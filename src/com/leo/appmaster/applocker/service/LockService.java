@@ -1,12 +1,12 @@
-package com.leo.applocker.service;
+package com.leo.appmaster.applocker.service;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.leo.applocker.LockScreenActivity;
-import com.leo.applocker.R;
-import com.leo.applocker.logic.LockHandler;
-import com.leo.applocker.logic.TimeoutRelockPolicy;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.logic.LockHandler;
+import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
 
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -56,8 +56,7 @@ public class LockService extends Service {
 		mNM.notify(NOTIFY_ID, notification);
 		startForeground(NOTIFY_ID, notification);
 
-		mTimer = new Timer();
-		mDetectTask = new DetectTask();
+
 		mLockHandler = new LockHandler(getApplicationContext());
 		mLockHandler.setLockPolicy(new TimeoutRelockPolicy(
 				getApplicationContext()));
@@ -88,20 +87,32 @@ public class LockService extends Service {
 		Log.d(TAG,
 				"start lock service: "
 						+ intent.getStringExtra(EXTRA_STARTUP_FROM));
+		startDetectTask();
 		mServiceStarted = true;
-		mTimer.schedule(mDetectTask, 0, 200);
-
 	}
 
 	private void stopLockService() {
 		Log.d(TAG, "stop lock service");
-		if (mTimer != null) {
-			mTimer.cancel();
-			mTimer.purge();
-		}
+		stopDetectTsk();
 		mServiceStarted = false;
 	}
+	
+	private void stopDetectTsk() {
+		if(mTimer != null) {
+			mTimer.cancel();
+			mTimer.purge();
+			mTimer = null;
+			mDetectTask = null;
+		}
+	}
 
+	private void startDetectTask() {
+		stopDetectTsk();
+		mTimer = new Timer();
+		mDetectTask = new DetectTask();
+		mTimer.schedule(mDetectTask, 0, 200);
+	}
+	
 	@Override
 	public void onDestroy() {
 		stopLockService();
@@ -137,6 +148,7 @@ public class LockService extends Service {
 				e.printStackTrace();
 			}
 
+			
 			if (mLockHandler != null) {
 				mLockHandler.handleAppLaunch(topPackageInfo.packageName,
 						topActivityName);

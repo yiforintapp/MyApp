@@ -1,4 +1,4 @@
-package com.leo.applocker.logic;
+package com.leo.appmaster.applocker.logic;
 
 import java.util.List;
 
@@ -7,20 +7,22 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
-import com.leo.applocker.AppLockerPreference;
-import com.leo.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.AppLockerPreference;
+import com.leo.appmaster.applocker.LockScreenActivity;
 
-public class LockHandler extends BroadcastReceiver{
+public class LockHandler extends BroadcastReceiver {
 
 	private static final String TAG = "LockHandler";
 
 	public static final String ACTION_APP_UNLOCKED = "com.leo.applocker.appunlocked";
-	public static final String EXTRA_UNLOCKED_APP_PKG = "unlocked_app_pkg";
+	public static final String EXTRA_LOCKED_APP_PKG = "locked_app_pkg";
 
 	private Context mContext;
 	private ActivityManager mAm;
+	private PackageManager mPm;
 	private String mLastRunningPkg;
 
 	private ILockPolicy mLockPolicy;
@@ -29,12 +31,14 @@ public class LockHandler extends BroadcastReceiver{
 		this.mContext = mContext;
 		mAm = (ActivityManager) mContext
 				.getSystemService(Context.ACTIVITY_SERVICE);
+		mPm = mContext.getPackageManager();
 		mLastRunningPkg = getRunningPkg();
 	}
+
 	public void setLockPolicy(ILockPolicy policy) {
 		mLockPolicy = policy;
-		if(mLockPolicy instanceof TimeoutRelockPolicy) {
-			
+		if (mLockPolicy instanceof TimeoutRelockPolicy) {
+
 		}
 	}
 
@@ -56,17 +60,21 @@ public class LockHandler extends BroadcastReceiver{
 		if (pkg == null)
 			return;
 		if (!pkg.equals(mLastRunningPkg)) {
-			
+			String myPackage = mContext.getPackageName();
+			if (pkg.equals(myPackage) || mLastRunningPkg.equals(myPackage)) {
+				mLastRunningPkg = pkg;
+				return;
+			}
 			mLastRunningPkg = pkg;
 			List<String> list = AppLockerPreference.getInstance(mContext)
 					.getLockedAppList();
-			if (list.contains(pkg)) {
-				if (!mLockPolicy.onHandleLock(pkg)) {
-					Intent intent = new Intent(mContext,
-							LockScreenActivity.class);
-					intent.putExtra(LockScreenActivity.EXTRA_LOCK_PKG, pkg);
-					mContext.startActivity(intent);
-				}
+			 if (list.contains(pkg)) {
+			if (!mLockPolicy.onHandleLock(pkg)) {
+				Intent intent = new Intent(mContext, LockScreenActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.putExtra(EXTRA_LOCKED_APP_PKG, pkg);
+				mContext.startActivity(intent);
+				 }
 			}
 		}
 	}
@@ -74,7 +82,7 @@ public class LockHandler extends BroadcastReceiver{
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (ACTION_APP_UNLOCKED.equals(intent.getAction())) {
-			String pkg = intent.getStringExtra(EXTRA_UNLOCKED_APP_PKG);
+			String pkg = intent.getStringExtra(EXTRA_LOCKED_APP_PKG);
 			mLockPolicy.onUnlocked(pkg);
 		}
 	}

@@ -1,6 +1,6 @@
-package com.leo.applocker.receiver;
+package com.leo.appmaster.applocker.receiver;
 
-import com.leo.applocker.service.LockService;
+import com.leo.appmaster.applocker.service.LockService;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

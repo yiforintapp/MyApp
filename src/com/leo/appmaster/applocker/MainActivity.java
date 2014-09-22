@@ -1,7 +1,8 @@
-package com.leo.applocker;
+package com.leo.appmaster.applocker;
 
 
-import com.leo.applocker.service.LockService;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.LockService;
 
 import android.app.Activity;
 import android.content.Intent;

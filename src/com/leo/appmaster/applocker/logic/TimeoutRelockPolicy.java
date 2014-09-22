@@ -1,12 +1,15 @@
-package com.leo.applocker.logic;
+package com.leo.appmaster.applocker.logic;
 
 import java.util.HashMap;
 
-import com.leo.applocker.AppLockerPreference;
+import com.leo.appmaster.applocker.AppLockerPreference;
 
 import android.content.Context;
+import android.util.Log;
 
 public class TimeoutRelockPolicy implements ILockPolicy {
+
+	private static final String TAG = "TimeoutRelockPolicy";
 
 	Context mContext;
 
@@ -31,7 +34,12 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 	public boolean onHandleLock(String pkg) {
 		if (mLockapp.containsKey(pkg)) {
 			long lastLockTime = mLockapp.get(pkg);
-			if ((System.currentTimeMillis() - lastLockTime) > mRelockTimeout)
+			Log.d(TAG,
+					"System.currentTimeMillis() = "
+							+ System.currentTimeMillis()
+							+ "       lastLockTime = " + lastLockTime
+							+ "       mRelockTimeout =  " + mRelockTimeout);
+			if ((System.currentTimeMillis() - lastLockTime) < mRelockTimeout)
 				return true;
 		} else {
 			mLockapp.put(pkg, System.currentTimeMillis());

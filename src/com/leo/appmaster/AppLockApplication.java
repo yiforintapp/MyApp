@@ -1,4 +1,4 @@
-package com.leo.applocker;
+package com.leo.appmaster;
 
 import android.app.Application;
 

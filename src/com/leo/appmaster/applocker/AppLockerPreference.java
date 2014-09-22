@@ -1,4 +1,4 @@
-package com.leo.applocker;
+package com.leo.appmaster.applocker;
 
 import java.util.Arrays;
 import java.util.List;
@@ -78,7 +78,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		mPassword = mPref.getString(PREF_PASSWORD, "1234");
 
 		mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
-		mRelockTimeout = mPref.getInt(PREF_RELOCK_TIME, 1000 * 10);
+		mRelockTimeout = mPref.getInt(PREF_RELOCK_TIME, 0);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		} else if (PREF_LOCK_POLICY.equals(key)) {
 			mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
 		} else if (PREF_RELOCK_TIME.equals(key)) {
-			mRelockTimeout = mPref.getInt(PREF_RELOCK_TIME, -1);
+			mRelockTimeout = mPref.getInt(PREF_RELOCK_TIME, 0);
 		}
 	}
 }

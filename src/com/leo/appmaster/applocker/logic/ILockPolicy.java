@@ -1,4 +1,4 @@
-package com.leo.applocker.logic;
+package com.leo.appmaster.applocker.logic;
 
 public interface ILockPolicy {
 	boolean onHandleLock(String pkg);
