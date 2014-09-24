@@ -1,6 +1,9 @@
 package com.leo.appmaster.appmanage;
 
+import java.util.List;
+import java.util.Set;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -41,20 +44,19 @@ public class AppManagerActivity extends Activity implements IAppLoadListener {
 	}
 
 	@Override
-	public void onLoadFinsh(Vector<AppDetailInfo> appDetails) {
+	public void onLoadFinsh(List<AppDetailInfo> list) {
 		mLoadingView.setVisibility(View.INVISIBLE);
 
-		mAppContainGV.setAdapter(new DataAdapter(appDetails,
-				getLayoutInflater()));
+		mAppContainGV.setAdapter(new DataAdapter(list, getLayoutInflater()));
 		mAppContainGV.setVisibility(View.VISIBLE);
 	}
 
 	private class DataAdapter extends BaseAdapter {
 
-		Vector<AppDetailInfo> mAppDetails;
+		List<AppDetailInfo> mAppDetails;
 		LayoutInflater mInflater;
 
-		public DataAdapter(Vector<AppDetailInfo> appDetails,
+		public DataAdapter(List<AppDetailInfo> appDetails,
 				LayoutInflater inflater) {
 			super();
 			this.mAppDetails = appDetails;

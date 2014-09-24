@@ -18,13 +18,12 @@ public class AppDetailInfo extends BaseInfo {
 	/*
 	 * app power comsumption info
 	 */
-	private PowerComsuInfo mPowerComInfo;
+	private double mPowerComsuPercent;
 
 	public AppDetailInfo() {
 		mCacheInfo = new CacheInfo();
 		mPermissionInfo = new AppPermissionInfo();
 		mTrafficInfo = new TrafficInfo();
-		mPowerComInfo = new PowerComsuInfo();
 	}
 
 	public CacheInfo getCacheInfo() {
@@ -51,12 +50,12 @@ public class AppDetailInfo extends BaseInfo {
 		this.mTrafficInfo = mTrafficInfo;
 	}
 
-	public PowerComsuInfo getPowerComInfo() {
-		return mPowerComInfo;
+	public double getPowerComsuPercent() {
+		return mPowerComsuPercent;
 	}
 
-	public void setPowerComInfo(PowerComsuInfo mPowerComInfo) {
-		this.mPowerComInfo = mPowerComInfo;
+	public void setPowerComsuPercent(double percentOfTotal) {
+		this.mPowerComsuPercent = percentOfTotal;
 	}
 
 }

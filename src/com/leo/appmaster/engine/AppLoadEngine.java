@@ -1,8 +1,12 @@
 package com.leo.appmaster.engine;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -30,7 +34,7 @@ public class AppLoadEngine {
 	private static final String TAG = "app engine";
 
 	public interface IAppLoadListener {
-		void onLoadFinsh(Vector<AppDetailInfo> mAppDetails);
+		void onLoadFinsh(List<AppDetailInfo> list);
 	}
 
 	private static AppLoadEngine mInstance;
@@ -51,7 +55,13 @@ public class AppLoadEngine {
 			case MSG_LOAD_FINISH:
 				Log.d(TAG, "load app finished");
 				if (mLoadListener != null) {
-					mLoadListener.onLoadFinsh(mAppDetails);
+					Set<Entry<String, AppDetailInfo>> set = mAppDetails
+							.entrySet();
+					ArrayList<AppDetailInfo> list = new ArrayList<AppDetailInfo>();
+					for (Entry<String, AppDetailInfo> entry : set) {
+						list.add(entry.getValue());
+					}
+					mLoadListener.onLoadFinsh(list);
 				}
 				break;
 
@@ -64,10 +74,11 @@ public class AppLoadEngine {
 	/*
 	 * do not change this data structure, because it is thread-safety
 	 */
-	private Vector<AppDetailInfo> mAppDetails;
+
+	private ConcurrentHashMap<String, AppDetailInfo> mAppDetails;
 
 	public AppLoadEngine() {
-		mAppDetails = new Vector<AppDetailInfo>();
+		mAppDetails = new ConcurrentHashMap<String, AppDetailInfo>();
 	}
 
 	public static synchronized AppLoadEngine getInstance() {
@@ -101,6 +112,7 @@ public class AppLoadEngine {
 				loadBaseInfo();
 				loadTrafficInfo();
 				loadPermissionInfo();
+				loadPowerComsuInfo();
 				loadCacheInfo();
 				try {
 					mLatch.await();
@@ -131,7 +143,7 @@ public class AppLoadEngine {
 			appInfo.setInSdcard(AppUtil.isInstalledInSDcard(applicationInfo));
 			appInfo.setUid(applicationInfo.uid);
 
-			mAppDetails.add(appInfo);
+			mAppDetails.put(packageName, appInfo);
 		}
 	}
 
@@ -139,16 +151,18 @@ public class AppLoadEngine {
 	 * load all traffic info in new thread
 	 */
 	private void loadTrafficInfo() {
-		for (AppDetailInfo info : mAppDetails) {
-			long received = TrafficStats.getUidRxBytes(info.getUid());
-			long transmitted = TrafficStats.getUidTxBytes(info.getUid());
+		Set<Entry<String, AppDetailInfo>> set = mAppDetails.entrySet();
+		for (Entry<String, AppDetailInfo> entry : set) {
+			long received = TrafficStats.getUidRxBytes(entry.getValue()
+					.getUid());
+			long transmitted = TrafficStats.getUidTxBytes(entry.getValue()
+					.getUid());
 			if (received == -1 && transmitted == -1) {
 				continue;
 			}
-			info.getTrafficInfo().setTransmittedData(transmitted);
-			info.getTrafficInfo().setReceivedData(received);
+			entry.getValue().getTrafficInfo().setTransmittedData(transmitted);
+			entry.getValue().getTrafficInfo().setReceivedData(received);
 		}
-
 	}
 
 	/*
@@ -156,8 +170,10 @@ public class AppLoadEngine {
 	 */
 	private void loadCacheInfo() {
 		mCacheLoadCounts.set(0);
-		for (AppDetailInfo info : mAppDetails) {
-			getCacheInfo(info.getPkg(), info.getCacheInfo());
+		Set<Entry<String, AppDetailInfo>> set = mAppDetails.entrySet();
+		for (Entry<String, AppDetailInfo> entry : set) {
+			getCacheInfo(entry.getValue().getPkg(), entry.getValue()
+					.getCacheInfo());
 		}
 	}
 
@@ -196,17 +212,29 @@ public class AppLoadEngine {
 
 	private void loadPermissionInfo() {
 		PackageInfo packangeInfo;
-		for (AppDetailInfo info : mAppDetails) {
+		Set<Entry<String, AppDetailInfo>> set = mAppDetails.entrySet();
+		for (Entry<String, AppDetailInfo> entry : set) {
 			try {
-				packangeInfo = mPm.getPackageInfo(info.getPkg(),
+				packangeInfo = mPm.getPackageInfo(entry.getValue().getPkg(),
 						PackageManager.GET_PERMISSIONS);
-				info.getPermissionInfo().setPermissions(
-						packangeInfo.permissions);
+				entry.getValue().getPermissionInfo()
+						.setPermissions(packangeInfo.permissions);
 			} catch (NameNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
+	private void loadPowerComsuInfo() {
+		BatteryInfoProvider provider = new BatteryInfoProvider(mContext);
+		List<BatteryComsuption> list = provider.getBatteryStats();
+		for (BatteryComsuption batterySipper : list) {
+			String packageName = batterySipper.getDefaultPackageName();
+			if (packageName != null && mAppDetails.containsKey(packageName)) {
+				Log.e("xxxx", packageName + " : " +batterySipper.getPercentOfTotal() );
+				mAppDetails.get(packageName).setPowerComsuPercent(
+						batterySipper.getPercentOfTotal());
+			}
+		}
+	}
 }
