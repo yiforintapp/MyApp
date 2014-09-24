@@ -68,29 +68,14 @@ public class BatteryInfoProvider {
 		mPowerProfile = new PowerProfile(context);
 	}
 
-	/**
-	 * ������С�ٷֱȣ�С�ڸ�ֵ�ĳ��򽫱����˵�
-	 * 
-	 * @param minPercentOfTotal
-	 */
 	public void setMinPercentOfTotal(double minPercentOfTotal) {
 		this.mMinPercentOfTotal = minPercentOfTotal;
 	}
 
-	/**
-	 * ��ȡ���ĵ�����
-	 * 
-	 * @return
-	 */
 	public double getTotalPower() {
 		return mTotalPower;
 	}
 
-	/**
-	 * ��ȡ��ص�ʹ��ʱ��
-	 * 
-	 * @return
-	 */
 	public String getStatsPeriod() {
 		return BatteryUtils.formatElapsedTime(mContext, mStatsPeriod);
 	}
@@ -206,8 +191,8 @@ public class BatteryInfoProvider {
 					BatteryComsuption sipper = templist.get(info.processName);
 					sipper.setValue(sipper.getValue() + time);
 				} else {
-					templist.put(info.processName, new BatteryComsuption(mContext,
-							info.processName, time));
+					templist.put(info.processName, new BatteryComsuption(
+							mContext, info.processName, time));
 				}
 				totalTime += time;
 			} else {
@@ -240,7 +225,8 @@ public class BatteryInfoProvider {
 
 		Collections.sort(list, new Comparator<BatteryComsuption>() {
 			@Override
-			public int compare(BatteryComsuption object1, BatteryComsuption object2) {
+			public int compare(BatteryComsuption object1,
+					BatteryComsuption object2) {
 				double d1 = object1.getPercentOfTotal();
 				double d2 = object2.getPercentOfTotal();
 				if (d1 - d2 < 0) {
@@ -323,8 +309,8 @@ public class BatteryInfoProvider {
 				* mPowerProfile.getAveragePower(PowerProfile.POWER_WIFI_ON)) / 1000;
 		if (DEBUG)
 			Log.i(TAG, "WIFI power=" + wifiPower + " from procs=" + mWifiPower);
-		BatteryComsuption bs = addEntry(DrainType.WIFI, runningTimeMs, wifiPower
-				+ mWifiPower);
+		BatteryComsuption bs = addEntry(DrainType.WIFI, runningTimeMs,
+				wifiPower + mWifiPower);
 		aggregateSippers(bs, mWifiSippers, "WIFI");
 	}
 
@@ -337,8 +323,8 @@ public class BatteryInfoProvider {
 		int btPingCount = mStats.getBluetoothPingCount();
 		btPower += (btPingCount * mPowerProfile
 				.getAveragePower(PowerProfile.POWER_BLUETOOTH_AT_CMD)) / 1000;
-		BatteryComsuption bs = addEntry(DrainType.BLUETOOTH, btOnTimeMs, btPower
-				+ mBluetoothPower);
+		BatteryComsuption bs = addEntry(DrainType.BLUETOOTH, btOnTimeMs,
+				btPower + mBluetoothPower);
 		aggregateSippers(bs, mBluetoothSippers, "Bluetooth");
 	}
 
@@ -377,8 +363,8 @@ public class BatteryInfoProvider {
 		}
 	}
 
-	private void aggregateSippers(BatteryComsuption bs, List<BatteryComsuption> from,
-			String tag) {
+	private void aggregateSippers(BatteryComsuption bs,
+			List<BatteryComsuption> from, String tag) {
 		for (int i = 0; i < from.size(); i++) {
 			BatteryComsuption wbs = from.get(i);
 			if (DEBUG)
@@ -394,7 +380,8 @@ public class BatteryInfoProvider {
 		}
 	}
 
-	private BatteryComsuption addEntry(DrainType drainType, long time, double power) {
+	private BatteryComsuption addEntry(DrainType drainType, long time,
+			double power) {
 		if (power > mMaxPower)
 			mMaxPower = power;
 		mTotalPower += power;
@@ -560,8 +547,8 @@ public class BatteryInfoProvider {
 
 			// Add the app to the list if it is consuming power
 			if (power != 0) {
-				BatteryComsuption app = new BatteryComsuption(mContext, DrainType.APP, u,
-						new double[] { power });
+				BatteryComsuption app = new BatteryComsuption(mContext,
+						DrainType.APP, u, new double[] { power });
 				app.cpuTime = cpuTime;
 				app.gpsTime = gpsTime;
 				// app.wifiRunningTime = wifiRunningTimeMs;
@@ -591,12 +578,7 @@ public class BatteryInfoProvider {
 				Log.i(TAG, "Added power = " + power);
 		}
 	}
-
-	/**
-	 * ����ÿ�ֽڵ�ƽ������
-	 * 
-	 * @return
-	 */
+	
 	private double getAverageDataCost() {
 		final long WIFI_BPS = 1000000; // TODO: Extract average bit rates from
 										// system
