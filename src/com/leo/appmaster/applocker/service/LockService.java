@@ -148,7 +148,6 @@ public class LockService extends Service {
 				e.printStackTrace();
 			}
 
-			
 			if (mLockHandler != null) {
 				mLockHandler.handleAppLaunch(topPackageInfo.packageName,
 						topActivityName);
