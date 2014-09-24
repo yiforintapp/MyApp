@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">AppMaster</string>
-    <string name="hello_world">Hello world!</string>
-
-        <string name="app_manage">应用管理</string>
+    
+    <string name="app_manage">应用管理</string>
     <string name="app_lock">应用锁</string>
     <string name="app_backup">应用备份</string>
     <string name="clean_memory">一键清理</string>
+
 </resources>

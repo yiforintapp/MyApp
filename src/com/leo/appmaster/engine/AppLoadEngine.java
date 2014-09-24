@@ -41,20 +41,19 @@ public class AppLoadEngine {
 	private static AppLoadEngine mInstance;
 	private Context mContext;
 	private PackageManager mPm;
-	private AtomicInteger mCacheLoadCounts;
 	private CountDownLatch mLatch;
 	private Handler mHandler;
 
 	private IAppLoadListener mLoadListener;
 
-	private static final int MSG_LOAD_FINISH = 1000;
+	private static final int MSG_LOAD_BASE_INFO_FINISH = 1000;
 
 	@SuppressLint("HandlerLeak")
 	private class LoadHandler extends Handler {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case MSG_LOAD_FINISH:
+			case MSG_LOAD_BASE_INFO_FINISH:
 				Log.d(TAG, "load app finished");
 				if (mLoadListener != null) {
 					Set<Entry<String, AppDetailInfo>> set = mAppDetails
@@ -99,7 +98,6 @@ public class AppLoadEngine {
 		mContext = ctx;
 		mHandler = new LoadHandler();
 		mPm = mContext.getPackageManager();
-		mCacheLoadCounts = new AtomicInteger(0);
 		mLatch = new CountDownLatch(1);
 	}
 
@@ -107,26 +105,32 @@ public class AppLoadEngine {
 		mLoadListener = listener;
 	}
 
-	public void loadAppDetailInfo() {
+	public void loadAllBaseInfo() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				loadBaseInfo();
-				loadTrafficInfo();
-				loadPermissionInfo();
+				loadAllPkgInfo();
 				loadPowerComsuInfo();
-				loadCacheInfo();
-				try {
-					mLatch.await();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				mHandler.sendEmptyMessage(MSG_LOAD_FINISH);
+				mHandler.sendEmptyMessage(MSG_LOAD_BASE_INFO_FINISH);
 			}
 		}).start();
 	}
+	
+	public AppDetailInfo loadAppDetailInfo(String pkgName) {
+		mLatch = new CountDownLatch(1);
+		loadTrafficInfo(pkgName);
+		loadPermissionInfo(pkgName);
+		loadCacheInfo(pkgName);
+		try {
+			mLatch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return mAppDetails.get(pkgName);
+	}
+	
 
-	public void loadBaseInfo() {
+	public void loadAllPkgInfo() {
 		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent, 0);
@@ -148,36 +152,46 @@ public class AppLoadEngine {
 			mAppDetails.put(packageName, appInfo);
 		}
 	}
-
-	/*
-	 * load all traffic info in new thread
-	 */
-	private void loadTrafficInfo() {
-		Set<Entry<String, AppDetailInfo>> set = mAppDetails.entrySet();
-		for (Entry<String, AppDetailInfo> entry : set) {
-			long received = TrafficStats.getUidRxBytes(entry.getValue()
-					.getUid());
-			long transmitted = TrafficStats.getUidTxBytes(entry.getValue()
-					.getUid());
-			if (received == -1 && transmitted == -1) {
-				continue;
+	
+	private void loadPowerComsuInfo() {
+		BatteryInfoProvider provider = new BatteryInfoProvider(mContext);
+		List<BatteryComsuption> list = provider.getBatteryStats();
+		for (BatteryComsuption batterySipper : list) {
+			String packageName = batterySipper.getDefaultPackageName();
+			if (packageName != null && mAppDetails.containsKey(packageName)) {
+				mAppDetails.get(packageName).setPowerComsuPercent(
+						batterySipper.getPercentOfTotal());
 			}
-			entry.getValue().getTrafficInfo().setTransmittedData(transmitted);
-			entry.getValue().getTrafficInfo().setReceivedData(received);
 		}
 	}
 
-	/*
-	 * load all cache info
-	 */
-	private void loadCacheInfo() {
-		mCacheLoadCounts.set(0);
-		Set<Entry<String, AppDetailInfo>> set = mAppDetails.entrySet();
-		for (Entry<String, AppDetailInfo> entry : set) {
-			getCacheInfo(entry.getValue().getPkg(), entry.getValue()
-					.getCacheInfo());
+	private void loadCacheInfo(String pkgName) {
+		AppDetailInfo info = mAppDetails.get(pkgName);
+		getCacheInfo(pkgName, info.getCacheInfo());
+	}
+
+	private void loadPermissionInfo(String pkgName) {
+		PackageInfo packangeInfo;
+		AppDetailInfo info = mAppDetails.get(pkgName);
+		try {
+			packangeInfo = mPm.getPackageInfo(pkgName,
+					PackageManager.GET_PERMISSIONS);
+			info.getPermissionInfo().setPermissions(packangeInfo.permissions);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
+
+	private void loadTrafficInfo(String pkgName) {
+		AppDetailInfo info = mAppDetails.get(pkgName);
+		if (info != null) {
+			long received = TrafficStats.getUidRxBytes(info.getUid());
+			long transmitted = TrafficStats.getUidTxBytes(info.getUid());
+			info.getTrafficInfo().setTransmittedData(transmitted);
+			info.getTrafficInfo().setReceivedData(received);
+		}
+	}
+
 
 	private void getCacheInfo(String pkg, final CacheInfo cacheInfo) {
 		try {
@@ -200,11 +214,7 @@ public class AppLoadEngine {
 							cacheInfo.setDataSize(TextFormater
 									.dataSizeFormat(dataSize));
 
-							// we should judge weather load all cache info
-							if (mCacheLoadCounts.addAndGet(1) == mAppDetails
-									.size()) {
-								mLatch.countDown();
-							}
+							mLatch.countDown();
 						}
 					} });
 		} catch (Exception e) {
@@ -212,32 +222,4 @@ public class AppLoadEngine {
 		}
 	}
 
-	private void loadPermissionInfo() {
-		PackageInfo packangeInfo;
-		Set<Entry<String, AppDetailInfo>> set = mAppDetails.entrySet();
-		for (Entry<String, AppDetailInfo> entry : set) {
-			try {
-				packangeInfo = mPm.getPackageInfo(entry.getValue().getPkg(),
-						PackageManager.GET_PERMISSIONS);
-				entry.getValue().getPermissionInfo()
-						.setPermissions(packangeInfo.permissions);
-			} catch (NameNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private void loadPowerComsuInfo() {
-		BatteryInfoProvider provider = new BatteryInfoProvider(mContext);
-		List<BatteryComsuption> list = provider.getBatteryStats();
-		for (BatteryComsuption batterySipper : list) {
-			String packageName = batterySipper.getDefaultPackageName();
-			if (packageName != null && mAppDetails.containsKey(packageName)) {
-				Log.e("xxxx",
-						packageName + " : " + batterySipper.getPercentOfTotal());
-				mAppDetails.get(packageName).setPowerComsuPercent(
-						batterySipper.getPercentOfTotal());
-			}
-		}
-	}
 }

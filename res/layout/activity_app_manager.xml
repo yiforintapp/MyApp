@@ -23,6 +23,7 @@
         android:layout_height="match_parent"
         android:horizontalSpacing="3dp"
         android:verticalSpacing="3dp"
+        android:listSelector="@null"
         android:numColumns="4"
         android:visibility="invisible" >
     </GridView>

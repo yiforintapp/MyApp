@@ -35,7 +35,7 @@ public class AppManagerActivity extends Activity implements IAppLoadListener {
 		AppLoadEngine manager = AppLoadEngine.getInstance();
 		manager.init(this.getApplicationContext());
 		manager.setLoadListener(this);
-		manager.loadAppDetailInfo();
+		manager.loadAllBaseInfo();
 	}
 
 	private void intiUI() {
