@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -48,6 +49,7 @@ public class AppLoadEngine {
 
 	private static final int MSG_LOAD_FINISH = 1000;
 
+	@SuppressLint("HandlerLeak")
 	private class LoadHandler extends Handler {
 		@Override
 		public void handleMessage(Message msg) {
@@ -77,7 +79,7 @@ public class AppLoadEngine {
 
 	private ConcurrentHashMap<String, AppDetailInfo> mAppDetails;
 
-	public AppLoadEngine() {
+	private AppLoadEngine() {
 		mAppDetails = new ConcurrentHashMap<String, AppDetailInfo>();
 	}
 
@@ -231,7 +233,8 @@ public class AppLoadEngine {
 		for (BatteryComsuption batterySipper : list) {
 			String packageName = batterySipper.getDefaultPackageName();
 			if (packageName != null && mAppDetails.containsKey(packageName)) {
-				Log.e("xxxx", packageName + " : " +batterySipper.getPercentOfTotal() );
+				Log.e("xxxx",
+						packageName + " : " + batterySipper.getPercentOfTotal());
 				mAppDetails.get(packageName).setPowerComsuPercent(
 						batterySipper.getPercentOfTotal());
 			}
