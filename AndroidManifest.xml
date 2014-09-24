@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leo.appmaster"
     android:installLocation="preferExternal"
-    android:versionCode="1"
+    android:versionCode="@string/version_code"
     android:versionName="@string/version_name" >
 
     <uses-sdk
