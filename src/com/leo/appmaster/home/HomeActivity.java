@@ -3,6 +3,7 @@ package com.leo.appmaster.home;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.appmanage.AppManagerActivity;
+import com.leo.appmaster.ui.CommonTitleBar;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,6 +20,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 	private TextView mTvAppBackup;
 	private TextView mTvCleanMem;
 	
+	private CommonTitleBar mTtileBar;
 	
 	private int mCurrentProgress;
 
@@ -44,6 +46,11 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTvAppLock.setOnClickListener(this);
 		mTvAppBackup.setOnClickListener(this);
 		mTvCleanMem.setOnClickListener(this);
+		
+		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+		mTtileBar.setTitle(R.string.app_name);
+		mTtileBar.setBackArrowVisibility(View.GONE);
+		
 	}
 
 	private void startLockService() {
@@ -92,11 +99,11 @@ public class HomeActivity extends Activity implements OnClickListener {
 
 		@Override
 		public void run() {
-			while (mCurrentProgress > 0) {
+			while (mCurrentProgress > 1) {
 				mCurrentProgress -= 1;
 				mTaskProgessView.setProgress(mCurrentProgress);
 				try {
-					Thread.sleep(100);
+					Thread.sleep(10);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -105,7 +112,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 				mCurrentProgress += 1;
 				mTaskProgessView.setProgress(mCurrentProgress);
 				try {
-					Thread.sleep(100);
+					Thread.sleep(10);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

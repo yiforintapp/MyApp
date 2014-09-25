@@ -1,5 +1,6 @@
 package com.leo.appmaster.appmanage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -9,23 +10,45 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.IAppLoadListener;
 import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.PageIndicator;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.PageTransformer;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class AppManagerActivity extends Activity implements IAppLoadListener {
+@SuppressLint("InflateParams")
+public class AppManagerActivity extends Activity implements IAppLoadListener,
+		OnClickListener, OnItemClickListener {
 
 	View mLoadingView;
-	private GridView mAppContainGV;
+
+	private CommonTitleBar mTtileBar;
+	private PageIndicator mPageIndicator;
+	private ViewPager mViewPager;
+	private View mPagerContain;
+
+	List<AppDetailInfo> mAppDetails;
+	LayoutInflater mInflater;
+
+	private int pageItemCount = 20;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,38 +62,103 @@ public class AppManagerActivity extends Activity implements IAppLoadListener {
 	}
 
 	private void intiUI() {
+		mInflater = getLayoutInflater();
 		mLoadingView = findViewById(R.id.rl_loading);
-		mAppContainGV = (GridView) findViewById(R.id.gv_app_contain);
+
+		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+		mTtileBar.setTitle(R.string.app_manage);
+		mTtileBar.setBackViewListener(this);
+		mTtileBar.setOptionVisibility(View.INVISIBLE);
+
+		mPagerContain = findViewById(R.id.layout_pager_container);
+		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setPageTransformer(true, new DepthPageTransformer());
 	}
 
 	@Override
 	public void onLoadFinsh(List<AppDetailInfo> list) {
+		mAppDetails = list;
 		mLoadingView.setVisibility(View.INVISIBLE);
+		int pageCount = Math.round(((long) mAppDetails.size()) / pageItemCount);
+		int itemCounts[] = new int[pageCount];
+		int i;
+		for (i = 0; i < itemCounts.length; i++) {
+			if (i == itemCounts.length - 1) {
+				itemCounts[i] = list.size() / pageItemCount;
+			} else {
+				itemCounts[i] = pageItemCount;
+			}
+		}
+		ArrayList<View> viewList = new ArrayList<View>();
 
-		mAppContainGV.setAdapter(new DataAdapter(list, getLayoutInflater()));
-		mAppContainGV.setVisibility(View.VISIBLE);
+		for (i = 0; i < pageCount; i++) {
+			GridView gridView = (GridView) mInflater.inflate(
+					R.layout.grid_page_item, mViewPager, false);
+			if (i == pageCount) {
+				gridView.setAdapter(new DataAdapter(mAppDetails, i
+						* pageItemCount, mAppDetails.size() - 1));
+			} else {
+				gridView.setAdapter(new DataAdapter(mAppDetails, i
+						* pageItemCount, i * pageItemCount + pageItemCount - 1));
+			}
+			gridView.setOnItemClickListener(this);
+			viewList.add(gridView);
+		}
+		mViewPager.setAdapter(new DataPagerAdapter(viewList));
+		mPageIndicator.setViewPager(mViewPager);
+		mPagerContain.setVisibility(View.VISIBLE);
 	}
 
-	private class DataAdapter extends BaseAdapter {
+	private class DataPagerAdapter extends PagerAdapter {
 
-		List<AppDetailInfo> mAppDetails;
-		LayoutInflater mInflater;
+		List<View> pagerList;
 
-		public DataAdapter(List<AppDetailInfo> appDetails,
-				LayoutInflater inflater) {
-			super();
-			this.mAppDetails = appDetails;
-			this.mInflater = inflater;
+		public DataPagerAdapter(ArrayList<View> viewList) {
+			pagerList = viewList;
 		}
 
 		@Override
 		public int getCount() {
-			return mAppDetails.size();
+			return pagerList.size();
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			container.removeView(pagerList.get(position));
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			container.addView(pagerList.get(position), 0);
+			return pagerList.get(position);
+		}
+	}
+
+	private class DataAdapter extends BaseAdapter {
+
+		int startLoc;
+		int endLoc;
+
+		public DataAdapter(List<AppDetailInfo> appDetails, int start, int end) {
+			super();
+			startLoc = start;
+			endLoc = end;
+		}
+
+		@Override
+		public int getCount() {
+			return endLoc - startLoc + 1;
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return mAppDetails.get(position);
+			return mAppDetails.get(startLoc + position);
 		}
 
 		@Override
@@ -80,29 +168,80 @@ public class AppManagerActivity extends Activity implements IAppLoadListener {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			ItemHolder holder;
 			if (convertView == null) {
-				holder = new ItemHolder();
 				convertView = mInflater.inflate(R.layout.app_item, null);
-				holder.imageView = (ImageView) convertView
-						.findViewById(R.id.iv_app_icon);
-				holder.textView = (TextView) convertView
-						.findViewById(R.id.tv_app_name);
-				convertView.setTag(holder);
-			} else {
-				holder = (ItemHolder) convertView.getTag();
 			}
-			holder.imageView.setImageDrawable(mAppDetails.get(position)
-					.getAppIcon());
-			holder.textView.setText(mAppDetails.get(position).getAppLabel());
+
+			ImageView imageView = (ImageView) convertView
+					.findViewById(R.id.iv_app_icon);
+			TextView textView = (TextView) convertView
+					.findViewById(R.id.tv_app_name);
+
+			AppDetailInfo info = mAppDetails.get(startLoc + position);
+			imageView.setImageDrawable(info.getAppIcon());
+			textView.setText(info.getAppLabel());
+			convertView.setTag(info.getPkg());
 			return convertView;
 		}
 
 	}
 
-	private static class ItemHolder {
-		public ImageView imageView;
-		public TextView textView;
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.layout_title_back:
+			this.finish();
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	public class DepthPageTransformer implements PageTransformer {
+		private static final float MIN_SCALE = 0.75f;
+
+		@SuppressLint("NewApi")
+		@Override
+		public void transformPage(View view, float position) {
+			int pageWidth = view.getWidth();
+			if (position < -1) { // [-Infinity,-1)
+									// This page is way off-screen to the left.
+				view.setAlpha(0);
+			} else if (position <= 0) { // [-1,0]
+										// Use the default slide transition when
+										// moving to the left page
+				view.setAlpha(1);
+				view.setTranslationX(0);
+				view.setScaleX(1);
+				view.setScaleY(1);
+			} else if (position <= 1) { // (0,1]
+										// Fade the page out.
+				view.setAlpha(1 - position);
+				// Counteract the default slide transition
+				view.setTranslationX(pageWidth * -position);
+				// Scale the page down (between MIN_SCALE and 1)
+				float scaleFactor = MIN_SCALE + (1 - MIN_SCALE)
+						* (1 - Math.abs(position));
+				view.setScaleX(scaleFactor);
+				view.setScaleY(scaleFactor);
+			} else { // (1,+Infinity]
+						// This page is way off-screen to the right.
+				view.setAlpha(0);
+
+			}
+		}
+
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		String pkg = (String) view.getTag();
+		Intent intent = new Intent(this, AppDetailActivity.class);
+		intent.putExtra(AppDetailActivity.EXTRA_LOAD_PKG, pkg);
+		this.startActivity(intent);
 	}
 
 }

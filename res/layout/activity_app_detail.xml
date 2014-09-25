@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.leo.appmaster.ui.CommonTitleBar
+        android:id="@+id/layout_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:id="@+id/pager_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_title_bar"
+        android:background="#34234563"
+        android:orientation="vertical"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp" 
+            android:background="#54678681">
+
+            <TextView
+                android:id="@+id/tv_app_use_info"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="70dp"
+                android:gravity="center"
+                android:text="@string/app_use_info"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/tv_app_permission_info"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="70dp"
+                android:gravity="center"
+                android:text="@string/app_permission_info"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager_app_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</RelativeLayout>
