@@ -1,0 +1,264 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#23948379" >
+
+    <com.leo.appmaster.ui.CommonTitleBar
+        android:id="@+id/layout_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_title_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
+
+        <TextView
+            android:id="@+id/tv_input_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/please_input_pswd"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/tv_input_tip"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_below="@id/tv_input_header"
+            android:layout_marginTop="5dp"
+            android:gravity="center" />
+
+        <ImageView
+            android:id="@+id/iv_app_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_above="@+id/tv_input_tip"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_launcher" />
+
+        <EditText
+            android:id="@+id/ev_passwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_input_tip"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:enabled="false"
+            android:gravity="center"
+            android:hint="@string/passwd_hint"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/ev_passwd"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/tv_1"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="1"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tv_2"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="2"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tv_3"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="3"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/tv_4"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="4"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tv_5"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="5"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tv_6"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="6"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/tv_7"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="7"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tv_8"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="8"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tv_9"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="9"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/tv_delete"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="@string/delete"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tv_0"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="0"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tv_ok"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="#23298354"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="@string/makesure"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_find_passwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:text="@string/find_passwd"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout>

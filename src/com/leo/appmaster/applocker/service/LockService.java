@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.PasswdSettingActivity;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
 

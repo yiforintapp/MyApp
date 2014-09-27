@@ -38,6 +38,7 @@
         android:layout_marginRight="5dp"
         android:gravity="center"
         android:textColor="#aaffffff"
+        android:visibility="invisible"
         android:text="设置"
         android:textSize="20sp" />
 

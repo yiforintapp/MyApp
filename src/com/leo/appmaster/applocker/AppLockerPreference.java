@@ -14,11 +14,14 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	private static final String PREF_PASSWORD = "password";
 	private static final String PREF_LOCK_POLICY = "lock_policy";
 	private static final String PREF_RELOCK_TIME = "relock_time";
+	private static final String PREF_HAVE_SETTED_PSWD = "have_setted_pswd";
 
 	private List<String> mLockedAppList;
 	private String mPassword;
 	private String mLockPolicy;
 	private int mRelockTimeout;
+
+	private boolean mHaveSettedPswd;
 
 	private SharedPreferences mPref;
 	private static AppLockerPreference mInstance;
@@ -56,7 +59,9 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 
 	public void savePassword(String password) {
 		mPassword = password;
-		mPref.edit().putString(PREF_PASSWORD, password);
+		mHaveSettedPswd = true;
+		mPref.edit().putString(PREF_PASSWORD, password).commit();
+		mPref.edit().putBoolean(PREF_HAVE_SETTED_PSWD, mHaveSettedPswd).commit();
 	}
 
 	public List<String> getLockedAppList() {
@@ -72,10 +77,17 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		mPref.edit().putString(PREF_APPLICATION_LIST, combined).commit();
 	}
 
+	public boolean haveSettedPswd() {
+		return mHaveSettedPswd;
+	}
+
 	private void loadPreferences() {
 		mLockedAppList = Arrays.asList(mPref.getString(PREF_APPLICATION_LIST,
 				"").split(";"));
-		mPassword = mPref.getString(PREF_PASSWORD, "1234");
+		mHaveSettedPswd = mPref.getBoolean(PREF_HAVE_SETTED_PSWD, false);
+		if (mHaveSettedPswd == true) {
+			mPassword = mPref.getString(PREF_PASSWORD, "123456");
+		}
 
 		mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
 		mRelockTimeout = mPref.getInt(PREF_RELOCK_TIME, 0);
@@ -94,5 +106,9 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		} else if (PREF_RELOCK_TIME.equals(key)) {
 			mRelockTimeout = mPref.getInt(PREF_RELOCK_TIME, 0);
 		}
+	}
+
+	public boolean hasPswdProtect() {
+		return false;
 	}
 }

@@ -1,8 +1,8 @@
 package com.leo.appmaster.appmanage;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.cleanmemory.ProcessUtils;
 import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.utils.ProcessUtils;
 
 import android.app.ActivityManager;
 import android.content.Context;

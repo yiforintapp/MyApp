@@ -30,6 +30,11 @@ public class BaseInfo {
 	 * app uid
 	 */
 	private int mUid;
+
+	/*
+	 * is locked
+	 */
+	private boolean mLocked;
 	
 	public String getPkg() {
 		return mPkg;
@@ -78,5 +83,15 @@ public class BaseInfo {
 	public void setUid(int mUid) {
 		this.mUid = mUid;
 	}
+
+	public boolean isLocked() {
+		return mLocked;
+	}
+
+	public void setLocked(boolean mLocked) {
+		this.mLocked = mLocked;
+	}
+	
+	
 	
 }

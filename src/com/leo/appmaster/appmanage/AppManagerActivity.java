@@ -67,7 +67,7 @@ public class AppManagerActivity extends Activity implements IAppLoadListener,
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_manage);
-		mTtileBar.setBackViewListener(this);
+		mTtileBar.openBackView();
 		mTtileBar.setOptionVisibility(View.INVISIBLE);
 
 		mPagerContain = findViewById(R.id.layout_pager_container);
@@ -188,14 +188,6 @@ public class AppManagerActivity extends Activity implements IAppLoadListener,
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.layout_title_back:
-			this.finish();
-			break;
-
-		default:
-			break;
-		}
 
 	}
 

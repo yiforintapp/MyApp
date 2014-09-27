@@ -1,6 +1,9 @@
 package com.leo.appmaster.utils;
 
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
 
 public class AppUtil {
@@ -33,5 +36,15 @@ public class AppUtil {
 		long totalTraffic = TrafficStats.getTotalRxBytes()
 				+ TrafficStats.getTotalTxBytes();
 		return totalTraffic - getMobileTraffic();
+	}
+	
+	public static Drawable getDrawable(PackageManager pm, String pkg) {
+		Drawable d = null;
+		try {
+			d =  pm.getApplicationIcon(pkg);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return d;
 	}
 }

@@ -1,8 +1,12 @@
 package com.leo.appmaster.home;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockerPreference;
+import com.leo.appmaster.applocker.PasswdSettingActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.appmanage.AppManagerActivity;
+import com.leo.appmaster.cleanmemory.CleanMemActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 import android.app.Activity;
@@ -50,6 +54,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
+		mTtileBar.setOptionVisibility(View.VISIBLE);
 		
 	}
 
@@ -75,18 +80,34 @@ public class HomeActivity extends Activity implements OnClickListener {
 			this.startActivity(intent);
 			break;
 		case R.id.tv_app_lock:
-
+			if(AppLockerPreference.getInstance(this).haveSettedPswd()) {
+				enterLockPage();
+			} else {
+				startPswdSetting();
+			}
 			break;
 		case R.id.tv_app_backup:
 
 			break;
 		case R.id.tv_clean_memory:
-
+			intent = new Intent(this, CleanMemActivity.class);
+			this.startActivity(intent);
 			break;
 
 		default:
 			break;
 		}
+	}
+
+	private void enterLockPage() {
+		Intent intent = new Intent(this, LockScreenActivity.class);
+		intent.putExtra(LockScreenActivity.ERTRA_UNLOCK_TYPE, LockScreenActivity.TYPE_SELF);
+		startActivity(intent);
+	}
+
+	private void startPswdSetting() {
+		Intent intent = new Intent(this, PasswdSettingActivity.class);
+		startActivity(intent);
 	}
 
 	class ProgressRunable implements Runnable {

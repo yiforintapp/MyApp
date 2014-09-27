@@ -1,4 +1,4 @@
-package com.leo.appmaster.cleanmemory;
+package com.leo.appmaster.utils;
 
 import java.util.List;
 

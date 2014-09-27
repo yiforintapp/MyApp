@@ -43,6 +43,7 @@ public class AppLoadEngine {
 	private PackageManager mPm;
 	private CountDownLatch mLatch;
 	private Handler mHandler;
+	private boolean mInit;
 
 	private IAppLoadListener mLoadListener;
 
@@ -95,10 +96,13 @@ public class AppLoadEngine {
 	 * @param ctx
 	 */
 	public void init(Context ctx) {
-		mContext = ctx;
-		mHandler = new LoadHandler();
-		mPm = mContext.getPackageManager();
-		mLatch = new CountDownLatch(1);
+		if (!mInit) {
+			mInit = true;
+			mContext = ctx;
+			mHandler = new LoadHandler();
+			mPm = mContext.getPackageManager();
+			mLatch = new CountDownLatch(1);
+		}
 	}
 
 	public void setLoadListener(IAppLoadListener listener) {
@@ -115,7 +119,7 @@ public class AppLoadEngine {
 			}
 		}).start();
 	}
-	
+
 	public AppDetailInfo loadAppDetailInfo(String pkgName) {
 		mLatch = new CountDownLatch(1);
 		loadTrafficInfo(pkgName);
@@ -128,9 +132,8 @@ public class AppLoadEngine {
 		}
 		return mAppDetails.get(pkgName);
 	}
-	
 
-	public void loadAllPkgInfo() {
+	private void loadAllPkgInfo() {
 		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent, 0);
@@ -152,7 +155,7 @@ public class AppLoadEngine {
 			mAppDetails.put(packageName, appInfo);
 		}
 	}
-	
+
 	private void loadPowerComsuInfo() {
 		BatteryInfoProvider provider = new BatteryInfoProvider(mContext);
 		List<BatteryComsuption> list = provider.getBatteryStats();
@@ -192,7 +195,6 @@ public class AppLoadEngine {
 		}
 	}
 
-
 	private void getCacheInfo(String pkg, final CacheInfo cacheInfo) {
 		try {
 			Method method = PackageManager.class.getMethod(
@@ -220,6 +222,10 @@ public class AppLoadEngine {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void removeListener() {
+		mLoadListener = null;
 	}
 
 }

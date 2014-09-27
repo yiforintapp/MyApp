@@ -2,6 +2,7 @@ package com.leo.appmaster.ui;
 
 import com.leo.appmaster.R;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -9,15 +10,17 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.View.OnClickListener;
 
-public class CommonTitleBar extends FrameLayout {
+public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
-	private View mVgTitleandBack;
 	private ImageView mIvBackArrow;
 	private TextView mTvTitle;
 
 	private TextView mTvOption;
 
+	private View mLayoutBackView;
+	
 	public CommonTitleBar(Context context) {
 		super(context);
 	}
@@ -30,17 +33,12 @@ public class CommonTitleBar extends FrameLayout {
 	protected void onFinishInflate() {
 		LayoutInflater inflater = LayoutInflater.from(getContext());
 		inflater.inflate(R.layout.common_title_bar, this, true);
-
-		mVgTitleandBack = findViewById(R.id.layout_title_back);
+		mLayoutBackView = findViewById(R.id.layout_title_back);
 		mIvBackArrow = (ImageView) findViewById(R.id.iv_back_arrow);
 		mTvTitle = (TextView) findViewById(R.id.tv_title);
 		mTvOption = (TextView) findViewById(R.id.tv_option);
 
 		super.onFinishInflate();
-	}
-
-	public void setBackViewListener(OnClickListener listener) {
-		mVgTitleandBack.setOnClickListener(listener);
 	}
 
 	public void setTitle(String title) {
@@ -70,6 +68,18 @@ public class CommonTitleBar extends FrameLayout {
 
 	public void setOptionListener(OnClickListener listener) {
 		mTvOption.setOnClickListener(listener);
+	}
+
+	 public void openBackView() {
+		 mLayoutBackView.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		if(mLayoutBackView == v) {
+			((Activity)getContext()).finish();
+		}
+		
 	}
 
 }

@@ -30,12 +30,31 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.leo.appmaster.applocker.LockPasswdSettingActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
             android:name="com.leo.appmaster.applocker.LockScreenActivity"
             android:excludeFromRecents="true"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-            android:noHistory="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.applocker.LockScreenActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.AppLockListActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.WaitActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.appmanage.AppManagerActivity"
@@ -44,6 +63,11 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.appmanage.AppDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.cleanmemory.CleanMemActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>

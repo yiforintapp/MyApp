@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.PasswdSettingActivity;
 
 public class LockHandler extends BroadcastReceiver {
 
@@ -72,6 +73,7 @@ public class LockHandler extends BroadcastReceiver {
 							LockScreenActivity.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.putExtra(EXTRA_LOCKED_APP_PKG, pkg);
+					intent.putExtra(LockScreenActivity.ERTRA_UNLOCK_TYPE, LockScreenActivity.TYPE_OTHER);
 					mContext.startActivity(intent);
 				}
 			}

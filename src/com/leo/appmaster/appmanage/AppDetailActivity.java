@@ -57,7 +57,7 @@ public class AppDetailActivity extends Activity implements
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_manage);
 		mTtileBar.setOptionVisibility(View.INVISIBLE);
-		mTtileBar.setBackViewListener(this);
+		mTtileBar.openBackView();
 		
 		mPager1 = (AppInfoBaseLayout) this.getLayoutInflater().inflate(
 				R.layout.pager_app_use_info, null);
@@ -116,14 +116,6 @@ public class AppDetailActivity extends Activity implements
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.layout_title_bar:
-			finish();
-			break;
-
-		default:
-			break;
-		}
 		
 	}
 

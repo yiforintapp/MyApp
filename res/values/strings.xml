@@ -12,5 +12,21 @@
     <string name="app_permission_info">权限监控</string>
     <string name="uninstall">卸载</string>
     <string name="stop">停止</string>
+    
+    
+    <string name="please_input_pswd">输入密码</string>
+    <string name="please_input_pswd_again">再次输入密码</string>
+    <string name="makesure">确认</string>
+    <string name="delete">删除</string>
+    <string name="passwd_hint">请输入不低于六位数密码</string>
+    <string name="tip_no_the_same_pswd">输入密码不一致，请重新输入</string>
+    <string name="use_gesture">使用手势密码</string>
+    <string name="reset_passwd">重设密码</string>
+    <string name="app_locked">已加锁</string>
+    <string name="app_unlock">未加锁</string>
+    <string name="find_passwd">密码找回</string>
+    <string name="please_wait">请稍候再试</string>
+    
+    
 
 </resources>
