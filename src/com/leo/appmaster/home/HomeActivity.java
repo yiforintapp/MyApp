@@ -3,7 +3,8 @@ package com.leo.appmaster.home;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.PasswdSettingActivity;
-import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.PasswdLockScreenActivity;
+import com.leo.appmaster.applocker.gesture.GestureLockScreenActivity;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.appmanage.AppManagerActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
@@ -23,9 +24,9 @@ public class HomeActivity extends Activity implements OnClickListener {
 	private TextView mTvAppLock;
 	private TextView mTvAppBackup;
 	private TextView mTvCleanMem;
-	
+
 	private CommonTitleBar mTtileBar;
-	
+
 	private int mCurrentProgress;
 
 	@Override
@@ -50,12 +51,12 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTvAppLock.setOnClickListener(this);
 		mTvAppBackup.setOnClickListener(this);
 		mTvCleanMem.setOnClickListener(this);
-		
+
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionVisibility(View.VISIBLE);
-		
+
 	}
 
 	private void startLockService() {
@@ -80,7 +81,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 			this.startActivity(intent);
 			break;
 		case R.id.tv_app_lock:
-			if(AppLockerPreference.getInstance(this).haveSettedPswd()) {
+			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
 				enterLockPage();
 			} else {
 				startPswdSetting();
@@ -100,8 +101,17 @@ public class HomeActivity extends Activity implements OnClickListener {
 	}
 
 	private void enterLockPage() {
-		Intent intent = new Intent(this, LockScreenActivity.class);
-		intent.putExtra(LockScreenActivity.ERTRA_UNLOCK_TYPE, LockScreenActivity.TYPE_SELF);
+		Intent intent = null;
+		int lockType = AppLockerPreference.getInstance(this).getLockType();
+		if(lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+			intent = new Intent(this, PasswdLockScreenActivity.class);
+			intent.putExtra(PasswdLockScreenActivity.ERTRA_UNLOCK_TYPE,
+					PasswdLockScreenActivity.TYPE_SELF);
+		} else {
+			intent = new Intent(this, GestureLockScreenActivity.class);
+			intent.putExtra(PasswdLockScreenActivity.ERTRA_UNLOCK_TYPE,
+					PasswdLockScreenActivity.TYPE_SELF);
+		}
 		startActivity(intent);
 	}
 
@@ -111,9 +121,9 @@ public class HomeActivity extends Activity implements OnClickListener {
 	}
 
 	class ProgressRunable implements Runnable {
-		
+
 		private int targetProgress;
-		
+
 		public ProgressRunable(int targetProgress) {
 			this.targetProgress = targetProgress;
 		}
@@ -129,7 +139,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 					e.printStackTrace();
 				}
 			}
-			while(mCurrentProgress < targetProgress) {
+			while (mCurrentProgress < targetProgress) {
 				mCurrentProgress += 1;
 				mTaskProgessView.setProgress(mCurrentProgress);
 				try {

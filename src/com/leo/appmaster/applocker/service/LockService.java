@@ -4,7 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.PasswdLockScreenActivity;
 import com.leo.appmaster.applocker.PasswdSettingActivity;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
@@ -47,7 +47,7 @@ public class LockService extends Service {
 		Notification notification = new Notification(R.drawable.ic_launcher,
 				"leo applocker", System.currentTimeMillis());
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				new Intent(this, LockScreenActivity.class), 0);
+				new Intent(this, PasswdLockScreenActivity.class), 0);
 
 		notification.setLatestEventInfo(this, "leo applocker",
 				"leo applocker is servicing", contentIntent);

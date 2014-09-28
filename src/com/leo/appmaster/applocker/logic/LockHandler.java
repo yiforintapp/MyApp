@@ -11,8 +11,9 @@ import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.leo.appmaster.applocker.AppLockerPreference;
-import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.PasswdLockScreenActivity;
 import com.leo.appmaster.applocker.PasswdSettingActivity;
+import com.leo.appmaster.applocker.gesture.GestureLockScreenActivity;
 
 public class LockHandler extends BroadcastReceiver {
 
@@ -68,12 +69,24 @@ public class LockHandler extends BroadcastReceiver {
 			List<String> list = AppLockerPreference.getInstance(mContext)
 					.getLockedAppList();
 			if (list.contains(pkg)) {
+
+				Intent intent = null;
 				if (!mLockPolicy.onHandleLock(pkg)) {
-					Intent intent = new Intent(mContext,
-							LockScreenActivity.class);
+					int lockType = AppLockerPreference.getInstance(mContext)
+							.getLockType();
+					if (lockType == AppLockerPreference.LOCK_TYPE_NONE)
+						return;
+					if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+						intent = new Intent(mContext,
+								PasswdLockScreenActivity.class);
+					} else if (lockType == AppLockerPreference.LOCK_TYPE_GESTURE) {
+						intent = new Intent(mContext,
+								GestureLockScreenActivity.class);
+					}
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.putExtra(EXTRA_LOCKED_APP_PKG, pkg);
-					intent.putExtra(LockScreenActivity.ERTRA_UNLOCK_TYPE, LockScreenActivity.TYPE_OTHER);
+					intent.putExtra(PasswdLockScreenActivity.ERTRA_UNLOCK_TYPE,
+							PasswdLockScreenActivity.TYPE_OTHER);
 					mContext.startActivity(intent);
 				}
 			}

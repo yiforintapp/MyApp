@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class WaitActivity extends Activity {
 	
 	private TextView mTvTime;
-	private int mWaitTime = 15;
+	private int mWaitTime = 10;
 	private UpdateTask mTask;
 
 	@Override

@@ -6,15 +6,23 @@ import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppUtil;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class LockScreenActivity extends FragmentActivity {
+public class PasswdLockScreenActivity extends FragmentActivity implements
+		OnClickListener {
 
 	public static String ERTRA_UNLOCK_TYPE = "extra_unlock_type";
 
@@ -34,11 +42,14 @@ public class LockScreenActivity extends FragmentActivity {
 	private int mType = TYPE_SELF;
 
 	private String mPkg;
-	
+
+	Dialog mPpDialog;
+	private EditText mEtQuestion, mEtAnwser;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_lock_screen);
+		setContentView(R.layout.activity_passwd_lock_screen);
 
 		handleIntent();
 
@@ -55,23 +66,25 @@ public class LockScreenActivity extends FragmentActivity {
 	private void initUI() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
-		
+
 		mInputHeader = (TextView) findViewById(R.id.tv_input_header);
 		mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
 
+		mInputTip = (TextView) findViewById(R.id.tv_input_tip);
+		
 		if (mType == TYPE_SELF) {
 			mInputHeader.setVisibility(View.VISIBLE);
 			mAppIcon.setVisibility(View.INVISIBLE);
 			mTtileBar.openBackView();
 		} else {
 			mAppIcon.setVisibility(View.VISIBLE);
-			mAppIcon.setImageDrawable(AppUtil.getDrawable(getPackageManager(), mPkg));
+			mAppIcon.setImageDrawable(AppUtil.getDrawable(getPackageManager(),
+					mPkg));
 			mInputHeader.setVisibility(View.INVISIBLE);
 		}
 
 		mFindPasswd = (TextView) findViewById(R.id.tv_find_passwd);
-		mInputTip = (TextView) findViewById(R.id.tv_input_tip);
-		mPswdEdit = (EditText) findViewById(R.id.ev_passwd);
+		mPswdEdit = (EditText) findViewById(R.id.et_passwd_input);
 	}
 
 	public void onClick(View v) {
@@ -126,7 +139,20 @@ public class LockScreenActivity extends FragmentActivity {
 
 	private void findPasswd() {
 		// TODO Auto-generated method stub
+		if (mPpDialog == null) {
+			ViewGroup viewGroup = (ViewGroup) getLayoutInflater().inflate(
+					R.layout.dialog_passwd_protect, null);
+			mEtQuestion = (EditText) viewGroup.findViewById(R.id.et_question);
+			mEtAnwser = (EditText) viewGroup.findViewById(R.id.et_anwser);
+			mPpDialog = new AlertDialog.Builder(this)
+					.setTitle(R.string.pleas_input_anwser)
+					.setNegativeButton(R.string.makesure, this)
+					.setPositiveButton(R.string.cancel, this)
+					.setView(viewGroup).create();
+			mEtQuestion.setText(AppLockerPreference.getInstance(this).getPpQuestion());
+		}
 
+		mPpDialog.show();
 	}
 
 	private void checkPasswd() {
@@ -135,7 +161,7 @@ public class LockScreenActivity extends FragmentActivity {
 		AppLockerPreference pref = AppLockerPreference.getInstance(this);
 
 		if (pref.getPassword().equals(mInputPasswd)) { // 密码输入正确
-			if(mType == TYPE_SELF) {
+			if (mType == TYPE_SELF) {
 				Intent intent = null;
 				// try start lock service
 				intent = new Intent(this, LockService.class);
@@ -143,12 +169,11 @@ public class LockScreenActivity extends FragmentActivity {
 
 				intent = new Intent(this, AppLockListActivity.class);
 				this.startActivity(intent);
-			} else if(mType == TYPE_OTHER) {
-				
+			} else if (mType == TYPE_OTHER) {
+
 			}
 			finish();
 		} else {
-
 			if (mInputCount >= mMaxInput) {
 				Intent intent = new Intent(this, WaitActivity.class);
 				this.startActivity(intent);
@@ -157,7 +182,7 @@ public class LockScreenActivity extends FragmentActivity {
 			} else {
 				if (pref.hasPswdProtect()
 						&& mInputTip.getVisibility() != View.VISIBLE) {
-					mInputTip.setVisibility(View.VISIBLE);
+					mFindPasswd.setVisibility(View.VISIBLE);
 				}
 				mInputTip.setText("您已输错" + mInputCount + "次" + "，还剩"
 						+ (mMaxInput - mInputCount) + "次机会");
@@ -168,11 +193,26 @@ public class LockScreenActivity extends FragmentActivity {
 
 	@Override
 	public void onBackPressed() {
-		if(mType == TYPE_SELF) {
+		if (mType == TYPE_SELF) {
 			super.onBackPressed();
 		}
 	}
-	
-	
+
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		if(which == DialogInterface.BUTTON_NEGATIVE) {//make sure
+			String anwser = AppLockerPreference.getInstance(this).getPpAnwser();
+			if(anwser.equals(mEtAnwser.getText().toString())) {
+				//goto reset passwd
+				
+				
+			} else {
+				Toast.makeText(this, "答案不正确，请重新输入", 0).show();
+			}
+		} else if(which == DialogInterface.BUTTON_POSITIVE) { //cancel
+			dialog.dismiss();
+		}
+
+	}
 
 }

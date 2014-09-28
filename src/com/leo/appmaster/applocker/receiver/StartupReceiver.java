@@ -18,7 +18,7 @@ public class StartupReceiver extends BroadcastReceiver {
 		Log.e(TAG, action);
 		if (action.equals(Intent.ACTION_BOOT_COMPLETED)
 				|| action.equals(Intent.ACTION_USER_PRESENT)) {
-			if (AppLockerPreference.getInstance(context).haveSettedPswd()) {
+			if (AppLockerPreference.getInstance(context).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
 				Intent serviceIntent = new Intent(context, LockService.class);
 				serviceIntent.putExtra(LockService.EXTRA_STARTUP_FROM, action);
 				context.startService(serviceIntent);

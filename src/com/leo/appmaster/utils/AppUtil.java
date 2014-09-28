@@ -12,7 +12,7 @@ public class AppUtil {
 		// 它就不是系统应用，这个就是判断这种情况的
 		if ((info.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
 			return true;
-		} else if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0)// 判断是不是系统应用
+		} else if ((info.flags & ApplicationInfo.FLAG_SYSTEM) != 0)// 判断是不是系统应用
 		{
 			return true;
 		}

@@ -1,20 +1,24 @@
 package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.gesture.GestureSettingActivity;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PasswdSettingActivity extends FragmentActivity {
+public class PasswdSettingActivity extends Activity implements
+		OnClickListener {
 
 	private TextView mTvButtom;
 	private TextView mInputText;
@@ -36,7 +40,7 @@ public class PasswdSettingActivity extends FragmentActivity {
 	private void initUI() {
 		mTvButtom = (TextView) findViewById(R.id.tv_buttom);
 		mInputText = (TextView) findViewById(R.id.tv_input_header);
-		mPswdEdit = (EditText) findViewById(R.id.ev_passwd);
+		mPswdEdit = (EditText) findViewById(R.id.tv_passwd_tip);
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 		mTtileBar.openBackView();
@@ -99,8 +103,9 @@ public class PasswdSettingActivity extends FragmentActivity {
 	}
 
 	private void switchGesture() {
-		// TODO Auto-generated method stub
-
+		Intent intent = new Intent(this, GestureSettingActivity.class);
+		startActivity(intent);
+		finish();
 	}
 
 	private void setPasswd() {
@@ -124,17 +129,12 @@ public class PasswdSettingActivity extends FragmentActivity {
 				// now we can start lock service
 				intent = new Intent(this, LockService.class);
 				this.startService(intent);
-				
 				// save password
 				AppLockerPreference.getInstance(this).savePassword(
 						mTempFirstPasswd);
-				
 				// todo set passwd protect
-//				setPasswdProtect();
-				
-				//show app lock list
-				intent = new Intent(this, AppLockListActivity.class);
-				startActivity(intent);
+				setPasswdProtect();
+
 			} else {
 				Toast.makeText(this, R.string.tip_no_the_same_pswd, 1).show();
 			}
@@ -143,6 +143,23 @@ public class PasswdSettingActivity extends FragmentActivity {
 
 	private void setPasswdProtect() {
 
+		Dialog dialog = new AlertDialog.Builder(this).setTitle("是否设置密保问题?")
+				.setMessage("为了避免忘记密码而无法进入应用锁，建议设置密保问题，是否设置？")
+				.setNegativeButton(R.string.cancel, this)
+				.setPositiveButton(R.string.makesure, this).create();
+		dialog.show();
 	}
 
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		Intent intent;
+		if (which == DialogInterface.BUTTON_POSITIVE) {
+			intent = new Intent(this, PasswdProtectActivity.class);
+			this.startActivity(intent);
+		} else if (which == DialogInterface.BUTTON_NEGATIVE) {
+			intent = new Intent(this, AppLockListActivity.class);
+			this.startActivity(intent);
+		}
+		finish();
+	}
 }

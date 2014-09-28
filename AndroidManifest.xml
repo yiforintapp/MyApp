@@ -20,7 +20,6 @@
         android:theme="@android:style/Theme.Light" >
         <activity
             android:name="com.leo.appmaster.home.HomeActivity"
-            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
             <intent-filter>
@@ -30,29 +29,43 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.leo.appmaster.applocker.LockPasswdSettingActivity"
-            android:label="@string/app_name"
+            android:name="com.leo.appmaster.applocker.PasswdSettingActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.applocker.LockScreenActivity"
+            android:name="com.leo.appmaster.applocker.PasswdLockScreenActivity"
             android:excludeFromRecents="true"
-            android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.applocker.LockScreenActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.PasswdProtectActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.gesture.GestureSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.gesture.GestureLockScreenActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.AppLockListActivity"
-            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.WaitActivity"
-            android:label="@string/app_name"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>

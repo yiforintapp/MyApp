@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
@@ -34,7 +35,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AppLockListActivity extends Activity implements IAppLoadListener,
-		OnItemClickListener {
+		OnItemClickListener, OnClickListener {
 
 	private CommonTitleBar mTtileBar;
 
@@ -50,7 +51,7 @@ public class AppLockListActivity extends Activity implements IAppLoadListener,
 	public LayoutInflater mInflater;
 
 	private View mLastSelectItem;
-	
+
 	private boolean mCaculated;
 	private float mScale = 0.5f;
 
@@ -84,6 +85,8 @@ public class AppLockListActivity extends Activity implements IAppLoadListener,
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 		mTtileBar.openBackView();
+		mTtileBar.setOptionVisibility(View.VISIBLE);
+		mTtileBar.setOptionListener(this);
 
 		mIvAnimator = (ImageView) findViewById(R.id.iv_animator);
 
@@ -144,7 +147,7 @@ public class AppLockListActivity extends Activity implements IAppLoadListener,
 		}
 	}
 
-	public void onClick(View v) {
+	public void onTabClick(View v) {
 		if (v == mTvLocked) {
 			mPager.setCurrentItem(1);
 		} else if (v == mTvUnlock) {
@@ -210,8 +213,9 @@ public class AppLockListActivity extends Activity implements IAppLoadListener,
 		float targetY = (float) (mLockedLocationY - mIvAnimator.getTop() - (mIvAnimator
 				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
 
-		Log.e("xxxx", "orgX = " + orgX + ",   orgY = " + orgY + ",   targetX = "+ targetX + ",  targetY = " + targetY);
-		
+		Log.e("xxxx", "orgX = " + orgX + ",   orgY = " + orgY
+				+ ",   targetX = " + targetX + ",  targetY = " + targetY);
+
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
 		animation.setAnimationListener(new FlyAnimaListener());
 
@@ -379,6 +383,11 @@ public class AppLockListActivity extends Activity implements IAppLoadListener,
 			container.addView(view, 0);
 			return view;
 		}
+
+	}
+
+	@Override
+	public void onClick(View v) {
 
 	}
 }

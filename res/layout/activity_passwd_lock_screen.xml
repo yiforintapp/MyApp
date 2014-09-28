@@ -17,36 +17,26 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" >
 
-        <TextView
-            android:id="@+id/tv_input_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/please_input_pswd"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/tv_input_tip"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_below="@id/tv_input_header"
-            android:layout_marginTop="5dp"
-            android:gravity="center" />
-
         <ImageView
             android:id="@+id/iv_app_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_above="@+id/tv_input_tip"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:src="@drawable/ic_launcher" />
 
+        <TextView
+            android:id="@+id/tv_input_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/iv_app_icon"
+            android:textColor="#880000"
+            android:visibility="visible" />
+
         <EditText
-            android:id="@+id/ev_passwd"
+            android:id="@+id/et_passwd_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_input_tip"
@@ -62,9 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/ev_passwd"
+            android:layout_below="@+id/et_passwd_input"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -259,6 +248,18 @@
             android:onClick="onClick"
             android:text="@string/find_passwd"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_input_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/please_input_pswd"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="visible" />
     </RelativeLayout>
 
 </RelativeLayout>
