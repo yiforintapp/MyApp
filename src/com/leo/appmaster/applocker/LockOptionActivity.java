@@ -1,11 +1,10 @@
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.ui.CommonTitleBar;
-
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.ui.CommonTitleBar;
 
 public class LockOptionActivity extends Activity {
 
@@ -20,8 +19,6 @@ public class LockOptionActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		AppLoadEngine engine = AppLoadEngine.getInstance();
-		engine.removeListener();
 		super.onDestroy();
 	}
 
