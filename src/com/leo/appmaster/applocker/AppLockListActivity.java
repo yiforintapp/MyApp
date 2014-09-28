@@ -3,12 +3,6 @@ package com.leo.appmaster.applocker;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.engine.AppLoadEngine.IAppLoadListener;
-import com.leo.appmaster.model.AppDetailInfo;
-import com.leo.appmaster.ui.CommonTitleBar;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
@@ -33,7 +27,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AppLockListActivity extends Activity implements IAppLoadListener,
+import com.leo.appmaster.R;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
+import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.ui.CommonTitleBar;
+
+public class AppLockListActivity extends Activity implements AppChangeListener,
 		OnItemClickListener {
 
 	private CommonTitleBar mTtileBar;
@@ -66,16 +66,9 @@ public class AppLockListActivity extends Activity implements IAppLoadListener,
 
 	@Override
 	protected void onDestroy() {
-		AppLoadEngine engine = AppLoadEngine.getInstance();
-		engine.removeListener();
+		AppLoadEngine engine = AppLoadEngine.getInstance(this);
+		engine.unregisterAppChangeListener(this);
 		super.onDestroy();
-	}
-
-	private void loadData() {
-		AppLoadEngine engine = AppLoadEngine.getInstance();
-		engine.init(this);
-		engine.setLoadListener(this);
-		engine.loadAllBaseInfo();
 	}
 
 	@SuppressLint("NewApi")
@@ -152,8 +145,8 @@ public class AppLockListActivity extends Activity implements IAppLoadListener,
 		}
 	}
 
-	@Override
-	public void onLoadFinsh(List<AppDetailInfo> list) {
+	private void loadData() {
+	    ArrayList<AppDetailInfo> list = AppLoadEngine.getInstance(this).getAllPkgInfo();
 		List<String> lockList = AppLockerPreference.getInstance(this)
 				.getLockedAppList();
 		for (AppDetailInfo appDetailInfo : list) {
@@ -381,4 +374,10 @@ public class AppLockListActivity extends Activity implements IAppLoadListener,
 		}
 
 	}
+
+    @Override
+    public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
+        // TODO Auto-generated method stub
+        
+    }
 }
