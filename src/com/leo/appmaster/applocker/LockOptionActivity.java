@@ -1,12 +1,10 @@
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.ui.CommonTitleBar;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.ui.CommonTitleBar;
 
 public class LockOptionActivity extends PreferenceActivity {
 

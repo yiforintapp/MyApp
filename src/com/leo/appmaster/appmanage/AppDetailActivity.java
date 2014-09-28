@@ -46,7 +46,7 @@ public class AppDetailActivity extends Activity implements
 	private void handleIntent() {
 		Intent intent = this.getIntent();
 		String pkg = intent.getStringExtra(EXTRA_LOAD_PKG);
-		mAppInfo = AppLoadEngine.getInstance().loadAppDetailInfo(pkg);
+		mAppInfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(pkg);
 	}
 
 	private void initUI() {

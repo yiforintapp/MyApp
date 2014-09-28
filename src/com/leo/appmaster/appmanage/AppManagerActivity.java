@@ -2,21 +2,10 @@ package com.leo.appmaster.appmanage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.Vector;
-import java.util.Map.Entry;
-
-import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.engine.AppLoadEngine.IAppLoadListener;
-import com.leo.appmaster.model.AppDetailInfo;
-import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.PageIndicator;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -25,17 +14,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.leo.appmaster.R;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
+import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.PageIndicator;
+
 @SuppressLint("InflateParams")
-public class AppManagerActivity extends Activity implements IAppLoadListener,
+public class AppManagerActivity extends Activity implements AppChangeListener,
 		OnClickListener, OnItemClickListener {
 
 	View mLoadingView;
@@ -54,11 +48,16 @@ public class AppManagerActivity extends Activity implements IAppLoadListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_app_manager);
+		
+	    AppLoadEngine.getInstance(this).registerAppChangeListener(this);
+		
 		intiUI();
-		AppLoadEngine manager = AppLoadEngine.getInstance();
-		manager.init(this.getApplicationContext());
-		manager.setLoadListener(this);
-		manager.loadAllBaseInfo();
+	}
+	
+	@Override
+	protected void onDestroy() {
+	    super.onDestroy();
+	    AppLoadEngine.getInstance(this).unregisterAppChangeListener(this);
 	}
 
 	private void intiUI() {
@@ -74,18 +73,20 @@ public class AppManagerActivity extends Activity implements IAppLoadListener,
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setPageTransformer(true, new DepthPageTransformer());
+			
+		fillData();
 	}
 
-	@Override
-	public void onLoadFinsh(List<AppDetailInfo> list) {
-		mAppDetails = list;
+	
+	public void fillData() {
+	    mAppDetails = AppLoadEngine.getInstance(this).getAllPkgInfo();
 		mLoadingView.setVisibility(View.INVISIBLE);
 		int pageCount = Math.round(((long) mAppDetails.size()) / pageItemCount);
 		int itemCounts[] = new int[pageCount];
 		int i;
 		for (i = 0; i < itemCounts.length; i++) {
 			if (i == itemCounts.length - 1) {
-				itemCounts[i] = list.size() / pageItemCount;
+				itemCounts[i] = mAppDetails.size() / pageItemCount;
 			} else {
 				itemCounts[i] = pageItemCount;
 			}
@@ -235,5 +236,11 @@ public class AppManagerActivity extends Activity implements IAppLoadListener,
 		intent.putExtra(AppDetailActivity.EXTRA_LOAD_PKG, pkg);
 		this.startActivity(intent);
 	}
+	
+	 @Override
+	 public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
+	        // TODO Auto-generated method stub
+	        
+	 }
 
 }

@@ -1,61 +1,72 @@
+
 package com.leo.appmaster.model;
 
 import android.content.pm.PermissionInfo;
 
 public class AppDetailInfo extends BaseInfo {
-	/*
-	 * app cache info
-	 */
-	private CacheInfo mCacheInfo;
-	/*
-	 * all user permission of app
-	 */
-	private AppPermissionInfo mPermissionInfo;
-	/*
-	 * app traffic info
-	 */
-	private TrafficInfo mTrafficInfo;
-	/*
-	 * app power comsumption info
-	 */
-	private double mPowerComsuPercent;
+    /*
+     * app cache info
+     */
+    private CacheInfo mCacheInfo;
+    /*
+     * all user permission of app
+     */
+    private AppPermissionInfo mPermissionInfo;
+    /*
+     * app traffic info
+     */
+    private TrafficInfo mTrafficInfo;
+    /*
+     * app power comsumption info
+     */
+    private double mPowerComsuPercent;
 
-	public AppDetailInfo() {
-		mCacheInfo = new CacheInfo();
-		mPermissionInfo = new AppPermissionInfo();
-		mTrafficInfo = new TrafficInfo();
-	}
+    private String mSourceDir;
 
-	public CacheInfo getCacheInfo() {
-		return mCacheInfo;
-	}
+    public AppDetailInfo() {
+        mCacheInfo = new CacheInfo();
+        mPermissionInfo = new AppPermissionInfo();
+        mTrafficInfo = new TrafficInfo();
+    }
 
-	public void setCacheInfo(CacheInfo mCacheInfo) {
-		this.mCacheInfo = mCacheInfo;
-	}
+    public CacheInfo getCacheInfo() {
+        return mCacheInfo;
+    }
 
-	public AppPermissionInfo getPermissionInfo() {
-		return mPermissionInfo;
-	}
+    public void setCacheInfo(CacheInfo mCacheInfo) {
+        this.mCacheInfo = mCacheInfo;
+    }
 
-	public void setPermissionInfo(AppPermissionInfo permissionInfo) {
-		this.mPermissionInfo = permissionInfo;
-	}
+    public AppPermissionInfo getPermissionInfo() {
+        return mPermissionInfo;
+    }
 
-	public TrafficInfo getTrafficInfo() {
-		return mTrafficInfo;
-	}
+    public void setPermissionInfo(AppPermissionInfo permissionInfo) {
+        this.mPermissionInfo = permissionInfo;
+    }
 
-	public void setTrafficInfo(TrafficInfo mTrafficInfo) {
-		this.mTrafficInfo = mTrafficInfo;
-	}
+    public TrafficInfo getTrafficInfo() {
+        return mTrafficInfo;
+    }
 
-	public double getPowerComsuPercent() {
-		return mPowerComsuPercent;
-	}
+    public void setTrafficInfo(TrafficInfo mTrafficInfo) {
+        this.mTrafficInfo = mTrafficInfo;
+    }
 
-	public void setPowerComsuPercent(double percentOfTotal) {
-		this.mPowerComsuPercent = percentOfTotal;
-	}
+    public double getPowerComsuPercent() {
+        return mPowerComsuPercent;
+    }
+
+    public void setPowerComsuPercent(double percentOfTotal) {
+        this.mPowerComsuPercent = percentOfTotal;
+    }
+
+    public String getSourceDir() {
+        return mSourceDir;
+    }
+
+    public void setSourceDir(String dir) {
+        this.mSourceDir = dir;
+    }
 
 }
