@@ -6,8 +6,9 @@ import com.leo.appmaster.ui.CommonTitleBar;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 
-public class LockOptionActivity extends Activity {
+public class LockOptionActivity extends PreferenceActivity {
 
 	private CommonTitleBar mTtileBar;
 
@@ -15,13 +16,12 @@ public class LockOptionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lock_option);
+		addPreferencesFromResource(R.xml.setting);
 		initUI();
 	}
 
 	@Override
 	protected void onDestroy() {
-		AppLoadEngine engine = AppLoadEngine.getInstance();
-		engine.removeListener();
 		super.onDestroy();
 	}
 

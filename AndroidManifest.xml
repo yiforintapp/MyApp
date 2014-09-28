@@ -63,6 +63,11 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
+            android:name="com.leo.appmaster.applocker.LockOptionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
             android:name="com.leo.appmaster.applocker.WaitActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"

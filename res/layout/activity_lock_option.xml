@@ -14,9 +14,12 @@
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_below="@id/layout_title_bar"
+        android:layout_margin="10dp"
         android:cacheColorHint="@color/transparent"
         android:divider="@null"
         android:fadingEdgeLength="0dip"
+        android:listSelector="@null"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="none" />
 

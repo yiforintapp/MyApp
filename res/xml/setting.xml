@@ -27,7 +27,7 @@
             android:widgetLayout="@layout/pref_widget_more" />
         <Preference
             android:key="set_passwd_protect"
-            android:layout="@layout/pref_list_item_bot"
+            android:layout="@layout/pref_list_item_mid"
             android:title="密保问题"
             android:widgetLayout="@layout/pref_widget_more" />
         <Preference

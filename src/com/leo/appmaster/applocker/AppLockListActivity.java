@@ -11,6 +11,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -87,7 +88,9 @@ public class AppLockListActivity extends Activity implements IAppLoadListener,
 		mTtileBar.openBackView();
 		mTtileBar.setOptionVisibility(View.VISIBLE);
 		mTtileBar.setOptionListener(this);
-
+		mTtileBar.setOptionVisibility(View.VISIBLE);
+		mTtileBar.setOptionListener(this);
+		
 		mIvAnimator = (ImageView) findViewById(R.id.iv_animator);
 
 		mTvUnlock = (TextView) findViewById(R.id.tv_app_unlock);
@@ -388,6 +391,11 @@ public class AppLockListActivity extends Activity implements IAppLoadListener,
 
 	@Override
 	public void onClick(View v) {
-
+		switch(v.getId()) {
+		case R.id.tv_option:
+			Intent intent = new Intent(this, LockOptionActivity.class);
+			startActivity(intent);
+			break;
+		}
 	}
 }
