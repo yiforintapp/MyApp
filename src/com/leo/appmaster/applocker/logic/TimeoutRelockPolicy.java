@@ -39,7 +39,7 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 							+ System.currentTimeMillis()
 							+ "       lastLockTime = " + lastLockTime
 							+ "       mRelockTimeout =  " + mRelockTimeout);
-			if ((System.currentTimeMillis() - lastLockTime) < mRelockTimeout)
+			if ((System.currentTimeMillis() - lastLockTime) < mRelockTimeout * 1000)
 				return true;
 		} else {
 			mLockapp.put(pkg, System.currentTimeMillis());
@@ -47,6 +47,10 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 		return false;
 	}
 
+	public void clearLockApp() {
+		mLockapp.clear();
+	}
+	
 	@Override
 	public void onUnlocked(String pkg) {
 		mLockapp.put(pkg, System.currentTimeMillis());

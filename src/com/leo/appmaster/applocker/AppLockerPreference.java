@@ -3,10 +3,12 @@ package com.leo.appmaster.applocker;
 import java.util.Arrays;
 import java.util.List;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 
@@ -20,12 +22,13 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	private static final String PREF_PASSWD_QUESTION = "passwd_question";
 	private static final String PREF_PASSWD_ANWSER = "passwd_anwser";
 	private static final String PREF_PASSWD_TIP = "passwd_tip";
+	public static final String PREF_AUTO_LOCK = "set_auto_lock";
+	public static final String PREF_FORBIND_UNINSTALL = "set_forbid_uninstall";
 
 	private List<String> mLockedAppList;
 	private String mPassword;
 	private String mGesture;
 	private String mLockPolicy;
-	private int mRelockTimeout;
 	private boolean mHavePswdProtect;
 
 	public static final int LOCK_TYPE_NONE = -1;
@@ -57,12 +60,12 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	public int getRelockTimeout() {
-		return mRelockTimeout;
+		String time = mPref.getString(PREF_RELOCK_TIME, "0");
+		return Integer.parseInt(time);
 	}
 
 	public void setRelockTimeout(int timeout) {
-		mRelockTimeout = timeout;
-		mPref.edit().putInt(PREF_RELOCK_TIME, timeout).commit();
+		mPref.edit().putString(PREF_RELOCK_TIME, timeout + "").commit();
 	}
 
 	public String getPassword() {
@@ -104,7 +107,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		return mPref.getString(PREF_PASSWD_ANWSER, "");
 	}
 
-	public String getPpTip() {
+	public String getPasswdTip() {
 		return mPref.getString(PREF_PASSWD_TIP, "");
 	}
 
@@ -127,10 +130,9 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		mLockType = mPref.getInt(PREF_LOCK_TYPE, LOCK_TYPE_NONE);
 		mHavePswdProtect = mPref.getBoolean(PREF_HAVE_PSWD_PROTECTED, false);
 		mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
-		mRelockTimeout = mPref.getInt(PREF_RELOCK_TIME, 0);
-		if(mLockType == LOCK_TYPE_GESTURE) {
+		if (mLockType == LOCK_TYPE_GESTURE) {
 			mGesture = mPref.getString(PREF_GESTURE, null);
-		} else if(mLockType == LOCK_TYPE_PASSWD){
+		} else if (mLockType == LOCK_TYPE_PASSWD) {
 			mPassword = mPref.getString(PREF_PASSWORD, null);
 		}
 	}
@@ -145,8 +147,9 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 			mPassword = mPref.getString(PREF_PASSWORD, "1234");
 		} else if (PREF_LOCK_POLICY.equals(key)) {
 			mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
-		} else if (PREF_RELOCK_TIME.equals(key)) {
-			mRelockTimeout = mPref.getInt(PREF_RELOCK_TIME, 0);
+		} else if(PREF_RELOCK_TIME.equals(key)) {
+			String s = mPref.getString(PREF_RELOCK_TIME, "-1");
+			Log.e("", s);
 		}
 	}
 
@@ -156,6 +159,14 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		mPref.edit().putString(PREF_PASSWD_QUESTION, qusetion).commit();
 		mPref.edit().putString(PREF_PASSWD_ANWSER, answer).commit();
 		mPref.edit().putString(PREF_PASSWD_TIP, tip).commit();
+	}
+
+	public void setAtuoLock(boolean autoLock) {
+		mPref.edit().putBoolean(PREF_AUTO_LOCK, autoLock).commit();
+	}
+
+	public boolean isAutoLock() {
+		return mPref.getBoolean(PREF_AUTO_LOCK, false);
 	}
 
 }

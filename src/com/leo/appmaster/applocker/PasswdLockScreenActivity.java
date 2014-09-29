@@ -181,7 +181,7 @@ public class PasswdLockScreenActivity extends FragmentActivity implements
 				mInputCount = 0;
 			} else {
 				if (pref.hasPswdProtect()
-						&& mInputTip.getVisibility() != View.VISIBLE) {
+						&& mFindPasswd.getVisibility() != View.VISIBLE) {
 					mFindPasswd.setVisibility(View.VISIBLE);
 				}
 				mInputTip.setText("您已输错" + mInputCount + "次" + "，还剩"

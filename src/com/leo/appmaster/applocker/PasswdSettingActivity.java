@@ -109,9 +109,9 @@ public class PasswdSettingActivity extends Activity implements
 	}
 
 	private void setPasswd() {
-		mTempFirstPasswd = mPswdEdit.getText().toString();
 		AppLockerPreference pref = AppLockerPreference.getInstance(this);
 		if (mInputCount == 1) {
+			mTempFirstPasswd = mPswdEdit.getText().toString();
 			if (mTempFirstPasswd.equals("")) {
 				Toast.makeText(this, "密码不能为空", 1).show();
 			} else if (mTempFirstPasswd.length() < 6) {
@@ -133,8 +133,12 @@ public class PasswdSettingActivity extends Activity implements
 				AppLockerPreference.getInstance(this).savePassword(
 						mTempFirstPasswd);
 				// todo set passwd protect
-				setPasswdProtect();
-
+				if(!AppLockerPreference.getInstance(this).hasPswdProtect()) {
+					setPasswdProtect();
+				} else {
+					intent = new Intent(this, AppLockListActivity.class);
+					startActivity(intent);
+				}
 			} else {
 				Toast.makeText(this, R.string.tip_no_the_same_pswd, 1).show();
 			}

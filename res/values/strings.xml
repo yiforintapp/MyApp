@@ -44,9 +44,33 @@
     <string name="lockscreen_access_pattern_cell_added">"已添加单元格"</string>
     <string name="lockscreen_access_pattern_detected">"图案绘制完成"</string>
     <string name="please_input_gesture">请绘制解锁图案</string>
+    <string name="input_passwd_tip">请输入密码提示</string>
+    <string name="pp_success">密码保护设置成功</string>
     <string name="set_gesture">绘制手势</string>
     <string name="please_input_gesture_again">请再次绘制解锁图案</string>
     <string name="set_gesture_again">重设手势</string>
     <string name="gesture_hint">请连接至少4个点</string>
+    <string name="lock_right_now">立即锁定</string>
+    <string name="lock_15_sec">15秒</string>
+    <string name="lock_30_sec">30秒</string>
+    <string name="lock_1_min">1分钟</string>
+    <string name="lock_3_min">3分钟</string>
+    <string name="lock_5_min">5分钟</string>
+    <string-array name="lock_time_entrys">
+        <item>@string/lock_right_now</item>
+        <item>@string/lock_15_sec</item>
+        <item>@string/lock_30_sec</item>
+        <item>@string/lock_1_min</item>
+        <item>@string/lock_3_min</item>
+        <item>@string/lock_5_min</item>
+    </string-array>
+    <string-array name="lock_time_items">
+        <item>0</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>300</item>
+    </string-array>
 
 </resources>

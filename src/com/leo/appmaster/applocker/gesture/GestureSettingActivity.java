@@ -139,8 +139,14 @@ public class GestureSettingActivity extends FragmentActivity implements
 				// now we can start lock service
 				intent = new Intent(this, LockService.class);
 				startService(intent);
-				AppLockerPreference.getInstance(this).saveGesture(mTempGesture2);
-				setGestureProtect();
+				AppLockerPreference.getInstance(this)
+						.saveGesture(mTempGesture2);
+				if (!AppLockerPreference.getInstance(this).hasPswdProtect()) {
+					setGestureProtect();
+				} else {
+					intent = new Intent(this, AppLockListActivity.class);
+					startActivity(intent);
+				}
 			} else {
 				Toast.makeText(this, R.string.tip_no_the_same_pswd, 1).show();
 				mLockPatternView.clearPattern();

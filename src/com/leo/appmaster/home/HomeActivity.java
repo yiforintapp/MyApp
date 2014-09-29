@@ -1,6 +1,5 @@
 package com.leo.appmaster.home;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +34,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		// startLockService();
+		judgeLockService();
 		initUI();
 	}
 
@@ -61,10 +60,14 @@ public class HomeActivity extends Activity implements OnClickListener {
 
 	}
 
-	private void startLockService() {
-		Intent serviceIntent = new Intent(this, LockService.class);
-		serviceIntent.putExtra(LockService.EXTRA_STARTUP_FROM, "main activity");
-		startService(serviceIntent);
+	private void judgeLockService() {
+		if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
+			Intent serviceIntent = new Intent(this, LockService.class);
+			serviceIntent.putExtra(LockService.EXTRA_STARTUP_FROM,
+					"main activity");
+			
+			startService(serviceIntent);
+		}
 	}
 
 	private void startTaskView(int tatget) {
@@ -90,8 +93,8 @@ public class HomeActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.tv_app_backup:
-		    intent = new Intent(this, AppBackupRestoreActivity.class);
-		    startActivity(intent);
+			intent = new Intent(this, AppBackupRestoreActivity.class);
+			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
 			intent = new Intent(this, CleanMemActivity.class);
@@ -106,7 +109,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 	private void enterLockPage() {
 		Intent intent = null;
 		int lockType = AppLockerPreference.getInstance(this).getLockType();
-		if(lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
 			intent = new Intent(this, PasswdLockScreenActivity.class);
 			intent.putExtra(PasswdLockScreenActivity.ERTRA_UNLOCK_TYPE,
 					PasswdLockScreenActivity.TYPE_SELF);

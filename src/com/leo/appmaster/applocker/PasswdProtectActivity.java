@@ -58,6 +58,7 @@ public class PasswdProtectActivity extends Activity {
 			// show app lock list
 			Intent intent = new Intent(this, AppLockListActivity.class);
 			startActivity(intent);
+			Toast.makeText(this, R.string.pp_success, 1).show();
 			finish();
 		}
 	}
@@ -65,8 +66,8 @@ public class PasswdProtectActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		// show app lock list
-		Intent intent = new Intent(this, AppLockListActivity.class);
-		startActivity(intent);
+//		Intent intent = new Intent(this, AppLockListActivity.class);
+//		startActivity(intent);
 		super.onBackPressed();
 	}
 

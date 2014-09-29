@@ -98,6 +98,12 @@ public class LockHandler extends BroadcastReceiver {
 		if (ACTION_APP_UNLOCKED.equals(intent.getAction())) {
 			String pkg = intent.getStringExtra(EXTRA_LOCKED_APP_PKG);
 			mLockPolicy.onUnlocked(pkg);
+		} else if(Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
+			if(mLockPolicy instanceof TimeoutRelockPolicy) {
+				if(AppLockerPreference.getInstance(context).isAutoLock()){
+					((TimeoutRelockPolicy)mLockPolicy).clearLockApp();
+				}
+			}
 		}
 	}
 
