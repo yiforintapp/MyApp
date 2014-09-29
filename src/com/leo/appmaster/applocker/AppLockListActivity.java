@@ -34,6 +34,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leoers.leoanalytics.LeoStat;
 
 public class AppLockListActivity extends Activity implements AppChangeListener,
 		OnItemClickListener, OnClickListener {
@@ -183,8 +184,10 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mLastSelectApp = (AppDetailInfo) view.getTag();
 		calculateLoc();
 		if (mLastSelectApp.isLocked()) {
+            LeoStat.addEvent(LeoStat.P2, "unlock app", mLastSelectApp.getPkg());
 			moveItemToUnlock(view, mLastSelectApp.getAppIcon());
 		} else {
+            LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
 			moveItemToLock(view, mLastSelectApp.getAppIcon());
 		}
 		mLastSelectItem = view;

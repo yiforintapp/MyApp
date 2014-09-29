@@ -1,10 +1,12 @@
 package com.leo.appmaster;
 
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leoers.leoanalytics.LeoStat;
 
 import android.app.Application;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 public class AppMasterApplication extends Application {
     
@@ -12,8 +14,7 @@ public class AppMasterApplication extends Application {
     
    @Override
    public void onCreate() {
-       super.onCreate();
-       
+       super.onCreate();       
        mAppsEngine = AppLoadEngine.getInstance(this);
        mAppsEngine.preloadAllBaseInfo();
         // Register intent receivers
@@ -21,6 +22,8 @@ public class AppMasterApplication extends Application {
         filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
         filter.addDataScheme("package");
         registerReceiver(mAppsEngine, filter);
+
+        iniLeoSdk();
    }
    
    
@@ -28,6 +31,11 @@ public class AppMasterApplication extends Application {
    public void onTerminate() {
        super.onTerminate();
        unregisterReceiver(mAppsEngine);
+   }
+   
+   private void iniLeoSdk() {
+       LeoStat.init(getApplicationContext(), "1", "applocker");
+//       LeoStat.setUpdateService();  //暂时 不进行启动升级检测
    }
 
 }

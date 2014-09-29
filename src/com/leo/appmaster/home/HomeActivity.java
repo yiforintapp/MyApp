@@ -17,6 +17,7 @@ import com.leo.appmaster.appmanage.AppManagerActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leoers.leoanalytics.LeoStat;
 
 public class HomeActivity extends Activity implements OnClickListener {
 
@@ -79,13 +80,16 @@ public class HomeActivity extends Activity implements OnClickListener {
 		Intent intent = null;
 		switch (v.getId()) {
 		case R.id.tasksCompletedView:
+	        LeoStat.addEvent(LeoStat.P2, "tasksCompleted", "click the one key clear button");
 			startTaskView(mCurrentProgress - 10);
 			break;
 		case R.id.tv_app_manage:
+	         LeoStat.addEvent(LeoStat.P2, "app_manage", "click the app manage button");
 			intent = new Intent(this, AppManagerActivity.class);
 			this.startActivity(intent);
 			break;
 		case R.id.tv_app_lock:
+	          LeoStat.addEvent(LeoStat.P2, "app lock", "click the app lock button");
 			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
 				enterLockPage();
 			} else {
@@ -93,10 +97,12 @@ public class HomeActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.tv_app_backup:
+            LeoStat.addEvent(LeoStat.P2, "app backup", "click the app backup button");
 			intent = new Intent(this, AppBackupRestoreActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
+	         LeoStat.addEvent(LeoStat.P2, "tasksCompleted", "click the one key clear button");
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;
@@ -158,4 +164,5 @@ public class HomeActivity extends Activity implements OnClickListener {
 		}
 
 	}
+	
 }
