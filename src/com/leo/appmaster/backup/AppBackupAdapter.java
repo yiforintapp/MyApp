@@ -1,28 +1,45 @@
 package com.leo.appmaster.backup;
 
-import java.io.File;
 import java.util.ArrayList;
 
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.model.AppDetailInfo;
-
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.model.AppDetailInfo;
 
 public class AppBackupAdapter extends BaseAdapter {
     
-    private ArrayList<File> mBackupList; 
+    private ArrayList<AppDetailInfo> mBackupList; 
     
-    public AppBackupAdapter() {
-        mBackupList = new ArrayList<File>();
-        ArrayList<AppDetailInfo> apps = AppLoadEngine.getInstance(null).getAllPkgInfo();
-        for(AppDetailInfo app : apps) {
-            if(!app.isSystemApp()) {
-                mBackupList.add(new File(app.getSourceDir()));
+    private AppBackupRestoreManager mBackupManager;
+    
+    public AppBackupAdapter(AppBackupRestoreManager manager) {
+        mBackupManager = manager;
+        mBackupList = new ArrayList<AppDetailInfo>();
+    }
+    
+    public ArrayList<AppDetailInfo> getSelectedItems() {
+        ArrayList<AppDetailInfo> selectedItems = new ArrayList<AppDetailInfo>();
+        for(AppDetailInfo app : mBackupList) {
+            if(app.isChecked) {
+                selectedItems.add(app);
             }
         }
+        return selectedItems;
+    }
+    
+    public void updateData() {
+        mBackupList.clear();
+        ArrayList<AppDetailInfo> apps = mBackupManager.getBackupList();
+        for(AppDetailInfo app : apps) {
+            if(!app.isSystemApp()) {
+                mBackupList.add(app);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -42,9 +59,19 @@ public class AppBackupAdapter extends BaseAdapter {
 
     @Override
     public View getView(int arg0, View arg1, ViewGroup arg2) {
-        TextView text = new TextView(arg2.getContext());
-        text.setText(mBackupList.get(arg0).getName());
-        return text;
+        AppBackupItemView itemView = null;
+        if(arg1 instanceof AppBackupItemView) {
+            itemView = (AppBackupItemView) arg1;
+        } else {
+            LayoutInflater inflater = LayoutInflater.from(arg2.getContext());
+            itemView = (AppBackupItemView)inflater.inflate(R.layout.item_app_backup, null);
+        }
+        AppDetailInfo app = mBackupList.get(arg0);
+        itemView.setIcon(app.getAppIcon());
+        itemView.setTitle(app.getAppLabel());
+        itemView.setState(app.isBackuped ? AppBackupItemView.STATE_BACKUPED : app.isChecked ? AppBackupItemView.STATE_SELECTED : AppBackupItemView.STATE_UNSELECTED);
+        itemView.setTag(app);
+        return itemView;
     }
 
 }
