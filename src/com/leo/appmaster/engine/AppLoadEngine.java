@@ -169,6 +169,12 @@ public class AppLoadEngine extends BroadcastReceiver {
     private AppDetailInfo loadAppInfoOfPackage(String packageName, ApplicationInfo applicationInfo) {
         AppDetailInfo appInfo = new AppDetailInfo();
         // first fill base info
+        try {
+            PackageInfo pInfo = mPm.getPackageInfo(packageName, 0);
+            appInfo.setVersionCode(pInfo.versionCode);
+            appInfo.setVersionName(pInfo.versionName);
+        } catch (NameNotFoundException e) {
+        }
         appInfo.setPkg(packageName);
         appInfo.setAppLabel(applicationInfo.loadLabel(mPm).toString());
         appInfo.setAppIcon(applicationInfo.loadIcon(mPm));

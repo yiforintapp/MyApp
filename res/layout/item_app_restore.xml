@@ -1,0 +1,40 @@
+<com.leo.appmaster.backup.AppRestoreItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp" >
+
+    <ImageView
+        android:id="@+id/app_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:padding="6dp"
+        android:scaleType="center" />
+
+    <Button
+        android:id="@+id/button_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_vertical"
+        android:text="@string/button_delete" />
+
+    <Button
+        android:id="@+id/button_install"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@id/button_delete"
+        android:text="@string/button_install" />
+
+    <TextView
+        android:id="@+id/app_title"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/button_install"
+        android:layout_toRightOf="@id/app_icon"
+        android:gravity="center_vertical"
+        android:singleLine="true" />
+
+</com.leo.appmaster.backup.AppRestoreItemView>
