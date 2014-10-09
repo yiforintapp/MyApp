@@ -4,6 +4,8 @@ package com.leo.appmaster.backup;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -15,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
@@ -159,7 +160,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
             mPager.setCurrentItem(1, true);
         } else if(v == mButtonBackup) {
             ArrayList<AppDetailInfo> items = mBackupAdapter.getSelectedItems();
-            showProgressDialog("Backuping...", items.size(), false, false);
+            showProgressDialog("Backuping...", items.size(), false, true);
             mBackupManager.backupApps(items);
         }
     }
@@ -238,6 +239,12 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     private void showProgressDialog(String message, int max, boolean indeterminate, boolean cancelable) {
         if(mProgressDialog == null) {
             mProgressDialog = new LEOProgressDialog(this);
+            mProgressDialog.setOnCancelListener(new OnCancelListener() {            
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    mBackupManager.cancelBackup();
+                }
+            });
         }
         mProgressDialog.setCancelable(cancelable);
         mProgressDialog.setCanceledOnTouchOutside(false);

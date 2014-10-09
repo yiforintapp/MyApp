@@ -43,6 +43,8 @@ public class AppBackupRestoreManager {
     private ArrayList<AppDetailInfo> mSavedList;
     private ArrayList<AppDetailInfo> mBackupList;
     
+    private boolean mBackupCanceled = false;
+    
     private PackageManager mPackageManager;
 
     public AppBackupRestoreManager(Context context, AppBackupDataListener listener) {
@@ -63,6 +65,7 @@ public class AppBackupRestoreManager {
     }
 
     public void backupApps(final ArrayList<AppDetailInfo> apps) {
+        mBackupCanceled = false;
         String backupPath = getBackupPath();
         final int totalNum = apps.size();
         if(backupPath == null) {
@@ -74,6 +77,9 @@ public class AppBackupRestoreManager {
                     int doneNum = 0;
                     int successNum = 0;
                     for(AppDetailInfo app : apps) {
+                        if(mBackupCanceled) {
+                            break;
+                        }
                         doneNum ++;
                         if(tryBackupApp(app)) {
                             successNum++;
@@ -85,7 +91,10 @@ public class AppBackupRestoreManager {
             });
         }
     }
-    
+
+    public void cancelBackup() {
+        mBackupCanceled = true;
+    }
     
     public void deleteApp(final AppDetailInfo app) {
         mExecutorService.execute(new Runnable() {              
@@ -146,8 +155,12 @@ public class AppBackupRestoreManager {
             String pName = app.getPkg();
             dest += pName + ".apk";
             out = new FileOutputStream(dest);
-            while ((slen = in.read(c, 0, c.length)) != -1)
+            while ((slen = in.read(c, 0, c.length)) != -1) {
+                if(mBackupCanceled) {
+                    break;
+                }
                 out.write(c, 0, slen);
+            }
         } catch (IOException e) {
             return false;
         } finally {
@@ -161,9 +174,15 @@ public class AppBackupRestoreManager {
                 try {
                     in.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
                     return false;
                 }
+            }
+            if(mBackupCanceled) {
+                File f = new File(dest);
+                if(f.exists()) {
+                    f.delete();
+                }
+                return false;
             }
         }
         
