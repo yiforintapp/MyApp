@@ -36,6 +36,9 @@ public class BaseInfo {
 	 */
 	private boolean mLocked;
 	
+	private int versionCode;
+    private String versionName;
+	
 	public String getPkg() {
 		return mPkg;
 	}
@@ -92,6 +95,21 @@ public class BaseInfo {
 		this.mLocked = mLocked;
 	}
 	
-	
+	public int getVersionCode() {
+        return versionCode;
+    }
+
+    public void setVersionCode(int versionCode) {
+        this.versionCode = versionCode;
+    }
+
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
 	
 }

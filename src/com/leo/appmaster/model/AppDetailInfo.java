@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.model;
 
-import android.content.pm.PermissionInfo;
 
 public class AppDetailInfo extends BaseInfo {
     /*
@@ -22,6 +21,10 @@ public class AppDetailInfo extends BaseInfo {
     private double mPowerComsuPercent;
 
     private String mSourceDir;
+    
+    public boolean isChecked;
+    
+    public boolean isBackuped;
 
     public AppDetailInfo() {
         mCacheInfo = new CacheInfo();

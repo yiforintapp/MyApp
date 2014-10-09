@@ -13,6 +13,20 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 	<uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+
+<!--  统计sdk start-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
+    <!-- 统计sdk end -->
+>>>>>>> branch 'master' of http://gitlab.leoers.com/leo/appmaster.git
     
     <application
         android:name="com.leo.appmaster.AppMasterApplication"
@@ -88,7 +102,13 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-
+        
+         <!-- add for the app update of leosdk  -->
+         <activity android:name="com.leoers.leoanalytics.UpdateActivity" 
+            android:theme="@android:style/Theme.Dialog"/>
+         <service android:name="com.leoers.leoanalytics.DownloadService" />
+        <!-- add for the app update of leosdk  -->
+        
         <service android:name="com.leo.appmaster.applocker.service.LockService" >
         </service>
 

@@ -32,6 +32,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.DragGridView;
 import com.leo.appmaster.ui.PagedGridView;
 import com.leo.appmaster.ui.DragGridView.AnimEndListener;
+import com.leoers.leoanalytics.LeoStat;
 
 public class AppLockListActivity extends Activity implements AppChangeListener,
 		OnItemClickListener, OnClickListener, AnimEndListener {
@@ -175,20 +176,21 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			mUnlockList.add(info);
 			mLockedList.remove(info);
 			moveItemToUnlock(view, mLastSelectApp.getAppIcon());
+
+			LeoStat.addEvent(LeoStat.P2, "unlock app", mLastSelectApp.getPkg());
 		} else {
 			mLastSelectApp.setLocked(true);
-			if (mLastSelectApp.isLocked()) {
-				mLastSelectApp.setLocked(false);
-				for (BaseInfo baseInfo : mUnlockList) {
-					if (baseInfo.getPkg().equals(mLastSelectApp.getPkg())) {
-						info = baseInfo;
-						break;
-					}
+			for (BaseInfo baseInfo : mUnlockList) {
+				if (baseInfo.getPkg().equals(mLastSelectApp.getPkg())) {
+					info = baseInfo;
+					break;
 				}
-				mLockedList.add(info);
-				mUnlockList.remove(info);
-				moveItemToLock(view, mLastSelectApp.getAppIcon());
 			}
+			mLockedList.add(info);
+			mUnlockList.remove(info);
+			moveItemToLock(view, mLastSelectApp.getAppIcon());
+			
+			LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
 		}
 		((DragGridView) parent).removeItemAnimation(position, mLastSelectApp);
 
@@ -326,7 +328,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	@Override
 	public void onAnimEnd() {
-//		mPagerUnlock.notifyChange(mUnlockList);
-//		mPagerLock.notifyChange(mLockedList);
+		// mPagerUnlock.notifyChange(mUnlockList);
+		// mPagerLock.notifyChange(mLockedList);
 	}
 }
