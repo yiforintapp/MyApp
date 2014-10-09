@@ -28,7 +28,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_memory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textView1"
@@ -41,7 +41,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignLeft="@+id/tv_memory"
             android:layout_below="@+id/et_anwser"
             android:layout_marginTop="5dp"
             android:text="@string/passwd_tip"
@@ -51,7 +51,7 @@
             android:id="@+id/et_qusetion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignLeft="@+id/tv_memory"
             android:layout_below="@+id/textView1"
             android:layout_marginTop="5dp"
             android:ems="10"
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textView3"
-            android:layout_below="@+id/textView2"
+            android:layout_below="@+id/tv_memory"
             android:layout_marginTop="5dp"
             android:ems="10"
             android:textSize="18sp" />
