@@ -1,18 +1,32 @@
 package com.leo.appmaster.cleanmemory;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.home.TasksCompletedView;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.RocketDock;
+import com.leo.appmaster.utils.ProcessUtils;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class CleanMemActivity extends Activity implements OnClickListener {
+public class CleanMemActivity extends Activity implements OnClickListener,
+		OnTouchListener {
 	private CommonTitleBar mTtileBar;
-	private TasksCompletedView mTaskProgessView;
-	private int mCurrentProgress;
+	private ImageView mRocket;
+	private RocketDock mRocketDock;
+
+	private TextView TvMemory;
+
+	private long mLastAvailableMem;
+	private long mTotalMem;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,66 +37,50 @@ public class CleanMemActivity extends Activity implements OnClickListener {
 
 	private void initUI() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		mTaskProgessView = (TasksCompletedView) findViewById(R.id.tasksCompletedView);
-		mCurrentProgress = 80;
-		mTaskProgessView.setProgress(mCurrentProgress);
-		
-		mTtileBar.setTitle(R.string.clean_memory);
 		mTtileBar.openBackView();
-		
-		mTaskProgessView.setOnClickListener(this);
-	}
+		mRocket = (ImageView) findViewById(R.id.rocket_icon);
+		mRocket.setOnClickListener(this);
+		mRocket.setOnTouchListener(this);
+		mRocketDock = (RocketDock) findViewById(R.id.rocket_dock);
+		TvMemory = (TextView) findViewById(R.id.tv_memory);
 
-	private void startTaskView(int tatget) {
-		new Thread(new ProgressRunable(tatget)).start();
-	}
-	
-	class ProgressRunable implements Runnable {
+		mLastAvailableMem = ProcessUtils.getAvailableMem(this);
+		mTotalMem = ProcessUtils.getTotalMem();
 
-		private int targetProgress;
-
-		public ProgressRunable(int targetProgress) {
-			this.targetProgress = targetProgress;
-		}
-
-		@Override
-		public void run() {
-			while (mCurrentProgress > 1) {
-				mCurrentProgress -= 1;
-				mTaskProgessView.setProgress(mCurrentProgress);
-				try {
-					Thread.sleep(10);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			while (mCurrentProgress < targetProgress) {
-				mCurrentProgress += 1;
-				mTaskProgessView.setProgress(mCurrentProgress);
-				try {
-					Thread.sleep(10);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			mCurrentProgress = targetProgress;
-		}
-
+		TvMemory.setText(mLastAvailableMem + "/" + mTotalMem + "");
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.tasksCompletedView:
-			startTaskView(mCurrentProgress - 5);
-			break;
-		case R.id.layout_title_back:
-			finish();
+		case R.id.rocket_icon:
+			launchRocket();
 			break;
 		default:
 			break;
 		}
-		
+
+	}
+
+	public void launchRocket() {
+		Animation ta = createRocketFly();
+		mRocket.setImageResource(R.drawable.rocket_fly);
+		mRocket.startAnimation(ta);
+	}
+
+	private Animation createRocketFly() {
+		TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -2000);
+		ta.setDuration(1000);
+		ta.setFillEnabled(true);
+		ta.setFillBefore(true);
+		ta.setInterpolator(new AccelerateInterpolator());
+		return ta;
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+
+		return false;
 	}
 
 }
