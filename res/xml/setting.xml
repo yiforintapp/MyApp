@@ -32,7 +32,7 @@
             android:widgetLayout="@layout/pref_widget_more" >
             <intent
                 android:action="com.leo.appmaster.change-passwd-protect-question"
-                android:targetClass="com.leo.appmaster.applocker.PasswdSettingActivity"
+                android:targetClass="com.leo.appmaster.applocker.LockSettingActivity"
                 android:targetPackage="com.leo.appmaster" />
         </Preference>
         <Preference

@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#23238379" >
+    
+    <TextView
+        android:id="@+id/tv_find_gesture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/find_gesture" />
+
+    <ImageView
+        android:id="@+id/iv_app_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tv_gesture_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_app_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/please_input_gesture"
+        android:textColor="#aa0000"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_gesture_tip"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
+
+        <com.leo.appmaster.applocker.gesture.LockPatternView
+            android:id="@+id/gesture_lockview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5.0dip" />
+    </LinearLayout>
+
+    
+
+</RelativeLayout>

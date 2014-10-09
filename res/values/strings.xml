@@ -17,7 +17,7 @@
     <string name="makesure">确认</string>
     <string name="cancel">取消</string>
     <string name="delete">删除</string>
-    <string name="passwd_hint">请输入不低于六位数密码</string>
+    <string name="passwd_hint">请输入四位数密码</string>
     <string name="tip_no_the_same_pswd">输入密码不一致，请重新输入</string>
     <string name="use_gesture">使用手势</string>
     <string name="use_passwd">使用密码</string>
@@ -45,10 +45,11 @@
     <string name="lockscreen_access_pattern_detected">"图案绘制完成"</string>
     <string name="please_input_gesture">请绘制解锁图案</string>
     <string name="input_passwd_tip">请输入密码提示</string>
+    <string name="find_gesture">手势找回</string>
     <string name="pp_success">密码保护设置成功</string>
     <string name="set_gesture">绘制手势</string>
     <string name="please_input_gesture_again">请再次绘制解锁图案</string>
-    <string name="set_gesture_again">重设手势</string>
+    <string name="reset_gesture">重设手势</string>
     <string name="gesture_hint">请连接至少4个点</string>
     <string name="lock_right_now">立即锁定</string>
     <string name="lock_15_sec">15秒</string>

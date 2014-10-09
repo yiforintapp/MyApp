@@ -74,6 +74,10 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 		 mLayoutBackView.setOnClickListener(this);
 	}
 
+	 public void setOptionImage(int resID) {
+		 mTvOption.setBackgroundResource(resID);
+	 }
+	 
 	@Override
 	public void onClick(View v) {
 		if(mLayoutBackView == v) {

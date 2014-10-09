@@ -7,13 +7,11 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.leo.appmaster.applocker.AppLockerPreference;
-import com.leo.appmaster.applocker.PasswdLockScreenActivity;
-import com.leo.appmaster.applocker.PasswdSettingActivity;
-import com.leo.appmaster.applocker.gesture.GestureLockScreenActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.fragment.LockFragment;
 
 public class LockHandler extends BroadcastReceiver {
 
@@ -70,23 +68,23 @@ public class LockHandler extends BroadcastReceiver {
 					.getLockedAppList();
 			if (list.contains(pkg)) {
 
-				Intent intent = null;
+				Intent intent = new Intent(mContext, LockScreenActivity.class);
 				if (!mLockPolicy.onHandleLock(pkg)) {
 					int lockType = AppLockerPreference.getInstance(mContext)
 							.getLockType();
 					if (lockType == AppLockerPreference.LOCK_TYPE_NONE)
 						return;
 					if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
-						intent = new Intent(mContext,
-								PasswdLockScreenActivity.class);
+						intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+								LockFragment.LOCK_TYPE_PASSWD);
 					} else if (lockType == AppLockerPreference.LOCK_TYPE_GESTURE) {
-						intent = new Intent(mContext,
-								GestureLockScreenActivity.class);
+						intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+								LockFragment.LOCK_TYPE_GESTURE);
 					}
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.putExtra(EXTRA_LOCKED_APP_PKG, pkg);
-					intent.putExtra(PasswdLockScreenActivity.ERTRA_UNLOCK_TYPE,
-							PasswdLockScreenActivity.TYPE_OTHER);
+					intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+							LockFragment.FROM_OTHER);
 					mContext.startActivity(intent);
 				}
 			}
@@ -98,10 +96,10 @@ public class LockHandler extends BroadcastReceiver {
 		if (ACTION_APP_UNLOCKED.equals(intent.getAction())) {
 			String pkg = intent.getStringExtra(EXTRA_LOCKED_APP_PKG);
 			mLockPolicy.onUnlocked(pkg);
-		} else if(Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
-			if(mLockPolicy instanceof TimeoutRelockPolicy) {
-				if(AppLockerPreference.getInstance(context).isAutoLock()){
-					((TimeoutRelockPolicy)mLockPolicy).clearLockApp();
+		} else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
+			if (mLockPolicy instanceof TimeoutRelockPolicy) {
+				if (AppLockerPreference.getInstance(context).isAutoLock()) {
+					((TimeoutRelockPolicy) mLockPolicy).clearLockApp();
 				}
 			}
 		}

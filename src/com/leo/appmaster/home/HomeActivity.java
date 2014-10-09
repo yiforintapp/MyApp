@@ -9,13 +9,13 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockerPreference;
-import com.leo.appmaster.applocker.PasswdLockScreenActivity;
-import com.leo.appmaster.applocker.PasswdSettingActivity;
-import com.leo.appmaster.applocker.gesture.GestureLockScreenActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.appmanage.AppManagerActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
+import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 public class HomeActivity extends Activity implements OnClickListener {
@@ -65,7 +65,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 			Intent serviceIntent = new Intent(this, LockService.class);
 			serviceIntent.putExtra(LockService.EXTRA_STARTUP_FROM,
 					"main activity");
-			
+
 			startService(serviceIntent);
 		}
 	}
@@ -89,7 +89,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
 				enterLockPage();
 			} else {
-				startPswdSetting();
+				startLockSetting();
 			}
 			break;
 		case R.id.tv_app_backup:
@@ -109,20 +109,19 @@ public class HomeActivity extends Activity implements OnClickListener {
 	private void enterLockPage() {
 		Intent intent = null;
 		int lockType = AppLockerPreference.getInstance(this).getLockType();
+		intent = new Intent(this, LockScreenActivity.class);
 		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
-			intent = new Intent(this, PasswdLockScreenActivity.class);
-			intent.putExtra(PasswdLockScreenActivity.ERTRA_UNLOCK_TYPE,
-					PasswdLockScreenActivity.TYPE_SELF);
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_PASSWD);
 		} else {
-			intent = new Intent(this, GestureLockScreenActivity.class);
-			intent.putExtra(PasswdLockScreenActivity.ERTRA_UNLOCK_TYPE,
-					PasswdLockScreenActivity.TYPE_SELF);
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_GESTURE);
 		}
 		startActivity(intent);
 	}
 
-	private void startPswdSetting() {
-		Intent intent = new Intent(this, PasswdSettingActivity.class);
+	private void startLockSetting() {
+		Intent intent = new Intent(this, LockSettingActivity.class);
 		startActivity(intent);
 	}
 

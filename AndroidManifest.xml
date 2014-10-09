@@ -12,7 +12,8 @@
     <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-
+	<uses-permission android:name="android.permission.VIBRATE"/>
+    
     <application
         android:name="com.leo.appmaster.AppMasterApplication"
         android:icon="@drawable/ic_launcher"
@@ -29,12 +30,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.leo.appmaster.applocker.PasswdSettingActivity"
+            android:name="com.leo.appmaster.applocker.LockSettingActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.applocker.PasswdLockScreenActivity"
+            android:name="com.leo.appmaster.applocker.LockScreenActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
@@ -42,18 +43,6 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.PasswdProtectActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="com.leo.appmaster.applocker.gesture.GestureSettingActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="com.leo.appmaster.applocker.gesture.GestureLockScreenActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>

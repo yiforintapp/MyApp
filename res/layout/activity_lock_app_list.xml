@@ -35,11 +35,11 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="50dp"
+                    android:background="@color/tab_select"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onTabClick"
-                    android:paddingRight="10dp"
                     android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:text="@string/app_unlock"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -50,19 +50,31 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="50dp"
+                    android:background="@color/tab_unselect"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onTabClick"
-                    android:paddingRight="10dp"
                     android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:text="@string/app_locked"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </RelativeLayout>
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/pager"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent" 
+                android:paddingTop="20dp">
+
+                <com.leo.appmaster.ui.PagedGridView
+                    android:id="@+id/pager_unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.leo.appmaster.ui.PagedGridView
+                    android:id="@+id/pager_lock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible" />
+            </FrameLayout>
         </LinearLayout>
 
         <ImageView

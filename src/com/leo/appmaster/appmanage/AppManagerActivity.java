@@ -95,7 +95,7 @@ public class AppManagerActivity extends Activity implements AppChangeListener,
 
 		for (i = 0; i < pageCount; i++) {
 			GridView gridView = (GridView) mInflater.inflate(
-					R.layout.grid_page_item, mViewPager, false);
+					R.layout.appmanage_gridview, mViewPager, false);
 			if (i == pageCount) {
 				gridView.setAdapter(new DataAdapter(mAppDetails, i
 						* pageItemCount, mAppDetails.size() - 1));
