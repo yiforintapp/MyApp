@@ -54,7 +54,7 @@ public class LockHandler extends BroadcastReceiver {
 	}
 
 	public void handleAppLaunch(String pkg, String activity) {
-		Log.d(TAG, "handleLock: " + pkg + "/" + activity);
+//		Log.d(TAG, "handleLock: " + pkg + "/" + activity);
 		if (pkg == null)
 			return;
 		if (!pkg.equals(mLastRunningPkg)) {

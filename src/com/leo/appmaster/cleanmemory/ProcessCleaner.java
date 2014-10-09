@@ -18,7 +18,7 @@ public class ProcessCleaner {
 	 * 
 	 * @param pkg
 	 */
-	private void cleanProcess(String pkg) {
+	public void cleanProcess(String pkg) {
 		mAm.killBackgroundProcesses(pkg);
 	}
 
@@ -27,7 +27,7 @@ public class ProcessCleaner {
 	 * 
 	 * @param pkg
 	 */
-	private void cleanProcess(List<String> pkgs) {
+	public void cleanProcess(List<String> pkgs) {
 		if (pkgs != null) {
 			for (String pkg : pkgs) {
 				mAm.killBackgroundProcesses(pkg);
@@ -38,7 +38,7 @@ public class ProcessCleaner {
 	/**
 	 * clean all running process
 	 */
-	private void cleanAllProcess() {
+	public void cleanAllProcess() {
 		List<RunningAppProcessInfo> list = mAm.getRunningAppProcesses();
 		for (RunningAppProcessInfo runningAppProcessInfo : list) {
 			mAm.killBackgroundProcesses(runningAppProcessInfo.processName);

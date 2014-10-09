@@ -39,7 +39,7 @@ public class ProcessUtils {
 
 		// 取得剩余的内存空间
 
-		MEM_UNUSED = mi.availMem / 1024;
+		MEM_UNUSED = mi.availMem;
 		return MEM_UNUSED;
 	}
 
@@ -76,7 +76,7 @@ public class ProcessUtils {
 		// 截取字符串信息
 
 		content = content.substring(begin + 1, end).trim();
-		mTotal = Integer.parseInt(content);
+		mTotal = Integer.parseInt(content) * 1024;
 		return mTotal;
 	}
 }

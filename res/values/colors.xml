@@ -12,5 +12,6 @@
     <color name="white">#ffffffff</color>
     <color name="grey">#ff333333</color>
     <color name="pref_category">#ffaaaaaa</color>
+    <color name="app_background">#2893fe</color>
 
 </resources>
