@@ -12,6 +12,7 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +22,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class PagedGridView extends LinearLayout {
+public class PagedGridView extends LinearLayout implements AnimEndListener {
 
-	private List<BaseInfo> mData;
 	private int mCellX, mCellY;
 	private ViewPager mViewPager;
 	private CirclePageIndicator mIndicator;
@@ -35,7 +35,6 @@ public class PagedGridView extends LinearLayout {
 	private ArrayList<List<BaseInfo>> mPageDatas;
 
 	private OnItemClickListener mListener;
-	private AnimEndListener mAnimListener;
 	private int mPageCount;
 
 	public PagedGridView(Context context, AttributeSet attrs) {
@@ -45,30 +44,20 @@ public class PagedGridView extends LinearLayout {
 	}
 
 	public void setDatas(List<BaseInfo> data, int cellX, int cellY) {
-		mData = data;
 		mCellX = cellX;
 		mCellY = cellY;
 		mPageItemCount = mCellX * mCellY;
-		mPageCount = (int) Math.ceil(((double) mData.size())
-				/ (mCellX * mCellY));
-		updateUI();
+		updateUI(data);
 	}
 
-	public void setAnimListener(AnimEndListener listener) {
-		mAnimListener = listener;
-		if (mGridViewList != null && !mGridViewList.isEmpty()) {
-			for (DragGridView gridView : mGridViewList) {
-				gridView.setOnAnimEndListener(listener);
-			}
-		}
-	}
-
-	private void updateUI() {
+	private void updateUI(List<BaseInfo> data) {
+		mPageCount = (int) Math
+				.ceil(((double) data.size()) / (mCellX * mCellY));
 		int itemCounts[] = new int[mPageCount];
 		int i;
 		for (i = 0; i < itemCounts.length; i++) {
 			if (i == itemCounts.length - 1) {
-				itemCounts[i] = mData.size() / mPageItemCount;
+				itemCounts[i] = data.size() / mPageItemCount;
 			} else {
 				itemCounts[i] = mPageItemCount;
 			}
@@ -83,13 +72,13 @@ public class PagedGridView extends LinearLayout {
 			DragGridView gridView = (DragGridView) mInflater.inflate(
 					R.layout.grid_page_item, mViewPager, false);
 			if (i == mPageCount - 1) {
-				pageData = copyFrom(mData.subList(i * mPageItemCount,
-						mData.size()));
+				pageData = copyFrom(data.subList(i * mPageItemCount,
+						data.size()));
 				adapter = new GridviewAdapter(pageData, i);
 				gridView.setAdapter(adapter);
 
 			} else {
-				pageData = copyFrom(mData.subList(i * mPageItemCount, (i + 1)
+				pageData = copyFrom(data.subList(i * mPageItemCount, (i + 1)
 						* mPageItemCount));
 				adapter = new GridviewAdapter(pageData, i);
 				gridView.setAdapter(adapter);
@@ -97,20 +86,18 @@ public class PagedGridView extends LinearLayout {
 			if (mListener != null) {
 				gridView.setOnItemClickListener(mListener);
 			}
-			if (mAnimListener != null) {
-				gridView.setOnAnimEndListener(mAnimListener);
-			}
+			gridView.setOnAnimEndListener(this);
 			mGridViewList.add(gridView);
 			mPageDatas.add(pageData);
 		}
 
-		mAdapter = new DataPagerAdapter(mGridViewList);
+		mAdapter = new DataPagerAdapter();
 		mViewPager.setAdapter(mAdapter);
 		mIndicator.setViewPager(mViewPager);
 	}
 
 	public void notifyChange(List<BaseInfo> list) {
-		updateUI();
+		updateUI(list);
 	}
 
 	private List<BaseInfo> copyFrom(List<BaseInfo> source) {
@@ -149,15 +136,9 @@ public class PagedGridView extends LinearLayout {
 
 	private class DataPagerAdapter extends PagerAdapter {
 
-		List<DragGridView> pagerList;
-
-		public DataPagerAdapter(ArrayList<DragGridView> viewList) {
-			pagerList = viewList;
-		}
-
 		@Override
 		public int getCount() {
-			return pagerList.size();
+			return mGridViewList.size();
 		}
 
 		@Override
@@ -167,13 +148,15 @@ public class PagedGridView extends LinearLayout {
 
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
-			container.removeView(pagerList.get(position));
+			if(position < mGridViewList.size()) {
+				container.removeView(mGridViewList.get(position));
+			}
 		}
 
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
-			container.addView(pagerList.get(position), 0);
-			return pagerList.get(position);
+			container.addView(mGridViewList.get(position), 0);
+			return mGridViewList.get(position);
 		}
 	}
 
@@ -182,11 +165,11 @@ public class PagedGridView extends LinearLayout {
 		private int mHidePosition = -1;
 		List<BaseInfo> mList;
 
-		private int mCurPage;
+		private int mPageIndex;
 
 		public GridviewAdapter(List<BaseInfo> list, int page) {
 			super();
-			mCurPage = page;
+			mPageIndex = page;
 			initData(list);
 		}
 
@@ -256,10 +239,10 @@ public class PagedGridView extends LinearLayout {
 
 		@Override
 		public void removeItem(BaseInfo removeApp) {
-			boolean re = mList.remove(removeApp);
+			mList.remove(removeApp);
 			BaseInfo temp = null;
-			if (mCurPage < mPageCount - 1) {
-				int page = mCurPage;
+			if (mPageIndex < mPageCount - 1) {
+				int page = mPageIndex;
 				for (; page != mPageCount - 1; page++) {
 					List<BaseInfo> nextPage = mPageDatas.get(page + 1);
 					temp = nextPage.remove(0);
@@ -271,6 +254,24 @@ public class PagedGridView extends LinearLayout {
 						.notifyDataSetChanged();
 			}
 
+		}
+	}
+
+	@Override
+	public void onAnimEnd() {
+		List<BaseInfo> list = mPageDatas.get(mPageCount - 1);
+		if (list.size() == 0) {
+			mGridViewList.remove(mPageCount - 1);
+			mPageDatas.remove(mPageCount - 1);
+			mPageCount--;
+
+			int targetIndex = mViewPager.getCurrentItem();
+			if (targetIndex == mPageCount) {
+				targetIndex--;
+			}
+			mAdapter.notifyDataSetChanged();
+			mViewPager.setCurrentItem(targetIndex);
+			mIndicator.invalidate();
 		}
 	}
 }

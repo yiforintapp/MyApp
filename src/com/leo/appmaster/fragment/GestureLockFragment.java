@@ -113,7 +113,7 @@ public class GestureLockFragment extends LockFragment implements
 		mInputCount++;
 		AppLockerPreference pref = AppLockerPreference.getInstance(mActivity);
 		if (pref.getGesture().equals(gesture)) { // 密码输入正确
-			if (mLockType == FROM_SELF) {
+			if (mFrom == FROM_SELF) {
 				Intent intent = null;
 				// try start lock service
 				intent = new Intent(mActivity, LockService.class);
@@ -121,7 +121,7 @@ public class GestureLockFragment extends LockFragment implements
 
 				intent = new Intent(mActivity, AppLockListActivity.class);
 				this.startActivity(intent);
-			} else if (mLockType == FROM_OTHER) {
+			} else if (mFrom == FROM_OTHER) {
 				//input right gesture, just finish self
 			}
 			mActivity.finish();

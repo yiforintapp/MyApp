@@ -26,7 +26,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
     <!-- 统计sdk end -->
->>>>>>> branch 'master' of http://gitlab.leoers.com/leo/appmaster.git
     
     <application
         android:name="com.leo.appmaster.AppMasterApplication"
@@ -46,11 +45,15 @@
         <activity
             android:name="com.leo.appmaster.applocker.LockSettingActivity"
             android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.LockScreenActivity"
             android:excludeFromRecents="true"
+            android:noHistory="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
@@ -83,7 +86,7 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.appmanage.AppManagerActivity"
+            android:name="com.leo.appmaster.appmanage.AppListActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>

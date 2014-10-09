@@ -29,7 +29,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.PageIndicator;
 
 @SuppressLint("InflateParams")
-public class AppManagerActivity extends Activity implements AppChangeListener,
+public class AppListActivity extends Activity implements AppChangeListener,
 		OnClickListener, OnItemClickListener {
 
 	View mLoadingView;
@@ -72,7 +72,7 @@ public class AppManagerActivity extends Activity implements AppChangeListener,
 		mPagerContain = findViewById(R.id.layout_pager_container);
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setPageTransformer(true, new DepthPageTransformer());
+//		mViewPager.setPageTransformer(true, new DepthPageTransformer());
 			
 		fillData();
 	}

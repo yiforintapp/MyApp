@@ -31,11 +31,10 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.DragGridView;
 import com.leo.appmaster.ui.PagedGridView;
-import com.leo.appmaster.ui.DragGridView.AnimEndListener;
 import com.leoers.leoanalytics.LeoStat;
 
 public class AppLockListActivity extends Activity implements AppChangeListener,
-		OnItemClickListener, OnClickListener, AnimEndListener {
+		OnItemClickListener, OnClickListener {
 
 	private CommonTitleBar mTtileBar;
 
@@ -56,6 +55,10 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	private float mScale = 0.5f;
 
 	private BaseInfo mLastSelectApp;
+
+	private Object mLock = new Object();
+
+	private boolean isFlying;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +100,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 		mPagerUnlock = (PagedGridView) findViewById(R.id.pager_unlock);
 		mPagerLock = (PagedGridView) findViewById(R.id.pager_lock);
-
-		mPagerUnlock.setAnimListener(this);
-		mPagerLock.setAnimListener(this);
 
 		mPagerUnlock.setGridviewItemClickListener(this);
 		mPagerLock.setGridviewItemClickListener(this);
@@ -162,14 +162,22 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		if (isFlying) {
+			return;
+		}
+
+		isFlying = true;
+
 		calculateLoc();
 		mLastSelectApp = (BaseInfo) view.getTag();
+		Log.e("xxxx", mLastSelectApp.getPkg());
 		BaseInfo info = null;
 		if (mLastSelectApp.isLocked()) {
 			mLastSelectApp.setLocked(false);
 			for (BaseInfo baseInfo : mLockedList) {
 				if (baseInfo.getPkg().equals(mLastSelectApp.getPkg())) {
 					info = baseInfo;
+					info.setLocked(false);
 					break;
 				}
 			}
@@ -183,17 +191,22 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			for (BaseInfo baseInfo : mUnlockList) {
 				if (baseInfo.getPkg().equals(mLastSelectApp.getPkg())) {
 					info = baseInfo;
+					info.setLocked(true);
 					break;
 				}
 			}
 			mLockedList.add(info);
 			mUnlockList.remove(info);
 			moveItemToLock(view, mLastSelectApp.getAppIcon());
-			
+
 			LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
 		}
 		((DragGridView) parent).removeItemAnimation(position, mLastSelectApp);
+		saveLockList();
+	}
 
+	private void saveLockList() {
+		new Thread(new PushLockedListTask()).start();
 	}
 
 	private void moveItemToLock(View view, Drawable drawable) {
@@ -220,7 +233,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				+ ",   targetX = " + targetX + ",  targetY = " + targetY);
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
-		animation.setAnimationListener(new FlyAnimaListener());
+		animation.setAnimationListener(new FlyAnimaListener(true));
 
 		mIvAnimator.setVisibility(View.VISIBLE);
 		mIvAnimator.setImageDrawable(drawable);
@@ -248,7 +261,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
-		animation.setAnimationListener(new FlyAnimaListener());
+		animation.setAnimationListener(new FlyAnimaListener(false));
 
 		mIvAnimator.setVisibility(View.VISIBLE);
 		mIvAnimator.setImageDrawable(drawable);
@@ -272,6 +285,13 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	}
 
 	private class FlyAnimaListener implements AnimationListener {
+
+		boolean moveToLock;
+
+		public FlyAnimaListener(boolean b) {
+			moveToLock = b;
+		}
+
 		@Override
 		public void onAnimationStart(Animation animation) {
 		}
@@ -286,20 +306,27 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			mTvUnlock.setText("未加锁(" + mUnlockList.size() + ")");
 			mTvLocked.setText(" 已加锁(" + mLockedList.size() + ")");
 
-			// mLastSelectItem.setVisibility(View.VISIBLE);
-			new Thread(new PushLockedListTask()).start();
+			if (moveToLock) {
+				mPagerLock.notifyChange(mLockedList);
+			} else {
+				mPagerUnlock.notifyChange(mUnlockList);
+			}
+
+			isFlying = false;
 		}
 	}
 
 	private class PushLockedListTask implements Runnable {
 		@Override
 		public void run() {
-			List<String> list = new ArrayList<String>();
-			for (BaseInfo info : AppLockListActivity.this.mLockedList) {
-				list.add(info.getPkg());
+			synchronized (mLock) {
+				List<String> list = new ArrayList<String>();
+				for (BaseInfo info : AppLockListActivity.this.mLockedList) {
+					list.add(info.getPkg());
+				}
+				AppLockerPreference.getInstance(AppLockListActivity.this)
+						.setLockedAppList(list);
 			}
-			AppLockerPreference.getInstance(AppLockListActivity.this)
-					.setLockedAppList(list);
 		}
 
 	}
@@ -311,7 +338,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	@Override
 	public void onClick(View v) {
-		Log.e("xxxx", "id = " + v.getId());
 		switch (v.getId()) {
 		case R.id.tv_option:
 			Intent intent = new Intent(this, LockOptionActivity.class);
@@ -324,11 +350,5 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			onTabClick(v);
 			break;
 		}
-	}
-
-	@Override
-	public void onAnimEnd() {
-		// mPagerUnlock.notifyChange(mUnlockList);
-		// mPagerLock.notifyChange(mLockedList);
 	}
 }

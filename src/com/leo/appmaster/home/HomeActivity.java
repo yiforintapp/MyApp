@@ -12,7 +12,7 @@ import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.service.LockService;
-import com.leo.appmaster.appmanage.AppManagerActivity;
+import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
 import com.leo.appmaster.fragment.LockFragment;
@@ -85,7 +85,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.tv_app_manage:
 	         LeoStat.addEvent(LeoStat.P2, "app_manage", "click the app manage button");
-			intent = new Intent(this, AppManagerActivity.class);
+			intent = new Intent(this, AppListActivity.class);
 			this.startActivity(intent);
 			break;
 		case R.id.tv_app_lock:
