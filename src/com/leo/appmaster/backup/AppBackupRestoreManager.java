@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Environment;
 
@@ -26,6 +27,7 @@ import com.leo.appmaster.model.AppDetailInfo;
 public class AppBackupRestoreManager {
 
     private static final String BACKUP_PATH = "leo/appmaster/.backup/";
+    private static final String INSTALL_PACKAGE = "com.android.packageinstaller";
     
     public interface AppBackupDataListener {
         public void onDataReady();
@@ -84,6 +86,7 @@ public class AppBackupRestoreManager {
         }
     }
     
+    
     public void deleteApp(final AppDetailInfo app) {
         mExecutorService.execute(new Runnable() {              
             @Override
@@ -111,6 +114,12 @@ public class AppBackupRestoreManager {
     public void restoreApp(Context context, AppDetailInfo app) {
         Intent intent = new Intent();    
         intent.setDataAndType(Uri.fromFile(new File(app.getSourceDir())),  "application/vnd.android.package-archive");    
+        try {
+            // check android package installer
+            mPackageManager.getPackageInfo(INSTALL_PACKAGE, 0);
+            intent.setPackage(INSTALL_PACKAGE);
+        } catch (NameNotFoundException e) {
+        }
         context.startActivity(intent);    
     }
 
@@ -130,7 +139,7 @@ public class AppBackupRestoreManager {
             return false;
         }
         // do file copy operation
-        byte[] c = new byte[1024];
+        byte[] c = new byte[1024 * 5];
         int slen;
         FileOutputStream out = null;
         try {
@@ -162,8 +171,11 @@ public class AppBackupRestoreManager {
         newApp.setAppLabel(app.getAppLabel());
         newApp.setAppIcon(app.getAppIcon());
         newApp.setPkg(app.getPkg());
+        newApp.setVersionCode(app.getVersionCode());
+        newApp.setVersionName(app.getVersionName());
         newApp.setSourceDir(dest);
         app.isBackuped = true;
+        app.isChecked = false;
         mSavedList.add(newApp);
         
         return true;

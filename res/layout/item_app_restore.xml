@@ -5,36 +5,51 @@
 
     <ImageView
         android:id="@+id/app_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_margin="6dp"
         android:gravity="center"
-        android:padding="6dp"
-        android:scaleType="center" />
-
-    <Button
-        android:id="@+id/button_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="center_vertical"
-        android:text="@string/button_delete" />
-
-    <Button
-        android:id="@+id/button_install"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_toLeftOf="@id/button_delete"
-        android:text="@string/button_install" />
+        android:scaleType="centerInside" />
 
     <TextView
         android:id="@+id/app_title"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@id/button_install"
-        android:layout_toRightOf="@id/app_icon"
+        android:layout_marginBottom="36dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="120dp"
+        android:layout_marginTop="6dp"
         android:gravity="center_vertical"
         android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/app_version"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="120dp"
+        android:layout_marginTop="36dp"
+        android:gravity="center_vertical"
+        android:singleLine="true" />
+
+    <Button
+        android:id="@+id/button_install"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="60dp"
+        android:gravity="center"
+        android:text="@string/button_install" />
+
+    <Button
+        android:id="@+id/button_delete"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="6dp"
+        android:gravity="center"
+        android:text="@string/button_delete" />
 
 </com.leo.appmaster.backup.AppRestoreItemView>

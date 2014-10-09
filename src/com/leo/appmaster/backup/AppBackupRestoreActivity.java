@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.backup;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,8 +21,12 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 
 public class AppBackupRestoreActivity extends Activity implements View.OnClickListener, OnItemClickListener, AppBackupDataListener {
+    
     
     private  View mViewBackup;
     private  View mViewRestore;
@@ -33,6 +39,11 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     
     private AppBackupRestoreManager mBackupManager;
     
+    private LEOProgressDialog mProgressDialog;
+    private LEOAlarmDialog mAlarmDialog;
+    
+    private AppDetailInfo mPendingDelApp;
+    
     private Handler mHandler = new Handler();
         
     @Override
@@ -42,6 +53,19 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         initUI();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+        if(mAlarmDialog != null) {
+            mAlarmDialog.dismiss();
+            mAlarmDialog = null;
+        }
+    }
+    
     private void initUI() {
         CommonTitleBar title = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         title.setTitle(R.string.app_backup);
@@ -134,7 +158,9 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         } else if(v == mViewRestore) {
             mPager.setCurrentItem(1, true);
         } else if(v == mButtonBackup) {
-            mBackupManager.backupApps(mBackupAdapter.getSelectedItems());
+            ArrayList<AppDetailInfo> items = mBackupAdapter.getSelectedItems();
+            showProgressDialog("Backuping...", items.size(), false, false);
+            mBackupManager.backupApps(items);
         }
     }
 
@@ -146,7 +172,12 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
             app.isChecked = !app.isChecked;
             item.setState(app.isBackuped ? AppBackupItemView.STATE_BACKUPED : app.isChecked ? AppBackupItemView.STATE_SELECTED : AppBackupItemView.STATE_UNSELECTED);
         }
+    }
+    
 
+    public void tryDeleteApp(AppDetailInfo app) {
+        mPendingDelApp = app;
+        showAlarmDialog("Delete", "Are you sure to delete: " + app.getAppLabel());
     }
 
     @Override
@@ -165,7 +196,9 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         mHandler.post(new Runnable() {       
             @Override
             public void run() {
-               Toast.makeText(AppBackupRestoreActivity.this, "Done : " + doneNum + " / " + totalNum, Toast.LENGTH_SHORT).show();
+                if(mProgressDialog != null && mProgressDialog.isShowing()) {
+                    mProgressDialog.setProgress(doneNum);
+                }
             }
         });
     }
@@ -177,7 +210,9 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
             public void run() {
                mBackupAdapter.updateData();
                mRestoreAdapter.updateData();
-               Toast.makeText(AppBackupRestoreActivity.this, "Finish : " + successNum + " / " + totalNum, Toast.LENGTH_SHORT).show();
+               if(mProgressDialog != null ) {
+                   mProgressDialog.dismiss();
+               }
             }
         });
     }
@@ -191,9 +226,47 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
                     mRestoreAdapter.updateData();
                     mBackupAdapter.updateData();
                 }
-                Toast.makeText(AppBackupRestoreActivity.this, success + "", Toast.LENGTH_SHORT).show();
+                if(mProgressDialog != null) {
+                    mProgressDialog.dismiss();
+                }
             }
         });
     }
+    
+
+    
+    private void showProgressDialog(String message, int max, boolean indeterminate, boolean cancelable) {
+        if(mProgressDialog == null) {
+            mProgressDialog = new LEOProgressDialog(this);
+        }
+        mProgressDialog.setCancelable(cancelable);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setIndeterminate(indeterminate);
+        mProgressDialog.setMax(max);
+        mProgressDialog.setProgress(0);
+        mProgressDialog.setMessage(message);
+        mProgressDialog.show();
+    }
+    
+
+    private void showAlarmDialog(String title, String content) {
+        if(mAlarmDialog == null) {
+            mAlarmDialog = new LEOAlarmDialog(this);
+            mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {           
+                @Override
+                public void onClick(int which) {
+                    if(which == 1 && mPendingDelApp != null) {
+                        showProgressDialog("Deleting: " + mPendingDelApp.getAppLabel(), 0, true, false);
+                        mBackupManager.deleteApp(mPendingDelApp);
+                    }
+                    mPendingDelApp = null;
+                }
+            });
+        }
+        mAlarmDialog.setTitle(title);
+        mAlarmDialog.setContent(content);
+        mAlarmDialog.show();
+    }
+
 
 }

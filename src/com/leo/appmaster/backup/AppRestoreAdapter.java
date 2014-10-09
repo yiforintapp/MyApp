@@ -57,6 +57,7 @@ public class AppRestoreAdapter extends BaseAdapter {
         AppDetailInfo app = mRestoreList.get(arg0);
         itemView.setIcon(app.getAppIcon());
         itemView.setTitle(app.getAppLabel());
+        itemView.setVersion(app.getVersionName());
         itemView.setTag(app);
         return itemView;
     }

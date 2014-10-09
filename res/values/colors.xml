@@ -12,5 +12,10 @@
     <color name="white">#ffffffff</color>
     <color name="grey">#ff333333</color>
     <color name="pref_category">#ffaaaaaa</color>
+    <color name="low_white">#26ffffff</color>
+    <color name="dialog_pro_start">#6ba3d4</color>
+    <color name="dialog_pro_center">#6291c6</color>
+    <color name="dialog_pro_end">#5285b7</color>
+    <color name="dialog_pro_bg">#d9dce3</color>
 
 </resources>
