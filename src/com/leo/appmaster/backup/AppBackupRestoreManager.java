@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Environment;
 
@@ -26,6 +27,7 @@ import com.leo.appmaster.model.AppDetailInfo;
 public class AppBackupRestoreManager {
 
     private static final String BACKUP_PATH = "leo/appmaster/.backup/";
+    private static final String INSTALL_PACKAGE = "com.android.packageinstaller";
     
     public interface AppBackupDataListener {
         public void onDataReady();
@@ -40,6 +42,8 @@ public class AppBackupRestoreManager {
     
     private ArrayList<AppDetailInfo> mSavedList;
     private ArrayList<AppDetailInfo> mBackupList;
+    
+    private boolean mBackupCanceled = false;
     
     private PackageManager mPackageManager;
 
@@ -61,6 +65,7 @@ public class AppBackupRestoreManager {
     }
 
     public void backupApps(final ArrayList<AppDetailInfo> apps) {
+        mBackupCanceled = false;
         String backupPath = getBackupPath();
         final int totalNum = apps.size();
         if(backupPath == null) {
@@ -72,6 +77,9 @@ public class AppBackupRestoreManager {
                     int doneNum = 0;
                     int successNum = 0;
                     for(AppDetailInfo app : apps) {
+                        if(mBackupCanceled) {
+                            break;
+                        }
                         doneNum ++;
                         if(tryBackupApp(app)) {
                             successNum++;
@@ -82,6 +90,10 @@ public class AppBackupRestoreManager {
                 }
             });
         }
+    }
+
+    public void cancelBackup() {
+        mBackupCanceled = true;
     }
     
     public void deleteApp(final AppDetailInfo app) {
@@ -111,6 +123,12 @@ public class AppBackupRestoreManager {
     public void restoreApp(Context context, AppDetailInfo app) {
         Intent intent = new Intent();    
         intent.setDataAndType(Uri.fromFile(new File(app.getSourceDir())),  "application/vnd.android.package-archive");    
+        try {
+            // check android package installer
+            mPackageManager.getPackageInfo(INSTALL_PACKAGE, 0);
+            intent.setPackage(INSTALL_PACKAGE);
+        } catch (NameNotFoundException e) {
+        }
         context.startActivity(intent);    
     }
 
@@ -130,15 +148,19 @@ public class AppBackupRestoreManager {
             return false;
         }
         // do file copy operation
-        byte[] c = new byte[1024];
+        byte[] c = new byte[1024 * 5];
         int slen;
         FileOutputStream out = null;
         try {
             String pName = app.getPkg();
             dest += pName + ".apk";
             out = new FileOutputStream(dest);
-            while ((slen = in.read(c, 0, c.length)) != -1)
+            while ((slen = in.read(c, 0, c.length)) != -1) {
+                if(mBackupCanceled) {
+                    break;
+                }
                 out.write(c, 0, slen);
+            }
         } catch (IOException e) {
             return false;
         } finally {
@@ -152,9 +174,15 @@ public class AppBackupRestoreManager {
                 try {
                     in.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
                     return false;
                 }
+            }
+            if(mBackupCanceled) {
+                File f = new File(dest);
+                if(f.exists()) {
+                    f.delete();
+                }
+                return false;
             }
         }
         
@@ -162,8 +190,11 @@ public class AppBackupRestoreManager {
         newApp.setAppLabel(app.getAppLabel());
         newApp.setAppIcon(app.getAppIcon());
         newApp.setPkg(app.getPkg());
+        newApp.setVersionCode(app.getVersionCode());
+        newApp.setVersionName(app.getVersionName());
         newApp.setSourceDir(dest);
         app.isBackuped = true;
+        app.isChecked = false;
         mSavedList.add(newApp);
         
         return true;

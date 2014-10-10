@@ -36,6 +36,7 @@ public class AppBackupAdapter extends BaseAdapter {
         ArrayList<AppDetailInfo> apps = mBackupManager.getBackupList();
         for(AppDetailInfo app : apps) {
             if(!app.isSystemApp()) {
+                app.isChecked = false;
                 mBackupList.add(app);
             }
         }
@@ -69,6 +70,7 @@ public class AppBackupAdapter extends BaseAdapter {
         AppDetailInfo app = mBackupList.get(arg0);
         itemView.setIcon(app.getAppIcon());
         itemView.setTitle(app.getAppLabel());
+        itemView.setVersion(app.getVersionName());
         itemView.setState(app.isBackuped ? AppBackupItemView.STATE_BACKUPED : app.isChecked ? AppBackupItemView.STATE_SELECTED : AppBackupItemView.STATE_UNSELECTED);
         itemView.setTag(app);
         return itemView;

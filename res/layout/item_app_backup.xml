@@ -5,28 +5,42 @@
 
     <ImageView
         android:id="@+id/app_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:padding="6dp"
-        android:layout_alignParentLeft="true"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_margin="6dp"
         android:gravity="center"
-        android:scaleType="center" />
+        android:scaleType="centerInside" />
+
+    <TextView
+        android:id="@+id/app_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="36dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/app_version"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="36dp"
+        android:gravity="center_vertical"
+        android:singleLine="true" />
 
     <ImageView
         android:id="@+id/app_check"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:padding="6dp"
-        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:layout_margin="6dp"
         android:gravity="center"
-        android:scaleType="center"/>
-    
-    <TextView android:id="@+id/app_title"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_toLeftOf="@id/app_check"
-        android:layout_toRightOf="@id/app_icon"
-        android:gravity="center_vertical"
-        android:singleLine="true"/>
+        android:scaleType="centerInside" />
 
 </com.leo.appmaster.backup.AppBackupItemView>

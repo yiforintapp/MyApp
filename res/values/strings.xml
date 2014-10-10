@@ -42,6 +42,7 @@
     <string name="anwser">答案:</string>
     <string name="not_unistall">防止被卸载</string>
     <string name="lock_screen_auto_lock">锁屏后自动锁定</string>
+    <string name="tips">提示</string>
     <!-- 手势密码 -->
     <string name="lockscreen_access_pattern_start">"开始绘制图案"</string>
     <string name="lockscreen_access_pattern_cleared">"图案已清除"</string>
