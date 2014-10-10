@@ -2,7 +2,7 @@ package com.leo.appmaster.model;
 
 public class TrafficInfo {
 	private long mReceivedData;
-	private long mRransmittedData;
+	private long mTransmittedData;
 
 	public long getReceivedData() {
 		return mReceivedData;
@@ -13,11 +13,11 @@ public class TrafficInfo {
 	}
 
 	public long getMtransmittedData() {
-		return mRransmittedData;
+		return mTransmittedData;
 	}
 
 	public void setTransmittedData(long mTransmittedData) {
-		this.mRransmittedData = mTransmittedData;
+		this.mTransmittedData = mTransmittedData;
 	}
 
 }
