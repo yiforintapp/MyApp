@@ -57,12 +57,15 @@ public class AppBackupItemView extends FrameLayout {
     public void setState(int state) {
         switch (state) {
             case STATE_SELECTED:
+                setEnabled(true);
                 mChecked.setImageResource(R.drawable.checkbox_checked);
                 break;
             case STATE_BACKUPED:
+                setEnabled(false);
                 mChecked.setImageResource(R.drawable.checkbox_checked_unclickable);
                 break;
             default:
+                setEnabled(true);
                 mChecked.setImageResource(R.drawable.checkbox_normal);
                 break;
         }

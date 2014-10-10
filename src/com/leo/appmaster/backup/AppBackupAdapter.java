@@ -35,10 +35,16 @@ public class AppBackupAdapter extends BaseAdapter {
         mBackupList.clear();
         ArrayList<AppDetailInfo> apps = mBackupManager.getBackupList();
         for(AppDetailInfo app : apps) {
-            if(!app.isSystemApp()) {
-                app.isChecked = false;
-                mBackupList.add(app);
-            }
+            app.isChecked = false;
+            mBackupList.add(app);
+        }
+        notifyDataSetChanged();
+    }
+    
+    public void checkAll(boolean check) {
+        for(AppDetailInfo app : mBackupList) {
+            if(app.isBackuped) continue;
+            app.isChecked = check;
         }
         notifyDataSetChanged();
     }
@@ -70,7 +76,7 @@ public class AppBackupAdapter extends BaseAdapter {
         AppDetailInfo app = mBackupList.get(arg0);
         itemView.setIcon(app.getAppIcon());
         itemView.setTitle(app.getAppLabel());
-        itemView.setVersion(app.getVersionName());
+        itemView.setVersion(app.getVersionName() + "    " + mBackupManager.getApkSize(app));
         itemView.setState(app.isBackuped ? AppBackupItemView.STATE_BACKUPED : app.isChecked ? AppBackupItemView.STATE_SELECTED : AppBackupItemView.STATE_UNSELECTED);
         itemView.setTag(app);
         return itemView;
