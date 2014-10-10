@@ -4,14 +4,14 @@ import java.util.LinkedList;
 
 import org.xclcharts.chart.LineChart;
 import org.xclcharts.chart.LineData;
-import org.xclcharts.common.DensityUtil;
 import org.xclcharts.renderer.XEnum;
 import org.xclcharts.view.GraphicalView;
+
+import com.leo.appmaster.utils.DipPixelUtil;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint.Align;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -92,16 +92,16 @@ public class LineChartView  extends GraphicalView {
 		dataSeries1.add(10d); 
 		dataSeries1.add(44d); 
 		dataSeries1.add(31d); 
-		dataSeries1.add(40d);
+		dataSeries1.add(70d);
 		dataSeries1.add(5d);
 		LineData lineData1 = new LineData("",dataSeries1,(int)Color.rgb(234, 83, 71));
 		lineData1.setLineGradient(true);
 		lineData1.setLabelVisible(true);		
 		lineData1.setDotStyle(XEnum.DotStyle.RING_DOT);
-		lineData1.setDotRadius(40);
+		lineData1.setDotRadius(DipPixelUtil.dip2px(mContext, 8));
 		lineData1.getDotLabelPaint().setColor(Color.BLUE);
-		lineData1.getDotLabelPaint().setTextSize(22);
-		lineData1.getDotLabelPaint().setTextAlign(Align.CENTER);
+//		lineData1.getDotLabelPaint().setTextSize(DipPixelUtil.dip2px(mContext, 10));
+//		lineData1.getDotLabelPaint().setTextAlign(Align.CENTER);
 		lineData1.setLineGradient(true);
 		lineData1.setStartPoitPos(1);
 		

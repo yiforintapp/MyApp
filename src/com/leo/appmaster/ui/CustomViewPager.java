@@ -26,6 +26,8 @@ public class CustomViewPager extends ViewPager {
         super.scrollTo(x, y);  
     }  
   
+    
+    
     @Override  
     public boolean onTouchEvent(MotionEvent arg0) {  
         // TODO Auto-generated method stub  

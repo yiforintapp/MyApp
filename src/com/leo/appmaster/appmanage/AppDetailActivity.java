@@ -1,6 +1,11 @@
 package com.leo.appmaster.appmanage;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.GestureLayout.IGestureListener;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppDetailInfo;
@@ -23,6 +28,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -33,7 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class AppDetailActivity extends Activity implements
-		OnPageChangeListener, OnClickListener {
+		OnPageChangeListener, OnClickListener, IGestureListener{
 
 	public static final String EXTRA_LOAD_PKG = "load_pkg_name";
 
@@ -52,7 +58,8 @@ public class AppDetailActivity extends Activity implements
     private TextView mAppVersion;
     private TextView mAppMemory;
     private TextView mAppUsedFlow;
-	
+    private GestureLayout mGestureLayout;
+    
     private Button mUninstall;
     private Button mStop;
 
@@ -62,7 +69,9 @@ public class AppDetailActivity extends Activity implements
     private Bitmap mAppBaseInfoLayoutbg;
 	
 	private AppDetailInfo mAppInfo;
-
+	
+	private Date mCurrdate;
+	private Calendar mCalendar = Calendar.getInstance();;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -105,14 +114,19 @@ public class AppDetailActivity extends Activity implements
         
 		mPager1 = (LinearLayout)this.getLayoutInflater().inflate(R.layout.activity_user_details, null);
 		mPager2 = (AppInfoBaseLayout) this.getLayoutInflater().inflate(	R.layout.pager_app_use_info, null);
-
         mBatteryCharts = (BatteryChartsView) mPager1.findViewById(R.id.battery_charts);
         mBatteryCharts.setPowerPercent((float)mAppInfo.getPowerComsuPercent() / 100);
 		mPager2.setAppDetailInfo(mAppInfo);
 		mViewPager.setAdapter(new AppdetailAdapter());
 		mViewPager.setOnPageChangeListener(this);
 		mViewPager.setScanScroll(false);
+		mViewPager.requestDisallowInterceptTouchEvent(true);
+		
+		mGestureLayout = (GestureLayout) mPager1.findViewById(R.id.gesture_layout);
+		mGestureLayout.setListener(this);
 		setAppInfoBackground(mAppInfo.getAppIcon());
+		mCurrdate = mCalendar.getTime();
+		setWeekString(mCurrdate);
 	}
 
 	private void setAppInfoBackground(Drawable drawable) {
@@ -134,6 +148,67 @@ public class AppDetailActivity extends Activity implements
 
 	}
 
+	
+	private void setWeekString(Date currDate) {
+	    String newMessageInfo;
+	    
+        TextView sun = (TextView) mPager1.findViewById(R.id.sunday);
+        TextView mon = (TextView) mPager1.findViewById(R.id.monday);
+        TextView tue = (TextView) mPager1.findViewById(R.id.tuesday);
+        TextView wed = (TextView) mPager1.findViewById(R.id.wednesday);
+        TextView thu = (TextView) mPager1.findViewById(R.id.thursday);
+        TextView fri = (TextView) mPager1.findViewById(R.id.friday);
+        TextView sat = (TextView) mPager1.findViewById(R.id.saturday);
+        
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM");
+        Calendar calendar = mCalendar; 
+        calendar.setTime(currDate);
+        int dayIndex = calendar.get(Calendar.DAY_OF_WEEK); 
+        calendar.add(Calendar.DATE, -(dayIndex - 1));
+        Date date = calendar.getTime();
+        String text= format.format(date);
+        dayIndex = calendar.get(Calendar.DAY_OF_WEEK); 
+        int count = 7;
+        while (count > 0) {
+            count--;
+            switch (dayIndex) {
+                case 1:
+                    newMessageInfo = "S " + "<font color='#cccccc'><b>" +  format.format(date) + "</b></font>";
+                    sun.setText(Html.fromHtml(newMessageInfo));
+                    break;
+                case 2:
+                    newMessageInfo = "M " + "<font color='#cccccc'><b>" +  format.format(date) + "</b></font>";
+                    mon.setText(Html.fromHtml(newMessageInfo));
+                    break;
+                case 3:
+                    newMessageInfo = "T " + "<font color='#cccccc'><b>" +  format.format(date) + "</b></font>";
+                    tue.setText(Html.fromHtml(newMessageInfo));
+                    break;
+                case 4:
+                    newMessageInfo = "W " + "<font color='#cccccc'><b>" +  format.format(date) + "</b></font>";
+                    wed.setText(Html.fromHtml(newMessageInfo));
+                    break;
+                case 5:
+                    newMessageInfo = "T " + "<font color='#cccccc'><b>" +  format.format(date) + "</b></font>";
+                    thu.setText(Html.fromHtml(newMessageInfo));
+                    break;
+                case 6:
+                    newMessageInfo = "F " + "<font color='#cccccc'><b>" +  format.format(date) + "</b></font>";
+                    fri.setText(Html.fromHtml(newMessageInfo));
+                    break;
+                case 7:
+                    newMessageInfo = "S " + "<font color='#cccccc'><b>" +  format.format(date) + "</b></font>";
+                    sat.setText(Html.fromHtml(newMessageInfo));
+                    break;
+                default:
+                    break;
+            }
+            calendar.add(Calendar.DATE, 1);
+            dayIndex = calendar.get(Calendar.DAY_OF_WEEK); 
+            date = calendar.getTime();
+        }
+        calendar.setTime(currDate);
+	}
 	
 	private class AppdetailAdapter extends PagerAdapter {
 
@@ -219,6 +294,21 @@ public class AppDetailActivity extends Activity implements
             mAppBaseInfoLayoutbg.recycle();
             mAppBaseInfoLayoutbg = null;
         }
+    }
+
+    @Override
+    public void onScroll(int direction) {
+        if (direction > 0) { //left
+            if (mCurrdate.equals( mCalendar.getTime())) {
+                return;
+            }
+            mCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+            setWeekString(mCalendar.getTime());
+        } else if (direction < 0) { //right
+            mCalendar.add(Calendar.WEEK_OF_YEAR, -1);
+            setWeekString(mCalendar.getTime());
+        }
+        
     }
 	
 	
