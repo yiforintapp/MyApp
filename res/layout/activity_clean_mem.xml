@@ -31,7 +31,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="120dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:text="Used Memory"
                 android:textColor="#ffffff" />
 
@@ -43,7 +43,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:text="874M/2G"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 android:textColor="#ffffff" />
 
             <FrameLayout

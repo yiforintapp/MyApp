@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/app_background"
     android:layout_height="match_parent" >
 
     <com.leo.appmaster.ui.CommonTitleBar
@@ -31,7 +32,6 @@
             android:id="@+id/layout_pager_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#34234563"
             android:paddingTop="25dp"
             android:paddingBottom="25dp"
             android:paddingLeft="2dp"

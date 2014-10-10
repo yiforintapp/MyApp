@@ -5,8 +5,11 @@ import java.text.DecimalFormat;
 import android.util.Log;
 
 public class TextFormater {
+	
+	//已KB为单位
 	public static String dataSizeFormat(long size) {
 		DecimalFormat formater = new DecimalFormat("####.00");
+		size = size <<10;
 		if (size < 1024) {
 			return size + "byte";
 		} else if (size < (1 << 20)) // 左移20位，相当于1024 * 1024
@@ -22,7 +25,6 @@ public class TextFormater {
 		 * formater.format(gSize) + "GB"; } else { return "size : error"; }
 		 */else {
 			float gSize = (float) size / (1024 * 1024 * 1024);
-			Log.e("xxxx", "size = " + size + "   gSize = " + gSize);
 			return formater.format(gSize) + "GB";
 		}
 	}

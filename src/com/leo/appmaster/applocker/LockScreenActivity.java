@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 public class LockScreenActivity extends FragmentActivity {
 
@@ -31,6 +32,12 @@ public class LockScreenActivity extends FragmentActivity {
 		handleIntent();
 
 		initUI();
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		Log.e("xxxx", "onNewIntent");
+		super.onNewIntent(intent);
 	}
 
 	private void handleIntent() {

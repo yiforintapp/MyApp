@@ -1,5 +1,7 @@
 package com.leo.appmaster.fragment;
 
+import android.content.Intent;
+
 public abstract class LockFragment extends BaseFragment {
 	
 	protected final int mMaxInput = 5;
@@ -27,4 +29,6 @@ public abstract class LockFragment extends BaseFragment {
 	public void setFrom(int from){
 		mFrom = from;
 	}
+	
+	public abstract void onNewIntent(Intent intent);
 }

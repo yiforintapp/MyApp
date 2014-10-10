@@ -42,7 +42,7 @@ public class GestureLockFragment extends LockFragment implements
 	protected int layoutResourceId() {
 		return R.layout.fragment_lock_gesture;
 	}
-
+	
 	@Override
 	protected void onInitUI() {
 		mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
@@ -60,7 +60,8 @@ public class GestureLockFragment extends LockFragment implements
 		}
 	}
 
-
+	
+             
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -164,5 +165,11 @@ public class GestureLockFragment extends LockFragment implements
 		} else if (which == DialogInterface.BUTTON_POSITIVE) { // cancel
 			mDialog.dismiss();
 		}
+	}
+
+	@Override
+	public void onNewIntent(Intent intent) {
+		// TODO Auto-generated method stub
+		
 	}
 }

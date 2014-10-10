@@ -27,6 +27,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tasksCompletedView"
         android:layout_centerHorizontal="true"
+        android:background="@color/app_background"
         android:layout_marginTop="10dp"
         android:orientation="vertical" >
 
@@ -40,7 +41,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#34234563"
                 android:gravity="center"
                 android:text="@string/app_manage"
                 android:textSize="20sp" />
@@ -50,7 +50,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#34234563"
                 android:gravity="center"
                 android:text="@string/app_lock"
                 android:textSize="20sp" />
@@ -66,7 +65,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#34234563"
                 android:gravity="center"
                 android:text="@string/clean_memory"
                 android:textSize="20sp" />
@@ -76,7 +74,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#34234563"
                 android:gravity="center"
                 android:text="@string/app_backup"
                 android:textSize="20sp" />

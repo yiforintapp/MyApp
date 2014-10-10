@@ -88,7 +88,7 @@ public class PasswdLockFragment extends LockFragment implements
 					mActivity.getPackageManager(), mPackage));
 			mAppicon.setVisibility(View.VISIBLE);
 		}
-		
+
 		clearPasswd();
 
 	}
@@ -244,7 +244,8 @@ public class PasswdLockFragment extends LockFragment implements
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 		if (which == DialogInterface.BUTTON_NEGATIVE) {// make sure
-			String anwser = AppLockerPreference.getInstance(mActivity).getPpAnwser();
+			String anwser = AppLockerPreference.getInstance(mActivity)
+					.getPpAnwser();
 			if (anwser.equals(mEtAnwser.getText().toString())) {
 				// goto reset passwd
 				Intent intent = new Intent(mActivity, LockOptionActivity.class);
@@ -256,6 +257,12 @@ public class PasswdLockFragment extends LockFragment implements
 		} else if (which == DialogInterface.BUTTON_POSITIVE) { // cancel
 			mDialog.dismiss();
 		}
+
+	}
+
+	@Override
+	public void onNewIntent(Intent intent) {
+		// TODO Auto-generated method stub
 
 	}
 }

@@ -12,12 +12,12 @@
     <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-	<uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
-<!--  统计sdk start-->
+    <!-- 统计sdk start -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -27,7 +27,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
     <!-- 统计sdk end -->
-    
+
     <application
         android:name="com.leo.appmaster.AppMasterApplication"
         android:icon="@drawable/ic_launcher"
@@ -45,15 +45,14 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.LockSettingActivity"
-            android:screenOrientation="portrait"
             android:excludeFromRecents="true"
-            android:noHistory="true"
             android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.LockScreenActivity"
-            android:excludeFromRecents="true"
             android:noHistory="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
@@ -106,13 +105,15 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-        
-         <!-- add for the app update of leosdk  -->
-         <activity android:name="com.leoers.leoanalytics.UpdateActivity" 
-            android:theme="@android:style/Theme.Dialog"/>
-         <service android:name="com.leoers.leoanalytics.DownloadService" />
-        <!-- add for the app update of leosdk  -->
-        
+
+        <!-- add for the app update of leosdk -->
+        <activity
+            android:name="com.leoers.leoanalytics.UpdateActivity"
+            android:theme="@android:style/Theme.Dialog" />
+
+        <service android:name="com.leoers.leoanalytics.DownloadService" />
+        <!-- add for the app update of leosdk -->
+
         <service android:name="com.leo.appmaster.applocker.service.LockService" >
         </service>
 

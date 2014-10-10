@@ -26,7 +26,7 @@ public class ProcessUtils {
 		return false;
 	}
 
-	// 获得可用的内存
+	// 获得可用的内存,以KB为单位
 	public static long getAvailableMem(Context mContext) {
 		long MEM_UNUSED;
 		// 得到ActivityManager
@@ -39,11 +39,11 @@ public class ProcessUtils {
 
 		// 取得剩余的内存空间
 
-		MEM_UNUSED = mi.availMem;
+		MEM_UNUSED = mi.availMem / 1024;
 		return MEM_UNUSED;
 	}
 
-	// 获得总内存
+	// 获得总内存, 以KB为单位
 	public static long getTotalMem() {
 		long mTotal;
 		// /proc/meminfo读出的内核信息进行解释
@@ -76,7 +76,7 @@ public class ProcessUtils {
 		// 截取字符串信息
 
 		content = content.substring(begin + 1, end).trim();
-		mTotal = Integer.parseInt(content) * 1024;
+		mTotal = Integer.parseInt(content);
 		return mTotal;
 	}
 }
