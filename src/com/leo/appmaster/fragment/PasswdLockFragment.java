@@ -27,8 +27,8 @@ public class PasswdLockFragment extends LockFragment implements
 
 	private ImageView mAppicon;
 
-	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv0,
-			tv_delete, tv_makesure;
+	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv0;
+	private ImageView iv_delete, iv_makesure;
 	private TextView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
 	private TextView mPasswdTip;
 	private TextView mFindPasswd;
@@ -53,8 +53,8 @@ public class PasswdLockFragment extends LockFragment implements
 		tv8 = (TextView) findViewById(R.id.tv_8);
 		tv9 = (TextView) findViewById(R.id.tv_9);
 		tv0 = (TextView) findViewById(R.id.tv_0);
-		tv_delete = (TextView) findViewById(R.id.tv_delete);
-		tv_makesure = (TextView) findViewById(R.id.tv_ok);
+		iv_delete = (ImageView) findViewById(R.id.tv_delete);
+		iv_delete = (ImageView) findViewById(R.id.tv_ok);
 
 		tv1.setOnClickListener(this);
 		tv2.setOnClickListener(this);
@@ -66,10 +66,10 @@ public class PasswdLockFragment extends LockFragment implements
 		tv8.setOnClickListener(this);
 		tv9.setOnClickListener(this);
 		tv0.setOnClickListener(this);
-		tv_delete.setOnClickListener(this);
-		tv_makesure.setOnClickListener(this);
-		tv_makesure.setEnabled(false);
-		tv_delete.setEnabled(false);
+		iv_delete.setOnClickListener(this);
+		iv_delete.setOnClickListener(this);
+		iv_delete.setEnabled(false);
+		iv_delete.setEnabled(false);
 
 		mTvPasswd1 = (TextView) findViewById(R.id.tv_passwd_1);
 		mTvPasswd2 = (TextView) findViewById(R.id.tv_passwd_2);
@@ -214,14 +214,14 @@ public class PasswdLockFragment extends LockFragment implements
 	private void deletePasswd() {
 		if (!mTvPasswd4.getText().equals("")) {
 			mTvPasswd4.setText("");
-			tv_makesure.setEnabled(false);
+			iv_delete.setEnabled(false);
 		} else if (!mTvPasswd3.getText().equals("")) {
 			mTvPasswd3.setText("");
 		} else if (!mTvPasswd2.getText().equals("")) {
 			mTvPasswd2.setText("");
 		} else if (!mTvPasswd1.getText().equals("")) {
 			mTvPasswd1.setText("");
-			tv_delete.setEnabled(false);
+			iv_delete.setEnabled(false);
 		}
 
 	}
@@ -229,14 +229,14 @@ public class PasswdLockFragment extends LockFragment implements
 	private void inputPasswd(String s) {
 		if (mTvPasswd1.getText().equals("")) {
 			mTvPasswd1.setText(s);
-			tv_delete.setEnabled(true);
+			iv_delete.setEnabled(true);
 		} else if (mTvPasswd2.getText().equals("")) {
 			mTvPasswd2.setText(s);
 		} else if (mTvPasswd3.getText().equals("")) {
 			mTvPasswd3.setText(s);
 		} else if (mTvPasswd4.getText().equals("")) {
 			mTvPasswd4.setText(s);
-			tv_makesure.setEnabled(true);
+			iv_delete.setEnabled(true);
 		}
 
 	}

@@ -26,6 +26,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.LeoViewPager;
 import com.leo.appmaster.ui.PageIndicator;
 
 @SuppressLint("InflateParams")
@@ -36,7 +37,7 @@ public class AppListActivity extends Activity implements AppChangeListener,
 
 	private CommonTitleBar mTtileBar;
 	private PageIndicator mPageIndicator;
-	private ViewPager mViewPager;
+	private LeoViewPager mViewPager;
 	private View mPagerContain;
 
 	List<AppDetailInfo> mAppDetails;
@@ -71,8 +72,8 @@ public class AppListActivity extends Activity implements AppChangeListener,
 
 		mPagerContain = findViewById(R.id.layout_pager_container);
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-//		mViewPager.setPageTransformer(true, new DepthPageTransformer());
+		mViewPager = (LeoViewPager) findViewById(R.id.pager);
+		mViewPager.setPageTransformer(true, new DepthPageTransformer());
 			
 		fillData();
 	}

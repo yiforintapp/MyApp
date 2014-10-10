@@ -5,12 +5,15 @@ import java.util.Collections;
 import java.util.List;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.AppListActivity.DepthPageTransformer;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.ui.DragGridView.AnimEndListener;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +28,7 @@ import android.widget.TextView;
 public class PagedGridView extends LinearLayout implements AnimEndListener {
 
 	private int mCellX, mCellY;
-	private ViewPager mViewPager;
+	private LeoViewPager mViewPager;
 	private CirclePageIndicator mIndicator;
 	private LayoutInflater mInflater;
 
@@ -129,7 +132,8 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 	@Override
 	protected void onFinishInflate() {
 		mInflater.inflate(R.layout.paged_gridview, this, true);
-		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager = (LeoViewPager) findViewById(R.id.pager);
+		mViewPager.setPageTransformer(true, new DepthPageTransformer());
 		mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
 		super.onFinishInflate();
 	}
@@ -148,7 +152,7 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
-			if(position < mGridViewList.size()) {
+			if (position < mGridViewList.size()) {
 				container.removeView(mGridViewList.get(position));
 			}
 		}
@@ -273,5 +277,41 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 			mViewPager.setCurrentItem(targetIndex);
 			mIndicator.invalidate();
 		}
+	}
+
+	public class DepthPageTransformer implements PageTransformer {
+		private static final float MIN_SCALE = 0.75f;
+
+		@SuppressLint("NewApi")
+		@Override
+		public void transformPage(View view, float position) {
+			int pageWidth = view.getWidth();
+			if (position < -1) { // [-Infinity,-1)
+									// This page is way off-screen to the left.
+				view.setAlpha(0);
+			} else if (position <= 0) { // [-1,0]
+										// Use the default slide transition when
+										// moving to the left page
+				view.setAlpha(1);
+				view.setTranslationX(0);
+				view.setScaleX(1);
+				view.setScaleY(1);
+			} else if (position <= 1) { // (0,1]
+										// Fade the page out.
+				view.setAlpha(1 - position);
+				// Counteract the default slide transition
+				view.setTranslationX(pageWidth * -position);
+				// Scale the page down (between MIN_SCALE and 1)
+				float scaleFactor = MIN_SCALE + (1 - MIN_SCALE)
+						* (1 - Math.abs(position));
+				view.setScaleX(scaleFactor);
+				view.setScaleY(scaleFactor);
+			} else { // (1,+Infinity]
+						// This page is way off-screen to the right.
+				view.setAlpha(0);
+
+			}
+		}
+
 	}
 }

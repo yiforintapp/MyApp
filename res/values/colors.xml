@@ -5,8 +5,6 @@
     <color name="title_txt_color">#f1f1f3</color>
     <color name="circle_color">#323a45</color>
     <color name="ring_color">#14b9d6</color>
-    <color name="tab_unselect">#00000000</color>
-    <color name="tab_select">#55257425</color>
     <color name="transparent">#00000000</color>
     <color name="black">#ff000000</color>
     <color name="white">#ffffffff</color>
@@ -18,5 +16,6 @@
     <color name="dialog_pro_center">#6291c6</color>
     <color name="dialog_pro_end">#5285b7</color>
     <color name="dialog_pro_bg">#d9dce3</color>
+    <color name="tab_select_text">#2a94fe</color>
 
 </resources>

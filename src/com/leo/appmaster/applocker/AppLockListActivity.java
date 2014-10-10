@@ -39,6 +39,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	private CommonTitleBar mTtileBar;
 
 	private ImageView mIvAnimator;
+	private View mTabContainer;
 	private TextView mTvUnlock, mTvLocked;
 	private int mLockedLocationX, mLockedLocationY;
 	private int mUnlockLocationX, mUnlockLocationY;
@@ -77,7 +78,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		super.onDestroy();
 	}
 
-	@SuppressLint("NewApi")
 	private void initUI() {
 		mInflater = LayoutInflater.from(this);
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
@@ -90,6 +90,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 		mIvAnimator = (ImageView) findViewById(R.id.iv_animator);
 
+		mTabContainer = findViewById(R.id.tab_container);
 		mTvUnlock = (TextView) findViewById(R.id.tv_app_unlock);
 		mTvLocked = (TextView) findViewById(R.id.tv_app_locked);
 		mTvUnlock.setOnClickListener(this);
@@ -125,14 +126,17 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			mPagerUnlock.setVisibility(View.INVISIBLE);
 			mPagerLock.setVisibility(View.VISIBLE);
 
-			mTvUnlock.setBackgroundResource(R.color.tab_unselect);
-			mTvLocked.setBackgroundResource(R.color.tab_select);
+			mTvUnlock.setTextColor(getResources().getColor(R.color.white));
+			mTvLocked.setTextColor(getResources().getColor(R.color.tab_select_text));
+			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_r);
 		} else if (v == mTvUnlock) {
 			mPagerUnlock.setVisibility(View.VISIBLE);
 			mPagerLock.setVisibility(View.INVISIBLE);
 
-			mTvUnlock.setBackgroundResource(R.color.tab_select);
-			mTvLocked.setBackgroundResource(R.color.tab_unselect);
+			mTvUnlock.setTextColor(getResources().getColor(
+					R.color.tab_select_text));
+			mTvLocked.setTextColor(getResources().getColor(R.color.white));
+			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_l);
 		}
 	}
 

@@ -25,10 +25,10 @@ import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.utils.LockPatternUtils;
 
-public class GestureSettingFragment extends BaseFragment implements OnClickListener,
-		OnPatternListener, android.content.DialogInterface.OnClickListener {
+public class GestureSettingFragment extends BaseFragment implements
+		OnClickListener, OnPatternListener,
+		android.content.DialogInterface.OnClickListener {
 
-	private TextView mTvReset;
 	private TextView mTvGestureTip;
 
 	private LockPatternView mLockPatternView;
@@ -43,9 +43,6 @@ public class GestureSettingFragment extends BaseFragment implements OnClickListe
 
 	@Override
 	protected void onInitUI() {
-		mTvReset = (TextView) findViewById(R.id.tv_reset_gesture);
-		mTvReset.setOnClickListener(this);
-
 		mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
 		mLockPatternView.setOnPatternListener(this);
 
@@ -53,13 +50,12 @@ public class GestureSettingFragment extends BaseFragment implements OnClickListe
 
 	}
 
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.tv_reset_gesture:
-			resetGesture();
-			break;
+		// case R.id.tv_reset_gesture:
+		// resetGesture();
+		// break;
 
 		default:
 			break;
@@ -69,7 +65,7 @@ public class GestureSettingFragment extends BaseFragment implements OnClickListe
 	private void resetGesture() {
 		mInputCount = 1;
 		mTempGesture1 = mTempGesture2 = "";
-		mTvGestureTip.setText(R.string.please_input_gesture);
+		mTvGestureTip.setText(R.string.gesture_hint);
 	}
 
 	@Override
@@ -118,7 +114,7 @@ public class GestureSettingFragment extends BaseFragment implements OnClickListe
 					startActivity(intent);
 				}
 			} else {
-				
+				resetGesture();
 				Toast.makeText(mActivity, R.string.tip_no_the_same_pswd, 1)
 						.show();
 				mLockPatternView.clearPattern();

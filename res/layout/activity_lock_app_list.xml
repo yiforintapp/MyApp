@@ -1,19 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/lock_list_bg" >
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:background="@color/app_background" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_title_bar"
-        android:background="@color/app_background"
         android:paddingLeft="2dp"
         android:paddingRight="2dp" >
 
@@ -24,9 +25,10 @@
             android:orientation="vertical" >
 
             <RelativeLayout
+                android:id="@+id/tab_container"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
-                android:background="#54678681" >
+                android:background="@drawable/stacked_tabs_l" >
 
                 <TextView
                     android:id="@+id/tv_app_unlock"
@@ -35,13 +37,12 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="50dp"
-                    android:background="@color/tab_select"
                     android:clickable="true"
                     android:gravity="center"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="@string/app_unlock"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textColor="@color/tab_select_text" />
 
                 <TextView
                     android:id="@+id/tv_app_locked"
@@ -50,19 +51,18 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="50dp"
-                    android:background="@color/tab_unselect"
                     android:clickable="true"
                     android:gravity="center"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="@string/app_locked"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" 
-                android:paddingTop="15dp">
+                android:layout_height="match_parent"
+                android:paddingTop="15dp" >
 
                 <com.leo.appmaster.ui.PagedGridView
                     android:id="@+id/pager_unlock"

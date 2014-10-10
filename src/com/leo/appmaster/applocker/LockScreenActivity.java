@@ -75,6 +75,12 @@ public class LockScreenActivity extends FragmentActivity {
 	public void onBackPressed() {
 		if (mFrom == LockFragment.FROM_SELF) {
 			super.onBackPressed();
+		} else {
+			Intent intent = new Intent();
+			intent.setAction(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+			this.startActivity(intent);
+			finish();
 		}
 	}
 }
