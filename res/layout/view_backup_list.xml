@@ -1,21 +1,40 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >   
-    
-    <Button
-        android:id="@+id/button_backup"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/text_backup"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:text="@string/button_backup" />
+        android:layout_height="40dp"
+        android:layout_gravity="top"
+        android:gravity="center_horizontal"
+        android:singleLine="true"
+        android:textSize="16dp" />
 
     <ListView
         android:id="@+id/list_backup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/button_backup" />
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="30dp" />
 
+    <Button
+        android:id="@+id/button_backup"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:text="@string/button_backup"
+        android:background="@drawable/selector_list_item_mid" />
+    
+    <ImageView
+        android:id="@+id/check_backup"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="6dp"
+        android:gravity="center"
+        android:src="@drawable/checkbox_normal"
+        android:scaleType="centerInside" />
 
-</RelativeLayout>
+</FrameLayout>

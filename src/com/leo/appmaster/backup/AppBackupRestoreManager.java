@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.StatFs;
 
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppDetailInfo;
@@ -29,8 +31,20 @@ public class AppBackupRestoreManager {
     private static final String BACKUP_PATH = "leo/appmaster/.backup/";
     private static final String INSTALL_PACKAGE = "com.android.packageinstaller";
     
+    private static final long sKB =  1024;
+    private static final long sMB =  sKB * sKB;
+    private static final long sGB =  sMB * sKB;
+    
+    private static final String sUnitB = "B";
+    private static final String sUnitKB = "KB";
+    private static final String sUnitMB = "MB";
+    private static final String sUnitGB = "GB";
+    
+    private static final DecimalFormat sFormat = new DecimalFormat("#.0");
+    
     public interface AppBackupDataListener {
         public void onDataReady();
+        public void onDataUpdate();
         public void onBackupProcessChanged(int doneNum, int totalNum);
         public void onBackupFinish(boolean success, int successNum, int totalNum, String message);
         public void onApkDeleted(boolean success);
@@ -42,6 +56,8 @@ public class AppBackupRestoreManager {
     
     private ArrayList<AppDetailInfo> mSavedList;
     private ArrayList<AppDetailInfo> mBackupList;
+    
+    private boolean mDataReady = false;
     
     private boolean mBackupCanceled = false;
     
@@ -104,6 +120,8 @@ public class AppBackupRestoreManager {
                 boolean success = false;
                 if(apkFile.exists()) {
                     success = apkFile.delete();
+                } else {
+                    success = true;
                 }
                 if(success) {
                     mSavedList.remove(app);
@@ -130,6 +148,75 @@ public class AppBackupRestoreManager {
         } catch (NameNotFoundException e) {
         }
         context.startActivity(intent);    
+    }
+    
+    public void checkDataUpdate() {
+        if(mDataReady) {
+            mExecutorService.execute(new Runnable() {           
+                @Override
+                public void run() {
+                    ArrayList<AppDetailInfo> deleteSavedList = new ArrayList<AppDetailInfo>();
+                    for(AppDetailInfo app : mSavedList) {
+                        File apkFile = new File(app.getSourceDir());
+                        if(!apkFile.isFile() || !apkFile.exists()) {
+                            deleteSavedList.add(app);
+                            for(AppDetailInfo a : mBackupList) {
+                                if(app.getPkg().equals(a.getPkg())) {
+                                    a.isBackuped = false;
+                                }
+                            }
+                        }
+                    }
+                    if(deleteSavedList.size() > 0) {
+                        mSavedList.removeAll(deleteSavedList);
+                        mBackupListener.onDataUpdate();
+                    }
+                }
+            });
+        }
+    }
+    
+
+    public String getBackupTips(Context context) {
+        int installedSize = mBackupList.size();
+        String avaiableSize = getAvaiableSize();
+        String tips = "Installed: " + installedSize + "    Avaiable storage: " + avaiableSize;
+        return tips;
+    }
+    
+    public String getApkSize(AppDetailInfo app) {
+        File file = new File(app.getSourceDir());
+        if(file.isFile() && file.exists()) {
+            long size = file.length();
+            return convertToSizeString(size);
+        }
+        return "0";
+    }
+    
+    private String getAvaiableSize() {
+        if(isSDReady()) {
+            File path = Environment.getExternalStorageDirectory();
+            StatFs stat = new StatFs(path.getPath());
+            long blockSize = stat.getBlockSize();
+            long availableBlocks = stat.getAvailableBlocks();
+            long avaiableSize =  availableBlocks * blockSize;
+            return convertToSizeString(avaiableSize);
+        }
+        return "Not avaiable";
+    }
+    
+    private String convertToSizeString(long size) {
+        String sSize = null;
+        if(size > sGB) {
+            sSize = sFormat.format((float)size / sGB ) + sUnitGB;
+        } else if(size > sMB) {
+            sSize = sFormat.format((float)size / sMB ) + sUnitMB;
+        } else if(size > sKB) {
+            sSize = sFormat.format((float)size / sKB ) + sUnitKB;
+        } else {
+            sSize = size + sUnitB;
+        }
+        return sSize;
     }
 
     private boolean tryBackupApp(AppDetailInfo app) {
@@ -205,13 +292,16 @@ public class AppBackupRestoreManager {
             getRestoreList();
             ArrayList<AppDetailInfo> allApps = AppLoadEngine.getInstance(null).getAllPkgInfo();
             for(AppDetailInfo app : allApps) {
+                if(app.isSystemApp()) {
+                    continue;
+                }
                 String pName = app.getPkg();
                 int versionCode = app.getVersionCode();
                 for(AppDetailInfo a : mSavedList) { // check if already backuped
                     if(pName.equals(a.getPkg()) && versionCode == a.getVersionCode()) {
                         app.isBackuped = true;
                         break;
-                    }
+                    }                
                 }
                 mBackupList.add(app);
             }
@@ -230,6 +320,7 @@ public class AppBackupRestoreManager {
                 return 0;
             }            
         });
+        mDataReady = true;
         return mBackupList;
     }
 

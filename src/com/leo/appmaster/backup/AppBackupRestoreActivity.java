@@ -16,7 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
@@ -35,6 +38,8 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     private ViewPager mPager;
     private ListView mBackupList;
     private ListView mRestoreList;
+    private TextView mBackupText;
+    private ImageView mCheckAll;
     private AppBackupAdapter mBackupAdapter;
     private AppRestoreAdapter mRestoreAdapter;
     
@@ -67,6 +72,12 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         }
     }
     
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mBackupManager.checkDataUpdate();
+    }
+    
     private void initUI() {
         CommonTitleBar title = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         title.setTitle(R.string.app_backup);
@@ -74,7 +85,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         
         mViewBackup = findViewById(R.id.app_backup);
         mViewBackup.setOnClickListener(this);
-        
+                
         mViewRestore = findViewById(R.id.app_restore);
         mViewRestore.setOnClickListener(this);
         
@@ -84,6 +95,10 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
 
         LayoutInflater inflater = LayoutInflater.from(this);
         final View backupList = inflater.inflate(R.layout.view_backup_list, null);
+        mBackupText = (TextView) backupList.findViewById(R.id.text_backup);
+        mCheckAll = (ImageView) backupList.findViewById(R.id.check_backup);
+        mCheckAll.setTag(false);
+        mCheckAll.setOnClickListener(this);
         mButtonBackup = backupList.findViewById(R.id.button_backup);
         mButtonBackup.setOnClickListener(this);
         mBackupList = (ListView)backupList.findViewById(R.id.list_backup);
@@ -160,8 +175,21 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
             mPager.setCurrentItem(1, true);
         } else if(v == mButtonBackup) {
             ArrayList<AppDetailInfo> items = mBackupAdapter.getSelectedItems();
-            showProgressDialog("Backuping...", items.size(), false, true);
-            mBackupManager.backupApps(items);
+            int size =  items.size();
+            if(size > 0) {
+                showProgressDialog("Backuping...", size, false, true);
+                mBackupManager.backupApps(items);
+            } else {
+                //TODO
+            }
+        } else if(v == mCheckAll) {
+            Object tag = mCheckAll.getTag();
+            if(tag instanceof Boolean) {
+                boolean checkAll = !(Boolean) tag;
+                mBackupAdapter.checkAll(checkAll);
+                mCheckAll.setImageResource(checkAll ? R.drawable.checkbox_checked  : R.drawable.checkbox_normal);
+                mCheckAll.setTag(checkAll);
+            }
         }
     }
 
@@ -170,7 +198,11 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         if(view instanceof AppBackupItemView) {
             AppBackupItemView item = (AppBackupItemView) view;
             AppDetailInfo app = (AppDetailInfo) item.getTag();
-            app.isChecked = !app.isChecked;
+            if(app.isBackuped) {
+                app.isChecked = false;
+            } else {
+                app.isChecked = !app.isChecked;
+            }
             item.setState(app.isBackuped ? AppBackupItemView.STATE_BACKUPED : app.isChecked ? AppBackupItemView.STATE_SELECTED : AppBackupItemView.STATE_UNSELECTED);
         }
     }
@@ -186,8 +218,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         mHandler.post(new Runnable() {       
             @Override
             public void run() {
-               mBackupAdapter.updateData();
-               mRestoreAdapter.updateData();
+                updateDataList();
             }
         });
     }
@@ -209,8 +240,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         mHandler.post(new Runnable() {       
             @Override
             public void run() {
-               mBackupAdapter.updateData();
-               mRestoreAdapter.updateData();
+                updateDataList();
                if(mProgressDialog != null ) {
                    mProgressDialog.dismiss();
                }
@@ -224,8 +254,9 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
             @Override
             public void run() {
                 if(success) {
-                    mRestoreAdapter.updateData();
-                    mBackupAdapter.updateData();
+                    updateDataList();
+                } else {
+                    Toast.makeText(AppBackupRestoreActivity.this, "Delete fail!", Toast.LENGTH_LONG).show();
                 }
                 if(mProgressDialog != null) {
                     mProgressDialog.dismiss();
@@ -234,6 +265,24 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         });
     }
     
+
+    @Override
+    public void onDataUpdate() {
+        mHandler.post(new Runnable() {       
+            @Override
+            public void run() {
+                updateDataList();
+            }
+        });
+    }
+    
+    private void updateDataList() {
+        mRestoreAdapter.updateData();
+        mBackupAdapter.updateData();
+        mBackupText.setText(mBackupManager.getBackupTips(this));
+        mCheckAll.setImageResource(R.drawable.checkbox_normal);
+        mCheckAll.setTag(false);
+    }
 
     
     private void showProgressDialog(String message, int max, boolean indeterminate, boolean cancelable) {

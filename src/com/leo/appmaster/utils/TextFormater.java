@@ -6,10 +6,9 @@ import android.util.Log;
 
 public class TextFormater {
 	
-	//已KB为单位
+	//已B为单位
 	public static String dataSizeFormat(long size) {
 		DecimalFormat formater = new DecimalFormat("####.00");
-		size = size <<10;
 		if (size < 1024) {
 			return size + "byte";
 		} else if (size < (1 << 20)) // 左移20位，相当于1024 * 1024
