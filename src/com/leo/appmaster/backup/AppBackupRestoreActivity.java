@@ -155,11 +155,11 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     
     private void onPageChange(int page) {
         if (page == 0) {
-            mBackupList.setBackgroundResource(R.color.tab_select);
-            mRestoreList.setBackgroundResource(R.color.tab_unselect);
+            mBackupList.setBackgroundResource(R.color.tab_select_text);
+            mRestoreList.setBackgroundResource(R.color.white);
         } else {
-            mBackupList.setBackgroundResource(R.color.tab_unselect);
-            mRestoreList.setBackgroundResource(R.color.tab_select);
+            mBackupList.setBackgroundResource(R.color.white);
+            mRestoreList.setBackgroundResource(R.color.tab_select_text);
         }
     }
     

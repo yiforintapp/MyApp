@@ -52,15 +52,15 @@ public class LockSettingActivity extends FragmentActivity implements
 	}
 
 	private void initUI() {
-		CommonTitleBar mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+		mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTitleBar.openBackView();
 		mTitleBar.setOptionListener(this);
 
 		mTvSwitch = (TextView) findViewById(R.id.tv_option);
 		mTitleBar.setOptionListener(this);
 		mTitleBar.setOptionVisibility(View.VISIBLE);
-		mTitleBar.setOptionBackground(R.drawable.ic_launcher);
-
+		mTitleBar.setOptionText("");
+		mTitleBar.setOptionBackground(R.drawable.switch_passwd);
 	}
 
 	@Override
@@ -80,9 +80,11 @@ public class LockSettingActivity extends FragmentActivity implements
 		if (mLockType == LOCK_TYPE_PASSWD) {
 			tans.replace(R.id.fragment_contain, mGesture);
 			mLockType = LOCK_TYPE_GESTURE;
+			mTitleBar.setOptionBackground(R.drawable.switch_gesture);
 		} else {
 			tans.replace(R.id.fragment_contain, mPasswd);
 			mLockType = LOCK_TYPE_PASSWD;
+			mTitleBar.setOptionBackground(R.drawable.switch_passwd);
 		}
 		tans.commit();
 	}

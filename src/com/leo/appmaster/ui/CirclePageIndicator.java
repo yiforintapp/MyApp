@@ -229,7 +229,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
             shortPaddingBefore = getPaddingLeft();
         }
 
-        final float threeRadius = mRadius * 3;
+        final float threeRadius = mRadius * 5;
         final float shortOffset = shortPaddingBefore + mRadius;
         float longOffset = longPaddingBefore + mRadius;
         if (mCentered) {
@@ -261,7 +261,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
 
             // Only paint stroke if a stroke width was non-zero
             if (pageFillRadius != mRadius) {
-                canvas.drawCircle(dX, dY, mRadius, mPaintStroke);
+                canvas.drawCircle(dX, dY, mRadius + 4, mPaintStroke);
             }
         }
 

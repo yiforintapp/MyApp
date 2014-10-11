@@ -11,6 +11,8 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,11 +32,11 @@ import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 public class DragGridView extends GridView {
-	
+
 	public interface AnimEndListener {
 		public void onAnimEnd();
 	}
-	
+
 	private long dragResponseMS = 1000;
 	private boolean isDrag = false;
 
@@ -73,11 +75,11 @@ public class DragGridView extends GridView {
 	private boolean mNumColumnsSet;
 	private int mHorizontalSpacing;
 	private int mVerticalSpacing;
-	
+
 	private AnimEndListener mAnimEndListener;
-	
+
 	public void setOnAnimEndListener(AnimEndListener listener) {
-		mAnimEndListener =  listener;
+		mAnimEndListener = listener;
 	}
 
 	public DragGridView(Context context) {
@@ -99,15 +101,8 @@ public class DragGridView extends GridView {
 		if (!mNumColumnsSet) {
 			mNumColumns = AUTO_FIT;
 		}
-
 	}
 
-	/**
-	 * ɾ��item�Ķ���Ч��
-	 * 
-	 * @param position
-	 * @param mLastSelectApp 
-	 */
 	public void removeItemAnimation(final int position, BaseInfo removeApp) {
 		mDragAdapter.removeItem(removeApp);
 		final ViewTreeObserver observer = getViewTreeObserver();
@@ -124,7 +119,6 @@ public class DragGridView extends GridView {
 
 	private Handler mHandler = new Handler();
 
-	// ���������Ƿ�Ϊ������Runnable
 	private Runnable mLongClickRunnable = new Runnable() {
 
 		@Override
@@ -133,7 +127,6 @@ public class DragGridView extends GridView {
 			mVibrator.vibrate(50); // ��һ��
 			mStartDragItemView.setVisibility(View.INVISIBLE);// ���ظ�item
 
-			// �������ǰ��µĵ���ʾitem����
 			createDragImage(mDragBitmap, mDownX, mDownY);
 		}
 	};
@@ -160,36 +153,24 @@ public class DragGridView extends GridView {
 		this.mNumColumns = numColumns;
 	}
 
-	/**
-	 * ��ȡ���õ��п�
-	 */
 	@Override
 	public void setColumnWidth(int columnWidth) {
 		super.setColumnWidth(columnWidth);
 		mColumnWidth = columnWidth;
 	}
 
-	/**
-	 * ��ȡˮƽ����ļ�϶
-	 */
 	@Override
 	public void setHorizontalSpacing(int horizontalSpacing) {
 		super.setHorizontalSpacing(horizontalSpacing);
 		this.mHorizontalSpacing = horizontalSpacing;
 	}
 
-	/**
-	 * ��ȡ��ֱ����ļ�϶
-	 */
 	@Override
 	public void setVerticalSpacing(int verticalSpacing) {
 		super.setVerticalSpacing(verticalSpacing);
 		this.mVerticalSpacing = verticalSpacing;
 	}
 
-	/**
-	 * ����������ΪAUTO_FIT�������������������������
-	 */
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		if (mNumColumns == AUTO_FIT) {
@@ -219,11 +200,6 @@ public class DragGridView extends GridView {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
-	/**
-	 * ������Ӧ��ק�ĺ�������Ĭ����1000����
-	 * 
-	 * @param dragResponseMS
-	 */
 	public void setDragResponseMS(long dragResponseMS) {
 		this.dragResponseMS = dragResponseMS;
 	}
@@ -284,6 +260,7 @@ public class DragGridView extends GridView {
 		// mHandler.removeCallbacks(mScrollRunnable);
 		// break;
 		// }
+
 		return super.dispatchTouchEvent(ev);
 	}
 
@@ -508,7 +485,7 @@ public class DragGridView extends GridView {
 			@Override
 			public void onAnimationEnd(Animator animation) {
 				mAnimationEnd = true;
-				if(mAnimEndListener != null) {
+				if (mAnimEndListener != null) {
 					mAnimEndListener.onAnimEnd();
 				}
 			}
@@ -556,4 +533,17 @@ public class DragGridView extends GridView {
 		return statusHeight;
 	}
 
+	class YScrollDetector extends SimpleOnGestureListener {
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2,
+				float distanceX, float distanceY) {
+			if (distanceY != 0 && distanceX != 0) {
+
+			}
+			if (Math.abs(distanceY) >= Math.abs(distanceX)) {
+				return true;
+			}
+			return false;
+		}
+	}
 }

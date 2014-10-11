@@ -17,13 +17,13 @@ import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.service.LockService;
 
-public class PasswdSettingFragment extends BaseFragment implements OnClickListener,
-		android.content.DialogInterface.OnClickListener {
-	
-	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv0,
-			tv_delete, tv_makesure;
+public class PasswdSettingFragment extends BaseFragment implements
+		OnClickListener, android.content.DialogInterface.OnClickListener {
+
+	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv0;
+
+	private ImageView iv_delete, iv_makesure;
 	private TextView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
-	private TextView mTvReset;
 	private TextView mInputTip;
 
 	private int mInputCount = 1;
@@ -47,8 +47,8 @@ public class PasswdSettingFragment extends BaseFragment implements OnClickListen
 		tv8 = (TextView) findViewById(R.id.tv_8);
 		tv9 = (TextView) findViewById(R.id.tv_9);
 		tv0 = (TextView) findViewById(R.id.tv_0);
-		tv_delete = (TextView) findViewById(R.id.tv_delete);
-		tv_makesure = (TextView) findViewById(R.id.tv_ok);
+		iv_delete = (ImageView) findViewById(R.id.tv_delete);
+		iv_makesure = (ImageView) findViewById(R.id.tv_ok);
 
 		tv1.setOnClickListener(this);
 		tv2.setOnClickListener(this);
@@ -60,23 +60,19 @@ public class PasswdSettingFragment extends BaseFragment implements OnClickListen
 		tv8.setOnClickListener(this);
 		tv9.setOnClickListener(this);
 		tv0.setOnClickListener(this);
-		tv_delete.setOnClickListener(this);
-		tv_makesure.setOnClickListener(this);
-		tv_makesure.setEnabled(false);
-		tv_delete.setEnabled(false);
+		iv_delete.setOnClickListener(this);
+		iv_makesure.setOnClickListener(this);
+		iv_makesure.setEnabled(false);
+		iv_delete.setEnabled(false);
 
 		mTvPasswd1 = (TextView) findViewById(R.id.tv_passwd_1);
 		mTvPasswd2 = (TextView) findViewById(R.id.tv_passwd_2);
 		mTvPasswd3 = (TextView) findViewById(R.id.tv_passwd_3);
 		mTvPasswd4 = (TextView) findViewById(R.id.tv_passwd_4);
 
-		mTvReset = (TextView) findViewById(R.id.tv_reset_passwd);
-		mTvReset.setOnClickListener(this);
-
 		mInputTip = (TextView) findViewById(R.id.tv_passwd_tip);
-		
+
 	}
-	
 
 	@Override
 	public void onClick(View v) {
@@ -118,10 +114,6 @@ public class PasswdSettingFragment extends BaseFragment implements OnClickListen
 			makesurePasswd();
 			break;
 
-		case R.id.tv_reset_passwd:
-			resetPasswd();
-			break;
-
 		default:
 			break;
 		}
@@ -130,8 +122,8 @@ public class PasswdSettingFragment extends BaseFragment implements OnClickListen
 	private void resetPasswd() {
 		clearPasswd();
 		mInputCount = 1;
-		tv_delete.setEnabled(false);
-		tv_makesure.setEnabled(false);
+		iv_delete.setEnabled(false);
+		iv_makesure.setEnabled(false);
 		mInputTip.setText(R.string.passwd_hint);
 		mTempFirstPasswd = mTempSecondPasswd = "";
 
@@ -146,8 +138,8 @@ public class PasswdSettingFragment extends BaseFragment implements OnClickListen
 			mInputCount++;
 			clearPasswd();
 			mInputTip.setText(R.string.please_input_pswd_again);
-			tv_makesure.setEnabled(false);
-			tv_delete.setEnabled(false);
+			iv_makesure.setEnabled(false);
+			iv_delete.setEnabled(false);
 		} else if (mInputCount == 2) {
 			mTempSecondPasswd = mTvPasswd1.getText().toString()
 					+ mTvPasswd2.getText().toString()
@@ -173,7 +165,8 @@ public class PasswdSettingFragment extends BaseFragment implements OnClickListen
 				}
 			} else {
 				// todo re-input
-				Toast.makeText(mActivity, R.string.tip_no_the_same_pswd, 1).show();
+				Toast.makeText(mActivity, R.string.tip_no_the_same_pswd, 1)
+						.show();
 				clearPasswd();
 				mInputTip.setText(R.string.please_input_pswd_again);
 			}
@@ -200,14 +193,14 @@ public class PasswdSettingFragment extends BaseFragment implements OnClickListen
 	private void deletePasswd() {
 		if (!mTvPasswd4.getText().equals("")) {
 			mTvPasswd4.setText("");
-			tv_makesure.setEnabled(false);
+			iv_makesure.setEnabled(false);
 		} else if (!mTvPasswd3.getText().equals("")) {
 			mTvPasswd3.setText("");
 		} else if (!mTvPasswd2.getText().equals("")) {
 			mTvPasswd2.setText("");
 		} else if (!mTvPasswd1.getText().equals("")) {
 			mTvPasswd1.setText("");
-			tv_delete.setEnabled(false);
+			iv_delete.setEnabled(false);
 		}
 
 	}
@@ -215,14 +208,14 @@ public class PasswdSettingFragment extends BaseFragment implements OnClickListen
 	private void inputPasswd(String s) {
 		if (mTvPasswd1.getText().equals("")) {
 			mTvPasswd1.setText(s);
-			tv_delete.setEnabled(true);
+			iv_delete.setEnabled(true);
 		} else if (mTvPasswd2.getText().equals("")) {
 			mTvPasswd2.setText(s);
 		} else if (mTvPasswd3.getText().equals("")) {
 			mTvPasswd3.setText(s);
 		} else if (mTvPasswd4.getText().equals("")) {
 			mTvPasswd4.setText(s);
-			tv_makesure.setEnabled(true);
+			iv_makesure.setEnabled(true);
 		}
 
 	}
@@ -238,6 +231,6 @@ public class PasswdSettingFragment extends BaseFragment implements OnClickListen
 			this.startActivity(intent);
 		}
 		mActivity.finish();
-		
+
 	}
 }

@@ -1,29 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"  >
-
-
-    <TextView
-        android:id="@+id/tv_gesture_tip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        android:enabled="false"
-        android:gravity="center"
-        android:text="@string/gesture_hint"
-        android:textColor="#aa0000"
-        android:textSize="16sp" />
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/tv_reset_gesture"
+        android:layout_above="@+id/tv_gesture_tip"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tv_gesture_tip"
-        android:layout_margin="2dp"
+        android:layout_marginTop="80dp"
         android:orientation="vertical" >
 
         <com.leo.appmaster.applocker.gesture.LockPatternView
@@ -31,20 +16,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5.0dip" />
+            android:layout_margin="5dip" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_reset_gesture"
-        android:layout_width="120dp"
-        android:layout_height="40dp"
+        android:id="@+id/tv_gesture_tip"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="10dp"
-        android:background="#98734232"
+        android:enabled="false"
         android:gravity="center"
-        android:text="@string/reset_gesture"
+        android:text="@string/gesture_hint"
+        android:textColor="#aaffffff"
         android:textSize="16sp" />
 
 </RelativeLayout>
