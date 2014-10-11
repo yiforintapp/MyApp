@@ -104,14 +104,15 @@ public class DragGridView extends GridView {
 	}
 
 	public void removeItemAnimation(final int position, BaseInfo removeApp) {
-		mDragAdapter.removeItem(removeApp);
+		mDragAdapter.removeItem(position);
 		final ViewTreeObserver observer = getViewTreeObserver();
 		observer.addOnPreDrawListener(new OnPreDrawListener() {
 
 			@Override
 			public boolean onPreDraw() {
 				observer.removeOnPreDrawListener(this);
-				animateReorder(position, getLastVisiblePosition() + 1);
+				 animateReorder(position, getLastVisiblePosition() + 1);
+//				animateReorder2(position);
 				return true;
 			}
 		});
@@ -464,9 +465,51 @@ public class DragGridView extends GridView {
 		}
 
 		AnimatorSet resultSet = new AnimatorSet();
-//		resultSet.playTogether(resultList);
-		resultSet.playSequentially(resultList);
+		 resultSet.playTogether(resultList);
+//		resultSet.playSequentially(resultList);
 		resultSet.setDuration(1000);
+		resultSet.setInterpolator(new AccelerateDecelerateInterpolator());
+		resultSet.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				mAnimationEnd = false;
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				mAnimationEnd = true;
+				if (mAnimEndListener != null) {
+					mAnimEndListener.onAnimEnd();
+				}
+			}
+		});
+		resultSet.start();
+	}
+
+	private void animateReorder2(final int oldPosition) {
+		List<Animator> resultList = new LinkedList<Animator>();
+		int lastPosition = getLastVisiblePosition();
+
+		for (int pos = oldPosition + 1; pos < lastPosition + 1; pos++) {
+			View view = getChildAt(pos);
+			int temp = (pos) % mNumColumns;
+			if (temp == 0) {
+				resultList.add(createTranslationAnimations(view, 0,
+						(view.getWidth() + mHorizontalSpacing)
+								* (mNumColumns - 1),  0, -(view.getHeight()
+										+ mVerticalSpacing)));
+			} else {
+				resultList.add(createTranslationAnimations(view, 0,
+						-(view.getWidth() + mHorizontalSpacing), 0, 0));
+			}
+		}
+
+		AnimatorSet all = new AnimatorSet();
+		
+		AnimatorSet resultSet = new AnimatorSet();
+		// resultSet.playTogether(resultList);
+		resultSet.playSequentially(resultList);
+		resultSet.setDuration(300);
 		resultSet.setInterpolator(new AccelerateDecelerateInterpolator());
 		resultSet.addListener(new AnimatorListenerAdapter() {
 			@Override

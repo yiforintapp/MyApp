@@ -42,6 +42,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private CommonTitleBar mTtileBar;
 	private ImageButton mRocket;
 	private ImageView mIvLoad;
+	private View mRocketHolder;
 	private RocketDock mRocketDock;
 
 	private TextView mTvMemory;
@@ -63,7 +64,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	private float mTouchDownX, mTouchDownY;
 
-	private final float mThreshold = 220;
+	private float mThreshold = 0;
 	private Animation mShakeAnim;
 
 	@Override
@@ -83,6 +84,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mTtileBar.openBackView();
 		mRocket = (ImageButton) findViewById(R.id.rocket_icon);
 		mRocket.setOnTouchListener(this);
+		mRocketHolder = findViewById(R.id.layout_rocket_holder);
 		mRocketDock = (RocketDock) findViewById(R.id.rocket_dock);
 		mTvMemory = (TextView) findViewById(R.id.tv_memory);
 
@@ -91,16 +93,35 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mTotalMem = ProcessUtils.getTotalMem();
 		mLastUsedMem = mTotalMem - ProcessUtils.getAvailableMem(this);
 
-		mTvMemory.setText(TextFormater.dataSizeFormat(mLastUsedMem) + "/"
-				+ TextFormater.dataSizeFormat(mTotalMem));
+		// mTvMemory.setText(TextFormater.dataSizeFormat(mLastUsedMem) + "/"
+		// + TextFormater.dataSizeFormat(mTotalMem));
 
 		startLoad();
 	}
 
 	private void startLoad() {
-		Animation ra = AnimationUtils.loadAnimation(
-				this, R.anim.rotation);
+		rotateLoadView(3000, 360 * 5);
 
+		final ValueAnimator up = ValueAnimator.ofInt(0, (int) mLastUsedMem);
+		up.setDuration(3000);
+		up.addUpdateListener(new AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator va) {
+				mLastUsedMem = (Integer) va.getAnimatedValue();
+				updateMem();
+			}
+		});
+		up.start();
+
+	}
+
+	private void rotateLoadView(int duration, int degrees) {
+		Animation ra = new RotateAnimation(0, degrees,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+		ra.setDuration(duration);
+		ra.setFillEnabled(true);
+		ra.setFillAfter(true);
 		mIvLoad.startAnimation(ra);
 	}
 
@@ -183,6 +204,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		Animation ta = createRocketFly();
 		mRocket.setImageResource(R.drawable.rocket_fly);
 		mRocket.startAnimation(ta);
+		rotateLoadView(1200, 360 * 2);
 	}
 
 	private Animation createRocketFly() {
@@ -211,6 +233,13 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		int action = event.getAction();
+
+		if (mThreshold == 0) {
+			mThreshold = Math.min(mRocketHolder.getWidth(),
+					mRocketHolder.getHeight()) / 2;
+			Log.e("xxxx", "mThreshold = " + mThreshold);
+		}
+
 		if (action == MotionEvent.ACTION_DOWN) {
 			mTouchDownX = event.getX();
 			mTouchDownY = event.getY();
@@ -290,13 +319,13 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private void startUpdataMemTip(long targetMem) {
 		if (!mUpdating) {
 			mUpdating = true;
-			ValueAnimator update = ValueAnimator.ofInt((int) mLastUsedMem, 0);
-			update.setDuration(500);
-
-			final ValueAnimator down = ValueAnimator.ofInt(0, (int) targetMem);
+			ValueAnimator down = ValueAnimator.ofInt((int) mLastUsedMem, 0);
 			down.setDuration(500);
 
-			update.addUpdateListener(new AnimatorUpdateListener() {
+			final ValueAnimator up = ValueAnimator.ofInt(0, (int) targetMem);
+			up.setDuration(500);
+
+			down.addUpdateListener(new AnimatorUpdateListener() {
 				@Override
 				public void onAnimationUpdate(ValueAnimator va) {
 					mLastUsedMem = (Integer) va.getAnimatedValue();
@@ -304,7 +333,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 				}
 			});
 
-			update.addListener(new AnimatorListener() {
+			down.addListener(new AnimatorListener() {
 				@Override
 				public void onAnimationStart(Animator arg0) {
 				}
@@ -319,18 +348,18 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 				@Override
 				public void onAnimationEnd(Animator arg0) {
-					down.start();
+					up.start();
 				}
 			});
 
-			down.addUpdateListener(new AnimatorUpdateListener() {
+			up.addUpdateListener(new AnimatorUpdateListener() {
 				@Override
 				public void onAnimationUpdate(ValueAnimator va) {
 					mLastUsedMem = (Integer) va.getAnimatedValue();
 					updateMem();
 				}
 			});
-			down.addListener(new AnimatorListener() {
+			up.addListener(new AnimatorListener() {
 				@Override
 				public void onAnimationStart(Animator arg0) {
 				}
@@ -353,7 +382,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 				}
 			});
 
-			update.start();
+			down.start();
 		}
 	}
 

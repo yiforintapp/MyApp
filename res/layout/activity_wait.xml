@@ -2,27 +2,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#23948379" >
+    android:background="@color/app_background" >
+
+    <TextView
+        android:id="@+id/tv_wait_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/white"
+        android:text="00:10"
+        android:gravity="center"
+        android:textSize="40sp" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="145dp"
         android:text="@string/please_wait"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textColor="@color/white" />
 
-    <TextView
-        android:id="@+id/tv_wait_time"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_above="@+id/textView1"
+    <com.leo.appmaster.ui.TimeView
+        android:id="@+id/time_view"
+        android:layout_width="124dp"
+        android:layout_height="124dp"
+        android:background="@drawable/time_bg"
+        android:layout_above="@+id/tv_wait_time"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
-        android:textColor="#458433"
-        android:text="00:10"
-        android:gravity="center"
-        android:textSize="30sp" />
+        android:layout_marginBottom="40dp" />
 
 </RelativeLayout>
