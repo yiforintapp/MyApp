@@ -26,6 +26,7 @@ import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 
@@ -47,6 +48,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     
     private LEOProgressDialog mProgressDialog;
     private LEOAlarmDialog mAlarmDialog;
+    private LEOMessageDialog mMessageDialog;
     
     private AppDetailInfo mPendingDelApp;
     
@@ -62,6 +64,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mBackupManager.onDestory();
         if(mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
@@ -69,6 +72,10 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         if(mAlarmDialog != null) {
             mAlarmDialog.dismiss();
             mAlarmDialog = null;
+        }
+        if(mMessageDialog != null) {
+            mMessageDialog.dismiss();
+            mMessageDialog = null;
         }
     }
     
@@ -236,10 +243,15 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     }
 
     @Override
-    public void onBackupFinish(final boolean success, final int successNum, final int totalNum, String message) {
+    public void onBackupFinish(final boolean success, final int successNum, final int totalNum, final String message) {
         mHandler.post(new Runnable() {       
             @Override
             public void run() {
+                if(success) {
+                    showMessageDialog("Backup Finished",  totalNum  + " application backuped");
+                } else {
+                    Toast.makeText(AppBackupRestoreActivity.this, message, Toast.LENGTH_LONG).show();
+                }
                 updateDataList();
                if(mProgressDialog != null ) {
                    mProgressDialog.dismiss();
@@ -322,6 +334,15 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         mAlarmDialog.setTitle(title);
         mAlarmDialog.setContent(content);
         mAlarmDialog.show();
+    }
+    
+    private void showMessageDialog(String title, String message) {
+        if(mMessageDialog == null) {
+            mMessageDialog = new LEOMessageDialog(this);
+        }
+        mMessageDialog.setTitle(title);
+        mMessageDialog.setContent(message);
+        mMessageDialog.show();
     }
 
 

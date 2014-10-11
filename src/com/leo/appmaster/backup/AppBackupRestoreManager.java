@@ -24,9 +24,10 @@ import android.os.Environment;
 import android.os.StatFs;
 
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppDetailInfo;
 
-public class AppBackupRestoreManager {
+public class AppBackupRestoreManager implements AppChangeListener{
 
     private static final String BACKUP_PATH = "leo/appmaster/.backup/";
     private static final String INSTALL_PACKAGE = "com.android.packageinstaller";
@@ -68,6 +69,7 @@ public class AppBackupRestoreManager {
         mBackupListener = listener;
         mSavedList = new ArrayList<AppDetailInfo>();
         mBackupList = new ArrayList<AppDetailInfo>();
+        AppLoadEngine.getInstance(context).registerAppChangeListener(this);
     }
     
     public void prepareDate() {
@@ -377,4 +379,21 @@ public class AppBackupRestoreManager {
         return null;
     }
 
+    public void onDestory() {
+        mBackupListener = null;
+        mSavedList.clear();
+        mBackupList.clear();
+        AppLoadEngine.getInstance(null).unregisterAppChangeListener(this);
+    }
+
+    @Override
+    public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
+        if(type == AppChangeListener.TYPE_ADD) {
+            mBackupList.addAll(changes);
+        } else if(type == AppChangeListener.TYPE_REMOVE) {
+            mBackupList.removeAll(changes);
+        }
+        mBackupListener.onDataUpdate();
+    }
+    
 }

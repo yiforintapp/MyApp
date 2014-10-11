@@ -158,7 +158,8 @@ public class AppLoadEngine extends BroadcastReceiver {
                 for (ResolveInfo resolveInfo : apps) {
                     ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
                     String packageName = applicationInfo.packageName;
-                    AppDetailInfo appInfo = loadAppInfoOfPackage(packageName, applicationInfo);
+                    AppDetailInfo appInfo = new AppDetailInfo();
+                    loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
                     mAppDetails.put(packageName, appInfo);
                 }
                 mAppsLoaded = true;
@@ -166,8 +167,7 @@ public class AppLoadEngine extends BroadcastReceiver {
         }
     }
 
-    private AppDetailInfo loadAppInfoOfPackage(String packageName, ApplicationInfo applicationInfo) {
-        AppDetailInfo appInfo = new AppDetailInfo();
+    private void loadAppInfoOfPackage(String packageName, ApplicationInfo applicationInfo, AppDetailInfo appInfo) {
         // first fill base info
         try {
             PackageInfo pInfo = mPm.getPackageInfo(packageName, 0);
@@ -182,7 +182,6 @@ public class AppLoadEngine extends BroadcastReceiver {
         appInfo.setInSdcard(AppUtil.isInstalledInSDcard(applicationInfo));
         appInfo.setUid(applicationInfo.uid);
         appInfo.setSourceDir(applicationInfo.sourceDir);
-        return appInfo;
     }
 
     private void loadPowerComsuInfo() {
@@ -322,7 +321,8 @@ public class AppLoadEngine extends BroadcastReceiver {
                         List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent, 0);
                         if(apps.size() > 0) {
                             ApplicationInfo applicationInfo = apps.get(0).activityInfo.applicationInfo;
-                            AppDetailInfo appInfo =  loadAppInfoOfPackage(packages[i], applicationInfo);
+                            AppDetailInfo appInfo =  new AppDetailInfo();
+                            loadAppInfoOfPackage(packages[i], applicationInfo, appInfo);
                             mAppDetails.put(packages[i], appInfo);
                            changedFinal.add(appInfo);
                         }
@@ -330,15 +330,17 @@ public class AppLoadEngine extends BroadcastReceiver {
                     break;
                 case AppChangeListener.TYPE_UPDATE:
                     for (int i = 0; i < N; i++) {
-                        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-                        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-                        mainIntent.setPackage(packages[i]);
-                        List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent, 0);
-                        if(apps.size() > 0) {
-                            ApplicationInfo applicationInfo = apps.get(0).activityInfo.applicationInfo;
-                            AppDetailInfo appInfo =  loadAppInfoOfPackage(packages[i], applicationInfo);
-                            mAppDetails.put(packages[i], appInfo);
-                            changedFinal.add(appInfo);
+                        AppDetailInfo appInfo = mAppDetails.get(packages[i]);
+                        if(appInfo != null) {
+                            Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+                            mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+                            mainIntent.setPackage(packages[i]);
+                            List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent, 0);
+                            if(apps.size() > 0) {
+                                ApplicationInfo applicationInfo = apps.get(0).activityInfo.applicationInfo;
+                                loadAppInfoOfPackage(packages[i], applicationInfo, appInfo);
+                                changedFinal.add(appInfo);
+                            }
                         }
                     }
                     break;
