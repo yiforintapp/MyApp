@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-
+    
+    
+    
+<!-- 
     <com.leo.appmaster.appmanage.GestureLayout
         android:id="@+id/gesture_layout"
         android:layout_width="match_parent"
@@ -105,6 +108,6 @@
             android:id="@+id/battery_charts"
             android:layout_width="match_parent"
             android:layout_height="200dp" />
-    </RelativeLayout>
+    </RelativeLayout> -->
 
 </LinearLayout>

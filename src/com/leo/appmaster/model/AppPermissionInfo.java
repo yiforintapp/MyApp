@@ -4,7 +4,8 @@ import android.content.pm.PermissionInfo;
 
 public class AppPermissionInfo {
 	private PermissionInfo[] mPermissions;
-
+	private String sharedPkgList[];
+	
 	public PermissionInfo[] getPermissions() {
 		return mPermissions;
 	}
@@ -13,4 +14,12 @@ public class AppPermissionInfo {
 		this.mPermissions = mPermissions;
 	}
 
+    public String[] getPermissionList() {
+        return sharedPkgList;
+    }
+	
+	public void setPermissionList(String [] list) {
+	    sharedPkgList = list;
+	}
+	
 }

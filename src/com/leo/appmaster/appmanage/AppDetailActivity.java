@@ -1,6 +1,6 @@
 package com.leo.appmaster.appmanage;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,26 +9,27 @@ import com.leo.appmaster.appmanage.GestureLayout.IGestureListener;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppDetailInfo;
-import com.leo.appmaster.ui.BatteryChartsView;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CustomViewPager;
+import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.TextFormater;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.PermissionInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -36,7 +37,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
 public class AppDetailActivity extends Activity implements
 		OnPageChangeListener, OnClickListener, IGestureListener{
@@ -49,7 +52,7 @@ public class AppDetailActivity extends Activity implements
     private ImageView mIvIcon;
 	
     private RelativeLayout mBatteryInfoLayout;
-    private BatteryChartsView mBatteryCharts;
+//    private BatteryChartsView mBatteryCharts;
 	
     private LinearLayout mTitle;
     private LinearLayout mAppBaseInfoLayout;
@@ -58,20 +61,20 @@ public class AppDetailActivity extends Activity implements
     private TextView mAppVersion;
     private TextView mAppMemory;
     private TextView mAppUsedFlow;
-    private GestureLayout mGestureLayout;
+//    private GestureLayout mGestureLayout;
     
     private Button mUninstall;
     private Button mStop;
 
     private LinearLayout mPager1;
-    private AppInfoBaseLayout mPager2;
+    private ScrollView mPager2;
 
     private Bitmap mAppBaseInfoLayoutbg;
 	
 	private AppDetailInfo mAppInfo;
 	
 	private Date mCurrdate;
-	private Calendar mCalendar = Calendar.getInstance();;
+	private Calendar mCalendar = Calendar.getInstance();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -113,43 +116,53 @@ public class AppDetailActivity extends Activity implements
         mStop.setOnClickListener(this);
         
 		mPager1 = (LinearLayout)this.getLayoutInflater().inflate(R.layout.activity_user_details, null);
-		mPager2 = (AppInfoBaseLayout) this.getLayoutInflater().inflate(	R.layout.pager_app_use_info, null);
-        mBatteryCharts = (BatteryChartsView) mPager1.findViewById(R.id.battery_charts);
-        mBatteryCharts.setPowerPercent((float)mAppInfo.getPowerComsuPercent() / 100);
-		mPager2.setAppDetailInfo(mAppInfo);
+		mPager2 = (ScrollView) this.getLayoutInflater().inflate(	R.layout.app_permission_info, null);
+//        mBatteryCharts = (BatteryChartsView) mPager1.findViewById(R.id.battery_charts);
+//        mBatteryCharts.setPowerPercent((float)mAppInfo.getPowerComsuPercent() / 100);
 		mViewPager.setAdapter(new AppdetailAdapter());
 		mViewPager.setOnPageChangeListener(this);
-		mViewPager.setScanScroll(false);
+		mViewPager.setScanScroll(true);
 		mViewPager.requestDisallowInterceptTouchEvent(true);
-		
-		mGestureLayout = (GestureLayout) mPager1.findViewById(R.id.gesture_layout);
-		mGestureLayout.setListener(this);
+		mViewPager.setCurrentItem(0);
+		setSelecteTab(0);
+//		mGestureLayout = (GestureLayout) mPager1.findViewById(R.id.gesture_layout);
+//		mGestureLayout.setListener(this);
 		setAppInfoBackground(mAppInfo.getAppIcon());
-		mCurrdate = mCalendar.getTime();
-		setWeekString(mCurrdate);
+		//
+//		mCurrdate = mCalendar.getTime();
+//		setWeekString(mCurrdate);
+		
+		initPermisionInfo();
 	}
 
 	private void setAppInfoBackground(Drawable drawable) {
 	    float d = (float)3 / 2/*mAppBaseInfoLayout.getWidth() / mAppBaseInfoLayout.getHeight()*/;
 	    
-	    int w = (int)(drawable.getIntrinsicHeight() * d / 2);
-	    int h = drawable.getIntrinsicHeight() / 2;
+	    int w = drawable.getIntrinsicWidth() * 9 / 10 ;
+	    int h = w * 2 / 3;
 	    mAppBaseInfoLayoutbg = Bitmap.createBitmap(
 	            w,
                 h,
                 Bitmap.Config.RGB_565);
+//	    Bitmap tmp = Bitmap.createBitmap(
+//                w,
+//                h,
+//                Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(mAppBaseInfoLayoutbg);
         canvas.drawColor(Color.WHITE);
         drawable.setBounds(-(drawable.getIntrinsicWidth()  - w) / 2, -(drawable.getIntrinsicHeight() - h) / 2, (drawable.getIntrinsicWidth()  - w) / 2 + w, (drawable.getIntrinsicHeight() - h) / 2 + h);
         drawable.draw(canvas);
-        canvas.drawColor(Color.argb(100, 0, 0, 0));
-        
+        canvas.drawColor(Color.argb(60, 0, 0, 0));
+//        NativeBlurMethod.doConvertBlur(tmp, mAppBaseInfoLayoutbg);
+        mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 5, true);
         mAppBaseInfoLayout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
+//        tmp.recycle();
+//        tmp = null;
 
 	}
 
 	
-	private void setWeekString(Date currDate) {
+/*	private void setWeekString(Date currDate) {
 	    String newMessageInfo;
 	    
         TextView sun = (TextView) mPager1.findViewById(R.id.sunday);
@@ -208,7 +221,97 @@ public class AppDetailActivity extends Activity implements
             date = calendar.getTime();
         }
         calendar.setTime(currDate);
-	}
+	}*/
+	
+    private void initPermisionInfo() {
+
+        LinearLayout permissionContent = (LinearLayout) mPager2
+                .findViewById(R.id.permission_content);
+        PackageManager packageManager = this.getPackageManager();
+        String[] sharedPkgList = mAppInfo.getPermissionInfo().getPermissionList();
+        if (sharedPkgList == null)
+            return;
+        ArrayList<PermissionInfo> nomalPermissions = new ArrayList<PermissionInfo>();
+        ArrayList<PermissionInfo> dangerousPermissions = new ArrayList<PermissionInfo>();
+        ArrayList<PermissionInfo> sinatruePermissions = new ArrayList<PermissionInfo>();
+
+        for (int i = 0; i < sharedPkgList.length; i++)
+        {
+            PermissionInfo tmpPermInfo;
+            try {
+                tmpPermInfo = packageManager.getPermissionInfo(sharedPkgList[i], 0);
+            } catch (NameNotFoundException e) {
+                e.printStackTrace();
+                continue;
+            }
+            if (tmpPermInfo.protectionLevel == PermissionInfo.PROTECTION_DANGEROUS) {
+                dangerousPermissions.add(tmpPermInfo);
+            } else if (tmpPermInfo.protectionLevel == PermissionInfo.PROTECTION_DANGEROUS
+                    || tmpPermInfo.protectionLevel == PermissionInfo.PROTECTION_SIGNATURE_OR_SYSTEM) {
+                sinatruePermissions.add(tmpPermInfo);
+            } else {
+                nomalPermissions.add(tmpPermInfo);
+            }
+        }
+        if (dangerousPermissions.size() > 0) {
+            TextView title = new TextView(this);
+            title.setText("绝密隐私权限");
+            title.setBackgroundColor(Color.GRAY);
+            title.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            permissionContent.addView(title);
+            for (int i = 0; i < dangerousPermissions.size(); i++)
+            {
+                RelativeLayout permissionItem = (RelativeLayout) this.getLayoutInflater().inflate(
+                        R.layout.permission_item_layout, null);
+                TextView permissionName = (TextView) permissionItem
+                        .findViewById(R.id.permission_name);
+                permissionName.setText(dangerousPermissions.get(i).loadLabel(packageManager));
+                TextView permissionDiscr = (TextView) permissionItem
+                        .findViewById(R.id.permission_discription);
+                permissionDiscr.setText(dangerousPermissions.get(i).loadDescription(packageManager));
+                permissionContent.addView(permissionItem);
+            }
+        }
+        if (sinatruePermissions.size() > 0) {
+            TextView title = new TextView(this);
+            title.setText("重要隐私权限");
+            title.setBackgroundColor(Color.GRAY);
+            title.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+            permissionContent.addView(title);
+            for (int i = 0; i < sinatruePermissions.size(); i++)
+            {
+                RelativeLayout permissionItem = (RelativeLayout) this.getLayoutInflater().inflate(
+                        R.layout.permission_item_layout, null);
+                TextView permissionName = (TextView) permissionItem
+                        .findViewById(R.id.permission_name);
+                permissionName.setText(sinatruePermissions.get(i).loadLabel(packageManager));
+                TextView permissionDiscr = (TextView) permissionItem
+                        .findViewById(R.id.permission_discription);
+                permissionDiscr.setText(sinatruePermissions.get(i).loadDescription(packageManager));
+                permissionContent.addView(permissionItem);
+            }
+        }
+        if (nomalPermissions.size() > 0) {
+            TextView title = new TextView(this);
+            title.setText("普通隐私权限");
+            title.setBackgroundColor(Color.GRAY);
+            title.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            permissionContent.addView(title);
+            for (int i = 0; i < nomalPermissions.size(); i++)
+            {
+                RelativeLayout permissionItem = (RelativeLayout) this.getLayoutInflater().inflate(
+                        R.layout.permission_item_layout, null);
+                TextView permissionName = (TextView) permissionItem
+                        .findViewById(R.id.permission_name);
+                permissionName.setText(nomalPermissions.get(i).loadLabel(packageManager));
+                TextView permissionDiscr = (TextView) permissionItem
+                        .findViewById(R.id.permission_discription);
+                permissionDiscr.setText(nomalPermissions.get(i).loadDescription(packageManager));
+                permissionContent.addView(permissionItem);
+            }
+        }
+
+    }
 	
 	private class AppdetailAdapter extends PagerAdapter {
 
@@ -243,15 +346,23 @@ public class AppDetailActivity extends Activity implements
 
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
+
 	}
 
 	@Override
 	public void onPageScrolled(int arg0, float arg1, int arg2) {
+	    
 	}
 
 	@Override
-	public void onPageSelected(int arg0) {
-
+	public void onPageSelected(int pageIndex) {
+	    
+	    Log.i("XXXX", "onPageSelected pageIndex = "+pageIndex);
+	    setSelecteTab(pageIndex);
+	}
+	
+	private void setSelecteTab(int index) {
+	    
 	}
 
 	@Override
@@ -298,7 +409,7 @@ public class AppDetailActivity extends Activity implements
 
     @Override
     public void onScroll(int direction) {
-        if (direction > 0) { //left
+/*        if (direction > 0) { //left
             if (mCurrdate.equals( mCalendar.getTime())) {
                 return;
             }
@@ -307,7 +418,7 @@ public class AppDetailActivity extends Activity implements
         } else if (direction < 0) { //right
             mCalendar.add(Calendar.WEEK_OF_YEAR, -1);
             setWeekString(mCalendar.getTime());
-        }
+        }*/
         
     }
 	
