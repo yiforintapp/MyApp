@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/lock_list_bg" >
+    android:background="@drawable/app_list_bg" >
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_title_bar"

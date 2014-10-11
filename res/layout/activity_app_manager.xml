@@ -1,11 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/app_background"
+    android:background="@drawable/app_list_bg"
     android:layout_height="match_parent" >
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_title_bar"
+        android:background="@color/app_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

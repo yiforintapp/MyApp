@@ -81,11 +81,11 @@
 
             <ImageButton
                 android:id="@+id/rocket_icon"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="110dp"
+                android:layout_marginBottom="100dp"
                 android:scaleType="centerInside"
                 android:background="@null"
                 android:src="@drawable/rocket_stop" />
@@ -96,8 +96,7 @@
                 android:layout_height="30dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="110dp"
-                android:background="#22435233" />
+                android:layout_marginBottom="110dp" />
         </RelativeLayout>
     </FrameLayout>
 

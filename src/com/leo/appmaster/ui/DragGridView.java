@@ -310,15 +310,6 @@ public class DragGridView extends GridView {
 		return super.onTouchEvent(ev);
 	}
 
-	/**
-	 * �����϶��ľ���
-	 * 
-	 * @param bitmap
-	 * @param downX
-	 *            ���µĵ���Ը��ؼ���X����
-	 * @param downY
-	 *            ���µĵ���Ը��ؼ���X����
-	 */
 	private void createDragImage(Bitmap bitmap, int downX, int downY) {
 		mWindowLayoutParams = new WindowManager.LayoutParams();
 		mWindowLayoutParams.format = PixelFormat.TRANSLUCENT; // ͼƬ֮��������ط�͸��
@@ -473,8 +464,9 @@ public class DragGridView extends GridView {
 		}
 
 		AnimatorSet resultSet = new AnimatorSet();
-		resultSet.playTogether(resultList);
-		resultSet.setDuration(300);
+//		resultSet.playTogether(resultList);
+		resultSet.playSequentially(resultList);
+		resultSet.setDuration(1000);
 		resultSet.setInterpolator(new AccelerateDecelerateInterpolator());
 		resultSet.addListener(new AnimatorListenerAdapter() {
 			@Override

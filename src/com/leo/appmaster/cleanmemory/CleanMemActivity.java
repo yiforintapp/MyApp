@@ -26,9 +26,12 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +41,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	public static final int MSG_UPDATE_MEM = 0;
 	private CommonTitleBar mTtileBar;
 	private ImageButton mRocket;
+	private ImageView mIvLoad;
 	private RocketDock mRocketDock;
 
 	private TextView mTvMemory;
@@ -59,7 +63,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	private float mTouchDownX, mTouchDownY;
 
-	private final float mThreshold = 250;
+	private final float mThreshold = 220;
+	private Animation mShakeAnim;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +74,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		initUI();
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		mHandler = new EventHandler(this);
-		createRocketAnima();
+		createTranslateAnima();
 		startTranslate();
 	}
 
@@ -81,11 +86,26 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mRocketDock = (RocketDock) findViewById(R.id.rocket_dock);
 		mTvMemory = (TextView) findViewById(R.id.tv_memory);
 
+		mIvLoad = (ImageView) findViewById(R.id.iv_load);
+
 		mTotalMem = ProcessUtils.getTotalMem();
 		mLastUsedMem = mTotalMem - ProcessUtils.getAvailableMem(this);
 
 		mTvMemory.setText(TextFormater.dataSizeFormat(mLastUsedMem) + "/"
 				+ TextFormater.dataSizeFormat(mTotalMem));
+
+		startLoad();
+	}
+
+	private void startLoad() {
+		Animation ra = AnimationUtils.loadAnimation(
+				this, R.anim.rotation);
+
+		mIvLoad.startAnimation(ra);
+	}
+
+	private void stopLoad() {
+		mIvLoad.clearAnimation();
 	}
 
 	private void updateMem() {
@@ -103,6 +123,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void startTranslate() {
+		mTranslating = true;
 		mRocket.startAnimation(mRocketAnima);
 		mRocket.setImageResource(R.drawable.rocket_stop);
 	}
@@ -110,13 +131,12 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private void stopTranslate() {
 		if (mTranslating) {
 			mTranslating = false;
-			mRocket.clearAnimation();
 			mRocketAnima.cancel();
 			mRocket.setImageResource(R.drawable.rocket_fly);
 		}
 	}
 
-	private void createRocketAnima() {
+	private void createTranslateAnima() {
 		AnimationSet as = new AnimationSet(true);
 		TranslateAnimation ta = new TranslateAnimation(0, 0, 0, 50);
 		ScaleAnimation sa = new ScaleAnimation(1f, 1f, 1f, 0.9f);
@@ -149,74 +169,14 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	}
 
-	private void startUpdataMemTip(long targetMem) {
-		if (!mUpdating) {
-			mUpdating = true;
-			ValueAnimator update = ValueAnimator.ofInt((int) mLastUsedMem, 0);
-			update.setDuration(1000);
+	private void shakeRocket() {
+		mShakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
 
-			final ValueAnimator down = ValueAnimator.ofInt(0, (int) targetMem);
-			down.setDuration(1000);
+		mRocket.startAnimation(mShakeAnim);
+	}
 
-			update.addUpdateListener(new AnimatorUpdateListener() {
-				@Override
-				public void onAnimationUpdate(ValueAnimator va) {
-					mLastUsedMem = (Integer) va.getAnimatedValue();
-					updateMem();
-				}
-			});
-
-			update.addListener(new AnimatorListener() {
-				@Override
-				public void onAnimationStart(Animator arg0) {
-				}
-
-				@Override
-				public void onAnimationRepeat(Animator arg0) {
-				}
-
-				@Override
-				public void onAnimationCancel(Animator arg0) {
-				}
-
-				@Override
-				public void onAnimationEnd(Animator arg0) {
-					down.start();
-				}
-			});
-
-			down.addUpdateListener(new AnimatorUpdateListener() {
-				@Override
-				public void onAnimationUpdate(ValueAnimator va) {
-					mLastUsedMem = (Integer) va.getAnimatedValue();
-					updateMem();
-				}
-			});
-			down.addListener(new AnimatorListener() {
-				@Override
-				public void onAnimationStart(Animator arg0) {
-				}
-
-				@Override
-				public void onAnimationRepeat(Animator arg0) {
-				}
-
-				@Override
-				public void onAnimationCancel(Animator arg0) {
-				}
-
-				@Override
-				public void onAnimationEnd(Animator arg0) {
-					mUpdating = false;
-					Toast.makeText(
-							CleanMemActivity.this,
-							"为您清理" + TextFormater.dataSizeFormat(mCleanMem)
-									+ "内存", Toast.LENGTH_SHORT).show();
-				}
-			});
-
-			update.start();
-		}
+	private void stopShakeRocket() {
+		mShakeAnim.cancel();
 	}
 
 	public void launchRocket() {
@@ -227,7 +187,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	private Animation createRocketFly() {
 		TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -2000);
-		ta.setDuration(2000);
+		ta.setDuration(1000);
 		ta.setFillEnabled(true);
 		ta.setFillBefore(true);
 		ta.setInterpolator(new AccelerateInterpolator());
@@ -288,6 +248,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			new Thread(new VibrateTask()).start();
 			// todo
 			startSmoking();
+			shakeRocket();
 		}
 		stopTranslate();
 	}
@@ -297,11 +258,12 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void cancelLaunch() {
+		stopVibrate();
+		stopShakeRocket();
 		if (!mTranslating) {
 			mTranslating = true;
 			startTranslate();
 		}
-		stopVibrate();
 	}
 
 	private void stopVibrate() {
@@ -323,6 +285,76 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			}
 		}
 
+	}
+
+	private void startUpdataMemTip(long targetMem) {
+		if (!mUpdating) {
+			mUpdating = true;
+			ValueAnimator update = ValueAnimator.ofInt((int) mLastUsedMem, 0);
+			update.setDuration(500);
+
+			final ValueAnimator down = ValueAnimator.ofInt(0, (int) targetMem);
+			down.setDuration(500);
+
+			update.addUpdateListener(new AnimatorUpdateListener() {
+				@Override
+				public void onAnimationUpdate(ValueAnimator va) {
+					mLastUsedMem = (Integer) va.getAnimatedValue();
+					updateMem();
+				}
+			});
+
+			update.addListener(new AnimatorListener() {
+				@Override
+				public void onAnimationStart(Animator arg0) {
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator arg0) {
+				}
+
+				@Override
+				public void onAnimationCancel(Animator arg0) {
+				}
+
+				@Override
+				public void onAnimationEnd(Animator arg0) {
+					down.start();
+				}
+			});
+
+			down.addUpdateListener(new AnimatorUpdateListener() {
+				@Override
+				public void onAnimationUpdate(ValueAnimator va) {
+					mLastUsedMem = (Integer) va.getAnimatedValue();
+					updateMem();
+				}
+			});
+			down.addListener(new AnimatorListener() {
+				@Override
+				public void onAnimationStart(Animator arg0) {
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator arg0) {
+				}
+
+				@Override
+				public void onAnimationCancel(Animator arg0) {
+				}
+
+				@Override
+				public void onAnimationEnd(Animator arg0) {
+					mUpdating = false;
+					Toast.makeText(
+							CleanMemActivity.this,
+							"为您清理" + TextFormater.dataSizeFormat(mCleanMem)
+									+ "内存", Toast.LENGTH_SHORT).show();
+				}
+			});
+
+			update.start();
+		}
 	}
 
 	private static class EventHandler extends Handler {
