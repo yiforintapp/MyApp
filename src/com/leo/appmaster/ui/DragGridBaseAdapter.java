@@ -21,7 +21,7 @@ public interface DragGridBaseAdapter {
 	 * ɾ��ĳ��item
 	 * @param mLastSelectApp
 	 */
-	public void removeItem(BaseInfo mLastSelectApp);
+	public void removeItem(int position);
 	
 
 }

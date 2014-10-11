@@ -242,8 +242,9 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 		}
 
 		@Override
-		public void removeItem(BaseInfo removeApp) {
-			mList.remove(removeApp);
+		public void removeItem(int position) {
+			mList.remove(position);
+
 			BaseInfo temp = null;
 			if (mPageIndex < mPageCount - 1) {
 				int page = mPageIndex;
