@@ -8,4 +8,7 @@
     <string name="app_details">应用详情</string>
     <string name="app_memory">"内存使用&#058;<xliff:g>%1$s</xliff:g>"</string>
     <string name="app_used_flow">"已用流量&#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_permission1">危险权限</string>
+    <string name="app_permission2">普通权限</string>
+    <string name="app_permission3">重要权限</string>
 </resources>

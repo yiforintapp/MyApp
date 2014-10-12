@@ -62,8 +62,13 @@
     <string name="lock_3_min">3分钟</string>
     <string name="lock_5_min">5分钟</string>
     
-      <string name="app_memory">"Memory&#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_memory">"Memory&#058;<xliff:g>%1$s</xliff:g>"</string>
     <string name="app_used_flow">"Used Flow&#058;<xliff:g>%1$s</xliff:g>"</string>
+    
+    <string name="app_permission1">Dangerous Permission</string>
+    <string name="app_permission2">Normal Permission</string>
+    <string name="app_permission3">Important Permission</string>
+    
     <string-array name="lock_time_entrys">
         <item>@string/lock_right_now</item>
         <item>@string/lock_15_sec</item>
