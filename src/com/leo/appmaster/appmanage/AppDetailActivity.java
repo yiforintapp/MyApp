@@ -9,7 +9,9 @@ import com.leo.appmaster.appmanage.GestureLayout.IGestureListener;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CustomViewPager;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.TextFormater;
 
@@ -30,6 +32,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -54,7 +57,7 @@ public class AppDetailActivity extends Activity implements
     private RelativeLayout mBatteryInfoLayout;
 //    private BatteryChartsView mBatteryCharts;
 	
-    private LinearLayout mTitle;
+    private CommonTitleBar mTitle;
     private LinearLayout mAppBaseInfoLayout;
     private ImageView mAppIcon;
     private TextView mAppName;
@@ -97,8 +100,10 @@ public class AppDetailActivity extends Activity implements
 		
 		mViewPager = (CustomViewPager) findViewById(R.id.pager_app_detail);
 		mAppBaseInfoLayout = (LinearLayout) findViewById(R.id.app_base_info);
-		mTitle = (LinearLayout) findViewById(R.id.activity_title);
-		mTitle.setOnClickListener(this);
+		mTitle = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+		mTitle.setTitle(R.string.app_details);
+		mTitle.openBackView();
+		mTitle.setOptionVisibility(View.INVISIBLE);
         mAppIcon = (ImageView) findViewById(R.id.app_info_icon);
         mAppIcon.setImageDrawable(mAppInfo.getAppIcon());
         mAppName = (TextView) findViewById(R.id.app_name);
@@ -225,6 +230,7 @@ public class AppDetailActivity extends Activity implements
 	
     private void initPermisionInfo() {
 
+        boolean isSetBgTag = false;
         LinearLayout permissionContent = (LinearLayout) mPager2
                 .findViewById(R.id.permission_content);
         PackageManager packageManager = this.getPackageManager();
@@ -255,17 +261,27 @@ public class AppDetailActivity extends Activity implements
         }
         if (dangerousPermissions.size() > 0) {
             TextView title = new TextView(this);
-            title.setText("绝密隐私权限");
-            title.setBackgroundColor(Color.GRAY);
-            title.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            title.setText(R.string.app_permission2);
+            title.setBackgroundColor(Color.rgb(214, 214, 214));
+            title.setGravity(Gravity.CENTER_VERTICAL);
+            title.setPadding(DipPixelUtil.dip2px(this, 20), 0, 0, 0);
+            title.setTextSize(15);
+            title.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,DipPixelUtil.dip2px(this, 40)));
             permissionContent.addView(title);
             for (int i = 0; i < dangerousPermissions.size(); i++)
             {
                 RelativeLayout permissionItem = (RelativeLayout) this.getLayoutInflater().inflate(
                         R.layout.permission_item_layout, null);
+                if (isSetBgTag) {
+                    permissionItem.setBackgroundColor(Color.rgb(247, 247, 247));
+                    isSetBgTag = false;
+                } else {
+                    isSetBgTag = true;
+                }
                 TextView permissionName = (TextView) permissionItem
                         .findViewById(R.id.permission_name);
                 permissionName.setText(dangerousPermissions.get(i).loadLabel(packageManager));
+//                Log.i("XXXX", "dangerousPermissions.get(i).group="+dangerousPermissions.get(i).group);
                 TextView permissionDiscr = (TextView) permissionItem
                         .findViewById(R.id.permission_discription);
                 permissionDiscr.setText(dangerousPermissions.get(i).loadDescription(packageManager));
@@ -274,17 +290,27 @@ public class AppDetailActivity extends Activity implements
         }
         if (sinatruePermissions.size() > 0) {
             TextView title = new TextView(this);
-            title.setText("重要隐私权限");
-            title.setBackgroundColor(Color.GRAY);
-            title.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+            title.setText(R.string.app_permission3);
+            title.setBackgroundColor(Color.rgb(214, 214, 214));
+            title.setGravity(Gravity.CENTER_VERTICAL);
+            title.setPadding(DipPixelUtil.dip2px(this, 20), 0, 0, 0);
+            title.setTextSize(15);
+            title.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,DipPixelUtil.dip2px(this, 40)));
             permissionContent.addView(title);
             for (int i = 0; i < sinatruePermissions.size(); i++)
             {
                 RelativeLayout permissionItem = (RelativeLayout) this.getLayoutInflater().inflate(
                         R.layout.permission_item_layout, null);
+                if (isSetBgTag) {
+                    permissionItem.setBackgroundColor(Color.rgb(247, 247, 247));
+                    isSetBgTag = false;
+                } else {
+                    isSetBgTag = true;
+                }
                 TextView permissionName = (TextView) permissionItem
                         .findViewById(R.id.permission_name);
                 permissionName.setText(sinatruePermissions.get(i).loadLabel(packageManager));
+//                Log.i("XXXX", "dangerousPermissions.get(i).group="+dangerousPermissions.get(i).group);
                 TextView permissionDiscr = (TextView) permissionItem
                         .findViewById(R.id.permission_discription);
                 permissionDiscr.setText(sinatruePermissions.get(i).loadDescription(packageManager));
@@ -293,14 +319,23 @@ public class AppDetailActivity extends Activity implements
         }
         if (nomalPermissions.size() > 0) {
             TextView title = new TextView(this);
-            title.setText("普通隐私权限");
-            title.setBackgroundColor(Color.GRAY);
-            title.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            title.setText(R.string.app_permission1);
+            title.setBackgroundColor(Color.rgb(214, 214, 214));
+            title.setGravity(Gravity.CENTER_VERTICAL);
+            title.setPadding(DipPixelUtil.dip2px(this, 20), 0, 0, 0);
+            title.setTextSize(15);
+            title.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,DipPixelUtil.dip2px(this, 40)));
             permissionContent.addView(title);
             for (int i = 0; i < nomalPermissions.size(); i++)
             {
                 RelativeLayout permissionItem = (RelativeLayout) this.getLayoutInflater().inflate(
                         R.layout.permission_item_layout, null);
+                if (isSetBgTag) {
+                    permissionItem.setBackgroundColor(Color.rgb(247, 247, 247));
+                    isSetBgTag = false;
+                } else {
+                    isSetBgTag = true;
+                }
                 TextView permissionName = (TextView) permissionItem
                         .findViewById(R.id.permission_name);
                 permissionName.setText(nomalPermissions.get(i).loadLabel(packageManager));
@@ -362,15 +397,22 @@ public class AppDetailActivity extends Activity implements
 	}
 	
 	private void setSelecteTab(int index) {
-	    
+	    if (index == 0) {
+	        mTvUseInfo.setBackgroundResource(R.drawable.tab_selected);
+	        mTvUseInfo.setTextColor(Color.rgb(0, 127, 255));
+	        mTvPermissionInfo.setBackgroundColor(Color.TRANSPARENT);
+	        mTvPermissionInfo.setTextColor(Color.rgb(80, 80, 80));
+	    } else if (index == 1) {
+	        mTvUseInfo.setBackgroundColor(Color.TRANSPARENT);
+	        mTvUseInfo.setTextColor(Color.rgb(80, 80, 80));
+	        mTvPermissionInfo.setBackgroundResource(R.drawable.tab_selected);
+	        mTvPermissionInfo.setTextColor(Color.rgb(0, 127, 255));
+	    }
 	}
 
 	@Override
 	public void onClick(View v) {
 	    switch (v.getId()) {
-	        case R.id.activity_title:
-	            onBackPressed();
-	            break;
             case R.id.uninstall_app:
                 RemoveApp(mAppInfo.getPkg());
                 break;
