@@ -78,6 +78,7 @@
     <string name="bakup_fail_cancel">备份恢复已取消</string>
     <string name="bakup_fail_full">存储空间不足</string>
     <string name="bakup_fail_unavailable">存储卡不可用</string>
+    <string name="no_app_backuped">没有应用备份数据</string>
 
     <string-array name="lock_time_entrys">
         <item>@string/lock_right_now</item>

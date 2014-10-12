@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -40,6 +41,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     private ViewPager mPager;
     private ListView mBackupList;
     private ListView mRestoreList;
+    private View mEmptyView;
     private TextView mInstallText;
     private TextView mStorageText;
     private ImageView mCheckAll;
@@ -118,6 +120,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         mBackupList.setAdapter(mBackupAdapter);
         
         final View restoreList = inflater.inflate(R.layout.view_restore_list, null);
+        mEmptyView = restoreList.findViewById(R.id.list_empty);
         mRestoreList = (ListView)restoreList.findViewById(R.id.list_restore);
         mRestoreAdapter = new AppRestoreAdapter(mBackupManager);
         mRestoreList.setAdapter(mRestoreAdapter);
@@ -304,6 +307,11 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         mStorageText.setText(mBackupManager.getAvaiableSize());
         mCheckAll.setImageResource(R.drawable.tick_all_normal);
         mCheckAll.setTag(false);
+        if(mRestoreAdapter.isEmpty()) {
+            mEmptyView.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyView.setVisibility(View.GONE);
+        }
     }
 
     
