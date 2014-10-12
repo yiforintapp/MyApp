@@ -133,7 +133,7 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 	protected void onFinishInflate() {
 		mInflater.inflate(R.layout.paged_gridview, this, true);
 		mViewPager = (LeoViewPager) findViewById(R.id.pager);
-		mViewPager.setPageTransformer(true, new DepthPageTransformer());
+//		mViewPager.setPageTransformer(true, new DepthPageTransformer());
 		mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
 		super.onFinishInflate();
 	}

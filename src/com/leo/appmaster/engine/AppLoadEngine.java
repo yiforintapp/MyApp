@@ -222,6 +222,7 @@ public class AppLoadEngine extends BroadcastReceiver {
             info.getTrafficInfo().setTransmittedData(transmitted);
             info.getTrafficInfo().setReceivedData(received);
         }
+        
     }
 
     private void getCacheInfo(String pkg, final CacheInfo cacheInfo) {

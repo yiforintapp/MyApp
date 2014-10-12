@@ -100,10 +100,10 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void startLoad() {
-		rotateLoadView(3000, 360 * 5);
+		rotateLoadView(2000, 360 * 4);
 
 		final ValueAnimator up = ValueAnimator.ofInt(0, (int) mLastUsedMem);
-		up.setDuration(3000);
+		up.setDuration(2000);
 		up.addUpdateListener(new AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator va) {
