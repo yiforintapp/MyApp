@@ -3,6 +3,7 @@ package com.leo.appmaster.cleanmemory;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.RocketDock;
+import com.leo.appmaster.ui.ShadeView;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.nineoldandroids.animation.Animator;
@@ -38,32 +39,27 @@ import android.widget.Toast;
 
 public class CleanMemActivity extends Activity implements OnClickListener,
 		OnTouchListener {
+
 	public static final int MSG_UPDATE_MEM = 0;
 	private CommonTitleBar mTtileBar;
 	private ImageButton mRocket;
 	private ImageView mIvLoad;
 	private View mRocketHolder;
 	private RocketDock mRocketDock;
-
 	private TextView mTvMemory;
+	private ShadeView mShadeView;
 
 	private long mLastUsedMem;
 	private long mTotalMem;
-
 	private long mCleanMem;
-
 	private Vibrator mVibrator;
 	public boolean mVibrating;
 	private boolean mTranslating;
 	private boolean mUpdating;
-
 	private ProcessCleaner mCleaner;
 	private Handler mHandler;
-
 	private Animation mRocketAnima;
-
 	private float mTouchDownX, mTouchDownY;
-
 	private float mThreshold = 0;
 	private Animation mShakeAnim;
 
@@ -87,7 +83,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mRocketHolder = findViewById(R.id.layout_rocket_holder);
 		mRocketDock = (RocketDock) findViewById(R.id.rocket_dock);
 		mTvMemory = (TextView) findViewById(R.id.tv_memory);
-
+		mShadeView = (ShadeView) findViewById(R.id.shade_view);
 		mIvLoad = (ImageView) findViewById(R.id.iv_load);
 
 		mTotalMem = ProcessUtils.getTotalMem();
@@ -96,6 +92,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		// mTvMemory.setText(TextFormater.dataSizeFormat(mLastUsedMem) + "/"
 		// + TextFormater.dataSizeFormat(mTotalMem));
 
+		mShadeView.updateColor(0x409923);
+		
 		startLoad();
 	}
 

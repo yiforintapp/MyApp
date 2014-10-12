@@ -58,7 +58,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTvMemoryInfo = (TextView) findViewById(R.id.tv_memory_info);
 		mTvFlow = (TextView) findViewById(R.id.tv_flow);
 		mCricleView = (CricleView) findViewById(R.id.cricle_view);
-		
+
 		mTvAppManage = findViewById(R.id.tv_app_manage);
 		mTvAppLock = findViewById(R.id.tv_app_lock);
 		mTvAppBackup = findViewById(R.id.tv_app_backup);
@@ -72,6 +72,8 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionVisibility(View.VISIBLE);
+		mTtileBar.setOptionText("");
+		mTtileBar.setOptionBackground(R.drawable.setting_btn);
 
 	}
 
