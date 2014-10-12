@@ -104,6 +104,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/app_info_button_selecter"
                 android:text="@string/uninstall"
+                android:textSize="15dp"
                 android:textColor="@android:color/white" />
 
             <View
@@ -117,6 +118,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/app_info_button_selecter"
                 android:text="@string/stop"
+                android:textSize="15dp"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
