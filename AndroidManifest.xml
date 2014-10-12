@@ -32,7 +32,7 @@
         android:name="com.leo.appmaster.AppMasterApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light" >
+        android:theme="@android:style/Theme.NoTitleBar" >
         <activity
             android:name="com.leo.appmaster.home.HomeActivity"
             android:screenOrientation="portrait"

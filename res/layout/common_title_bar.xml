@@ -30,7 +30,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_option"
+        android:id="@+id/tv_option_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -41,5 +41,17 @@
         android:visibility="invisible"
         android:text="设置"
         android:textSize="20sp" />
+    
+    <ImageView
+        android:id="@+id/tv_option_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:scaleType="centerInside"
+        android:src="@drawable/del_icon"
+        android:visibility="invisible" />
 
 </RelativeLayout>

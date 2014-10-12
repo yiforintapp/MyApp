@@ -56,9 +56,9 @@ public class LockSettingActivity extends FragmentActivity implements
 		mTitleBar.openBackView();
 		mTitleBar.setOptionListener(this);
 
-		mTvSwitch = (TextView) findViewById(R.id.tv_option);
+		mTvSwitch = (TextView) findViewById(R.id.tv_option_text);
 		mTitleBar.setOptionListener(this);
-		mTitleBar.setOptionVisibility(View.VISIBLE);
+		mTitleBar.setOptionTextVisibility(View.VISIBLE);
 		mTitleBar.setOptionText("");
 		mTitleBar.setOptionBackground(R.drawable.switch_passwd);
 	}
@@ -66,7 +66,7 @@ public class LockSettingActivity extends FragmentActivity implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.tv_option:
+		case R.id.tv_option_text:
 			switchLockType();
 			break;
 

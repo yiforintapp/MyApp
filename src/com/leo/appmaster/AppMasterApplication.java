@@ -1,20 +1,22 @@
 package com.leo.appmaster;
 
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leoers.leoanalytics.LeoStat;
-
 import android.app.Application;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
+
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leoers.leoanalytics.LeoStat;
 
 public class AppMasterApplication extends Application {
     
     private AppLoadEngine mAppsEngine;
     
+    private static AppMasterApplication mInstance;
+    
    @Override
    public void onCreate() {
        super.onCreate();       
+       mInstance = this;
        mAppsEngine = AppLoadEngine.getInstance(this);
        mAppsEngine.preloadAllBaseInfo();
         // Register intent receivers
@@ -36,6 +38,10 @@ public class AppMasterApplication extends Application {
    private void iniLeoSdk() {
        LeoStat.init(getApplicationContext(), "1", "applocker");
 //       LeoStat.setUpdateService();  //暂时 不进行启动升级检测
+   }
+   
+   public static AppMasterApplication getInstance() {
+       return mInstance;
    }
 
 }

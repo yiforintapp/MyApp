@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,10 +16,11 @@ import com.leo.appmaster.model.AppDetailInfo;
 public class AppRestoreItemView extends FrameLayout implements OnClickListener {
 
     private ImageView mIcon;
-    private Button mInstall;
-    private Button mDelete;
+    private View mInstall;
+    private View mDelete;
     private TextView mTitle;
     private TextView mVersion;
+    private TextView mAppSize;
 
     public AppRestoreItemView(Context context) {
         this(context, null);
@@ -38,12 +38,13 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
     protected void onFinishInflate() {
         super.onFinishInflate();
         mIcon = (ImageView) findViewById(R.id.app_icon);
-        mInstall = (Button) findViewById(R.id.button_install);
+        mInstall =  findViewById(R.id.button_install);
         mInstall.setOnClickListener(this);
-        mDelete = (Button) findViewById(R.id.button_delete);
+        mDelete =  findViewById(R.id.button_delete);
         mDelete.setOnClickListener(this);
         mTitle = (TextView) findViewById(R.id.app_title);
         mVersion = (TextView) findViewById(R.id.app_version);
+        mAppSize = (TextView) findViewById(R.id.app_size);
     }
 
     @Override
@@ -68,6 +69,10 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
     
     public void setVersion(CharSequence version) {
         mVersion.setText(version);
+    }
+    
+    public void setSize(CharSequence size) {
+        mAppSize.setText(size);
     }
     
     public void setIcon(Drawable icon) {

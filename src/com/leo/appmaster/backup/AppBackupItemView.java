@@ -19,6 +19,7 @@ public class AppBackupItemView extends FrameLayout {
     private ImageView mAppIcon;
     private TextView mAppTitle;
     private TextView mAppVersion;
+    private TextView mAppSize;
     private ImageView mChecked;
 
     public AppBackupItemView(Context context) {
@@ -39,6 +40,7 @@ public class AppBackupItemView extends FrameLayout {
         mAppIcon = (ImageView) findViewById(R.id.app_icon);
         mAppTitle = (TextView) findViewById(R.id.app_title);
         mAppVersion = (TextView) findViewById(R.id.app_version);
+        mAppSize = (TextView) findViewById(R.id.app_size);
         mChecked = (ImageView) findViewById(R.id.app_check);
     }
 
@@ -49,6 +51,10 @@ public class AppBackupItemView extends FrameLayout {
     public void setVersion(CharSequence version) {
         mAppVersion.setText(version);
     }
+    
+    public void setSize(CharSequence size) {
+        mAppSize.setText(size);
+    }
 
     public void setIcon(Drawable icon) {
         mAppIcon.setImageDrawable(icon);
@@ -58,15 +64,15 @@ public class AppBackupItemView extends FrameLayout {
         switch (state) {
             case STATE_SELECTED:
                 setEnabled(true);
-                mChecked.setImageResource(R.drawable.checkbox_checked);
+                mChecked.setImageResource(R.drawable.tick_sel);
                 break;
             case STATE_BACKUPED:
                 setEnabled(false);
-                mChecked.setImageResource(R.drawable.checkbox_checked_unclickable);
+                mChecked.setImageResource(R.drawable.backedup_icon);
                 break;
             default:
                 setEnabled(true);
-                mChecked.setImageResource(R.drawable.checkbox_normal);
+                mChecked.setImageResource(R.drawable.tick_normal);
                 break;
         }
     }

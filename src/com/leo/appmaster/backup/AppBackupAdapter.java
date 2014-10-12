@@ -2,6 +2,7 @@ package com.leo.appmaster.backup;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,9 +75,17 @@ public class AppBackupAdapter extends BaseAdapter {
             itemView = (AppBackupItemView)inflater.inflate(R.layout.item_app_backup, null);
         }
         AppDetailInfo app = mBackupList.get(arg0);
+        Context context = itemView.getContext();
+        if(arg0 % 2 == 0) {
+            itemView.setBackgroundColor(context.getResources().getColor(R.color.white));
+        } else {
+            itemView.setBackgroundColor(context.getResources().getColor(R.color.item_backup_grey));
+        }
         itemView.setIcon(app.getAppIcon());
         itemView.setTitle(app.getAppLabel());
-        itemView.setVersion(app.getVersionName() + "    " + mBackupManager.getApkSize(app));
+        
+        itemView.setVersion(String.format(context.getResources().getString(R.string.app_version), app.getVersionName()));
+        itemView.setSize(mBackupManager.getApkSize(app));
         itemView.setState(app.isBackuped ? AppBackupItemView.STATE_BACKUPED : app.isChecked ? AppBackupItemView.STATE_SELECTED : AppBackupItemView.STATE_UNSELECTED);
         itemView.setTag(app);
         return itemView;

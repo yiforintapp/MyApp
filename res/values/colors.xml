@@ -17,5 +17,8 @@
     <color name="dialog_pro_end">#5285b7</color>
     <color name="dialog_pro_bg">#d9dce3</color>
     <color name="tab_select_text">#2a94fe</color>
+    <color name="item_backup_grey">#f7f7f7</color>
+    <color name="backup_tips_background_color">#d4eaff</color>
+    <color name="backup_tips_text_color">#2893fe</color>
 
 </resources>

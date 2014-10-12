@@ -57,7 +57,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
-		mTtileBar.setOptionVisibility(View.VISIBLE);
+		mTtileBar.setOptionTextVisibility(View.VISIBLE);
 
 	}
 

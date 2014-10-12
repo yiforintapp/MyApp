@@ -1,14 +1,14 @@
 <com.leo.appmaster.backup.AppRestoreItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp" >
+    android:layout_height="76dp" >
 
     <ImageView
         android:id="@+id/app_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="left|center_vertical"
-        android:layout_margin="6dp"
+        android:layout_margin="20dp"
         android:gravity="center"
         android:scaleType="centerInside" />
 
@@ -16,40 +16,65 @@
         android:id="@+id/app_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="36dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="120dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginBottom="42dp"
+        android:layout_marginLeft="82dp"
+        android:layout_marginRight="150dp"
+        android:layout_marginTop="14dp"
         android:gravity="center_vertical"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="14dp" />
 
     <TextView
         android:id="@+id/app_version"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="6dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="120dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="82dp"
+        android:layout_marginRight="150dp"
+        android:layout_marginTop="34dp"
         android:gravity="center_vertical"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="10dp" />
 
-    <Button
+    <TextView
+        android:id="@+id/app_size"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="82dp"
+        android:layout_marginRight="150dp"
+        android:layout_marginTop="48dp"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="10dp" />
+
+    <TextView
         android:id="@+id/button_install"
-        android:layout_width="48dp"
-        android:layout_height="match_parent"
+        android:layout_width="54dp"
+        android:layout_height="27dp"
         android:layout_gravity="right|center_vertical"
-        android:layout_marginRight="60dp"
+        android:layout_marginRight="94dp"
+        android:background="@drawable/item_restore_button_bg"
         android:gravity="center"
-        android:text="@string/button_install" />
+        android:text="@string/button_install"
+        android:textColor="@drawable/backup_button_text_selector"
+        android:textSize="12dp" 
+        android:singleLine="true"/>
 
-    <Button
+    <TextView
         android:id="@+id/button_delete"
-        android:layout_width="48dp"
-        android:layout_height="match_parent"
+        android:layout_width="54dp"
+        android:layout_height="27dp"
         android:layout_gravity="right|center_vertical"
-        android:layout_marginRight="6dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/item_restore_button_bg"
         android:gravity="center"
-        android:text="@string/button_delete" />
+        android:text="@string/button_delete"
+        android:textColor="@drawable/backup_button_text_selector" 
+        android:textSize="12dp"
+        android:singleLine="true"/>
 
 </com.leo.appmaster.backup.AppRestoreItemView>
