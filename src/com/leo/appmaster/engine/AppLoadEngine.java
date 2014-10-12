@@ -207,7 +207,9 @@ public class AppLoadEngine extends BroadcastReceiver {
         try {
             packangeInfo = mPm.getPackageInfo(pkgName,
                     PackageManager.GET_PERMISSIONS);
-            info.getPermissionInfo().setPermissions(packangeInfo.permissions);
+//            info.getPermissionInfo().setPermissions(packangeInfo.permissions);
+            
+            info.getPermissionInfo().setPermissionList(packangeInfo.requestedPermissions);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -221,6 +223,7 @@ public class AppLoadEngine extends BroadcastReceiver {
             info.getTrafficInfo().setTransmittedData(transmitted);
             info.getTrafficInfo().setReceivedData(received);
         }
+        
     }
 
     private void getCacheInfo(String pkg, final CacheInfo cacheInfo) {

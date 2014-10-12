@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -15,21 +16,28 @@ import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
+import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CricleView;
+import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.ProcessUtils;
+import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
 public class HomeActivity extends Activity implements OnClickListener {
 
-	private TasksCompletedView mTaskProgessView;
-	private TextView mTvAppManage;
-	private TextView mTvAppLock;
-	private TextView mTvAppBackup;
-	private TextView mTvCleanMem;
+	private View mTopLayout;
+	private View mTvAppManage;
+	private View mTvAppLock;
+	private View mTvAppBackup;
+	private View mTvCleanMem;
 
+	private TextView mTvMemoryInfo, mTvFlow;
+	private ImageView mIvDigital_0, mIvDigital_1, mIvDigital_2;
 	private CommonTitleBar mTtileBar;
 
-	private int mCurrentProgress;
+	private CricleView mCricleView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +48,21 @@ public class HomeActivity extends Activity implements OnClickListener {
 	}
 
 	private void initUI() {
-		mTaskProgessView = (TasksCompletedView) findViewById(R.id.tasksCompletedView);
-		mCurrentProgress = 80;
-		mTaskProgessView.setProgress(mCurrentProgress);
-		mTaskProgessView.setOnClickListener(this);
+		mTopLayout = findViewById(R.id.top_layout);
+		mTopLayout.setOnClickListener(this);
 
-		mTvAppManage = (TextView) findViewById(R.id.tv_app_manage);
-		mTvAppLock = (TextView) findViewById(R.id.tv_app_lock);
-		mTvAppBackup = (TextView) findViewById(R.id.tv_app_backup);
-		mTvCleanMem = (TextView) findViewById(R.id.tv_clean_memory);
+		mIvDigital_0 = (ImageView) findViewById(R.id.digital_0);
+		mIvDigital_1 = (ImageView) findViewById(R.id.digital_1);
+		mIvDigital_2 = (ImageView) findViewById(R.id.digital_2);
+
+		mTvMemoryInfo = (TextView) findViewById(R.id.tv_memory_info);
+		mTvFlow = (TextView) findViewById(R.id.tv_flow);
+		mCricleView = (CricleView) findViewById(R.id.cricle_view);
+
+		mTvAppManage = findViewById(R.id.tv_app_manage);
+		mTvAppLock = findViewById(R.id.tv_app_lock);
+		mTvAppBackup = findViewById(R.id.tv_app_backup);
+		mTvCleanMem = findViewById(R.id.tv_clean_memory);
 		mTvAppManage.setOnClickListener(this);
 		mTvAppLock.setOnClickListener(this);
 		mTvAppBackup.setOnClickListener(this);
@@ -58,7 +72,54 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionTextVisibility(View.VISIBLE);
+		mTtileBar.setOptionTextVisibility(View.VISIBLE);
+		mTtileBar.setOptionText("");
+		mTtileBar.setOptionBackground(R.drawable.setting_btn);
 
+	}
+
+	@Override
+	protected void onResume() {
+		int appCount = AppLoadEngine.getInstance(this).getAllPkgInfo().size();
+		setAppCount(appCount);
+
+		long total = ProcessUtils.getTotalMem();
+		long used = total - ProcessUtils.getAvailableMem(this);
+
+		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) + "/"
+				+ TextFormater.dataSizeFormat(total));
+
+		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
+
+		mCricleView.updateDegrees(360f / total * used);
+
+		super.onResume();
+	}
+
+	private void setAppCount(int count) {
+		int one, two, three;
+		one = count / 100;
+		two = (count % 100) / 10;
+		three = (count % 100) % 10;
+
+		int[] index = new int[] { R.drawable.digital_0, R.drawable.digital_1,
+				R.drawable.digital_2, R.drawable.digital_3,
+				R.drawable.digital_4, R.drawable.digital_5,
+				R.drawable.digital_6, R.drawable.digital_7,
+				R.drawable.digital_8, R.drawable.digital_9 };
+
+		if (one == 0) {
+			mIvDigital_0.setVisibility(View.GONE);
+		} else {
+			mIvDigital_0.setImageResource(index[one]);
+		}
+		if (two == 0) {
+			mIvDigital_1.setVisibility(View.GONE);
+		} else {
+			mIvDigital_1.setImageResource(index[two]);
+		}
+
+		mIvDigital_2.setImageResource(index[three]);
 	}
 
 	private void judgeLockService() {
@@ -71,25 +132,20 @@ public class HomeActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	private void startTaskView(int tatget) {
-		new Thread(new ProgressRunable(tatget)).start();
-	}
-
 	@Override
 	public void onClick(View v) {
 		Intent intent = null;
 		switch (v.getId()) {
-		case R.id.tasksCompletedView:
-	        LeoStat.addEvent(LeoStat.P2, "tasksCompleted", "click the one key clear button");
-			startTaskView(mCurrentProgress - 10);
-			break;
+		case R.id.top_layout:
 		case R.id.tv_app_manage:
-	         LeoStat.addEvent(LeoStat.P2, "app_manage", "click the app manage button");
+			LeoStat.addEvent(LeoStat.P2, "app_manage",
+					"click the app manage button");
 			intent = new Intent(this, AppListActivity.class);
 			this.startActivity(intent);
 			break;
 		case R.id.tv_app_lock:
-	          LeoStat.addEvent(LeoStat.P2, "app lock", "click the app lock button");
+			LeoStat.addEvent(LeoStat.P2, "app lock",
+					"click the app lock button");
 			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
 				enterLockPage();
 			} else {
@@ -97,12 +153,14 @@ public class HomeActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.tv_app_backup:
-            LeoStat.addEvent(LeoStat.P2, "app backup", "click the app backup button");
+			LeoStat.addEvent(LeoStat.P2, "app backup",
+					"click the app backup button");
 			intent = new Intent(this, AppBackupRestoreActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
-	         LeoStat.addEvent(LeoStat.P2, "tasksCompleted", "click the one key clear button");
+			LeoStat.addEvent(LeoStat.P2, "tasksCompleted",
+					"click the one key clear button");
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;
@@ -130,38 +188,4 @@ public class HomeActivity extends Activity implements OnClickListener {
 		Intent intent = new Intent(this, LockSettingActivity.class);
 		startActivity(intent);
 	}
-
-	class ProgressRunable implements Runnable {
-
-		private int targetProgress;
-
-		public ProgressRunable(int targetProgress) {
-			this.targetProgress = targetProgress;
-		}
-
-		@Override
-		public void run() {
-			while (mCurrentProgress > 1) {
-				mCurrentProgress -= 1;
-				mTaskProgessView.setProgress(mCurrentProgress);
-				try {
-					Thread.sleep(10);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			while (mCurrentProgress < targetProgress) {
-				mCurrentProgress += 1;
-				mTaskProgessView.setProgress(mCurrentProgress);
-				try {
-					Thread.sleep(10);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			mCurrentProgress = targetProgress;
-		}
-
-	}
-	
 }

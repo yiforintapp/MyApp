@@ -8,6 +8,7 @@
     <color name="transparent">#00000000</color>
     <color name="black">#ff000000</color>
     <color name="white">#ffffffff</color>
+    <color name="text_color_blue">#0582ff</color>
     <color name="grey">#ff333333</color>
     <color name="pref_category">#ffaaaaaa</color>
     <color name="app_background">#2893fe</color>

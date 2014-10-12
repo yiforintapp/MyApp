@@ -31,20 +31,23 @@ public class AppUtil {
 				+ TrafficStats.getMobileTxBytes();
 	}
 
-	
 	public long getWifiTraffic() {
 		long totalTraffic = TrafficStats.getTotalRxBytes()
 				+ TrafficStats.getTotalTxBytes();
 		return totalTraffic - getMobileTraffic();
 	}
-	
+
 	public static Drawable getDrawable(PackageManager pm, String pkg) {
 		Drawable d = null;
 		try {
-			d =  pm.getApplicationIcon(pkg);
+			d = pm.getApplicationIcon(pkg);
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
 		return d;
+	}
+
+	public static long getTotalTriffic() {
+		return TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();
 	}
 }

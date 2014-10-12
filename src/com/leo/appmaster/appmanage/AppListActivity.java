@@ -73,7 +73,7 @@ public class AppListActivity extends Activity implements AppChangeListener,
 		mPagerContain = findViewById(R.id.layout_pager_container);
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
 		mViewPager = (LeoViewPager) findViewById(R.id.pager);
-		mViewPager.setPageTransformer(true, new DepthPageTransformer());
+//		mViewPager.setPageTransformer(true, new DepthPageTransformer());
 			
 		fillData();
 	}

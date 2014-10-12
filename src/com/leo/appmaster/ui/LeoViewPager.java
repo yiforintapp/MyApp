@@ -14,9 +14,6 @@ public class LeoViewPager extends ViewPager {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
-		// // TODO Auto-generated method stub
-		// return super.onInterceptTouchEvent(arg0);
-//		
 		float preX = 0;
 		
 		switch (event.getAction()) {
@@ -25,7 +22,7 @@ public class LeoViewPager extends ViewPager {
 			break;
 		case MotionEvent.ACTION_MOVE:
 			Log.e("xxxx", "onInterceptTouchEvent");
-			if (Math.abs(event.getX() - preX) > 4) {
+			if (Math.abs(event.getX() - preX) > 40) {
 				return true;
 			} else {
 				preX = event.getX();

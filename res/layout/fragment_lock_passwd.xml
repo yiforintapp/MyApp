@@ -242,7 +242,6 @@
                 android:background="#aaffffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:scaleType="centerInside"
                 android:src="@drawable/del_icon"  />
 
