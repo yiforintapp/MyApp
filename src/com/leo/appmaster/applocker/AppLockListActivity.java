@@ -29,7 +29,7 @@ import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.DragGridView;
+import com.leo.appmaster.ui.LeoGridView;
 import com.leo.appmaster.ui.PagedGridView;
 import com.leoers.leoanalytics.LeoStat;
 
@@ -208,7 +208,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 			LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
 		}
-		((DragGridView) parent).removeItemAnimation(position, mLastSelectApp);
+		((LeoGridView) parent).removeItemAnimation(position, mLastSelectApp);
 		saveLockList();
 	}
 

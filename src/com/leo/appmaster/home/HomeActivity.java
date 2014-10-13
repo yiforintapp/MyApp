@@ -75,17 +75,12 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar.setOptionTextVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
 		mTtileBar.setOptionBackground(R.drawable.setting_btn);
-
-		updateAppCount();
-	}
-
-	private void updateAppCount() {
-		
 	}
 
 	@Override
 	protected void onResume() {
 		int appCount = AppLoadEngine.getInstance(this).getAllPkgInfo().size();
+
 		setAppCount(appCount);
 
 		long total = ProcessUtils.getTotalMem();

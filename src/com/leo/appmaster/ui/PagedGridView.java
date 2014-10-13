@@ -7,7 +7,7 @@ import java.util.List;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity.DepthPageTransformer;
 import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.ui.DragGridView.AnimEndListener;
+import com.leo.appmaster.ui.LeoGridView.AnimEndListener;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -34,7 +34,7 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 
 	private PagerAdapter mAdapter;
 	private int mPageItemCount;
-	private ArrayList<DragGridView> mGridViewList;
+	private ArrayList<LeoGridView> mGridViewList;
 	private ArrayList<List<BaseInfo>> mPageDatas;
 
 	private OnItemClickListener mListener;
@@ -66,13 +66,13 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 			}
 		}
 
-		mGridViewList = new ArrayList<DragGridView>();
+		mGridViewList = new ArrayList<LeoGridView>();
 		mPageDatas = new ArrayList<List<BaseInfo>>();
 
 		for (i = 0; i < mPageCount; i++) {
 			GridviewAdapter adapter = null;
 			List<BaseInfo> pageData = null;
-			DragGridView gridView = (DragGridView) mInflater.inflate(
+			LeoGridView gridView = (LeoGridView) mInflater.inflate(
 					R.layout.grid_page_item, mViewPager, false);
 			if (i == mPageCount - 1) {
 				pageData = copyFrom(data.subList(i * mPageItemCount,
@@ -123,7 +123,7 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 	public void setGridviewItemClickListener(OnItemClickListener listener) {
 		mListener = listener;
 		if (mGridViewList != null) {
-			for (DragGridView gridView : mGridViewList) {
+			for (LeoGridView gridView : mGridViewList) {
 				gridView.setOnItemClickListener(mListener);
 			}
 		}
@@ -165,7 +165,7 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 	}
 
 	private class GridviewAdapter extends BaseAdapter implements
-			DragGridBaseAdapter {
+			LeoGridBaseAdapter {
 		private int mHidePosition = -1;
 		List<BaseInfo> mList;
 
@@ -282,7 +282,7 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 			mIndicator.invalidate();
 		}
 
-		for (DragGridView gridView : mGridViewList) {
+		for (LeoGridView gridView : mGridViewList) {
 			((GridviewAdapter) gridView.getAdapter()).notifyDataSetChanged();
 		}
 	}

@@ -26,6 +26,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.LeoGridBaseAdapter;
 import com.leo.appmaster.ui.LeoViewPager;
 import com.leo.appmaster.ui.PageIndicator;
 
@@ -49,16 +50,16 @@ public class AppListActivity extends Activity implements AppChangeListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_app_manager);
-		
-	    AppLoadEngine.getInstance(this).registerAppChangeListener(this);
-		
+
+		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
+
 		intiUI();
 	}
-	
+
 	@Override
 	protected void onDestroy() {
-	    super.onDestroy();
-	    AppLoadEngine.getInstance(this).unregisterAppChangeListener(this);
+		super.onDestroy();
+		AppLoadEngine.getInstance(this).unregisterAppChangeListener(this);
 	}
 
 	private void intiUI() {
@@ -73,14 +74,13 @@ public class AppListActivity extends Activity implements AppChangeListener,
 		mPagerContain = findViewById(R.id.layout_pager_container);
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
 		mViewPager = (LeoViewPager) findViewById(R.id.pager);
-//		mViewPager.setPageTransformer(true, new DepthPageTransformer());
-			
+		// mViewPager.setPageTransformer(true, new DepthPageTransformer());
+
 		fillData();
 	}
 
-	
 	public void fillData() {
-	    mAppDetails = AppLoadEngine.getInstance(this).getAllPkgInfo();
+		mAppDetails = AppLoadEngine.getInstance(this).getAllPkgInfo();
 		mLoadingView.setVisibility(View.INVISIBLE);
 		int pageCount = Math.round(((long) mAppDetails.size()) / pageItemCount);
 		int itemCounts[] = new int[pageCount];
@@ -142,7 +142,8 @@ public class AppListActivity extends Activity implements AppChangeListener,
 		}
 	}
 
-	private class DataAdapter extends BaseAdapter {
+	private class DataAdapter extends BaseAdapter implements
+			LeoGridBaseAdapter {
 
 		int startLoc;
 		int endLoc;
@@ -184,6 +185,18 @@ public class AppListActivity extends Activity implements AppChangeListener,
 			textView.setText(info.getAppLabel());
 			convertView.setTag(info.getPkg());
 			return convertView;
+		}
+
+		@Override
+		public void reorderItems(int oldPosition, int newPosition) {
+		}
+
+		@Override
+		public void setHideItem(int hidePosition) {
+		}
+
+		@Override
+		public void removeItem(int position) {
 		}
 
 	}
@@ -237,11 +250,11 @@ public class AppListActivity extends Activity implements AppChangeListener,
 		intent.putExtra(AppDetailActivity.EXTRA_LOAD_PKG, pkg);
 		this.startActivity(intent);
 	}
-	
-	 @Override
-	 public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
-	        // TODO Auto-generated method stub
-	        
-	 }
+
+	@Override
+	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
+		// TODO Auto-generated method stub
+
+	}
 
 }
