@@ -17,19 +17,17 @@
 
 package com.leo.appmaster.ui;
 
-import android.support.v4.view.ViewPager;
-
 /**
  * A PageIndicator is responsible to show an visual indicator on the total views
  * number and the current visible view.
  */
-public interface PageIndicator extends ViewPager.OnPageChangeListener {
+public interface PageIndicator extends LeoAppViewPager.OnPageChangeListener {
     /**
      * Bind the indicator to a ViewPager.
      *
      * @param view
      */
-    void setViewPager(ViewPager view);
+    void setViewPager(LeoAppViewPager view);
 
     /**
      * Bind the indicator to a ViewPager.
@@ -37,7 +35,7 @@ public interface PageIndicator extends ViewPager.OnPageChangeListener {
      * @param view
      * @param initialPosition
      */
-    void setViewPager(ViewPager view, int initialPosition);
+    void setViewPager(LeoAppViewPager view, int initialPosition);
 
     /**
      * <p>Set the current page of both the ViewPager and indicator.</p>
@@ -54,7 +52,7 @@ public interface PageIndicator extends ViewPager.OnPageChangeListener {
      *
      * @param listener
      */
-    void setOnPageChangeListener(ViewPager.OnPageChangeListener listener);
+    void setOnPageChangeListener(LeoAppViewPager.OnPageChangeListener listener);
 
     /**
      * Notify the indicator that the fragment list has changed.

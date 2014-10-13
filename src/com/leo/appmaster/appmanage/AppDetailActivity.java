@@ -81,7 +81,7 @@ public class AppDetailActivity extends Activity implements
 	private AppDetailInfo mAppInfo;
 	private DeleteReceiver mDeleteReceiver;
 	private Date mCurrdate;
-	private Calendar mCalendar = Calendar.getInstance();
+//	private Calendar mCalendar = Calendar.getInstance();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -130,8 +130,8 @@ public class AppDetailActivity extends Activity implements
         mAppVersion.setText(mAppInfo.getVersionName());
         mAppMemory = (TextView) findViewById(R.id.app_memory);
         mAppMemory.setText(String.format(getString(R.string.app_memory), mAppInfo.getCacheInfo().getCodeSize()));
-        mAppUsedFlow = (TextView) findViewById(R.id.app_used_flow);
-        mAppUsedFlow.setText(String.format(getString(R.string.app_used_flow), TextFormater.dataSizeFormat(mAppInfo.getTrafficInfo().getReceivedData() + mAppInfo.getTrafficInfo().getMtransmittedData())));
+        mAppUsedFlow = (TextView) findViewById(R.id.app_cache_size);
+        mAppUsedFlow.setText(String.format(getString(R.string.app_cache_size), mAppInfo.getCacheInfo().getCacheSize()));
         
         mUninstall = (Button) findViewById(R.id.uninstall_app);
         mUninstall.setOnClickListener(this);
@@ -425,8 +425,6 @@ public class AppDetailActivity extends Activity implements
 
 	@Override
 	public void onPageSelected(int pageIndex) {
-	    
-	    Log.i("XXXX", "onPageSelected pageIndex = "+pageIndex);
 	    setSelecteTab(pageIndex);
 	}
 	

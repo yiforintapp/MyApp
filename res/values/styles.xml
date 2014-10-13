@@ -91,5 +91,9 @@
         <item name="android:minHeight">37dip</item>
         <item name="android:maxHeight">37dip</item>
     </style>
-
+    
+    <style name="PopupListAnim">
+        <item name="android:windowEnterAnimation">@anim/popumenu_scale_in</item>
+        <item name="android:windowExitAnimation">@anim/popumenu_scale_out</item>
+    </style>
 </resources>

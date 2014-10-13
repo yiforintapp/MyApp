@@ -21,6 +21,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CricleView;
+import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
@@ -38,6 +39,8 @@ public class HomeActivity extends Activity implements OnClickListener {
 	private ImageView mIvDigital_0, mIvDigital_1, mIvDigital_2;
 	private CommonTitleBar mTtileBar;
 
+    
+    private LeoPopMenu mLeoPopMenu;
 	private CricleView mCricleView;
 
 	@Override
@@ -72,10 +75,10 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
-		mTtileBar.setOptionTextVisibility(View.VISIBLE);
-		mTtileBar.setOptionTextVisibility(View.VISIBLE);
+		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
-		mTtileBar.setOptionBackground(R.drawable.setting_btn);
+		mTtileBar.setOptionImage(R.drawable.setting_btn);
+		mTtileBar.setOptionListener(this);
 
 		startCalculateAppCount();
 	}
@@ -179,7 +182,12 @@ public class HomeActivity extends Activity implements OnClickListener {
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;
-
+		case R.id.tv_option_image:
+            if (mLeoPopMenu == null) {
+                mLeoPopMenu = new LeoPopMenu();
+            }
+            mLeoPopMenu.showPopMenu(HomeActivity.this, mTtileBar.findViewById(R.id.tv_option_image));
+		    break;
 		default:
 			break;
 		}

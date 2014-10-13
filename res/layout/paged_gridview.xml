@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.leo.appmaster.ui.LeoViewPager
+    <com.leo.appmaster.ui.LeoAppViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:verticalSpacing="20dp"
         android:layout_weight="1" />
 
     <com.leo.appmaster.ui.CirclePageIndicator

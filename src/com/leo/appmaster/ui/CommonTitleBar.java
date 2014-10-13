@@ -67,7 +67,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     public void setOptionBackground(int resId) {
         mTvOptionText.setBackgroundResource(resId);
     }
-
+    
     public void setOptionText(String text) {
         mTvOptionText.setText(text);
     }
@@ -82,7 +82,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     }
 
     public void setOptionImage(int resID) {
-        mTvOptionText.setBackgroundResource(resID);
+        mTvOptionImage.setImageResource(resID);
     }
 
     @Override

@@ -26,7 +26,7 @@ import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoGridBaseAdapter;
-import com.leo.appmaster.ui.LeoViewPager;
+import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.PageIndicator;
 
 @SuppressLint("InflateParams")
@@ -37,13 +37,14 @@ public class AppListActivity extends Activity implements AppChangeListener,
 
 	private CommonTitleBar mTtileBar;
 	private PageIndicator mPageIndicator;
-	private LeoViewPager mViewPager;
+	private LeoAppViewPager mViewPager;
 	private View mPagerContain;
 
 	List<AppDetailInfo> mAppDetails;
 	LayoutInflater mInflater;
 
 	private int pageItemCount = 20;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,7 @@ public class AppListActivity extends Activity implements AppChangeListener,
 
 		mPagerContain = findViewById(R.id.layout_pager_container);
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
-		mViewPager = (LeoViewPager) findViewById(R.id.pager);
+		mViewPager = (LeoAppViewPager) findViewById(R.id.pager);
 		// mViewPager.setPageTransformer(true, new DepthPageTransformer());
 
 		fillData();
@@ -94,7 +95,7 @@ public class AppListActivity extends Activity implements AppChangeListener,
 		ArrayList<View> viewList = new ArrayList<View>();
 
 		for (i = 0; i < pageCount; i++) {
-			GridView gridView = (GridView) mInflater.inflate(
+		    GridView gridView = (GridView) mInflater.inflate(
 					R.layout.appmanage_gridview, mViewPager, false);
 			if (i == pageCount) {
 				gridView.setAdapter(new DataAdapter(mAppDetails, i
@@ -136,8 +137,9 @@ public class AppListActivity extends Activity implements AppChangeListener,
 
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
-			container.addView(pagerList.get(position), 0);
-			return pagerList.get(position);
+		    View view = pagerList.get(position);
+			container.addView(view);
+			return view;
 		}
 	}
 

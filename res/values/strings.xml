@@ -80,11 +80,13 @@
     <string name="no_app_backuped">No applications backuped</string>
     
     <string name="app_memory">"Memory&#058;<xliff:g>%1$s</xliff:g>"</string>
-    <string name="app_used_flow">"Used Flow&#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_cache_size">"Cache Size&#058;<xliff:g>%1$s</xliff:g>"</string>
     <string name="app_permission1">Dangerous Permission</string>
     <string name="app_permission2">Normal Permission</string>
     <string name="app_permission3">Important Permission</string>
-
+    <string name="app_setting_update">Check the upgrade</string>
+    <string name="app_setting_about">About</string>
+    
     <string-array name="lock_time_entrys">
         <item>@string/lock_right_now</item>
         <item>@string/lock_15_sec</item>
