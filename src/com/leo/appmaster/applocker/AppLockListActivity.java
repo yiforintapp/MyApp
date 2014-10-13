@@ -123,13 +123,16 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	public void onTabClick(View v) {
 		if (v == mTvLocked) {
+			mPagerLock.notifyChange(mLockedList);
 			mPagerUnlock.setVisibility(View.INVISIBLE);
 			mPagerLock.setVisibility(View.VISIBLE);
 
 			mTvUnlock.setTextColor(getResources().getColor(R.color.white));
-			mTvLocked.setTextColor(getResources().getColor(R.color.tab_select_text));
+			mTvLocked.setTextColor(getResources().getColor(
+					R.color.tab_select_text));
 			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_r);
 		} else if (v == mTvUnlock) {
+			mPagerUnlock.notifyChange(mUnlockList);
 			mPagerUnlock.setVisibility(View.VISIBLE);
 			mPagerLock.setVisibility(View.INVISIBLE);
 
@@ -309,13 +312,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			mIvAnimator.setVisibility(View.INVISIBLE);
 			mTvUnlock.setText("未加锁(" + mUnlockList.size() + ")");
 			mTvLocked.setText(" 已加锁(" + mLockedList.size() + ")");
-
-			if (moveToLock) {
-				mPagerLock.notifyChange(mLockedList);
-			} else {
-				mPagerUnlock.notifyChange(mUnlockList);
-			}
-
 			isFlying = false;
 		}
 	}

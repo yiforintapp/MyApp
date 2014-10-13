@@ -133,7 +133,7 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 	protected void onFinishInflate() {
 		mInflater.inflate(R.layout.paged_gridview, this, true);
 		mViewPager = (LeoViewPager) findViewById(R.id.pager);
-//		mViewPager.setPageTransformer(true, new DepthPageTransformer());
+		// mViewPager.setPageTransformer(true, new DepthPageTransformer());
 		mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
 		super.onFinishInflate();
 	}
@@ -254,10 +254,13 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 					mPageDatas.get(page).add(temp);
 				}
 			}
-			for (DragGridView gridView : mGridViewList) {
-				((GridviewAdapter) gridView.getAdapter())
-						.notifyDataSetChanged();
-			}
+			// for (DragGridView gridView : mGridViewList) {
+			// ((GridviewAdapter) gridView.getAdapter())
+			// .notifyDataSetChanged();
+			// }
+
+			((GridviewAdapter) mGridViewList.get(mPageIndex).getAdapter())
+					.notifyDataSetChanged();
 
 		}
 	}
@@ -277,6 +280,10 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 			mAdapter.notifyDataSetChanged();
 			mViewPager.setCurrentItem(targetIndex);
 			mIndicator.invalidate();
+		}
+
+		for (DragGridView gridView : mGridViewList) {
+			((GridviewAdapter) gridView.getAdapter()).notifyDataSetChanged();
 		}
 	}
 

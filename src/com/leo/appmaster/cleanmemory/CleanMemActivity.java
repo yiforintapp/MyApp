@@ -14,6 +14,7 @@ import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -92,20 +94,22 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		// mTvMemory.setText(TextFormater.dataSizeFormat(mLastUsedMem) + "/"
 		// + TextFormater.dataSizeFormat(mTotalMem));
 
-		mShadeView.updateColor(0x409923);
-		
 		startLoad();
 	}
 
 	private void startLoad() {
-		rotateLoadView(2000, 360 * 4);
+		rotateLoadView(2000, 360 * 3);
 
-		final ValueAnimator up = ValueAnimator.ofInt(0, (int) mLastUsedMem);
+		final int target = (int) mLastUsedMem;
+		final ValueAnimator up = ValueAnimator.ofInt(0, target);
 		up.setDuration(2000);
+		up.setInterpolator(new AccelerateDecelerateInterpolator());
 		up.addUpdateListener(new AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator va) {
 				mLastUsedMem = (Integer) va.getAnimatedValue();
+				float per = (float) mLastUsedMem / target;
+				mShadeView.updateColor(1);
 				updateMem();
 			}
 		});
