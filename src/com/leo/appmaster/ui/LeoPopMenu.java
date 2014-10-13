@@ -47,7 +47,7 @@ public class LeoPopMenu {
         mLeoPopMenu.setOutsideTouchable(true);
         mLeoPopMenu.setBackgroundDrawable(AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.popup_menu_bg));
         mLeoPopMenu.update();
-//        mLeoPopMenu.setAnimationStyle(R.style.PopupMenuAnim);
+        mLeoPopMenu.setAnimationStyle(R.style.PopupListAnim);
         mLeoPopMenu.showAsDropDown(anchorView, 0, 0);
     }
 
