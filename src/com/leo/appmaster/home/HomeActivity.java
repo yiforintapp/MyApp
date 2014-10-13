@@ -2,6 +2,7 @@ package com.leo.appmaster.home;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -75,25 +76,39 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar.setOptionTextVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
 		mTtileBar.setOptionBackground(R.drawable.setting_btn);
+
+		startCalculateAppCount();
 	}
 
 	@Override
 	protected void onResume() {
-		int appCount = AppLoadEngine.getInstance(this).getAllPkgInfo().size();
-
-		setAppCount(appCount);
-
 		long total = ProcessUtils.getTotalMem();
 		long used = total - ProcessUtils.getAvailableMem(this);
-
 		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) + "/"
 				+ TextFormater.dataSizeFormat(total));
-
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
-
 		mCricleView.updateDegrees(360f / total * used);
-
 		super.onResume();
+	}
+
+	private void startCalculateAppCount() {
+		AsyncTask<Integer, Integer, Integer> at = new AsyncTask<Integer, Integer, Integer>() {
+			@Override
+			protected Integer doInBackground(Integer... params) {
+				int appCount = AppLoadEngine.getInstance(HomeActivity.this)
+						.getAllPkgInfo().size();
+				return appCount;
+			}
+
+			@Override
+			protected void onPostExecute(Integer result) {
+				setAppCount(result);
+				super.onPostExecute(result);
+			}
+
+		};
+
+		at.execute(0);
 	}
 
 	private void setAppCount(int count) {

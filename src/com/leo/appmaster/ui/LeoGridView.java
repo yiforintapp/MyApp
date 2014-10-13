@@ -68,6 +68,13 @@ public class LeoGridView extends GridView {
 
 	@Override
 	protected void onFinishInflate() {
+		
+		int height = this.getWidth();
+//		this.setVerticalSpacing((int) (height * 0.02));
+		
+		Log.e("xxxx", "onFinishInflate :  height = " + height);
+		
+		
 		super.onFinishInflate();
 	}
 
@@ -124,9 +131,8 @@ public class LeoGridView extends GridView {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int height = MeasureSpec.getSize(heightMeasureSpec);
-
-		this.setVerticalSpacing((int) (height * 0.02));
+		Log.e("xxxx", "onMeasure");
+		
 		if (mNumColumns == AUTO_FIT) {
 			int numFittedColumns;
 			if (mColumnWidth > 0) {
@@ -163,7 +169,7 @@ public class LeoGridView extends GridView {
 		animSetXY.playTogether(animX, animY);
 		return animSetXY;
 	}
-
+	
 	private void animateReorder(final int oldPosition, final int newPosition) {
 		boolean isForward = newPosition > oldPosition;
 		List<Animator> resultList = new LinkedList<Animator>();

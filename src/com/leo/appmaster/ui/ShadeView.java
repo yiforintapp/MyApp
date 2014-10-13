@@ -1,19 +1,31 @@
 package com.leo.appmaster.ui;
 
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
-public class ShadeView extends View {
+public class ShadeView extends View implements AnimatorUpdateListener {
 
-	public static int mGreenColor = 0x47;
-	public static int mRedColor = 0x87;
+	public static int DEFAULT_COLOR_RED = 0x28;
+	public static int DEFAULT_COLOR_GREEN = 0x93;
+	public static int DEFAULT_COLOR_BLUE = 0xfe;
+	
+	private int mCurColor = DEFAULT_COLOR_RED;
 
-	private int mCurColor = mRedColor;
+	private int mGreen = DEFAULT_COLOR_GREEN, mRed = DEFAULT_COLOR_RED,
+			mBlue = DEFAULT_COLOR_BLUE;
 
-	private int mGreen = mGreenColor, mRed = mRedColor;
+	private ValueAnimator gVa;
+	private ValueAnimator rVa;
+	private ValueAnimator bVa;
 
 	public ShadeView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -27,14 +39,32 @@ public class ShadeView extends View {
 		super.onDraw(canvas);
 	}
 
-	public void setColor(int color) {
-		mCurColor = color;
-		invalidate();
+	public void updateColor(int targetR, int targetG, int targetB, int duration) {
+		AnimatorSet set = new AnimatorSet();
+		rVa = ValueAnimator.ofInt(mRed, targetR);
+		gVa = ValueAnimator.ofInt(mGreen, targetG);
+		bVa = ValueAnimator.ofInt(mBlue, targetB);
+
+		gVa.addUpdateListener(this);
+		rVa.addUpdateListener(this);
+		bVa.addUpdateListener(this);
+
+		set.playTogether(gVa, rVa, bVa);
+		set.setDuration(duration);
+		set.setInterpolator(new LinearInterpolator());
+
+		set.start();
 	}
 
-	public void updateColor(int step) {
-		mGreen += step;
-		mRed -= step;
-		setColor(Color.rgb(mRed, mGreen, 10));
+	@Override
+	public void onAnimationUpdate(ValueAnimator va) {
+		mGreen = (Integer) gVa.getAnimatedValue();
+		mRed = (Integer) rVa.getAnimatedValue();
+		mBlue = (Integer) bVa.getAnimatedValue();
+		
+		mCurColor = Color.rgb(mRed, mGreen, mBlue);
+
+		Log.e("xxxx", "mGreen: " + mGreen + "   mRed:" + mRed);
+		postInvalidate();
 	}
 }

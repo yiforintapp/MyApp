@@ -27,9 +27,9 @@ public class LeoViewPager extends ViewPager {
 					+ (event.getY() - preY));
 			Log.e("xxxx", "onInterceptTouchEvent: event.getX() - preX = "
 					+ (event.getX() - preX) + "\n\n");
-			if (Math.abs(event.getX() - preX) > 350) {
-				return true;
-			}
+//			if (Math.abs(event.getX() - preX) > 350) {
+//				return true;
+//			}
 			break;
 		default:
 			break;

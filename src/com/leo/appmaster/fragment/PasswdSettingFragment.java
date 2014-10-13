@@ -27,8 +27,8 @@ public class PasswdSettingFragment extends BaseFragment implements
 	private TextView mInputTip;
 
 	private int mInputCount = 1;
-	private String mTempFirstPasswd;
-	private String mTempSecondPasswd;
+	private String mTempFirstPasswd = "";
+	private String mTempSecondPasswd = "";
 
 	@Override
 	protected int layoutResourceId() {
@@ -119,33 +119,15 @@ public class PasswdSettingFragment extends BaseFragment implements
 		}
 	}
 
-	private void resetPasswd() {
-		clearPasswd();
-		mInputCount = 1;
-		iv_delete.setEnabled(false);
-		iv_makesure.setEnabled(false);
-		mInputTip.setText(R.string.passwd_hint);
-		mTempFirstPasswd = mTempSecondPasswd = "";
-
-	}
 
 	private void makesurePasswd() {
 		if (mInputCount == 1) {
-			mTempFirstPasswd = mTvPasswd1.getText().toString()
-					+ mTvPasswd2.getText().toString()
-					+ mTvPasswd3.getText().toString()
-					+ mTvPasswd4.getText().toString();
 			mInputCount++;
 			clearPasswd();
 			mInputTip.setText(R.string.please_input_pswd_again);
 			iv_makesure.setEnabled(false);
 			iv_delete.setEnabled(false);
 		} else if (mInputCount == 2) {
-			mTempSecondPasswd = mTvPasswd1.getText().toString()
-					+ mTvPasswd2.getText().toString()
-					+ mTvPasswd3.getText().toString()
-					+ mTvPasswd4.getText().toString();
-
 			if (mTempFirstPasswd.equals(mTempSecondPasswd)) {
 				// todo save passwd
 				Intent intent = null;
@@ -168,7 +150,10 @@ public class PasswdSettingFragment extends BaseFragment implements
 				Toast.makeText(mActivity, R.string.tip_no_the_same_pswd, 1)
 						.show();
 				clearPasswd();
-				mInputTip.setText(R.string.please_input_pswd_again);
+				mInputCount = 1;
+				mTempFirstPasswd = "";
+				mTempSecondPasswd = "";
+				mInputTip.setText(R.string.passwd_hint);
 			}
 		}
 	}
@@ -203,19 +188,51 @@ public class PasswdSettingFragment extends BaseFragment implements
 			iv_delete.setEnabled(false);
 		}
 
+		if (mInputCount == 1) {
+			if (mTempFirstPasswd.length() > 0) {
+				mTempFirstPasswd = mTempFirstPasswd.substring(0,
+						mTempFirstPasswd.length());
+			}
+		} else {
+			if (mTempFirstPasswd.length() > 0) {
+				mTempSecondPasswd = mTempSecondPasswd.substring(0,
+						mTempSecondPasswd.length());
+			}
+		}
+
 	}
 
 	private void inputPasswd(String s) {
 		if (mTvPasswd1.getText().equals("")) {
-			mTvPasswd1.setText(s);
+			mTvPasswd1.setText("*");
 			iv_delete.setEnabled(true);
+			if (mInputCount == 1) {
+				mTempFirstPasswd = mTempFirstPasswd + s;
+			} else {
+				mTempSecondPasswd = mTempSecondPasswd + s;
+			}
 		} else if (mTvPasswd2.getText().equals("")) {
-			mTvPasswd2.setText(s);
+			mTvPasswd2.setText("*");
+			if (mInputCount == 1) {
+				mTempFirstPasswd = mTempFirstPasswd + s;
+			} else {
+				mTempSecondPasswd = mTempSecondPasswd + s;
+			}
 		} else if (mTvPasswd3.getText().equals("")) {
-			mTvPasswd3.setText(s);
+			mTvPasswd3.setText("*");
+			if (mInputCount == 1) {
+				mTempFirstPasswd = mTempFirstPasswd + s;
+			} else {
+				mTempSecondPasswd = mTempSecondPasswd + s;
+			}
 		} else if (mTvPasswd4.getText().equals("")) {
-			mTvPasswd4.setText(s);
+			mTvPasswd4.setText("*");
 			iv_makesure.setEnabled(true);
+			if (mInputCount == 1) {
+				mTempFirstPasswd = mTempFirstPasswd + s;
+			} else {
+				mTempSecondPasswd = mTempSecondPasswd + s;
+			}
 		}
 
 	}

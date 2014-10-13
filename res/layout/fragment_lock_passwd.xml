@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/app_background"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/app_background" >
 
     <TextView
         android:id="@+id/tv_find_passwd"
@@ -25,7 +25,7 @@
         android:src="@drawable/ic_launcher"
         android:visibility="invisible" />
 
-        <LinearLayout
+    <LinearLayout
         android:id="@+id/layout_passwd"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -42,6 +42,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/pw_dline"
             android:gravity="center"
+            android:textColor="#ffffffff"
             android:textSize="25sp" />
 
         <TextView
@@ -51,6 +52,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/pw_dline"
             android:gravity="center"
+            android:textColor="#ffffffff"
             android:textSize="25sp" />
 
         <TextView
@@ -60,6 +62,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/pw_dline"
             android:gravity="center"
+            android:textColor="#ffffffff"
             android:textSize="25sp" />
 
         <TextView
@@ -68,6 +71,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/pw_dline"
             android:gravity="center"
+            android:textColor="#ffffffff"
             android:textSize="25sp" />
     </LinearLayout>
 
@@ -91,10 +95,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:text="1"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -106,10 +109,9 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:text="2"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -119,10 +121,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:text="3"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -141,10 +142,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:text="4"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -156,10 +156,9 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:text="5"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -169,10 +168,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:text="6"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -189,10 +187,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:text="7"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -204,10 +201,9 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:text="8"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -217,10 +213,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:text="9"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -239,11 +234,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
                 android:scaleType="centerInside"
-                android:src="@drawable/del_icon"  />
+                android:src="@drawable/del_icon" />
 
             <TextView
                 android:id="@+id/tv_0"
@@ -252,10 +247,9 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:text="0"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -265,10 +259,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#aaffffff"
+                android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:onClick="onClick"
                 android:scaleType="centerInside"
                 android:src="@drawable/ok_icon" />
         </LinearLayout>

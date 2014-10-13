@@ -4,12 +4,6 @@
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <com.leo.appmaster.ui.CommonTitleBar
-        android:id="@+id/layout_title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/app_background" />
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -17,34 +11,38 @@
         <com.leo.appmaster.ui.ShadeView
             android:id="@+id/shade_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="40dp" />
-        
+            android:layout_height="match_parent" />
+
+        <com.leo.appmaster.ui.CommonTitleBar
+            android:id="@+id/layout_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/tv_memory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="120dp"
+                android:text="874M/2G"
+                android:textColor="#ffffff"
+                android:textSize="34sp" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_memory"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
                 android:text="Used Memory"
                 android:textColor="#ffffff"
                 android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/tv_memory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="874M/2G"
-                android:textColor="#ffffff"
-                android:textSize="22sp" />
 
             <FrameLayout
                 android:id="@+id/frameLayout1"
@@ -70,7 +68,7 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/used_mem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="30dp"

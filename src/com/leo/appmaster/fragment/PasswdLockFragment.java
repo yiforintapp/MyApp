@@ -36,6 +36,8 @@ public class PasswdLockFragment extends LockFragment implements
 	private EditText mEtQuestion, mEtAnwser;
 	private AlertDialog mDialog;
 
+	private String mTempPasswd = "";
+
 	@Override
 	protected int layoutResourceId() {
 		return R.layout.fragment_lock_passwd;
@@ -54,7 +56,7 @@ public class PasswdLockFragment extends LockFragment implements
 		tv9 = (TextView) findViewById(R.id.tv_9);
 		tv0 = (TextView) findViewById(R.id.tv_0);
 		iv_delete = (ImageView) findViewById(R.id.tv_delete);
-		iv_delete = (ImageView) findViewById(R.id.tv_ok);
+		iv_makesure = (ImageView) findViewById(R.id.tv_ok);
 
 		tv1.setOnClickListener(this);
 		tv2.setOnClickListener(this);
@@ -67,9 +69,9 @@ public class PasswdLockFragment extends LockFragment implements
 		tv9.setOnClickListener(this);
 		tv0.setOnClickListener(this);
 		iv_delete.setOnClickListener(this);
-		iv_delete.setOnClickListener(this);
+		iv_makesure.setOnClickListener(this);
 		iv_delete.setEnabled(false);
-		iv_delete.setEnabled(false);
+		iv_makesure.setEnabled(false);
 
 		mTvPasswd1 = (TextView) findViewById(R.id.tv_passwd_1);
 		mTvPasswd2 = (TextView) findViewById(R.id.tv_passwd_2);
@@ -163,10 +165,9 @@ public class PasswdLockFragment extends LockFragment implements
 
 	private void checkPasswd() {
 		mInputCount++;
-		String passwd = getInputPasswd();
 		AppLockerPreference pref = AppLockerPreference.getInstance(mActivity);
 
-		if (pref.getPassword().equals(passwd)) { // 密码输入正确
+		if (pref.getPassword().equals(mTempPasswd)) { // 密码输入正确
 			if (mFrom == FROM_SELF) {
 				Intent intent = null;
 				// try start lock service
@@ -197,13 +198,6 @@ public class PasswdLockFragment extends LockFragment implements
 		}
 	}
 
-	private String getInputPasswd() {
-		return mTvPasswd1.getText().toString()
-				+ mTvPasswd2.getText().toString()
-				+ mTvPasswd3.getText().toString()
-				+ mTvPasswd4.getText().toString();
-	}
-
 	private void clearPasswd() {
 		mTvPasswd1.setText("");
 		mTvPasswd2.setText("");
@@ -214,29 +208,37 @@ public class PasswdLockFragment extends LockFragment implements
 	private void deletePasswd() {
 		if (!mTvPasswd4.getText().equals("")) {
 			mTvPasswd4.setText("");
-			iv_delete.setEnabled(false);
+			mTempPasswd = mTempPasswd.substring(0, mTempPasswd.length() - 1);
+			iv_makesure.setEnabled(false);
 		} else if (!mTvPasswd3.getText().equals("")) {
 			mTvPasswd3.setText("");
+			mTempPasswd = mTempPasswd.substring(0, mTempPasswd.length() - 1);
 		} else if (!mTvPasswd2.getText().equals("")) {
 			mTvPasswd2.setText("");
+			mTempPasswd = mTempPasswd.substring(0, mTempPasswd.length() - 1);
 		} else if (!mTvPasswd1.getText().equals("")) {
 			mTvPasswd1.setText("");
 			iv_delete.setEnabled(false);
+			mTempPasswd = "";
 		}
 
 	}
 
 	private void inputPasswd(String s) {
 		if (mTvPasswd1.getText().equals("")) {
-			mTvPasswd1.setText(s);
+			mTvPasswd1.setText("*");
 			iv_delete.setEnabled(true);
+			mTempPasswd = s;
 		} else if (mTvPasswd2.getText().equals("")) {
-			mTvPasswd2.setText(s);
+			mTvPasswd2.setText("*");
+			mTempPasswd = mTempPasswd + s;
 		} else if (mTvPasswd3.getText().equals("")) {
-			mTvPasswd3.setText(s);
+			mTvPasswd3.setText("*");
+			mTempPasswd = mTempPasswd + s;
 		} else if (mTvPasswd4.getText().equals("")) {
-			mTvPasswd4.setText(s);
-			iv_delete.setEnabled(true);
+			mTvPasswd4.setText("*");
+			mTempPasswd = mTempPasswd + s;
+			iv_makesure.setEnabled(true);
 		}
 
 	}

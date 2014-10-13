@@ -99,7 +99,6 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	private void startLoad() {
 		rotateLoadView(2000, 360 * 3);
-
 		final int target = (int) mLastUsedMem;
 		final ValueAnimator up = ValueAnimator.ofInt(0, target);
 		up.setDuration(2000);
@@ -108,13 +107,12 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			@Override
 			public void onAnimationUpdate(ValueAnimator va) {
 				mLastUsedMem = (Integer) va.getAnimatedValue();
-				float per = (float) mLastUsedMem / target;
-				mShadeView.updateColor(1);
 				updateMem();
 			}
 		});
 		up.start();
-
+		
+		mShadeView.updateColor(0xff, 0x3b, 0x00, 2000);
 	}
 
 	private void rotateLoadView(int duration, int degrees) {
@@ -181,15 +179,11 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			mCleaner = new ProcessCleaner(
 					(ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
 		}
-
 		mCleaner.cleanAllProcess();
-
 		long curUsedMem = mTotalMem - ProcessUtils.getAvailableMem(this);
-
 		mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-
 		startUpdataMemTip(curUsedMem);
-
+		mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
 	}
 
 	private void shakeRocket() {

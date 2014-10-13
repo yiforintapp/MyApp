@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:textColor="@color/white"
-        android:text="00:10"
+        android:layout_marginBottom="5dp"
         android:gravity="center"
-        android:textSize="40sp" />
+        android:text="00:10"
+        android:textColor="@color/white"
+        android:textSize="50sp" />
 
     <TextView
         android:id="@+id/textView1"
@@ -22,17 +22,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="145dp"
+        android:layout_marginBottom="165dp"
         android:text="@string/please_wait"
         android:textColor="@color/white" />
 
-    <com.leo.appmaster.ui.TimeView
-        android:id="@+id/time_view"
-        android:layout_width="124dp"
-        android:layout_height="124dp"
-        android:background="@drawable/time_bg"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="122dp"
+        android:layout_height="122dp"
         android:layout_above="@+id/tv_wait_time"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp" />
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:background="@drawable/clock_body" 
+        android:orientation="vertical" >
+
+        <com.leo.appmaster.ui.TimeView
+            android:id="@+id/time_view"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:background="@drawable/clock_scale" />
+    </LinearLayout>
 
 </RelativeLayout>

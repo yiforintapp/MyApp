@@ -32,9 +32,12 @@ public class WaitActivity extends Activity {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (mWaitTime > 0) {
+				while (true) {
 					mTvTime.post(mTask);
 					mWaitTime--;
+					if (mWaitTime == 0) {
+						break;
+					}
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
@@ -44,7 +47,7 @@ public class WaitActivity extends Activity {
 				WaitActivity.this.finish();
 			}
 		}).start();
-		
+
 		ValueAnimator va = ValueAnimator.ofFloat(0f, 360f);
 		va.addUpdateListener(new AnimatorUpdateListener() {
 			@Override
