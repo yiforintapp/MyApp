@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -142,8 +141,7 @@ public class AppListActivity extends Activity implements AppChangeListener,
 		}
 	}
 
-	private class DataAdapter extends BaseAdapter implements
-			LeoGridBaseAdapter {
+	private class DataAdapter extends BaseAdapter implements LeoGridBaseAdapter {
 
 		int startLoc;
 		int endLoc;
@@ -253,8 +251,13 @@ public class AppListActivity extends Activity implements AppChangeListener,
 
 	@Override
 	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
-		// TODO Auto-generated method stub
+		runOnUiThread(new Runnable() {
 
+			@Override
+			public void run() {
+				fillData();
+			}
+		});
 	}
 
 }

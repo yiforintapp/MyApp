@@ -17,8 +17,10 @@ import com.leo.appmaster.utils.TextFormater;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PermissionInfo;
@@ -29,8 +31,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -75,7 +79,7 @@ public class AppDetailActivity extends Activity implements
     private Bitmap mAppBaseInfoLayoutbg;
 	
 	private AppDetailInfo mAppInfo;
-	
+	private DeleteReceiver mDeleteReceiver;
 	private Date mCurrdate;
 	private Calendar mCalendar = Calendar.getInstance();
 	@Override
@@ -83,6 +87,7 @@ public class AppDetailActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_app_detail);
 		handleIntent();
+		resisterDeleteReceiver();
 		initUI();
 	}
 
@@ -92,6 +97,19 @@ public class AppDetailActivity extends Activity implements
 		mAppInfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(pkg);
 	}
 
+	private void resisterDeleteReceiver() {
+        mDeleteReceiver = new DeleteReceiver();
+	    IntentFilter filter = new IntentFilter();  
+	    filter.addAction(Intent.ACTION_PACKAGE_REMOVED);  
+	    filter.addDataScheme("package");  
+
+	    registerReceiver(mDeleteReceiver, filter);
+	}
+	
+	private void unResisterDeleteReceiver() {
+	    unregisterReceiver(mDeleteReceiver);
+	}
+	
 	private void initUI() {
 		mTvUseInfo = (TextView) findViewById(R.id.tv_app_use_info);
 		mTvPermissionInfo = (TextView) findViewById(R.id.tv_app_permission_info);
@@ -281,7 +299,11 @@ public class AppDetailActivity extends Activity implements
                 }
                 TextView permissionName = (TextView) permissionItem
                         .findViewById(R.id.permission_name);
-                permissionName.setText(dangerousPermissions.get(i).loadLabel(packageManager));
+                CharSequence pName = dangerousPermissions.get(i).loadLabel(packageManager);
+                if (TextUtils.isEmpty(pName)) {
+                    continue;
+                }
+                permissionName.setText(pName);
 //                Log.i("XXXX", "dangerousPermissions.get(i).group="+dangerousPermissions.get(i).group);
                 TextView permissionDiscr = (TextView) permissionItem
                         .findViewById(R.id.permission_discription);
@@ -311,7 +333,11 @@ public class AppDetailActivity extends Activity implements
                 }
                 TextView permissionName = (TextView) permissionItem
                         .findViewById(R.id.permission_name);
-                permissionName.setText(sinatruePermissions.get(i).loadLabel(packageManager));
+                CharSequence pName = sinatruePermissions.get(i).loadLabel(packageManager);
+                if (TextUtils.isEmpty(pName)) {
+                    continue;
+                }
+                permissionName.setText(pName);
 //                Log.i("XXXX", "dangerousPermissions.get(i).group="+dangerousPermissions.get(i).group);
                 TextView permissionDiscr = (TextView) permissionItem
                         .findViewById(R.id.permission_discription);
@@ -341,7 +367,12 @@ public class AppDetailActivity extends Activity implements
                 }
                 TextView permissionName = (TextView) permissionItem
                         .findViewById(R.id.permission_name);
-                permissionName.setText(nomalPermissions.get(i).loadLabel(packageManager));
+                CharSequence pName = nomalPermissions.get(i).loadLabel(packageManager);
+                if (TextUtils.isEmpty(pName)) {
+                    continue;
+                }
+                permissionName.setText(pName);
+//              Log.i("XXXX", "dangerousPermissions.get(i).group="+dangerousPermissions.get(i).group);
                 TextView permissionDiscr = (TextView) permissionItem
                         .findViewById(R.id.permission_discription);
                 permissionDiscr.setText(nomalPermissions.get(i).loadDescription(packageManager));
@@ -420,8 +451,10 @@ public class AppDetailActivity extends Activity implements
                 RemoveApp(mAppInfo.getPkg());
                 break;
             case R.id.stop_app:
-                ProcessCleaner cleaner = new ProcessCleaner((ActivityManager)getSystemService(Context.ACTIVITY_SERVICE));
-                cleaner.cleanProcess(mAppInfo.getPkg());
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", mAppInfo.getPkg(), null);
+                intent.setData(uri);
+                startActivity(intent);
                 break;
             case R.id.tv_app_use_info:
                 mViewPager.setCurrentItem(0);
@@ -450,6 +483,7 @@ public class AppDetailActivity extends Activity implements
             mAppBaseInfoLayoutbg.recycle();
             mAppBaseInfoLayoutbg = null;
         }
+        unResisterDeleteReceiver();
     }
 
     @Override
@@ -467,5 +501,18 @@ public class AppDetailActivity extends Activity implements
         
     }
 	
-	
+    private class DeleteReceiver extends BroadcastReceiver {      
+        
+        @Override     
+        public void onReceive(Context context, Intent intent) {      
+            if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
+                String packageName = intent.getData().getSchemeSpecificPart();
+                if (mAppInfo != null) {
+                    if (mAppInfo.getPkg().equals(packageName)) {
+                        finish();
+                    }
+                }
+            }      
+        }
+    }
 }
