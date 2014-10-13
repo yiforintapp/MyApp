@@ -74,10 +74,9 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
-		mTtileBar.setOptionTextVisibility(View.VISIBLE);
-		mTtileBar.setOptionTextVisibility(View.VISIBLE);
+		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
-		mTtileBar.setOptionBackground(R.drawable.setting_btn);
+		mTtileBar.setOptionImage(R.drawable.setting_btn);
 		mTtileBar.setOptionListener(this);
 	}
 
@@ -168,11 +167,11 @@ public class HomeActivity extends Activity implements OnClickListener {
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;
-		case R.id.tv_option_text:
+		case R.id.tv_option_image:
             if (mLeoPopMenu == null) {
                 mLeoPopMenu = new LeoPopMenu();
             }
-            mLeoPopMenu.showPopMenu(HomeActivity.this, mTtileBar.findViewById(R.id.tv_option_text));
+            mLeoPopMenu.showPopMenu(HomeActivity.this, mTtileBar.findViewById(R.id.tv_option_image));
 		    break;
 		default:
 			break;
