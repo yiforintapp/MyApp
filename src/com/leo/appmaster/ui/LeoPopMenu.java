@@ -27,7 +27,6 @@ public class LeoPopMenu {
     
     private PopupWindow mLeoPopMenu;
 
-
     /**
      * @param aContext
      * @param anchorView 显示tab列表

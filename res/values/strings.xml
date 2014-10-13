@@ -79,6 +79,7 @@
     <string name="bakup_fail_unavailable">Storage is unavailable</string>
     <string name="no_app_backuped">No applications backuped</string>
     
+    <string name="app_details">App Details</string>
     <string name="app_memory">"Memory&#058;<xliff:g>%1$s</xliff:g>"</string>
     <string name="app_cache_size">"Cache Size&#058;<xliff:g>%1$s</xliff:g>"</string>
     <string name="app_permission1">Dangerous Permission</string>
