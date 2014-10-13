@@ -17,8 +17,10 @@ import com.leo.appmaster.utils.TextFormater;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PermissionInfo;
@@ -77,7 +79,7 @@ public class AppDetailActivity extends Activity implements
     private Bitmap mAppBaseInfoLayoutbg;
 	
 	private AppDetailInfo mAppInfo;
-	
+	private DeleteReceiver mDeleteReceiver;
 	private Date mCurrdate;
 	private Calendar mCalendar = Calendar.getInstance();
 	@Override
@@ -85,6 +87,7 @@ public class AppDetailActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_app_detail);
 		handleIntent();
+		resisterDeleteReceiver();
 		initUI();
 	}
 
@@ -94,6 +97,19 @@ public class AppDetailActivity extends Activity implements
 		mAppInfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(pkg);
 	}
 
+	private void resisterDeleteReceiver() {
+        mDeleteReceiver = new DeleteReceiver();
+	    IntentFilter filter = new IntentFilter();  
+	    filter.addAction(Intent.ACTION_PACKAGE_REMOVED);  
+	    filter.addDataScheme("package");  
+
+	    registerReceiver(mDeleteReceiver, filter);
+	}
+	
+	private void unResisterDeleteReceiver() {
+	    unregisterReceiver(mDeleteReceiver);
+	}
+	
 	private void initUI() {
 		mTvUseInfo = (TextView) findViewById(R.id.tv_app_use_info);
 		mTvPermissionInfo = (TextView) findViewById(R.id.tv_app_permission_info);
@@ -467,6 +483,7 @@ public class AppDetailActivity extends Activity implements
             mAppBaseInfoLayoutbg.recycle();
             mAppBaseInfoLayoutbg = null;
         }
+        unResisterDeleteReceiver();
     }
 
     @Override
@@ -484,5 +501,18 @@ public class AppDetailActivity extends Activity implements
         
     }
 	
-	
+    private class DeleteReceiver extends BroadcastReceiver {      
+        
+        @Override     
+        public void onReceive(Context context, Intent intent) {      
+            if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
+                String packageName = intent.getData().getSchemeSpecificPart();
+                if (mAppInfo != null) {
+                    if (mAppInfo.getPkg().equals(packageName)) {
+                        finish();
+                    }
+                }
+            }      
+        }
+    }
 }
