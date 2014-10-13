@@ -3,27 +3,15 @@ package com.leo.appmaster.ui;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.PixelFormat;
-import android.graphics.Rect;
-import android.os.Handler;
-import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnPreDrawListener;
-import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 
 import com.leo.appmaster.model.BaseInfo;
@@ -124,9 +112,9 @@ public class LeoGridView extends GridView {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int height = MeasureSpec.getSize(heightMeasureSpec);
+//		int height = MeasureSpec.getSize(heightMeasureSpec);
 
-		this.setVerticalSpacing((int) (height * 0.02));
+//		this.setVerticalSpacing((int) (height * 0.02));
 		if (mNumColumns == AUTO_FIT) {
 			int numFittedColumns;
 			if (mColumnWidth > 0) {

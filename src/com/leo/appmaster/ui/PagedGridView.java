@@ -28,7 +28,7 @@ import android.widget.TextView;
 public class PagedGridView extends LinearLayout implements AnimEndListener {
 
 	private int mCellX, mCellY;
-	private LeoViewPager mViewPager;
+	private LeoAppViewPager mViewPager;
 	private CirclePageIndicator mIndicator;
 	private LayoutInflater mInflater;
 
@@ -132,7 +132,7 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 	@Override
 	protected void onFinishInflate() {
 		mInflater.inflate(R.layout.paged_gridview, this, true);
-		mViewPager = (LeoViewPager) findViewById(R.id.pager);
+		mViewPager = (LeoAppViewPager) findViewById(R.id.pager);
 		// mViewPager.setPageTransformer(true, new DepthPageTransformer());
 		mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
 		super.onFinishInflate();
