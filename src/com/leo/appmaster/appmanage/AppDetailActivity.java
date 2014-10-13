@@ -81,7 +81,7 @@ public class AppDetailActivity extends Activity implements
 	private AppDetailInfo mAppInfo;
 	private DeleteReceiver mDeleteReceiver;
 	private Date mCurrdate;
-	private Calendar mCalendar = Calendar.getInstance();
+//	private Calendar mCalendar = Calendar.getInstance();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -425,8 +425,6 @@ public class AppDetailActivity extends Activity implements
 
 	@Override
 	public void onPageSelected(int pageIndex) {
-	    
-	    Log.i("XXXX", "onPageSelected pageIndex = "+pageIndex);
 	    setSelecteTab(pageIndex);
 	}
 	

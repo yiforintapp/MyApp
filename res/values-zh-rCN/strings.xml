@@ -103,5 +103,6 @@
     <string name="app_permission1">危险权限</string>
     <string name="app_permission2">普通权限</string>
     <string name="app_permission3">重要权限</string>
-
+    <string name="app_setting_update">检查升级</string>
+    <string name="app_setting_about">关于</string>
 </resources>
