@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -304,7 +303,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         mRestoreAdapter.updateData();
         mBackupAdapter.updateData();
         mInstallText.setText(mBackupManager.getInstalledAppSize());
-        mStorageText.setText(mBackupManager.getAvaiableSize());
+        mStorageText.setText(mBackupManager.getAvaiableSizeString());
         mCheckAll.setImageResource(R.drawable.tick_all_normal);
         mCheckAll.setTag(false);
         if(mRestoreAdapter.isEmpty()) {

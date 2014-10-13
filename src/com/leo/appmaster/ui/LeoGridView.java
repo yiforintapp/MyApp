@@ -52,6 +52,7 @@ public class LeoGridView extends GridView {
 		if (!mNumColumnsSet) {
 			mNumColumns = AUTO_FIT;
 		}
+        setLayerType(View.LAYER_TYPE_HARDWARE, null);
 	}
 
 	@Override

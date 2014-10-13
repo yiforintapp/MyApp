@@ -220,17 +220,20 @@ public class AppBackupRestoreManager implements AppChangeListener{
         return String.format(s, "0");
     }
     
-    public String getAvaiableSize() {
+    public String getAvaiableSizeString() {
         String tips = AppMasterApplication.getInstance().getString(R.string.storage_size);
         if(isSDReady()) {
-            File path = Environment.getExternalStorageDirectory();
-            StatFs stat = new StatFs(path.getPath());
-            long blockSize = stat.getBlockSize();
-            long availableBlocks = stat.getAvailableBlocks();
-            long avaiableSize =  availableBlocks * blockSize;
-            return String.format(tips, convertToSizeString(avaiableSize));
+            return String.format(tips, convertToSizeString(getAvaiableSize()));
         }
         return String.format(tips, AppMasterApplication.getInstance().getString(R.string.unavailable));
+    }
+    
+    private long getAvaiableSize() {
+        File path = Environment.getExternalStorageDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long availableBlocks = stat.getAvailableBlocks();
+        return  availableBlocks * blockSize;        
     }
     
     private String convertToSizeString(long size) {
@@ -255,6 +258,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
         String dest = getBackupPath();
         if(dest == null) {
             return FAIL_TYPE_SDCARD_UNAVAILABLE;
+        }
+        if(apkFile.length() > getAvaiableSize()) {
+            return FAIL_TYPE_FULL;
         }
         FileInputStream in = null;
         try {
@@ -465,6 +471,19 @@ public class AppBackupRestoreManager implements AppChangeListener{
             mBackupList.addAll(changes);
         } else if(type == AppChangeListener.TYPE_REMOVE) {
             mBackupList.removeAll(changes);
+        } else if(type == AppChangeListener.TYPE_UPDATE) {
+            for(AppDetailInfo app : changes) {
+                if(app.isBackuped) { // if app already backuped, check version
+                    String pkg = app.getPkg();
+                    int vCode = app.getVersionCode();
+                    for(AppDetailInfo a : mSavedList) {
+                        if(pkg.equals(a.getPkg()) && vCode != a.getVersionCode()) {
+                            app.isBackuped = false;
+                            break;
+                        }
+                    }
+                }
+            }
         }
         mBackupListener.onDataUpdate();
     }
