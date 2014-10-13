@@ -219,7 +219,9 @@ public class AppLoadEngine extends BroadcastReceiver {
         AppDetailInfo info = mAppDetails.get(pkgName);
         if (info != null) {
             long received = TrafficStats.getUidRxBytes(info.getUid());
+            if (received < 0) received = 0;
             long transmitted = TrafficStats.getUidTxBytes(info.getUid());
+            if (transmitted < 0) transmitted = 0;
             info.getTrafficInfo().setTransmittedData(transmitted);
             info.getTrafficInfo().setReceivedData(received);
         }
