@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
@@ -53,15 +54,6 @@ public class LeoGridView extends GridView {
 			mNumColumns = AUTO_FIT;
 		}
 		setLayerType(View.LAYER_TYPE_HARDWARE, null);
-	}
-
-	@Override
-	protected void onFinishInflate() {
-
-		// int height = this.getWidth();
-		// this.setVerticalSpacing((int) (height * 0.02));
-
-		super.onFinishInflate();
 	}
 
 	public void removeItemAnimation(final int position, BaseInfo removeApp) {
