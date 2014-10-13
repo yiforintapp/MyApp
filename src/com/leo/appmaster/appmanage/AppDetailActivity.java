@@ -29,8 +29,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -281,7 +283,11 @@ public class AppDetailActivity extends Activity implements
                 }
                 TextView permissionName = (TextView) permissionItem
                         .findViewById(R.id.permission_name);
-                permissionName.setText(dangerousPermissions.get(i).loadLabel(packageManager));
+                CharSequence pName = dangerousPermissions.get(i).loadLabel(packageManager);
+                if (TextUtils.isEmpty(pName)) {
+                    continue;
+                }
+                permissionName.setText(pName);
 //                Log.i("XXXX", "dangerousPermissions.get(i).group="+dangerousPermissions.get(i).group);
                 TextView permissionDiscr = (TextView) permissionItem
                         .findViewById(R.id.permission_discription);
@@ -311,7 +317,11 @@ public class AppDetailActivity extends Activity implements
                 }
                 TextView permissionName = (TextView) permissionItem
                         .findViewById(R.id.permission_name);
-                permissionName.setText(sinatruePermissions.get(i).loadLabel(packageManager));
+                CharSequence pName = sinatruePermissions.get(i).loadLabel(packageManager);
+                if (TextUtils.isEmpty(pName)) {
+                    continue;
+                }
+                permissionName.setText(pName);
 //                Log.i("XXXX", "dangerousPermissions.get(i).group="+dangerousPermissions.get(i).group);
                 TextView permissionDiscr = (TextView) permissionItem
                         .findViewById(R.id.permission_discription);
@@ -341,7 +351,12 @@ public class AppDetailActivity extends Activity implements
                 }
                 TextView permissionName = (TextView) permissionItem
                         .findViewById(R.id.permission_name);
-                permissionName.setText(nomalPermissions.get(i).loadLabel(packageManager));
+                CharSequence pName = nomalPermissions.get(i).loadLabel(packageManager);
+                if (TextUtils.isEmpty(pName)) {
+                    continue;
+                }
+                permissionName.setText(pName);
+//              Log.i("XXXX", "dangerousPermissions.get(i).group="+dangerousPermissions.get(i).group);
                 TextView permissionDiscr = (TextView) permissionItem
                         .findViewById(R.id.permission_discription);
                 permissionDiscr.setText(nomalPermissions.get(i).loadDescription(packageManager));
@@ -420,8 +435,10 @@ public class AppDetailActivity extends Activity implements
                 RemoveApp(mAppInfo.getPkg());
                 break;
             case R.id.stop_app:
-                ProcessCleaner cleaner = new ProcessCleaner((ActivityManager)getSystemService(Context.ACTIVITY_SERVICE));
-                cleaner.cleanProcess(mAppInfo.getPkg());
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", mAppInfo.getPkg(), null);
+                intent.setData(uri);
+                startActivity(intent);
                 break;
             case R.id.tv_app_use_info:
                 mViewPager.setCurrentItem(0);
