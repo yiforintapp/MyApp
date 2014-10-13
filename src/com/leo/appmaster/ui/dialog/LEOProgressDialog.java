@@ -17,6 +17,7 @@ public class LEOProgressDialog extends LEOBaseDialog {
 	private TextView mProHint;
 	private ProgressBar mProgressBar;
 	private TextView mState;
+	private View bottomLayout;
 
 	public LEOProgressDialog(Context context) {
 		super(context, R.style.bt_dialog);
@@ -33,6 +34,10 @@ public class LEOProgressDialog extends LEOBaseDialog {
 	public void setMax(int maxValue) {
 		mMax = maxValue;
 		mProgressBar.setMax(maxValue);
+	}
+	
+	public void setButtonVisiable(boolean visiable) {
+	    bottomLayout.setVisibility(visiable ? View.VISIBLE : View.GONE);
 	}
 	
 	public void setIndeterminate(boolean indeterminate) {
@@ -52,6 +57,16 @@ public class LEOProgressDialog extends LEOBaseDialog {
 		mProHint = (TextView) dlgView.findViewById(R.id.dlg_pro_hint);
 		mState = (TextView) dlgView.findViewById(R.id.dlg_pro_state);
 		mProgressBar = (ProgressBar) dlgView.findViewById(R.id.dlg_pro);
+		bottomLayout = dlgView.findViewById(R.id.dlg_bottom_layout);
+		
+		
+		View cancel = dlgView.findViewById(R.id.dlg_bottom_btn);
+		cancel.setOnClickListener(new View.OnClickListener() {           
+            @Override
+            public void onClick(View v) {
+               cancel();
+            }
+        });
 
 		setContentView(dlgView);
 	}

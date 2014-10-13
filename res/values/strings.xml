@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
     <string name="app_name">AppMaster</string>
-    <string name="hello_world">Hello world!</string>
     <string name="app_manage">应用管理</string>
     <string name="app_detail">App Details</string>
     <string name="app_lock">应用锁</string>
-    <string name="app_backup">应用备份</string>
-     <string name="app_restore">应用恢复</string>
-     <string name="button_backup">备份</string>
-     <string name="button_install">安装</string>
-     <string name="button_delete">删除</string>
+    <string name="app_backup">Backup</string>
+    <string name="app_restore">Restore</string>
+    <string name="button_backup">Backup</string>
+    <string name="button_install">Install</string>
+    <string name="button_delete">Delete</string>
     <string name="clean_memory">一键清理</string>
     <string name="app_use_info">使用情况</string>
     <string name="app_permission_info">权限监控</string>
@@ -17,9 +17,9 @@
     <string name="stop">停止</string>
     <string name="please_input_pswd">输入密码</string>
     <string name="please_input_pswd_again">再次输入密码</string>
-    <string name="makesure">确认</string>
-    <string name="cancel">取消</string>
-    <string name="delete">删除</string>
+    <string name="makesure">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
     <string name="passwd_hint">请输入四位数密码</string>
     <string name="tip_no_the_same_pswd">输入密码不一致，请重新输入</string>
     <string name="use_gesture">使用手势</string>
@@ -62,13 +62,29 @@
     <string name="lock_3_min">3分钟</string>
     <string name="lock_5_min">5分钟</string>
     
+    <string name="app_version">Version: %1$s</string>
+    <string name="backuping">Backuping</string>
+    <string name="no_application_selected">No applications selected</string>
+    <string name="query_delete">Are you sure to delete: %1$s?</string>
+    <string name="backup_finish">Backup Finished</string>
+    <string name="backuped_count">%1$d applications backuped</string>
+    <string name="delete_fail">Delete fail!</string>
+    <string name="deleting_app">Deleting: %1$s</string>
+    <string name="installed_app_size">Installed app: %1$d</string>
+    <string name="apk_size">Size: %1$s</string>
+    <string name="storage_size">Phone capacity: %1$s</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="bakup_fail_cancel">Backup canceled</string>
+    <string name="bakup_fail_full">Storage is full</string>
+    <string name="bakup_fail_unavailable">Storage is unavailable</string>
+    <string name="no_app_backuped">No applications backuped</string>
+    
     <string name="app_memory">"Memory&#058;<xliff:g>%1$s</xliff:g>"</string>
     <string name="app_used_flow">"Used Flow&#058;<xliff:g>%1$s</xliff:g>"</string>
-    
     <string name="app_permission1">Dangerous Permission</string>
     <string name="app_permission2">Normal Permission</string>
     <string name="app_permission3">Important Permission</string>
-    
+
     <string-array name="lock_time_entrys">
         <item>@string/lock_right_now</item>
         <item>@string/lock_15_sec</item>

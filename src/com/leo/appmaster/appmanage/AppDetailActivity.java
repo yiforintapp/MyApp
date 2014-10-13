@@ -103,7 +103,7 @@ public class AppDetailActivity extends Activity implements
 		mTitle = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTitle.setTitle(R.string.app_details);
 		mTitle.openBackView();
-		mTitle.setOptionVisibility(View.INVISIBLE);
+		mTitle.setOptionTextVisibility(View.INVISIBLE);
         mAppIcon = (ImageView) findViewById(R.id.app_info_icon);
         mAppIcon.setImageDrawable(mAppInfo.getAppIcon());
         mAppName = (TextView) findViewById(R.id.app_name);
@@ -261,7 +261,8 @@ public class AppDetailActivity extends Activity implements
         }
         if (dangerousPermissions.size() > 0) {
             TextView title = new TextView(this);
-            title.setText(R.string.app_permission2);
+            title.setText(R.string.app_permission1);
+            title.setTextColor(Color.rgb(148, 148, 148));
             title.setBackgroundColor(Color.rgb(214, 214, 214));
             title.setGravity(Gravity.CENTER_VERTICAL);
             title.setPadding(DipPixelUtil.dip2px(this, 20), 0, 0, 0);
@@ -291,6 +292,7 @@ public class AppDetailActivity extends Activity implements
         if (sinatruePermissions.size() > 0) {
             TextView title = new TextView(this);
             title.setText(R.string.app_permission3);
+            title.setTextColor(Color.rgb(148, 148, 148));
             title.setBackgroundColor(Color.rgb(214, 214, 214));
             title.setGravity(Gravity.CENTER_VERTICAL);
             title.setPadding(DipPixelUtil.dip2px(this, 20), 0, 0, 0);
@@ -319,7 +321,8 @@ public class AppDetailActivity extends Activity implements
         }
         if (nomalPermissions.size() > 0) {
             TextView title = new TextView(this);
-            title.setText(R.string.app_permission1);
+            title.setText(R.string.app_permission2);
+            title.setTextColor(Color.rgb(148, 148, 148));
             title.setBackgroundColor(Color.rgb(214, 214, 214));
             title.setGravity(Gravity.CENTER_VERTICAL);
             title.setPadding(DipPixelUtil.dip2px(this, 20), 0, 0, 0);

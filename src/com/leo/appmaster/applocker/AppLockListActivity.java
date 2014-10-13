@@ -83,9 +83,9 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 		mTtileBar.openBackView();
-		mTtileBar.setOptionVisibility(View.VISIBLE);
+		mTtileBar.setOptionTextVisibility(View.VISIBLE);
 		mTtileBar.setOptionListener(this);
-		mTtileBar.setOptionVisibility(View.VISIBLE);
+		mTtileBar.setOptionTextVisibility(View.VISIBLE);
 		mTtileBar.setOptionListener(this);
 
 		mIvAnimator = (ImageView) findViewById(R.id.iv_animator);
@@ -339,7 +339,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.tv_option:
+		case R.id.tv_option_text:
 			Intent intent = new Intent(this, LockOptionActivity.class);
 			startActivity(intent);
 			break;

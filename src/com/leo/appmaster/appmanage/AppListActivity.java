@@ -68,7 +68,7 @@ public class AppListActivity extends Activity implements AppChangeListener,
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_manage);
 		mTtileBar.openBackView();
-		mTtileBar.setOptionVisibility(View.INVISIBLE);
+		mTtileBar.setOptionTextVisibility(View.INVISIBLE);
 
 		mPagerContain = findViewById(R.id.layout_pager_container);
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
