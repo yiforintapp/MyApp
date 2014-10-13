@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background"
     tools:context="${relativePackage}.${activityClass}" >
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/app_background" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -18,8 +18,8 @@
             android:id="@+id/shade_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="44dp" />
-
+            android:layout_marginTop="40dp" />
+        
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
@@ -31,9 +31,9 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="120dp"
-                android:textSize="15sp"
                 android:text="Used Memory"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_memory"
@@ -43,8 +43,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:text="874M/2G"
-                android:textSize="22sp"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
 
             <FrameLayout
                 android:id="@+id/frameLayout1"
@@ -86,8 +86,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="100dp"
-                android:scaleType="centerInside"
                 android:background="@null"
+                android:scaleType="centerInside"
                 android:src="@drawable/rocket_stop" />
 
             <com.leo.appmaster.ui.RocketDock

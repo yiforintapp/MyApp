@@ -75,6 +75,11 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar.setOptionText("");
 		mTtileBar.setOptionBackground(R.drawable.setting_btn);
 
+		updateAppCount();
+	}
+
+	private void updateAppCount() {
+		
 	}
 
 	@Override

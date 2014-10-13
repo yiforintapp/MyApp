@@ -9,6 +9,7 @@ import java.util.List;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
+import android.util.Log;
 
 public class ProcessUtils {
 
@@ -76,7 +77,8 @@ public class ProcessUtils {
 		// 截取字符串信息
 
 		content = content.substring(begin + 1, end).trim();
-		mTotal = Integer.parseInt(content) * 1024;
+		
+		mTotal = Integer.parseInt(content) * 1024L;
 		return mTotal;
 	}
 }

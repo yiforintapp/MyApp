@@ -111,8 +111,8 @@ public class DragGridView extends GridView {
 			@Override
 			public boolean onPreDraw() {
 				observer.removeOnPreDrawListener(this);
-				 animateReorder(position, getLastVisiblePosition() + 1);
-//				animateReorder2(position);
+				animateReorder(position, getLastVisiblePosition() + 1);
+				// animateReorder2(position);
 				return true;
 			}
 		});
@@ -439,7 +439,7 @@ public class DragGridView extends GridView {
 		if (isForward) {
 			for (int pos = oldPosition; pos < newPosition; pos++) {
 				View view = getChildAt(pos - getFirstVisiblePosition());
-				if ((pos + 1) % mNumColumns == 0) {
+				if ((pos + 1) % mNumColumns == 0 && (pos + 1) != newPosition) {
 					resultList.add(createTranslationAnimations(view,
 							-(view.getWidth() + mHorizontalSpacing)
 									* (mNumColumns - 1), 0, view.getHeight()
@@ -449,6 +449,7 @@ public class DragGridView extends GridView {
 							view.getWidth() + mHorizontalSpacing, 0, 0, 0));
 				}
 			}
+
 		} else {
 			for (int pos = oldPosition; pos > newPosition; pos--) {
 				View view = getChildAt(pos - getFirstVisiblePosition());
@@ -465,9 +466,9 @@ public class DragGridView extends GridView {
 		}
 
 		AnimatorSet resultSet = new AnimatorSet();
-		 resultSet.playTogether(resultList);
-//		resultSet.playSequentially(resultList);
-		resultSet.setDuration(1000);
+		resultSet.playTogether(resultList);
+		// resultSet.playSequentially(resultList);
+		resultSet.setDuration(500);
 		resultSet.setInterpolator(new AccelerateDecelerateInterpolator());
 		resultSet.addListener(new AnimatorListenerAdapter() {
 			@Override
@@ -496,8 +497,8 @@ public class DragGridView extends GridView {
 			if (temp == 0) {
 				resultList.add(createTranslationAnimations(view, 0,
 						(view.getWidth() + mHorizontalSpacing)
-								* (mNumColumns - 1),  0, -(view.getHeight()
-										+ mVerticalSpacing)));
+								* (mNumColumns - 1), 0,
+						-(view.getHeight() + mVerticalSpacing)));
 			} else {
 				resultList.add(createTranslationAnimations(view, 0,
 						-(view.getWidth() + mHorizontalSpacing), 0, 0));
@@ -505,7 +506,7 @@ public class DragGridView extends GridView {
 		}
 
 		AnimatorSet all = new AnimatorSet();
-		
+
 		AnimatorSet resultSet = new AnimatorSet();
 		// resultSet.playTogether(resultList);
 		resultSet.playSequentially(resultList);
