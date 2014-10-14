@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -39,16 +40,19 @@ public class HomeActivity extends Activity implements OnClickListener {
 	private ImageView mIvDigital_0, mIvDigital_1, mIvDigital_2;
 	private CommonTitleBar mTtileBar;
 
-    
-    private LeoPopMenu mLeoPopMenu;
+	private LeoPopMenu mLeoPopMenu;
 	private CricleView mCricleView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		long start = System.currentTimeMillis();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		judgeLockService();
 		initUI();
+		long end = System.currentTimeMillis();
+		Log.e("xxxx", "HomeActivity onCreate time = " + (end - start));
+		
 	}
 
 	private void initUI() {
@@ -85,12 +89,18 @@ public class HomeActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onResume() {
+		long start = System.currentTimeMillis();
+
 		long total = ProcessUtils.getTotalMem();
 		long used = total - ProcessUtils.getAvailableMem(this);
 		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) + "/"
 				+ TextFormater.dataSizeFormat(total));
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
+
+		long end = System.currentTimeMillis();
+
+		Log.e("xxxx", "onResume time = " + (end - start));
 		super.onResume();
 	}
 
@@ -183,11 +193,12 @@ public class HomeActivity extends Activity implements OnClickListener {
 			this.startActivity(intent);
 			break;
 		case R.id.tv_option_image:
-            if (mLeoPopMenu == null) {
-                mLeoPopMenu = new LeoPopMenu();
-            }
-            mLeoPopMenu.showPopMenu(HomeActivity.this, mTtileBar.findViewById(R.id.tv_option_image));
-		    break;
+			if (mLeoPopMenu == null) {
+				mLeoPopMenu = new LeoPopMenu();
+			}
+			mLeoPopMenu.showPopMenu(HomeActivity.this,
+					mTtileBar.findViewById(R.id.tv_option_image));
+			break;
 		default:
 			break;
 		}

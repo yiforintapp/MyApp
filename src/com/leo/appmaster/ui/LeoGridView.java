@@ -26,7 +26,6 @@ public class LeoGridView extends GridView {
 	public interface AnimEndListener {
 		public void onAnimEnd();
 	}
-
 	private LeoGridBaseAdapter mDragAdapter;
 	private int mNumColumns;
 	private int mColumnWidth;
