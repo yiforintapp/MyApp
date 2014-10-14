@@ -46,18 +46,17 @@ public class HomeActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		long start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+	      Log.e("xxxx", "HomeActivity onCreate time1 = " + (System.currentTimeMillis() - start));
 		judgeLockService();
 		initUI();
-		long end = System.currentTimeMillis();
-		Log.e("xxxx", "HomeActivity onCreate time = " + (end - start));
 	}
 
 	private void initUI() {
 		mTopLayout = findViewById(R.id.top_layout);
-		mTopLayout.setOnClickListener(this);
+//		mTopLayout.setOnClickListener(this);
 
 		mIvDigital_0 = (ImageView) findViewById(R.id.digital_0);
 		mIvDigital_1 = (ImageView) findViewById(R.id.digital_1);
@@ -71,7 +70,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTvAppLock = findViewById(R.id.tv_app_lock);
 		mTvAppBackup = findViewById(R.id.tv_app_backup);
 		mTvCleanMem = findViewById(R.id.tv_clean_memory);
-		mTvAppManage.setOnClickListener(this);
+//		mTvAppManage.setOnClickListener(this);
 		mTvAppLock.setOnClickListener(this);
 		mTvAppBackup.setOnClickListener(this);
 		mTvCleanMem.setOnClickListener(this);
@@ -93,8 +92,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 		ProcessCleaner pc = ProcessCleaner.getInstance(this);
 		long total = pc.getTotalMem();
 		long used = pc.getUsedMem();
-		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) + "/"
-				+ TextFormater.dataSizeFormat(total));
+		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) /*+ "/" + TextFormater.dataSizeFormat(total)*/);
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
 
@@ -166,10 +164,10 @@ public class HomeActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.top_layout:
 		case R.id.tv_app_manage:
-			LeoStat.addEvent(LeoStat.P2, "app_manage",
-					"click the app manage button");
-			intent = new Intent(this, AppListActivity.class);
-			this.startActivity(intent);
+//			LeoStat.addEvent(LeoStat.P2, "app_manage",
+//					"click the app manage button");
+//			intent = new Intent(this, AppListActivity.class);
+//			this.startActivity(intent);
 			break;
 		case R.id.tv_app_lock:
 			LeoStat.addEvent(LeoStat.P2, "app lock",

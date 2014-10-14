@@ -158,9 +158,9 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				mUnlockList.add(appDetailInfo);
 			}
 		}
-
-		mPagerUnlock.setDatas(mUnlockList, 4, 5);
-		mPagerLock.setDatas(mLockedList, 4, 5);
+        int rowCount = getResources().getInteger(R.integer.gridview_row_count);
+		mPagerUnlock.setDatas(mUnlockList, 4, rowCount);
+		mPagerLock.setDatas(mLockedList, 4, rowCount);
 
 		mTvUnlock.setText("未加锁(" + mUnlockList.size() + ")");
 		mTvLocked.setText(" 已加锁(" + mLockedList.size() + ")");
