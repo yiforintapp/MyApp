@@ -47,7 +47,15 @@ public class AppLoadEngine extends BroadcastReceiver {
         /**
          * Application updated
          */
-        public final static int TYPE_UPDATE = 2;
+        public final static int TYPE_UPDATE = 2;        
+        /**
+         * Applications available, for those applications installed in external storage.
+         */
+        public final static int TYPE_AVAILABLE = 3;
+        /**
+         * Applications unavailable, for those applications installed in external storage.
+         */
+        public final static int TYPE_UNAVAILABLE = 4;
 
         /**
          * Called when applications changed, see
@@ -270,7 +278,8 @@ public class AppLoadEngine extends BroadcastReceiver {
             final String action = intent.getAction();
             
             if (Intent.ACTION_PACKAGE_REMOVED.equals(action)
-                    || Intent.ACTION_PACKAGE_ADDED.equals(action)) {
+                    || Intent.ACTION_PACKAGE_ADDED.equals(action)
+                    || Intent.ACTION_PACKAGE_CHANGED.equals(action)) {
                 
                 final String packageName = intent.getData().getSchemeSpecificPart();
                 final boolean replacing = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false);
@@ -280,7 +289,9 @@ public class AppLoadEngine extends BroadcastReceiver {
                     // they sent us a bad intent
                    return;
                 }
-               if (Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
+              if (Intent.ACTION_PACKAGE_CHANGED.equals(action)) {
+                    op = AppChangeListener.TYPE_UPDATE;
+              }else  if (Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
                     if (!replacing) {
                         op = AppChangeListener.TYPE_REMOVE;
                     }
@@ -292,11 +303,18 @@ public class AppLoadEngine extends BroadcastReceiver {
                     } else {
                         op =  AppChangeListener.TYPE_UPDATE;
                    }
-               }
+               }  
     
                 if (op != AppChangeListener.TYPE_NONE) {
                     enqueuePackageUpdated(new PackageUpdatedTask(op, new String[] { packageName }));
                 }
+           }  else if (Intent.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE.equals(action)) {
+               // First, schedule to add these apps back in.
+               String[] packages = intent.getStringArrayExtra(Intent.EXTRA_CHANGED_PACKAGE_LIST);
+               enqueuePackageUpdated(new PackageUpdatedTask(AppChangeListener.TYPE_AVAILABLE, packages));
+           } else if (Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE.equals(action)) {
+               String[] packages = intent.getStringArrayExtra(Intent.EXTRA_CHANGED_PACKAGE_LIST);
+               enqueuePackageUpdated(new PackageUpdatedTask(AppChangeListener.TYPE_UNAVAILABLE, packages));
            }
         }
         
@@ -319,6 +337,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                 final int N = packages.length;
                 switch (mOp) {
                case AppChangeListener.TYPE_ADD:
+               case AppChangeListener.TYPE_AVAILABLE:
                     for (int i = 0; i < N; i++) {
                         Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
                         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -350,6 +369,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                     }
                     break;
                 case AppChangeListener.TYPE_REMOVE:
+                case AppChangeListener.TYPE_UNAVAILABLE:
                     for (int i = 0; i < N; i++) {
                         AppDetailInfo appInfo = mAppDetails.remove(packages[i]);
                         changedFinal.add(appInfo);

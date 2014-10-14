@@ -22,6 +22,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StatFs;
@@ -268,12 +269,12 @@ public class AppBackupRestoreManager implements AppChangeListener{
         } catch (FileNotFoundException e) {
             return FAIL_TYPE_SOURCE_NOT_FOUND;
         }
+        String pName = app.getPkg();
         // do file copy operation
         byte[] c = new byte[1024 * 5];
         int slen;
         FileOutputStream out = null;
         try {
-            String pName = app.getPkg();
             dest += pName + ".apk";
             out = new FileOutputStream(dest);
             while ((slen = in.read(c, 0, c.length)) != -1) {
@@ -307,7 +308,18 @@ public class AppBackupRestoreManager implements AppChangeListener{
             }
         }
         
-        AppDetailInfo newApp = new AppDetailInfo();
+        AppDetailInfo newApp = null;
+        boolean add = true;
+        for(AppDetailInfo appInfo : mSavedList) {
+            if(pName.equals(appInfo.getPkg())) {
+                newApp = appInfo;
+                add = false;
+                break;
+            }
+        }
+        if(newApp == null) {
+            newApp = new AppDetailInfo();
+        }
         newApp.setAppLabel(app.getAppLabel());
         newApp.setAppIcon(app.getAppIcon());
         newApp.setPkg(app.getPkg());
@@ -316,8 +328,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
         newApp.setSourceDir(dest);
         app.isBackuped = true;
         app.isChecked = false;
-        mSavedList.add(newApp);
-        
+        if(add) {
+            mSavedList.add(newApp);
+        }        
         return FAIL_TYPE_NONE;
     }
 
@@ -374,13 +387,20 @@ public class AppBackupRestoreManager implements AppChangeListener{
                         AppDetailInfo app = new AppDetailInfo();
                         Resources res = getResources(fPath);
                         ApplicationInfo appInfo = pInfo.applicationInfo;
+                        String label = null;
+                        Drawable icon = null;
                         if(res != null) {
-                            app.setAppLabel(res.getString(appInfo.labelRes));
-                            app.setAppIcon(res.getDrawable(appInfo.icon));
-                        } else {
-                            app.setAppLabel(mPackageManager.getApplicationLabel(appInfo).toString());
-                            app.setAppIcon(mPackageManager.getApplicationIcon(appInfo));
+                            label = res.getString(appInfo.labelRes);
+                            icon = res.getDrawable(appInfo.icon);
+                        }                         
+                        if(label == null) {
+                            label = mPackageManager.getApplicationLabel(appInfo).toString();
                         }
+                        if(icon == null) {
+                            icon = mPackageManager.getApplicationIcon(appInfo);
+                        }
+                        app.setAppLabel(label);
+                        app.setAppIcon(icon);
                         app.setSourceDir(fPath);
                         app.setPkg(appInfo.packageName);
                         app.setVersionCode(pInfo.versionCode);
@@ -467,9 +487,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
 
     @Override
     public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
-        if(type == AppChangeListener.TYPE_ADD) {
+        if(type == AppChangeListener.TYPE_ADD || type == AppChangeListener.TYPE_AVAILABLE) {
             mBackupList.addAll(changes);
-        } else if(type == AppChangeListener.TYPE_REMOVE) {
+        } else if(type == AppChangeListener.TYPE_REMOVE|| type == AppChangeListener.TYPE_UNAVAILABLE) {
             mBackupList.removeAll(changes);
         } else if(type == AppChangeListener.TYPE_UPDATE) {
             for(AppDetailInfo app : changes) {
