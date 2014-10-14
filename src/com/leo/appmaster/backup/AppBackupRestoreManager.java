@@ -15,8 +15,10 @@ import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -67,8 +69,23 @@ public class AppBackupRestoreManager implements AppChangeListener{
         public void onBackupFinish(boolean success, int successNum, int totalNum, String message);
         public void onApkDeleted(boolean success);
     }
+    
+    private class SDCardReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();    
+            if (action.equals(Intent.ACTION_MEDIA_MOUNTED))    {    
+                onSDCardChange(true);
+            }else {    
+                onSDCardChange(false);
+            }    
+        }     
+    }
 
     private  ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+    
+    private SDCardReceiver mSDReceiver;
     
     private AppBackupDataListener mBackupListener;
     
@@ -87,6 +104,16 @@ public class AppBackupRestoreManager implements AppChangeListener{
         mSavedList = new ArrayList<AppDetailInfo>();
         mBackupList = new ArrayList<AppDetailInfo>();
         AppLoadEngine.getInstance(context).registerAppChangeListener(this);
+        
+        mSDReceiver = new SDCardReceiver();
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MEDIA_MOUNTED);
+        intentFilter.setPriority(1000);
+        intentFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+        intentFilter.addAction(Intent.ACTION_MEDIA_REMOVED);
+        intentFilter.addAction(Intent.ACTION_MEDIA_SHARED);
+        intentFilter.addAction(Intent.ACTION_MEDIA_BAD_REMOVAL);    
+        intentFilter.addDataScheme("file");    
+        context.registerReceiver(mSDReceiver, intentFilter);
     }
     
     public void prepareDate() {
@@ -482,11 +509,12 @@ public class AppBackupRestoreManager implements AppChangeListener{
         return null;
     }
 
-    public void onDestory() {
+    public void onDestory(Context context) {
         mBackupListener = null;
         mSavedList.clear();
         mBackupList.clear();
         AppLoadEngine.getInstance(null).unregisterAppChangeListener(this);
+        context.unregisterReceiver(mSDReceiver);
     }
 
     @Override
@@ -510,6 +538,28 @@ public class AppBackupRestoreManager implements AppChangeListener{
             }
         }
         mBackupListener.onDataUpdate();
+    }
+    
+    private void onSDCardChange(boolean mounted) {
+        String backupPath = getBackupPath();
+        if(backupPath == null) {
+            mSavedList.clear();
+            for(AppDetailInfo app : mBackupList) {
+                app.isBackuped = false;
+            }
+            mBackupListener.onDataUpdate();
+        } else {
+            mExecutorService.execute(new Runnable() {           
+                @Override
+                public void run() {
+                    mBackupList.clear();
+                    mSavedList.clear();
+                    mDataReady = false;
+                    getBackupList();
+                    mBackupListener.onDataUpdate();
+                }
+            });
+        }
     }
     
 }
