@@ -67,7 +67,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBackupManager.onDestory();
+        mBackupManager.onDestory(this);
         if(mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
