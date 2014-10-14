@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <dimen name="gridview_vertical_spacing">18dip</dimen>
+    <integer name="gridview_row_count">5</integer>
+</resources>
