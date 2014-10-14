@@ -27,6 +27,12 @@ public class ProcessUtils {
 		return false;
 	}
 
+	
+	//获取已用内存大小
+	public  static long getUsedMem(Context mContext) {
+		return getTotalMem() - getAvailableMem(mContext);
+	}
+	
 	// 获得可用的内存,以B为单位
 	public static long getAvailableMem(Context mContext) {
 		long MEM_UNUSED;

@@ -1,60 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="set_forbid_uninstall"
-            android:layout="@layout/pref_list_item_top"
-            android:title="防止被卸载"
-            android:widgetLayout="@layout/pref_widget_checkbox" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="set_auto_lock"
-            android:layout="@layout/pref_list_item_mid"
-            android:title="锁屏后自动锁定"
-            android:widgetLayout="@layout/pref_widget_checkbox" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="set_forbid_uninstall"
+        android:layout="@layout/pref_list_item_top"
+        android:title="@string/forbid_uninstall"
+        android:widgetLayout="@layout/pref_widget_checkbox" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="set_auto_lock"
+        android:layout="@layout/pref_list_item_mid"
+        android:title="@string/forbid_uninstall"
+        android:widgetLayout="@layout/pref_widget_checkbox" />
 
-        <ListPreference
-            android:dialogTitle="更改锁定时间"
-            android:entries="@array/lock_time_entrys"
-            android:entryValues="@array/lock_time_items"
-            android:defaultValue="0"
-            android:key="relock_time"
-            android:layout="@layout/pref_list_item_mid"
-            android:title="更改锁定时间"
-            android:widgetLayout="@layout/pref_widget_more" />
+    <ListPreference
+        android:defaultValue="0"
+        android:dialogTitle="@string/change_lock_time"
+        android:entries="@array/lock_time_entrys"
+        android:entryValues="@array/lock_time_items"
+        android:key="relock_time"
+        android:layout="@layout/pref_list_item_mid"
+        android:title="@string/change_lock_time"
+        android:widgetLayout="@layout/pref_widget_more" />
 
-        <Preference
-            android:key="change_passwd"
-            android:layout="@layout/pref_list_item_mid"
-            android:title="更改密码"
-            android:widgetLayout="@layout/pref_widget_more" >
-            <intent
-                android:action="com.leo.appmaster.change-passwd-protect-question"
-                android:targetClass="com.leo.appmaster.applocker.LockSettingActivity"
-                android:targetPackage="com.leo.appmaster" />
-        </Preference>
-        <Preference
-            android:key="set_passwd_protect"
-            android:layout="@layout/pref_list_item_mid"
-            android:title="密保问题"
-            android:widgetLayout="@layout/pref_widget_more" >
-            <intent
-                android:action="com.leo.appmaster.change-passwd-protect-question"
-                android:targetClass="com.leo.appmaster.applocker.PasswdProtectActivity"
-                android:targetPackage="com.leo.appmaster" />
-        </Preference>
-        <Preference
-            android:key="set_passwd_tip"
-            android:layout="@layout/pref_list_item_bot"
-            android:title="密码提示"
-            android:widgetLayout="@layout/pref_widget_more" >
-            <intent
-                android:action="com.leo.appmaster.change-passwd-protect-question"
-                android:targetClass="com.leo.appmaster.applocker.PasswdTipActivity"
-                android:targetPackage="com.leo.appmaster" />
-        </Preference>
-    </PreferenceCategory>
+    <Preference
+        android:key="change_passwd"
+        android:layout="@layout/pref_list_item_mid"
+        android:title="@string/change_passwd"
+        android:widgetLayout="@layout/pref_widget_more" >
+        <intent
+            android:action="com.leo.appmaster.change-passwd-protect-question"
+            android:targetClass="com.leo.appmaster.applocker.LockSettingActivity"
+            android:targetPackage="com.leo.appmaster" />
+    </Preference>
+    <Preference
+        android:key="set_passwd_protect"
+        android:layout="@layout/pref_list_item_mid"
+        android:title="@string/passwd_protect"
+        android:widgetLayout="@layout/pref_widget_more" >
+        <intent
+            android:action="com.leo.appmaster.change-passwd-protect-question"
+            android:targetClass="com.leo.appmaster.applocker.PasswdProtectActivity"
+            android:targetPackage="com.leo.appmaster" />
+    </Preference>
+    <Preference
+        android:key="set_passwd_tip"
+        android:layout="@layout/pref_list_item_bot"
+        android:title="@string/passwd_notify"
+        android:widgetLayout="@layout/pref_widget_more" >
+        <intent
+            android:action="com.leo.appmaster.change-passwd-protect-question"
+            android:targetClass="com.leo.appmaster.applocker.PasswdTipActivity"
+            android:targetPackage="com.leo.appmaster" />
+    </Preference>
 
 </PreferenceScreen>

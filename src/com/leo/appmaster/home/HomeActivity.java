@@ -18,6 +18,7 @@ import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
+import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -52,7 +53,6 @@ public class HomeActivity extends Activity implements OnClickListener {
 		initUI();
 		long end = System.currentTimeMillis();
 		Log.e("xxxx", "HomeActivity onCreate time = " + (end - start));
-		
 	}
 
 	private void initUI() {
@@ -90,9 +90,9 @@ public class HomeActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		long start = System.currentTimeMillis();
-
-		long total = ProcessUtils.getTotalMem();
-		long used = total - ProcessUtils.getAvailableMem(this);
+		ProcessCleaner pc = ProcessCleaner.getInstance(this);
+		long total = pc.getTotalMem();
+		long used = pc.getUsedMem();
 		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) + "/"
 				+ TextFormater.dataSizeFormat(total));
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));

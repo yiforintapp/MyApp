@@ -10,10 +10,8 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6.0dip"
         android:layout_marginLeft="15.0dip"
         android:layout_marginRight="6.0dip"
-        android:layout_marginTop="6.0dip"
         android:layout_weight="1.0" >
 
         <TextView
@@ -24,7 +22,7 @@
             android:fadingEdge="horizontal"
             android:singleLine="true"
             android:gravity="center_vertical"
-            android:textColor="@drawable/selector_text_title"
+            android:textColor="@color/option_text_color"
             android:textSize="18.0sp" />
 
     </RelativeLayout>

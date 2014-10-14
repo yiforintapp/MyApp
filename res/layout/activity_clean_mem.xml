@@ -11,7 +11,8 @@
         <com.leo.appmaster.ui.ShadeView
             android:id="@+id/shade_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/app_background" />
 
         <com.leo.appmaster.ui.CommonTitleBar
             android:id="@+id/layout_title_bar"
@@ -21,6 +22,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_memory"
@@ -68,11 +75,11 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/used_mem"
+                        android:id="@+id/tv_accelerate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="30dp"
-                        android:text="Accelerate"
+                        android:text="@string/accelerate"
                         android:textColor="#ffffff" />
                 </LinearLayout>
             </FrameLayout>

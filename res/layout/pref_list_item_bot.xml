@@ -23,7 +23,7 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:singleLine="true"
-            android:textColor="@drawable/selector_text_title"
+            android:textColor="@color/option_text_color"
             android:textSize="18.0sp" />
 
         <TextView
@@ -34,7 +34,7 @@
             android:layout_below="@android:id/title"
             android:maxLines="2"
             android:textColor="@drawable/selector_text_detail"
-            android:textSize="14.0sp" />
+            android:textSize="18.0sp" />
     </RelativeLayout>
 
     <LinearLayout

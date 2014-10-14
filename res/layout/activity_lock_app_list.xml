@@ -16,6 +16,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/layout_title_bar"
         android:paddingLeft="2dp"
+        android:paddingTop="5dp"
         android:paddingRight="2dp" >
 
         <LinearLayout

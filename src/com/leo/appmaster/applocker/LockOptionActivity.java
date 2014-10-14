@@ -76,12 +76,14 @@ public class LockOptionActivity extends PreferenceActivity implements
 		if (AppLockerPreference.PREF_FORBIND_UNINSTALL.equals(key)) {
 			Intent intent = null;
 			ComponentName component = new ComponentName(this,
-					DeviceReceiver.class);;
+					DeviceReceiver.class);
+			;
 			if (isAdminActive()) {
 				intent = new Intent();
 				intent.setClassName("com.android.settings",
 						"com.android.settings.DeviceAdminAdd");
-				intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, component);
+				intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
+						component);
 				startActivity(intent);
 			} else {
 				intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
@@ -89,9 +91,10 @@ public class LockOptionActivity extends PreferenceActivity implements
 						component);
 				startActivity(intent);
 			}
+		} else if (AppLockerPreference.PREF_AUTO_LOCK.equals(key)) {
+			mAutoLock.setChecked((Boolean) newValue);
 		}
-		
-		
+
 		return false;
 	}
 }

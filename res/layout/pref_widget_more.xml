@@ -3,6 +3,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentRight="true"
-    android:layout_marginRight="22.0dip"
+    android:layout_marginRight="25.0dip"
     android:layout_gravity="center_vertical"
     android:src="@drawable/selector_pref_more" />

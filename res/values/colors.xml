@@ -21,5 +21,7 @@
     <color name="item_backup_grey">#f7f7f7</color>
     <color name="backup_tips_background_color">#d4eaff</color>
     <color name="backup_tips_text_color">#2893fe</color>
+    <color name="option_text_color">#505050</color>
+    
 
 </resources>

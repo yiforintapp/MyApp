@@ -48,7 +48,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private ImageView mIvLoad;
 	private View mRocketHolder;
 	private RocketDock mRocketDock;
-	private TextView mTvMemory;
+	private TextView mTvMemory, mTvAccelerate;
 	private ShadeView mShadeView;
 
 	private long mLastUsedMem;
@@ -65,6 +65,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private float mThreshold = 0;
 	private Animation mShakeAnim;
 
+	private boolean mAllowClean;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,27 +76,53 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		mHandler = new EventHandler(this);
 		createTranslateAnima();
-		startTranslate();
 	}
 
 	private void initUI() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.openBackView();
 		mRocket = (ImageButton) findViewById(R.id.rocket_icon);
-		mRocket.setOnTouchListener(this);
 		mRocketHolder = findViewById(R.id.layout_rocket_holder);
 		mRocketDock = (RocketDock) findViewById(R.id.rocket_dock);
 		mTvMemory = (TextView) findViewById(R.id.tv_memory);
+		mTvAccelerate = (TextView) findViewById(R.id.tv_accelerate);
 		mShadeView = (ShadeView) findViewById(R.id.shade_view);
 		mIvLoad = (ImageView) findViewById(R.id.iv_load);
 
-		mTotalMem = ProcessUtils.getTotalMem();
-		mLastUsedMem = mTotalMem - ProcessUtils.getAvailableMem(this);
+		if (mCleaner == null) {
+			mCleaner = ProcessCleaner.getInstance(this);
+		}
 
-		// mTvMemory.setText(TextFormater.dataSizeFormat(mLastUsedMem) + "/"
-		// + TextFormater.dataSizeFormat(mTotalMem));
+		mTotalMem = mCleaner.getTotalMem();
+		mLastUsedMem = mCleaner.getUsedMem();
+		updateMem();
 
-		startLoad();
+		mAllowClean = mCleaner.allowClean();
+		if (mAllowClean) {
+			mRocket.setOnTouchListener(this);
+			startLoad();
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		mAllowClean = mCleaner.allowClean();
+		if (mAllowClean) {
+			mTotalMem = mCleaner.getTotalMem();
+			mLastUsedMem = mCleaner.getUsedMem();
+			updateMem();
+			mRocket.setOnTouchListener(this);
+			mRocket.setVisibility(View.VISIBLE);
+			mIvLoad.setVisibility(View.VISIBLE);
+			startTranslate();
+		} else {
+			mRocket.setVisibility(View.INVISIBLE);
+			mIvLoad.setVisibility(View.INVISIBLE);
+			mRocket.setOnTouchListener(null);
+			mTvAccelerate.setText(R.string.compeletely);
+			// todo change UI
+		}
+		super.onResume();
 	}
 
 	private void startLoad() {
@@ -111,7 +139,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			}
 		});
 		up.start();
-		
+
 		mShadeView.updateColor(0xff, 0x3b, 0x00, 2000);
 	}
 
@@ -120,8 +148,22 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);
 		ra.setDuration(duration);
-		ra.setFillEnabled(true);
-		ra.setFillAfter(true);
+		ra.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				if (mAllowClean) {
+					mIvLoad.setVisibility(View.VISIBLE);
+				} else {
+					mIvLoad.setVisibility(View.INVISIBLE);
+				}
+			}
+		});
 		mIvLoad.startAnimation(ra);
 	}
 
@@ -175,15 +217,12 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	private void cleanMemory() {
 		launchRocket();
-		if (mCleaner == null) {
-			mCleaner = new ProcessCleaner(
-					(ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
-		}
-		mCleaner.cleanAllProcess();
-		long curUsedMem = mTotalMem - ProcessUtils.getAvailableMem(this);
+		mCleaner.tryClean();
+		long curUsedMem = mCleaner.getUsedMem();
 		mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
 		startUpdataMemTip(curUsedMem);
 		mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
+		mAllowClean = false;
 	}
 
 	private void shakeRocket() {
@@ -207,7 +246,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -2000);
 		ta.setDuration(1000);
 		ta.setFillEnabled(true);
-		ta.setFillBefore(true);
+		ta.setFillAfter(true);
 		ta.setInterpolator(new AccelerateInterpolator());
 		ta.setAnimationListener(new AnimationListener() {
 			@Override
@@ -220,7 +259,10 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				startTranslate();
+				// startTranslate();
+				mRocket.setVisibility(View.INVISIBLE);
+				mRocket.setOnTouchListener(null);
+				mTvAccelerate.setText(R.string.compeletely);
 			}
 		});
 		return ta;

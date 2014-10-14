@@ -38,7 +38,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/used_mem"
+            android:id="@+id/tv_accelerate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tv_memory"
@@ -61,7 +61,7 @@
             android:id="@+id/et_anwser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/used_mem"
+            android:layout_alignLeft="@+id/tv_accelerate"
             android:layout_below="@+id/tv_memory"
             android:layout_marginTop="5dp"
             android:ems="10"
@@ -71,8 +71,8 @@
             android:id="@+id/et_passwd_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/used_mem"
-            android:layout_below="@+id/used_mem"
+            android:layout_alignLeft="@+id/tv_accelerate"
+            android:layout_below="@+id/tv_accelerate"
             android:layout_marginTop="5dp"
             android:ems="10"
             android:textSize="18sp" />

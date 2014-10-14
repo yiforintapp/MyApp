@@ -117,7 +117,7 @@
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/used_mem"
+                android:id="@+id/tv_accelerate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/cicle_container"
@@ -132,7 +132,7 @@
                 android:id="@+id/tv_flow"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/used_mem"
+                android:layout_above="@+id/tv_accelerate"
                 android:layout_alignLeft="@+id/imageView3"
                 android:gravity="center"
                 android:text="245M"
@@ -143,8 +143,8 @@
                 android:id="@+id/textView5"
                 android:layout_width="92dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/used_mem"
-                android:layout_alignBottom="@+id/used_mem"
+                android:layout_alignBaseline="@+id/tv_accelerate"
+                android:layout_alignBottom="@+id/tv_accelerate"
                 android:layout_alignLeft="@+id/tv_flow"
                 android:layout_alignRight="@+id/tv_flow"
                 android:gravity="center"
