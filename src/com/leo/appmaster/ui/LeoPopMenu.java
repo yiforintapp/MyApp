@@ -4,13 +4,8 @@ package com.leo.appmaster.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.R;
-
 import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.drawable.BitmapDrawable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.R;
+import com.leoers.leoanalytics.LeoStat;
 
 public class LeoPopMenu {
     
@@ -68,7 +67,7 @@ public class LeoPopMenu {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    
+                    LeoStat.checkUpdate();
                 } else if (position == 1) {
                     
                 }

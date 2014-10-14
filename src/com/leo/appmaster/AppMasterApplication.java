@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.update.UpdateActivity;
 import com.leoers.leoanalytics.LeoStat;
 
 public class AppMasterApplication extends Application {
@@ -43,7 +44,7 @@ public class AppMasterApplication extends Application {
 
 	private void iniLeoSdk() {
 		LeoStat.init(getApplicationContext(), "1", "applocker");
-		// LeoStat.setUpdateService(); //暂时 不进行启动升级检测
+		LeoStat.initUpdateEngine(UpdateActivity.class.getName(), true);
 	}
 
 	public static AppMasterApplication getInstance() {

@@ -108,10 +108,10 @@
 
         <!-- add for the app update of leosdk -->
         <activity
-            android:name="com.leoers.leoanalytics.UpdateActivity"
-            android:theme="@android:style/Theme.Dialog" />
-
-        <service android:name="com.leoers.leoanalytics.DownloadService" />
+            android:name=".update.UpdateActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.UpdateDialog.NoFrame" >
+        </activity>
         <!-- add for the app update of leosdk -->
 
         <service android:name="com.leo.appmaster.applocker.service.LockService" >
