@@ -17,6 +17,7 @@ public class ProcessCleaner {
 	private long mLastCleanTime;
 	private long mLastMemUsed;
 	private long mMemTotal;
+	private long mLastCleanMem;
 
 	private static int CLEAN_INTERVAL = 8000;
 
@@ -38,6 +39,10 @@ public class ProcessCleaner {
 		return mMemTotal;
 	}
 
+	public long getLastCleanMem() {
+		return mLastCleanMem;
+	}
+	
 	public long getUsedMem() {
 		long curTime = System.currentTimeMillis();
 		if ((curTime - mLastCleanTime) > CLEAN_INTERVAL) {
@@ -46,7 +51,7 @@ public class ProcessCleaner {
 
 		return mLastMemUsed;
 	}
-	
+
 	public boolean allowClean() {
 		long curTime = System.currentTimeMillis();
 		return (curTime - mLastCleanTime) > CLEAN_INTERVAL;
@@ -56,7 +61,7 @@ public class ProcessCleaner {
 		this.mAm = mAm;
 		this.mContext = ctx.getApplicationContext();
 	}
-	
+
 	public long tryClean() {
 		long resault = -1;
 		long curTime = System.currentTimeMillis();
@@ -65,7 +70,7 @@ public class ProcessCleaner {
 			cleanAllProcess();
 			cleanAllProcess();
 			long curUsedMem = ProcessUtils.getUsedMem(mContext);
-			resault = curUsedMem - mLastMemUsed;
+			resault = mLastCleanMem = Math.abs(curUsedMem - mLastMemUsed);
 			mLastMemUsed = curUsedMem;
 		}
 		return resault;
