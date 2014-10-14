@@ -3,34 +3,36 @@ package com.leo.appmaster;
 import android.app.Application;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
 
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leoers.leoanalytics.LeoStat;
 
 public class AppMasterApplication extends Application {
 
-	private AppLoadEngine mAppsEngine;
-
-	private static AppMasterApplication mInstance;
-
-	@Override
-	public void onCreate() {
-		long start = System.currentTimeMillis();
-		super.onCreate();
-		mInstance = this;
-		mAppsEngine = AppLoadEngine.getInstance(this);
-		mAppsEngine.preloadAllBaseInfo();
-		// Register intent receivers
-		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
-		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-		filter.addDataScheme("package");
-		registerReceiver(mAppsEngine, filter);
-
-		iniLeoSdk();
-		long end = System.currentTimeMillis();
-
-		Log.e("xxxx", "Application onCreate time = " + (end - start));
+    
+    private AppLoadEngine mAppsEngine;
+    
+    private static AppMasterApplication mInstance;
+    
+   @Override
+   public void onCreate() {
+       super.onCreate();       
+       mInstance = this;
+       mAppsEngine = AppLoadEngine.getInstance(this);
+       mAppsEngine.preloadAllBaseInfo();
+        // Register intent receivers
+       IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+        filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
+        filter.addDataScheme("package");
+        registerReceiver(mAppsEngine, filter);
+        
+        filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE);
+        filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE);
+        registerReceiver(mAppsEngine, filter);
+        
+        iniLeoSdk();
 	}
 
 	@Override
