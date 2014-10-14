@@ -98,7 +98,7 @@
                         android:layout_height="80dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ok_icon"
+                        android:src="@drawable/show_ok"
                         android:visibility="invisible" />
 
                     <TextView

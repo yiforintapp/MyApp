@@ -255,7 +255,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 						1.0f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
 						ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
 
-				show.setDuration(1000);
+				show.setDuration(500);
 
 				mRocketHolder.startAnimation(show);
 			}
