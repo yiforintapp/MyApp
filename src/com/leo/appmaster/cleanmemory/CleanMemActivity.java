@@ -26,6 +26,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
@@ -45,10 +46,11 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	public static final int MSG_UPDATE_MEM = 0;
 	private CommonTitleBar mTtileBar;
 	private ImageButton mRocket;
-	private ImageView mIvLoad;
+	private ImageView mIvLoad, mIvOk;;
 	private View mRocketHolder;
 	private RocketDock mRocketDock;
-	private TextView mTvMemory, mTvAccelerate;
+	private TextView mTvUsedMemory, mTvTotalMemory, mTvCleanResult,
+			mTvAccelerate;
 	private ShadeView mShadeView;
 
 	private long mLastUsedMem;
@@ -59,7 +61,6 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private boolean mTranslating;
 	private boolean mUpdating;
 	private ProcessCleaner mCleaner;
-	private Handler mHandler;
 	private Animation mRocketAnima;
 	private float mTouchDownX, mTouchDownY;
 	private float mThreshold = 0;
@@ -71,11 +72,9 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_clean_mem);
-
+		createTranslateAnima();
 		initUI();
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		mHandler = new EventHandler(this);
-		createTranslateAnima();
 	}
 
 	private void initUI() {
@@ -84,14 +83,14 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mRocket = (ImageButton) findViewById(R.id.rocket_icon);
 		mRocketHolder = findViewById(R.id.layout_rocket_holder);
 		mRocketDock = (RocketDock) findViewById(R.id.rocket_dock);
-		mTvMemory = (TextView) findViewById(R.id.tv_memory);
+		mTvUsedMemory = (TextView) findViewById(R.id.tv_memory);
+		mTvTotalMemory = (TextView) findViewById(R.id.tv_total);
+		mTvCleanResult = (TextView) findViewById(R.id.tv_clean_result);
 		mTvAccelerate = (TextView) findViewById(R.id.tv_accelerate);
 		mShadeView = (ShadeView) findViewById(R.id.shade_view);
 		mIvLoad = (ImageView) findViewById(R.id.iv_load);
-
-		if (mCleaner == null) {
-			mCleaner = ProcessCleaner.getInstance(this);
-		}
+		mIvOk = (ImageView) findViewById(R.id.clean_ok);
+		mCleaner = ProcessCleaner.getInstance(this);
 
 		mTotalMem = mCleaner.getTotalMem();
 		mLastUsedMem = mCleaner.getUsedMem();
@@ -100,29 +99,24 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mAllowClean = mCleaner.allowClean();
 		if (mAllowClean) {
 			mRocket.setOnTouchListener(this);
-			startLoad();
-		}
-	}
-
-	@Override
-	protected void onResume() {
-		mAllowClean = mCleaner.allowClean();
-		if (mAllowClean) {
-			mTotalMem = mCleaner.getTotalMem();
-			mLastUsedMem = mCleaner.getUsedMem();
-			updateMem();
-			mRocket.setOnTouchListener(this);
 			mRocket.setVisibility(View.VISIBLE);
 			mIvLoad.setVisibility(View.VISIBLE);
+			startLoad();
 			startTranslate();
 		} else {
+			String s = "为您清理"
+					+ TextFormater.dataSizeFormat(mCleaner.getLastCleanMem())
+					+ "内存";
+			mTvCleanResult.setText(s);
 			mRocket.setVisibility(View.INVISIBLE);
 			mIvLoad.setVisibility(View.INVISIBLE);
-			mRocket.setOnTouchListener(null);
+			mIvOk.setVisibility(View.VISIBLE);
+			mTvAccelerate.setVisibility(View.INVISIBLE);
+			mRocketHolder.setBackgroundDrawable(null);
 			mTvAccelerate.setText(R.string.compeletely);
 			// todo change UI
 		}
-		super.onResume();
+
 	}
 
 	private void startLoad() {
@@ -152,16 +146,18 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			@Override
 			public void onAnimationStart(Animation animation) {
 			}
+
 			@Override
 			public void onAnimationRepeat(Animation animation) {
 			}
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				if (mAllowClean) {
-					mIvLoad.setVisibility(View.VISIBLE);
-				} else {
-					mIvLoad.setVisibility(View.INVISIBLE);
-				}
+				AlphaAnimation aa = new AlphaAnimation(1f, 0.0f);
+				aa.setDuration(1000);
+				aa.setFillEnabled(true);
+				aa.setFillAfter(true);
+				mIvLoad.startAnimation(aa);
 			}
 		});
 		mIvLoad.startAnimation(ra);
@@ -172,8 +168,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void updateMem() {
-		mTvMemory.setText(TextFormater.dataSizeFormat(mLastUsedMem) + "/"
-				+ TextFormater.dataSizeFormat(mTotalMem));
+		mTvUsedMemory.setText(TextFormater.dataSizeFormat(mLastUsedMem));
+		mTvTotalMemory.setText("/" + TextFormater.dataSizeFormat(mTotalMem));
 	}
 
 	@Override
@@ -217,12 +213,56 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	private void cleanMemory() {
 		launchRocket();
+		showOK();
 		mCleaner.tryClean();
 		long curUsedMem = mCleaner.getUsedMem();
 		mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
 		startUpdataMemTip(curUsedMem);
 		mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
 		mAllowClean = false;
+	}
+
+	private void showOK() {
+		AnimationSet as = new AnimationSet(true);
+		AlphaAnimation aa = new AlphaAnimation(1.0f, 0.0f);
+		ScaleAnimation sa = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f,
+				ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
+				ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+
+		aa.setDuration(800);
+		sa.setDuration(1000);
+		
+		as.addAnimation(sa);
+		as.addAnimation(aa);
+		
+
+		as.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				mRocketHolder.setBackgroundDrawable(null);
+				mTvAccelerate.setVisibility(View.INVISIBLE);
+				mIvOk.setVisibility(View.VISIBLE);
+
+				ScaleAnimation show = new ScaleAnimation(0.0f, 1.0f, 0.0f,
+						1.0f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
+						ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+
+				show.setDuration(1000);
+
+				mRocketHolder.startAnimation(show);
+			}
+		});
+
+		mRocketHolder.startAnimation(as);
+
 	}
 
 	private void shakeRocket() {
@@ -239,7 +279,6 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		Animation ta = createRocketFly();
 		mRocket.setImageResource(R.drawable.rocket_fly);
 		mRocket.startAnimation(ta);
-		rotateLoadView(1200, 360 * 2);
 	}
 
 	private Animation createRocketFly() {
@@ -262,7 +301,6 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 				// startTranslate();
 				mRocket.setVisibility(View.INVISIBLE);
 				mRocket.setOnTouchListener(null);
-				mTvAccelerate.setText(R.string.compeletely);
 			}
 		});
 		return ta;
@@ -413,10 +451,13 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 				@Override
 				public void onAnimationEnd(Animator arg0) {
 					mUpdating = false;
-					Toast.makeText(
-							CleanMemActivity.this,
-							"为您清理" + TextFormater.dataSizeFormat(mCleanMem)
-									+ "内存", Toast.LENGTH_SHORT).show();
+
+					String s = "为您清理" + TextFormater.dataSizeFormat(mCleanMem)
+							+ "内存";
+					Toast.makeText(CleanMemActivity.this, s, Toast.LENGTH_SHORT)
+							.show();
+
+					mTvCleanResult.setText(s);
 				}
 			});
 

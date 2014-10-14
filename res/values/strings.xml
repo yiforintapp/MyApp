@@ -42,10 +42,11 @@
     <string name="not_unistall">防止被卸载</string>
     <string name="lock_screen_auto_lock">锁屏后自动锁定</string>
     <string name="tips">提示</string>
-    
+
     <!-- 一键加速 -->
     <string name="compeletely">完成</string>
     <string name="accelerate">加速</string>
+    <string name="clean_result">clean up </string>
     <!-- 手势密码 -->
     <string name="lockscreen_access_pattern_start">"开始绘制图案"</string>
     <string name="lockscreen_access_pattern_cleared">"图案已清除"</string>
