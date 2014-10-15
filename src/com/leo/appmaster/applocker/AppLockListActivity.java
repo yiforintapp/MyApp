@@ -23,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
@@ -185,6 +186,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			moveItemToUnlock(view, mLastSelectApp.getAppIcon());
 
 			LeoStat.addEvent(LeoStat.P2, "unlock app", mLastSelectApp.getPkg());
+			FlurryAgent.logEvent(mLastSelectApp.getPkg()+": unlock app");
 		} else {
 			mLastSelectApp.setLocked(true);
 			for (BaseInfo baseInfo : mUnlockList) {
@@ -199,6 +201,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			moveItemToLock(view, mLastSelectApp.getAppIcon());
 
 			LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
+			FlurryAgent.logEvent(mLastSelectApp.getPkg()+": lock app");
 		}
 		((LeoGridView) parent).removeItemAnimation(position, mLastSelectApp);
 		saveLockList();

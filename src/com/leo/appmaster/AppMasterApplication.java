@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.update.UpdateActivity;
 import com.leoers.leoanalytics.LeoStat;
@@ -34,17 +35,23 @@ public class AppMasterApplication extends Application {
         registerReceiver(mAppsEngine, filter);
         
         iniLeoSdk();
+        iniFlurry();
 	}
 
 	@Override
 	public void onTerminate() {
 		super.onTerminate();
 		unregisterReceiver(mAppsEngine);
+		FlurryAgent.onEndSession(getApplicationContext());
 	}
 
 	private void iniLeoSdk() {
 		LeoStat.init(getApplicationContext(), "1", "appmaster");
 		LeoStat.initUpdateEngine(UpdateActivity.class.getName(), true);
+	}
+	
+	private void iniFlurry(){
+	    FlurryAgent.onStartSession(getApplicationContext(), "F6PHG92TXG5QZ48H4YC8");
 	}
 
 	public static AppMasterApplication getInstance() {
