@@ -110,6 +110,12 @@
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
 
+        <activity
+            android:name="com.leo.appmaster.appsetting.AboutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        
         <!-- add for the app update of leosdk -->
         <activity
             android:name=".update.UpdateActivity"

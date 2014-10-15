@@ -108,6 +108,7 @@
     <string name="app_setting_update">检查升级</string>
     <string name="app_setting_about">关于</string>
     
+    <string name="forbid_uninstall">禁止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>
     <string name="change_lock_time">更改锁定时间</string>
     <string name="passwd_protect">密保问题</string>
