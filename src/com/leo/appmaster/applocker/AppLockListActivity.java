@@ -47,16 +47,10 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	private List<BaseInfo> mUnlockList;
 
 	private PagedGridView mPagerUnlock, mPagerLock;
-
 	public LayoutInflater mInflater;
-
-	// private View mLastSelectItem;
-
 	private boolean mCaculated;
 	private float mScale = 0.5f;
-
 	private BaseInfo mLastSelectApp;
-
 	private Object mLock = new Object();
 
 	private boolean isFlying;
@@ -158,12 +152,11 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				mUnlockList.add(appDetailInfo);
 			}
 		}
-        int rowCount = getResources().getInteger(R.integer.gridview_row_count);
+		int rowCount = getResources().getInteger(R.integer.gridview_row_count);
 		mPagerUnlock.setDatas(mUnlockList, 4, rowCount);
 		mPagerLock.setDatas(mLockedList, 4, rowCount);
 
-		mTvUnlock.setText("未加锁(" + mUnlockList.size() + ")");
-		mTvLocked.setText(" 已加锁(" + mLockedList.size() + ")");
+		updateLockText();
 	}
 
 	@Override
@@ -177,7 +170,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 		calculateLoc();
 		mLastSelectApp = (BaseInfo) view.getTag();
-		Log.e("xxxx", mLastSelectApp.getPkg());
 		BaseInfo info = null;
 		if (mLastSelectApp.isLocked()) {
 			mLastSelectApp.setLocked(false);
@@ -240,7 +232,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				+ ",   targetX = " + targetX + ",  targetY = " + targetY);
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
-		animation.setAnimationListener(new FlyAnimaListener(true));
+		animation.setAnimationListener(new FlyAnimaListener());
 
 		mIvAnimator.setVisibility(View.VISIBLE);
 		mIvAnimator.setImageDrawable(drawable);
@@ -268,7 +260,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
-		animation.setAnimationListener(new FlyAnimaListener(false));
+		animation.setAnimationListener(new FlyAnimaListener());
 
 		mIvAnimator.setVisibility(View.VISIBLE);
 		mIvAnimator.setImageDrawable(drawable);
@@ -276,6 +268,24 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	}
 
+	private void updateLockText() {
+		int unlockSize = mUnlockList.size();
+		int lockSize = mLockedList.size();
+		if (unlockSize == 0) {
+			mTvUnlock.setText(getString(R.string.unlock_count));
+		} else {
+			mTvUnlock.setText(getString(R.string.unlock_count) + "("
+					+ unlockSize + ")");
+		}
+
+		if (lockSize == 0) {
+			mTvLocked.setText(getString(R.string.lock_count));
+		} else {
+			mTvLocked.setText(getString(R.string.lock_count) + "("
+					+ lockSize + ")");
+		}
+	}
+	
 	private Animation createFlyAnimation(float orgX, float orgY, float targetX,
 			float tragetY) {
 		AnimationSet set = new AnimationSet(true);
@@ -293,10 +303,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	private class FlyAnimaListener implements AnimationListener {
 
-		boolean moveToLock;
-
-		public FlyAnimaListener(boolean b) {
-			moveToLock = b;
+		public FlyAnimaListener() {
 		}
 
 		@Override
@@ -310,8 +317,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			mIvAnimator.setVisibility(View.INVISIBLE);
-			mTvUnlock.setText("未加锁(" + mUnlockList.size() + ")");
-			mTvLocked.setText(" 已加锁(" + mLockedList.size() + ")");
+			updateLockText();
 			isFlying = false;
 		}
 	}

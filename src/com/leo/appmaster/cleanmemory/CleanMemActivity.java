@@ -231,10 +231,9 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 		aa.setDuration(800);
 		sa.setDuration(1000);
-		
+
 		as.addAnimation(sa);
 		as.addAnimation(aa);
-		
 
 		as.setAnimationListener(new AnimationListener() {
 			@Override

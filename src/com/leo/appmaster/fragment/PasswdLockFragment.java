@@ -19,6 +19,7 @@ import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.WaitActivity;
+import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.utils.AppUtil;
 
@@ -177,15 +178,17 @@ public class PasswdLockFragment extends LockFragment implements
 				intent = new Intent(mActivity, AppLockListActivity.class);
 				mActivity.startActivity(intent);
 			} else if (mFrom == LockFragment.FROM_OTHER) {
-
+				unlockSucceed(mPackage);
 			}
 			mActivity.finish();
 		} else {
 			if (mInputCount >= mMaxInput) {
 				Intent intent = new Intent(mActivity, WaitActivity.class);
+				intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
 				this.startActivity(intent);
-				mPasswdTip.setText(R.string.please_input_pswd);
-				mInputCount = 0;
+				// mPasswdTip.setText(R.string.please_input_pswd);
+				// mInputCount = 0;
+				mActivity.finish();
 			} else {
 				if (pref.hasPswdProtect()
 						&& mFindPasswd.getVisibility() != View.VISIBLE) {

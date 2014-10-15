@@ -32,8 +32,8 @@ public class LockScreenActivity extends FragmentActivity {
 	private CommonTitleBar mTtileBar;
 	private LockFragment mFragment;
 
-	
-    private Bitmap mAppBaseInfoLayoutbg;
+	private Bitmap mAppBaseInfoLayoutbg;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,9 +62,11 @@ public class LockScreenActivity extends FragmentActivity {
 		mFrom = intent.getIntExtra(EXTRA_UNLOCK_FROM, LockFragment.FROM_SELF);
 
 		if (mFrom == LockFragment.FROM_OTHER) {
-		      BitmapDrawable bd = (BitmapDrawable)AppUtil.getDrawable(getPackageManager(), intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
-		         
-		        setAppInfoBackground(bd);
+			BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
+					getPackageManager(),
+					intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
+
+			setAppInfoBackground(bd);
 		}
 
 		mFragment.setFrom(mFrom);
@@ -83,7 +85,7 @@ public class LockScreenActivity extends FragmentActivity {
 	        canvas.drawColor(Color.WHITE);
 	        drawable.setBounds(-(drawable.getIntrinsicWidth()  - w) / 2, -(drawable.getIntrinsicHeight() - h) / 2, (drawable.getIntrinsicWidth()  - w) / 2 + w, (drawable.getIntrinsicHeight() - h) / 2 + h);
 	        drawable.draw(canvas);
-//	        canvas.drawColor(Color.argb(60, 0, 0, 0));
+	        canvas.drawColor(Color.argb(26, 0, 0, 0));
 	        mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
 	        
 	        RelativeLayout layout = (RelativeLayout)findViewById(R.id.activity_lock_layout);
@@ -93,19 +95,18 @@ public class LockScreenActivity extends FragmentActivity {
 
 	    }
 	
-	   
-	   
-	@Override
-    protected void onDestroy() {
-        // TODO Auto-generated method stub
-        super.onDestroy();
-        if (mAppBaseInfoLayoutbg != null) {
-            mAppBaseInfoLayoutbg.recycle();
-            mAppBaseInfoLayoutbg = null;
-        }
-    }
 
-    private void initUI() {
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		if (mAppBaseInfoLayoutbg != null) {
+			mAppBaseInfoLayoutbg.recycle();
+			mAppBaseInfoLayoutbg = null;
+		}
+	}
+
+	private void initUI() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 

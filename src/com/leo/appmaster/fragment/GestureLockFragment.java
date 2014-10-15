@@ -23,6 +23,7 @@ import com.leo.appmaster.applocker.WaitActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
+import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LockPatternUtils;
@@ -34,7 +35,6 @@ public class GestureLockFragment extends LockFragment implements
 	private TextView mGestureTip, mFindGesture;
 	private ImageView mAppIcon;
 
-
 	private EditText mEtQuestion, mEtAnwser;
 	private AlertDialog mDialog;
 
@@ -42,7 +42,7 @@ public class GestureLockFragment extends LockFragment implements
 	protected int layoutResourceId() {
 		return R.layout.fragment_lock_gesture;
 	}
-	
+
 	@Override
 	protected void onInitUI() {
 		mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
@@ -51,8 +51,8 @@ public class GestureLockFragment extends LockFragment implements
 		mGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
 		mFindGesture = (TextView) findViewById(R.id.tv_find_gesture);
 		mFindGesture.setOnClickListener(this);
-		
-		if(mPackage != null) {
+
+		if (mPackage != null) {
 			mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
 			mAppIcon.setImageDrawable(AppUtil.getDrawable(
 					mActivity.getPackageManager(), mPackage));
@@ -60,8 +60,6 @@ public class GestureLockFragment extends LockFragment implements
 		}
 	}
 
-	
-             
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -75,8 +73,8 @@ public class GestureLockFragment extends LockFragment implements
 	}
 
 	private void findGesture() {
-		ViewGroup viewGroup = (ViewGroup) mActivity.getLayoutInflater().inflate(
-				R.layout.dialog_passwd_protect, null);
+		ViewGroup viewGroup = (ViewGroup) mActivity.getLayoutInflater()
+				.inflate(R.layout.dialog_passwd_protect, null);
 		mEtQuestion = (EditText) viewGroup.findViewById(R.id.et_question);
 		mEtAnwser = (EditText) viewGroup.findViewById(R.id.et_anwser);
 		mDialog = new AlertDialog.Builder(mActivity)
@@ -86,7 +84,7 @@ public class GestureLockFragment extends LockFragment implements
 				.create();
 		mEtQuestion.setText(AppLockerPreference.getInstance(mActivity)
 				.getPpQuestion());
-		mDialog.show();		
+		mDialog.show();
 	}
 
 	@Override
@@ -109,7 +107,7 @@ public class GestureLockFragment extends LockFragment implements
 		String gesture = LockPatternUtils.patternToString(pattern);
 		checkGesture(gesture);
 	}
-	
+
 	private void checkGesture(String gesture) {
 		mInputCount++;
 		AppLockerPreference pref = AppLockerPreference.getInstance(mActivity);
@@ -123,15 +121,18 @@ public class GestureLockFragment extends LockFragment implements
 				intent = new Intent(mActivity, AppLockListActivity.class);
 				this.startActivity(intent);
 			} else if (mFrom == FROM_OTHER) {
-				//input right gesture, just finish self
+				// input right gesture, just finish self
+				unlockSucceed(mPackage);
 			}
 			mActivity.finish();
 		} else {
 			if (mInputCount >= mMaxInput) {
 				Intent intent = new Intent(mActivity, WaitActivity.class);
+				intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
 				this.startActivity(intent);
-				mGestureTip.setText(R.string.please_input_gesture);
-				mInputCount = 0;
+				// mGestureTip.setText(R.string.please_input_gesture);
+				// mInputCount = 0;
+				mActivity.finish();
 			} else {
 				if (pref.hasPswdProtect()
 						&& mFindGesture.getVisibility() != View.VISIBLE) {
@@ -144,7 +145,6 @@ public class GestureLockFragment extends LockFragment implements
 		}
 	}
 
-
 	private void shakeGestureTip() {
 		Animation shake = AnimationUtils.loadAnimation(mActivity, R.anim.shake);
 		mGestureTip.startAnimation(shake);
@@ -153,7 +153,8 @@ public class GestureLockFragment extends LockFragment implements
 	@Override
 	public void onClick(DialogInterface arg0, int which) {
 		if (which == DialogInterface.BUTTON_NEGATIVE) {// make sure
-			String anwser = AppLockerPreference.getInstance(mActivity).getPpAnwser();
+			String anwser = AppLockerPreference.getInstance(mActivity)
+					.getPpAnwser();
 			if (anwser.equals(mEtAnwser.getText().toString())) {
 				// goto reset passwd
 				Intent intent = new Intent(mActivity, LockOptionActivity.class);
@@ -170,6 +171,6 @@ public class GestureLockFragment extends LockFragment implements
 	@Override
 	public void onNewIntent(Intent intent) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

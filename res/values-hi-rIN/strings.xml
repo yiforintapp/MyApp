@@ -1,4 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <string name="app_name">AppMaster</string>
+    <string name="app_manage">ऐप का प्रबंधन</string>
+    <string name="app_detail">ऐप का विवरण</string>
+    <string name="app_lock">ऐप का ताला</string>
+    <string name="app_backup">ऐप बैकअप</string>
+    <string name="app_restore">रिकवरी</string>
+    <string name="button_backup">बैकअप</string>
+    <string name="button_install">स्थापित करें</string>
+    <string name="button_delete">हटाएं</string>
+    <string name="clean_memory">एक क्लिक में तेज़ी लाए</string>
+    <string name="app_use_info">उपयोग</string>
+    <string name="app_permission_info">अनुमति की निगरानि</string>
+    <string name="uninstall">卸载</string>
+    <string name="stop">停止</string>
+    <string name="please_input_pswd">पासवर्ड इनपुट करें</string>
+    <string name="please_input_pswd_again">फिर से पासवर्ड इनपुट करें</string>
+    <string name="makesure">ठीक</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="delete">हटाएं</string>
+    <string name="passwd_hint">चार अंकों पासवर्ड दर्ज करें</string>
+    <string name="tip_no_the_same_pswd">पासवर्ड असंगत है, दोबारा दर्ज करें</string>
+    <string name="use_gesture">इशारों का प्रयोग करें</string>
+    <string name="use_passwd">पासवर्ड का प्रयोग करें</string>
+    <string name="reset_passwd">पासवर्ड रीसेट करें</string>
+    <string name="app_locked">ताला डाला गया है</string>
+    <string name="app_unlock">ताला नहीं डाला गया है</string>
+    <string name="find_passwd">पासवर्ड वापस बुलाएं</string>
+    <string name="please_wait">बाद में दोबारा प्रयास करें</string>
+    <string name="passwd_question">प्रश्न</string>
+    <string name="passwd_anwser">उत्तर</string>
+    <string name="passwd_tip">पासवर्ड अनुस्मारक (वैकल्पिक)</string>
+    <string name="save">स्टोर</string>
+    <string name="passwd_protect_setting">सुरक्षा प्रश्न सेट</string>
+    <string name="qusetion">सवाल:</string>
+    <string name="qusetion_cant_null">सवाल खाली नहीं हो सकता</string>
+    <string name="aneser_cant_null">जवाब खाली नहीं हो सकता</string>
+    <string name="pleas_input_anwser">सुरक्षा प्रश्न का उत्तर लिखें</string>
+    <string name="anwser">उत्तर:</string>
+    <string name="not_unistall">रद्द से रोकें</string>
+    <string name="lock_screen_auto_lock">स्क्रीन लॉक करने के बाद स्वचालित रूप से ताले डालें</string>
+    <string name="tips">टिप्स</string>
+
+    <!-- 一键加速 -->
+    <string name="compeletely">完成</string>
+    <string name="accelerate">加速</string>
+    <string name="clean_result">clean up </string>
+    <!-- 手势密码 -->
+    <string name="lockscreen_access_pattern_start">"पैटर्न खींचना शुरु करें"</string>
+    <string name="lockscreen_access_pattern_cleared">"पैटर्न हटा दिया गया है"</string>
+    <string name="lockscreen_access_pattern_detected">"पैटर्न को समाप्त किया गया है"</string>
+    <string name="please_input_gesture">अनलॉक प्रतिमान आरेखित करें</string>
+    <string name="input_passwd_tip">पासवर्ड संकेत दर्ज करें</string>
+    <string name="find_gesture">इशारों को वापस बुलाएं</string>
+    <string name="pp_success">पासवर्ड सुरक्षा सेटिंग समाप्त हो गया</string>
+    <string name="set_gesture">इशारों को आरेखित करें</string>
+    <string name="please_input_gesture_again">अनलॉक प्रतिमान दोबारा आरेखित करें</string>
+    <string name="reset_gesture">इशारा रीसेट करें</string>
+    <string name="gesture_hint">कम से कम 4 अंक कनेक्ट करें</string>
+    <string name="lock_right_now">तुरंत लॉक करें</string>
+    <string name="lock_15_sec">15 सेकंड</string>
+    <string name="lock_30_sec">30 सेकंड</string>
+    <string name="lock_1_min">1 मिनट</string>
+    <string name="lock_3_min">3 मिनट</string>
+    <string name="lock_5_min">5 मिनट</string>
+    <string name="app_version">संस्करण: %1$s</string>
+    <string name="backuping">बैकअप किया जा रहा है</string>
+    <string name="no_application_selected">किसी भी आवेदन का चयन नहीं</string>
+    <string name="query_delete">%1$s वसूली फ़ाइल हटाना चाहते हैं?</string>
+    <string name="backup_finish">बैकअप किया जाने में सफल हो गया है</string>
+    <string name="backuped_count">सफलतापूर्वक %1$d ऐप बैकअप किए गए हैं</string>
+    <string name="delete_fail">हटाएं विफल रही!</string>
+    <string name="deleting_app">हटाया जा रहा है: %1$s</string>
+    <string name="installed_app_size">स्थापित किए गए सॉफ्टवेयर: %1$d</string>
+    <string name="apk_size">साइज: %1$s</string>
+    <string name="storage_size">मोबाइल की शेष मेमोरी: %1$s</string>
+
+    <string name="unavailable">अनुपलब्ध</string>
+    <string name="bakup_fail_cancel">बैकअप रद्द कर दिया गया है</string>
+    <string name="bakup_fail_full">भंडारण अंतरिक्ष भरा है</string>
+    <string name="bakup_fail_unavailable">संग्रहण स्थान उपलब्ध नहीं है</string>
+    <string name="no_app_backuped">कोई बैकअप डेटा</string>
+    <string name="app_details">ऐप का विवरण</string>
+    <string name="app_memory">"सिस्टम अधिभोग &#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_cache_size">"बफर अधिभोग&#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_permission1">Dangerous Permission</string>
+    <string name="app_permission2">Normal Permission</string>
+    <string name="app_permission3">Important Permission</string>
+    <string name="app_setting_update">Check the upgrade</string>
+    <string name="app_setting_about">About</string>
+
+    <string-array name="lock_time_entrys">
+        <item>@string/lock_right_now</item>
+        <item>@string/lock_15_sec</item>
+        <item>@string/lock_30_sec</item>
+        <item>@string/lock_1_min</item>
+        <item>@string/lock_3_min</item>
+        <item>@string/lock_5_min</item>
+    </string-array>
+    <string-array name="lock_time_items">
+        <item>0</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>300</item>
+    </string-array>
+
+    <!-- Lock option -->
+    <string name="forbid_uninstall">锁屏后自动锁定</string>
+    <string name="auto_lock">锁屏后自动锁定</string>
+    <string name="change_lock_time">更改锁定时间</string>
+    <string name="change_passwd">更改密码</string>
+    <string name="passwd_protect">密保问题</string>
+    <string name="passwd_notify">密码提示</string>
+
 </resources>

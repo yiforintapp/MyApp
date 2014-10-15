@@ -2,9 +2,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">AppMaster</string>
-    <string name="hello_world">Hello world!</string>
     <string name="app_manage">应用管理</string>
-    <string name="app_detail">App Details</string>
+    <string name="app_detail">应用详情</string>
     <string name="app_lock">应用锁</string>
     <string name="app_backup">应用备份</string>
     <string name="app_restore">应用恢复</string>
@@ -43,7 +42,11 @@
     <string name="not_unistall">防止被卸载</string>
     <string name="lock_screen_auto_lock">锁屏后自动锁定</string>
     <string name="tips">提示</string>
-    <!-- 手势密码 -->
+    
+    
+    <!-- App lock -->
+     <string name="lock_count">"已加锁"</string>
+      <string name="unlock_count">"未加锁"</string>
     <string name="lockscreen_access_pattern_start">"开始绘制图案"</string>
     <string name="lockscreen_access_pattern_cleared">"图案已清除"</string>
     <string name="lockscreen_access_pattern_cell_added">"已添加单元格"</string>
@@ -65,7 +68,7 @@
     <string name="app_version">版本: %1$s</string>
     <string name="backuping">正在备份</string>
     <string name="no_application_selected">没有选择任何应用</string>
-    <string name="query_delete">确定删除: %1$s?</string>
+    <string name="query_delete">是否删除 %1$s的恢复文件？</string>
     <string name="backup_finish">备份完成</string>
     <string name="backuped_count">成功备份%1$d个应用</string>
     <string name="delete_fail">删除失败！</string>
@@ -104,5 +107,10 @@
     <string name="app_permission3">重要权限</string>
     <string name="app_setting_update">检查升级</string>
     <string name="app_setting_about">关于</string>
-
+    
+    <string name="auto_lock">锁屏后自动锁定</string>
+    <string name="change_lock_time">更改锁定时间</string>
+    <string name="passwd_protect">密保问题</string>
+    <string name="change_passwd">更改密码</string>
+    <string name="passwd_notify">密码提示</string>
 </resources>
