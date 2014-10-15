@@ -1,4 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <string name="app_name">AppMaster</string>
+    <string name="app_manage">应用管理</string>
+    <string name="app_detail">App Details</string>
+    <string name="app_lock">应用锁</string>
+    <string name="app_backup">ऐप बैकअप</string>
+    <string name="app_restore">रिकवरी</string>
+    <string name="button_backup">बैकअप</string>
+    <string name="button_install">स्थापित करें</string>
+    <string name="button_delete">हटाएं</string>
+    <string name="clean_memory">一键清理</string>
+    <string name="app_use_info">使用情况</string>
+    <string name="app_permission_info">权限监控</string>
+    <string name="uninstall">卸载</string>
+    <string name="stop">停止</string>
+    <string name="please_input_pswd">输入密码</string>
+    <string name="please_input_pswd_again">再次输入密码</string>
+    <string name="makesure">ठीक</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="delete">हटाएं</string>
+    <string name="passwd_hint">请输入四位数密码</string>
+    <string name="tip_no_the_same_pswd">输入密码不一致，请重新输入</string>
+    <string name="use_gesture">使用手势</string>
+    <string name="use_passwd">使用密码</string>
+    <string name="reset_passwd">重设密码</string>
+    <string name="app_locked">已加锁</string>
+    <string name="app_unlock">未加锁</string>
+    <string name="find_passwd">密码找回</string>
+    <string name="please_wait">请稍候再试</string>
+    <string name="passwd_question">问题</string>
+    <string name="passwd_anwser">答案</string>
+    <string name="passwd_tip">密码提示(选填)</string>
+    <string name="save">保存</string>
+    <string name="passwd_protect_setting">密保问题设置</string>
+    <string name="qusetion">问题:</string>
+    <string name="qusetion_cant_null">问题不能为空</string>
+    <string name="aneser_cant_null">答案不能为空</string>
+    <string name="pleas_input_anwser">请输入密保问题的答案</string>
+    <string name="anwser">答案:</string>
+    <string name="not_unistall">防止被卸载</string>
+    <string name="lock_screen_auto_lock">锁屏后自动锁定</string>
+    <string name="tips">提示</string>
+
+    <!-- 一键加速 -->
+    <string name="compeletely">完成</string>
+    <string name="accelerate">加速</string>
+    <string name="clean_result">clean up </string>
+    <!-- 手势密码 -->
+    <string name="lockscreen_access_pattern_start">"开始绘制图案"</string>
+    <string name="lockscreen_access_pattern_cleared">"图案已清除"</string>
+    <string name="lockscreen_access_pattern_cell_added">"已添加单元格"</string>
+    <string name="lockscreen_access_pattern_detected">"图案绘制完成"</string>
+    <string name="please_input_gesture">请绘制解锁图案</string>
+    <string name="input_passwd_tip">请输入密码提示</string>
+    <string name="find_gesture">手势找回</string>
+    <string name="pp_success">密码保护设置成功</string>
+    <string name="set_gesture">绘制手势</string>
+    <string name="please_input_gesture_again">请再次绘制解锁图案</string>
+    <string name="reset_gesture">重设手势</string>
+    <string name="gesture_hint">请连接至少4个点</string>
+    <string name="lock_right_now">立即锁定</string>
+    <string name="lock_15_sec">15秒</string>
+    <string name="lock_30_sec">30秒</string>
+    <string name="lock_1_min">1分钟</string>
+    <string name="lock_3_min">3分钟</string>
+    <string name="lock_5_min">5分钟</string>
+    <string name="app_version">संस्करण: %1$s</string>
+    <string name="backuping">बैकअप किया जा रहा है</string>
+    <string name="no_application_selected">No applications selected</string>
+    <string name="query_delete">%1$s वसूली फ़ाइल हटाना चाहते हैं?</string>
+    <string name="backup_finish">बैकअप किया जाने में सफल हो गया है</string>
+    <string name="backuped_count">सफलतापूर्वक %1$d ऐप बैकअप किए गए हैं</string>
+    <string name="delete_fail">Delete fail!</string>
+    <string name="deleting_app">Deleting: %1$s</string>
+    <string name="installed_app_size">स्थापित किए गए सॉफ्टवेयर: %1$d</string>
+    <string name="apk_size">साइज: %1$s</string>
+    <string name="storage_size">मोबाइल की शेष मेमोरी: %1$s</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="bakup_fail_cancel">Backup canceled</string>
+    <string name="bakup_fail_full">Storage is full</string>
+    <string name="bakup_fail_unavailable">Storage is unavailable</string>
+    <string name="no_app_backuped">No applications backuped</string>
+    <string name="app_details">App Details</string>
+    <string name="app_memory">"Memory&#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_cache_size">"Cache Size&#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_permission1">Dangerous Permission</string>
+    <string name="app_permission2">Normal Permission</string>
+    <string name="app_permission3">Important Permission</string>
+    <string name="app_setting_update">Check the upgrade</string>
+    <string name="app_setting_about">About</string>
+
+    <string-array name="lock_time_entrys">
+        <item>@string/lock_right_now</item>
+        <item>@string/lock_15_sec</item>
+        <item>@string/lock_30_sec</item>
+        <item>@string/lock_1_min</item>
+        <item>@string/lock_3_min</item>
+        <item>@string/lock_5_min</item>
+    </string-array>
+    <string-array name="lock_time_items">
+        <item>0</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>300</item>
+    </string-array>
+
+    <!-- Lock option -->
+    <string name="forbid_uninstall">锁屏后自动锁定</string>
+    <string name="change_lock_time">更改锁定时间</string>
+    <string name="change_passwd">更改密码</string>
+    <string name="passwd_protect">密保问题</string>
+    <string name="passwd_notify">密码提示</string>
+
 </resources>
