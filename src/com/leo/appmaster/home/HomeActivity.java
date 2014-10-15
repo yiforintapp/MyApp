@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
@@ -172,6 +173,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 		case R.id.tv_app_lock:
 			LeoStat.addEvent(LeoStat.P2, "app lock",
 					"click the app lock button");
+			FlurryAgent.logEvent("app lock: click the app lock button");
 			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
 				enterLockPage();
 			} else {
@@ -181,12 +183,14 @@ public class HomeActivity extends Activity implements OnClickListener {
 		case R.id.tv_app_backup:
 			LeoStat.addEvent(LeoStat.P2, "app backup",
 					"click the app backup button");
+			FlurryAgent.logEvent("app backup: click the app backup button");
 			intent = new Intent(this, AppBackupRestoreActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
 			LeoStat.addEvent(LeoStat.P2, "tasksCompleted",
 					"click the one key clear button");
+			FlurryAgent.logEvent("tasksCompleted: click the one key clear button");
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;

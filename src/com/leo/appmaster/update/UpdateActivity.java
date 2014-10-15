@@ -46,6 +46,8 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     private final static int DOWNLOAD_NOTIFICATION_ID = 1001;
     /* mActionDownloadWindow must set value before build notification */
     private static String mActionDownloadWindow = "";
+    /* this TAG MUST match the one in SDK library */
+    private final static String LEO_SDK_DOWNLOAD_TAG = ".leoanasdk.download";
 
     public UpdateActivity() {
         mProgressHandler = new ProgressHandler(this);
@@ -57,8 +59,10 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIntent = getIntent();
-        mActionDownloadWindow = getPackageName() + ".download";
+        mActionDownloadWindow = getPackageName() + LEO_SDK_DOWNLOAD_TAG;
         buildDownloadNotification();
+        // TODO: we can pull style and parameters from UpdateManager and do
+        // layout in here
     }
 
     @Override
@@ -112,7 +116,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     private void showDownloadFailed() {
         setContentView(R.layout.dialog_alarm);
         TextView tvTitle = (TextView) findViewById(R.id.dlg_title);
-        tvTitle.setText(getString(R.string.download_error));
+        tvTitle.setText(getString(R.string.tips_title));
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.download_error));
         TextView tvRetry = (TextView) findViewById(R.id.dlg_left_btn);
@@ -215,8 +219,13 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     /* stone: UI done */
     private void showNoUpdate() {
         setContentView(R.layout.dialog_message);
+        ImageView iv = (ImageView) findViewById(R.id.dlg_left_icon);
+        iv.setVisibility(View.INVISIBLE);
+        TextView title = (TextView) findViewById(R.id.dlg_title);
+        title.setText(getString(R.string.tips_title));
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.update_no_need));
+        tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         TextView tv = (TextView) findViewById(R.id.dlg_bottom_btn);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,6 +252,8 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     /* stone: UI done */
     private void showCheckFailed() {
         setContentView(R.layout.dialog_alarm);
+        TextView title = (TextView) findViewById(R.id.dlg_title);
+        title.setText(getString(R.string.tips_title));
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.network_busy_msg));
         TextView retry = (TextView) findViewById(R.id.dlg_left_btn);
