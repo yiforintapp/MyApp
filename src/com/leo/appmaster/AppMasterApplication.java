@@ -43,7 +43,7 @@ public class AppMasterApplication extends Application {
 	}
 
 	private void iniLeoSdk() {
-		LeoStat.init(getApplicationContext(), "1", "applocker");
+		LeoStat.init(getApplicationContext(), "1", "appmaster");
 		LeoStat.initUpdateEngine(UpdateActivity.class.getName(), true);
 	}
 
