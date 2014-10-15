@@ -75,6 +75,9 @@ public class WaitActivity extends Activity {
 	}
 
 	private void returnBack() {
+		if (returned) {
+			return;
+		}
 		returned = true;
 		Intent intent = new Intent(this, LockScreenActivity.class);
 		int lockType = AppLockerPreference.getInstance(WaitActivity.this)

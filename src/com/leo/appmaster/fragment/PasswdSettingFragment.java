@@ -3,6 +3,7 @@ package com.leo.appmaster.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -18,7 +19,8 @@ import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.service.LockService;
 
 public class PasswdSettingFragment extends BaseFragment implements
-		OnClickListener, android.content.DialogInterface.OnClickListener {
+		OnClickListener, android.content.DialogInterface.OnClickListener,
+		OnDismissListener {
 
 	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv0;
 
@@ -29,6 +31,8 @@ public class PasswdSettingFragment extends BaseFragment implements
 	private int mInputCount = 1;
 	private String mTempFirstPasswd = "";
 	private String mTempSecondPasswd = "";
+
+	private boolean mGotoPasswdProtect;
 
 	@Override
 	protected int layoutResourceId() {
@@ -119,7 +123,6 @@ public class PasswdSettingFragment extends BaseFragment implements
 		}
 	}
 
-
 	private void makesurePasswd() {
 		if (mInputCount == 1) {
 			mInputCount++;
@@ -172,6 +175,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 				.setMessage("为了避免忘记密码而无法进入应用锁，建议设置密保问题，是否设置？")
 				.setNegativeButton(R.string.cancel, this)
 				.setPositiveButton(R.string.makesure, this).create();
+		dialog.setOnDismissListener(this);
 		dialog.show();
 	}
 
@@ -239,15 +243,22 @@ public class PasswdSettingFragment extends BaseFragment implements
 
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-		Intent intent;
 		if (which == DialogInterface.BUTTON_POSITIVE) {
+			mGotoPasswdProtect = true;
+		}
+
+	}
+
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		Intent intent;
+		if (mGotoPasswdProtect) {
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
-			this.startActivity(intent);
-		} else if (which == DialogInterface.BUTTON_NEGATIVE) {
+			startActivity(intent);
+		} else {
 			intent = new Intent(mActivity, AppLockListActivity.class);
-			this.startActivity(intent);
+			startActivity(intent);
 		}
 		mActivity.finish();
-
 	}
 }
