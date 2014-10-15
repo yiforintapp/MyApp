@@ -67,11 +67,11 @@
     <string name="lock_3_min">3 मिनट</string>
     <string name="lock_5_min">5 मिनट</string>
     <string name="app_version">संस्करण: %1$s</string>
-    <string name="backuping">बैकअप किया जा रहा है</string>
+    <string name="backuping">बैकअप किया जा रहा है: ( %1$s )</string>
     <string name="no_application_selected">किसी भी आवेदन का चयन नहीं</string>
     <string name="query_delete">%1$s वसूली फ़ाइल हटाना चाहते हैं?</string>
     <string name="backup_finish">बैकअप किया जाने में सफल हो गया है</string>
-    <string name="backuped_count">सफलतापूर्वक %1$d ऐप बैकअप किए गए हैं</string>
+    <string name="backuped_count">सफलतापूर्वक %1$d ऐप बैकअप किए गए हैं: %2$s</string>
     <string name="delete_fail">हटाएं विफल रही!</string>
     <string name="deleting_app">हटाया जा रहा है: %1$s</string>
     <string name="installed_app_size">स्थापित किए गए सॉफ्टवेयर: %1$d</string>
@@ -110,7 +110,7 @@
     </string-array>
 
     <!-- Lock option -->
-    <string name="forbid_uninstall">锁屏后自动锁定</string>
+    <string name="forbid_uninstall">禁止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>
     <string name="change_lock_time">更改锁定时间</string>
     <string name="change_passwd">更改密码</string>

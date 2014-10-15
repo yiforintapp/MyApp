@@ -25,6 +25,8 @@ public class AppDetailInfo extends BaseInfo {
     public boolean isChecked;
     
     public boolean isBackuped;
+    
+    public int topPos = -1;
 
     public AppDetailInfo() {
         mCacheInfo = new CacheInfo();

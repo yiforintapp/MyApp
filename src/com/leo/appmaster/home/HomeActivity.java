@@ -17,6 +17,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.appmanage.AppListActivity;
+import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
@@ -79,7 +80,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
-		mTtileBar.setOptionImageVisibility(View.VISIBLE);
+		mTtileBar.setOptionImageVisibility(View.GONE);
 		mTtileBar.setOptionText("");
 		mTtileBar.setOptionImage(R.drawable.setting_btn);
 		mTtileBar.setOptionListener(this);
@@ -164,11 +165,16 @@ public class HomeActivity extends Activity implements OnClickListener {
 		Intent intent = null;
 		switch (v.getId()) {
 		case R.id.top_layout:
+		    break;
 		case R.id.tv_app_manage:
 //			LeoStat.addEvent(LeoStat.P2, "app_manage",
 //					"click the app manage button");
-			intent = new Intent(this, AppListActivity.class);
-			this.startActivity(intent);
+//			intent = new Intent(this, AppListActivity.class);
+//			this.startActivity(intent);
+		    /** modify for version 1.0*/
+            intent = new Intent(this, AboutActivity.class);
+            this.startActivity(intent);
+            /**end*/
 			break;
 		case R.id.tv_app_lock:
 			LeoStat.addEvent(LeoStat.P2, "app lock",

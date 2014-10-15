@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="13dp"
+    android:layout_marginRight="13dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/dlg_title_layout"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minHeight="95dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/dlg_title"
+            style="@style/dlg_title_txt"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/tips"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dialog_content_area_bg"
+            android:maxHeight="247dp"
+            android:minHeight="60dp"
+            android:paddingBottom="22dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="22dp" >
+
+            <ProgressBar
+                android:id="@+id/dlg_pro"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="6dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="13dp"
+                android:paddingLeft="17dp"
+                android:paddingRight="17dp"
+                android:progress="0"
+                android:progressDrawable="@drawable/progress_bar" />
+
+            <TextView
+                android:id="@+id/dlg_pro_state"
+                style="@style/dlg_content_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/dlg_pro"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="15dp"
+                android:paddingRight="17dp"
+                android:text="0/0" >
+            </TextView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- 双btn -->
+
+    <LinearLayout
+        android:id="@+id/dlg_bottom_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dlg_title_layout"
+        android:background="@color/dialog_btn_area_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="11dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="11dp" >
+
+        <TextView
+            android:id="@+id/dlg_bottom_btn"
+            style="@style/dlg_single_button_txt"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="@string/cancel" />
+    </LinearLayout>
+
+</RelativeLayout>
