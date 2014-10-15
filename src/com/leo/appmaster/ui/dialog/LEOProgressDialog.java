@@ -14,6 +14,7 @@ public class LEOProgressDialog extends LEOBaseDialog {
 
 	private int mMax;
 	private int mCurrent;
+	private TextView mTitle;
 	private TextView mProHint;
 	private ProgressBar mProgressBar;
 	private TextView mState;
@@ -30,6 +31,12 @@ public class LEOProgressDialog extends LEOBaseDialog {
 			mProHint.setText(hintString);
 		}
 	}
+	
+	   public void setTitle(String title) {
+	        if (title != null) {
+	            mTitle.setText(title);
+	        }
+	    }
 
 	public void setMax(int maxValue) {
 		mMax = maxValue;
@@ -55,6 +62,7 @@ public class LEOProgressDialog extends LEOBaseDialog {
 		View dlgView = LayoutInflater.from(mContext).inflate(R.layout.dialog_progress, null);
 
 		mProHint = (TextView) dlgView.findViewById(R.id.dlg_pro_hint);
+		mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
 		mState = (TextView) dlgView.findViewById(R.id.dlg_pro_state);
 		mProgressBar = (ProgressBar) dlgView.findViewById(R.id.dlg_pro);
 		bottomLayout = dlgView.findViewById(R.id.dlg_bottom_layout);

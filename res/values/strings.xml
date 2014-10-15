@@ -69,7 +69,7 @@
     <string name="lock_3_min">3 Min.</string>
     <string name="lock_5_min">5 Min.</string>
     <string name="app_version">Version: %1$s</string>
-    <string name="backuping">Processing data</string>
+    <string name="backuping">Processing data: ( %1$s )</string>
     <string name="no_application_selected">No applications selected</string>
     <string name="query_delete">Delete the recovery file of %1$s?</string>
     <string name="backup_finish">Backup Completed</string>

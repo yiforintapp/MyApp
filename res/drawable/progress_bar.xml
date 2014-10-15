@@ -3,7 +3,7 @@
 
     <item android:id="@android:id/background">
         <shape>
-            <solid android:color="@color/dialog_pro_bg" />
+            <solid android:color="@color/item_backup_grey" />
 
             <corners
                 android:bottomLeftRadius="5dp"
@@ -16,7 +16,7 @@
         <clip>
             <shape>
                 <gradient
-                    android:centerColor="@color/dialog_pro_center"
+                    android:centerColor="@color/app_background"
                     android:centerX="0"
                     android:centerY="0"
                     android:endColor="@color/dialog_pro_end"

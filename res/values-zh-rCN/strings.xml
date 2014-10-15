@@ -66,9 +66,9 @@
     <string name="lock_3_min">3分钟</string>
     <string name="lock_5_min">5分钟</string>
     <string name="app_version">版本: %1$s</string>
-    <string name="backuping">正在备份</string>
+    <string name="backuping">正在备份: ( %1$s )</string>
     <string name="no_application_selected">没有选择任何应用</string>
-    <string name="query_delete">是否删除 %1$s的恢复文件？</string>
+    <string name="query_delete">是否删除%1$s的恢复文件？</string>
     <string name="backup_finish">备份完成</string>
     <string name="backuped_count">成功备份%1$d个应用</string>
     <string name="delete_fail">删除失败！</string>

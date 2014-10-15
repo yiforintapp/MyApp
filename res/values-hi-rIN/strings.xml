@@ -66,7 +66,7 @@
     <string name="lock_3_min">3 मिनट</string>
     <string name="lock_5_min">5 मिनट</string>
     <string name="app_version">संस्करण: %1$s</string>
-    <string name="backuping">बैकअप किया जा रहा है</string>
+    <string name="backuping">बैकअप किया जा रहा है: ( %1$s )</string>
     <string name="no_application_selected">किसी भी आवेदन का चयन नहीं</string>
     <string name="query_delete">%1$s वसूली फ़ाइल हटाना चाहते हैं?</string>
     <string name="backup_finish">बैकअप किया जाने में सफल हो गया है</string>
