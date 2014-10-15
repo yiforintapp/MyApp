@@ -74,26 +74,27 @@ public class LockScreenActivity extends FragmentActivity {
 				.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
 	}
 
-	private void setAppInfoBackground(Drawable drawable) {
-		int h = drawable.getIntrinsicHeight() * 9 / 10;
-		int w = h * 3 / 5;
-		mAppBaseInfoLayoutbg = Bitmap.createBitmap(w, h,
-				Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(mAppBaseInfoLayoutbg);
-		canvas.drawColor(Color.WHITE);
-		drawable.setBounds(-(drawable.getIntrinsicWidth() - w) / 2,
-				-(drawable.getIntrinsicHeight() - h) / 2,
-				(drawable.getIntrinsicWidth() - w) / 2 + w,
-				(drawable.getIntrinsicHeight() - h) / 2 + h);
-		drawable.draw(canvas);
-		// canvas.drawColor(Color.argb(60, 0, 0, 0));
-		mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
+	   private void setAppInfoBackground(Drawable drawable) {        
+	        int h = drawable.getIntrinsicHeight() * 9 / 10;
+	        int w = h * 3 / 5;
+	        mAppBaseInfoLayoutbg = Bitmap.createBitmap(
+	                w,
+	                h,
+	                Bitmap.Config.ARGB_8888);
+	        Canvas canvas = new Canvas(mAppBaseInfoLayoutbg);
+	        canvas.drawColor(Color.WHITE);
+	        drawable.setBounds(-(drawable.getIntrinsicWidth()  - w) / 2, -(drawable.getIntrinsicHeight() - h) / 2, (drawable.getIntrinsicWidth()  - w) / 2 + w, (drawable.getIntrinsicHeight() - h) / 2 + h);
+	        drawable.draw(canvas);
+	        canvas.drawColor(Color.argb(26, 0, 0, 0));
+	        mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
+	        
+	        RelativeLayout layout = (RelativeLayout)findViewById(R.id.activity_lock_layout);
+	        
+	        layout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
 
-		RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
 
-		layout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
-
-	}
+	    }
+	
 
 	@Override
 	protected void onDestroy() {
