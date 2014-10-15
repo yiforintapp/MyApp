@@ -263,7 +263,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
             @Override
             public void run() {
                 if(success) {
-                    showMessageDialog(getString(R.string.backup_finish),  String.format(getString(R.string.backuped_count), totalNum));
+                    showMessageDialog(getString(R.string.backup_finish),  String.format(getString(R.string.backuped_count), totalNum, message));
                 } else {
                     Toast.makeText(AppBackupRestoreActivity.this, message, Toast.LENGTH_LONG).show();
                 }

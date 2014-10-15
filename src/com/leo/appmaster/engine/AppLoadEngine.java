@@ -175,8 +175,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			if (!mAppsLoaded) {
 				Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 				mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-				List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent,
-						0);
+				List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent, 0);
 				for (ResolveInfo resolveInfo : apps) {
 					ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
 					String packageName = applicationInfo.packageName;

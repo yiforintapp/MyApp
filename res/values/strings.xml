@@ -73,7 +73,7 @@
     <string name="no_application_selected">No applications selected</string>
     <string name="query_delete">Delete the recovery file of %1$s?</string>
     <string name="backup_finish">Backup Completed</string>
-    <string name="backuped_count">%1$d Apps backuped successfully</string>
+    <string name="backuped_count">%1$d apps backuped successfully to: %2$s</string>
     <string name="delete_fail">Delete fail!</string>
     <string name="deleting_app">Deleting: %1$s</string>
     <string name="installed_app_size">App Installled: %1$d</string>

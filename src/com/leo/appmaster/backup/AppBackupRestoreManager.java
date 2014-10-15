@@ -509,7 +509,7 @@ public class AppBackupRestoreManager implements AppChangeListener{
             case FAIL_TYPE_SDCARD_UNAVAILABLE:
                 return AppMasterApplication.getInstance().getString(R.string.bakup_fail_unavailable);
         }
-        return null;
+        return getBackupPath();
     }
 
     public void onDestory(Context context) {
