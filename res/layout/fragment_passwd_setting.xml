@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/app_background" >
 
     <LinearLayout
         android:id="@+id/layout_passwd"
@@ -10,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="130dp"
         android:gravity="center" >
 
         <TextView
@@ -21,7 +22,7 @@
             android:background="@drawable/pw_dline"
             android:gravity="center"
             android:textColor="#ffffffff"
-            android:textSize="25sp" />
+            android:textSize="40sp" />
 
         <TextView
             android:id="@+id/tv_passwd_2"
@@ -31,7 +32,7 @@
             android:background="@drawable/pw_dline"
             android:gravity="center"
             android:textColor="#ffffffff"
-            android:textSize="25sp" />
+            android:textSize="40sp" />
 
         <TextView
             android:id="@+id/tv_passwd_3"
@@ -41,7 +42,7 @@
             android:background="@drawable/pw_dline"
             android:gravity="center"
             android:textColor="#ffffffff"
-            android:textSize="25sp" />
+            android:textSize="40sp" />
 
         <TextView
             android:id="@+id/tv_passwd_4"
@@ -50,19 +51,18 @@
             android:background="@drawable/pw_dline"
             android:gravity="center"
             android:textColor="#ffffffff"
-            android:textSize="25sp" />
+            android:textSize="40sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/tv_passwd_tip"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/layout_passwd"
-        android:layout_margin="2dp"
+        android:gravity="center"
         android:orientation="vertical"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp" >
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,10 +72,9 @@
 
             <TextView
                 android:id="@+id/tv_1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="1"
@@ -84,12 +83,11 @@
 
             <TextView
                 android:id="@+id/tv_2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="2"
@@ -98,10 +96,9 @@
 
             <TextView
                 android:id="@+id/tv_3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="3"
@@ -119,10 +116,9 @@
 
             <TextView
                 android:id="@+id/tv_4"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="4"
@@ -131,12 +127,11 @@
 
             <TextView
                 android:id="@+id/tv_5"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="5"
@@ -145,10 +140,9 @@
 
             <TextView
                 android:id="@+id/tv_6"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="6"
@@ -164,10 +158,9 @@
 
             <TextView
                 android:id="@+id/tv_7"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="7"
@@ -176,12 +169,11 @@
 
             <TextView
                 android:id="@+id/tv_8"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="8"
@@ -190,10 +182,9 @@
 
             <TextView
                 android:id="@+id/tv_9"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="9"
@@ -209,25 +200,22 @@
             android:layout_weight="1"
             android:gravity="center" >
 
-            <ImageView
-                android:id="@+id/tv_delete"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+            <View
+                android:id="@+id/tv_ok"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
                 android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
-                android:scaleType="centerInside"
-                android:src="@drawable/del_icon" />
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/tv_0"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="0"
@@ -235,27 +223,37 @@
                 android:textSize="25sp" />
 
             <ImageView
-                android:id="@+id/tv_ok"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#1effffff"
+                android:id="@+id/tv_delete"
+                android:layout_width="69dp"
+                android:layout_height="69dp"
                 android:clickable="true"
                 android:gravity="center"
                 android:scaleType="centerInside"
-                android:src="@drawable/ok_icon" />
+                android:src="@drawable/digital_del_icon" />
         </LinearLayout>
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_passwd_tip"
+        android:id="@+id/tv_passwd_input_tip"
         android:layout_width="match_parent"
-        android:layout_height="84dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="48dp"
         android:gravity="center"
         android:text="@string/passwd_hint"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_passwd_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_passwd_input_tip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+         android:textSize="14sp" 
         android:textColor="#aaffffff"
-        android:textSize="16sp" />
+        android:text="passwd hint" />
 
 </RelativeLayout>

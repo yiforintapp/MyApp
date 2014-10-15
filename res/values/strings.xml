@@ -34,6 +34,7 @@
     <string name="passwd_tip">Password hint(Optional)</string>
     <string name="save">Save</string>
     <string name="passwd_protect_setting">Reset security question</string>
+    <string name="input_error_tip">您已输错<xliff:g>%1$s</xliff:g>次，还剩<xliff:g>%2$s</xliff:g>次机会</string>
     <string name="qusetion">Security question:</string>
     <string name="qusetion_cant_null">Please enter the new question</string>
     <string name="aneser_cant_null">Please enter your answer</string>
@@ -56,6 +57,8 @@
     <string name="lockscreen_access_pattern_detected">"Pattern Recorded!"</string>
     <string name="please_input_gesture">Please enter the unlock pattern</string>
     <string name="input_passwd_tip">Type your password tip</string>
+    <string name="switch_gesture">use gesture</string>
+    <string name="switch_passwd">use passwd</string>
     <string name="find_gesture">Forget your pattern?</string>
     <string name="pp_success">Password Reset</string>
     <string name="set_gesture">Draw a pattern</string>

@@ -48,11 +48,14 @@ public class LockSettingActivity extends FragmentActivity implements
 
 		int type = AppLockerPreference.getInstance(this).getLockType();
 		if (type == AppLockerPreference.LOCK_TYPE_GESTURE) {
+			mLockType = LOCK_TYPE_GESTURE;
 			tans.replace(R.id.fragment_contain, mGesture);
+			mTitleBar.setOptionText(getString(R.string.switch_passwd));
 		} else {
+			mLockType = LOCK_TYPE_PASSWD;
 			tans.replace(R.id.fragment_contain, mPasswd);
+			mTitleBar.setOptionText(getString(R.string.switch_gesture));
 		}
-		mLockType = LOCK_TYPE_PASSWD;
 		tans.commit();
 
 	}
@@ -66,7 +69,6 @@ public class LockSettingActivity extends FragmentActivity implements
 		mTitleBar.setOptionListener(this);
 		mTitleBar.setOptionTextVisibility(View.VISIBLE);
 		mTitleBar.setOptionText("");
-		mTitleBar.setOptionBackground(R.drawable.switch_passwd);
 	}
 
 	@Override
@@ -86,11 +88,11 @@ public class LockSettingActivity extends FragmentActivity implements
 		if (mLockType == LOCK_TYPE_PASSWD) {
 			tans.replace(R.id.fragment_contain, mGesture);
 			mLockType = LOCK_TYPE_GESTURE;
-			mTitleBar.setOptionBackground(R.drawable.switch_gesture);
+			mTitleBar.setOptionText(getString(R.string.switch_passwd));
 		} else {
 			tans.replace(R.id.fragment_contain, mPasswd);
 			mLockType = LOCK_TYPE_PASSWD;
-			mTitleBar.setOptionBackground(R.drawable.switch_passwd);
+			mTitleBar.setOptionText(getString(R.string.switch_gesture));
 		}
 		tans.commit();
 	}

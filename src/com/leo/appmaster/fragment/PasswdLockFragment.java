@@ -29,9 +29,9 @@ public class PasswdLockFragment extends LockFragment implements
 	private ImageView mAppicon;
 
 	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv0;
-	private ImageView iv_delete, iv_makesure;
+	private ImageView iv_delete;
 	private TextView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
-	private TextView mPasswdTip;
+	private TextView mPasswdTip, mPasswdHint;
 	private TextView mFindPasswd;
 
 	private EditText mEtQuestion, mEtAnwser;
@@ -57,7 +57,6 @@ public class PasswdLockFragment extends LockFragment implements
 		tv9 = (TextView) findViewById(R.id.tv_9);
 		tv0 = (TextView) findViewById(R.id.tv_0);
 		iv_delete = (ImageView) findViewById(R.id.tv_delete);
-		iv_makesure = (ImageView) findViewById(R.id.tv_ok);
 
 		tv1.setOnClickListener(this);
 		tv2.setOnClickListener(this);
@@ -70,20 +69,27 @@ public class PasswdLockFragment extends LockFragment implements
 		tv9.setOnClickListener(this);
 		tv0.setOnClickListener(this);
 		iv_delete.setOnClickListener(this);
-		iv_makesure.setOnClickListener(this);
 		iv_delete.setEnabled(false);
-		iv_makesure.setEnabled(false);
 
 		mTvPasswd1 = (TextView) findViewById(R.id.tv_passwd_1);
 		mTvPasswd2 = (TextView) findViewById(R.id.tv_passwd_2);
 		mTvPasswd3 = (TextView) findViewById(R.id.tv_passwd_3);
 		mTvPasswd4 = (TextView) findViewById(R.id.tv_passwd_4);
 
-		mPasswdTip = (TextView) findViewById(R.id.tv_passwd_tip);
+		mPasswdHint = (TextView) findViewById(R.id.tv_passwd_hint);
+		mPasswdTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
 		mAppicon = (ImageView) findViewById(R.id.iv_app_icon);
 
 		mFindPasswd = (TextView) findViewById(R.id.tv_find_passwd);
 		mFindPasswd.setOnClickListener(this);
+
+		String passwdtip = AppLockerPreference.getInstance(mActivity)
+				.getPasswdTip();
+		if (passwdtip == null || passwdtip.equals("")) {
+			mPasswdHint.setVisibility(View.INVISIBLE);
+		} else {
+			mPasswdHint.setText(passwdtip);
+		}
 
 		if (mPackage != null) {
 			mAppicon = (ImageView) findViewById(R.id.iv_app_icon);
@@ -136,7 +142,7 @@ public class PasswdLockFragment extends LockFragment implements
 			checkPasswd();
 			break;
 
-		case R.id.tv_find_gesture:
+		case R.id.tv_find_passwd:
 			findPasswd();
 			break;
 
@@ -194,8 +200,10 @@ public class PasswdLockFragment extends LockFragment implements
 						&& mFindPasswd.getVisibility() != View.VISIBLE) {
 					mFindPasswd.setVisibility(View.VISIBLE);
 				}
-				mPasswdTip.setText("您已输错" + mInputCount + "次" + "，还剩"
-						+ (mMaxInput - mInputCount) + "次机会");
+
+				mPasswdTip.setText(String.format(
+						getString(R.string.input_error_tip), mInputCount + "",
+						(mMaxInput - mInputCount) + ""));
 			}
 			clearPasswd();
 		}
@@ -212,7 +220,6 @@ public class PasswdLockFragment extends LockFragment implements
 		if (!mTvPasswd4.getText().equals("")) {
 			mTvPasswd4.setText("");
 			mTempPasswd = mTempPasswd.substring(0, mTempPasswd.length() - 1);
-			iv_makesure.setEnabled(false);
 		} else if (!mTvPasswd3.getText().equals("")) {
 			mTvPasswd3.setText("");
 			mTempPasswd = mTempPasswd.substring(0, mTempPasswd.length() - 1);
@@ -241,7 +248,8 @@ public class PasswdLockFragment extends LockFragment implements
 		} else if (mTvPasswd4.getText().equals("")) {
 			mTvPasswd4.setText("*");
 			mTempPasswd = mTempPasswd + s;
-			iv_makesure.setEnabled(true);
+
+			checkPasswd();
 		}
 
 	}

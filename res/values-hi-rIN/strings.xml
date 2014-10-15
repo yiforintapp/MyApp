@@ -30,6 +30,7 @@
     <string name="find_passwd">पासवर्ड वापस बुलाएं</string>
     <string name="please_wait">बाद में दोबारा प्रयास करें</string>
     <string name="passwd_question">प्रश्न</string>
+    <string name="input_error_tip">您已输错<xliff:g>%1$s</xliff:g>次，还剩<xliff:g>%2$s</xliff:g>次机会</string>
     <string name="passwd_anwser">उत्तर</string>
     <string name="passwd_tip">पासवर्ड अनुस्मारक (वैकल्पिक)</string>
     <string name="save">स्टोर</string>
