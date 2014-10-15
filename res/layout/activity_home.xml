@@ -96,7 +96,7 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                 <com.leo.appmaster.ui.CricleView
+                  <com.leo.appmaster.ui.CricleView
                     android:id="@+id/cricle_view"
                     android:layout_width="82dp"
                     android:layout_height="82dp"
@@ -162,7 +162,7 @@
         android:layout_centerHorizontal="true"
         android:orientation="vertical" >
 
-        <LinearLayout
+       <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" >
@@ -188,9 +188,12 @@
                     android:textColor="@color/text_color_blue"
                     android:textSize="14sp" />
             </LinearLayout>
-
+            <View 
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#FFF5F5F5"/>
             <LinearLayout
-                android:id="@+id/ tv_app_manage"
+                android:id="@+id/ tv_app_backup"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -200,18 +203,21 @@
                 <ImageView
                     android:layout_width="38dp"
                     android:layout_height="38dp"
-                    android:src="@drawable/appmanager_icon" />
+                    android:src="@drawable/appbackup_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/app_manage"
+                    android:text="@string/app_backup"
                     android:textColor="@color/text_color_blue"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
-
+            <View 
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#FFF5F5F5"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -238,9 +244,12 @@
                     android:textColor="@color/text_color_blue"
                     android:textSize="14sp" />
             </LinearLayout>
-
+            <View 
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#FFF5F5F5"/>
             <LinearLayout
-                android:id="@+id/ tv_app_backup"
+                android:id="@+id/ tv_app_manage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -250,13 +259,13 @@
                 <ImageView
                     android:layout_width="38dp"
                     android:layout_height="38dp"
-                    android:src="@drawable/appbackup_icon" />
+                    android:src="@drawable/setting_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/app_backup"
+                    android:text="@string/app_setting_about"
                     android:textColor="@color/text_color_blue"
                     android:textSize="14sp" />
             </LinearLayout>
