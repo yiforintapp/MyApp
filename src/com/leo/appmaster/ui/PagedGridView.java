@@ -267,6 +267,11 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 
 	@Override
 	public void onAnimEnd() {
+
+		if (mPageCount < 1) {
+			return;
+		}
+
 		List<BaseInfo> list = mPageDatas.get(mPageCount - 1);
 		if (list.size() == 0) {
 			mGridViewList.remove(mPageCount - 1);
