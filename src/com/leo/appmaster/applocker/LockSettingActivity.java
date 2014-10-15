@@ -43,12 +43,18 @@ public class LockSettingActivity extends FragmentActivity implements
 		mGesture = new GestureSettingFragment();
 
 		mFm = getSupportFragmentManager();
-		
+
 		FragmentTransaction tans = mFm.beginTransaction();
-		tans.replace(R.id.fragment_contain, mPasswd);
+
+		int type = AppLockerPreference.getInstance(this).getLockType();
+		if (type == AppLockerPreference.LOCK_TYPE_GESTURE) {
+			tans.replace(R.id.fragment_contain, mGesture);
+		} else {
+			tans.replace(R.id.fragment_contain, mPasswd);
+		}
 		mLockType = LOCK_TYPE_PASSWD;
 		tans.commit();
-	
+
 	}
 
 	private void initUI() {
