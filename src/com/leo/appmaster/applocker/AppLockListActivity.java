@@ -59,9 +59,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lock_app_list);
-
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
-
 		initUI();
 		loadData();
 	}

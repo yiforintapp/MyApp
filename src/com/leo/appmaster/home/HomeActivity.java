@@ -70,7 +70,7 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTvAppLock = findViewById(R.id.tv_app_lock);
 		mTvAppBackup = findViewById(R.id.tv_app_backup);
 		mTvCleanMem = findViewById(R.id.tv_clean_memory);
-//		mTvAppManage.setOnClickListener(this);
+		mTvAppManage.setOnClickListener(this);
 		mTvAppLock.setOnClickListener(this);
 		mTvAppBackup.setOnClickListener(this);
 		mTvCleanMem.setOnClickListener(this);
@@ -166,8 +166,8 @@ public class HomeActivity extends Activity implements OnClickListener {
 		case R.id.tv_app_manage:
 //			LeoStat.addEvent(LeoStat.P2, "app_manage",
 //					"click the app manage button");
-//			intent = new Intent(this, AppListActivity.class);
-//			this.startActivity(intent);
+			intent = new Intent(this, AppListActivity.class);
+			this.startActivity(intent);
 			break;
 		case R.id.tv_app_lock:
 			LeoStat.addEvent(LeoStat.P2, "app lock",
