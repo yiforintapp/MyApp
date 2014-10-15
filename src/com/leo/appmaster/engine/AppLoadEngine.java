@@ -3,6 +3,7 @@ package com.leo.appmaster.engine;
 import java.lang.reflect.Method;
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -99,6 +100,30 @@ public class AppLoadEngine extends BroadcastReceiver {
 	 */
 
 	private ConcurrentHashMap<String, AppDetailInfo> mAppDetails;
+	
+	private final static String[] sTopAppArray = new String[]{
+	        "com.whatsapp", // WhatsApp Messenger
+	        "com.facebook.orca", // Facebook Messenger 
+	        "com.facebook.katana", // Facebook
+	        "com.bsb.hike", // hike messenger
+	        "jp.naver.line.android", // line
+	        "com.viber.voip", // Viber
+	        "com.tencent.mm", // wechat
+	        "com.twitter.android", // Twitter
+	        "com.instagram.android", // Instagram
+	        "com.android.contacts", // Contacts
+	        "com.android.mms", // MMS
+	        "com.skype.raider", // Skype
+	        "com.imo.android.imoim", // imo
+	        "frames.techtouch.hordingframe", // Photo Frames: Hoarding
+	        "com.picsart.studio", // PicsArt - Photo Studio
+	        "com.km.cutpaste.util", // Cut Paste Photos
+	        "com.pixlr.express", // Pixlr Express - photo editing
+	        "com.android.gallery3d", // Gallery
+	        "com.android.email"   // Email
+	};
+	
+	private final List<String> mTopApplist;
 
 	private AppLoadEngine(Context context) {
 		mContext = context.getApplicationContext();
@@ -106,6 +131,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		mLatch = new CountDownLatch(1);
 		mAppDetails = new ConcurrentHashMap<String, AppDetailInfo>();
 		mListeners = new ArrayList<AppChangeListener>(1);
+		mTopApplist = Arrays.asList(sTopAppArray);
 	}
 
 	public static synchronized AppLoadEngine getInstance(Context context) {
@@ -204,6 +230,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		appInfo.setInSdcard(AppUtil.isInstalledInSDcard(applicationInfo));
 		appInfo.setUid(applicationInfo.uid);
 		appInfo.setSourceDir(applicationInfo.sourceDir);
+		appInfo.topPos = mTopApplist.indexOf(packageName);
 	}
 
 	private void loadPowerComsuInfo() {
@@ -412,9 +439,20 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 		@Override
 		public int compare(AppDetailInfo lhs, AppDetailInfo rhs) {
-			return Collator.getInstance().compare(lhs.getAppLabel().trim(),
-					rhs.getAppLabel().trim());
+		    if(lhs.topPos > -1 && rhs.topPos < 0) {
+		        return -1;
+		    } else if(lhs.topPos < 0 && rhs.topPos > -1) {
+		        return 1;
+		    } else if(lhs.topPos > -1 && rhs.topPos > -1) {
+		        return lhs.topPos - rhs.topPos;
+		    }
+			return Collator.getInstance().compare(trimString(lhs.getAppLabel()),
+			        trimString(rhs.getAppLabel()));
 		}
+		
+	    private String trimString(String s) {
+	        return s.replaceAll("\u00A0", "").trim();
+	    }
 
 	}
 
