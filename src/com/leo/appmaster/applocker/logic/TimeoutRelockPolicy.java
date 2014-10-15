@@ -13,36 +13,29 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 
 	Context mContext;
 
-	private int mRelockTimeout;
 	private HashMap<String, Long> mLockapp = new HashMap<String, Long>();
 
 	public TimeoutRelockPolicy(Context mContext) {
 		super();
 		this.mContext = mContext;
-		mRelockTimeout = getRelockTime();
+
 	}
 
 	public int getRelockTime() {
 		return AppLockerPreference.getInstance(mContext).getRelockTimeout();
 	}
 
-	public void setRelockTime(int timeout) {
-		AppLockerPreference.getInstance(mContext).setRelockTimeout(timeout);
-	}
-
 	@Override
 	public boolean onHandleLock(String pkg) {
+		long curTime = System.currentTimeMillis();
 		if (mLockapp.containsKey(pkg)) {
 			long lastLockTime = mLockapp.get(pkg);
-			Log.d(TAG,
-					"System.currentTimeMillis() = "
-							+ System.currentTimeMillis()
-							+ "       lastLockTime = " + lastLockTime
-							+ "       mRelockTimeout =  " + mRelockTimeout);
-			if ((System.currentTimeMillis() - lastLockTime) < mRelockTimeout * 1000)
+			Log.d(TAG, " curTime -  lastLockTime = " + (curTime - lastLockTime)
+					+ "       mRelockTimeout =  " + getRelockTime());
+			if ((curTime - lastLockTime) < getRelockTime())
 				return true;
 		} else {
-			mLockapp.put(pkg, System.currentTimeMillis());
+			mLockapp.put(pkg, curTime);
 		}
 		return false;
 	}
@@ -50,10 +43,12 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 	public void clearLockApp() {
 		mLockapp.clear();
 	}
-	
+
 	@Override
 	public void onUnlocked(String pkg) {
-		mLockapp.put(pkg, System.currentTimeMillis());
+		long curTime = System.currentTimeMillis();
+		Log.e("xxxx", "onUnlocked time: " + curTime);
+		mLockapp.put(pkg, curTime);
 	}
 
 }

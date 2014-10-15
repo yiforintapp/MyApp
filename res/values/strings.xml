@@ -109,7 +109,8 @@
     </string-array>
 
     <!-- Lock option -->
-    <string name="forbid_uninstall">锁屏后自动锁定</string>
+    <string name="forbid_uninstall">防止被卸载</string>
+    <string name="auto_lock">锁屏后自动锁定</string>
     <string name="change_lock_time">更改锁定时间</string>
     <string name="change_passwd">更改密码</string>
     <string name="passwd_protect">密保问题</string>

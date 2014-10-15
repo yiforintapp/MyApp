@@ -11,7 +11,7 @@
         android:defaultValue="true"
         android:key="set_auto_lock"
         android:layout="@layout/pref_list_item_mid"
-        android:title="@string/forbid_uninstall"
+        android:title="@string/auto_lock"
         android:widgetLayout="@layout/pref_widget_checkbox" />
 
     <ListPreference

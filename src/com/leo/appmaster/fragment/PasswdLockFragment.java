@@ -177,7 +177,7 @@ public class PasswdLockFragment extends LockFragment implements
 				intent = new Intent(mActivity, AppLockListActivity.class);
 				mActivity.startActivity(intent);
 			} else if (mFrom == LockFragment.FROM_OTHER) {
-
+				unlockSucceed(mPackage);
 			}
 			mActivity.finish();
 		} else {

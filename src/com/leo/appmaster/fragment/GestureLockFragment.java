@@ -124,6 +124,7 @@ public class GestureLockFragment extends LockFragment implements
 				this.startActivity(intent);
 			} else if (mFrom == FROM_OTHER) {
 				//input right gesture, just finish self
+				unlockSucceed(mPackage);
 			}
 			mActivity.finish();
 		} else {

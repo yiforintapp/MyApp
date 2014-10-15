@@ -44,7 +44,7 @@ public class WaitActivity extends Activity {
 						e.printStackTrace();
 					}
 				}
-				WaitActivity.this.finish();
+				WaitActivity.this.onBackPressed();
 			}
 		}).start();
 

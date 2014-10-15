@@ -61,7 +61,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 
 	public int getRelockTimeout() {
 		String time = mPref.getString(PREF_RELOCK_TIME, "0");
-		return Integer.parseInt(time);
+		return Integer.parseInt(time) * 1000;
 	}
 
 	public void setRelockTimeout(int timeout) {
@@ -148,8 +148,11 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		} else if (PREF_LOCK_POLICY.equals(key)) {
 			mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
 		} else if(PREF_RELOCK_TIME.equals(key)) {
-			String s = mPref.getString(PREF_RELOCK_TIME, "-1");
-			Log.e("", s);
+//			String s = mPref.getString(PREF_RELOCK_TIME, "-1");
+			
+			int re = getRelockTimeout();
+			
+			Log.e("xxxx", re + "");
 		}
 	}
 

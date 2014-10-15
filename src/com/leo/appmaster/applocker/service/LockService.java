@@ -61,6 +61,7 @@ public class LockService extends Service {
 				getApplicationContext()));
 
 		IntentFilter filter = new IntentFilter(LockHandler.ACTION_APP_UNLOCKED);
+		filter.addAction(Intent.ACTION_SCREEN_OFF);
 		this.getApplicationContext().registerReceiver(mLockHandler, filter);
 		super.onCreate();
 	}
