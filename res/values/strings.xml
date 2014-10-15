@@ -47,7 +47,10 @@
     <string name="compeletely">Compeletely</string>
     <string name="accelerate">Boost</string>
     <string name="clean_result">clean up </string>
-    <!-- 手势密码 -->
+    <!-- applock -->
+
+    <string name="lock_count">"Locked"</string>
+    <string name="unlock_count">"Unlocked"</string>
     <string name="lockscreen_access_pattern_start">"Pattern Drawing"</string>
     <string name="lockscreen_access_pattern_cleared">"Pattern Deleted"</string>
     <string name="lockscreen_access_pattern_detected">"Pattern Recorded!"</string>
@@ -114,4 +117,5 @@
     <string name="change_passwd">Change Password</string>
     <string name="passwd_protect">Security Question</string>
     <string name="passwd_notify">Password hint</string>
+
 </resources>
