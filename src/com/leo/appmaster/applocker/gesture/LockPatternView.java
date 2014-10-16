@@ -250,14 +250,14 @@ public class LockPatternView extends View {
 
 		mPathPaint.setAntiAlias(true);
 		mPathPaint.setDither(true);
-		mPathPaint.setColor(Color.YELLOW); // TODO this should be from the style
+		mPathPaint.setColor(Color.WHITE); // TODO this should be from the style
 		mPathPaint.setAlpha(mStrokeAlpha);
 		mPathPaint.setStyle(Paint.Style.STROKE);
 		mPathPaint.setStrokeJoin(Paint.Join.ROUND);
 		mPathPaint.setStrokeCap(Paint.Cap.ROUND);
 
-		mBitmapCircleDefault = getBitmapFor(R.drawable.gesture_pattern_item_bg);
-		mBitmapCircleGreen = getBitmapFor(R.drawable.gesture_pattern_selected);
+		mBitmapCircleDefault = getBitmapFor(R.drawable.gesture_point_bg);
+		mBitmapCircleGreen = getBitmapFor(R.drawable.gesture_point);
 		mBitmapCircleRed = getBitmapFor(R.drawable.gesture_pattern_selected_wrong);
 		// bitmaps have the size of the largest bitmap in this group
 		final Bitmap bitmaps[] = { mBitmapCircleDefault, mBitmapCircleGreen,
@@ -899,7 +899,7 @@ public class LockPatternView extends View {
 		final float squareWidth = mSquareWidth;
 		final float squareHeight = mSquareHeight;
 
-		float radius = (squareWidth * mDiameterFactor * 0.5f);
+		float radius = (squareWidth * mDiameterFactor * 0.7f);
 		mPathPaint.setStrokeWidth(radius);
 
 		final Path currentPath = mCurrentPath;
@@ -950,7 +950,7 @@ public class LockPatternView extends View {
 			if (mPatternDisplayMode == DisplayMode.Wrong)
 				mPathPaint.setColor(Color.RED);
 			else
-				mPathPaint.setColor(Color.YELLOW);
+				mPathPaint.setColor(0x7fffffff);
 			canvas.drawPath(currentPath, mPathPaint);
 		}
 
@@ -1021,7 +1021,7 @@ public class LockPatternView extends View {
 
 		mCircleMatrix.setTranslate(leftX + offsetX, topY + offsetY);
 		mCircleMatrix.preTranslate(mBitmapWidth / 2, mBitmapHeight / 2);
-		mCircleMatrix.preScale(sx, sy);
+		mCircleMatrix.preScale(sx * 0.6f, sy * 0.6f);
 		mCircleMatrix.preTranslate(-mBitmapWidth / 2, -mBitmapHeight / 2);
 
 		canvas.drawBitmap(outerCircle, mCircleMatrix, mPaint);

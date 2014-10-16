@@ -193,7 +193,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
             ArrayList<AppDetailInfo> items = mBackupAdapter.getSelectedItems();
             int size =  items.size();
             if(size > 0) {
-                showProgressDialog(getString(R.string.backuping), size, false, true);
+                showProgressDialog(getString(R.string.button_backup), "", size, false, true);
                 mBackupManager.backupApps(items);
             } else {
                 Toast.makeText(this, R.string.no_application_selected, Toast.LENGTH_LONG).show();
@@ -242,12 +242,16 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     }
 
     @Override
-    public void onBackupProcessChanged(final int doneNum, final int totalNum) {
+    public void onBackupProcessChanged(final int doneNum, final int totalNum, final String currentApp) {
         mHandler.post(new Runnable() {       
             @Override
             public void run() {
                 if(mProgressDialog != null && mProgressDialog.isShowing()) {
                     mProgressDialog.setProgress(doneNum);
+                    if(currentApp != null) {
+                        String backup = getString(R.string.backuping);
+                        mProgressDialog.setMessage(String.format(backup, currentApp));
+                    }
                 }
             }
         });
@@ -259,7 +263,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
             @Override
             public void run() {
                 if(success) {
-                    showMessageDialog(getString(R.string.backup_finish),  String.format(getString(R.string.backuped_count), totalNum));
+                    showMessageDialog(getString(R.string.backup_finish),  String.format(getString(R.string.backuped_count), totalNum, message));
                 } else {
                     Toast.makeText(AppBackupRestoreActivity.this, message, Toast.LENGTH_LONG).show();
                 }
@@ -314,7 +318,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
     }
 
     
-    private void showProgressDialog(String message, int max, boolean indeterminate, boolean cancelable) {
+    private void showProgressDialog(String title, String message, int max, boolean indeterminate, boolean cancelable) {
         if(mProgressDialog == null) {
             mProgressDialog = new LEOProgressDialog(this);
             mProgressDialog.setOnCancelListener(new OnCancelListener() {            
@@ -331,6 +335,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         mProgressDialog.setMax(max);
         mProgressDialog.setProgress(0);
         mProgressDialog.setMessage(message);
+        mProgressDialog.setTitle(title);
         mProgressDialog.show();
     }
     
@@ -342,7 +347,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
                 @Override
                 public void onClick(int which) {
                     if(which == 1 && mPendingDelApp != null) {
-                        showProgressDialog(String.format(getString(R.string.deleting_app), mPendingDelApp.getAppLabel()), 0, true, false);
+                        showProgressDialog(getString(R.string.delete), String.format(getString(R.string.deleting_app), mPendingDelApp.getAppLabel()), 0, true, false);
                         mBackupManager.deleteApp(mPendingDelApp);
                     }
                     mPendingDelApp = null;

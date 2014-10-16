@@ -24,9 +24,9 @@ public class PasswdSettingFragment extends BaseFragment implements
 
 	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv0;
 
-	private ImageView iv_delete, iv_makesure;
+	private ImageView iv_delete;
 	private TextView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
-	private TextView mInputTip;
+	private TextView mInputTip, mPasswdHint;
 
 	private int mInputCount = 1;
 	private String mTempFirstPasswd = "";
@@ -52,7 +52,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 		tv9 = (TextView) findViewById(R.id.tv_9);
 		tv0 = (TextView) findViewById(R.id.tv_0);
 		iv_delete = (ImageView) findViewById(R.id.tv_delete);
-		iv_makesure = (ImageView) findViewById(R.id.tv_ok);
+		mPasswdHint = (TextView) findViewById(R.id.tv_passwd_hint);
 
 		tv1.setOnClickListener(this);
 		tv2.setOnClickListener(this);
@@ -65,8 +65,6 @@ public class PasswdSettingFragment extends BaseFragment implements
 		tv9.setOnClickListener(this);
 		tv0.setOnClickListener(this);
 		iv_delete.setOnClickListener(this);
-		iv_makesure.setOnClickListener(this);
-		iv_makesure.setEnabled(false);
 		iv_delete.setEnabled(false);
 
 		mTvPasswd1 = (TextView) findViewById(R.id.tv_passwd_1);
@@ -74,8 +72,16 @@ public class PasswdSettingFragment extends BaseFragment implements
 		mTvPasswd3 = (TextView) findViewById(R.id.tv_passwd_3);
 		mTvPasswd4 = (TextView) findViewById(R.id.tv_passwd_4);
 
-		mInputTip = (TextView) findViewById(R.id.tv_passwd_tip);
+		mInputTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
 
+		String passwdtip = AppLockerPreference.getInstance(mActivity)
+				.getPasswdTip();
+
+		if (passwdtip == null || passwdtip.equals("")) {
+			mPasswdHint.setVisibility(View.INVISIBLE);
+		} else {
+			mPasswdHint.setText(passwdtip);
+		}
 	}
 
 	@Override
@@ -128,7 +134,6 @@ public class PasswdSettingFragment extends BaseFragment implements
 			mInputCount++;
 			clearPasswd();
 			mInputTip.setText(R.string.please_input_pswd_again);
-			iv_makesure.setEnabled(false);
 			iv_delete.setEnabled(false);
 		} else if (mInputCount == 2) {
 			if (mTempFirstPasswd.equals(mTempSecondPasswd)) {
@@ -182,7 +187,6 @@ public class PasswdSettingFragment extends BaseFragment implements
 	private void deletePasswd() {
 		if (!mTvPasswd4.getText().equals("")) {
 			mTvPasswd4.setText("");
-			iv_makesure.setEnabled(false);
 		} else if (!mTvPasswd3.getText().equals("")) {
 			mTvPasswd3.setText("");
 		} else if (!mTvPasswd2.getText().equals("")) {
@@ -231,12 +235,12 @@ public class PasswdSettingFragment extends BaseFragment implements
 			}
 		} else if (mTvPasswd4.getText().equals("")) {
 			mTvPasswd4.setText("*");
-			iv_makesure.setEnabled(true);
 			if (mInputCount == 1) {
 				mTempFirstPasswd = mTempFirstPasswd + s;
 			} else {
 				mTempSecondPasswd = mTempSecondPasswd + s;
 			}
+			makesurePasswd();
 		}
 
 	}

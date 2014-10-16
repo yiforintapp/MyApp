@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginLeft="13dp"
     android:layout_marginRight="13dp"
-    android:background="@drawable/dlg_bg"
     android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
-        android:layout_width="fill_parent"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:minHeight="95dp"
@@ -28,11 +27,13 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:maxHeight="247dp"
+            android:background="@color/dialog_content_area_bg"
             android:minHeight="60dp"
-            android:paddingBottom="14dp"
-            android:paddingLeft="17dp"
-            android:paddingRight="17dp"
-            android:paddingTop="14dp" >
+            android:paddingBottom="22dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="22dp" >
 
             <ProgressBar
                 android:id="@+id/dlg_pro"
@@ -68,12 +69,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dlg_title_layout"
+        android:background="@color/dialog_btn_area_bg"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingLeft="17dp"
-        android:paddingRight="17dp"
-        android:paddingTop="10dp"
+        android:paddingBottom="11dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="11dp"
         android:weightSum="2" >
 
         <TextView

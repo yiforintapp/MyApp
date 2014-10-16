@@ -138,8 +138,10 @@ public class GestureLockFragment extends LockFragment implements
 						&& mFindGesture.getVisibility() != View.VISIBLE) {
 					mFindGesture.setVisibility(View.VISIBLE);
 				}
-				mGestureTip.setText("您已输错" + mInputCount + "次" + "，还剩"
-						+ (mMaxInput - mInputCount) + "次机会");
+
+				mGestureTip.setText(String.format(
+						getString(R.string.input_error_tip), mInputCount + "",
+						(mMaxInput - mInputCount) + ""));
 			}
 			mLockPatternView.clearPattern();
 		}

@@ -65,7 +65,7 @@ public class AppBackupRestoreManager implements AppChangeListener{
     public interface AppBackupDataListener {
         public void onDataReady();
         public void onDataUpdate();
-        public void onBackupProcessChanged(int doneNum, int totalNum);
+        public void onBackupProcessChanged(int doneNum, int totalNum, String currentApp);
         public void onBackupFinish(boolean success, int successNum, int totalNum, String message);
         public void onApkDeleted(boolean success);
     }
@@ -146,6 +146,7 @@ public class AppBackupRestoreManager implements AppChangeListener{
                             success = false;
                             break;
                         }
+                        mBackupListener.onBackupProcessChanged(doneNum, totalNum, app.getAppLabel());
                         doneNum ++;
                         failType = tryBackupApp(app);
                         if(failType== FAIL_TYPE_NONE) {
@@ -154,7 +155,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                             success = false;
                             break;
                         }
-                        mBackupListener.onBackupProcessChanged(doneNum, totalNum);
+                    }
+                    if(doneNum == totalNum) {
+                        mBackupListener.onBackupProcessChanged(doneNum, totalNum, null);
                     }
                     mBackupListener.onBackupFinish(success, successNum, totalNum, getFailMessage(failType));
                 }
@@ -506,7 +509,7 @@ public class AppBackupRestoreManager implements AppChangeListener{
             case FAIL_TYPE_SDCARD_UNAVAILABLE:
                 return AppMasterApplication.getInstance().getString(R.string.bakup_fail_unavailable);
         }
-        return null;
+        return getBackupPath();
     }
 
     public void onDestory(Context context) {

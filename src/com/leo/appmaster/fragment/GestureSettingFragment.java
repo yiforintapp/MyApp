@@ -88,12 +88,12 @@ public class GestureSettingFragment extends BaseFragment implements
 		int patternSize = pattern.size();
 		if (mInputCount == 1) {
 			if (patternSize < 4) {
-				shakeGestureTip();
+//				shakeGestureTip();
 				mLockPatternView.clearPattern();
 				return;
 			}
 			mTempGesture1 = LockPatternUtils.patternToString(pattern);
-			mTvGestureTip.setText(R.string.please_input_gesture_again);
+			mTvGestureTip.setText(R.string.please_input_gesture_again); 
 			mLockPatternView.clearPattern();
 			mInputCount++;
 		} else {
