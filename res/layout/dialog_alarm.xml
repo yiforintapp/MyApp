@@ -3,18 +3,17 @@
     android:layout_width="330dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_marginLeft="13dp"
-    android:layout_marginRight="13dp"
-    android:background="@color/white"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingLeft="13dp"
+    android:paddingRight="13dp" >
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
-        android:layout_width="fill_parent"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:minHeight="95dp"
         android:maxHeight="274dp"
+        android:minHeight="95dp"
         android:orientation="vertical" >
 
         <TextView
@@ -29,6 +28,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:minHeight="60dp"
             android:paddingBottom="14dp"
             android:paddingLeft="17dp"
@@ -55,20 +55,19 @@
         </RelativeLayout>
     </LinearLayout>
 
-
     <LinearLayout
         android:id="@+id/dlg_2btn_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dlg_title_layout"
+        android:background="@color/item_backup_grey"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
         android:paddingLeft="17dp"
         android:paddingRight="17dp"
         android:paddingTop="10dp"
-        android:weightSum="2" 
-        android:background="@color/item_backup_grey">
+        android:weightSum="2" >
 
         <TextView
             android:id="@+id/dlg_left_btn"
