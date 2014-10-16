@@ -163,7 +163,7 @@ public class GestureLockFragment extends LockFragment implements
 				mActivity.startActivity(intent);
 
 			} else {
-				Toast.makeText(mActivity, "答案不正确，请重新输入", 0).show();
+				Toast.makeText(mActivity, R.string.reinput_anwser, 0).show();
 			}
 		} else if (which == DialogInterface.BUTTON_POSITIVE) { // cancel
 			mDialog.dismiss();

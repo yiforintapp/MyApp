@@ -19,6 +19,7 @@
     <string name="set_gesture_suc">手势设置成功</string>
     <string name="set_passwd_suc">密码设置成功</string>
     <string name="stop">停止</string>
+    <string name="reinput_anwser">"答案不正确，请重新输入"</string>
     <string name="please_input_pswd">输入密码</string>
     <string name="please_input_pswd_again">再次输入密码</string>
     <string name="makesure">确认</string>

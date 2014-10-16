@@ -37,6 +37,7 @@
         <activity
             android:name="com.leo.appmaster.home.HomeActivity"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,11 +69,13 @@
         <activity
             android:name="com.leo.appmaster.applocker.AppLockListActivity"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.LockOptionActivity"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
@@ -109,13 +112,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-
         <activity
             android:name="com.leo.appmaster.appsetting.AboutActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-        
+
         <!-- add for the app update of leosdk -->
         <activity
             android:name=".update.UpdateActivity"

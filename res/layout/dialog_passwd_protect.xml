@@ -26,6 +26,7 @@
             android:layout_weight="1"
             android:textColor="#ddf1f1f1"
             android:layout_marginLeft="10dp"
+            android:background="@drawable/input_box_line"
             android:ems="10"
             android:enabled="false" >
         </EditText>
@@ -49,6 +50,7 @@
             android:layout_height="wrap_content"
             android:textColor="#dd000000"
             android:layout_marginLeft="10dp"
+            android:background="@drawable/input_box_line"
             android:layout_weight="1"
             android:ems="10" >
             <requestFocus />

@@ -44,11 +44,11 @@
         <EditText
             android:id="@+id/et_question"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_below="@+id/textView1"
             android:textSize="16sp"
-            android:background="@null"
             android:layout_marginTop="18dp"
+            android:background="@drawable/input_box_line"
             android:layout_centerHorizontal="true"
             
             android:ems="10" >
@@ -68,12 +68,12 @@
         <EditText
             android:id="@+id/et_anwser"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_below="@+id/textView2"
             android:layout_marginTop="18dp"
             android:textSize="16sp"
-            android:background="@null"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/input_box_line"
             android:ems="10" />
 
     </RelativeLayout>
