@@ -48,6 +48,8 @@ public class PasswdProtectActivity extends Activity {
 	public void onClick(View v) {
 		String qusetion = mQuestion.getText().toString();
 		String answer = mAnwser.getText().toString();
+		String passwdHint = AppLockerPreference.getInstance(this)
+				.getPasswdTip();
 		if (v == mSave) {
 			if (qusetion == null || qusetion.equals("")) {
 				Toast.makeText(this, R.string.qusetion_cant_null, 1).show();
@@ -59,7 +61,7 @@ public class PasswdProtectActivity extends Activity {
 			}
 
 			AppLockerPreference.getInstance(this).savePasswdProtect(qusetion,
-					answer, null);
+					answer, passwdHint);
 			Toast.makeText(this, R.string.pp_success, 1).show();
 			finish();
 		}

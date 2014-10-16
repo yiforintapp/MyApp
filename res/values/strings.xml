@@ -31,8 +31,8 @@
     <string name="reset_passwd">Reset Password</string>
     <string name="app_locked">Locked</string>
     <string name="app_unlock">Unlocked</string>
-    <string name="set_gesture_suc">手势设置成功</string>
-    <string name="set_passwd_suc">密码设置成功</string>
+    <string name="set_gesture_suc">Pattern Recorded!</string>
+    <string name="set_passwd_suc">Password Setted!</string>
     <string name="find_passwd">Forget password?</string>
     <string name="please_wait">Please try again later</string>
     <string name="passwd_question">Security question</string>
@@ -41,15 +41,15 @@
     <string name="save">Save</string>
     <string name="passwd_protect_setting">Reset security question</string>
     <string name="passwd_prompt">Passwd hint: <xliff:g>%1$s</xliff:g></string>
-    <string name="input_error_tip">您已输错<xliff:g>%1$s</xliff:g>次，还剩<xliff:g>%2$s</xliff:g>次机会</string>
+    <string name="input_error_tip">You have entered a wrong password<xliff:g>%1$s</xliff:g>times,<xliff:g>%2$s</xliff:g>times left to be locked</string>
     <string name="set_success">successfully</string>
-    <string name="passwd_hint_cant_null">"密码提示不能为空"</string>
-    <string name="set_protect_or_not">"是否设置密保问题?"</string>
-    <string name="set_protect_message">"为了避免忘记密码而无法进入应用锁，建议设置密保问题，是否设置?"</string>
-    <string name="reinput_anwser">"答案不正确，请重新输入"</string>
+    <string name="passwd_hint_cant_null">Please enter a password hint</string>
+    <string name="set_protect_or_not">Do you need to create a security question?</string>
+    <string name="set_protect_message">We suggest a security question in case you forget your password, continue?</string>
+    <string name="reinput_anwser">The answer was incorrect. Please try again</string>
     <string name="input_qusetion">Input security question:</string>
     <string name="qusetion_cant_null">Please enter the new question</string>
-    <string name="passwd_setting">密码设置</string>
+    <string name="passwd_setting">Password Setting</string>
     <string name="aneser_cant_null">Please enter your answer</string>
     <string name="pleas_input_anwser">Answer your security question</string>
     <string name="anwser">Enter the answer here:</string>
@@ -61,8 +61,8 @@
     <string name="compeletely">Compeletely</string>
     <string name="accelerate">Boost</string>
     <string name="used_mem">Used memory</string>
-    <string name="clean_result">clean up:<xliff:g>%1$s</xliff:g>M内存</string>
-    <string name="best_mem">已经是最佳状态,无需再次加速</string>
+    <string name="clean_result">clean up:<xliff:g>%1$s</xliff:g>M Memory</string>
+    <string name="best_mem">Maximum Cleanup!</string>
     <!-- applock -->
 
     <string name="lock_count">"Locked"</string>
