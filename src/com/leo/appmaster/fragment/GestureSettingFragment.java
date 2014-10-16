@@ -53,9 +53,9 @@ public class GestureSettingFragment extends BaseFragment implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		// case R.id.tv_reset_gesture:
-		// resetGesture();
-		// break;
+		 case R.id.tv_bottom:
+		 resetGesture();
+		 break;
 
 		default:
 			break;
@@ -111,6 +111,7 @@ public class GestureSettingFragment extends BaseFragment implements
 					setGestureProtect();
 				} else {
 					intent = new Intent(mActivity, AppLockListActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 				}
 			} else {
@@ -146,6 +147,7 @@ public class GestureSettingFragment extends BaseFragment implements
 			startActivity(intent);
 		} else {
 			intent = new Intent(mActivity, AppLockListActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		}
 		mActivity.finish();

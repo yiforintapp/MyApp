@@ -65,7 +65,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="1"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -79,7 +78,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="2"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -91,7 +89,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="3"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -110,7 +107,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="4"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -124,7 +120,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="5"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -136,7 +131,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="6"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -155,7 +149,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="7"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -169,7 +162,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="8"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -181,7 +173,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="9"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -200,7 +191,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="@string/delete"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -214,7 +204,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="0"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -226,7 +215,6 @@
                     android:background="#23298354"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClick"
                     android:text="@string/makesure"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="25sp" />
@@ -244,7 +232,6 @@
         android:background="#23298354"
         android:clickable="true"
         android:gravity="center"
-        android:onClick="onClick"
         android:text="@string/use_gesture"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="16sp" />

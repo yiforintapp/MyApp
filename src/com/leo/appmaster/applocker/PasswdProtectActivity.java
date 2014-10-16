@@ -8,11 +8,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PasswdProtectActivity extends Activity {
+public class PasswdProtectActivity extends Activity implements OnClickListener {
 
 	private CommonTitleBar mTtileBar;
 
@@ -33,7 +34,7 @@ public class PasswdProtectActivity extends Activity {
 		mQuestion = (EditText) findViewById(R.id.et_question);
 		mAnwser = (EditText) findViewById(R.id.et_anwser);
 		mSave = (TextView) findViewById(R.id.tv_save);
-
+		mSave.setOnClickListener(this);
 		String question = AppLockerPreference.getInstance(this).getPpQuestion();
 		if (question != null) {
 			mQuestion.setHint(question);
@@ -45,6 +46,7 @@ public class PasswdProtectActivity extends Activity {
 
 	}
 
+	@Override
 	public void onClick(View v) {
 		String qusetion = mQuestion.getText().toString();
 		String answer = mAnwser.getText().toString();
@@ -69,9 +71,6 @@ public class PasswdProtectActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		// show app lock list
-		// Intent intent = new Intent(this, AppLockListActivity.class);
-		// startActivity(intent);
 		super.onBackPressed();
 	}
 
