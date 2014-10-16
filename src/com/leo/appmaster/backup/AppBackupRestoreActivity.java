@@ -310,6 +310,7 @@ public class AppBackupRestoreActivity extends Activity implements View.OnClickLi
         mStorageText.setText(mBackupManager.getAvaiableSizeString());
         mCheckAll.setImageResource(R.drawable.tick_all_normal);
         mCheckAll.setTag(false);
+        mCheckAll.setEnabled(mBackupAdapter.hasBackupApp());
         if(mRestoreAdapter.isEmpty()) {
             mEmptyView.setVisibility(View.VISIBLE);
         } else {
