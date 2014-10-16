@@ -33,6 +33,7 @@
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
         android:background="@drawable/input_box_line"
+        android:singleLine="true"
         android:ems="10" >
         <requestFocus />
     </EditText>

@@ -24,6 +24,7 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="passwd_hint">Enter Password</string>
+    <string name="passwd_hint_tip">Password Hint:</string>
     <string name="tip_no_the_same_pswd">Invalid password. Please try again.</string>
     <string name="use_gesture">Lock with Pattern</string>
     <string name="use_passwd">Lock with Password</string>
@@ -35,7 +36,7 @@
     <string name="find_passwd">Forget password?</string>
     <string name="please_wait">Please try again later</string>
     <string name="passwd_question">Security question</string>
-    <string name="passwd_anwser">Answer</string>
+    <string name="passwd_anwser">Answer:</string>
     <string name="passwd_tip">Please unput password hint:</string>
     <string name="save">Save</string>
     <string name="passwd_protect_setting">Reset security question</string>
@@ -43,6 +44,8 @@
     <string name="input_error_tip">您已输错<xliff:g>%1$s</xliff:g>次，还剩<xliff:g>%2$s</xliff:g>次机会</string>
     <string name="set_success">successfully</string>
     <string name="passwd_hint_cant_null">"密码提示不能为空"</string>
+    <string name="set_protect_or_not">"是否设置密保问题?"</string>
+    <string name="set_protect_message">"为了避免忘记密码而无法进入应用锁，建议设置密保问题，是否设置?"</string>
     <string name="reinput_anwser">"答案不正确，请重新输入"</string>
     <string name="input_qusetion">Input security question:</string>
     <string name="qusetion_cant_null">Please enter the new question</string>
@@ -71,6 +74,7 @@
     <string name="find_gesture">Forget your pattern?</string>
     <string name="pp_success">Password Reset</string>
     <string name="set_gesture">Draw a pattern</string>
+    <string name="setting">Setting</string>
     <string name="please_input_gesture_again">Confirm your pattern</string>
     <string name="reset_gesture">Reset your pattern</string>
     <string name="gesture_hint">Connect at least 4 dots</string>

@@ -254,6 +254,6 @@
         android:layout_marginTop="20dp"
          android:textSize="14sp" 
         android:textColor="#aaffffff"
-        android:text="passwd hint" />
+        android:text="@string/passwd_hint_tip" />
 
 </RelativeLayout>

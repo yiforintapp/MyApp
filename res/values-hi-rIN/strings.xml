@@ -29,6 +29,7 @@
     <string name="set_gesture_suc">手势设置成功</string>
     <string name="set_passwd_suc">密码设置成功</string>
     <string name="use_passwd">पासवर्ड का प्रयोग करें</string>
+    <string name="passwd_hint_tip">密码提示：</string>
     <string name="reinput_anwser">"答案不正确，请重新输入"</string>
     <string name="passwd_setting">密码设置</string>
     <string name="reset_passwd">पासवर्ड रीसेट करें</string>
@@ -43,6 +44,9 @@
     <string name="set_success">设置成功</string>
     <string name="passwd_hint_cant_null">"密码提示不能为空"</string>
     <string name="input_qusetion">请输入密保问题:</string>
+    <string name="set_protect_or_not">"是否设置密保问题?"</string>
+    <string name="set_protect_message">"为了避免忘记密码而无法进入应用锁，建议设置密保问题，是否设置?"</string>
+    <string name="setting">Setting</string>
     <string name="save">स्टोर</string>
     <string name="passwd_protect_setting">सुरक्षा प्रश्न सेट</string>
     <string name="qusetion">सवाल:</string>
