@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout1"
             android:layout_centerHorizontal="true"
-            android:text="App Installed"
+            android:text="@string/app_count"
             android:textColor="@color/white" />
 
         <ImageView
@@ -114,19 +114,19 @@
                 android:gravity="center"
                 android:text="654M/2G"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/tv_accelerate"
-                android:layout_width="wrap_content"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/cicle_container"
                 android:layout_below="@+id/tv_memory_info"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="Used Memory"
+                android:text="@string/used_memory"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_flow"
@@ -137,7 +137,7 @@
                 android:gravity="center"
                 android:text="245M"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -148,9 +148,9 @@
                 android:layout_alignLeft="@+id/tv_flow"
                 android:layout_alignRight="@+id/tv_flow"
                 android:gravity="center"
-                android:text="UsedFlow"
+                android:text="@string/used_flow"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14dp" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -186,7 +186,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/app_lock"
                     android:textColor="@color/text_color_blue"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
             </LinearLayout>
             <View 
                 android:layout_width="2dp"
@@ -211,7 +211,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/app_backup"
                     android:textColor="@color/text_color_blue"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
             </LinearLayout>
         </LinearLayout>
             <View 
@@ -242,7 +242,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/clean_memory"
                     android:textColor="@color/text_color_blue"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
             </LinearLayout>
             <View 
                 android:layout_width="2dp"
@@ -267,7 +267,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/app_setting_about"
                     android:textColor="@color/text_color_blue"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
