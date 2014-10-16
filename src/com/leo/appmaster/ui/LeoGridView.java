@@ -3,9 +3,12 @@ package com.leo.appmaster.ui;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,10 +19,6 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 
 import com.leo.appmaster.model.BaseInfo;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 public class LeoGridView extends GridView {
 

@@ -1,20 +1,11 @@
 package com.leo.appmaster.cleanmemory;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.RocketDock;
-import com.leo.appmaster.ui.ShadeView;
-import com.leo.appmaster.utils.ProcessUtils;
-import com.leo.appmaster.utils.TextFormater;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.Animator.AnimatorListener;
-import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
-
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,9 +27,14 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.RocketDock;
+import com.leo.appmaster.ui.ShadeView;
+import com.leo.appmaster.utils.TextFormater;
 
 public class CleanMemActivity extends Activity implements OnClickListener,
 		OnTouchListener {
