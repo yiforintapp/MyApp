@@ -111,6 +111,7 @@ public class GestureSettingFragment extends BaseFragment implements
 					setGestureProtect();
 				} else {
 					intent = new Intent(mActivity, AppLockListActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 				}
 			} else {
@@ -129,6 +130,7 @@ public class GestureSettingFragment extends BaseFragment implements
 		d.setLeftBtnStr(getString(R.string.cancel));
 		d.setRightBtnStr(getString(R.string.makesure));
 		d.setOnClickListener(this);
+		d.setOnDismissListener(this);
 		d.show();
 	}
 
@@ -145,6 +147,7 @@ public class GestureSettingFragment extends BaseFragment implements
 			startActivity(intent);
 		} else {
 			intent = new Intent(mActivity, AppLockListActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		}
 		mActivity.finish();

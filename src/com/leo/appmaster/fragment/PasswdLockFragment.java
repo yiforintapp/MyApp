@@ -89,7 +89,7 @@ public class PasswdLockFragment extends LockFragment implements
 			mPasswdHint.setVisibility(View.INVISIBLE);
 		} else {
 			mPasswdHint.setText(String.format(
-					getString(R.string.passwd_prompt), passwdtip));
+					getString(R.string.passwd_hint_tip), passwdtip));
 		}
 
 		if (mPackage != null) {

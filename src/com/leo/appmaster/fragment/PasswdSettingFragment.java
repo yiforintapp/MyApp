@@ -148,6 +148,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 					setPasswdProtect();
 				} else {
 					intent = new Intent(mActivity, AppLockListActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 				}
 			} else {
@@ -250,6 +251,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 			startActivity(intent);
 		} else {
 			intent = new Intent(mActivity, AppLockListActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		}
 		mActivity.finish();
