@@ -2,6 +2,9 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">AppMaster</string>
+    <string name="app_count">The number of apps</string>
+    <string name="used_memory">Used memory</string>
+    <string name="used_flow">Used flow</string>
     <string name="app_manage">ऐप का प्रबंधन</string>
     <string name="app_detail">ऐप का विवरण</string>
     <string name="app_lock">ऐप का ताला</string>

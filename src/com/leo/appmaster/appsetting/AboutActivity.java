@@ -4,14 +4,17 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leoers.leoanalytics.LeoStat;
 
 import android.app.Activity;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class AboutActivity extends Activity implements OnClickListener{
 
     private CommonTitleBar mTtileBar;
+    private TextView mAppVersion;
     
     private Button mCheckUpdate;
     
@@ -25,6 +28,15 @@ public class AboutActivity extends Activity implements OnClickListener{
         mTtileBar.openBackView();
         mCheckUpdate = (Button) findViewById(R.id.check_update_button);
         mCheckUpdate.setOnClickListener(this);
+        
+        mAppVersion = (TextView)findViewById(R.id.app_version);
+        try {
+            String versionName = getPackageManager().getPackageInfo(getPackageName(),0).versionName;
+            mAppVersion.setText(versionName);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
