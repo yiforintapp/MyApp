@@ -56,7 +56,8 @@
     <string name="compeletely">Compeletely</string>
     <string name="accelerate">Boost</string>
     <string name="used_mem">Used memory</string>
-    <string name="clean_result">clean up </string>
+    <string name="clean_result">clean up:<xliff:g>%1$s</xliff:g>M内存</string>
+    <string name="best_mem">已经是最佳状态,无需再次加速</string>
     <!-- applock -->
 
     <string name="lock_count">"Locked"</string>

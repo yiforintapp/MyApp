@@ -63,7 +63,6 @@ public class ShadeView extends View implements AnimatorUpdateListener {
 		
 		mCurColor = Color.rgb(mRed, mGreen, mBlue);
 
-		Log.e("xxxx", "mGreen: " + mGreen + "   mRed:" + mRed);
 		postInvalidate();
 	}
 }

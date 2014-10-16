@@ -56,7 +56,8 @@
     <string name="compeletely">完成</string>
     <string name="accelerate">加速</string>
     <string name="used_mem">使用内存</string>
-    <string name="clean_result">clean up </string>
+    <string name="clean_result">clean up:<xliff:g>%1$s</xliff:g>M内存</string>
+    <string name="best_mem">已经是最佳状态,无需再次加速</string>
     <!-- 手势密码 -->
     <string name="lockscreen_access_pattern_start">"पैटर्न खींचना शुरु करें"</string>
     <string name="lockscreen_access_pattern_cleared">"पैटर्न हटा दिया गया है"</string>

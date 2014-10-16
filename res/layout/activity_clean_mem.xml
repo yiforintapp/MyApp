@@ -123,12 +123,14 @@
                 android:layout_marginBottom="100dp"
                 android:background="@null"
                 android:scaleType="centerInside"
+                android:visibility="gone" 
                 android:src="@drawable/rocket_stop" />
 
             <com.leo.appmaster.ui.RocketDock
                 android:id="@+id/rocket_dock"
                 android:layout_width="120dp"
                 android:layout_height="30dp"
+                android:visibility="gone"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="110dp" />
