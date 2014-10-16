@@ -45,13 +45,8 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     private int mTotal = 0;
     private boolean mIsNotifying = false;
     private final static int DOWNLOAD_NOTIFICATION_ID = 1001;
-    private final static int UPDATE_NOTIFICATION_ID = 1002;
     /* mActionDownloadWindow must set value before build notification */
     private static String mActionDownloadWindow = "";
-    private static String mActionUpdateWindow = "";
-    /* this TAG MUST match the one in SDK library */
-    private final static String LEO_SDK_DOWNLOAD_TAG = ".leoanasdk.download";
-    private final static String LEO_SDK_UPDATE_TAG = ".leoanasdk.update";
 
     public UpdateActivity() {
         mProgressHandler = new ProgressHandler(this);
@@ -63,10 +58,8 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIntent = getIntent();
-        mActionDownloadWindow = getPackageName() + LEO_SDK_DOWNLOAD_TAG;
-        mActionUpdateWindow = getPackageName() + LEO_SDK_UPDATE_TAG;
+        mActionDownloadWindow = getPackageName() + UpdateManager.LEO_SDK_DOWNLOAD_TAG;
         buildDownloadNotification();
-        buildUpdateNotification();
         Log.e(TAG, "onCreate");
     }
 
@@ -119,6 +112,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                 showNoNetwork();
                 break;
             case UpdateManager.TYPE_DOWNLOADING:
+                mTotal = mManager.getTotalSize();
                 if (param == UpdateManager.FORCE_UPDATE) {
                     showForceDownloading();
                 } else if (param == UpdateManager.NORMAL_UPDATE) {
@@ -160,7 +154,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
 
     /* stone: UI done */
     private void showForceUpdate() {
-        String appid = mManager.getAppId();
+        String appName = getString(R.string.app_name);
         String version = mManager.getVersion();
         Spanned feature = mManager.getFeature();
         int size = mManager.getSize();
@@ -169,7 +163,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         TextView tvId = (TextView) findViewById(R.id.dlg_title);
         tvId.setText(getString(R.string.update_title));
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
-        tvMsg.setText(getString(R.string.update_datail_msg, appid, version,
+        tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
         tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         ImageView iv = (ImageView) findViewById(R.id.dlg_left_icon);
@@ -189,9 +183,13 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     private void showDownloading() {
         mIsNotifying = false;
         nm.cancel(DOWNLOAD_NOTIFICATION_ID);
+        String appName = getString(R.string.app_name);
+        String downloadTip = getString(R.string.downloading, appName);
         setContentView(R.layout.dialog_progress_alarm_sdk);
         TextView tvTitle = (TextView) findViewById(R.id.dlg_title);
-        tvTitle.setText(getString(R.string.downloading, mManager.getAppId()));
+        tvTitle.setText(downloadTip);
+        TextView tvContent = (TextView) findViewById(R.id.dlg_single_content);
+        tvContent.setText(getString(R.string.app_name));
         ProgressBar pb = (ProgressBar) findViewById(R.id.dlg_pro);
         pb.setProgress(mProgress);
         pb.setMax(100);
@@ -199,6 +197,10 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         tvSize.setText(getString(R.string.downloaded_size,
                 (float) mComplete / 1024 / 1024,
                 (float) mTotal / 1024 / 1024));
+
+        long c = mComplete, t = mTotal;
+        TextView tvPercent = (TextView) findViewById(R.id.dlg_pro_percent);
+        tvPercent.setText(c * 100 / t + "%");
 
         TextView tvCancel = (TextView) findViewById(R.id.dlg_left_btn);
         tvCancel.setText(getString(R.string.cancel_download));
@@ -240,9 +242,13 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     private void showForceDownloading() {
         mIsNotifying = false;
         nm.cancel(DOWNLOAD_NOTIFICATION_ID);
+        String appName = getString(R.string.app_name);
+        String downloadTip = getString(R.string.downloading, appName);
         setContentView(R.layout.dialog_progress_message_sdk);
         TextView tvTitle = (TextView) findViewById(R.id.dlg_title);
-        tvTitle.setText(getString(R.string.downloading, mManager.getAppId()));
+        tvTitle.setText(downloadTip);
+        TextView tvContent = (TextView) findViewById(R.id.dlg_single_content);
+        tvContent.setText(appName);
         ProgressBar pb = (ProgressBar) findViewById(R.id.dlg_pro);
         pb.setProgress(mProgress);
         pb.setMax(100);
@@ -250,6 +256,10 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         tvSize.setText(getString(R.string.downloaded_size,
                 (float) mComplete / 1024 / 1024,
                 (float) mTotal / 1024 / 1024));
+
+        long c = mComplete, t = mTotal;
+        TextView tvPercent = (TextView) findViewById(R.id.dlg_pro_percent);
+        tvPercent.setText(c * 100 / t + "%");
 
         TextView tvCancel = (TextView) findViewById(R.id.dlg_bottom_btn);
         tvCancel.setText(getString(R.string.cancel_download));
@@ -339,7 +349,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     }
 
     private void showNeedUpdate() {
-        String appid = mManager.getAppId();
+        String appName = getString(R.string.app_name);
         String version = mManager.getVersion();
         Spanned feature = mManager.getFeature();
         int size = mManager.getSize();
@@ -348,7 +358,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         TextView tvId = (TextView) findViewById(R.id.dlg_title);
         tvId.setText(getString(R.string.update_title));
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
-        tvMsg.setText(getString(R.string.update_datail_msg, appid, version,
+        tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
         TextView tvYes = (TextView) findViewById(R.id.dlg_right_btn);
         tvYes.setText(getString(R.string.do_update));
@@ -374,63 +384,37 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     private NotificationManager nm = null;
     private RemoteViews rv = null;
     private Notification dNotification = null;
-    private Notification uNotification = null;
 
     @SuppressWarnings("deprecation")
     private void buildDownloadNotification() {
-        CharSequence from = "LeoAnaSDK";
-        CharSequence message = "LeoAnaSDK downloading";
+        String appName = getString(R.string.app_name);
+        String downloadTip = getString(R.string.downloading, appName);
+        CharSequence from = appName;
+        CharSequence message = downloadTip;
         nm = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         rv = new RemoteViews(this.getPackageName(),
                 R.layout.sdk_notification_download);
-        rv.setTextViewText(R.id.tv_title,
-                getString(R.string.downloading, mManager.getAppId()));
+        rv.setTextViewText(R.id.tv_title, downloadTip);
         Intent intent = new Intent(mActionDownloadWindow);
         PendingIntent contentIntent = PendingIntent.getBroadcast(this, 0,
                 intent, 0);
         dNotification = new Notification(R.drawable.ic_launcher,
-                "leoanasdk downloading", System.currentTimeMillis());
-        dNotification.setLatestEventInfo(this, from, message, contentIntent);
-        dNotification.flags = Notification.FLAG_AUTO_CANCEL
-                | Notification.FLAG_ONGOING_EVENT;
-    }
-
-    @SuppressWarnings("deprecation")
-    private void buildUpdateNotification() {
-        CharSequence from = "LeoAnaSDK";
-        CharSequence message = "LeoAnaSDK downloading";
-        nm = (NotificationManager) this
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        // rv = new RemoteViews(this.getPackageName(),
-        // R.layout.sdk_notification_download);
-        rv.setTextViewText(R.id.tv_title,
-                getString(R.string.downloading, mManager.getAppId()));
-        Intent intent = new Intent(mActionUpdateWindow);
-        PendingIntent contentIntent = PendingIntent.getBroadcast(this, 0,
-                intent, 0);
-        dNotification = new Notification(R.drawable.ic_launcher,
-                "leoanasdk downloading", System.currentTimeMillis());
+                downloadTip, System.currentTimeMillis());
         dNotification.setLatestEventInfo(this, from, message, contentIntent);
         dNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONGOING_EVENT;
     }
 
     private void sendDownloadNotification(int progress) {
-        Log.d(TAG, "sending Download Notification, isNotifying="
-                + mIsNotifying);
+        // Log.d(TAG, "sending Download Notification, isNotifying="
+        // + mIsNotifying);
         if (mIsNotifying) {
             rv.setProgressBar(R.id.pb_download, 100, progress, false);
             rv.setTextViewText(R.id.tv_progress, progress + "%");
             dNotification.contentView = rv;
             nm.notify(DOWNLOAD_NOTIFICATION_ID, dNotification);
         }
-    }
-
-    private void sendUpdateNotification() {
-        Log.d(TAG, "sending Download Notification, isNotifying="
-                + mIsNotifying);
-        nm.notify(UPDATE_NOTIFICATION_ID, uNotification);
     }
 
     private boolean isOutOfBounds(Activity context, MotionEvent event) {
@@ -486,7 +470,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                         long c = msg.arg1;
                         long t = msg.arg2;
                         theActivity.mProgress = (int) (c * 100 / t);
-                        Log.d(TAG, "mProgress = " + theActivity.mProgress);
+                        // Log.d(TAG, "mProgress = " + theActivity.mProgress);
                         if (theActivity.mIsNotifying) {
                             theActivity.sendDownloadNotification(theActivity.mProgress);
                         } else {
@@ -497,6 +481,8 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                             tvSize.setText(theActivity.getString(R.string.downloaded_size,
                                     (float) msg.arg1 / 1024 / 1024,
                                     (float) msg.arg2 / 1024 / 1024));
+                            TextView tvPercent = (TextView) theActivity.findViewById(R.id.dlg_pro_percent);
+                            tvPercent.setText(theActivity.mProgress + "%");
                         }
                         if (msg.arg1 == msg.arg2) {
                             theActivity.nm.cancel(DOWNLOAD_NOTIFICATION_ID);

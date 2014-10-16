@@ -35,11 +35,34 @@
             android:paddingRight="12dp"
             android:paddingTop="22dp" >
 
+            <LinearLayout
+                android:id="@+id/icon_and_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="17dp"
+                    android:src="@drawable/ic_launcher" />
+
+                <TextView
+                    android:id="@+id/dlg_single_content"
+                    style="@style/dlg_content_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="17dp"
+                    android:paddingTop="17dp"
+                    android:text="appmaster is downloading" >
+                </TextView>
+            </LinearLayout>
+
             <ProgressBar
                 android:id="@+id/dlg_pro"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="6dp"
+                android:layout_below="@id/icon_and_title"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="13dp"
                 android:paddingLeft="17dp"
@@ -52,13 +75,24 @@
                 style="@style/dlg_content_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/dlg_pro"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="17dp"
+                android:text="0/0" />
+
+            <TextView
+                android:id="@+id/dlg_pro_percent"
+                style="@style/dlg_content_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/dlg_pro"
                 android:layout_marginTop="8dp"
                 android:paddingBottom="15dp"
                 android:paddingRight="17dp"
-                android:text="0/0" >
-            </TextView>
+                android:text="0%" />
         </RelativeLayout>
     </LinearLayout>
 

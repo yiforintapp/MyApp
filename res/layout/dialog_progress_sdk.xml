@@ -20,13 +20,13 @@
 
     <ProgressBar
         android:id="@+id/dlg_pro"
-        style="?android:attr/progressBarStyleLarge"
+        style="@style/ProgressBarCricle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="247dp"
         android:layout_below="@+id/dlg_pro_hint"
         android:layout_centerHorizontal="true"
         android:background="@color/dialog_content_area_bg"
+        android:maxHeight="247dp"
         android:paddingBottom="17dp"
         android:paddingLeft="17dp"
         android:paddingRight="17dp"
