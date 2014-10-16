@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_background" >
+    android:layout_height="match_parent" >
 
     <TextView
         android:id="@+id/tv_find_passwd"
@@ -11,7 +10,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="2dp"
         android:text="@string/find_passwd"
         android:textColor="#ffffff"
         android:visibility="invisible" />

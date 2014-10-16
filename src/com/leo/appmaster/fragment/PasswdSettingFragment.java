@@ -77,11 +77,13 @@ public class PasswdSettingFragment extends BaseFragment implements
 		String passwdtip = AppLockerPreference.getInstance(mActivity)
 				.getPasswdTip();
 
-		if (passwdtip == null || passwdtip.equals("")) {
-			mPasswdHint.setVisibility(View.INVISIBLE);
-		} else {
-			mPasswdHint.setText(passwdtip);
-		}
+		
+		mPasswdHint.setVisibility(View.INVISIBLE);
+//		if (passwdtip == null || passwdtip.equals("")) {
+//			mPasswdHint.setVisibility(View.INVISIBLE);
+//		} else {
+//			mPasswdHint.setText(passwdtip);
+//		}
 	}
 
 	@Override

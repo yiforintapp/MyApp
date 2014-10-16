@@ -88,7 +88,8 @@ public class PasswdLockFragment extends LockFragment implements
 		if (passwdtip == null || passwdtip.equals("")) {
 			mPasswdHint.setVisibility(View.INVISIBLE);
 		} else {
-			mPasswdHint.setText(passwdtip);
+			mPasswdHint.setText(String.format(
+					getString(R.string.passwd_prompt), passwdtip));
 		}
 
 		if (mPackage != null) {
@@ -152,7 +153,6 @@ public class PasswdLockFragment extends LockFragment implements
 	}
 
 	private void findPasswd() {
-		// TODO Auto-generated method stub
 		if (mDialog == null) {
 			ViewGroup viewGroup = (ViewGroup) mActivity.getLayoutInflater()
 					.inflate(R.layout.dialog_passwd_protect, null);
