@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:ellipsize="end"
-        android:paddingTop="20dp"
         android:singleLine="true" >
     </TextView>
 
@@ -22,16 +21,11 @@
         android:id="@+id/dlg_pro"
         style="@style/ProgressBarCricle"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_below="@+id/dlg_pro_hint"
         android:layout_centerHorizontal="true"
         android:background="@color/dialog_content_area_bg"
-        android:maxHeight="247dp"
-        android:paddingBottom="17dp"
-        android:paddingLeft="17dp"
-        android:paddingRight="17dp"
-        android:paddingTop="17dp"
-        android:progressDrawable="@drawable/progress_bar" />
+        android:maxHeight="247dp"/>
 
     <LinearLayout
         android:id="@+id/dlg_bottom_layout"
