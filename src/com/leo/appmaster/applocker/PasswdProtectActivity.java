@@ -16,7 +16,7 @@ public class PasswdProtectActivity extends Activity {
 
 	private CommonTitleBar mTtileBar;
 
-	private EditText mQuestion, mAnwser, mPasswdTip;
+	private EditText mQuestion, mAnwser;
 	private TextView mSave;
 
 	@Override
@@ -30,18 +30,24 @@ public class PasswdProtectActivity extends Activity {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.passwd_protect_setting);
 		mTtileBar.openBackView();
-
-		mQuestion = (EditText) findViewById(R.id.et_qusetion);
+		mQuestion = (EditText) findViewById(R.id.et_question);
 		mAnwser = (EditText) findViewById(R.id.et_anwser);
-		mPasswdTip = (EditText) findViewById(R.id.et_passwd_tip);
+		mSave = (TextView) findViewById(R.id.tv_save);
 
-		mSave = (TextView) findViewById(R.id.tv_szve);
+		String question = AppLockerPreference.getInstance(this).getPpQuestion();
+		if (question != null) {
+			mQuestion.setHint(question);
+		}
+		String answer = AppLockerPreference.getInstance(this).getPpAnwser();
+		if (question != null) {
+			mAnwser.setHint(answer);
+		}
+
 	}
 
 	public void onClick(View v) {
 		String qusetion = mQuestion.getText().toString();
 		String answer = mAnwser.getText().toString();
-		String tip = mPasswdTip.getText().toString();
 		if (v == mSave) {
 			if (qusetion == null || qusetion.equals("")) {
 				Toast.makeText(this, R.string.qusetion_cant_null, 1).show();
@@ -53,7 +59,7 @@ public class PasswdProtectActivity extends Activity {
 			}
 
 			AppLockerPreference.getInstance(this).savePasswdProtect(qusetion,
-					answer, tip);
+					answer, null);
 
 			// show app lock list
 			Intent intent = new Intent(this, AppLockListActivity.class);
@@ -66,8 +72,8 @@ public class PasswdProtectActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		// show app lock list
-//		Intent intent = new Intent(this, AppLockListActivity.class);
-//		startActivity(intent);
+		// Intent intent = new Intent(this, AppLockListActivity.class);
+		// startActivity(intent);
 		super.onBackPressed();
 	}
 

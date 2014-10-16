@@ -42,7 +42,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	public static final int MSG_UPDATE_MEM = 0;
 	private CommonTitleBar mTtileBar;
 	private ImageButton mRocket;
-	private ImageView mIvLoad, mIvOk;;
+	private ImageView mIvLoad, mIvOk;
 	private View mRocketHolder;
 	private RocketDock mRocketDock;
 	private TextView mTvUsedMemory, mTvTotalMemory, mTvCleanResult,
@@ -76,6 +76,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private void initUI() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.openBackView();
+		mTtileBar.setTitle(R.string.clean_memory);
 		mRocket = (ImageButton) findViewById(R.id.rocket_icon);
 		mRocketHolder = findViewById(R.id.layout_rocket_holder);
 		mRocketDock = (RocketDock) findViewById(R.id.rocket_dock);
@@ -86,6 +87,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mShadeView = (ShadeView) findViewById(R.id.shade_view);
 		mIvLoad = (ImageView) findViewById(R.id.iv_load);
 		mIvOk = (ImageView) findViewById(R.id.clean_ok);
+		mIvOk.setOnClickListener(CleanMemActivity.this);
 		mCleaner = ProcessCleaner.getInstance(this);
 
 		mTotalMem = mCleaner.getTotalMem();
@@ -150,7 +152,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				AlphaAnimation aa = new AlphaAnimation(1f, 0.0f);
-				aa.setDuration(1000);
+				aa.setDuration(500);
 				aa.setFillEnabled(true);
 				aa.setFillAfter(true);
 				mIvLoad.startAnimation(aa);
@@ -171,6 +173,9 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.clean_ok:
+			finish();
+			break;
 		default:
 			break;
 		}
@@ -245,7 +250,6 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 				mRocketHolder.setBackgroundDrawable(null);
 				mTvAccelerate.setVisibility(View.INVISIBLE);
 				mIvOk.setVisibility(View.VISIBLE);
-
 				ScaleAnimation show = new ScaleAnimation(0.0f, 1.0f, 0.0f,
 						1.0f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
 						ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
