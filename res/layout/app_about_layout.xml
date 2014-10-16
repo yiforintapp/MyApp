@@ -57,7 +57,7 @@
             android:layout_marginBottom="20dp"
             android:textColor="#FFABCEFF"
             android:textSize="10dp"
-            android:text="Copyright © 1998 - 2014 LEO Network Technology. All Rights Reserved" />
+            android:text="Copyright © 2014 LEO Network Technology. All Rights Reserved" />
     </RelativeLayout>
     <LinearLayout 
         android:layout_width="match_parent"

@@ -9,15 +9,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/app_background" />
+    
+    <LinearLayout
+        android:id="@+id/for_pressed_effect"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_above="@+id/bottom"
+        android:background="@color/white"
+        android:orientation="horizontal" >
 
+        <View
+            android:id="@+id/pressed_effect1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/pressed_effect2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white" />
+    </LinearLayout>
+    
     <RelativeLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom"
         android:layout_below="@id/layout_title_bar"
+        android:background="@drawable/home_info_bg" 
         android:layout_centerHorizontal="true"
-        android:background="@drawable/home_info_bg" >
+>
 
         <LinearLayout
             android:id="@+id/linearLayout1"
@@ -96,7 +120,7 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                  <com.leo.appmaster.ui.CricleView
+                   <com.leo.appmaster.ui.CricleView
                     android:id="@+id/cricle_view"
                     android:layout_width="82dp"
                     android:layout_height="82dp"
@@ -160,6 +184,7 @@
         android:layout_height="190dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:background="@color/white"
         android:orientation="vertical" >
 
        <LinearLayout
@@ -173,7 +198,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:background="@color/white" >
 
                 <ImageView
                     android:layout_width="38dp"
@@ -198,7 +224,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical" >
+                android:orientation="vertical" 
+                android:background="@color/white" >
 
                 <ImageView
                     android:layout_width="38dp"
@@ -229,7 +256,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:background="@drawable/home_button_selecter"  >
 
                 <ImageView
                     android:layout_width="38dp"
@@ -254,7 +282,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical" >
+                android:orientation="vertical" 
+                android:background="@drawable/home_button_selecter" >
 
                 <ImageView
                     android:layout_width="38dp"
