@@ -3,4 +3,15 @@
 <resources>
     <dimen name="gridview_vertical_spacing">12dip</dimen>
     <integer name="gridview_row_count">4</integer>
+    <dimen name="digital_height">82dp</dimen>
+    <dimen name="digital_width">51dp</dimen>
+    <dimen name="memory_flow_marginTop">2dp</dimen>
+    <dimen name="flow_icon_marginRight">30dp</dimen>
+    <dimen name="flow_icon_marginTop">0dp</dimen>
+    <dimen name="flow_icon_width">137dp</dimen>
+    <dimen name="flow_icon_height">69dp</dimen>
+    <dimen name="cicle_container_width">69dp</dimen>
+    <dimen name="cicle_width">56dp</dimen>
+    <dimen name="memory_flow_text1_marginTop">1dp</dimen>
+    <dimen name="memory_flow_text2_marginTop">3dp</dimen>
 </resources>

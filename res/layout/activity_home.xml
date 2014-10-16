@@ -46,7 +46,7 @@
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
-            android:layout_height="92dp"
+            android:layout_height="@dimen/digital_height"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="6dp"
@@ -54,21 +54,21 @@
 
             <ImageView
                 android:id="@+id/digital_0"
-                android:layout_width="58dp"
+                android:layout_width="@dimen/digital_width"
                 android:layout_height="match_parent"
                 android:padding="3dp"
                 android:scaleType="fitCenter" />
 
             <ImageView
                 android:id="@+id/digital_1"
-                android:layout_width="58dp"
+                android:layout_width="@dimen/digital_width"
                 android:layout_height="match_parent"
                 android:padding="3dp"
                 android:scaleType="fitCenter" />
 
             <ImageView
                 android:id="@+id/digital_2"
-                android:layout_width="58dp"
+                android:layout_width="@dimen/digital_width"
                 android:layout_height="match_parent"
                 android:padding="3dp"
                 android:scaleType="fitCenter" />
@@ -81,6 +81,7 @@
             android:layout_below="@+id/linearLayout1"
             android:layout_centerHorizontal="true"
             android:text="@string/app_count"
+            android:textSize="15dp" 
             android:textColor="@color/white" />
 
         <ImageView
@@ -94,25 +95,24 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/dline"
-            android:layout_marginBottom="18dp" >
+            android:layout_marginTop="@dimen/memory_flow_marginTop">
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="160dp"
-                android:layout_height="92dp"
+                android:layout_width="@dimen/flow_icon_width"
+                android:layout_height="@dimen/flow_icon_height"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginRight="@dimen/flow_icon_marginRight"
+                android:layout_marginTop="@dimen/flow_icon_marginTop"
                 android:scaleType="centerCrop"
                 android:src="@drawable/flow_icon" />
 
             <LinearLayout
                 android:id="@+id/cicle_container"
-                android:layout_width="87dp"
-                android:layout_height="87dp"
+                android:layout_width="@dimen/cicle_container_width"
+                android:layout_height="@dimen/cicle_container_width"
                 android:layout_alignBottom="@+id/imageView3"
                 android:layout_marginRight="20dp"
                 android:layout_toLeftOf="@+id/imageView3"
@@ -120,10 +120,10 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                   <com.leo.appmaster.ui.CricleView
+                    <com.leo.appmaster.ui.CricleView
                     android:id="@+id/cricle_view"
-                    android:layout_width="82dp"
-                    android:layout_height="82dp"
+                    android:layout_width="@dimen/cicle_width"
+                    android:layout_height="@dimen/cicle_width"
                     android:background="@drawable/memory_bg" />
             </LinearLayout>
 
@@ -134,9 +134,9 @@
                 android:layout_alignLeft="@+id/cicle_container"
                 android:layout_alignRight="@+id/cicle_container"
                 android:layout_below="@+id/cicle_container"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/memory_flow_text1_marginTop"
                 android:gravity="center"
-                android:text="654M/2G"
+                android:text="0M"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -146,7 +146,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/cicle_container"
                 android:layout_below="@+id/tv_memory_info"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/memory_flow_text2_marginTop"
+                android:layout_marginLeft="-5dp"
                 android:gravity="center"
                 android:text="@string/used_memory"
                 android:textColor="@color/white"
@@ -154,7 +155,7 @@
 
             <TextView
                 android:id="@+id/tv_flow"
-                android:layout_width="160dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tv_accelerate"
                 android:layout_alignLeft="@+id/imageView3"
