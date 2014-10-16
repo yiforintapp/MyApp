@@ -32,6 +32,15 @@ public class AppBackupAdapter extends BaseAdapter {
         return selectedItems;
     }
     
+    public boolean hasBackupApp() {
+        for(AppDetailInfo app : mBackupList) {
+            if(!app.isBackuped) {
+               return true;
+            }
+        }
+        return false;
+    }
+    
     public void updateData() {
         mBackupList.clear();
         ArrayList<AppDetailInfo> apps = mBackupManager.getBackupList();
