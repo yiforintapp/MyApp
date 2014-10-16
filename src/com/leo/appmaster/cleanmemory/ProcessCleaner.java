@@ -19,7 +19,7 @@ public class ProcessCleaner {
 	private long mMemTotal;
 	private long mLastCleanMem;
 
-	private static int CLEAN_INTERVAL = 8000;
+	private static int CLEAN_INTERVAL = 30 * 1000;
 
 	public static synchronized ProcessCleaner getInstance(Context ctx) {
 		if (mInstance == null) {

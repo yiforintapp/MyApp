@@ -13,7 +13,6 @@
     <string name="button_backup">备份</string>
     <string name="button_install">安装</string>
     <string name="button_delete">删除</string>
-    <string name="clean_memory">一键加速</string>
     <string name="app_use_info">使用情况</string>
     <string name="app_permission_info">权限监控</string>
     <string name="uninstall">卸载</string>
@@ -51,6 +50,11 @@
     <string name="lock_screen_auto_lock">锁屏后自动锁定</string>
     <string name="tips">提示</string>
 
+    <!-- acceralate -->
+    <string name="clean_memory">一键加速</string>
+    <string name="clean_result">为您清理:<xliff:g>%1$s</xliff:g>M内存</string>
+    <string name="best_mem">已经是最佳状态,无需再次加速</string>
+    
     <!-- App lock -->
     <string name="lock_count">"已加锁"</string>
     <string name="unlock_count">"未加锁"</string>

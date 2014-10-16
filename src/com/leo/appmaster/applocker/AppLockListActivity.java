@@ -335,12 +335,16 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 						.setLockedAppList(list);
 			}
 		}
-
 	}
 
 	@Override
 	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
-
+	    runOnUiThread(new Runnable() {          
+            @Override
+            public void run() {
+                loadData();
+            }
+        });
 	}
 
 	@Override

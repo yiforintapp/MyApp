@@ -1,5 +1,7 @@
 package com.leo.appmaster.home;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -22,7 +24,9 @@ import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CricleView;
 import com.leo.appmaster.ui.LeoPopMenu;
@@ -31,7 +35,8 @@ import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
-public class HomeActivity extends Activity implements OnClickListener {
+public class HomeActivity extends Activity implements OnClickListener,
+		AppChangeListener {
 
 	private View mTopLayout;
 	private View mTvAppManage;
@@ -48,17 +53,22 @@ public class HomeActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-        long start = System.currentTimeMillis();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-	      Log.e("xxxx", "HomeActivity onCreate time1 = " + (System.currentTimeMillis() - start));
 		judgeLockService();
 		initUI();
+		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		AppLoadEngine.getInstance(this).unregisterAppChangeListener(this);
+		super.onDestroy();
 	}
 
 	private void initUI() {
 		mTopLayout = findViewById(R.id.top_layout);
-//		mTopLayout.setOnClickListener(this);
+		// mTopLayout.setOnClickListener(this);
 
 		mIvDigital_0 = (ImageView) findViewById(R.id.digital_0);
 		mIvDigital_1 = (ImageView) findViewById(R.id.digital_1);
@@ -85,26 +95,26 @@ public class HomeActivity extends Activity implements OnClickListener {
 		mTtileBar.setOptionImage(R.drawable.setting_btn);
 		mTtileBar.setOptionListener(this);
 
-		startCalculateAppCount();
+		calculateAppCount();
 	}
 
 	@Override
 	protected void onResume() {
-		long start = System.currentTimeMillis();
 		ProcessCleaner pc = ProcessCleaner.getInstance(this);
 		long total = pc.getTotalMem();
 		long used = pc.getUsedMem();
-		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) /*+ "/" + TextFormater.dataSizeFormat(total)*/);
+		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) /*
+																 * + "/" +
+																 * TextFormater
+																 * .dataSizeFormat
+																 * (total)
+																 */);
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
-
-		long end = System.currentTimeMillis();
-
-		Log.e("xxxx", "onResume time = " + (end - start));
 		super.onResume();
 	}
 
-	private void startCalculateAppCount() {
+	private void calculateAppCount() {
 		AsyncTask<Integer, Integer, Integer> at = new AsyncTask<Integer, Integer, Integer>() {
 			@Override
 			protected Integer doInBackground(Integer... params) {
@@ -165,16 +175,16 @@ public class HomeActivity extends Activity implements OnClickListener {
 		Intent intent = null;
 		switch (v.getId()) {
 		case R.id.top_layout:
-		    break;
+			break;
 		case R.id.tv_app_manage:
-//			LeoStat.addEvent(LeoStat.P2, "app_manage",
-//					"click the app manage button");
-//			intent = new Intent(this, AppListActivity.class);
-//			this.startActivity(intent);
-		    /** modify for version 1.0*/
-            intent = new Intent(this, AboutActivity.class);
-            this.startActivity(intent);
-            /**end*/
+			// LeoStat.addEvent(LeoStat.P2, "app_manage",
+			// "click the app manage button");
+			// intent = new Intent(this, AppListActivity.class);
+			// this.startActivity(intent);
+			/** modify for version 1.0 */
+			intent = new Intent(this, AboutActivity.class);
+			this.startActivity(intent);
+			/** end */
 			break;
 		case R.id.tv_app_lock:
 			LeoStat.addEvent(LeoStat.P2, "app lock",
@@ -196,7 +206,8 @@ public class HomeActivity extends Activity implements OnClickListener {
 		case R.id.tv_clean_memory:
 			LeoStat.addEvent(LeoStat.P2, "tasksCompleted",
 					"click the one key clear button");
-			FlurryAgent.logEvent("tasksCompleted: click the one key clear button");
+			FlurryAgent
+					.logEvent("tasksCompleted: click the one key clear button");
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;
@@ -229,5 +240,10 @@ public class HomeActivity extends Activity implements OnClickListener {
 	private void startLockSetting() {
 		Intent intent = new Intent(this, LockSettingActivity.class);
 		startActivity(intent);
+	}
+
+	@Override
+	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
+		calculateAppCount();
 	}
 }
