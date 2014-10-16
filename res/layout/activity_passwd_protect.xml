@@ -47,7 +47,7 @@
             android:layout_height="30dp"
             android:layout_below="@+id/textView1"
             android:textSize="16sp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/input_box_line"
             android:layout_centerHorizontal="true"
             
@@ -63,6 +63,7 @@
             android:layout_below="@+id/et_question"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:textSize="16sp"
             android:text="@string/passwd_anwser" />
 
         <EditText
@@ -70,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_below="@+id/textView2"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="12dp"
             android:textSize="16sp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/input_box_line"

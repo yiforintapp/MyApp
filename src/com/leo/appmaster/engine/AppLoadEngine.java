@@ -61,6 +61,11 @@ public class AppLoadEngine extends BroadcastReceiver {
 		 * external storage.
 		 */
 		public final static int TYPE_UNAVAILABLE = 4;
+		/**
+		 * Applications unavailable, for those applications installed in
+		 * external storage.
+		 */
+		public final static int TYPE_LOCAL_CHANGE = 5;
 
 		/**
 		 * Called when applications changed, see
@@ -100,29 +105,29 @@ public class AppLoadEngine extends BroadcastReceiver {
 	 */
 
 	private ConcurrentHashMap<String, AppDetailInfo> mAppDetails;
-	
-	private final static String[] sTopAppArray = new String[]{
-	        "com.whatsapp", // WhatsApp Messenger
-	        "com.facebook.orca", // Facebook Messenger 
-	        "com.facebook.katana", // Facebook
-	        "com.bsb.hike", // hike messenger
-	        "jp.naver.line.android", // line
-	        "com.viber.voip", // Viber
-	        "com.tencent.mm", // wechat
-	        "com.twitter.android", // Twitter
-	        "com.instagram.android", // Instagram
-	        "com.android.contacts", // Contacts
-	        "com.android.mms", // MMS
-	        "com.skype.raider", // Skype
-	        "com.imo.android.imoim", // imo
-	        "frames.techtouch.hordingframe", // Photo Frames: Hoarding
-	        "com.picsart.studio", // PicsArt - Photo Studio
-	        "com.km.cutpaste.util", // Cut Paste Photos
-	        "com.pixlr.express", // Pixlr Express - photo editing
-	        "com.android.gallery3d", // Gallery
-	        "com.android.email"   // Email
+
+	private final static String[] sTopAppArray = new String[] { "com.whatsapp", // WhatsApp
+																				// Messenger
+			"com.facebook.orca", // Facebook Messenger
+			"com.facebook.katana", // Facebook
+			"com.bsb.hike", // hike messenger
+			"jp.naver.line.android", // line
+			"com.viber.voip", // Viber
+			"com.tencent.mm", // wechat
+			"com.twitter.android", // Twitter
+			"com.instagram.android", // Instagram
+			"com.android.contacts", // Contacts
+			"com.android.mms", // MMS
+			"com.skype.raider", // Skype
+			"com.imo.android.imoim", // imo
+			"frames.techtouch.hordingframe", // Photo Frames: Hoarding
+			"com.picsart.studio", // PicsArt - Photo Studio
+			"com.km.cutpaste.util", // Cut Paste Photos
+			"com.pixlr.express", // Pixlr Express - photo editing
+			"com.android.gallery3d", // Gallery
+			"com.android.email" // Email
 	};
-	
+
 	private final List<String> mTopApplist;
 
 	private AppLoadEngine(Context context) {
@@ -166,7 +171,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			@Override
 			public void run() {
 				loadAllPkgInfo();
-				loadPowerComsuInfo();
+				// loadPowerComsuInfo();
 			}
 		});
 	}
@@ -201,7 +206,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 			if (!mAppsLoaded) {
 				Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 				mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-				List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent, 0);
+				List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent,
+						0);
 				for (ResolveInfo resolveInfo : apps) {
 					ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
 					String packageName = applicationInfo.packageName;
@@ -362,6 +368,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 					.getStringArrayExtra(Intent.EXTRA_CHANGED_PACKAGE_LIST);
 			enqueuePackageUpdated(new PackageUpdatedTask(
 					AppChangeListener.TYPE_UNAVAILABLE, packages));
+		} else if (Intent.ACTION_LOCALE_CHANGED.equals(action)) {
+			enqueuePackageUpdated(new PackageUpdatedTask(
+					AppChangeListener.TYPE_LOCAL_CHANGE, new String[] {}));
 		}
 	}
 
@@ -427,6 +436,12 @@ public class AppLoadEngine extends BroadcastReceiver {
 					changedFinal.add(appInfo);
 				}
 				break;
+			case AppChangeListener.TYPE_LOCAL_CHANGE:
+				mAppDetails.clear();
+				mAppsLoaded = false;
+				loadAllPkgInfo();
+				break;
+
 			}
 
 			if (!changedFinal.isEmpty()) {
@@ -439,20 +454,21 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 		@Override
 		public int compare(AppDetailInfo lhs, AppDetailInfo rhs) {
-		    if(lhs.topPos > -1 && rhs.topPos < 0) {
-		        return -1;
-		    } else if(lhs.topPos < 0 && rhs.topPos > -1) {
-		        return 1;
-		    } else if(lhs.topPos > -1 && rhs.topPos > -1) {
-		        return lhs.topPos - rhs.topPos;
-		    }
-			return Collator.getInstance().compare(trimString(lhs.getAppLabel()),
-			        trimString(rhs.getAppLabel()));
+			if (lhs.topPos > -1 && rhs.topPos < 0) {
+				return -1;
+			} else if (lhs.topPos < 0 && rhs.topPos > -1) {
+				return 1;
+			} else if (lhs.topPos > -1 && rhs.topPos > -1) {
+				return lhs.topPos - rhs.topPos;
+			}
+			return Collator.getInstance().compare(
+					trimString(lhs.getAppLabel()),
+					trimString(rhs.getAppLabel()));
 		}
-		
-	    private String trimString(String s) {
-	        return s.replaceAll("\u00A0", "").trim();
-	    }
+
+		private String trimString(String s) {
+			return s.replaceAll("\u00A0", "").trim();
+		}
 
 	}
 

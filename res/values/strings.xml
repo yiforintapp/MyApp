@@ -64,9 +64,6 @@
 
     <string name="lock_count">"Locked"</string>
     <string name="unlock_count">"Unlocked"</string>
-    <string name="lockscreen_access_pattern_start">"Pattern Drawing"</string>
-    <string name="lockscreen_access_pattern_cleared">"Pattern Deleted"</string>
-    <string name="lockscreen_access_pattern_detected">"Pattern Recorded!"</string>
     <string name="please_input_gesture">Please enter the unlock pattern</string>
     <string name="input_passwd_tip">Type your password tip</string>
     <string name="switch_gesture">use gesture</string>

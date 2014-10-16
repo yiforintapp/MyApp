@@ -200,7 +200,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 					break;
 				}
 			}
-			mLockedList.add(info);
+			mLockedList.add(0, info);
 			mUnlockList.remove(info);
 			moveItemToLock(view, mLastSelectApp.getAppIcon());
 
