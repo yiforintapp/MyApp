@@ -1,6 +1,8 @@
 package com.leo.appmaster.applocker;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -146,11 +148,15 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			if (lockList.contains(appDetailInfo.getPkg())) {
 				appDetailInfo.setLocked(true);
 				mLockedList.add(appDetailInfo);
+
 			} else {
 				appDetailInfo.setLocked(false);
 				mUnlockList.add(appDetailInfo);
 			}
 		}
+
+		Collections.sort(mLockedList, new LockedAppComparator(lockList));
+
 		int rowCount = getResources().getInteger(R.integer.gridview_row_count);
 		mPagerUnlock.setDatas(mUnlockList, 4, rowCount);
 		mPagerLock.setDatas(mLockedList, 4, rowCount);
@@ -184,7 +190,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			moveItemToUnlock(view, mLastSelectApp.getAppIcon());
 
 			LeoStat.addEvent(LeoStat.P2, "unlock app", mLastSelectApp.getPkg());
-			FlurryAgent.logEvent(mLastSelectApp.getPkg()+": unlock app");
+			FlurryAgent.logEvent(mLastSelectApp.getPkg() + ": unlock app");
 		} else {
 			mLastSelectApp.setLocked(true);
 			for (BaseInfo baseInfo : mUnlockList) {
@@ -199,7 +205,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			moveItemToLock(view, mLastSelectApp.getAppIcon());
 
 			LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
-			FlurryAgent.logEvent(mLastSelectApp.getPkg()+": lock app");
+			FlurryAgent.logEvent(mLastSelectApp.getPkg() + ": lock app");
 		}
 		((LeoGridView) parent).removeItemAnimation(position, mLastSelectApp);
 		saveLockList();
@@ -282,11 +288,11 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		if (lockSize == 0) {
 			mTvLocked.setText(getString(R.string.lock_count));
 		} else {
-			mTvLocked.setText(getString(R.string.lock_count) + "("
-					+ lockSize + ")");
+			mTvLocked.setText(getString(R.string.lock_count) + "(" + lockSize
+					+ ")");
 		}
 	}
-	
+
 	private Animation createFlyAnimation(float orgX, float orgY, float targetX,
 			float tragetY) {
 		AnimationSet set = new AnimationSet(true);
@@ -339,12 +345,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	@Override
 	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
-	    runOnUiThread(new Runnable() {          
-            @Override
-            public void run() {
-                loadData();
-            }
-        });
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				loadData();
+			}
+		});
 	}
 
 	@Override
@@ -360,6 +366,24 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		case R.id.tv_app_locked:
 			onTabClick(v);
 			break;
+		}
+	}
+
+	private class LockedAppComparator implements Comparator<BaseInfo> {
+		List<String> sortBase;
+
+		public LockedAppComparator(List<String> sortBase) {
+			super();
+			this.sortBase = sortBase;
+		}
+
+		@Override
+		public int compare(BaseInfo lhs, BaseInfo rhs) {
+			if (sortBase.indexOf(lhs.getPkg()) > sortBase.indexOf(rhs.getPkg())) {
+				return 1;
+			} else {
+				return -1;
+			}
 		}
 	}
 }
