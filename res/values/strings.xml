@@ -49,7 +49,7 @@
     <string name="reinput_anwser">The answer was incorrect. Please try again</string>
     <string name="input_qusetion">Input security question:</string>
     <string name="qusetion_cant_null">Please enter the new question</string>
-    <string name="passwd_setting">Password Settings</string>
+    <string name="passwd_setting">Password Setting</string>
     <string name="aneser_cant_null">Please enter your answer</string>
     <string name="pleas_input_anwser">Answer your security question</string>
     <string name="anwser">Enter the answer here:</string>
