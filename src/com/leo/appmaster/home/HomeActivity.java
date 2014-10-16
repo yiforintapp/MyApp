@@ -165,7 +165,7 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 		} else {
 			mIvDigital_0.setImageResource(index[one]);
 		}
-		if (two == 0) {
+		if (two == 0 && one == 0) {
 			mIvDigital_1.setVisibility(View.GONE);
 		} else {
 			mIvDigital_1.setImageResource(index[two]);
