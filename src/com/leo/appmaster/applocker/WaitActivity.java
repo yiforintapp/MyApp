@@ -1,18 +1,17 @@
 package com.leo.appmaster.applocker;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.animation.LinearInterpolator;
+import android.widget.TextView;
+
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.TimeView;
-import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.animation.LinearInterpolator;
-import android.widget.TextView;
 
 public class WaitActivity extends Activity {
 
