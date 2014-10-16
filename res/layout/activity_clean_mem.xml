@@ -65,7 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Used Memory"
+                        android:text="@string/used_mem"
                         android:textColor="#ffffff"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -98,6 +98,7 @@
                         android:layout_height="80dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
+                        android:clickable="true"
                         android:src="@drawable/show_ok"
                         android:visibility="invisible" />
 

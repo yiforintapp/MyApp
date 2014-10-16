@@ -30,16 +30,20 @@
     <string name="reset_passwd">Reset Password</string>
     <string name="app_locked">Locked</string>
     <string name="app_unlock">Unlocked</string>
+    <string name="set_gesture_suc">手势设置成功</string>
+    <string name="set_passwd_suc">密码设置成功</string>
     <string name="find_passwd">Forget password?</string>
     <string name="please_wait">Please try again later</string>
     <string name="passwd_question">Security question</string>
     <string name="passwd_anwser">Answer</string>
-    <string name="passwd_tip">Password hint(Optional)</string>
+    <string name="passwd_tip">Please unput password hint:</string>
     <string name="save">Save</string>
     <string name="passwd_protect_setting">Reset security question</string>
     <string name="passwd_prompt">Passwd hint: <xliff:g>%1$s</xliff:g></string>
     <string name="input_error_tip">您已输错<xliff:g>%1$s</xliff:g>次，还剩<xliff:g>%2$s</xliff:g>次机会</string>
-    <string name="qusetion">Security question:</string>
+    <string name="set_success">successfully</string>
+    <string name="passwd_hint_cant_null">"密码提示不能为空"</string>
+    <string name="input_qusetion">Input security question:</string>
     <string name="qusetion_cant_null">Please enter the new question</string>
     <string name="aneser_cant_null">Please enter your answer</string>
     <string name="pleas_input_anwser">Answer your security question</string>
@@ -51,6 +55,7 @@
     <!-- 一键加速 -->
     <string name="compeletely">Compeletely</string>
     <string name="accelerate">Boost</string>
+    <string name="used_mem">Used memory</string>
     <string name="clean_result">clean up </string>
     <!-- applock -->
 

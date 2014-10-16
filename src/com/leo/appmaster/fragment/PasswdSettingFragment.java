@@ -77,13 +77,12 @@ public class PasswdSettingFragment extends BaseFragment implements
 		String passwdtip = AppLockerPreference.getInstance(mActivity)
 				.getPasswdTip();
 
-		
 		mPasswdHint.setVisibility(View.INVISIBLE);
-//		if (passwdtip == null || passwdtip.equals("")) {
-//			mPasswdHint.setVisibility(View.INVISIBLE);
-//		} else {
-//			mPasswdHint.setText(passwdtip);
-//		}
+		// if (passwdtip == null || passwdtip.equals("")) {
+		// mPasswdHint.setVisibility(View.INVISIBLE);
+		// } else {
+		// mPasswdHint.setText(passwdtip);
+		// }
 	}
 
 	@Override
@@ -139,15 +138,12 @@ public class PasswdSettingFragment extends BaseFragment implements
 			iv_delete.setEnabled(false);
 		} else if (mInputCount == 2) {
 			if (mTempFirstPasswd.equals(mTempSecondPasswd)) {
-				// todo save passwd
+				Toast.makeText(mActivity, R.string.set_passwd_suc, 1).show();
 				Intent intent = null;
-				// now we can start lock service
 				intent = new Intent(mActivity, LockService.class);
 				mActivity.startService(intent);
-				// save password
 				AppLockerPreference.getInstance(mActivity).savePassword(
 						mTempFirstPasswd);
-				// todo set passwd protect
 				if (!AppLockerPreference.getInstance(mActivity)
 						.hasPswdProtect()) {
 					setPasswdProtect();
@@ -156,7 +152,6 @@ public class PasswdSettingFragment extends BaseFragment implements
 					startActivity(intent);
 				}
 			} else {
-				// todo re-input
 				Toast.makeText(mActivity, R.string.tip_no_the_same_pswd, 1)
 						.show();
 				clearPasswd();

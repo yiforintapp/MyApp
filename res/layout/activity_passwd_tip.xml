@@ -1,42 +1,55 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#23948379" >
+    android:layout_height="match_parent" >
+
+    <com.leo.appmaster.ui.CommonTitleBar
+        android:id="@+id/commonTitleBar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/app_background" >
+    </com.leo.appmaster.ui.CommonTitleBar>
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="41dp"
-        android:layout_marginTop="60dp"
-        android:text="@string/input_passwd_tip"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="16sp"
+        android:layout_below="@+id/commonTitleBar1"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="37dp"
+        android:text="@string/passwd_tip" />
 
     <EditText
         android:id="@+id/et_passwd_tip"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
+        android:textSize="18sp"
         android:layout_below="@+id/textView1"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:background="@null"
         android:ems="10" >
-
         <requestFocus />
     </EditText>
 
     <TextView
         android:id="@+id/tv_make_sure"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
         android:layout_below="@+id/et_passwd_tip"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/check_update_button"
         android:gravity="center"
-        android:textSize="25sp"
-        android:background="#49384892"
-        android:text="@string/makesure" />
+        android:text="@string/makesure"
+        android:textColor="#ffffff"
+        android:textSize="22sp" />
 
 </RelativeLayout>

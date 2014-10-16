@@ -1,6 +1,7 @@
 package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.CommonTitleBar;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,9 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PasswdTipActivity extends Activity implements OnClickListener {
-
+	CommonTitleBar mTitleBar;
 	EditText mEtTip;
 	TextView mTvMakesure;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,22 +28,25 @@ public class PasswdTipActivity extends Activity implements OnClickListener {
 		mEtTip = (EditText) findViewById(R.id.et_passwd_tip);
 		mTvMakesure = (TextView) findViewById(R.id.tv_make_sure);
 		mTvMakesure.setOnClickListener(this);
-		
+		mTitleBar = (CommonTitleBar) findViewById(R.id.commonTitleBar1);
+		mTitleBar.openBackView();
 		String tip = AppLockerPreference.getInstance(this).getPasswdTip();
-		if(tip != null) {
+		if (tip != null) {
 			mEtTip.setHint(tip);
 		}
 	}
 
 	@Override
 	public void onClick(View v) {
-		if(v == mTvMakesure) {
+		if (v == mTvMakesure) {
 			String tip = mEtTip.getText().toString();
-			if(tip != null && !tip.equals("")) {
-				AppLockerPreference.getInstance(this).savePasswdProtect(null, null, tip);
-				Toast.makeText(this, "设置成功", 0).show();
+			if (tip != null && !tip.equals("")) {
+				AppLockerPreference.getInstance(this).savePasswdProtect(null,
+						null, tip);
+				Toast.makeText(this, R.string.set_success, 0).show();
+				finish();
 			} else {
-				Toast.makeText(this, "密码提示不能为空", 0).show();
+				Toast.makeText(this, R.string.passwd_hint_cant_null, 0).show();
 			}
 		}
 	}

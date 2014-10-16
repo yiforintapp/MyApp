@@ -99,7 +99,7 @@ public class GestureSettingFragment extends BaseFragment implements
 		} else {
 			mTempGesture2 = LockPatternUtils.patternToString(pattern);
 			if (mTempGesture2.equals(mTempGesture1)) {
-				Toast.makeText(mActivity, "手势设置成功", 1).show();
+				Toast.makeText(mActivity, R.string.set_gesture_suc, 1).show();
 				Intent intent = null;
 				// now we can start lock service
 				intent = new Intent(mActivity, LockService.class);

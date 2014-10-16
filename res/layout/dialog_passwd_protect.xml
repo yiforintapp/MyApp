@@ -16,15 +16,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ddf1f1f1"
-            android:text="@string/qusetion"
+            android:text="@string/passwd_question"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
             android:id="@+id/et_question"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="#ddf1f1f1"
+            android:layout_marginLeft="10dp"
             android:ems="10"
             android:enabled="false" >
         </EditText>
@@ -47,8 +48,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="#dd000000"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:ems="10" >
+            <requestFocus />
         </EditText>
     </LinearLayout>
 
