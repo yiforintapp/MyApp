@@ -129,6 +129,7 @@ public class GestureSettingFragment extends BaseFragment implements
 		d.setLeftBtnStr(getString(R.string.cancel));
 		d.setRightBtnStr(getString(R.string.makesure));
 		d.setOnClickListener(this);
+		d.setOnDismissListener(this);
 		d.show();
 	}
 

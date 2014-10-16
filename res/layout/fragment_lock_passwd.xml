@@ -32,7 +32,7 @@
         android:layout_below="@+id/iv_app_icon"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="@string/passwd_hint_tip"
+        android:text="@string/passwd_hint"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
@@ -43,7 +43,7 @@
         android:layout_below="@+id/tv_passwd_input_tip"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="passwd hint"
+        android:text="@string/passwd_hint_tip"
         android:textColor="#aaffffff"
         android:textSize="14sp" />
 
