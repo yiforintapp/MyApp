@@ -49,7 +49,9 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 	private View mPressedEffect1;
     private View mPressedEffect2;
 
-	private TextView mTvMemoryInfo, mTvFlow;
+    private TextView mMemoryPercent;
+	private TextView mTvMemoryInfo;
+    private TextView mTvFlow;
 	private ImageView mIvDigital_0, mIvDigital_1, mIvDigital_2;
 	private CommonTitleBar mTtileBar;
 
@@ -81,6 +83,7 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 
 		mTvMemoryInfo = (TextView) findViewById(R.id.tv_memory_info);
 		mTvFlow = (TextView) findViewById(R.id.tv_flow);
+		mMemoryPercent =  (TextView) findViewById(R.id.tv_memory_percent);
 		mCricleView = (CricleView) findViewById(R.id.cricle_view);
 
 		mTvAppManage = findViewById(R.id.tv_app_manage);
@@ -113,6 +116,7 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 		ProcessCleaner pc = ProcessCleaner.getInstance(this);
 		long total = pc.getTotalMem();
 		long used = pc.getUsedMem();
+		mMemoryPercent.setText(used * 100 / total + "%");
 		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) /*
 																 * + "/" +
 																 * TextFormater

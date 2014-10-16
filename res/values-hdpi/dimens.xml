@@ -11,6 +11,7 @@
     <dimen name="flow_icon_width">137dp</dimen>
     <dimen name="flow_icon_height">69dp</dimen>
     <dimen name="cicle_container_width">69dp</dimen>
+    <dimen name="cicle_container_halfwidth">25dp</dimen>
     <dimen name="cicle_width">56dp</dimen>
     <dimen name="memory_flow_text1_marginTop">1dp</dimen>
     <dimen name="memory_flow_text2_marginTop">3dp</dimen>

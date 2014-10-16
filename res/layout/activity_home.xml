@@ -120,13 +120,25 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                    <com.leo.appmaster.ui.CricleView
+                     <com.leo.appmaster.ui.CricleView
                     android:id="@+id/cricle_view"
                     android:layout_width="@dimen/cicle_width"
                     android:layout_height="@dimen/cicle_width"
                     android:background="@drawable/memory_bg" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_memory_percent"
+                android:layout_width="@dimen/cicle_container_width"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/cicle_container"
+                android:layout_alignTop="@+id/cicle_container"
+                android:layout_marginTop="@dimen/cicle_container_halfwidth"
+                android:gravity="center"
+                android:text="100%"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
+            
             <TextView
                 android:id="@+id/tv_memory_info"
                 android:layout_width="wrap_content"
