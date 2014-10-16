@@ -61,9 +61,6 @@
     <string name="clean_result">clean up:<xliff:g>%1$s</xliff:g>M内存</string>
     <string name="best_mem">已经是最佳状态,无需再次加速</string>
     <!-- 手势密码 -->
-    <string name="lockscreen_access_pattern_start">"पैटर्न खींचना शुरु करें"</string>
-    <string name="lockscreen_access_pattern_cleared">"पैटर्न हटा दिया गया है"</string>
-    <string name="lockscreen_access_pattern_detected">"पैटर्न को समाप्त किया गया है"</string>
     <string name="please_input_gesture">अनलॉक प्रतिमान आरेखित करें</string>
     <string name="input_passwd_tip">पासवर्ड संकेत दर्ज करें</string>
     <string name="find_gesture">इशारों को वापस बुलाएं</string>
