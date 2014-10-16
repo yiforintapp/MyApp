@@ -1,11 +1,9 @@
 package com.leo.appmaster.fragment;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -18,10 +16,10 @@ import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 
 public class PasswdSettingFragment extends BaseFragment implements
-		OnClickListener, android.content.DialogInterface.OnClickListener,
-		OnDismissListener {
+		OnDismissListener, OnDiaogClickListener, OnClickListener {
 
 	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv0;
 
@@ -175,10 +173,10 @@ public class PasswdSettingFragment extends BaseFragment implements
 		LEOAlarmDialog d = new LEOAlarmDialog(mActivity);
 		d.setTitle(getString(R.string.set_protect_or_not));
 		d.setContent(getString(R.string.set_protect_message));
-		d.setLeftBtnListener(this);
 		d.setLeftBtnStr(getString(R.string.cancel));
-		d.setRightBtnListener(this);
 		d.setRightBtnStr(getString(R.string.makesure));
+		d.setOnClickListener(this);
+		d.setOnDismissListener(this);
 		d.show();
 	}
 
@@ -244,15 +242,8 @@ public class PasswdSettingFragment extends BaseFragment implements
 	}
 
 	@Override
-	public void onClick(DialogInterface dialog, int which) {
-		if (which == DialogInterface.BUTTON_POSITIVE) {
-			mGotoPasswdProtect = true;
-		}
-
-	}
-
-	@Override
 	public void onDismiss(DialogInterface dialog) {
+		Log.e("xxxx", "onDismiss: mGotoPasswdProtect = " + mGotoPasswdProtect);
 		Intent intent;
 		if (mGotoPasswdProtect) {
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
@@ -262,5 +253,14 @@ public class PasswdSettingFragment extends BaseFragment implements
 			startActivity(intent);
 		}
 		mActivity.finish();
+	}
+
+	@Override
+	public void onClick(int which) {
+		if (which == 0) {
+		} else if (which == 1) {
+			mGotoPasswdProtect = true;
+		}
+
 	}
 }

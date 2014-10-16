@@ -1,17 +1,13 @@
 package com.leo.appmaster.fragment;
 
 import java.util.List;
-
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.content.DialogInterface.OnDismissListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,11 +20,12 @@ import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.LockPatternUtils;
 
 public class GestureSettingFragment extends BaseFragment implements
-		OnClickListener, OnPatternListener,
-		android.content.DialogInterface.OnClickListener {
+		OnClickListener, OnPatternListener, OnDismissListener,
+		OnDiaogClickListener {
 
 	private TextView mTvGestureTip;
 
@@ -36,6 +33,8 @@ public class GestureSettingFragment extends BaseFragment implements
 	private int mInputCount = 1;
 
 	private String mTempGesture1, mTempGesture2;
+
+	private boolean mGotoPasswdProtect;
 
 	@Override
 	protected int layoutResourceId() {
@@ -127,10 +126,9 @@ public class GestureSettingFragment extends BaseFragment implements
 		LEOAlarmDialog d = new LEOAlarmDialog(mActivity);
 		d.setTitle(getString(R.string.set_protect_or_not));
 		d.setContent(getString(R.string.set_protect_message));
-		d.setLeftBtnListener(this);
 		d.setLeftBtnStr(getString(R.string.cancel));
-		d.setRightBtnListener(this);
 		d.setRightBtnStr(getString(R.string.makesure));
+		d.setOnClickListener(this);
 		d.show();
 	}
 
@@ -140,15 +138,23 @@ public class GestureSettingFragment extends BaseFragment implements
 	}
 
 	@Override
-	public void onClick(DialogInterface arg0, int which) {
+	public void onDismiss(DialogInterface dialog) {
 		Intent intent;
-		if (which == DialogInterface.BUTTON_POSITIVE) {
+		if (mGotoPasswdProtect) {
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
 			startActivity(intent);
-		} else if (which == DialogInterface.BUTTON_NEGATIVE) {
+		} else {
 			intent = new Intent(mActivity, AppLockListActivity.class);
 			startActivity(intent);
 		}
 		mActivity.finish();
+	}
+
+	@Override
+	public void onClick(int which) {
+		if (which == 0) {
+		} else if (which == 1) {
+			mGotoPasswdProtect = true;
+		}
 	}
 }
