@@ -46,6 +46,7 @@
     <string name="reinput_anwser">"答案不正确，请重新输入"</string>
     <string name="input_qusetion">Input security question:</string>
     <string name="qusetion_cant_null">Please enter the new question</string>
+    <string name="passwd_setting">密码设置</string>
     <string name="aneser_cant_null">Please enter your answer</string>
     <string name="pleas_input_anwser">Answer your security question</string>
     <string name="anwser">Enter the answer here:</string>

@@ -41,9 +41,7 @@ public class LockSettingActivity extends FragmentActivity implements
 	private void initFragment() {
 		mPasswd = new PasswdSettingFragment();
 		mGesture = new GestureSettingFragment();
-
 		mFm = getSupportFragmentManager();
-
 		FragmentTransaction tans = mFm.beginTransaction();
 
 		int type = AppLockerPreference.getInstance(this).getLockType();
@@ -69,6 +67,7 @@ public class LockSettingActivity extends FragmentActivity implements
 		mTitleBar.setOptionListener(this);
 		mTitleBar.setOptionTextVisibility(View.VISIBLE);
 		mTitleBar.setOptionText("");
+		mTitleBar.setTitle(R.string.passwd_setting);
 	}
 
 	@Override

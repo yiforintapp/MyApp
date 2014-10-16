@@ -20,6 +20,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 public class LockScreenActivity extends FragmentActivity {
@@ -46,7 +47,6 @@ public class LockScreenActivity extends FragmentActivity {
 
 	@Override
 	protected void onNewIntent(Intent intent) {
-		Log.e("xxxx", "onNewIntent");
 		super.onNewIntent(intent);
 	}
 
@@ -112,6 +112,10 @@ public class LockScreenActivity extends FragmentActivity {
 
 		if (mFrom == LockFragment.FROM_SELF) {
 			mTtileBar.openBackView();
+			mTtileBar.setTitle(R.string.app_lock);
+		} else {
+			mTtileBar.setBackArrowVisibility(View.GONE);
+			mTtileBar.setTitle(R.string.app_name);
 		}
 
 		FragmentManager fm = getSupportFragmentManager();
