@@ -23,6 +23,7 @@ import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.LockPatternUtils;
 
 public class GestureSettingFragment extends BaseFragment implements
@@ -88,12 +89,12 @@ public class GestureSettingFragment extends BaseFragment implements
 		int patternSize = pattern.size();
 		if (mInputCount == 1) {
 			if (patternSize < 4) {
-//				shakeGestureTip();
+				// shakeGestureTip();
 				mLockPatternView.clearPattern();
 				return;
 			}
 			mTempGesture1 = LockPatternUtils.patternToString(pattern);
-			mTvGestureTip.setText(R.string.please_input_gesture_again); 
+			mTvGestureTip.setText(R.string.please_input_gesture_again);
 			mLockPatternView.clearPattern();
 			mInputCount++;
 		} else {
@@ -123,12 +124,14 @@ public class GestureSettingFragment extends BaseFragment implements
 	}
 
 	private void setGestureProtect() {
-		Dialog dialog = new AlertDialog.Builder(mActivity)
-				.setTitle("是否设置密保问题?")
-				.setMessage("为了避免忘记密码而无法进入应用锁，建议设置密保问题，是否设置？")
-				.setNegativeButton(R.string.cancel, this)
-				.setPositiveButton(R.string.makesure, this).create();
-		dialog.show();
+		LEOAlarmDialog d = new LEOAlarmDialog(mActivity);
+		d.setTitle(getString(R.string.set_protect_or_not));
+		d.setContent(getString(R.string.set_protect_message));
+		d.setLeftBtnListener(this);
+		d.setLeftBtnStr(getString(R.string.cancel));
+		d.setRightBtnListener(this);
+		d.setRightBtnStr(getString(R.string.makesure));
+		d.show();
 	}
 
 	private void shakeGestureTip() {

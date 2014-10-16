@@ -15,8 +15,6 @@
         android:layout_height="match_parent"
         android:padding="17dp" >
 
-
-
         <TextView
             android:id="@+id/tv_save"
             android:layout_width="match_parent"
@@ -34,24 +32,24 @@
         <TextView
             android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:textSize="16sp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="18dp"
-            android:text="@string/input_qusetion" />
+            android:text="@string/input_qusetion"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/et_question"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_below="@+id/textView1"
-            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
             android:background="@drawable/input_box_line"
-            android:layout_centerHorizontal="true"
-            
-            android:ems="10" >
+            android:ems="10"
+            android:singleLine="true"
+            android:textSize="16sp" >
 
             <requestFocus />
         </EditText>
@@ -63,20 +61,20 @@
             android:layout_below="@+id/et_question"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:textSize="16sp"
-            android:text="@string/passwd_anwser" />
+            android:text="@string/passwd_anwser"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/et_anwser"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_below="@+id/textView2"
-            android:layout_marginTop="12dp"
-            android:textSize="16sp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
             android:background="@drawable/input_box_line"
-            android:ems="10" />
-
+            android:ems="10"
+            android:singleLine="true"
+            android:textSize="16sp" />
     </RelativeLayout>
 
 </LinearLayout>

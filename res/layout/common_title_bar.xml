@@ -40,7 +40,6 @@
         android:gravity="center"
         android:textColor="#ffffff"
         android:visibility="invisible"
-        android:text="设置"
         android:textSize="16sp" />
     
     <ImageView
