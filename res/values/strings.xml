@@ -24,6 +24,7 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="passwd_hint">Enter Password</string>
+    <string name="passwd_hint_tip">Password Hint:</string>
     <string name="tip_no_the_same_pswd">Invalid password. Please try again.</string>
     <string name="use_gesture">Lock with Pattern</string>
     <string name="use_passwd">Lock with Password</string>
@@ -35,7 +36,7 @@
     <string name="find_passwd">Forget password?</string>
     <string name="please_wait">Please try again later</string>
     <string name="passwd_question">Security question</string>
-    <string name="passwd_anwser">Answer</string>
+    <string name="passwd_anwser">Answer:</string>
     <string name="passwd_tip">Please unput password hint:</string>
     <string name="save">Save</string>
     <string name="passwd_protect_setting">Reset security question</string>

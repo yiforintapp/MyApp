@@ -17,6 +17,7 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 
 public class PasswdSettingFragment extends BaseFragment implements
 		OnClickListener, android.content.DialogInterface.OnClickListener,
@@ -171,14 +172,14 @@ public class PasswdSettingFragment extends BaseFragment implements
 	}
 
 	private void setPasswdProtect() {
-
-		Dialog dialog = new AlertDialog.Builder(mActivity)
-				.setTitle("是否设置密保问题?")
-				.setMessage("为了避免忘记密码而无法进入应用锁，建议设置密保问题，是否设置？")
-				.setNegativeButton(R.string.cancel, this)
-				.setPositiveButton(R.string.makesure, this).create();
-		dialog.setOnDismissListener(this);
-		dialog.show();
+		LEOAlarmDialog d = new LEOAlarmDialog(mActivity);
+		d.setTitle(getString(R.string.set_protect_or_not));
+		d.setContent(getString(R.string.set_protect_message));
+		d.setLeftBtnListener(this);
+		d.setLeftBtnStr(getString(R.string.cancel));
+		d.setRightBtnListener(this);
+		d.setRightBtnStr(getString(R.string.makesure));
+		d.show();
 	}
 
 	private void deletePasswd() {
