@@ -66,7 +66,6 @@
             android:layout_alignParentTop="true"
             android:layout_margin="10dp"
             android:clickable="true"
-            android:onClick="onClick"
             android:text="@string/find_passwd"
             android:visibility="gone" />
 

@@ -61,7 +61,7 @@
     <string name="compeletely">Compeletely</string>
     <string name="accelerate">Boost</string>
     <string name="used_mem">Used memory</string>
-    <string name="clean_result">clean up:<xliff:g>%1$s</xliff:g>M Memory</string>
+    <string name="clean_result">clean up:<xliff:g>%1$s</xliff:g>Memory</string>
     <string name="best_mem">Maximum Cleanup!</string>
     <!-- applock -->
 

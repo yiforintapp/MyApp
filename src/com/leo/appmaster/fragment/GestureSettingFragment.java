@@ -53,9 +53,9 @@ public class GestureSettingFragment extends BaseFragment implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		// case R.id.tv_reset_gesture:
-		// resetGesture();
-		// break;
+		 case R.id.tv_bottom:
+		 resetGesture();
+		 break;
 
 		default:
 			break;

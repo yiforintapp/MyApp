@@ -85,11 +85,11 @@ public class PasswdLockFragment extends LockFragment implements
 
 		String passwdtip = AppLockerPreference.getInstance(mActivity)
 				.getPasswdTip();
-		if (passwdtip == null || passwdtip.equals("")) {
+		if (passwdtip == null || passwdtip.trim().equals("")) {
 			mPasswdHint.setVisibility(View.INVISIBLE);
 		} else {
-			mPasswdHint.setText(String.format(
-					getString(R.string.passwd_hint_tip), passwdtip));
+			mPasswdHint
+					.setText(getString(R.string.passwd_hint_tip) + passwdtip);
 		}
 
 		if (mPackage != null) {

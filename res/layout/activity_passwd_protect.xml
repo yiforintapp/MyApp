@@ -24,7 +24,6 @@
             android:background="@drawable/check_update_button"
             android:clickable="true"
             android:gravity="center"
-            android:onClick="onClick"
             android:text="@string/save"
             android:textColor="#ffffff"
             android:textSize="22sp" />
