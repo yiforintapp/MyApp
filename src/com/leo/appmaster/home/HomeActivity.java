@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,14 +38,16 @@ import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
-public class HomeActivity extends Activity implements OnClickListener,
-		AppChangeListener {
+public class HomeActivity extends Activity implements OnClickListener,OnTouchListener,AppChangeListener {
 
 	private View mTopLayout;
 	private View mTvAppManage;
 	private View mTvAppLock;
 	private View mTvAppBackup;
 	private View mTvCleanMem;
+	
+	private View mPressedEffect1;
+    private View mPressedEffect2;
 
 	private TextView mTvMemoryInfo, mTvFlow;
 	private ImageView mIvDigital_0, mIvDigital_1, mIvDigital_2;
@@ -84,8 +89,13 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mTvCleanMem = findViewById(R.id.tv_clean_memory);
 		mTvAppManage.setOnClickListener(this);
 		mTvAppLock.setOnClickListener(this);
+		mTvAppBackup.setOnTouchListener(this);
+        mTvAppLock.setOnTouchListener(this);
 		mTvAppBackup.setOnClickListener(this);
 		mTvCleanMem.setOnClickListener(this);
+		
+		mPressedEffect1 = findViewById(R.id.pressed_effect1);
+        mPressedEffect2 = findViewById(R.id.pressed_effect2);
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
@@ -242,8 +252,39 @@ public class HomeActivity extends Activity implements OnClickListener,
 		startActivity(intent);
 	}
 
+
 	@Override
 	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
 		calculateAppCount();
 	}
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (v.getId() == R.id.tv_app_lock) {
+                    mPressedEffect1.setBackgroundResource(R.drawable.home_sel);
+                    mTvAppLock.setBackgroundResource(R.drawable.home_sel);
+                } else if (v.getId() == R.id.tv_app_backup) {
+                    mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
+                    mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_OUTSIDE:
+                if (v.getId() == R.id.tv_app_lock) {
+                    mPressedEffect1.setBackgroundColor(Color.WHITE);
+                    mTvAppLock.setBackgroundColor(Color.WHITE);
+                } else if (v.getId() == R.id.tv_app_backup) {
+                    mPressedEffect2.setBackgroundColor(Color.WHITE);
+                    mTvAppBackup.setBackgroundColor(Color.WHITE);
+                }
+                break;
+            default:
+                break;
+        }
+
+        return false;
+    }
 }

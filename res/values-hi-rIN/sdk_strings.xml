@@ -25,8 +25,8 @@
     <string name="features">संस्करण की विशेषताएं</string>
     <string name="size">साइज</string>
     <!-- notification -->
-    <string name="update_available">अपडेट हो गया</string>
-    <string name="version_found">नवीनतम संस्करण का पता लगाएं</string>
+    <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g>&#160;नवीनतम संस्करण का पता लगाएं</string>
+    <string name="version_found">नवीनतम संस्करण का पता लगाएं&#160;<xliff:g id="new_version">%1$s</xliff:g>&#160;अपडेट के लिए क्लिक करें</string>
     <string name="click_to_update">अपडेट के लिए क्लिक करें</string>
 
 </resources>

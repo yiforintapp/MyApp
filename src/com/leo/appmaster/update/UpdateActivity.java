@@ -28,90 +28,80 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leoers.leoanalytics.LeoStat;
-import com.leoers.leoanalytics.update.OnProgressListener;
+import com.leoers.leoanalytics.update.IUIHelper;
 import com.leoers.leoanalytics.update.UpdateManager;
 
 public class UpdateActivity extends Activity implements OnProgressListener {
 
     private final static String TAG = UpdateActivity.class.getSimpleName();
     private Intent mIntent = null;
-    private int mUIType = UpdateManager.TYPE_CHECKING;
+    private int mUIType = IUIHelper.TYPE_CHECKING;
     private int mParam = 0;
     private UpdateManager mManager = null;
     private Handler mProgressHandler = null;
+    private UIHelper mUIHelper = null;
 
     private int mProgress = 100;
     private int mComplete = 0;
     private int mTotal = 0;
     private boolean mIsNotifying = false;
     private final static int DOWNLOAD_NOTIFICATION_ID = 1001;
-    /* mActionDownloadWindow must set value before build notification */
-    private static String mActionDownloadWindow = "";
 
     public UpdateActivity() {
         mProgressHandler = new ProgressHandler(this);
         mManager = UpdateManager.getInstance(this);
-        mManager.registerProgressListener(this);
+        mUIHelper = UIHelper.getInstance(this);
+        mUIHelper.setOnProgressListener(this);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIntent = getIntent();
-        mActionDownloadWindow = getPackageName() + UpdateManager.LEO_SDK_DOWNLOAD_TAG;
         buildDownloadNotification();
-        Log.e(TAG, "onCreate");
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.e(TAG, "onNewIntent");
         mIntent = intent;
-        Log.e(TAG, "onResume");
-        mUIType = mIntent.getIntExtra(UpdateManager.LAYOUT_TYPE,
-                UpdateManager.TYPE_CHECKING);
-        mParam = mIntent.getIntExtra(UpdateManager.LAYOUT_PARAM,
-                UpdateManager.TYPE_CHECKING);
-        Log.e(TAG, "mUIType=" + mUIType);
-        showView(mUIType, mParam);
         super.onNewIntent(intent);
     }
 
     @Override
-    protected void onStart() {
-        Log.e(TAG, "onStart");
-        super.onStart();
-        onNewIntent(getIntent());
+    protected void onResume() {
+        // mUIType = mIntent.getIntExtra(IUIHelper.LAYOUT_TYPE,
+        // IUIHelper.TYPE_CHECKING);
+        // mParam = mIntent.getIntExtra(IUIHelper.LAYOUT_PARAM,
+        // IUIHelper.TYPE_CHECKING);
+        mUIType = mUIHelper.getLayoutType();
+        mParam = mUIHelper.getLayoutParam();
+        Log.e(TAG, "mUIType=" + mUIType);
+        showView(mUIType, mParam);
+        super.onResume();
     }
-
-    //
-    // @Override
-    // protected void onResume() {
-    // super.onResume();
-    // }
 
     private void showView(int type, int param) {
         switch (type) {
-            case UpdateManager.TYPE_CHECKING:
+            case IUIHelper.TYPE_CHECKING:
                 showChecking();
                 break;
-            case UpdateManager.TYPE_CHECK_NEED_UPDATE:
+            case IUIHelper.TYPE_CHECK_NEED_UPDATE:
                 if (param == UpdateManager.NORMAL_UPDATE) {
                     showNeedUpdate();
                 } else if (param == UpdateManager.FORCE_UPDATE) {
                     showForceUpdate();
                 }/* normal or force update */
                 break;
-            case UpdateManager.TYPE_CHECK_NO_UPDATE:
+            case IUIHelper.TYPE_CHECK_NO_UPDATE:
                 showNoUpdate();
                 break;
-            case UpdateManager.TYPE_CHECK_FAILED:
+            case IUIHelper.TYPE_CHECK_FAILED:
                 showCheckFailed();
                 break;
-            case UpdateManager.TYPE_NO_NETWORK:
+            case IUIHelper.TYPE_NO_NETWORK:
                 showNoNetwork();
                 break;
-            case UpdateManager.TYPE_DOWNLOADING:
+            case IUIHelper.TYPE_DOWNLOADING:
                 mTotal = mManager.getTotalSize();
                 if (param == UpdateManager.FORCE_UPDATE) {
                     showForceDownloading();
@@ -119,7 +109,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                     showDownloading();
                 }
                 break;
-            case UpdateManager.TYPE_DOWNLOAD_FAILED:
+            case IUIHelper.TYPE_DOWNLOAD_FAILED:
                 showDownloadFailed();
                 break;
         }
@@ -396,7 +386,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         rv = new RemoteViews(this.getPackageName(),
                 R.layout.sdk_notification_download);
         rv.setTextViewText(R.id.tv_title, downloadTip);
-        Intent intent = new Intent(mActionDownloadWindow);
+        Intent intent = new Intent(UIHelper.ACTION_DOWNLOADING);
         PendingIntent contentIntent = PendingIntent.getBroadcast(this, 0,
                 intent, 0);
         dNotification = new Notification(R.drawable.ic_launcher,
@@ -437,7 +427,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (mUIType) {
-            case UpdateManager.TYPE_CHECK_NEED_UPDATE:
+            case IUIHelper.TYPE_CHECK_NEED_UPDATE:
                 if (mParam == UpdateManager.NORMAL_UPDATE) {
                     mManager.onCancelUpdate();
                 } else if (mParam == UpdateManager.FORCE_UPDATE) {
@@ -445,7 +435,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                     return true;
                 }
                 break;
-            case UpdateManager.TYPE_DOWNLOADING:
+            case IUIHelper.TYPE_DOWNLOADING:
                 mIsNotifying = true;
                 break;
         }
@@ -464,7 +454,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
             UpdateActivity theActivity = mActivity.get();
             switch (msg.what) {
                 case 1:
-                    if (theActivity.mUIType == UpdateManager.TYPE_DOWNLOADING) {
+                    if (theActivity.mUIType == IUIHelper.TYPE_DOWNLOADING) {
                         theActivity.mComplete = msg.arg1;
                         theActivity.mTotal = msg.arg2;
                         long c = msg.arg1;

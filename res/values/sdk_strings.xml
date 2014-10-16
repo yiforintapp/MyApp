@@ -25,8 +25,8 @@
     <string name="features">Features</string>
     <string name="size">Size</string>
     <!-- notification -->
-    <string name="update_available">Updated</string>
-    <string name="version_found">New Version Available</string>
+    <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g>&#160;has new version</string>
+    <string name="version_found">New version&#160;<xliff:g id="new_version">%1$s</xliff:g>&#160;available, click to update</string>
     <string name="click_to_update">Click to update</string>
 
 </resources>

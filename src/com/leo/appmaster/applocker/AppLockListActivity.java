@@ -339,7 +339,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	@Override
 	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
-		loadData();
+	    runOnUiThread(new Runnable() {          
+            @Override
+            public void run() {
+                loadData();
+            }
+        });
 	}
 
 	@Override
