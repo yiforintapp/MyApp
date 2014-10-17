@@ -46,7 +46,6 @@
         <activity
             android:name="com.leo.appmaster.home.HomeActivity"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
@@ -74,13 +73,11 @@
         <activity
             android:name="com.leo.appmaster.applocker.AppLockListActivity"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.LockOptionActivity"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
