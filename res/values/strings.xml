@@ -50,6 +50,8 @@
     <string name="input_qusetion">Input security question:</string>
     <string name="qusetion_cant_null">Please enter the new question</string>
     <string name="passwd_setting">Password Setting</string>
+    <string name="passwd_set_passwd_tip">首次使用，请设置四位密码</string>
+    <string name="passwd_set_gesture_tip">首次使用，请设置手势</string>
     <string name="not_set">Not Set</string>
     <string name="aneser_cant_null">Please enter your answer</string>
     <string name="pleas_input_anwser">Answer your security question</string>
