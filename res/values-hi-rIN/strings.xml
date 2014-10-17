@@ -12,6 +12,8 @@
     <string name="app_restore">रिकवरी</string>
     <string name="button_backup">बैकअप</string>
     <string name="button_install">स्थापित करें</string>
+    <string name="passwd_set_passwd_tip">首次使用，请设置四位密码</string>
+    <string name="passwd_set_gesture_tip">首次使用，请设置手势</string>
     <string name="button_delete">हटाएं</string>
     <string name="clean_memory">एक क्लिक में तेज़ी लाए</string>
     <string name="app_use_info">उपयोग</string>

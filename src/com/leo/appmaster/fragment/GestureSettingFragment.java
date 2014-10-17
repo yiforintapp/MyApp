@@ -45,17 +45,21 @@ public class GestureSettingFragment extends BaseFragment implements
 	protected void onInitUI() {
 		mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
 		mLockPatternView.setOnPatternListener(this);
-
 		mTvGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
+
+		if (AppLockerPreference.getInstance(mActivity).getGesture() == null
+				&& AppLockerPreference.getInstance(mActivity).getPassword() == null) {
+			mTvGestureTip.setText(R.string.passwd_set_gesture_tip);
+		}
 
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		 case R.id.tv_bottom:
-		 resetGesture();
-		 break;
+		case R.id.tv_bottom:
+			resetGesture();
+			break;
 
 		default:
 			break;
@@ -91,7 +95,7 @@ public class GestureSettingFragment extends BaseFragment implements
 				checkGesture(pattern);
 			}
 		}, 300);
-		
+
 	}
 
 	private void checkGesture(List<Cell> pattern) {
@@ -129,6 +133,11 @@ public class GestureSettingFragment extends BaseFragment implements
 				Toast.makeText(mActivity, R.string.tip_no_the_same_pswd, 1)
 						.show();
 				mLockPatternView.clearPattern();
+				if (AppLockerPreference.getInstance(mActivity).getGesture() == null
+						&& AppLockerPreference.getInstance(mActivity)
+								.getPassword() == null) {
+					mTvGestureTip.setText(R.string.passwd_set_gesture_tip);
+				}
 			}
 		}
 	}

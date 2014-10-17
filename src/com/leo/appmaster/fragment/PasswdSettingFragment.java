@@ -73,15 +73,11 @@ public class PasswdSettingFragment extends BaseFragment implements
 
 		mInputTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
 
-		String passwdtip = AppLockerPreference.getInstance(mActivity)
-				.getPasswdTip();
-
+		if (AppLockerPreference.getInstance(mActivity).getGesture() == null
+				&& AppLockerPreference.getInstance(mActivity).getPassword() == null) {
+			mInputTip.setText(R.string.passwd_set_passwd_tip);
+		}
 		mPasswdHint.setVisibility(View.INVISIBLE);
-		// if (passwdtip == null || passwdtip.equals("")) {
-		// mPasswdHint.setVisibility(View.INVISIBLE);
-		// } else {
-		// mPasswdHint.setText(passwdtip);
-		// }
 	}
 
 	@Override
@@ -164,6 +160,12 @@ public class PasswdSettingFragment extends BaseFragment implements
 						mTempFirstPasswd = "";
 						mTempSecondPasswd = "";
 						mInputTip.setText(R.string.passwd_hint);
+						if (AppLockerPreference.getInstance(mActivity)
+								.getGesture() == null
+								&& AppLockerPreference.getInstance(mActivity)
+										.getPassword() == null) {
+							mInputTip.setText(R.string.passwd_set_passwd_tip);
+						}
 					}
 				}
 			}

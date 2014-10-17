@@ -35,7 +35,7 @@
         android:layout_marginTop="30dp"
         android:text="@string/please_input_gesture"
         android:textColor="#aaffffff"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
     <com.leo.appmaster.applocker.gesture.LockPatternView
         android:id="@+id/gesture_lockview"

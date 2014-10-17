@@ -15,7 +15,7 @@
         android:gravity="center"
         android:text="@string/gesture_hint"
         android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
     <com.leo.appmaster.applocker.gesture.LockPatternView
         android:id="@+id/gesture_lockview"
