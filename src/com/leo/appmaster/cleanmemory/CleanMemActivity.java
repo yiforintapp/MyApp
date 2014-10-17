@@ -119,14 +119,14 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private void startLoad() {
 		
 		rotateLoadView(2000, 360 * 3);
-		final int target = (int) mLastUsedMem;
+		final int target = (int)(mLastUsedMem / 1024);
 		final ValueAnimator up = ValueAnimator.ofInt(0, target);
 		up.setDuration(2000);
 		up.setInterpolator(new AccelerateDecelerateInterpolator());
 		up.addUpdateListener(new AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator va) {
-				mLastUsedMem = (Integer) va.getAnimatedValue();
+				mLastUsedMem = (Integer) va.getAnimatedValue() * 1024l;
 				updateMem();
 			}
 		});
@@ -396,16 +396,16 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private void startUpdataMemTip(long targetMem) {
 		if (!mUpdating) {
 			mUpdating = true;
-			ValueAnimator down = ValueAnimator.ofInt((int) mLastUsedMem, 0);
-			down.setDuration(500);
-
-			final ValueAnimator up = ValueAnimator.ofInt(0, (int) targetMem);
-			up.setDuration(500);
+			ValueAnimator down = ValueAnimator.ofInt((int) (mLastUsedMem / 1024), 0);
+			down.setDuration(300);
+			final int target = (int)(targetMem / 1024);
+			final ValueAnimator up = ValueAnimator.ofInt(0, target);
+			up.setDuration(800);
 
 			down.addUpdateListener(new AnimatorUpdateListener() {
 				@Override
 				public void onAnimationUpdate(ValueAnimator va) {
-					mLastUsedMem = (Integer) va.getAnimatedValue();
+					mLastUsedMem = (Integer) va.getAnimatedValue() * 1024l;
 					updateMem();
 				}
 			});
@@ -432,7 +432,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			up.addUpdateListener(new AnimatorUpdateListener() {
 				@Override
 				public void onAnimationUpdate(ValueAnimator va) {
-					mLastUsedMem = (Integer) va.getAnimatedValue();
+					mLastUsedMem = (Integer) va.getAnimatedValue() * 1024l;
 					updateMem();
 				}
 			});
