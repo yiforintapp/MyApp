@@ -244,7 +244,6 @@ public class PasswdSettingFragment extends BaseFragment implements
 
 	@Override
 	public void onDismiss(DialogInterface dialog) {
-		Log.e("xxxx", "onDismiss: mGotoPasswdProtect = " + mGotoPasswdProtect);
 		Intent intent;
 		if (mGotoPasswdProtect) {
 			intent = new Intent(mActivity, PasswdProtectActivity.class);

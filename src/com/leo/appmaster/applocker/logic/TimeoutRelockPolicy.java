@@ -47,7 +47,6 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 	@Override
 	public void onUnlocked(String pkg) {
 		long curTime = System.currentTimeMillis();
-		Log.e("xxxx", "onUnlocked time: " + curTime);
 		mLockapp.put(pkg, curTime);
 	}
 

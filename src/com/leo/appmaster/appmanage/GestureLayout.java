@@ -65,12 +65,10 @@ public class GestureLayout extends LinearLayout{
                                                               // CHECKSTYLE
                 float velocityX = velocityTracker.getXVelocity();
                 if (velocityX > mSnapVelocity) {
-                    Log.i("XXXX", "move right");
                     if (mListener != null) {
                         mListener.onScroll(-1);
                     }
                 } else if (velocityX < -mSnapVelocity) {
-                    Log.i("XXXX", "move left");
                     if (mListener != null) {
                         mListener.onScroll(1);
                     }

@@ -151,8 +151,6 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 //			String s = mPref.getString(PREF_RELOCK_TIME, "-1");
 			
 			int re = getRelockTimeout();
-			
-			Log.e("xxxx", re + "");
 		}
 	}
 

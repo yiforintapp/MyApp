@@ -235,8 +235,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		float targetY = (float) (mLockedLocationY - mIvAnimator.getTop() - (mIvAnimator
 				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
 
-		Log.e("xxxx", "orgX = " + orgX + ",   orgY = " + orgY
-				+ ",   targetX = " + targetX + ",  targetY = " + targetY);
+//		Log.e("xxxx", "orgX = " + orgX + ",   orgY = " + orgY
+//				+ ",   targetX = " + targetX + ",  targetY = " + targetY);
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
 		animation.setAnimationListener(new FlyAnimaListener());
