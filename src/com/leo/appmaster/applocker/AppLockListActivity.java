@@ -146,10 +146,11 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		List<String> lockList = AppLockerPreference.getInstance(this)
 				.getLockedAppList();
 		for (AppDetailInfo appDetailInfo : list) {
+			 if (appDetailInfo.getPkg().equals(this.getPackageName()))
+			 continue;
 			if (lockList.contains(appDetailInfo.getPkg())) {
 				appDetailInfo.setLocked(true);
 				mLockedList.add(appDetailInfo);
-
 			} else {
 				appDetailInfo.setLocked(false);
 				mUnlockList.add(appDetailInfo);
@@ -168,14 +169,15 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		mLastSelectApp = (BaseInfo) view.getTag();
+//		if (mLastSelectApp.getPkg().equals(this.getPackageName()))
+//			return;
+
 		if (isFlying) {
 			return;
 		}
-
 		isFlying = true;
-
 		calculateLoc();
-		mLastSelectApp = (BaseInfo) view.getTag();
 		BaseInfo info = null;
 		if (mLastSelectApp.isLocked()) {
 			mLastSelectApp.setLocked(false);
