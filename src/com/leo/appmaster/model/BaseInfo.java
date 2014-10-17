@@ -36,6 +36,11 @@ public class BaseInfo {
 	 */
 	private boolean mLocked;
 	
+	/*
+	 * top index
+	 */
+	public int topPos = -1;
+	
 	private int versionCode;
     private String versionName;
 	

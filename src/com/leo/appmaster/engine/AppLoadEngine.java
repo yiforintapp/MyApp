@@ -26,6 +26,7 @@ import android.os.HandlerThread;
 import android.os.RemoteException;
 
 import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.CacheInfo;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.TextFormater;
@@ -450,10 +451,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 		}
 	}
 
-	public static class AppComparator implements Comparator<AppDetailInfo> {
+	public static class AppComparator implements Comparator<BaseInfo> {
 
 		@Override
-		public int compare(AppDetailInfo lhs, AppDetailInfo rhs) {
+		public int compare(BaseInfo lhs, BaseInfo rhs) {
 			if (lhs.topPos > -1 && rhs.topPos < 0) {
 				return -1;
 			} else if (lhs.topPos < 0 && rhs.topPos > -1) {

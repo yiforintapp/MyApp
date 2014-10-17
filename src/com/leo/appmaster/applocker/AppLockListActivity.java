@@ -1,5 +1,6 @@
 package com.leo.appmaster.applocker;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -138,8 +139,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	}
 
 	private void loadData() {
-	    mUnlockList.clear();
-	    mLockedList.clear();
+		mUnlockList.clear();
+		mLockedList.clear();
 		ArrayList<AppDetailInfo> list = AppLoadEngine.getInstance(this)
 				.getAllPkgInfo();
 		List<String> lockList = AppLockerPreference.getInstance(this)
@@ -186,6 +187,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				}
 			}
 			mUnlockList.add(info);
+			Collections.sort(mUnlockList, new AppLoadEngine.AppComparator());
 			mLockedList.remove(info);
 			moveItemToUnlock(view, mLastSelectApp.getAppIcon());
 
@@ -235,8 +237,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		float targetY = (float) (mLockedLocationY - mIvAnimator.getTop() - (mIvAnimator
 				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
 
-//		Log.e("xxxx", "orgX = " + orgX + ",   orgY = " + orgY
-//				+ ",   targetX = " + targetX + ",  targetY = " + targetY);
+		// Log.e("xxxx", "orgX = " + orgX + ",   orgY = " + orgY
+		// + ",   targetX = " + targetX + ",  targetY = " + targetY);
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
 		animation.setAnimationListener(new FlyAnimaListener());
