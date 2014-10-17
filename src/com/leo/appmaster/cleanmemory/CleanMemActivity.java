@@ -280,7 +280,6 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	private void shakeRocket() {
 		mShakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
-
 		mRocket.startAnimation(mShakeAnim);
 	}
 
@@ -345,6 +344,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 				cancelLaunch();
 			} else {
 				stopVibrate();
+				stopShakeRocket();
 				cleanMemory();
 			}
 		} else if (action == MotionEvent.ACTION_MOVE) {
