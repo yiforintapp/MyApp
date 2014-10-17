@@ -40,6 +40,8 @@
         android:id="@+id/tv_passwd_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:layout_below="@+id/tv_passwd_input_tip"

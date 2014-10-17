@@ -129,7 +129,7 @@
     </string-array>
 
     <!-- Lock option -->
-    <string name="forbid_uninstall">Automatically lock after the screen turns off</string>
+    <string name="forbid_uninstall">Forbid Uninstall</string>
     <string name="auto_lock">Automatically lock after the screen turns off</string>
     <string name="change_lock_time">Change the lock time</string>
     <string name="change_passwd">Change Password</string>

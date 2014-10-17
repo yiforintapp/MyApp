@@ -22,15 +22,14 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	private static final String PREF_PASSWD_QUESTION = "passwd_question";
 	private static final String PREF_PASSWD_ANWSER = "passwd_anwser";
 	private static final String PREF_PASSWD_TIP = "passwd_tip";
-	public static final String PREF_AUTO_LOCK = "set_auto_lock";  
-	public static final String PREF_SET_PROTECT= "set_passwd_protect";
+	public static final String PREF_AUTO_LOCK = "set_auto_lock";
+	public static final String PREF_SET_PROTECT = "set_passwd_protect";
 	public static final String PREF_FORBIND_UNINSTALL = "set_forbid_uninstall";
 
 	private List<String> mLockedAppList;
 	private String mPassword;
 	private String mGesture;
 	private String mLockPolicy;
-	private boolean mHavePswdProtect;
 
 	public static final int LOCK_TYPE_NONE = -1;
 	public static final int LOCK_TYPE_PASSWD = 0;
@@ -97,7 +96,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	public boolean hasPswdProtect() {
-		return mHavePswdProtect;
+		return mPref.getString(PREF_PASSWD_QUESTION, "").equals("");
 	}
 
 	public String getPpQuestion() {
@@ -129,7 +128,6 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		mLockedAppList = Arrays.asList(mPref.getString(PREF_APPLICATION_LIST,
 				"").split(";"));
 		mLockType = mPref.getInt(PREF_LOCK_TYPE, LOCK_TYPE_NONE);
-		mHavePswdProtect = mPref.getBoolean(PREF_HAVE_PSWD_PROTECTED, false);
 		mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
 		if (mLockType == LOCK_TYPE_GESTURE) {
 			mGesture = mPref.getString(PREF_GESTURE, null);
@@ -148,15 +146,14 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 			mPassword = mPref.getString(PREF_PASSWORD, "1234");
 		} else if (PREF_LOCK_POLICY.equals(key)) {
 			mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
-		} else if(PREF_RELOCK_TIME.equals(key)) {
-//			String s = mPref.getString(PREF_RELOCK_TIME, "-1");
-			
+		} else if (PREF_RELOCK_TIME.equals(key)) {
+			// String s = mPref.getString(PREF_RELOCK_TIME, "-1");
+
 			int re = getRelockTimeout();
 		}
 	}
 
 	public void savePasswdProtect(String qusetion, String answer, String tip) {
-		mHavePswdProtect = true;
 		mPref.edit().putBoolean(PREF_HAVE_PSWD_PROTECTED, true).commit();
 		mPref.edit().putString(PREF_PASSWD_QUESTION, qusetion).commit();
 		mPref.edit().putString(PREF_PASSWD_ANWSER, answer).commit();

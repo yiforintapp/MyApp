@@ -39,18 +39,13 @@ public class PasswdTipActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v == mTvMakesure) {
-			String tip = mEtTip.getText().toString();
+			String tip = mEtTip.getText().toString().trim();
 			AppLockerPreference ap = AppLockerPreference.getInstance(this);
 			String q = ap.getPpQuestion();
 			String a = ap.getPpAnwser();
-			if (tip != null && !tip.equals("")) {
-				AppLockerPreference.getInstance(this).savePasswdProtect(q,
-						a, tip);
-				Toast.makeText(this, R.string.set_success, 0).show();
-				finish();
-			} else {
-				Toast.makeText(this, R.string.passwd_hint_cant_null, 0).show();
-			}
+			AppLockerPreference.getInstance(this).savePasswdProtect(q, a, tip);
+			Toast.makeText(this, R.string.set_success, 0).show();
+			finish();
 		}
 	}
 
