@@ -116,6 +116,9 @@ public class UIHelper implements IUIHelper {
 
     @Override
     public void onNewState(int ui_type, int param) {
+        if (listener != null) {
+            listener.onChangeState();
+        }
         mIsUpdateNotifying = true;
         mUIType = ui_type;
         mUIParam = param;
