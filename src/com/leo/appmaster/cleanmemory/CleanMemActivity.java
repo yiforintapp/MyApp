@@ -240,6 +240,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		as.setAnimationListener(new AnimationListener() {
 			@Override
 			public void onAnimationStart(Animation animation) {
+				mTvAccelerate.setVisibility(View.INVISIBLE);
 			}
 
 			@Override
@@ -254,9 +255,21 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 				ScaleAnimation show = new ScaleAnimation(0.0f, 1.0f, 0.0f,
 						1.0f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
 						ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-
 				show.setDuration(500);
-
+				show.setAnimationListener(new AnimationListener() {
+					@Override
+					public void onAnimationStart(Animation animation) {
+					}
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						mRocket.setVisibility(View.INVISIBLE);
+						mRocket.setClickable(false);
+						mRocket.setOnTouchListener(null);
+					}
+				});
 				mRocketHolder.startAnimation(show);
 			}
 		});
@@ -298,11 +311,11 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				mRocket.setVisibility(View.GONE);
-				ViewGroup vg = (ViewGroup) mRocket.getParent();
-				vg.removeView(mRocket);
-				mRocket.setOnTouchListener(null);
-				mRocket.setEnabled(false);
+//				mRocket.setVisibility(View.GONE);
+//				ViewGroup vg = (ViewGroup) mRocket.getParent();
+//				vg.removeView(mRocket);
+//				mRocket.setOnTouchListener(null);
+//				mRocket.setEnabled(false);
 			}
 		});
 		return ta;
