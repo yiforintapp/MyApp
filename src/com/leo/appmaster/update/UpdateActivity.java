@@ -490,4 +490,10 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     public void onProgress(int progress, int max) {
         mProgressHandler.obtainMessage(1, progress, max).sendToTarget();
     }
+
+    @Override
+    public void onChangeState() {
+        Log.d(TAG, "onChangeState called");
+        finish();
+    }
 }
