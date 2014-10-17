@@ -3,6 +3,7 @@ package com.leo.appmaster;
 import android.app.Application;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.applocker.AppLockerPreference;
@@ -61,7 +62,7 @@ public class AppMasterApplication extends Application {
 
 	private void iniLeoSdk() {
 		LeoStat.init(getApplicationContext(), "1", "appmaster");
-		LeoStat.setSilentMode();
+		LeoStat.setDebugLevel(Log.ERROR);
 		LeoStat.initUpdateEngine(UIHelper.getInstance(getApplicationContext()),
 				true);
 	}

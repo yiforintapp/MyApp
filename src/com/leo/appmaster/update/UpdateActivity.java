@@ -41,7 +41,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     private Handler mProgressHandler = null;
     private UIHelper mUIHelper = null;
 
-    private int mProgress = 100;
+    private int mProgress = 0;
     private int mComplete = 0;
     private int mTotal = 0;
     private boolean mIsNotifying = false;
@@ -103,6 +103,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                 break;
             case IUIHelper.TYPE_DOWNLOADING:
                 mTotal = mManager.getTotalSize();
+                mProgress = mUIHelper.getProgress();
                 if (param == UpdateManager.FORCE_UPDATE) {
                     showForceDownloading();
                 } else if (param == UpdateManager.NORMAL_UPDATE) {
@@ -181,6 +182,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         TextView tvContent = (TextView) findViewById(R.id.dlg_single_content);
         tvContent.setText(getString(R.string.app_name));
         ProgressBar pb = (ProgressBar) findViewById(R.id.dlg_pro);
+        Log.d(TAG, "mProgress=" + mProgress);
         pb.setProgress(mProgress);
         pb.setMax(100);
         TextView tvSize = (TextView) findViewById(R.id.dlg_pro_state);
@@ -240,6 +242,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         TextView tvContent = (TextView) findViewById(R.id.dlg_single_content);
         tvContent.setText(appName);
         ProgressBar pb = (ProgressBar) findViewById(R.id.dlg_pro);
+        Log.d(TAG, "mProgress=" + mProgress);
         pb.setProgress(mProgress);
         pb.setMax(100);
         TextView tvSize = (TextView) findViewById(R.id.dlg_pro_state);
