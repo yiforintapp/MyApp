@@ -61,7 +61,7 @@
         android:layout_below="@+id/layout_passwd"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingBottom="20dp"
+        android:paddingBottom="10dp"
         android:paddingTop="10dp" >
 
         <LinearLayout
@@ -251,7 +251,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_passwd_input_tip"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
          android:textSize="14sp" 
         android:textColor="#aaffffff"
         android:text="@string/passwd_hint_tip" />

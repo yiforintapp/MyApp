@@ -46,6 +46,7 @@
     <string name="qusetion_cant_null">问题不能为空</string>
     <string name="aneser_cant_null">答案不能为空</string>
     <string name="pleas_input_anwser">请输入密保问题的答案</string>
+    <string name="not_set">未设置</string>
     <string name="anwser">答案：</string>
     <string name="not_unistall">防止被卸载</string>
     <string name="lock_screen_auto_lock">锁屏后自动锁定</string>
@@ -63,6 +64,7 @@
     <string name="please_input_gesture">请绘制解锁图案</string>
     <string name="input_passwd_tip">请输入密码提示</string>
     <string name="switch_gesture">使用手势</string>
+    <string name="no_item_tip">暂无加锁应用</string>
     <string name="switch_passwd">使用密码</string>
     <string name="setting">设置</string>
     <string name="passwd_hint_tip">密码提示：</string>

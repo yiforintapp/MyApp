@@ -1,5 +1,6 @@
 package com.leo.appmaster.applocker;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,7 +44,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	private ImageView mIvAnimator;
 	private View mTabContainer;
-	private TextView mTvUnlock, mTvLocked;
+	private TextView mTvUnlock, mTvLocked, mTvNoItem;
 	private int mLockedLocationX, mLockedLocationY;
 	private int mUnlockLocationX, mUnlockLocationY;
 	private List<BaseInfo> mLockedList;
@@ -90,6 +91,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mTvUnlock.setOnClickListener(this);
 		mTvLocked.setOnClickListener(this);
 
+		mTvNoItem = (TextView) findViewById(R.id.no_item_tip);
+
 		mLockedList = new ArrayList<BaseInfo>();
 		mUnlockList = new ArrayList<BaseInfo>();
 
@@ -120,26 +123,35 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			mPagerLock.notifyChange(mLockedList);
 			mPagerUnlock.setVisibility(View.INVISIBLE);
 			mPagerLock.setVisibility(View.VISIBLE);
-
 			mTvUnlock.setTextColor(getResources().getColor(R.color.white));
 			mTvLocked.setTextColor(getResources().getColor(
 					R.color.tab_select_text));
+
+			if (mLockedList.isEmpty()) {
+				mTvNoItem.setVisibility(View.VISIBLE);
+			} else {
+				mTvNoItem.setVisibility(View.INVISIBLE);
+			}
 			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_r);
 		} else if (v == mTvUnlock) {
 			mPagerUnlock.notifyChange(mUnlockList);
 			mPagerUnlock.setVisibility(View.VISIBLE);
 			mPagerLock.setVisibility(View.INVISIBLE);
-
 			mTvUnlock.setTextColor(getResources().getColor(
 					R.color.tab_select_text));
 			mTvLocked.setTextColor(getResources().getColor(R.color.white));
 			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_l);
+			if (mUnlockList.isEmpty()) {
+				mTvNoItem.setVisibility(View.VISIBLE);
+			} else {
+				mTvNoItem.setVisibility(View.INVISIBLE);
+			}
 		}
 	}
 
 	private void loadData() {
-	    mUnlockList.clear();
-	    mLockedList.clear();
+		mUnlockList.clear();
+		mLockedList.clear();
 		ArrayList<AppDetailInfo> list = AppLoadEngine.getInstance(this)
 				.getAllPkgInfo();
 		List<String> lockList = AppLockerPreference.getInstance(this)
@@ -148,7 +160,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			if (lockList.contains(appDetailInfo.getPkg())) {
 				appDetailInfo.setLocked(true);
 				mLockedList.add(appDetailInfo);
-
 			} else {
 				appDetailInfo.setLocked(false);
 				mUnlockList.add(appDetailInfo);
@@ -161,6 +172,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mPagerUnlock.setDatas(mUnlockList, 4, rowCount);
 		mPagerLock.setDatas(mLockedList, 4, rowCount);
 
+		if (mUnlockList.isEmpty()) {
+			mTvNoItem.setVisibility(View.VISIBLE);
+		} else {
+			mTvNoItem.setVisibility(View.INVISIBLE);
+		}
+
 		updateLockText();
 	}
 
@@ -170,9 +187,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		if (isFlying) {
 			return;
 		}
-
 		isFlying = true;
-
 		calculateLoc();
 		mLastSelectApp = (BaseInfo) view.getTag();
 		BaseInfo info = null;
@@ -186,8 +201,15 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				}
 			}
 			mUnlockList.add(info);
+			Collections.sort(mUnlockList, new AppLoadEngine.AppComparator());
 			mLockedList.remove(info);
 			moveItemToUnlock(view, mLastSelectApp.getAppIcon());
+
+			if (mLockedList.isEmpty()) {
+				mTvNoItem.setVisibility(View.VISIBLE);
+			} else {
+				mTvNoItem.setVisibility(View.INVISIBLE);
+			}
 
 			LeoStat.addEvent(LeoStat.P2, "unlock app", mLastSelectApp.getPkg());
 			FlurryAgent.logEvent(mLastSelectApp.getPkg() + ": unlock app");
@@ -203,6 +225,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			mLockedList.add(0, info);
 			mUnlockList.remove(info);
 			moveItemToLock(view, mLastSelectApp.getAppIcon());
+
+			if (mUnlockList.isEmpty()) {
+				mTvNoItem.setVisibility(View.VISIBLE);
+			} else {
+				mTvNoItem.setVisibility(View.INVISIBLE);
+			}
 
 			LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
 			FlurryAgent.logEvent(mLastSelectApp.getPkg() + ": lock app");
@@ -235,8 +263,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		float targetY = (float) (mLockedLocationY - mIvAnimator.getTop() - (mIvAnimator
 				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
 
-		Log.e("xxxx", "orgX = " + orgX + ",   orgY = " + orgY
-				+ ",   targetX = " + targetX + ",  targetY = " + targetY);
+		// Log.e("xxxx", "orgX = " + orgX + ",   orgY = " + orgY
+		// + ",   targetX = " + targetX + ",  targetY = " + targetY);
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
 		animation.setAnimationListener(new FlyAnimaListener());

@@ -97,8 +97,6 @@ public class LockHandler extends BroadcastReceiver {
 			String pkg = intent.getStringExtra(EXTRA_LOCKED_APP_PKG);
 			mLockPolicy.onUnlocked(pkg);
 		} else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
-			
-			Log.e("xxxx", "ACTION_SCREEN_OFF");
 			if (mLockPolicy instanceof TimeoutRelockPolicy) {
 				if (AppLockerPreference.getInstance(context).isAutoLock()) {
 					((TimeoutRelockPolicy) mLockPolicy).clearLockApp();

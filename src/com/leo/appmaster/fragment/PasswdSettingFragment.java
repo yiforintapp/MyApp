@@ -130,37 +130,45 @@ public class PasswdSettingFragment extends BaseFragment implements
 	}
 
 	private void makesurePasswd() {
-		if (mInputCount == 1) {
-			mInputCount++;
-			clearPasswd();
-			mInputTip.setText(R.string.please_input_pswd_again);
-			iv_delete.setEnabled(false);
-		} else if (mInputCount == 2) {
-			if (mTempFirstPasswd.equals(mTempSecondPasswd)) {
-				Toast.makeText(mActivity, R.string.set_passwd_suc, 1).show();
-				Intent intent = null;
-				intent = new Intent(mActivity, LockService.class);
-				mActivity.startService(intent);
-				AppLockerPreference.getInstance(mActivity).savePassword(
-						mTempFirstPasswd);
-				if (!AppLockerPreference.getInstance(mActivity)
-						.hasPswdProtect()) {
-					setPasswdProtect();
-				} else {
-					intent = new Intent(mActivity, AppLockListActivity.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
+		mTvPasswd1.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (mInputCount == 1) {
+					mInputCount++;
+					clearPasswd();
+					mInputTip.setText(R.string.please_input_pswd_again);
+					iv_delete.setEnabled(false);
+				} else if (mInputCount == 2) {
+					if (mTempFirstPasswd.equals(mTempSecondPasswd)) {
+						Toast.makeText(mActivity, R.string.set_passwd_suc, 1)
+								.show();
+						Intent intent = null;
+						intent = new Intent(mActivity, LockService.class);
+						mActivity.startService(intent);
+						AppLockerPreference.getInstance(mActivity)
+								.savePassword(mTempFirstPasswd);
+						if (!AppLockerPreference.getInstance(mActivity)
+								.hasPswdProtect()) {
+							setPasswdProtect();
+						} else {
+							intent = new Intent(mActivity,
+									AppLockListActivity.class);
+							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(intent);
+						}
+					} else {
+						Toast.makeText(mActivity,
+								R.string.tip_no_the_same_pswd, 1).show();
+						clearPasswd();
+						mInputCount = 1;
+						mTempFirstPasswd = "";
+						mTempSecondPasswd = "";
+						mInputTip.setText(R.string.passwd_hint);
+					}
 				}
-			} else {
-				Toast.makeText(mActivity, R.string.tip_no_the_same_pswd, 1)
-						.show();
-				clearPasswd();
-				mInputCount = 1;
-				mTempFirstPasswd = "";
-				mTempSecondPasswd = "";
-				mInputTip.setText(R.string.passwd_hint);
 			}
-		}
+		}, 200);
+
 	}
 
 	private void clearPasswd() {
@@ -244,7 +252,6 @@ public class PasswdSettingFragment extends BaseFragment implements
 
 	@Override
 	public void onDismiss(DialogInterface dialog) {
-		Log.e("xxxx", "onDismiss: mGotoPasswdProtect = " + mGotoPasswdProtect);
 		Intent intent;
 		if (mGotoPasswdProtect) {
 			intent = new Intent(mActivity, PasswdProtectActivity.class);

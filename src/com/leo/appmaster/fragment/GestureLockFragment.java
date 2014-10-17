@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.internal.telephony.Connection.PostDialState;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.AppLockerPreference;
@@ -104,8 +105,14 @@ public class GestureLockFragment extends LockFragment implements
 
 	@Override
 	public void onPatternDetected(List<Cell> pattern) {
-		String gesture = LockPatternUtils.patternToString(pattern);
-		checkGesture(gesture);
+		final String gesture = LockPatternUtils.patternToString(pattern);
+		mLockPatternView.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				checkGesture(gesture);
+			}
+		}, 200);
+
 	}
 
 	private void checkGesture(String gesture) {

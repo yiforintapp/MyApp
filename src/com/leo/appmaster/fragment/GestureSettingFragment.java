@@ -84,7 +84,17 @@ public class GestureSettingFragment extends BaseFragment implements
 	}
 
 	@Override
-	public void onPatternDetected(List<Cell> pattern) {
+	public void onPatternDetected(final List<Cell> pattern) {
+		mLockPatternView.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				checkGesture(pattern);
+			}
+		}, 300);
+		
+	}
+
+	private void checkGesture(List<Cell> pattern) {
 		int patternSize = pattern.size();
 		if (mInputCount == 1) {
 			if (patternSize < 4) {

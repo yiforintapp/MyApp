@@ -192,8 +192,6 @@ public class PasswdLockFragment extends LockFragment implements
 				Intent intent = new Intent(mActivity, WaitActivity.class);
 				intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
 				this.startActivity(intent);
-				// mPasswdTip.setText(R.string.please_input_pswd);
-				// mInputCount = 0;
 				mActivity.finish();
 			} else {
 				if (pref.hasPswdProtect()
@@ -210,10 +208,15 @@ public class PasswdLockFragment extends LockFragment implements
 	}
 
 	private void clearPasswd() {
-		mTvPasswd1.setText("");
-		mTvPasswd2.setText("");
-		mTvPasswd3.setText("");
-		mTvPasswd4.setText("");
+		mTvPasswd1.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mTvPasswd1.setText("");
+				mTvPasswd2.setText("");
+				mTvPasswd3.setText("");
+				mTvPasswd4.setText("");
+			}
+		}, 300);
 	}
 
 	private void deletePasswd() {
