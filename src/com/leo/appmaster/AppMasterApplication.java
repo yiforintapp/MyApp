@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.flurry.android.FlurryAgent;
+import com.leo.appmaster.applocker.AppLockerPreference;
+import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.update.UIHelper;
 import com.leoers.leoanalytics.LeoStat;
@@ -35,9 +37,19 @@ public class AppMasterApplication extends Application {
 
 		filter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
 		registerReceiver(mAppsEngine, filter);
-
 		iniLeoSdk();
 		iniFlurry();
+		judgeLockService();
+	}
+
+	private void judgeLockService() {
+		if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
+			Intent serviceIntent = new Intent(this, LockService.class);
+			serviceIntent.putExtra(LockService.EXTRA_STARTUP_FROM,
+					"main activity");
+
+			startService(serviceIntent);
+		}
 	}
 
 	@Override

@@ -62,7 +62,6 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		judgeLockService();
 		initUI();
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 	}
@@ -174,15 +173,6 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 		mIvDigital_2.setImageResource(index[three]);
 	}
 
-	private void judgeLockService() {
-		if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
-			Intent serviceIntent = new Intent(this, LockService.class);
-			serviceIntent.putExtra(LockService.EXTRA_STARTUP_FROM,
-					"main activity");
-
-			startService(serviceIntent);
-		}
-	}
 
 	@Override
 	public void onClick(View v) {

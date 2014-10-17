@@ -84,13 +84,11 @@ public class LockService extends Service {
 	}
 
 	private void startLockService(Intent intent) {
-		Log.d(TAG, "start lock service");
 		startDetectTask();
 		mServiceStarted = true;
 	}
 
 	private void stopLockService() {
-		Log.d(TAG, "stop lock service");
 		stopDetectTsk();
 		mServiceStarted = false;
 	}
@@ -114,7 +112,7 @@ public class LockService extends Service {
 	@Override
 	public void onDestroy() {
 		stopLockService();
-		stopForeground(true);
+//		stopForeground(true);
 		mNM.cancel(NOTIFY_ID);
 		this.getApplicationContext().unregisterReceiver(mLockHandler);
 		super.onDestroy();
@@ -129,7 +127,7 @@ public class LockService extends Service {
 
 		@Override
 		public void run() {
-
+			Log.e("xxxx", "DetectTask");
 			RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1)
 					.get(0);
 			String topActivityPackageName = topTaskInfo.topActivity

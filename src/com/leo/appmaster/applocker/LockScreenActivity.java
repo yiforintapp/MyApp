@@ -85,7 +85,7 @@ public class LockScreenActivity extends FragmentActivity {
 	        canvas.drawColor(Color.WHITE);
 	        drawable.setBounds(-(drawable.getIntrinsicWidth()  - w) / 2, -(drawable.getIntrinsicHeight() - h) / 2, (drawable.getIntrinsicWidth()  - w) / 2 + w, (drawable.getIntrinsicHeight() - h) / 2 + h);
 	        drawable.draw(canvas);
-	        canvas.drawColor(Color.argb(26, 0, 0, 0));
+	        canvas.drawColor(Color.argb(70, 0, 0, 0));
 	        mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
 	        
 	        RelativeLayout layout = (RelativeLayout)findViewById(R.id.activity_lock_layout);

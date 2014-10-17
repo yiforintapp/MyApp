@@ -67,7 +67,6 @@ public class LEOProgressDialog extends LEOBaseDialog {
 		mProgressBar = (ProgressBar) dlgView.findViewById(R.id.dlg_pro);
 		bottomLayout = dlgView.findViewById(R.id.dlg_bottom_layout);
 		
-		
 		View cancel = dlgView.findViewById(R.id.dlg_bottom_btn);
 		cancel.setOnClickListener(new View.OnClickListener() {           
             @Override
