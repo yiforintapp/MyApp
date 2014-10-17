@@ -78,7 +78,6 @@
     <string name="pp_success">Password Reset</string>
     <string name="set_gesture">Draw a pattern</string>
     <string name="setting">Setting</string>
-    <string name="no_item_tip">Ｎo application locked</string>
     <string name="please_input_gesture_again">Confirm your pattern</string>
     <string name="reset_gesture">Reset your pattern</string>
     <string name="gesture_hint">Connect at least 4 dots</string>
@@ -137,5 +136,10 @@
     <string name="change_passwd">Change Password</string>
     <string name="passwd_protect">Security Question</string>
     <string name="passwd_notify">Password Hint</string>
+    
+    
+    
+    <string name="no_lock_item_tip">暂无加锁应用</string>
+    <string name="no_unlocked_item_tip">无未加锁应用</string>
 
 </resources>

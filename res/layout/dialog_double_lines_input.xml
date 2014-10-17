@@ -28,6 +28,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dlg_title_layout"
+        android:background="@color/white"
         android:paddingBottom="3dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

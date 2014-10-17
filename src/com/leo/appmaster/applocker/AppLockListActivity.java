@@ -1,17 +1,14 @@
 package com.leo.appmaster.applocker;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -129,6 +126,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 			if (mLockedList.isEmpty()) {
 				mTvNoItem.setVisibility(View.VISIBLE);
+				mTvNoItem.setText(R.string.no_lock_item_tip);
 			} else {
 				mTvNoItem.setVisibility(View.INVISIBLE);
 			}
@@ -143,6 +141,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_l);
 			if (mUnlockList.isEmpty()) {
 				mTvNoItem.setVisibility(View.VISIBLE);
+				mTvNoItem.setText(R.string.no_unlocked_item_tip);
 			} else {
 				mTvNoItem.setVisibility(View.INVISIBLE);
 			}
@@ -174,9 +173,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 		if (mUnlockList.isEmpty()) {
 			mTvNoItem.setVisibility(View.VISIBLE);
+			mTvNoItem.setText(R.string.no_unlocked_item_tip);
 		} else {
 			mTvNoItem.setVisibility(View.INVISIBLE);
 		}
+		
+		
 
 		updateLockText();
 	}
@@ -207,6 +209,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 			if (mLockedList.isEmpty()) {
 				mTvNoItem.setVisibility(View.VISIBLE);
+				mTvNoItem.setText(R.string.no_lock_item_tip);
 			} else {
 				mTvNoItem.setVisibility(View.INVISIBLE);
 			}
@@ -228,6 +231,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 			if (mUnlockList.isEmpty()) {
 				mTvNoItem.setVisibility(View.VISIBLE);
+				mTvNoItem.setText(R.string.no_unlocked_item_tip);
 			} else {
 				mTvNoItem.setVisibility(View.INVISIBLE);
 			}

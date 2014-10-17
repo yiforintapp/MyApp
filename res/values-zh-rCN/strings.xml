@@ -58,7 +58,7 @@
     <string name="clean_memory">一键加速</string>
     <string name="clean_result">为您清理：<xliff:g>%1$s</xliff:g>内存</string>
     <string name="best_mem">已经是最佳状态，无需再次加速</string>
-    
+
     <!-- App lock -->
     <string name="lock_count">"已加锁"</string>
     <string name="unlock_count">"未加锁"</string>
@@ -66,7 +66,8 @@
     <string name="please_input_gesture">请绘制解锁图案</string>
     <string name="input_passwd_tip">请输入密码提示</string>
     <string name="switch_gesture">使用手势</string>
-    <string name="no_item_tip">暂无加锁应用</string>
+    <string name="no_lock_item_tip">暂无加锁应用</string>
+    <string name="no_unlocked_item_tip">无未加锁应用</string>
     <string name="switch_passwd">使用密码</string>
     <string name="setting">设置</string>
     <string name="passwd_hint_tip">密码提示：</string>
