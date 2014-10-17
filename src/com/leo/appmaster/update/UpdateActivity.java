@@ -86,7 +86,6 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                 showChecking();
                 break;
             case IUIHelper.TYPE_CHECK_NEED_UPDATE:
-                mProgress = mUIHelper.getProgress();
                 if (param == UpdateManager.NORMAL_UPDATE) {
                     showNeedUpdate();
                 } else if (param == UpdateManager.FORCE_UPDATE) {
@@ -104,6 +103,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                 break;
             case IUIHelper.TYPE_DOWNLOADING:
                 mTotal = mManager.getTotalSize();
+                mProgress = mUIHelper.getProgress();
                 if (param == UpdateManager.FORCE_UPDATE) {
                     showForceDownloading();
                 } else if (param == UpdateManager.NORMAL_UPDATE) {
