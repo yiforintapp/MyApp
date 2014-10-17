@@ -29,8 +29,8 @@
                 android:id="@+id/tab_container"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/stacked_tabs_l" >
 
                 <TextView
@@ -76,7 +76,17 @@
                     android:id="@+id/pager_lock"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="invisible" />
+                    android:visibility="invisible" >
+                </com.leo.appmaster.ui.PagedGridView>
+
+                <TextView
+                    android:id="@+id/no_item_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:text="@string/no_item_tip" />
             </FrameLayout>
         </LinearLayout>
 

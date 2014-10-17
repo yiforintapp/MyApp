@@ -32,7 +32,7 @@ public class PasswdTipActivity extends Activity implements OnClickListener {
 		mTitleBar.openBackView();
 		String tip = AppLockerPreference.getInstance(this).getPasswdTip();
 		if (tip != null) {
-			mEtTip.setHint(tip);
+			mEtTip.setText(tip);
 		}
 	}
 

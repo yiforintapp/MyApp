@@ -22,7 +22,8 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	private static final String PREF_PASSWD_QUESTION = "passwd_question";
 	private static final String PREF_PASSWD_ANWSER = "passwd_anwser";
 	private static final String PREF_PASSWD_TIP = "passwd_tip";
-	public static final String PREF_AUTO_LOCK = "set_auto_lock";
+	public static final String PREF_AUTO_LOCK = "set_auto_lock";  
+	public static final String PREF_SET_PROTECT= "set_passwd_protect";
 	public static final String PREF_FORBIND_UNINSTALL = "set_forbid_uninstall";
 
 	private List<String> mLockedAppList;

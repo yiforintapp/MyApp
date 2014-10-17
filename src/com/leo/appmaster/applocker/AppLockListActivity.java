@@ -44,7 +44,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	private ImageView mIvAnimator;
 	private View mTabContainer;
-	private TextView mTvUnlock, mTvLocked;
+	private TextView mTvUnlock, mTvLocked, mTvNoItem;
 	private int mLockedLocationX, mLockedLocationY;
 	private int mUnlockLocationX, mUnlockLocationY;
 	private List<BaseInfo> mLockedList;
@@ -91,6 +91,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mTvUnlock.setOnClickListener(this);
 		mTvLocked.setOnClickListener(this);
 
+		mTvNoItem = (TextView) findViewById(R.id.no_item_tip);
+
 		mLockedList = new ArrayList<BaseInfo>();
 		mUnlockList = new ArrayList<BaseInfo>();
 
@@ -121,20 +123,29 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			mPagerLock.notifyChange(mLockedList);
 			mPagerUnlock.setVisibility(View.INVISIBLE);
 			mPagerLock.setVisibility(View.VISIBLE);
-
 			mTvUnlock.setTextColor(getResources().getColor(R.color.white));
 			mTvLocked.setTextColor(getResources().getColor(
 					R.color.tab_select_text));
+
+			if (mLockedList.isEmpty()) {
+				mTvNoItem.setVisibility(View.VISIBLE);
+			} else {
+				mTvNoItem.setVisibility(View.INVISIBLE);
+			}
 			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_r);
 		} else if (v == mTvUnlock) {
 			mPagerUnlock.notifyChange(mUnlockList);
 			mPagerUnlock.setVisibility(View.VISIBLE);
 			mPagerLock.setVisibility(View.INVISIBLE);
-
 			mTvUnlock.setTextColor(getResources().getColor(
 					R.color.tab_select_text));
 			mTvLocked.setTextColor(getResources().getColor(R.color.white));
 			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_l);
+			if (mUnlockList.isEmpty()) {
+				mTvNoItem.setVisibility(View.VISIBLE);
+			} else {
+				mTvNoItem.setVisibility(View.INVISIBLE);
+			}
 		}
 	}
 
@@ -146,8 +157,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		List<String> lockList = AppLockerPreference.getInstance(this)
 				.getLockedAppList();
 		for (AppDetailInfo appDetailInfo : list) {
-			 if (appDetailInfo.getPkg().equals(this.getPackageName()))
-			 continue;
 			if (lockList.contains(appDetailInfo.getPkg())) {
 				appDetailInfo.setLocked(true);
 				mLockedList.add(appDetailInfo);
@@ -163,21 +172,24 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mPagerUnlock.setDatas(mUnlockList, 4, rowCount);
 		mPagerLock.setDatas(mLockedList, 4, rowCount);
 
+		if (mUnlockList.isEmpty()) {
+			mTvNoItem.setVisibility(View.VISIBLE);
+		} else {
+			mTvNoItem.setVisibility(View.INVISIBLE);
+		}
+
 		updateLockText();
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		mLastSelectApp = (BaseInfo) view.getTag();
-//		if (mLastSelectApp.getPkg().equals(this.getPackageName()))
-//			return;
-
 		if (isFlying) {
 			return;
 		}
 		isFlying = true;
 		calculateLoc();
+		mLastSelectApp = (BaseInfo) view.getTag();
 		BaseInfo info = null;
 		if (mLastSelectApp.isLocked()) {
 			mLastSelectApp.setLocked(false);
@@ -193,6 +205,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			mLockedList.remove(info);
 			moveItemToUnlock(view, mLastSelectApp.getAppIcon());
 
+			if (mLockedList.isEmpty()) {
+				mTvNoItem.setVisibility(View.VISIBLE);
+			} else {
+				mTvNoItem.setVisibility(View.INVISIBLE);
+			}
+
 			LeoStat.addEvent(LeoStat.P2, "unlock app", mLastSelectApp.getPkg());
 			FlurryAgent.logEvent(mLastSelectApp.getPkg() + ": unlock app");
 		} else {
@@ -207,6 +225,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			mLockedList.add(0, info);
 			mUnlockList.remove(info);
 			moveItemToLock(view, mLastSelectApp.getAppIcon());
+
+			if (mUnlockList.isEmpty()) {
+				mTvNoItem.setVisibility(View.VISIBLE);
+			} else {
+				mTvNoItem.setVisibility(View.INVISIBLE);
+			}
 
 			LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
 			FlurryAgent.logEvent(mLastSelectApp.getPkg() + ": lock app");

@@ -26,6 +26,8 @@
     <string name="passwd_hint">चार अंकों पासवर्ड दर्ज करें</string>
     <string name="tip_no_the_same_pswd">पासवर्ड असंगत है, दोबारा दर्ज करें</string>
     <string name="use_gesture">इशारों का प्रयोग करें</string>
+    <string name="not_set">Not Set</string>
+    <string name="no_item_tip">Ｎo application locked</string>
     <string name="set_gesture_suc">इशारे सेटिंग्स सफलता</string>
     <string name="set_passwd_suc">पासवर्ड सफलतापूर्वक सेट</string>
     <string name="use_passwd">पासवर्ड का प्रयोग करें</string>

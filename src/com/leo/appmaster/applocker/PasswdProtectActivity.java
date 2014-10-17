@@ -37,11 +37,11 @@ public class PasswdProtectActivity extends Activity implements OnClickListener {
 		mSave.setOnClickListener(this);
 		String question = AppLockerPreference.getInstance(this).getPpQuestion();
 		if (question != null) {
-			mQuestion.setHint(question);
+			mQuestion.setText(question);
 		}
 		String answer = AppLockerPreference.getInstance(this).getPpAnwser();
 		if (question != null) {
-			mAnwser.setHint(answer);
+			mAnwser.setText(answer);
 		}
 
 	}

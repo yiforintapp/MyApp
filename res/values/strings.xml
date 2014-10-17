@@ -50,6 +50,7 @@
     <string name="input_qusetion">Input security question:</string>
     <string name="qusetion_cant_null">Please enter the new question</string>
     <string name="passwd_setting">Password Setting</string>
+    <string name="not_set">Not Set</string>
     <string name="aneser_cant_null">Please enter your answer</string>
     <string name="pleas_input_anwser">Answer your security question</string>
     <string name="anwser">Enter the answer here:</string>
@@ -75,6 +76,7 @@
     <string name="pp_success">Password Reset</string>
     <string name="set_gesture">Draw a pattern</string>
     <string name="setting">Setting</string>
+    <string name="no_item_tip">Ｎo application locked</string>
     <string name="please_input_gesture_again">Confirm your pattern</string>
     <string name="reset_gesture">Reset your pattern</string>
     <string name="gesture_hint">Connect at least 4 dots</string>
@@ -132,6 +134,6 @@
     <string name="change_lock_time">Change the lock time</string>
     <string name="change_passwd">Change Password</string>
     <string name="passwd_protect">Security Question</string>
-    <string name="passwd_notify">Password hint</string>
+    <string name="passwd_notify">Password Hint</string>
 
 </resources>

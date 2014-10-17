@@ -21,6 +21,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 	private SharedPreferences mSp;
 
 	private CheckBoxPreference mForbidUninstall, mAutoLock;
+	private Preference mSetProtect;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 	private void setupPreference() {
 		mForbidUninstall = (CheckBoxPreference) findPreference(AppLockerPreference.PREF_FORBIND_UNINSTALL);
 		mAutoLock = (CheckBoxPreference) findPreference(AppLockerPreference.PREF_AUTO_LOCK);
+		mSetProtect = findPreference(AppLockerPreference.PREF_SET_PROTECT);
 		mForbidUninstall.setOnPreferenceChangeListener(this);
 		mAutoLock.setOnPreferenceChangeListener(this);
 	}
@@ -56,7 +58,18 @@ public class LockOptionActivity extends PreferenceActivity implements
 			mForbidUninstall.setChecked(false);
 		}
 
+		if (haveProtect()) {
+			mSetProtect.setTitle(R.string.passwd_protect);
+		} else {
+			mSetProtect.setTitle(getString(R.string.passwd_protect) + "("
+					+ getString(R.string.not_set) + ")");
+		}
+
 		super.onResume();
+	}
+
+	private boolean haveProtect() {
+		return AppLockerPreference.getInstance(this).hasPswdProtect();
 	}
 
 	@Override
@@ -77,7 +90,6 @@ public class LockOptionActivity extends PreferenceActivity implements
 			Intent intent = null;
 			ComponentName component = new ComponentName(this,
 					DeviceReceiver.class);
-			;
 			if (isAdminActive()) {
 				intent = new Intent();
 				intent.setClassName("com.android.settings",
