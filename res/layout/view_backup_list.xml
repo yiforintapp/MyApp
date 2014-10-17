@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@color/white">
+    android:layout_height="match_parent"
+    android:background="@color/white" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,10 +18,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/backup_tips_background_color"
+            android:ellipsize="middle"
             android:gravity="center_horizontal"
             android:singleLine="true"
             android:textColor="@color/backup_tips_text_color"
-            android:textSize="14dp"
+            android:textSize="13dp"
             android:textStyle="bold" />
 
         <TextView
@@ -30,10 +31,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/backup_tips_background_color"
+            android:ellipsize="middle"
             android:gravity="center_horizontal"
             android:singleLine="true"
             android:textColor="@color/backup_tips_text_color"
-            android:textSize="14dp"
+            android:textSize="13dp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -66,10 +68,10 @@
             android:layout_marginLeft="72dp"
             android:layout_marginRight="72dp"
             android:layout_marginTop="10dp"
-            android:gravity="center"
             android:background="@drawable/button_bg_blue"
-            android:textColor="@drawable/backup_button_text_selector"
-            android:text="@string/button_backup" />
+            android:gravity="center"
+            android:text="@string/button_backup"
+            android:textColor="@drawable/backup_button_text_selector" />
 
         <ImageView
             android:id="@+id/check_backup"

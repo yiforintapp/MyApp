@@ -5,7 +5,7 @@
     <integer name="gridview_row_count">5</integer>
     <dimen name="digital_height">92dp</dimen>
     <dimen name="digital_width">58dp</dimen>
-    <dimen name="memory_flow_marginTop">12dp</dimen>
+    <dimen name="memory_flow_marginTop">10dp</dimen>
     <dimen name="flow_icon_marginRight">30dp</dimen>
     <dimen name="flow_icon_marginTop">10dp</dimen>
     <dimen name="flow_icon_width">160dp</dimen>
@@ -13,6 +13,6 @@
     <dimen name="cicle_container_width">87dp</dimen>
     <dimen name="cicle_container_halfwidth">35dp</dimen>
     <dimen name="cicle_width">82dp</dimen>
-    <dimen name="memory_flow_text1_marginTop">12dp</dimen>
-    <dimen name="memory_flow_text2_marginTop">5dp</dimen>
+    <dimen name="memory_flow_text1_marginTop">6dp</dimen>
+    <dimen name="memory_flow_text2_marginTop">4dp</dimen>
 </resources>

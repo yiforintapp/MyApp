@@ -4,4 +4,6 @@
     <dimen name="gridview_vertical_spacing">15dip</dimen>
     <integer name="gridview_row_count">5</integer>
     <dimen name="memory_flow_marginTop">15dp</dimen>
+    <dimen name="memory_flow_text1_marginTop">12dp</dimen>
+    <dimen name="memory_flow_text2_marginTop">5dp</dimen>
 </resources>

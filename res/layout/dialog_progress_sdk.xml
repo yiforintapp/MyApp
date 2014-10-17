@@ -21,11 +21,11 @@
         android:id="@+id/dlg_pro"
         style="@style/ProgressBarCricle"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/dlg_pro_hint"
         android:layout_centerHorizontal="true"
         android:background="@color/dialog_content_area_bg"
-        android:maxHeight="247dp"/>
+        android:maxHeight="247dp" />
 
     <LinearLayout
         android:id="@+id/dlg_bottom_layout"
