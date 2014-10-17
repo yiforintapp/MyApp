@@ -86,7 +86,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mTvUsedMemory = (TextView) findViewById(R.id.tv_memory);
 		mTvTotalMemory = (TextView) findViewById(R.id.tv_total);
 		mTvCleanResult = (TextView) findViewById(R.id.tv_clean_result);
-		mTvAccelerate = (TextView) findViewById(R.id.tv_accelerate);
+		mTvAccelerate = (TextView) findViewById(R.id.tv_mem_tip);
 		mShadeView = (ShadeView) findViewById(R.id.shade_view);
 		mIvLoad = (ImageView) findViewById(R.id.iv_load);
 		mIvOk = (ImageView) findViewById(R.id.clean_ok);
