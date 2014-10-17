@@ -127,7 +127,6 @@ public class LockService extends Service {
 
 		@Override
 		public void run() {
-			Log.e("xxxx", "DetectTask");
 			RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1)
 					.get(0);
 			String topActivityPackageName = topTaskInfo.topActivity

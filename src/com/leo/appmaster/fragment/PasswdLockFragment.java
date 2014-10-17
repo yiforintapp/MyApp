@@ -21,10 +21,12 @@ import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.WaitActivity;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
+import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 
 public class PasswdLockFragment extends LockFragment implements
-		OnClickListener, android.content.DialogInterface.OnClickListener {
+		OnClickListener, OnDiaogClickListener {
 
 	private ImageView mAppicon;
 
@@ -35,7 +37,7 @@ public class PasswdLockFragment extends LockFragment implements
 	private TextView mFindPasswd;
 
 	private EditText mEtQuestion, mEtAnwser;
-	private AlertDialog mDialog;
+	private LeoDoubleLinesInputDialog mDialog;
 
 	private String mTempPasswd = "";
 
@@ -153,20 +155,16 @@ public class PasswdLockFragment extends LockFragment implements
 	}
 
 	private void findPasswd() {
-		if (mDialog == null) {
-			ViewGroup viewGroup = (ViewGroup) mActivity.getLayoutInflater()
-					.inflate(R.layout.dialog_passwd_protect, null);
-			mEtQuestion = (EditText) viewGroup.findViewById(R.id.et_question);
-			mEtAnwser = (EditText) viewGroup.findViewById(R.id.et_anwser);
-			mDialog = new AlertDialog.Builder(mActivity)
-					.setTitle(R.string.pleas_input_anwser)
-					.setNegativeButton(R.string.makesure, this)
-					.setPositiveButton(R.string.cancel, this)
-					.setView(viewGroup).create();
-			mEtQuestion.setText(AppLockerPreference.getInstance(mActivity)
-					.getPpQuestion());
-		}
-
+		mDialog = new LeoDoubleLinesInputDialog(mActivity);
+		mDialog.setTitle(R.string.pleas_input_anwser);
+		mDialog.setFirstHead(R.string.passwd_question);
+		mDialog.setSecondHead(R.string.passwd_anwser);
+		mDialog.setOnClickListener(this);
+		mEtQuestion = mDialog.getFirstEditText();
+		mEtAnwser = mDialog.getSecondEditText();
+		mEtQuestion.setFocusable(false);
+		mEtQuestion.setText(AppLockerPreference.getInstance(mActivity)
+				.getPpQuestion());
 		mDialog.show();
 	}
 
@@ -258,8 +256,14 @@ public class PasswdLockFragment extends LockFragment implements
 	}
 
 	@Override
-	public void onClick(DialogInterface dialog, int which) {
-		if (which == DialogInterface.BUTTON_NEGATIVE) {// make sure
+	public void onNewIntent(Intent intent) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onClick(int which) {
+		if (which == 1) {// make sure
 			String anwser = AppLockerPreference.getInstance(mActivity)
 					.getPpAnwser();
 			if (anwser.equals(mEtAnwser.getText().toString())) {
@@ -270,15 +274,9 @@ public class PasswdLockFragment extends LockFragment implements
 			} else {
 				Toast.makeText(mActivity, R.string.reinput_anwser, 0).show();
 			}
-		} else if (which == DialogInterface.BUTTON_POSITIVE) { // cancel
+		} else if (which == 0) { // cancel
 			mDialog.dismiss();
 		}
-
-	}
-
-	@Override
-	public void onNewIntent(Intent intent) {
-		// TODO Auto-generated method stub
 
 	}
 }

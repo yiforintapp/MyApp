@@ -26,18 +26,19 @@ import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
+import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LockPatternUtils;
 
 public class GestureLockFragment extends LockFragment implements
-		OnClickListener, OnPatternListener,
-		android.content.DialogInterface.OnClickListener {
+		OnClickListener, OnPatternListener, OnDiaogClickListener {
 	private LockPatternView mLockPatternView;
 	private TextView mGestureTip, mFindGesture;
 	private ImageView mAppIcon;
 
 	private EditText mEtQuestion, mEtAnwser;
-	private AlertDialog mDialog;
+	private LeoDoubleLinesInputDialog mDialog;
 
 	@Override
 	protected int layoutResourceId() {
@@ -74,15 +75,14 @@ public class GestureLockFragment extends LockFragment implements
 	}
 
 	private void findGesture() {
-		ViewGroup viewGroup = (ViewGroup) mActivity.getLayoutInflater()
-				.inflate(R.layout.dialog_passwd_protect, null);
-		mEtQuestion = (EditText) viewGroup.findViewById(R.id.et_question);
-		mEtAnwser = (EditText) viewGroup.findViewById(R.id.et_anwser);
-		mDialog = new AlertDialog.Builder(mActivity)
-				.setTitle(R.string.pleas_input_anwser)
-				.setNegativeButton(R.string.makesure, this)
-				.setPositiveButton(R.string.cancel, this).setView(viewGroup)
-				.create();
+		mDialog = new LeoDoubleLinesInputDialog(mActivity);
+		mDialog.setTitle(R.string.pleas_input_anwser);
+		mDialog.setFirstHead(R.string.passwd_question);
+		mDialog.setSecondHead(R.string.passwd_anwser);
+		mDialog.setOnClickListener(this);
+		mEtQuestion = mDialog.getFirstEditText();
+		mEtAnwser = mDialog.getSecondEditText();
+		mEtQuestion.setFocusable(false);
 		mEtQuestion.setText(AppLockerPreference.getInstance(mActivity)
 				.getPpQuestion());
 		mDialog.show();
@@ -160,8 +160,13 @@ public class GestureLockFragment extends LockFragment implements
 	}
 
 	@Override
-	public void onClick(DialogInterface arg0, int which) {
-		if (which == DialogInterface.BUTTON_NEGATIVE) {// make sure
+	public void onNewIntent(Intent intent) {
+
+	}
+
+	@Override
+	public void onClick(int which) {
+		if (which == 1) {// make sure
 			String anwser = AppLockerPreference.getInstance(mActivity)
 					.getPpAnwser();
 			if (anwser.equals(mEtAnwser.getText().toString())) {
@@ -172,14 +177,9 @@ public class GestureLockFragment extends LockFragment implements
 			} else {
 				Toast.makeText(mActivity, R.string.reinput_anwser, 0).show();
 			}
-		} else if (which == DialogInterface.BUTTON_POSITIVE) { // cancel
+		} else if (which == 0) { // cancel
 			mDialog.dismiss();
 		}
-	}
-
-	@Override
-	public void onNewIntent(Intent intent) {
-		// TODO Auto-generated method stub
 
 	}
 }

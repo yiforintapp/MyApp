@@ -35,7 +35,7 @@
     <string name="set_passwd_suc">Password Setted!</string>
     <string name="find_passwd">Forget password?</string>
     <string name="please_wait">Please try again later</string>
-    <string name="passwd_question">Security question</string>
+    <string name="passwd_question">Security Question:</string>
     <string name="passwd_anwser">Answer:</string>
     <string name="passwd_tip">Please unput password hint:</string>
     <string name="save">Save</string>
