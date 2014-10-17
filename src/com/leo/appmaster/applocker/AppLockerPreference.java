@@ -25,6 +25,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_AUTO_LOCK = "set_auto_lock";
 	public static final String PREF_SET_PROTECT = "set_passwd_protect";
 	public static final String PREF_FORBIND_UNINSTALL = "set_forbid_uninstall";
+	public static final String PREF_FIRST_USE_LOCKER = "first_use_locker";
 
 	private List<String> mLockedAppList;
 	private String mPassword;
@@ -48,6 +49,14 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	public static synchronized AppLockerPreference getInstance(Context context) {
 		return mInstance == null ? (mInstance = new AppLockerPreference(context))
 				: mInstance;
+	}
+
+	public boolean isFisrtUseLocker() {
+		return mPref.getBoolean(PREF_FIRST_USE_LOCKER, true);
+	}
+
+	public void setLockerUsed() {
+		mPref.edit().putBoolean(PREF_FIRST_USE_LOCKER, false).commit();
 	}
 
 	public String getLockPolicy() {

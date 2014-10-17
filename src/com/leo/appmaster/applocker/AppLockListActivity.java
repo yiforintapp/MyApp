@@ -39,6 +39,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	private CommonTitleBar mTtileBar;
 
+	private View mMaskLayer;
 	private ImageView mIvAnimator;
 	private View mTabContainer;
 	private TextView mTvUnlock, mTvLocked, mTvNoItem;
@@ -73,32 +74,26 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	private void initUI() {
 		mInflater = LayoutInflater.from(this);
+		mMaskLayer = findViewById(R.id.mask_layer);
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 		mTtileBar.openBackView();
 		mTtileBar.setOptionText(getString(R.string.setting));
 		mTtileBar.setOptionTextVisibility(View.VISIBLE);
 		mTtileBar.setOptionListener(this);
-
 		mIvAnimator = (ImageView) findViewById(R.id.iv_animator);
-
 		mTabContainer = findViewById(R.id.tab_container);
 		mTvUnlock = (TextView) findViewById(R.id.tv_app_unlock);
 		mTvLocked = (TextView) findViewById(R.id.tv_app_locked);
 		mTvUnlock.setOnClickListener(this);
 		mTvLocked.setOnClickListener(this);
-
 		mTvNoItem = (TextView) findViewById(R.id.no_item_tip);
-
 		mLockedList = new ArrayList<BaseInfo>();
 		mUnlockList = new ArrayList<BaseInfo>();
-
 		mPagerUnlock = (PagedGridView) findViewById(R.id.pager_unlock);
 		mPagerLock = (PagedGridView) findViewById(R.id.pager_lock);
-
 		mPagerUnlock.setGridviewItemClickListener(this);
 		mPagerLock.setGridviewItemClickListener(this);
-
 	}
 
 	private void calculateLoc() {
@@ -149,6 +144,11 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	}
 
 	private void loadData() {
+
+		if (AppLockerPreference.getInstance(this).isFisrtUseLocker()) {
+			mMaskLayer.setVisibility(View.VISIBLE);
+		}
+
 		mUnlockList.clear();
 		mLockedList.clear();
 		ArrayList<AppDetailInfo> list = AppLoadEngine.getInstance(this)
@@ -164,9 +164,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				mUnlockList.add(appDetailInfo);
 			}
 		}
-
 		Collections.sort(mLockedList, new LockedAppComparator(lockList));
-
 		int rowCount = getResources().getInteger(R.integer.gridview_row_count);
 		mPagerUnlock.setDatas(mUnlockList, 4, rowCount);
 		mPagerLock.setDatas(mLockedList, 4, rowCount);
@@ -177,9 +175,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		} else {
 			mTvNoItem.setVisibility(View.INVISIBLE);
 		}
-		
-		
-
 		updateLockText();
 	}
 

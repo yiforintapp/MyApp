@@ -19,6 +19,12 @@
         android:paddingRight="2dp"
         android:paddingTop="5dp" >
 
+        <View
+            android:id="@+id/mask_layer"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <LinearLayout
             android:id="@+id/pager_container"
             android:layout_width="match_parent"
@@ -83,9 +89,9 @@
                     android:id="@+id/no_item_tip"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:gravity="center" />
+                    android:textSize="18sp" />
             </FrameLayout>
         </LinearLayout>
 
