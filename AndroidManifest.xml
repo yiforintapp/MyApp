@@ -64,6 +64,7 @@
         <activity
             android:name="com.leo.appmaster.applocker.PasswdProtectActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity

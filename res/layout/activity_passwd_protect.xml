@@ -9,24 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/app_background" />
-
-    <RelativeLayout
+<ScrollView
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none" >
+    
+<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="17dp" >
-
-        <TextView
-            android:id="@+id/tv_save"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/check_update_button"
-            android:clickable="true"
-            android:gravity="center"
-            android:text="@string/save"
-            android:textColor="#ffffff"
-            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/textView1"
@@ -74,6 +66,20 @@
             android:ems="10"
             android:singleLine="true"
             android:textSize="16sp" />
+        
+      <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/et_anwser"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/check_update_button"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="@string/save"
+            android:textColor="#ffffff"
+            android:textSize="22sp" />
     </RelativeLayout>
-
+</ScrollView>
 </LinearLayout>
