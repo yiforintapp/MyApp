@@ -138,7 +138,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	}
 
 	private void loadData() {
-
+	    mUnlockList.clear();
+	    mLockedList.clear();
 		ArrayList<AppDetailInfo> list = AppLoadEngine.getInstance(this)
 				.getAllPkgInfo();
 		List<String> lockList = AppLockerPreference.getInstance(this)

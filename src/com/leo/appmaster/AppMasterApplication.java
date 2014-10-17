@@ -49,6 +49,7 @@ public class AppMasterApplication extends Application {
 
 	private void iniLeoSdk() {
 		LeoStat.init(getApplicationContext(), "1", "appmaster");
+		LeoStat.setSilentMode();
 		LeoStat.initUpdateEngine(UIHelper.getInstance(getApplicationContext()),
 				true);
 	}
