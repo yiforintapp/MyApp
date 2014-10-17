@@ -12,8 +12,8 @@
     <string name="app_restore">रिकवरी</string>
     <string name="button_backup">बैकअप</string>
     <string name="button_install">स्थापित करें</string>
-    <string name="passwd_set_passwd_tip">首次使用请设置四位密码</string>
-    <string name="passwd_set_gesture_tip">首次使用请设置手势</string>
+    <string name="passwd_set_passwd_tip">पहली बार चार के लिए एक पासवर्ड सेट करें</string>
+    <string name="passwd_set_gesture_tip">पहली बार इशारों सेट करें</string>
     <string name="button_delete">हटाएं</string>
     <string name="clean_memory">एक क्लिक में तेज़ी लाए</string>
     <string name="app_use_info">उपयोग</string>
@@ -28,8 +28,8 @@
     <string name="passwd_hint">चार अंकों पासवर्ड दर्ज करें</string>
     <string name="tip_no_the_same_pswd">पासवर्ड असंगत है, दोबारा दर्ज करें</string>
     <string name="use_gesture">इशारों का प्रयोग करें</string>
-    <string name="not_set">Not Set</string>
-    <string name="no_item_tip">Ｎo application locked</string>
+    <string name="not_set">सेट नहीं</string>
+    <string name="no_item_tip">कोई ताला किसी भी आवेदन</string>
     <string name="set_gesture_suc">इशारे सेटिंग्स सफलता</string>
     <string name="set_passwd_suc">पासवर्ड सफलतापूर्वक सेट</string>
     <string name="use_passwd">पासवर्ड का प्रयोग करें</string>
