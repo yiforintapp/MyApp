@@ -10,7 +10,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Debug;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -37,6 +36,7 @@ public class UIHelper implements IUIHelper {
 
     private int mUIType = IUIHelper.TYPE_CHECKING;
     private int mUIParam = 0;
+    private int mProgress = 0;
 
     private UIHelper(Context ctx) {
         mContext = ctx;
@@ -143,8 +143,15 @@ public class UIHelper implements IUIHelper {
         return false;
     }
 
+    public int getProgress() {
+        return mProgress;
+    }
+
     @Override
     public void onProgress(int complete, int total) {
+        long c = complete;
+        long t = total;
+        mProgress = (int) (c * 100 / t);
         if (listener != null) {
             listener.onProgress(complete, total);
         }
