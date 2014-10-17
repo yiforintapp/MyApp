@@ -96,7 +96,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	public boolean hasPswdProtect() {
-		return mPref.getString(PREF_PASSWD_QUESTION, "").equals("");
+		return !mPref.getString(PREF_PASSWD_QUESTION, "").equals("");
 	}
 
 	public String getPpQuestion() {

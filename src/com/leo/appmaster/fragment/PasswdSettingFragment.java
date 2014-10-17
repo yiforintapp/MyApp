@@ -254,6 +254,9 @@ public class PasswdSettingFragment extends BaseFragment implements
 	public void onDismiss(DialogInterface dialog) {
 		Intent intent;
 		if (mGotoPasswdProtect) {
+			intent = new Intent(mActivity, AppLockListActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
 			startActivity(intent);
 		} else {
