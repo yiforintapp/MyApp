@@ -25,21 +25,20 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/tab_container"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/stacked_tabs_l" >
+                android:background="@drawable/stacked_tabs_l"
+                android:orientation="horizontal" >
 
                 <TextView
                     android:id="@+id/tv_app_unlock"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="50dp"
+                    android:layout_weight="1"
                     android:clickable="true"
                     android:ellipsize="middle"
                     android:gravity="center"
@@ -51,11 +50,9 @@
 
                 <TextView
                     android:id="@+id/tv_app_locked"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginRight="50dp"
+                    android:layout_weight="1"
                     android:clickable="true"
                     android:ellipsize="middle"
                     android:gravity="center"
@@ -64,7 +61,7 @@
                     android:singleLine="true"
                     android:text="@string/app_locked"
                     android:textColor="@color/white" />
-            </RelativeLayout>
+            </LinearLayout>
 
             <FrameLayout
                 android:id="@+id/pager_parent"
