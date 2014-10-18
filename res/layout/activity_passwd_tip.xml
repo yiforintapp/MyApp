@@ -17,24 +17,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:textSize="16sp"
         android:layout_below="@+id/commonTitleBar1"
         android:layout_marginLeft="17dp"
         android:layout_marginTop="37dp"
-        android:text="@string/passwd_tip" />
+        android:text="@string/passwd_tip"
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/et_passwd_tip"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:textSize="18sp"
         android:layout_below="@+id/textView1"
-        android:layout_marginTop="22dp"
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
+        android:layout_marginTop="22dp"
         android:background="@drawable/input_box_line"
+        android:ems="10"
         android:singleLine="true"
-        android:ems="10" >
+        android:textSize="18sp" >
+
         <requestFocus />
     </EditText>
 

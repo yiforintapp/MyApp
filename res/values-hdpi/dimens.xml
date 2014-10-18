@@ -15,4 +15,5 @@
     <dimen name="cicle_width">56dp</dimen>
     <dimen name="memory_flow_text1_marginTop">1dp</dimen>
     <dimen name="memory_flow_text2_marginTop">3dp</dimen>
+    <dimen name="splash_center">180dp</dimen>
 </resources>

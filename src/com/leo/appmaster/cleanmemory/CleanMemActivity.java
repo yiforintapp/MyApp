@@ -6,17 +6,12 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -230,16 +225,16 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void cleanMemory() {
-		synchronized (lock) {
-			launchRocket();
-			mCleaner.tryClean(this);
-			showOK();
-			long curUsedMem = mCleaner.getCurUsedMem();
-			mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-			startUpdataMemTip(curUsedMem);
-			mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
-			mAllowClean = false;
-		}
+        synchronized (lock) {
+            launchRocket();
+            mCleaner.tryClean(this);
+            showOK();
+            long curUsedMem = mCleaner.getCurUsedMem();
+            mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+            startUpdataMemTip(curUsedMem);
+            mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
+            mAllowClean = false;
+        }
 	}
 
 	private void showOK() {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">AppMaster</string>
+    <string name="app_name">App Master</string>
     <string name="app_count">应用数量</string>
     <string name="used_memory">使用内存</string>
     <string name="used_flow">使用流量</string>
@@ -66,8 +66,6 @@
     <string name="please_input_gesture">请绘制解锁图案</string>
     <string name="input_passwd_tip">请输入密码提示</string>
     <string name="switch_gesture">使用手势</string>
-    <string name="no_lock_item_tip">暂无加锁应用</string>
-    <string name="no_unlocked_item_tip">无未加锁应用</string>
     <string name="switch_passwd">使用密码</string>
     <string name="setting">设置</string>
     <string name="passwd_hint_tip">密码提示：</string>
@@ -136,5 +134,8 @@
     <string name="passwd_protect">密保问题</string>
     <string name="change_passwd">更改密码</string>
     <string name="passwd_notify">密码提示</string>
+    
+    <string name="no_lock_item_tip">暂无加锁应用</string>
+    <string name="no_unlocked_item_tip">没有未加锁应用</string>
 
 </resources>

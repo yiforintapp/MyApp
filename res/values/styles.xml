@@ -125,7 +125,7 @@
     
     <style name="Widget.Button.Borderless" parent="@android:style/Widget.Button">
 		<item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@drawable/backup_button_text_selector</item>
         <item name="android:background">@drawable/check_update_button</item>
     </style>
     
