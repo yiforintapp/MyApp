@@ -50,8 +50,8 @@
     <string name="input_qusetion">Input security question:</string>
     <string name="qusetion_cant_null">Please enter the new question</string>
     <string name="passwd_setting">Password Setting</string>
-    <string name="passwd_set_passwd_tip">首次使用请设置四位密码</string>
-    <string name="passwd_set_gesture_tip">首次使用请设置手势</string>
+    <string name="passwd_set_passwd_tip">Pleasse set your lock password</string>
+    <string name="passwd_set_gesture_tip">Please set your lock gesture</string>
     <string name="not_set">Not Set</string>
     <string name="aneser_cant_null">Please enter your answer</string>
     <string name="pleas_input_anwser">Answer your security question</string>
@@ -139,7 +139,7 @@
     
     
     
-    <string name="no_lock_item_tip">暂无加锁应用</string>
-    <string name="no_unlocked_item_tip">无未加锁应用</string>
+    <string name="no_lock_item_tip">No locked applications</string>
+    <string name="no_unlocked_item_tip">All applications locked</string>
 
 </resources>
