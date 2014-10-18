@@ -68,6 +68,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private boolean mLading;
 	private boolean mLoading;
 
+	private Object lock = new Object();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,7 +83,9 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				mCleaner.cleanAllProcess(CleanMemActivity.this);
+				synchronized (lock) {
+					mCleaner.cleanAllProcess(CleanMemActivity.this);
+				}
 			}
 		}).start();
 	}
@@ -129,7 +133,6 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void startLoad() {
-
 		rotateLoadView(2000, 360 * 3);
 		final int target = (int) (mLastUsedMem / 1024);
 		final ValueAnimator up = ValueAnimator.ofInt(0, target);
@@ -227,15 +230,16 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void cleanMemory() {
-		launchRocket();
-		mCleaner.tryClean(this);
-		showOK();
-		long curUsedMem = mCleaner.getCurUsedMem();
-		mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-		Log.e("xxxx", "clean activity: mLastUsedMem = " + mLastUsedMem);
-		startUpdataMemTip(curUsedMem);
-		mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
-		mAllowClean = false;
+		synchronized (lock) {
+			launchRocket();
+			mCleaner.tryClean(this);
+			showOK();
+			long curUsedMem = mCleaner.getCurUsedMem();
+			mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+			startUpdataMemTip(curUsedMem);
+			mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
+			mAllowClean = false;
+		}
 	}
 
 	private void showOK() {
