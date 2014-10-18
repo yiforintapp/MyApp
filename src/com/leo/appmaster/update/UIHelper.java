@@ -108,7 +108,7 @@ public class UIHelper implements IUIHelper {
         PendingIntent contentIntent = PendingIntent.getActivity(mContext,
                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // go back to app - end
-        downloadNotification = new Notification(R.drawable.ic_launcher,
+        downloadNotification = new Notification(R.drawable.ic_launcher_notification,
                 downloadTip, System.currentTimeMillis());
         downloadNotification.setLatestEventInfo(mContext, from, message, contentIntent);
         downloadNotification.flags = Notification.FLAG_AUTO_CANCEL
@@ -117,8 +117,11 @@ public class UIHelper implements IUIHelper {
 
     public void sendDownloadNotification(int progress) {
         Log.d(TAG, "sendDownloadNotification called ");
+        String appName = mContext.getString(R.string.app_name);
         downloadRv.setProgressBar(R.id.pb_download, 100, progress, false);
-        downloadRv.setTextViewText(R.id.tv_progress, progress + "%");
+        downloadRv.setTextViewText(R.id.tv_content, mContext.getString(R.string.downloading_notification,
+                appName, progress)+"%");
+        // downloadRv.setTextViewText(R.id.tv_progress, progress + "%");
         downloadNotification.contentView = downloadRv;
         nm.notify(DOWNLOAD_NOTIFICATION_ID, downloadNotification);
     }
@@ -146,7 +149,7 @@ public class UIHelper implements IUIHelper {
                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // go back to app - end
 
-        updateNotification = new Notification(R.drawable.ic_launcher,
+        updateNotification = new Notification(R.drawable.ic_launcher_notification,
                 updateTip, System.currentTimeMillis());
         Intent dIntent = new Intent(UIHelper.ACTION_CANCEL_UPDATE);
         PendingIntent delIntent = PendingIntent.getBroadcast(mContext, 0,
@@ -156,17 +159,6 @@ public class UIHelper implements IUIHelper {
         updateNotification.setLatestEventInfo(mContext, updateTip, contentText, contentIntent);
         updateNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONGOING_EVENT;
-        nm.notify(UPDATE_NOTIFICATION_ID, updateNotification);
-    }
-
-    private void sendUpdateNotification2() {
-        Log.d(TAG, "sendUpdateNotification call");
-        // String appName = mContext.getString(R.string.app_name);
-        // updateRv.setTextViewText(R.id.tv_title,
-        // mContext.getString(R.string.update_available, appName));
-        // updateRv.setTextViewText(R.id.tv_content,
-        // mContext.getString(R.string.version_found, mManager.getVersion()));
-        // updateNotification.contentView = updateRv;
         nm.notify(UPDATE_NOTIFICATION_ID, updateNotification);
     }
 
