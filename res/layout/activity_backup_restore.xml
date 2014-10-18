@@ -21,9 +21,9 @@
             android:id="@+id/tab_container"
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:background="@drawable/stacked_tabs_l"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" >
+            android:layout_marginRight="10dp"
+            android:background="@drawable/stacked_tabs_l" >
 
             <TextView
                 android:id="@+id/app_backup"
@@ -33,9 +33,11 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="50dp"
                 android:clickable="true"
+                android:ellipsize="middle"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:singleLine="true"
                 android:text="@string/app_backup"
                 android:textColor="@color/tab_select_text" />
 
@@ -47,9 +49,11 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="50dp"
                 android:clickable="true"
+                android:ellipsize="middle"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:singleLine="true"
                 android:text="@string/app_restore"
                 android:textColor="@color/white" />
         </RelativeLayout>
@@ -58,7 +62,7 @@
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="48dp"/>
+            android:layout_marginTop="48dp" />
     </FrameLayout>
 
 </RelativeLayout>

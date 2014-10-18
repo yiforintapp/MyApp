@@ -1,16 +1,15 @@
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.ui.CommonTitleBar;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.ui.CommonTitleBar;
 
 public class PasswdTipActivity extends Activity implements OnClickListener {
 	CommonTitleBar mTitleBar;
@@ -29,6 +28,7 @@ public class PasswdTipActivity extends Activity implements OnClickListener {
 		mTvMakesure = (TextView) findViewById(R.id.tv_make_sure);
 		mTvMakesure.setOnClickListener(this);
 		mTitleBar = (CommonTitleBar) findViewById(R.id.commonTitleBar1);
+		mTitleBar.setTitle(R.string.passwd_notify);
 		mTitleBar.openBackView();
 		String tip = AppLockerPreference.getInstance(this).getPasswdTip();
 		if (tip != null) {

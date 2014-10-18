@@ -250,7 +250,12 @@ public class HomeActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
-		calculateAppCount();
+	    runOnUiThread(new Runnable() {           
+            @Override
+            public void run() {
+                calculateAppCount();
+            }
+        });
 	}
 
 	@Override

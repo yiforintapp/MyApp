@@ -90,11 +90,21 @@ public class PasswdProtectActivity extends Activity implements OnClickListener {
 		String passwdHint = AppLockerPreference.getInstance(this)
 				.getPasswdTip();
 		if (v == mSave) {
+		    boolean noQuestion = qusetion == null || qusetion.trim().equals("");
+		    boolean noAnswer = answer == null || answer.equals("");
+		    if(noQuestion && noAnswer) {
+		        qusetion = answer = "";
+		    } else if(noQuestion && !noAnswer) {
+		        Toast.makeText(this, R.string.qusetion_cant_null, 1).show();
+                return;
+		    } else if(!noQuestion && noAnswer) {
+		        Toast.makeText(this, R.string.aneser_cant_null, 1).show();
+                return;
+		    }
 			if (qusetion == null || qusetion.trim().equals("")) {
 				qusetion = answer = "";
 			} else if (answer == null || answer.equals("")) {
-				Toast.makeText(this, R.string.aneser_cant_null, 1).show();
-				return;
+				
 			}
 			AppLockerPreference.getInstance(this).savePasswdProtect(qusetion,
 					answer, passwdHint);
