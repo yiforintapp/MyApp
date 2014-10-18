@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">App Master</string>
-    <string name="app_count">App Installed</string>
+    <string name="app_count">Apps Installed</string>
     <string name="used_memory">Memory Used</string>
     <string name="used_flow">Traffic Used</string>
     <string name="app_manage">Management</string>

@@ -137,7 +137,7 @@
     <string name="change_passwd">पासवर्ड बदलें</string>
     <string name="passwd_notify">पासवर्ड इशारा</string>
     
-    <string name="no_lock_item_tip">暂无加锁应用</string>
-    <string name="no_unlocked_item_tip">没有未加锁应用</string>
+    <string name="no_lock_item_tip">कोई ताला आवेदन</string>
+    <string name="no_unlocked_item_tip">खुला कोई आवेदन</string>
     
 </resources>
