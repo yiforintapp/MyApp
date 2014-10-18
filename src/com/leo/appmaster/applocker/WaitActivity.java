@@ -38,6 +38,13 @@ public class WaitActivity extends Activity {
 		mPackage = intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG);
 	}
 
+	
+	@Override
+	protected void onStop() {
+		returned = true;
+		super.onStop();
+	}
+
 	private void startWaitTime() {
 		new Thread(new Runnable() {
 			@Override

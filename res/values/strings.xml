@@ -41,7 +41,7 @@
     <string name="save">Save</string>
     <string name="passwd_protect_setting">Reset security question</string>
     <string name="passwd_prompt">Passwd hint: <xliff:g>%1$s</xliff:g></string>
-    <string name="input_error_tip">You have entered a wrong password<xliff:g>%1$s</xliff:g>times,<xliff:g>%2$s</xliff:g>times left to be locked</string>
+    <string name="input_error_tip">You have entered a wrong password<xliff:g>%1$s</xliff:g> times,<xliff:g>%2$s</xliff:g> times left to be locked</string>
     <string name="set_success">successfully</string>
     <string name="passwd_hint_cant_null">Please enter a password hint</string>
     <string name="set_protect_or_not">Do you need to create a security question?</string>

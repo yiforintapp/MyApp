@@ -2,13 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash_bk"
     tools:context="${relativePackage}.${activityClass}" >
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="match_parent"
-        android:scaleType="fitXY"
-        android:layout_height="match_parent"
-        android:src="@drawable/splash" />
+        android:layout_width="@dimen/splash_center"
+        android:layout_height="@dimen/splash_center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/splash_center" />
 
 </RelativeLayout>

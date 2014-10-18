@@ -38,20 +38,21 @@ import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
-public class HomeActivity extends Activity implements OnClickListener,OnTouchListener,AppChangeListener {
+public class HomeActivity extends Activity implements OnClickListener,
+		OnTouchListener, AppChangeListener {
 
 	private View mTopLayout;
 	private View mTvAppManage;
 	private View mTvAppLock;
 	private View mTvAppBackup;
 	private View mTvCleanMem;
-	
-	private View mPressedEffect1;
-    private View mPressedEffect2;
 
-    private TextView mMemoryPercent;
+	private View mPressedEffect1;
+	private View mPressedEffect2;
+
+	private TextView mMemoryPercent;
 	private TextView mTvMemoryInfo;
-    private TextView mTvFlow;
+	private TextView mTvFlow;
 	private ImageView mIvDigital_0, mIvDigital_1, mIvDigital_2;
 	private CommonTitleBar mTtileBar;
 
@@ -82,7 +83,7 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 
 		mTvMemoryInfo = (TextView) findViewById(R.id.tv_memory_info);
 		mTvFlow = (TextView) findViewById(R.id.tv_flow);
-		mMemoryPercent =  (TextView) findViewById(R.id.tv_memory_percent);
+		mMemoryPercent = (TextView) findViewById(R.id.tv_memory_percent);
 		mCricleView = (CricleView) findViewById(R.id.cricle_view);
 
 		mTvAppManage = findViewById(R.id.tv_app_manage);
@@ -92,12 +93,12 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 		mTvAppManage.setOnClickListener(this);
 		mTvAppLock.setOnClickListener(this);
 		mTvAppBackup.setOnTouchListener(this);
-        mTvAppLock.setOnTouchListener(this);
+		mTvAppLock.setOnTouchListener(this);
 		mTvAppBackup.setOnClickListener(this);
 		mTvCleanMem.setOnClickListener(this);
-		
+
 		mPressedEffect1 = findViewById(R.id.pressed_effect1);
-        mPressedEffect2 = findViewById(R.id.pressed_effect2);
+		mPressedEffect2 = findViewById(R.id.pressed_effect2);
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
@@ -119,7 +120,8 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) /*
 																 * + "/" +
 																 * TextFormater
-																 * .dataSizeFormat
+																 * .
+																 * dataSizeFormat
 																 * (total)
 																 */);
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
@@ -128,23 +130,24 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 	}
 
 	private void calculateAppCount() {
-		AsyncTask<Integer, Integer, Integer> at = new AsyncTask<Integer, Integer, Integer>() {
-			@Override
-			protected Integer doInBackground(Integer... params) {
-				int appCount = AppLoadEngine.getInstance(HomeActivity.this)
-						.getAllPkgInfo().size();
-				return appCount;
-			}
+		// AsyncTask<Integer, Integer, Integer> at = new AsyncTask<Integer,
+		// Integer, Integer>() {
+		// @Override
+		// protected Integer doInBackground(Integer... params) {
+		int appCount = AppLoadEngine.getInstance(HomeActivity.this)
+				.getAllPkgInfo().size();
+		// return appCount;
+		// }
 
-			@Override
-			protected void onPostExecute(Integer result) {
-				setAppCount(result);
-				super.onPostExecute(result);
-			}
+		// @Override
+		// protected void onPostExecute(Integer result) {
+		setAppCount(appCount);
+		// super.onPostExecute(result);
+		// }
+		//
+		// };
 
-		};
-
-		at.execute(0);
+		// at.execute(0);
 	}
 
 	private void setAppCount(int count) {
@@ -172,7 +175,6 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 
 		mIvDigital_2.setImageResource(index[three]);
 	}
-
 
 	@Override
 	public void onClick(View v) {
@@ -246,39 +248,38 @@ public class HomeActivity extends Activity implements OnClickListener,OnTouchLis
 		startActivity(intent);
 	}
 
-
 	@Override
 	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
 		calculateAppCount();
 	}
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if (v.getId() == R.id.tv_app_lock) {
-                    mPressedEffect1.setBackgroundResource(R.drawable.home_sel);
-                    mTvAppLock.setBackgroundResource(R.drawable.home_sel);
-                } else if (v.getId() == R.id.tv_app_backup) {
-                    mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
-                    mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_OUTSIDE:
-                if (v.getId() == R.id.tv_app_lock) {
-                    mPressedEffect1.setBackgroundColor(Color.WHITE);
-                    mTvAppLock.setBackgroundColor(Color.WHITE);
-                } else if (v.getId() == R.id.tv_app_backup) {
-                    mPressedEffect2.setBackgroundColor(Color.WHITE);
-                    mTvAppBackup.setBackgroundColor(Color.WHITE);
-                }
-                break;
-            default:
-                break;
-        }
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			if (v.getId() == R.id.tv_app_lock) {
+				mPressedEffect1.setBackgroundResource(R.drawable.home_sel);
+				mTvAppLock.setBackgroundResource(R.drawable.home_sel);
+			} else if (v.getId() == R.id.tv_app_backup) {
+				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
+				mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
+			}
+			break;
+		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_CANCEL:
+		case MotionEvent.ACTION_OUTSIDE:
+			if (v.getId() == R.id.tv_app_lock) {
+				mPressedEffect1.setBackgroundColor(Color.WHITE);
+				mTvAppLock.setBackgroundColor(Color.WHITE);
+			} else if (v.getId() == R.id.tv_app_backup) {
+				mPressedEffect2.setBackgroundColor(Color.WHITE);
+				mTvAppBackup.setBackgroundColor(Color.WHITE);
+			}
+			break;
+		default:
+			break;
+		}
 
-        return false;
-    }
+		return false;
+	}
 }
