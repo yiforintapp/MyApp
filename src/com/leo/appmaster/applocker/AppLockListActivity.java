@@ -78,6 +78,15 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		AppLoadEngine.getInstance(this).unregisterAppChangeListener(this);
 		super.onDestroy();
 	}
+	
+	@Override
+	public void onBackPressed() {
+	    if(mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
+	        mMaskLayer.setVisibility(View.GONE);
+	    } else {
+	        super.onBackPressed();
+	    }
+	}
 
 	private void initUI() {
 		mInflater = LayoutInflater.from(this);
