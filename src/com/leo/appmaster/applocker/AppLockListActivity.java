@@ -147,6 +147,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 		if (AppLockerPreference.getInstance(this).isFisrtUseLocker()) {
 			mMaskLayer.setVisibility(View.VISIBLE);
+			mMaskLayer.setOnClickListener(this);
 		}
 
 		mUnlockList.clear();
@@ -392,6 +393,10 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			break;
 		case R.id.tv_app_locked:
 			onTabClick(v);
+			break;
+		case R.id.mask_layer:
+			mMaskLayer.setVisibility(View.INVISIBLE);
+			AppLockerPreference.getInstance(this).setLockerUsed();
 			break;
 		}
 	}

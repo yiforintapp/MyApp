@@ -19,12 +19,6 @@
         android:paddingRight="2dp"
         android:paddingTop="5dp" >
 
-        <View
-            android:id="@+id/mask_layer"
-            android:visibility="invisible"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
         <LinearLayout
             android:id="@+id/pager_container"
             android:layout_width="match_parent"
@@ -103,5 +97,12 @@
             android:src="@drawable/ic_launcher"
             android:visibility="invisible" />
     </FrameLayout>
+
+    <View
+        android:id="@+id/mask_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/guide_locklist"
+        android:visibility="visible" />
 
 </RelativeLayout>

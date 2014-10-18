@@ -1,5 +1,6 @@
 package com.leo.appmaster.utils;
 
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -17,6 +18,17 @@ public class AppUtil {
 			return true;
 		}
 		return false;
+	}
+
+	public static ApplicationInfo getApplicationInfo(String pkg, Context ctx) {
+		ApplicationInfo info = null;
+		try {
+			ctx.getPackageManager().getApplicationInfo(pkg,
+					PackageManager.GET_UNINSTALLED_PACKAGES);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return info;
 	}
 
 	public static boolean isInstalledInSDcard(ApplicationInfo info) {

@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -76,6 +77,15 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
+	private void preCleanMemory() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				mCleaner.cleanAllProcess(CleanMemActivity.this);
+			}
+		}).start();
+	}
+
 	private void initUI() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.openBackView();
@@ -104,6 +114,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			mIvLoad.setVisibility(View.VISIBLE);
 			startLoad();
 			startTranslate();
+
+			preCleanMemory();
 		} else {
 			mTvCleanResult.setText(R.string.best_mem);
 			mRocket.setVisibility(View.INVISIBLE);
@@ -117,9 +129,9 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void startLoad() {
-		
+
 		rotateLoadView(2000, 360 * 3);
-		final int target = (int)(mLastUsedMem / 1024);
+		final int target = (int) (mLastUsedMem / 1024);
 		final ValueAnimator up = ValueAnimator.ofInt(0, target);
 		up.setDuration(2000);
 		up.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -151,7 +163,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				mLoading = false;;
+				mLoading = false;
+				;
 				AlphaAnimation aa = new AlphaAnimation(1f, 0.0f);
 				aa.setDuration(500);
 				aa.setFillEnabled(true);
@@ -215,10 +228,11 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	private void cleanMemory() {
 		launchRocket();
+		mCleaner.tryClean(this);
 		showOK();
-		mCleaner.tryClean();
-		long curUsedMem = mCleaner.getUsedMem();
+		long curUsedMem = mCleaner.getCurUsedMem();
 		mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+		Log.e("xxxx", "clean activity: mLastUsedMem = " + mLastUsedMem);
 		startUpdataMemTip(curUsedMem);
 		mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
 		mAllowClean = false;
@@ -260,9 +274,11 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 					@Override
 					public void onAnimationStart(Animation animation) {
 					}
+
 					@Override
 					public void onAnimationRepeat(Animation animation) {
 					}
+
 					@Override
 					public void onAnimationEnd(Animation animation) {
 						mRocket.setVisibility(View.INVISIBLE);
@@ -310,11 +326,11 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-//				mRocket.setVisibility(View.GONE);
-//				ViewGroup vg = (ViewGroup) mRocket.getParent();
-//				vg.removeView(mRocket);
-//				mRocket.setOnTouchListener(null);
-//				mRocket.setEnabled(false);
+				// mRocket.setVisibility(View.GONE);
+				// ViewGroup vg = (ViewGroup) mRocket.getParent();
+				// vg.removeView(mRocket);
+				// mRocket.setOnTouchListener(null);
+				// mRocket.setEnabled(false);
 			}
 		});
 		return ta;
@@ -322,7 +338,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		if(mLoading) return true;
+		if (mLoading)
+			return true;
 		int action = event.getAction();
 		if (mThreshold == 0) {
 			mThreshold = Math.min(mRocketHolder.getWidth(),
@@ -409,9 +426,10 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private void startUpdataMemTip(long targetMem) {
 		if (!mUpdating) {
 			mUpdating = true;
-			ValueAnimator down = ValueAnimator.ofInt((int) (mLastUsedMem / 1024), 0);
+			ValueAnimator down = ValueAnimator.ofInt(
+					(int) (mLastUsedMem / 1024), 0);
 			down.setDuration(300);
-			final int target = (int)(targetMem / 1024);
+			final int target = (int) (targetMem / 1024);
 			final ValueAnimator up = ValueAnimator.ofInt(0, target);
 			up.setDuration(800);
 
