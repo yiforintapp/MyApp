@@ -412,12 +412,18 @@ public class UpdateActivity extends Activity implements OnProgressListener {
             UpdateActivity theActivity = mActivity.get();
             switch (msg.what) {
                 case MSG_UPDATE_PROGRESS:
+                    if (msg.arg1 == msg.arg2) {
+                        Log.e(TAG,
+                                "cancel notification and finish UpdateActivity");
+                        theActivity.mUIHelper.cancelDownloadNotification();
+                        theActivity.finish();
+                    }/* no matter in which UI, finish when download done */
                     if (theActivity.mUIType == IUIHelper.TYPE_DOWNLOADING) {
                         theActivity.mComplete = msg.arg1;
                         theActivity.mTotal = msg.arg2;
                         long c = msg.arg1;
                         long t = msg.arg2;
-                        theActivity.mProgress = (int) (c * 100 / t);
+                        theActivity.mProgress = (t == 0) ? 0 : (int) (c * 100 / t);
                         Log.d(TAG, "mProgress = " + theActivity.mProgress);
 
                         ProgressBar pb = (ProgressBar) theActivity.findViewById(R.id.dlg_pro);
@@ -429,13 +435,6 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                                 (float) msg.arg2 / 1024 / 1024));
                         TextView tvPercent = (TextView) theActivity.findViewById(R.id.dlg_pro_percent);
                         tvPercent.setText(theActivity.mProgress + "%");
-
-                        if (msg.arg1 == msg.arg2) {
-                            Log.e(TAG,
-                                    "cancel notification and finish UpdateActivity");
-                            theActivity.mUIHelper.cancelDownloadNotification();
-                            theActivity.finish();
-                        }
                     }
                     break;
                 case MSG_NOTIFY_LAYOUT:
