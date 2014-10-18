@@ -1,54 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:paddingTop="5dp" >
 
     <ImageView
         android:id="@+id/img_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
         android:contentDescription="icon"
+        android:paddingLeft="10dp"
         android:src="@drawable/ic_launcher" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:textSize="18sp" />
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@id/img_icon"
+        android:orientation="vertical"
+        android:paddingLeft="25dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingBottom="14dp" >
 
-            <ProgressBar
-                android:id="@+id/pb_download"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="150dp"
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="30dp"
-                android:gravity="center"
-                android:max="100" />
+                android:text="downloading"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv_progress"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginRight="30dp"
                 android:text="0%" />
         </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/pb_download"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_bar" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
