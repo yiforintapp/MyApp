@@ -41,9 +41,11 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="50dp"
                     android:clickable="true"
+                    android:ellipsize="middle"
                     android:gravity="center"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:singleLine="true"
                     android:text="@string/app_unlock"
                     android:textColor="@color/tab_select_text" />
 
@@ -55,9 +57,11 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="50dp"
                     android:clickable="true"
+                    android:ellipsize="middle"
                     android:gravity="center"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:singleLine="true"
                     android:text="@string/app_locked"
                     android:textColor="@color/white" />
             </RelativeLayout>
@@ -65,7 +69,7 @@
             <FrameLayout
                 android:id="@+id/pager_parent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent" >
 
                 <com.leo.appmaster.ui.PagedGridView
                     android:id="@+id/pager_unlock"
