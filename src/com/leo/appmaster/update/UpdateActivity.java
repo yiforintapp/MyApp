@@ -383,19 +383,24 @@ public class UpdateActivity extends Activity implements OnProgressListener {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (mUIType) {
-            case IUIHelper.TYPE_CHECK_NEED_UPDATE:
-                if (mParam == UpdateManager.NORMAL_UPDATE) {
-                    mManager.onCancelUpdate();
-                } else if (mParam == UpdateManager.FORCE_UPDATE) {
-                    /* this is a force update, can not cancel by back key */
-                    return true;
-                }
-                break;
-            case IUIHelper.TYPE_DOWNLOADING:
-                // TODO: show downloading notification here
-                // mIsNotifying = true;
-                break;
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            switch (mUIType) {
+                case IUIHelper.TYPE_CHECK_NEED_UPDATE:
+                    if (mParam == UpdateManager.NORMAL_UPDATE) {
+                        mManager.onCancelUpdate();
+                    } else if (mParam == UpdateManager.FORCE_UPDATE) {
+                        /* this is a force update, can not cancel by back key */
+                        return true;
+                    }
+                    break;
+                // case IUIHelper.TYPE_DOWNLOADING:
+                // // TODO: show downloading notification here
+                // // mIsNotifying = true;
+                // break;
+                case IUIHelper.TYPE_CHECKING:
+                    mManager.onCancelCheck();
+                    break;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
