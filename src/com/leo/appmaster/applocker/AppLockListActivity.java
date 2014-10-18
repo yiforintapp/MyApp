@@ -96,6 +96,41 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mPagerLock.setGridviewItemClickListener(this);
 	}
 
+	private void loadData() {
+		if (AppLockerPreference.getInstance(this).isFisrtUseLocker()) {
+			mMaskLayer.setVisibility(View.VISIBLE);
+			mMaskLayer.setOnClickListener(this);
+		}
+
+		mUnlockList.clear();
+		mLockedList.clear();
+		ArrayList<AppDetailInfo> list = AppLoadEngine.getInstance(this)
+				.getAllPkgInfo();
+		List<String> lockList = AppLockerPreference.getInstance(this)
+				.getLockedAppList();
+		for (AppDetailInfo appDetailInfo : list) {
+			if (lockList.contains(appDetailInfo.getPkg())) {
+				appDetailInfo.setLocked(true);
+				mLockedList.add(appDetailInfo);
+			} else {
+				appDetailInfo.setLocked(false);
+				mUnlockList.add(appDetailInfo);
+			}
+		}
+		Collections.sort(mLockedList, new LockedAppComparator(lockList));
+		int rowCount = getResources().getInteger(R.integer.gridview_row_count);
+		mPagerUnlock.setDatas(mUnlockList, 4, rowCount);
+		mPagerLock.setDatas(mLockedList, 4, rowCount);
+
+		if (mUnlockList.isEmpty()) {
+			mTvNoItem.setVisibility(View.VISIBLE);
+			mTvNoItem.setText(R.string.no_unlocked_item_tip);
+		} else {
+			mTvNoItem.setVisibility(View.INVISIBLE);
+		}
+		updateLockText();
+	}
+
 	private void calculateLoc() {
 		if (!mCaculated) {
 			mLockedLocationX = mTvLocked.getLeft()
@@ -141,42 +176,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				mTvNoItem.setVisibility(View.INVISIBLE);
 			}
 		}
-	}
-
-	private void loadData() {
-
-		if (AppLockerPreference.getInstance(this).isFisrtUseLocker()) {
-			mMaskLayer.setVisibility(View.VISIBLE);
-			mMaskLayer.setOnClickListener(this);
-		}
-
-		mUnlockList.clear();
-		mLockedList.clear();
-		ArrayList<AppDetailInfo> list = AppLoadEngine.getInstance(this)
-				.getAllPkgInfo();
-		List<String> lockList = AppLockerPreference.getInstance(this)
-				.getLockedAppList();
-		for (AppDetailInfo appDetailInfo : list) {
-			if (lockList.contains(appDetailInfo.getPkg())) {
-				appDetailInfo.setLocked(true);
-				mLockedList.add(appDetailInfo);
-			} else {
-				appDetailInfo.setLocked(false);
-				mUnlockList.add(appDetailInfo);
-			}
-		}
-		Collections.sort(mLockedList, new LockedAppComparator(lockList));
-		int rowCount = getResources().getInteger(R.integer.gridview_row_count);
-		mPagerUnlock.setDatas(mUnlockList, 4, rowCount);
-		mPagerLock.setDatas(mLockedList, 4, rowCount);
-
-		if (mUnlockList.isEmpty()) {
-			mTvNoItem.setVisibility(View.VISIBLE);
-			mTvNoItem.setText(R.string.no_unlocked_item_tip);
-		} else {
-			mTvNoItem.setVisibility(View.INVISIBLE);
-		}
-		updateLockText();
 	}
 
 	@Override
