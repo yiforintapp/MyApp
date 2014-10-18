@@ -17,11 +17,11 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	private static final String PREF_PASSWORD = "password";
 	private static final String PREF_GESTURE = "gesture";
 	private static final String PREF_LOCK_POLICY = "lock_policy";
-	private static final String PREF_RELOCK_TIME = "relock_time";
 	private static final String PREF_HAVE_PSWD_PROTECTED = "have_setted_pswd";
 	private static final String PREF_PASSWD_QUESTION = "passwd_question";
 	private static final String PREF_PASSWD_ANWSER = "passwd_anwser";
 	private static final String PREF_PASSWD_TIP = "passwd_tip";
+	public static final String PREF_RELOCK_TIME = "relock_time";
 	public static final String PREF_AUTO_LOCK = "set_auto_lock";
 	public static final String PREF_SET_PROTECT = "set_passwd_protect";
 	public static final String PREF_FORBIND_UNINSTALL = "set_forbid_uninstall";
@@ -73,7 +73,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		return Integer.parseInt(time) * 1000;
 	}
 
-	public void setRelockTimeout(int timeout) {
+	public void setRelockTimeout(String timeout) {
 		mPref.edit().putString(PREF_RELOCK_TIME, timeout + "").commit();
 	}
 
