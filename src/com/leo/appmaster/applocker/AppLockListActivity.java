@@ -6,9 +6,13 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,10 +20,12 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
+import android.view.animation.Interpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,6 +55,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	private List<BaseInfo> mUnlockList;
 
 	private PagedGridView mPagerUnlock, mPagerLock;
+	private FrameLayout mPagerParent;
 	public LayoutInflater mInflater;
 	private boolean mCaculated;
 	private float mScale = 0.5f;
@@ -90,6 +97,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mTvNoItem = (TextView) findViewById(R.id.no_item_tip);
 		mLockedList = new ArrayList<BaseInfo>();
 		mUnlockList = new ArrayList<BaseInfo>();
+		mPagerParent = (FrameLayout) findViewById(R.id.pager_parent);
 		mPagerUnlock = (PagedGridView) findViewById(R.id.pager_unlock);
 		mPagerLock = (PagedGridView) findViewById(R.id.pager_lock);
 		mPagerUnlock.setGridviewItemClickListener(this);
@@ -246,16 +254,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 		int orgX = mPagerUnlock.getLeft()
 				+ view.getLeft()
-				+ (view.getRight() - view.getLeft())
-				/ 2
-				- (mIvAnimator.getLeft() + (mIvAnimator.getRight() - mIvAnimator
-						.getLeft()) / 2);
-		int orgY = mPagerUnlock.getTop()
+                + view.getWidth() / 2
+                - (mIvAnimator.getLeft() + mIvAnimator.getWidth() / 2);
+		int orgY = mPagerUnlock.getTop() + mPagerParent.getTop()
 				+ view.getTop()
-				+ (view.getBottom() - view.getTop())
-				/ 2
-				- (mIvAnimator.getTop() + (mIvAnimator.getBottom() - mIvAnimator
-						.getTop()) / 2);
+                + /*view.getHeight() / 2 + */view.getPaddingTop()
+                - (mIvAnimator.getTop()  /*+mIvAnimator.getHeight() / 2*/);
 
 		float targetX = (float) (mLockedLocationX - mIvAnimator.getLeft() - (mIvAnimator
 				.getRight() - mIvAnimator.getLeft()) * (0.5 - mScale / 2));
@@ -267,26 +271,21 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
 		animation.setAnimationListener(new FlyAnimaListener());
-
 		mIvAnimator.setVisibility(View.VISIBLE);
 		mIvAnimator.setImageDrawable(drawable);
 		mIvAnimator.startAnimation(animation);
 
 	}
-
+	
 	private void moveItemToUnlock(View view, Drawable drawable) {
 		int orgX = mPagerUnlock.getLeft()
 				+ view.getLeft()
-				+ (view.getRight() - view.getLeft())
-				/ 2
-				- (mIvAnimator.getLeft() + (mIvAnimator.getRight() - mIvAnimator
-						.getLeft()) / 2);
-		int orgY = mPagerUnlock.getTop()
+				+ view.getWidth() / 2
+				- (mIvAnimator.getLeft() + mIvAnimator.getWidth() / 2);
+		int orgY = mPagerUnlock.getTop() + mPagerParent.getTop()
 				+ view.getTop()
-				+ (view.getBottom() - view.getTop())
-				/ 2
-				- (mIvAnimator.getTop() + (mIvAnimator.getBottom() - mIvAnimator
-						.getTop()) / 2);
+                + /*view.getHeight() / 2 + */view.getPaddingTop()
+				- (mIvAnimator.getTop()  /*+mIvAnimator.getHeight() / 2*/);
 
 		float targetX = (float) (mUnlockLocationX - mIvAnimator.getLeft() - (mIvAnimator
 				.getRight() - mIvAnimator.getLeft()) * (0.5 - mScale / 2));
@@ -328,10 +327,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 		Animation ta = new TranslateAnimation(orgX, targetX, orgY, tragetY);
 		ScaleAnimation sa = new ScaleAnimation(1.0f, mScale, 1.0f, mScale);
-
 		set.addAnimation(sa);
 		set.addAnimation(ta);
-
 		return set;
 	}
 

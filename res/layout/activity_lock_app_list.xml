@@ -63,9 +63,9 @@
             </RelativeLayout>
 
             <FrameLayout
+                android:id="@+id/pager_parent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="15dp" >
+                android:layout_height="match_parent">
 
                 <com.leo.appmaster.ui.PagedGridView
                     android:id="@+id/pager_unlock"
@@ -92,7 +92,7 @@
         <ImageView
             android:id="@+id/iv_animator"
             android:layout_width="48dp"
-            android:layout_height="80dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_launcher"
             android:visibility="invisible" />
