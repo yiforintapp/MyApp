@@ -75,7 +75,6 @@
             android:layout_width="fill_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@drawable/backup_button_text_selector"
             android:text="@string/cancel" />
 
         <ImageView
@@ -90,7 +89,6 @@
             android:layout_width="fill_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@drawable/backup_button_text_selector"
             android:text="@string/makesure" />
     </LinearLayout>
 

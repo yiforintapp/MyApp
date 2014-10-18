@@ -68,7 +68,7 @@
             android:layout_marginLeft="72dp"
             android:layout_marginRight="72dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/button_bg_blue"
+            android:background="@drawable/check_update_button"
             android:gravity="center"
             android:text="@string/button_backup"
             android:textColor="@drawable/backup_button_text_selector" />
