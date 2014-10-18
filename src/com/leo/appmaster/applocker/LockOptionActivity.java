@@ -25,7 +25,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 	private CommonTitleBar mTtileBar;
 	private SharedPreferences mSp;
-    private Preference mLockTime;
+	private Preference mLockTime;
 
 	private CheckBoxPreference mForbidUninstall, mAutoLock;
 	private Preference mSetProtect;
@@ -66,21 +66,21 @@ public class LockOptionActivity extends PreferenceActivity implements
 		} else {
 			mForbidUninstall.setChecked(false);
 		}
-		
-        if (haveProtect()) {
-            mSetProtect.setTitle(R.string.passwd_protect);
-        } else {
-            mSetProtect.setTitle(getString(R.string.passwd_protect) + "("
-                    + getString(R.string.not_set) + ")");
-        }
+
+		if (haveProtect()) {
+			mSetProtect.setTitle(R.string.passwd_protect);
+		} else {
+			mSetProtect.setTitle(getString(R.string.passwd_protect) + "("
+					+ getString(R.string.not_set) + ")");
+		}
 
 		super.onResume();
 	}
 
-    private boolean haveProtect() {
-        return AppLockerPreference.getInstance(this).hasPswdProtect();
-    }
-	
+	private boolean haveProtect() {
+		return AppLockerPreference.getInstance(this).hasPswdProtect();
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -119,52 +119,62 @@ public class LockOptionActivity extends PreferenceActivity implements
 		return false;
 	}
 
-    @Override
-    public boolean onPreferenceClick(Preference preference) {
-        onCreateChoiceDialog(AppLockerPreference.getInstance(this).getRelockTimeout());
-        return false;
-    }
+	@Override
+	public boolean onPreferenceClick(Preference preference) {
+		onCreateChoiceDialog(AppLockerPreference.getInstance(this)
+				.getRelockTimeout());
+		return false;
+	}
 
+	private void onCreateChoiceDialog(int id) {
+		final String[] valueString = getResources().getStringArray(
+				R.array.lock_time_items);
+		int index = 0;
+		for (index = 0; index < valueString.length; index++) {
+			if (valueString[index].equals(String.valueOf(id / 1000))) {
+				break;
+			}
+		}
+		if (index >= valueString.length) {
+			index = 0;
+		}
 
-    private void onCreateChoiceDialog(int id) {
-        final String [] valueString = getResources().getStringArray(R.array.lock_time_items);
-        int index = 0;
-        for (index = 0; index < valueString.length; index++ ) {
-            if (valueString[index].equals(String.valueOf(id / 1000))) {
-                break;
-            }
-        }
-        if (index >= valueString.length) {
-            index = 0;
-        }
+		AlertDialog scaleIconListDlg = new AlertDialog.Builder(this)
+				.setTitle(R.string.change_lock_time)
+				.setSingleChoiceItems(R.array.lock_time_entrys, index,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								AppLockerPreference.getInstance(
+										LockOptionActivity.this)
+										.setRelockTimeout(
+												valueString[whichButton]);
+								dialog.dismiss();
+							}
+						})
+				.setNegativeButton(R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
 
-        AlertDialog scaleIconListDlg = new AlertDialog.Builder(this)
-        .setTitle(R.string.change_lock_time)
-        .setSingleChoiceItems(R.array.lock_time_entrys, index, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                AppLockerPreference.getInstance(LockOptionActivity.this).setRelockTimeout(valueString[whichButton]);
-                dialog.dismiss();
-            }
-        })
-        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+								/* User clicked No so do some stuff */
+							}
+						}).create();
+		// int divierId =
+		// scaleIconListDlg.getContext().getResources().getIdentifier("android:id/titleDivider",
+		// "id", "android");
+		// View divider = scaleIconListDlg.findViewById(divierId);
+		// divider.setBackgroundColor(getResources().getColor(R.color.transparent));
+		TextView title = new TextView(this);
+		title.setText(getString(R.string.change_lock_time));
+		title.setTextColor(Color.WHITE);
+		title.setTextSize(20);
+		title.setPadding(DipPixelUtil.dip2px(this, 20),
+				DipPixelUtil.dip2px(this, 10), 0, DipPixelUtil.dip2px(this, 10));
+		title.setBackgroundColor(getResources().getColor(
+				R.color.dialog_title_area_bg));
+		scaleIconListDlg.setCustomTitle(title);
+		scaleIconListDlg.show();
+	}
 
-                /* User clicked No so do some stuff */
-            }
-        })
-       .create();
-//        int divierId = scaleIconListDlg.getContext().getResources().getIdentifier("android:id/titleDivider", "id", "android");
-//        View divider = scaleIconListDlg.findViewById(divierId);
-//        divider.setBackgroundColor(getResources().getColor(R.color.transparent));
-        TextView title = new TextView(this);
-        title.setText(getString(R.string.change_lock_time));
-        title.setTextColor(Color.WHITE);
-        title.setTextSize(20);
-        title.setPadding(DipPixelUtil.dip2px(this, 20), DipPixelUtil.dip2px(this, 10), 0, DipPixelUtil.dip2px(this,  10));
-        title.setBackgroundColor(getResources().getColor(R.color.dialog_title_area_bg));
-        scaleIconListDlg.setCustomTitle(title);
-        scaleIconListDlg.show();
-    }
-	
-	
 }

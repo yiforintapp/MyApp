@@ -275,7 +275,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:scaleType="centerInside"
-                android:src="@drawable/digital_del_icon" />
+                android:src="@drawable/delete_button_selecter" />
         </LinearLayout>
     </LinearLayout>
 
