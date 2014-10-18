@@ -22,28 +22,15 @@
         android:orientation="vertical"
         android:paddingLeft="25dp" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="14dp" >
-
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="downloading"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="30dp"
-                android:text="0%" />
-        </RelativeLayout>
+            android:ellipsize="middle"
+            android:paddingBottom="14dp"
+            android:singleLine="true"
+            android:text="downloading"
+            android:textSize="18dp" />
 
         <ProgressBar
             android:id="@+id/pb_download"

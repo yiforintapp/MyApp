@@ -29,10 +29,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/dlg_title_layout"
         android:background="@color/white"
+        android:orientation="vertical"
         android:paddingBottom="3dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:orientation="vertical"
         android:paddingTop="3dp" >
 
         <LinearLayout
@@ -59,6 +59,7 @@
                 android:background="@drawable/input_box_line"
                 android:ems="10"
                 android:enabled="false"
+                android:singleLine="true"
                 android:textColor="#dd1f1f1f" >
             </EditText>
         </LinearLayout>
@@ -84,8 +85,9 @@
                 android:layout_weight="1"
                 android:background="@drawable/input_box_line"
                 android:ems="10"
-                android:textCursorDrawable="@null"
-                android:textColor="#dd1f1f1f" >
+                android:singleLine="true"
+                android:textColor="#dd1f1f1f"
+                android:textCursorDrawable="@null" >
 
                 <requestFocus />
             </EditText>
@@ -95,8 +97,8 @@
     <LinearLayout
         android:id="@+id/dlg_2btn_layout"
         android:layout_width="fill_parent"
-        android:layout_below="@+id/content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/content"
         android:background="@color/item_backup_grey"
         android:gravity="center"
         android:orientation="horizontal"
