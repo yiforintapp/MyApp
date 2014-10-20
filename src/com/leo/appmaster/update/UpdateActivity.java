@@ -4,10 +4,6 @@ package com.leo.appmaster.update;
 import java.lang.ref.WeakReference;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,11 +15,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -31,7 +25,7 @@ import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.update.IUIHelper;
 import com.leoers.leoanalytics.update.UpdateManager;
 
-public class UpdateActivity extends Activity implements OnProgressListener {
+public class UpdateActivity extends Activity implements OnStateChangeListener {
 
     private final static String TAG = UpdateActivity.class.getSimpleName();
     private Intent mIntent = null;
@@ -117,8 +111,8 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         }
     }
 
-    /* stone: UI done */
     private void showDownloadFailed() {
+        mUIHelper.cancelDownloadFailedNotification();
         setContentView(R.layout.dialog_alarm);
         TextView tvTitle = (TextView) findViewById(R.id.dlg_title);
         tvTitle.setText(getString(R.string.tips_title));
@@ -144,7 +138,6 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         });
     }
 
-    /* stone: UI done */
     private void showForceUpdate() {
         String appName = getString(R.string.app_name);
         String version = mManager.getVersion();
@@ -157,7 +150,8 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
-        tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         ImageView iv = (ImageView) findViewById(R.id.dlg_left_icon);
         iv.setVisibility(View.INVISIBLE);
         TextView tvYes = (TextView) findViewById(R.id.dlg_bottom_btn);
@@ -171,9 +165,12 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         });
     }
 
-    /* stone: UI done */
     private void showDownloading() {
-        Log.d(TAG, "showDownloading");
+        mProgress = mUIHelper.getProgress();
+        mComplete = mUIHelper.getComplete();
+        mTotal = mUIHelper.getTotal();
+        Log.d(TAG, "showDownloading, p=" + mProgress + "; c=" + mComplete
+                + "; t=" + mTotal);
         mUIHelper.cancelDownloadNotification();
         String appName = getString(R.string.app_name);
         String downloadTip = getString(R.string.downloading, appName);
@@ -188,8 +185,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         pb.setMax(100);
         TextView tvSize = (TextView) findViewById(R.id.dlg_pro_state);
         tvSize.setText(getString(R.string.downloaded_size,
-                (float) mComplete / 1024 / 1024,
-                (float) mTotal / 1024 / 1024));
+                (float) mComplete / 1024 / 1024, (float) mTotal / 1024 / 1024));
 
         long c = mComplete, t = mTotal;
         TextView tvPercent = (TextView) findViewById(R.id.dlg_pro_percent);
@@ -209,18 +205,16 @@ public class UpdateActivity extends Activity implements OnProgressListener {
 
         TextView tvHide = (TextView) findViewById(R.id.dlg_right_btn);
         tvHide.setText(getString(R.string.hide_download_window));
-        if (mParam != UpdateManager.FORCE_UPDATE) {
-            tvHide.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-                    Log.d(TAG, "sendDownloadNotification in showDownloading, click hide window");
-                    mUIHelper.sendDownloadNotification(mProgress);
-                    finish();
-                }
-            });
-        } else {
-            tvHide.setVisibility(View.INVISIBLE);
-        }
+        tvHide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Log.d(TAG,
+                        "sendDownloadNotification in showDownloading, click hide window");
+                mUIHelper.sendDownloadNotification(mProgress);
+                finish();
+            }
+        });
+
     }
 
     private void showForceDownloading() {
@@ -238,8 +232,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         pb.setMax(100);
         TextView tvSize = (TextView) findViewById(R.id.dlg_pro_state);
         tvSize.setText(getString(R.string.downloaded_size,
-                (float) mComplete / 1024 / 1024,
-                (float) mTotal / 1024 / 1024));
+                (float) mComplete / 1024 / 1024, (float) mTotal / 1024 / 1024));
 
         long c = mComplete, t = mTotal;
         TextView tvPercent = (TextView) findViewById(R.id.dlg_pro_percent);
@@ -258,7 +251,6 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         });
     }
 
-    /* stone: UI done */
     private void showNoUpdate() {
         setContentView(R.layout.dialog_message);
         ImageView iv = (ImageView) findViewById(R.id.dlg_left_icon);
@@ -267,7 +259,8 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         title.setText(getString(R.string.tips_title));
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.update_no_need));
-        tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         TextView tv = (TextView) findViewById(R.id.dlg_bottom_btn);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,7 +270,6 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         });
     }
 
-    /* stone: UI done */
     private void showNoNetwork() {
         setContentView(R.layout.dialog_message);
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
@@ -291,7 +283,6 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         });
     }
 
-    /* stone: UI done */
     private void showCheckFailed() {
         setContentView(R.layout.dialog_alarm);
         TextView title = (TextView) findViewById(R.id.dlg_title);
@@ -316,7 +307,6 @@ public class UpdateActivity extends Activity implements OnProgressListener {
         });
     }
 
-    /* stone: UI done */
     private void showChecking() {
         setContentView(R.layout.dialog_progress_sdk);
         TextView tvHint = (TextView) findViewById(R.id.dlg_pro_hint);
@@ -332,6 +322,7 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     }
 
     private void showNeedUpdate() {
+        mUIHelper.cancelUpdateNotification();
         String appName = getString(R.string.app_name);
         String version = mManager.getVersion();
         Spanned feature = mManager.getFeature();
@@ -367,15 +358,18 @@ public class UpdateActivity extends Activity implements OnProgressListener {
     private boolean isOutOfBounds(Activity context, MotionEvent event) {
         final int x = (int) event.getX();
         final int y = (int) event.getY();
-        final int slop = ViewConfiguration.get(context).getScaledWindowTouchSlop();
+        final int slop = ViewConfiguration.get(context)
+                .getScaledWindowTouchSlop();
         final View decorView = context.getWindow().getDecorView();
-        return (x < -slop) || (y < -slop) || (x > (decorView.getWidth() + slop))
+        return (x < -slop) || (y < -slop)
+                || (x > (decorView.getWidth() + slop))
                 || (y > (decorView.getHeight() + slop));
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN && isOutOfBounds(this, event)) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN
+                && isOutOfBounds(this, event)) {
             return true;
         }
         return super.onTouchEvent(event);
@@ -393,10 +387,10 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                         return true;
                     }
                     break;
-                // case IUIHelper.TYPE_DOWNLOADING:
-                // // TODO: show downloading notification here
-                // // mIsNotifying = true;
-                // break;
+                case IUIHelper.TYPE_DOWNLOADING:
+                    mUIHelper.sendDownloadNotification(mProgress);
+                    finish();
+                    break;
                 case IUIHelper.TYPE_CHECKING:
                     mManager.onCancelCheck();
                     break;
@@ -418,10 +412,10 @@ public class UpdateActivity extends Activity implements OnProgressListener {
             switch (msg.what) {
                 case MSG_UPDATE_PROGRESS:
                     if (msg.arg1 == msg.arg2) {
-                        Log.e(TAG,
-                                "cancel notification and finish UpdateActivity");
+                        Log.d(TAG, "cancel notification and finish UpdateActivity");
                         theActivity.mUIHelper.cancelDownloadNotification();
                         theActivity.finish();
+                        return;
                     }/* no matter in which UI, finish when download done */
                     if (theActivity.mUIType == IUIHelper.TYPE_DOWNLOADING) {
                         theActivity.mComplete = msg.arg1;
@@ -431,35 +425,47 @@ public class UpdateActivity extends Activity implements OnProgressListener {
                         theActivity.mProgress = (t == 0) ? 0 : (int) (c * 100 / t);
                         Log.d(TAG, "mProgress = " + theActivity.mProgress);
 
-                        ProgressBar pb = (ProgressBar) theActivity.findViewById(R.id.dlg_pro);
+                        ProgressBar pb = (ProgressBar) theActivity
+                                .findViewById(R.id.dlg_pro);
                         pb.setProgress(theActivity.mProgress);
                         pb.setMax(100);
-                        TextView tvSize = (TextView) theActivity.findViewById(R.id.dlg_pro_state);
-                        tvSize.setText(theActivity.getString(R.string.downloaded_size,
+                        TextView tvSize = (TextView) theActivity
+                                .findViewById(R.id.dlg_pro_state);
+                        tvSize.setText(theActivity.getString(
+                                R.string.downloaded_size,
                                 (float) msg.arg1 / 1024 / 1024,
                                 (float) msg.arg2 / 1024 / 1024));
-                        TextView tvPercent = (TextView) theActivity.findViewById(R.id.dlg_pro_percent);
+                        TextView tvPercent = (TextView) theActivity
+                                .findViewById(R.id.dlg_pro_percent);
                         tvPercent.setText(theActivity.mProgress + "%");
                     }
                     break;
                 case MSG_NOTIFY_LAYOUT:
-                    Log.d(TAG, "MSG_NOTIFY_LAYOUT: type=" + msg.arg1 + "; param=" + msg.arg2);
-                    theActivity.showView(msg.arg1, msg.arg2);
+                    if (msg.arg1 == IUIHelper.TYPE_DISMISS) {
+                        theActivity.finish();
+                    } else {
+                        Log.d(TAG, "MSG_NOTIFY_LAYOUT: type=" + msg.arg1
+                                + "; param=" + msg.arg2);
+                        theActivity.showView(msg.arg1, msg.arg2);
+                    }
                     break;
             }
         }
     };
 
     @Override
-    public void onProgress(int progress, int max) {
-        Log.d(TAG, "onProgress call back");
-        mProgressHandler.obtainMessage(MSG_UPDATE_PROGRESS, progress, max).sendToTarget();
+    public void onProgress(int progress, int total) {
+        Log.d(TAG, "onProgress call back, progress=" + progress + "; total="
+                + total);
+        mProgressHandler.obtainMessage(MSG_UPDATE_PROGRESS, progress, total)
+                .sendToTarget();
     }
 
     @Override
     public void onChangeState(int type, int param) {
         mUIType = type;
         mParam = param;
-        mProgressHandler.obtainMessage(MSG_NOTIFY_LAYOUT, type, param).sendToTarget();
+        mProgressHandler.obtainMessage(MSG_NOTIFY_LAYOUT, type, param)
+                .sendToTarget();
     }
 }
