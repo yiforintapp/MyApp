@@ -140,6 +140,6 @@
     <string name="no_lock_item_tip">कोई ताला आवेदन</string>
     <string name="no_unlocked_item_tip">खुला कोई आवेदन</string>
     
-    <string name="reset_passwd_successful">重设成功！</string>
+    <string name="reset_passwd_successful">सफलतापूर्वक सेट !</string>
     
 </resources>
