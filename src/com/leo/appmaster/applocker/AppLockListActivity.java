@@ -356,11 +356,23 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		AnimationSet set = new AnimationSet(true);
 		set.setInterpolator(new AccelerateDecelerateInterpolator());
 		set.setDuration(500);
-
-		Animation ta = new TranslateAnimation(orgX, targetX, orgY, tragetY);
+		TranslateAnimation ta = new TranslateAnimation(orgX, targetX, orgY,
+				tragetY);
 		ScaleAnimation sa = new ScaleAnimation(1.0f, mScale, 1.0f, mScale);
 		set.addAnimation(sa);
 		set.addAnimation(ta);
+
+		// AnimationSet set = new AnimationSet(false);
+		// set.setDuration(500);
+		//
+		// TranslateAnimation ta = new TranslateAnimation(orgX, targetX, orgY,
+		// tragetY);
+		// ScaleAnimation sa = new ScaleAnimation(1.0f, mScale, 1.0f, mScale);
+		// AlphaAnimation aa = new AlphaAnimation(1f, 0.0f);
+		//
+		// ta.setInterpolator(new AccelerateDecelerateInterpolator());
+		// sa.setInterpolator(new AccelerateDecelerateInterpolator());
+		// aa.setInterpolator(new AccelerateInterpolator());
 		return set;
 	}
 

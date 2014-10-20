@@ -82,7 +82,7 @@
     <string name="please_input_gesture_again">Confirm your pattern</string>
     <string name="reset_gesture">Reset a pattern</string>
     <string name="gesture_hint">Connect at least 4 dots</string>
-    <string name="lock_right_now">Lock</string>
+    <string name="lock_right_now">Immediately</string>
     <string name="lock_15_sec">15 Seconds</string>
     <string name="lock_30_sec">30 Seconds</string>
     <string name="lock_1_min">1 Minute</string>

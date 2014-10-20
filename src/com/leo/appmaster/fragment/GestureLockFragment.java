@@ -128,7 +128,7 @@ public class GestureLockFragment extends LockFragment implements
 				mActivity.startService(intent);
 
 				intent = new Intent(mActivity, AppLockListActivity.class);
-				this.startActivity(intent);
+				mActivity.startActivity(intent);
 			} else if (mFrom == FROM_OTHER) {
 				// input right gesture, just finish self
 				unlockSucceed(mPackage);
@@ -138,7 +138,7 @@ public class GestureLockFragment extends LockFragment implements
 			if (mInputCount >= mMaxInput) {
 				Intent intent = new Intent(mActivity, WaitActivity.class);
 				intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
-				this.startActivity(intent);
+				mActivity.startActivity(intent);
 				// mGestureTip.setText(R.string.please_input_gesture);
 				// mInputCount = 0;
 				mActivity.finish();
@@ -149,7 +149,7 @@ public class GestureLockFragment extends LockFragment implements
 				}
 
 				mGestureTip.setText(String.format(
-						getString(R.string.input_error_tip), mInputCount + "",
+						mActivity.getString(R.string.input_error_tip), mInputCount + "",
 						(mMaxInput - mInputCount) + ""));
 			}
 			mLockPatternView.clearPattern();
