@@ -25,7 +25,7 @@ public class UIHelper implements IUIHelper {
     private static UIHelper sUIHelper = null;
     private Context mContext = null;
     private UpdateManager mManager = null;
-    private OnProgressListener listener = null;
+    private OnStateChangeListener listener = null;
 
     private NotificationManager nm = null;
     // private RemoteViews updateRv = null;
@@ -33,13 +33,17 @@ public class UIHelper implements IUIHelper {
     private Notification updateNotification = null;
     private Notification downloadNotification = null;
 
+    /* modify these constants in different application */
     public final static String ACTION_NEED_UPDATE = "com.leo.appmaster.update";
     public final static String ACTION_CANCEL_UPDATE = "com.leo.appmaster.update.cancel";
     public final static String ACTION_DOWNLOADING = "com.leo.appmaster.download";
-    public final static String ACTION_CANCEL_DOWNLOAD = "com.leo.appmaster.update.cancel";
+    public final static String ACTION_CANCEL_DOWNLOAD = "com.leo.appmaster.download.cancel";
+    public final static String ACTION_DOWNLOAD_FAILED = "com.leo.appmaster.download.failed";
+    public final static String ACTION_DOWNLOAD_FAILED_CANCEL = "com.leo.appmaster.download.failed.dismiss";
 
     private final static int DOWNLOAD_NOTIFICATION_ID = 1001;
     private final static int UPDATE_NOTIFICATION_ID = 1002;
+    private final static int DOWNLOAD_FAILED_NOTIFICATION_ID = 1003;
 
     private int mUIType = IUIHelper.TYPE_CHECKING;
     private int mUIParam = 0;
@@ -63,6 +67,14 @@ public class UIHelper implements IUIHelper {
         filter = new IntentFilter();
         filter.addAction(ACTION_CANCEL_DOWNLOAD);
         mContext.registerReceiver(receive, filter);
+        /* for cancel download */
+        filter = new IntentFilter();
+        filter.addAction(ACTION_DOWNLOAD_FAILED);
+        mContext.registerReceiver(receive, filter);
+        /* for cancel download */
+        filter = new IntentFilter();
+        filter.addAction(ACTION_DOWNLOAD_FAILED_CANCEL);
+        mContext.registerReceiver(receive, filter);
     }
 
     public static UIHelper getInstance(Context ctx) {
@@ -81,7 +93,7 @@ public class UIHelper implements IUIHelper {
         buildDownloadNotification();
     }
 
-    public void setOnProgressListener(OnProgressListener l) {
+    public void setOnProgressListener(OnStateChangeListener l) {
         listener = l;
     }
 
@@ -94,23 +106,25 @@ public class UIHelper implements IUIHelper {
         downloadRv = new RemoteViews(mContext.getPackageName(),
                 R.layout.sdk_notification_download);
         downloadRv.setTextViewText(R.id.tv_title, downloadTip);
-        // Intent intent = new Intent(UIHelper.ACTION_DOWNLOADING);
-        // PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, 0,
-        // intent, 0);
+        Intent intent = new Intent(ACTION_DOWNLOADING);
+        PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, 0,
+                intent, 0);
         // go back to app - begin
-        Intent intent = new Intent(mContext, UpdateActivity.class);
-        ComponentName componentName = new ComponentName(mContext.getPackageName(),
-                UpdateActivity.class.getName());
-        intent.setComponent(componentName);
-        intent.setAction("android.intent.action.MAIN");
-        intent.addCategory("android.intent.category.LAUNCHER");
-        intent.addFlags(Notification.FLAG_ONGOING_EVENT);
-        PendingIntent contentIntent = PendingIntent.getActivity(mContext,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Intent intent = new Intent(mContext, SDKUpdateActivity.class);
+        // ComponentName componentName = new ComponentName(
+        // mContext.getPackageName(), SDKUpdateActivity.class.getName());
+        // intent.setComponent(componentName);
+        // intent.setAction("android.intent.action.MAIN");
+        // intent.addCategory("android.intent.category.LAUNCHER");
+        // intent.addFlags(Notification.FLAG_ONGOING_EVENT);
+        // PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0,
+        // intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // go back to app - end
-        downloadNotification = new Notification(R.drawable.ic_launcher_notification,
-                downloadTip, System.currentTimeMillis());
-        downloadNotification.setLatestEventInfo(mContext, from, message, contentIntent);
+        downloadNotification = new Notification(
+                R.drawable.ic_launcher_notification, downloadTip,
+                System.currentTimeMillis());
+        downloadNotification.setLatestEventInfo(mContext, from, message,
+                contentIntent);
         downloadNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONGOING_EVENT;
     }
@@ -119,8 +133,10 @@ public class UIHelper implements IUIHelper {
         Log.d(TAG, "sendDownloadNotification called ");
         String appName = mContext.getString(R.string.app_name);
         downloadRv.setProgressBar(R.id.pb_download, 100, progress, false);
-        downloadRv.setTextViewText(R.id.tv_content, mContext.getString(R.string.downloading_notification,
-                appName, progress)+"%");
+        downloadRv.setTextViewText(
+                R.id.tv_content,
+                mContext.getString(R.string.downloading_notification, appName,
+                        progress) + "%");
         // downloadRv.setTextViewText(R.id.tv_progress, progress + "%");
         downloadNotification.contentView = downloadRv;
         nm.notify(DOWNLOAD_NOTIFICATION_ID, downloadNotification);
@@ -133,44 +149,80 @@ public class UIHelper implements IUIHelper {
     @SuppressWarnings("deprecation")
     private void sendUpdateNotification() {
         String appName = mContext.getString(R.string.app_name);
-        String updateTip = mContext.getString(R.string.update_available, appName);
-        // Intent intent = new Intent(UIHelper.ACTION_NEED_UPDATE);
-        // PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, 0,
-        // intent, 0);
+        String updateTip = mContext.getString(R.string.update_available,
+                appName);
+        Intent intent = new Intent(ACTION_NEED_UPDATE);
+        PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, 0,
+                intent, 0);
         // go back to app - begin
-        Intent intent = new Intent(mContext, UpdateActivity.class);
-        ComponentName componentName = new ComponentName(mContext.getPackageName(),
-                UpdateActivity.class.getName());
-        intent.setComponent(componentName);
-        intent.setAction("android.intent.action.MAIN");
-        intent.addCategory("android.intent.category.LAUNCHER");
-        intent.addFlags(Notification.FLAG_ONGOING_EVENT);
-        PendingIntent contentIntent = PendingIntent.getActivity(mContext,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Intent intent = new Intent(mContext, SDKUpdateActivity.class);
+        // ComponentName componentName = new ComponentName(
+        // mContext.getPackageName(), SDKUpdateActivity.class.getName());
+        // intent.setComponent(componentName);
+        // intent.setAction("android.intent.action.MAIN");
+        // intent.addCategory("android.intent.category.LAUNCHER");
+        // intent.addFlags(Notification.FLAG_ONGOING_EVENT);
+        // PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0,
+        // intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // go back to app - end
 
-        updateNotification = new Notification(R.drawable.ic_launcher_notification,
-                updateTip, System.currentTimeMillis());
+        updateNotification = new Notification(
+                R.drawable.ic_launcher_notification, updateTip,
+                System.currentTimeMillis());
         Intent dIntent = new Intent(UIHelper.ACTION_CANCEL_UPDATE);
         PendingIntent delIntent = PendingIntent.getBroadcast(mContext, 0,
                 dIntent, 0);
         updateNotification.deleteIntent = delIntent;
-        String contentText = mContext.getString(R.string.version_found, mManager.getVersion());
-        updateNotification.setLatestEventInfo(mContext, updateTip, contentText, contentIntent);
+        String contentText = mContext.getString(R.string.version_found,
+                mManager.getVersion());
+        updateNotification.setLatestEventInfo(mContext, updateTip, contentText,
+                contentIntent);
         updateNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONGOING_EVENT;
         nm.notify(UPDATE_NOTIFICATION_ID, updateNotification);
+    }
+
+    public void cancelUpdateNotification() {
+        nm.cancel(UPDATE_NOTIFICATION_ID);
+    }
+
+    private void sendDownloadFailedNotification() {
+        String appName = mContext.getString(R.string.app_name);
+        String failedTip = mContext.getString(R.string.download_error);
+        Intent intent = new Intent(ACTION_DOWNLOAD_FAILED);
+        PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, 0,
+                intent, 0);
+        updateNotification = new Notification(
+                R.drawable.ic_launcher_notification, failedTip,
+                System.currentTimeMillis());
+        Intent dIntent = new Intent(ACTION_DOWNLOAD_FAILED_CANCEL);
+        PendingIntent delIntent = PendingIntent.getBroadcast(mContext, 0,
+                dIntent, 0);
+        updateNotification.deleteIntent = delIntent;
+        String contentText = mContext.getString(R.string.version_found,
+                mManager.getVersion());
+        updateNotification.setLatestEventInfo(mContext, appName, failedTip,
+                contentIntent);
+        updateNotification.flags = Notification.FLAG_AUTO_CANCEL
+                | Notification.FLAG_ONGOING_EVENT;
+        nm.cancel(DOWNLOAD_NOTIFICATION_ID);
+        nm.notify(DOWNLOAD_FAILED_NOTIFICATION_ID, updateNotification);
+    }
+
+    public void cancelDownloadFailedNotification() {
+        nm.cancel(DOWNLOAD_FAILED_NOTIFICATION_ID);
     }
 
     @Override
     public void onNewState(int ui_type, int param) {
         mUIType = ui_type;
         mUIParam = param;
-        if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE && !isRunningForeground(mContext)) {
+        if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
+                && !isRunningForeground(mContext)) {
             Log.e(TAG, "runing on background, show update notification");
             sendUpdateNotification();
         } else {
-            showUpdateActivity(ui_type, param);
+            showUI(ui_type, param);
         }
     }
 
@@ -214,11 +266,26 @@ public class UIHelper implements IUIHelper {
         return mProgress;
     }
 
+    public int getComplete() {
+        return mManager.getCurrentCompleteSzie();
+    }
+
+    public int getTotal() {
+        return mManager.getTotalSize();
+    }
+
     @Override
     public void onProgress(int complete, int total) {
         long c = complete;
         long t = total;
         mProgress = (total == 0) ? 0 : (int) (c * 100 / t);
+        if (mProgress == 100) {
+            cancelDownloadNotification();
+            if (listener != null) {
+                listener.onChangeState(TYPE_DISMISS, 0);
+            }
+            return;
+        }/* download done */
         if (!isActivityOnTop(mContext)) {
             Log.d(TAG, "sendDownloadNotification in onProgress of UIHelper");
             sendDownloadNotification(mProgress);
@@ -230,24 +297,38 @@ public class UIHelper implements IUIHelper {
         }
     }
 
-    private void showUpdateActivity(int type, int param) {
+    private void showUI(int type, int param) {
         Log.d(TAG, "type=" + type + "; param=" + param);
         if (isActivityOnTop(mContext) && listener != null) {
             Log.d(TAG, "activity on top");
             listener.onChangeState(type, param);
         } else if (isAppOnTop(mContext)) {
-            Log.d(TAG, "showing activity type=" + type);
-            Intent i = new Intent();
-            i.setClass(mContext, UpdateActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.putExtra(LAYOUT_TYPE, type);
-            i.putExtra(LAYOUT_PARAM, param);
-            mContext.startActivity(i);
+            relaunchActivity(type, param);
         } else {
-            Log.d(TAG, "we should show a notification here");
+            showNotification(type);
         }
+    }
+
+    private void showNotification(int type) {
+        switch (type) {
+            case IUIHelper.TYPE_CHECK_NEED_UPDATE:
+                sendUpdateNotification();
+                break;
+            case IUIHelper.TYPE_DOWNLOAD_FAILED:
+                sendDownloadFailedNotification();
+                break;
+        }
+    }
+
+    private void relaunchActivity(int type, int param) {
+        Intent i = new Intent();
+        i.setClass(mContext, UpdateActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        i.putExtra(LAYOUT_TYPE, type);
+        i.putExtra(LAYOUT_PARAM, param);
+        mContext.startActivity(i);
     }
 
     BroadcastReceiver receive = new BroadcastReceiver() {
@@ -257,15 +338,31 @@ public class UIHelper implements IUIHelper {
             Log.d(TAG, "onReceive action =" + action);
             if (action.equals(ACTION_NEED_UPDATE)) {
                 nm.cancel(UPDATE_NOTIFICATION_ID);
-                showUpdateActivity(IUIHelper.TYPE_UPDATE, mManager.getReleaseType());
+                Log.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
+                relaunchActivity(IUIHelper.TYPE_UPDATE,
+                        mManager.getReleaseType());
             } else if (action.equals(ACTION_CANCEL_UPDATE)) {
                 mManager.onCancelUpdate();
+                if (listener != null) {
+                    listener.onChangeState(TYPE_DISMISS, 0);
+                }
             } else if (action.equals(ACTION_DOWNLOADING)) {
-                showUpdateActivity(IUIHelper.TYPE_DOWNLOADING, mManager.getReleaseType());
+                Log.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
+                relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
+                        mManager.getReleaseType());
             } else if (action.equals(ACTION_CANCEL_DOWNLOAD)) {
                 mManager.onCancelDownload();
-                // TODO: how to stop showming the last progress UI
-            }/* done */
+                if (listener != null) {
+                    listener.onChangeState(TYPE_DISMISS, 0);
+                }
+            } else if (action.equals(ACTION_DOWNLOAD_FAILED)) {
+                relaunchActivity(IUIHelper.TYPE_DOWNLOAD_FAILED, 0);
+            } else if (action.equals(ACTION_DOWNLOAD_FAILED_CANCEL)) {
+                mManager.onCancelDownload();
+                if (listener != null) {
+                    listener.onChangeState(TYPE_DISMISS, 0);
+                }
+            }
         }
     };
 
@@ -277,6 +374,16 @@ public class UIHelper implements IUIHelper {
     @Override
     public int getLayoutParam() {
         return mUIParam;
+    }
+
+    @Override
+    public void onBusy() {
+        // String appname = mContext.getString(R.string.app_name);
+        // Toast.makeText(mContext,
+        // mContext.getString(R.string.downloading, appname),
+        // Toast.LENGTH_SHORT).show();
+        /* show UI corresponding to current state of download manager */
+        showUI(mUIType, mUIParam);
     }
 
 }
