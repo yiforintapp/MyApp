@@ -33,6 +33,7 @@ import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
+import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -74,18 +75,36 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	}
 
 	@Override
+	protected void onRestart() {
+		super.onRestart();
+		Intent intent = new Intent(this, LockScreenActivity.class);
+		int lockType = AppLockerPreference.getInstance(this).getLockType();
+		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_PASSWD);
+		} else {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_GESTURE);
+		}
+		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF);
+		startActivity(intent);
+		finish();
+	}
+
+	@Override
 	protected void onDestroy() {
 		AppLoadEngine.getInstance(this).unregisterAppChangeListener(this);
 		super.onDestroy();
 	}
-	
+
 	@Override
 	public void onBackPressed() {
-	    if(mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
-	        mMaskLayer.setVisibility(View.GONE);
-	    } else {
-	        super.onBackPressed();
-	    }
+		if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
+			mMaskLayer.setVisibility(View.GONE);
+		} else {
+			super.onBackPressed();
+		}
 	}
 
 	private void initUI() {
@@ -261,14 +280,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	private void moveItemToLock(View view, Drawable drawable) {
 
-		int orgX = mPagerUnlock.getLeft()
-				+ view.getLeft()
-                + view.getWidth() / 2
-                - (mIvAnimator.getLeft() + mIvAnimator.getWidth() / 2);
+		int orgX = mPagerUnlock.getLeft() + view.getLeft() + view.getWidth()
+				/ 2 - (mIvAnimator.getLeft() + mIvAnimator.getWidth() / 2);
 		int orgY = mPagerUnlock.getTop() + mPagerParent.getTop()
 				+ view.getTop()
-                + /*view.getHeight() / 2 + */view.getPaddingTop()
-                - (mIvAnimator.getTop()  /*+mIvAnimator.getHeight() / 2*/);
+				+ /* view.getHeight() / 2 + */view.getPaddingTop()
+				- (mIvAnimator.getTop() /* +mIvAnimator.getHeight() / 2 */);
 
 		float targetX = (float) (mLockedLocationX - mIvAnimator.getLeft() - (mIvAnimator
 				.getRight() - mIvAnimator.getLeft()) * (0.5 - mScale / 2));
@@ -285,16 +302,14 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mIvAnimator.startAnimation(animation);
 
 	}
-	
+
 	private void moveItemToUnlock(View view, Drawable drawable) {
-		int orgX = mPagerUnlock.getLeft()
-				+ view.getLeft()
-				+ view.getWidth() / 2
-				- (mIvAnimator.getLeft() + mIvAnimator.getWidth() / 2);
+		int orgX = mPagerUnlock.getLeft() + view.getLeft() + view.getWidth()
+				/ 2 - (mIvAnimator.getLeft() + mIvAnimator.getWidth() / 2);
 		int orgY = mPagerUnlock.getTop() + mPagerParent.getTop()
 				+ view.getTop()
-                + /*view.getHeight() / 2 + */view.getPaddingTop()
-				- (mIvAnimator.getTop()  /*+mIvAnimator.getHeight() / 2*/);
+				+ /* view.getHeight() / 2 + */view.getPaddingTop()
+				- (mIvAnimator.getTop() /* +mIvAnimator.getHeight() / 2 */);
 
 		float targetX = (float) (mUnlockLocationX - mIvAnimator.getLeft() - (mIvAnimator
 				.getRight() - mIvAnimator.getLeft()) * (0.5 - mScale / 2));
