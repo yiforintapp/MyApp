@@ -129,7 +129,7 @@ public class GestureSettingFragment extends BaseFragment implements
 				} else {
 					intent = new Intent(mActivity, AppLockListActivity.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
+					mActivity.startActivity(intent);
 				}
 			} else {
 				resetGesture();
@@ -147,8 +147,8 @@ public class GestureSettingFragment extends BaseFragment implements
 
 	private void showResetSuc() {
 		LEOMessageDialog d = new LEOMessageDialog(mActivity);
-		d.setTitle(getString(R.string.reset_gesture));
-		d.setContent(getString(R.string.reset_passwd_successful));
+		d.setTitle(mActivity.getString(R.string.reset_gesture));
+		d.setContent(mActivity.getString(R.string.reset_passwd_successful));
 		d.setOnDismissListener(this);
 		d.setCanceledOnTouchOutside(false);
 		d.show();
@@ -156,10 +156,10 @@ public class GestureSettingFragment extends BaseFragment implements
 
 	private void showGestureProtectDialog() {
 		LEOAlarmDialog d = new LEOAlarmDialog(mActivity);
-		d.setTitle(getString(R.string.set_protect_or_not));
-		d.setContent(getString(R.string.set_protect_message));
-		d.setLeftBtnStr(getString(R.string.cancel));
-		d.setRightBtnStr(getString(R.string.makesure));
+		d.setTitle(mActivity.getString(R.string.set_protect_or_not));
+		d.setContent(mActivity.getString(R.string.set_protect_message));
+		d.setLeftBtnStr(mActivity.getString(R.string.cancel));
+		d.setRightBtnStr(mActivity.getString(R.string.makesure));
 		d.setOnClickListener(this);
 		d.setOnDismissListener(this);
 		d.show();
@@ -176,15 +176,15 @@ public class GestureSettingFragment extends BaseFragment implements
 		if (mGotoPasswdProtect) {
 			intent = new Intent(mActivity, AppLockListActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
+			mActivity.startActivity(intent);
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
-			startActivity(intent);
+			mActivity.startActivity(intent);
 		} else if (((LockSettingActivity) mActivity).isResetPasswd()) {
 //			mActivity.finish();
 		} else {
 			intent = new Intent(mActivity, AppLockListActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
+			mActivity.startActivity(intent);
 		}
 		mActivity.finish();
 	}

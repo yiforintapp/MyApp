@@ -93,7 +93,7 @@ public class PasswdLockFragment extends LockFragment implements
 			mPasswdHint.setVisibility(View.INVISIBLE);
 		} else {
 			mPasswdHint
-					.setText(getString(R.string.passwd_hint_tip) + passwdtip);
+					.setText(mActivity.getString(R.string.passwd_hint_tip) + passwdtip);
 		}
 
 		if (mPackage != null) {
@@ -191,7 +191,7 @@ public class PasswdLockFragment extends LockFragment implements
 			if (mInputCount >= mMaxInput) {
 				Intent intent = new Intent(mActivity, WaitActivity.class);
 				intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
-				this.startActivity(intent);
+				mActivity.startActivity(intent);
 				mActivity.finish();
 			} else {
 				if (pref.hasPswdProtect()
@@ -200,7 +200,7 @@ public class PasswdLockFragment extends LockFragment implements
 				}
 
 				mPasswdTip.setText(String.format(
-						getString(R.string.input_error_tip), mInputCount + "",
+						mActivity.getString(R.string.input_error_tip), mInputCount + "",
 						(mMaxInput - mInputCount) + ""));
 			}
 			clearPasswd();
