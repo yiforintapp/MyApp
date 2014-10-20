@@ -412,7 +412,8 @@ public class UpdateActivity extends Activity implements OnStateChangeListener {
             switch (msg.what) {
                 case MSG_UPDATE_PROGRESS:
                     if (msg.arg1 == msg.arg2) {
-                        Log.d(TAG, "cancel notification and finish UpdateActivity");
+                        // Log.d(TAG,
+                        // "cancel notification and finish UpdateActivity");
                         theActivity.mUIHelper.cancelDownloadNotification();
                         theActivity.finish();
                         return;
@@ -423,7 +424,7 @@ public class UpdateActivity extends Activity implements OnStateChangeListener {
                         long c = msg.arg1;
                         long t = msg.arg2;
                         theActivity.mProgress = (t == 0) ? 0 : (int) (c * 100 / t);
-                        Log.d(TAG, "mProgress = " + theActivity.mProgress);
+                        // Log.d(TAG, "mProgress = " + theActivity.mProgress);
 
                         ProgressBar pb = (ProgressBar) theActivity
                                 .findViewById(R.id.dlg_pro);
@@ -455,8 +456,8 @@ public class UpdateActivity extends Activity implements OnStateChangeListener {
 
     @Override
     public void onProgress(int progress, int total) {
-        Log.d(TAG, "onProgress call back, progress=" + progress + "; total="
-                + total);
+        // Log.d(TAG, "onProgress call back, progress=" + progress + "; total="
+        // + total);
         mProgressHandler.obtainMessage(MSG_UPDATE_PROGRESS, progress, total)
                 .sendToTarget();
     }
