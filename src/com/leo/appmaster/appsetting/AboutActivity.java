@@ -1,11 +1,17 @@
 package com.leo.appmaster.appsetting;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leoers.leoanalytics.LeoStat;
 
 import android.app.Activity;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -46,6 +52,20 @@ public class AboutActivity extends Activity implements OnClickListener{
 
     @Override
     protected void onResume() {
+        
+        if (LeoStat.isUpdateAvailable()) {
+            if (mCheckUpdate != null) {
+                Spanned buttonText = Html.fromHtml(getString(R.string.app_setting_update_new));
+                SpannableString span = new SpannableString(buttonText);
+                span.setSpan(new AbsoluteSizeSpan(DipPixelUtil.dip2px(this, 12)), buttonText.length() - 4, buttonText.length() - 1,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); 
+                mCheckUpdate.setText(span);
+            }
+        } else {
+              if (mCheckUpdate != null) {
+                  mCheckUpdate.setText(R.string.app_setting_update);
+                }
+        }
+        
         super.onResume();
     }
 

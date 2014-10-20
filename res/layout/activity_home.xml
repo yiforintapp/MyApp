@@ -299,6 +299,7 @@
                 android:background="@drawable/home_button_selecter" >
 
                 <ImageView
+                    android:id="@+id/setting_icon"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:src="@drawable/setting_icon" />

@@ -129,6 +129,7 @@
     <string name="app_permission2">普通权限</string>
     <string name="app_permission3">重要权限</string>
     <string name="app_setting_update">检查升级</string>
+    <string name="app_setting_update_new">&#160;&#160;&#160;检查升级<Data><![CDATA[ <b><font color="#ff0000">NEW</font></b> ]]></Data></string> 
     <string name="app_setting_about">关于</string>
     <string name="forbid_uninstall">禁止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>

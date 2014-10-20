@@ -129,6 +129,7 @@
     <string name="app_permission2">जनरल गोपनीयता अनुमति</string>
     <string name="app_permission3">महत्वपूर्ण गोपनीयता अनुमति</string>
     <string name="app_setting_update">नवीनीकरण के लिए जाँच करें</string>
+    <string name="app_setting_update_new">नवीनीकरण के लिए जाँच करें<Data><![CDATA[ <b><font color="#ff0000">NEW</font></b> ]]></Data></string> 
     <string name="app_setting_about">जानकारी</string>
     <string name="forbid_uninstall">रद्द से रोकें</string>
     <string name="auto_lock">स्क्रीन लॉक करने के बाद स्वचालित रूप से ताले डालें</string>
