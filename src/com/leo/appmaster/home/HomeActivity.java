@@ -46,6 +46,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 	private View mTvAppLock;
 	private View mTvAppBackup;
 	private View mTvCleanMem;
+	private ImageView mSettingIcon;
 
 	private View mPressedEffect1;
 	private View mPressedEffect2;
@@ -86,10 +87,13 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mMemoryPercent = (TextView) findViewById(R.id.tv_memory_percent);
 		mCricleView = (CricleView) findViewById(R.id.cricle_view);
 
-		mTvAppManage = findViewById(R.id.tv_app_manage);
+		mTvAppManage =  findViewById(R.id.tv_app_manage);
 		mTvAppLock = findViewById(R.id.tv_app_lock);
 		mTvAppBackup = findViewById(R.id.tv_app_backup);
 		mTvCleanMem = findViewById(R.id.tv_clean_memory);
+		
+		mSettingIcon = (ImageView) findViewById(R.id.setting_icon);
+		
 		mTvAppManage.setOnClickListener(this);
 		mTvAppLock.setOnClickListener(this);
 		mTvAppBackup.setOnTouchListener(this);
@@ -126,6 +130,16 @@ public class HomeActivity extends Activity implements OnClickListener,
 																 */);
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
+		
+		if (LeoStat.isUpdateAvailable()) {
+		    if (mSettingIcon != null) {
+		        mSettingIcon.setImageResource(R.drawable.setting_icon_new);
+		    }
+		} else {
+	          if (mSettingIcon != null) {
+	              mSettingIcon.setImageResource(R.drawable.setting_icon);
+	            }
+		}
 		super.onResume();
 	}
 
