@@ -68,6 +68,7 @@ public class AppMasterApplication extends Application {
 	}
 
 	private void iniFlurry() {
+    FlurryAgent.setVersionName(getString(R.string.version_name)+"_"+getString(R.string.channel_code));
 		FlurryAgent.onStartSession(getApplicationContext(),
 				"F6PHG92TXG5QZ48H4YC8");
 	}
