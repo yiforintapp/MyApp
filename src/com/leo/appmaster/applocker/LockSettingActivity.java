@@ -5,6 +5,7 @@ import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,25 +18,30 @@ import android.widget.TextView;
 public class LockSettingActivity extends FragmentActivity implements
 		OnClickListener {
 
+	public static final String RESET_PASSWD_FLAG = "reset_passwd";
+
 	public static final int LOCK_TYPE_PASSWD = 1;
 	public static final int LOCK_TYPE_GESTURE = 2;
-
 	private int mLockType = LOCK_TYPE_PASSWD;
-
 	private TextView mTvSwitch;
 	private CommonTitleBar mTitleBar;
-
 	FragmentManager mFm;
-
 	Fragment mPasswd, mGesture;
+
+	private boolean mResetFlag;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-
 		setContentView(R.layout.activity_lock_setting);
+		handleIntent();
 		initUI();
 		initFragment();
+	}
+
+	private void handleIntent() {
+		Intent intent = getIntent();
+		mResetFlag = intent.getBooleanExtra(RESET_PASSWD_FLAG, false);
 	}
 
 	private void initFragment() {
@@ -43,16 +49,21 @@ public class LockSettingActivity extends FragmentActivity implements
 		mGesture = new GestureSettingFragment();
 		mFm = getSupportFragmentManager();
 		FragmentTransaction tans = mFm.beginTransaction();
-
 		int type = AppLockerPreference.getInstance(this).getLockType();
 		if (type == AppLockerPreference.LOCK_TYPE_GESTURE) {
 			mLockType = LOCK_TYPE_GESTURE;
 			tans.replace(R.id.fragment_contain, mGesture);
 			mTitleBar.setOptionText(getString(R.string.switch_passwd));
+			if (mResetFlag) {
+				mTitleBar.setTitle(R.string.reset_gesture);
+			}
 		} else {
 			mLockType = LOCK_TYPE_PASSWD;
 			tans.replace(R.id.fragment_contain, mPasswd);
 			mTitleBar.setOptionText(getString(R.string.switch_gesture));
+			if (mResetFlag) {
+				mTitleBar.setTitle(R.string.reset_passwd);
+			}
 		}
 		tans.commit();
 
@@ -87,13 +98,23 @@ public class LockSettingActivity extends FragmentActivity implements
 		if (mLockType == LOCK_TYPE_PASSWD) {
 			tans.replace(R.id.fragment_contain, mGesture);
 			mLockType = LOCK_TYPE_GESTURE;
+			if (mResetFlag) {
+				mTitleBar.setTitle(R.string.reset_gesture);
+			}
 			mTitleBar.setOptionText(getString(R.string.switch_passwd));
 		} else {
 			tans.replace(R.id.fragment_contain, mPasswd);
 			mLockType = LOCK_TYPE_PASSWD;
+			if (mResetFlag) {
+				mTitleBar.setTitle(R.string.reset_passwd);
+			}
 			mTitleBar.setOptionText(getString(R.string.switch_gesture));
 		}
 		tans.commit();
+	}
+
+	public boolean isResetPasswd() {
+		return mResetFlag;
 	}
 
 }

@@ -1020,7 +1020,7 @@ public class LockPatternView extends View {
 
 		mCircleMatrix.setTranslate(leftX + offsetX, topY + offsetY);
 		mCircleMatrix.preTranslate(mBitmapWidth / 2, mBitmapHeight / 2);
-		mCircleMatrix.preScale(sx * 0.6f, sy * 0.6f);
+		mCircleMatrix.preScale(sx * 0.65f, sy * 0.65f);
 		mCircleMatrix.preTranslate(-mBitmapWidth / 2, -mBitmapHeight / 2);
 
 		canvas.drawBitmap(outerCircle, mCircleMatrix, mPaint);

@@ -17,6 +17,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockOptionActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.WaitActivity;
 import com.leo.appmaster.applocker.logic.LockHandler;
@@ -268,7 +270,8 @@ public class PasswdLockFragment extends LockFragment implements
 					.getPpAnwser();
 			if (anwser.equals(mEtAnwser.getText().toString())) {
 				// goto reset passwd
-				Intent intent = new Intent(mActivity, LockOptionActivity.class);
+				Intent intent = new Intent(mActivity, LockSettingActivity.class);
+				intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
 				mActivity.startActivity(intent);
 
 			} else {

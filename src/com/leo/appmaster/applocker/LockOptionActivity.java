@@ -25,7 +25,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 	private CommonTitleBar mTtileBar;
 	private SharedPreferences mSp;
-	private Preference mLockTime;
+	private Preference mLockTime, mResetPasswd;
 
 	private CheckBoxPreference mForbidUninstall, mAutoLock;
 	private Preference mSetProtect;
@@ -44,6 +44,8 @@ public class LockOptionActivity extends PreferenceActivity implements
 		mAutoLock = (CheckBoxPreference) findPreference(AppLockerPreference.PREF_AUTO_LOCK);
 		mSetProtect = findPreference(AppLockerPreference.PREF_SET_PROTECT);
 		mLockTime = (Preference) findPreference(AppLockerPreference.PREF_RELOCK_TIME);
+		mResetPasswd = (Preference) findPreference("change_passwd");
+		mResetPasswd.setOnPreferenceClickListener(this);
 		mForbidUninstall.setOnPreferenceChangeListener(this);
 		mAutoLock.setOnPreferenceChangeListener(this);
 		mLockTime.setOnPreferenceClickListener(this);
@@ -121,8 +123,17 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
-		onCreateChoiceDialog(AppLockerPreference.getInstance(this)
-				.getRelockTimeout());
+		String key = preference.getKey();
+
+		if (AppLockerPreference.PREF_RELOCK_TIME.equals(key)) {
+			onCreateChoiceDialog(AppLockerPreference.getInstance(this)
+					.getRelockTimeout());
+		} else if ("change_passwd".equals(key)) {
+			Intent intent = new Intent(this, LockSettingActivity.class);
+			intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
+			startActivity(intent);
+		}
+
 		return false;
 	}
 

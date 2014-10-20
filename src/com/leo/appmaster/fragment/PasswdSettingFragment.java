@@ -13,9 +13,11 @@ import android.widget.Toast;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.AppLockerPreference;
+import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 
 public class PasswdSettingFragment extends BaseFragment implements
@@ -143,6 +145,12 @@ public class PasswdSettingFragment extends BaseFragment implements
 						mActivity.startService(intent);
 						AppLockerPreference.getInstance(mActivity)
 								.savePassword(mTempFirstPasswd);
+
+						if (((LockSettingActivity) mActivity).isResetPasswd()) {
+							showResetSuc();
+							return;
+						}
+
 						if (!AppLockerPreference.getInstance(mActivity)
 								.hasPswdProtect()) {
 							setPasswdProtect();
@@ -171,6 +179,15 @@ public class PasswdSettingFragment extends BaseFragment implements
 			}
 		}, 200);
 
+	}
+
+	private void showResetSuc() {
+		LEOMessageDialog d = new LEOMessageDialog(mActivity);
+		d.setTitle(getString(R.string.reset_passwd));
+		d.setContent(getString(R.string.reset_passwd_successful));
+		d.setOnDismissListener(this);
+		d.setCanceledOnTouchOutside(false);
+		d.show();
 	}
 
 	private void clearPasswd() {
@@ -261,6 +278,9 @@ public class PasswdSettingFragment extends BaseFragment implements
 			startActivity(intent);
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
 			startActivity(intent);
+		}  else if (((LockSettingActivity) mActivity).isResetPasswd()) {
+//			mActivity.finish();
+			
 		} else {
 			intent = new Intent(mActivity, AppLockListActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

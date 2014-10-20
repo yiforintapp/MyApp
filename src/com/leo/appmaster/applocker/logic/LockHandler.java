@@ -23,6 +23,7 @@ public class LockHandler extends BroadcastReceiver {
 	private Context mContext;
 	private ActivityManager mAm;
 	private String mLastRunningPkg;
+	private String mLastRuningActivity;
 
 	private ILockPolicy mLockPolicy;
 
@@ -54,16 +55,20 @@ public class LockHandler extends BroadcastReceiver {
 	}
 
 	public void handleAppLaunch(String pkg, String activity) {
-//		Log.d(TAG, "handleLock: " + pkg + "/" + activity);
-		if (pkg == null)
+		if (pkg == null || activity == null)
 			return;
+
 		if (!pkg.equals(mLastRunningPkg)) {
 			String myPackage = mContext.getPackageName();
-			if (pkg.equals(myPackage) || mLastRunningPkg.equals(myPackage)) {
+			if (pkg.equals(myPackage)
+					|| (mLastRunningPkg.equals(myPackage) && mLastRuningActivity
+							.contains("LockScreenActivity"))) {
 				mLastRunningPkg = pkg;
+				mLastRuningActivity = activity;
 				return;
 			}
 			mLastRunningPkg = pkg;
+			mLastRuningActivity = activity;
 			List<String> list = AppLockerPreference.getInstance(mContext)
 					.getLockedAppList();
 			if (list.contains(pkg)) {
@@ -88,6 +93,8 @@ public class LockHandler extends BroadcastReceiver {
 					mContext.startActivity(intent);
 				}
 			}
+		} else {
+			mLastRuningActivity = activity;
 		}
 	}
 

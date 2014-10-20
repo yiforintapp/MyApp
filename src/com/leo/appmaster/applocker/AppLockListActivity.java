@@ -65,6 +65,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	private boolean isFlying;
 
+	private boolean mGotoSetting;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,6 +79,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	@Override
 	protected void onRestart() {
 		super.onRestart();
+
+		if (mGotoSetting) {
+			mGotoSetting = false;
+			return;
+		}
+
 		Intent intent = new Intent(this, LockScreenActivity.class);
 		int lockType = AppLockerPreference.getInstance(this).getLockType();
 		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
@@ -405,6 +413,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.tv_option_text:
+			mGotoSetting = true;
 			Intent intent = new Intent(this, LockOptionActivity.class);
 			startActivity(intent);
 			break;

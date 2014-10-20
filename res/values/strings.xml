@@ -18,6 +18,7 @@
     <string name="uninstall">Uninstall</string>
     <string name="set_gesture_suc">Pattern Recorded!</string>
     <string name="set_passwd_suc">Password has been set successfully.</string>
+    <string name="reset_passwd_successful">Reset Successfully</string>
     <string name="stop">Stop</string>
     <string name="reinput_anwser">The answer was incorrect. Please try again.</string>
     <string name="please_input_pswd">Set Password</string>

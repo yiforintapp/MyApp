@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.AppLockerPreference;
+import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
@@ -21,6 +22,7 @@ import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.LockPatternUtils;
 
 public class GestureSettingFragment extends BaseFragment implements
@@ -28,12 +30,9 @@ public class GestureSettingFragment extends BaseFragment implements
 		OnDiaogClickListener {
 
 	private TextView mTvGestureTip;
-
 	private LockPatternView mLockPatternView;
 	private int mInputCount = 1;
-
 	private String mTempGesture1, mTempGesture2;
-
 	private boolean mGotoPasswdProtect;
 
 	@Override
@@ -113,16 +112,20 @@ public class GestureSettingFragment extends BaseFragment implements
 		} else {
 			mTempGesture2 = LockPatternUtils.patternToString(pattern);
 			if (mTempGesture2.equals(mTempGesture1)) {
-				Toast.makeText(mActivity, R.string.set_gesture_suc, 1).show();
 				Intent intent = null;
 				// now we can start lock service
 				intent = new Intent(mActivity, LockService.class);
 				mActivity.startService(intent);
 				AppLockerPreference.getInstance(mActivity).saveGesture(
 						mTempGesture2);
+				if (((LockSettingActivity) mActivity).isResetPasswd()) {
+					showResetSuc();
+					return;
+				}
+				Toast.makeText(mActivity, R.string.set_gesture_suc, 1).show();
 				if (!AppLockerPreference.getInstance(mActivity)
 						.hasPswdProtect()) {
-					setGestureProtect();
+					showGestureProtectDialog();
 				} else {
 					intent = new Intent(mActivity, AppLockListActivity.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -142,7 +145,16 @@ public class GestureSettingFragment extends BaseFragment implements
 		}
 	}
 
-	private void setGestureProtect() {
+	private void showResetSuc() {
+		LEOMessageDialog d = new LEOMessageDialog(mActivity);
+		d.setTitle(getString(R.string.reset_gesture));
+		d.setContent(getString(R.string.reset_passwd_successful));
+		d.setOnDismissListener(this);
+		d.setCanceledOnTouchOutside(false);
+		d.show();
+	}
+
+	private void showGestureProtectDialog() {
 		LEOAlarmDialog d = new LEOAlarmDialog(mActivity);
 		d.setTitle(getString(R.string.set_protect_or_not));
 		d.setContent(getString(R.string.set_protect_message));
@@ -167,6 +179,8 @@ public class GestureSettingFragment extends BaseFragment implements
 			startActivity(intent);
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
 			startActivity(intent);
+		} else if (((LockSettingActivity) mActivity).isResetPasswd()) {
+//			mActivity.finish();
 		} else {
 			intent = new Intent(mActivity, AppLockListActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
