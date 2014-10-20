@@ -43,18 +43,18 @@ public class LockService extends Service {
 
 	@Override
 	public void onCreate() {
-//		Notification notification = new Notification(R.drawable.ic_launcher,
-//				"leo applocker", System.currentTimeMillis());
-//		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-//				new Intent(this, LockScreenActivity.class), 0);
-//
-//		notification.setLatestEventInfo(this, "leo applocker",
-//				"leo applocker is servicing", contentIntent);
-//
-//		mNM = (NotificationManager) getApplicationContext().getSystemService(
-//				Context.NOTIFICATION_SERVICE);
-//		mNM.notify(NOTIFY_ID, notification);
-//		startForeground(NOTIFY_ID, notification);
+		// Notification notification = new Notification(R.drawable.ic_launcher,
+		// "leo applocker", System.currentTimeMillis());
+		// PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+		// new Intent(this, LockScreenActivity.class), 0);
+		//
+		// notification.setLatestEventInfo(this, "leo applocker",
+		// "leo applocker is servicing", contentIntent);
+		//
+		// mNM = (NotificationManager) getApplicationContext().getSystemService(
+		// Context.NOTIFICATION_SERVICE);
+		// mNM.notify(NOTIFY_ID, notification);
+		// startForeground(NOTIFY_ID, notification);
 
 		mLockHandler = new LockHandler(getApplicationContext());
 		mLockHandler.setLockPolicy(new TimeoutRelockPolicy(
@@ -112,7 +112,7 @@ public class LockService extends Service {
 	@Override
 	public void onDestroy() {
 		stopLockService();
-//		stopForeground(true);
+		// stopForeground(true);
 		mNM.cancel(NOTIFY_ID);
 		this.getApplicationContext().unregisterReceiver(mLockHandler);
 		super.onDestroy();
@@ -137,6 +137,7 @@ public class LockService extends Service {
 
 			String topActivityName = topTaskInfo.topActivity
 					.getShortClassName().toString();
+
 			try {
 				topPackageInfo = pm.getPackageInfo(topActivityPackageName, 0);
 			} catch (NameNotFoundException e) {
