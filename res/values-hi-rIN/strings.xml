@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">आवेदन मास्टर्स</string>
-    <string name="app_count">आवेदनों की संख्या</string>
-    <string name="used_memory">स्मृति का इस्तेमाल</string>
-    <string name="used_flow">आवागमन इस्तेमाल किया गया है</string>
+    <string name="app_name">ऐप मास्टर</string>
+    <string name="app_count">ऐप्स स्थापित किए गए</string>
+    <string name="used_memory">एमबी मेमोरी का दखल</string>
+    <string name="used_flow">एमबी प्रवाह की खपत</string>
     <string name="app_manage">ऐप का प्रबंधन</string>
     <string name="app_detail">ऐप का विवरण</string>
     <string name="app_lock">ऐप का ताला</string>
@@ -12,66 +12,72 @@
     <string name="app_restore">रिकवरी</string>
     <string name="button_backup">बैकअप</string>
     <string name="button_install">स्थापित करें</string>
-    <string name="passwd_set_passwd_tip">पहली बार चार के लिए एक पासवर्ड सेट करें</string>
-    <string name="passwd_set_gesture_tip">पहली बार इशारों सेट करें</string>
     <string name="button_delete">हटाएं</string>
-    <string name="clean_memory">एक क्लिक में तेज़ी लाए</string>
     <string name="app_use_info">उपयोग</string>
     <string name="app_permission_info">अनुमति की निगरानि</string>
-    <string name="uninstall">स्थापना रद्द करें</string>
+    <string name="uninstall">अस्थापित करना</string>
+    <string name="set_gesture_suc">इशारा दर्ज</string>
+    <string name="set_passwd_suc">पासवर्ड सफलतापूर्वक दर्ज किया गया</string>
     <string name="stop">रुकें</string>
+    <string name="reinput_anwser">गलत उत्तर। पुनः प्रयास करें</string>
     <string name="please_input_pswd">पासवर्ड इनपुट करें</string>
     <string name="please_input_pswd_again">फिर से पासवर्ड इनपुट करें</string>
-    <string name="makesure">ठीक</string>
+    <string name="makesure">पुष्टि करें</string>
     <string name="cancel">रद्द करें</string>
     <string name="delete">हटाएं</string>
+    <string name="passwd_set_passwd_tip">कृपया 4 अक्षरों का पासवर्ड दर्ज करें</string>
+    <string name="passwd_set_gesture_tip">ताला खोलने का इशारा बनायें</string>
     <string name="passwd_hint">चार अंकों पासवर्ड दर्ज करें</string>
     <string name="tip_no_the_same_pswd">पासवर्ड असंगत है, दोबारा दर्ज करें</string>
-    <string name="use_gesture">इशारों का प्रयोग करें</string>
-    <string name="not_set">सेट नहीं</string>
-    <string name="set_gesture_suc">इशारे सेटिंग्स सफलता</string>
-    <string name="set_passwd_suc">पासवर्ड सफलतापूर्वक सेट</string>
-    <string name="use_passwd">पासवर्ड का प्रयोग करें</string>
-    <string name="passwd_hint_tip">पासवर्ड संकेत: </string>
-    <string name="reinput_anwser">जवाब सही नहीं है, फिर से दर्ज करें</string>
-    <string name="passwd_setting">पासवर्ड सेटिंग्स</string>
-    <string name="reset_passwd">पासवर्ड रीसेट करें</string>
+    <string name="input_error_tip">आपने ताला खोलने की प्रक्रिया को %1$s,बार गलत दर्ज किया। ठंडा होने में %2$s बार बाकी।</string>
+    <string name="use_gesture">इशारा ताला</string>
+    <string name="use_passwd">पासवर्ड ताला</string>
+
+    <string name="reset_passwd">पासवर्ड पुनः स्थापित करें</string>
     <string name="app_locked">ताला डाला गया है</string>
     <string name="app_unlock">ताला नहीं डाला गया है</string>
     <string name="find_passwd">पासवर्ड वापस बुलाएं</string>
     <string name="please_wait">बाद में दोबारा प्रयास करें</string>
-    <string name="passwd_question">प्रश्न</string>
-    <string name="input_error_tip">आप गलत है<xliff:g>%1$s</xliff:g>टाइम्स，वाम<xliff:g>%2$s</xliff:g>संभावना</string>
-    <string name="passwd_anwser">उत्तर</string>
-    <string name="passwd_tip">पासवर्ड अनुस्मारक (वैकल्पिक)</string>
-    <string name="set_success">सफलतापूर्वक सेट</string>
-    <string name="passwd_hint_cant_null">पासवर्ड शीघ्र रिक्त नहीं हो सकता</string>
-    <string name="input_qusetion">सुरक्षा प्रश्न दर्ज करें: </string>
-    <string name="set_protect_or_not">सुरक्षा प्रश्न सेट करने के लिए है?</string>
-    <string name="set_protect_message">ताला में प्रवेश नहीं कर सकते हैं आवेदन से बचने के लिए अपने पासवर्ड, यह सेटिंग, चाहे सुरक्षा प्रश्न सेट करने के लिए सिफारिश की है भूल गए?</string>
-    <string name="setting">सेट</string>
+    <string name="passwd_question">प्रश्न: </string>
+    <string name="passwd_anwser">उत्तर: </string>
+    <string name="accelerate">तेज़ी लाए</string>
+    <string name="used_mem">मेमोरी इस्तेमाल</string>
+    <string name="passwd_tip">पासवर्ड संकेत दर्ज करें: </string>
     <string name="save">स्टोर</string>
     <string name="passwd_protect_setting">सुरक्षा प्रश्न सेट</string>
-    <string name="qusetion">सवाल:</string>
+    <string name="input_qusetion">कृपया एक सुरक्षा प्रश्न दर्ज करें: </string>
     <string name="qusetion_cant_null">सवाल खाली नहीं हो सकता</string>
     <string name="aneser_cant_null">जवाब खाली नहीं हो सकता</string>
     <string name="pleas_input_anwser">सुरक्षा प्रश्न का उत्तर लिखें</string>
-    <string name="anwser">उत्तर:</string>
+    <string name="not_set">प्रश्न अस्थापित करें</string>
+    <string name="anwser">उत्तर: </string>
     <string name="not_unistall">रद्द से रोकें</string>
     <string name="lock_screen_auto_lock">स्क्रीन लॉक करने के बाद स्वचालित रूप से ताले डालें</string>
-    <string name="tips">टिप्स</string>
+    <string name="tips">इशारा</string>
+    <string name="compeletely">Complete</string>
 
-    <!-- 一键加速 -->
-    <string name="compeletely">अंजाम देना</string>
-    <string name="accelerate">त्वरित</string>
-    <string name="used_mem">स्मृति का उपयोग</string>
-    <string name="clean_result">साफ - सफाई:<xliff:g>%1$s</xliff:g>M ram</string>
-    <string name="best_mem">फिर से त्वरित बिना, सबसे अच्छा राज्य है</string>
-    <!-- 手势密码 -->
+    <!-- acceralate -->
+    <string name="clean_memory">एक क्लिक में तेज़ी लाए</string>
+    <string name="clean_result">खली की जा सकने वाली एम् बी %1$s</string>
+    <string name="best_mem">सबसे अच्छा हालत है, फिर से तेजी लाने की कोई ज़रूरत नहीं है</string>
+
+    <!-- App lock -->
+    <string name="lock_count">ताला डाला गया है</string>
+    <string name="unlock_count">ताला नहीं डाला गया है</string>
+    <string name="lockscreen_access_pattern_detected">पैटर्न को समाप्त किया गया है</string>
     <string name="please_input_gesture">अनलॉक प्रतिमान आरेखित करें</string>
     <string name="input_passwd_tip">पासवर्ड संकेत दर्ज करें</string>
+    <string name="switch_gesture">इशारों का प्रयोग करें</string>
+    <string name="switch_passwd">पासवर्ड का प्रयोग करें</string>
+    <string name="setting">सेटिंग</string>
+    <string name="passwd_hint_tip">पासवर्ड अनुस्मारक: </string>
+    <string name="set_protect_or_not">क्या आपको सुरक्षा प्रश्न बनाने की आवश्यकता है।</string>
+    <string name="set_protect_message">हमारी सलाह से आपको अपना सुरक्षा प्रश्न ज़रूर बनाना चाहिए ताकि अगर आप पासवर्ड भूल जाएँ तो, चलते रहें?</string>
     <string name="find_gesture">इशारों को वापस बुलाएं</string>
     <string name="pp_success">पासवर्ड सुरक्षा सेटिंग समाप्त हो गया</string>
+    <string name="passwd_setting">पासवर्ड सेटिंग्स</string>
+    <string name="set_success">पासवर्ड सफलतापूर्वक स्थापित किया गया</string>
+    <string name="passwd_hint_cant_null">कृपया अपने पासवर्ड का इशारा दर्ज करें</string>
     <string name="set_gesture">इशारों को आरेखित करें</string>
     <string name="please_input_gesture_again">अनलॉक प्रतिमान दोबारा आरेखित करें</string>
     <string name="reset_gesture">इशारा रीसेट करें</string>
@@ -82,31 +88,22 @@
     <string name="lock_1_min">1 मिनट</string>
     <string name="lock_3_min">3 मिनट</string>
     <string name="lock_5_min">5 मिनट</string>
-    <string name="app_version">संस्करण: %1$s</string>
-    <string name="backuping">बैकअप किया जा रहा है: ( %1$s )</string>
-    <string name="no_application_selected">किसी भी आवेदन का चयन नहीं</string>
-    <string name="query_delete">%1$s वसूली फ़ाइल हटाना चाहते हैं?</string>
+    <string name="app_version">संस्करण संख्या: %1$s</string>
+    <string name="backuping">बैकअप किया जा रहा है ( %1$s )</string>
+    <string name="no_application_selected">कृपया एक ऐप चुनें</string>
+    <string name="query_delete">पुनः स्थापित की जा सकने वाली फ़ाइल को हटायें %1$s?</string>
     <string name="backup_finish">बैकअप किया जाने में सफल हो गया है</string>
     <string name="backuped_count">सफलतापूर्वक %1$d ऐप बैकअप किए गए हैं: %2$s</string>
-    <string name="delete_fail">हटाएं विफल रही!</string>
-    <string name="deleting_app">हटाया जा रहा है: %1$s</string>
-    <string name="installed_app_size">स्थापित किए गए सॉफ्टवेयर: %1$d</string>
+    <string name="delete_fail">हटाना फेल</string>
+    <string name="deleting_app">हटाना: %1$s</string>
+    <string name="installed_app_size">स्थापित ऐप्स: %1$d</string>
     <string name="apk_size">साइज: %1$s</string>
-    <string name="storage_size">मोबाइल की शेष मेमोरी: %1$s</string>
-
-    <string name="unavailable">अनुपलब्ध</string>
-    <string name="bakup_fail_cancel">बैकअप रद्द कर दिया गया है</string>
-    <string name="bakup_fail_full">भंडारण अंतरिक्ष भरा है</string>
-    <string name="bakup_fail_unavailable">संग्रहण स्थान उपलब्ध नहीं है</string>
-    <string name="no_app_backuped">कोई बैकअप डेटा</string>
-    <string name="app_details">ऐप का विवरण</string>
-    <string name="app_memory">"सिस्टम अधिभोग &#058;<xliff:g>%1$s</xliff:g>"</string>
-    <string name="app_cache_size">"बफर अधिभोग&#058;<xliff:g>%1$s</xliff:g>"</string>
-    <string name="app_permission1">खतरनाक अनुमतियां</string>
-    <string name="app_permission2">जनरल अधिकार</string>
-    <string name="app_permission3">महत्वपूर्ण अधिकार</string>
-    <string name="app_setting_update">अद्यतन के लिए जाँच करें</string>
-    <string name="app_setting_about">इसके संबंध में</string>
+    <string name="storage_size">बाकी मेमोरी: %1$s</string>
+    <string name="unavailable">अवैध</string>
+    <string name="bakup_fail_cancel">पुनः स्थापित रोक</string>
+    <string name="bakup_fail_full">मेमोरी आवश्यकता से कम</string>
+    <string name="bakup_fail_unavailable">अवैध एस डी कार्ड</string>
+    <string name="no_app_backuped">कोई पुनः स्थापना दर्ज नहीं</string>
 
     <string-array name="lock_time_entrys">
         <item>@string/lock_right_now</item>
@@ -125,15 +122,22 @@
         <item>300</item>
     </string-array>
 
-    <!-- Lock option -->
-    <string name="forbid_uninstall">स्थापना रद्द करें निषेध</string>
-    <string name="auto_lock">लॉक स्क्रीन स्वचालित रूप से ताले के बाद</string>
-    <string name="change_lock_time">ताला समय बदलें</string>
-    <string name="change_passwd">पासवर्ड बदलें</string>
+    <string name="app_details">ऐप का विवरण</string>
+    <string name="app_memory">सिस्टम अधिभोग %1$s</string>
+    <string name="app_cache_size">बफर अधिभोग %1$s</string>
+    <string name="app_permission1">टॉप सीक्रेट गोपनीयता अनुमति</string>
+    <string name="app_permission2">जनरल गोपनीयता अनुमति</string>
+    <string name="app_permission3">महत्वपूर्ण गोपनीयता अनुमति</string>
+    <string name="app_setting_update">नवीनीकरण के लिए जाँच करें</string>
+    <string name="app_setting_about">जानकारी</string>
+    <string name="forbid_uninstall">रद्द से रोकें</string>
+    <string name="auto_lock">स्क्रीन लॉक करने के बाद स्वचालित रूप से ताले डालें</string>
+    <string name="change_lock_time">स्वयं ताले का समय स्थापना</string>
     <string name="passwd_protect">सुरक्षा प्रश्न</string>
-    <string name="passwd_notify">पासवर्ड संकेत</string>
+    <string name="change_passwd">पासवर्ड बदलें</string>
+    <string name="passwd_notify">पासवर्ड इशारा</string>
     
-    <string name="no_lock_item_tip">暂无加锁应用</string>
-    <string name="no_unlocked_item_tip">无未加锁应用</string>
-
+    <string name="no_lock_item_tip">कोई ताला आवेदन</string>
+    <string name="no_unlocked_item_tip">खुला कोई आवेदन</string>
+    
 </resources>

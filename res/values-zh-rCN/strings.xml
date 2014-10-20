@@ -26,7 +26,7 @@
     <string name="cancel">取消</string>
     <string name="delete">删除</string>
     <string name="passwd_set_passwd_tip">首次使用请设置四位密码</string>
-    <string name="passwd_set_gesture_tip">首次使用请设置手势</string>
+    <string name="passwd_set_gesture_tip">首次使用请设置手势（最少4个点）</string>
     <string name="passwd_hint">请输入四位数密码</string>
     <string name="tip_no_the_same_pswd">输入密码不一致，请重新输入</string>
     <string name="input_error_tip">您已输错<xliff:g>%1$s</xliff:g>次，还剩<xliff:g>%2$s</xliff:g>次机会</string>
@@ -53,6 +53,7 @@
     <string name="not_unistall">防止被卸载</string>
     <string name="lock_screen_auto_lock">锁屏后自动锁定</string>
     <string name="tips">提示</string>
+    <string name="compeletely">完成</string>
 
     <!-- acceralate -->
     <string name="clean_memory">一键加速</string>
@@ -134,7 +135,6 @@
     <string name="passwd_protect">密保问题</string>
     <string name="change_passwd">更改密码</string>
     <string name="passwd_notify">密码提示</string>
-    
     <string name="no_lock_item_tip">暂无加锁应用</string>
     <string name="no_unlocked_item_tip">没有未加锁应用</string>
 
