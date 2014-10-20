@@ -71,7 +71,7 @@
             <TextView
                 android:id="@+id/tv_save"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:layout_below="@+id/et_anwser"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="60dp"
