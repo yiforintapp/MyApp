@@ -61,7 +61,7 @@ public class AppMasterApplication extends Application {
 	}
 
 	private void iniLeoSdk() {
-		LeoStat.init(getApplicationContext(), "1", "appmaster");
+		LeoStat.init(getApplicationContext(), getString(R.string.channel_code), "appmaster");
 		LeoStat.setDebugLevel(Log.ERROR);
 		LeoStat.initUpdateEngine(UIHelper.getInstance(getApplicationContext()),
 				true);
