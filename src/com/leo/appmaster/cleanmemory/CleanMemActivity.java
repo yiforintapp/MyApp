@@ -108,12 +108,10 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 		mAllowClean = mCleaner.allowClean();
 		if (mAllowClean) {
-			mRocket.setOnTouchListener(this);
 			mRocket.setVisibility(View.VISIBLE);
 			mIvLoad.setVisibility(View.VISIBLE);
 			startLoad();
 			startTranslate();
-
 			preCleanMemory();
 		} else {
 			mTvCleanResult.setText(R.string.best_mem);
@@ -162,12 +160,13 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				mLoading = false;
-				;
 				AlphaAnimation aa = new AlphaAnimation(1f, 0.0f);
 				aa.setDuration(500);
 				aa.setFillEnabled(true);
 				aa.setFillAfter(true);
 				mIvLoad.startAnimation(aa);
+				
+				mRocket.setOnTouchListener(CleanMemActivity.this);
 			}
 		});
 		mIvLoad.startAnimation(ra);
