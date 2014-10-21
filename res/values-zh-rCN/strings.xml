@@ -74,6 +74,8 @@
     <string name="set_protect_message">"为了避免忘记密码而无法进入应用锁，建议设置密保问题，是否设置?"</string>
     <string name="reset_passwd_successful">重设成功！</string>
     <string name="find_gesture">手势找回</string>
+    <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
+    <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
     <string name="pp_success">密码保护设置成功</string>
     <string name="passwd_setting">密码设置</string>
     <string name="set_success">设置成功</string>
@@ -129,7 +131,7 @@
     <string name="app_permission2">普通权限</string>
     <string name="app_permission3">重要权限</string>
     <string name="app_setting_update">检查升级</string>
-    <string name="app_setting_update_new">&#160;&#160;&#160;检查升级<Data><![CDATA[ <b><font color="#ff0000">NEW</font></b> ]]></Data></string> 
+    <string name="app_setting_update_new">&#160;&#160;&#160;检查升级<Data><![CDATA[ <b><font color="#ff0000">NEW</font></b> ]]></Data></string>
     <string name="app_setting_about">关于</string>
     <string name="forbid_uninstall">禁止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>
