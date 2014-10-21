@@ -95,6 +95,9 @@ public class PasswdLockFragment extends LockFragment implements
 			mPasswdHint
 					.setText(mActivity.getString(R.string.passwd_hint_tip) + passwdtip);
 		}
+		if (AppLockerPreference.getInstance(mActivity).hasPswdProtect()) {
+			mFindPasswd.setVisibility(View.VISIBLE);
+		}
 
 		if (mPackage != null) {
 			mAppicon = (ImageView) findViewById(R.id.iv_app_icon);
@@ -194,11 +197,6 @@ public class PasswdLockFragment extends LockFragment implements
 				mActivity.startActivity(intent);
 				mActivity.finish();
 			} else {
-				if (pref.hasPswdProtect()
-						&& mFindPasswd.getVisibility() != View.VISIBLE) {
-					mFindPasswd.setVisibility(View.VISIBLE);
-				}
-
 				mPasswdTip.setText(String.format(
 						mActivity.getString(R.string.input_error_tip), mInputCount + "",
 						(mMaxInput - mInputCount) + ""));

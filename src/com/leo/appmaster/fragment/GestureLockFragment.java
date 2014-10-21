@@ -56,6 +56,10 @@ public class GestureLockFragment extends LockFragment implements
 		mFindGesture = (TextView) findViewById(R.id.tv_find_gesture);
 		mFindGesture.setOnClickListener(this);
 
+		if (AppLockerPreference.getInstance(mActivity).hasPswdProtect()) {
+			mFindGesture.setVisibility(View.VISIBLE);
+		}
+
 		if (mPackage != null) {
 			mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
 			mAppIcon.setImageDrawable(AppUtil.getDrawable(
@@ -143,14 +147,9 @@ public class GestureLockFragment extends LockFragment implements
 				// mInputCount = 0;
 				mActivity.finish();
 			} else {
-				if (pref.hasPswdProtect()
-						&& mFindGesture.getVisibility() != View.VISIBLE) {
-					mFindGesture.setVisibility(View.VISIBLE);
-				}
-
 				mGestureTip.setText(String.format(
-						mActivity.getString(R.string.input_error_tip), mInputCount + "",
-						(mMaxInput - mInputCount) + ""));
+						mActivity.getString(R.string.input_error_tip),
+						mInputCount + "", (mMaxInput - mInputCount) + ""));
 			}
 			mLockPatternView.clearPattern();
 		}
