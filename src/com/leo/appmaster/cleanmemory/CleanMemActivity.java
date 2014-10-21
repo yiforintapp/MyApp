@@ -303,6 +303,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void launchRocket() {
+		mRocket.setOnTouchListener(null);
+		mRocket.setClickable(false);
 		Animation ta = createRocketFly();
 		mRocket.setImageResource(R.drawable.rocket_fly);
 		mRocket.startAnimation(ta);
