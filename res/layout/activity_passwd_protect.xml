@@ -75,7 +75,7 @@
                 android:layout_below="@+id/et_anwser"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="60dp"
-                android:background="@drawable/check_update_button"
+                android:background="@drawable/mycheck_button_selecter"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="@string/save"
