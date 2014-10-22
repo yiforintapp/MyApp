@@ -48,7 +48,7 @@
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
         android:layout_marginTop="28dp"
-        android:background="@drawable/check_update_button"
+        android:background="@drawable/mycheck_button_selecter"
         android:gravity="center"
         android:text="@string/makesure"
         android:textColor="#ffffff"

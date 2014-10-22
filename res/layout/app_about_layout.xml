@@ -72,7 +72,7 @@
             android:layout_gravity="center"
             android:textColor="@android:color/white"
             android:textSize="18dp"
-            android:background="@drawable/check_update_button"
+            android:background="@drawable/mycheck_button_selecter"
             android:text="@string/check_update" />
         
     </LinearLayout>
