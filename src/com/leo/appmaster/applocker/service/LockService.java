@@ -3,15 +3,10 @@ package com.leo.appmaster.applocker.service;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
 
 import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
@@ -27,14 +22,12 @@ public class LockService extends Service {
 
 	private static final String TAG = "LockService";
 	public static final String EXTRA_STARTUP_FROM = "start_from";
-	private final int NOTIFY_ID = 1000;
 
 	private boolean mServiceStarted;
 
 	private Timer mTimer;
 	private TimerTask mDetectTask;
 	private LockHandler mLockHandler;
-//	private NotificationManager mNM;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -43,19 +36,6 @@ public class LockService extends Service {
 
 	@Override
 	public void onCreate() {
-		// Notification notification = new Notification(R.drawable.ic_launcher,
-		// "leo applocker", System.currentTimeMillis());
-		// PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-		// new Intent(this, LockScreenActivity.class), 0);
-		//
-		// notification.setLatestEventInfo(this, "leo applocker",
-		// "leo applocker is servicing", contentIntent);
-		//
-		// mNM = (NotificationManager) getApplicationContext().getSystemService(
-		// Context.NOTIFICATION_SERVICE);
-		// mNM.notify(NOTIFY_ID, notification);
-		// startForeground(NOTIFY_ID, notification);
-
 		mLockHandler = new LockHandler(getApplicationContext());
 		mLockHandler.setLockPolicy(new TimeoutRelockPolicy(
 				getApplicationContext()));
@@ -112,8 +92,6 @@ public class LockService extends Service {
 	@Override
 	public void onDestroy() {
 		stopLockService();
-		// stopForeground(true);
-//		mNM.cancel(NOTIFY_ID);
 		this.getApplicationContext().unregisterReceiver(mLockHandler);
 		super.onDestroy();
 	}
