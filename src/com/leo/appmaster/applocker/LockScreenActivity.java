@@ -64,7 +64,7 @@ public class LockScreenActivity extends FragmentActivity {
 					getPackageManager(),
 					intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
 
-			setAppInfoBackground(bd);
+					setAppInfoBackground(bd);
 		}
 
 		mFragment.setFrom(mFrom);
