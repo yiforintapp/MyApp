@@ -129,7 +129,9 @@
         </activity>
         <!-- add for the app update of leosdk -->
 
-        <service android:name="com.leo.appmaster.applocker.service.LockService" >
+        <service
+            android:name="com.leo.appmaster.applocker.service.LockService"
+            android:exported="true" >
         </service>
 
         <receiver android:name="com.leo.appmaster.applocker.receiver.StartupReceiver" >
