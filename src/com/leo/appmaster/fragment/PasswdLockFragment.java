@@ -183,10 +183,13 @@ public class PasswdLockFragment extends LockFragment implements
 				// try start lock service
 				intent = new Intent(mActivity, LockService.class);
 				mActivity.startService(intent);
-//				if (mPackage.equals(mActivity.getPackageName())) {
-//
-//				}
-				intent = new Intent(mActivity, AppLockListActivity.class);
+
+				if (LockOptionActivity.class.getName().equals(mActivityName)) {
+					intent = new Intent(mActivity, LockOptionActivity.class);
+				} else {
+					intent = new Intent(mActivity, AppLockListActivity.class);
+				}
+
 				mActivity.startActivity(intent);
 			} else if (mFrom == LockFragment.FROM_OTHER) {
 				unlockSucceed(mPackage);

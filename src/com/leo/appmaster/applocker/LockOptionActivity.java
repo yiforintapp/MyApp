@@ -13,10 +13,12 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
 
@@ -25,10 +27,12 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 	private CommonTitleBar mTtileBar;
 	private SharedPreferences mSp;
-	private Preference mLockTime, mResetPasswd;
+	private Preference mLockTime, mResetPasswd, mChangeProtectQuestion,
+			mChangePasswdTip;
 
 	private CheckBoxPreference mForbidUninstall, mAutoLock;
 	private Preference mSetProtect;
+	private boolean mGotoSetting;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +49,14 @@ public class LockOptionActivity extends PreferenceActivity implements
 		mSetProtect = findPreference(AppLockerPreference.PREF_SET_PROTECT);
 		mLockTime = (Preference) findPreference(AppLockerPreference.PREF_RELOCK_TIME);
 		mResetPasswd = (Preference) findPreference("change_passwd");
+		mChangeProtectQuestion = (Preference) findPreference("set_passwd_protect");
+		mChangePasswdTip = (Preference) findPreference("set_passwd_tip");
 		mResetPasswd.setOnPreferenceClickListener(this);
 		mForbidUninstall.setOnPreferenceChangeListener(this);
 		mAutoLock.setOnPreferenceChangeListener(this);
 		mLockTime.setOnPreferenceClickListener(this);
+		mChangeProtectQuestion.setOnPreferenceClickListener(this);
+		mChangePasswdTip.setOnPreferenceClickListener(this);
 	}
 
 	private boolean isAdminActive() {
@@ -59,6 +67,33 @@ public class LockOptionActivity extends PreferenceActivity implements
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+
+		Log.e("xxxx", "LockOptionActivity onRestart:  mGotoSetting = "
+				+ mGotoSetting);
+
+		if (!mGotoSetting) {
+			Intent intent = new Intent(this, LockScreenActivity.class);
+			int lockType = AppLockerPreference.getInstance(this).getLockType();
+			if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+				intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+						LockFragment.LOCK_TYPE_PASSWD);
+			} else {
+				intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+						LockFragment.LOCK_TYPE_GESTURE);
+			}
+			intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+					LockFragment.FROM_SELF);
+			intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
+					LockOptionActivity.class.getName());
+			startActivity(intent);
+			finish();
+		}
+		mGotoSetting = false;
 	}
 
 	@Override
@@ -98,6 +133,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		String key = preference.getKey();
 		if (AppLockerPreference.PREF_FORBIND_UNINSTALL.equals(key)) {
+			mGotoSetting = true;
 			Intent intent = null;
 			ComponentName component = new ComponentName(this,
 					DeviceReceiver.class);
@@ -129,8 +165,17 @@ public class LockOptionActivity extends PreferenceActivity implements
 			onCreateChoiceDialog(AppLockerPreference.getInstance(this)
 					.getRelockTimeout());
 		} else if ("change_passwd".equals(key)) {
+			mGotoSetting = true;
 			Intent intent = new Intent(this, LockSettingActivity.class);
 			intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
+			startActivity(intent);
+		} else if ("set_passwd_protect".equals(key)) {
+			mGotoSetting = true;
+			Intent intent = new Intent(this, PasswdProtectActivity.class);
+			startActivity(intent);
+		} else if ("set_passwd_tip".equals(key)) {
+			mGotoSetting = true;
+			Intent intent = new Intent(this, PasswdTipActivity.class);
 			startActivity(intent);
 		}
 

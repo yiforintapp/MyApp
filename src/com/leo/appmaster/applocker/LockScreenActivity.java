@@ -27,6 +27,7 @@ public class LockScreenActivity extends FragmentActivity {
 
 	public static String EXTRA_UNLOCK_FROM = "extra_unlock_from";
 	public static String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
+	public static String EXTRA_FROM_ACTIVITY = "extra_form_activity";
 
 	int mFrom;
 
@@ -70,29 +71,29 @@ public class LockScreenActivity extends FragmentActivity {
 		mFragment.setFrom(mFrom);
 		mFragment.setPackage(intent
 				.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
+		mFragment.setActivity(intent.getStringExtra(EXTRA_FROM_ACTIVITY));
 	}
 
-	   private void setAppInfoBackground(Drawable drawable) {        
-	        int h = drawable.getIntrinsicHeight() * 9 / 10;
-	        int w = h * 3 / 5;
-	        mAppBaseInfoLayoutbg = Bitmap.createBitmap(
-	                w,
-	                h,
-	                Bitmap.Config.ARGB_8888);
-	        Canvas canvas = new Canvas(mAppBaseInfoLayoutbg);
-	        canvas.drawColor(Color.WHITE);
-	        drawable.setBounds(-(drawable.getIntrinsicWidth()  - w) / 2, -(drawable.getIntrinsicHeight() - h) / 2, (drawable.getIntrinsicWidth()  - w) / 2 + w, (drawable.getIntrinsicHeight() - h) / 2 + h);
-	        drawable.draw(canvas);
-	        canvas.drawColor(Color.argb(70, 0, 0, 0));
-	        mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
-	        
-	        RelativeLayout layout = (RelativeLayout)findViewById(R.id.activity_lock_layout);
-	        
-	        layout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
+	private void setAppInfoBackground(Drawable drawable) {
+		int h = drawable.getIntrinsicHeight() * 9 / 10;
+		int w = h * 3 / 5;
+		mAppBaseInfoLayoutbg = Bitmap.createBitmap(w, h,
+				Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(mAppBaseInfoLayoutbg);
+		canvas.drawColor(Color.WHITE);
+		drawable.setBounds(-(drawable.getIntrinsicWidth() - w) / 2,
+				-(drawable.getIntrinsicHeight() - h) / 2,
+				(drawable.getIntrinsicWidth() - w) / 2 + w,
+				(drawable.getIntrinsicHeight() - h) / 2 + h);
+		drawable.draw(canvas);
+		canvas.drawColor(Color.argb(70, 0, 0, 0));
+		mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
 
+		RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
 
-	    }
-	
+		layout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
+
+	}
 
 	@Override
 	protected void onDestroy() {

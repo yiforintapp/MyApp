@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.AppLockerPreference;
+import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
@@ -34,6 +35,7 @@ public class GestureSettingFragment extends BaseFragment implements
 	private int mInputCount = 1;
 	private String mTempGesture1, mTempGesture2;
 	private boolean mGotoPasswdProtect;
+	private String mActivityName;
 
 	@Override
 	protected int layoutResourceId() {
@@ -63,6 +65,10 @@ public class GestureSettingFragment extends BaseFragment implements
 		default:
 			break;
 		}
+	}
+
+	public void setActivityName(String name) {
+		mActivityName = name;
 	}
 
 	private void resetGesture() {
@@ -127,7 +133,14 @@ public class GestureSettingFragment extends BaseFragment implements
 						.hasPswdProtect()) {
 					showGestureProtectDialog();
 				} else {
-					intent = new Intent(mActivity, AppLockListActivity.class);
+
+					if (LockOptionActivity.class.getName()
+							.equals(mActivityName)) {
+						intent = new Intent(mActivity, LockOptionActivity.class);
+					} else {
+						intent = new Intent(mActivity,
+								AppLockListActivity.class);
+					}
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					mActivity.startActivity(intent);
 				}
@@ -180,7 +193,7 @@ public class GestureSettingFragment extends BaseFragment implements
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
 			mActivity.startActivity(intent);
 		} else if (((LockSettingActivity) mActivity).isResetPasswd()) {
-//			mActivity.finish();
+			// mActivity.finish();
 		} else {
 			intent = new Intent(mActivity, AppLockListActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

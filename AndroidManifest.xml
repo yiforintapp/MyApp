@@ -79,7 +79,6 @@
         <activity
             android:name="com.leo.appmaster.applocker.LockOptionActivity"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/Theme" >
         </activity>
         <activity

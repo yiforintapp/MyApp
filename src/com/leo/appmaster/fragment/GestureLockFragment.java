@@ -130,8 +130,11 @@ public class GestureLockFragment extends LockFragment implements
 				// try start lock service
 				intent = new Intent(mActivity, LockService.class);
 				mActivity.startService(intent);
-
-				intent = new Intent(mActivity, AppLockListActivity.class);
+				if (LockOptionActivity.class.getName().equals(mActivityName)) {
+					intent = new Intent(mActivity, LockOptionActivity.class);
+				} else {
+					intent = new Intent(mActivity, AppLockListActivity.class);
+				}
 				mActivity.startActivity(intent);
 			} else if (mFrom == FROM_OTHER) {
 				// input right gesture, just finish self

@@ -19,9 +19,14 @@ public abstract class LockFragment extends BaseFragment {
 	protected int mInputCount = 0;
 
 	protected String mPackage;
+	protected String mActivityName;
 
 	public void setPackage(String pkg) {
 		mPackage = pkg;
+	}
+
+	public void setActivity(String activity) {
+		mActivityName = activity;
 	}
 
 	public void setLockType(int type) {
@@ -39,4 +44,5 @@ public abstract class LockFragment extends BaseFragment {
 	}
 
 	public abstract void onNewIntent(Intent intent);
+
 }

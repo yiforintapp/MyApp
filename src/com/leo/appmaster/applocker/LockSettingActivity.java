@@ -26,9 +26,12 @@ public class LockSettingActivity extends FragmentActivity implements
 	private TextView mTvSwitch;
 	private CommonTitleBar mTitleBar;
 	FragmentManager mFm;
-	Fragment mPasswd, mGesture;
+	PasswdSettingFragment mPasswd;
+	GestureSettingFragment mGesture;
 
 	private boolean mResetFlag;
+
+	private String mFromActivity;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -42,11 +45,15 @@ public class LockSettingActivity extends FragmentActivity implements
 	private void handleIntent() {
 		Intent intent = getIntent();
 		mResetFlag = intent.getBooleanExtra(RESET_PASSWD_FLAG, false);
+		mFromActivity = intent
+				.getStringExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY);
 	}
 
 	private void initFragment() {
 		mPasswd = new PasswdSettingFragment();
 		mGesture = new GestureSettingFragment();
+		mPasswd.setActivityName(mFromActivity);
+		mGesture.setActivityName(mFromActivity);
 		mFm = getSupportFragmentManager();
 		FragmentTransaction tans = mFm.beginTransaction();
 		int type = AppLockerPreference.getInstance(this).getLockType();

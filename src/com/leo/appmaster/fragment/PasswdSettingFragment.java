@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.AppLockerPreference;
+import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.service.LockService;
@@ -34,6 +35,8 @@ public class PasswdSettingFragment extends BaseFragment implements
 	private String mTempSecondPasswd = "";
 
 	private boolean mGotoPasswdProtect;
+
+	protected String mActivityName;
 
 	@Override
 	protected int layoutResourceId() {
@@ -127,6 +130,10 @@ public class PasswdSettingFragment extends BaseFragment implements
 		}
 	}
 
+	public void setActivityName(String name) {
+		mActivityName = name;
+	}
+	
 	private void makesurePasswd() {
 		mTvPasswd1.postDelayed(new Runnable() {
 			@Override
@@ -155,8 +162,14 @@ public class PasswdSettingFragment extends BaseFragment implements
 								.hasPswdProtect()) {
 							setPasswdProtect();
 						} else {
-							intent = new Intent(mActivity,
-									AppLockListActivity.class);
+							if (LockOptionActivity.class.getName().equals(
+									mActivityName)) {
+								intent = new Intent(mActivity,
+										LockOptionActivity.class);
+							} else {
+								intent = new Intent(mActivity,
+										AppLockListActivity.class);
+							}
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							mActivity.startActivity(intent);
 						}
@@ -278,9 +291,9 @@ public class PasswdSettingFragment extends BaseFragment implements
 			mActivity.startActivity(intent);
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
 			mActivity.startActivity(intent);
-		}  else if (((LockSettingActivity) mActivity).isResetPasswd()) {
-//			mActivity.finish();
-			
+		} else if (((LockSettingActivity) mActivity).isResetPasswd()) {
+			// mActivity.finish();
+
 		} else {
 			intent = new Intent(mActivity, AppLockListActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

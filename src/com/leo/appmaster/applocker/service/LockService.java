@@ -34,7 +34,7 @@ public class LockService extends Service {
 	private Timer mTimer;
 	private TimerTask mDetectTask;
 	private LockHandler mLockHandler;
-	private NotificationManager mNM;
+//	private NotificationManager mNM;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -113,7 +113,7 @@ public class LockService extends Service {
 	public void onDestroy() {
 		stopLockService();
 		// stopForeground(true);
-		mNM.cancel(NOTIFY_ID);
+//		mNM.cancel(NOTIFY_ID);
 		this.getApplicationContext().unregisterReceiver(mLockHandler);
 		super.onDestroy();
 	}

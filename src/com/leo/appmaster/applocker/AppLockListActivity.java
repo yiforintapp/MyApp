@@ -96,6 +96,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		}
 		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 				LockFragment.FROM_SELF);
+		intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY, LockScreenActivity.class.getName());
 		startActivity(intent);
 		finish();
 	}
