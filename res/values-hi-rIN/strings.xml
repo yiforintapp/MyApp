@@ -140,7 +140,9 @@
     
     <string name="no_lock_item_tip">कोई ताला आवेदन</string>
     <string name="no_unlocked_item_tip">खुला कोई आवेदन</string>
-    
     <string name="reset_passwd_successful">सफलतापूर्वक सेट !</string>
+    
+    <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
+    <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
     
 </resources>

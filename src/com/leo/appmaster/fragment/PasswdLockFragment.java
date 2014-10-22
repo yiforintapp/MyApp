@@ -92,8 +92,11 @@ public class PasswdLockFragment extends LockFragment implements
 		if (passwdtip == null || passwdtip.trim().equals("")) {
 			mPasswdHint.setVisibility(View.INVISIBLE);
 		} else {
-			mPasswdHint
-					.setText(mActivity.getString(R.string.passwd_hint_tip) + passwdtip);
+			mPasswdHint.setText(mActivity.getString(R.string.passwd_hint_tip)
+					+ passwdtip);
+		}
+		if (AppLockerPreference.getInstance(mActivity).hasPswdProtect()) {
+			mFindPasswd.setVisibility(View.VISIBLE);
 		}
 
 		if (mPackage != null) {
@@ -180,7 +183,9 @@ public class PasswdLockFragment extends LockFragment implements
 				// try start lock service
 				intent = new Intent(mActivity, LockService.class);
 				mActivity.startService(intent);
-
+//				if (mPackage.equals(mActivity.getPackageName())) {
+//
+//				}
 				intent = new Intent(mActivity, AppLockListActivity.class);
 				mActivity.startActivity(intent);
 			} else if (mFrom == LockFragment.FROM_OTHER) {
@@ -194,14 +199,9 @@ public class PasswdLockFragment extends LockFragment implements
 				mActivity.startActivity(intent);
 				mActivity.finish();
 			} else {
-				if (pref.hasPswdProtect()
-						&& mFindPasswd.getVisibility() != View.VISIBLE) {
-					mFindPasswd.setVisibility(View.VISIBLE);
-				}
-
 				mPasswdTip.setText(String.format(
-						mActivity.getString(R.string.input_error_tip), mInputCount + "",
-						(mMaxInput - mInputCount) + ""));
+						mActivity.getString(R.string.input_error_tip),
+						mInputCount + "", (mMaxInput - mInputCount) + ""));
 			}
 			clearPasswd();
 		}

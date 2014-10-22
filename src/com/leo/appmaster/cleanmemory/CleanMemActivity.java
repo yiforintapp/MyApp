@@ -1,7 +1,7 @@
 package com.leo.appmaster.cleanmemory;
 
 import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
@@ -16,7 +16,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
@@ -28,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.RocketDock;
 import com.leo.appmaster.ui.ShadeView;
@@ -108,12 +108,10 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 		mAllowClean = mCleaner.allowClean();
 		if (mAllowClean) {
-			mRocket.setOnTouchListener(this);
 			mRocket.setVisibility(View.VISIBLE);
 			mIvLoad.setVisibility(View.VISIBLE);
 			startLoad();
 			startTranslate();
-
 			preCleanMemory();
 		} else {
 			mTvCleanResult.setText(R.string.best_mem);
@@ -149,25 +147,22 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);
 		ra.setDuration(duration);
-		ra.setAnimationListener(new AnimationListener() {
+		ra.setAnimationListener(new AnimationListenerAdapter() {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				mLoading = true;
 			}
 
 			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-
-			@Override
 			public void onAnimationEnd(Animation animation) {
 				mLoading = false;
-				;
 				AlphaAnimation aa = new AlphaAnimation(1f, 0.0f);
 				aa.setDuration(500);
 				aa.setFillEnabled(true);
 				aa.setFillAfter(true);
 				mIvLoad.startAnimation(aa);
+
+				mRocket.setOnTouchListener(CleanMemActivity.this);
 			}
 		});
 		mIvLoad.startAnimation(ra);
@@ -225,16 +220,16 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void cleanMemory() {
-        synchronized (lock) {
-            launchRocket();
-            mCleaner.tryClean(this);
-            showOK();
-            long curUsedMem = mCleaner.getCurUsedMem();
-            mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-            startUpdataMemTip(curUsedMem);
-            mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
-            mAllowClean = false;
-        }
+		synchronized (lock) {
+			launchRocket();
+			mCleaner.tryClean(this);
+			showOK();
+			long curUsedMem = mCleaner.getCurUsedMem();
+			mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+			startUpdataMemTip(curUsedMem);
+			mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
+			mAllowClean = false;
+		}
 	}
 
 	private void showOK() {
@@ -250,14 +245,10 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		as.addAnimation(sa);
 		as.addAnimation(aa);
 
-		as.setAnimationListener(new AnimationListener() {
+		as.setAnimationListener(new AnimationListenerAdapter() {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				mTvAccelerate.setVisibility(View.INVISIBLE);
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
 			}
 
 			@Override
@@ -269,15 +260,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 						1.0f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
 						ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
 				show.setDuration(500);
-				show.setAnimationListener(new AnimationListener() {
-					@Override
-					public void onAnimationStart(Animation animation) {
-					}
-
-					@Override
-					public void onAnimationRepeat(Animation animation) {
-					}
-
+				show.setAnimationListener(new AnimationListenerAdapter() {
 					@Override
 					public void onAnimationEnd(Animation animation) {
 						mRocket.setVisibility(View.INVISIBLE);
@@ -303,6 +286,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void launchRocket() {
+		mRocket.setOnTouchListener(null);
+		mRocket.setClickable(false);
 		Animation ta = createRocketFly();
 		mRocket.setImageResource(R.drawable.rocket_fly);
 		mRocket.startAnimation(ta);
@@ -314,24 +299,6 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		ta.setFillEnabled(true);
 		ta.setFillAfter(true);
 		ta.setInterpolator(new AccelerateInterpolator());
-		ta.setAnimationListener(new AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				// mRocket.setVisibility(View.GONE);
-				// ViewGroup vg = (ViewGroup) mRocket.getParent();
-				// vg.removeView(mRocket);
-				// mRocket.setOnTouchListener(null);
-				// mRocket.setEnabled(false);
-			}
-		});
 		return ta;
 	}
 
@@ -440,19 +407,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 				}
 			});
 
-			down.addListener(new AnimatorListener() {
-				@Override
-				public void onAnimationStart(Animator arg0) {
-				}
-
-				@Override
-				public void onAnimationRepeat(Animator arg0) {
-				}
-
-				@Override
-				public void onAnimationCancel(Animator arg0) {
-				}
-
+			down.addListener(new AnimatorListenerAdapter() {
 				@Override
 				public void onAnimationEnd(Animator arg0) {
 					up.start();
@@ -466,19 +421,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 					updateMem();
 				}
 			});
-			up.addListener(new AnimatorListener() {
-				@Override
-				public void onAnimationStart(Animator arg0) {
-				}
-
-				@Override
-				public void onAnimationRepeat(Animator arg0) {
-				}
-
-				@Override
-				public void onAnimationCancel(Animator arg0) {
-				}
-
+			up.addListener(new AnimatorListenerAdapter() {
 				@Override
 				public void onAnimationEnd(Animator arg0) {
 					mUpdating = false;

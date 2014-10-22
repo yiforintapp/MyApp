@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.Interpolator;
 import android.view.animation.ScaleAnimation;
@@ -40,6 +39,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoGridView;
 import com.leo.appmaster.ui.PagedGridView;
 import com.leoers.leoanalytics.LeoStat;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 
 public class AppLockListActivity extends Activity implements AppChangeListener,
 		OnItemClickListener, OnClickListener {
@@ -304,7 +304,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		// + ",   targetX = " + targetX + ",  targetY = " + targetY);
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
-		animation.setAnimationListener(new FlyAnimaListener());
+		animation.setAnimationListener(new FlyAnimaEndListener());
 		mIvAnimator.setVisibility(View.VISIBLE);
 		mIvAnimator.setImageDrawable(drawable);
 		mIvAnimator.startAnimation(animation);
@@ -325,7 +325,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
-		animation.setAnimationListener(new FlyAnimaListener());
+		animation.setAnimationListener(new FlyAnimaEndListener());
 
 		mIvAnimator.setVisibility(View.VISIBLE);
 		mIvAnimator.setImageDrawable(drawable);
@@ -361,34 +361,10 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		ScaleAnimation sa = new ScaleAnimation(1.0f, mScale, 1.0f, mScale);
 		set.addAnimation(sa);
 		set.addAnimation(ta);
-
-		// AnimationSet set = new AnimationSet(false);
-		// set.setDuration(500);
-		//
-		// TranslateAnimation ta = new TranslateAnimation(orgX, targetX, orgY,
-		// tragetY);
-		// ScaleAnimation sa = new ScaleAnimation(1.0f, mScale, 1.0f, mScale);
-		// AlphaAnimation aa = new AlphaAnimation(1f, 0.0f);
-		//
-		// ta.setInterpolator(new AccelerateDecelerateInterpolator());
-		// sa.setInterpolator(new AccelerateDecelerateInterpolator());
-		// aa.setInterpolator(new AccelerateInterpolator());
 		return set;
 	}
 
-	private class FlyAnimaListener implements AnimationListener {
-
-		public FlyAnimaListener() {
-		}
-
-		@Override
-		public void onAnimationStart(Animation animation) {
-		}
-
-		@Override
-		public void onAnimationRepeat(Animation animation) {
-		}
-
+	private class FlyAnimaEndListener extends AnimationListenerAdapter {
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			mIvAnimator.setVisibility(View.INVISIBLE);

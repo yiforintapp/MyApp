@@ -86,7 +86,10 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	public void savePassword(String password) {
-		mPassword = password;
+		mPassword = "";
+		if (password != null) {
+			mPassword = password.trim();
+		}
 		mPref.edit().putString(PREF_PASSWORD, password).commit();
 		mPref.edit().putInt(PREF_LOCK_TYPE, LOCK_TYPE_PASSWD).commit();
 		mLockType = LOCK_TYPE_PASSWD;
@@ -162,6 +165,14 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	public void savePasswdProtect(String qusetion, String answer, String tip) {
+
+		if (qusetion != null)
+			qusetion = qusetion.trim();
+		if (answer != null)
+			answer = answer.trim();
+		if (tip != null)
+			tip = tip.trim();
+
 		mPref.edit().putBoolean(PREF_HAVE_PSWD_PROTECTED, true).commit();
 		mPref.edit().putString(PREF_PASSWD_QUESTION, qusetion).commit();
 		mPref.edit().putString(PREF_PASSWD_ANWSER, answer).commit();

@@ -127,7 +127,7 @@ public class LeoDoubleLinesInputDialog extends LEOBaseDialog {
 				if (mListener != null) {
 					mListener.onClick(arg1);
 				}
-				dialog.dismiss();
+//				dialog.dismiss();
 			}
 		};
 		setLeftBtnListener(listener);
