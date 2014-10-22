@@ -1,7 +1,7 @@
 package com.leo.appmaster.model;
 
 import android.graphics.drawable.Drawable;
-
+// app class
 public class BaseInfo {
 	/*
 	 * app package name

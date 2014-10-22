@@ -430,9 +430,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 							getString(R.string.clean_result),
 							TextFormater.dataSizeFormat(mCleaner
 									.getLastCleanMem()) + "");
-					Toast.makeText(CleanMemActivity.this, s, Toast.LENGTH_SHORT)
-							.show();
-
+					Toast.makeText(CleanMemActivity.this, s, Toast.LENGTH_SHORT).show();
 					mTvCleanResult.setText(s);
 				}
 			});

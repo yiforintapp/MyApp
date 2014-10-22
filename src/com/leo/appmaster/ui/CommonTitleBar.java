@@ -40,7 +40,6 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mTvTitle = (TextView) findViewById(R.id.tv_title);
         mTvOptionText = (TextView) findViewById(R.id.tv_option_text);
         mTvOptionImage = (ImageView) findViewById(R.id.tv_option_image);
-
         super.onFinishInflate();
     }
 
@@ -76,7 +75,6 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mTvOptionText.setOnClickListener(listener);
         mTvOptionImage.setOnClickListener(listener);
     }
-
     public void openBackView() {
         mLayoutBackView.setOnClickListener(this);
     }
@@ -92,5 +90,4 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         }
 
     }
-
 }

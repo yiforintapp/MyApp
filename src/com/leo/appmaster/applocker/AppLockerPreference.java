@@ -160,7 +160,6 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 			mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
 		} else if (PREF_RELOCK_TIME.equals(key)) {
 			// String s = mPref.getString(PREF_RELOCK_TIME, "-1");
-
 			int re = getRelockTimeout();
 		}
 	}
@@ -183,7 +182,6 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	public void setAtuoLock(boolean autoLock) {
 		mPref.edit().putBoolean(PREF_AUTO_LOCK, autoLock).commit();
 	}
-
 	public boolean isAutoLock() {
 		return mPref.getBoolean(PREF_AUTO_LOCK, false);
 	}

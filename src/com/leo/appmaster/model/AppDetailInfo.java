@@ -1,7 +1,7 @@
 
 package com.leo.appmaster.model;
 
-
+// app Detail info
 public class AppDetailInfo extends BaseInfo {
     /*
      * app cache info
