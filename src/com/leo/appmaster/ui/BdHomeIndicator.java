@@ -25,7 +25,6 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 
 /**

@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.leo.appmaster.utils.LeoLog;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -48,7 +50,6 @@ import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityRecordCompat;
 import android.support.v4.widget.EdgeEffectCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.FocusFinder;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -638,13 +639,13 @@ public class LeoAppViewPager extends ViewGroup {
                     mSetChildrenDrawingOrderEnabled = ViewGroup.class.getDeclaredMethod(
                             "setChildrenDrawingOrderEnabled", new Class[] { Boolean.TYPE });
                 } catch (NoSuchMethodException e) {
-                    Log.e(TAG, "Can't find setChildrenDrawingOrderEnabled", e);
+                	LeoLog.e(TAG, "Can't find setChildrenDrawingOrderEnabled", e);
                 }
             }
             try {
                 mSetChildrenDrawingOrderEnabled.invoke(this, enable);
             } catch (Exception e) {
-                Log.e(TAG, "Error changing children drawing order", e);
+            	LeoLog.e(TAG, "Error changing children drawing order", e);
             }
         }
     }
@@ -698,7 +699,7 @@ public class LeoAppViewPager extends ViewGroup {
      */
     public void setOffscreenPageLimit(int limit) {
         if (limit < DEFAULT_OFFSCREEN_PAGES) {
-            Log.w(TAG, "Requested offscreen page limit " + limit + " too small; defaulting to " +
+        	LeoLog.w(TAG, "Requested offscreen page limit " + limit + " too small; defaulting to " +
                     DEFAULT_OFFSCREEN_PAGES);
             limit = DEFAULT_OFFSCREEN_PAGES;
         }
@@ -945,7 +946,7 @@ public class LeoAppViewPager extends ViewGroup {
         // fling to a new position until we have finished the scroll to
         // that position, avoiding glitches from happening at that point.
         if (mPopulatePending) {
-            if (DEBUG) Log.i(TAG, "populate is pending, skipping for now...");
+            if (DEBUG) LeoLog.i(TAG, "populate is pending, skipping for now...");
             sortChildDrawingOrder();
             return;
         }
@@ -1013,7 +1014,7 @@ public class LeoAppViewPager extends ViewGroup {
                         mItems.remove(itemIndex);
                         mAdapter.destroyItem(this, pos, ii.object);
                         if (DEBUG) {
-                            Log.i(TAG, "populate() - destroyItem() with pos: " + pos +
+                        	LeoLog.i(TAG, "populate() - destroyItem() with pos: " + pos +
                                     " view: " + ((View) ii.object));
                         }
                         itemIndex--;
@@ -1047,7 +1048,7 @@ public class LeoAppViewPager extends ViewGroup {
                             mItems.remove(itemIndex);
                             mAdapter.destroyItem(this, pos, ii.object);
                             if (DEBUG) {
-                                Log.i(TAG, "populate() - destroyItem() with pos: " + pos +
+                            	LeoLog.i(TAG, "populate() - destroyItem() with pos: " + pos +
                                         " view: " + ((View) ii.object));
                             }
                             ii = itemIndex < mItems.size() ? mItems.get(itemIndex) : null;
@@ -1069,9 +1070,9 @@ public class LeoAppViewPager extends ViewGroup {
         }
 
         if (DEBUG) {
-            Log.i(TAG, "Current page list:");
+        	LeoLog.i(TAG, "Current page list:");
             for (int i=0; i<mItems.size(); i++) {
-                Log.i(TAG, "#" + i + ": page " + mItems.get(i).position);
+            	LeoLog.i(TAG, "#" + i + ": page " + mItems.get(i).position);
             }
         }
 
@@ -1453,7 +1454,7 @@ public class LeoAppViewPager extends ViewGroup {
         for (int i = 0; i < size; ++i) {
             final View child = getChildAt(i);
             if (child.getVisibility() != GONE) {
-                if (DEBUG) Log.v(TAG, "Measuring #" + i + " " + child
+                if (DEBUG) LeoLog.v(TAG, "Measuring #" + i + " " + child
                         + ": " + mChildWidthMeasureSpec);
 
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
@@ -1595,7 +1596,7 @@ public class LeoAppViewPager extends ViewGroup {
                                 MeasureSpec.EXACTLY);
                         child.measure(widthSpec, heightSpec);
                     }
-                    if (DEBUG) Log.v(TAG, "Positioning #" + i + " " + child + " f=" + ii.object
+                    if (DEBUG) LeoLog.v(TAG, "Positioning #" + i + " " + child + " f=" + ii.object
                             + ":" + childLeft + "," + childTop + " " + child.getMeasuredWidth()
                             + "x" + child.getMeasuredHeight());
                     child.layout(childLeft, childTop,
@@ -1801,7 +1802,7 @@ public class LeoAppViewPager extends ViewGroup {
         // Always take care of the touch gesture being complete.
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
             // Release the drag.
-            if (DEBUG) Log.v(TAG, "Intercept done!");
+            if (DEBUG) LeoLog.v(TAG, "Intercept done!");
             mIsBeingDragged = false;
             mIsUnableToDrag = false;
             mActivePointerId = INVALID_POINTER;
@@ -1816,11 +1817,11 @@ public class LeoAppViewPager extends ViewGroup {
         // are dragging.
         if (action != MotionEvent.ACTION_DOWN) {
             if (mIsBeingDragged) {
-                if (DEBUG) Log.v(TAG, "Intercept returning true!");
+                if (DEBUG) LeoLog.v(TAG, "Intercept returning true!");
                 return true;
             }
             if (mIsUnableToDrag) {
-                if (DEBUG) Log.v(TAG, "Intercept returning false!");
+                if (DEBUG) LeoLog.v(TAG, "Intercept returning false!");
                 return false;
             }
         }
@@ -1848,7 +1849,7 @@ public class LeoAppViewPager extends ViewGroup {
                 final float xDiff = Math.abs(dx);
                 final float y = MotionEventCompat.getY(ev, pointerIndex);
                 final float yDiff = Math.abs(y - mInitialMotionY);
-                if (DEBUG) Log.v(TAG, "Moved x to " + x + "," + y + " diff=" + xDiff + "," + yDiff);
+                if (DEBUG) LeoLog.v(TAG, "Moved x to " + x + "," + y + " diff=" + xDiff + "," + yDiff);
 
 //                if (dx != 0 && !isGutterDrag(mLastMotionX, dx) &&
 //                        canScroll(this, false, (int) dx, (int) x, (int) y)) {
@@ -1859,7 +1860,7 @@ public class LeoAppViewPager extends ViewGroup {
 //                    return false;
 //                }
                 if (xDiff > mTouchSlop || yDiff > mTouchSlop) {
-                    if (DEBUG) Log.v(TAG, "Starting drag!");
+                    if (DEBUG) LeoLog.v(TAG, "Starting drag!");
                     mIsBeingDragged = true;
                     requestParentDisallowInterceptTouchEvent(true);
                     setScrollState(SCROLL_STATE_DRAGGING);
@@ -1873,7 +1874,7 @@ public class LeoAppViewPager extends ViewGroup {
 //                    // direction to be counted as a drag...  abort
 //                    // any attempt to drag horizontally, to work correctly
 //                    // with children that have scrolling containers.
-//                    if (DEBUG) Log.v(TAG, "Starting unable to drag!");
+//                    if (DEBUG) LeoLog.v(TAG, "Starting unable to drag!");
 //                    mIsUnableToDrag = true;
 //                }
                 if (mIsBeingDragged) {
@@ -1910,7 +1911,7 @@ public class LeoAppViewPager extends ViewGroup {
                     mIsBeingDragged = false;
                 }
 
-                if (DEBUG) Log.v(TAG, "Down at " + mLastMotionX + "," + mLastMotionY
+                if (DEBUG) LeoLog.v(TAG, "Down at " + mLastMotionX + "," + mLastMotionY
                         + " mIsBeingDragged=" + mIsBeingDragged
                         + "mIsUnableToDrag=" + mIsUnableToDrag);
                 break;
@@ -1980,9 +1981,9 @@ public class LeoAppViewPager extends ViewGroup {
                     final float xDiff = Math.abs(x - mLastMotionX);
                     final float y = MotionEventCompat.getY(ev, pointerIndex);
                     final float yDiff = Math.abs(y - mLastMotionY);
-                    if (DEBUG) Log.v(TAG, "Moved x to " + x + "," + y + " diff=" + xDiff + "," + yDiff);
+                    if (DEBUG) LeoLog.v(TAG, "Moved x to " + x + "," + y + " diff=" + xDiff + "," + yDiff);
                     if (xDiff > mTouchSlop || yDiff > mTouchSlop) {
-                        if (DEBUG) Log.v(TAG, "Starting drag!");
+                        if (DEBUG) LeoLog.v(TAG, "Starting drag!");
                         mIsBeingDragged = true;
                         requestParentDisallowInterceptTouchEvent(true);
                         mLastMotionX = x - mInitialMotionX > 0 ? mInitialMotionX + mTouchSlop :
@@ -2544,7 +2545,7 @@ public class LeoAppViewPager extends ViewGroup {
                         parent = parent.getParent()) {
                     sb.append(" => ").append(parent.getClass().getSimpleName());
                 }
-                Log.e(TAG, "arrowScroll tried to find focus based on non-child " +
+                LeoLog.e(TAG, "arrowScroll tried to find focus based on non-child " +
                         "current focused view " + sb.toString());
                 currentFocused = null;
             }

@@ -57,6 +57,7 @@ public class LockService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		Log.e("xxxx", "onStartCommand");
 		if (!mServiceStarted) {
 			startLockService(intent);
 		}
@@ -93,6 +94,8 @@ public class LockService extends Service {
 	public void onDestroy() {
 		stopLockService();
 		this.getApplicationContext().unregisterReceiver(mLockHandler);
+		sendBroadcast(new Intent("com.leo.appmaster.restart"));
+		Log.e("xxxx", "onDestroy");
 		super.onDestroy();
 	}
 

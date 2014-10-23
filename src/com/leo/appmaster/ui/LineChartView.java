@@ -67,7 +67,6 @@ public class LineChartView  { // extends GraphicalView {
 //			
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
-//			Log.e(TAG, e.toString());
 //		}
 //	}
 //	private void chartDataSet()
@@ -125,7 +124,6 @@ public class LineChartView  { // extends GraphicalView {
 //	        //设置绘图区内边距	  	        
 //            chart.render(canvas);
 //        } catch (Exception e){
-//        	Log.e(TAG, e.toString());
 //        }
 //    }
 //

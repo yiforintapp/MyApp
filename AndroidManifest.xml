@@ -129,7 +129,9 @@
         </activity>
         <!-- add for the app update of leosdk -->
 
-        <service android:name="com.leo.appmaster.applocker.service.LockService" >
+        <service
+            android:name="com.leo.appmaster.applocker.service.LockService"
+            android:exported="true" >
         </service>
 
         <receiver android:name="com.leo.appmaster.applocker.receiver.StartupReceiver" >
@@ -137,6 +139,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="com.leo.appmaster.restart" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.leo.appmaster.applocker.receiver.DeviceReceiver" >

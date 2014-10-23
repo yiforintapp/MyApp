@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Space;
 
 import com.android.internal.R;
+import com.leo.appmaster.utils.LeoLog;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -1458,7 +1458,7 @@ public class GridLayout extends ViewGroup {
 					removed.add(arc);
 				}
 			}
-			Log.d(TAG, axisName + " constraints: " + arcsToString(culprits)
+			LeoLog.d(TAG, axisName + " constraints: " + arcsToString(culprits)
 					+ " are inconsistent; " + "permanently removing: "
 					+ arcsToString(removed) + ". ");
 		}

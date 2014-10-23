@@ -9,7 +9,6 @@ import java.util.List;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
-import android.util.Log;
 
 public class ProcessUtils {
 

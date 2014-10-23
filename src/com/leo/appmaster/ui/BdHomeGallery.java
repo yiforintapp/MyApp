@@ -396,7 +396,6 @@ public class BdHomeGallery extends ViewGroup {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
-//		BdLog.e("action=" + event.getAction());
 		final int action = event.getAction();
 		if ((action == MotionEvent.ACTION_MOVE) && (mTouchState != TouchState.REST)
 				&& !isXLocked) {
@@ -440,7 +439,6 @@ public class BdHomeGallery extends ViewGroup {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-//		BdLog.e("action=" + event.getAction());
 		final int action = event.getAction();
 		final float x = event.getX();
 
@@ -467,7 +465,6 @@ public class BdHomeGallery extends ViewGroup {
 
 				final int dst = getScrollX() + deltaX;
 				deltaX = dst < mLeftEdge ? 0 : dst > mRightRdge ? 0 : deltaX;
-//				BdLog.e("--------delta x=" + deltaX);
 				scrollBy(deltaX, 0);
 				break;
 

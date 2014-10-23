@@ -11,10 +11,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.update.IUIHelper;
 import com.leoers.leoanalytics.update.UpdateManager;
 
@@ -59,7 +59,7 @@ public class UIHelper implements IUIHelper {
         filter = new IntentFilter();
         filter.addAction(ACTION_CANCEL_UPDATE);
         mContext.registerReceiver(receive, filter);
-        /* show downloading dialog */
+        /* show downloading diaLeoLog */
         filter = new IntentFilter();
         filter.addAction(ACTION_DOWNLOADING);
         mContext.registerReceiver(receive, filter);
@@ -130,7 +130,7 @@ public class UIHelper implements IUIHelper {
     }
 
     public void sendDownloadNotification(int progress) {
-        Log.d(TAG, "sendDownloadNotification called ");
+        LeoLog.d(TAG, "sendDownloadNotification called ");
         String appName = mContext.getString(R.string.app_name);
         downloadRv.setProgressBar(R.id.pb_download, 100, progress, false);
         downloadRv.setTextViewText(
@@ -219,7 +219,7 @@ public class UIHelper implements IUIHelper {
         mUIParam = param;
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
                 && !isRunningForeground(mContext)) {
-            Log.e(TAG, "runing on background, show update notification");
+            LeoLog.e(TAG, "runing on background, show update notification");
             sendUpdateNotification();
         } else {
             showUI(ui_type, param);
@@ -287,7 +287,7 @@ public class UIHelper implements IUIHelper {
             return;
         }/* download done */
         if (!isActivityOnTop(mContext)) {
-            Log.d(TAG, "sendDownloadNotification in onProgress of UIHelper");
+            LeoLog.d(TAG, "sendDownloadNotification in onProgress of UIHelper");
             sendDownloadNotification(mProgress);
         } else {
             cancelDownloadNotification();
@@ -298,9 +298,9 @@ public class UIHelper implements IUIHelper {
     }
 
     private void showUI(int type, int param) {
-        Log.d(TAG, "type=" + type + "; param=" + param);
+        LeoLog.d(TAG, "type=" + type + "; param=" + param);
         if (isActivityOnTop(mContext) && listener != null) {
-            Log.d(TAG, "activity on top");
+            LeoLog.d(TAG, "activity on top");
             listener.onChangeState(type, param);
         } else if (isAppOnTop(mContext)) {
             relaunchActivity(type, param);
@@ -335,10 +335,10 @@ public class UIHelper implements IUIHelper {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            Log.d(TAG, "onReceive action =" + action);
+            LeoLog.d(TAG, "onReceive action =" + action);
             if (action.equals(ACTION_NEED_UPDATE)) {
                 nm.cancel(UPDATE_NOTIFICATION_ID);
-                Log.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
+                LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
                 relaunchActivity(IUIHelper.TYPE_UPDATE,
                         mManager.getReleaseType());
             } else if (action.equals(ACTION_CANCEL_UPDATE)) {
@@ -347,7 +347,7 @@ public class UIHelper implements IUIHelper {
                     listener.onChangeState(TYPE_DISMISS, 0);
                 }
             } else if (action.equals(ACTION_DOWNLOADING)) {
-                Log.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
+                LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
                 relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
                         mManager.getReleaseType());
             } else if (action.equals(ACTION_CANCEL_DOWNLOAD)) {

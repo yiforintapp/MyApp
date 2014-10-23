@@ -47,30 +47,30 @@ public class PhoneInfo {
 		return androidVersion;
 	}
 
-    public String getPhoneBrand() {
+    public static String getPhoneBrand() {
         return Build.BRAND;
     }
 
-    public String getPhoneDeviceModel() {
+    public static String getPhoneDeviceModel() {
         return Build.MODEL;
     }
 
-    public String getDevicever() {
+    public static String getDevicever() {
         return Build.DISPLAY;
     }
 
-    public String getSysterVersion() {
+    public static String getSysterVersion() {
         return Build.VERSION.RELEASE;
     }
 
-    public String getResolution(Context aContext) {
+    public static String getResolution(Context aContext) {
         DisplayMetrics display = aContext.getResources().getDisplayMetrics();
         return display.widthPixels + "*" + display.heightPixels;
     }
-    public String getLanguage(){
+    public static String getLanguage(){
         return Locale.getDefault().getLanguage();
     }
-    public String getMacAddress(Context aContext) {
+    public static String getMacAddress(Context aContext) {
         String result = null;
         WifiManager wifiManager = (WifiManager) aContext.getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -78,13 +78,13 @@ public class PhoneInfo {
         return result;
     }
 
-    public String getImei(Context aContext) {
+    public static String getImei(Context aContext) {
         TelephonyManager tm = (TelephonyManager) aContext
                 .getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getDeviceId();
     }
 
-    public String getOperatorName(Context aContext) {
+    public static String getOperatorName(Context aContext) {
         TelephonyManager tm = (TelephonyManager) aContext
                 .getSystemService(Context.TELEPHONY_SERVICE);
         String simoperator = tm.getSimOperator();
@@ -131,7 +131,7 @@ public class PhoneInfo {
         return null;
     }
 
-    public String getPhoneNumber(Context aContext) {
+    public static String getPhoneNumber(Context aContext) {
         TelephonyManager tm = (TelephonyManager) aContext
                 .getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getLine1Number();
@@ -167,7 +167,7 @@ public class PhoneInfo {
      * @param aContext
      * @return
      */
-    public double[] getLocation(Context aContext) {
+    public static double[] getLocation(Context aContext) {
         final LocationManager locationManager = (LocationManager) aContext
                 .getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -187,11 +187,11 @@ public class PhoneInfo {
         return locationdata;
     }
 
-//    public static String getBuildVersion(Context aContext) {
+//    public static static String getBuildVersion(Context aContext) {
 //        return getContentFromIni(aContext, R.raw.buildversion);
 //    }
 
-//    public static String getCUID(Context aContext) {
+//    public static static String getCUID(Context aContext) {
 //        return StatService.getCuid(aContext);
 //    }
 
@@ -230,7 +230,7 @@ public class PhoneInfo {
         return false;
     }
 
-    public boolean IsSdCardMounted() {
+    public static boolean IsSdCardMounted() {
         try {
             return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
         } catch (Exception e) {
@@ -239,7 +239,7 @@ public class PhoneInfo {
         return false;
     }
 
-    public String getIpAddresses(Context aContext) {
+    public static String getIpAddresses(Context aContext) {
         ConnectivityManager cm = (ConnectivityManager)
                 aContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         // LinkProperties prop = cm.getActiveLinkProperties();

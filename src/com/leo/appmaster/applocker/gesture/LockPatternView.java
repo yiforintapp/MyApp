@@ -18,7 +18,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -492,8 +491,6 @@ public class LockPatternView extends View {
 			viewWidth = Math.min(viewWidth, viewHeight);
 			break;
 		}
-		Log.v(TAG, "LockPatternView dimensions: " + viewWidth + "x"
-				+ viewHeight);
 		setMeasuredDimension(viewWidth, viewHeight);
 	}
 
