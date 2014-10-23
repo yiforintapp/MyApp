@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
-import android.view.View;
+
 import android.widget.ImageView;
 
 public class RocketView extends ImageView implements OnGestureListener {

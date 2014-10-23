@@ -12,7 +12,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryStats.Uid;
 
-
 class BatteryComsuption implements Comparable<BatteryComsuption> {
 
 	private final Context mContext;
@@ -48,8 +47,8 @@ class BatteryComsuption implements Comparable<BatteryComsuption> {
 		getQuickNameIcon(pkgName);
 	}
 
-	public BatteryComsuption(Context context, BatteryInfoProvider.DrainType type, Uid uid,
-			double[] values) {
+	public BatteryComsuption(Context context,
+			BatteryInfoProvider.DrainType type, Uid uid, double[] values) {
 		mContext = context;
 		this.values = values;
 		this.drainType = type;
@@ -136,20 +135,12 @@ class BatteryComsuption implements Comparable<BatteryComsuption> {
 		}
 		PackageManager pm = mContext.getPackageManager();
 		String[] packages = pm.getPackagesForUid(uid);
-		// icon = pm.getDefaultActivityIcon();
 		if (packages == null) {
-			// name = Integer.toString(uid);
 			if (uid == 0) {
 				drainType = DrainType.KERNEL;
-				// name =
-				// mContext.getResources().getString(R.string.process_kernel_label);
 			} else if ("mediaserver".equals(label)) {
 				drainType = DrainType.MEDIASERVER;
-				// name =
-				// mContext.getResources().getString(R.string.process_mediaserver_label);
 			}
-			// iconId = R.drawable.ic_power_system;
-			// icon = mContext.getResources().getDrawable(iconId);
 			return;
 		}
 
@@ -175,9 +166,8 @@ class BatteryComsuption implements Comparable<BatteryComsuption> {
 		String[] packageLabels = new String[packages.length];
 		System.arraycopy(packages, 0, packageLabels, 0, packages.length);
 
-		// Convert package names to user-facing labels where possible
 		for (int i = 0; i < packageLabels.length; i++) {
-			// Check if package matches preferred package
+
 			try {
 				ApplicationInfo ai = pm.getApplicationInfo(packageLabels[i], 0);
 				CharSequence label = ai.loadLabel(pm);
@@ -198,7 +188,7 @@ class BatteryComsuption implements Comparable<BatteryComsuption> {
 		if (packageLabels.length == 1) {
 			label = packageLabels[0];
 		} else {
-			// Look for an official name for this UID.
+
 			for (String pkgName : packages) {
 				try {
 					final PackageInfo pi = pm.getPackageInfo(pkgName, 0);

@@ -3,12 +3,11 @@ package com.leo.appmaster.applocker;
 import java.util.Arrays;
 import java.util.List;
 
-import android.R.integer;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 

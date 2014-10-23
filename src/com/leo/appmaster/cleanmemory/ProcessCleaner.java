@@ -2,15 +2,11 @@ package com.leo.appmaster.cleanmemory;
 
 import java.util.List;
 
-import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.ProcessUtils;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.util.Log;
-
 public class ProcessCleaner {
 
 	private Context mContext;

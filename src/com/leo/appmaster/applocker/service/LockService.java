@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.app.ActivityManager;
 import android.app.Service;
@@ -16,11 +17,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.IBinder;
-import android.util.Log;
 
 public class LockService extends Service {
 
-	private static final String TAG = "LockService";
 	public static final String EXTRA_STARTUP_FROM = "start_from";
 
 	private boolean mServiceStarted;
@@ -57,7 +56,7 @@ public class LockService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.e("xxxx", "onStartCommand");
+		LeoLog.e("xxxx", "onStartCommand");
 		if (!mServiceStarted) {
 			startLockService(intent);
 		}
@@ -95,7 +94,7 @@ public class LockService extends Service {
 		stopLockService();
 		this.getApplicationContext().unregisterReceiver(mLockHandler);
 		sendBroadcast(new Intent("com.leo.appmaster.restart"));
-		Log.e("xxxx", "onDestroy");
+		LeoLog.e("xxxx", "onDestroy");
 		super.onDestroy();
 	}
 

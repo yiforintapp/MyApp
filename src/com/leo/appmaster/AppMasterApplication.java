@@ -31,7 +31,7 @@ public class AppMasterApplication extends Application {
 		mAppsEngine = AppLoadEngine.getInstance(this);
 		mAppsEngine.preloadAllBaseInfo();
 		// Register intent receivers
-		//
+
 		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
 		// 成功删除某个APK之后发出的广播
 		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
@@ -53,8 +53,7 @@ public class AppMasterApplication extends Application {
 		judgeLockService();
 
 		// start app destory listener
-		
-		
+
 		restartApplocker(PhoneInfo.getAndroidVersion());
 
 	}

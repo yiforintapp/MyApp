@@ -93,7 +93,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		}
 		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 				LockFragment.FROM_SELF);
-		intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY, LockScreenActivity.class.getName());
+		intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
+				LockScreenActivity.class.getName());
 		startActivity(intent);
 		finish();
 	}
@@ -301,9 +302,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				.getRight() - mIvAnimator.getLeft()) * (0.5 - mScale / 2));
 		float targetY = (float) (mLockedLocationY - mIvAnimator.getTop() - (mIvAnimator
 				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
-
-		// Log.e("xxxx", "orgX = " + orgX + ",   orgY = " + orgY
-		// + ",   targetX = " + targetX + ",  targetY = " + targetY);
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
 		animation.setAnimationListener(new FlyAnimaEndListener());

@@ -528,7 +528,7 @@ public class AppBackupRestoreManager implements AppChangeListener{
             mBackupList.removeAll(changes);
         } else if(type == AppChangeListener.TYPE_UPDATE) {
             for(AppDetailInfo app : changes) {
-                if(app.isBackuped) { // if app already backuped, check version
+                if(app.isBackuped) { 
                     String pkg = app.getPkg();
                     int vCode = app.getVersionCode();
                     for(AppDetailInfo a : mSavedList) {

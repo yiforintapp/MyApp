@@ -13,7 +13,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -21,6 +20,7 @@ import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 
 public class LockOptionActivity extends PreferenceActivity implements
 		OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -73,7 +73,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 	protected void onRestart() {
 		super.onRestart();
 
-		Log.e("xxxx", "LockOptionActivity onRestart:  mGotoSetting = "
+		LeoLog.e("xxxx", "LockOptionActivity onRestart:  mGotoSetting = "
 				+ mGotoSetting);
 
 		if (!mGotoSetting) {

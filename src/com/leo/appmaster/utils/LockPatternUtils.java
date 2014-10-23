@@ -12,11 +12,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.leo.appmaster.applocker.gesture.LockPatternView;
-import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 
 import android.content.Context;
 import android.os.FileObserver;
-import android.util.Log;
 
 /**
  * 图案解锁加密、解密工具类
@@ -71,8 +69,8 @@ public class LockPatternUtils {
 		if (sLockPatternFilename == null) {
 			String dataSystemDirectory = context.getFilesDir()
 					.getAbsolutePath();
-			sLockPatternFilename = new File(dataSystemDirectory
-					, LOCK_PATTERN_FILE);
+			sLockPatternFilename = new File(dataSystemDirectory,
+					LOCK_PATTERN_FILE);
 			sHaveNonZeroPatternFile.set(sLockPatternFilename.length() > 0);
 			int fileObserverMask = FileObserver.CLOSE_WRITE
 					| FileObserver.DELETE | FileObserver.MOVED_TO
@@ -160,10 +158,12 @@ public class LockPatternUtils {
 		} catch (FileNotFoundException fnfe) {
 			// Cant do much, unless we want to fail over to using the settings
 			// provider
-			LeoLog.e(TAG, "Unable to save lock pattern to " + sLockPatternFilename);
+			LeoLog.e(TAG, "Unable to save lock pattern to "
+					+ sLockPatternFilename);
 		} catch (IOException ioe) {
 			// Cant do much
-			LeoLog.e(TAG, "Unable to save lock pattern to " + sLockPatternFilename);
+			LeoLog.e(TAG, "Unable to save lock pattern to "
+					+ sLockPatternFilename);
 		}
 	}
 
