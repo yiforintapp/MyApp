@@ -53,7 +53,7 @@ public class LeoLog {
 	/**
 	 * Is the {@link UncaughtExceptionHandler} enabled ?
 	 */
-	public static boolean EXCEPTION_HANDLER_ENABLE = true;
+	public static boolean EXCEPTION_HANDLER_ENABLE = false;
 
 	/**
 	 * set batch size of write LogEntry to file.
