@@ -10,6 +10,7 @@ import com.leo.appmaster.utils.LeoLog;
 import android.app.ActivityManager;
 import android.app.Service;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -109,14 +110,16 @@ public class LockService extends Service {
 		public void run() {
 			RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1)
 					.get(0);
+
+			if (topTaskInfo.topActivity == null)
+				return;
 			String topActivityPackageName = topTaskInfo.topActivity
 					.getPackageName();
-
 			PackageManager pm = getPackageManager();
 			PackageInfo topPackageInfo = null;
 
 			String topActivityName = topTaskInfo.topActivity
-					.getShortClassName().toString();
+					.getShortClassName();
 
 			try {
 				topPackageInfo = pm.getPackageInfo(topActivityPackageName, 0);
