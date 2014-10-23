@@ -282,7 +282,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void stopShakeRocket() {
-		mShakeAnim.cancel();
+		if (mShakeAnim != null)
+			mShakeAnim.cancel();
 	}
 
 	private void launchRocket() {
@@ -369,7 +370,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 
 	private void stopVibrate() {
 		mVibrating = false;
-		mVibrator.cancel();
+		if (mVibrator != null)
+			mVibrator.cancel();
 	}
 
 	private class VibrateTask implements Runnable {
@@ -429,7 +431,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 							getString(R.string.clean_result),
 							TextFormater.dataSizeFormat(mCleaner
 									.getLastCleanMem()) + "");
-					Toast.makeText(CleanMemActivity.this, s, Toast.LENGTH_SHORT).show();
+					Toast.makeText(CleanMemActivity.this, s, Toast.LENGTH_SHORT)
+							.show();
 					mTvCleanResult.setText(s);
 				}
 			});
