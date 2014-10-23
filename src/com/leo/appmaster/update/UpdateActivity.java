@@ -307,7 +307,7 @@ public class UpdateActivity extends Activity implements OnStateChangeListener {
 	}
 
 	private void showChecking() {
-		setContentView(R.layout.dialog_progress_alarm_sdk);
+		setContentView(R.layout.dialog_progress_sdk);
 		TextView tvHint = (TextView) findViewById(R.id.dlg_pro_hint);
 		tvHint.setText(getString(R.string.check_update));
 		TextView tvCancel = (TextView) findViewById(R.id.dlg_bottom_btn);
