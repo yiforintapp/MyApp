@@ -282,7 +282,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void stopShakeRocket() {
-		mShakeAnim.cancel();
+		if (mShakeAnim != null)
+			mShakeAnim.cancel();
 	}
 
 	private void launchRocket() {
