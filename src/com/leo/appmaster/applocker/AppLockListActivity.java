@@ -6,20 +6,15 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.Interpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
@@ -96,7 +91,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		}
 		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 				LockFragment.FROM_SELF);
-		intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY, LockScreenActivity.class.getName());
+		intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
+				LockScreenActivity.class.getName());
 		startActivity(intent);
 		finish();
 	}
@@ -300,9 +296,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				.getRight() - mIvAnimator.getLeft()) * (0.5 - mScale / 2));
 		float targetY = (float) (mLockedLocationY - mIvAnimator.getTop() - (mIvAnimator
 				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
-
-		// Log.e("xxxx", "orgX = " + orgX + ",   orgY = " + orgY
-		// + ",   targetX = " + targetX + ",  targetY = " + targetY);
 
 		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
 		animation.setAnimationListener(new FlyAnimaEndListener());

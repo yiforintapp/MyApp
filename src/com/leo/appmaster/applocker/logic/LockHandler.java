@@ -7,15 +7,12 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.fragment.LockFragment;
 
 public class LockHandler extends BroadcastReceiver {
-
-	private static final String TAG = "LockHandler";
 
 	public static final String ACTION_APP_UNLOCKED = "com.leo.applocker.appunlocked";
 	public static final String EXTRA_LOCKED_APP_PKG = "locked_app_pkg";

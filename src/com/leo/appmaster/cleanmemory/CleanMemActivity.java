@@ -348,7 +348,6 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		if (!mVibrating) {
 			mVibrating = true;
 			new Thread(new VibrateTask()).start();
-			// todo
 			startSmoking();
 			shakeRocket();
 		}

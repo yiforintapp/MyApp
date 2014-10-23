@@ -32,8 +32,6 @@ import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.TextFormater;
 
 public class AppLoadEngine extends BroadcastReceiver {
-	private static final String TAG = "app engine";
-
 	/**
 	 * Resister this listener to receive application changed events
 	 */
@@ -172,7 +170,6 @@ public class AppLoadEngine extends BroadcastReceiver {
 			@Override
 			public void run() {
 				loadAllPkgInfo();
-				// loadPowerComsuInfo();
 			}
 		});
 	}

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.appmanage.AppListActivity.DepthPageTransformer;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.ui.LeoGridView.AnimEndListener;
 

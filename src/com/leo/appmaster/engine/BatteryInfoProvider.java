@@ -29,6 +29,7 @@ import com.android.internal.app.IBatteryStats;
 import com.android.internal.os.BatteryStatsImpl;
 import com.android.internal.os.PowerProfile;
 import com.leo.appmaster.utils.BatteryUtils;
+import com.leo.appmaster.utils.LeoLog;
 
 public class BatteryInfoProvider {
 	private static final String TAG = "BatteryInfo";
@@ -282,7 +283,7 @@ public class BatteryInfoProvider {
 					mStatsType) / 1000;
 			power += screenBinPower * brightnessTime;
 			if (DEBUG) {
-				Log.i(TAG, "Screen bin power = " + (int) screenBinPower
+				LeoLog.i(TAG, "Screen bin power = " + (int) screenBinPower
 						+ ", time = " + brightnessTime);
 			}
 		}
@@ -299,7 +300,7 @@ public class BatteryInfoProvider {
 		long runningTimeMs = mStats.getGlobalWifiRunningTime(uSecNow,
 				mStatsType) / 1000;
 		if (DEBUG)
-			Log.i(TAG, "WIFI runningTime=" + runningTimeMs
+			LeoLog.i(TAG, "WIFI runningTime=" + runningTimeMs
 					+ " app runningTime=" + mAppWifiRunning);
 		runningTimeMs -= mAppWifiRunning;
 		if (runningTimeMs < 0)
@@ -308,7 +309,7 @@ public class BatteryInfoProvider {
 				* mPowerProfile.getAveragePower(PowerProfile.POWER_WIFI_ON) + runningTimeMs
 				* mPowerProfile.getAveragePower(PowerProfile.POWER_WIFI_ON)) / 1000;
 		if (DEBUG)
-			Log.i(TAG, "WIFI power=" + wifiPower + " from procs=" + mWifiPower);
+			LeoLog.i(TAG, "WIFI power=" + wifiPower + " from procs=" + mWifiPower);
 		BatteryComsuption bs = addEntry(DrainType.WIFI, runningTimeMs,
 				wifiPower + mWifiPower);
 		aggregateSippers(bs, mWifiSippers, "WIFI");
@@ -368,7 +369,7 @@ public class BatteryInfoProvider {
 		for (int i = 0; i < from.size(); i++) {
 			BatteryComsuption wbs = from.get(i);
 			if (DEBUG)
-				Log.i(TAG, tag + " adding sipper " + wbs + ": cpu="
+				LeoLog.i(TAG, tag + " adding sipper " + wbs + ": cpu="
 						+ wbs.cpuTime);
 			bs.cpuTime += wbs.cpuTime;
 			bs.gpsTime += wbs.gpsTime;
@@ -430,7 +431,7 @@ public class BatteryInfoProvider {
 				for (Map.Entry<String, ? extends BatteryStats.Uid.Proc> ent : processStats
 						.entrySet()) {
 					if (DEBUG)
-						Log.i(TAG, "Process name = " + ent.getKey());
+						LeoLog.i(TAG, "Process name = " + ent.getKey());
 
 					Uid.Proc ps = ent.getValue();
 					final long userTime = ps.getUserTime(which);
@@ -438,8 +439,7 @@ public class BatteryInfoProvider {
 					final long foregroundTime = ps.getForegroundTime(which);
 					cpuFgTime += foregroundTime * 10; // convert to millis
 					final long tmpCpuTime = (userTime + systemTime) * 10; // convert
-																			// to
-																			// millis
+																		
 					int totalTimeAtSpeeds = 0;
 					// Get the total first
 					for (int step = 0; step < speedSteps; step++) {
@@ -472,7 +472,7 @@ public class BatteryInfoProvider {
 			}
 			if (cpuFgTime > cpuTime) {
 				if (DEBUG && cpuFgTime > cpuTime + 10000) {
-					Log.i(TAG,
+					LeoLog.i(TAG,
 							"WARNING! Cputime is more than 10 seconds behind Foreground time");
 				}
 				cpuTime = cpuFgTime; // Statistics may not have been gathered
@@ -534,7 +534,7 @@ public class BatteryInfoProvider {
 					if (sensorData != null) {
 						multiplier = sensorData.getPower();
 						if (DEBUG) {
-							Log.i(TAG, "Got sensor " + sensorData.getName()
+							LeoLog.i(TAG, "Got sensor " + sensorData.getName()
 									+ " with power = " + multiplier);
 						}
 					}
@@ -543,7 +543,7 @@ public class BatteryInfoProvider {
 			}
 
 			if (DEBUG)
-				Log.i(TAG, "UID " + u.getUid() + ": power=" + power);
+				LeoLog.i(TAG, "UID " + u.getUid() + ": power=" + power);
 
 			// Add the app to the list if it is consuming power
 			if (power != 0) {
@@ -575,7 +575,7 @@ public class BatteryInfoProvider {
 			}
 
 			if (DEBUG)
-				Log.i(TAG, "Added power = " + power);
+				LeoLog.i(TAG, "Added power = " + power);
 		}
 	}
 	
@@ -629,9 +629,9 @@ public class BatteryInfoProvider {
 				mStats.distributeWorkLocked(BatteryStats.STATS_SINCE_CHARGED);
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "RemoteException:", e);
+			LeoLog.e(TAG, "RemoteException:", e);
 		} catch (Error e) {
-			Log.e(TAG, "Error:", e);
+			LeoLog.e(TAG, "Error:", e);
 		}
 		return mStats;
 	}
