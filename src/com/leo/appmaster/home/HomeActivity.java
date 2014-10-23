@@ -1,13 +1,13 @@
 package com.leo.appmaster.home;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,8 +20,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.applocker.service.LockService;
-import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
@@ -34,7 +32,6 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CricleView;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
@@ -193,6 +190,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		Intent intent = null;
+		Map<String, String> params = new HashMap<String, String>();
 		switch (v.getId()) {
 		case R.id.top_layout:
 			break;
@@ -209,7 +207,9 @@ public class HomeActivity extends Activity implements OnClickListener,
 		case R.id.tv_app_lock:
 			LeoStat.addEvent(LeoStat.P2, "app lock",
 					"click the app lock button");
-			FlurryAgent.logEvent("app lock: click the app lock button");
+			params.clear();
+			params.put("action name", "click the app lock button");
+			FlurryAgent.logEvent("main page", params, true);
 			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
 				enterLockPage();
 			} else {
@@ -219,15 +219,18 @@ public class HomeActivity extends Activity implements OnClickListener,
 		case R.id.tv_app_backup:
 			LeoStat.addEvent(LeoStat.P2, "app backup",
 					"click the app backup button");
-			FlurryAgent.logEvent("app backup: click the app backup button");
+			params.clear();
+            params.put("action name", "click the app backup button");
+            FlurryAgent.logEvent("main page", params, true);
 			intent = new Intent(this, AppBackupRestoreActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
 			LeoStat.addEvent(LeoStat.P2, "tasksCompleted",
 					"click the one key clear button");
-			FlurryAgent
-					.logEvent("tasksCompleted: click the one key clear button");
+			params.clear();
+            params.put("action name", "click the one key clear button");
+            FlurryAgent.logEvent("main page", params, true);
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;

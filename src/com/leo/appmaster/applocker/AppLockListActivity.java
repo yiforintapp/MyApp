@@ -3,23 +3,20 @@ package com.leo.appmaster.applocker;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.Interpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
@@ -30,6 +27,7 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.R;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
@@ -39,7 +37,6 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoGridView;
 import com.leo.appmaster.ui.PagedGridView;
 import com.leoers.leoanalytics.LeoStat;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
 
 public class AppLockListActivity extends Activity implements AppChangeListener,
 		OnItemClickListener, OnClickListener {
@@ -255,7 +252,9 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			}
 
 			LeoStat.addEvent(LeoStat.P2, "unlock app", mLastSelectApp.getPkg());
-			FlurryAgent.logEvent(mLastSelectApp.getPkg() + ": unlock app");
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("package name", mLastSelectApp.getPkg());
+			FlurryAgent.logEvent("unlock app", params);
 		} else {
 			mLastSelectApp.setLocked(true);
 			for (BaseInfo baseInfo : mUnlockList) {
@@ -277,7 +276,9 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			}
 
 			LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
-			FlurryAgent.logEvent(mLastSelectApp.getPkg() + ": lock app");
+			Map<String, String> params = new HashMap<String, String>();
+            params.put("package name", mLastSelectApp.getPkg());
+            FlurryAgent.logEvent("lock app", params);
 		}
 		((LeoGridView) parent).removeItemAnimation(position, mLastSelectApp);
 		saveLockList();
