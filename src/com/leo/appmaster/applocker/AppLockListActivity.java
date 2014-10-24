@@ -113,6 +113,15 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			super.onBackPressed();
 		}
 	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	    try {
+	        super.onRestoreInstanceState(savedInstanceState);
+	    } catch (Exception e) {
+	        
+	    }
+	}
 
 	private void initUI() {
 		mInflater = LayoutInflater.from(this);
