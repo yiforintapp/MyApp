@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">ऐप मास्टर</string>
+    <string name="app_name">&#160;ऐप मास्टर&#160;</string>
     <string name="app_count">ऐप्स स्थापित किए गए</string>
     <string name="used_memory">एमबी मेमोरी का दखल</string>
     <string name="used_flow">एमबी प्रवाह की खपत</string>

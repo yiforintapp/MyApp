@@ -113,14 +113,14 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			super.onBackPressed();
 		}
 	}
-	
+
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-	    try {
-	        super.onRestoreInstanceState(savedInstanceState);
-	    } catch (Exception e) {
-	        
-	    }
+		try {
+			super.onRestoreInstanceState(savedInstanceState);
+		} catch (Exception e) {
+
+		}
 	}
 
 	private void initUI() {
@@ -161,6 +161,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		List<String> lockList = AppLockerPreference.getInstance(this)
 				.getLockedAppList();
 		for (AppDetailInfo appDetailInfo : list) {
+			if (appDetailInfo.getPkg().equals(this.getPackageName()))
+				continue;
 			if (lockList.contains(appDetailInfo.getPkg())) {
 				appDetailInfo.setLocked(true);
 				mLockedList.add(appDetailInfo);
@@ -287,8 +289,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 			LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
 			Map<String, String> params = new HashMap<String, String>();
-            params.put("package name", mLastSelectApp.getPkg());
-            FlurryAgent.logEvent("lock app", params);
+			params.put("package name", mLastSelectApp.getPkg());
+			FlurryAgent.logEvent("lock app", params);
 		}
 		((LeoGridView) parent).removeItemAnimation(position, mLastSelectApp);
 		saveLockList();
