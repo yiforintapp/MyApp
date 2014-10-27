@@ -2,20 +2,25 @@ package com.leo.appmaster.home;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
@@ -38,7 +43,6 @@ import com.leoers.leoanalytics.LeoStat;
 public class HomeActivity extends Activity implements OnClickListener,
 		OnTouchListener, AppChangeListener {
 
-	private View mTopLayout;
 	private View mTvAppManage;
 	private View mTvAppLock;
 	private View mTvAppBackup;
@@ -72,9 +76,6 @@ public class HomeActivity extends Activity implements OnClickListener,
 	}
 
 	private void initUI() {
-		mTopLayout = findViewById(R.id.top_layout);
-		// mTopLayout.setOnClickListener(this);
-
 		mIvDigital_0 = (ImageView) findViewById(R.id.digital_0);
 		mIvDigital_1 = (ImageView) findViewById(R.id.digital_1);
 		mIvDigital_2 = (ImageView) findViewById(R.id.digital_2);
@@ -84,13 +85,13 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mMemoryPercent = (TextView) findViewById(R.id.tv_memory_percent);
 		mCricleView = (CricleView) findViewById(R.id.cricle_view);
 
-		mTvAppManage =  findViewById(R.id.tv_app_manage);
+		mTvAppManage = findViewById(R.id.tv_app_manage);
 		mTvAppLock = findViewById(R.id.tv_app_lock);
 		mTvAppBackup = findViewById(R.id.tv_app_backup);
 		mTvCleanMem = findViewById(R.id.tv_clean_memory);
-		
+
 		mSettingIcon = (ImageView) findViewById(R.id.setting_icon);
-		
+
 		mTvAppManage.setOnClickListener(this);
 		mTvAppLock.setOnClickListener(this);
 		mTvAppBackup.setOnTouchListener(this);
@@ -127,38 +128,23 @@ public class HomeActivity extends Activity implements OnClickListener,
 																 */);
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
-		
+
 		if (LeoStat.isUpdateAvailable()) {
-		    if (mSettingIcon != null) {
-		        mSettingIcon.setImageResource(R.drawable.setting_icon_new);
-		    }
+			if (mSettingIcon != null) {
+				mSettingIcon.setImageResource(R.drawable.setting_icon_new);
+			}
 		} else {
-	          if (mSettingIcon != null) {
-	              mSettingIcon.setImageResource(R.drawable.setting_icon);
-	            }
+			if (mSettingIcon != null) {
+				mSettingIcon.setImageResource(R.drawable.setting_icon);
+			}
 		}
 		super.onResume();
 	}
 
 	private void calculateAppCount() {
-		// AsyncTask<Integer, Integer, Integer> at = new AsyncTask<Integer,
-		// Integer, Integer>() {
-		// @Override
-		// protected Integer doInBackground(Integer... params) {
 		int appCount = AppLoadEngine.getInstance(HomeActivity.this)
 				.getAllPkgInfo().size();
-		// return appCount;
-		// }
-
-		// @Override
-		// protected void onPostExecute(Integer result) {
 		setAppCount(appCount);
-		// super.onPostExecute(result);
-		// }
-		//
-		// };
-
-		// at.execute(0);
 	}
 
 	private void setAppCount(int count) {
@@ -220,8 +206,8 @@ public class HomeActivity extends Activity implements OnClickListener,
 			LeoStat.addEvent(LeoStat.P2, "app backup",
 					"click the app backup button");
 			params.clear();
-            params.put("action name", "click the app backup button");
-            FlurryAgent.logEvent("main page", params, true);
+			params.put("action name", "click the app backup button");
+			FlurryAgent.logEvent("main page", params, true);
 			intent = new Intent(this, AppBackupRestoreActivity.class);
 			startActivity(intent);
 			break;
@@ -229,21 +215,41 @@ public class HomeActivity extends Activity implements OnClickListener,
 			LeoStat.addEvent(LeoStat.P2, "tasksCompleted",
 					"click the one key clear button");
 			params.clear();
-            params.put("action name", "click the one key clear button");
-            FlurryAgent.logEvent("main page", params, true);
+			params.put("action name", "click the one key clear button");
+			FlurryAgent.logEvent("main page", params, true);
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;
 		case R.id.tv_option_image:
 			if (mLeoPopMenu == null) {
 				mLeoPopMenu = new LeoPopMenu();
+				mLeoPopMenu.setPopMenuItems(getPopMenuItems());
+				mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						if (position == 0) {
+							LeoStat.checkUpdate();
+						} else if (position == 1) {
+						}
+						mLeoPopMenu.dismissSnapshotList();
+					}
+				});
 			}
-			mLeoPopMenu.showPopMenu(HomeActivity.this,
+			mLeoPopMenu.showPopMenu(this,
 					mTtileBar.findViewById(R.id.tv_option_image));
 			break;
 		default:
 			break;
 		}
+	}
+
+	private List<String> getPopMenuItems() {
+		List<String> listItems = new ArrayList<String>();
+		Resources resources = AppMasterApplication.getInstance().getResources();
+		listItems.add(resources.getString(R.string.app_setting_update));
+		listItems.add(resources.getString(R.string.app_setting_about));
+		return listItems;
 	}
 
 	private void enterLockPage() {
@@ -267,12 +273,12 @@ public class HomeActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
-	    runOnUiThread(new Runnable() {           
-            @Override
-            public void run() {
-                calculateAppCount();
-            }
-        });
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				calculateAppCount();
+			}
+		});
 	}
 
 	@Override
