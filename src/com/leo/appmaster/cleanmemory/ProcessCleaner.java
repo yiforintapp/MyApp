@@ -1,12 +1,19 @@
 package com.leo.appmaster.cleanmemory;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.utils.ProcessUtils;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+
 public class ProcessCleaner {
 
 	private Context mContext;
@@ -106,11 +113,28 @@ public class ProcessCleaner {
 	 */
 	public void cleanAllProcess(Context cxt) {
 		List<RunningAppProcessInfo> list = mAm.getRunningAppProcesses();
+		List<String> launchers = getLauncherPkgs(cxt);
 		for (RunningAppProcessInfo runningAppProcessInfo : list) {
 			if (runningAppProcessInfo.importance > RunningAppProcessInfo.IMPORTANCE_CANT_SAVE_STATE) {
-				mAm.killBackgroundProcesses(runningAppProcessInfo.processName);
+				if (!launchers.contains(runningAppProcessInfo.processName)) {
+					mAm.killBackgroundProcesses(runningAppProcessInfo.processName);
+				}
 			}
 		}
 		mCurUsedMem = ProcessUtils.getUsedMem(cxt);
+	}
+
+	private List<String> getLauncherPkgs(Context ctx) {
+		PackageManager pm = ctx.getPackageManager();
+		List<String> pkgs = new ArrayList<String>();
+		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_HOME);
+		List<ResolveInfo> apps = pm.queryIntentActivities(mainIntent, 0);
+		for (ResolveInfo resolveInfo : apps) {
+			ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
+			String packageName = applicationInfo.packageName;
+			pkgs.add(packageName);
+		}
+		return pkgs;
 	}
 }
