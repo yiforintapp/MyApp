@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">App Master</string>
+    <string name="app_name">&#160;App Master&#160;</string>
     <string name="app_count">Apps Installed</string>
     <string name="used_memory">Memory Used</string>
     <string name="used_flow">Traffic Used</string>
     <string name="app_manage">Management</string>
     <string name="app_detail">Details</string>
     <string name="app_lock">App Lock</string>
-    <string name="app_backup">App Backup</string>
+    <string name="app_backup">App Backup</string> 
     <string name="app_restore">App Restore</string>
     <string name="button_backup">Backup</string>
     <string name="button_install">Install</string>
