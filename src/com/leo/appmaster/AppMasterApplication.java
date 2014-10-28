@@ -48,8 +48,7 @@ public class AppMasterApplication extends Application {
 		// 设备当前区域设置已更改是发出的广播
 		filter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
 		registerReceiver(mAppsEngine, filter);
-		iniLeoSdk();
-		iniFlurry();
+		SDKWrapper.iniSDK(this);
 		judgeLockService();
 
 		// start app destory listener
@@ -72,22 +71,7 @@ public class AppMasterApplication extends Application {
 	public void onTerminate() {
 		super.onTerminate();
 		unregisterReceiver(mAppsEngine);
-		FlurryAgent.onEndSession(getApplicationContext());
-	}
-
-	private void iniLeoSdk() {
-		LeoStat.init(getApplicationContext(), getString(R.string.channel_code),
-				"appmaster");
-		LeoStat.setDebugLevel(Log.ERROR);
-		LeoStat.initUpdateEngine(UIHelper.getInstance(getApplicationContext()),
-				true);
-	}
-
-	private void iniFlurry() {
-		FlurryAgent.setVersionName(getString(R.string.version_name) + "_"
-				+ getString(R.string.channel_code));
-		FlurryAgent.onStartSession(getApplicationContext(),
-				"F6PHG92TXG5QZ48H4YC8");
+		SDKWrapper.endSession(this);
 	}
 
 	public static AppMasterApplication getInstance() {
