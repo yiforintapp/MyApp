@@ -139,6 +139,7 @@
     <string name="passwd_notify">Password Hint</string>
     <string name="no_lock_item_tip">No locked Apps</string>
     <string name="no_unlocked_item_tip">No unlocked Apps</string>
+    
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
 
