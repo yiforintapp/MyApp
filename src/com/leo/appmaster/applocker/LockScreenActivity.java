@@ -1,15 +1,25 @@
 package com.leo.appmaster.applocker;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.LeoPopMenu;
+import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
+import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FastBlur;
+import com.leoers.leoanalytics.LeoStat;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,20 +30,27 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class LockScreenActivity extends FragmentActivity {
+public class LockScreenActivity extends FragmentActivity implements
+		OnClickListener, OnDiaogClickListener {
 
 	public static String EXTRA_UNLOCK_FROM = "extra_unlock_from";
 	public static String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
 	public static String EXTRA_FROM_ACTIVITY = "extra_form_activity";
 
 	int mFrom;
-
 	private CommonTitleBar mTtileBar;
 	private LockFragment mFragment;
-
 	private Bitmap mAppBaseInfoLayoutbg;
+	private LeoPopMenu mLeoPopMenu;
+	private LeoDoubleLinesInputDialog mDialog;
+	private EditText mEtQuestion, mEtAnwser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +81,7 @@ public class LockScreenActivity extends FragmentActivity {
 					getPackageManager(),
 					intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
 
-					setAppInfoBackground(bd);
+			setAppInfoBackground(bd);
 		}
 
 		mFragment.setFrom(mFrom);
@@ -108,6 +125,12 @@ public class LockScreenActivity extends FragmentActivity {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 
+		if (AppLockerPreference.getInstance(this).hasPswdProtect()) {
+			mTtileBar.setOptionImage(R.drawable.setting_btn);
+			mTtileBar.setOptionImageVisibility(View.VISIBLE);
+			mTtileBar.setOptionListener(this);
+		}
+
 		if (mFrom == LockFragment.FROM_SELF) {
 			mTtileBar.openBackView();
 			mTtileBar.setTitle(R.string.app_lock);
@@ -115,12 +138,24 @@ public class LockScreenActivity extends FragmentActivity {
 			mTtileBar.setBackArrowVisibility(View.GONE);
 			mTtileBar.setTitle(R.string.app_name);
 		}
-
 		FragmentManager fm = getSupportFragmentManager();
-
 		FragmentTransaction tans = fm.beginTransaction();
 		tans.replace(R.id.fragment_contain, mFragment);
 		tans.commit();
+	}
+
+	private void findPasswd() {
+		mDialog = new LeoDoubleLinesInputDialog(this);
+		mDialog.setTitle(R.string.pleas_input_anwser);
+		mDialog.setFirstHead(R.string.passwd_question);
+		mDialog.setSecondHead(R.string.passwd_anwser);
+		mDialog.setOnClickListener(this);
+		mEtQuestion = mDialog.getFirstEditText();
+		mEtAnwser = mDialog.getSecondEditText();
+		mEtQuestion.setFocusable(false);
+		mEtQuestion.setText(AppLockerPreference.getInstance(this)
+				.getPpQuestion());
+		mDialog.show();
 	}
 
 	@Override
@@ -134,5 +169,63 @@ public class LockScreenActivity extends FragmentActivity {
 			this.startActivity(intent);
 			finish();
 		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.tv_option_image:
+			if (mLeoPopMenu == null) {
+				mLeoPopMenu = new LeoPopMenu();
+				mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						if (position == 0) {
+							findPasswd();
+						}
+						mLeoPopMenu.dismissSnapshotList();
+					}
+				});
+			}
+			mLeoPopMenu.setPopMenuItems(getPopMenuItems());
+			mLeoPopMenu.showPopMenu(this,
+					mTtileBar.findViewById(R.id.tv_option_image));
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	private List<String> getPopMenuItems() {
+		List<String> listItems = new ArrayList<String>();
+		Resources resources = AppMasterApplication.getInstance().getResources();
+		if (AppLockerPreference.getInstance(this).getLockType() == AppLockerPreference.LOCK_TYPE_GESTURE) {
+			listItems.add(resources.getString(R.string.find_gesture));
+		} else if (AppLockerPreference.getInstance(this).getLockType() == AppLockerPreference.LOCK_TYPE_PASSWD) {
+			listItems.add(resources.getString(R.string.find_passwd));
+		}
+		return listItems;
+	}
+
+	@Override
+	public void onClick(int which) {
+		if (which == 1) {// make sure
+			String anwser = AppLockerPreference.getInstance(this).getPpAnwser();
+			if (anwser.equals(mEtAnwser.getText().toString())) {
+				// goto reset passwd
+				Intent intent = new Intent(this, LockSettingActivity.class);
+				intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
+				this.startActivity(intent);
+
+			} else {
+				Toast.makeText(this, R.string.reinput_anwser, 0).show();
+			}
+		} else if (which == 0) { // cancel
+			mDialog.dismiss();
+		}
+
 	}
 }

@@ -28,13 +28,11 @@ import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListene
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LockPatternUtils;
 
-public class GestureLockFragment extends LockFragment implements
-		OnClickListener, OnPatternListener, OnDiaogClickListener {
+public class GestureLockFragment extends LockFragment implements OnPatternListener {
 	private LockPatternView mLockPatternView;
-	private TextView mGestureTip, mFindGesture;
+	private TextView mGestureTip;
 	private ImageView mAppIcon;
 
-	private EditText mEtQuestion, mEtAnwser;
 	private LeoDoubleLinesInputDialog mDialog;
 
 	@Override
@@ -48,12 +46,6 @@ public class GestureLockFragment extends LockFragment implements
 		mLockPatternView.setOnPatternListener(this);
 
 		mGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
-		mFindGesture = (TextView) findViewById(R.id.tv_find_gesture);
-		mFindGesture.setOnClickListener(this);
-
-		if (AppLockerPreference.getInstance(mActivity).hasPswdProtect()) {
-			mFindGesture.setVisibility(View.VISIBLE);
-		}
 
 		if (mPackage != null) {
 			mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
@@ -61,32 +53,6 @@ public class GestureLockFragment extends LockFragment implements
 					mActivity.getPackageManager(), mPackage));
 			mAppIcon.setVisibility(View.VISIBLE);
 		}
-	}
-
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.tv_find_gesture:
-			findGesture();
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	private void findGesture() {
-		mDialog = new LeoDoubleLinesInputDialog(mActivity);
-		mDialog.setTitle(R.string.pleas_input_anwser);
-		mDialog.setFirstHead(R.string.passwd_question);
-		mDialog.setSecondHead(R.string.passwd_anwser);
-		mDialog.setOnClickListener(this);
-		mEtQuestion = mDialog.getFirstEditText();
-		mEtAnwser = mDialog.getSecondEditText();
-		mEtQuestion.setFocusable(false);
-		mEtQuestion.setText(AppLockerPreference.getInstance(mActivity)
-				.getPpQuestion());
-		mDialog.show();
 	}
 
 	@Override
@@ -160,26 +126,6 @@ public class GestureLockFragment extends LockFragment implements
 
 	@Override
 	public void onNewIntent(Intent intent) {
-
-	}
-
-	@Override
-	public void onClick(int which) {
-		if (which == 1) {// make sure
-			String anwser = AppLockerPreference.getInstance(mActivity)
-					.getPpAnwser();
-			if (anwser.equals(mEtAnwser.getText().toString())) {
-				// goto reset passwd
-				Intent intent = new Intent(mActivity, LockSettingActivity.class);
-				intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
-				mActivity.startActivity(intent);
-
-			} else {
-				Toast.makeText(mActivity, R.string.reinput_anwser, 0).show();
-			}
-		} else if (which == 0) { // cancel
-			mDialog.dismiss();
-		}
 
 	}
 }

@@ -1,25 +1,14 @@
 package com.leo.appmaster.model;
 
-import android.content.pm.PermissionInfo;
-
 public class AppPermissionInfo {
-	private PermissionInfo[] mPermissions;
-	private String sharedPkgList[];
-	
-	public PermissionInfo[] getPermissions() {
-		return mPermissions;
+	private String mPermissionList[];
+
+	public String[] getPermissionList() {
+		return mPermissionList;
 	}
 
-	public void setPermissions(PermissionInfo[] mPermissions) {
-		this.mPermissions = mPermissions;
+	public void setPermissionList(String[] list) {
+		mPermissionList = list;
 	}
 
-    public String[] getPermissionList() {
-        return sharedPkgList;
-    }
-	
-	public void setPermissionList(String [] list) {
-	    sharedPkgList = list;
-	}
-	
 }

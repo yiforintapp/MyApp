@@ -20,8 +20,7 @@ import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 
-public class PasswdLockFragment extends LockFragment implements
-		OnClickListener, OnDiaogClickListener {
+public class PasswdLockFragment extends LockFragment implements OnClickListener {
 
 	private ImageView mAppicon;
 
@@ -29,11 +28,6 @@ public class PasswdLockFragment extends LockFragment implements
 	private ImageView iv_delete;
 	private TextView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
 	private TextView mPasswdTip, mPasswdHint;
-	private TextView mFindPasswd;
-
-	private EditText mEtQuestion, mEtAnwser;
-	private LeoDoubleLinesInputDialog mDialog;
-
 	private String mTempPasswd = "";
 
 	@Override
@@ -76,10 +70,6 @@ public class PasswdLockFragment extends LockFragment implements
 		mPasswdHint = (TextView) findViewById(R.id.tv_passwd_hint);
 		mPasswdTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
 		mAppicon = (ImageView) findViewById(R.id.iv_app_icon);
-
-		mFindPasswd = (TextView) findViewById(R.id.tv_find_passwd);
-		mFindPasswd.setOnClickListener(this);
-
 		String passwdtip = AppLockerPreference.getInstance(mActivity)
 				.getPasswdTip();
 		if (passwdtip == null || passwdtip.trim().equals("")) {
@@ -87,9 +77,6 @@ public class PasswdLockFragment extends LockFragment implements
 		} else {
 			mPasswdHint.setText(mActivity.getString(R.string.passwd_hint_tip)
 					+ passwdtip);
-		}
-		if (AppLockerPreference.getInstance(mActivity).hasPswdProtect()) {
-			mFindPasswd.setVisibility(View.VISIBLE);
 		}
 
 		if (mPackage != null) {
@@ -142,28 +129,9 @@ public class PasswdLockFragment extends LockFragment implements
 		case R.id.tv_ok:
 			checkPasswd();
 			break;
-
-		case R.id.tv_find_passwd:
-			findPasswd();
-			break;
-
 		default:
 			break;
 		}
-	}
-
-	private void findPasswd() {
-		mDialog = new LeoDoubleLinesInputDialog(mActivity);
-		mDialog.setTitle(R.string.pleas_input_anwser);
-		mDialog.setFirstHead(R.string.passwd_question);
-		mDialog.setSecondHead(R.string.passwd_anwser);
-		mDialog.setOnClickListener(this);
-		mEtQuestion = mDialog.getFirstEditText();
-		mEtAnwser = mDialog.getSecondEditText();
-		mEtQuestion.setFocusable(false);
-		mEtQuestion.setText(AppLockerPreference.getInstance(mActivity)
-				.getPpQuestion());
-		mDialog.show();
 	}
 
 	private void checkPasswd() {
@@ -256,26 +224,6 @@ public class PasswdLockFragment extends LockFragment implements
 	@Override
 	public void onNewIntent(Intent intent) {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onClick(int which) {
-		if (which == 1) {// make sure
-			String anwser = AppLockerPreference.getInstance(mActivity)
-					.getPpAnwser();
-			if (anwser.equals(mEtAnwser.getText().toString())) {
-				// goto reset passwd
-				Intent intent = new Intent(mActivity, LockSettingActivity.class);
-				intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
-				mActivity.startActivity(intent);
-
-			} else {
-				Toast.makeText(mActivity, R.string.reinput_anwser, 0).show();
-			}
-		} else if (which == 0) { // cancel
-			mDialog.dismiss();
-		}
 
 	}
 }

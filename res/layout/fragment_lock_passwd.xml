@@ -3,18 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/tv_find_passwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="2dp"
-        android:text="@string/find_passwd"
-        android:textColor="#ffffff"
-        android:visibility="invisible" />
-
     <ImageView
         android:id="@+id/iv_app_icon"
         android:layout_width="48dp"

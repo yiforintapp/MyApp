@@ -7,10 +7,12 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.utils.LeoLog;
 
 public class LockHandler extends BroadcastReceiver {
 
@@ -55,6 +57,8 @@ public class LockHandler extends BroadcastReceiver {
 		if (pkg == null || activity == null)
 			return;
 
+//		LeoLog.e("handleAppLaunch", pkg + "/" + activity);
+
 		if (!pkg.equals(mLastRunningPkg)) {
 			String myPackage = mContext.getPackageName();
 			if (pkg.equals(myPackage)
@@ -69,7 +73,6 @@ public class LockHandler extends BroadcastReceiver {
 			List<String> list = AppLockerPreference.getInstance(mContext)
 					.getLockedAppList();
 			if (list.contains(pkg)) {
-
 				Intent intent = new Intent(mContext, LockScreenActivity.class);
 				if (!mLockPolicy.onHandleLock(pkg)) {
 					int lockType = AppLockerPreference.getInstance(mContext)
@@ -106,7 +109,31 @@ public class LockHandler extends BroadcastReceiver {
 					((TimeoutRelockPolicy) mLockPolicy).clearLockApp();
 				}
 			}
+		} else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+			List<String> list = AppLockerPreference.getInstance(mContext)
+					.getLockedAppList();
+			LeoLog.e("onReceive", "mLastRunningPkg = " + mLastRunningPkg);
+			if (list.contains(mLastRunningPkg)) {
+				Intent intent2 = new Intent(mContext, LockScreenActivity.class);
+				if (!mLockPolicy.onHandleLock(mLastRunningPkg)) {
+					int lockType = AppLockerPreference.getInstance(mContext)
+							.getLockType();
+					if (lockType == AppLockerPreference.LOCK_TYPE_NONE)
+						return;
+					if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+						intent2.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+								LockFragment.LOCK_TYPE_PASSWD);
+					} else if (lockType == AppLockerPreference.LOCK_TYPE_GESTURE) {
+						intent2.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+								LockFragment.LOCK_TYPE_GESTURE);
+					}
+					intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent2.putExtra(EXTRA_LOCKED_APP_PKG, mLastRunningPkg);
+					intent2.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+							LockFragment.FROM_OTHER);
+					mContext.startActivity(intent2);
+				}
+			}
 		}
 	}
-
 }
