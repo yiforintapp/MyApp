@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
@@ -176,7 +177,6 @@ public class HomeActivity extends Activity implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		Intent intent = null;
-		Map<String, String> params = new HashMap<String, String>();
 		switch (v.getId()) {
 		case R.id.top_layout:
 			break;
@@ -191,11 +191,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 			/** end */
 			break;
 		case R.id.tv_app_lock:
-			LeoStat.addEvent(LeoStat.P2, "app lock",
-					"click the app lock button");
-			params.clear();
-			params.put("action name", "click the app lock button");
-			FlurryAgent.logEvent("main page", params, true);
+			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the app lock button");
 			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
 				enterLockPage();
 			} else {
@@ -203,20 +199,12 @@ public class HomeActivity extends Activity implements OnClickListener,
 			}
 			break;
 		case R.id.tv_app_backup:
-			LeoStat.addEvent(LeoStat.P2, "app backup",
-					"click the app backup button");
-			params.clear();
-			params.put("action name", "click the app backup button");
-			FlurryAgent.logEvent("main page", params, true);
+			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the app backup button");
 			intent = new Intent(this, AppBackupRestoreActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
-			LeoStat.addEvent(LeoStat.P2, "tasksCompleted",
-					"click the one key clear button");
-			params.clear();
-			params.put("action name", "click the one key clear button");
-			FlurryAgent.logEvent("main page", params, true);
+			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the one key clear button");
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;

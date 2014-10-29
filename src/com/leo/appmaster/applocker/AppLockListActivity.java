@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
@@ -210,10 +211,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			((LockImageView) view.findViewById(R.id.iv_app_icon))
 					.setLocked(false);
 
-			LeoStat.addEvent(LeoStat.P2, "unlock app", mLastSelectApp.getPkg());
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("package name", mLastSelectApp.getPkg());
-			FlurryAgent.logEvent("unlock app", params);
+			SDKWrapper.addEvent(LeoStat.P2, "unlock app",
+					mLastSelectApp.getPkg());
 		} else {
 			mLastSelectApp.setLocked(true);
 			for (BaseInfo baseInfo : mUnlockList) {
@@ -229,10 +228,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			((LockImageView) view.findViewById(R.id.iv_app_icon))
 					.setLocked(true);
 
-			LeoStat.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("package name", mLastSelectApp.getPkg());
-			FlurryAgent.logEvent("lock app", params);
+			SDKWrapper
+					.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
 		}
 		saveLockList();
 	}
