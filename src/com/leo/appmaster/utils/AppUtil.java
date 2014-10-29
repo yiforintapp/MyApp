@@ -31,6 +31,19 @@ public class AppUtil {
 		return info;
 	}
 
+	public static String getAppLabel(String pkg, Context ctx) {
+		try {
+			return ctx
+					.getPackageManager()
+					.getApplicationLabel(
+							ctx.getPackageManager().getApplicationInfo(pkg, 0))
+					.toString();
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static boolean isInstalledInSDcard(ApplicationInfo info) {
 		if ((info.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE) != 0) {
 			return true;

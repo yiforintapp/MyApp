@@ -24,11 +24,19 @@ import android.net.TrafficStats;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteException;
+import android.util.Log;
+import android.view.WindowManager;
 
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockerPreference;
+import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.CacheInfo;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 
 public class AppLoadEngine extends BroadcastReceiver {
@@ -211,6 +219,12 @@ public class AppLoadEngine extends BroadcastReceiver {
 					String packageName = applicationInfo.packageName;
 					AppDetailInfo appInfo = new AppDetailInfo();
 					loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
+					try {
+						appInfo.installTime = mPm
+								.getPackageInfo(packageName, 0).firstInstallTime;
+					} catch (NameNotFoundException e) {
+						e.printStackTrace();
+					}
 					mAppDetails.put(packageName, appInfo);
 				}
 				mAppsLoaded = true;
@@ -338,6 +352,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			} else if (Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
 				if (!replacing) {
 					op = AppChangeListener.TYPE_REMOVE;
+					checkUnlockWhenRemove(packageName);
 				}
 				// else, we are replacing the package, so a PACKAGE_ADDED will
 				// be sent
@@ -345,6 +360,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			} else if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
 				if (!replacing) {
 					op = AppChangeListener.TYPE_ADD;
+					showLockTip(packageName);
 				} else {
 					op = AppChangeListener.TYPE_UPDATE;
 				}
@@ -370,6 +386,66 @@ public class AppLoadEngine extends BroadcastReceiver {
 			enqueuePackageUpdated(new PackageUpdatedTask(
 					AppChangeListener.TYPE_LOCAL_CHANGE, new String[] {}));
 		}
+	}
+
+	private void checkUnlockWhenRemove(final String packageName) {
+		sWorker.post(new Runnable() {
+			@Override
+			public void run() {
+				AppLockerPreference pre = AppLockerPreference
+						.getInstance(mContext);
+				List<String> lockList = new ArrayList<String>(pre
+						.getLockedAppList());
+				if (lockList.contains(packageName)) {
+					lockList.remove(packageName);
+				}
+				pre.setLockedAppList(lockList);
+			}
+		});
+	}
+
+	private void showLockTip(final String packageName) {
+		sWorker.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				for (String str : sTopAppArray) {
+					if (str.equals(packageName)) {
+						LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
+						dialog.setTitle(R.string.app_name);
+						dialog.setContent("检测到您安装了"
+								+ AppUtil.getAppLabel(packageName, mContext)
+								+ "，建议枷锁");
+						dialog.setOnClickListener(new OnDiaogClickListener() {
+							@Override
+							public void onClick(int which) {
+								if (which == 0) {
+								} else if (which == 1) {
+									AppLockerPreference pre = AppLockerPreference
+											.getInstance(mContext);
+									List<String> lockList = new ArrayList<String>(
+											pre.getLockedAppList());
+									lockList.add(packageName);
+									pre.setLockedAppList(lockList);
+
+									if (pre.getLockType() == AppLockerPreference.LOCK_TYPE_NONE) {
+										Intent intent = new Intent(mContext,
+												LockSettingActivity.class);
+										intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										mContext.startActivity(intent);
+									}
+
+								}
+							}
+						});
+						dialog.getWindow().setType(
+								WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+						dialog.show();
+						break;
+					}
+				}
+
+			}
+		}, 5000);
 	}
 
 	void enqueuePackageUpdated(PackageUpdatedTask task) {

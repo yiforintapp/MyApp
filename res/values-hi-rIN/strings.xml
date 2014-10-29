@@ -18,7 +18,7 @@
     <string name="uninstall">अस्थापित करना</string>
     <string name="set_gesture_suc">इशारा दर्ज</string>
     <string name="set_passwd_suc">पासवर्ड सफलतापूर्वक दर्ज किया गया</string>
-     <string name="reset_passwd_successful">सफलतापूर्वक सेट !</string>
+    <string name="reset_passwd_successful">सफलतापूर्वक सेट !</string>
     <string name="stop">रुकें</string>
     <string name="reinput_anwser">गलत उत्तर। पुनः प्रयास करें</string>
     <string name="please_input_pswd">पासवर्ड इनपुट करें</string>
@@ -129,18 +129,23 @@
     <string name="app_permission2">जनरल गोपनीयता अनुमति</string>
     <string name="app_permission3">महत्वपूर्ण गोपनीयता अनुमति</string>
     <string name="app_setting_update">नवीनीकरण के लिए जाँच करें</string>
-    <string name="app_setting_update_new">नवीनीकरण के लिए जाँच करें<Data><![CDATA[ <b><font color="#ff0000">NEW</font></b> ]]></Data></string> 
+    <string name="app_setting_update_new">नवीनीकरण के लिए जाँच करें<Data><![CDATA[ <b><font color="#ff0000">NEW</font></b> ]]></Data></string>
     <string name="app_setting_about">जानकारी</string>
     <string name="forbid_uninstall">रद्द से रोकें</string>
     <string name="auto_lock">स्क्रीन लॉक करने के बाद स्वचालित रूप से ताले डालें</string>
     <string name="change_lock_time">स्वयं ताले का समय स्थापना</string>
     <string name="passwd_protect">सुरक्षा प्रश्न</string>
     <string name="change_passwd">पासवर्ड बदलें</string>
-    <string name="passwd_notify">पासवर्ड इशारा</string>   
+    <string name="passwd_notify">पासवर्ड इशारा</string>
     <string name="no_lock_item_tip">कोई ताला आवेदन</string>
     <string name="no_unlocked_item_tip">खुला कोई आवेदन</string>
-    
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
-    
+
+    <string-array name="sort_type">
+        <item>默认排序</item>
+        <item>应用名称排序</item>
+        <item>安装时间排序</item>
+    </string-array>
+
 </resources>

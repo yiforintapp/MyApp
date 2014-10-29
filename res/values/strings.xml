@@ -8,7 +8,7 @@
     <string name="app_manage">Management</string>
     <string name="app_detail">Details</string>
     <string name="app_lock">App Lock</string>
-    <string name="app_backup">App Backup</string> 
+    <string name="app_backup">App Backup</string>
     <string name="app_restore">App Restore</string>
     <string name="button_backup">Backup</string>
     <string name="button_install">Install</string>
@@ -139,8 +139,13 @@
     <string name="passwd_notify">Password Hint</string>
     <string name="no_lock_item_tip">No locked Apps</string>
     <string name="no_unlocked_item_tip">No unlocked Apps</string>
-    
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
+
+    <string-array name="sort_type">
+        <item>默认排序</item>
+        <item>应用名称排序</item>
+        <item>安装时间排序</item>
+    </string-array>
 
 </resources>

@@ -28,6 +28,8 @@ public class LeoPopMenu {
 
 	private MenuListAdapter mAdapter;
 
+	private int mAnimaStyle;
+
 	/**
 	 * @param aContext
 	 * @param anchorView
@@ -43,15 +45,19 @@ public class LeoPopMenu {
 
 		View convertView = buildTabListLayout();
 
-		mLeoPopMenu = new PopupWindow(convertView, LayoutParams.WRAP_CONTENT,
+		mLeoPopMenu = new PopupWindow(convertView, 360,
 				LayoutParams.WRAP_CONTENT, true);
 		mLeoPopMenu.setFocusable(true);
 		mLeoPopMenu.setOutsideTouchable(true);
 		mLeoPopMenu.setBackgroundDrawable(AppMasterApplication.getInstance()
 				.getResources().getDrawable(R.drawable.popup_menu_bg));
+		mLeoPopMenu.setAnimationStyle(mAnimaStyle);
 		mLeoPopMenu.update();
-		mLeoPopMenu.setAnimationStyle(R.style.PopupListAnim);
 		mLeoPopMenu.showAsDropDown(anchorView, 0, 0);
+	}
+
+	public void setAnimation(int animaStyle) {
+		mAnimaStyle = animaStyle;
 	}
 
 	public void dismissSnapshotList() {

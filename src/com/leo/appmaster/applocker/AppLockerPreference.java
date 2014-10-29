@@ -3,7 +3,6 @@ package com.leo.appmaster.applocker;
 import java.util.Arrays;
 import java.util.List;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -25,6 +24,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_SET_PROTECT = "set_passwd_protect";
 	public static final String PREF_FORBIND_UNINSTALL = "set_forbid_uninstall";
 	public static final String PREF_FIRST_USE_LOCKER = "first_use_locker";
+	public static final String PREF_SORT_TYPE = "sort_type";
 
 	private List<String> mLockedAppList;
 	private String mPassword;
@@ -48,6 +48,14 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	public static synchronized AppLockerPreference getInstance(Context context) {
 		return mInstance == null ? (mInstance = new AppLockerPreference(context))
 				: mInstance;
+	}
+
+	public void setSortType(int type) {
+		mPref.edit().putInt(PREF_SORT_TYPE, type).commit();
+	}
+
+	public int getSortType() {
+		return mPref.getInt(PREF_SORT_TYPE, AppLockListActivity.DEFAULT_SORT);
 	}
 
 	public boolean isFisrtUseLocker() {
@@ -181,6 +189,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	public void setAtuoLock(boolean autoLock) {
 		mPref.edit().putBoolean(PREF_AUTO_LOCK, autoLock).commit();
 	}
+
 	public boolean isAutoLock() {
 		return mPref.getBoolean(PREF_AUTO_LOCK, false);
 	}

@@ -19,84 +19,10 @@
         android:paddingRight="2dp"
         android:paddingTop="5dp" >
 
-        <LinearLayout
-            android:id="@+id/pager_container"
+        <com.leo.appmaster.ui.PagedGridView
+            android:id="@+id/pager_unlock"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:id="@+id/tab_container"
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/stacked_tabs_l"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/tv_app_unlock"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:ellipsize="middle"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:singleLine="true"
-                    android:text="@string/app_unlock"
-                    android:textColor="@color/tab_select_text" />
-
-                <TextView
-                    android:id="@+id/tv_app_locked"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:ellipsize="middle"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:singleLine="true"
-                    android:text="@string/app_locked"
-                    android:textColor="@color/white" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/pager_parent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <com.leo.appmaster.ui.PagedGridView
-                    android:id="@+id/pager_unlock"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <com.leo.appmaster.ui.PagedGridView
-                    android:id="@+id/pager_lock"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="invisible" >
-                </com.leo.appmaster.ui.PagedGridView>
-
-                <TextView
-                    android:id="@+id/no_item_tip"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </FrameLayout>
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/iv_animator"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_launcher"
-            android:visibility="invisible" />
+            android:layout_height="match_parent" />
     </FrameLayout>
 
     <View
@@ -104,6 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/guide_locklist"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

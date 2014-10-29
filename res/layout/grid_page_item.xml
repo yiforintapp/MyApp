@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.leo.appmaster.ui.LeoGridView xmlns:android="http://schemas.android.com/apk/res/android"
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/gv_app_contain"
     android:layout_width="match_parent"
@@ -8,7 +8,8 @@
     android:paddingTop="15dp" 
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
+    android:listSelector="@drawable/selector_app_item"
     android:verticalSpacing="@dimen/gridview_vertical_spacing"  
     android:numColumns="4">
 
-</com.leo.appmaster.ui.LeoGridView>
+</GridView>

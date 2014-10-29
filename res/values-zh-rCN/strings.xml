@@ -18,7 +18,7 @@
     <string name="uninstall">卸载</string>
     <string name="set_gesture_suc">手势设置成功</string>
     <string name="set_passwd_suc">密码设置成功</string>
-     <string name="reset_passwd_successful">重设成功！</string>
+    <string name="reset_passwd_successful">重设成功！</string>
     <string name="stop">停止</string>
     <string name="reinput_anwser">"答案不正确，请重新输入"</string>
     <string name="please_input_pswd">输入密码</string>
@@ -62,6 +62,12 @@
     <string name="best_mem">已经是最佳状态，无需再次加速</string>
 
     <!-- App lock -->
+    <string-array name="sort_type">
+        <item>默认排序</item>
+        <item>应用名称排序</item>
+        <item>安装时间排序</item>
+    </string-array>
+
     <string name="lock_count">"已加锁"</string>
     <string name="unlock_count">"未加锁"</string>
     <string name="lockscreen_access_pattern_detected">"图案绘制完成"</string>
@@ -139,7 +145,6 @@
     <string name="passwd_notify">密码提示</string>
     <string name="no_lock_item_tip">暂无加锁应用</string>
     <string name="no_unlocked_item_tip">没有未加锁应用</string>
-
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
 

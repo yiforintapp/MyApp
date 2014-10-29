@@ -41,6 +41,11 @@ public class BaseInfo {
 	 */
 	public int topPos = -1;
 	
+	/*
+	 * app install time
+	 */
+	public long installTime = -1l;
+	
 	private int versionCode;
     private String versionName;
 	

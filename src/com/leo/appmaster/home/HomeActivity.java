@@ -105,7 +105,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
-		mTtileBar.setOptionImageVisibility(View.GONE);
+		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
 		mTtileBar.setOptionImage(R.drawable.setting_btn);
 		mTtileBar.setOptionListener(this);
@@ -223,6 +223,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		case R.id.tv_option_image:
 			if (mLeoPopMenu == null) {
 				mLeoPopMenu = new LeoPopMenu();
+				mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
 				mLeoPopMenu.setPopMenuItems(getPopMenuItems());
 				mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
 					@Override
