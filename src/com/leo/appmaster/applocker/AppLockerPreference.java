@@ -25,6 +25,8 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_FORBIND_UNINSTALL = "set_forbid_uninstall";
 	public static final String PREF_FIRST_USE_LOCKER = "first_use_locker";
 	public static final String PREF_SORT_TYPE = "sort_type";
+	public static final String PREF_RECOM_LOCK_TIP = "recom_lock_tip";
+	public static final String PREF_NEW_APP_LOCK_TIP = "new_app_lock_tip";
 
 	private List<String> mLockedAppList;
 	private String mPassword;
@@ -48,6 +50,14 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	public static synchronized AppLockerPreference getInstance(Context context) {
 		return mInstance == null ? (mInstance = new AppLockerPreference(context))
 				: mInstance;
+	}
+
+	public boolean isRecomLockTip() {
+		return mPref.getBoolean(PREF_RECOM_LOCK_TIP, true);
+	}
+
+	public boolean isNewAppLockTip() {
+		return mPref.getBoolean(PREF_NEW_APP_LOCK_TIP, true);
 	}
 
 	public void setSortType(int type) {

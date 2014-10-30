@@ -148,4 +148,7 @@
         <item>安装时间排序</item>
     </string-array>
 
+    <string name="recom_lock_tip">推荐应用加锁提醒</string>
+    <string name="new_app_lock_tip">新装应用加锁提醒</string>
+
 </resources>

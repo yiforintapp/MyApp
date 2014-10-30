@@ -140,6 +140,8 @@
     <string name="forbid_uninstall">禁止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>
     <string name="change_lock_time">更改锁定时间</string>
+    <string name="recom_lock_tip">推荐应用加锁提醒</string>
+    <string name="new_app_lock_tip">新装应用加锁提醒</string>
     <string name="passwd_protect">密保问题</string>
     <string name="change_passwd">更改密码</string>
     <string name="passwd_notify">密码提示</string>

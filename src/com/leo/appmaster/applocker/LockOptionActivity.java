@@ -72,10 +72,6 @@ public class LockOptionActivity extends PreferenceActivity implements
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-
-		LeoLog.e("xxxx", "LockOptionActivity onRestart:  mGotoSetting = "
-				+ mGotoSetting);
-
 		if (!mGotoSetting) {
 			Intent intent = new Intent(this, LockScreenActivity.class);
 			int lockType = AppLockerPreference.getInstance(this).getLockType();
