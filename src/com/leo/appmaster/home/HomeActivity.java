@@ -44,10 +44,10 @@ import com.leoers.leoanalytics.LeoStat;
 public class HomeActivity extends Activity implements OnClickListener,
 		OnTouchListener, AppChangeListener {
 
-	private View mTvAppManage;
-	private View mTvAppLock;
-	private View mTvAppBackup;
-	private View mTvCleanMem;
+	private View mPictureHide;
+	private View mAppLock;
+	private View mAppBackup;
+	private View mCleanMem;
 	private ImageView mSettingIcon;
 
 	private View mPressedEffect1;
@@ -86,19 +86,19 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mMemoryPercent = (TextView) findViewById(R.id.tv_memory_percent);
 		mCricleView = (CricleView) findViewById(R.id.cricle_view);
 
-		mTvAppManage = findViewById(R.id.tv_app_manage);
-		mTvAppLock = findViewById(R.id.tv_app_lock);
-		mTvAppBackup = findViewById(R.id.tv_app_backup);
-		mTvCleanMem = findViewById(R.id.tv_clean_memory);
+		mPictureHide = findViewById(R.id.tv_picture_hide);
+		mAppLock = findViewById(R.id.tv_app_lock);
+		mAppBackup = findViewById(R.id.tv_app_backup);
+		mCleanMem = findViewById(R.id.tv_clean_memory);
 
 		mSettingIcon = (ImageView) findViewById(R.id.setting_icon);
 
-		mTvAppManage.setOnClickListener(this);
-		mTvAppLock.setOnClickListener(this);
-		mTvAppBackup.setOnTouchListener(this);
-		mTvAppLock.setOnTouchListener(this);
-		mTvAppBackup.setOnClickListener(this);
-		mTvCleanMem.setOnClickListener(this);
+		mPictureHide.setOnClickListener(this);
+		mAppLock.setOnClickListener(this);
+		mAppBackup.setOnTouchListener(this);
+		mAppLock.setOnTouchListener(this);
+		mAppBackup.setOnClickListener(this);
+		mCleanMem.setOnClickListener(this);
 
 		mPressedEffect1 = findViewById(R.id.pressed_effect1);
 		mPressedEffect2 = findViewById(R.id.pressed_effect2);
@@ -120,13 +120,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		long total = pc.getTotalMem();
 		long used = pc.getUsedMem();
 		mMemoryPercent.setText(used * 100 / total + "%");
-		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) /*
-																 * + "/" +
-																 * TextFormater
-																 * .
-																 * dataSizeFormat
-																 * (total)
-																 */);
+		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used));
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
 
@@ -180,18 +174,14 @@ public class HomeActivity extends Activity implements OnClickListener,
 		switch (v.getId()) {
 		case R.id.top_layout:
 			break;
-		case R.id.tv_app_manage:
-			// LeoStat.addEvent(LeoStat.P2, "app_manage",
-			// "click the app manage button");
-			// intent = new Intent(this, AppListActivity.class);
+		case R.id.tv_picture_hide:
+			// goto picture hide
+			// intent = new Intent(this, AboutActivity.class);
 			// this.startActivity(intent);
-			/** modify for version 1.0 */
-			intent = new Intent(this, AboutActivity.class);
-			this.startActivity(intent);
-			/** end */
 			break;
 		case R.id.tv_app_lock:
-			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the app lock button");
+			SDKWrapper.addEvent(LeoStat.P2, "main page",
+					"click the app lock button");
 			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
 				enterLockPage();
 			} else {
@@ -199,12 +189,14 @@ public class HomeActivity extends Activity implements OnClickListener,
 			}
 			break;
 		case R.id.tv_app_backup:
-			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the app backup button");
+			SDKWrapper.addEvent(LeoStat.P2, "main page",
+					"click the app backup button");
 			intent = new Intent(this, AppBackupRestoreActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
-			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the one key clear button");
+			SDKWrapper.addEvent(LeoStat.P2, "main page",
+					"click the one key clear button");
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;
@@ -218,8 +210,17 @@ public class HomeActivity extends Activity implements OnClickListener,
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						if (position == 0) {
-							LeoStat.checkUpdate();
+							// goto user feedback
+
 						} else if (position == 1) {
+							// goto app recommend
+						} else if (position == 2) {
+							LeoStat.checkUpdate();
+						} else if (position == 3) {
+							// goto about pager
+							Intent about = new Intent(HomeActivity.this,
+									AboutActivity.class);
+							HomeActivity.this.startActivity(about);
 						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
@@ -236,6 +237,8 @@ public class HomeActivity extends Activity implements OnClickListener,
 	private List<String> getPopMenuItems() {
 		List<String> listItems = new ArrayList<String>();
 		Resources resources = AppMasterApplication.getInstance().getResources();
+		listItems.add(resources.getString(R.string.feedback));
+		listItems.add(resources.getString(R.string.app_recomend));
 		listItems.add(resources.getString(R.string.app_setting_update));
 		listItems.add(resources.getString(R.string.app_setting_about));
 		return listItems;
@@ -276,10 +279,10 @@ public class HomeActivity extends Activity implements OnClickListener,
 		case MotionEvent.ACTION_DOWN:
 			if (v.getId() == R.id.tv_app_lock) {
 				mPressedEffect1.setBackgroundResource(R.drawable.home_sel);
-				mTvAppLock.setBackgroundResource(R.drawable.home_sel);
+				mAppLock.setBackgroundResource(R.drawable.home_sel);
 			} else if (v.getId() == R.id.tv_app_backup) {
 				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
-				mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
+				mAppBackup.setBackgroundResource(R.drawable.home_sel);
 			}
 			break;
 		case MotionEvent.ACTION_UP:
@@ -287,10 +290,10 @@ public class HomeActivity extends Activity implements OnClickListener,
 		case MotionEvent.ACTION_OUTSIDE:
 			if (v.getId() == R.id.tv_app_lock) {
 				mPressedEffect1.setBackgroundColor(Color.WHITE);
-				mTvAppLock.setBackgroundColor(Color.WHITE);
+				mAppLock.setBackgroundColor(Color.WHITE);
 			} else if (v.getId() == R.id.tv_app_backup) {
 				mPressedEffect2.setBackgroundColor(Color.WHITE);
-				mTvAppBackup.setBackgroundColor(Color.WHITE);
+				mAppBackup.setBackgroundColor(Color.WHITE);
 			}
 			break;
 		default:

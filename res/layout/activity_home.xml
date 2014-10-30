@@ -290,7 +290,7 @@
                 android:layout_height="match_parent"
                 android:background="#FFF5F5F5"/>
             <LinearLayout
-                android:id="@+id/ tv_app_manage"
+                android:id="@+id/ tv_picture_hide"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -308,7 +308,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/app_setting_about"
+                    android:text="@string/picture_hide"
                     android:textColor="@color/text_color_blue"
                     android:textSize="14dp" />
             </LinearLayout>

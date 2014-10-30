@@ -128,6 +128,7 @@
         <item>300</item>
     </string-array>
 
+    <string name="picture_hide">图片隐藏</string>
     <string name="app_details">应用详情</string>
     <string name="app_memory">"系统占用&#058;<xliff:g>%1$s</xliff:g>"</string>
     <string name="app_cache_size">"占用缓存&#058;<xliff:g>%1$s</xliff:g>"</string>
@@ -136,6 +137,8 @@
     <string name="app_permission3">重要权限</string>
     <string name="app_setting_update">检查升级</string>
     <string name="app_setting_update_new">&#160;&#160;&#160;检查升级<Data><![CDATA[ <b><font color="#ff0000">NEW</font></b> ]]></Data></string>
+    <string name="feedback">用户反馈</string>
+    <string name="app_recomend">精品推荐</string>
     <string name="app_setting_about">关于</string>
     <string name="forbid_uninstall">禁止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>
