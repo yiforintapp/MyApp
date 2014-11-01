@@ -4,6 +4,7 @@ import java.util.List;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnDismissListener;
+import android.graphics.Color;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockOptionActivity;
@@ -19,6 +21,7 @@ import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
+import com.leo.appmaster.applocker.gesture.LockPatternView.DisplayMode;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -30,12 +33,13 @@ public class GestureSettingFragment extends BaseFragment implements
 		OnClickListener, OnPatternListener, OnDismissListener,
 		OnDiaogClickListener {
 
-	private TextView mTvGestureTip;
+	private TextView mTvGestureTip, mTvPasswdFuncTip, mTvBottom;
 	private LockPatternView mLockPatternView;
 	private int mInputCount = 1;
 	private String mTempGesture1, mTempGesture2;
 	private boolean mGotoPasswdProtect;
 	private String mActivityName;
+	private Animation mShake;
 
 	@Override
 	protected int layoutResourceId() {
@@ -47,12 +51,16 @@ public class GestureSettingFragment extends BaseFragment implements
 		mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
 		mLockPatternView.setOnPatternListener(this);
 		mTvGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
+		mTvPasswdFuncTip = (TextView) findViewById(R.id.tv_passwd_function_tip);
+		mTvBottom = (TextView) findViewById(R.id.tv_bottom);
+		mTvBottom.setOnClickListener(this);
 
-		if (AppLockerPreference.getInstance(mActivity).getGesture() == null
-				&& AppLockerPreference.getInstance(mActivity).getPassword() == null) {
-			mTvGestureTip.setText(R.string.passwd_set_gesture_tip);
+		if (AppLockerPreference.getInstance(mActivity).getLockType() == AppLockerPreference.LOCK_TYPE_NONE) {
+			mTvGestureTip.setText(R.string.first_set_passwd_hint);
+		} else {
+			mTvGestureTip.setText(R.string.set_gesture);
 		}
-
+		mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
 	}
 
 	@Override
@@ -61,7 +69,6 @@ public class GestureSettingFragment extends BaseFragment implements
 		case R.id.tv_bottom:
 			resetGesture();
 			break;
-
 		default:
 			break;
 		}
@@ -70,16 +77,25 @@ public class GestureSettingFragment extends BaseFragment implements
 	public void setActivityName(String name) {
 		mActivityName = name;
 	}
-
+	
 	private void resetGesture() {
+		cancelShake();
 		mInputCount = 1;
 		mTempGesture1 = mTempGesture2 = "";
-		mTvGestureTip.setText(R.string.gesture_hint);
+
+		if (AppLockerPreference.getInstance(mActivity).getLockType() == AppLockerPreference.LOCK_TYPE_NONE) {
+			mTvGestureTip.setText(R.string.first_set_passwd_hint);
+		} else {
+			mTvGestureTip.setText(R.string.set_gesture);
+		}
+
+		mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
 	}
 
 	@Override
 	public void onPatternStart() {
-
+		cancelShake();
+		mTvPasswdFuncTip.setText(R.string.gesture_start_hint);
 	}
 
 	@Override
@@ -107,12 +123,15 @@ public class GestureSettingFragment extends BaseFragment implements
 		int patternSize = pattern.size();
 		if (mInputCount == 1) {
 			if (patternSize < 4) {
-				// shakeGestureTip();
-				mLockPatternView.clearPattern();
+				mTvPasswdFuncTip.setText(R.string.passwd_set_gesture_tip);
+				shakeGestureTip();
+				// mLockPatternView.clearPattern();
 				return;
 			}
 			mTempGesture1 = LockPatternUtils.patternToString(pattern);
-			mTvGestureTip.setText(R.string.please_input_gesture_again);
+
+			mTvGestureTip.setText(R.string.make_passwd);
+			mTvPasswdFuncTip.setText(R.string.input_again);
 			mLockPatternView.clearPattern();
 			mInputCount++;
 		} else {
@@ -145,22 +164,23 @@ public class GestureSettingFragment extends BaseFragment implements
 					mActivity.startActivity(intent);
 				}
 			} else {
-				resetGesture();
-				Toast.makeText(mActivity, R.string.tip_no_the_same_pswd, 1)
-						.show();
+				shakeGestureTip();
 				mLockPatternView.clearPattern();
-				if (AppLockerPreference.getInstance(mActivity).getGesture() == null
-						&& AppLockerPreference.getInstance(mActivity)
-								.getPassword() == null) {
-					mTvGestureTip.setText(R.string.passwd_set_gesture_tip);
-				}
+				mTvPasswdFuncTip.setText(R.string.tip_no_the_same_pswd);
+				// if (AppLockerPreference.getInstance(mActivity).getGesture()
+				// == null
+				// && AppLockerPreference.getInstance(mActivity)
+				// .getPassword() == null) {
+				// mTvGestureTip.setText(R.string.first_set_passwd_hint);
+				// mTvPasswdFuncTip.setText(R.string.tip_no_the_same_pswd);
+				// }
 			}
 		}
 	}
 
 	private void showResetSuc() {
 		LEOMessageDialog d = new LEOMessageDialog(mActivity);
-		d.setTitle(mActivity.getString(R.string.reset_gesture));
+		d.setTitle(mActivity.getString(R.string.reset_gesture_passwd));
 		d.setContent(mActivity.getString(R.string.reset_passwd_successful));
 		d.setOnDismissListener(this);
 		d.setCanceledOnTouchOutside(false);
@@ -178,9 +198,31 @@ public class GestureSettingFragment extends BaseFragment implements
 		d.show();
 	}
 
+	private void cancelShake() {
+		if (mShake != null && mShake.hasStarted()) {
+			mShake.cancel();
+			mShake.reset();
+		}
+	}
+
 	private void shakeGestureTip() {
-		Animation shake = AnimationUtils.loadAnimation(mActivity, R.anim.shake);
-		mTvGestureTip.startAnimation(shake);
+		if (mShake == null) {
+			mShake = AnimationUtils.loadAnimation(mActivity,
+					R.anim.left_right_shake);
+			mShake.setAnimationListener(new AnimationListenerAdapter() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+					mLockPatternView.setDisplayMode(DisplayMode.Wrong);
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					mLockPatternView.clearPattern();
+				}
+
+			});
+		}
+		mTvPasswdFuncTip.startAnimation(mShake);
 	}
 
 	@Override

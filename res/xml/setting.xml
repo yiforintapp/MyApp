@@ -15,12 +15,6 @@
         android:widgetLayout="@layout/pref_widget_checkbox" />
     <CheckBoxPreference
         android:defaultValue="true"
-        android:key="recom_lock_tip"
-        android:layout="@layout/pref_list_item_mid"
-        android:title="@string/recom_lock_tip"
-        android:widgetLayout="@layout/pref_widget_checkbox" />
-    <CheckBoxPreference
-        android:defaultValue="true"
         android:key="new_app_lock_tip"
         android:layout="@layout/pref_list_item_mid"
         android:title="@string/new_app_lock_tip"

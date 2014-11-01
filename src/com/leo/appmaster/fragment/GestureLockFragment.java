@@ -120,7 +120,7 @@ public class GestureLockFragment extends LockFragment implements OnPatternListen
 	}
 
 	private void shakeGestureTip() {
-		Animation shake = AnimationUtils.loadAnimation(mActivity, R.anim.shake);
+		Animation shake = AnimationUtils.loadAnimation(mActivity, R.anim.up_down_shake);
 		mGestureTip.startAnimation(shake);
 	}
 

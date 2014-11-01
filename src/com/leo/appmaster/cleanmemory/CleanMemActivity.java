@@ -277,7 +277,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	}
 
 	private void shakeRocket() {
-		mShakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
+		mShakeAnim = AnimationUtils.loadAnimation(this, R.anim.up_down_shake);
 		mRocket.startAnimation(mShakeAnim);
 	}
 

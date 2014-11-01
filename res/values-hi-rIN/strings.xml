@@ -27,7 +27,6 @@
     <string name="cancel">रद्द करें</string>
     <string name="delete">हटाएं</string>
     <string name="passwd_set_passwd_tip">कृपया 4 अक्षरों का पासवर्ड दर्ज करें</string>
-    <string name="passwd_set_gesture_tip">ताला खोलने का इशारा बनायें</string>
     <string name="passwd_hint">चार अंकों पासवर्ड दर्ज करें</string>
     <string name="tip_no_the_same_pswd">पासवर्ड असंगत है, दोबारा दर्ज करें</string>
     <string name="input_error_tip">आपने ताला खोलने की प्रक्रिया को %1$s,बार गलत दर्ज किया। ठंडा होने में %2$s बार बाकी।</string>
@@ -78,9 +77,7 @@
     <string name="passwd_setting">पासवर्ड सेटिंग्स</string>
     <string name="set_success">पासवर्ड सफलतापूर्वक स्थापित किया गया</string>
     <string name="passwd_hint_cant_null">कृपया अपने पासवर्ड का इशारा दर्ज करें</string>
-    <string name="set_gesture">इशारों को आरेखित करें</string>
     <string name="please_input_gesture_again">अनलॉक प्रतिमान दोबारा आरेखित करें</string>
-    <string name="reset_gesture">इशारा रीसेट करें</string>
     <string name="gesture_hint">कम से कम 4 अंक कनेक्ट करें</string>
     <string name="lock_right_now">तुरंत लॉक करें</string>
     <string name="lock_15_sec">15 सेकंड</string>
@@ -152,5 +149,16 @@
     <string name="new_app_lock_tip">新装应用加锁提醒</string>
     <string name="app_recomend">精品推荐</string>
     <string name="feedback">用户反馈</string>
-<string name="picture_hide">图片隐藏</string>
+    <string name="first_set_passwd_hint">首次使用请设置密码</string>
+    <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>
+    <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片隐藏功能中</string>
+    <string name="make_passwd">确认密码</string>
+    <string name="input_again">请再次输入</string>
+    <string name="passwd_set_gesture_tip">请至少连接4个点</string>
+    <string name="set_gesture">设置手势密码</string>
+    <string name="gesture_start_hint">画完后松开手指</string>
+    <string name="reset_gesture_passwd">重设手势密码</string>
+    <string name="reset_digital_passwd">重设数字密码</string>
+    <string name="picture_hide">图片隐藏</string>
+
 </resources>

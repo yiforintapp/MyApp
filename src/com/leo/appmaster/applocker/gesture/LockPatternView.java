@@ -895,7 +895,7 @@ public class LockPatternView extends View {
 		final float squareWidth = mSquareWidth;
 		final float squareHeight = mSquareHeight;
 
-		float radius = (squareWidth * mDiameterFactor * 0.7f);
+		float radius = (squareWidth * mDiameterFactor);
 		mPathPaint.setStrokeWidth(radius);
 
 		final Path currentPath = mCurrentPath;
@@ -944,9 +944,9 @@ public class LockPatternView extends View {
 			}
 			// chang the line color in different DisplayMode
 			if (mPatternDisplayMode == DisplayMode.Wrong)
-				mPathPaint.setColor(Color.RED);
+				mPathPaint.setColor(0x7fbb0000);
 			else
-				mPathPaint.setColor(0x7fffffff);
+				mPathPaint.setColor(0xafffffff);
 			canvas.drawPath(currentPath, mPathPaint);
 		}
 
@@ -1017,7 +1017,7 @@ public class LockPatternView extends View {
 
 		mCircleMatrix.setTranslate(leftX + offsetX, topY + offsetY);
 		mCircleMatrix.preTranslate(mBitmapWidth / 2, mBitmapHeight / 2);
-		mCircleMatrix.preScale(sx * 0.63f, sy * 0.63f);
+		mCircleMatrix.preScale(sx * 0.65f, sy * 0.65f);
 		mCircleMatrix.preTranslate(-mBitmapWidth / 2, -mBitmapHeight / 2);
 
 		canvas.drawBitmap(outerCircle, mCircleMatrix, mPaint);
