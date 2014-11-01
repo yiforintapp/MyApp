@@ -44,9 +44,11 @@ public class AppMasterApplication extends Application {
 		filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE);
 		// 正在移动App是发出的广播
 		filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE);
-		registerReceiver(mAppsEngine, filter);
 		// 设备当前区域设置已更改是发出的广播
-		filter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
+		filter.addAction(Intent.ACTION_LOCALE_CHANGED);
+		// recommend list change
+		filter.addAction(AppLoadEngine.ACTION_RECOMMEND_LIST_CHANGE);
+
 		registerReceiver(mAppsEngine, filter);
 		SDKWrapper.iniSDK(this);
 		judgeLockService();

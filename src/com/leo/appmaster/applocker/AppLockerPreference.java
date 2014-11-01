@@ -26,8 +26,12 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_FIRST_USE_LOCKER = "first_use_locker";
 	public static final String PREF_SORT_TYPE = "sort_type";
 	public static final String PREF_NEW_APP_LOCK_TIP = "new_app_lock_tip";
+	public static final String PREF_LAST_PULL_LOCK_LIST_TIME = "last_pull_lock_list_time";
+	public static final String PREF_PULL_INTERVAL = "pull_interval";
+	public static final String PREF_RECOMMEND_LOCK_LIST = "recommend_app_lock_list";
 
 	private List<String> mLockedAppList;
+	private List<String> mRecommendList;
 	private String mPassword;
 	private String mGesture;
 	private String mLockPolicy;
@@ -148,9 +152,24 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 		mPref.edit().putString(PREF_APPLICATION_LIST, combined).commit();
 	}
 
+	public List<String> getRecommendList() {
+		return mRecommendList;
+	}
+
+	public void setRecommendList(List<String> applicationList) {
+		mRecommendList = applicationList;
+		String combined = "";
+		for (String string : applicationList) {
+			combined = combined + string + ";";
+		}
+		mPref.edit().putString(PREF_RECOMMEND_LOCK_LIST, combined).commit();
+	}
+
 	private void loadPreferences() {
 		mLockedAppList = Arrays.asList(mPref.getString(PREF_APPLICATION_LIST,
 				"").split(";"));
+		mRecommendList = Arrays.asList(mPref.getString(
+				PREF_RECOMMEND_LOCK_LIST, "").split(";"));
 		mLockType = mPref.getInt(PREF_LOCK_TYPE, LOCK_TYPE_NONE);
 		mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
 		if (mLockType == LOCK_TYPE_GESTURE) {
@@ -197,6 +216,22 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 
 	public boolean isAutoLock() {
 		return mPref.getBoolean(PREF_AUTO_LOCK, false);
+	}
+
+	public void setLastLocklistPullTime(long time) {
+		mPref.edit().putLong(PREF_LAST_PULL_LOCK_LIST_TIME, time).commit();
+	}
+
+	public void setPullInterval(long interval) {
+		mPref.edit().putLong(PREF_PULL_INTERVAL, interval).commit();
+	}
+
+	public long getLastLocklistPullTime() {
+		return mPref.getLong(PREF_LAST_PULL_LOCK_LIST_TIME, 0l);
+	}
+
+	public long getPullInterval() {
+		return mPref.getLong(PREF_PULL_INTERVAL, 0l);
 	}
 
 }
