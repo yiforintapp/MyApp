@@ -35,7 +35,7 @@ public class SDKWrapper {
         LeoStat.addEvent(level, eventID, eventDescription);
         Map<String, String> params = new HashMap<String, String>();
         params.put("description", eventDescription);
-        FlurryAgent.logEvent(eventID, params, true);
+        FlurryAgent.logEvent(eventID, params);
     }
 
     public static void endSession(Context ctx) {
