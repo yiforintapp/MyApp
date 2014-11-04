@@ -60,6 +60,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 	private TextView mTvMemoryInfo;
 	private TextView mTvFlow;
 	private ImageView mIvDigital_0, mIvDigital_1, mIvDigital_2;
+	private TextView mLockedApp;
 	private CommonTitleBar mTtileBar;
 
 	private LeoPopMenu mLeoPopMenu;
@@ -83,6 +84,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mIvDigital_0 = (ImageView) findViewById(R.id.digital_0);
 		mIvDigital_1 = (ImageView) findViewById(R.id.digital_1);
 		mIvDigital_2 = (ImageView) findViewById(R.id.digital_2);
+		mLockedApp = (TextView) findViewById(R.id.tv_lock_count);
 
 		mTvMemoryInfo = (TextView) findViewById(R.id.tv_memory_info);
 		mTvFlow = (TextView) findViewById(R.id.tv_flow);
@@ -133,6 +135,7 @@ public class HomeActivity extends Activity implements OnClickListener,
         }
 			
 		updateSettingIcon();
+		setLockedAppCount();
 		super.onResume();
 		LeoLog.d("HOME", "homepage onResume");
 	}
@@ -142,6 +145,12 @@ public class HomeActivity extends Activity implements OnClickListener,
 				.getAllPkgInfo().size();
 		setAppCount(appCount);
 	}
+	
+    private void setLockedAppCount() {
+        int lockedAppCount = AppMasterPreference.getInstance(this)
+                .getLockedAppList().size();
+        mLockedApp.setText(Integer.toString(lockedAppCount));
+    }
 
 	@Override
     public void onOptionsMenuClosed(Menu menu) {
