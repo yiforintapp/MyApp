@@ -2,7 +2,7 @@ package com.leo.appmaster.applocker.logic;
 
 import java.util.HashMap;
 
-import com.leo.appmaster.applocker.AppLockerPreference;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Context;
@@ -22,7 +22,7 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 	}
 
 	public int getRelockTime() {
-		return AppLockerPreference.getInstance(mContext).getRelockTimeout();
+		return AppMasterPreference.getInstance(mContext).getRelockTimeout();
 	}
 
 	@Override

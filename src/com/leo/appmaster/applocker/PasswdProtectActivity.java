@@ -1,5 +1,6 @@
 package com.leo.appmaster.applocker;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CommonTitleBar;
 
@@ -70,12 +71,12 @@ public class PasswdProtectActivity extends Activity implements OnClickListener {
 		mSave.setOnClickListener(this);
 
 		mScrollView = (ScrollView) findViewById(R.id.scroll);
-		String question = AppLockerPreference.getInstance(this).getPpQuestion();
+		String question = AppMasterPreference.getInstance(this).getPpQuestion();
 		if (question != null) {
 			mQuestion.setText(question);
 			mQuestion.selectAll();
 		}
-		String answer = AppLockerPreference.getInstance(this).getPpAnwser();
+		String answer = AppMasterPreference.getInstance(this).getPpAnwser();
 		if (question != null) {
 			mAnwser.setText(answer);
 		}
@@ -86,7 +87,7 @@ public class PasswdProtectActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		String qusetion = mQuestion.getText().toString();
 		String answer = mAnwser.getText().toString();
-		String passwdHint = AppLockerPreference.getInstance(this)
+		String passwdHint = AppMasterPreference.getInstance(this)
 				.getPasswdTip();
 		if (v == mSave) {
 			boolean noQuestion = qusetion == null || qusetion.trim().equals("");
@@ -116,7 +117,7 @@ public class PasswdProtectActivity extends Activity implements OnClickListener {
 			if (qusetion == null || qusetion.trim().equals("")) {
 				qusetion = answer = "";
 			}
-			AppLockerPreference.getInstance(this).savePasswdProtect(qusetion,
+			AppMasterPreference.getInstance(this).savePasswdProtect(qusetion,
 					answer, passwdHint);
 			Toast.makeText(this, R.string.pp_success, Toast.LENGTH_SHORT)
 					.show();

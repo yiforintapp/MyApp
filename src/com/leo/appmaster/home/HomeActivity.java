@@ -20,10 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -182,7 +182,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		case R.id.tv_app_lock:
 			SDKWrapper.addEvent(LeoStat.P2, "main page",
 					"click the app lock button");
-			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
+			if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
 				enterLockPage();
 			} else {
 				startLockSetting();
@@ -246,9 +246,9 @@ public class HomeActivity extends Activity implements OnClickListener,
 
 	private void enterLockPage() {
 		Intent intent = null;
-		int lockType = AppLockerPreference.getInstance(this).getLockType();
+		int lockType = AppMasterPreference.getInstance(this).getLockType();
 		intent = new Intent(this, LockScreenActivity.class);
-		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_PASSWD);
 		} else {

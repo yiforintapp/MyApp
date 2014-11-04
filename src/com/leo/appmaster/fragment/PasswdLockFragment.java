@@ -8,9 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.WaitActivity;
@@ -70,7 +70,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener 
 		mPasswdHint = (TextView) findViewById(R.id.tv_passwd_hint);
 		mPasswdTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
 		mAppicon = (ImageView) findViewById(R.id.iv_app_icon);
-		String passwdtip = AppLockerPreference.getInstance(mActivity)
+		String passwdtip = AppMasterPreference.getInstance(mActivity)
 				.getPasswdTip();
 		if (passwdtip == null || passwdtip.trim().equals("")) {
 			mPasswdHint.setVisibility(View.INVISIBLE);
@@ -136,7 +136,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener 
 
 	private void checkPasswd() {
 		mInputCount++;
-		AppLockerPreference pref = AppLockerPreference.getInstance(mActivity);
+		AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
 
 		if (pref.getPassword().equals(mTempPasswd)) { // 密码输入正确
 			if (mFrom == FROM_SELF) {

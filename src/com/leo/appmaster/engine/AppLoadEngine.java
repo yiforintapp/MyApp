@@ -28,8 +28,8 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -147,13 +147,18 @@ public class AppLoadEngine extends BroadcastReceiver {
 		mAppDetails = new ConcurrentHashMap<String, AppDetailInfo>();
 		mListeners = new ArrayList<AppChangeListener>(1);
 
-		List<String> list = AppLockerPreference.getInstance(mContext)
+		List<String> list = AppMasterPreference.getInstance(mContext)
 				.getRecommendList();
 		if (list.get(0).equals("")) {
 			mRecommendLocklist = Arrays.asList(sLocalLockArray);
 		} else {
 			mRecommendLocklist = list;
 		}
+	}
+	
+	
+	public List<String> getRecommendLockList() {
+		return mRecommendLocklist;
 	}
 
 	public void updateRecommendLockList(List<String> list) {
@@ -163,7 +168,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			appDetailInfo.topPos = mRecommendLocklist.indexOf(appDetailInfo
 					.getPkg());
 		}
-		AppLockerPreference.getInstance(mContext).setRecommendList(list);
+		AppMasterPreference.getInstance(mContext).setRecommendList(list);
 	}
 
 	public static synchronized AppLoadEngine getInstance(Context context) {
@@ -414,7 +419,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		sWorker.post(new Runnable() {
 			@Override
 			public void run() {
-				AppLockerPreference pre = AppLockerPreference
+				AppMasterPreference pre = AppMasterPreference
 						.getInstance(mContext);
 				List<String> lockList = new ArrayList<String>(pre
 						.getLockedAppList());
@@ -442,14 +447,14 @@ public class AppLoadEngine extends BroadcastReceiver {
 							public void onClick(int which) {
 								if (which == 0) {
 								} else if (which == 1) {
-									AppLockerPreference pre = AppLockerPreference
+									AppMasterPreference pre = AppMasterPreference
 											.getInstance(mContext);
 									List<String> lockList = new ArrayList<String>(
 											pre.getLockedAppList());
 									lockList.add(packageName);
 									pre.setLockedAppList(lockList);
 
-									if (pre.getLockType() == AppLockerPreference.LOCK_TYPE_NONE) {
+									if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 										Intent intent = new Intent(mContext,
 												LockSettingActivity.class);
 										intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

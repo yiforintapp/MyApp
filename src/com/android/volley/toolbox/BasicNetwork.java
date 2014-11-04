@@ -104,7 +104,6 @@ public class BasicNetwork implements Network {
 				int statusCode = statusLine.getStatusCode();
 
 				responseHeaders = convertHeaders(httpResponse.getAllHeaders());
-				LeoLog.d("xxxx", "statusCode = " + statusCode + " haders = " + responseHeaders.values().toString());
 				// Handle cache validation.
 				if (statusCode == HttpStatus.SC_NOT_MODIFIED) {
 

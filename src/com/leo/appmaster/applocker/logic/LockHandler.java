@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.leo.appmaster.applocker.AppLockerPreference;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.utils.LeoLog;
@@ -70,19 +70,19 @@ public class LockHandler extends BroadcastReceiver {
 			}
 			mLastRunningPkg = pkg;
 			mLastRuningActivity = activity;
-			List<String> list = AppLockerPreference.getInstance(mContext)
+			List<String> list = AppMasterPreference.getInstance(mContext)
 					.getLockedAppList();
 			if (list.contains(pkg)) {
 				Intent intent = new Intent(mContext, LockScreenActivity.class);
 				if (!mLockPolicy.onHandleLock(pkg)) {
-					int lockType = AppLockerPreference.getInstance(mContext)
+					int lockType = AppMasterPreference.getInstance(mContext)
 							.getLockType();
-					if (lockType == AppLockerPreference.LOCK_TYPE_NONE)
+					if (lockType == AppMasterPreference.LOCK_TYPE_NONE)
 						return;
-					if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+					if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 						intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 								LockFragment.LOCK_TYPE_PASSWD);
-					} else if (lockType == AppLockerPreference.LOCK_TYPE_GESTURE) {
+					} else if (lockType == AppMasterPreference.LOCK_TYPE_GESTURE) {
 						intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 								LockFragment.LOCK_TYPE_GESTURE);
 					}
@@ -105,25 +105,25 @@ public class LockHandler extends BroadcastReceiver {
 			mLockPolicy.onUnlocked(pkg);
 		} else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
 			if (mLockPolicy instanceof TimeoutRelockPolicy) {
-				if (AppLockerPreference.getInstance(context).isAutoLock()) {
+				if (AppMasterPreference.getInstance(context).isAutoLock()) {
 					((TimeoutRelockPolicy) mLockPolicy).clearLockApp();
 				}
 			}
 		} else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-			List<String> list = AppLockerPreference.getInstance(mContext)
+			List<String> list = AppMasterPreference.getInstance(mContext)
 					.getLockedAppList();
 			LeoLog.e("onReceive", "mLastRunningPkg = " + mLastRunningPkg);
 			if (list.contains(mLastRunningPkg)) {
 				Intent intent2 = new Intent(mContext, LockScreenActivity.class);
 				if (!mLockPolicy.onHandleLock(mLastRunningPkg)) {
-					int lockType = AppLockerPreference.getInstance(mContext)
+					int lockType = AppMasterPreference.getInstance(mContext)
 							.getLockType();
-					if (lockType == AppLockerPreference.LOCK_TYPE_NONE)
+					if (lockType == AppMasterPreference.LOCK_TYPE_NONE)
 						return;
-					if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+					if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 						intent2.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 								LockFragment.LOCK_TYPE_PASSWD);
-					} else if (lockType == AppLockerPreference.LOCK_TYPE_GESTURE) {
+					} else if (lockType == AppMasterPreference.LOCK_TYPE_GESTURE) {
 						intent2.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 								LockFragment.LOCK_TYPE_GESTURE);
 					}

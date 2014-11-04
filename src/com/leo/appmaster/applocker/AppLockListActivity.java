@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
@@ -90,8 +91,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		}
 
 		Intent intent = new Intent(this, LockScreenActivity.class);
-		int lockType = AppLockerPreference.getInstance(this).getLockType();
-		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+		int lockType = AppMasterPreference.getInstance(this).getLockType();
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_PASSWD);
 		} else {
@@ -132,7 +133,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 
 	private void initUI() {
 		mSortType = getResources().getStringArray(R.array.sort_type);
-		mCurSortType = AppLockerPreference.getInstance(this).getSortType();
+		mCurSortType = AppMasterPreference.getInstance(this).getSortType();
 
 		mInflater = LayoutInflater.from(this);
 		mMaskLayer = findViewById(R.id.mask_layer);
@@ -153,7 +154,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	}
 
 	private void loadData() {
-		if (AppLockerPreference.getInstance(this).isFisrtUseLocker()) {
+		if (AppMasterPreference.getInstance(this).isFisrtUseLocker()) {
 			mMaskLayer.setVisibility(View.VISIBLE);
 			mMaskLayer.setOnClickListener(this);
 		}
@@ -161,7 +162,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mLockedList.clear();
 		ArrayList<AppDetailInfo> list = AppLoadEngine.getInstance(this)
 				.getAllPkgInfo();
-		List<String> lockList = AppLockerPreference.getInstance(this)
+		List<String> lockList = AppMasterPreference.getInstance(this)
 				.getLockedAppList();
 		for (AppDetailInfo appDetailInfo : list) {
 			if (appDetailInfo.getPkg().equals(this.getPackageName()))
@@ -252,8 +253,22 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				for (BaseInfo info : AppLockListActivity.this.mLockedList) {
 					list.add(info.getPkg());
 				}
-				AppLockerPreference.getInstance(AppLockListActivity.this)
-						.setLockedAppList(list);
+				List<String> recommendList = AppLoadEngine.getInstance(
+						getApplicationContext()).getRecommendLockList();
+
+				int count = 0;
+				for (String string : list) {
+					if (recommendList.contains(string))
+						count++;
+				}
+
+				AppMasterPreference pref = AppMasterPreference
+						.getInstance(AppLockListActivity.this);
+
+				pref.setRecommendLockPercent(((float) count)
+						/ recommendList.size());
+
+				pref.setLockedAppList(list);
 			}
 		}
 	}
@@ -304,7 +319,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 							}
 						}
 						loadData();
-						AppLockerPreference.getInstance(
+						AppMasterPreference.getInstance(
 								AppLockListActivity.this).setSortType(
 								mCurSortType);
 						mTtileBar.setCenterText(mSortType[mCurSortType]);
@@ -318,7 +333,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			break;
 		case R.id.mask_layer:
 			mMaskLayer.setVisibility(View.INVISIBLE);
-			AppLockerPreference.getInstance(this).setLockerUsed();
+			AppMasterPreference.getInstance(this).setLockerUsed();
 			break;
 		}
 	}

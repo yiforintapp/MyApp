@@ -15,8 +15,8 @@ import android.os.Message;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.utils.LeoLog;
@@ -66,7 +66,7 @@ public class SplashActivity extends Activity {
 			@Override
 			public void run() {
 				// get recommend app lock list
-				final AppLockerPreference pref = AppLockerPreference
+				final AppMasterPreference pref = AppMasterPreference
 						.getInstance(getApplicationContext());
 				long lastPull = pref.getLastLocklistPullTime();
 				long interval = pref.getPullInterval();
