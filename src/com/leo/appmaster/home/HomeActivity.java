@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +18,7 @@ import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -38,6 +40,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CricleView;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
@@ -108,7 +111,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
-		mTtileBar.setOptionImage(R.drawable.setting_btn);
+        mTtileBar.setOptionImage(R.drawable.setting_btn);
 		mTtileBar.setOptionListener(this);
 
 		calculateAppCount();
@@ -124,16 +127,14 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
 
-		if (LeoStat.isUpdateAvailable()) {
-			if (mSettingIcon != null) {
-				mSettingIcon.setImageResource(R.drawable.setting_icon_new);
-			}
-		} else {
-			if (mSettingIcon != null) {
-				mSettingIcon.setImageResource(R.drawable.setting_icon);
-			}
-		}
+
+        if (mSettingIcon != null) {
+            mSettingIcon.setImageResource(R.drawable.setting_icon);
+        }
+			
+		updateSettingIcon();
 		super.onResume();
+		LeoLog.d("HOME", "homepage onResume");
 	}
 
 	private void calculateAppCount() {
@@ -142,7 +143,14 @@ public class HomeActivity extends Activity implements OnClickListener,
 		setAppCount(appCount);
 	}
 
-	private void setAppCount(int count) {
+	@Override
+    public void onOptionsMenuClosed(Menu menu) {
+        // TODO Auto-generated method stub
+        super.onOptionsMenuClosed(menu);
+        LeoLog.d("homepage", "onOptionsMenuClosed");
+    }
+
+    private void setAppCount(int count) {
 		int one, two, three;
 		one = count / 100;
 		two = (count % 100) / 10;
@@ -203,8 +211,8 @@ public class HomeActivity extends Activity implements OnClickListener,
 		case R.id.tv_option_image:
 			if (mLeoPopMenu == null) {
 				mLeoPopMenu = new LeoPopMenu();
+				mLeoPopMenu.setItemSpaned(true);
 				mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
-				mLeoPopMenu.setPopMenuItems(getPopMenuItems());
 				mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
@@ -226,12 +234,27 @@ public class HomeActivity extends Activity implements OnClickListener,
 					}
 				});
 			}
+            mLeoPopMenu.setPopMenuItems(getPopMenuItems());
 			mLeoPopMenu.showPopMenu(this,
 					mTtileBar.findViewById(R.id.tv_option_image));
+            mLeoPopMenu.setOnDismiss(new OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    updateSettingIcon();
+                }
+            });
 			break;
 		default:
 			break;
 		}
+	}
+	
+	private void updateSettingIcon(){
+        if (LeoStat.isUpdateAvailable()) {
+            mTtileBar.setOptionImage(R.drawable.setting_btn_new);
+        } else {
+            mTtileBar.setOptionImage(R.drawable.setting_btn);
+        }
 	}
 
 	private List<String> getPopMenuItems() {
@@ -239,7 +262,11 @@ public class HomeActivity extends Activity implements OnClickListener,
 		Resources resources = AppMasterApplication.getInstance().getResources();
 		listItems.add(resources.getString(R.string.feedback));
 		listItems.add(resources.getString(R.string.app_recomend));
-		listItems.add(resources.getString(R.string.app_setting_update));
+        if (LeoStat.isUpdateAvailable()) {
+            listItems.add(resources.getString(R.string.app_setting_has_update));
+        } else {
+            listItems.add(resources.getString(R.string.app_setting_update));
+        }
 		listItems.add(resources.getString(R.string.app_setting_about));
 		return listItems;
 	}

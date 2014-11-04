@@ -136,6 +136,7 @@
     <string name="passwd_notify">पासवर्ड इशारा</string>
     <string name="no_lock_item_tip">कोई ताला आवेदन</string>
     <string name="no_unlocked_item_tip">खुला कोई आवेदन</string>
+    <string name="app_setting_has_update">&#160;&#160;&#160;नवीनीकरण के लिए जाँच करें <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
 

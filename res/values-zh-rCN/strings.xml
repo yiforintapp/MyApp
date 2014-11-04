@@ -160,5 +160,6 @@
     <string name="no_unlocked_item_tip">没有未加锁应用</string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
+    <string name="app_setting_has_update">&#160;&#160;&#160;检查升级 <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
 
 </resources>

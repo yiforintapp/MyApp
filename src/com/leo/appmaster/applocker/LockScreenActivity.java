@@ -16,7 +16,6 @@ import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FastBlur;
-import com.leoers.leoanalytics.LeoStat;
 
 import android.content.Intent;
 import android.content.res.Resources;
