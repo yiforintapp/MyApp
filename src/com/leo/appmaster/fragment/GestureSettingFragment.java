@@ -12,10 +12,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
@@ -55,7 +55,7 @@ public class GestureSettingFragment extends BaseFragment implements
 		mTvBottom = (TextView) findViewById(R.id.tv_bottom);
 		mTvBottom.setOnClickListener(this);
 
-		if (AppLockerPreference.getInstance(mActivity).getLockType() == AppLockerPreference.LOCK_TYPE_NONE) {
+		if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 			mTvGestureTip.setText(R.string.first_set_passwd_hint);
 		} else {
 			mTvGestureTip.setText(R.string.set_gesture);
@@ -83,7 +83,7 @@ public class GestureSettingFragment extends BaseFragment implements
 		mInputCount = 1;
 		mTempGesture1 = mTempGesture2 = "";
 
-		if (AppLockerPreference.getInstance(mActivity).getLockType() == AppLockerPreference.LOCK_TYPE_NONE) {
+		if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 			mTvGestureTip.setText(R.string.first_set_passwd_hint);
 		} else {
 			mTvGestureTip.setText(R.string.set_gesture);
@@ -141,14 +141,14 @@ public class GestureSettingFragment extends BaseFragment implements
 				// now we can start lock service
 				intent = new Intent(mActivity, LockService.class);
 				mActivity.startService(intent);
-				AppLockerPreference.getInstance(mActivity).saveGesture(
+				AppMasterPreference.getInstance(mActivity).saveGesture(
 						mTempGesture2);
 				if (((LockSettingActivity) mActivity).isResetPasswd()) {
 					showResetSuc();
 					return;
 				}
 				Toast.makeText(mActivity, R.string.set_gesture_suc, 1).show();
-				if (!AppLockerPreference.getInstance(mActivity)
+				if (!AppMasterPreference.getInstance(mActivity)
 						.hasPswdProtect()) {
 					showGestureProtectDialog();
 				} else {

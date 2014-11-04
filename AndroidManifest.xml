@@ -63,6 +63,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
@@ -135,12 +136,13 @@
             android:exported="true" >
         </service>
 
-        <receiver android:name="com.leo.appmaster.applocker.receiver.StartupReceiver" >
+        <receiver android:name="com.leo.appmaster.applocker.receiver.LockReceiver" >
             <intent-filter android:priority="1000" >
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="com.leo.appmaster.restart" />
+                <action android:name="com.leo.appmaster.alarmlock" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.leo.appmaster.applocker.receiver.DeviceReceiver" >

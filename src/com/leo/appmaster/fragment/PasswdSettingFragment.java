@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
@@ -86,7 +86,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 		mTvBottom = (TextView) findViewById(R.id.tv_bottom);
 		mTvBottom.setOnClickListener(this);
 
-		if (AppLockerPreference.getInstance(mActivity).getLockType() == AppLockerPreference.LOCK_TYPE_NONE) {
+		if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 			mInputTip.setText(R.string.first_set_passwd_hint);
 			mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
 		} else {
@@ -174,7 +174,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 		mInputCount = 1;
 		mTempFirstPasswd = "";
 		mTempSecondPasswd = "";
-		if (AppLockerPreference.getInstance(mActivity).getLockType() == AppLockerPreference.LOCK_TYPE_NONE) {
+		if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 			mInputTip.setText(R.string.first_set_passwd_hint);
 		} else {
 			mInputTip.setText(R.string.set_passwd);
@@ -203,7 +203,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 						Intent intent = null;
 						intent = new Intent(mActivity, LockService.class);
 						mActivity.startService(intent);
-						AppLockerPreference.getInstance(mActivity)
+						AppMasterPreference.getInstance(mActivity)
 								.savePassword(mTempFirstPasswd);
 
 						if (((LockSettingActivity) mActivity).isResetPasswd()) {
@@ -211,7 +211,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 							return;
 						}
 
-						if (!AppLockerPreference.getInstance(mActivity)
+						if (!AppMasterPreference.getInstance(mActivity)
 								.hasPswdProtect()) {
 							setPasswdProtect();
 						} else {

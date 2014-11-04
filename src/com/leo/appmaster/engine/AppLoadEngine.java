@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -27,8 +28,8 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -36,7 +37,6 @@ import com.leo.appmaster.model.CacheInfo;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 
 public class AppLoadEngine extends BroadcastReceiver {
@@ -88,12 +88,13 @@ public class AppLoadEngine extends BroadcastReceiver {
 				final int type);
 	}
 
+	public static final String ACTION_RECOMMEND_LIST_CHANGE = "com.leo.appmaster.RECOMMEND_LIST_CHANGE";
+
 	private static AppLoadEngine mInstance;
 	private Context mContext;
 	private PackageManager mPm;
 	private CountDownLatch mLatch;
 	private boolean mInit;
-
 	private boolean mAppsLoaded = false;
 
 	private ArrayList<AppChangeListener> mListeners;
@@ -113,8 +114,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	private ConcurrentHashMap<String, AppDetailInfo> mAppDetails;
 
-	private final static String[] sTopAppArray = new String[] { "com.whatsapp", // WhatsApp
-																				// Messenger
+	private final static String[] sLocalLockArray = new String[] {
+			"com.whatsapp", // WhatsApp
+							// Messenger
 			"com.facebook.orca", // Facebook Messenger
 			"com.facebook.katana", // Facebook
 			"com.bsb.hike", // hike messenger
@@ -132,10 +134,11 @@ public class AppLoadEngine extends BroadcastReceiver {
 			"com.km.cutpaste.util", // Cut Paste Photos
 			"com.pixlr.express", // Pixlr Express - photo editing
 			"com.android.gallery3d", // Gallery
-			"com.android.email" // Email
+			"com.android.email", // Email
+			"com.tencent.mobileqq" // qq
 	};
 
-	private final List<String> mTopApplist;
+	private List<String> mRecommendLocklist;
 
 	private AppLoadEngine(Context context) {
 		mContext = context.getApplicationContext();
@@ -143,7 +146,29 @@ public class AppLoadEngine extends BroadcastReceiver {
 		mLatch = new CountDownLatch(1);
 		mAppDetails = new ConcurrentHashMap<String, AppDetailInfo>();
 		mListeners = new ArrayList<AppChangeListener>(1);
-		mTopApplist = Arrays.asList(sTopAppArray);
+
+		List<String> list = AppMasterPreference.getInstance(mContext)
+				.getRecommendList();
+		if (list.get(0).equals("")) {
+			mRecommendLocklist = Arrays.asList(sLocalLockArray);
+		} else {
+			mRecommendLocklist = list;
+		}
+	}
+	
+	
+	public List<String> getRecommendLockList() {
+		return mRecommendLocklist;
+	}
+
+	public void updateRecommendLockList(List<String> list) {
+		mRecommendLocklist = list;
+		Collection<AppDetailInfo> collection = mAppDetails.values();
+		for (AppDetailInfo appDetailInfo : collection) {
+			appDetailInfo.topPos = mRecommendLocklist.indexOf(appDetailInfo
+					.getPkg());
+		}
+		AppMasterPreference.getInstance(mContext).setRecommendList(list);
 	}
 
 	public static synchronized AppLoadEngine getInstance(Context context) {
@@ -248,7 +273,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		appInfo.setInSdcard(AppUtil.isInstalledInSDcard(applicationInfo));
 		appInfo.setUid(applicationInfo.uid);
 		appInfo.setSourceDir(applicationInfo.sourceDir);
-		appInfo.topPos = mTopApplist.indexOf(packageName);
+		appInfo.topPos = mRecommendLocklist.indexOf(packageName);
 	}
 
 	private void loadPowerComsuInfo() {
@@ -333,7 +358,6 @@ public class AppLoadEngine extends BroadcastReceiver {
 	 */
 	public void onReceive(Context context, Intent intent) {
 		final String action = intent.getAction();
-
 		if (Intent.ACTION_PACKAGE_REMOVED.equals(action)
 				|| Intent.ACTION_PACKAGE_ADDED.equals(action)
 				|| Intent.ACTION_PACKAGE_CHANGED.equals(action)) {
@@ -385,6 +409,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 		} else if (Intent.ACTION_LOCALE_CHANGED.equals(action)) {
 			enqueuePackageUpdated(new PackageUpdatedTask(
 					AppChangeListener.TYPE_LOCAL_CHANGE, new String[] {}));
+		} else if (ACTION_RECOMMEND_LIST_CHANGE.equals(action)) {
+			updateRecommendLockList(intent
+					.getStringArrayListExtra(Intent.EXTRA_PACKAGES));
 		}
 	}
 
@@ -392,7 +419,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		sWorker.post(new Runnable() {
 			@Override
 			public void run() {
-				AppLockerPreference pre = AppLockerPreference
+				AppMasterPreference pre = AppMasterPreference
 						.getInstance(mContext);
 				List<String> lockList = new ArrayList<String>(pre
 						.getLockedAppList());
@@ -408,26 +435,26 @@ public class AppLoadEngine extends BroadcastReceiver {
 		sWorker.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				for (String str : sTopAppArray) {
+				for (String str : sLocalLockArray) {
 					if (str.equals(packageName)) {
 						LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
 						dialog.setTitle(R.string.app_name);
 						dialog.setContent("检测到您安装了"
 								+ AppUtil.getAppLabel(packageName, mContext)
-								+ "，建议枷锁");
+								+ "，建议加锁");
 						dialog.setOnClickListener(new OnDiaogClickListener() {
 							@Override
 							public void onClick(int which) {
 								if (which == 0) {
 								} else if (which == 1) {
-									AppLockerPreference pre = AppLockerPreference
+									AppMasterPreference pre = AppMasterPreference
 											.getInstance(mContext);
 									List<String> lockList = new ArrayList<String>(
 											pre.getLockedAppList());
 									lockList.add(packageName);
 									pre.setLockedAppList(lockList);
 
-									if (pre.getLockType() == AppLockerPreference.LOCK_TYPE_NONE) {
+									if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 										Intent intent = new Intent(mContext,
 												LockSettingActivity.class);
 										intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

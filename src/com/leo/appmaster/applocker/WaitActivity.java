@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.fragment.LockFragment;
@@ -86,9 +87,9 @@ public class WaitActivity extends Activity {
 		}
 		returned = true;
 		Intent intent = new Intent(this, LockScreenActivity.class);
-		int lockType = AppLockerPreference.getInstance(WaitActivity.this)
+		int lockType = AppMasterPreference.getInstance(WaitActivity.this)
 				.getLockType();
-		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_PASSWD);
 		} else {

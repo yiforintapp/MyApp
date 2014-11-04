@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CommonTitleBar;
 
@@ -30,7 +31,7 @@ public class PasswdTipActivity extends Activity implements OnClickListener {
 		mTitleBar = (CommonTitleBar) findViewById(R.id.commonTitleBar1);
 		mTitleBar.setTitle(R.string.passwd_notify);
 		mTitleBar.openBackView();
-		String tip = AppLockerPreference.getInstance(this).getPasswdTip();
+		String tip = AppMasterPreference.getInstance(this).getPasswdTip();
 		if (tip != null) {
 			mEtTip.setText(tip);
 		}
@@ -40,10 +41,10 @@ public class PasswdTipActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		if (v == mTvMakesure) {
 			String tip = mEtTip.getText().toString().trim();
-			AppLockerPreference ap = AppLockerPreference.getInstance(this);
+			AppMasterPreference ap = AppMasterPreference.getInstance(this);
 			String q = ap.getPpQuestion();
 			String a = ap.getPpAnwser();
-			AppLockerPreference.getInstance(this).savePasswdProtect(q, a, tip);
+			AppMasterPreference.getInstance(this).savePasswdProtect(q, a, tip);
 			Toast.makeText(this, R.string.set_success, 0).show();
 			finish();
 		}
