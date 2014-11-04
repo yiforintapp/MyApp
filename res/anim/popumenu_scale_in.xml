@@ -17,5 +17,4 @@
         android:interpolator="@android:anim/decelerate_interpolator"
         android:pivotX="100%"
         android:pivotY="0%" />
-
 </set>

@@ -57,7 +57,7 @@
             android:layout_marginBottom="20dp"
             android:textColor="#FFABCEFF"
             android:textSize="10dp"
-            android:text="Copyright © 2014 LEO Network Technology. All Rights Reserved" />
+            android:text="@string/about_copy" />
     </RelativeLayout>
     <LinearLayout 
         android:layout_width="match_parent"
@@ -73,7 +73,7 @@
             android:textColor="@android:color/white"
             android:textSize="18dp"
             android:background="@drawable/mycheck_button_selecter"
-            android:text="@string/check_update" />
+            android:text="@string/protocolBar" />
         
     </LinearLayout>
 

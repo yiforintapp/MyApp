@@ -120,7 +120,20 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-
+<!-- appWall -->
+<activity android:name="com.leo.appmaster.appwall.AppWallActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar">
+    <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>  -->
+            </activity>
+            <!-- 用户协议 -->
+          <activity android:name="com.leo.appmaster.home.ProtocolActivity">
+                 <!--    <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>  -->
+            </activity>
         <!-- add for the app update of leosdk -->
         <activity
             android:name=".update.UpdateActivity"

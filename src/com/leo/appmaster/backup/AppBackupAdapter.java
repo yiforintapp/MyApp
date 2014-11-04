@@ -85,10 +85,10 @@ public class AppBackupAdapter extends BaseAdapter {
         }
         AppDetailInfo app = mBackupList.get(arg0);
         Context context = itemView.getContext();
-        if(arg0 % 2 == 0) {
-            itemView.setBackgroundColor(context.getResources().getColor(R.color.white));
-        } else {
-            itemView.setBackgroundColor(context.getResources().getColor(R.color.item_backup_grey));
+        if(arg0 % 2 == 0) {     
+        	itemView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.backup_list_item_one));
+        } else {  
+        	itemView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.backup_list_item_two));
         }
         itemView.setIcon(app.getAppIcon());
         itemView.setTitle(app.getAppLabel());

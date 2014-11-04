@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -39,10 +41,10 @@ public class AppListActivity extends Activity implements AppChangeListener,
 	private PageIndicator mPageIndicator;
 	private LeoAppViewPager mViewPager;
 	private View mPagerContain;
-
+	
 	List<AppDetailInfo> mAppDetails;
 	LayoutInflater mInflater;
-
+	private Animation animate;
 	private int pageItemCount = 20;
 	
 
@@ -52,7 +54,7 @@ public class AppListActivity extends Activity implements AppChangeListener,
 		setContentView(R.layout.activity_app_manager);
 
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
-
+	//	animate=AnimationUtils.loadAnimation(AppListActivity.this,R.anim.locker_scale);
 		intiUI();
 	}
 
@@ -74,8 +76,7 @@ public class AppListActivity extends Activity implements AppChangeListener,
 		mPagerContain = findViewById(R.id.layout_pager_container);
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
 		mViewPager = (LeoAppViewPager) findViewById(R.id.pager);
-		// mViewPager.setPageTransformer(true, new DepthPageTransformer());
-
+		mViewPager.setPageTransformer(true, (com.leo.appmaster.ui.LeoAppViewPager.PageTransformer) new DepthPageTransformer());
 		fillData();
 	}
 
@@ -245,6 +246,7 @@ public class AppListActivity extends Activity implements AppChangeListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		view.startAnimation(animate);
 		String pkg = (String) view.getTag();
 		Intent intent = new Intent(this, AppDetailActivity.class);
 		intent.putExtra(AppDetailActivity.EXTRA_LOAD_PKG, pkg);

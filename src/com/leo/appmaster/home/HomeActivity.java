@@ -27,6 +27,7 @@ import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.appsetting.AboutActivity;
+import com.leo.appmaster.appwall.AppWallActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
@@ -106,8 +107,8 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
-		mTtileBar.setOptionImageVisibility(View.GONE);
-		mTtileBar.setOptionText("");
+		mTtileBar.setOptionImageVisibility(View.VISIBLE);
+		mTtileBar.setOptionText("设置");
 		mTtileBar.setOptionImage(R.drawable.setting_btn);
 		mTtileBar.setOptionListener(this);
 
@@ -219,6 +220,10 @@ public class HomeActivity extends Activity implements OnClickListener,
 						if (position == 0) {
 							LeoStat.checkUpdate();
 						} else if (position == 1) {
+						}else if(position==2)
+						{
+							Intent intent=new Intent(HomeActivity.this,AppWallActivity.class);
+							startActivity(intent);
 						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
@@ -237,6 +242,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		Resources resources = AppMasterApplication.getInstance().getResources();
 		listItems.add(resources.getString(R.string.app_setting_update));
 		listItems.add(resources.getString(R.string.app_setting_about));
+		listItems.add(resources.getString(R.string.appwallSetting));
 		return listItems;
 	}
 
@@ -279,6 +285,9 @@ public class HomeActivity extends Activity implements OnClickListener,
 			} else if (v.getId() == R.id.tv_app_backup) {
 				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
 				mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
+			}else if (v.getId() == R.string.appwallSetting) {
+				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
+				mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
 			}
 			break;
 		case MotionEvent.ACTION_UP:
@@ -295,7 +304,6 @@ public class HomeActivity extends Activity implements OnClickListener,
 		default:
 			break;
 		}
-
 		return false;
 	}
 }
