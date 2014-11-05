@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Request;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -53,6 +55,7 @@ public class AppWallActivity extends Activity implements OnItemClickListener {
 	private static final String IMAGEPATH = "http://c.hiphotos.baidu.com/image/w%3D310/";//图片的url
 	private static final String CHARSETLOCAL = "utf-8";// 本地
 	private static final String CHARSETSERVICE = "utf-8";// 服务端
+	private DownloadManager downloadManager;
 	private List<AppWallBean> all;
 	private ProgressDialog _processBar;
 	private void init() {
@@ -81,6 +84,7 @@ public class AppWallActivity extends Activity implements OnItemClickListener {
 				.cacheOnDisk(true).considerExifParams(true)
 				.displayer(new RoundedBitmapDisplayer(20)).build();
 		init();
+		downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);  
 			// 访问服务器
 		 MyAsyncTask task = new MyAsyncTask();
 		//task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
@@ -132,9 +136,22 @@ public class AppWallActivity extends Activity implements OnItemClickListener {
 	}
 	//访问网址
 	public void requestUrl(String url){
-		 Uri uri = Uri.parse(url);
-		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-		startActivity(intent);		
+		// Uri uri = Uri.parse(url);
+		 Uri uri = Uri.parse("http://down.360safe.com/inst.exe");
+		//-----------------------------------------------调用系统下载------------------------------------------------------------
+		    Request request = new Request(uri);    
+		    //设置允许使用的网络类型，这里是移动网络和wifi都可以    
+		    request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE|DownloadManager.Request.NETWORK_WIFI);    	  
+		    //禁止发出通知，既后台下载，如果要使用这一句必须声明一个权限：android.permission.DOWNLOAD_WITHOUT_NOTIFICATION    
+		    request.setShowRunningNotification(true);      
+		    //不显示下载界面    
+		    request.setVisibleInDownloadsUi(true);  
+		        /*设置下载后文件存放的位置,如果sdcard不可用，那么设置这个将报错，因此最好不设置如果sdcard可用，下载后的文件        在/mnt/sdcard/Android/data/packageName/files目录下面，如果sdcard不可用,设置了下面这个将报错，不设置，下载后的文件在/cache这个  目录下面*/  
+		//request.setDestinationInExternalFilesDir(this, null, "tar.apk");  
+		long id = downloadManager.enqueue(request);  		
+	//------------------------------------------------------------------------------------------------------------
+		/*Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		startActivity(intent);	*/	
 	}
 	// 创建线程异步加载
 	private class MyAsyncTask extends AsyncTask<String, Void, String> {
@@ -204,7 +221,8 @@ public class AppWallActivity extends Activity implements OnItemClickListener {
 					public void onClick(View arg0) {
 						 try {
 							MyAsyncTask task = new MyAsyncTask();					 
-							 task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
+							// task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
+							task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),"001a");
 						} catch (Exception e) {
 							e.printStackTrace();
 						}finally{

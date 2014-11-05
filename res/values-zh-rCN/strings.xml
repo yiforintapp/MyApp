@@ -143,7 +143,7 @@
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
     <!-- 应用墙 -->
-    <string name="app_wall">推荐应用</string>
+    <string name="app_wall">应用推荐</string>
     <string name="installApp">安装</string>
     <string name="protocolBar">隐私策略</string>
     <string name="appwallSetting">推荐</string>

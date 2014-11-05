@@ -109,7 +109,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("设置");
-		mTtileBar.setOptionImage(R.drawable.setting_btn);
+		mTtileBar.setOptionImage(R.drawable.setting_selector);
 		mTtileBar.setOptionListener(this);
 
 		calculateAppCount();
@@ -242,7 +242,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		Resources resources = AppMasterApplication.getInstance().getResources();
 		listItems.add(resources.getString(R.string.app_setting_update));
 		listItems.add(resources.getString(R.string.app_setting_about));
-		listItems.add(resources.getString(R.string.appwallSetting));
+		listItems.add(resources.getString(R.string.app_wall));
 		return listItems;
 	}
 
