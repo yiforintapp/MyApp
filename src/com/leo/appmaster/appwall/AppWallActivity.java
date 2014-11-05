@@ -136,8 +136,8 @@ public class AppWallActivity extends Activity implements OnItemClickListener {
 	}
 	//访问网址
 	public void requestUrl(String url){
-		// Uri uri = Uri.parse(url);
-		 Uri uri = Uri.parse("http://down.360safe.com/inst.exe");
+		 Uri uri = Uri.parse(url);
+		 //Uri uri = Uri.parse("http://down.360safe.com/inst.exe");
 		//-----------------------------------------------调用系统下载------------------------------------------------------------
 		    Request request = new Request(uri);    
 		    //设置允许使用的网络类型，这里是移动网络和wifi都可以    

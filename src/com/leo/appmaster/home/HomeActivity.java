@@ -285,7 +285,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 			} else if (v.getId() == R.id.tv_app_backup) {
 				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
 				mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
-			}else if (v.getId() == R.string.appwallSetting) {
+			}else if (v.getId() == R.string.app_wall) {
 				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
 				mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
 			}
