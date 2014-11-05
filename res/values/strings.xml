@@ -169,13 +169,14 @@
 					We will NOT share your personal information with any third parties unless: If required to do so by any applicable law, regulation, legal
 			 process or enforceable governmental request.\n \n
 			       <b>Contact Us</b>\n\n
-			       f you have any questions about this Policy or to report any violations of the Policy, please send an email to: support@leoers.com
+			       f you have any questions about this Policy or to report any violations of the Policy, please send an email to: <a href="support@leoers.com">support@leoers.com</a>
 			App Master also provides users the opportunity to opt-out of receiving communications from us at any time. If at any point you wish to stop 
 			communication from our side please inform us of your request via the same email address.\n\n
                    <b>Changes to this Policy</b>\n\n
-                   This Privacy Policy may be revised from time to time with or without notice. If we make a change in this policy, we will post the latest version 
-           on our site: www.leomaster.com. By continuing to access or use the services you agree to bebound by the revised Privacy Policy. If you do not 
-           agree to any modifications to this Policy, you should stop using any of all the services.\n
+                  This Privacy Policy may be revised from time to time with or without notice. If we make a change in this policy, we will post the latest version on our site:<a href="www.leomaster.com"> www.leomaster.com</a>. 
+                  By continuing to access or use the services you agree to be bound by the revised Privacy Policy. If you do not agree to any modifications to this Policy, you should stop using
+                  any of all the services.\n
        </string>
+       <string name="protocolSupport">support@leomaster.com</string>
       
 </resources>

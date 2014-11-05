@@ -17,6 +17,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:scrollbarStyle="insideInset"
+        android:scrollbars="none"
         android:layout_below="@+id/appwallTB"
          >
          <LinearLayout 
