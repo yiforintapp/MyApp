@@ -14,10 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_title_bar"
-        android:layout_margin="3dp"
-        android:background="#00ffffff"
         android:divider="@null"
         android:listSelector="@null"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="5dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="none" />
+
 </RelativeLayout>

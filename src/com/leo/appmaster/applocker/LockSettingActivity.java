@@ -1,5 +1,6 @@
 package com.leo.appmaster.applocker;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
@@ -53,23 +54,22 @@ public class LockSettingActivity extends FragmentActivity implements
 		mGesture = new GestureSettingFragment();
 		mPasswd.setActivityName(mFromActivity);
 		mGesture.setActivityName(mFromActivity);
+
+		if (mResetFlag) {
+			mTitleBar.setTitle(R.string.reset_passwd);
+		}
+
 		mFm = getSupportFragmentManager();
 		FragmentTransaction tans = mFm.beginTransaction();
-		int type = AppLockerPreference.getInstance(this).getLockType();
-		if (type == AppLockerPreference.LOCK_TYPE_GESTURE) {
+		int type = AppMasterPreference.getInstance(this).getLockType();
+		if (type == AppMasterPreference.LOCK_TYPE_GESTURE) {
 			mLockType = LOCK_TYPE_GESTURE;
 			tans.replace(R.id.fragment_contain, mGesture);
 			mTitleBar.setOptionText(getString(R.string.switch_passwd));
-			if (mResetFlag) {
-				mTitleBar.setTitle(R.string.reset_gesture);
-			}
 		} else {
 			mLockType = LOCK_TYPE_PASSWD;
 			tans.replace(R.id.fragment_contain, mPasswd);
 			mTitleBar.setOptionText(getString(R.string.switch_gesture));
-			if (mResetFlag) {
-				mTitleBar.setTitle(R.string.reset_passwd);
-			}
 		}
 		tans.commit();
 
@@ -104,16 +104,10 @@ public class LockSettingActivity extends FragmentActivity implements
 		if (mLockType == LOCK_TYPE_PASSWD) {
 			tans.replace(R.id.fragment_contain, mGesture);
 			mLockType = LOCK_TYPE_GESTURE;
-			if (mResetFlag) {
-				mTitleBar.setTitle(R.string.reset_gesture);
-			}
 			mTitleBar.setOptionText(getString(R.string.switch_passwd));
 		} else {
 			tans.replace(R.id.fragment_contain, mPasswd);
 			mLockType = LOCK_TYPE_PASSWD;
-			if (mResetFlag) {
-				mTitleBar.setTitle(R.string.reset_passwd);
-			}
 			mTitleBar.setOptionText(getString(R.string.switch_gesture));
 		}
 		tans.commit();

@@ -1,69 +1,56 @@
 package com.leo.appmaster.applocker;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.LeoGridView;
+import com.leo.appmaster.ui.LeoPopMenu;
+import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
 import com.leoers.leoanalytics.LeoStat;
 
 public class AppLockListActivity extends Activity implements AppChangeListener,
 		OnItemClickListener, OnClickListener {
 
+	public LayoutInflater mInflater;
 	private CommonTitleBar mTtileBar;
-
 	private View mMaskLayer;
-	private ImageView mIvAnimator;
-	private View mTabContainer;
-	private TextView mTvUnlock, mTvLocked, mTvNoItem;
-	private int mLockedLocationX, mLockedLocationY;
-	private int mUnlockLocationX, mUnlockLocationY;
 	private List<BaseInfo> mLockedList;
 	private List<BaseInfo> mUnlockList;
+	private PagedGridView mAppPager;
+	private LeoPopMenu mLeoPopMenu;
 
-	private PagedGridView mPagerUnlock, mPagerLock;
-	private FrameLayout mPagerParent;
-	public LayoutInflater mInflater;
-	private boolean mCaculated;
-	private float mScale = 0.5f;
 	private BaseInfo mLastSelectApp;
 	private Object mLock = new Object();
-
-	private boolean isFlying;
-
 	private boolean mGotoSetting;
+	private String[] mSortType;
+
+	public static final int DEFAULT_SORT = 0;
+	public static final int NAME_SORT = 1;
+	public static final int INSTALL_TIME_SORT = 2;
+	private int mCurSortType = DEFAULT_SORT;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +58,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		setContentView(R.layout.activity_lock_app_list);
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		initUI();
+	}
+
+	@Override
+	protected void onResume() {
 		loadData();
+		super.onResume();
 	}
 
 	@Override
@@ -84,8 +76,8 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		}
 
 		Intent intent = new Intent(this, LockScreenActivity.class);
-		int lockType = AppLockerPreference.getInstance(this).getLockType();
-		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+		int lockType = AppMasterPreference.getInstance(this).getLockType();
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_PASSWD);
 		} else {
@@ -125,41 +117,37 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	}
 
 	private void initUI() {
+		mSortType = getResources().getStringArray(R.array.sort_type);
+		mCurSortType = AppMasterPreference.getInstance(this).getSortType();
+
 		mInflater = LayoutInflater.from(this);
 		mMaskLayer = findViewById(R.id.mask_layer);
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 		mTtileBar.openBackView();
-		mTtileBar.setOptionText(getString(R.string.setting));
-		mTtileBar.setOptionTextVisibility(View.VISIBLE);
+		mTtileBar.setOptionImage(R.drawable.applock_setting);
+		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionListener(this);
-		mIvAnimator = (ImageView) findViewById(R.id.iv_animator);
-		mTabContainer = findViewById(R.id.tab_container);
-		mTvUnlock = (TextView) findViewById(R.id.tv_app_unlock);
-		mTvLocked = (TextView) findViewById(R.id.tv_app_locked);
-		mTvUnlock.setOnClickListener(this);
-		mTvLocked.setOnClickListener(this);
-		mTvNoItem = (TextView) findViewById(R.id.no_item_tip);
+		mTtileBar.setSpinerVibility(View.VISIBLE);
+		mTtileBar.setSpinerListener(this);
+		mTtileBar.setSpinerText(mSortType[mCurSortType]);
+
 		mLockedList = new ArrayList<BaseInfo>();
 		mUnlockList = new ArrayList<BaseInfo>();
-		mPagerParent = (FrameLayout) findViewById(R.id.pager_parent);
-		mPagerUnlock = (PagedGridView) findViewById(R.id.pager_unlock);
-		mPagerLock = (PagedGridView) findViewById(R.id.pager_lock);
-		mPagerUnlock.setGridviewItemClickListener(this);
-		mPagerLock.setGridviewItemClickListener(this);
+		mAppPager = (PagedGridView) findViewById(R.id.pager_unlock);
+		mAppPager.setItemClickListener(this);
 	}
 
 	private void loadData() {
-		if (AppLockerPreference.getInstance(this).isFisrtUseLocker()) {
+		if (AppMasterPreference.getInstance(this).isFisrtUseLocker()) {
 			mMaskLayer.setVisibility(View.VISIBLE);
 			mMaskLayer.setOnClickListener(this);
 		}
-
 		mUnlockList.clear();
 		mLockedList.clear();
 		ArrayList<AppDetailInfo> list = AppLoadEngine.getInstance(this)
 				.getAllPkgInfo();
-		List<String> lockList = AppLockerPreference.getInstance(this)
+		List<String> lockList = AppMasterPreference.getInstance(this)
 				.getLockedAppList();
 		for (AppDetailInfo appDetailInfo : list) {
 			if (appDetailInfo.getPkg().equals(this.getPackageName()))
@@ -173,74 +161,27 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			}
 		}
 		Collections.sort(mLockedList, new LockedAppComparator(lockList));
+		if (mCurSortType == DEFAULT_SORT) {
+			Collections.sort(mUnlockList, new DefalutAppComparator());
+		} else if (mCurSortType == NAME_SORT) {
+			Collections.sort(mUnlockList, new NameComparator());
+		} else if (mCurSortType == INSTALL_TIME_SORT) {
+			Collections.sort(mUnlockList, new InstallTimeComparator());
+		}
+
+		ArrayList<BaseInfo> resault = new ArrayList<BaseInfo>(mLockedList);
+		resault.addAll(mUnlockList);
+
 		int rowCount = getResources().getInteger(R.integer.gridview_row_count);
-		mPagerUnlock.setDatas(mUnlockList, 4, rowCount);
-		mPagerLock.setDatas(mLockedList, 4, rowCount);
+		mAppPager.setDatas(resault, 4, rowCount);
 
-		if (mUnlockList.isEmpty()) {
-			mTvNoItem.setVisibility(View.VISIBLE);
-			mTvNoItem.setText(R.string.no_unlocked_item_tip);
-		} else {
-			mTvNoItem.setVisibility(View.INVISIBLE);
-		}
 		updateLockText();
-	}
-
-	private void calculateLoc() {
-		if (!mCaculated) {
-			mLockedLocationX = mTvLocked.getLeft()
-					+ (mTvLocked.getRight() - mTvLocked.getLeft()) / 2;
-			mLockedLocationY = mTvLocked.getTop()
-					+ (mTvLocked.getBottom() - mTvLocked.getTop()) / 2;
-			mUnlockLocationX = mTvUnlock.getLeft()
-					+ (mTvUnlock.getRight() - mTvUnlock.getLeft()) / 2;
-			mUnlockLocationY = mTvUnlock.getTop()
-					+ (mTvUnlock.getBottom() - mTvUnlock.getTop()) / 2;
-			mCaculated = true;
-		}
-	}
-
-	public void onTabClick(View v) {
-		if (v == mTvLocked) {
-			mPagerLock.notifyChange(mLockedList);
-			mPagerUnlock.setVisibility(View.INVISIBLE);
-			mPagerLock.setVisibility(View.VISIBLE);
-			mTvUnlock.setTextColor(getResources().getColor(R.color.white));
-			mTvLocked.setTextColor(getResources().getColor(
-					R.color.tab_select_text));
-
-			if (mLockedList.isEmpty()) {
-				mTvNoItem.setVisibility(View.VISIBLE);
-				mTvNoItem.setText(R.string.no_lock_item_tip);
-			} else {
-				mTvNoItem.setVisibility(View.INVISIBLE);
-			}
-			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_r);
-		} else if (v == mTvUnlock) {
-			mPagerUnlock.notifyChange(mUnlockList);
-			mPagerUnlock.setVisibility(View.VISIBLE);
-			mPagerLock.setVisibility(View.INVISIBLE);
-			mTvUnlock.setTextColor(getResources().getColor(
-					R.color.tab_select_text));
-			mTvLocked.setTextColor(getResources().getColor(R.color.white));
-			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_l);
-			if (mUnlockList.isEmpty()) {
-				mTvNoItem.setVisibility(View.VISIBLE);
-				mTvNoItem.setText(R.string.no_unlocked_item_tip);
-			} else {
-				mTvNoItem.setVisibility(View.INVISIBLE);
-			}
-		}
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		if (isFlying) {
-			return;
-		}
-		isFlying = true;
-		calculateLoc();
+		animateItem(view);
 		mLastSelectApp = (BaseInfo) view.getTag();
 		BaseInfo info = null;
 		if (mLastSelectApp.isLocked()) {
@@ -253,18 +194,14 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				}
 			}
 			mUnlockList.add(info);
-			Collections.sort(mUnlockList, new AppLoadEngine.AppComparator());
 			mLockedList.remove(info);
-			moveItemToUnlock(view, mLastSelectApp.getAppIcon());
+			
+			// to set view unlocked
+			((LockImageView) view.findViewById(R.id.iv_app_icon))
+					.setLocked(false);
 
-			if (mLockedList.isEmpty()) {
-				mTvNoItem.setVisibility(View.VISIBLE);
-				mTvNoItem.setText(R.string.no_lock_item_tip);
-			} else {
-				mTvNoItem.setVisibility(View.INVISIBLE);
-			}
-
-			SDKWrapper.addEvent(LeoStat.P2, "unlock app", mLastSelectApp.getPkg());
+			SDKWrapper.addEvent(LeoStat.P2, "unlock app",
+					mLastSelectApp.getPkg());
 		} else {
 			mLastSelectApp.setLocked(true);
 			for (BaseInfo baseInfo : mUnlockList) {
@@ -276,107 +213,35 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			}
 			mLockedList.add(0, info);
 			mUnlockList.remove(info);
-			moveItemToLock(view, mLastSelectApp.getAppIcon());
+			// to set view lock
+			((LockImageView) view.findViewById(R.id.iv_app_icon))
+					.setLocked(true);
 
-			if (mUnlockList.isEmpty()) {
-				mTvNoItem.setVisibility(View.VISIBLE);
-				mTvNoItem.setText(R.string.no_unlocked_item_tip);
-			} else {
-				mTvNoItem.setVisibility(View.INVISIBLE);
-			}
-			
-			SDKWrapper.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
+			SDKWrapper
+					.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
 		}
-		((LeoGridView) parent).removeItemAnimation(position, mLastSelectApp);
 		saveLockList();
+	}
+
+	private void animateItem(View view) {
+
+		AnimatorSet as = new AnimatorSet();
+		as.setDuration(300);
+		ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f,
+				0.8f, 1f);
+		ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f,
+				0.8f, 1f);
+		as.playTogether(scaleX, scaleY);
+		as.start();
 	}
 
 	private void saveLockList() {
 		new Thread(new PushLockedListTask()).start();
 	}
 
-	private void moveItemToLock(View view, Drawable drawable) {
-
-		int orgX = mPagerUnlock.getLeft() + view.getLeft() + view.getWidth()
-				/ 2 - (mIvAnimator.getLeft() + mIvAnimator.getWidth() / 2);
-		int orgY = mPagerUnlock.getTop() + mPagerParent.getTop()
-				+ view.getTop()
-				+ /* view.getHeight() / 2 + */view.getPaddingTop()
-				- (mIvAnimator.getTop() /* +mIvAnimator.getHeight() / 2 */);
-
-		float targetX = (float) (mLockedLocationX - mIvAnimator.getLeft() - (mIvAnimator
-				.getRight() - mIvAnimator.getLeft()) * (0.5 - mScale / 2));
-		float targetY = (float) (mLockedLocationY - mIvAnimator.getTop() - (mIvAnimator
-				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
-
-		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
-		animation.setAnimationListener(new FlyAnimaEndListener());
-		mIvAnimator.setVisibility(View.VISIBLE);
-		mIvAnimator.setImageDrawable(drawable);
-		mIvAnimator.startAnimation(animation);
-
-	}
-
-	private void moveItemToUnlock(View view, Drawable drawable) {
-		int orgX = mPagerUnlock.getLeft() + view.getLeft() + view.getWidth()
-				/ 2 - (mIvAnimator.getLeft() + mIvAnimator.getWidth() / 2);
-		int orgY = mPagerUnlock.getTop() + mPagerParent.getTop()
-				+ view.getTop()
-				+ /* view.getHeight() / 2 + */view.getPaddingTop()
-				- (mIvAnimator.getTop() /* +mIvAnimator.getHeight() / 2 */);
-
-		float targetX = (float) (mUnlockLocationX - mIvAnimator.getLeft() - (mIvAnimator
-				.getRight() - mIvAnimator.getLeft()) * (0.5 - mScale / 2));
-		float targetY = (float) (mUnlockLocationY - mIvAnimator.getTop() - (mIvAnimator
-				.getBottom() - mIvAnimator.getTop()) * (0.5 - mScale / 2));
-
-		Animation animation = createFlyAnimation(orgX, orgY, targetX, targetY);
-		animation.setAnimationListener(new FlyAnimaEndListener());
-
-		mIvAnimator.setVisibility(View.VISIBLE);
-		mIvAnimator.setImageDrawable(drawable);
-		mIvAnimator.startAnimation(animation);
-
-	}
-
 	private void updateLockText() {
 		int unlockSize = mUnlockList.size();
 		int lockSize = mLockedList.size();
-		if (unlockSize == 0) {
-			mTvUnlock.setText(getString(R.string.unlock_count));
-		} else {
-			mTvUnlock.setText(getString(R.string.unlock_count) + "("
-					+ unlockSize + ")");
-		}
-
-		if (lockSize == 0) {
-			mTvLocked.setText(getString(R.string.lock_count));
-		} else {
-			mTvLocked.setText(getString(R.string.lock_count) + "(" + lockSize
-					+ ")");
-		}
-	}
-
-	private Animation createFlyAnimation(float orgX, float orgY, float targetX,
-			float tragetY) {
-		AnimationSet set = new AnimationSet(true);
-		set.setInterpolator(new AccelerateDecelerateInterpolator());
-		set.setDuration(500);
-		TranslateAnimation ta = new TranslateAnimation(orgX, targetX, orgY,
-				tragetY);
-		ScaleAnimation sa = new ScaleAnimation(1.0f, mScale, 1.0f, mScale);
-		set.addAnimation(sa);
-		set.addAnimation(ta);
-		return set;
-	}
-
-	private class FlyAnimaEndListener extends AnimationListenerAdapter {
-		@Override
-		public void onAnimationEnd(Animation animation) {
-			mIvAnimator.setVisibility(View.INVISIBLE);
-			updateLockText();
-			isFlying = false;
-		}
 	}
 
 	private class PushLockedListTask implements Runnable {
@@ -387,8 +252,22 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 				for (BaseInfo info : AppLockListActivity.this.mLockedList) {
 					list.add(info.getPkg());
 				}
-				AppLockerPreference.getInstance(AppLockListActivity.this)
-						.setLockedAppList(list);
+				List<String> recommendList = AppLoadEngine.getInstance(
+						getApplicationContext()).getRecommendLockList();
+
+				int count = 0;
+				for (String string : list) {
+					if (recommendList.contains(string))
+						count++;
+				}
+
+				AppMasterPreference pref = AppMasterPreference
+						.getInstance(AppLockListActivity.this);
+
+				pref.setRecommendLockPercent(((float) count)
+						/ recommendList.size());
+
+				pref.setLockedAppList(list);
 			}
 		}
 	}
@@ -406,22 +285,72 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.tv_option_text:
+		case R.id.tv_option_image:
 			mGotoSetting = true;
 			Intent intent = new Intent(this, LockOptionActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.tv_app_unlock:
-			onTabClick(v);
-			break;
-		case R.id.tv_app_locked:
-			onTabClick(v);
+		case R.id.layout_right:
+			if (mLeoPopMenu == null) {
+				mLeoPopMenu = new LeoPopMenu();
+				mLeoPopMenu.setAnimation(R.style.CenterEnterAnim);
+				mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						if (mCurSortType == DEFAULT_SORT) {
+							if (position == 0) {
+								mCurSortType = NAME_SORT;
+							} else if (position == 1) {
+								mCurSortType = INSTALL_TIME_SORT;
+							}
+						} else if (mCurSortType == NAME_SORT) {
+							if (position == 0) {
+								mCurSortType = DEFAULT_SORT;
+							} else if (position == 1) {
+								mCurSortType = INSTALL_TIME_SORT;
+							}
+						} else {
+							if (position == 0) {
+								mCurSortType = DEFAULT_SORT;
+							} else if (position == 1) {
+								mCurSortType = NAME_SORT;
+							}
+						}
+						loadData();
+						AppMasterPreference.getInstance(
+								AppLockListActivity.this).setSortType(
+								mCurSortType);
+						mTtileBar.setSpinerText(mSortType[mCurSortType]);
+						mLeoPopMenu.dismissSnapshotList();
+					}
+				});
+			}
+			mLeoPopMenu.setPopMenuItems(getPopMenuItems());
+			mLeoPopMenu.showPopMenu(this,
+					mTtileBar.findViewById(R.id.layout_right));
 			break;
 		case R.id.mask_layer:
 			mMaskLayer.setVisibility(View.INVISIBLE);
-			AppLockerPreference.getInstance(this).setLockerUsed();
+			AppMasterPreference.getInstance(this).setLockerUsed();
 			break;
 		}
+	}
+
+	private List<String> getPopMenuItems() {
+		List<String> listItems = new ArrayList<String>();
+
+		if (mCurSortType == DEFAULT_SORT) {
+			listItems.add(mSortType[NAME_SORT]);
+			listItems.add(mSortType[INSTALL_TIME_SORT]);
+		} else if (mCurSortType == NAME_SORT) {
+			listItems.add(mSortType[DEFAULT_SORT]);
+			listItems.add(mSortType[INSTALL_TIME_SORT]);
+		} else {
+			listItems.add(mSortType[DEFAULT_SORT]);
+			listItems.add(mSortType[NAME_SORT]);
+		}
+		return listItems;
 	}
 
 	private class LockedAppComparator implements Comparator<BaseInfo> {
@@ -439,6 +368,68 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			} else {
 				return -1;
 			}
+		}
+	}
+
+	public static class NameComparator implements Comparator<BaseInfo> {
+
+		@Override
+		public int compare(BaseInfo lhs, BaseInfo rhs) {
+			return Collator.getInstance().compare(
+					trimString(lhs.getAppLabel()),
+					trimString(rhs.getAppLabel()));
+		}
+
+		private String trimString(String s) {
+			return s.replaceAll("\u00A0", "").trim();
+		}
+
+	}
+
+	public static class InstallTimeComparator implements Comparator<BaseInfo> {
+
+		@Override
+		public int compare(BaseInfo lhs, BaseInfo rhs) {
+			if (lhs.installTime > rhs.installTime) {
+				return 1;
+			} else if (lhs.installTime < rhs.installTime) {
+				return -1;
+			} else {
+				return Collator.getInstance().compare(
+						trimString(lhs.getAppLabel()),
+						trimString(rhs.getAppLabel()));
+			}
+		}
+
+		private String trimString(String s) {
+			return s.replaceAll("\u00A0", "").trim();
+		}
+	}
+
+	public static class DefalutAppComparator implements Comparator<BaseInfo> {
+		@Override
+		public int compare(BaseInfo lhs, BaseInfo rhs) {
+			if (lhs.topPos > -1 && rhs.topPos < 0) {
+				return -1;
+			} else if (lhs.topPos < 0 && rhs.topPos > -1) {
+				return 1;
+			} else if (lhs.topPos > -1 && rhs.topPos > -1) {
+				return lhs.topPos - rhs.topPos;
+			}
+
+			if (lhs.isSystemApp() && !rhs.isSystemApp()) {
+				return -1;
+			} else if (!lhs.isSystemApp() && rhs.isSystemApp()) {
+				return 1;
+			}
+
+			return Collator.getInstance().compare(
+					trimString(lhs.getAppLabel()),
+					trimString(rhs.getAppLabel()));
+		}
+
+		private String trimString(String s) {
+			return s.replaceAll("\u00A0", "").trim();
 		}
 	}
 }

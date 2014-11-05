@@ -18,7 +18,7 @@
     <string name="uninstall">卸载</string>
     <string name="set_gesture_suc">手势设置成功</string>
     <string name="set_passwd_suc">密码设置成功</string>
-     <string name="reset_passwd_successful">重设成功！</string>
+    <string name="reset_passwd_successful">重设成功！</string>
     <string name="stop">停止</string>
     <string name="reinput_anwser">"答案不正确，请重新输入"</string>
     <string name="please_input_pswd">输入密码</string>
@@ -27,7 +27,7 @@
     <string name="cancel">取消</string>
     <string name="delete">删除</string>
     <string name="passwd_set_passwd_tip">首次使用请设置四位密码</string>
-    <string name="passwd_set_gesture_tip">首次使用请设置手势（最少4个点）</string>
+    <string name="passwd_set_gesture_tip">请至少连接4个点</string>
     <string name="passwd_hint">请输入四位数密码</string>
     <string name="tip_no_the_same_pswd">输入密码不一致，请重新输入</string>
     <string name="input_error_tip">您已输错<xliff:g>%1$s</xliff:g>次，还剩<xliff:g>%2$s</xliff:g>次机会</string>
@@ -58,17 +58,23 @@
 
     <!-- acceralate -->
     <string name="clean_memory">一键加速</string>
-    <string name="clean_result">为您清理：<xliff:g>%1$s</xliff:g>内存</string>
+    <string name="clean_result">清理内存</string>
     <string name="best_mem">已经是最佳状态，无需再次加速</string>
 
     <!-- App lock -->
+    <string-array name="sort_type">
+        <item>默认排序</item>
+        <item>应用名称排序</item>
+        <item>安装时间排序</item>
+    </string-array>
+
     <string name="lock_count">"已加锁"</string>
     <string name="unlock_count">"未加锁"</string>
     <string name="lockscreen_access_pattern_detected">"图案绘制完成"</string>
     <string name="please_input_gesture">请绘制解锁图案</string>
     <string name="input_passwd_tip">请输入密码提示</string>
-    <string name="switch_gesture">使用手势</string>
-    <string name="switch_passwd">使用密码</string>
+    <string name="switch_gesture">使用手势密码</string>
+    <string name="switch_passwd">使用数字密码</string>
     <string name="setting">设置</string>
     <string name="passwd_hint_tip">密码提示：</string>
     <string name="set_protect_or_not">"是否设置密保问题?"</string>
@@ -78,10 +84,18 @@
     <string name="passwd_setting">密码设置</string>
     <string name="set_success">设置成功</string>
     <string name="passwd_hint_cant_null">"密码提示不能为空"</string>
-    <string name="set_gesture">绘制手势</string>
+    <string name="set_gesture">设置手势密码</string>
+    <string name="set_passwd">设置数字密码</string>
     <string name="please_input_gesture_again">请再次绘制解锁图案</string>
-    <string name="reset_gesture">重设手势</string>
+    <string name="reset_gesture_passwd">重设手势密码</string>
+    <string name="reset_digital_passwd">重设数字密码</string>
     <string name="gesture_hint">请连接至少4个点</string>
+    <string name="first_set_passwd_hint">首次使用请设置密码</string>
+    <string name="make_passwd">确认密码</string>
+    <string name="input_again">请再次输入</string>
+    <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>
+    <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片隐藏功能中</string>
+    <string name="gesture_start_hint">画完后松开手指</string>
     <string name="lock_right_now">立即锁定</string>
     <string name="lock_15_sec">15秒</string>
     <string name="lock_30_sec">30秒</string>
@@ -122,6 +136,7 @@
         <item>300</item>
     </string-array>
 
+    <string name="picture_hide">图片隐藏</string>
     <string name="app_details">应用详情</string>
     <string name="app_memory">"系统占用&#058;<xliff:g>%1$s</xliff:g>"</string>
     <string name="app_cache_size">"占用缓存&#058;<xliff:g>%1$s</xliff:g>"</string>
@@ -130,20 +145,23 @@
     <string name="app_permission3">重要权限</string>
     <string name="app_setting_update">检查升级</string>
     <string name="app_setting_update_new">&#160;&#160;&#160;检查升级<Data><![CDATA[ <b><font color="#ff0000">NEW</font></b> ]]></Data></string>
+    <string name="feedback">用户反馈</string>
+    <string name="app_recomend">精品推荐</string>
     <string name="app_setting_about">关于</string>
     <string name="forbid_uninstall">禁止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>
     <string name="change_lock_time">更改锁定时间</string>
+    <string name="recom_lock_tip">推荐应用加锁提醒</string>
+    <string name="new_app_lock_tip">新装应用加锁提醒</string>
     <string name="passwd_protect">密保问题</string>
     <string name="change_passwd">更改密码</string>
     <string name="passwd_notify">密码提示</string>
     <string name="no_lock_item_tip">暂无加锁应用</string>
     <string name="no_unlocked_item_tip">没有未加锁应用</string>
-
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
-       <!-- 版权 -->
-       <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>    
+    <!-- 版权 -->
+    <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
     <!-- 应用墙 -->
     <string name="app_wall">应用推荐</string>
     <!-- 隐私策略 -->
@@ -163,5 +181,6 @@
 			     根据产品的发展需求，应用管理大师将会对此协议进行不定期的修改。如本协议有任何修改，我方将于官方网站www.leomaster.com中及时发布最新信息以通知用户。如您继续使用本软件及服务，即视为您同意接受这些修改。\n\n <b>联系我们</b>\n\n
                    如您对本协议有任何疑问或建议，请发送您的宝贵意见至\n</string>
     <string name="protocolSupport">support@leomaster.com</string>
+    <string name="app_setting_has_update">&#160;&#160;&#160;检查升级 <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
 
 </resources>

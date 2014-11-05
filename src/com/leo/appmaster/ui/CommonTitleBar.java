@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.ui;
 
 import android.app.Activity;
@@ -15,79 +14,98 @@ import com.leo.appmaster.R;
 
 public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
-    private ImageView mIvBackArrow;
-    private TextView mTvTitle;
+	private ImageView mIvBackArrow;
+	private TextView mTvTitle;
+	private TextView mTvLayoutRight;
+	private TextView mTvOptionText;
+	private ImageView mTvOptionImage;
 
-    private TextView mTvOptionText;
-    private ImageView mTvOptionImage;
+	private View mLayoutBackView, mLayoutSpiner;
 
-    private View mLayoutBackView;
+	public CommonTitleBar(Context context) {
+		super(context);
+	}
 
-    public CommonTitleBar(Context context) {
-        super(context);
-    }
+	public CommonTitleBar(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
 
-    public CommonTitleBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	@Override
+	protected void onFinishInflate() {
+		LayoutInflater inflater = LayoutInflater.from(getContext());
+		inflater.inflate(R.layout.common_title_bar, this, true);
+		mLayoutBackView = findViewById(R.id.layout_title_back);
+		mIvBackArrow = (ImageView) findViewById(R.id.iv_back_arrow);
+		mTvTitle = (TextView) findViewById(R.id.tv_title);
+		mTvLayoutRight = (TextView) findViewById(R.id.tv_layout_right);
+		mTvOptionText = (TextView) findViewById(R.id.tv_option_text);
+		mTvOptionImage = (ImageView) findViewById(R.id.tv_option_image);
+		mLayoutSpiner = findViewById(R.id.layout_right);
+		super.onFinishInflate();
+	}
 
-    @Override
-    protected void onFinishInflate() {
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        inflater.inflate(R.layout.common_title_bar, this, true);
-        mLayoutBackView = findViewById(R.id.layout_title_back);
-        mIvBackArrow = (ImageView) findViewById(R.id.iv_back_arrow);
-        mTvTitle = (TextView) findViewById(R.id.tv_title);
-        mTvOptionText = (TextView) findViewById(R.id.tv_option_text);
-        mTvOptionImage = (ImageView) findViewById(R.id.tv_option_image);
-        super.onFinishInflate();
-    }
+	public void setTitle(String title) {
+		mTvTitle.setText(title);
+	}
 
-    public void setTitle(String title) {
-        mTvTitle.setText(title);
-    }
+	public void setTitle(int resid) {
+		mTvTitle.setText(resid);
+	}
 
-    public void setTitle(int resid) {
-        mTvTitle.setText(resid);
-    }
+	public void setSpinerText(String text) {
+		mTvLayoutRight.setText(text);
+	}
 
-    public void setBackArrowVisibility(int visibility) {
-        mIvBackArrow.setVisibility(visibility);
-    }
+	public void setSpinerText(int resid) {
+		mTvLayoutRight.setText(resid);
+	}
 
-    public void setOptionTextVisibility(int visibility) {
-        mTvOptionText.setVisibility(visibility);
-    }
+	public void setSpinerListener(OnClickListener listener) {
+		mLayoutSpiner.setOnClickListener(listener);
+	}
 
-    public void setOptionImageVisibility(int visibility) {
-        mTvOptionImage.setVisibility(visibility);
-    }
+	public void setSpinerVibility(int visibility) {
+		mLayoutSpiner.setVisibility(visibility);
+	}
 
-    public void setOptionBackground(int resId) {
-        mTvOptionText.setBackgroundResource(resId);
-    }
-    
-    public void setOptionText(String text) {
-        mTvOptionText.setText(text);
-    }
+	public void setBackArrowVisibility(int visibility) {
+		mIvBackArrow.setVisibility(visibility);
+	}
 
-    public void setOptionListener(OnClickListener listener) {
-        mTvOptionText.setOnClickListener(listener);
-        mTvOptionImage.setOnClickListener(listener);
-    }
-    public void openBackView() {
-        mLayoutBackView.setOnClickListener(this);
-    }
+	public void setOptionTextVisibility(int visibility) {
+		mTvOptionText.setVisibility(visibility);
+	}
 
-    public void setOptionImage(int resID) {
-        mTvOptionImage.setImageResource(resID);
-    }
+	public void setOptionImageVisibility(int visibility) {
+		mTvOptionImage.setVisibility(visibility);
+	}
 
-    @Override
-    public void onClick(View v) {
-        if (mLayoutBackView == v) {
-            ((Activity) getContext()).finish();
-        }
+	public void setOptionBackground(int resId) {
+		mTvOptionText.setBackgroundResource(resId);
+	}
 
-    }
+	public void setOptionText(String text) {
+		mTvOptionText.setText(text);
+	}
+
+	public void setOptionListener(OnClickListener listener) {
+		mTvOptionText.setOnClickListener(listener);
+		mTvOptionImage.setOnClickListener(listener);
+	}
+
+	public void openBackView() {
+		mLayoutBackView.setOnClickListener(this);
+	}
+
+	public void setOptionImage(int resID) {
+		mTvOptionImage.setImageResource(resID);
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (mLayoutBackView == v) {
+			((Activity) getContext()).finish();
+		}
+
+	}
 }

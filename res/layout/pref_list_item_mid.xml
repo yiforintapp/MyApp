@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/setting_item_height"
     android:background="@drawable/selector_list_item_mid"
-    android:gravity="center_vertical"
-    android:minHeight="?android:listPreferredItemHeight"
-    android:paddingRight="?android:scrollbarSize" >
+    android:gravity="center_vertical" >
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6.0dip"
+        android:layout_marginBottom="2.0dip"
         android:layout_marginLeft="15.0dip"
         android:layout_marginRight="6.0dip"
-        android:layout_marginTop="6.0dip"
+        android:layout_marginTop="2.0dip"
         android:layout_weight="1.0" >
 
         <TextView
@@ -24,7 +22,7 @@
             android:fadingEdge="horizontal"
             android:textColor="@color/option_text_color"
             android:singleLine="true"
-            android:textSize="18.0sp" />
+            android:textSize="16.0sp" />
 
         <TextView
             android:id="@android:id/summary"
@@ -34,7 +32,7 @@
             android:layout_below="@android:id/title"
             android:maxLines="2"
             android:textColor="@drawable/selector_text_detail"
-            android:textSize="18.0sp" />
+            android:textSize="16.0sp" />
     </RelativeLayout>
 
     <LinearLayout

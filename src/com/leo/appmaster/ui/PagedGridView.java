@@ -1,12 +1,11 @@
 package com.leo.appmaster.ui;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.ui.LeoGridView.AnimEndListener;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,11 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class PagedGridView extends LinearLayout implements AnimEndListener {
+public class PagedGridView extends LinearLayout {
 
 	private int mCellX, mCellY;
 	private LeoAppViewPager mViewPager;
@@ -31,10 +31,11 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 
 	private PagerAdapter mAdapter;
 	private int mPageItemCount;
-	private ArrayList<LeoGridView> mGridViewList;
+	private ArrayList<GridView> mGridViewList;
 	private ArrayList<List<BaseInfo>> mPageDatas;
 
-	private OnItemClickListener mListener;
+	private OnItemClickListener mClickListener;
+	private OnTouchListener mTouchListener;
 	private int mPageCount;
 
 	public PagedGridView(Context context, AttributeSet attrs) {
@@ -63,13 +64,13 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 			}
 		}
 
-		mGridViewList = new ArrayList<LeoGridView>();
+		mGridViewList = new ArrayList<GridView>();
 		mPageDatas = new ArrayList<List<BaseInfo>>();
 
 		for (i = 0; i < mPageCount; i++) {
 			GridviewAdapter adapter = null;
 			List<BaseInfo> pageData = null;
-			LeoGridView gridView = (LeoGridView) mInflater.inflate(
+			GridView gridView = (GridView) mInflater.inflate(
 					R.layout.grid_page_item, mViewPager, false);
 			if (i == mPageCount - 1) {
 				pageData = copyFrom(data.subList(i * mPageItemCount,
@@ -83,10 +84,11 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 				adapter = new GridviewAdapter(pageData, i);
 				gridView.setAdapter(adapter);
 			}
-			if (mListener != null) {
-				gridView.setOnItemClickListener(mListener);
+			if (mClickListener != null) {
+				gridView.setOnItemClickListener(mClickListener);
 			}
-			gridView.setOnAnimEndListener(this);
+
+			gridView.setOnTouchListener(mTouchListener);
 			mGridViewList.add(gridView);
 			mPageDatas.add(pageData);
 		}
@@ -117,13 +119,17 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 		return list;
 	}
 
-	public void setGridviewItemClickListener(OnItemClickListener listener) {
-		mListener = listener;
+	public void setItemClickListener(OnItemClickListener listener) {
+		mClickListener = listener;
 		if (mGridViewList != null) {
-			for (LeoGridView gridView : mGridViewList) {
-				gridView.setOnItemClickListener(mListener);
+			for (GridView gridView : mGridViewList) {
+				gridView.setOnItemClickListener(mClickListener);
 			}
 		}
+	}
+
+	public void setItemTouchListener(OnTouchListener listener) {
+		mTouchListener = listener;
 	}
 
 	@Override
@@ -161,9 +167,7 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 		}
 	}
 
-	private class GridviewAdapter extends BaseAdapter implements
-			LeoGridBaseAdapter {
-		private int mHidePosition = -1;
+	private class GridviewAdapter extends BaseAdapter {
 		List<BaseInfo> mList;
 
 		private int mPageIndex;
@@ -199,93 +203,22 @@ public class PagedGridView extends LinearLayout implements AnimEndListener {
 				convertView = mInflater.inflate(R.layout.app_item, null);
 			}
 
-			ImageView imageView = (ImageView) convertView
+			LockImageView imageView = (LockImageView) convertView
 					.findViewById(R.id.iv_app_icon);
 			TextView textView = (TextView) convertView
 					.findViewById(R.id.tv_app_name);
-
 			BaseInfo info = mList.get(position);
+
+			if (AppLoadEngine.getInstance(getContext()).getRecommendLockList()
+					.contains(info.getPkg())) {
+				imageView.setRecommend(true);
+			}
+
+			imageView.setLocked(info.isLocked());
 			imageView.setImageDrawable(info.getAppIcon());
 			textView.setText(info.getAppLabel());
 			convertView.setTag(info);
-
-			if (position == mHidePosition) {
-				convertView.setVisibility(View.INVISIBLE);
-			}
-
 			return convertView;
-		}
-
-		@Override
-		public void reorderItems(int oldPosition, int newPosition) {
-			BaseInfo temp = mList.get(oldPosition);
-			if (oldPosition < newPosition) {
-				for (int i = oldPosition; i < newPosition; i++) {
-					Collections.swap(mList, i, i + 1);
-				}
-			} else if (oldPosition > newPosition) {
-				for (int i = oldPosition; i > newPosition; i--) {
-					Collections.swap(mList, i, i - 1);
-				}
-			}
-
-			mList.set(newPosition, temp);
-		}
-
-		@Override
-		public void setHideItem(int hidePosition) {
-			this.mHidePosition = hidePosition;
-			notifyDataSetChanged();
-		}
-
-		@Override
-		public void removeItem(int position) {
-			mList.remove(position);
-
-			BaseInfo temp = null;
-			if (mPageIndex < mPageCount - 1) {
-				int page = mPageIndex;
-				for (; page != mPageCount - 1; page++) {
-					List<BaseInfo> nextPage = mPageDatas.get(page + 1);
-					temp = nextPage.remove(0);
-					mPageDatas.get(page).add(temp);
-				}
-			}
-			// for (DragGridView gridView : mGridViewList) {
-			// ((GridviewAdapter) gridView.getAdapter())
-			// .notifyDataSetChanged();
-			// }
-
-			((GridviewAdapter) mGridViewList.get(mPageIndex).getAdapter())
-					.notifyDataSetChanged();
-
-		}
-	}
-
-	@Override
-	public void onAnimEnd() {
-
-		if (mPageCount < 1) {
-			return;
-		}
-
-		List<BaseInfo> list = mPageDatas.get(mPageCount - 1);
-		if (list.size() == 0) {
-			mGridViewList.remove(mPageCount - 1);
-			mPageDatas.remove(mPageCount - 1);
-			mPageCount--;
-
-			int targetIndex = mViewPager.getCurrentItem();
-			if (targetIndex == mPageCount) {
-				targetIndex--;
-			}
-			mAdapter.notifyDataSetChanged();
-			mViewPager.setCurrentItem(targetIndex);
-			mIndicator.invalidate();
-		}
-
-		for (LeoGridView gridView : mGridViewList) {
-			((GridviewAdapter) gridView.getAdapter()).notifyDataSetChanged();
 		}
 	}
 

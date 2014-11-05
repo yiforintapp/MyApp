@@ -8,7 +8,7 @@
     <string name="app_manage">Management</string>
     <string name="app_detail">Details</string>
     <string name="app_lock">App Lock</string>
-    <string name="app_backup">App Backup</string> 
+    <string name="app_backup">App Backup</string>
     <string name="app_restore">App Restore</string>
     <string name="button_backup">Backup</string>
     <string name="button_install">Install</string>
@@ -27,7 +27,6 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="passwd_set_passwd_tip">Please enter a 4-character password</string>
-    <string name="passwd_set_gesture_tip">Draw an unlock pattern(4 dots at least)</string>
     <string name="passwd_hint">Enter Password</string>
     <string name="tip_no_the_same_pswd">Invalid password. Please try again.</string>
     <string name="input_error_tip">You have incorrectly drawn your unlock pattern %1$s times，%2$s times left for a cooldown.</string>
@@ -58,7 +57,7 @@
 
     <!-- acceralate -->
     <string name="clean_memory">Boost</string>
-    <string name="clean_result">Freeable %1$s</string>
+    <string name="clean_result">Cleaned Memory</string>
     <string name="best_mem">Maximum Boost!</string>
 
     <!-- App lock -->
@@ -78,9 +77,8 @@
     <string name="passwd_setting">Password Settings</string>
     <string name="set_success">Password set successfully</string>
     <string name="passwd_hint_cant_null">Please enter your password hint</string>
-    <string name="set_gesture">Draw an unlock pattern</string>
     <string name="please_input_gesture_again">Confirm your pattern</string>
-    <string name="reset_gesture">Reset a pattern</string>
+    <string name="reset_gesture_passwd">Reset a pattern passwd</string>
     <string name="gesture_hint">Connect at least 4 dots</string>
     <string name="lock_right_now">Immediately</string>
     <string name="lock_15_sec">15 Seconds</string>
@@ -142,11 +140,13 @@
     <string name="app_setting_has_update">&#160;&#160;&#160;Check for updates <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
+
     <string-array name="sort_type">
         <item>默认排序</item>
         <item>应用名称排序</item>
         <item>安装时间排序</item>
     </string-array>
+
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
     <string name="new_app_lock_tip">新装应用加锁提醒</string>
     <string name="app_recomend">精品推荐</string>
@@ -154,30 +154,26 @@
     <string name="first_set_passwd_hint">首次使用请设置密码</string>
     <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>
     <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片隐藏功能中</string>
-     <string name="gesture_start_hint">画完后松开手指</string>
+    <string name="gesture_start_hint">画完后松开手指</string>
     <string name="make_passwd">确认密码</string>
     <string name="input_again">请再次输入</string>
     <string name="reset_digital_passwd">重设数字密码</string>
     <string name="picture_hide">图片隐藏</string>
-      <!-- 版权 -->
-       <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>    
-      <!-- AppWall -->
-      <string name="app_wall">应用推荐</string>
-      <!-- 隐私策略 -->
-      <string name="protocolBar">隐私策略</string>
-      <string name="protocolTitl">\n<b>Privacy Policy</b>\n</string>
-       <string  name="protocol">
-					            	                                                          
-			         Welcome to App Master. This Privacy Policy describes how your information is collected, used and shared when you use our services. 
+    <!-- 版权 -->
+    <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
+    <!-- AppWall -->
+    <string name="app_wall">应用推荐</string>
+    <!-- 隐私策略 -->
+    <string name="protocolBar">隐私策略</string>
+    <string name="protocolTitl">\n<b>Privacy Policy</b>\n</string>
+    <string name="protocol">			         Welcome to App Master. This Privacy Policy describes how your information is collected, used and shared when you use our services. 
 			  We, App Master, regards our users’ information as top priority and have been taking great efforts to provide you with best web experience.
 			  By using App Master, you consent to the collection and use of your personal information as outlined below. We may update this Privacy 
-			  Policy from time to time to reflect the users’ feedbacks, please visit termly to review any changes. \n	\n		
-			  		<b> The Information App Master Collects</b>\n\n
+			  Policy from time to time to reflect the users’ feedbacks, please visit termly to review any changes. \n	\n		 <b> The Information App Master Collects</b>\n\n
 			        No personal information is required when downloading or using App Master. When you download/use the Application or the Services, we 
 			  receive only non-personal information such as your device information, your operation system, language preference, etc. \n\n
 			          Your personal information will only be collected when: You participate in our events and voluntarily provide your name, email address, 
-			  phone number,etc. It will be your choice whether to provide your information.\n\n
-			     <b> How App Master Use the Information Collected</b>\n\n
+			  phone number,etc. It will be your choice whether to provide your information.\n\n <b> How App Master Use the Information Collected</b>\n\n
 			        We use your information to:\n
 					&#160;&#160;&#160;a. provide you with technical support\n
 					&#160;&#160;&#160;b. improve the services’ management \n
@@ -185,15 +181,16 @@
 					&#160;&#160;&#160;d. analyze statistical  data\n
 					&#160;&#160;&#160;e. investigate alleged fraud, infringement or other misconduct\n
 					We will NOT share your personal information with any third parties unless: If required to do so by any applicable law, regulation, legal
-			 process or enforceable governmental request.\n \n
-			       <b>Contact Us</b>\n\n
-			       f you have any questions about this Policy or to report any violations of the Policy, please send an email to: <a href="support@leoers.com">support@leoers.com</a>
-			App Master also provides users the opportunity to opt-out of receiving communications from us at any time. If at any point you wish to stop 
-			communication from our side please inform us of your request via the same email address.\n\n
-                   <b>Changes to this Policy</b>\n\n
+			 process or enforceable governmental request.\n \n <b>Contact Us</b>\n\n
+			       f you have any questions about this Policy or to report any violations of the Policy, please send an email to: <a href="support@leoers.com">support@leoers.com</a> 			App Master also provides users the opportunity to opt-out of receiving communications from us at any time. If at any point you wish to stop 
+			communication from our side please inform us of your request via the same email address.\n\n <b>Changes to this Policy</b>\n\n
                   This Privacy Policy may be revised from time to time with or without notice. If we make a change in this policy, we will post the latest version on our site:<a href="www.leomaster.com"> www.leomaster.com</a>. 
                   By continuing to access or use the services you agree to be bound by the revised Privacy Policy. If you do not agree to any modifications to this Policy, you should stop using
-                  any of all the services.\n
-       </string>
-       <string name="protocolSupport">support@leomaster.com</string>
+                  any of all the services.\n</string>
+    <string name="protocolSupport">support@leomaster.com</string>
+
+
+    <string name="passwd_set_gesture_tip">请至少连接4个点</string>
+    <string name="set_gesture">设置手势密码</string>
+
 </resources>

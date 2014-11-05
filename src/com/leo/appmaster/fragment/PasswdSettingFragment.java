@@ -5,16 +5,20 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
+import com.leo.appmaster.applocker.gesture.LockPatternView.DisplayMode;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
@@ -27,7 +31,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 
 	private ImageView iv_delete;
 	private TextView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
-	private TextView mInputTip, mPasswdHint;
+	private TextView mInputTip, mTvPasswdFuncTip, mTvBottom;
 
 	private int mInputCount = 1;
 	private String mTempFirstPasswd = "";
@@ -36,6 +40,8 @@ public class PasswdSettingFragment extends BaseFragment implements
 	private boolean mGotoPasswdProtect;
 
 	protected String mActivityName;
+
+	private Animation mShake;
 
 	@Override
 	protected int layoutResourceId() {
@@ -55,7 +61,6 @@ public class PasswdSettingFragment extends BaseFragment implements
 		tv9 = (TextView) findViewById(R.id.tv_9);
 		tv0 = (TextView) findViewById(R.id.tv_0);
 		iv_delete = (ImageView) findViewById(R.id.tv_delete);
-		mPasswdHint = (TextView) findViewById(R.id.tv_passwd_hint);
 
 		tv1.setOnClickListener(this);
 		tv2.setOnClickListener(this);
@@ -76,12 +81,17 @@ public class PasswdSettingFragment extends BaseFragment implements
 		mTvPasswd4 = (TextView) findViewById(R.id.tv_passwd_4);
 
 		mInputTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
+		mTvPasswdFuncTip = (TextView) findViewById(R.id.tv_passwd_function_tip);
 
-		if (AppLockerPreference.getInstance(mActivity).getGesture() == null
-				&& AppLockerPreference.getInstance(mActivity).getPassword() == null) {
-			mInputTip.setText(R.string.passwd_set_passwd_tip);
+		mTvBottom = (TextView) findViewById(R.id.tv_bottom);
+		mTvBottom.setOnClickListener(this);
+
+		if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+			mInputTip.setText(R.string.first_set_passwd_hint);
+			mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
+		} else {
+			mInputTip.setText(R.string.set_passwd);
 		}
-		mPasswdHint.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -123,16 +133,59 @@ public class PasswdSettingFragment extends BaseFragment implements
 		case R.id.tv_ok:
 			makesurePasswd();
 			break;
+		case R.id.tv_bottom:
+			resetPasswd();
+			break;
 
 		default:
 			break;
 		}
 	}
 
+	private void shakeGestureTip() {
+		if (mShake == null) {
+			mShake = AnimationUtils.loadAnimation(mActivity,
+					R.anim.left_right_shake);
+			mShake.setAnimationListener(new AnimationListenerAdapter() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+					mTvPasswdFuncTip.setText(R.string.tip_no_the_same_pswd);
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+				}
+
+			});
+		}
+		mTvPasswdFuncTip.startAnimation(mShake);
+	}
+
+	private void cancelShake() {
+		if (mShake != null && mShake.hasStarted()) {
+			mShake.cancel();
+			mShake.reset();
+		}
+	}
+	
+	private void resetPasswd() {
+		cancelShake();
+		clearPasswd();
+		mInputCount = 1;
+		mTempFirstPasswd = "";
+		mTempSecondPasswd = "";
+		if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+			mInputTip.setText(R.string.first_set_passwd_hint);
+		} else {
+			mInputTip.setText(R.string.set_passwd);
+		}
+		mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
+	}
+
 	public void setActivityName(String name) {
 		mActivityName = name;
 	}
-	
+
 	private void makesurePasswd() {
 		mTvPasswd1.postDelayed(new Runnable() {
 			@Override
@@ -140,7 +193,8 @@ public class PasswdSettingFragment extends BaseFragment implements
 				if (mInputCount == 1) {
 					mInputCount++;
 					clearPasswd();
-					mInputTip.setText(R.string.please_input_pswd_again);
+					mInputTip.setText(R.string.make_passwd);
+					mTvPasswdFuncTip.setText(R.string.input_again);
 					iv_delete.setEnabled(false);
 				} else if (mInputCount == 2) {
 					if (mTempFirstPasswd.equals(mTempSecondPasswd)) {
@@ -149,7 +203,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 						Intent intent = null;
 						intent = new Intent(mActivity, LockService.class);
 						mActivity.startService(intent);
-						AppLockerPreference.getInstance(mActivity)
+						AppMasterPreference.getInstance(mActivity)
 								.savePassword(mTempFirstPasswd);
 
 						if (((LockSettingActivity) mActivity).isResetPasswd()) {
@@ -157,7 +211,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 							return;
 						}
 
-						if (!AppLockerPreference.getInstance(mActivity)
+						if (!AppMasterPreference.getInstance(mActivity)
 								.hasPswdProtect()) {
 							setPasswdProtect();
 						} else {
@@ -173,19 +227,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 							mActivity.startActivity(intent);
 						}
 					} else {
-						Toast.makeText(mActivity,
-								R.string.tip_no_the_same_pswd, 1).show();
-						clearPasswd();
-						mInputCount = 1;
-						mTempFirstPasswd = "";
-						mTempSecondPasswd = "";
-						mInputTip.setText(R.string.passwd_hint);
-						if (AppLockerPreference.getInstance(mActivity)
-								.getGesture() == null
-								&& AppLockerPreference.getInstance(mActivity)
-										.getPassword() == null) {
-							mInputTip.setText(R.string.passwd_set_passwd_tip);
-						}
+						shakeGestureTip();
 					}
 				}
 			}

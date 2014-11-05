@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,10 +22,10 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -40,16 +41,17 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CricleView;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
 public class HomeActivity extends Activity implements OnClickListener,
 		OnTouchListener, AppChangeListener {
 
-	private View mTvAppManage;
-	private View mTvAppLock;
-	private View mTvAppBackup;
-	private View mTvCleanMem;
+	private View mPictureHide;
+	private View mAppLock;
+	private View mAppBackup;
+	private View mCleanMem;
 	private ImageView mSettingIcon;
 
 	private View mPressedEffect1;
@@ -90,19 +92,19 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mMemoryPercent = (TextView) findViewById(R.id.tv_memory_percent);
 		mCricleView = (CricleView) findViewById(R.id.cricle_view);
 
-		mTvAppManage = findViewById(R.id.tv_app_manage);
-		mTvAppLock = findViewById(R.id.tv_app_lock);
-		mTvAppBackup = findViewById(R.id.tv_app_backup);
-		mTvCleanMem = findViewById(R.id.tv_clean_memory);
+		mPictureHide = findViewById(R.id.tv_picture_hide);
+		mAppLock = findViewById(R.id.tv_app_lock);
+		mAppBackup = findViewById(R.id.tv_app_backup);
+		mCleanMem = findViewById(R.id.tv_clean_memory);
 
 		mSettingIcon = (ImageView) findViewById(R.id.setting_icon);
 
-		mTvAppManage.setOnClickListener(this);
-		mTvAppLock.setOnClickListener(this);
-		mTvAppBackup.setOnTouchListener(this);
-		mTvAppLock.setOnTouchListener(this);
-		mTvAppBackup.setOnClickListener(this);
-		mTvCleanMem.setOnClickListener(this);
+		mPictureHide.setOnClickListener(this);
+		mAppLock.setOnClickListener(this);
+		mAppBackup.setOnTouchListener(this);
+		mAppLock.setOnTouchListener(this);
+		mAppBackup.setOnClickListener(this);
+		mCleanMem.setOnClickListener(this);
 
 		mPressedEffect1 = findViewById(R.id.pressed_effect1);
 		mPressedEffect2 = findViewById(R.id.pressed_effect2);
@@ -112,7 +114,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
-		mTtileBar.setOptionImage(R.drawable.setting_selector);
+		mTtileBar.setOptionImage(R.drawable.setting_btn);
 		mTtileBar.setOptionListener(this);
 
 		calculateAppCount();
@@ -124,20 +126,14 @@ public class HomeActivity extends Activity implements OnClickListener,
 		long total = pc.getTotalMem();
 		long used = pc.getUsedMem();
 		mMemoryPercent.setText(used * 100 / total + "%");
-		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used) /*
-																 * + "/" +
-																 * TextFormater
-																 * .
-																 * dataSizeFormat
-																 * (total)
-																 */);
+		mTvMemoryInfo.setText(TextFormater.dataSizeFormat(used));
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
-
 
 		updateSettingIcon();
 		setLockedAppCount();
 		super.onResume();
+		LeoLog.d("HOME", "homepage onResume");
 	}
 
 	private void calculateAppCount() {
@@ -145,12 +141,19 @@ public class HomeActivity extends Activity implements OnClickListener,
 				.getAllPkgInfo().size();
 		setAppCount(appCount);
 	}
-	
-    private void setLockedAppCount() {
-        int lockedAppCount = AppLockerPreference.getInstance(this)
-                .getLockedAppList().size();
-        mLockedApp.setText(Integer.toString(lockedAppCount));
-    }
+
+	private void setLockedAppCount() {
+		int lockedAppCount = AppMasterPreference.getInstance(this)
+				.getLockedAppList().size();
+		mLockedApp.setText(Integer.toString(lockedAppCount));
+	}
+
+	@Override
+	public void onOptionsMenuClosed(Menu menu) {
+		// TODO Auto-generated method stub
+		super.onOptionsMenuClosed(menu);
+		LeoLog.d("homepage", "onOptionsMenuClosed");
+	}
 
 	private void setAppCount(int count) {
 		int one, two, three;
@@ -184,31 +187,29 @@ public class HomeActivity extends Activity implements OnClickListener,
 		switch (v.getId()) {
 		case R.id.top_layout:
 			break;
-		case R.id.tv_app_manage:
-			// LeoStat.addEvent(LeoStat.P2, "app_manage",
-			// "click the app manage button");
-			// intent = new Intent(this, AppListActivity.class);
+		case R.id.tv_picture_hide:
+			// goto picture hide
+			// intent = new Intent(this, AboutActivity.class);
 			// this.startActivity(intent);
-			/** modify for version 1.0 */
-			intent = new Intent(this, AboutActivity.class);
-			this.startActivity(intent);
-			/** end */
 			break;
 		case R.id.tv_app_lock:
-			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the app lock button");
-			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
+			SDKWrapper.addEvent(LeoStat.P2, "main page",
+					"click the app lock button");
+			if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
 				enterLockPage();
 			} else {
 				startLockSetting();
 			}
 			break;
 		case R.id.tv_app_backup:
-			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the app backup button");
+			SDKWrapper.addEvent(LeoStat.P2, "main page",
+					"click the app backup button");
 			intent = new Intent(this, AppBackupRestoreActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
-			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the one key clear button");
+			SDKWrapper.addEvent(LeoStat.P2, "main page",
+					"click the one key clear button");
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;
@@ -216,47 +217,50 @@ public class HomeActivity extends Activity implements OnClickListener,
 			if (mLeoPopMenu == null) {
 				mLeoPopMenu = new LeoPopMenu();
 				mLeoPopMenu.setPopMenuItems(getPopMenuItems());
-                mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
+				mLeoPopMenu.setItemSpaned(true);
+				mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
 				mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						if (position == 0) {
-							LeoStat.checkUpdate();
+							// goto user feedback
+
 						} else if (position == 1) {
-							Intent intent=new Intent(HomeActivity.this,AppWallActivity.class);
+							Intent intent = new Intent(HomeActivity.this,
+									AppWallActivity.class);
 							startActivity(intent);
-						}else if(position==2)
-						{
-							
-						}else if(position==3){
-							Intent intent=new Intent(HomeActivity.this,ProtocolActivity.class);
+						} else if (position == 2) {
+							LeoStat.checkUpdate();
+						} else if (position == 3) {
+							Intent intent = new Intent(HomeActivity.this,
+									ProtocolActivity.class);
 							startActivity(intent);
 						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
 				});
 			}
-            mLeoPopMenu.setPopMenuItems(getPopMenuItems());
+			mLeoPopMenu.setPopMenuItems(getPopMenuItems());
 			mLeoPopMenu.showPopMenu(this,
-			mTtileBar.findViewById(R.id.tv_option_image));
-            mLeoPopMenu.setOnDismiss(new OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    updateSettingIcon();
-                }
-            });
+					mTtileBar.findViewById(R.id.tv_option_image));
+			mLeoPopMenu.setOnDismiss(new OnDismissListener() {
+				@Override
+				public void onDismiss() {
+					updateSettingIcon();
+				}
+			});
 			break;
 		default:
 			break;
 		}
 	}
-	
+
 	private void updateSettingIcon(){
         if (LeoStat.isUpdateAvailable()) {
             mTtileBar.setOptionImage(R.drawable.setting_btn_new);
         } else {
-            mTtileBar.setOptionImage(R.drawable.setting_selector);
+            mTtileBar.setOptionImage(R.drawable.setting_btn);
         }
 	}
 
@@ -276,9 +280,9 @@ public class HomeActivity extends Activity implements OnClickListener,
 
 	private void enterLockPage() {
 		Intent intent = null;
-		int lockType = AppLockerPreference.getInstance(this).getLockType();
+		int lockType = AppMasterPreference.getInstance(this).getLockType();
 		intent = new Intent(this, LockScreenActivity.class);
-		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_PASSWD);
 		} else {
@@ -309,13 +313,10 @@ public class HomeActivity extends Activity implements OnClickListener,
 		case MotionEvent.ACTION_DOWN:
 			if (v.getId() == R.id.tv_app_lock) {
 				mPressedEffect1.setBackgroundResource(R.drawable.home_sel);
-				mTvAppLock.setBackgroundResource(R.drawable.home_sel);
+				mAppLock.setBackgroundResource(R.drawable.home_sel);
 			} else if (v.getId() == R.id.tv_app_backup) {
 				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
-				mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
-			}else if (v.getId() == R.string.app_wall) {
-				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
-				mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
+				mAppBackup.setBackgroundResource(R.drawable.home_sel);
 			}
 			break;
 		case MotionEvent.ACTION_UP:
@@ -323,10 +324,10 @@ public class HomeActivity extends Activity implements OnClickListener,
 		case MotionEvent.ACTION_OUTSIDE:
 			if (v.getId() == R.id.tv_app_lock) {
 				mPressedEffect1.setBackgroundColor(Color.WHITE);
-				mTvAppLock.setBackgroundColor(Color.WHITE);
+				mAppLock.setBackgroundColor(Color.WHITE);
 			} else if (v.getId() == R.id.tv_app_backup) {
 				mPressedEffect2.setBackgroundColor(Color.WHITE);
-				mTvAppBackup.setBackgroundColor(Color.WHITE);
+				mAppBackup.setBackgroundColor(Color.WHITE);
 			}
 			break;
 		default:

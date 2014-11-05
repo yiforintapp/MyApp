@@ -2,23 +2,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="5dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="5dp" >
 
-    <ImageView
+    <com.leo.appmaster.ui.LockImageView
         android:id="@+id/iv_app_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp" />
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:padding="4dp" />
 
     <TextView
         android:id="@+id/tv_app_name"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
+        android:ellipsize="marquee"
+        android:gravity="center"
         android:singleLine="true"
         android:textColor="#ffffff"
-        android:ellipsize="marquee"
         android:textSize="12dp" />
 
 </LinearLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <dimen name="gridview_vertical_spacing">6dip</dimen>
+    <dimen name="gridview_vertical_spacing">14dip</dimen>
     <integer name="gridview_row_count">5</integer>
     <dimen name="digital_height">92dp</dimen>
     <dimen name="digital_width">58dp</dimen>

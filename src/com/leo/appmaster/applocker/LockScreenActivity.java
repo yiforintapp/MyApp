@@ -3,6 +3,7 @@ package com.leo.appmaster.applocker;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.logic.LockHandler;
@@ -16,7 +17,6 @@ import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FastBlur;
-import com.leoers.leoanalytics.LeoStat;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -125,7 +125,7 @@ public class LockScreenActivity extends FragmentActivity implements
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 
-		if (AppLockerPreference.getInstance(this).hasPswdProtect()) {
+		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			mTtileBar.setOptionImage(R.drawable.setting_btn);
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
 			mTtileBar.setOptionListener(this);
@@ -153,7 +153,7 @@ public class LockScreenActivity extends FragmentActivity implements
 		mEtQuestion = mDialog.getFirstEditText();
 		mEtAnwser = mDialog.getSecondEditText();
 		mEtQuestion.setFocusable(false);
-		mEtQuestion.setText(AppLockerPreference.getInstance(this)
+		mEtQuestion.setText(AppMasterPreference.getInstance(this)
 				.getPpQuestion());
 		mDialog.show();
 	}
@@ -202,9 +202,9 @@ public class LockScreenActivity extends FragmentActivity implements
 	private List<String> getPopMenuItems() {
 		List<String> listItems = new ArrayList<String>();
 		Resources resources = AppMasterApplication.getInstance().getResources();
-		if (AppLockerPreference.getInstance(this).getLockType() == AppLockerPreference.LOCK_TYPE_GESTURE) {
+		if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_GESTURE) {
 			listItems.add(resources.getString(R.string.find_gesture));
-		} else if (AppLockerPreference.getInstance(this).getLockType() == AppLockerPreference.LOCK_TYPE_PASSWD) {
+		} else if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
 			listItems.add(resources.getString(R.string.find_passwd));
 		}
 		return listItems;
@@ -213,7 +213,7 @@ public class LockScreenActivity extends FragmentActivity implements
 	@Override
 	public void onClick(int which) {
 		if (which == 1) {// make sure
-			String anwser = AppLockerPreference.getInstance(this).getPpAnwser();
+			String anwser = AppMasterPreference.getInstance(this).getPpAnwser();
 			if (anwser.equals(mEtAnwser.getText().toString())) {
 				// goto reset passwd
 				Intent intent = new Intent(this, LockSettingActivity.class);
@@ -222,6 +222,7 @@ public class LockScreenActivity extends FragmentActivity implements
 
 			} else {
 				Toast.makeText(this, R.string.reinput_anwser, 0).show();
+				mEtAnwser.setText("");
 			}
 		} else if (which == 0) { // cancel
 			mDialog.dismiss();

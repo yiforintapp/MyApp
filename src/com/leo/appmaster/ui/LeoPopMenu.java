@@ -58,7 +58,7 @@ public class LeoPopMenu {
 				.getResources().getDrawable(R.drawable.popup_menu_bg));
 		mLeoPopMenu.setAnimationStyle(mAnimaStyle);
 		mLeoPopMenu.update();
-		mLeoPopMenu.showAsDropDown(anchorView, 0, 0);
+		mLeoPopMenu.showAsDropDown(anchorView, -50, 0);
 	}
 
 	public void setAnimation(int animaStyle) {

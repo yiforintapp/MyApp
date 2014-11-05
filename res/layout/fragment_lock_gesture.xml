@@ -20,17 +20,18 @@
         android:layout_below="@+id/iv_app_icon"
         android:enabled="false"
         android:gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="@string/please_input_gesture"
         android:textColor="#aaffffff"
         android:textSize="18sp" />
 
     <com.leo.appmaster.applocker.gesture.LockPatternView
         android:id="@+id/gesture_lockview"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_below="@+id/tv_gesture_tip"
+        android:layout_width="330dp"
+        android:layout_height="330dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
         android:layout_centerHorizontal="true"
-        android:padding="20dip" />
+        android:padding="10dip" />
 
 </RelativeLayout>

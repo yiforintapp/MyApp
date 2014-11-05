@@ -13,18 +13,12 @@
         android:layout="@layout/pref_list_item_mid"
         android:title="@string/auto_lock"
         android:widgetLayout="@layout/pref_widget_checkbox" />
-
-    <!--
-         <ListPreference
-        android:defaultValue="0"
-        android:dialogTitle="@string/change_lock_time"
-        android:entries="@array/lock_time_entrys"
-        android:entryValues="@array/lock_time_items"
-        android:key="relock_time"
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="new_app_lock_tip"
         android:layout="@layout/pref_list_item_mid"
-        android:title="@string/change_lock_time"
-        android:widgetLayout="@layout/pref_widget_more" />
-    -->
+        android:title="@string/new_app_lock_tip"
+        android:widgetLayout="@layout/pref_widget_checkbox" />
 
     <Preference
         android:key="relock_time"
