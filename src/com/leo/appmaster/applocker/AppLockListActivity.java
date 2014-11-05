@@ -12,10 +12,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -31,11 +29,10 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
-import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
 public class AppLockListActivity extends Activity implements AppChangeListener,
-		OnItemClickListener, OnClickListener, OnTouchListener {
+		OnItemClickListener, OnClickListener {
 
 	public LayoutInflater mInflater;
 	private CommonTitleBar mTtileBar;
@@ -139,7 +136,6 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mUnlockList = new ArrayList<BaseInfo>();
 		mAppPager = (PagedGridView) findViewById(R.id.pager_unlock);
 		mAppPager.setItemClickListener(this);
-		mAppPager.setItemTouchListener(this);
 	}
 
 	private void loadData() {
@@ -185,10 +181,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		LeoLog.e("xxxx", "onItemClick");
-
 		animateItem(view);
-
 		mLastSelectApp = (BaseInfo) view.getTag();
 		BaseInfo info = null;
 		if (mLastSelectApp.isLocked()) {
@@ -202,6 +195,7 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 			}
 			mUnlockList.add(info);
 			mLockedList.remove(info);
+			
 			// to set view unlocked
 			((LockImageView) view.findViewById(R.id.iv_app_icon))
 					.setLocked(false);
@@ -437,28 +431,5 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		private String trimString(String s) {
 			return s.replaceAll("\u00A0", "").trim();
 		}
-	}
-
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			LeoLog.e("xxxx", "ACTION_DOWN");
-			break;
-		case MotionEvent.ACTION_MOVE:
-			LeoLog.e("xxxx", "ACTION_MOVE");
-			break;
-		case MotionEvent.ACTION_UP:
-			LeoLog.e("xxxx", "ACTION_UP");
-			break;
-		case MotionEvent.ACTION_CANCEL:
-			LeoLog.e("xxxx", "ACTION_CANCEL");
-			break;
-
-		default:
-			break;
-		}
-
-		return false;
 	}
 }

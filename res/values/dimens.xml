@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="gridview_vertical_spacing">12dip</dimen>
+    <dimen name="gridview_vertical_spacing">14dip</dimen>
 
     <integer name="gridview_row_count">4</integer>
 
@@ -20,7 +20,7 @@
     <dimen name="setting_item_height">55dp</dimen>
     <dimen name="lock_icon_width">22dp</dimen>
     <dimen name="lock_icon_height">24dp</dimen>
-    <dimen name="lock_icon_X">32dp</dimen>
-    <dimen name="lock_icon_Y">30dp</dimen>
+    <dimen name="lock_icon_X">28dp</dimen>
+    <dimen name="lock_icon_Y">26dp</dimen>
 
 </resources>

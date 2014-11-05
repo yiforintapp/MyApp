@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,17 +20,15 @@ import android.view.View;
 import android.widget.ImageView;
 
 public class LockImageView extends ImageView {
+
 	private RectF mRect;
-
 	private boolean mLocked;
-	private Bitmap mLockBitmap;
+	private boolean mRecommend;
 	private Paint mPaint;
-	private float mScaleX, mScaleY;
 	private Matrix mMatrix;
-	private float mLockWidth, mLockHeight;
 	private float mLockX, mLockY;
-
 	private Bitmap mSourceBitmap, mGaryBitmap;
+	private PaintFlagsDrawFilter mDrawFilter;
 
 	public LockImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -40,10 +39,29 @@ public class LockImageView extends ImageView {
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		mPaint.setStyle(Paint.Style.FILL);
+
+		mLockX = getResources().getDimensionPixelSize(R.dimen.lock_icon_X);
+		mLockY = getResources().getDimensionPixelSize(R.dimen.lock_icon_Y);
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+
+		if (mDrawFilter == null) {
+			mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG
+					| Paint.FILTER_BITMAP_FLAG);
+			canvas.setDrawFilter(mDrawFilter);
+		}
+
+		if (mRect == null) {
+			mRect = new RectF();
+			int width = this.getMeasuredWidth();
+			int height = this.getMeasuredHeight();
+			mRect.left = 0;
+			mRect.top = 0;
+			mRect.right = width;
+			mRect.bottom = height;
+		}
 
 		if (mSourceBitmap == null) {
 			Drawable d = this.getDrawable();
@@ -51,16 +69,6 @@ public class LockImageView extends ImageView {
 		}
 
 		if (mLocked) {
-			if (mRect == null) {
-				mRect = new RectF();
-				int width = this.getMeasuredWidth();
-				int height = this.getMeasuredHeight();
-				mRect.left = 0;
-				mRect.top = 0;
-				mRect.right = width;
-				mRect.bottom = height;
-			}
-
 			if (mGaryBitmap == null) {
 				mGaryBitmap = mSourceBitmap.copy(mSourceBitmap.getConfig(),
 						true);
@@ -78,39 +86,52 @@ public class LockImageView extends ImageView {
 						blue = (int) (Color.blue(pixel) * 0.35);
 
 						pixel = Color.argb(alpha, red, green, blue);
-						// pixel = Color.argb(alpha, agr, agr, agr);
 						mGaryBitmap.setPixel(i, j, pixel);
 					}
 				}
 			}
 			this.setImageBitmap(mGaryBitmap);
 			super.onDraw(canvas);
-
-			if (mLockBitmap == null) {
-				mLockBitmap = BitmapFactory.decodeResource(getResources(),
-						R.drawable.lock_icon);
-
-				mLockWidth = getResources().getDimensionPixelSize(
-						R.dimen.lock_icon_width);
-				mLockHeight = getResources().getDimensionPixelSize(
-						R.dimen.lock_icon_height);
-
-				mLockX = getResources().getDimensionPixelSize(
-						R.dimen.lock_icon_X);
-				mLockY = getResources().getDimensionPixelSize(
-						R.dimen.lock_icon_Y);
-
-				mScaleX = mLockWidth / mLockBitmap.getWidth();
-				mScaleY = mLockHeight / mLockBitmap.getHeight();
-
-				mMatrix = new Matrix();
-				mMatrix.setScale(mScaleX, mScaleY, mLockBitmap.getWidth() / 2,
-						mLockBitmap.getHeight() / 2);
-			}
-
 			canvas.save();
 			canvas.translate(mLockX, mLockY);
-			canvas.drawBitmap(mLockBitmap, mMatrix, mPaint);
+			Bitmap lockBitmap = BitmapHolder.getLockBitmap(getContext());
+			if (mMatrix == null) {
+				int lockWidth = getResources().getDimensionPixelSize(
+						R.dimen.lock_icon_width);
+				int lockHeight = getResources().getDimensionPixelSize(
+						R.dimen.lock_icon_height);
+
+				float scaleX = (float) lockWidth / lockBitmap.getWidth();
+				float scaleY = (float) lockHeight / lockBitmap.getHeight();
+
+				mMatrix = new Matrix();
+				mMatrix.setScale(scaleX, scaleY, lockBitmap.getWidth() / 2,
+						lockBitmap.getHeight() / 2);
+			}
+			canvas.drawBitmap(lockBitmap, mMatrix, mPaint);
+			canvas.restore();
+		} else if (mRecommend) {
+			this.setImageBitmap(mSourceBitmap);
+			super.onDraw(canvas);
+			canvas.save();
+			canvas.translate(mLockX, mLockY);
+			Bitmap recommendBitmap = BitmapHolder
+					.getRecommendBitmap(getContext());
+			if (mMatrix == null) {
+				int lockWidth = getResources().getDimensionPixelSize(
+						R.dimen.lock_icon_width);
+				int lockHeight = getResources().getDimensionPixelSize(
+						R.dimen.lock_icon_height);
+
+				float scaleX = (float) lockWidth / recommendBitmap.getWidth();
+				float scaleY = (float) lockHeight / recommendBitmap.getHeight();
+
+				mMatrix = new Matrix();
+				mMatrix.setScale(scaleX, scaleY,
+						recommendBitmap.getWidth() / 2,
+						recommendBitmap.getHeight() / 2);
+			}
+			canvas.drawBitmap(recommendBitmap, mMatrix, mPaint);
 			canvas.restore();
 		} else {
 			this.setImageBitmap(mSourceBitmap);
@@ -121,5 +142,32 @@ public class LockImageView extends ImageView {
 	public void setLocked(boolean locked) {
 		mLocked = locked;
 		invalidate();
+	}
+
+	public void setRecommend(boolean recommend) {
+		mRecommend = recommend;
+	}
+
+	private static class BitmapHolder {
+		private static Bitmap mLockBitmap, mRecommendBitmap;
+
+		public static Bitmap getLockBitmap(Context ctx) {
+			if (mLockBitmap == null) {
+				mLockBitmap = BitmapFactory.decodeResource(ctx.getResources(),
+						R.drawable.lock_icon);
+			}
+
+			return mLockBitmap;
+		}
+
+		public static Bitmap getRecommendBitmap(Context ctx) {
+			if (mRecommendBitmap == null) {
+				mRecommendBitmap = BitmapFactory.decodeResource(
+						ctx.getResources(), R.drawable.star_icon);
+			}
+
+			return mRecommendBitmap;
+		}
+
 	}
 }

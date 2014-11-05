@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.BaseInfo;
 
 import android.annotation.SuppressLint;
@@ -86,7 +87,7 @@ public class PagedGridView extends LinearLayout {
 			if (mClickListener != null) {
 				gridView.setOnItemClickListener(mClickListener);
 			}
-			
+
 			gridView.setOnTouchListener(mTouchListener);
 			mGridViewList.add(gridView);
 			mPageDatas.add(pageData);
@@ -126,7 +127,7 @@ public class PagedGridView extends LinearLayout {
 			}
 		}
 	}
-	
+
 	public void setItemTouchListener(OnTouchListener listener) {
 		mTouchListener = listener;
 	}
@@ -206,13 +207,17 @@ public class PagedGridView extends LinearLayout {
 					.findViewById(R.id.iv_app_icon);
 			TextView textView = (TextView) convertView
 					.findViewById(R.id.tv_app_name);
-
 			BaseInfo info = mList.get(position);
+
+			if (AppLoadEngine.getInstance(getContext()).getRecommendLockList()
+					.contains(info.getPkg())) {
+				imageView.setRecommend(true);
+			}
+
 			imageView.setLocked(info.isLocked());
 			imageView.setImageDrawable(info.getAppIcon());
 			textView.setText(info.getAppLabel());
 			convertView.setTag(info);
-//			convertView.setOnTouchListener(mTouchListener);
 			return convertView;
 		}
 	}
