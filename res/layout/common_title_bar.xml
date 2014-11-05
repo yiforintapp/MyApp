@@ -56,7 +56,8 @@
         android:gravity="center"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:scaleType="centerInside"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:visibility="invisible" />
 
     <LinearLayout

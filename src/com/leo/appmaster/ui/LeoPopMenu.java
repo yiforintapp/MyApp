@@ -2,6 +2,8 @@ package com.leo.appmaster.ui;
 
 import java.util.List;
 import android.app.Activity;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -27,6 +30,8 @@ public class LeoPopMenu {
 	private OnItemClickListener mPopItemClickListener;
 
 	private MenuListAdapter mAdapter;
+	
+	private boolean mIsItemHTMLFormatted = false;
 
 	private int mAnimaStyle;
 
@@ -45,8 +50,8 @@ public class LeoPopMenu {
 
 		View convertView = buildTabListLayout();
 
-		mLeoPopMenu = new PopupWindow(convertView, 360,
-				LayoutParams.WRAP_CONTENT, true);
+		mLeoPopMenu = new PopupWindow(convertView, 360, 
+		        LayoutParams.WRAP_CONTENT, true);
 		mLeoPopMenu.setFocusable(true);
 		mLeoPopMenu.setOutsideTouchable(true);
 		mLeoPopMenu.setBackgroundDrawable(AppMasterApplication.getInstance()
@@ -58,6 +63,19 @@ public class LeoPopMenu {
 
 	public void setAnimation(int animaStyle) {
 		mAnimaStyle = animaStyle;
+	}
+	
+	/**
+	 * call this to set mIsSpanedItem true when your item is HTML style format string
+	 * */
+	public void setItemSpaned(boolean flag){
+	    mIsItemHTMLFormatted = flag;
+	}
+	
+	public void setOnDismiss(OnDismissListener l){
+        if (mLeoPopMenu != null) {
+            mLeoPopMenu.setOnDismissListener(l);
+        }
 	}
 
 	public void dismissSnapshotList() {
@@ -138,7 +156,13 @@ public class LeoPopMenu {
 						.findViewById(R.id.menu_text);
 				convertView.setTag(mHolder);
 			}
-			mHolder.mItemName.setText(mListItems.get(position));
+			
+            if (mIsItemHTMLFormatted) {
+                Spanned itemText = Html.fromHtml(mListItems.get(position));
+                mHolder.mItemName.setText(itemText);
+            } else {
+                mHolder.mItemName.setText(mListItems.get(position));
+            }
 
 			return convertView;
 		}
