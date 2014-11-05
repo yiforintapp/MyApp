@@ -1,5 +1,6 @@
 package com.leo.appmaster.applocker;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -136,8 +137,13 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	private void loadPreferences() {
-		mLockedAppList = Arrays.asList(mPref.getString(PREF_APPLICATION_LIST,
-				"").split(";"));
+	    String lockList = mPref.getString(PREF_APPLICATION_LIST, "");
+        if (lockList.equals("")) {
+            mLockedAppList = new ArrayList<String>(0);
+        } else {
+            mLockedAppList = Arrays.asList(mPref.getString(PREF_APPLICATION_LIST,
+                    "").split(";"));
+        }
 		mLockType = mPref.getInt(PREF_LOCK_TYPE, LOCK_TYPE_NONE);
 		mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
 		if (mLockType == LOCK_TYPE_GESTURE) {
@@ -151,8 +157,13 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		if (PREF_APPLICATION_LIST.equals(key)) {
-			mLockedAppList = Arrays.asList(mPref.getString(
-					PREF_APPLICATION_LIST, "").split(";"));
+            String lockList = mPref.getString(PREF_APPLICATION_LIST, "");
+            if (lockList.equals("")) {
+                mLockedAppList = new ArrayList<String>(0);
+            } else {
+                mLockedAppList = Arrays.asList(mPref.getString(PREF_APPLICATION_LIST,
+                        "").split(";"));
+            }
 		} else if (PREF_PASSWORD.equals(key)) {
 			mPassword = mPref.getString(PREF_PASSWORD, "1234");
 		} else if (PREF_LOCK_POLICY.equals(key)) {

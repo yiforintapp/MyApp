@@ -17,6 +17,7 @@ import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -57,6 +58,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 	private TextView mTvMemoryInfo;
 	private TextView mTvFlow;
 	private ImageView mIvDigital_0, mIvDigital_1, mIvDigital_2;
+	private TextView mLockedApp;
 	private CommonTitleBar mTtileBar;
 
 	private LeoPopMenu mLeoPopMenu;
@@ -80,6 +82,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mIvDigital_0 = (ImageView) findViewById(R.id.digital_0);
 		mIvDigital_1 = (ImageView) findViewById(R.id.digital_1);
 		mIvDigital_2 = (ImageView) findViewById(R.id.digital_2);
+		mLockedApp = (TextView) findViewById(R.id.tv_lock_count);
 
 		mTvMemoryInfo = (TextView) findViewById(R.id.tv_memory_info);
 		mTvFlow = (TextView) findViewById(R.id.tv_flow);
@@ -106,7 +109,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
-		mTtileBar.setOptionImageVisibility(View.GONE);
+		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
 		mTtileBar.setOptionImage(R.drawable.setting_btn);
 		mTtileBar.setOptionListener(this);
@@ -139,6 +142,9 @@ public class HomeActivity extends Activity implements OnClickListener,
 				mSettingIcon.setImageResource(R.drawable.setting_icon);
 			}
 		}
+
+		updateSettingIcon();
+		setLockedAppCount();
 		super.onResume();
 	}
 
@@ -147,6 +153,12 @@ public class HomeActivity extends Activity implements OnClickListener,
 				.getAllPkgInfo().size();
 		setAppCount(appCount);
 	}
+	
+    private void setLockedAppCount() {
+        int lockedAppCount = AppLockerPreference.getInstance(this)
+                .getLockedAppList().size();
+        mLockedApp.setText(Integer.toString(lockedAppCount));
+    }
 
 	private void setAppCount(int count) {
 		int one, two, three;
@@ -212,6 +224,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 			if (mLeoPopMenu == null) {
 				mLeoPopMenu = new LeoPopMenu();
 				mLeoPopMenu.setPopMenuItems(getPopMenuItems());
+                mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
 				mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
@@ -224,18 +237,39 @@ public class HomeActivity extends Activity implements OnClickListener,
 					}
 				});
 			}
+            mLeoPopMenu.setPopMenuItems(getPopMenuItems());
 			mLeoPopMenu.showPopMenu(this,
-					mTtileBar.findViewById(R.id.tv_option_image));
+			mTtileBar.findViewById(R.id.tv_option_image));
+            mLeoPopMenu.setOnDismiss(new OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    updateSettingIcon();
+                }
+            });
 			break;
 		default:
 			break;
 		}
 	}
+	
+	private void updateSettingIcon(){
+        if (LeoStat.isUpdateAvailable()) {
+            mTtileBar.setOptionImage(R.drawable.setting_btn_new);
+        } else {
+            mTtileBar.setOptionImage(R.drawable.setting_btn);
+        }
+	}
 
 	private List<String> getPopMenuItems() {
 		List<String> listItems = new ArrayList<String>();
 		Resources resources = AppMasterApplication.getInstance().getResources();
-		listItems.add(resources.getString(R.string.app_setting_update));
+		listItems.add(resources.getString(R.string.feedback));
+		listItems.add(resources.getString(R.string.app_recomend));
+        if (LeoStat.isUpdateAvailable()) {
+            listItems.add(resources.getString(R.string.app_setting_has_update));
+        } else {
+            listItems.add(resources.getString(R.string.app_setting_update));
+        }
 		listItems.add(resources.getString(R.string.app_setting_about));
 		return listItems;
 	}

@@ -139,8 +139,27 @@
     <string name="passwd_notify">Password Hint</string>
     <string name="no_lock_item_tip">No locked Apps</string>
     <string name="no_unlocked_item_tip">No unlocked Apps</string>
-    
+    <string name="app_setting_has_update">&#160;&#160;&#160;Check for updates <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
+
+    <string-array name="sort_type">
+        <item>默认排序</item>
+        <item>应用名称排序</item>
+        <item>安装时间排序</item>
+    </string-array>
+
+    <string name="recom_lock_tip">推荐应用加锁提醒</string>
+    <string name="new_app_lock_tip">新装应用加锁提醒</string>
+    <string name="app_recomend">精品推荐</string>
+    <string name="feedback">用户反馈</string>
+    <string name="first_set_passwd_hint">首次使用请设置密码</string>
+    <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>
+    <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片隐藏功能中</string>
+     <string name="gesture_start_hint">画完后松开手指</string>
+    <string name="make_passwd">确认密码</string>
+    <string name="input_again">请再次输入</string>
+    <string name="reset_digital_passwd">重设数字密码</string>
+    <string name="picture_hide">图片隐藏</string>
 
 </resources>

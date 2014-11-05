@@ -2,21 +2,24 @@ package com.leo.appmaster.ui;
 
 import java.util.List;
 import android.app.Activity;
+import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-import com.leoers.leoanalytics.LeoStat;
 
 public class LeoPopMenu {
 
@@ -27,6 +30,10 @@ public class LeoPopMenu {
 	private OnItemClickListener mPopItemClickListener;
 
 	private MenuListAdapter mAdapter;
+	
+	private boolean mIsItemHTMLFormatted = false;
+
+	private int mAnimaStyle;
 
 	/**
 	 * @param aContext
@@ -43,15 +50,32 @@ public class LeoPopMenu {
 
 		View convertView = buildTabListLayout();
 
-		mLeoPopMenu = new PopupWindow(convertView, LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT, true);
+		mLeoPopMenu = new PopupWindow(convertView, DipPixelUtil.dip2px((Context)activity, 120.0f), 
+		        LayoutParams.WRAP_CONTENT, true);
 		mLeoPopMenu.setFocusable(true);
 		mLeoPopMenu.setOutsideTouchable(true);
 		mLeoPopMenu.setBackgroundDrawable(AppMasterApplication.getInstance()
 				.getResources().getDrawable(R.drawable.popup_menu_bg));
+		mLeoPopMenu.setAnimationStyle(mAnimaStyle);
 		mLeoPopMenu.update();
-		mLeoPopMenu.setAnimationStyle(R.style.PopupListAnim);
 		mLeoPopMenu.showAsDropDown(anchorView, 0, 0);
+	}
+
+	public void setAnimation(int animaStyle) {
+		mAnimaStyle = animaStyle;
+	}
+	
+	/**
+	 * call this to set mIsSpanedItem true when your item is HTML style format string
+	 * */
+	public void setItemSpaned(boolean flag){
+	    mIsItemHTMLFormatted = flag;
+	}
+	
+	public void setOnDismiss(OnDismissListener l){
+        if (mLeoPopMenu != null) {
+            mLeoPopMenu.setOnDismissListener(l);
+        }
 	}
 
 	public void dismissSnapshotList() {
@@ -132,7 +156,13 @@ public class LeoPopMenu {
 						.findViewById(R.id.menu_text);
 				convertView.setTag(mHolder);
 			}
-			mHolder.mItemName.setText(mListItems.get(position));
+			
+            if (mIsItemHTMLFormatted) {
+                Spanned itemText = Html.fromHtml(mListItems.get(position));
+                mHolder.mItemName.setText(itemText);
+            } else {
+                mHolder.mItemName.setText(mListItems.get(position));
+            }
 
 			return convertView;
 		}

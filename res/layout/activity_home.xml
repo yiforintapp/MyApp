@@ -45,7 +45,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayout1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/digital_height"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -73,6 +73,42 @@
                 android:padding="3dp"
                 android:scaleType="fitCenter" />
         </LinearLayout>
+        
+        
+        <RelativeLayout
+            android:id="@+id/lock_count_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/linearLayout1" >
+            
+            <TextView
+                android:id="@+id/tv_lock_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="38"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+            
+            <ImageView
+                android:id="@+id/lock_count_divider"
+                android:layout_width="32dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_below="@id/tv_lock_count"
+                android:src="@drawable/lock_dline" />
+
+            <ImageView
+                android:id="@+id/lock_count_icon"
+                android:layout_width="10dp"
+                android:layout_height="12dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/lock_count_divider"
+                android:src="@drawable/lock_icon" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/textView1"
