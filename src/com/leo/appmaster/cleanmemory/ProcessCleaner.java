@@ -28,7 +28,7 @@ public class ProcessCleaner {
 	private long mLastMemUsed;
 	private long mCurUsedMem;
 
-	private static int CLEAN_INTERVAL = 30 * 1000;
+	private static int CLEAN_INTERVAL = 3 * 1000;
 
 	public static synchronized ProcessCleaner getInstance(Context ctx) {
 		if (mInstance == null) {

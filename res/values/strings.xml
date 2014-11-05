@@ -57,7 +57,7 @@
 
     <!-- acceralate -->
     <string name="clean_memory">Boost</string>
-    <string name="clean_result">Freeable %1$s</string>
+    <string name="clean_result">Cleaned Memory</string>
     <string name="best_mem">Maximum Boost!</string>
 
     <!-- App lock -->

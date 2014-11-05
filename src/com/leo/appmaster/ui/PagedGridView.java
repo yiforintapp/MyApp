@@ -33,7 +33,8 @@ public class PagedGridView extends LinearLayout {
 	private ArrayList<GridView> mGridViewList;
 	private ArrayList<List<BaseInfo>> mPageDatas;
 
-	private OnItemClickListener mListener;
+	private OnItemClickListener mClickListener;
+	private OnTouchListener mTouchListener;
 	private int mPageCount;
 
 	public PagedGridView(Context context, AttributeSet attrs) {
@@ -82,9 +83,11 @@ public class PagedGridView extends LinearLayout {
 				adapter = new GridviewAdapter(pageData, i);
 				gridView.setAdapter(adapter);
 			}
-			if (mListener != null) {
-				gridView.setOnItemClickListener(mListener);
+			if (mClickListener != null) {
+				gridView.setOnItemClickListener(mClickListener);
 			}
+			
+			gridView.setOnTouchListener(mTouchListener);
 			mGridViewList.add(gridView);
 			mPageDatas.add(pageData);
 		}
@@ -115,13 +118,17 @@ public class PagedGridView extends LinearLayout {
 		return list;
 	}
 
-	public void setGridviewItemClickListener(OnItemClickListener listener) {
-		mListener = listener;
+	public void setItemClickListener(OnItemClickListener listener) {
+		mClickListener = listener;
 		if (mGridViewList != null) {
 			for (GridView gridView : mGridViewList) {
-				gridView.setOnItemClickListener(mListener);
+				gridView.setOnItemClickListener(mClickListener);
 			}
 		}
+	}
+	
+	public void setItemTouchListener(OnTouchListener listener) {
+		mTouchListener = listener;
 	}
 
 	@Override
@@ -205,7 +212,7 @@ public class PagedGridView extends LinearLayout {
 			imageView.setImageDrawable(info.getAppIcon());
 			textView.setText(info.getAppLabel());
 			convertView.setTag(info);
-
+//			convertView.setOnTouchListener(mTouchListener);
 			return convertView;
 		}
 	}

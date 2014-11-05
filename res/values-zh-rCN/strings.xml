@@ -58,7 +58,7 @@
 
     <!-- acceralate -->
     <string name="clean_memory">一键加速</string>
-    <string name="clean_result">为您清理：<xliff:g>%1$s</xliff:g>内存</string>
+    <string name="clean_result">清理内存</string>
     <string name="best_mem">已经是最佳状态，无需再次加速</string>
 
     <!-- App lock -->

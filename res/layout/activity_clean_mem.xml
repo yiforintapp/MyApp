@@ -26,14 +26,15 @@
             <FrameLayout
                 android:id="@+id/top"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="120dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="120dp" >
 
                 <LinearLayout
+                    android:id="@+id/layout_clean_progreess"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical" >
 
@@ -66,6 +67,31 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="@string/used_mem"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_clean_resault"
+                    android:layout_width="match_parent"
+                    android:visibility="invisible"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_cleaned_memory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="874M"
+                        android:textColor="#ffffff"
+                        android:textSize="44sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/clean_result"
                         android:textColor="#ffffff"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -123,17 +149,17 @@
                 android:layout_marginBottom="100dp"
                 android:background="@null"
                 android:scaleType="centerInside"
-                android:visibility="gone" 
-                android:src="@drawable/rocket_stop" />
+                android:src="@drawable/rocket_stop"
+                android:visibility="gone" />
 
             <com.leo.appmaster.ui.RocketDock
                 android:id="@+id/rocket_dock"
                 android:layout_width="120dp"
                 android:layout_height="30dp"
-                android:visibility="gone"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="110dp" />
+                android:layout_marginBottom="110dp"
+                android:visibility="gone" />
         </RelativeLayout>
     </FrameLayout>
 

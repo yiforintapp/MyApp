@@ -4,50 +4,38 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.LeoGridView;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
 public class AppLockListActivity extends Activity implements AppChangeListener,
-		OnItemClickListener, OnClickListener {
+		OnItemClickListener, OnClickListener, OnTouchListener {
 
 	public LayoutInflater mInflater;
 	private CommonTitleBar mTtileBar;
@@ -140,17 +128,18 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 		mTtileBar.openBackView();
-		mTtileBar.setOptionText(getString(R.string.setting));
-		mTtileBar.setOptionTextVisibility(View.VISIBLE);
+		mTtileBar.setOptionImage(R.drawable.applock_setting);
+		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionListener(this);
-		mTtileBar.setCenterTextVibility(View.VISIBLE);
-		mTtileBar.setCenterListener(this);
-		mTtileBar.setCenterText(mSortType[mCurSortType]);
+		mTtileBar.setSpinerVibility(View.VISIBLE);
+		mTtileBar.setSpinerListener(this);
+		mTtileBar.setSpinerText(mSortType[mCurSortType]);
 
 		mLockedList = new ArrayList<BaseInfo>();
 		mUnlockList = new ArrayList<BaseInfo>();
 		mAppPager = (PagedGridView) findViewById(R.id.pager_unlock);
-		mAppPager.setGridviewItemClickListener(this);
+		mAppPager.setItemClickListener(this);
+		mAppPager.setItemTouchListener(this);
 	}
 
 	private void loadData() {
@@ -196,6 +185,10 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		LeoLog.e("xxxx", "onItemClick");
+
+		animateItem(view);
+
 		mLastSelectApp = (BaseInfo) view.getTag();
 		BaseInfo info = null;
 		if (mLastSelectApp.isLocked()) {
@@ -234,6 +227,18 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 					.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
 		}
 		saveLockList();
+	}
+
+	private void animateItem(View view) {
+
+		AnimatorSet as = new AnimatorSet();
+		as.setDuration(300);
+		ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f,
+				0.8f, 1f);
+		ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f,
+				0.8f, 1f);
+		as.playTogether(scaleX, scaleY);
+		as.start();
 	}
 
 	private void saveLockList() {
@@ -286,12 +291,12 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.tv_option_text:
+		case R.id.tv_option_image:
 			mGotoSetting = true;
 			Intent intent = new Intent(this, LockOptionActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.tv_center:
+		case R.id.layout_right:
 			if (mLeoPopMenu == null) {
 				mLeoPopMenu = new LeoPopMenu();
 				mLeoPopMenu.setAnimation(R.style.CenterEnterAnim);
@@ -322,14 +327,14 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 						AppMasterPreference.getInstance(
 								AppLockListActivity.this).setSortType(
 								mCurSortType);
-						mTtileBar.setCenterText(mSortType[mCurSortType]);
+						mTtileBar.setSpinerText(mSortType[mCurSortType]);
 						mLeoPopMenu.dismissSnapshotList();
 					}
 				});
 			}
 			mLeoPopMenu.setPopMenuItems(getPopMenuItems());
 			mLeoPopMenu.showPopMenu(this,
-					mTtileBar.findViewById(R.id.tv_center));
+					mTtileBar.findViewById(R.id.layout_right));
 			break;
 		case R.id.mask_layer:
 			mMaskLayer.setVisibility(View.INVISIBLE);
@@ -432,5 +437,28 @@ public class AppLockListActivity extends Activity implements AppChangeListener,
 		private String trimString(String s) {
 			return s.replaceAll("\u00A0", "").trim();
 		}
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			LeoLog.e("xxxx", "ACTION_DOWN");
+			break;
+		case MotionEvent.ACTION_MOVE:
+			LeoLog.e("xxxx", "ACTION_MOVE");
+			break;
+		case MotionEvent.ACTION_UP:
+			LeoLog.e("xxxx", "ACTION_UP");
+			break;
+		case MotionEvent.ACTION_CANCEL:
+			LeoLog.e("xxxx", "ACTION_CANCEL");
+			break;
+
+		default:
+			break;
+		}
+
+		return false;
 	}
 }

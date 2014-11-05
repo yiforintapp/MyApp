@@ -2,6 +2,8 @@ package com.leo.appmaster.cleanmemory;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
@@ -42,9 +44,10 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 	private ImageView mIvLoad, mIvOk;
 	private View mRocketHolder;
 	private RocketDock mRocketDock;
-	private TextView mTvUsedMemory, mTvTotalMemory, mTvCleanResult,
+	private TextView mTvUsedMemory, mTvTotalMemory, mTvCleanResult, mTvCleanResault,
 			mTvAccelerate;
 	private ShadeView mShadeView;
+	private View mLayoutProgress, mLayoutResault;
 
 	private long mLastUsedMem;
 	private long mTotalMem;
@@ -89,6 +92,8 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.openBackView();
 		mTtileBar.setTitle(R.string.clean_memory);
+		mLayoutProgress = findViewById(R.id.layout_clean_progreess);
+		mLayoutResault = findViewById(R.id.layout_clean_resault);
 		mRocket = (ImageButton) findViewById(R.id.rocket_icon);
 		mRocketHolder = findViewById(R.id.layout_rocket_holder);
 		mRocketDock = (RocketDock) findViewById(R.id.rocket_dock);
@@ -96,6 +101,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		mTvTotalMemory = (TextView) findViewById(R.id.tv_total);
 		mTvCleanResult = (TextView) findViewById(R.id.tv_clean_result);
 		mTvAccelerate = (TextView) findViewById(R.id.tv_mem_tip);
+		mTvCleanResault = (TextView) findViewById(R.id.tv_cleaned_memory);
 		mShadeView = (ShadeView) findViewById(R.id.shade_view);
 		mIvLoad = (ImageView) findViewById(R.id.iv_load);
 		mIvOk = (ImageView) findViewById(R.id.clean_ok);
@@ -122,7 +128,6 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 			mRocketHolder.setBackgroundDrawable(null);
 			mTvAccelerate.setText(R.string.compeletely);
 		}
-
 	}
 
 	private void startLoad() {
@@ -223,7 +228,7 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		synchronized (lock) {
 			launchRocket();
 			mCleaner.tryClean(this);
-			showOK();
+			showOk();
 			long curUsedMem = mCleaner.getCurUsedMem();
 			mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
 			startUpdataMemTip(curUsedMem);
@@ -232,19 +237,36 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 		}
 	}
 
-	private void showOK() {
+
+	private void showCleaned() {
+		AnimatorSet as = new AnimatorSet();
+		ObjectAnimator progressAlpha = ObjectAnimator.ofFloat(mLayoutProgress,
+				"alpha", 1f, 0f);
+		ObjectAnimator reasultAlpha = ObjectAnimator.ofFloat(mLayoutResault,
+				"alpha", 0f, 1f);
+		ObjectAnimator progressTranslate = ObjectAnimator.ofFloat(
+				mLayoutProgress, "translationY", 0f, -150f);
+		ObjectAnimator reasultTranslate = ObjectAnimator.ofFloat(
+				mLayoutResault, "translationY", 150f, 0f);
+
+		as.setDuration(500);
+		as.playTogether(progressAlpha, reasultAlpha, progressTranslate,
+				reasultTranslate);
+		mLayoutResault.setVisibility(View.VISIBLE);
+		mTvCleanResault.setText(TextFormater.dataSizeFormat(mCleanMem));
+		as.start();
+	}
+
+	private void showOk() {
 		AnimationSet as = new AnimationSet(true);
 		AlphaAnimation aa = new AlphaAnimation(1.0f, 0.0f);
 		ScaleAnimation sa = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f,
 				ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
 				ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-
 		aa.setDuration(800);
 		sa.setDuration(1000);
-
 		as.addAnimation(sa);
 		as.addAnimation(aa);
-
 		as.setAnimationListener(new AnimationListenerAdapter() {
 			@Override
 			public void onAnimationStart(Animation animation) {
@@ -269,11 +291,11 @@ public class CleanMemActivity extends Activity implements OnClickListener,
 					}
 				});
 				mRocketHolder.startAnimation(show);
+				
+				showCleaned();
 			}
 		});
-
 		mRocketHolder.startAnimation(as);
-
 	}
 
 	private void shakeRocket() {

@@ -16,11 +16,11 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
 	private ImageView mIvBackArrow;
 	private TextView mTvTitle;
-	private TextView mTvCenter;
+	private TextView mTvLayoutRight;
 	private TextView mTvOptionText;
 	private ImageView mTvOptionImage;
 
-	private View mLayoutBackView;
+	private View mLayoutBackView, mLayoutSpiner;
 
 	public CommonTitleBar(Context context) {
 		super(context);
@@ -37,9 +37,10 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 		mLayoutBackView = findViewById(R.id.layout_title_back);
 		mIvBackArrow = (ImageView) findViewById(R.id.iv_back_arrow);
 		mTvTitle = (TextView) findViewById(R.id.tv_title);
-		mTvCenter = (TextView) findViewById(R.id.tv_center);
+		mTvLayoutRight = (TextView) findViewById(R.id.tv_layout_right);
 		mTvOptionText = (TextView) findViewById(R.id.tv_option_text);
 		mTvOptionImage = (ImageView) findViewById(R.id.tv_option_image);
+		mLayoutSpiner = findViewById(R.id.layout_right);
 		super.onFinishInflate();
 	}
 
@@ -51,20 +52,20 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 		mTvTitle.setText(resid);
 	}
 
-	public void setCenterText(String text) {
-		mTvCenter.setText(text);
+	public void setSpinerText(String text) {
+		mTvLayoutRight.setText(text);
 	}
 
-	public void setCenterText(int resid) {
-		mTvCenter.setText(resid);
+	public void setSpinerText(int resid) {
+		mTvLayoutRight.setText(resid);
 	}
-	
-	public void setCenterListener(OnClickListener listener) {
-		mTvCenter.setOnClickListener(listener);
+
+	public void setSpinerListener(OnClickListener listener) {
+		mLayoutSpiner.setOnClickListener(listener);
 	}
-	
-	public void setCenterTextVibility(int visibility) {
-		mTvCenter.setVisibility(visibility);
+
+	public void setSpinerVibility(int visibility) {
+		mLayoutSpiner.setVisibility(visibility);
 	}
 
 	public void setBackArrowVisibility(int visibility) {

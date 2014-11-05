@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
+
     <dimen name="gridview_vertical_spacing">12dip</dimen>
+
     <integer name="gridview_row_count">4</integer>
+
     <dimen name="digital_height">82dp</dimen>
     <dimen name="digital_width">51dp</dimen>
     <dimen name="memory_flow_marginTop">0dp</dimen>
@@ -16,4 +18,9 @@
     <dimen name="memory_flow_text1_marginTop">1dp</dimen>
     <dimen name="memory_flow_text2_marginTop">3dp</dimen>
     <dimen name="setting_item_height">55dp</dimen>
+    <dimen name="lock_icon_width">22dp</dimen>
+    <dimen name="lock_icon_height">24dp</dimen>
+    <dimen name="lock_icon_X">32dp</dimen>
+    <dimen name="lock_icon_Y">30dp</dimen>
+
 </resources>

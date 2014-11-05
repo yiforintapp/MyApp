@@ -223,6 +223,7 @@ public class LockScreenActivity extends FragmentActivity implements
 
 			} else {
 				Toast.makeText(this, R.string.reinput_anwser, 0).show();
+				mEtAnwser.setText("");
 			}
 		} else if (which == 0) { // cancel
 			mDialog.dismiss();

@@ -57,7 +57,6 @@
 
     <!-- acceralate -->
     <string name="clean_memory">एक क्लिक में तेज़ी लाए</string>
-    <string name="clean_result">खली की जा सकने वाली एम् बी %1$s</string>
     <string name="best_mem">सबसे अच्छा हालत है, फिर से तेजी लाने की कोई ज़रूरत नहीं है</string>
 
     <!-- App lock -->
@@ -160,5 +159,6 @@
     <string name="reset_gesture_passwd">重设手势密码</string>
     <string name="reset_digital_passwd">重设数字密码</string>
     <string name="picture_hide">图片隐藏</string>
+    <string name="clean_result">清理内存</string>
 
 </resources>
