@@ -341,13 +341,13 @@
                     android:id="@+id/setting_icon"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
-                    android:src="@drawable/setting_icon" />
+                    android:src="@drawable/hidden_image_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/picture_hide"
+                    android:text="@string/app_image_hide"
                     android:textColor="@color/text_color_blue"
                     android:textSize="14dp" />
             </LinearLayout>

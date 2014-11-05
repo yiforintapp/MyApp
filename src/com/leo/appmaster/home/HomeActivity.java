@@ -26,6 +26,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
+import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -36,6 +38,7 @@ import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CricleView;
@@ -188,15 +191,17 @@ public class HomeActivity extends Activity implements OnClickListener,
 		case R.id.top_layout:
 			break;
 		case R.id.tv_picture_hide:
-			// goto picture hide
-			// intent = new Intent(this, AboutActivity.class);
-			// this.startActivity(intent);
+            SDKWrapper.addEvent(LeoStat.P2, "main page", "click the hide picture button");
+            if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
+                enterHidePicture();
+            } else {
+                startLockSetting();
+            }
 			break;
 		case R.id.tv_app_lock:
-			SDKWrapper.addEvent(LeoStat.P2, "main page",
-					"click the app lock button");
-			if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-				enterLockPage();
+			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the app lock button");
+			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
+                enterLockPage();
 			} else {
 				startLockSetting();
 			}
@@ -234,7 +239,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 							LeoStat.checkUpdate();
 						} else if (position == 3) {
 							Intent intent = new Intent(HomeActivity.this,
-									ProtocolActivity.class);
+									AboutActivity.class);
 							startActivity(intent);
 						}
 						mLeoPopMenu.dismissSnapshotList();
@@ -282,7 +287,9 @@ public class HomeActivity extends Activity implements OnClickListener,
 		Intent intent = null;
 		int lockType = AppMasterPreference.getInstance(this).getLockType();
 		intent = new Intent(this, LockScreenActivity.class);
-		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+        intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
+                AppLockListActivity.class.getName());
+		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_PASSWD);
 		} else {
@@ -292,8 +299,29 @@ public class HomeActivity extends Activity implements OnClickListener,
 		startActivity(intent);
 	}
 
+	   private void enterHidePicture() {
+	        Intent intent = null;
+	        int lockType = AppLockerPreference.getInstance(this).getLockType();
+	        intent = new Intent(this, LockScreenActivity.class);
+	        intent.putExtra(LockScreenActivity.EXTRA_LOCK_TITLE, getString(R.string.app_image_hide));
+	        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+	                LockFragment.FROM_SELF);
+	        intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
+	                ImageHideMainActivity.class.getName());
+	        if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+	            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+	                    LockFragment.LOCK_TYPE_PASSWD);
+	        } else {
+	            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+	                    LockFragment.LOCK_TYPE_GESTURE);
+	        }
+	        startActivity(intent);
+	    }
+	
 	private void startLockSetting() {
 		Intent intent = new Intent(this, LockSettingActivity.class);
+        intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
+                ImageHideMainActivity.class.getName());
 		startActivity(intent);
 	}
 

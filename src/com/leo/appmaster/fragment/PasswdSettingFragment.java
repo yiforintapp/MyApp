@@ -1,8 +1,10 @@
 package com.leo.appmaster.fragment;
 
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -10,7 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
@@ -220,8 +222,15 @@ public class PasswdSettingFragment extends BaseFragment implements
 								intent = new Intent(mActivity,
 										LockOptionActivity.class);
 							} else {
-								intent = new Intent(mActivity,
-										AppLockListActivity.class);
+		                        if (!TextUtils.isEmpty(mActivityName)) {
+		                            intent = new Intent();
+		                            ComponentName componentName = new ComponentName(
+		                                    AppMasterApplication.getInstance().getPackageName(),
+		                                    mActivityName);
+		                            intent.setComponent(componentName);
+		                        } else {
+		                            intent = new Intent(mActivity, AppLockListActivity.class);
+		                        }
 							}
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							mActivity.startActivity(intent);
@@ -327,7 +336,15 @@ public class PasswdSettingFragment extends BaseFragment implements
 	public void onDismiss(DialogInterface dialog) {
 		Intent intent;
 		if (mGotoPasswdProtect) {
-			intent = new Intent(mActivity, AppLockListActivity.class);
+            if (!TextUtils.isEmpty(mActivityName)) {
+                intent = new Intent();
+                ComponentName componentName = new ComponentName(
+                        AppMasterApplication.getInstance().getPackageName(),
+                        mActivityName);
+                intent.setComponent(componentName);
+            } else {
+                intent = new Intent(mActivity, AppLockListActivity.class);
+            }
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			mActivity.startActivity(intent);
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
@@ -336,7 +353,15 @@ public class PasswdSettingFragment extends BaseFragment implements
 			// mActivity.finish();
 
 		} else {
-			intent = new Intent(mActivity, AppLockListActivity.class);
+            if (!TextUtils.isEmpty(mActivityName)) {
+                intent = new Intent();
+                ComponentName componentName = new ComponentName(
+                        AppMasterApplication.getInstance().getPackageName(),
+                        mActivityName);
+                intent.setComponent(componentName);
+            } else {
+                intent = new Intent(mActivity, AppLockListActivity.class);
+            }
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			mActivity.startActivity(intent);
 		}

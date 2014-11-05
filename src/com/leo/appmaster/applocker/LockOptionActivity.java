@@ -34,16 +34,28 @@ public class LockOptionActivity extends PreferenceActivity implements
 	private CheckBoxPreference mForbidUninstall, mAutoLock;
 	private Preference mSetProtect;
 	private boolean mGotoSetting;
+	
+    public static final String TAG_COME_FROM = "come_from";
+	public static final int FROM_APPLOCK = 0;
+    public static final int FROM_IMAGEHIDE = 1;
+	
+	private int mComeFrom = FROM_APPLOCK;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lock_option);
 		addPreferencesFromResource(R.xml.setting);
+		initIntent();
 		initUI();
 		setupPreference();
 	}
 
+	private void initIntent() {
+	    Intent intent = getIntent();
+	    mComeFrom = intent.getIntExtra(TAG_COME_FROM, 0);
+	}
+	
 	private void setupPreference() {
 		mForbidUninstall = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL);
 		mAutoLock = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_AUTO_LOCK);
@@ -52,12 +64,18 @@ public class LockOptionActivity extends PreferenceActivity implements
 		mResetPasswd = (Preference) findPreference("change_passwd");
 		mChangeProtectQuestion = (Preference) findPreference("set_passwd_protect");
 		mChangePasswdTip = (Preference) findPreference("set_passwd_tip");
+		if (mComeFrom == FROM_IMAGEHIDE) {
+		    getPreferenceScreen().removePreference(mAutoLock);
+		    getPreferenceScreen().removePreference(mLockTime);
+		}
 		mResetPasswd.setOnPreferenceClickListener(this);
 		mForbidUninstall.setOnPreferenceChangeListener(this);
-		mAutoLock.setOnPreferenceChangeListener(this);
-		mLockTime.setOnPreferenceClickListener(this);
+        if (mComeFrom == FROM_APPLOCK) {
+            mAutoLock.setOnPreferenceChangeListener(this);
+            mLockTime.setOnPreferenceClickListener(this);
+        }
 		mChangeProtectQuestion.setOnPreferenceClickListener(this);
-		mChangePasswdTip.setOnPreferenceClickListener(this);
+//		mChangePasswdTip.setOnPreferenceClickListener(this);
 	}
 
 	private boolean isAdminActive() {
@@ -122,7 +140,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 	private void initUI() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		mTtileBar.setTitle(R.string.app_lock);
+		mTtileBar.setTitle(R.string.setting);
 		mTtileBar.openBackView();
 	}
 

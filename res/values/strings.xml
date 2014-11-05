@@ -140,6 +140,23 @@
     <string name="app_setting_has_update">&#160;&#160;&#160;Check for updates <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
+    
+   <string name="app_image_hide">Image Hide</string>
+    <string name="app_no_image_hide">请点击添加按钮，添加需要隐藏的图片</string>
+    <string name="app_no_image">没有可添加的图片</string>
+    <string name="app_image_gallery">Gallery</string>
+    <string name="app_select_all">Select All</string>
+    <string name="app_select_none">Cancel Selected</string>
+    <string name="app_hide_image">Hide</string>
+    <string name="app_cancel_hide_image">Cancel Hide</string>
+    <string name="app_hide_image_edit">Edit</string>
+    <string name="app_add_hide_image">Add</string>
+    <string name="app_share_hide_image">Share</string>
+    <string name="app_unhide_dialog_content">If cancel to hide this picture ?</string>
+    <string name="app_delete_dialog_content">Is to remove the picture ?</string>
+    <string name="app_unhide_pictures_dialog_content">是否取消隐藏你所选的图片？</string>
+    <string name="app_hide_pictures_dialog_content">是否隐藏你所选的图片？</string>
+    <string name="app_hide_image_fail">Hide picture fail !</string>
 
     <string-array name="sort_type">
         <item>默认排序</item>
@@ -158,7 +175,6 @@
     <string name="make_passwd">确认密码</string>
     <string name="input_again">请再次输入</string>
     <string name="reset_digital_passwd">重设数字密码</string>
-    <string name="picture_hide">图片隐藏</string>
     <!-- 版权 -->
     <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
     <!-- AppWall -->
@@ -189,8 +205,6 @@
                   any of all the services.\n</string>
     <string name="protocolSupport">support@leomaster.com</string>
 
-
     <string name="passwd_set_gesture_tip">请至少连接4个点</string>
     <string name="set_gesture">设置手势密码</string>
-
 </resources>

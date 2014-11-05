@@ -1,13 +1,15 @@
 package com.leo.appmaster.fragment;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
@@ -148,7 +150,16 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener 
 				if (LockOptionActivity.class.getName().equals(mActivityName)) {
 					intent = new Intent(mActivity, LockOptionActivity.class);
 				} else {
-					intent = new Intent(mActivity, AppLockListActivity.class);
+				    if (!TextUtils.isEmpty(mActivityName)) {
+				        intent = new Intent();
+				        ComponentName componentName = new ComponentName(  
+                                AppMasterApplication.getInstance().getPackageName(),  
+				                mActivityName);
+				        intent.setComponent(componentName); 
+				    } else {
+	                    intent = new Intent(mActivity, AppLockListActivity.class);
+				    }
+
 				}
 
 				mActivity.startActivity(intent);

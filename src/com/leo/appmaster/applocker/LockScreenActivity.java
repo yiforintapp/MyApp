@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -43,7 +44,8 @@ public class LockScreenActivity extends FragmentActivity implements
 	public static String EXTRA_UNLOCK_FROM = "extra_unlock_from";
 	public static String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
 	public static String EXTRA_FROM_ACTIVITY = "extra_form_activity";
-
+    public static String EXTRA_LOCK_TITLE = "extra_lock_title";
+	
 	int mFrom;
 	private CommonTitleBar mTtileBar;
 	private LockFragment mFragment;
@@ -51,6 +53,7 @@ public class LockScreenActivity extends FragmentActivity implements
 	private LeoPopMenu mLeoPopMenu;
 	private LeoDoubleLinesInputDialog mDialog;
 	private EditText mEtQuestion, mEtAnwser;
+	private String mLockTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +86,7 @@ public class LockScreenActivity extends FragmentActivity implements
 
 			setAppInfoBackground(bd);
 		}
-
+		mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
 		mFragment.setFrom(mFrom);
 		mFragment.setPackage(intent
 				.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
@@ -123,7 +126,6 @@ public class LockScreenActivity extends FragmentActivity implements
 
 	private void initUI() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		mTtileBar.setTitle(R.string.app_lock);
 
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			mTtileBar.setOptionImage(R.drawable.setting_btn);
@@ -133,7 +135,11 @@ public class LockScreenActivity extends FragmentActivity implements
 
 		if (mFrom == LockFragment.FROM_SELF) {
 			mTtileBar.openBackView();
-			mTtileBar.setTitle(R.string.app_lock);
+			if (TextUtils.isEmpty(mLockTitle)) {
+		         mTtileBar.setTitle(R.string.app_lock);
+			} else {
+	              mTtileBar.setTitle(mLockTitle);
+			}
 		} else {
 			mTtileBar.setBackArrowVisibility(View.GONE);
 			mTtileBar.setTitle(R.string.app_name);

@@ -13,7 +13,12 @@ import android.content.IntentFilter;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.engine.AppLoadEngine;
+
+import com.leo.appmaster.update.UIHelper;
+import com.leoers.leoanalytics.LeoStat;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
@@ -24,6 +29,10 @@ public class AppMasterApplication extends Application {
 
 	private static AppMasterApplication mInstance;
 
+    private static final int MAX_MEMORY_CACHE_SIZE = 5 * (1 << 20);// 5M
+    private static final int MAX_DISK_CACHE_SIZE = 50 * (1 << 20);// 20 Mb
+    private static final int MAX_THREAD_POOL_SIZE = 3;
+	
 	static {
 		System.loadLibrary("leo_service");
 	}
@@ -63,9 +72,20 @@ public class AppMasterApplication extends Application {
 		// start app destory listener
 
 		restartApplocker(PhoneInfo.getAndroidVersion());
-
+		initImageLoader();
 	}
 
+	private void initImageLoader() {
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                getApplicationContext())
+                .threadPoolSize(MAX_THREAD_POOL_SIZE)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .memoryCacheSizePercentage(12)
+                 .diskCacheSize(MAX_DISK_CACHE_SIZE) // 50 Mb
+                .denyCacheImageMultipleSizesInMemory().build();
+        ImageLoader.getInstance().init(config);
+	}
+	
 	private void judgeLockAlert() {
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		if (pref.isReminded()) {
@@ -139,6 +159,7 @@ public class AppMasterApplication extends Application {
 					.build();
 			ImageLoader.getInstance().init(config);
 		}
+
 
 
 }
