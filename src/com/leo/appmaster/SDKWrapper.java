@@ -46,7 +46,7 @@ public class SDKWrapper {
     private static void iniLeoSdk(Context ctx) {
         LeoStat.init(ctx, ctx.getString(R.string.channel_code),
                 "appmaster");
-        LeoStat.setDebugLevel(Log.ERROR);
+        LeoStat.setDebugLevel(Log.DEBUG);
         LeoStat.initUpdateEngine(UIHelper.getInstance(ctx),
                 true);
     }
