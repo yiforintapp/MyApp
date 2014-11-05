@@ -52,7 +52,7 @@ public class AppWallActivity extends Activity implements OnItemClickListener {
 	private TextView text;
 	private DisplayImageOptions options; 
 	private static final String DATAPATH = "http://test.leostat.com/appmaster/appwall";//数据的url
-	private static final String IMAGEPATH = "http://c.hiphotos.baidu.com/image/w%3D310/";//图片的url
+	//private static final String IMAGEPATH = "http://c.hiphotos.baidu.com/image/w%3D310/";//图片的url
 	private static final String CHARSETLOCAL = "utf-8";// 本地
 	private static final String CHARSETSERVICE = "utf-8";// 服务端
 	private DownloadManager downloadManager;
