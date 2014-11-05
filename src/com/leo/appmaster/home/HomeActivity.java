@@ -28,6 +28,7 @@ import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.appsetting.AboutActivity;
+import com.leo.appmaster.appwall.AppWallActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.cleanmemory.CleanMemActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
@@ -111,7 +112,7 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
-		mTtileBar.setOptionImage(R.drawable.setting_btn);
+		mTtileBar.setOptionImage(R.drawable.setting_selector);
 		mTtileBar.setOptionListener(this);
 
 		calculateAppCount();
@@ -133,15 +134,6 @@ public class HomeActivity extends Activity implements OnClickListener,
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
 
-		if (LeoStat.isUpdateAvailable()) {
-			if (mSettingIcon != null) {
-				mSettingIcon.setImageResource(R.drawable.setting_icon_new);
-			}
-		} else {
-			if (mSettingIcon != null) {
-				mSettingIcon.setImageResource(R.drawable.setting_icon);
-			}
-		}
 
 		updateSettingIcon();
 		setLockedAppCount();
@@ -232,6 +224,14 @@ public class HomeActivity extends Activity implements OnClickListener,
 						if (position == 0) {
 							LeoStat.checkUpdate();
 						} else if (position == 1) {
+							Intent intent=new Intent(HomeActivity.this,AppWallActivity.class);
+							startActivity(intent);
+						}else if(position==2)
+						{
+							
+						}else if(position==3){
+							Intent intent=new Intent(HomeActivity.this,ProtocolActivity.class);
+							startActivity(intent);
 						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
@@ -256,7 +256,7 @@ public class HomeActivity extends Activity implements OnClickListener,
         if (LeoStat.isUpdateAvailable()) {
             mTtileBar.setOptionImage(R.drawable.setting_btn_new);
         } else {
-            mTtileBar.setOptionImage(R.drawable.setting_btn);
+            mTtileBar.setOptionImage(R.drawable.setting_selector);
         }
 	}
 
@@ -264,13 +264,13 @@ public class HomeActivity extends Activity implements OnClickListener,
 		List<String> listItems = new ArrayList<String>();
 		Resources resources = AppMasterApplication.getInstance().getResources();
 		listItems.add(resources.getString(R.string.feedback));
-		listItems.add(resources.getString(R.string.app_recomend));
+		listItems.add(resources.getString(R.string.app_wall));
         if (LeoStat.isUpdateAvailable()) {
             listItems.add(resources.getString(R.string.app_setting_has_update));
         } else {
             listItems.add(resources.getString(R.string.app_setting_update));
         }
-		listItems.add(resources.getString(R.string.app_setting_about));
+		listItems.add(resources.getString(R.string.app_setting_about));	
 		return listItems;
 	}
 
@@ -313,6 +313,9 @@ public class HomeActivity extends Activity implements OnClickListener,
 			} else if (v.getId() == R.id.tv_app_backup) {
 				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
 				mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
+			}else if (v.getId() == R.string.app_wall) {
+				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
+				mTvAppBackup.setBackgroundResource(R.drawable.home_sel);
 			}
 			break;
 		case MotionEvent.ACTION_UP:
@@ -329,7 +332,6 @@ public class HomeActivity extends Activity implements OnClickListener,
 		default:
 			break;
 		}
-
 		return false;
 	}
 }

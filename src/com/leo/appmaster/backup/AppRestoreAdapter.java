@@ -58,7 +58,8 @@ public class AppRestoreAdapter extends BaseAdapter {
         AppDetailInfo app = mRestoreList.get(arg0);
         Context context = itemView.getContext();
         if(arg0 % 2 == 0) {
-            itemView.setBackgroundColor(context.getResources().getColor(R.color.white));
+           itemView.setBackgroundColor(context.getResources().getColor(R.color.white));
+        
         } else {
             itemView.setBackgroundColor(context.getResources().getColor(R.color.item_backup_grey));
         }

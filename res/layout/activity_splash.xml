@@ -13,20 +13,14 @@
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"
         android:src="@drawable/splash_center" />
-   <!--  
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+ 
+<TextView
+    android:id="@+id/splash_protocol"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/imageView1"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="66dp"
+    />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/uc_9apps" />
--->
 </RelativeLayout>

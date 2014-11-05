@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent" >
+    
+    <com.leo.appmaster.ui.CommonTitleBar 
+        android:id="@+id/appwallTB"
+        android:layout_width="match_parent"
+        android:background="@color/app_background"
+        android:layout_height="wrap_content" 
+        android:layout_alignParentTop="true">
+    </com.leo.appmaster.ui.CommonTitleBar>
+     
+    <ListView 
+        android:id="@+id/appwallLV"
+       	android:layout_below="@+id/appwallTB"
+       	android:layout_width="match_parent"
+       	android:layout_height="match_parent" 
+        android:background="@color/white" 
+        android:divider="@null"
+        android:dividerHeight="1dp"
+        android:listSelector="@null"
+        android:scrollbarStyle="outsideOverlay"    
+        android:scrollbars="none"
+        android:visibility="gone"
+        android:fadingEdge="horizontal">    
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="网络或服务器异常请重新尝试！" />
+
+        <Button
+            android:id="@+id/restartBT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView1"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:text="点击重试" />
+    </LinearLayout>
+  
+</RelativeLayout>

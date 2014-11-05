@@ -10,7 +10,6 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:paddingRight="3dp"
-        android:background="@drawable/common_button_selecter"
         android:gravity="center" >
 
         <ImageView
@@ -18,7 +17,7 @@
             android:layout_width="30dp"
             android:layout_height="35dp"
             android:clickable="false"
-            android:src="@drawable/back_btn" />
+            android:src="@drawable/common_left_selector" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -28,7 +27,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text="@string/app_name"
-            android:textColor="#ffffff"
+            android:textColor="@color/common_button_selecter"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -40,10 +39,9 @@
         android:layout_centerVertical="true"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
-        android:background="@drawable/common_button_selecter"
         android:gravity="center"
         android:text="xxxx"
-        android:textColor="#ffffff"
+        android:textColor="@color/common_button_selecter"
         android:textSize="16sp"
         android:visibility="invisible" />
 
@@ -56,7 +54,6 @@
         android:layout_marginRight="15dp"
         android:gravity="center"
         android:padding="5dp"
-        android:background="@drawable/common_button_selecter"
         android:scaleType="centerInside"
         android:visibility="invisible" />
 

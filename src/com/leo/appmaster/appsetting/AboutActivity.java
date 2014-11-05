@@ -1,10 +1,12 @@
 package com.leo.appmaster.appsetting;
 import com.leo.appmaster.R;
+import com.leo.appmaster.home.ProtocolActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leoers.leoanalytics.LeoStat;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.Html;
@@ -62,18 +64,20 @@ public class AboutActivity extends Activity implements OnClickListener{
             }
         } else {
               if (mCheckUpdate != null) {
-                  mCheckUpdate.setText(R.string.app_setting_update);
-                }
-        }
-        
+                  //mCheckUpdate.setText(R.string.app_setting_update);
+            	  mCheckUpdate.setText(R.string.protocolBar);  
+              }
+        }       
         super.onResume();
+        
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.check_update_button:
-                LeoStat.checkUpdate();
+              Intent intent=new Intent();
+              intent.setClass(AboutActivity.this,ProtocolActivity.class);
+              startActivity(intent);
                 break;
 
             default:

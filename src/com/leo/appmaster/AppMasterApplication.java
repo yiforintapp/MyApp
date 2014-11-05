@@ -1,6 +1,7 @@
 package com.leo.appmaster;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
@@ -11,6 +12,10 @@ import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.update.UIHelper;
 import com.leoers.leoanalytics.LeoStat;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 public class AppMasterApplication extends Application {
 
@@ -30,6 +35,7 @@ public class AppMasterApplication extends Application {
 		mInstance = this;
 		mAppsEngine = AppLoadEngine.getInstance(this);
 		mAppsEngine.preloadAllBaseInfo();
+		initImageLoader(getApplicationContext());
 		// Register intent receivers
 
 		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
@@ -77,5 +83,19 @@ public class AppMasterApplication extends Application {
 	public static AppMasterApplication getInstance() {
 		return mInstance;
 	}
+	
+	//初始化ImageLoader
+		public static void initImageLoader(Context context) {
+			ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+					.threadPriority(Thread.NORM_PRIORITY - 2)
+					.denyCacheImageMultipleSizesInMemory()
+					.diskCacheFileNameGenerator(new Md5FileNameGenerator())
+					.diskCacheSize(50 * 1024 * 1024) 
+					.tasksProcessingOrder(QueueProcessingType.LIFO)
+					.writeDebugLogs() 
+					.build();
+			ImageLoader.getInstance().init(config);
+		}
+
 
 }

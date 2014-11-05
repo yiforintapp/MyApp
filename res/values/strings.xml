@@ -38,7 +38,7 @@
     <string name="app_unlock">Unlocked</string>
     <string name="find_passwd">Forget your password?</string>
     <string name="please_wait">Please try again later</string>
-    <string name="passwd_question">Security Question: </string>
+    <string name="passwd_question">Question: </string>
     <string name="passwd_anwser">Answer: </string>
     <string name="accelerate">Boost</string>
     <string name="used_mem">Memory Used</string>
@@ -142,13 +142,11 @@
     <string name="app_setting_has_update">&#160;&#160;&#160;Check for updates <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
-
     <string-array name="sort_type">
         <item>默认排序</item>
         <item>应用名称排序</item>
         <item>安装时间排序</item>
     </string-array>
-
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
     <string name="new_app_lock_tip">新装应用加锁提醒</string>
     <string name="app_recomend">精品推荐</string>
@@ -161,5 +159,41 @@
     <string name="input_again">请再次输入</string>
     <string name="reset_digital_passwd">重设数字密码</string>
     <string name="picture_hide">图片隐藏</string>
-
+      <!-- 版权 -->
+       <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>    
+      <!-- AppWall -->
+      <string name="app_wall">应用推荐</string>
+      <!-- 隐私策略 -->
+      <string name="protocolBar">隐私策略</string>
+      <string name="protocolTitl">\n<b>Privacy Policy</b>\n</string>
+       <string  name="protocol">
+					            	                                                          
+			         Welcome to App Master. This Privacy Policy describes how your information is collected, used and shared when you use our services. 
+			  We, App Master, regards our users’ information as top priority and have been taking great efforts to provide you with best web experience.
+			  By using App Master, you consent to the collection and use of your personal information as outlined below. We may update this Privacy 
+			  Policy from time to time to reflect the users’ feedbacks, please visit termly to review any changes. \n	\n		
+			  		<b> The Information App Master Collects</b>\n\n
+			        No personal information is required when downloading or using App Master. When you download/use the Application or the Services, we 
+			  receive only non-personal information such as your device information, your operation system, language preference, etc. \n\n
+			          Your personal information will only be collected when: You participate in our events and voluntarily provide your name, email address, 
+			  phone number,etc. It will be your choice whether to provide your information.\n\n
+			     <b> How App Master Use the Information Collected</b>\n\n
+			        We use your information to:\n
+					&#160;&#160;&#160;a. provide you with technical support\n
+					&#160;&#160;&#160;b. improve the services’ management \n
+					&#160;&#160;&#160;c. deliver the services per you request\n
+					&#160;&#160;&#160;d. analyze statistical  data\n
+					&#160;&#160;&#160;e. investigate alleged fraud, infringement or other misconduct\n
+					We will NOT share your personal information with any third parties unless: If required to do so by any applicable law, regulation, legal
+			 process or enforceable governmental request.\n \n
+			       <b>Contact Us</b>\n\n
+			       f you have any questions about this Policy or to report any violations of the Policy, please send an email to: <a href="support@leoers.com">support@leoers.com</a>
+			App Master also provides users the opportunity to opt-out of receiving communications from us at any time. If at any point you wish to stop 
+			communication from our side please inform us of your request via the same email address.\n\n
+                   <b>Changes to this Policy</b>\n\n
+                  This Privacy Policy may be revised from time to time with or without notice. If we make a change in this policy, we will post the latest version on our site:<a href="www.leomaster.com"> www.leomaster.com</a>. 
+                  By continuing to access or use the services you agree to be bound by the revised Privacy Policy. If you do not agree to any modifications to this Policy, you should stop using
+                  any of all the services.\n
+       </string>
+       <string name="protocolSupport">support@leomaster.com</string>
 </resources>
