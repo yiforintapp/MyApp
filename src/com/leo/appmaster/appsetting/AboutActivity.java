@@ -63,17 +63,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
             mShowProtocol.setText(R.string.protocolBar);
         }
         
-        ImageView img = (ImageView) findViewById(R.id.app_logo);
-        String area = Locale.getDefault().getLanguage();
-        if(area.equalsIgnoreCase("zh")){
-            img.setImageResource(R.drawable.cn);
-        }else if(area.equalsIgnoreCase("hi")){
-            img.setImageResource(R.drawable.in);
-        }else{
-            img.setImageResource(R.drawable.en);
-        }
         super.onResume();
-        
     }
     @Override
     public void onClick(View view) {
