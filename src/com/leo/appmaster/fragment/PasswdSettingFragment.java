@@ -151,11 +151,13 @@ public class PasswdSettingFragment extends BaseFragment implements
 			mShake.setAnimationListener(new AnimationListenerAdapter() {
 				@Override
 				public void onAnimationStart(Animation animation) {
+					mTempSecondPasswd = "";
 					mTvPasswdFuncTip.setText(R.string.tip_no_the_same_pswd);
 				}
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
+					clearPasswd();
 				}
 
 			});
