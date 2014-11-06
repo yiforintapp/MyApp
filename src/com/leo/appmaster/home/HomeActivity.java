@@ -90,12 +90,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
         SharedPreferences prefernece = PreferenceManager.getDefaultSharedPreferences(this);
         boolean installed = prefernece.getBoolean("shortcut", false);
         if (!installed) {
+            Intent shortcutIntent = new Intent(this, SplashActivity.class);
+            shortcutIntent.setAction(Intent.ACTION_MAIN);
+            shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+//            shortcutIntent.setClassName("com.leo.appmaster", "com.leo.appmaster.home.SplashActivity");
+            
             Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
-            Intent shortcutIntent = new Intent(Intent.ACTION_MAIN);
-            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            shortcutIntent.setClassName("com.leo.appmaster", "com.leo.appmaster.home.SplashActivity");
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
             ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(this, R.drawable.ic_launcher);
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
