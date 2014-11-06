@@ -10,6 +10,7 @@ public abstract class LockFragment extends BaseFragment {
 
 	public static final int FROM_SELF = 0;
 	public static final int FROM_OTHER = 1;
+    public static final int FROM_RESTART = 2;
 	protected int mFrom = FROM_SELF;
 
 	public static final int LOCK_TYPE_PASSWD = 0;

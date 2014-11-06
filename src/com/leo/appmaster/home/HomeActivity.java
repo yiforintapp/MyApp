@@ -93,7 +93,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
             Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
             Intent shortcutIntent = new Intent(Intent.ACTION_MAIN);
-//            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             shortcutIntent.setClassName("com.leo.appmaster", "com.leo.appmaster.home.SplashActivity");
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);

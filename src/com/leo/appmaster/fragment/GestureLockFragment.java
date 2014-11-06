@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -107,7 +108,9 @@ public class GestureLockFragment extends LockFragment implements OnPatternListen
 	                    }
 				}
 				mActivity.startActivity(intent);
-			} else if (mFrom == FROM_OTHER) {
+			} else if (mFrom == LockFragment.FROM_RESTART) {
+                mActivity.finish();
+            } else if (mFrom == FROM_OTHER) {
 				// input right gesture, just finish self
 				unlockSucceed(mPackage);
 			}
