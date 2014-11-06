@@ -1,6 +1,7 @@
 package com.leo.appmaster.ui;
 
 import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
@@ -22,6 +23,12 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 
 public class LeoPopMenu {
+    
+    public static class LayoutStyles {
+        public int width;
+        public int height;
+        public int animation;
+    }
 
 	private PopupWindow mLeoPopMenu;
 
@@ -30,17 +37,18 @@ public class LeoPopMenu {
 	private OnItemClickListener mPopItemClickListener;
 
 	private MenuListAdapter mAdapter;
-	
+	private LayoutStyles mStyles = new LayoutStyles();
 	private boolean mIsItemHTMLFormatted = false;
 
-	private int mAnimaStyle;
+	private int mAnimaStyle = -1;
+
 
 	/**
 	 * @param aContext
 	 * @param anchorView
 	 *            显示tab列表
 	 */
-	public void showPopMenu(Activity activity, View anchorView) {
+	public void showPopMenu(Activity activity, View anchorView, LayoutStyles styles, OnDismissListener dimissListener) {
 		if (mLeoPopMenu != null) {
 			if (mLeoPopMenu.isShowing()) {
 				return;
@@ -48,16 +56,33 @@ public class LeoPopMenu {
 			mLeoPopMenu = null;
 		}
 
+		if(styles == null) {
+		    mStyles.width = DipPixelUtil.dip2px((Context)activity, 120.0f);
+		    mStyles.height = LayoutParams.WRAP_CONTENT;
+		    if (mAnimaStyle != -1) {
+		          mStyles.animation = mAnimaStyle;
+		    } else {
+		          mStyles.animation = R.style.PopupListAnimUpDown;
+		    }
+		} else {
+		    mStyles.width = styles.width;
+            mStyles.height = styles.height;
+            mStyles.animation = styles.animation;
+		}
+		
 		View convertView = buildTabListLayout();
 
-		mLeoPopMenu = new PopupWindow(convertView, DipPixelUtil.dip2px((Context)activity, 120.0f), 
-		        LayoutParams.WRAP_CONTENT, true);
+		mLeoPopMenu = new PopupWindow(convertView, mStyles.width, mStyles.height, true);
 		mLeoPopMenu.setFocusable(true);
 		mLeoPopMenu.setOutsideTouchable(true);
+		mLeoPopMenu.setOnDismissListener(dimissListener);
 		mLeoPopMenu.setBackgroundDrawable(AppMasterApplication.getInstance()
 				.getResources().getDrawable(R.drawable.popup_menu_bg));
 		mLeoPopMenu.setAnimationStyle(mAnimaStyle);
 		mLeoPopMenu.update();
+		
+		mLeoPopMenu.setAnimationStyle(mStyles.animation);
+//		mLeoPopMenu.showAsDropDown(anchorView, 0, 0);
 		mLeoPopMenu.showAsDropDown(anchorView, -50, 0);
 	}
 
@@ -101,6 +126,10 @@ public class LeoPopMenu {
 
 	public void setPopMenuItems(List<String> items) {
 		mItems = items;
+	}
+	
+	public void setOnDismissListener() {
+	    
 	}
 
 	public void setPopItemClickListener(OnItemClickListener listener) {

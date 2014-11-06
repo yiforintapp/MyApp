@@ -196,7 +196,7 @@ public class LockScreenActivity extends FragmentActivity implements
 			}
 			mLeoPopMenu.setPopMenuItems(getPopMenuItems());
 			mLeoPopMenu.showPopMenu(this,
-					mTtileBar.findViewById(R.id.tv_option_image));
+					mTtileBar.findViewById(R.id.tv_option_image), null, null);
 			break;
 
 		default:
