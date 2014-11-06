@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/splash_center" />
+        android:src="@drawable/icon_with_name" />
  
 <TextView
     android:id="@+id/splash_protocol"
