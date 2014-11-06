@@ -90,7 +90,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 
 		if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 			mInputTip.setText(R.string.first_set_passwd_hint);
-			mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
+			mTvPasswdFuncTip.setText(R.string.digital_passwd_function_hint);
 		} else {
 			mInputTip.setText(R.string.set_passwd);
 		}
@@ -151,11 +151,13 @@ public class PasswdSettingFragment extends BaseFragment implements
 			mShake.setAnimationListener(new AnimationListenerAdapter() {
 				@Override
 				public void onAnimationStart(Animation animation) {
+					mTempSecondPasswd = "";
 					mTvPasswdFuncTip.setText(R.string.tip_no_the_same_pswd);
 				}
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
+					clearPasswd();
 				}
 
 			});

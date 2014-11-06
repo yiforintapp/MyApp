@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.fragment.LockFragment;
@@ -124,8 +124,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         }
         
         Intent intent = new Intent(this, LockScreenActivity.class);
-        int lockType = AppLockerPreference.getInstance(this).getLockType();
-        if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+        int lockType = AppMasterPreference.getInstance(this).getLockType();
+        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
             intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
                     LockFragment.LOCK_TYPE_PASSWD);
         } else {

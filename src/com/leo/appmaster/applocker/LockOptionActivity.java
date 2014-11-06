@@ -67,6 +67,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 		if (mComeFrom == FROM_IMAGEHIDE) {
 		    getPreferenceScreen().removePreference(mAutoLock);
 		    getPreferenceScreen().removePreference(mLockTime);
+	          getPreferenceScreen().removePreference(findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP));
 		}
 		mResetPasswd.setOnPreferenceClickListener(this);
 		mForbidUninstall.setOnPreferenceChangeListener(this);
@@ -75,7 +76,7 @@ public class LockOptionActivity extends PreferenceActivity implements
             mLockTime.setOnPreferenceClickListener(this);
         }
 		mChangeProtectQuestion.setOnPreferenceClickListener(this);
-//		mChangePasswdTip.setOnPreferenceClickListener(this);
+		mChangePasswdTip.setOnPreferenceClickListener(this);
 	}
 
 	private boolean isAdminActive() {
