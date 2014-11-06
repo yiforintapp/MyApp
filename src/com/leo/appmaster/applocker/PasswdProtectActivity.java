@@ -1,6 +1,7 @@
 package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CommonTitleBar;
 
@@ -15,7 +16,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PasswdProtectActivity extends Activity implements OnClickListener {
+public class PasswdProtectActivity extends BaseActivity implements OnClickListener {
 
 	private CommonTitleBar mTtileBar;
 

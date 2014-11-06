@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockOptionActivity;
@@ -41,7 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ImageHideMainActivity extends Activity implements OnClickListener {
+public class ImageHideMainActivity extends BaseActivity implements OnClickListener {
     
     private List<PhotoAibum> mAlbumList = null;
     private GridView mGridView;

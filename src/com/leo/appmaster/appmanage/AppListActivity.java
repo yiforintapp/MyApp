@@ -22,6 +22,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
@@ -32,7 +33,7 @@ import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.PageIndicator;
 
 @SuppressLint("InflateParams")
-public class AppListActivity extends Activity implements AppChangeListener,
+public class AppListActivity extends BaseActivity implements AppChangeListener,
 		OnClickListener, OnItemClickListener {
 
 	View mLoadingView;

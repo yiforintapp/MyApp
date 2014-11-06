@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.model.AppDetailInfo;
@@ -31,7 +32,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 
-public class AppBackupRestoreActivity extends Activity implements View.OnClickListener, OnItemClickListener, AppBackupDataListener {
+public class AppBackupRestoreActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener, AppBackupDataListener {
     
     private View mTabContainer;
     private  TextView  mViewBackup;

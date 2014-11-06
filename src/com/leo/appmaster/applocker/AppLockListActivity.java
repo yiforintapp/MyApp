@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -31,7 +32,7 @@ import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
 import com.leoers.leoanalytics.LeoStat;
 
-public class AppLockListActivity extends Activity implements AppChangeListener,
+public class AppLockListActivity extends BaseActivity implements AppChangeListener,
 		OnItemClickListener, OnClickListener {
 
 	public LayoutInflater mInflater;

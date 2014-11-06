@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.MainViewActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.AppLockListActivity;
@@ -48,7 +49,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
-public class HomeActivity extends Activity implements OnClickListener,
+public class HomeActivity extends MainViewActivity implements OnClickListener,
 		OnTouchListener, AppChangeListener {
 
 	private View mPictureHide;
