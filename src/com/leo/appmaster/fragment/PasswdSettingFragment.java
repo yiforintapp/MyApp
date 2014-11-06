@@ -90,7 +90,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 
 		if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 			mInputTip.setText(R.string.first_set_passwd_hint);
-			mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
+			mTvPasswdFuncTip.setText(R.string.digital_passwd_function_hint);
 		} else {
 			mInputTip.setText(R.string.set_passwd);
 		}
