@@ -156,6 +156,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
+					clearPasswd();
 				}
 
 			});
