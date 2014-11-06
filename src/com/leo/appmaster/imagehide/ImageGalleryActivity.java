@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -37,7 +38,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * @author linxiongzhou
  *
  */
-public class ImageGalleryActivity extends Activity{
+public class ImageGalleryActivity extends BaseActivity{
 
     private List<PhotoAibum> mAlbumList = null;
     private GridView mGridView;

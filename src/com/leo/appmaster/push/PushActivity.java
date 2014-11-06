@@ -22,10 +22,11 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leoers.leoanalytics.utils.Debug;
 
-public class PushActivity extends Activity implements View.OnClickListener {
+public class PushActivity extends BaseActivity implements View.OnClickListener {
 
     private final static String TAG = PushActivity.class.getSimpleName();
 

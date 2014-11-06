@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppDetailInfo;
@@ -45,7 +46,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
-public class AppWallActivity extends Activity implements OnItemClickListener {
+public class AppWallActivity extends BaseActivity implements OnItemClickListener {
 	private ListView appwallLV;
 	private CommonTitleBar mTtileBar;
 	private Button button;

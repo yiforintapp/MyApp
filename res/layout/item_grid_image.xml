@@ -43,6 +43,6 @@
             android:layout_height="29dip"
             android:layout_marginTop="92dp"
             android:layout_marginLeft="92dp"
-            android:src="@drawable/choose_normal" />
+            android:src="@drawable/pic_choose_normal" />
 
 </RelativeLayout>

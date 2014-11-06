@@ -9,10 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CommonTitleBar;
 
-public class PasswdTipActivity extends Activity implements OnClickListener {
+public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 	CommonTitleBar mTitleBar;
 	EditText mEtTip;
 	TextView mTvMakesure;

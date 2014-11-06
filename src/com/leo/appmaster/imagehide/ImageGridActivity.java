@@ -42,6 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -51,7 +52,7 @@ import com.leo.appmaster.utils.FileOperationUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class ImageGridActivity extends Activity implements OnClickListener {
+public class ImageGridActivity extends BaseActivity implements OnClickListener {
     private final String TAG = "ImageGridActivity";
     
     private CommonTitleBar mTtileBar;
@@ -115,11 +116,11 @@ public class ImageGridActivity extends Activity implements OnClickListener {
                 } else {
                     ImageView cView = (ImageView) conView.findViewById(R.id.photo_select);
                     if (!mClickList.contains(mPicturesList.get(position))) {
-                        cView.setImageResource(R.drawable.choose_active);
+                        cView.setImageResource(R.drawable.pic_choose_active);
                         mClickList.add(mPicturesList.get(position));
                         mClickPosList.add((Integer)position);
                     } else {
-                        cView.setImageResource(R.drawable.choose_normal);
+                        cView.setImageResource(R.drawable.pic_choose_normal);
                         mClickList.remove(mPicturesList.get(position));
                         mClickPosList.remove((Integer)position);
                     }
@@ -311,9 +312,9 @@ public class ImageGridActivity extends Activity implements OnClickListener {
             } else {
                 holder.clickView.setVisibility(View.VISIBLE);
                 if (mClickList.contains(mPicturesList.get(position))) {
-                    holder.clickView.setImageResource(R.drawable.choose_active);
+                    holder.clickView.setImageResource(R.drawable.pic_choose_active);
                 } else {
-                    holder.clickView.setImageResource(R.drawable.choose_normal);
+                    holder.clickView.setImageResource(R.drawable.pic_choose_normal);
                 }
             }
             holder.pictureName.setText(FileOperationUtil.getNoExtNameFromHideFilepath(path));

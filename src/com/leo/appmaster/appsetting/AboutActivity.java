@@ -1,4 +1,5 @@
 package com.leo.appmaster.appsetting;
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.home.ProtocolActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -19,7 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class AboutActivity extends Activity implements OnClickListener{
+public class AboutActivity extends BaseActivity implements OnClickListener{
 
     private CommonTitleBar mTtileBar;
     private TextView mAppVersion;

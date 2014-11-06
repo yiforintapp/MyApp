@@ -3,6 +3,7 @@ package com.leo.appmaster.appmanage;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.GestureLayout.IGestureListener;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -43,7 +44,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
-public class AppDetailActivity extends Activity implements
+public class AppDetailActivity extends BaseActivity implements
 		OnPageChangeListener, OnClickListener, IGestureListener {
 
 	public static final String EXTRA_LOAD_PKG = "load_pkg_name";

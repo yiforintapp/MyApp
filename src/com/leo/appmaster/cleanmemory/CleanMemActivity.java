@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -35,7 +36,7 @@ import com.leo.appmaster.ui.RocketDock;
 import com.leo.appmaster.ui.ShadeView;
 import com.leo.appmaster.utils.TextFormater;
 
-public class CleanMemActivity extends Activity implements OnClickListener,
+public class CleanMemActivity extends BaseActivity implements OnClickListener,
 		OnTouchListener {
 
 	public static final int MSG_UPDATE_MEM = 0;

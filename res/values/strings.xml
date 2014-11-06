@@ -89,9 +89,7 @@
     <string name="app_version">Version: %1$s</string>
     <string name="backuping">Processing data: ( %1$s )</string>
     <string name="no_application_selected">Please select an App</string>
-    <string name="query_delete">Delete recovery files of %1$s?</string>
     <string name="backup_finish">Backuped successfully!</string>
-    <string name="backuped_count">%1$d Apps backuped to: %2$s</string>
     <string name="delete_fail">Delete Failed</string>
     <string name="deleting_app">Deleting: %1$s</string>
     <string name="installed_app_size">Installed Apps: %1$d</string>
@@ -141,6 +139,20 @@
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
     
+    <string name="query_delete">是否删除%1$s的备份文件，删除后不可恢复！</string>
+    <string name="backuped_count">成功备份%1$d个文件。存放位置：%2$s</string>
+    <string name="feedback_commit">提交</string>
+    <string name="feedback_content_tip">您遇到了什么问题？</string>
+    <string name="feedback_email_tip">您的常用邮箱</string>
+    <string name="feedback_category_tip">请选择问题类型</string>
+    <string name="category_lock">应用锁</string>
+    <string name="category_backup">备份</string>
+    <string name="category_boost">加速</string>
+    <string name="category_hide">图片隐藏</string>
+    <string name="category_other">其他问题</string>
+    <string name="category_suggest">给我们建议</string>   
+    <string name="feedback_success_title">提交成功</string>
+    <string name="feedback_success_content">感谢您的反馈，我们会尽快处理您的问题</string>
    <string name="app_image_hide">Image Hide</string>
     <string name="app_no_image_hide">请点击添加按钮，添加需要隐藏的图片</string>
     <string name="app_no_image">没有可添加的图片</string>

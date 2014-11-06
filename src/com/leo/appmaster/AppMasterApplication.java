@@ -1,8 +1,11 @@
 package com.leo.appmaster;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
@@ -29,6 +32,8 @@ public class AppMasterApplication extends Application {
 
 	private static AppMasterApplication mInstance;
 
+    private static List<Activity> mActivityList;
+
     private static final int MAX_MEMORY_CACHE_SIZE = 5 * (1 << 20);// 5M
     private static final int MAX_DISK_CACHE_SIZE = 50 * (1 << 20);// 20 Mb
     private static final int MAX_THREAD_POOL_SIZE = 3;
@@ -42,6 +47,7 @@ public class AppMasterApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		mActivityList = new ArrayList<Activity>();
 		mInstance = this;
 		mAppsEngine = AppLoadEngine.getInstance(this);
 		mAppsEngine.preloadAllBaseInfo();
@@ -160,6 +166,21 @@ public class AppMasterApplication extends Application {
 			ImageLoader.getInstance().init(config);
 		}
 
+    // for force update strategy to exit application completely
+	    public void addActivity(Activity activity) {
+	        mActivityList.add(activity);
+	    }
 
+	    public void removeActivity(Activity activity) {
+	        mActivityList.remove(activity);
+	    }
+	    
+	    public void exitApplication() {
+	        for (Activity activity : mActivityList) {
+	            activity.finish();
+	        }
+	        android.os.Process.killProcess(android.os.Process.myPid());  
+	        System.exit(0);
+	    }
 
 }
