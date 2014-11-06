@@ -61,13 +61,6 @@
     <string name="clean_result">清理内存</string>
     <string name="best_mem">已经是最佳状态，无需再次加速</string>
 
-    <!-- App lock -->
-    <string-array name="sort_type">
-        <item>默认排序</item>
-        <item>应用名称排序</item>
-        <item>安装时间排序</item>
-    </string-array>
-
     <string name="lock_count">"已加锁"</string>
     <string name="unlock_count">"未加锁"</string>
     <string name="lockscreen_access_pattern_detected">"图案绘制完成"</string>
@@ -158,6 +151,7 @@
     <string name="lock_remind">App Master 提醒您对应用加锁</string>
     <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
     <string name="no_unlocked_item_tip">没有未加锁应用</string>
+    <string name="app_setting_has_update">&#160;&#160;&#160;检查升级 <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
     
@@ -191,7 +185,15 @@
     <string name="app_delete_dialog_content">是否删除此图片？</string>
     <string name="app_unhide_pictures_dialog_content">是否取消隐藏你所选的图片？</string>
     <string name="app_hide_pictures_dialog_content">是否隐藏你所选的图片？</string>
-    <string name="app_hide_image_fail">隐藏图片失败！</string>
+    <string name="app_hide_image_fail">该图片没有写入权限，隐藏失败！</string>
+    
+        <!-- App lock -->
+    <string-array name="sort_type">
+        <item>默认排序</item>
+        <item>应用名称排序</item>
+        <item>安装时间排序</item>
+    </string-array>
+    
     <!-- 版权 -->
     <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
     <!-- 应用墙 -->
@@ -213,5 +215,4 @@
 			     根据产品的发展需求，应用管理大师将会对此协议进行不定期的修改。如本协议有任何修改，我方将于官方网站www.leomaster.com中及时发布最新信息以通知用户。如您继续使用本软件及服务，即视为您同意接受这些修改。\n\n <b>联系我们</b>\n\n
                    如您对本协议有任何疑问或建议，请发送您的宝贵意见至\n</string>
     <string name="protocolSupport">support@leomaster.com</string>
-    <string name="app_setting_has_update">&#160;&#160;&#160;检查升级 <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
 </resources>
