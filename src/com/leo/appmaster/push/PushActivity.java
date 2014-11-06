@@ -15,7 +15,9 @@ import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -97,6 +99,26 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
             PushUIHelper.getInstance(this).sendACK(false, "");
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private boolean isOutOfBounds(Activity context, MotionEvent event) {
+        final int x = (int) event.getX();
+        final int y = (int) event.getY();
+        final int slop = ViewConfiguration.get(context)
+                .getScaledWindowTouchSlop();
+        final View decorView = context.getWindow().getDecorView();
+        return (x < -slop) || (y < -slop)
+                || (x > (decorView.getWidth() + slop))
+                || (y > (decorView.getHeight() + slop));
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN
+                && isOutOfBounds(this, event)) {
+            return true;
+        }
+        return super.onTouchEvent(event);
     }
 
     private void handleCommit() {

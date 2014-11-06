@@ -75,9 +75,7 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 		setContentView(R.layout.activity_appwall_activity);
 		all=new ArrayList<AppWallBean>();
 		String flag=null;
-	      _processBar=new ProgressDialog(AppWallActivity.this);
-	   
-		
+	      _processBar=new ProgressDialog(AppWallActivity.this);	
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_launcher)
 				.showImageForEmptyUri(R.drawable.ic_launcher)
@@ -85,11 +83,10 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 				.cacheOnDisk(true).considerExifParams(true)
 				.displayer(new RoundedBitmapDisplayer(20)).build();
 		init();
-		downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);  
 			// 访问服务器
-		 MyAsyncTask task = new MyAsyncTask();
-		//task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
-		task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),"001a");
+			MyAsyncTask task = new MyAsyncTask();
+			// task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
+			task.execute(DATAPATH, AppwallHttpUtil.getLanguage(), "001a");
 	}
 
 	@Override
@@ -128,7 +125,7 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 			urlStr=sort.get(0)[1];
 			requestUrl(urlStr);
 		}else{
-			LeoLog.i("run","*************Not URL！");			
+			LeoLog.i("","*************Not URL！");			
 		}
 		
 		
@@ -142,36 +139,29 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 	// 创建线程异步加载
 	private class MyAsyncTask extends AsyncTask<String, Void, String> {
 		private boolean flag;
+		InputStream is = null;			
 		@Override
 		protected String doInBackground(String... params) {
+	
 			String data = null;
 			  String path=params[0]; 
 			  String language=params[1]; 
 			  String code=params[2];
 			   Map<String,String> map=new HashMap<String,String>(); 
 			   map.put("language_type", language);
-			  map.put("market_id",code);  
-			InputStream is = null;
-			try {
-				_processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");							
-				is = AppwallHttpUtil.requestByPost(path, map, CHARSETLOCAL);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}finally{
-				_processBar.dismiss();
-			}
-
-				if(is!=null) {
-					  data=AppwallHttpUtil.getJsonByInputStream(is, CHARSETSERVICE);
-						LeoLog.i("run","************************************"+data);
-					   }
+			  map.put("market_id",code);  	
+      
+					is = AppwallHttpUtil.requestByPost(path, map, CHARSETLOCAL);
+					if(is!=null) {
+						  data=AppwallHttpUtil.getJsonByInputStream(is, CHARSETSERVICE);			
+						   }
 			return data;
 		}
 		@Override
 		protected void onPostExecute(String result) {
 			boolean flag=false;
-			if (result != null&&result.equals("")) {
+			_processBar.dismiss();
+			if (result != null&&!result.equals("")) {
 				List<AppWallBean> apps=getJson(result);//从服务器解析
 				appwallLV.setVisibility(View.VISIBLE);			
 				button.setVisibility(View.GONE);
@@ -187,34 +177,34 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 			// 判断已存在包名
 				for (int i = 0; i < apps.size(); i++) {
 					//判断是否相同
-					flag=pkgName.contains(apps.get(i).getAppName());
+					flag=pkgName.contains(apps.get(i).getAppPackageName());
 					if(!flag){
 						all.add(apps.get(i));
 					}
 				}			
-						AppWallAdapter adapter = new AppWallAdapter(AppWallActivity.this, apps);
+						AppWallAdapter adapter = new AppWallAdapter(AppWallActivity.this, all);
 						appwallLV.setAdapter(adapter);
 				appwallLV.setOnItemClickListener(AppWallActivity.this);
 			} else {
-				//  _processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");
+		    
 				appwallLV.setVisibility(View.GONE);
 				button.setVisibility(View.VISIBLE);
 				text.setVisibility(View.VISIBLE);	
 				button.setOnClickListener(new OnClickListener() {				
 					@Override
 					public void onClick(View arg0) {
-						 try {
-							MyAsyncTask task = new MyAsyncTask();					 
-							// task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
-							task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),"001a");
-						} catch (Exception e) {
-							e.printStackTrace();
-						}finally{
-							_processBar.dismiss();
-						}
+						
+								MyAsyncTask task = new MyAsyncTask();					 
+								// task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
+								task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),"001a");						 
 					}
 				});
 			}
+		}
+		@Override
+		protected void onPreExecute() {
+			 _processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");
+			super.onPreExecute();
 		}
 	}
 
@@ -274,8 +264,7 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 			viewHolder.image.setImageResource(R.drawable.backedup_icon);
 			 viewHolder.textName.setText(app.getAppName());
 			 viewHolder.textDesc.setText(app.getAppDesc());
-			String imageUri=app.getImage();
-			
+			String imageUri=app.getImage();		
 			ImageLoader.getInstance().displayImage(imageUri, viewHolder.image,options);
 			return arg1;
 		}
@@ -317,7 +306,6 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 					appPackageName=json.getString("app_package_name");
 					app.setAppPackageName(appPackageName);
 				} catch (Exception e) {
-							LeoLog.i("run","×××××××××××××××××××××××××××××packageNull");
 					e.printStackTrace();
 				}
 				app.setImage(appIcon);

@@ -24,7 +24,7 @@
         android:layout_below="@+id/tv_passwd_input_tip"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:text="@string/gestur_passwd_function_hint"
+        android:text="@string/digital_passwd_function_hint"
         android:textColor="#ffffff"
         android:textSize="14sp" />
 
