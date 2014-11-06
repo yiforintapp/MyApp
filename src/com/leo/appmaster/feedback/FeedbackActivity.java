@@ -21,13 +21,14 @@ import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 
-public class FeedbackActivity extends Activity implements OnClickListener {
+public class FeedbackActivity extends BaseActivity implements OnClickListener {
     
     private View mBtnCommit;
     private EditText mEditContent;
