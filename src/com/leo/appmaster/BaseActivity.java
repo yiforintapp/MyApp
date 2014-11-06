@@ -31,7 +31,6 @@ public class BaseActivity extends Activity {
     protected void onResume() {
         super.onResume();
         StatService.onResume(this);
-        LeoStat.checkForceUpdate();
     }
 
     @Override
