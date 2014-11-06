@@ -125,7 +125,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:clickable="true"
-                        android:src="@drawable/show_ok"
+                        android:src="@drawable/selector_show_ok"
                         android:visibility="invisible" />
 
                     <TextView

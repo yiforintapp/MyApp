@@ -166,7 +166,6 @@
 
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
     <string name="new_app_lock_tip">新装应用加锁提醒</string>
-    <string name="app_recomend">精品推荐</string>
     <string name="feedback">用户反馈</string>
     <string name="first_set_passwd_hint">首次使用请设置密码</string>
     <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>

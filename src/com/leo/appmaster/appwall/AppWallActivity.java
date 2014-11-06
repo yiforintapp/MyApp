@@ -108,8 +108,8 @@ public class AppWallActivity extends Activity implements OnItemClickListener {
 
 		for (int i = 0; i < urls.size(); i++) {
 		    appUrl=urls.get(i);
-		    tempStr[1]=appUrl.getUrl();//首先访问
 			tempStr[0]=appUrl.getId();
+		    tempStr[1]=appUrl.getUrl();//首先访问
 			sort.add(tempStr);
 		}
 		int  number=sort.size();
