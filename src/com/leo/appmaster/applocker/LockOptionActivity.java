@@ -17,11 +17,13 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leoers.leoanalytics.LeoStat;
 
 public class LockOptionActivity extends PreferenceActivity implements
 		OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -128,6 +130,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 		}
 
 		super.onResume();
+		SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "enter");
 	}
 
 	private boolean haveProtect() {
@@ -166,8 +169,14 @@ public class LockOptionActivity extends PreferenceActivity implements
 						component);
 				startActivity(intent);
 			}
+			if((Boolean)newValue){
+			    SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "banremove");
+			}
 		} else if (AppMasterPreference.PREF_AUTO_LOCK.equals(key)) {
 			mAutoLock.setChecked((Boolean) newValue);
+			if(!((Boolean)newValue)){
+                SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "cancel_auto");
+            }
 		}
 
 		return false;
@@ -185,14 +194,17 @@ public class LockOptionActivity extends PreferenceActivity implements
 			Intent intent = new Intent(this, LockSettingActivity.class);
 			intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
 			startActivity(intent);
+			SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "changepwd");
 		} else if ("set_passwd_protect".equals(key)) {
 			mGotoSetting = true;
 			Intent intent = new Intent(this, PasswdProtectActivity.class);
 			startActivity(intent);
+			SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "pwdp");
 		} else if ("set_passwd_tip".equals(key)) {
 			mGotoSetting = true;
 			Intent intent = new Intent(this, PasswdTipActivity.class);
 			startActivity(intent);
+			SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "pwdn");
 		}
 
 		return false;
@@ -221,6 +233,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 										LockOptionActivity.this)
 										.setRelockTimeout(
 												valueString[whichButton]);
+								SDKWrapper.addEvent(LockOptionActivity.this, LeoStat.P1, "lock_setting", valueString[whichButton]);
 								dialog.dismiss();
 							}
 						})

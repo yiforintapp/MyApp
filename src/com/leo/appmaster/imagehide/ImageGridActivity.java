@@ -44,11 +44,13 @@ import android.widget.Toast;
 
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leoers.leoanalytics.LeoStat;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -627,6 +629,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             showProgressDialog(getString(R.string.app_hide_image), true,true);
                             BackgoundTask task = new BackgoundTask(ImageGridActivity.this);
                             task.execute(true);
+                            SDKWrapper.addEvent(ImageGridActivity.this, LeoStat.P1, "hide_pic", "used");
                         } else if (mActicityMode == CANCEL_HIDE_MODE) {
                             showProgressDialog(getString(R.string.app_cancel_hide_image), true,true);
                             BackgoundTask task = new BackgoundTask(ImageGridActivity.this);

@@ -201,8 +201,7 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 			((LockImageView) view.findViewById(R.id.iv_app_icon))
 					.setLocked(false);
 
-			SDKWrapper.addEvent(LeoStat.P2, "unlock app",
-					mLastSelectApp.getPkg());
+			SDKWrapper.addEvent(this, LeoStat.P1, "app", "unlock: " + mLastSelectApp.getPkg());
 		} else {
 			mLastSelectApp.setLocked(true);
 			for (BaseInfo baseInfo : mUnlockList) {
@@ -218,8 +217,7 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 			((LockImageView) view.findViewById(R.id.iv_app_icon))
 					.setLocked(true);
 
-			SDKWrapper
-					.addEvent(LeoStat.P2, "lock app", mLastSelectApp.getPkg());
+			SDKWrapper.addEvent(this, LeoStat.P1, "app", " lock: " + mLastSelectApp.getPkg());
 		}
 		saveLockList();
 	}
