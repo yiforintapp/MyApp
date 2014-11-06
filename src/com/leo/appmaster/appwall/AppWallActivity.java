@@ -122,10 +122,8 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 					break;//访问成功直接跳出
 				} catch (Exception e) {				
 					continue;//访问失败，继续循环访问
-				}
-				
-			}
-			
+				}				
+			}			
 		}else if(number>0&&number<=1){
 			urlStr=sort.get(0)[1];
 			requestUrl(urlStr);
@@ -153,17 +151,27 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 			   Map<String,String> map=new HashMap<String,String>(); 
 			   map.put("language_type", language);
 			  map.put("market_id",code);  
-			InputStream is=AppwallHttpUtil.requestByPost(path, map, CHARSETLOCAL);
+			InputStream is = null;
+			try {
+				_processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");							
+				is = AppwallHttpUtil.requestByPost(path, map, CHARSETLOCAL);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				_processBar.dismiss();
+			}
+
 				if(is!=null) {
 					  data=AppwallHttpUtil.getJsonByInputStream(is, CHARSETSERVICE);
+						LeoLog.i("run","************************************"+data);
 					   }
 			return data;
 		}
 		@Override
 		protected void onPostExecute(String result) {
 			boolean flag=false;
-
-			if (result != null) {
+			if (result != null&&result.equals("")) {
 				List<AppWallBean> apps=getJson(result);//从服务器解析
 				appwallLV.setVisibility(View.VISIBLE);			
 				button.setVisibility(View.GONE);
@@ -178,29 +186,17 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 				}							
 			// 判断已存在包名
 				for (int i = 0; i < apps.size(); i++) {
-					//pkgInfos.get(1).getPkg();
 					//判断是否相同
 					flag=pkgName.contains(apps.get(i).getAppName());
 					if(!flag){
 						all.add(apps.get(i));
 					}
-				}
-				try {
-					//_processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");
-					try {
+				}			
 						AppWallAdapter adapter = new AppWallAdapter(AppWallActivity.this, apps);
 						appwallLV.setAdapter(adapter);
-					} catch (Exception e) {					
-						e.printStackTrace();
-					}
-				} catch (Exception e) {				
-					e.printStackTrace();
-				}finally{
-					_processBar.dismiss();
-				}
 				appwallLV.setOnItemClickListener(AppWallActivity.this);
 			} else {
-				 // _processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");
+				//  _processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");
 				appwallLV.setVisibility(View.GONE);
 				button.setVisibility(View.VISIBLE);
 				text.setVisibility(View.VISIBLE);	

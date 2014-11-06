@@ -40,7 +40,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@drawable/input_box_line"
                 android:ems="10"
-                android:maxLength="80"
+                android:maxLength="40"
                 android:singleLine="true"
                 android:textSize="16sp" >
 
