@@ -529,6 +529,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 mImageAdapter.notifyDataSetChanged();
                 for (Integer view : viewList) {
                     mGridView.getChildAt(view).setAlpha(1);
+                    mGridView.getChildAt(view).setScaleX(1);
+                    mGridView.getChildAt(view).setScaleY(1);
                 }
                 mClickPosList.clear();
             }
@@ -537,8 +539,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     }
     
     private Animator createZoomAnimations(View view) {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.5f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.5f);
         ObjectAnimator zoomIn = ObjectAnimator.ofFloat(view,  "alpha", 1f, 0f);
-        return zoomIn;
+        AnimatorSet animZoom = new AnimatorSet();
+        animZoom.playTogether( scaleX, scaleY,zoomIn);
+        return animZoom;
     }
     
     
