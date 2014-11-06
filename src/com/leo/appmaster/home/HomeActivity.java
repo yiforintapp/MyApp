@@ -30,7 +30,6 @@ import com.leo.appmaster.MainViewActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.AppLockerPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -223,7 +222,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			break;
 		case R.id.tv_picture_hide:
             SDKWrapper.addEvent(LeoStat.P2, "main page", "click the hide picture button");
-            if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
+            if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 enterHidePicture();
             } else {
                 startPictureLockSetting();
@@ -231,7 +230,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			break;
 		case R.id.tv_app_lock:
 			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the app lock button");
-			if (AppLockerPreference.getInstance(this).getLockType() != AppLockerPreference.LOCK_TYPE_NONE) {
+			if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 enterLockPage();
 			} else {
 				startLockSetting();
@@ -322,7 +321,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		intent = new Intent(this, LockScreenActivity.class);
         intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
                 AppLockListActivity.class.getName());
-		if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_PASSWD);
 		} else {
@@ -341,14 +340,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	
 	   private void enterHidePicture() {
 	        Intent intent = null;
-	        int lockType = AppLockerPreference.getInstance(this).getLockType();
+	        int lockType = AppMasterPreference.getInstance(this).getLockType();
 	        intent = new Intent(this, LockScreenActivity.class);
 	        intent.putExtra(LockScreenActivity.EXTRA_LOCK_TITLE, getString(R.string.app_image_hide));
 	        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 	                LockFragment.FROM_SELF);
 	        intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
 	                ImageHideMainActivity.class.getName());
-	        if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
+	        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 	            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 	                    LockFragment.LOCK_TYPE_PASSWD);
 	        } else {
