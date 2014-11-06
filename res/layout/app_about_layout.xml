@@ -24,7 +24,7 @@
             android:layout_below="@+id/about_title_bar"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="49dp"
-            android:src="@drawable/en" />
+            android:src="@drawable/icon_with_name" />
 
         <TextView
             android:id="@+id/app_version"

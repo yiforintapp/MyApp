@@ -35,22 +35,9 @@ public class SplashActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
-		initUI();
 		mEventHandler = new EventHandler(this);
 		mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 1000);
 		startInitTask();
-	}
-	
-	private void initUI(){
-	    ImageView img = (ImageView) findViewById(R.id.image_view_splash_center);
-	    String area = Locale.getDefault().getLanguage();
-	    if(area.equalsIgnoreCase("zh")){
-	        img.setImageResource(R.drawable.cn);
-	    }else if(area.equalsIgnoreCase("hi")){
-	        img.setImageResource(R.drawable.in);
-	    }else{
-	        img.setImageResource(R.drawable.en);
-	    }
 	}
 
 	private static class EventHandler extends Handler {
