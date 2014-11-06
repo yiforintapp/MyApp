@@ -17,11 +17,7 @@ import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.engine.AppLoadEngine;
 
-import com.leo.appmaster.update.UIHelper;
-import com.leoers.leoanalytics.LeoStat;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
@@ -111,7 +107,7 @@ public class AppMasterApplication extends Application {
 			calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			pref.setLastAlarmSetTime(calendar.getTimeInMillis());
-			calendar.add(Calendar.DATE, 5);
+			calendar.add(Calendar.DATE, 3);
 			PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 			am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);

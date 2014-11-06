@@ -52,7 +52,7 @@ public class LockReceiver extends BroadcastReceiver {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			pref.setLastAlarmSetTime(calendar.getTimeInMillis());
-			calendar.add(Calendar.DATE, 5);
+			calendar.add(Calendar.DATE, 3);
 			PendingIntent pi = PendingIntent.getBroadcast(ctx, 0, intent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 			AlarmManager am = (AlarmManager) ctx
@@ -63,7 +63,7 @@ public class LockReceiver extends BroadcastReceiver {
 
 		NotificationManager nm = (NotificationManager) ctx
 				.getSystemService(Context.NOTIFICATION_SERVICE);
-		String content = "app master 提醒你对应用加锁";
+		String content = ctx.getString(R.string.lock_remind);
 
 		Intent intent = new Intent(ctx, LockScreenActivity.class);
 		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
@@ -77,10 +77,10 @@ public class LockReceiver extends BroadcastReceiver {
 				content, System.currentTimeMillis());
 		notification.largeIcon = BitmapFactory.decodeResource(
 				ctx.getResources(), R.drawable.ic_launcher);
-		notification.tickerText = "App Master 提醒您为应用加锁";
+		notification.tickerText = content;
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
-		notification.setLatestEventInfo(ctx, "App Master",
-				"App Master 提醒您为应用加锁", pendingIntent);
+		notification.setLatestEventInfo(ctx, "App Master", content,
+				pendingIntent);
 		nm.notify(0, notification);
 
 		pref.setReminded(true);
