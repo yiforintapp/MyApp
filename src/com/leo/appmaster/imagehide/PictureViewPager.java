@@ -13,8 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -28,6 +26,8 @@ import android.widget.LinearLayout;
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.LeoPictureViewPager;
+import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -51,7 +51,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
     private Intent mIntent;
     private ArrayList<String> mPicturesList = new ArrayList<String>();
-    private ViewPager mPager;
+    private LeoPictureViewPager mPager;
     private VPagerAdapter mPagerAdapter;
     private LEOAlarmDialog mDialog;
     
@@ -85,7 +85,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             mListPos = mIntent.getIntExtra("pos", 0);
         }
 
-        mPager = (ViewPager) findViewById(R.id.picture_view_pager);
+        mPager = (LeoPictureViewPager) findViewById(R.id.picture_view_pager);
 //        mPager.setOnClickListener(this);
         mPagerAdapter = new VPagerAdapter();
         mPager.setAdapter(mPagerAdapter);
