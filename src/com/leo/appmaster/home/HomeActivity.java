@@ -295,9 +295,9 @@ public class HomeActivity extends Activity implements OnClickListener,
 
 	private void updateSettingIcon(){
         if (LeoStat.isUpdateAvailable()) {
-            mTtileBar.setOptionImage(R.drawable.setting_btn_new);
+            mTtileBar.setOptionImage(R.drawable.setting_updated_selector);
         } else {
-            mTtileBar.setOptionImage(R.drawable.setting_btn);
+            mTtileBar.setOptionImage(R.drawable.setting_selector);
         }
 	}
 

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
+import com.leo.appmaster.push.PushUIHelper;
 import com.leo.appmaster.update.UIHelper;
 import com.leoers.leoanalytics.LeoStat;
 
@@ -46,9 +47,11 @@ public class SDKWrapper {
     private static void iniLeoSdk(Context ctx) {
         LeoStat.init(ctx, ctx.getString(R.string.channel_code),
                 "appmaster");
-        LeoStat.setDebugLevel(Log.ERROR);
+        // TODO: change log level to ERROR when release
+        LeoStat.setDebugLevel(Log.DEBUG);
         LeoStat.initUpdateEngine(UIHelper.getInstance(ctx),
                 true);
+        LeoStat.initPushEngine(PushUIHelper.getInstance(ctx));
     }
 
     private static void iniFlurry(Context ctx) {

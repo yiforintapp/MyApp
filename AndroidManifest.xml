@@ -29,7 +29,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- 统计sdk end -->
 
     <application
@@ -166,8 +167,10 @@
         <activity
             android:name=".update.UpdateActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
+
         <!-- add for the app update of leosdk -->
         
         <activity
@@ -176,6 +179,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
+
+        <activity
+            android:name=".push.PushActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.UpdateDialog.NoFrame" />
+        <!-- add for the app update and push of leosdk -->
 
         <service
             android:name="com.leo.appmaster.applocker.service.LockService"
