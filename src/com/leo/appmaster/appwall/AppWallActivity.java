@@ -75,9 +75,7 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 		setContentView(R.layout.activity_appwall_activity);
 		all=new ArrayList<AppWallBean>();
 		String flag=null;
-	      _processBar=new ProgressDialog(AppWallActivity.this);
-	   
-		
+	      _processBar=new ProgressDialog(AppWallActivity.this);	
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_launcher)
 				.showImageForEmptyUri(R.drawable.ic_launcher)
@@ -151,27 +149,20 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 			   Map<String,String> map=new HashMap<String,String>(); 
 			   map.put("language_type", language);
 			  map.put("market_id",code);  
-			InputStream is = null;
-			try {
-				_processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");							
-				is = AppwallHttpUtil.requestByPost(path, map, CHARSETLOCAL);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}finally{
-				_processBar.dismiss();
-			}
-
-				if(is!=null) {
-					  data=AppwallHttpUtil.getJsonByInputStream(is, CHARSETSERVICE);
-						LeoLog.i("run","************************************"+data);
-					   }
+			InputStream is = null;			
+					_processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");							
+					is = AppwallHttpUtil.requestByPost(path, map, CHARSETLOCAL);
+					if(is!=null) {
+						  data=AppwallHttpUtil.getJsonByInputStream(is, CHARSETSERVICE);				  
+							LeoLog.i("run","************************************"+data);
+						   }
+				   _processBar.dismiss();	
 			return data;
 		}
 		@Override
 		protected void onPostExecute(String result) {
 			boolean flag=false;
-			if (result != null&&result.equals("")) {
+			if (result != null&&!result.equals("")) {
 				List<AppWallBean> apps=getJson(result);//从服务器解析
 				appwallLV.setVisibility(View.VISIBLE);			
 				button.setVisibility(View.GONE);
