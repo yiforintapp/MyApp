@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">&#160;App Master&#160;</string>
+    <string name="app_name">&#160;应用管理大师&#160;</string>
     <string name="app_count">应用数量</string>
     <string name="used_memory">使用内存</string>
     <string name="used_flow">使用流量</string>
@@ -148,6 +148,8 @@
     <string name="change_passwd">更改密码</string>
     <string name="passwd_notify">密码提示</string>
     <string name="no_lock_item_tip">暂无加锁应用</string>
+    <string name="lock_remind">App Master 提醒您对应用加锁</string>
+    <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
     <string name="no_unlocked_item_tip">没有未加锁应用</string>
     <string name="app_setting_has_update">&#160;&#160;&#160;检查升级 <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>

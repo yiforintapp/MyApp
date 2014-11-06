@@ -76,7 +76,7 @@ public class LockOptionActivity extends PreferenceActivity implements
             mLockTime.setOnPreferenceClickListener(this);
         }
 		mChangeProtectQuestion.setOnPreferenceClickListener(this);
-//		mChangePasswdTip.setOnPreferenceClickListener(this);
+		mChangePasswdTip.setOnPreferenceClickListener(this);
 	}
 
 	private boolean isAdminActive() {
