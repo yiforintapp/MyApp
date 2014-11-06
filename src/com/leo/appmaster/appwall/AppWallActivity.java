@@ -150,13 +150,13 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 			   map.put("language_type", language);
 			  map.put("market_id",code);  
 			InputStream is = null;			
-					_processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");							
+					//_processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");							
 					is = AppwallHttpUtil.requestByPost(path, map, CHARSETLOCAL);
 					if(is!=null) {
 						  data=AppwallHttpUtil.getJsonByInputStream(is, CHARSETSERVICE);				  
 							LeoLog.i("run","************************************"+data);
 						   }
-				   _processBar.dismiss();	
+				 //  _processBar.dismiss();	
 			return data;
 		}
 		@Override
