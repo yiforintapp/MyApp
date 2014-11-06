@@ -219,5 +219,8 @@
     <string name="passwd_set_gesture_tip">请至少连接4个点</string>
     <string name="set_gesture">设置手势密码</string>
     <string name="set_passwd">设置数字密码</string>
-    <string name="lock_remind">App Master 提醒你对应用加锁</string>
+    <string name="lock_remind">App Master 提醒您对应用加锁</string>
+    
+    <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
+    
 </resources>

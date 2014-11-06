@@ -211,6 +211,7 @@
     <string name="gesture_start_hint">画完后松开手指</string>
     <string name="reset_gesture_passwd">重设手势密码</string>
     <string name="reset_digital_passwd">重设数字密码</string>
-    <string name="lock_remind">App Master 提醒你对应用加锁</string>
+    <string name="lock_remind">App Master 提醒您对应用加锁</string>
     <string name="clean_result">清理内存</string>
+    <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
 </resources>

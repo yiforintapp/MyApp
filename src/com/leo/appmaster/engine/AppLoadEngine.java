@@ -155,8 +155,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			mRecommendLocklist = list;
 		}
 	}
-	
-	
+
 	public List<String> getRecommendLockList() {
 		return mRecommendLocklist;
 	}
@@ -432,47 +431,53 @@ public class AppLoadEngine extends BroadcastReceiver {
 	}
 
 	private void showLockTip(final String packageName) {
-		sWorker.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				for (String str : sLocalLockArray) {
-					if (str.equals(packageName)) {
-						LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
-						dialog.setTitle(R.string.app_name);
-						dialog.setContent("检测到您安装了"
-								+ AppUtil.getAppLabel(packageName, mContext)
-								+ "，建议加锁");
-						dialog.setOnClickListener(new OnDiaogClickListener() {
-							@Override
-							public void onClick(int which) {
-								if (which == 0) {
-								} else if (which == 1) {
-									AppMasterPreference pre = AppMasterPreference
-											.getInstance(mContext);
-									List<String> lockList = new ArrayList<String>(
-											pre.getLockedAppList());
-									lockList.add(packageName);
-									pre.setLockedAppList(lockList);
 
-									if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-										Intent intent = new Intent(mContext,
-												LockSettingActivity.class);
-										intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-										mContext.startActivity(intent);
+		if (AppMasterPreference.getInstance(mContext).isNewAppLockTip()) {
+			sWorker.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					for (String str : sLocalLockArray) {
+						if (str.equals(packageName)) {
+							LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
+							dialog.setTitle(R.string.app_name);
+							String tip = mContext.getString(
+									R.string.new_install_lock_remind,
+									AppUtil.getAppLabel(packageName, mContext));
+							dialog.setContent(tip);
+							dialog.setOnClickListener(new OnDiaogClickListener() {
+								@Override
+								public void onClick(int which) {
+									if (which == 0) {
+									} else if (which == 1) {
+										AppMasterPreference pre = AppMasterPreference
+												.getInstance(mContext);
+										List<String> lockList = new ArrayList<String>(
+												pre.getLockedAppList());
+										lockList.add(packageName);
+										pre.setLockedAppList(lockList);
+
+										if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+											Intent intent = new Intent(
+													mContext,
+													LockSettingActivity.class);
+											intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+											mContext.startActivity(intent);
+										}
+
 									}
-
 								}
-							}
-						});
-						dialog.getWindow().setType(
-								WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-						dialog.show();
-						break;
+							});
+							dialog.getWindow()
+									.setType(
+											WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+							dialog.show();
+							break;
+						}
 					}
-				}
 
-			}
-		}, 5000);
+				}
+			}, 5000);
+		}
 	}
 
 	void enqueuePackageUpdated(PackageUpdatedTask task) {
