@@ -1,6 +1,7 @@
 package com.leo.appmaster.utils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -88,4 +89,26 @@ public class AppwallHttpUtil {
 	 public static String getLanguage() {
 		 return Locale.getDefault().getLanguage();
 		 }
+	//重命名路径 
+	 public static  boolean RenameFilePath(String filePath, String newFileName) {
+	        if (filePath == null || newFileName == null) {
+	            LeoLog.e("RenameFile","Rename: null parameter");
+	            return false;
+	        }
+
+	        File file = new File(filePath);	     
+	        try {
+	            if (file.isFile()) {
+	                boolean ret = file.renameTo(new File(newFileName));
+	                LeoLog.e("RenameFile", ret + " to rename file" );
+	                return ret;
+	            } else {
+	                return false;
+	            }
+	        } catch (SecurityException e) {
+	            LeoLog.e("RenameFile", "Fail to rename file," + e.toString());
+	        }
+	        return false;
+	    }
+	 
 }

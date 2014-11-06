@@ -39,6 +39,8 @@ public class SplashActivity extends BaseActivity {
 		mEventHandler = new EventHandler(this);
 		mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 1000);
 		startInitTask();
+		
+		
 	}
 	
 	private void initUI(){
