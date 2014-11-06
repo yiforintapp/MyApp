@@ -207,6 +207,7 @@
     <string name="input_again">请再次输入</string>
     <string name="passwd_set_gesture_tip">请至少连接4个点</string>
     <string name="set_gesture">设置手势密码</string>
+    <string name="set_passwd">设置数字密码</string>
     <string name="gesture_start_hint">画完后松开手指</string>
     <string name="reset_gesture_passwd">重设手势密码</string>
     <string name="reset_digital_passwd">重设数字密码</string>
