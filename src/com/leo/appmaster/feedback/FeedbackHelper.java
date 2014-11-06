@@ -1,0 +1,165 @@
+
+package com.leo.appmaster.feedback;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+
+import com.leo.appmaster.db.AppMasterDBHelper;
+import com.leoers.leoanalytics.LeoStat;
+
+/**
+ * Feedback helper to save and commit feedbacks
+ */
+public class FeedbackHelper {
+
+//    private final static String FEEDBACK_URL = "http://api.leostat.com/appmaster/feedback";
+    private final static String FEEDBACK_URL = "http://test.leostat.com/appmaster/feedback";
+    public final static String TABLE_NAME = "feedback";
+    protected final static String KEY_EMAIL = "email";
+    protected final static String KEY_CONTENT = "content";
+    protected final static String KEY_CATEGORY = "category";
+    protected final static String KEY_TIME = "submit_date";
+
+    private final static int MAX_COMMIT_COUNT = 3;
+
+    private int mCommitIndex = -1;
+
+    private final ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+
+    private static FeedbackHelper sInstance;
+
+    private Runnable mCommitTask = new Runnable() {
+        @Override
+        public void run() {
+            mCommitIndex ++;
+            boolean success = true;
+            AppMasterDBHelper dbHelper = AppMasterDBHelper.getInstance();
+            Cursor c = dbHelper.query(TABLE_NAME, null, null, null, null, null, null);
+            if (c != null && c.moveToFirst()) {
+                try {
+                    final int idIndex = c.getColumnIndexOrThrow(AppMasterDBHelper.COLUMN_ID);
+                    final int contentIndex = c.getColumnIndexOrThrow(KEY_CONTENT);
+                    final int emailIndex = c.getColumnIndexOrThrow(KEY_EMAIL);
+                    final int categoryIndex = c.getColumnIndexOrThrow(KEY_CATEGORY);
+                    final int timeIndex = c.getColumnIndexOrThrow(KEY_TIME);
+                    HttpPost httpRequest = new HttpPost(FEEDBACK_URL);
+                    do {
+                        long id = c.getLong(idIndex);
+                        List<NameValuePair> params = new ArrayList<NameValuePair>();
+                        params.add(new BasicNameValuePair(KEY_CONTENT, c.getString(contentIndex)));
+                        params.add(new BasicNameValuePair(KEY_EMAIL, c.getString(emailIndex)));
+                        params.add(new BasicNameValuePair(KEY_CATEGORY, c.getString(categoryIndex)));
+                        params.add(new BasicNameValuePair(KEY_TIME, c.getString(timeIndex)));
+                        httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+                        
+                        String deviceInfo = LeoStat.getEncodedDeviceInfo();
+                        httpRequest.addHeader("device", deviceInfo); // add device info
+                        
+                        HttpResponse httpResponse = new DefaultHttpClient().execute(httpRequest);
+
+                        if (httpResponse.getStatusLine().getStatusCode() == 200) { // connection success
+                            String strResult = EntityUtils.toString(httpResponse.getEntity());
+                            JSONObject object = new JSONObject(strResult);
+                            int code = object.getInt("code");
+                            if (code == 0) { // commit success
+                                AppMasterDBHelper.getInstance().delete(TABLE_NAME, AppMasterDBHelper.COLUMN_ID + "=" + id, null); // delete from db
+                                success = true;
+                            } else { // commit fail
+                                success = false;
+                                break;
+                            }
+                        } else { // connection fail
+                            success = false;
+                            break;
+                        }
+                    } while (c.moveToNext());
+                } catch (Exception e) {
+                    success = false;
+                } finally {
+                }
+            }
+            if (c != null) {
+                c.close();
+            }
+            if(success) { //success, exit thread
+                mCommitIndex = -1;
+                dbHelper.close();
+            } else if(mCommitIndex < MAX_COMMIT_COUNT) { // fail, retry
+                mExecutorService.execute(mCommitTask);
+            } else {
+                dbHelper.close();
+            }
+        }
+    };
+
+    public static synchronized FeedbackHelper getInstance() {
+        if (sInstance == null) {
+            sInstance = new FeedbackHelper();
+        }
+        return sInstance;
+    }
+
+    private FeedbackHelper() {
+        
+    }
+
+    /**
+     * Commit feedbacks if any in db
+     */
+    public void tryCommit() {
+        if (mCommitIndex < 0) {
+            mCommitIndex = 0;
+            mExecutorService.execute(mCommitTask);
+        }
+    }
+
+    /**
+     * Commit feedbacks with user input
+     * 
+     * @param category
+     * @param email
+     * @param content
+     */
+    public void tryCommit(final String category, final String email, final String content) {
+        mCommitIndex = MAX_COMMIT_COUNT;
+        mExecutorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                boolean success = false;
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(KEY_CONTENT, content);
+                    values.put(KEY_EMAIL, email);
+                    values.put(KEY_CATEGORY, category);
+                    values.put(KEY_TIME, System.currentTimeMillis() + "");
+                    long id = AppMasterDBHelper.getInstance().insert(TABLE_NAME, AppMasterDBHelper.COLUMN_ID, values);
+                    if (id > -1) {
+                        mCommitIndex = -1;
+                        success = true;
+                    }
+                } catch (Exception e) {
+                } finally {
+                    if(success) {
+                        tryCommit();
+                    }
+                }
+            }
+        });
+    }
+
+}

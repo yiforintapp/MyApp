@@ -329,7 +329,7 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 			}
 			mLeoPopMenu.setPopMenuItems(getPopMenuItems());
 			mLeoPopMenu.showPopMenu(this,
-					mTtileBar.findViewById(R.id.layout_right));
+					mTtileBar.findViewById(R.id.layout_right),null,null);
 			break;
 		case R.id.mask_layer:
 			mMaskLayer.setVisibility(View.INVISIBLE);
