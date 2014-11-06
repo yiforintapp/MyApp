@@ -43,7 +43,7 @@ public class LeoLog {
 	/**
 	 * Save log to file flag.
 	 */
-	public static boolean SAVE_TO_FILE = false;
+	public static boolean SAVE_TO_FILE = true;
 
 	/**
 	 * Default log level,the log above default will be logged.
@@ -53,7 +53,7 @@ public class LeoLog {
 	/**
 	 * Is the {@link UncaughtExceptionHandler} enabled ?
 	 */
-	public static boolean EXCEPTION_HANDLER_ENABLE = false;
+	public static boolean EXCEPTION_HANDLER_ENABLE = true;
 
 	/**
 	 * set batch size of write LogEntry to file.

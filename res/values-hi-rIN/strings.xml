@@ -169,6 +169,12 @@
     <string name="app_hide_pictures_dialog_content">是否隐藏你所选的图片？</string>
     <string name="app_hide_image_fail">Hide picture fail !</string>
 
+    <string-array name="sort_type">
+        <item>默认排序</item>
+        <item>应用名称排序</item>
+        <item>安装时间排序</item>
+    </string-array>
+    
     <!-- 版权 -->
     <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
     <!-- AppWall -->
@@ -190,12 +196,6 @@
 			     根据产品的发展需求，应用管理大师将会对此协议进行不定期的修改。如本协议有任何修改，我方将于官方网站www.leomaster.com中及时发布最新信息以通知用户。如您继续使用本软件及服务，即视为您同意接受这些修改。\n\n <b>联系我们</b>\n\n
                    如您对本协议有任何疑问或建议，请发送您的宝贵意见至\n</string>
     <string name="protocolSupport">support@leomaster.com</string>
-
-    <string-array name="sort_type">
-        <item>默认排序</item>
-        <item>应用名称排序</item>
-        <item>安装时间排序</item>
-    </string-array>
 
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
     <string name="new_app_lock_tip">新装应用加锁提醒</string>

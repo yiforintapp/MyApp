@@ -108,9 +108,7 @@ public class GestureLockFragment extends LockFragment implements OnPatternListen
 	                    }
 				}
 				mActivity.startActivity(intent);
-			} else if (mFrom == LockFragment.FROM_RESTART) {
-                mActivity.finish();
-            } else if (mFrom == FROM_OTHER) {
+			} else if (mFrom == FROM_OTHER) {
 				// input right gesture, just finish self
 				unlockSucceed(mPackage);
 			}
