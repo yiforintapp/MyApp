@@ -48,7 +48,11 @@ public class LockImageView extends ImageView {
 	protected void onDraw(Canvas canvas) {
 		if (mSourceBitmap == null) {
 			Drawable d = this.getDrawable();
-			mSourceBitmap = ((BitmapDrawable) d).getBitmap();
+			mSourceBitmap = Bitmap.createBitmap(d.getIntrinsicWidth(),
+					d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+			d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+			Canvas c = new Canvas(mSourceBitmap);
+			d.draw(c);
 		}
 		if (mLocked) {
 			if (mRect == null) {
