@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/image_view_splash_center"
-        android:layout_width="@dimen/splash_center"
-        android:layout_height="@dimen/splash_center"
+        android:layout_width="@dimen/splash_width"
+        android:layout_height="@dimen/splash_height"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"

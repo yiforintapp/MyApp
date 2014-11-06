@@ -19,29 +19,18 @@
 
         <ImageView
             android:id="@+id/app_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="144dp"
+            android:layout_height="152dp"
             android:layout_below="@+id/about_title_bar"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
-            android:src="@drawable/ic_launcher" />
-
-        <TextView
-            android:id="@+id/app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/app_logo"
-            android:layout_marginTop="34dp"
-            android:textColor="@android:color/white"
-            android:textSize="23dp"
-            android:text="@string/app_name" />
+            android:layout_marginTop="49dp"
+            android:src="@drawable/en" />
 
         <TextView
             android:id="@+id/app_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/app_name"
+            android:layout_below="@+id/app_logo"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:textSize="18dp"

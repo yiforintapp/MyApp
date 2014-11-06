@@ -1,4 +1,6 @@
 package com.leo.appmaster.appsetting;
+import java.util.Locale;
+
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.home.ProtocolActivity;
@@ -18,6 +20,7 @@ import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AboutActivity extends BaseActivity implements OnClickListener{
@@ -25,7 +28,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
     private CommonTitleBar mTtileBar;
     private TextView mAppVersion;
     
-    private Button mCheckUpdate;
+    private Button mShowProtocol;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,8 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
         mTtileBar.setTitle(R.string.app_setting_about);
         mTtileBar.setOptionImageVisibility(View.GONE);
         mTtileBar.openBackView();
-        mCheckUpdate = (Button) findViewById(R.id.check_update_button);
-        mCheckUpdate.setOnClickListener(this);
+        mShowProtocol = (Button) findViewById(R.id.check_update_button);
+        mShowProtocol.setOnClickListener(this);
         
         mAppVersion = (TextView)findViewById(R.id.app_version);
         try {
@@ -56,19 +59,19 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
     @Override
     protected void onResume() {
         
-        if (LeoStat.isUpdateAvailable()) {
-            if (mCheckUpdate != null) {
-                Spanned buttonText = Html.fromHtml(getString(R.string.app_setting_update_new));
-                SpannableString span = new SpannableString(buttonText);
-                span.setSpan(new AbsoluteSizeSpan(DipPixelUtil.dip2px(this, 12)), buttonText.length() - 4, buttonText.length() - 1,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); 
-                mCheckUpdate.setText(span);
-            }
-        } else {
-              if (mCheckUpdate != null) {
-                  //mCheckUpdate.setText(R.string.app_setting_update);
-            	  mCheckUpdate.setText(R.string.protocolBar);  
-              }
-        }       
+        if (mShowProtocol != null) {
+            mShowProtocol.setText(R.string.protocolBar);
+        }
+        
+        ImageView img = (ImageView) findViewById(R.id.app_logo);
+        String area = Locale.getDefault().getLanguage();
+        if(area.equalsIgnoreCase("zh")){
+            img.setImageResource(R.drawable.cn);
+        }else if(area.equalsIgnoreCase("hi")){
+            img.setImageResource(R.drawable.in);
+        }else{
+            img.setImageResource(R.drawable.en);
+        }
         super.onResume();
         
     }

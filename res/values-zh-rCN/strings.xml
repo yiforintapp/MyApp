@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">&#160;App Master&#160;</string>
+    <string name="app_name">&#160;应用管理大师&#160;</string>
     <string name="app_count">应用数量</string>
     <string name="used_memory">使用内存</string>
     <string name="used_flow">使用流量</string>
