@@ -25,18 +25,18 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 
-import com.leo.appmaster.appwall.Canstants;
+import com.leo.appmaster.constants.Constants;
+
 
 public class AppwallHttpUtil {
 	public static InputStream requestByPost(String path,Map<String,String> param,String charset){
-		boolean flag=false;
-		InputStream  is=null;
+		boolean flag = false;
+		InputStream is = null;
 		
-	
 			BasicHttpParams httpParams;
 			httpParams = new BasicHttpParams();
-			HttpConnectionParams.setConnectionTimeout(httpParams, Canstants.REQUEST_TIMEOUT);
-			HttpConnectionParams.setSoTimeout(httpParams, Canstants.SO_TIMEOUT);
+			HttpConnectionParams.setConnectionTimeout(httpParams, Constants.REQUEST_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(httpParams, Constants.SO_TIMEOUT);
 			try {				
 			HttpClient client=new DefaultHttpClient(httpParams);
 			HttpPost request=new HttpPost(path);
