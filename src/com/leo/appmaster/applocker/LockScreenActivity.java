@@ -128,7 +128,7 @@ public class LockScreenActivity extends FragmentActivity implements
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
-			mTtileBar.setOptionImage(R.drawable.setting_btn);
+			mTtileBar.setOptionImage(R.drawable.setting_selector);
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
 			mTtileBar.setOptionListener(this);
 		}

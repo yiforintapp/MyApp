@@ -126,7 +126,7 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 		mTtileBar.openBackView();
-		mTtileBar.setOptionImage(R.drawable.applock_setting);
+		mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionListener(this);
 		mTtileBar.setSpinerVibility(View.VISIBLE);
