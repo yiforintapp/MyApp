@@ -76,8 +76,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         mTtileBar = (CommonTitleBar)findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.app_image_hide);
         mTtileBar.openBackView();
-        mTtileBar.setOptionText(getString(R.string.setting));
-        mTtileBar.setOptionTextVisibility(View.VISIBLE);
+        mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
+        mTtileBar.setOptionImageVisibility(View.VISIBLE);
+//        mTtileBar.setOptionText(getString(R.string.setting));
+//        mTtileBar.setOptionTextVisibility(View.VISIBLE);
         mTtileBar.setOptionListener(this);
         mGridView = (GridView)findViewById(R.id.Image_hide_folder);
         mGridView.setAdapter(mHideAlbumAdapt);
@@ -132,7 +134,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                 intent = new Intent(this, ImageGalleryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
-            case R.id.tv_option_text:
+            case R.id.tv_option_image:
                 intent = new Intent(this, LockOptionActivity.class);
                 intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_IMAGEHIDE);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
