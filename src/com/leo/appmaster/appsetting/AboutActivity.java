@@ -44,7 +44,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
         mAppVersion = (TextView)findViewById(R.id.app_version);
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(),0).versionName;
-            mAppVersion.setText(versionName);
+            mAppVersion.setText("V"+versionName);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }

@@ -22,5 +22,7 @@
     <dimen name="lock_icon_height">24dp</dimen>
     <dimen name="lock_icon_X">28dp</dimen>
     <dimen name="lock_icon_Y">26dp</dimen>
-
+    <dimen name="about_logo_width">112dp</dimen>
+    <dimen name="about_logo_height">120dp</dimen>
+    
 </resources>
