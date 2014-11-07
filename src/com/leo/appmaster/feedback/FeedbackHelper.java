@@ -28,8 +28,8 @@ import com.leoers.leoanalytics.LeoStat;
  */
 public class FeedbackHelper {
 
-//    private final static String FEEDBACK_URL = "http://api.leostat.com/appmaster/feedback";
-    private final static String FEEDBACK_URL = "http://test.leostat.com/appmaster/feedback";
+    private final static String FEEDBACK_URL = "http://api.leostat.com/appmaster/feedback";
+//    private final static String FEEDBACK_URL = "http://test.leostat.com/appmaster/feedback";
     public final static String TABLE_NAME = "feedback";
     protected final static String KEY_EMAIL = "email";
     protected final static String KEY_CONTENT = "content";
