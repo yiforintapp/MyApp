@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
+import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.utils.Debug;
 
 public class PushActivity extends BaseActivity implements View.OnClickListener {
@@ -42,6 +44,17 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUI(getIntent());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SDKWrapper.addEvent(this, LeoStat.P1, "act", "popup");
+        Intent i = getIntent();
+        boolean isFromStatusBar = i.getBooleanExtra(PushUIHelper.EXTRA_WHERE, false);
+        if(isFromStatusBar){
+            SDKWrapper.addEvent(this, LeoStat.P1, "act", "notbar");
+        }
     }
 
     private void initUI(Intent i) {
@@ -83,6 +96,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.dlg_left_btn:
                 /* user ignore this activity */
+                SDKWrapper.addEvent(this, LeoStat.P1, "act", "cancel");
                 PushUIHelper.getInstance(this).sendACK(false, "");
                 finish();
                 break;
@@ -97,6 +111,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             PushUIHelper.getInstance(this).sendACK(false, "");
+            SDKWrapper.addEvent(this, LeoStat.P1, "act", "cancel");
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -147,6 +162,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
             intent.setData(content_url);
             startActivity(intent);
         }
+        SDKWrapper.addEvent(this, LeoStat.P1, "act", "cligp");
         PushUIHelper.getInstance(this).sendACK(true, phone);
         finish();
     }

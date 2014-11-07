@@ -336,32 +336,40 @@ public class UIHelper implements IUIHelper {
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             LeoLog.d(TAG, "onReceive action =" + action);
-            if (action.equals(ACTION_NEED_UPDATE)) {
-                nm.cancel(UPDATE_NOTIFICATION_ID);
-                LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
-                relaunchActivity(IUIHelper.TYPE_UPDATE,
-                        mManager.getReleaseType());
-            } else if (action.equals(ACTION_CANCEL_UPDATE)) {
-                mManager.onCancelUpdate();
-                if (listener != null) {
-                    listener.onChangeState(TYPE_DISMISS, 0);
+            try {
+                if (action.equals(ACTION_NEED_UPDATE)) {
+                    nm.cancel(UPDATE_NOTIFICATION_ID);
+                    LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
+                    relaunchActivity(IUIHelper.TYPE_UPDATE,
+                            mManager.getReleaseType());
+                } else if (action.equals(ACTION_CANCEL_UPDATE)) {
+                    mManager.onCancelUpdate();
+                    if (listener != null) {
+                        listener.onChangeState(TYPE_DISMISS, 0);
+                    }
+                } else if (action.equals(ACTION_DOWNLOADING)) {
+                    LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
+                    relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
+                            mManager.getReleaseType());
+                } else if (action.equals(ACTION_CANCEL_DOWNLOAD)) {
+                    mManager.onCancelDownload();
+                    if (listener != null) {
+                        listener.onChangeState(TYPE_DISMISS, 0);
+                    }
+                } else if (action.equals(ACTION_DOWNLOAD_FAILED)) {
+                    relaunchActivity(IUIHelper.TYPE_DOWNLOAD_FAILED, 0);
+                } else if (action.equals(ACTION_DOWNLOAD_FAILED_CANCEL)) {
+                    mManager.onCancelDownload();
+                    if (listener != null) {
+                        listener.onChangeState(TYPE_DISMISS, 0);
+                    }
                 }
-            } else if (action.equals(ACTION_DOWNLOADING)) {
-                LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
-                relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
-                        mManager.getReleaseType());
-            } else if (action.equals(ACTION_CANCEL_DOWNLOAD)) {
-                mManager.onCancelDownload();
-                if (listener != null) {
-                    listener.onChangeState(TYPE_DISMISS, 0);
-                }
-            } else if (action.equals(ACTION_DOWNLOAD_FAILED)) {
-                relaunchActivity(IUIHelper.TYPE_DOWNLOAD_FAILED, 0);
-            } else if (action.equals(ACTION_DOWNLOAD_FAILED_CANCEL)) {
-                mManager.onCancelDownload();
-                if (listener != null) {
-                    listener.onChangeState(TYPE_DISMISS, 0);
-                }
+            } catch (NullPointerException e) {
+                // there's a situation that the application is killed by
+                // notification still alive.
+                // Nullpointer exception will happen in this case ,do nothing
+                // when this happened
+                e.printStackTrace();
             }
         }
     };

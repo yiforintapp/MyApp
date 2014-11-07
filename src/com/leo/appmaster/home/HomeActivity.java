@@ -223,7 +223,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		case R.id.top_layout:
 			break;
 		case R.id.tv_picture_hide:
-            SDKWrapper.addEvent(LeoStat.P2, "main page", "click the hide picture button");
+		    // track: home - enter hide picture activity
+            SDKWrapper.addEvent(this, LeoStat.P1, "home", "hidpic");
             if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 enterHidePicture();
             } else {
@@ -231,7 +232,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
             }
 			break;
 		case R.id.tv_app_lock:
-			SDKWrapper.addEvent(LeoStat.P2, "main page", "click the app lock button");
+		    // track: home - enter lock application activity
+			SDKWrapper.addEvent(this, LeoStat.P1, "home", "lock");
 			if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 enterLockPage();
 			} else {
@@ -239,18 +241,20 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			}
 			break;
 		case R.id.tv_app_backup:
-			SDKWrapper.addEvent(LeoStat.P2, "main page",
-					"click the app backup button");
+		    // track: home - enter application backup/restore activity
+			SDKWrapper.addEvent(this, LeoStat.P1, "home", "backup");
 			intent = new Intent(this, AppBackupRestoreActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
-			SDKWrapper.addEvent(LeoStat.P2, "main page",
-					"click the one key clear button");
+		    // track: home - enter system boost activity
+			SDKWrapper.addEvent(this, LeoStat.P1, "home", "boost");
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;
 		case R.id.tv_option_image:
+		    // track: home - show setting popup window
+		    SDKWrapper.addEvent(this, LeoStat.P1, "home", "setting");
 			if (mLeoPopMenu == null) {
 				mLeoPopMenu = new LeoPopMenu();
 				mLeoPopMenu.setPopMenuItems(getPopMenuItems());
@@ -269,6 +273,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 									AppWallActivity.class);
 							startActivity(intent);
 						} else if (position == 2) {
+						    SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "setting", "check_update");
 							LeoStat.checkUpdate();
 						} else if (position == 3) {
 							Intent intent = new Intent(HomeActivity.this,

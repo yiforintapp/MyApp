@@ -30,11 +30,13 @@ import android.widget.Toast;
 
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.RocketDock;
 import com.leo.appmaster.ui.ShadeView;
 import com.leo.appmaster.utils.TextFormater;
+import com.leoers.leoanalytics.LeoStat;
 
 public class CleanMemActivity extends BaseActivity implements OnClickListener,
 		OnTouchListener {
@@ -236,6 +238,7 @@ public class CleanMemActivity extends BaseActivity implements OnClickListener,
 			mShadeView.updateColor(0x28, 0x93, 0xfe, 1200);
 			mAllowClean = false;
 		}
+		SDKWrapper.addEvent(this, LeoStat.P1, "boost", "speedup");
 	}
 
 

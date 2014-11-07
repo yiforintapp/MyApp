@@ -28,6 +28,7 @@ public class PushUIHelper implements IPushUIHelper {
 
     public final static String EXTRA_TITLE = "leoappmaster.push.title";
     public final static String EXTRA_CONTENT = "leoappmaster.push.content";
+    public final static String EXTRA_WHERE = "leoappmaster.push.fromwhere";
 
     private Context mContext = null;
     private NotificationManager nm = null;
@@ -75,15 +76,16 @@ public class PushUIHelper implements IPushUIHelper {
             Debug.d(TAG, "push activity already on top, do nothing");
         } else if (isAppOnTop(mContext)) {
             mStatusBar = false;
-            showPushActivity(title, content);
+            showPushActivity(title, content, false);
         } else {
             mStatusBar = true;
             sendPushNotification(title, content);
         }
     }
 
-    private void showPushActivity(String title, String content) {
+    private void showPushActivity(String title, String content, boolean isFromStatusBar) {
         Intent i = new Intent(mContext, PushActivity.class);
+        i.putExtra(EXTRA_WHERE, isFromStatusBar);
         i.putExtra(EXTRA_TITLE, title);
         i.putExtra(EXTRA_CONTENT, content);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -157,7 +159,7 @@ public class PushUIHelper implements IPushUIHelper {
             if (action.equals(ACTION_CHECK_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
                 Debug.d(TAG, "mTitle=" + mTitle + "; mContent= " + mContent);
-                showPushActivity(mTitle, mContent);
+                showPushActivity(mTitle, mContent, true);
             } else if (action.equals(ACTION_IGNORE_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
                 sendACK("N", "Q", "");
