@@ -44,11 +44,13 @@ import android.widget.Toast;
 
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leoers.leoanalytics.LeoStat;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -529,6 +531,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 mImageAdapter.notifyDataSetChanged();
                 for (Integer view : viewList) {
                     mGridView.getChildAt(view).setAlpha(1);
+                    mGridView.getChildAt(view).setScaleX(1);
+                    mGridView.getChildAt(view).setScaleY(1);
                 }
                 mClickPosList.clear();
             }
@@ -537,8 +541,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     }
     
     private Animator createZoomAnimations(View view) {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.5f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.5f);
         ObjectAnimator zoomIn = ObjectAnimator.ofFloat(view,  "alpha", 1f, 0f);
-        return zoomIn;
+        AnimatorSet animZoom = new AnimatorSet();
+        animZoom.playTogether( scaleX, scaleY,zoomIn);
+        return animZoom;
     }
     
     
@@ -621,6 +629,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             showProgressDialog(getString(R.string.app_hide_image), true,true);
                             BackgoundTask task = new BackgoundTask(ImageGridActivity.this);
                             task.execute(true);
+                            SDKWrapper.addEvent(ImageGridActivity.this, LeoStat.P1, "hide_pic", "used");
                         } else if (mActicityMode == CANCEL_HIDE_MODE) {
                             showProgressDialog(getString(R.string.app_cancel_hide_image), true,true);
                             BackgoundTask task = new BackgoundTask(ImageGridActivity.this);

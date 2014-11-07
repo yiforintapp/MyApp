@@ -52,7 +52,7 @@ public class LockReceiver extends BroadcastReceiver {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			pref.setLastAlarmSetTime(calendar.getTimeInMillis());
-			calendar.add(Calendar.DATE, 3);
+			calendar.add(Calendar.MINUTE, 3);
 			PendingIntent pi = PendingIntent.getBroadcast(ctx, 0, intent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 			AlarmManager am = (AlarmManager) ctx
@@ -68,8 +68,6 @@ public class LockReceiver extends BroadcastReceiver {
 		Intent intent = new Intent(ctx, LockScreenActivity.class);
 		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 				LockFragment.FROM_SELF);
-		intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
-				"AppMasterApplication");
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);

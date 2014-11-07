@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockOptionActivity;
@@ -25,6 +26,7 @@ import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leoers.leoanalytics.LeoStat;
 
 public class PasswdSettingFragment extends BaseFragment implements
 		OnDismissListener, OnDiaogClickListener, OnClickListener {
@@ -183,7 +185,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 		} else {
 			mInputTip.setText(R.string.set_passwd);
 		}
-		mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
+		mTvPasswdFuncTip.setText(R.string.digital_passwd_function_hint);
 	}
 
 	public void setActivityName(String name) {
@@ -207,6 +209,11 @@ public class PasswdSettingFragment extends BaseFragment implements
 						Intent intent = null;
 						intent = new Intent(mActivity, LockService.class);
 						mActivity.startService(intent);
+						
+						if(AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE){
+						    SDKWrapper.addEvent(PasswdSettingFragment.this.mActivity, LeoStat.P1, "first", "usepwd");
+						}
+						
 						AppMasterPreference.getInstance(mActivity)
 								.savePassword(mTempFirstPasswd);
 
@@ -351,10 +358,12 @@ public class PasswdSettingFragment extends BaseFragment implements
 			mActivity.startActivity(intent);
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
 			mActivity.startActivity(intent);
+			SDKWrapper.addEvent(mActivity, LeoStat.P1, "first", "setpwdp");
 		} else if (((LockSettingActivity) mActivity).isResetPasswd()) {
 			// mActivity.finish();
 
 		} else {
+		    SDKWrapper.addEvent(mActivity, LeoStat.P1, "first", "setpwdp_cancel");
             if (!TextUtils.isEmpty(mActivityName)) {
                 intent = new Intent();
                 ComponentName componentName = new ComponentName(

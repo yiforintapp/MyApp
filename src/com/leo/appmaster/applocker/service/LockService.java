@@ -18,6 +18,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.IBinder;
+import android.util.Log;
 
 public class LockService extends Service {
 
@@ -51,20 +52,24 @@ public class LockService extends Service {
 	@Deprecated
 	public void onStart(Intent intent, int startId) {
 		if (!mServiceStarted) {
-			startLockService(intent);
+			startLockService();
 		}
 		super.onStart(intent, startId);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		if (!mServiceStarted) {
-			startLockService(intent);
-		}
+        if(intent.getBooleanExtra("lock_service", true)) {
+            if (!mServiceStarted) {
+                startLockService();
+            }
+        } else {
+            stopLockService();
+        }
 		return START_STICKY;
 	}
 
-	private void startLockService(Intent intent) {
+	private void startLockService() {
 		startDetectTask();
 		mServiceStarted = true;
 	}
@@ -87,7 +92,7 @@ public class LockService extends Service {
 		stopDetectTsk();
 		mTimer = new Timer();
 		mDetectTask = new DetectTask();
-		mTimer.schedule(mDetectTask, 0, 100);
+		mTimer.schedule(mDetectTask, 0, 50);
 	}
 
 	@Override

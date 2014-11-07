@@ -30,7 +30,7 @@
     <string name="version_found">नवीनतम संस्करण का पता लगाएं&#160;<xliff:g id="new_version">%1$s</xliff:g>&#160;अपडेट के लिए क्लिक करें</string>
     <string name="click_to_update">अपडेट के लिए क्लिक करें</string>
     <!-- push -->
-    <string name="phone_number">Phone number</string>
+    <string name="phone_number">手机号码</string>
     <string name="india_only">+91 仅限印度地区</string>
     <string name="invalid_number">请输入正确的手机号码</string>
     <string name="goto_gp">前往google play</string>

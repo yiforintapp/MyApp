@@ -23,10 +23,12 @@ import android.widget.TextView;
 
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
+import com.leoers.leoanalytics.LeoStat;
 
 public class FeedbackActivity extends BaseActivity implements OnClickListener {
     
@@ -141,6 +143,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
     protected void onResume() {
         super.onResume();
         checkCommitable();
+        SDKWrapper.addEvent(this, LeoStat.P1, "setting", "fb_enter");
     }
 
     @Override
@@ -179,6 +182,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
             mEditEmail.setText("");
             mCategory.setText(R.string.feedback_category_tip);
             mCategory.setTag(null);
+            SDKWrapper.addEvent(this, LeoStat.P1, "setting", "fb_submit");
         }
     }
     

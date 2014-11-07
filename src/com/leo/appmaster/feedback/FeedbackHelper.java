@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leoers.leoanalytics.LeoStat;
@@ -27,8 +28,8 @@ import com.leoers.leoanalytics.LeoStat;
  */
 public class FeedbackHelper {
 
-//    private final static String FEEDBACK_URL = "http://api.leostat.com/appmaster/feedback";
-    private final static String FEEDBACK_URL = "http://test.leostat.com/appmaster/feedback";
+    private final static String FEEDBACK_URL = "http://api.leostat.com/appmaster/feedback";
+//    private final static String FEEDBACK_URL = "http://test.leostat.com/appmaster/feedback";
     public final static String TABLE_NAME = "feedback";
     protected final static String KEY_EMAIL = "email";
     protected final static String KEY_CONTENT = "content";
@@ -75,7 +76,9 @@ public class FeedbackHelper {
                         if (httpResponse.getStatusLine().getStatusCode() == 200) { // connection success
                             String strResult = EntityUtils.toString(httpResponse.getEntity());
                             JSONObject object = new JSONObject(strResult);
+//                            Log.i("XXXX", "params=" + params);
                             int code = object.getInt("code");
+//                            Log.i("XXXX", "code=" + code);
                             if (code == 0) { // commit success
                                 AppMasterDBHelper.getInstance().delete(TABLE_NAME, AppMasterDBHelper.COLUMN_ID + "=" + id, null); // delete from db
                                 success = true;

@@ -31,9 +31,11 @@ import android.os.StatFs;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppDetailInfo;
+import com.leoers.leoanalytics.LeoStat;
 
 public class AppBackupRestoreManager implements AppChangeListener{
     
@@ -146,7 +148,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                             success = false;
                             break;
                         }
-                        mBackupListener.onBackupProcessChanged(doneNum, totalNum, app.getAppLabel());
+                        if (mBackupListener != null) {
+                            mBackupListener.onBackupProcessChanged(doneNum, totalNum, app.getAppLabel());
+                        }
                         doneNum ++;
                         failType = tryBackupApp(app);
                         if(failType== FAIL_TYPE_NONE) {
@@ -156,10 +160,12 @@ public class AppBackupRestoreManager implements AppChangeListener{
                             break;
                         }
                     }
-                    if(doneNum == totalNum) {
-                        mBackupListener.onBackupProcessChanged(doneNum, totalNum, null);
+                    if (mBackupListener != null) {
+                        if(doneNum == totalNum) {
+                            mBackupListener.onBackupProcessChanged(doneNum, totalNum, null);
+                        }
+                        mBackupListener.onBackupFinish(success, successNum, totalNum, getFailMessage(failType));
                     }
-                    mBackupListener.onBackupFinish(success, successNum, totalNum, getFailMessage(failType));
                 }
             });
         }
@@ -204,7 +210,8 @@ public class AppBackupRestoreManager implements AppChangeListener{
             intent.setPackage(INSTALL_PACKAGE);
         } catch (NameNotFoundException e) {
         }
-        context.startActivity(intent);    
+        context.startActivity(intent);
+        SDKWrapper.addEvent(context, LeoStat.P1, "backup", "recover: "+app.getPkg());
     }
     
     public void checkDataUpdate() {
