@@ -123,7 +123,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
             @Override
             public void run() {
                 getBackupList();
-                mBackupListener.onDataReady();
+                if (mBackupListener != null) {
+                    mBackupListener.onDataReady();
+                }
             }
         });
     }
@@ -196,7 +198,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                         }
                     }
                 }
-                mBackupListener.onApkDeleted(success);
+                if (mBackupListener != null) {
+                    mBackupListener.onApkDeleted(success);
+                }
             }
         });
     }
@@ -233,7 +237,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                     }
                     if(deleteSavedList.size() > 0) {
                         mSavedList.removeAll(deleteSavedList);
-                        mBackupListener.onDataUpdate();
+                        if (mBackupListener != null) {
+                            mBackupListener.onDataUpdate();
+                        }
                     }
                 }
             });
@@ -566,7 +572,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                     mSavedList.clear();
                     mDataReady = false;
                     getBackupList();
-                    mBackupListener.onDataUpdate();
+                    if (mBackupListener != null) {
+                        mBackupListener.onDataUpdate();
+                    }
                 }
             });
         }
