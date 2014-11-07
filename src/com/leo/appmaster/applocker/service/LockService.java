@@ -3,14 +3,9 @@ package com.leo.appmaster.applocker.service;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.leo.appmaster.applocker.logic.LockHandler;
-import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.app.ActivityManager;
-import android.app.Service;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.content.ComponentName;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -18,7 +13,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.IBinder;
-import android.util.Log;
+
+import com.leo.appmaster.applocker.logic.LockHandler;
+import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
 
 public class LockService extends Service {
 
