@@ -53,7 +53,7 @@ public class AppLockListActivity extends BaseActivity implements
 	public static final int INSTALL_TIME_SORT = 2;
 	private int mCurSortType = DEFAULT_SORT;
 
-	public static final int REQUEST_CODE_LOCK = 1000;
+	public static final int REQUEST_CODE_LOCK = 9999;
 	public static final int REQUEST_CODE_OPTION = 1001;
 
 	@Override
@@ -374,6 +374,14 @@ public class AppLockListActivity extends BaseActivity implements
 		}
 
 	}
+	
+	
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		LeoLog.e("xxxx", "onNewIntent");
+		super.onNewIntent(intent);
+	}
 
 	public static class InstallTimeComparator implements Comparator<BaseInfo> {
 
@@ -453,7 +461,7 @@ public class AppLockListActivity extends BaseActivity implements
 				LockFragment.FROM_SELF);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-		startActivityForResult(intent, 1000);
+		startActivityForResult(intent, REQUEST_CODE_LOCK);
 	}
 
 	@Override
