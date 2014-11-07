@@ -591,7 +591,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         return animSetXY;
     }
     
-    private void showProgressDialog(String title,boolean indeterminate, boolean cancelable) {
+    private void showProgressDialog(String title, String message, boolean indeterminate, boolean cancelable) {
         if(mProgressDialog == null) {
             mProgressDialog = new LEOCircleProgressDialog(this);
             mProgressDialog.setOnCancelListener(new OnCancelListener() {            
@@ -606,6 +606,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setIndeterminate(indeterminate);
         mProgressDialog.setTitle(title);
+        mProgressDialog.setMessage(message);
         mProgressDialog.show();
     }
     
@@ -626,12 +627,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 if (which == 1) {
                     if (mClickList.size() > 0) {
                         if (mActicityMode == SELECT_HIDE_MODE) {
-                            showProgressDialog(getString(R.string.app_hide_image), true,true);
+                            showProgressDialog(getString(R.string.tips), getString(R.string.app_hide_image)+"...", true,true);
                             BackgoundTask task = new BackgoundTask(ImageGridActivity.this);
                             task.execute(true);
                             SDKWrapper.addEvent(ImageGridActivity.this, LeoStat.P1, "hide_pic", "used");
                         } else if (mActicityMode == CANCEL_HIDE_MODE) {
-                            showProgressDialog(getString(R.string.app_cancel_hide_image), true,true);
+                            showProgressDialog(getString(R.string.tips), getString(R.string.app_cancel_hide_image)+"...", true,true);
                             BackgoundTask task = new BackgoundTask(ImageGridActivity.this);
                             task.execute(false);
                         }
