@@ -121,8 +121,7 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 					urlStr = sort.get(i)[1];
 					if (i == 0) {
 						if (flagGp) {
-							requestGp(AppWallActivity.this,
-									"com.snapchat.android");
+							requestGp(AppWallActivity.this,urlStr);
 							break;// 访问成功直接跳出
 						} else {
 							continue;// 访问失败，继续循环访问

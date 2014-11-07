@@ -132,6 +132,15 @@ public class LockScreenActivity extends FragmentActivity implements
 		}
 	}
 
+	@Override
+	protected void onStop() {
+		if (mFromType == LockFragment.FROM_OTHER) {
+			finish();
+		}
+
+		super.onStop();
+	}
+
 	private void initUI() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 
@@ -141,7 +150,8 @@ public class LockScreenActivity extends FragmentActivity implements
 			mTtileBar.setOptionListener(this);
 		}
 
-		if (mFromType == LockFragment.FROM_SELF_HOME) {
+		if (mFromType == LockFragment.FROM_SELF_HOME
+				|| mFromType == LockFragment.FROM_SELF) {
 			mTtileBar.openBackView();
 			if (TextUtils.isEmpty(mLockTitle)) {
 				mTtileBar.setTitle(R.string.app_lock);
@@ -159,30 +169,30 @@ public class LockScreenActivity extends FragmentActivity implements
 	}
 
 	public void onUnlockSucceed() {
+
+		LeoLog.e("LockScreenActivity", "mFromType = " + mFromType
+				+ "     mToActivity = " + mToActivity);
+
 		if (mFromType == LockFragment.FROM_SELF) {
 			Intent intent = null;
 			intent = new Intent(this, LockService.class);
 			this.startService(intent);
-
-			finish();
-
+			setResult(11);
 		} else if (mFromType == LockFragment.FROM_OTHER) {
 			// input right gesture, just finish self
 			Intent intent = new Intent(LockHandler.ACTION_APP_UNLOCKED);
 			intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mToPackage);
 			sendBroadcast(intent);
-			finish();
 		} else if (mFromType == LockFragment.FROM_SELF_HOME) {
 			Intent intent = null;
 			// try start lock service
 			intent = new Intent(this, LockService.class);
 			this.startService(intent);
-
 			intent = new Intent();
 			intent.setClassName(this, mToActivity);
 			this.startActivity(intent);
-			finish();
 		}
+		finish();
 	}
 
 	public void onUolockOutcount() {
@@ -208,11 +218,10 @@ public class LockScreenActivity extends FragmentActivity implements
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent();
-		if (mFromType == LockFragment.FROM_SELF) {
+		if (mFromType != LockFragment.FROM_OTHER) {
 			intent.setClassName(getApplicationContext(),
 					HomeActivity.class.getName());
-			intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
-					| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 		} else {
 			intent.setAction(Intent.ACTION_MAIN);

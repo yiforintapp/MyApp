@@ -88,6 +88,7 @@ public class LockHandler extends BroadcastReceiver {
 								LockFragment.LOCK_TYPE_GESTURE);
 					}
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 					intent.putExtra(EXTRA_LOCKED_APP_PKG, pkg);
 					intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 							LockFragment.FROM_OTHER);
