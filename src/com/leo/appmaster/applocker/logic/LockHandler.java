@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -109,7 +110,16 @@ public class LockHandler extends BroadcastReceiver {
 					((TimeoutRelockPolicy) mLockPolicy).clearLockApp();
 				}
 			}
+
+			Intent lockIntent = new Intent(context, LockService.class);
+			lockIntent.putExtra("lock_service",  false);
+			context.startService(lockIntent);  
+			
 		} else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+            Intent lockIntent = new Intent(context, LockService.class);
+            lockIntent.putExtra("lock_service", true);
+            context.startService(lockIntent);
+		    
 			List<String> list = AppMasterPreference.getInstance(mContext)
 					.getLockedAppList();
 			LeoLog.e("onReceive", "mLastRunningPkg = " + mLastRunningPkg);
