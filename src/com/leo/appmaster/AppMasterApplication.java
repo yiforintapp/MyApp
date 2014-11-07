@@ -179,8 +179,6 @@ public class AppMasterApplication extends Application implements RequestFinished
 	        for (Activity activity : mActivityList) {
 	            activity.finish();
 	        }
-	        android.os.Process.killProcess(android.os.Process.myPid());  
-	        System.exit(0);
 	    }
 
         @Override

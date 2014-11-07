@@ -393,6 +393,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                         mManager.onCancelUpdate();
                     } else if (mParam == UpdateManager.FORCE_UPDATE) {
                         /* this is a force update */
+                        mManager.onCancelUpdate();
                         finish();
                         AppMasterApplication.getInstance().exitApplication();
                     }
