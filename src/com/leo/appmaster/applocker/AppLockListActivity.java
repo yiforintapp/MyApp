@@ -380,9 +380,9 @@ public class AppLockListActivity extends BaseActivity implements
 		@Override
 		public int compare(BaseInfo lhs, BaseInfo rhs) {
 			if (lhs.installTime > rhs.installTime) {
-				return 1;
-			} else if (lhs.installTime < rhs.installTime) {
 				return -1;
+			} else if (lhs.installTime < rhs.installTime) {
+				return 1;
 			} else {
 				return Collator.getInstance().compare(
 						trimString(lhs.getAppLabel()),

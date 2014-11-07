@@ -408,6 +408,15 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 case IUIHelper.TYPE_CHECKING:
                     mManager.onCancelCheck();
                     break;
+                case IUIHelper.TYPE_DOWNLOAD_FAILED:
+                    mManager.onCancelDownload();
+                    if (mParam == UpdateManager.FORCE_UPDATE) {
+                        finish();
+                        AppMasterApplication.getInstance().exitApplication();
+                    } else {
+                        finish();
+                    }
+                    break;
             }
         }
         return super.onKeyDown(keyCode, event);
