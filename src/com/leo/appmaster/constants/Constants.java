@@ -13,5 +13,6 @@ public class Constants {
  */
 	public static final int REQUEST_TIMEOUT = 5*1000;//设置请求超时5秒钟
 	public static final int SO_TIMEOUT = 5*1000;  //设置等待数据超时时间5秒钟
+	
 
 }

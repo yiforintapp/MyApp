@@ -45,7 +45,7 @@ public class AppBackupRestoreManager implements AppChangeListener{
     public static final int FAIL_TYPE_CANCELED = 4;
     
 
-    private static final String BACKUP_PATH = "appmaster/backup/";
+    public static final String BACKUP_PATH = "appmaster/backup/";
     private static final String INSTALL_PACKAGE = "com.android.packageinstaller";
     private static final String PATH_ASSETMANAGER = "android.content.res.AssetManager";
     private static final String METHOD_ADD_ASSET = "addAssetPath";
@@ -480,7 +480,7 @@ public class AppBackupRestoreManager implements AppChangeListener{
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 
-    public  String getBackupPath() {
+    private  String getBackupPath() {
         if (isSDReady()) {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath();
             if (!path.endsWith(File.separator)) {

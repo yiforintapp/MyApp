@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.SyncStateContract.Constants;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,17 +43,20 @@ import com.leo.appmaster.model.AppWallUrlBean;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leoers.leoanalytics.utils.Debug;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 public class AppWallActivity extends BaseActivity implements OnItemClickListener {
+	private boolean flagGp=false;
 	private ListView appwallLV;
 	private CommonTitleBar mTtileBar;
 	private Button button;
 	private TextView text;
 	private DisplayImageOptions options; 
 	private static final String DATAPATH = "http://test.leostat.com/appmaster/appwall";//数据的url
+	public static final String GPPACKAGE="com.android.vending";//GP包名
 	//private static final String IMAGEPATH = "http://c.hiphotos.baidu.com/image/w%3D310/";//图片的url
 	private static final String CHARSETLOCAL = "utf-8";// 本地
 	private static final String CHARSETSERVICE = "utf-8";// 服务端
@@ -111,30 +115,48 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 			sort.add(tempStr);
 		}
 		int  number=sort.size();
-		if(number>=2){
+		if (number >= 2) {
 			for (int i = 0; i < number; i++) {
 				try {
-					urlStr=sort.get(i)[1];
-					requestUrl(urlStr);
-					break;//访问成功直接跳出
-				} catch (Exception e) {				
-					continue;//访问失败，继续循环访问
-				}				
-			}			
-		}else if(number>0&&number<=1){
-			urlStr=sort.get(0)[1];
-			requestUrl(urlStr);
-		}else{
-			LeoLog.i("","*************Not URL！");			
+					urlStr = sort.get(i)[1];
+					if (i == 0) {
+						if (flagGp) {
+							requestGp(AppWallActivity.this,
+									"com.snapchat.android");
+							break;// 访问成功直接跳出
+						} else {
+							continue;// 访问失败，继续循环访问
+						}
+					} else {
+						requestUrl(urlStr);
+					}
+				} catch (Exception e) {
+					// continue;//访问失败，继续循环访问
+				}
+			}
+		} else if (number > 0 && number <= 1) {
+			urlStr = sort.get(0)[1];
+			
+			try {
+				requestUrl(urlStr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}		
+		} else {
+			LeoLog.i("", "*************Not URL！");
 		}
-		
-		
 	}
 	//访问网址
 	public void requestUrl(String url){
 		 Uri uri = Uri.parse(url);
 		 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 		startActivity(intent);		
+	}
+	//访问GooglPlay
+	public void requestGp(Context context,String packageGp){
+		Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id="+packageGp));
+		intent.setPackage(GPPACKAGE);
+		context. startActivity(intent);	
 	}
 	// 创建线程异步加载
 	private class MyAsyncTask extends AsyncTask<String, Void, String> {
@@ -149,8 +171,7 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 			  String code=params[2];
 			   Map<String,String> map=new HashMap<String,String>(); 
 			   map.put("language_type", language);
-			  map.put("market_id",code);  	
-      
+			  map.put("market_id",code);  	     
 					is = AppwallHttpUtil.requestByPost(path, map, CHARSETLOCAL);
 					if(is!=null) {
 						  data=AppwallHttpUtil.getJsonByInputStream(is, CHARSETSERVICE);			
@@ -160,6 +181,7 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 		@Override
 		protected void onPostExecute(String result) {
 			boolean flag=false;
+
 			_processBar.dismiss();
 			if (result != null&&!result.equals("")) {
 				List<AppWallBean> apps=getJson(result);//从服务器解析
@@ -172,8 +194,13 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 					//获取包名
 				StringBuilder sb=new StringBuilder();
 				for (int i = 0; i <pkgInfos.size(); i++) {						
-						pkgName.add(pkgInfos.get(i).getPkg());
-				}							
+					if(pkgInfos.get(i).getPkg().equals("com.android.vending")){
+						flagGp=true;
+					}
+					pkgName.add(pkgInfos.get(i).getPkg());
+						
+				}		
+				
 			// 判断已存在包名
 				for (int i = 0; i < apps.size(); i++) {
 					//判断是否相同

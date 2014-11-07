@@ -18,7 +18,7 @@
     <string name="uninstall">अस्थापित करना</string>
     <string name="set_gesture_suc">इशारा दर्ज</string>
     <string name="set_passwd_suc">पासवर्ड सफलतापूर्वक दर्ज किया गया</string>
-    <string name="reset_passwd_successful">सफलतापूर्वक सेट !</string>
+    <string name="reset_passwd_successful">दोबारा सेटअप करने में सफल !</string>
     <string name="stop">रुकें</string>
     <string name="reinput_anwser">गलत उत्तर। पुनः प्रयास करें</string>
     <string name="please_input_pswd">पासवर्ड इनपुट करें</string>

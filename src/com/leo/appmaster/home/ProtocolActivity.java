@@ -19,7 +19,7 @@ public class ProtocolActivity extends BaseActivity implements OnClickListener{
 		setContentView(R.layout.activity_protocol);
 		   mTtileBar = (CommonTitleBar) findViewById(R.id.appwallTB);
 	        mTtileBar.setTitle(R.string.protocolBar);
-	        mTtileBar.setOptionImageVisibility(View.GONE);
+	        mTtileBar.setOptionImageVisibility(View.VISIBLE);
 	        mTtileBar.openBackView();
 	        webView=(WebView) findViewById(R.id.webView);
 	       

@@ -32,6 +32,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AppBackupRestoreActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener, AppBackupDataListener {
     
@@ -64,30 +65,51 @@ public class AppBackupRestoreActivity extends BaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backup_restore);
         initUI();
-       //  renameFolder();
+       renameFolder();
     }
-/*public void renameFolder(){
-	AppBackupRestoreManager am=new AppBackupRestoreManager(this, null);
-	  String newName=am.getBackupPath();
-	  String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-      if (!path.endsWith(File.separator)) {
-          path += File.separator;
-      }
-      path += "leo/appmaster/.backup/";
-	String folderName=path;
-		File file=new File(path);
-		if(file.exists()){
-			  boolean ret = file.renameTo(new File(newName));
-			  if(ret)
-			  {
-				  Toast.makeText(this, "success",Toast.LENGTH_LONG).show();
-			  }else{
-				  Toast.makeText(this, "fail",Toast.LENGTH_LONG).show();
-			  }
+
+	public void renameFolder() {
+		String newName = getBackupPath();
+		String path = Environment.getExternalStorageDirectory()
+				.getAbsolutePath();
+		if (!path.endsWith(File.separator)) {
+			path += File.separator;
 		}
-	
-	
-}	*/
+		path += "leo/appmaster/.backup/";
+		File file = new File(path);
+		if (file.exists()) {
+			boolean ret = file.renameTo(new File(newName));
+			if (ret) {
+				// Toast.makeText(this, "success",Toast.LENGTH_LONG).show();
+				LeoLog.i("AppBackupRestoreActivity", "*******rename success");
+			} else {
+				// Toast.makeText(this, "fail",Toast.LENGTH_LONG).show();
+				LeoLog.i("AppBackupRestoreActivity", "*******rename fail");
+			}
+		}
+
+	}
+
+	public String getBackupPath() {
+		if (Environment.MEDIA_MOUNTED.equals(Environment
+				.getExternalStorageState())) {
+			String path = Environment.getExternalStorageDirectory()
+					.getAbsolutePath();
+			if (!path.endsWith(File.separator)) {
+				path += File.separator;
+			}
+			path += AppBackupRestoreManager.BACKUP_PATH;
+			File backupDir = new File(path);
+			if (!backupDir.exists()) {
+				boolean success = backupDir.mkdirs();
+				if (!success) {
+					return null;
+				}
+			}
+			return path;
+		}
+		return null;
+	}
     @Override
     protected void onDestroy() {
         super.onDestroy();

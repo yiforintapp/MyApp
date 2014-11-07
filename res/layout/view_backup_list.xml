@@ -68,10 +68,10 @@
             android:layout_marginLeft="72dp"
             android:layout_marginRight="72dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/check_update_button"
+            android:background="@drawable/mycheck_button_selecter"
             android:gravity="center"
             android:text="@string/button_backup"
-            android:textColor="@drawable/backup_button_text_selector" />
+            android:textColor="@color/white" />
 
         <ImageView
             android:id="@+id/check_backup"
