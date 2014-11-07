@@ -197,6 +197,14 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 		return false;
 	}
+	
+	
+
+	@Override
+	public void onBackPressed() {
+		setResult(11);
+		super.onBackPressed();
+	}
 
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
