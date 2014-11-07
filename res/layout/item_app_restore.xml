@@ -57,10 +57,10 @@
         android:layout_height="27dp"
         android:layout_gravity="right|center_vertical"
         android:layout_marginRight="94dp"
-        android:background="@drawable/item_restore_button_bg"
+        android:background="@drawable/install_delete_selector"
         android:gravity="center"
         android:text="@string/button_install"
-        android:textColor="@drawable/backup_button_text_selector"
+        android:textColor="@color/white"
         android:textSize="12dp" 
         android:singleLine="true"/>
 
@@ -70,10 +70,10 @@
         android:layout_height="27dp"
         android:layout_gravity="right|center_vertical"
         android:layout_marginRight="20dp"
-        android:background="@drawable/item_restore_button_bg"
+        android:background="@drawable/install_delete_selector"
         android:gravity="center"
         android:text="@string/button_delete"
-        android:textColor="@drawable/backup_button_text_selector" 
+        android:textColor="@color/white" 
         android:textSize="12dp"
         android:singleLine="true"/>
 

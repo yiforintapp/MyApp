@@ -1,6 +1,7 @@
 package com.leo.appmaster.utils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,18 +26,18 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 
-import com.leo.appmaster.appwall.Canstants;
+import com.leo.appmaster.constants.Constants;
+
 
 public class AppwallHttpUtil {
 	public static InputStream requestByPost(String path,Map<String,String> param,String charset){
-		boolean flag=false;
-		InputStream  is=null;
+		boolean flag = false;
+		InputStream is = null;
 		
-	
 			BasicHttpParams httpParams;
 			httpParams = new BasicHttpParams();
-			HttpConnectionParams.setConnectionTimeout(httpParams, Canstants.REQUEST_TIMEOUT);
-			HttpConnectionParams.setSoTimeout(httpParams, Canstants.SO_TIMEOUT);
+			HttpConnectionParams.setConnectionTimeout(httpParams, Constants.REQUEST_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(httpParams, Constants.SO_TIMEOUT);
 			try {				
 			HttpClient client=new DefaultHttpClient(httpParams);
 			HttpPost request=new HttpPost(path);
@@ -88,4 +89,26 @@ public class AppwallHttpUtil {
 	 public static String getLanguage() {
 		 return Locale.getDefault().getLanguage();
 		 }
+	//重命名路径 
+	 public static  boolean RenameFilePath(String filePath, String newFileName) {
+	        if (filePath == null || newFileName == null) {
+	            LeoLog.e("RenameFile","Rename: null parameter");
+	            return false;
+	        }
+
+	        File file = new File(filePath);	     
+	        try {
+	            if (file.isFile()) {
+	                boolean ret = file.renameTo(new File(newFileName));
+	                LeoLog.e("RenameFile", ret + " to rename file" );
+	                return ret;
+	            } else {
+	                return false;
+	            }
+	        } catch (SecurityException e) {
+	            LeoLog.e("RenameFile", "Fail to rename file," + e.toString());
+	        }
+	        return false;
+	    }
+	 
 }

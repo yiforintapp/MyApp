@@ -247,7 +247,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			}
 			break;
 		case R.id.tv_app_backup:
-		    // track: home - enter application backup/restore activity
 			SDKWrapper.addEvent(this, LeoStat.P1, "home", "backup");
 			intent = new Intent(this, AppBackupRestoreActivity.class);
 			startActivity(intent);
