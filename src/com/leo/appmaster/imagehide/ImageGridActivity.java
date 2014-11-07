@@ -101,6 +101,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         mGridView = (GridView) findViewById(R.id.image_gallery_image);
         mBottomBar = (LinearLayout) findViewById(R.id.bottom_bar);
         mSelectAll = (Button) findViewById(R.id.select_all);
+        mSelectAll.setEnabled(false);
         mHidePicture = (Button) findViewById(R.id.hide_image);
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle("");
@@ -665,6 +666,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         } else {
             mImageAdapter = new ImageAdapter();
             mGridView.setAdapter(mImageAdapter);
+            mSelectAll.setEnabled(true);
         }
     }
     
@@ -697,6 +699,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             
             mImageAdapter = new ImageAdapter();
             mGridView.setAdapter(mImageAdapter);
+            mSelectAll.setEnabled(true);
         }  
  
     }

@@ -86,7 +86,7 @@
         android:clickable="true"
         android:gravity="center"
         android:text="@string/feedback_commit"
-        android:textColor="@drawable/backup_button_text_selector"
+        android:textColor="@color/white"
         android:textSize="16dp" />
 
 </RelativeLayout>

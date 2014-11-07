@@ -136,48 +136,48 @@
     <string name="no_lock_item_tip">No locked Apps</string>
     <string name="no_unlocked_item_tip">No unlocked Apps</string>
     <string name="app_setting_has_update">&#160;&#160;&#160;Check for updates <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
-    <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
-    <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
-    <string name="query_delete">是否删除%1$s的备份文件，删除后不可恢复！</string>
-    <string name="backuped_count">成功备份%1$d个文件。存放位置：%2$s</string>
-    <string name="feedback_commit">提交</string>
-    <string name="feedback_content_tip">您遇到了什么问题？</string>
-    <string name="feedback_email_tip">您的常用邮箱</string>
-    <string name="feedback_category_tip">请选择问题类型</string>
-    <string name="category_lock">应用锁</string>
-    <string name="category_backup">备份</string>
-    <string name="category_boost">加速</string>
-    <string name="category_hide">图片隐藏</string>
-    <string name="category_other">其他问题</string>
-    <string name="category_suggest">给我们建议</string>
-    <string name="feedback_success_title">提交成功</string>
-    <string name="feedback_success_content">感谢您的反馈，我们会尽快处理您的问题</string>
-    <string name="app_image_hide">Image Hide</string>
-    <string name="app_no_image_hide">请点击添加按钮，添加需要隐藏的图片</string>
-    <string name="app_no_image">没有可添加的图片</string>
+    <string name="question_charsize_tip">Maximum of 40 characters.</string>
+    <string name="anwser_charsize_tip">Maximum of 40 characters.</string>
+    <string name="query_delete">Are you sure you want to permanently delete backup file of%1$s</string>
+    <string name="backuped_count">%1$d files backed up successfully. Backup Location:%2$s</string>
+    <string name="feedback_commit">Submit</string>
+    <string name="feedback_content_tip">What can we do for you?</string>
+    <string name="feedback_email_tip">Your Email</string>
+    <string name="feedback_category_tip">Select A Question</string>
+    <string name="category_lock">App Lock</string>
+    <string name="category_backup">App Backup</string>
+    <string name="category_boost">Boost</string>
+    <string name="category_hide">Hide Image</string>
+    <string name="category_other">Other Questions</string>
+    <string name="category_suggest">Give Us Feedback</string>
+    <string name="feedback_success_title">Submission Successful</string>
+    <string name="feedback_success_content">Thank you for your feedback, we\'ll follow up ASAP!</string>
+    <string name="app_image_hide">Hide Image</string>
+    <string name="app_no_image_hide">Click \'Add\' to select images</string>
+    <string name="app_no_image">No Images Selectable</string>
     <string name="app_image_gallery">Gallery</string>
     <string name="app_select_all">Select All</string>
-    <string name="app_select_none">Cancel Selected</string>
+    <string name="app_select_none">Unselect All</string>
     <string name="app_hide_image">Hide</string>
-    <string name="app_cancel_hide_image">Cancel Hide</string>
+    <string name="app_cancel_hide_image">Unhide</string>
     <string name="app_hide_image_edit">Edit</string>
     <string name="app_add_hide_image">Add</string>
     <string name="app_share_hide_image">Share</string>
-    <string name="app_unhide_dialog_content">If cancel to hide this picture ?</string>
-    <string name="app_delete_dialog_content">Is to remove the picture ?</string>
-    <string name="app_unhide_pictures_dialog_content">是否取消隐藏你所选的图片？</string>
-    <string name="app_hide_pictures_dialog_content">是否隐藏你所选的图片？</string>
-    <string name="app_hide_image_fail">Hide picture fail !</string>
+    <string name="app_unhide_dialog_content">Unhide this image ?</string>
+    <string name="app_delete_dialog_content">Delete this image ?</string>
+    <string name="app_unhide_pictures_dialog_content">Unhide the selected images ?</string>
+    <string name="app_hide_pictures_dialog_content">Hide the selected images ?</string>
+    <string name="app_hide_image_fail">Image not selectable! Hide failed !</string>
 
     <string-array name="sort_type">
-        <item>默认排序</item>
-        <item>应用名称排序</item>
-        <item>安装时间排序</item>
+        <item>Default Order</item>
+        <item>By Name</item>
+        <item>By Time</item>
     </string-array>
 
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
-    <string name="new_app_lock_tip">新装应用加锁提醒</string>
-    <string name="feedback">用户反馈</string>
+    <string name="new_app_lock_tip">Reminder of new Apps</string>
+    <string name="feedback">Feedbacks</string>
     <string name="first_set_passwd_hint">首次使用请设置密码</string>
     <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>
     <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片隐藏功能中</string>
@@ -188,39 +188,16 @@
     <!-- 版权 -->
     <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
     <!-- AppWall -->
-    <string name="app_wall">应用推荐</string>
+    <string name="app_wall">Hot Apps</string>
     <!-- 隐私策略 -->
-    <string name="protocolBar">隐私保护协议</string>
-    <string name="protocolTitl">\n<b>Privacy Policy</b>\n</string>
-    <string name="protocol">			         Welcome to App Master. This Privacy Policy describes how your information is collected, used and shared when you use our services. 
-			  We, App Master, regards our users’ information as top priority and have been taking great efforts to provide you with best web experience.
-			  By using App Master, you consent to the collection and use of your personal information as outlined below. We may update this Privacy 
-			  Policy from time to time to reflect the users’ feedbacks, please visit termly to review any changes. \n	\n		 <b> The Information App Master Collects</b>\n\n
-			        No personal information is required when downloading or using App Master. When you download/use the Application or the Services, we 
-			  receive only non-personal information such as your device information, your operation system, language preference, etc. \n\n
-			          Your personal information will only be collected when: You participate in our events and voluntarily provide your name, email address, 
-			  phone number,etc. It will be your choice whether to provide your information.\n\n <b> How App Master Use the Information Collected</b>\n\n
-			        We use your information to:\n
-					&#160;&#160;&#160;a. provide you with technical support\n
-					&#160;&#160;&#160;b. improve the services’ management \n
-					&#160;&#160;&#160;c. deliver the services per you request\n
-					&#160;&#160;&#160;d. analyze statistical  data\n
-					&#160;&#160;&#160;e. investigate alleged fraud, infringement or other misconduct\n
-					We will NOT share your personal information with any third parties unless: If required to do so by any applicable law, regulation, legal
-			 process or enforceable governmental request.\n \n <b>Contact Us</b>\n\n
-			       f you have any questions about this Policy or to report any violations of the Policy, please send an email to: <a href="support@leoers.com">support@leoers.com</a> 			App Master also provides users the opportunity to opt-out of receiving communications from us at any time. If at any point you wish to stop 
-			communication from our side please inform us of your request via the same email address.\n\n <b>Changes to this Policy</b>\n\n
-                  This Privacy Policy may be revised from time to time with or without notice. If we make a change in this policy, we will post the latest version on our site:<a href="www.leomaster.com"> www.leomaster.com</a>. 
-                  By continuing to access or use the services you agree to be bound by the revised Privacy Policy. If you do not agree to any modifications to this Policy, you should stop using
-                  any of all the services.\n</string>
-    <string name="protocolSupport">support@leomaster.com</string>
+    <string name="protocolBar">Privacy Policy</string>
     <string name="passwd_set_gesture_tip">请至少连接4个点</string>
     <string name="set_gesture">设置手势密码</string>
     <string name="set_passwd">设置数字密码</string>
     <string name="lock_remind">App Master 提醒您对应用加锁</string>
     <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
     
-    <string name="lock_guide">点击应用，轻松加锁</string>
-    <string name="start_guide">常用应用，推荐加锁</string>
+    <string name="lock_guide">Tap Apps to lock</string>
+    <string name="start_guide">Most-used Apps</string>
 
 </resources>
