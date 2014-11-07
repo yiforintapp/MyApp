@@ -41,6 +41,7 @@ import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.AppWallBean;
 import com.leo.appmaster.model.AppWallUrlBean;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.utils.Debug;
@@ -60,9 +61,9 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 	//private static final String IMAGEPATH = "http://c.hiphotos.baidu.com/image/w%3D310/";//图片的url
 	private static final String CHARSETLOCAL = "utf-8";// 本地
 	private static final String CHARSETSERVICE = "utf-8";// 服务端
-	private DownloadManager downloadManager;
-	private List<AppWallBean> all;
-	private ProgressDialog _processBar;
+	private LEOCircleProgressDialog p;
+	private List<AppWallBean> all;//去重后的应用
+	private List<AppWallBean> temp;
 	private void init() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.appwallTB);
 		mTtileBar.setTitle(R.string.app_wall);
@@ -79,7 +80,7 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 		setContentView(R.layout.activity_appwall_activity);
 		all=new ArrayList<AppWallBean>();
 		String flag=null;
-	      _processBar=new ProgressDialog(AppWallActivity.this);	
+		 p=new LEOCircleProgressDialog(AppWallActivity.this);
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_launcher)
 				.showImageForEmptyUri(R.drawable.ic_launcher)
@@ -107,7 +108,6 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 		List<String[]>  sort=new ArrayList<String[]>();
 		String urlStr=null;
 		Uri url=null;
-
 		for (int i = 0; i < urls.size(); i++) {
 		    appUrl=urls.get(i);
 			tempStr[0]=appUrl.getId();
@@ -181,14 +181,14 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 		@Override
 		protected void onPostExecute(String result) {
 			boolean flag=false;
-
-			_processBar.dismiss();
+			p.dismiss();
 			if (result != null&&!result.equals("")) {
 				List<AppWallBean> apps=getJson(result);//从服务器解析
 				appwallLV.setVisibility(View.VISIBLE);			
 				button.setVisibility(View.GONE);
 				text.setVisibility(View.GONE);	
-					all = new ArrayList<AppWallBean>();//对比后本地没有的应用				
+					all = new ArrayList<AppWallBean>();//对比后本地没有的应用		
+					temp=new ArrayList<AppWallBean>();
 				List<AppDetailInfo> pkgInfos=AppLoadEngine.getInstance(AppWallActivity.this).getAllPkgInfo();//获取本地安装的所有包信息
 				List<String> pkgName=new ArrayList<String>();
 					//获取包名
@@ -209,7 +209,15 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 						all.add(apps.get(i));
 					}
 				}			
-						AppWallAdapter adapter = new AppWallAdapter(AppWallActivity.this, all);
+				//获取all中前十条记录
+				for (int i = 0; i < all.size(); i++) {
+					if(i<10){
+						temp.add(all.get(i));
+					}else{
+						break;
+					}
+				}
+						AppWallAdapter adapter = new AppWallAdapter(AppWallActivity.this, temp);
 						appwallLV.setAdapter(adapter);
 				appwallLV.setOnItemClickListener(AppWallActivity.this);
 			} else {
@@ -230,7 +238,11 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 		}
 		@Override
 		protected void onPreExecute() {
-			 _processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");
+
+			p.setTitle("应用推荐列表");
+			p.setMessage("正在获取应用信息，请稍候！");
+			p.show();
+			// _processBar = ProgressDialog.show(AppWallActivity.this, "", "正在获取信息，请稍候！");
 			super.onPreExecute();
 		}
 	}
@@ -334,6 +346,8 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 					app.setAppPackageName(appPackageName);
 				} catch (Exception e) {
 					e.printStackTrace();
+					//如果失败就给包名赋空字符串，保证程序正常运行
+					app.setAppName("");
 				}
 				app.setImage(appIcon);
 				app.setAppName(appName);

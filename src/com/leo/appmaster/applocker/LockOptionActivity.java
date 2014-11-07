@@ -35,7 +35,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 	private CheckBoxPreference mForbidUninstall, mAutoLock;
 	private Preference mSetProtect;
-	private boolean mShouldLockOnRestart;
+	private boolean mShouldLockOnRestart = true;
 
 	public static final String TAG_COME_FROM = "come_from";
 	public static final int FROM_APPLOCK = 0;
