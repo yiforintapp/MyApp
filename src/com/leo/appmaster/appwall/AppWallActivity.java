@@ -238,7 +238,6 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 		}
 		@Override
 		protected void onPreExecute() {
-
 			p.setTitle("应用推荐列表");
 			p.setMessage("正在获取应用信息，请稍候！");
 			p.show();
