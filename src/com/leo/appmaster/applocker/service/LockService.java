@@ -3,14 +3,9 @@ package com.leo.appmaster.applocker.service;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.leo.appmaster.applocker.logic.LockHandler;
-import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.app.ActivityManager;
-import android.app.Service;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.content.ComponentName;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -18,6 +13,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.IBinder;
+
+import com.leo.appmaster.applocker.logic.LockHandler;
+import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
 
 public class LockService extends Service {
 
@@ -51,20 +49,24 @@ public class LockService extends Service {
 	@Deprecated
 	public void onStart(Intent intent, int startId) {
 		if (!mServiceStarted) {
-			startLockService(intent);
+			startLockService();
 		}
 		super.onStart(intent, startId);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		if (!mServiceStarted) {
-			startLockService(intent);
-		}
+        if(intent.getBooleanExtra("lock_service", true)) {
+            if (!mServiceStarted) {
+                startLockService();
+            }
+        } else {
+            stopLockService();
+        }
 		return START_STICKY;
 	}
 
-	private void startLockService(Intent intent) {
+	private void startLockService() {
 		startDetectTask();
 		mServiceStarted = true;
 	}

@@ -191,7 +191,7 @@
     <!-- AppWall -->
     <string name="app_wall">应用推荐</string>
     <!-- 隐私策略 -->
-    <string name="protocolBar">隐私策略</string>
+    <string name="protocolBar">隐私保护协议</string>
     <string name="protocolTitl">\n<b>Privacy Policy</b>\n</string>
     <string name="protocol">			         Welcome to App Master. This Privacy Policy describes how your information is collected, used and shared when you use our services. 
 			  We, App Master, regards our users’ information as top priority and have been taking great efforts to provide you with best web experience.
