@@ -322,12 +322,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                 LockFragment.FROM_SELF);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        startActivityForResult(intent, 1000);
+        startActivityForResult(intent, REQUEST_CODE_LOCK);
     }
 
     @Override
     public void onActivityResault(int requestCode, int resultCode) {
-        LeoLog.e("AppLockListActivity", "onActivityResault: requestCode = "
+        LeoLog.e("ImageHideMainActivity", "onActivityResault: requestCode = "
                 + requestCode + "    resultCode = " + resultCode);
             mShouldLockOnRestart = false;
     }
