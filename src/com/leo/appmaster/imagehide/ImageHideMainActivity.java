@@ -16,6 +16,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -54,13 +55,17 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
     
-    private boolean mDontLock = false;
-    
     String[] STORE_HIDEIMAGES = new String[] {               
             MediaStore.Files.FileColumns.DISPLAY_NAME, 
             MediaStore.Files.FileColumns.DATA, 
             MediaStore.Files.FileColumns._ID, // 
     };
+    
+    private boolean mShouldLockOnRestart = true;
+    
+
+    public static final int REQUEST_CODE_LOCK = 1000;
+    public static final int REQUEST_CODE_OPTION = 1001;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,29 +122,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     protected void onRestart() {
         // TODO Auto-generated method stub
         super.onRestart();
-        
-        if (mDontLock) {
-            mDontLock = false;
-            return;
-        }
-        
-        Intent intent = new Intent(this, LockScreenActivity.class);
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        intent.putExtra(LockScreenActivity.EXTRA_LOCK_TITLE, getString(R.string.app_image_hide));
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                ImageHideMainActivity.class.getName());
-        startActivity(intent);
-        finish();
-        
     }
 
     @Override
@@ -147,15 +129,13 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         Intent intent;
         switch (view.getId()) {
             case R.id.add_hide_image:
-                mDontLock = true;
                 intent = new Intent(this, ImageGalleryActivity.class);
-                this.startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
             case R.id.tv_option_text:
-                mDontLock = true;
                 intent = new Intent(this, LockOptionActivity.class);
                 intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_IMAGEHIDE);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
             default:
                 break;
@@ -296,18 +276,58 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                     @Override
                     public void onItemClick(AdapterView<?> arg0, View arg1,
                             int position, long arg3) {                        
-                        mDontLock = true;
                         Intent intent = new Intent(ImageHideMainActivity.this, ImageGridActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("data", mAlbumList.get(position)); 
                         intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);  
                         intent.putExtras(bundle);
-                        startActivity(intent);
+                        startActivityForResult(intent, REQUEST_CODE_OPTION);
                     } 
                 });
             }
         }  
  
+    }
+    
+    @Override
+    public void onActivityCreate() {
+        LeoLog.e("ImageHideMainActivity", "onActivityCreate");
+        // showLockPage();
+    }
+
+    @Override
+    public void onActivityRestart() {
+        LeoLog.e("ImageHideMainActivity", "onActivityRestart");
+        if (mShouldLockOnRestart) {
+            showLockPage();
+        } else {
+            mShouldLockOnRestart = true;
+        }
+    }
+
+    private void showLockPage() {
+        LeoLog.e("ImageHideMainActivity", "showLockPage");
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        int lockType = AppMasterPreference.getInstance(this).getLockType();
+        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_PASSWD);
+        } else {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_GESTURE);
+        }
+        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+                LockFragment.FROM_SELF);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivityForResult(intent, 1000);
+    }
+
+    @Override
+    public void onActivityResault(int requestCode, int resultCode) {
+        LeoLog.e("AppLockListActivity", "onActivityResault: requestCode = "
+                + requestCode + "    resultCode = " + resultCode);
+            mShouldLockOnRestart = false;
     }
     
 }

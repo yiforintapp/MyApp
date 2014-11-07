@@ -30,18 +30,21 @@ public class BaseActivity extends Activity implements ILock {
 		super.onDestroy();
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		StatService.onResume(this);
-	}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (SDKWrapper.isChannelFor91()) {
+            StatService.onResume(this);
+        }
+    }
 
-	@Override
-	protected void onPause() {
-		StatService.onPause(this);
-		super.onPause();
-	}
-
+    @Override
+    protected void onPause() {
+        if (SDKWrapper.isChannelFor91()) {
+            StatService.onPause(this);
+        }
+        super.onPause();
+    }
 	@Override
 	protected void onStart() {
 		FlurryAgent.onStartSession(this, "QCKRJN2WQNJN9QBKS5DD");
