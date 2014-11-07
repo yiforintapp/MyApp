@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/app_list_bg" >
+    android:background="@drawable/app_list_bg"
+    android:gravity="center" >
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_title_bar"
@@ -11,27 +12,51 @@
         android:layout_alignParentTop="true"
         android:background="@color/app_background" />
 
-    <FrameLayout
+    <com.leo.appmaster.ui.PagedGridView
+        android:id="@+id/pager_unlock"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_title_bar"
         android:paddingLeft="2dp"
-        android:paddingRight="2dp" >
-
-        <com.leo.appmaster.ui.PagedGridView
-            android:id="@+id/pager_unlock"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+        android:paddingRight="2dp" />
 
     <RelativeLayout
         android:id="@+id/mask_layer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/guide_locklist"
-        android:visibility="visible" >
-        
-        
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/lock_guide" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="26dp"
+            android:text="@string/start_guide"
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="124dp"
+            android:layout_marginTop="198dp"
+            android:text="@string/lock_guide"
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
+
     </RelativeLayout>
 
 </RelativeLayout>

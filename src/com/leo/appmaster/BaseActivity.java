@@ -1,4 +1,3 @@
-
 package com.leo.appmaster;
 
 /**
@@ -8,47 +7,78 @@ package com.leo.appmaster;
 
 import com.baidu.mobstat.StatService;
 import com.flurry.android.FlurryAgent;
+import com.leo.appmaster.applocker.ILock;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity implements ILock {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        AppMasterApplication.getInstance().addActivity(this);
-        super.onCreate(savedInstanceState);
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		onActivityCreate();
+		AppMasterApplication.getInstance().addActivity(this);
+		super.onCreate(savedInstanceState);
+	}
 
-    @Override
-    protected void onDestroy() {
-        AppMasterApplication.getInstance().removeActivity(this);
-        super.onDestroy();
-    }
+	@Override
+	protected void onDestroy() {
+		AppMasterApplication.getInstance().removeActivity(this);
+		super.onDestroy();
+	}
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        StatService.onResume(this);
-    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		StatService.onResume(this);
+	}
 
-    @Override
-    protected void onPause() {
-        StatService.onPause(this);
-        super.onPause();
-    }
+	@Override
+	protected void onPause() {
+		StatService.onPause(this);
+		super.onPause();
+	}
 
-    @Override
-    protected void onStart() {
-        FlurryAgent.onStartSession(this, "QCKRJN2WQNJN9QBKS5DD");
-        super.onStart();
-    }
+	@Override
+	protected void onStart() {
+		FlurryAgent.onStartSession(this, "QCKRJN2WQNJN9QBKS5DD");
+		super.onStart();
+	}
 
-    @Override
-    protected void onStop() {
-        FlurryAgent.onEndSession(this);
-        super.onStop();
-    }
+	@Override
+	protected void onStop() {
+		FlurryAgent.onEndSession(this);
+		super.onStop();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		onActivityResault(requestCode, resultCode);
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	protected void onRestart() {
+		onActivityRestart();
+		super.onRestart();
+	}
+
+	@Override
+	public void onActivityCreate() {
+
+	}
+
+	@Override
+	public void onActivityRestart() {
+
+	}
+
+	@Override
+	public void onActivityResault(int requestCode, int resultCode) {
+
+	}
 
 }

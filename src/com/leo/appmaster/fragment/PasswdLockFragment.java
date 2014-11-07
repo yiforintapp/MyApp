@@ -1,25 +1,13 @@
 package com.leo.appmaster.fragment;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.LockOptionActivity;
-import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.applocker.WaitActivity;
-import com.leo.appmaster.applocker.logic.LockHandler;
-import com.leo.appmaster.applocker.service.LockService;
-import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
-import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.utils.AppUtil;
 
 public class PasswdLockFragment extends LockFragment implements OnClickListener {
@@ -81,10 +69,10 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener 
 					+ passwdtip);
 		}
 
-		if (mPackage != null) {
+		if (mPackageName != null) {
 			mAppicon = (ImageView) findViewById(R.id.iv_app_icon);
 			mAppicon.setImageDrawable(AppUtil.getDrawable(
-					mActivity.getPackageManager(), mPackage));
+					mActivity.getPackageManager(), mPackageName));
 			mAppicon.setVisibility(View.VISIBLE);
 		}
 
@@ -140,38 +128,13 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener 
 		mInputCount++;
 		AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
 
-		if (pref.getPassword().equals(mTempPasswd)) { // 密码输入正确
-			if (mFrom == FROM_SELF) {
-				Intent intent = null;
-				// try start lock service
-				intent = new Intent(mActivity, LockService.class);
-				mActivity.startService(intent);
-
-				if (LockOptionActivity.class.getName().equals(mActivityName)) {
-					intent = new Intent(mActivity, LockOptionActivity.class);
-				} else {
-				    if (!TextUtils.isEmpty(mActivityName)) {
-				        intent = new Intent();
-				        ComponentName componentName = new ComponentName(  
-                                AppMasterApplication.getInstance().getPackageName(),  
-				                mActivityName);
-				        intent.setComponent(componentName); 
-				    } else {
-	                    intent = new Intent(mActivity, AppLockListActivity.class);
-				    }
-
-				}
-				mActivity.startActivity(intent);
-			} else if (mFrom == LockFragment.FROM_OTHER) {
-				unlockSucceed(mPackage);
-			}
-			mActivity.finish();
+		if (pref.getPassword().equals(mTempPasswd)) {
+			((LockScreenActivity)mActivity).onUnlockSucceed();
 		} else {
 			if (mInputCount >= mMaxInput) {
-				Intent intent = new Intent(mActivity, WaitActivity.class);
-				intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
-				mActivity.startActivity(intent);
-				mActivity.finish();
+				mInputCount = 0;
+				mPasswdTip.setText(R.string.passwd_hint);
+				((LockScreenActivity) mActivity).onUolockOutcount();
 			} else {
 				mPasswdTip.setText(String.format(
 						mActivity.getString(R.string.input_error_tip),
@@ -233,7 +196,6 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener 
 
 	@Override
 	public void onNewIntent(Intent intent) {
-		// TODO Auto-generated method stub
 
 	}
 }

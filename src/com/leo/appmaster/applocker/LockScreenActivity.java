@@ -7,6 +7,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.logic.LockHandler;
+import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
@@ -17,7 +18,9 @@ import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FastBlur;
+import com.leo.appmaster.utils.LeoLog;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -43,10 +46,12 @@ public class LockScreenActivity extends FragmentActivity implements
 
 	public static String EXTRA_UNLOCK_FROM = "extra_unlock_from";
 	public static String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
-	public static String EXTRA_FROM_ACTIVITY = "extra_form_activity";
-    public static String EXTRA_LOCK_TITLE = "extra_lock_title";
-	
-	int mFrom;
+	public static String EXTRA_TO_ACTIVITY = "extra_to_activity";
+	public static String EXTRA_LOCK_TITLE = "extra_lock_title";
+
+	int mFromType;
+	private String mToPackage;
+	private String mToActivity;
 	private CommonTitleBar mTtileBar;
 	private LockFragment mFragment;
 	private Bitmap mAppBaseInfoLayoutbg;
@@ -61,6 +66,7 @@ public class LockScreenActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_lock_setting);
 		handleIntent();
 		initUI();
+		LeoLog.e("LockScreenActivity", "onCreate");
 	}
 
 	@Override
@@ -77,9 +83,10 @@ public class LockScreenActivity extends FragmentActivity implements
 		} else {
 			mFragment = new GestureLockFragment();
 		}
-		mFrom = intent.getIntExtra(EXTRA_UNLOCK_FROM, LockFragment.FROM_SELF);
+		mFromType = intent.getIntExtra(EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF);
 
-		if (mFrom == LockFragment.FROM_OTHER) {
+		if (mFromType == LockFragment.FROM_OTHER) {
 			BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
 					getPackageManager(),
 					intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
@@ -87,10 +94,11 @@ public class LockScreenActivity extends FragmentActivity implements
 			setAppInfoBackground(bd);
 		}
 		mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
-		mFragment.setFrom(mFrom);
-		mFragment.setPackage(intent
-				.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
-		mFragment.setActivity(intent.getStringExtra(EXTRA_FROM_ACTIVITY));
+		mFragment.setFrom(mFromType);
+		mToPackage = intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG);
+		mToActivity = intent.getStringExtra(EXTRA_TO_ACTIVITY);
+		mFragment.setPackage(mToPackage);
+		mFragment.setActivity(mToActivity);
 	}
 
 	private void setAppInfoBackground(Drawable drawable) {
@@ -133,12 +141,12 @@ public class LockScreenActivity extends FragmentActivity implements
 			mTtileBar.setOptionListener(this);
 		}
 
-		if (mFrom == LockFragment.FROM_SELF) {
+		if (mFromType == LockFragment.FROM_SELF) {
 			mTtileBar.openBackView();
 			if (TextUtils.isEmpty(mLockTitle)) {
-		         mTtileBar.setTitle(R.string.app_lock);
+				mTtileBar.setTitle(R.string.app_lock);
 			} else {
-	              mTtileBar.setTitle(mLockTitle);
+				mTtileBar.setTitle(mLockTitle);
 			}
 		} else {
 			mTtileBar.setBackArrowVisibility(View.GONE);
@@ -148,6 +156,39 @@ public class LockScreenActivity extends FragmentActivity implements
 		FragmentTransaction tans = fm.beginTransaction();
 		tans.replace(R.id.fragment_contain, mFragment);
 		tans.commit();
+	}
+
+	public void onUnlockSucceed() {
+		if (mFromType == LockFragment.FROM_SELF) {
+			Intent intent = null;
+			intent = new Intent(this, LockService.class);
+			this.startService(intent);
+
+			finish();
+
+		} else if (mFromType == LockFragment.FROM_OTHER) {
+			// input right gesture, just finish self
+			Intent intent = new Intent(LockHandler.ACTION_APP_UNLOCKED);
+			intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mToPackage);
+			sendBroadcast(intent);
+			finish();
+		} else if (mFromType == LockFragment.FROM_SELF_HOME) {
+			Intent intent = null;
+			// try start lock service
+			intent = new Intent(this, LockService.class);
+			this.startService(intent);
+
+			intent = new Intent();
+			intent.setClassName(this, mToActivity);
+			this.startActivity(intent);
+			finish();
+		}
+	}
+
+	public void onUolockOutcount() {
+		Intent intent = new Intent(this, WaitActivity.class);
+		intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mToPackage);
+		startActivity(intent);
 	}
 
 	private void findPasswd() {
@@ -166,15 +207,19 @@ public class LockScreenActivity extends FragmentActivity implements
 
 	@Override
 	public void onBackPressed() {
-		if (mFrom == LockFragment.FROM_SELF) {
-			super.onBackPressed();
+		Intent intent = new Intent();
+		if (mFromType == LockFragment.FROM_SELF) {
+			intent.setClassName(getApplicationContext(),
+					HomeActivity.class.getName());
+			intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
+					| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
 		} else {
-			Intent intent = new Intent();
 			intent.setAction(Intent.ACTION_MAIN);
 			intent.addCategory(Intent.CATEGORY_HOME);
-			this.startActivity(intent);
-			finish();
 		}
+		startActivity(intent);
+		finish();
 	}
 
 	@Override
@@ -225,7 +270,7 @@ public class LockScreenActivity extends FragmentActivity implements
 				Intent intent = new Intent(this, LockSettingActivity.class);
 				intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
 				this.startActivity(intent);
-
+				finish();
 			} else {
 				Toast.makeText(this, R.string.reinput_anwser, 0).show();
 				mEtAnwser.setText("");
@@ -233,6 +278,5 @@ public class LockScreenActivity extends FragmentActivity implements
 		} else if (which == 0) { // cancel
 			mDialog.dismiss();
 		}
-
 	}
 }

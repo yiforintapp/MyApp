@@ -110,30 +110,30 @@ public class LockHandler extends BroadcastReceiver {
 				}
 			}
 		} else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-			List<String> list = AppMasterPreference.getInstance(mContext)
-					.getLockedAppList();
-			LeoLog.e("onReceive", "mLastRunningPkg = " + mLastRunningPkg);
-			if (list.contains(mLastRunningPkg)) {
-				Intent intent2 = new Intent(mContext, LockScreenActivity.class);
-				if (!mLockPolicy.onHandleLock(mLastRunningPkg)) {
-					int lockType = AppMasterPreference.getInstance(mContext)
-							.getLockType();
-					if (lockType == AppMasterPreference.LOCK_TYPE_NONE)
-						return;
-					if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-						intent2.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-								LockFragment.LOCK_TYPE_PASSWD);
-					} else if (lockType == AppMasterPreference.LOCK_TYPE_GESTURE) {
-						intent2.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-								LockFragment.LOCK_TYPE_GESTURE);
-					}
-					intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					intent2.putExtra(EXTRA_LOCKED_APP_PKG, mLastRunningPkg);
-					intent2.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-							LockFragment.FROM_OTHER);
-					mContext.startActivity(intent2);
-				}
-			}
+//			List<String> list = AppMasterPreference.getInstance(mContext)
+//					.getLockedAppList();
+//			LeoLog.e("onReceive", "mLastRunningPkg = " + mLastRunningPkg);
+//			if (list.contains(mLastRunningPkg)) {
+//				Intent intent2 = new Intent(mContext, LockScreenActivity.class);
+//				if (!mLockPolicy.onHandleLock(mLastRunningPkg)) {
+//					int lockType = AppMasterPreference.getInstance(mContext)
+//							.getLockType();
+//					if (lockType == AppMasterPreference.LOCK_TYPE_NONE)
+//						return;
+//					if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+//						intent2.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+//								LockFragment.LOCK_TYPE_PASSWD);
+//					} else if (lockType == AppMasterPreference.LOCK_TYPE_GESTURE) {
+//						intent2.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+//								LockFragment.LOCK_TYPE_GESTURE);
+//					}
+//					intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//					intent2.putExtra(EXTRA_LOCKED_APP_PKG, mLastRunningPkg);
+//					intent2.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+//							LockFragment.FROM_OTHER);
+//					mContext.startActivity(intent2);
+//				}
+//			}
 		}
 	}
 }

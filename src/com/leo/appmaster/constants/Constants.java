@@ -9,7 +9,7 @@ public class Constants {
 
 	public static final String APP_LOCK_LIST_DEBUG2 = "http://192.168.1.142:8080/appmaster/appmaster/applockerrecommend";
 	
-	public static final int LOCK_TIP_INTERVAL_OF_DATE = 3;
+	public static final int LOCK_TIP_INTERVAL_OF_DATE = 1;
 //	public static final int LOCK_TIP_INTERVAL_OF_MS= 3 * 24 * 60 * 60 * 1000;
 	public static final int LOCK_TIP_INTERVAL_OF_MS= 3 * 60 * 1000;
 }

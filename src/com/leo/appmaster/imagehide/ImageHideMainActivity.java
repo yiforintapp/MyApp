@@ -135,7 +135,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         intent.putExtra(LockScreenActivity.EXTRA_LOCK_TITLE, getString(R.string.app_image_hide));
         intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
                 LockFragment.FROM_SELF);
-        intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
+        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
                 ImageHideMainActivity.class.getName());
         startActivity(intent);
         finish();

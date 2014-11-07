@@ -19,6 +19,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockOptionActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.WaitActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
@@ -31,12 +32,11 @@ import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListene
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LockPatternUtils;
 
-public class GestureLockFragment extends LockFragment implements OnPatternListener {
+public class GestureLockFragment extends LockFragment implements
+		OnPatternListener {
 	private LockPatternView mLockPatternView;
 	private TextView mGestureTip;
 	private ImageView mAppIcon;
-
-	private LeoDoubleLinesInputDialog mDialog;
 
 	@Override
 	protected int layoutResourceId() {
@@ -50,10 +50,10 @@ public class GestureLockFragment extends LockFragment implements OnPatternListen
 
 		mGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
 
-		if (mPackage != null) {
+		if (mPackageName != null) {
 			mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
 			mAppIcon.setImageDrawable(AppUtil.getDrawable(
-					mActivity.getPackageManager(), mPackage));
+					mActivity.getPackageManager(), mPackageName));
 			mAppIcon.setVisibility(View.VISIBLE);
 		}
 	}
@@ -88,39 +88,13 @@ public class GestureLockFragment extends LockFragment implements OnPatternListen
 	private void checkGesture(String gesture) {
 		mInputCount++;
 		AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
-		if (pref.getGesture().equals(gesture)) { // 密码输入正确
-			if (mFrom == FROM_SELF) {
-				Intent intent = null;
-				// try start lock service
-				intent = new Intent(mActivity, LockService.class);
-				mActivity.startService(intent);
-				if (LockOptionActivity.class.getName().equals(mActivityName)) {
-					intent = new Intent(mActivity, LockOptionActivity.class);
-				} else {
-	                   if (!TextUtils.isEmpty(mActivityName)) {
-	                        intent = new Intent();
-	                        ComponentName componentName = new ComponentName(  
-	                                AppMasterApplication.getInstance().getPackageName(),  
-	                                mActivityName);
-	                        intent.setComponent(componentName); 
-	                    } else {
-	                        intent = new Intent(mActivity, AppLockListActivity.class);
-	                    }
-				}
-				mActivity.startActivity(intent);
-			} else if (mFrom == FROM_OTHER) {
-				// input right gesture, just finish self
-				unlockSucceed(mPackage);
-			}
-			mActivity.finish();
+		if (pref.getGesture().equals(gesture)) {
+			((LockScreenActivity) mActivity).onUnlockSucceed();
 		} else {
 			if (mInputCount >= mMaxInput) {
-				Intent intent = new Intent(mActivity, WaitActivity.class);
-				intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
-				mActivity.startActivity(intent);
-				// mGestureTip.setText(R.string.please_input_gesture);
-				// mInputCount = 0;
-				mActivity.finish();
+				((LockScreenActivity) mActivity).onUolockOutcount();
+				mGestureTip.setText(R.string.please_input_gesture);
+				mInputCount = 0;
 			} else {
 				mGestureTip.setText(String.format(
 						mActivity.getString(R.string.input_error_tip),
@@ -131,7 +105,8 @@ public class GestureLockFragment extends LockFragment implements OnPatternListen
 	}
 
 	private void shakeGestureTip() {
-		Animation shake = AnimationUtils.loadAnimation(mActivity, R.anim.up_down_shake);
+		Animation shake = AnimationUtils.loadAnimation(mActivity,
+				R.anim.up_down_shake);
 		mGestureTip.startAnimation(shake);
 	}
 

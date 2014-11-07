@@ -35,12 +35,12 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 	private CheckBoxPreference mForbidUninstall, mAutoLock;
 	private Preference mSetProtect;
-	private boolean mGotoSetting;
-	
-    public static final String TAG_COME_FROM = "come_from";
+	private boolean mShouldLockOnRestart;
+
+	public static final String TAG_COME_FROM = "come_from";
 	public static final int FROM_APPLOCK = 0;
-    public static final int FROM_IMAGEHIDE = 1;
-	
+	public static final int FROM_IMAGEHIDE = 1;
+
 	private int mComeFrom = FROM_APPLOCK;
 
 	@Override
@@ -54,10 +54,10 @@ public class LockOptionActivity extends PreferenceActivity implements
 	}
 
 	private void initIntent() {
-	    Intent intent = getIntent();
-	    mComeFrom = intent.getIntExtra(TAG_COME_FROM, 0);
+		Intent intent = getIntent();
+		mComeFrom = intent.getIntExtra(TAG_COME_FROM, 0);
 	}
-	
+
 	private void setupPreference() {
 		mForbidUninstall = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL);
 		mAutoLock = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_AUTO_LOCK);
@@ -67,16 +67,17 @@ public class LockOptionActivity extends PreferenceActivity implements
 		mChangeProtectQuestion = (Preference) findPreference("set_passwd_protect");
 		mChangePasswdTip = (Preference) findPreference("set_passwd_tip");
 		if (mComeFrom == FROM_IMAGEHIDE) {
-		    getPreferenceScreen().removePreference(mAutoLock);
-		    getPreferenceScreen().removePreference(mLockTime);
-	          getPreferenceScreen().removePreference(findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP));
+			getPreferenceScreen().removePreference(mAutoLock);
+			getPreferenceScreen().removePreference(mLockTime);
+			getPreferenceScreen().removePreference(
+					findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP));
 		}
 		mResetPasswd.setOnPreferenceClickListener(this);
 		mForbidUninstall.setOnPreferenceChangeListener(this);
-        if (mComeFrom == FROM_APPLOCK) {
-            mAutoLock.setOnPreferenceChangeListener(this);
-            mLockTime.setOnPreferenceClickListener(this);
-        }
+		if (mComeFrom == FROM_APPLOCK) {
+			mAutoLock.setOnPreferenceChangeListener(this);
+			mLockTime.setOnPreferenceClickListener(this);
+		}
 		mChangeProtectQuestion.setOnPreferenceClickListener(this);
 		mChangePasswdTip.setOnPreferenceClickListener(this);
 	}
@@ -91,27 +92,40 @@ public class LockOptionActivity extends PreferenceActivity implements
 		}
 	}
 
+	private void showLockPage() {
+		LeoLog.e("LockOptionActivity", "showLockPage");
+		Intent intent = new Intent(this, LockScreenActivity.class);
+		int lockType = AppMasterPreference.getInstance(this).getLockType();
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_PASSWD);
+		} else {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_GESTURE);
+		}
+		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		startActivityForResult(intent, 1000);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		LeoLog.e("LockOptionActivity", "onActivityResault: requestCode = "
+				+ requestCode + "    resultCode = " + resultCode);
+		mShouldLockOnRestart = false;
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		if (!mGotoSetting) {
-			Intent intent = new Intent(this, LockScreenActivity.class);
-			int lockType = AppMasterPreference.getInstance(this).getLockType();
-			if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-				intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-						LockFragment.LOCK_TYPE_PASSWD);
-			} else {
-				intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-						LockFragment.LOCK_TYPE_GESTURE);
-			}
-			intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-					LockFragment.FROM_SELF);
-			intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
-					LockOptionActivity.class.getName());
-			startActivity(intent);
-			finish();
+		if (mShouldLockOnRestart) {
+			showLockPage();
+		} else {
+			mShouldLockOnRestart = true;
 		}
-		mGotoSetting = false;
 	}
 
 	@Override
@@ -152,7 +166,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		String key = preference.getKey();
 		if (AppMasterPreference.PREF_FORBIND_UNINSTALL.equals(key)) {
-			mGotoSetting = true;
+			mShouldLockOnRestart = true;
 			Intent intent = null;
 			ComponentName component = new ComponentName(this,
 					DeviceReceiver.class);
@@ -169,14 +183,16 @@ public class LockOptionActivity extends PreferenceActivity implements
 						component);
 				startActivity(intent);
 			}
-			if((Boolean)newValue){
-			    SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "banremove");
+			if ((Boolean) newValue) {
+				SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting",
+						"banremove");
 			}
 		} else if (AppMasterPreference.PREF_AUTO_LOCK.equals(key)) {
 			mAutoLock.setChecked((Boolean) newValue);
-			if(!((Boolean)newValue)){
-                SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "cancel_auto");
-            }
+			if (!((Boolean) newValue)) {
+				SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting",
+						"cancel_auto");
+			}
 		}
 
 		return false;
@@ -190,20 +206,17 @@ public class LockOptionActivity extends PreferenceActivity implements
 			onCreateChoiceDialog(AppMasterPreference.getInstance(this)
 					.getRelockTimeout());
 		} else if ("change_passwd".equals(key)) {
-			mGotoSetting = true;
 			Intent intent = new Intent(this, LockSettingActivity.class);
 			intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
-			startActivity(intent);
+			startActivityForResult(intent, 0);
 			SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "changepwd");
 		} else if ("set_passwd_protect".equals(key)) {
-			mGotoSetting = true;
 			Intent intent = new Intent(this, PasswdProtectActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, 0);
 			SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "pwdp");
 		} else if ("set_passwd_tip".equals(key)) {
-			mGotoSetting = true;
 			Intent intent = new Intent(this, PasswdTipActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, 0);
 			SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "pwdn");
 		}
 
@@ -233,7 +246,9 @@ public class LockOptionActivity extends PreferenceActivity implements
 										LockOptionActivity.this)
 										.setRelockTimeout(
 												valueString[whichButton]);
-								SDKWrapper.addEvent(LockOptionActivity.this, LeoStat.P1, "lock_setting", valueString[whichButton]);
+								SDKWrapper.addEvent(LockOptionActivity.this,
+										LeoStat.P1, "lock_setting",
+										valueString[whichButton]);
 								dialog.dismiss();
 							}
 						})
