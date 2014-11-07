@@ -68,8 +68,6 @@ public class LockReceiver extends BroadcastReceiver {
 		Intent intent = new Intent(ctx, LockScreenActivity.class);
 		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 				LockFragment.FROM_SELF);
-		intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
-				"AppMasterApplication");
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);

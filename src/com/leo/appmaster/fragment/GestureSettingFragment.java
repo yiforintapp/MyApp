@@ -94,7 +94,7 @@ public class GestureSettingFragment extends BaseFragment implements
 			mTvGestureTip.setText(R.string.set_gesture);
 		}
 
-		mTvPasswdFuncTip.setText(R.string.digital_passwd_function_hint);
+		mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
 	}
 
 	@Override
