@@ -148,7 +148,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                             success = false;
                             break;
                         }
-                        mBackupListener.onBackupProcessChanged(doneNum, totalNum, app.getAppLabel());
+                        if (mBackupListener != null) {
+                            mBackupListener.onBackupProcessChanged(doneNum, totalNum, app.getAppLabel());
+                        }
                         doneNum ++;
                         failType = tryBackupApp(app);
                         if(failType== FAIL_TYPE_NONE) {
@@ -158,10 +160,12 @@ public class AppBackupRestoreManager implements AppChangeListener{
                             break;
                         }
                     }
-                    if(doneNum == totalNum) {
-                        mBackupListener.onBackupProcessChanged(doneNum, totalNum, null);
+                    if (mBackupListener != null) {
+                        if(doneNum == totalNum) {
+                            mBackupListener.onBackupProcessChanged(doneNum, totalNum, null);
+                        }
+                        mBackupListener.onBackupFinish(success, successNum, totalNum, getFailMessage(failType));
                     }
-                    mBackupListener.onBackupFinish(success, successNum, totalNum, getFailMessage(failType));
                 }
             });
         }
