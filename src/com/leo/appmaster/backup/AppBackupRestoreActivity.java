@@ -337,7 +337,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 				if (success) {
 					showMessageDialog(getString(R.string.backup_finish), String
 							.format(getString(R.string.backuped_count),
-									totalNum, message));
+							        successNum, message));
 				} else {
 					Toast.makeText(AppBackupRestoreActivity.this, message,
 							Toast.LENGTH_LONG).show();
