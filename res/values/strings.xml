@@ -124,8 +124,7 @@
     <string name="app_permission1">Top-secret Privacy Control</string>
     <string name="app_permission2">Common Privacy Control</string>
     <string name="app_permission3">Important Privacy Control</string>
-    <string name="app_setting_update">Check for updates</string>
-    <string name="app_setting_update_new">&#160;&#160;&#160;Check for updates<Data><![CDATA[ <b><font color="#ff0000">NEW</font></b> ]]></Data></string>
+    <string name="app_setting_update">Updates</string>
     <string name="app_setting_about">About</string>
     <string name="forbid_uninstall">Uninstall Protection</string>
     <string name="auto_lock">Auto-lock after screen turns off</string>
@@ -135,7 +134,7 @@
     <string name="passwd_notify">Password Hint</string>
     <string name="no_lock_item_tip">No locked Apps</string>
     <string name="no_unlocked_item_tip">No unlocked Apps</string>
-    <string name="app_setting_has_update">&#160;&#160;&#160;Check for updates <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
+    <string name="app_setting_has_update">&#160;&#160;&#160;Updates <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">Maximum of 40 characters.</string>
     <string name="anwser_charsize_tip">Maximum of 40 characters.</string>
     <string name="query_delete">Are you sure you want to permanently delete backup file of%1$s</string>

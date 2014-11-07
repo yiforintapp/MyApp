@@ -80,8 +80,17 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		path += "leo/appmaster/.backup/";
 		File file = new File(path);
 		if (file.exists()) {
-			boolean ret = file.renameTo(new File(newName));
-			if (ret) {
+			boolean ret;
+	try {
+				ret = file.renameTo(new File(newName));
+			} catch (Exception e) {
+				String newPath = path + AppBackupRestoreManager.BACKUP_PATH;
+				File newFile = new File(newPath);
+				newFile.mkdirs();
+				ret = file.renameTo(new File(newPath));
+				e.printStackTrace();
+			}
+	if (ret) {
 				// Toast.makeText(this, "success",Toast.LENGTH_LONG).show();
 				LeoLog.i("AppBackupRestoreActivity", "*******rename success");
 			} else {
@@ -337,7 +346,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 				if (success) {
 					showMessageDialog(getString(R.string.backup_finish), String
 							.format(getString(R.string.backuped_count),
-									totalNum, message));
+							        successNum, message));
 				} else {
 					Toast.makeText(AppBackupRestoreActivity.this, message,
 							Toast.LENGTH_LONG).show();
