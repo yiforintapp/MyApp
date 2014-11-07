@@ -189,6 +189,8 @@
     <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
     <!-- AppWall -->
     <string name="app_wall">应用推荐</string>
+    <string name="app_wall_network">网络或服务器异常请重新尝试！</string>
+    <string name="app_wall_click">点击重试 </string>
     <!-- 隐私策略 -->
     <string name="protocolBar">隐私保护协议</string>
     <string name="protocolTitl">\n<b>Privacy Policy</b>\n</string>
