@@ -316,6 +316,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         setContentView(R.layout.dialog_progress_sdk);
         TextView tvHint = (TextView) findViewById(R.id.dlg_title);
         tvHint.setText(getString(R.string.check_update));
+        TextView tvContent = (TextView) findViewById(R.id.dlg_content);
+        tvContent.setText(getString(R.string.checking_update_msg));
         TextView tvCancel = (TextView) findViewById(R.id.dlg_bottom_btn);
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override

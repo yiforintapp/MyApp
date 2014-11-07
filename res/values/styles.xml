@@ -91,10 +91,10 @@
         <item name="android:indeterminateDrawable">@drawable/unified_loading_circle_2_drawable</item>
         <item name="android:indeterminateBehavior">repeat</item>
         <item name="android:indeterminateDuration">2000</item>
-        <item name="android:minWidth">37dip</item>
-        <item name="android:maxWidth">37dip</item>
-        <item name="android:minHeight">37dip</item>
-        <item name="android:maxHeight">37dip</item>
+        <item name="android:minWidth">48dip</item>
+        <item name="android:maxWidth">48dip</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:maxHeight">48dip</item>
     </style>
 
     <style name="RightEnterAnim">

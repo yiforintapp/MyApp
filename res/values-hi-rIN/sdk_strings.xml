@@ -15,7 +15,7 @@
     <string name="download_error">डाउनलोड नेटवर्क की जाँच करें और पुन: प्रयास विफल</string>
     <string name="network_error_msg">अभी नेटवर्क उपलब्ध नहीं है, नेटवर्क सेटिंग्स की जाँच करें!</string>
     <string name="check_update">अपडेट की जांच करें</string>
-    <string name="checking_update_msg">अपडेट की जांच की जा रही है।</string>
+    <string name="checking_update_msg">अपडेट की जांच की जा रही है।  &#8230;</string>
     <string name="check_failed">जांच करने में विफल हो गया</string>
     <string name="network_busy_msg">नेटवर्क व्यस्त है, बाद में पुन: प्रयास करें!</string>
     <string name="retry">पुन: प्रयास करें</string>
