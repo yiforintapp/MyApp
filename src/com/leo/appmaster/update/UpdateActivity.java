@@ -136,6 +136,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             public void onClick(View arg0) {
                 mManager.onCancelDownload();
                 if (mParam == UpdateManager.FORCE_UPDATE) {
+                    finish();
                     AppMasterApplication.getInstance().exitApplication();
                 } else {
                     finish();
@@ -251,6 +252,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             public void onClick(View arg0) {
                 mUIHelper.cancelDownloadNotification();
                 mManager.onCancelDownload();
+                finish();
                 AppMasterApplication.getInstance().exitApplication();
             }
         });
@@ -391,6 +393,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                         mManager.onCancelUpdate();
                     } else if (mParam == UpdateManager.FORCE_UPDATE) {
                         /* this is a force update */
+                        finish();
                         AppMasterApplication.getInstance().exitApplication();
                     }
                     break;
