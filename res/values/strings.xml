@@ -188,6 +188,9 @@
     <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
     <!-- AppWall -->
     <string name="app_wall">Hot Apps</string>
+    <string name="app_wall_network">网络或服务器异常请重新尝试！</string>
+    <string name="app_wall_click">点击重试 </string>
+
     <!-- 隐私策略 -->
     <string name="protocolBar">Privacy Policy</string>
     <string name="passwd_set_gesture_tip">请至少连接4个点</string>

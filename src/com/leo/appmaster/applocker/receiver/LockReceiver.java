@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.service.LockService;
@@ -46,7 +47,7 @@ public class LockReceiver extends BroadcastReceiver {
 				am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
 				return;
 			} else {
-				
+
 				LeoLog.e("LockReceiver", "showNotification");
 				showNotification(context);
 				AppMasterPreference.getInstance(context).setReminded(true);
@@ -73,6 +74,8 @@ public class LockReceiver extends BroadcastReceiver {
 			intent = new Intent(ctx, LockSettingActivity.class);
 			intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 					LockFragment.FROM_SELF_HOME);
+			intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+					AppLockListActivity.class.getName());
 		} else {
 			intent = new Intent(ctx, LockScreenActivity.class);
 			int lockType = pref.getLockType();

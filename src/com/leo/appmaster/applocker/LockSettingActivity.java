@@ -49,13 +49,16 @@ public class LockSettingActivity extends FragmentActivity implements
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		if (mShouldLockOnRestart ) {
-			showLockPage();
+		if (mShouldLockOnRestart) {
+			if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+				showLockPage();
+			}
+
 		} else {
 			mShouldLockOnRestart = true;
 		}
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		LeoLog.e("LockOptionActivity", "onActivityResault: requestCode = "
