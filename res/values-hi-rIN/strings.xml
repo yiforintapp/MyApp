@@ -134,69 +134,54 @@
     <string name="no_lock_item_tip">कोई ताला आवेदन</string>
     <string name="no_unlocked_item_tip">खुला कोई आवेदन</string>
     <string name="app_setting_has_update">&#160;&#160;&#160;नवीनीकरण के लिए जाँच करें <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
-    <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
-    <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
-    <string name="query_delete">是否删除%1$s的备份文件，删除后不可恢复！</string>
-    <string name="backuped_count">成功备份%1$d个文件。存放位置：%2$s</string>
-    <string name="feedback">用户反馈</string>
-    <string name="feedback_commit">提交</string>
-    <string name="feedback_content_tip">您遇到了什么问题？</string>
-    <string name="feedback_email_tip">您的常用邮箱</string>
-    <string name="feedback_category_tip">请选择问题类型</string>
-    <string name="category_lock">应用锁</string>
-    <string name="category_backup">备份</string>
-    <string name="category_boost">加速</string>
-    <string name="category_hide">图片隐藏</string>
-    <string name="category_other">其他问题</string>
-    <string name="category_suggest">给我们建议</string>
-    <string name="feedback_success_title">提交成功</string>
-    <string name="feedback_success_content">感谢您的反馈，我们会尽快处理您的问题</string>
-    <string name="app_image_hide">Image Hide</string>
-    <string name="app_no_image_hide">请点击添加按钮，添加需要隐藏的图片</string>
-    <string name="app_no_image">没有可添加的图片</string>
-    <string name="app_image_gallery">Gallery</string>
-    <string name="app_select_all">Select All</string>
-    <string name="app_select_none">Cancel Selected</string>
-    <string name="app_hide_image">Hide</string>
-    <string name="app_cancel_hide_image">Cancel Hide</string>
-    <string name="app_hide_image_edit">Edit</string>
-    <string name="app_add_hide_image">Add</string>
-    <string name="app_share_hide_image">Share</string>
-    <string name="app_unhide_dialog_content">If cancel to hide this picture ?</string>
-    <string name="app_delete_dialog_content">Is to remove the picture ?</string>
-    <string name="app_unhide_pictures_dialog_content">是否解锁你所选的图片？</string>
-    <string name="app_hide_pictures_dialog_content">是否隐藏你所选的图片？</string>
-    <string name="app_hide_image_fail">Hide picture fail !</string>
+    <string name="question_charsize_tip">अधिकतम.40  अक्षरों का पासवर्ड</string>
+    <string name="anwser_charsize_tip">अधिकतम. 40 अक्षर</string>
+    <string name="query_delete">क्या आप स्थायी रूप से %1$s की बैकअप फ़ाइल को नष्ट करना चाहते हैं?</string>
+    <string name="backuped_count">%1$d फ़ाइलों के बैकअप में सफल. बैकअप स्थान: %2$s</string>
+    <string name="feedback">फ़ीडबैक्स</string>
+    <string name="feedback_commit">प्रस्तुत करें</string>
+    <string name="feedback_content_tip">हम आप के लिए क्या कर सकते हैं ?</string>
+    <string name="feedback_email_tip">आप का ईमेल</string>
+    <string name="feedback_category_tip">एक प्रश्न का चयन करें</string>
+    <string name="category_lock">ऐप लॉक</string>
+    <string name="category_backup">ऐप बैकअप</string>
+    <string name="category_boost">बूस्ट</string>
+    <string name="category_hide">फोटो को छुपाएं</string>
+    <string name="category_other">अन्य प्रश्न</string>
+    <string name="category_suggest">हमें फ़ीडबैक दें</string>
+    <string name="feedback_success_title">प्रस्तुत करने में सफल</string>
+    <string name="feedback_success_content">आपके फ़ीडबैक के लिए धन्यवाद! जितनी जल्दी हो सके हम इसे इस पर गौर करेंगे ।</string>
+    <string name="app_image_hide">फोटो को छुपाएं </string>
+    <string name="app_no_image_hide">फ़ोटो को चुनने के लिए \'ऐड\' क्लिक करें</string>
+    <string name="app_no_image">कोई फ़ोटो का चयन नहीं किया जा सके!</string>
+    <string name="app_image_gallery">गैलरी</string>
+    <string name="app_select_all">सभी को चुनें</string>
+    <string name="app_select_none">सभी चयन रद्द करें</string>
+    <string name="app_hide_image">छिपाएं</string>
+    <string name="app_cancel_hide_image">छिपाना रद्द करें</string>
+    <string name="app_hide_image_edit">संपादित करें</string>
+    <string name="app_add_hide_image">जोड़ें</string>
+    <string name="app_share_hide_image">शेयर करें</string>
+    <string name="app_unhide_dialog_content">इस फ़ोटो का छिपाना रद्द करें?</string>
+    <string name="app_delete_dialog_content">फ़ोटो को रद्द करें?</string>
+    <string name="app_unhide_pictures_dialog_content">चुने गए फ़ोटो का  छिपाना रद्द करें?</string>
+    <string name="app_hide_pictures_dialog_content">चुने गए फ़ोटो को छिपाएं?</string>
+    <string name="app_hide_image_fail">फ़ोटो का चयन नहीं किया जा सके! छुपाने में विफल!</string>
 
     <string-array name="sort_type">
-        <item>默认排序</item>
-        <item>应用名称排序</item>
-        <item>安装时间排序</item>
+        <item>डिफ़ॉल्ट क्रम</item>
+        <item>नाम के अनुसार</item>
+        <item>समय के अनुसार</item>
     </string-array>
 
     <!-- 版权 -->
-    <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
+    <string name="about_copy">कॉपीराइट 2014 लियो नेटवर्क टैक्नोलॉजी. सर्वाधिकार सुरक्षित</string>
     <!-- AppWall -->
-    <string name="app_wall">应用推荐</string>
+    <string name="app_wall">हॉट ऐप्स</string>
     <!-- 隐私策略 -->
-    <string name="protocolBar">隐私保护协议</string>
-    <string name="protocolTitl">\n<b>应用管理大师隐私保护协议</b>\n</string>
-    <string name="protocol">			        欢迎您使用应用管理大师（以下简称“本软件”）软件及服务！本软件承诺遵守应用管理大师隐私保护协议（以下简称“本协议”）
-			        及相关法律规定，以保护您的个人隐私信息。请您务必在使用前认真阅读该隐私保护政策。您的下载、安装及使用本软件及相关服务即视为已阅读并同意本协议的约束。 \n	\n		 <b>应用管理大师将收集哪些信息？</b>\n\n
-			      本软件将不向任何用户要求提供个人隐私信息。在您下载/使用本软件时，我们只能及只会获取‘设备信息，操作系统，语言选项等’非隐私信息。\n \n
-			        您的个人隐私信息只有在以下情况发生时被获取：您参加我们举办的各类活动并自愿提供姓名、邮箱地址、电话号码等个人信息，以用于获奖凭证。是否提供该类信息将取决于您的个人决定。\n\n <b>应用管理大师将如何使用收集到的信息？</b>\n\n
-			        以下情况发生时我们将需要使用您提供的个人信息:\n
-					&#160;&#160;&#160;a. 为您提供技术支持\n
-					&#160;&#160;&#160;b. 利用收集的信息改进和维护我们的产品/服务。 \n
-					&#160;&#160;&#160;c. 为您提供您需要的服务\n
-					&#160;&#160;&#160;d. 数据分析及研究\n
-					&#160;&#160;&#160;e. 调查涉嫌欺诈、侵犯或其他不当行为\n
-					我们将不会与任何第三方透漏你的个人信息，除非出于相关法律法规程序及政府机构的需求。\n \n <b>隐私协议的修订</b>\n\n
-			     根据产品的发展需求，应用管理大师将会对此协议进行不定期的修改。如本协议有任何修改，我方将于官方网站www.leomaster.com中及时发布最新信息以通知用户。如您继续使用本软件及服务，即视为您同意接受这些修改。\n\n <b>联系我们</b>\n\n
-                   如您对本协议有任何疑问或建议，请发送您的宝贵意见至\n</string>
-    <string name="protocolSupport">support@leomaster.com</string>
+    <string name="protocolBar">गोपनीयता की नीति</string>
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
-    <string name="new_app_lock_tip">新装应用加锁提醒</string>
+    <string name="new_app_lock_tip">नई ऐप्स का अनुस्मारक</string>
     <string name="app_recomend">精品推荐</string>
     <string name="first_set_passwd_hint">首次使用请设置密码</string>
     <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>
@@ -210,9 +195,9 @@
     <string name="reset_gesture_passwd">重设手势密码</string>
     <string name="reset_digital_passwd">重设数字密码</string>
     <string name="lock_remind">App Master 提醒您对应用加锁</string>
-    <string name="clean_result">清理内存</string>
+    <string name="clean_result">कैश साफ़ करें</string>
     <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
-    <string name="lock_guide">点击应用，轻松加锁</string>
-    <string name="start_guide">常用应用，推荐加锁</string>
+    <string name="lock_guide">ताला रखने के लिए ऐप को क्लिक करें</string>
+    <string name="start_guide">सबसे अधिक इस्तेमाल किए गए एप्प्स</string>
 
 </resources>
