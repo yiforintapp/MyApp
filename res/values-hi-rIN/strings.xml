@@ -177,6 +177,8 @@
     <!-- 版权 -->
     <string name="about_copy">कॉपीराइट 2014 लियो नेटवर्क टैक्नोलॉजी. सर्वाधिकार सुरक्षित</string>
     <!-- AppWall -->
+    <string name="app_wall_network">网络或服务器异常请重新尝试！</string>
+    <string name="app_wall_click">点击重试 </string>
     <string name="app_wall">हॉट ऐप्स</string>
     <!-- 隐私策略 -->
     <string name="protocolBar">गोपनीयता की नीति</string>
