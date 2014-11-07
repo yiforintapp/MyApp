@@ -81,7 +81,7 @@
             android:layout_marginRight="20dp"
             android:gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/tick_all_normal" />
+            android:src="@drawable/check_all_selector" />
     </FrameLayout>
 
 </FrameLayout>

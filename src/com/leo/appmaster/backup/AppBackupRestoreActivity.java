@@ -266,8 +266,8 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 			if (tag instanceof Boolean) {
 				boolean checkAll = !(Boolean) tag;
 				mBackupAdapter.checkAll(checkAll);
-				mCheckAll.setImageResource(checkAll ? R.drawable.tick_all_sel
-						: R.drawable.tick_all_normal);
+				mCheckAll.setImageResource(checkAll ? R.drawable.check_all_selected_selector
+						: R.drawable.check_all_selector);
 				mCheckAll.setTag(checkAll);
 			}
 		} else if (v.getId() == R.id.tv_option_image) {
@@ -383,7 +383,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		mBackupAdapter.updateData();
 		mInstallText.setText(mBackupManager.getInstalledAppSize());
 		mStorageText.setText(mBackupManager.getAvaiableSizeString());
-		mCheckAll.setImageResource(R.drawable.tick_all_normal);
+		//mCheckAll.setImageResource(R.drawable.tick_all_normal);
 		mCheckAll.setTag(false);
 		mCheckAll.setEnabled(mBackupAdapter.hasBackupApp());
 		if (mRestoreAdapter.isEmpty()) {
