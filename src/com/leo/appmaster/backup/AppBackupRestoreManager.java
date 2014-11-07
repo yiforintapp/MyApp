@@ -480,7 +480,7 @@ public class AppBackupRestoreManager implements AppChangeListener{
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 
-    private String getBackupPath() {
+    public  String getBackupPath() {
         if (isSDReady()) {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath();
             if (!path.endsWith(File.separator)) {

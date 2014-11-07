@@ -1,12 +1,13 @@
 
 package com.leo.appmaster.backup;
 
+import java.io.File;
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -63,8 +64,30 @@ public class AppBackupRestoreActivity extends BaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backup_restore);
         initUI();
+       //  renameFolder();
     }
-
+/*public void renameFolder(){
+	AppBackupRestoreManager am=new AppBackupRestoreManager(this, null);
+	  String newName=am.getBackupPath();
+	  String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+      if (!path.endsWith(File.separator)) {
+          path += File.separator;
+      }
+      path += "leo/appmaster/.backup/";
+	String folderName=path;
+		File file=new File(path);
+		if(file.exists()){
+			  boolean ret = file.renameTo(new File(newName));
+			  if(ret)
+			  {
+				  Toast.makeText(this, "success",Toast.LENGTH_LONG).show();
+			  }else{
+				  Toast.makeText(this, "fail",Toast.LENGTH_LONG).show();
+			  }
+		}
+	
+	
+}	*/
     @Override
     protected void onDestroy() {
         super.onDestroy();

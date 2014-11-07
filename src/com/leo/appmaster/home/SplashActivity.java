@@ -35,7 +35,7 @@ public class SplashActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
-		initUI();
+		initUI();		
 		mEventHandler = new EventHandler(this);
 		mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 1000);
 		startInitTask();
