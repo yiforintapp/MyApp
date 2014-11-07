@@ -16,6 +16,10 @@ import com.leoers.leoanalytics.LeoStat;
 
 public class SDKWrapper {
 
+    private final static String CHANNEL_CODE_FOR_91 = "0011a";
+
+    private static boolean sChannelFor91 = false;
+
     /**
      * initial leo analytics and flurry SDK, this will changed in the future.
      * this should be called in application's onCreate method.
@@ -25,7 +29,14 @@ public class SDKWrapper {
     public static void iniSDK(Context ctx) {
         iniLeoSdk(ctx.getApplicationContext());
         iniFlurry(ctx.getApplicationContext());
-        iniBaidu(ctx);
+        if (ctx.getString(R.string.channel_code).equalsIgnoreCase(CHANNEL_CODE_FOR_91)) {
+            sChannelFor91 = true;
+            iniBaidu(ctx);
+        }
+    }
+
+    public static boolean isChannelFor91() {
+        return sChannelFor91;
     }
 
     /**
@@ -43,8 +54,10 @@ public class SDKWrapper {
         Map<String, String> params = new HashMap<String, String>();
         params.put("description", description);
         FlurryAgent.logEvent(id, params);
-        // baidu
-        StatService.onEvent(ctx, id, description);
+        if (sChannelFor91) {
+            // baidu
+            StatService.onEvent(ctx, id, description);
+        }
     }
 
     public static void endSession(Context ctx) {

@@ -30,12 +30,16 @@ public class BaseActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        StatService.onResume(this);
+        if (SDKWrapper.isChannelFor91()) {
+            StatService.onResume(this);
+        }
     }
 
     @Override
     protected void onPause() {
-        StatService.onPause(this);
+        if (SDKWrapper.isChannelFor91()) {
+            StatService.onPause(this);
+        }
         super.onPause();
     }
 
