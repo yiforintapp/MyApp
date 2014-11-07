@@ -42,14 +42,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -85,6 +89,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     private boolean mDontLock = false;
 
     private int mMinClickPos = 0;
+
+    private boolean mShouldLockOnRestart = true;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -693,5 +699,47 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             mGridView.setAdapter(mImageAdapter);
         }  
  
-    }  
+    }
+    
+    @Override
+    public void onActivityCreate() {
+        LeoLog.e("ImageHideMainActivity", "onActivityCreate");
+        // showLockPage();
+    }
+
+    @Override
+    public void onActivityRestart() {
+        LeoLog.e("ImageHideMainActivity", "onActivityRestart");
+        if (mShouldLockOnRestart) {
+            showLockPage();
+        } else {
+            mShouldLockOnRestart = true;
+        }
+    }
+
+    private void showLockPage() {
+        LeoLog.e("ImageHideMainActivity", "showLockPage");
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        int lockType = AppMasterPreference.getInstance(this).getLockType();
+        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_PASSWD);
+        } else {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_GESTURE);
+        }
+        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+                LockFragment.FROM_SELF);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivityForResult(intent, 1000);
+    }
+
+    @Override
+    public void onActivityResault(int requestCode, int resultCode) {
+        LeoLog.e("AppLockListActivity", "onActivityResault: requestCode = "
+                + requestCode + "    resultCode = " + resultCode);
+            mShouldLockOnRestart = false;
+    }
+    
 }
