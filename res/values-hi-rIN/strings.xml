@@ -136,7 +136,6 @@
     <string name="app_setting_has_update">&#160;&#160;&#160;नवीनीकरण के लिए जाँच करें <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
-
     <string name="query_delete">是否删除%1$s的备份文件，删除后不可恢复！</string>
     <string name="backuped_count">成功备份%1$d个文件。存放位置：%2$s</string>
     <string name="feedback">用户反馈</string>
@@ -152,10 +151,10 @@
     <string name="category_suggest">给我们建议</string>
     <string name="feedback_success_title">提交成功</string>
     <string name="feedback_success_content">感谢您的反馈，我们会尽快处理您的问题</string>
-   <string name="app_image_hide">Image Hide</string>
+    <string name="app_image_hide">Image Hide</string>
     <string name="app_no_image_hide">请点击添加按钮，添加需要隐藏的图片</string>
     <string name="app_no_image">没有可添加的图片</string>
-   <string name="app_image_gallery">Gallery</string>
+    <string name="app_image_gallery">Gallery</string>
     <string name="app_select_all">Select All</string>
     <string name="app_select_none">Cancel Selected</string>
     <string name="app_hide_image">Hide</string>
@@ -174,7 +173,7 @@
         <item>应用名称排序</item>
         <item>安装时间排序</item>
     </string-array>
-    
+
     <!-- 版权 -->
     <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
     <!-- AppWall -->
@@ -196,7 +195,6 @@
 			     根据产品的发展需求，应用管理大师将会对此协议进行不定期的修改。如本协议有任何修改，我方将于官方网站www.leomaster.com中及时发布最新信息以通知用户。如您继续使用本软件及服务，即视为您同意接受这些修改。\n\n <b>联系我们</b>\n\n
                    如您对本协议有任何疑问或建议，请发送您的宝贵意见至\n</string>
     <string name="protocolSupport">support@leomaster.com</string>
-
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
     <string name="new_app_lock_tip">新装应用加锁提醒</string>
     <string name="app_recomend">精品推荐</string>
@@ -214,4 +212,7 @@
     <string name="lock_remind">App Master 提醒您对应用加锁</string>
     <string name="clean_result">清理内存</string>
     <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
+    <string name="lock_guide">点击应用，轻松加锁</string>
+    <string name="start_guide">常用应用，推荐加锁</string>
+
 </resources>

@@ -66,7 +66,8 @@ public class WaitActivity extends BaseActivity {
 						e.printStackTrace();
 					}
 				}
-				returnBack();
+//				returnBack();
+				finish();
 			}
 		}).start();
 		ValueAnimator va = ValueAnimator.ofFloat(0f, 360f);
@@ -116,7 +117,8 @@ public class WaitActivity extends BaseActivity {
 
 	@Override
 	public void onBackPressed() {
-		returnBack();
+		super.onBackPressed();
+//		returnBack();
 	}
 
 	private class UpdateTask implements Runnable {

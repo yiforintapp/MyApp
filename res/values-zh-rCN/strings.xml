@@ -187,6 +187,9 @@
     <string name="app_hide_pictures_dialog_content">是否隐藏你所选的图片？</string>
     <string name="app_hide_image_fail">该图片没有写入权限，隐藏失败！</string>
     
+    <string name="lock_guide">点击应用，轻松加锁</string>
+    <string name="start_guide">常用应用，推荐加锁</string>
+    
         <!-- App lock -->
     <string-array name="sort_type">
         <item>默认排序</item>

@@ -3,8 +3,10 @@ package com.leo.appmaster.applocker;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.GestureSettingFragment;
+import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +35,8 @@ public class LockSettingActivity extends FragmentActivity implements
 
 	private String mFromActivity;
 
+	private boolean mShouldLockOnRestart = true;
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
@@ -42,11 +46,46 @@ public class LockSettingActivity extends FragmentActivity implements
 		initFragment();
 	}
 
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		if (mShouldLockOnRestart ) {
+			showLockPage();
+		} else {
+			mShouldLockOnRestart = true;
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		LeoLog.e("LockOptionActivity", "onActivityResault: requestCode = "
+				+ requestCode + "    resultCode = " + resultCode);
+		mShouldLockOnRestart = false;
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void showLockPage() {
+		Intent intent = new Intent(this, LockScreenActivity.class);
+		int lockType = AppMasterPreference.getInstance(this).getLockType();
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_PASSWD);
+		} else {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_GESTURE);
+		}
+		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		startActivityForResult(intent, 1000);
+	}
+
 	private void handleIntent() {
 		Intent intent = getIntent();
 		mResetFlag = intent.getBooleanExtra(RESET_PASSWD_FLAG, false);
 		mFromActivity = intent
-				.getStringExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY);
+				.getStringExtra(LockScreenActivity.EXTRA_TO_ACTIVITY);
 	}
 
 	private void initFragment() {

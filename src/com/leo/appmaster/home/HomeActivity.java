@@ -82,35 +82,42 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		// commit feedbacks if any
 		FeedbackHelper.getInstance().tryCommit();
-		
+
 		installShortcut();
 	}
 
+	
 	private void installShortcut() {
-        SharedPreferences prefernece = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean installed = prefernece.getBoolean("shortcut", false);
-        if (!installed) {
-            Intent shortcutIntent = new Intent(this, SplashActivity.class);
-            shortcutIntent.setAction(Intent.ACTION_MAIN);
-            shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-//            shortcutIntent.setClassName("com.leo.appmaster", "com.leo.appmaster.home.SplashActivity");
-            
-            Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(this, R.drawable.ic_launcher);
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
-            shortcut.putExtra("duplicate", false);  
-            shortcut.putExtra("from_shortcut", true);
-            
-            sendBroadcast(shortcut);
-            
-            prefernece.edit().putBoolean("shortcut", true).commit();
-        }
-    }
+		SharedPreferences prefernece = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		boolean installed = prefernece.getBoolean("shortcut", false);
+		if (!installed) {
+			Intent shortcutIntent = new Intent(this, SplashActivity.class);
+			shortcutIntent.setAction(Intent.ACTION_MAIN);
+			shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+			shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+					| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+			// shortcutIntent.setClassName("com.leo.appmaster",
+			// "com.leo.appmaster.home.SplashActivity");
 
-    @Override
+			Intent shortcut = new Intent(
+					"com.android.launcher.action.INSTALL_SHORTCUT");
+			shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+					getString(R.string.app_name));
+			shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+			ShortcutIconResource iconRes = Intent.ShortcutIconResource
+					.fromContext(this, R.drawable.ic_launcher);
+			shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+			shortcut.putExtra("duplicate", false);
+			shortcut.putExtra("from_shortcut", true);
+
+			sendBroadcast(shortcut);
+
+			prefernece.edit().putBoolean("shortcut", true).commit();
+		}
+	}
+
+	@Override
 	protected void onDestroy() {
 		AppLoadEngine.getInstance(this).unregisterAppChangeListener(this);
 		super.onDestroy();
@@ -229,19 +236,19 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		case R.id.top_layout:
 			break;
 		case R.id.tv_picture_hide:
-		    // track: home - enter hide picture activity
-            SDKWrapper.addEvent(this, LeoStat.P1, "home", "hidpic");
-            if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-                enterHidePicture();
-            } else {
-                startPictureLockSetting();
-            }
+			// track: home - enter hide picture activity
+			SDKWrapper.addEvent(this, LeoStat.P1, "home", "hidpic");
+			if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+				enterHidePicture();
+			} else {
+				startPictureLockSetting();
+			}
 			break;
 		case R.id.tv_app_lock:
-		    // track: home - enter lock application activity
+			// track: home - enter lock application activity
 			SDKWrapper.addEvent(this, LeoStat.P1, "home", "lock");
 			if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-                enterLockPage();
+				enterLockPage();
 			} else {
 				startLockSetting();
 			}
@@ -252,14 +259,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
-		    // track: home - enter system boost activity
+			// track: home - enter system boost activity
 			SDKWrapper.addEvent(this, LeoStat.P1, "home", "boost");
 			intent = new Intent(this, CleanMemActivity.class);
 			this.startActivity(intent);
 			break;
 		case R.id.tv_option_image:
-		    // track: home - show setting popup window
-		    SDKWrapper.addEvent(this, LeoStat.P1, "home", "setting");
+			// track: home - show setting popup window
+			SDKWrapper.addEvent(this, LeoStat.P1, "home", "setting");
 			if (mLeoPopMenu == null) {
 				mLeoPopMenu = new LeoPopMenu();
 				mLeoPopMenu.setPopMenuItems(getPopMenuItems());
@@ -270,15 +277,16 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						if (position == 0) {
-                            Intent intent = new Intent(HomeActivity.this,
-                                    FeedbackActivity.class);
-                            startActivity(intent);
+							Intent intent = new Intent(HomeActivity.this,
+									FeedbackActivity.class);
+							startActivity(intent);
 						} else if (position == 1) {
 							Intent intent = new Intent(HomeActivity.this,
 									AppWallActivity.class);
 							startActivity(intent);
 						} else if (position == 2) {
-						    SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "setting", "check_update");
+							SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
+									"setting", "check_update");
 							LeoStat.checkUpdate();
 						} else if (position == 3) {
 							Intent intent = new Intent(HomeActivity.this,
@@ -292,12 +300,13 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			mLeoPopMenu.setPopMenuItems(getPopMenuItems());
 			mLeoPopMenu.showPopMenu(this,
 
-					mTtileBar.findViewById(R.id.tv_option_image), null, new OnDismissListener() {
-		                @Override
-		                public void onDismiss() {
-		                    updateSettingIcon();
-		                }
-		            });
+			mTtileBar.findViewById(R.id.tv_option_image), null,
+					new OnDismissListener() {
+						@Override
+						public void onDismiss() {
+							updateSettingIcon();
+						}
+					});
 
 			break;
 		default:
@@ -305,12 +314,12 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		}
 	}
 
-	private void updateSettingIcon(){
-        if (LeoStat.isUpdateAvailable()) {
-            mTtileBar.setOptionImage(R.drawable.setting_updated_selector);
-        } else {
-            mTtileBar.setOptionImage(R.drawable.setting_selector);
-        }
+	private void updateSettingIcon() {
+		if (LeoStat.isUpdateAvailable()) {
+			mTtileBar.setOptionImage(R.drawable.setting_updated_selector);
+		} else {
+			mTtileBar.setOptionImage(R.drawable.setting_selector);
+		}
 	}
 
 	private List<String> getPopMenuItems() {
@@ -318,21 +327,54 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		Resources resources = AppMasterApplication.getInstance().getResources();
 		listItems.add(resources.getString(R.string.feedback));
 		listItems.add(resources.getString(R.string.app_wall));
-        if (LeoStat.isUpdateAvailable()) {
-            listItems.add(resources.getString(R.string.app_setting_has_update));
-        } else {
-            listItems.add(resources.getString(R.string.app_setting_update));
-        }
-		listItems.add(resources.getString(R.string.app_setting_about));	
+		if (LeoStat.isUpdateAvailable()) {
+			listItems.add(resources.getString(R.string.app_setting_has_update));
+		} else {
+			listItems.add(resources.getString(R.string.app_setting_update));
+		}
+		listItems.add(resources.getString(R.string.app_setting_about));
 		return listItems;
 	}
 
 	private void enterLockPage() {
 		Intent intent = null;
+		// intent = new Intent(this, AppLockListActivity.class);
+		// startActivity(intent);
+
 		int lockType = AppMasterPreference.getInstance(this).getLockType();
 		intent = new Intent(this, LockScreenActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
-                AppLockListActivity.class.getName());
+		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF_HOME);
+		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+				AppLockListActivity.class.getName());
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_PASSWD);
+		} else {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_GESTURE);
+		}
+		startActivity(intent);
+
+	}
+
+	private void startLockSetting() {
+		Intent intent = new Intent(this, LockSettingActivity.class);
+		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+				AppLockListActivity.class.getName());
+		startActivity(intent);
+	}
+
+	private void enterHidePicture() {
+		Intent intent = null;
+		int lockType = AppMasterPreference.getInstance(this).getLockType();
+		intent = new Intent(this, LockScreenActivity.class);
+		intent.putExtra(LockScreenActivity.EXTRA_LOCK_TITLE,
+				getString(R.string.app_image_hide));
+		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF_HOME);
+		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+				ImageHideMainActivity.class.getName());
 		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_PASSWD);
@@ -343,36 +385,10 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		startActivity(intent);
 	}
 
-	   private void startLockSetting() {
-	        Intent intent = new Intent(this, LockSettingActivity.class);
-	        intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
-	                AppLockListActivity.class.getName());
-	        startActivity(intent);
-	    }
-	
-	   private void enterHidePicture() {
-	        Intent intent = null;
-	        int lockType = AppMasterPreference.getInstance(this).getLockType();
-	        intent = new Intent(this, LockScreenActivity.class);
-	        intent.putExtra(LockScreenActivity.EXTRA_LOCK_TITLE, getString(R.string.app_image_hide));
-	        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-	                LockFragment.FROM_SELF);
-	        intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
-	                ImageHideMainActivity.class.getName());
-	        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-	            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-	                    LockFragment.LOCK_TYPE_PASSWD);
-	        } else {
-	            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-	                    LockFragment.LOCK_TYPE_GESTURE);
-	        }
-	        startActivity(intent);
-	    }
-	
 	private void startPictureLockSetting() {
 		Intent intent = new Intent(this, LockSettingActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
-                ImageHideMainActivity.class.getName());
+		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+				ImageHideMainActivity.class.getName());
 		startActivity(intent);
 	}
 

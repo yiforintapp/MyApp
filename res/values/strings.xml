@@ -138,7 +138,6 @@
     <string name="app_setting_has_update">&#160;&#160;&#160;Check for updates <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
-    
     <string name="query_delete">是否删除%1$s的备份文件，删除后不可恢复！</string>
     <string name="backuped_count">成功备份%1$d个文件。存放位置：%2$s</string>
     <string name="feedback_commit">提交</string>
@@ -150,10 +149,10 @@
     <string name="category_boost">加速</string>
     <string name="category_hide">图片隐藏</string>
     <string name="category_other">其他问题</string>
-    <string name="category_suggest">给我们建议</string>   
+    <string name="category_suggest">给我们建议</string>
     <string name="feedback_success_title">提交成功</string>
     <string name="feedback_success_content">感谢您的反馈，我们会尽快处理您的问题</string>
-   <string name="app_image_hide">Image Hide</string>
+    <string name="app_image_hide">Image Hide</string>
     <string name="app_no_image_hide">请点击添加按钮，添加需要隐藏的图片</string>
     <string name="app_no_image">没有可添加的图片</string>
     <string name="app_image_gallery">Gallery</string>
@@ -215,12 +214,13 @@
                   By continuing to access or use the services you agree to be bound by the revised Privacy Policy. If you do not agree to any modifications to this Policy, you should stop using
                   any of all the services.\n</string>
     <string name="protocolSupport">support@leomaster.com</string>
-
     <string name="passwd_set_gesture_tip">请至少连接4个点</string>
     <string name="set_gesture">设置手势密码</string>
     <string name="set_passwd">设置数字密码</string>
     <string name="lock_remind">App Master 提醒您对应用加锁</string>
-    
     <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
     
+    <string name="lock_guide">点击应用，轻松加锁</string>
+    <string name="start_guide">常用应用，推荐加锁</string>
+
 </resources>

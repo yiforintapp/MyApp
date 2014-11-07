@@ -8,7 +8,6 @@ import java.util.List;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,10 +29,11 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
-public class AppLockListActivity extends BaseActivity implements AppChangeListener,
-		OnItemClickListener, OnClickListener {
+public class AppLockListActivity extends BaseActivity implements
+		AppChangeListener, OnItemClickListener, OnClickListener {
 
 	public LayoutInflater mInflater;
 	private CommonTitleBar mTtileBar;
@@ -45,13 +45,16 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 
 	private BaseInfo mLastSelectApp;
 	private Object mLock = new Object();
-	private boolean mGotoSetting;
+	private boolean mShouldLockOnRestart = true;
 	private String[] mSortType;
 
 	public static final int DEFAULT_SORT = 0;
 	public static final int NAME_SORT = 1;
 	public static final int INSTALL_TIME_SORT = 2;
 	private int mCurSortType = DEFAULT_SORT;
+
+	public static final int REQUEST_CODE_LOCK = 1000;
+	public static final int REQUEST_CODE_OPTION = 1001;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,27 +73,6 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-
-		if (mGotoSetting) {
-			mGotoSetting = false;
-			return;
-		}
-
-		Intent intent = new Intent(this, LockScreenActivity.class);
-		int lockType = AppMasterPreference.getInstance(this).getLockType();
-		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_PASSWD);
-		} else {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_GESTURE);
-		}
-		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-				LockFragment.FROM_SELF);
-		intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
-		        AppLockListActivity.class.getName());
-		startActivity(intent);
-		finish();
 	}
 
 	@Override
@@ -122,7 +104,14 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 		mCurSortType = AppMasterPreference.getInstance(this).getSortType();
 
 		mInflater = LayoutInflater.from(this);
-		mMaskLayer = findViewById(R.id.mask_layer);
+
+		if (AppMasterPreference.getInstance(this).isFisrtUseLocker()) {
+			mMaskLayer = findViewById(R.id.mask_layer);
+			mMaskLayer.setOnClickListener(this);
+			mMaskLayer.setVisibility(View.VISIBLE);
+			AppMasterPreference.getInstance(this).setLockerUsed();
+		}
+
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 		mTtileBar.openBackView();
@@ -196,12 +185,13 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 			}
 			mUnlockList.add(info);
 			mLockedList.remove(info);
-			
+
 			// to set view unlocked
 			((LockImageView) view.findViewById(R.id.iv_app_icon))
 					.setLocked(false);
 
-			SDKWrapper.addEvent(this, LeoStat.P1, "app", "unlock: " + mLastSelectApp.getPkg());
+			SDKWrapper.addEvent(this, LeoStat.P1, "app", "unlock: "
+					+ mLastSelectApp.getPkg());
 		} else {
 			mLastSelectApp.setLocked(true);
 			for (BaseInfo baseInfo : mUnlockList) {
@@ -217,7 +207,8 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 			((LockImageView) view.findViewById(R.id.iv_app_icon))
 					.setLocked(true);
 
-			SDKWrapper.addEvent(this, LeoStat.P1, "app", " lock: " + mLastSelectApp.getPkg());
+			SDKWrapper.addEvent(this, LeoStat.P1, "app", " lock: "
+					+ mLastSelectApp.getPkg());
 		}
 		saveLockList();
 	}
@@ -285,9 +276,8 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.tv_option_image:
-			mGotoSetting = true;
 			Intent intent = new Intent(this, LockOptionActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, REQUEST_CODE_OPTION);
 			break;
 		case R.id.layout_right:
 			if (mLeoPopMenu == null) {
@@ -327,7 +317,7 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 			}
 			mLeoPopMenu.setPopMenuItems(getPopMenuItems());
 			mLeoPopMenu.showPopMenu(this,
-					mTtileBar.findViewById(R.id.layout_right),null,null);
+					mTtileBar.findViewById(R.id.layout_right), null, null);
 			break;
 		case R.id.mask_layer:
 			mMaskLayer.setVisibility(View.INVISIBLE);
@@ -431,4 +421,50 @@ public class AppLockListActivity extends BaseActivity implements AppChangeListen
 			return s.replaceAll("\u00A0", "").trim();
 		}
 	}
+
+	@Override
+	public void onActivityCreate() {
+		LeoLog.e("AppLockListActivity", "onActivityCreate");
+		// showLockPage();
+	}
+
+	@Override
+	public void onActivityRestart() {
+		LeoLog.e("AppLockListActivity", "onActivityRestart");
+		if (mShouldLockOnRestart) {
+			showLockPage();
+		} else {
+			mShouldLockOnRestart = true;
+		}
+	}
+
+	private void showLockPage() {
+		LeoLog.e("AppLockListActivity", "showLockPage");
+		Intent intent = new Intent(this, LockScreenActivity.class);
+		int lockType = AppMasterPreference.getInstance(this).getLockType();
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_PASSWD);
+		} else {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_GESTURE);
+		}
+		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		startActivityForResult(intent, 1000);
+	}
+
+	@Override
+	public void onActivityResault(int requestCode, int resultCode) {
+		LeoLog.e("AppLockListActivity", "onActivityResault: requestCode = "
+				+ requestCode + "    resultCode = " + resultCode);
+		if (REQUEST_CODE_LOCK == requestCode) {
+			mShouldLockOnRestart = false;
+		} else if (REQUEST_CODE_OPTION == requestCode) {
+			mShouldLockOnRestart = false;
+		}
+	}
+
 }

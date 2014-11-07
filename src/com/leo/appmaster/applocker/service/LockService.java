@@ -89,7 +89,7 @@ public class LockService extends Service {
 		stopDetectTsk();
 		mTimer = new Timer();
 		mDetectTask = new DetectTask();
-		mTimer.schedule(mDetectTask, 0, 50);
+		mTimer.schedule(mDetectTask, 0, 100);
 	}
 
 	@Override

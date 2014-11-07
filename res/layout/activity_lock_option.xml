@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_title_bar"
@@ -9,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@color/app_background" />
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
