@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.update.IUIHelper;
@@ -217,6 +218,9 @@ public class UIHelper implements IUIHelper {
     public void onNewState(int ui_type, int param) {
         mUIType = ui_type;
         mUIParam = param;
+        if(ui_type == IUIHelper.TYPE_DOWNLOAD_DONE && param == UpdateManager.FORCE_UPDATE){
+            AppMasterApplication.getInstance().exitApplication();
+        }
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
                 && !isRunningForeground(mContext)) {
             LeoLog.e(TAG, "runing on background, show update notification");
