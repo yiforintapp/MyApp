@@ -178,9 +178,15 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	}
 
 	private void setLockedAppCount() {
+	    View v = findViewById(R.id.lock_count_layout);
 		int lockedAppCount = AppMasterPreference.getInstance(this)
 				.getLockedAppList().size();
-		mLockedApp.setText(Integer.toString(lockedAppCount));
+		if(lockedAppCount == 0){
+		    v.setVisibility(View.INVISIBLE);
+		}else{
+		    v.setVisibility(View.VISIBLE);
+		    mLockedApp.setText(Integer.toString(lockedAppCount));
+		}
 	}
 
 	@Override
