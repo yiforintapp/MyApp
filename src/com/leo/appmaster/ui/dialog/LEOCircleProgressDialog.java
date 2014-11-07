@@ -47,7 +47,7 @@ public class LEOCircleProgressDialog extends LEOBaseDialog {
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(R.layout.dialog_progress_sdk, null);
 
-        mProHint = (TextView) dlgView.findViewById(R.id.dlg_pro_hint);
+        mProHint = (TextView) dlgView.findViewById(R.id.dlg_content);
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mProgressBar = (ProgressBar) dlgView.findViewById(R.id.dlg_pro);
         bottomLayout = dlgView.findViewById(R.id.dlg_bottom_layout);

@@ -15,7 +15,7 @@
     <string name="download_error">डाउनलोड नेटवर्क की जाँच करें और पुन: प्रयास विफल</string>
     <string name="network_error_msg">अभी नेटवर्क उपलब्ध नहीं है, नेटवर्क सेटिंग्स की जाँच करें!</string>
     <string name="check_update">अपडेट की जांच करें</string>
-    <string name="checking_update_msg">अपडेट की जांच की जा रही है।</string>
+    <string name="checking_update_msg">अपडेट की जांच की जा रही है।  &#8230;</string>
     <string name="check_failed">जांच करने में विफल हो गया</string>
     <string name="network_busy_msg">नेटवर्क व्यस्त है, बाद में पुन: प्रयास करें!</string>
     <string name="retry">पुन: प्रयास करें</string>
@@ -30,7 +30,7 @@
     <string name="version_found">नवीनतम संस्करण का पता लगाएं&#160;<xliff:g id="new_version">%1$s</xliff:g>&#160;अपडेट के लिए क्लिक करें</string>
     <string name="click_to_update">अपडेट के लिए क्लिक करें</string>
     <!-- push -->
-    <string name="phone_number">Phone number</string>
+    <string name="phone_number">手机号码</string>
     <string name="india_only">+91 仅限印度地区</string>
     <string name="invalid_number">请输入正确的手机号码</string>
     <string name="goto_gp">前往google play</string>

@@ -256,7 +256,6 @@ public class LockOptionActivity extends PreferenceActivity implements
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
-
 								/* User clicked No so do some stuff */
 							}
 						}).create();

@@ -185,7 +185,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 		} else {
 			mInputTip.setText(R.string.set_passwd);
 		}
-		mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
+		mTvPasswdFuncTip.setText(R.string.digital_passwd_function_hint);
 	}
 
 	public void setActivityName(String name) {

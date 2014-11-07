@@ -160,7 +160,7 @@ public class LeoLog {
 	 *            An exception to log
 	 */
 	public static void log(int aLogLevel, String aTag, String aMessage,
-			Throwable aThrowable) {
+			Throwable aThrowable)  throws ArrayIndexOutOfBoundsException {
 		if (isLoggable(aLogLevel)) {
 			switch (aLogLevel) {
 			case VERBOSE:

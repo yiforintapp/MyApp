@@ -17,4 +17,6 @@
     <dimen name="memory_flow_text2_marginTop">5dp</dimen>
     <dimen name="splash_width">206dp</dimen>
     <dimen name="splash_height">220dp</dimen>
+    <dimen name="about_logo_width">144dp</dimen>
+    <dimen name="about_logo_height">152dp</dimen>
 </resources>

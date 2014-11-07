@@ -27,8 +27,8 @@ import android.widget.Toast;
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
-import com.leoers.leoanalytics.utils.Debug;
 
 public class PushActivity extends BaseActivity implements View.OnClickListener {
 
@@ -174,7 +174,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
         List<ResolveInfo> resolveInfos = pm
                 .queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY);
         for (ResolveInfo info : resolveInfos) {
-            Debug.d(TAG, "name=" + info.activityInfo.packageName);
+            LeoLog.d(TAG, "name=" + info.activityInfo.packageName);
             if (info.activityInfo.packageName.equals(GP_MARKET_PACKAGE_NAME)) {
                 return true;
             }

@@ -13,9 +13,9 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.push.IPushUIHelper;
 import com.leoers.leoanalytics.push.PushManager;
-import com.leoers.leoanalytics.utils.Debug;
 
 public class PushUIHelper implements IPushUIHelper {
 
@@ -69,11 +69,11 @@ public class PushUIHelper implements IPushUIHelper {
 
     @Override
     public void onPush(String title, String content) {
-        Debug.d(TAG, "title=" + title + "; content=" + content);
+        LeoLog.d(TAG, "title=" + title + "; content=" + content);
         mTitle = title;
         mContent = content;
         if (isActivityOnTop(mContext)) {
-            Debug.d(TAG, "push activity already on top, do nothing");
+            LeoLog.d(TAG, "push activity already on top, do nothing");
         } else if (isAppOnTop(mContext)) {
             mStatusBar = false;
             showPushActivity(title, content, false);
@@ -158,7 +158,7 @@ public class PushUIHelper implements IPushUIHelper {
             String action = intent.getAction();
             if (action.equals(ACTION_CHECK_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
-                Debug.d(TAG, "mTitle=" + mTitle + "; mContent= " + mContent);
+                LeoLog.d(TAG, "mTitle=" + mTitle + "; mContent= " + mContent);
                 showPushActivity(mTitle, mContent, true);
             } else if (action.equals(ACTION_IGNORE_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);

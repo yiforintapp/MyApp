@@ -14,8 +14,8 @@
     <string name="tips_title">Tip</string>
     <string name="download_error">Download failed, please check the network and try again</string>
     <string name="network_error_msg">Connection failed. Please check your network settings.</string>
-    <string name="check_update">Check for Updates</string>
-    <string name="checking_update_msg">Checking for Updates</string>
+    <string name="check_update">Checking</string>
+    <string name="checking_update_msg">Checking for Updates &#8230;</string>
     <string name="check_failed">Check Failed</string>
     <string name="network_busy_msg">The network is busy. Please try again later</string>
     <string name="retry">Reload</string>

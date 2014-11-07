@@ -74,18 +74,18 @@
 
     <style name="dlg_single_button_txt">
         <item name="android:textSize">15dp</item>
-        <item name="android:background">@drawable/button_bg_blue</item>
+        <item name="android:background">@drawable/dlg_single_button_selector</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@drawable/backup_button_text_selector</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:layout_width">129dp</item>
         <item name="android:layout_height">33dp</item>
     </style>
 
     <style name="dlg_left_button_txt">
         <item name="android:textSize">15dp</item>
-        <item name="android:background">@drawable/button_bg_grey</item>
+        <item name="android:background">@drawable/dlg_left_button_selector</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@drawable/backup_button_text_selector</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:layout_height">33dp</item>
         <item name="android:layout_width">129dp</item>
     </style>
@@ -94,7 +94,7 @@
         <item name="android:textSize">15dp</item>
         <item name="android:background">@drawable/check_update_button</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@drawable/backup_button_text_selector</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:layout_height">33dp</item>
         <item name="android:layout_width">129dp</item>
     </style>
@@ -104,10 +104,10 @@
         <item name="android:indeterminateDrawable">@drawable/unified_loading_circle_2_drawable</item>
         <item name="android:indeterminateBehavior">repeat</item>
         <item name="android:indeterminateDuration">2000</item>
-        <item name="android:minWidth">37dip</item>
-        <item name="android:maxWidth">37dip</item>
-        <item name="android:minHeight">37dip</item>
-        <item name="android:maxHeight">37dip</item>
+        <item name="android:minWidth">48dip</item>
+        <item name="android:maxWidth">48dip</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:maxHeight">48dip</item>
     </style>
 
     <style name="RightEnterAnim">
@@ -147,7 +147,7 @@
 
     <style name="Widget.Button.Borderless" parent="@android:style/Widget.Button">
         <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
-        <item name="android:textColor">@drawable/backup_button_text_selector</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/check_update_button</item>
     </style>
 

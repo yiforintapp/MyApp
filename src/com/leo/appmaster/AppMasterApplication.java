@@ -17,13 +17,15 @@ import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leoers.leoanalytics.LeoStat;
+import com.leoers.leoanalytics.RequestFinishedReporter;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
-public class AppMasterApplication extends Application {
+public class AppMasterApplication extends Application implements RequestFinishedReporter{
 
 	private AppLoadEngine mAppsEngine;
 
@@ -70,6 +72,7 @@ public class AppMasterApplication extends Application {
 
 		registerReceiver(mAppsEngine, filter);
 		SDKWrapper.iniSDK(this);
+		LeoStat.registerRequestFailedReporter(this);
 		judgeLockService();
 		judgeLockAlert();
 		// start app destory listener
@@ -179,5 +182,10 @@ public class AppMasterApplication extends Application {
 	        android.os.Process.killProcess(android.os.Process.myPid());  
 	        System.exit(0);
 	    }
+
+        @Override
+        public void reportRequestFinished(String description) {
+            SDKWrapper.addEvent(getInstance(), LeoStat.P1, "leosdk", description);
+        }
 
 }

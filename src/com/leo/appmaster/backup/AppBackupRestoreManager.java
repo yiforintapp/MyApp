@@ -47,7 +47,7 @@ public class AppBackupRestoreManager implements AppChangeListener{
     public static final int FAIL_TYPE_CANCELED = 4;
     
 
-    private static final String BACKUP_PATH = "appmaster/backup/";
+    public static final String BACKUP_PATH = "appmaster/backup/";
     private static final String INSTALL_PACKAGE = "com.android.packageinstaller";
     private static final String PATH_ASSETMANAGER = "android.content.res.AssetManager";
     private static final String METHOD_ADD_ASSET = "addAssetPath";
@@ -123,7 +123,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
             @Override
             public void run() {
                 getBackupList();
-                mBackupListener.onDataReady();
+                if (mBackupListener != null) {
+                    mBackupListener.onDataReady();
+                }
             }
         });
     }
@@ -148,7 +150,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                             success = false;
                             break;
                         }
-                        mBackupListener.onBackupProcessChanged(doneNum, totalNum, app.getAppLabel());
+                        if (mBackupListener != null) {
+                            mBackupListener.onBackupProcessChanged(doneNum, totalNum, app.getAppLabel());
+                        }
                         doneNum ++;
                         failType = tryBackupApp(app);
                         if(failType== FAIL_TYPE_NONE) {
@@ -158,10 +162,12 @@ public class AppBackupRestoreManager implements AppChangeListener{
                             break;
                         }
                     }
-                    if(doneNum == totalNum) {
-                        mBackupListener.onBackupProcessChanged(doneNum, totalNum, null);
+                    if (mBackupListener != null) {
+                        if(doneNum == totalNum) {
+                            mBackupListener.onBackupProcessChanged(doneNum, totalNum, null);
+                        }
+                        mBackupListener.onBackupFinish(success, successNum, totalNum, getFailMessage(failType));
                     }
-                    mBackupListener.onBackupFinish(success, successNum, totalNum, getFailMessage(failType));
                 }
             });
         }
@@ -192,7 +198,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                         }
                     }
                 }
-                mBackupListener.onApkDeleted(success);
+                if (mBackupListener != null) {
+                    mBackupListener.onApkDeleted(success);
+                }
             }
         });
     }
@@ -229,7 +237,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                     }
                     if(deleteSavedList.size() > 0) {
                         mSavedList.removeAll(deleteSavedList);
-                        mBackupListener.onDataUpdate();
+                        if (mBackupListener != null) {
+                            mBackupListener.onDataUpdate();
+                        }
                     }
                 }
             });
@@ -483,7 +493,7 @@ public class AppBackupRestoreManager implements AppChangeListener{
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 
-    private String getBackupPath() {
+    private  String getBackupPath() {
         if (isSDReady()) {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath();
             if (!path.endsWith(File.separator)) {
@@ -562,7 +572,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                     mSavedList.clear();
                     mDataReady = false;
                     getBackupList();
-                    mBackupListener.onDataUpdate();
+                    if (mBackupListener != null) {
+                        mBackupListener.onDataUpdate();
+                    }
                 }
             });
         }
