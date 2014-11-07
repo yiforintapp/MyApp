@@ -141,7 +141,7 @@ public class LockScreenActivity extends FragmentActivity implements
 			mTtileBar.setOptionListener(this);
 		}
 
-		if (mFromType == LockFragment.FROM_SELF) {
+		if (mFromType == LockFragment.FROM_SELF_HOME) {
 			mTtileBar.openBackView();
 			if (TextUtils.isEmpty(mLockTitle)) {
 				mTtileBar.setTitle(R.string.app_lock);
