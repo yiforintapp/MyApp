@@ -114,21 +114,24 @@ public class LockHandler extends BroadcastReceiver {
 				}
 			}
 
-			 Intent lockIntent = new Intent(context, LockService.class);
-			 lockIntent.putExtra("lock_service", false);
-			 context.startService(lockIntent);
+			Intent lockIntent = new Intent(context, LockService.class);
+			lockIntent.putExtra("lock_service", false);
+			context.startService(lockIntent);
 
 		} else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-			 Intent lockIntent = new Intent(context, LockService.class);
-			 lockIntent.putExtra("lock_service", true);
-			 context.startService(lockIntent);
+			Intent lockIntent = new Intent(context, LockService.class);
+			lockIntent.putExtra("lock_service", true);
+			context.startService(lockIntent);
 			judgeShowLockPage();
 		}
 	}
 
 	private void judgeShowLockPage() {
-		List<String> list = AppMasterPreference.getInstance(mContext)
-				.getLockedAppList();
+		AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+		if (!pref.isAutoLock()) {
+			return;
+		}
+		List<String> list = pref.getLockedAppList();
 		LeoLog.e("onReceive", "mLastRunningPkg = " + mLastRunningPkg);
 		if (list.contains(mLastRunningPkg)) {
 			Intent intent2 = new Intent(mContext, LockScreenActivity.class);

@@ -5,6 +5,6 @@ public class AppMasterConfig {
 	/*
 	 * is loggable
 	 */
-	public static final boolean LOGGABLE = false;
+	public static final boolean LOGGABLE = true;
 
 }
