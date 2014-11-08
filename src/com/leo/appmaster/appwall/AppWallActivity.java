@@ -105,12 +105,13 @@ public class AppWallActivity extends BaseActivity implements
 		AppWallBean app = (AppWallBean) arg0.getItemAtPosition(arg2);
 		List<AppWallUrlBean> urls = app.getDownload();
 		AppWallUrlBean appUrl = null;
-		String[] tempStr = new String[2];
+		
 		List<String[]> sort = new ArrayList<String[]>();
 		String urlStr = null;
 		Uri url = null;
 		for (int i = 0; i < urls.size(); i++) {
 			appUrl = urls.get(i);
+			String[] tempStr = new String[2];
 			tempStr[0] = appUrl.getId();
 			tempStr[1] = appUrl.getUrl();// 首先访问
 			sort.add(tempStr);
@@ -122,6 +123,7 @@ public class AppWallActivity extends BaseActivity implements
 					urlStr = sort.get(i)[1];
 					if (i == 0) {
 						if (flagGp) {
+							LeoLog.i("run","********************"+urlStr);
 							requestGp(AppWallActivity.this, urlStr);
 							break;// 访问成功直接跳出
 						} else {
