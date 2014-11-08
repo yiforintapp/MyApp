@@ -76,7 +76,11 @@ public class AppWallActivity extends BaseActivity implements
 		setContentView(R.layout.activity_appwall_activity);
 		all = new ArrayList<AppWallBean>();
 		p = new AppWallDialog(this);
-
+		Window window=p.getWindow();
+	    WindowManager.LayoutParams lp = window.getAttributes();   
+        lp.alpha = 0.5f;// 透明度   
+        lp.dimAmount = 0.0f;// 黑暗度   
+        window.setAttributes(lp);   
 		String flag = null;
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.photo_bg_loding)
@@ -232,7 +236,8 @@ public class AppWallActivity extends BaseActivity implements
 				button.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {
-
+						button.setVisibility(View.GONE);
+						text.setVisibility(View.GONE);
 						MyAsyncTask task = new MyAsyncTask();
 						// task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
 						task.execute(DATAPATH, AppwallHttpUtil.getLanguage(),
