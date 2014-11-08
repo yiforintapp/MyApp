@@ -52,7 +52,7 @@ public class AppWallActivity extends BaseActivity implements
 	private Button button;
 	private TextView text;
 	private DisplayImageOptions options;
-	private static final String DATAPATH = "http://test.leostat.com/appmaster/appwall";// 数据的url
+	private static final String DATAPATH = "http://api.leostat.com/appmaster/appwall";// 数据的url
 	public static final String GPPACKAGE = "com.android.vending";// GP包名
 	private static final String CHARSETLOCAL = "utf-8";// 本地
 	private static final String CHARSETSERVICE = "utf-8";// 服务端
@@ -229,7 +229,6 @@ public class AppWallActivity extends BaseActivity implements
 				appwallLV.setAdapter(adapter);
 				appwallLV.setOnItemClickListener(AppWallActivity.this);
 			} else {
-
 				appwallLV.setVisibility(View.GONE);
 				button.setVisibility(View.VISIBLE);
 				text.setVisibility(View.VISIBLE);
