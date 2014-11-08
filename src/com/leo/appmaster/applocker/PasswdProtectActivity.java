@@ -75,7 +75,7 @@ public class PasswdProtectActivity extends BaseActivity implements
 
 	private void initUI() {
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		mTtileBar.setTitle(R.string.passwd_protect_setting);
+		mTtileBar.setTitle(R.string.passwd_protect);
 		mTtileBar.openBackView();
 		mQuestion = (EditText) findViewById(R.id.et_question);
 		mQuestion.setOnFocusChangeListener(new OnFocusChangeListener() {
