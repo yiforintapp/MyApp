@@ -345,7 +345,8 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 				} catch (Exception e) {
 					e.printStackTrace();
 					//如果失败就给包名赋空字符串，保证程序正常运行
-					app.setAppName("");
+					appPackageName="";
+					app.setAppPackageName(appPackageName);
 				}
 				app.setImage(appIcon);
 				app.setAppName(appName);

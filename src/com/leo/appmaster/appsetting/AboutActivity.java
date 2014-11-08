@@ -36,7 +36,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
         setContentView(R.layout.app_about_layout);
         mTtileBar = (CommonTitleBar) findViewById(R.id.about_title_bar);
         mTtileBar.setTitle(R.string.app_setting_about);
-        mTtileBar.setOptionImageVisibility(View.GONE);
+        mTtileBar.setOptionImageVisibility(View.VISIBLE);
         mTtileBar.openBackView();
         mShowProtocol = (Button) findViewById(R.id.check_update_button);
         mShowProtocol.setOnClickListener(this);
