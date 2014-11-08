@@ -90,8 +90,8 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 		init();
 			// 访问服务器
 			MyAsyncTask task = new MyAsyncTask();
-			//task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
-			task.execute(DATAPATH, AppwallHttpUtil.getLanguage(), "001a");
+			task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
+			//task.execute(DATAPATH, AppwallHttpUtil.getLanguage(), "001a");
 	}
 
 	@Override
