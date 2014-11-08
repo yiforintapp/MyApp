@@ -82,15 +82,15 @@ public class AppWallActivity extends BaseActivity implements OnItemClickListener
 		String flag=null;
 		 p=new LEOCircleProgressDialog(AppWallActivity.this);
 		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_launcher)
-				.showImageForEmptyUri(R.drawable.ic_launcher)
+				.showImageOnLoading(R.drawable.photo_bg_loding)
+				.showImageForEmptyUri(R.drawable.photo_bg_loding)
 				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true)
 				.displayer(new RoundedBitmapDisplayer(20)).build();
 		init();
 			// 访问服务器
 			MyAsyncTask task = new MyAsyncTask();
-			// task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
+			//task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
 			task.execute(DATAPATH, AppwallHttpUtil.getLanguage(), "001a");
 	}
 
