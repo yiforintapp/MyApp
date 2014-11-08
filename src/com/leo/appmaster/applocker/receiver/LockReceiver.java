@@ -47,8 +47,6 @@ public class LockReceiver extends BroadcastReceiver {
 				am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
 				return;
 			} else {
-
-				LeoLog.e("LockReceiver", "showNotification");
 				showNotification(context);
 				AppMasterPreference.getInstance(context).setReminded(true);
 			}
