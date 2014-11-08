@@ -58,7 +58,7 @@ public class LockHandler extends BroadcastReceiver {
 		if (pkg == null || activity == null)
 			return;
 
-		// LeoLog.e("handleAppLaunch", pkg + "/" + activity);
+		LeoLog.e("handleAppLaunch", pkg + "/" + activity);
 
 		if (!pkg.equals(mLastRunningPkg)) {
 			String myPackage = mContext.getPackageName();
@@ -102,24 +102,26 @@ public class LockHandler extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		LeoLog.e("LockReceiver", "action = " + intent.getAction());
 		if (ACTION_APP_UNLOCKED.equals(intent.getAction())) {
 			String pkg = intent.getStringExtra(EXTRA_LOCKED_APP_PKG);
 			mLockPolicy.onUnlocked(pkg);
 		} else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
 			if (mLockPolicy instanceof TimeoutRelockPolicy) {
 				if (AppMasterPreference.getInstance(context).isAutoLock()) {
+					LeoLog.e("LockReceiver", "isAutoLock");
 					((TimeoutRelockPolicy) mLockPolicy).clearLockApp();
 				}
 			}
 
-			Intent lockIntent = new Intent(context, LockService.class);
-			lockIntent.putExtra("lock_service", false);
-			context.startService(lockIntent);
+//			Intent lockIntent = new Intent(context, LockService.class);
+//			lockIntent.putExtra("lock_service", false);
+//			context.startService(lockIntent);
 
 		} else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-			Intent lockIntent = new Intent(context, LockService.class);
-			lockIntent.putExtra("lock_service", true);
-			context.startService(lockIntent);
+//			Intent lockIntent = new Intent(context, LockService.class);
+//			lockIntent.putExtra("lock_service", true);
+//			context.startService(lockIntent);
 		}
 	}
 }
