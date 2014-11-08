@@ -111,7 +111,7 @@ public class AppMasterApplication extends Application implements RequestFinished
 			calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			pref.setLastAlarmSetTime(calendar.getTimeInMillis());
-			calendar.add(Calendar.DATE, Constants.LOCK_TIP_INTERVAL_OF_DATE);
+			calendar.add(Calendar.MINUTE, Constants.LOCK_TIP_INTERVAL_OF_DATE);
 			PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 			am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);

@@ -39,7 +39,7 @@ public class LockReceiver extends BroadcastReceiver {
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(new Date());
 				pref.setLastAlarmSetTime(calendar.getTimeInMillis());
-				calendar.add(Calendar.DATE, 3);
+				calendar.add(Calendar.MINUTE, 3);
 				PendingIntent pi = PendingIntent.getBroadcast(context, 0,
 						intent, PendingIntent.FLAG_UPDATE_CURRENT);
 				AlarmManager am = (AlarmManager) context
