@@ -35,7 +35,7 @@
     <string name="reset_passwd">पासवर्ड पुनः स्थापित करें</string>
     <string name="app_locked">ताला डाला गया है</string>
     <string name="app_unlock">ताला नहीं डाला गया है</string>
-    <string name="find_passwd">पासवर्ड वापस बुलाएं</string>
+    <string name="find_passwd">पासवर्ड भूल</string>
     <string name="please_wait">बाद में दोबारा प्रयास करें</string>
     <string name="passwd_question">प्रश्न: </string>
     <string name="passwd_anwser">उत्तर: </string>
@@ -48,7 +48,7 @@
     <string name="qusetion_cant_null">सवाल खाली नहीं हो सकता</string>
     <string name="aneser_cant_null">जवाब खाली नहीं हो सकता</string>
     <string name="pleas_input_anwser">सुरक्षा प्रश्न का उत्तर लिखें</string>
-    <string name="not_set">प्रश्न अस्थापित करें</string>
+    <string name="not_set">अस्थापित</string>
     <string name="anwser">उत्तर: </string>
     <string name="not_unistall">रद्द से रोकें</string>
     <string name="lock_screen_auto_lock">स्क्रीन लॉक करने के बाद स्वचालित रूप से ताले डालें</string>
@@ -65,13 +65,13 @@
     <string name="lockscreen_access_pattern_detected">पैटर्न को समाप्त किया गया है</string>
     <string name="please_input_gesture">अनलॉक प्रतिमान आरेखित करें</string>
     <string name="input_passwd_tip">पासवर्ड संकेत दर्ज करें</string>
-    <string name="switch_gesture">इशारों का प्रयोग करें</string>
-    <string name="switch_passwd">पासवर्ड का प्रयोग करें</string>
+    <string name="switch_gesture">पैटर्न</string>
+    <string name="switch_passwd">पासवर्ड</string>
     <string name="setting">सेटिंग</string>
     <string name="passwd_hint_tip">पासवर्ड अनुस्मारक: </string>
     <string name="set_protect_or_not">क्या आपको सुरक्षा प्रश्न बनाने की आवश्यकता है।</string>
     <string name="set_protect_message">हमारी सलाह से आपको अपना सुरक्षा प्रश्न ज़रूर बनाना चाहिए ताकि अगर आप पासवर्ड भूल जाएँ तो, चलते रहें?</string>
-    <string name="find_gesture">इशारों को वापस बुलाएं</string>
+    <string name="find_gesture">पासवर्ड भूल</string>
     <string name="pp_success">पासवर्ड सुरक्षा सेटिंग समाप्त हो गया</string>
     <string name="passwd_setting">पासवर्ड सेटिंग्स</string>
     <string name="set_success">पासवर्ड सफलतापूर्वक स्थापित किया गया</string>
@@ -87,7 +87,7 @@
     <string name="app_version">संस्करण संख्या: %1$s</string>
     <string name="backuping">बैकअप किया जा रहा है ( %1$s )</string>
     <string name="no_application_selected">कृपया एक ऐप चुनें</string>
-    <string name="backup_finish">बैकअप किया जाने में सफल हो गया है</string>
+    <string name="backup_finish">बैकअप में सफल</string>
     <string name="delete_fail">हटाना फेल</string>
     <string name="deleting_app">हटाना: %1$s</string>
     <string name="installed_app_size">स्थापित ऐप्स: %1$d</string>
@@ -122,11 +122,11 @@
     <string name="app_permission1">टॉप सीक्रेट गोपनीयता अनुमति</string>
     <string name="app_permission2">जनरल गोपनीयता अनुमति</string>
     <string name="app_permission3">महत्वपूर्ण गोपनीयता अनुमति</string>
-    <string name="app_setting_update">नवीनीकरण के लिए जाँच करें</string>
+    <string name="app_setting_update">अद्यतन</string>
     <string name="app_setting_about">जानकारी</string>
     <string name="forbid_uninstall">रद्द से रोकें</string>
-    <string name="auto_lock">स्क्रीन लॉक करने के बाद स्वचालित रूप से ताले डालें</string>
-    <string name="change_lock_time">स्वयं ताले का समय स्थापना</string>
+    <string name="auto_lock">स्क्रीन-ऑफ़ के बाद लॉक</string>
+    <string name="change_lock_time">स्वयंतालेकासमयस्थापना</string>
     <string name="passwd_protect">सुरक्षा प्रश्न</string>
     <string name="change_passwd">पासवर्ड बदलें</string>
     <string name="passwd_notify">पासवर्ड इशारा</string>
@@ -168,37 +168,36 @@
     <string name="app_hide_image_fail">फ़ोटो का चयन नहीं किया जा सके! छुपाने में विफल!</string>
 
     <string-array name="sort_type">
-        <item>डिफ़ॉल्ट क्रम</item>
-        <item>नाम के अनुसार</item>
-        <item>समय के अनुसार</item>
+        <item>डिफ़ॉल्ट</item>
+        <item>नाम से</item>
+        <item>समय से</item>
     </string-array>
 
     <!-- 版权 -->
     <string name="about_copy">कॉपीराइट 2014 लियो नेटवर्क टैक्नोलॉजी. सर्वाधिकार सुरक्षित</string>
     <!-- AppWall -->
-    <string name="app_wall_network">网络或服务器异常请重新尝试！</string>
-    <string name="app_wall_click">点击重试 </string>
+    <string name="app_wall_network">नेटवर्क त्रुटि. कृपया बाद में पुन: प्रयास करें!</string>
+    <string name="app_wall_click">रिफ्रेश</string>
     <string name="app_wall">हॉट ऐप्स</string>
     <!-- 隐私策略 -->
     <string name="protocolBar">गोपनीयता की नीति</string>
-    <string name="recom_lock_tip">推荐应用加锁提醒</string>
+    <string name="recom_lock_tip">सबसे अधिक इस्तेमाल किया ऐप का अनुस्मारक</string>
     <string name="new_app_lock_tip">नई ऐप्स का अनुस्मारक</string>
-    <string name="app_recomend">精品推荐</string>
-    <string name="first_set_passwd_hint">首次使用请设置密码</string>
-    <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>
-    <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片隐藏功能中</string>
-    <string name="make_passwd">确认密码</string>
-    <string name="input_again">请再次输入</string>
-    <string name="passwd_set_gesture_tip">请至少连接4个点</string>
-    <string name="set_gesture">设置手势密码</string>
-    <string name="set_passwd">设置数字密码</string>
-    <string name="gesture_start_hint">画完后松开手指</string>
-    <string name="reset_gesture_passwd">重设手势密码</string>
-    <string name="reset_digital_passwd">重设数字密码</string>
-    <string name="lock_remind">App Master 提醒您对应用加锁</string>
+    <string name="first_set_passwd_hint">अपने पहले प्रवेश के लिए एक पासवर्ड सेट करें.</string>
+    <string name="gestur_passwd_function_hint">बंद करने और छुपाने में उपलब्ध पैटर्न</string>
+    <string name="digital_passwd_function_hint">पासवर्ड उपलब्ध हैं. लॉक या छिपाना समारोह में</string>
+    <string name="make_passwd">आपके पासवर्ड की पुष्टि करें</string>
+    <string name="input_again">फिरसेपासवर्डइनपुटकरें</string>
+    <string name="passwd_set_gesture_tip">कम से कम 4 अंक कनेक्ट करें</string>
+    <string name="set_gesture">एक नया पैटर्न बनाएँ</string>
+    <string name="set_passwd">नया पासवर्ड दर्ज करें</string>
+    <string name="gesture_start_hint">जब किया जाएं, उंगली को रिलीज करें</string>
+    <string name="reset_gesture_passwd">पैटर्न रीसेट करें</string>
+    <string name="reset_digital_passwd">फिर से पासवर्ड बनाएँ</string>
+    <string name="lock_remind">ऐपमास्टर अनुस्मारक: अपने नए ऐप के लिए एक लॉक सेट करें.</string>
     <string name="clean_result">कैश साफ़ करें</string>
-    <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
-    <string name="lock_guide">ताला रखने के लिए ऐप को क्लिक करें</string>
-    <string name="start_guide">सबसे अधिक इस्तेमाल किए गए एप्प्स</string>
+    <string name="new_install_lock_remind">आपको स्थापित किया है %1$s . इसके लिए एक लॉक सेट करें ?</string>
+    <string name="lock_guide">लॉक करने ऐप क्लिक करें</string>
+    <string name="start_guide">अधिक उपयोग किए गए ऐप्स</string>
 
 </resources>

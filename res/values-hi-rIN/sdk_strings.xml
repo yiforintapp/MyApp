@@ -31,8 +31,8 @@
     <string name="click_to_update">अपडेट के लिए क्लिक करें</string>
     <!-- push -->
     <string name="phone_number">फ़ोन नंबर</string>
-    <string name="india_only">केवल भारत में</string>
+    <string name="india_only">सिर्फ़ भारत</string>
     <string name="invalid_number">सही फोन नंबर दर्ज करें</string>
-    <string name="goto_gp">जाएं गूगल प्ले google play</string>
+    <string name="goto_gp">रेटिंग</string>
 
 </resources>
