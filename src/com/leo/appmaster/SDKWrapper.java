@@ -68,7 +68,7 @@ public class SDKWrapper {
         LeoStat.init(ctx, ctx.getString(R.string.channel_code),
                 "appmaster");
         // TODO: change log level to ERROR when release
-        LeoStat.setDebugLevel(Log.VERBOSE);
+        LeoStat.setDebugLevel(Log.ERROR);
         LeoStat.initUpdateEngine(UIHelper.getInstance(ctx),
                 true);
         LeoStat.initPushEngine(PushUIHelper.getInstance(ctx));
@@ -79,7 +79,7 @@ public class SDKWrapper {
                 + ctx.getString(R.string.channel_code));
         FlurryAgent.setLogEvents(true);
         // TODO: disable internal log when release
-        FlurryAgent.setLogEnabled(true);
+        FlurryAgent.setLogEnabled(false);
     }
 
     private static void iniBaidu(Context ctx) {
@@ -89,7 +89,8 @@ public class SDKWrapper {
         StatService.setOn(ctx, StatService.EXCEPTION_LOG);
         StatService.setSendLogStrategy(ctx, SendStrategyEnum.APP_START, 1, false);
         StatService.setLogSenderDelayed(5);
-        StatService.setDebugOn(true);
+        // TODO: disable internal log when release
+        // StatService.setDebugOn(true);
     }
 
 }
