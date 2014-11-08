@@ -31,8 +31,8 @@
     <string name="click_to_update">Click to update</string>
     <!-- push -->
     <string name="phone_number">Phone number</string>
-    <string name="india_only">仅限印度地区</string>
-    <string name="invalid_number">请输入正确的手机号码</string>
-    <string name="goto_gp">前往google play</string>
+    <string name="india_only">India Only</string>
+    <string name="invalid_number">Please enter the correct phone number</string>
+    <string name="goto_gp">Go to google play</string>
 
 </resources>
