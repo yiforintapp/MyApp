@@ -69,7 +69,7 @@
     <string name="switch_passwd">पासवर्ड</string>
     <string name="setting">सेटिंग</string>
     <string name="passwd_hint_tip">पासवर्ड अनुस्मारक: </string>
-    <string name="set_protect_or_not">क्या आपको सुरक्षा प्रश्न बनाने की आवश्यकता है।</string>
+    <string name="set_protect_or_not">सुरक्षाप्रश्न</string>
     <string name="set_protect_message">हमारी सलाह से आपको अपना सुरक्षा प्रश्न ज़रूर बनाना चाहिए ताकि अगर आप पासवर्ड भूल जाएँ तो, चलते रहें?</string>
     <string name="find_gesture">पासवर्ड भूल</string>
     <string name="pp_success">पासवर्ड सुरक्षा सेटिंग समाप्त हो गया</string>

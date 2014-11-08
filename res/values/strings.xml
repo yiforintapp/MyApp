@@ -70,7 +70,7 @@
     <string name="switch_passwd">Password</string>
     <string name="setting">Settings</string>
     <string name="passwd_hint_tip">Password Hint: </string>
-    <string name="set_protect_or_not">Do you need to create a security question?</string>
+    <string name="set_protect_or_not">Security Question</string>
     <string name="set_protect_message">We strongly recommend that you set up your security question in case you forget the password, continue?</string>
     <string name="find_gesture">Forget passwd</string>
     <string name="pp_success">Security question set!</string>
