@@ -115,28 +115,49 @@ public class AppLoadEngine extends BroadcastReceiver {
 	private ConcurrentHashMap<String, AppDetailInfo> mAppDetails;
 
 	private final static String[] sLocalLockArray = new String[] {
-			"com.whatsapp", // WhatsApp
-							// Messenger
-			"com.facebook.orca", // Facebook Messenger
-			"com.facebook.katana", // Facebook
-			"com.bsb.hike", // hike messenger
-			"jp.naver.line.android", // line
-			"com.viber.voip", // Viber
-			"com.tencent.mm", // wechat
-			"com.twitter.android", // Twitter
-			"com.instagram.android", // Instagram
-			"com.android.contacts", // Contacts
-			"com.android.mms", // MMS
-			"com.skype.raider", // Skype
-			"com.imo.android.imoim", // imo
-			"frames.techtouch.hordingframe", // Photo Frames: Hoarding
-			"com.picsart.studio", // PicsArt - Photo Studio
-			"com.km.cutpaste.util", // Cut Paste Photos
-			"com.pixlr.express", // Pixlr Express - photo editing
-			"com.android.gallery3d", // Gallery
-			"com.android.email", // Email
-			"com.tencent.mobileqq" // qq
-	};
+			"com.leo.appmaster", "com.facebook.katana",
+			"com.mxtech.videoplayer.ad", "com.facebook.orca",
+			"com.mediatek.filemanager", "com.sec.android.gallery3d",
+			"com.android.settings", "com.android.email",
+			"com.android.providers.downloads.ui",
+			"com.sec.android.app.myfiles", "com.google.android.gm",
+			"com.android.vending", "com.android.browser",
+			"com.google.android.youtube", "com.mediatek.videoplayer",
+			"com.android.music", "com.android.calendar",
+			"com.android.calculator2",
+			"com.google.android.googlequicksearchbox",
+			"com.google.android.apps.maps", "com.opera.mini.android",
+			"com.bsb.hike", "com.dragon.android.mobomarket",
+			"com.google.android.gms", "com.UCMobile.intl",
+			"com.google.android.talk", "com.uc.browser.en",
+			"com.android.chrome", "com.android.deskclock", "com.viber.voip",
+			"com.google.android.music", "com.android.soundrecorder",
+			"cn.andouya", "com.sec.android.app.videoplayer",
+			"com.king.candycrushsaga", "com.tencent.mobileqq",
+			"com.sec.android.app.camera", "jp.naver.line.android",
+			"com.mobile.indiapp", "com.google.android.apps.plus",
+			"com.mediatek.StkSelection", "com.kiloo.subwaysurf",
+			"com.android.quicksearchbox", "com.mediatek.FMRadio",
+			"com.google.android.play.games", "com.ansangha.drdriving",
+			"com.google.maps", "com.leo.appmaster", "com.tencent.qq",
+			"com.google.plus", "com.baidu.map", "com.tencent.mm",
+			"com.baidu.reader", "com.google.vending",
+			"com.estrongs.android.pop", "com.google.android.videos",
+			"com.google.android.apps.magazines", "com.android.stk",
+			"com.baidu.BaiduMap", "com.google.android.apps.books",
+			"com.imangi.templerun2", "com.android.dialer",
+			"com.sec.android.app.music", "com.htc.task",
+			"com.cleanmaster.mguard", "com.skype.raider",
+			"com.samsung.everglades.video", "com.sonyericsson.album",
+			"com.google.android.apps.docs", "com.sec.android.app.samsungapps",
+			"com.appstar.callrecorder", "com.sec.chaton",
+			"com.mediatek.datatransfer", "com.slideme.sam.manager",
+			"com.sec.android.app.voicerecorder", "com.nemo.vidmate",
+			"com.sec.android.app.fm", "com.mobogenie", "com.android.camera",
+			"com.htc.sense.browser", "com.htc.soundrecorder",
+			"com.google.android.apps.genie.geniewidget",
+			"com.kiloo.subwaysurfmobrob", "com.dianxinos.optimizer.duplay",
+			"com.twitter.android", "com.sec.android.app.popupcalculator" };
 
 	private List<String> mRecommendLocklist;
 
@@ -436,44 +457,42 @@ public class AppLoadEngine extends BroadcastReceiver {
 			sWorker.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					for (String str : sLocalLockArray) {
-						if (str.equals(packageName)) {
-							LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
-							dialog.setTitle(R.string.app_name);
-							String tip = mContext.getString(
-									R.string.new_install_lock_remind,
-									AppUtil.getAppLabel(packageName, mContext));
-							dialog.setContent(tip);
-							dialog.setOnClickListener(new OnDiaogClickListener() {
-								@Override
-								public void onClick(int which) {
-									if (which == 0) {
-									} else if (which == 1) {
-										AppMasterPreference pre = AppMasterPreference
-												.getInstance(mContext);
-										List<String> lockList = new ArrayList<String>(
-												pre.getLockedAppList());
-										lockList.add(packageName);
-										pre.setLockedAppList(lockList);
+					// for (String str : sLocalLockArray) {
+					// if (str.equals(packageName)) {
+					LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
+					dialog.setTitle(R.string.app_name);
+					String tip = mContext.getString(
+							R.string.new_install_lock_remind,
+							AppUtil.getAppLabel(packageName, mContext));
+					dialog.setContent(tip);
+					dialog.setOnClickListener(new OnDiaogClickListener() {
+						@Override
+						public void onClick(int which) {
+							if (which == 0) {
+							} else if (which == 1) {
+								AppMasterPreference pre = AppMasterPreference
+										.getInstance(mContext);
+								List<String> lockList = new ArrayList<String>(
+										pre.getLockedAppList());
+								lockList.add(packageName);
+								pre.setLockedAppList(lockList);
 
-										if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-											Intent intent = new Intent(
-													mContext,
-													LockSettingActivity.class);
-											intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-											mContext.startActivity(intent);
-										}
-
-									}
+								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+									Intent intent = new Intent(mContext,
+											LockSettingActivity.class);
+									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									mContext.startActivity(intent);
 								}
-							});
-							dialog.getWindow()
-									.setType(
-											WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-							dialog.show();
-							break;
+
+							}
 						}
-					}
+					});
+					dialog.getWindow().setType(
+							WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+					dialog.show();
+					// break;
+					// }
+					// }
 
 				}
 			}, 5000);
