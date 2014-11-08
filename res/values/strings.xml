@@ -35,7 +35,7 @@
     <string name="reset_passwd">Reset a password</string>
     <string name="app_locked">Locked</string>
     <string name="app_unlock">Unlocked</string>
-    <string name="find_passwd">Forget your password?</string>
+    <string name="find_passwd">Forget passwd</string>
     <string name="please_wait">Please try again later</string>
     <string name="passwd_question">Question: </string>
     <string name="passwd_anwser">Answer: </string>
@@ -48,7 +48,7 @@
     <string name="qusetion_cant_null">Please enter a question</string>
     <string name="aneser_cant_null">Please enter your answer</string>
     <string name="pleas_input_anwser">Answer your security question</string>
-    <string name="not_set">Question Unset</string>
+    <string name="not_set">Unset</string>
     <string name="anwser">Answer: </string>
     <string name="not_unistall">Uninstall Protection</string>
     <string name="lock_screen_auto_lock">Auto-lock after screen turns off</string>
@@ -66,13 +66,13 @@
     <string name="lockscreen_access_pattern_detected">Pattern Recorded</string>
     <string name="please_input_gesture">Draw pattern to unlock</string>
     <string name="input_passwd_tip">Please enter a password hint</string>
-    <string name="switch_gesture">Pattern Lock</string>
-    <string name="switch_passwd">Password Lock</string>
+    <string name="switch_gesture">Pattern</string>
+    <string name="switch_passwd">Password</string>
     <string name="setting">Settings</string>
     <string name="passwd_hint_tip">Password Hint: </string>
-    <string name="set_protect_or_not">Do you need to create a security question?</string>
+    <string name="set_protect_or_not">Security Question</string>
     <string name="set_protect_message">We strongly recommend that you set up your security question in case you forget the password, continue?</string>
-    <string name="find_gesture">Forget your pattern?</string>
+    <string name="find_gesture">Forget passwd</string>
     <string name="pp_success">Security question set!</string>
     <string name="passwd_setting">Password Settings</string>
     <string name="set_success">Password set successfully</string>
@@ -89,7 +89,7 @@
     <string name="app_version">Version: %1$s</string>
     <string name="backuping">Processing data: ( %1$s )</string>
     <string name="no_application_selected">Please select an App</string>
-    <string name="backup_finish">Backuped successfully!</string>
+    <string name="backup_finish">Backup Successful</string>
     <string name="delete_fail">Delete Failed</string>
     <string name="deleting_app">Deleting: %1$s</string>
     <string name="installed_app_size">Installed Apps: %1$d</string>
@@ -127,7 +127,7 @@
     <string name="app_setting_update">Updates</string>
     <string name="app_setting_about">About</string>
     <string name="forbid_uninstall">Uninstall Protection</string>
-    <string name="auto_lock">Auto-lock after screen turns off</string>
+    <string name="auto_lock">Lock after screen-off</string>
     <string name="change_lock_time">Auto-lock Time Settings</string>
     <string name="passwd_protect">Security Question</string>
     <string name="change_passwd">Change Password</string>
@@ -174,30 +174,30 @@
         <item>By Time</item>
     </string-array>
 
-    <string name="recom_lock_tip">推荐应用加锁提醒</string>
+    <string name="recom_lock_tip">Reminder of most-used Apps</string>
     <string name="new_app_lock_tip">Reminder of new Apps</string>
     <string name="feedback">Feedbacks</string>
-    <string name="first_set_passwd_hint">首次使用请设置密码</string>
-    <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>
-    <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片隐藏功能中</string>
-    <string name="gesture_start_hint">画完后松开手指</string>
-    <string name="make_passwd">确认密码</string>
-    <string name="input_again">请再次输入</string>
-    <string name="reset_digital_passwd">重设数字密码</string>
+    <string name="first_set_passwd_hint">Set a password for your first login.</string>
+    <string name="gestur_passwd_function_hint">Pattern available in Lock&amp;hide</string>
+    <string name="digital_passwd_function_hint">Password available in Lock&amp;Hide</string>
+    <string name="gesture_start_hint">Release finger when done</string>
+    <string name="make_passwd">Confirm your password</string>
+    <string name="input_again">Please enter again</string>
+    <string name="reset_digital_passwd">Reset a password</string>
     <!-- 版权 -->
     <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
     <!-- AppWall -->
     <string name="app_wall">Hot Apps</string>
-    <string name="app_wall_network">网络或服务器异常请重新尝试！</string>
-    <string name="app_wall_click">点击重试 </string>
+    <string name="app_wall_network">Network Error. Please try again later.</string>
+    <string name="app_wall_click">Refresh</string>
 
     <!-- 隐私策略 -->
     <string name="protocolBar">Privacy Policy</string>
-    <string name="passwd_set_gesture_tip">请至少连接4个点</string>
-    <string name="set_gesture">设置手势密码</string>
-    <string name="set_passwd">设置数字密码</string>
-    <string name="lock_remind">App Master 提醒您对应用加锁</string>
-    <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
+    <string name="passwd_set_gesture_tip">Connect at least 4 dots</string>
+    <string name="set_gesture">Draw a new pattern</string>
+    <string name="set_passwd">Enter the new password</string>
+    <string name="lock_remind">App Master reminder: set a lock for your new App?</string>
+    <string name="new_install_lock_remind">You have installed %1$s. Set a lock for it?</string>
     
     <string name="lock_guide">Tap Apps to lock</string>
     <string name="start_guide">Most-used Apps</string>

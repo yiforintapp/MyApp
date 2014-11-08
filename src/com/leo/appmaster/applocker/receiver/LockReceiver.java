@@ -39,7 +39,7 @@ public class LockReceiver extends BroadcastReceiver {
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(new Date());
 				pref.setLastAlarmSetTime(calendar.getTimeInMillis());
-				calendar.add(Calendar.MINUTE, 3);
+				calendar.add(Calendar.DATE, 3);
 				PendingIntent pi = PendingIntent.getBroadcast(context, 0,
 						intent, PendingIntent.FLAG_UPDATE_CURRENT);
 				AlarmManager am = (AlarmManager) context
@@ -79,7 +79,7 @@ public class LockReceiver extends BroadcastReceiver {
 		} else {
 			intent = new Intent(ctx, LockScreenActivity.class);
 			intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-					LockSettingActivity.class.getName());
+					AppLockListActivity.class.getName());
 			int lockType = pref.getLockType();
 			if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 				intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,

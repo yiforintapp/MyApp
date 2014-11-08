@@ -28,6 +28,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StatFs;
+import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
@@ -161,6 +162,9 @@ public class AppBackupRestoreManager implements AppChangeListener{
                             success = false;
                             break;
                         }
+                    }
+                    if (successNum == 0) {
+                        success = false;
                     }
                     if (mBackupListener != null) {
                         if(doneNum == totalNum) {

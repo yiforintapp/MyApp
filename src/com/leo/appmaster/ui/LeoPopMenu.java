@@ -57,7 +57,7 @@ public class LeoPopMenu {
 		}
 
 		if(styles == null) {
-		    mStyles.width = DipPixelUtil.dip2px((Context)activity, 130.0f);
+		    mStyles.width = DipPixelUtil.dip2px((Context)activity, 132.0f);
 		    mStyles.height = LayoutParams.WRAP_CONTENT;
 		    if (mAnimaStyle != -1) {
 		          mStyles.animation = mAnimaStyle;

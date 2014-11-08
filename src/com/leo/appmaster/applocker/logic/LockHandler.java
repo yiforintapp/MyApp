@@ -58,7 +58,7 @@ public class LockHandler extends BroadcastReceiver {
 		if (pkg == null || activity == null)
 			return;
 
-		// LeoLog.e("handleAppLaunch", pkg + "/" + activity);
+		LeoLog.e("handleAppLaunch", pkg + "/" + activity);
 
 		if (!pkg.equals(mLastRunningPkg)) {
 			String myPackage = mContext.getPackageName();
@@ -102,24 +102,55 @@ public class LockHandler extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		LeoLog.e("LockReceiver", "action = " + intent.getAction());
 		if (ACTION_APP_UNLOCKED.equals(intent.getAction())) {
 			String pkg = intent.getStringExtra(EXTRA_LOCKED_APP_PKG);
 			mLockPolicy.onUnlocked(pkg);
 		} else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
 			if (mLockPolicy instanceof TimeoutRelockPolicy) {
 				if (AppMasterPreference.getInstance(context).isAutoLock()) {
+					LeoLog.e("LockReceiver", "isAutoLock");
 					((TimeoutRelockPolicy) mLockPolicy).clearLockApp();
 				}
 			}
 
-			Intent lockIntent = new Intent(context, LockService.class);
-			lockIntent.putExtra("lock_service", false);
-			context.startService(lockIntent);
+			 Intent lockIntent = new Intent(context, LockService.class);
+			 lockIntent.putExtra("lock_service", false);
+			 context.startService(lockIntent);
 
 		} else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-			Intent lockIntent = new Intent(context, LockService.class);
-			lockIntent.putExtra("lock_service", true);
-			context.startService(lockIntent);
+			 Intent lockIntent = new Intent(context, LockService.class);
+			 lockIntent.putExtra("lock_service", true);
+			 context.startService(lockIntent);
+			judgeShowLockPage();
+		}
+	}
+
+	private void judgeShowLockPage() {
+		List<String> list = AppMasterPreference.getInstance(mContext)
+				.getLockedAppList();
+		LeoLog.e("onReceive", "mLastRunningPkg = " + mLastRunningPkg);
+		if (list.contains(mLastRunningPkg)) {
+			Intent intent2 = new Intent(mContext, LockScreenActivity.class);
+			if (!mLockPolicy.onHandleLock(mLastRunningPkg)) {
+				int lockType = AppMasterPreference.getInstance(mContext)
+						.getLockType();
+				if (lockType == AppMasterPreference.LOCK_TYPE_NONE)
+					return;
+				if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+					intent2.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+							LockFragment.LOCK_TYPE_PASSWD);
+				} else if (lockType == AppMasterPreference.LOCK_TYPE_GESTURE) {
+					intent2.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+							LockFragment.LOCK_TYPE_GESTURE);
+				}
+				intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent2.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+				intent2.putExtra(EXTRA_LOCKED_APP_PKG, mLastRunningPkg);
+				intent2.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+						LockFragment.FROM_OTHER);
+				mContext.startActivity(intent2);
+			}
 		}
 	}
 }
