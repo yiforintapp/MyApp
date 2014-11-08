@@ -74,21 +74,13 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
         TextView tvContent = (TextView) findViewById(R.id.dlg_content);
         tvContent.setText(content);
 
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        int dpi = dm.densityDpi;
-        int height = 30 * dpi / 160;
-
         TextView tvCancel = (TextView) findViewById(R.id.dlg_left_btn);
         tvCancel.setText(getString(R.string.cancel));
         tvCancel.setOnClickListener(this);
-        tvCancel.setLayoutParams(new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, height, 1.2f));
 
         TextView tvGO = (TextView) findViewById(R.id.dlg_right_btn);
         tvGO.setText(getString(R.string.goto_gp));
         tvGO.setOnClickListener(this);
-        tvGO.setLayoutParams(new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, height, 0.8f));
     }
 
     @Override
