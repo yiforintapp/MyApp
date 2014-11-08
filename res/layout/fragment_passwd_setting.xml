@@ -252,7 +252,7 @@
                 android:src="@drawable/delete_button_selecter" />
         </LinearLayout>
     </LinearLayout>
-    
+
     <TextView
         android:id="@+id/tv_bottom"
         android:layout_width="wrap_content"
@@ -260,9 +260,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/common_button_selecter"
         android:padding="10dp"
         android:text="@string/reset_digital_passwd"
-        android:textColor="#ffffff" />
+        android:textColor="@color/common_button_selecter" />
 
 </RelativeLayout>

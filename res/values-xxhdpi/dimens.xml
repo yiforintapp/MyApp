@@ -17,4 +17,5 @@
     <dimen name="memory_flow_text2_marginTop">4dp</dimen>
     <dimen name="about_logo_width">144dp</dimen>
     <dimen name="about_logo_height">152dp</dimen>
+    <dimen name="gesture_setting_margintop">30dp</dimen>
 </resources>

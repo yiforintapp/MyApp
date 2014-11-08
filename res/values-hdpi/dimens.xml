@@ -19,4 +19,5 @@
     <dimen name="splash_height">188dp</dimen>
     <dimen name="about_logo_width">112dp</dimen>
     <dimen name="about_logo_height">120dp</dimen>
+    <dimen name="gesture_setting_margintop">10dp</dimen>
 </resources>
