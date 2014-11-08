@@ -85,7 +85,7 @@ public class AppWallActivity extends BaseActivity implements
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.photo_bg_loding)
 				.showImageForEmptyUri(R.drawable.photo_bg_loding)
-				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
+				.showImageOnFail(R.drawable.photo_bg_loding).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true)
 				.displayer(new RoundedBitmapDisplayer(20)).build();
 		init();
@@ -238,9 +238,9 @@ public class AppWallActivity extends BaseActivity implements
 						button.setVisibility(View.GONE);
 						text.setVisibility(View.GONE);
 						MyAsyncTask task = new MyAsyncTask();
-						// task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
-						task.execute(DATAPATH, AppwallHttpUtil.getLanguage(),
-								"001a");
+						 task.execute(DATAPATH,AppwallHttpUtil.getLanguage(),getString(R.string.channel_code));
+						/*task.execute(DATAPATH, AppwallHttpUtil.getLanguage(),
+								"001a");*/
 					}
 				});
 			}
