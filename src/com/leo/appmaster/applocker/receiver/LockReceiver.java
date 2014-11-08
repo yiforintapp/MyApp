@@ -79,7 +79,7 @@ public class LockReceiver extends BroadcastReceiver {
 		} else {
 			intent = new Intent(ctx, LockScreenActivity.class);
 			intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-					LockSettingActivity.class.getName());
+					AppLockListActivity.class.getName());
 			int lockType = pref.getLockType();
 			if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
 				intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
