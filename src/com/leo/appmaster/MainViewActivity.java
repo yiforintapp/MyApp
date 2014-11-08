@@ -12,8 +12,8 @@ public class MainViewActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        LeoStat.checkForceUpdate();
         super.onResume();
+        LeoStat.checkForceUpdate();
     }
 
 }

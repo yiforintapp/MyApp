@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/app_background"
     android:layout_height="match_parent" >
 
     <ImageView
@@ -20,7 +21,7 @@
         android:layout_below="@+id/iv_app_icon"
         android:enabled="false"
         android:gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/please_input_gesture"
         android:textColor="#aaffffff"
         android:textSize="18sp" />
@@ -30,7 +31,7 @@
         android:layout_width="330dp"
         android:layout_height="330dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="40dp"
         android:layout_centerHorizontal="true"
         android:padding="10dip" />
 
