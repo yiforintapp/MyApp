@@ -70,6 +70,12 @@ public class LockScreenActivity extends FragmentActivity implements
 	}
 
 	@Override
+	protected void onResume() {
+		LeoLog.e("LockScreenActivity", "onResume");
+		super.onResume();
+	}
+
+	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 	}
@@ -86,7 +92,8 @@ public class LockScreenActivity extends FragmentActivity implements
 		mFromType = intent.getIntExtra(EXTRA_UNLOCK_FROM,
 				LockFragment.FROM_SELF);
 
-		if (mFromType == LockFragment.FROM_OTHER) {
+		if (mFromType == LockFragment.FROM_OTHER
+				|| mFromType == LockFragment.FROM_SCREEN_ON) {
 			BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
 					getPackageManager(),
 					intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
@@ -124,6 +131,7 @@ public class LockScreenActivity extends FragmentActivity implements
 
 	@Override
 	protected void onDestroy() {
+		LeoLog.e("LockScreenActivity", "onDestroy");
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		if (mAppBaseInfoLayoutbg != null) {
@@ -137,7 +145,7 @@ public class LockScreenActivity extends FragmentActivity implements
 		if (mFromType == LockFragment.FROM_OTHER) {
 			finish();
 		}
-
+		LeoLog.e("LockScreenActivity", "onStop");
 		super.onStop();
 	}
 
@@ -178,7 +186,8 @@ public class LockScreenActivity extends FragmentActivity implements
 			intent = new Intent(this, LockService.class);
 			this.startService(intent);
 			setResult(11);
-		} else if (mFromType == LockFragment.FROM_OTHER) {
+		} else if (mFromType == LockFragment.FROM_OTHER
+				|| mFromType == LockFragment.FROM_SCREEN_ON) {
 			// input right gesture, just finish self
 			Intent intent = new Intent(LockHandler.ACTION_APP_UNLOCKED);
 			intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mToPackage);
@@ -218,7 +227,8 @@ public class LockScreenActivity extends FragmentActivity implements
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent();
-		if (mFromType != LockFragment.FROM_OTHER) {
+		if (mFromType != LockFragment.FROM_OTHER
+				|| mFromType != LockFragment.FROM_SCREEN_ON) {
 			intent.setClassName(getApplicationContext(),
 					HomeActivity.class.getName());
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

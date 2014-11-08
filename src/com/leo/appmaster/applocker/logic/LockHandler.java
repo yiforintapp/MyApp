@@ -113,16 +113,15 @@ public class LockHandler extends BroadcastReceiver {
 					((TimeoutRelockPolicy) mLockPolicy).clearLockApp();
 				}
 			}
-
 			Intent lockIntent = new Intent(context, LockService.class);
 			lockIntent.putExtra("lock_service", false);
 			context.startService(lockIntent);
 
 		} else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+			judgeShowLockPage();
 			Intent lockIntent = new Intent(context, LockService.class);
 			lockIntent.putExtra("lock_service", true);
 			context.startService(lockIntent);
-			judgeShowLockPage();
 		}
 	}
 
@@ -132,8 +131,8 @@ public class LockHandler extends BroadcastReceiver {
 			return;
 		}
 		List<String> list = pref.getLockedAppList();
-		LeoLog.e("onReceive", "mLastRunningPkg = " + mLastRunningPkg);
 		if (list.contains(mLastRunningPkg)) {
+			LeoLog.e("mLastRunningPkg = " + mLastRunningPkg, "is in lock list");
 			Intent intent2 = new Intent(mContext, LockScreenActivity.class);
 			if (!mLockPolicy.onHandleLock(mLastRunningPkg)) {
 				int lockType = AppMasterPreference.getInstance(mContext)
@@ -151,7 +150,7 @@ public class LockHandler extends BroadcastReceiver {
 				intent2.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 				intent2.putExtra(EXTRA_LOCKED_APP_PKG, mLastRunningPkg);
 				intent2.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-						LockFragment.FROM_OTHER);
+						LockFragment.FROM_SCREEN_ON);
 				mContext.startActivity(intent2);
 			}
 		}
