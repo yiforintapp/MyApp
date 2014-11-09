@@ -37,6 +37,7 @@ import com.leo.appmaster.model.CacheInfo;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 
 public class AppLoadEngine extends BroadcastReceiver {
@@ -116,29 +117,20 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	private final static String[] sLocalLockArray = new String[] {
 			"com.whatsapp", "com.android.gallery3d", "com.android.mms",
-			"com.tencent.mm", "com.android.contacts", "com.leo.appmaster",
-			"com.facebook.katana", "com.mxtech.videoplayer.ad",
-			"com.facebook.orca", "com.mediatek.filemanager",
-			"com.sec.android.gallery3d", "com.android.settings",
-			"com.android.email", "com.android.providers.downloads.ui",
-			"com.sec.android.app.myfiles", "com.google.android.gm",
-			"com.android.vending", "com.android.browser",
+			"com.tencent.mm", "com.android.contacts", "com.facebook.katana",
+			"com.mxtech.videoplayer.ad", "com.facebook.orca",
+			"com.mediatek.filemanager", "com.sec.android.gallery3d",
+			"com.android.settings", "com.android.email",
+			"com.android.providers.downloads.ui",
+			"com.sec.android.app.myfiles", "com.android.vending",
 			"com.google.android.youtube", "com.mediatek.videoplayer",
-			"com.android.music", "com.android.calendar",
-			"com.opera.mini.android", "com.bsb.hike",
-			"com.dragon.android.mobomarket", "com.google.android.gms",
-			"com.UCMobile.intl", "com.google.android.talk",
-			"com.uc.browser.en", "com.android.chrome", "com.android.deskclock",
-			"com.viber.voip", "com.google.android.music",
-			"com.android.soundrecorder", "com.sec.android.app.videoplayer",
-			"com.tencent.mobileqq", "jp.naver.line.android", "com.tencent.qq",
-			"com.google.plus", "com.tencent.mm", "com.google.vending",
-			"com.google.android.videos", "com.android.dialer",
-			"com.cleanmaster.mguard", "com.skype.raider",
-			"com.samsung.everglades.video", "com.sonyericsson.album",
-			"com.appstar.callrecorder", "com.sec.chaton",
-			"com.mediatek.datatransfer", "com.sec.android.app.voicerecorder",
-			"com.nemo.vidmate", "com.sec.android.app.fm", "com.mobogenie",
+			"com.android.calendar", "com.google.android.talk",
+			"com.viber.voip", "com.android.soundrecorder",
+			"com.sec.android.app.videoplayer", "com.tencent.mobileqq",
+			"jp.naver.line.android", "com.tencent.qq", "com.google.plus",
+			"com.tencent.mm", "com.google.android.videos",
+			"com.android.dialer", "com.samsung.everglades.video",
+			"com.appstar.callrecorder", "com.sec.android.app.voicerecorder",
 			"com.htc.soundrecorder", "com.twitter.android" };
 
 	private List<String> mRecommendLocklist;
@@ -276,6 +268,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		appInfo.setUid(applicationInfo.uid);
 		appInfo.setSourceDir(applicationInfo.sourceDir);
 		appInfo.topPos = mRecommendLocklist.indexOf(packageName);
+		LeoLog.e("xxxx", packageName + ":   topPos");
 	}
 
 	private void loadPowerComsuInfo() {
