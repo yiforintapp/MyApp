@@ -227,15 +227,16 @@ public class LockScreenActivity extends FragmentActivity implements
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent();
-		if (mFromType != LockFragment.FROM_OTHER
-				|| mFromType != LockFragment.FROM_SCREEN_ON) {
+		if (mFromType == LockFragment.FROM_OTHER
+				|| mFromType == LockFragment.FROM_SCREEN_ON) {
+
+			intent.setAction(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+		} else {
+
 			intent.setClassName(getApplicationContext(),
 					HomeActivity.class.getName());
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-		} else {
-			intent.setAction(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_HOME);
 		}
 		startActivity(intent);
 		finish();
