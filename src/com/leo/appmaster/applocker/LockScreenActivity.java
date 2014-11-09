@@ -66,12 +66,10 @@ public class LockScreenActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_lock_setting);
 		handleIntent();
 		initUI();
-		LeoLog.e("LockScreenActivity", "onCreate");
 	}
 
 	@Override
 	protected void onResume() {
-		LeoLog.e("LockScreenActivity", "onResume");
 		super.onResume();
 	}
 
@@ -143,7 +141,7 @@ public class LockScreenActivity extends FragmentActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
-		LeoLog.e("LockScreenActivity", "onStop" + "      mFromType = "
+		LeoLog.d("LockScreenActivity", "onStop" + "      mFromType = "
 				+ mFromType);
 		if (mFromType == LockFragment.FROM_OTHER) {
 			if (!AppMasterPreference.getInstance(this).isAutoLock()) {
@@ -181,10 +179,6 @@ public class LockScreenActivity extends FragmentActivity implements
 	}
 
 	public void onUnlockSucceed() {
-
-		LeoLog.e("LockScreenActivity", "mFromType = " + mFromType
-				+ "     mToActivity = " + mToActivity);
-
 		if (mFromType == LockFragment.FROM_SELF) {
 			Intent intent = null;
 			intent = new Intent(this, LockService.class);

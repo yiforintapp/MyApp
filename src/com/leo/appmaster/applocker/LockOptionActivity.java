@@ -93,7 +93,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 	}
 
 	private void showLockPage() {
-		LeoLog.e("LockOptionActivity", "showLockPage");
+		LeoLog.d("LockOptionActivity", "showLockPage");
 		Intent intent = new Intent(this, LockScreenActivity.class);
 		int lockType = AppMasterPreference.getInstance(this).getLockType();
 		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
@@ -112,7 +112,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		LeoLog.e("LockOptionActivity", "onActivityResault: requestCode = "
+		LeoLog.d("LockOptionActivity", "onActivityResault: requestCode = "
 				+ requestCode + "    resultCode = " + resultCode);
 		mShouldLockOnRestart = false;
 		super.onActivityResult(requestCode, resultCode, data);

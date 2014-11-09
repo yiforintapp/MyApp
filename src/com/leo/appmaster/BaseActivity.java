@@ -8,8 +8,6 @@ package com.leo.appmaster;
 import com.baidu.mobstat.StatService;
 import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.applocker.ILock;
-import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
 
 import android.app.Activity;
 import android.content.Intent;

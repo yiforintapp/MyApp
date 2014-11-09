@@ -6,7 +6,6 @@ import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -61,8 +60,6 @@ public class LockSettingActivity extends FragmentActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		LeoLog.e("LockOptionActivity", "onActivityResault: requestCode = "
-				+ requestCode + "    resultCode = " + resultCode);
 		mShouldLockOnRestart = false;
 		super.onActivityResult(requestCode, resultCode, data);
 	}

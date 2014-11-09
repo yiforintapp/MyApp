@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 /**
- * @author lipeil if we extends this class,we must: first provider layout id in
+ * @author zwy if we extends this class,we must: first provider layout id in
  *         method layoutResourceId() secend we init our UI in onInitUI.
  */
 public abstract class BaseFragment extends Fragment {

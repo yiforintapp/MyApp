@@ -5,7 +5,6 @@ import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -50,8 +49,6 @@ public class PasswdProtectActivity extends BaseActivity implements
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		LeoLog.e("LockOptionActivity", "onActivityResault: requestCode = "
-				+ requestCode + "    resultCode = " + resultCode);
 		mShouldLockOnRestart = false;
 		super.onActivityResult(requestCode, resultCode, data);
 	}

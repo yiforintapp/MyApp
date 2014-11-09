@@ -29,7 +29,6 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
-import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
 public class AppLockListActivity extends BaseActivity implements
@@ -379,7 +378,6 @@ public class AppLockListActivity extends BaseActivity implements
 
 	@Override
 	protected void onNewIntent(Intent intent) {
-		LeoLog.e("xxxx", "onNewIntent");
 		super.onNewIntent(intent);
 	}
 
@@ -432,13 +430,10 @@ public class AppLockListActivity extends BaseActivity implements
 
 	@Override
 	public void onActivityCreate() {
-		LeoLog.e("AppLockListActivity", "onActivityCreate");
-		// showLockPage();
 	}
 
 	@Override
 	public void onActivityRestart() {
-		LeoLog.e("AppLockListActivity", "onActivityRestart");
 		if (mShouldLockOnRestart) {
 			showLockPage();
 		} else {
@@ -447,7 +442,6 @@ public class AppLockListActivity extends BaseActivity implements
 	}
 
 	private void showLockPage() {
-		LeoLog.e("AppLockListActivity", "showLockPage");
 		Intent intent = new Intent(this, LockScreenActivity.class);
 		int lockType = AppMasterPreference.getInstance(this).getLockType();
 		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
@@ -466,8 +460,6 @@ public class AppLockListActivity extends BaseActivity implements
 
 	@Override
 	public void onActivityResault(int requestCode, int resultCode) {
-		LeoLog.e("AppLockListActivity", "onActivityResault: requestCode = "
-				+ requestCode + "    resultCode = " + resultCode);
 		if (REQUEST_CODE_LOCK == requestCode) {
 			mShouldLockOnRestart = false;
 		} else if (REQUEST_CODE_OPTION == requestCode) {
