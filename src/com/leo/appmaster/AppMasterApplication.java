@@ -25,18 +25,19 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
-public class AppMasterApplication extends Application implements RequestFinishedReporter{
+public class AppMasterApplication extends Application implements
+		RequestFinishedReporter {
 
 	private AppLoadEngine mAppsEngine;
 
 	private static AppMasterApplication mInstance;
 
-    private static List<Activity> mActivityList;
+	private static List<Activity> mActivityList;
 
-    private static final int MAX_MEMORY_CACHE_SIZE = 5 * (1 << 20);// 5M
-    private static final int MAX_DISK_CACHE_SIZE = 50 * (1 << 20);// 20 Mb
-    private static final int MAX_THREAD_POOL_SIZE = 3;
-	
+	private static final int MAX_MEMORY_CACHE_SIZE = 5 * (1 << 20);// 5M
+	private static final int MAX_DISK_CACHE_SIZE = 50 * (1 << 20);// 20 Mb
+	private static final int MAX_THREAD_POOL_SIZE = 3;
+
 	static {
 		System.loadLibrary("leo_service");
 	}
@@ -82,16 +83,15 @@ public class AppMasterApplication extends Application implements RequestFinished
 	}
 
 	private void initImageLoader() {
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                getApplicationContext())
-                .threadPoolSize(MAX_THREAD_POOL_SIZE)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .memoryCacheSizePercentage(12)
-                 .diskCacheSize(MAX_DISK_CACHE_SIZE) // 50 Mb
-                .denyCacheImageMultipleSizesInMemory().build();
-        ImageLoader.getInstance().init(config);
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				getApplicationContext()).threadPoolSize(MAX_THREAD_POOL_SIZE)
+				.threadPriority(Thread.NORM_PRIORITY - 2)
+				.memoryCacheSizePercentage(12)
+				.diskCacheSize(MAX_DISK_CACHE_SIZE) // 50 Mb
+				.denyCacheImageMultipleSizesInMemory().build();
+		ImageLoader.getInstance().init(config);
 	}
-	
+
 	private void judgeLockAlert() {
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		if (pref.isReminded()) {
@@ -124,7 +124,8 @@ public class AppMasterApplication extends Application implements RequestFinished
 			if (detal < Constants.LOCK_TIP_INTERVAL_OF_MS) {
 				PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent,
 						PendingIntent.FLAG_UPDATE_CURRENT);
-				am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, detal, pi);
+				am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
+						+ Constants.LOCK_TIP_INTERVAL_OF_MS - detal, pi);
 				pref.setLastAlarmSetTime(calendar.getTimeInMillis());
 			} else {
 				sendBroadcast(intent);
@@ -152,38 +153,37 @@ public class AppMasterApplication extends Application implements RequestFinished
 	public static AppMasterApplication getInstance() {
 		return mInstance;
 	}
-	
-	//初始化ImageLoader
-		public static void initImageLoader(Context context) {
-			ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-					.threadPriority(Thread.NORM_PRIORITY - 2)
-					.denyCacheImageMultipleSizesInMemory()
-					.diskCacheFileNameGenerator(new Md5FileNameGenerator())
-					.diskCacheSize(50 * 1024 * 1024) 
-					.tasksProcessingOrder(QueueProcessingType.LIFO)
-					.writeDebugLogs() 
-					.build();
-			ImageLoader.getInstance().init(config);
+
+	// 初始化ImageLoader
+	public static void initImageLoader(Context context) {
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				context).threadPriority(Thread.NORM_PRIORITY - 2)
+				.denyCacheImageMultipleSizesInMemory()
+				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
+				.diskCacheSize(50 * 1024 * 1024)
+				.tasksProcessingOrder(QueueProcessingType.LIFO)
+				.writeDebugLogs().build();
+		ImageLoader.getInstance().init(config);
+	}
+
+	// for force update strategy to exit application completely
+	public void addActivity(Activity activity) {
+		mActivityList.add(activity);
+	}
+
+	public void removeActivity(Activity activity) {
+		mActivityList.remove(activity);
+	}
+
+	public void exitApplication() {
+		for (Activity activity : mActivityList) {
+			activity.finish();
 		}
+	}
 
-    // for force update strategy to exit application completely
-	    public void addActivity(Activity activity) {
-	        mActivityList.add(activity);
-	    }
-
-	    public void removeActivity(Activity activity) {
-	        mActivityList.remove(activity);
-	    }
-	    
-	    public void exitApplication() {
-	        for (Activity activity : mActivityList) {
-	            activity.finish();
-	        }
-	    }
-
-        @Override
-        public void reportRequestFinished(String description) {
-            SDKWrapper.addEvent(getInstance(), LeoStat.P1, "leosdk", description);
-        }
+	@Override
+	public void reportRequestFinished(String description) {
+		SDKWrapper.addEvent(getInstance(), LeoStat.P1, "leosdk", description);
+	}
 
 }

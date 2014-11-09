@@ -142,11 +142,15 @@ public class LockScreenActivity extends FragmentActivity implements
 
 	@Override
 	protected void onStop() {
+		super.onStop();
+		LeoLog.e("LockScreenActivity", "onStop" + "      mFromType = "
+				+ mFromType);
 		if (mFromType == LockFragment.FROM_OTHER) {
+			if (!AppMasterPreference.getInstance(this).isAutoLock()) {
+				return;
+			}
 			finish();
 		}
-		LeoLog.e("LockScreenActivity", "onStop");
-		super.onStop();
 	}
 
 	private void initUI() {

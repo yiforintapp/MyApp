@@ -268,7 +268,6 @@ public class AppLoadEngine extends BroadcastReceiver {
 		appInfo.setUid(applicationInfo.uid);
 		appInfo.setSourceDir(applicationInfo.sourceDir);
 		appInfo.topPos = mRecommendLocklist.indexOf(packageName);
-		LeoLog.e("xxxx", packageName + ":   topPos");
 	}
 
 	private void loadPowerComsuInfo() {
