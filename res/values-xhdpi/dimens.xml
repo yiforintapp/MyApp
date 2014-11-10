@@ -20,14 +20,4 @@
     <dimen name="about_logo_width">144dp</dimen>
     <dimen name="about_logo_height">152dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
-    <dimen name="hide_album_frame_width">167dp</dimen>
-    <dimen name="hide_album_image_frame_width">128dp</dimen>
-    <dimen name="hide_album_image_frame_left">18dp</dimen>
-    <dimen name="hide_album_image_frame_top">18dp</dimen>
-    <dimen name="hide_picture_frame_width">167dp</dimen>
-    <dimen name="hide_pictrue_imge_frame_width">142dp</dimen>
-    <dimen name="hide_picture_iamge_frame_left">10dp</dimen>
-    <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-    <dimen name="hide_picture_checkbox_left">107dp</dimen>
-    <dimen name="hide_picture_checkbox_top">107dp</dimen>
 </resources>
