@@ -56,13 +56,15 @@ public class LockService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-        if(intent.getBooleanExtra("lock_service", true)) {
-            if (!mServiceStarted) {
-                startLockService();
-            }
-        } else {
-            stopLockService();
-        }
+		if (intent != null) {
+			if (intent.getBooleanExtra("lock_service", true)) {
+				if (!mServiceStarted) {
+					startLockService();
+				}
+			} else {
+				stopLockService();
+			}
+		}
 		return START_STICKY;
 	}
 
