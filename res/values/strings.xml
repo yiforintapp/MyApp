@@ -198,8 +198,9 @@
     <string name="set_passwd">Enter the new password</string>
     <string name="lock_remind">App Master reminder: set a lock for your new App?</string>
     <string name="new_install_lock_remind">You have installed %1$s. Set a lock for it?</string>
-    
     <string name="lock_guide">Tap Apps to lock</string>
     <string name="start_guide">Most-used Apps</string>
+    <string name="grade">Rate Us!</string>
+    <string name="grade_tip">Thank you for using App Master. Please leave your feedbacks here.</string>
 
 </resources>

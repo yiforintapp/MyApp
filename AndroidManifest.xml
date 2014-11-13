@@ -65,9 +65,20 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.applocker.LockSettingActivity"
+            android:name="com.leo.appmaster.home.GooglePlayGuideActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.home.GradeTipActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.LockSettingActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
         <activity

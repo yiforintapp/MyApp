@@ -35,6 +35,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_RECOMMEND_LOCK_LIST = "recommend_app_lock_list";
 	public static final String PREF_LAST_ALARM_SET_TIME = "last_alarm_set_time";
 	public static final String PREF_RECOMMEND_LOCK_PERCENT = "recommend_lock_percent";
+	public static final String PREF_UNLOCK_COUNT = "unlock_count";
 
 	// other
 	public static final String PREF_LAST_VERSION = "last_version";
@@ -66,10 +67,18 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 				: mInstance;
 	}
 
+	public void setUnlockCount(long count) {
+		mPref.edit().putLong(PREF_UNLOCK_COUNT, count).commit();
+	}
+
+	public long getUnlockCount() {
+		return mPref.getLong(PREF_UNLOCK_COUNT, 0);
+	}
+
 	public void setRecommendLockPercent(float percent) {
 		mPref.edit().putFloat(PREF_RECOMMEND_LOCK_PERCENT, percent).commit();
 	}
-	
+
 	public float getRecommendLockPercent() {
 		return mPref.getFloat(PREF_RECOMMEND_LOCK_PERCENT, 0.0f);
 	}
@@ -209,13 +218,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	private void loadPreferences() {
-	    String lockList = mPref.getString(PREF_APPLICATION_LIST, "");
-        if (lockList.equals("")) {
-            mLockedAppList = new ArrayList<String>(0);
-        } else {
-            mLockedAppList = Arrays.asList(mPref.getString(PREF_APPLICATION_LIST,
-                    "").split(";"));
-        }
+		String lockList = mPref.getString(PREF_APPLICATION_LIST, "");
+		if (lockList.equals("")) {
+			mLockedAppList = new ArrayList<String>(0);
+		} else {
+			mLockedAppList = Arrays.asList(mPref.getString(
+					PREF_APPLICATION_LIST, "").split(";"));
+		}
 		mRecommendList = Arrays.asList(mPref.getString(
 				PREF_RECOMMEND_LOCK_LIST, "").split(";"));
 		mLockType = mPref.getInt(PREF_LOCK_TYPE, LOCK_TYPE_NONE);
@@ -231,13 +240,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		if (PREF_APPLICATION_LIST.equals(key)) {
-            String lockList = mPref.getString(PREF_APPLICATION_LIST, "");
-            if (lockList.equals("")) {
-                mLockedAppList = new ArrayList<String>(0);
-            } else {
-                mLockedAppList = Arrays.asList(mPref.getString(PREF_APPLICATION_LIST,
-                        "").split(";"));
-            }
+			String lockList = mPref.getString(PREF_APPLICATION_LIST, "");
+			if (lockList.equals("")) {
+				mLockedAppList = new ArrayList<String>(0);
+			} else {
+				mLockedAppList = Arrays.asList(mPref.getString(
+						PREF_APPLICATION_LIST, "").split(";"));
+			}
 		} else if (PREF_PASSWORD.equals(key)) {
 			mPassword = mPref.getString(PREF_PASSWORD, "1234");
 		} else if (PREF_LOCK_POLICY.equals(key)) {
@@ -288,7 +297,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	public void setLastAlarmSetTime(long currentTimeMillis) {
-		mPref.edit().putLong(PREF_LAST_ALARM_SET_TIME, currentTimeMillis).commit();
+		mPref.edit().putLong(PREF_LAST_ALARM_SET_TIME, currentTimeMillis)
+				.commit();
 	}
 
 	public long getInstallTime() {

@@ -3,19 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <RelativeLayout 
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/app_background">
-        
+        android:background="@color/app_background" >
 
         <com.leo.appmaster.ui.CommonTitleBar
-        android:id="@+id/about_title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/app_background" />
+            android:id="@+id/about_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/app_background" />
 
         <ImageView
             android:id="@+id/app_logo"
@@ -24,47 +24,57 @@
             android:layout_below="@+id/about_title_bar"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="49dp"
-            android:src="@drawable/icon_with_name" />
+            android:src="@drawable/splash_icon" />
 
         <TextView
             android:id="@+id/app_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/app_logo"
-            android:layout_marginTop="10dp"
+            android:layout_below="@+id/app_name"
             android:layout_centerHorizontal="true"
-            android:textSize="18dp"
+            android:layout_marginTop="10dp"
+            android:text="1.00"
             android:textColor="#FFABCEFF"
-            android:text="1.00" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/copyright"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
+            android:text="@string/about_copy"
             android:textColor="#FFABCEFF"
-            android:textSize="10dp"
-            android:text="@string/about_copy" />
+            android:textSize="10dp" />
+
+        <ImageView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@+id/app_logo"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/splash_name" />
+
     </RelativeLayout>
-    <LinearLayout 
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="207dp"
-        android:gravity="center"
         android:background="@android:color/white"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical" >
+
         <Button
             android:id="@+id/check_update_button"
             android:layout_width="289dp"
             android:layout_height="43dp"
             android:layout_gravity="center"
-            android:textColor="@android:color/white"
-            android:textSize="18dp"
             android:background="@drawable/mycheck_button_selecter"
-            android:text="@string/protocolBar" />
-        
+            android:text="@string/protocolBar"
+            android:textColor="@android:color/white"
+            android:textSize="18dp" />
     </LinearLayout>
 
-        
 </LinearLayout>

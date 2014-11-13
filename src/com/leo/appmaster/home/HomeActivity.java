@@ -3,32 +3,46 @@ package com.leo.appmaster.home;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.MainViewActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
@@ -82,11 +96,37 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		// commit feedbacks if any
 		FeedbackHelper.getInstance().tryCommit();
-
 		installShortcut();
+
+		judgeShowGradeTip();
 	}
 
-	
+	private void judgeShowGradeTip() {
+		mTtileBar.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				ActivityManager mActivityManager = (ActivityManager) HomeActivity.this
+						.getSystemService(Context.ACTIVITY_SERVICE);
+
+				RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(
+						1).get(0);
+
+				LeoLog.e("xxxx", "topTaskInfo.baseActivity = "
+						+ topTaskInfo.baseActivity);
+				String pkg = HomeActivity.this.getPackageName();
+				if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
+					long count = AppMasterPreference.getInstance(
+							HomeActivity.this).getUnlockCount();
+					if (count >= 1) {
+						Intent intent = new Intent(HomeActivity.this,
+								GradeTipActivity.class);
+						HomeActivity.this.startActivity(intent);
+					}
+				}
+			}
+		}, 5000);
+	}
+
 	private void installShortcut() {
 		SharedPreferences prefernece = PreferenceManager
 				.getDefaultSharedPreferences(this);
@@ -110,9 +150,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
 			shortcut.putExtra("duplicate", false);
 			shortcut.putExtra("from_shortcut", true);
-
 			sendBroadcast(shortcut);
-
 			prefernece.edit().putBoolean("shortcut", true).commit();
 		}
 	}
@@ -185,14 +223,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	}
 
 	private void setLockedAppCount() {
-	    View v = findViewById(R.id.lock_count_layout);
+		View v = findViewById(R.id.lock_count_layout);
 		int lockedAppCount = AppMasterPreference.getInstance(this)
 				.getLockedAppList().size();
-		if(lockedAppCount == 0){
-		    v.setVisibility(View.INVISIBLE);
-		}else{
-		    v.setVisibility(View.VISIBLE);
-		    mLockedApp.setText(Integer.toString(lockedAppCount));
+		if (lockedAppCount == 0) {
+			v.setVisibility(View.INVISIBLE);
+		} else {
+			v.setVisibility(View.VISIBLE);
+			mLockedApp.setText(Integer.toString(lockedAppCount));
 		}
 	}
 
@@ -292,6 +330,39 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 							Intent intent = new Intent(HomeActivity.this,
 									AboutActivity.class);
 							startActivity(intent);
+						} else if (position == 4) {
+
+							if (AppUtil.appInstalled(getApplicationContext(),
+									"com.android.vending")) {
+								Intent intent = new Intent(Intent.ACTION_VIEW);
+								Uri uri = Uri
+										.parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+								intent.setData(uri);
+								ComponentName cn = new ComponentName(
+										"com.android.vending",
+										"com.google.android.finsky.activities.MainActivity");
+								intent.setComponent(cn);
+								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								startActivity(intent);
+								mPictureHide.postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										Intent intent2 = new Intent(
+												HomeActivity.this,
+												GooglePlayGuideActivity.class);
+										intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										startActivity(intent2);
+									}
+								}, 200);
+							} else {
+								Intent intent = new Intent(Intent.ACTION_VIEW);
+								Uri uri = Uri
+										.parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+								intent.setData(uri);
+								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								startActivity(intent);
+							}
+
 						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
@@ -333,6 +404,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			listItems.add(resources.getString(R.string.app_setting_update));
 		}
 		listItems.add(resources.getString(R.string.app_setting_about));
+		listItems.add(resources.getString(R.string.grade));
 		return listItems;
 	}
 

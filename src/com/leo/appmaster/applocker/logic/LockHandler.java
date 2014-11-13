@@ -7,6 +7,7 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.preference.Preference;
 import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
