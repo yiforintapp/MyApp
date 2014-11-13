@@ -15,10 +15,19 @@
     <dimen name="cicle_width">56dp</dimen>
     <dimen name="memory_flow_text1_marginTop">1dp</dimen>
     <dimen name="memory_flow_text2_marginTop">3dp</dimen>
-    <dimen name="splash_width">156dp</dimen>
-    <dimen name="splash_height">168dp</dimen>
-    <dimen name="about_logo_width">92dp</dimen>
-    <dimen name="about_logo_height">100dp</dimen>
+    <dimen name="splash_width">176dp</dimen>
+    <dimen name="splash_height">188dp</dimen>
+    <dimen name="about_logo_width">112dp</dimen>
+    <dimen name="about_logo_height">120dp</dimen>
     <dimen name="gesture_setting_margintop">10dp</dimen>
-    <dimen name="splash_layout_margin_top">120dp</dimen>
+    <dimen name="hide_album_frame_width">149dp</dimen>
+    <dimen name="hide_album_image_frame_width">115dp</dimen>
+    <dimen name="hide_album_image_frame_left">16dp</dimen>
+    <dimen name="hide_album_image_frame_top">16dp</dimen>
+    <dimen name="hide_picture_frame_width">149dp</dimen>
+    <dimen name="hide_pictrue_imge_frame_width">126dp</dimen>
+    <dimen name="hide_picture_image_frame_left">9dp</dimen>
+    <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
+    <dimen name="hide_picture_checkbox_left">95dp</dimen>
+    <dimen name="hide_picture_checkbox_top">95dp</dimen>
 </resources>

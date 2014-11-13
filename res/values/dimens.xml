@@ -22,7 +22,16 @@
     <dimen name="lock_icon_height">24dp</dimen>
     <dimen name="lock_icon_X">28dp</dimen>
     <dimen name="lock_icon_Y">26dp</dimen>
-    <dimen name="about_logo_width">92dp</dimen>
-    <dimen name="about_logo_height">100dp</dimen>
-    
+    <dimen name="about_logo_width">112dp</dimen>
+    <dimen name="about_logo_height">120dp</dimen>
+    <dimen name="hide_album_frame_width">149dp</dimen>
+    <dimen name="hide_album_image_frame_width">115dp</dimen>
+    <dimen name="hide_album_image_frame_left">16dp</dimen>
+    <dimen name="hide_album_image_frame_top">16dp</dimen>
+    <dimen name="hide_picture_frame_width">149dp</dimen>
+    <dimen name="hide_pictrue_imge_frame_width">126dp</dimen>
+    <dimen name="hide_picture_image_frame_left">6dp</dimen>
+    <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
+    <dimen name="hide_picture_checkbox_left">95dp</dimen>
+    <dimen name="hide_picture_checkbox_top">95dp</dimen>
 </resources>
