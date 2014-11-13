@@ -36,6 +36,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_LAST_ALARM_SET_TIME = "last_alarm_set_time";
 	public static final String PREF_RECOMMEND_LOCK_PERCENT = "recommend_lock_percent";
 	public static final String PREF_UNLOCK_COUNT = "unlock_count";
+	public static final String PREF_GUIDE_TIP_SHOW = "google_play_guide_tip_show";
 
 	// other
 	public static final String PREF_LAST_VERSION = "last_version";
@@ -67,6 +68,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 				: mInstance;
 	}
 
+	public void setGoogleTipShowed(boolean show) {
+		mPref.edit().putBoolean(PREF_GUIDE_TIP_SHOW, show).commit();
+	}
+	
+	public boolean getGoogleTipShowed() {
+		return mPref.getBoolean(PREF_GUIDE_TIP_SHOW, false);
+	}
+	
 	public void setUnlockCount(long count) {
 		mPref.edit().putLong(PREF_UNLOCK_COUNT, count).commit();
 	}

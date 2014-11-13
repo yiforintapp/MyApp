@@ -111,13 +111,13 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 				RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(
 						1).get(0);
 
-				LeoLog.e("xxxx", "topTaskInfo.baseActivity = "
-						+ topTaskInfo.baseActivity);
 				String pkg = HomeActivity.this.getPackageName();
 				if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
 					long count = AppMasterPreference.getInstance(
 							HomeActivity.this).getUnlockCount();
-					if (count >= 1) {
+					boolean haveTip = AppMasterPreference.getInstance(
+							HomeActivity.this).getGoogleTipShowed();
+					if (count >= 5 && !haveTip) {
 						Intent intent = new Intent(HomeActivity.this,
 								GradeTipActivity.class);
 						HomeActivity.this.startActivity(intent);

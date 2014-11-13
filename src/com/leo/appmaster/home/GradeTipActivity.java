@@ -1,5 +1,6 @@
 package com.leo.appmaster.home;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.AppUtil;
 
@@ -23,8 +24,13 @@ public class GradeTipActivity extends Activity implements OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.layout_show_googleplay_tip);
 		mTvMakeSure = (TextView) findViewById(R.id.tv_make);
-
 		mTvMakeSure.setOnClickListener(this);
+	}
+
+	@Override
+	protected void onResume() {
+		AppMasterPreference.getInstance(this).setGoogleTipShowed(true);
+		super.onResume();
 	}
 
 	private void openShowGoogleGuide() {
