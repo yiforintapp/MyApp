@@ -12,6 +12,7 @@ import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
@@ -252,6 +253,9 @@ public class LockScreenActivity extends FragmentActivity implements
 							int position, long id) {
 						if (position == 0) {
 							findPasswd();
+						}else if(position == 1){
+							Intent intent=new Intent(LockScreenActivity.this,LockerTheme.class);
+							startActivityForResult(intent, 0);
 						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
@@ -276,6 +280,7 @@ public class LockScreenActivity extends FragmentActivity implements
 		} else if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
 			listItems.add(resources.getString(R.string.find_passwd));
 		}
+		listItems.add(resources.getString(R.string.lockerTheme));
 		return listItems;
 	}
 

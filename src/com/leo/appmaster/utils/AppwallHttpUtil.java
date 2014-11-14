@@ -26,6 +26,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+
 import com.leo.appmaster.constants.Constants;
 
 
@@ -110,5 +114,28 @@ public class AppwallHttpUtil {
 	        }
 	        return false;
 	    }
+	 //访问浏览器
+		// 访问网址
+		public static void requestUrl(Context context,String url) {
+			Uri uri = Uri.parse(url);
+			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			context.startActivity(intent);
+		}
+
+		// 访问GooglPlay
+		public static void requestGp(Context context, String packageGp) {
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("market://details?id=" + packageGp));
+			intent.setPackage(Constants.GPPACKAGE);
+			context.startActivity(intent);
+		}
+		
+		//判断字符串
+		public static boolean isHttpUrl(String str){
+			boolean flag=false;
+			flag=str.startsWith("http");
+			return flag;
+		}
+
 	 
 }

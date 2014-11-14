@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
+ <Preference
+        android:key="set_locker_theme"
+         android:layout="@layout/pref_list_item_top"
+        android:title="@string/lockerTheme"
+        android:widgetLayout="@layout/pref_widget_more" >
+    </Preference>
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="set_forbid_uninstall"
-        android:layout="@layout/pref_list_item_top"
+         android:layout="@layout/pref_list_item_mid"
         android:title="@string/forbid_uninstall"
         android:widgetLayout="@layout/pref_widget_checkbox" />
     <CheckBoxPreference

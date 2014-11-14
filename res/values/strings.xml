@@ -201,5 +201,9 @@
     
     <string name="lock_guide">Tap Apps to lock</string>
     <string name="start_guide">Most-used Apps</string>
-
+ <!-- Theme -->
+    <string  name="localtheme">Local Theme</string>
+    <string  name="onlinetheme">Online Theme</string>
+    <string name="lockerTheme">Theme</string>
+    <string  name="defaultTheme">Default</string>
 </resources>

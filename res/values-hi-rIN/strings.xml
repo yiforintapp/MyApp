@@ -199,5 +199,9 @@
     <string name="new_install_lock_remind">आपको स्थापित किया है %1$s . इसके लिए एक लॉक सेट करें ?</string>
     <string name="lock_guide">लॉक करने ऐप क्लिक करें</string>
     <string name="start_guide">अधिक उपयोग किए गए ऐप्स</string>
-
+ <!-- Theme -->
+    <string  name="localtheme">स्थानीय थीम</string>
+    <string  name="onlinetheme"> ऑनलाइन थीम</string>
+    <string name="lockerTheme">थीम</string>
+    <string  name="defaultTheme">चूक</string>
 </resources>

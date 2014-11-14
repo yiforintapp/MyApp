@@ -203,4 +203,10 @@
     <string name="app_wall_click">点击重试</string>
     <!-- 隐私策略 -->
     <string name="protocolBar">隐私保护协议</string>
+    
+    <!-- Theme -->
+    <string  name="localtheme">本地</string>
+    <string  name="onlinetheme">在线</string>
+    <string name="lockerTheme">主题</string>
+    <string  name="defaultTheme">默认</string>
 </resources>
