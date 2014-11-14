@@ -64,6 +64,10 @@ public class LockService extends Service {
 			} else {
 				stopLockService();
 			}
+		} else {
+			if (!mServiceStarted) {
+				startLockService();
+			}
 		}
 		return START_STICKY;
 	}

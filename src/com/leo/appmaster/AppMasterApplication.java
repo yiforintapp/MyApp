@@ -70,16 +70,33 @@ public class AppMasterApplication extends Application implements
 		filter.addAction(Intent.ACTION_LOCALE_CHANGED);
 		// recommend list change
 		filter.addAction(AppLoadEngine.ACTION_RECOMMEND_LIST_CHANGE);
-
 		registerReceiver(mAppsEngine, filter);
+
 		SDKWrapper.iniSDK(this);
 		LeoStat.registerRequestFailedReporter(this);
-		judgeLockService();
-		judgeLockAlert();
-		// start app destory listener
+		
+		startInitTask(this);
 
 		restartApplocker(PhoneInfo.getAndroidVersion());
-		initImageLoader();
+	}
+
+	private void startInitTask(final Context ctx) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				judgeLockService();
+				judgeLockAlert();
+				judgeStatictiUnlockCount();
+				initImageLoader();
+			}
+		}).start();
+	}
+
+	private void judgeStatictiUnlockCount() {
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(this))) {
+			pref.setUnlockCount(0);
+		}
 	}
 
 	private void initImageLoader() {

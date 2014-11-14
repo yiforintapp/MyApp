@@ -200,6 +200,10 @@ public class LockScreenActivity extends FragmentActivity implements
 			intent.setClassName(this, mToActivity);
 			this.startActivity(intent);
 		}
+		
+		AppMasterPreference pref = AppMasterPreference
+				.getInstance(this);
+		pref.setUnlockCount(pref.getUnlockCount() + 1);
 		finish();
 	}
 
