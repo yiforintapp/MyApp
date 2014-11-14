@@ -213,7 +213,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		updateSettingIcon();
 		setLockedAppCount();
 		super.onResume();
-		LeoLog.d("HOME", "homepage onResume");
 	}
 
 	private void calculateAppCount() {
