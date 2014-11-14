@@ -76,7 +76,7 @@ public class LockerTheme extends Activity{
 				}
 			}
 		}else{
-
+			number=0;
 		}
 		
 /*
