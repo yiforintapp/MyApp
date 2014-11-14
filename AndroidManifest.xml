@@ -208,6 +208,14 @@
             android:theme="@style/activity_theme"
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
+<!-- Theme -->
+			<activity android:name="com.leo.appmaster.lockertheme.LockerTheme" >
+			   <!--  <intent-filter>
+			        <action android:name="android.intent.action.MAIN" />
+			
+			        <category android:name="android.intent.category.LAUNCHER" />
+			    </intent-filter> -->
+			</activity>
 
         <service
             android:name="com.leo.appmaster.applocker.service.LockService"

@@ -14,12 +14,14 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -30,7 +32,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 	private CommonTitleBar mTtileBar;
 	private SharedPreferences mSp;
-	private Preference mLockTime, mResetPasswd, mChangeProtectQuestion,
+	private Preference mTheme,mLockTime, mResetPasswd, mChangeProtectQuestion,
 			mChangePasswdTip;
 
 	private CheckBoxPreference mForbidUninstall, mAutoLock;
@@ -65,7 +67,9 @@ public class LockOptionActivity extends PreferenceActivity implements
 		mLockTime = (Preference) findPreference(AppMasterPreference.PREF_RELOCK_TIME);
 		mResetPasswd = (Preference) findPreference("change_passwd");
 		mChangeProtectQuestion = (Preference) findPreference("set_passwd_protect");
+		mTheme= findPreference("set_locker_theme");
 		mChangePasswdTip = (Preference) findPreference("set_passwd_tip");
+		
 		if (mComeFrom == FROM_IMAGEHIDE) {
 			getPreferenceScreen().removePreference(mAutoLock);
 			getPreferenceScreen().removePreference(mLockTime);
@@ -78,6 +82,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 			mAutoLock.setOnPreferenceChangeListener(this);
 			mLockTime.setOnPreferenceClickListener(this);
 		}
+		mTheme.setOnPreferenceClickListener(this);
 		mChangeProtectQuestion.setOnPreferenceClickListener(this);
 		mChangePasswdTip.setOnPreferenceClickListener(this);
 	}
@@ -165,6 +170,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		String key = preference.getKey();
+	
 		if (AppMasterPreference.PREF_FORBIND_UNINSTALL.equals(key)) {
 			mShouldLockOnRestart = true;
 			Intent intent = null;
@@ -209,7 +215,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		String key = preference.getKey();
-
+		
 		if (AppMasterPreference.PREF_RELOCK_TIME.equals(key)) {
 			onCreateChoiceDialog(AppMasterPreference.getInstance(this)
 					.getRelockTimeout());
@@ -226,6 +232,9 @@ public class LockOptionActivity extends PreferenceActivity implements
 			Intent intent = new Intent(this, PasswdTipActivity.class);
 			startActivityForResult(intent, 0);
 			SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "pwdn");
+		}else if("set_locker_theme".equals(key)){
+			Intent intent=new Intent(LockOptionActivity.this,LockerTheme.class);
+			startActivityForResult(intent, 0);
 		}
 
 		return false;
