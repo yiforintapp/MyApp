@@ -6,6 +6,7 @@ import java.util.List;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.fragment.GestureLockFragment;
@@ -17,10 +18,14 @@ import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
+import com.leoers.leoanalytics.LeoStat;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -38,6 +43,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -95,7 +101,7 @@ public class LockScreenActivity extends FragmentActivity implements
 			BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
 					getPackageManager(),
 					intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
-
+//			createChoiceDialog();
 			setAppInfoBackground(bd);
 		}
 		mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
@@ -105,6 +111,46 @@ public class LockScreenActivity extends FragmentActivity implements
 		mFragment.setPackage(mToPackage);
 		mFragment.setActivity(mToActivity);
 	}
+	
+	
+//	private void createChoiceDialog() {
+//		final String[] valueString = getResources().getStringArray(
+//				R.array.det_lock_time_items);
+//
+//		AlertDialog scaleIconListDlg = new AlertDialog.Builder(this)
+//				.setTitle(R.string.change_lock_time)
+//				.setSingleChoiceItems(R.array.lock_time_entrys, -1,
+//						new DialogInterface.OnClickListener() {
+//							public void onClick(DialogInterface dialog,
+//									int whichButton) {
+//								AppMasterPreference.getInstance(
+//										LockScreenActivity.this)
+//										.setRelockTimeout(
+//												valueString[whichButton]);
+//								SDKWrapper.addEvent(LockScreenActivity.this,
+//										LeoStat.P1, "lock_setting",
+//										valueString[whichButton]);
+//								dialog.dismiss();
+//							}
+//						})
+//				.setNegativeButton(R.string.cancel,
+//						new DialogInterface.OnClickListener() {
+//							public void onClick(DialogInterface dialog,
+//									int whichButton) {
+//								/* User clicked No so do some stuff */
+//							}
+//						}).create();
+//		TextView title = new TextView(this);
+//		title.setText(getString(R.string.change_lock_time));
+//		title.setTextColor(Color.WHITE);
+//		title.setTextSize(20);
+//		title.setPadding(DipPixelUtil.dip2px(this, 20),
+//				DipPixelUtil.dip2px(this, 10), 0, DipPixelUtil.dip2px(this, 10));
+//		title.setBackgroundColor(getResources().getColor(
+//				R.color.dialog_title_area_bg));
+//		scaleIconListDlg.setCustomTitle(title);
+//		scaleIconListDlg.show();
+//	}
 
 	private void setAppInfoBackground(Drawable drawable) {
 		int h = drawable.getIntrinsicHeight() * 9 / 10;

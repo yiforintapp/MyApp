@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -30,12 +32,16 @@ import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.CacheInfo;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
@@ -433,7 +439,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 				public void run() {
 					// for (String str : sLocalLockArray) {
 					// if (str.equals(packageName)) {
-					LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
+					LEOThreeButtonDialog dialog = new LEOThreeButtonDialog(
+							mContext);
 					dialog.setTitle(R.string.app_name);
 					String tip = mContext.getString(
 							R.string.new_install_lock_remind,
@@ -442,21 +449,48 @@ public class AppLoadEngine extends BroadcastReceiver {
 					dialog.setOnClickListener(new OnDiaogClickListener() {
 						@Override
 						public void onClick(int which) {
+							AppMasterPreference pre = AppMasterPreference
+									.getInstance(mContext);
+							Intent intent = null;
 							if (which == 0) {
-							} else if (which == 1) {
-								AppMasterPreference pre = AppMasterPreference
-										.getInstance(mContext);
 								List<String> lockList = new ArrayList<String>(
 										pre.getLockedAppList());
 								lockList.add(packageName);
 								pre.setLockedAppList(lockList);
 
 								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-									Intent intent = new Intent(mContext,
+									intent = new Intent(mContext,
 											LockSettingActivity.class);
 									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 									mContext.startActivity(intent);
 								}
+							} else if (which == 1) {
+								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+									intent = new Intent(mContext,
+											LockSettingActivity.class);
+									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									mContext.startActivity(intent);
+								} else {
+									intent = new Intent(mContext, LockScreenActivity.class);
+									intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+											AppLockListActivity.class.getName());
+									int lockType = pre.getLockType();
+									if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+										intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+												LockFragment.LOCK_TYPE_PASSWD);
+									} else {
+										intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+												LockFragment.LOCK_TYPE_GESTURE);
+									}
+									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+											| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+									intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+											LockFragment.FROM_SELF_HOME);
+
+									mContext.startActivity(intent);
+								}
+
+							} else if (which == 2) {
 
 							}
 						}

@@ -202,5 +202,12 @@
     
     <string name="grade">रेट करें</string>
     <string name="grade_tip">ऐप मास्टर का यूस के लिए धन्यवाद. यहाँ फ़ीडबैक दें</string>
-
+    
+    <string name="lock_more">加锁更多</string>
+<string name="lock">加锁</string>
+<string name="det_change_lock_time">ओटो-लॉक टाइम बदलना चाहते？</string>
+    <string-array name="det_lock_time_items">
+        <item>30</item>
+        <item>60</item>
+    </string-array>
 </resources>

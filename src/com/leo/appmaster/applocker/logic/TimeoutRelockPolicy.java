@@ -13,7 +13,7 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 
 	Context mContext;
 
-	private HashMap<String, Long> mLockapp = new HashMap<String, Long>();
+	private HashMap<String, UnlockTimeHolder> mLockapp = new HashMap<String, UnlockTimeHolder>();
 
 	public TimeoutRelockPolicy(Context mContext) {
 		super();
@@ -29,14 +29,19 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 	public boolean onHandleLock(String pkg) {
 		long curTime = System.currentTimeMillis();
 		if (mLockapp.containsKey(pkg)) {
-			long lastLockTime = mLockapp.get(pkg);
+			long lastLockTime = mLockapp.get(pkg).lastUnlockTime;
+
 			LeoLog.d(TAG, " curTime -  lastLockTime = "
 					+ (curTime - lastLockTime) + "       mRelockTimeout =  "
 					+ getRelockTime());
 			if ((curTime - lastLockTime) < getRelockTime())
 				return true;
 		} else {
-			mLockapp.put(pkg, curTime);
+			UnlockTimeHolder holder = new UnlockTimeHolder();
+			holder.lastUnlockTime = curTime;
+			holder.secondUnlockTime = 0;
+			holder.firstUnlockTime = 0;
+			mLockapp.put(pkg, holder);
 		}
 		return false;
 	}
@@ -48,7 +53,25 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 	@Override
 	public void onUnlocked(String pkg) {
 		long curTime = System.currentTimeMillis();
-		mLockapp.put(pkg, curTime);
+		UnlockTimeHolder holder = mLockapp.get(pkg);
+		if (holder == null) {
+			holder = new UnlockTimeHolder();
+			holder.lastUnlockTime = curTime;
+			holder.secondUnlockTime = 0;
+			holder.firstUnlockTime = 0;
+			mLockapp.put(pkg, holder);
+		} else {
+			holder.firstUnlockTime = holder.secondUnlockTime;
+			holder.secondUnlockTime = holder.lastUnlockTime;
+			holder.lastUnlockTime = curTime;
+		}
+
+	}
+
+	private static class UnlockTimeHolder {
+		long firstUnlockTime;
+		long secondUnlockTime;
+		long lastUnlockTime;
 	}
 
 }
