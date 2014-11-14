@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leo.appmaster"
     android:versionCode="14"
-    android:versionName="@string/version_name" >
+    android:versionName="@string/version_name" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.DELETE_PACKAGES" tools:ignore="ProtectedPermissions"/>
 
     <!-- 统计sdk start -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -210,7 +211,8 @@
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
 <!-- Theme -->
-			<activity android:name="com.leo.appmaster.lockertheme.LockerTheme" >
+			<activity android:name="com.leo.appmaster.lockertheme.LockerTheme" 
+			    >
 			   <!--  <intent-filter>
 			        <action android:name="android.intent.action.MAIN" />
 			
