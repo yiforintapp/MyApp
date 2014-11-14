@@ -52,8 +52,7 @@
         android:theme="@style/activity_theme" >
         <activity
             android:name="com.leo.appmaster.home.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

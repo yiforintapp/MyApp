@@ -208,5 +208,13 @@
     <string name="defaultTheme">Default</string>
     <string name="grade">Rate Us!</string>
     <string name="grade_tip">Thank you for using App Master. Please leave your feedbacks here.</string>
+    <string name="lock_more">Lock More</string>
+    <string name="lock">加锁</string>
+    <string name="det_change_lock_time">Do you wish to change your Auto-lock time?</string>
+
+    <string-array name="det_lock_time_items">
+        <item>30</item>
+        <item>60</item>
+    </string-array>
 
 </resources>
