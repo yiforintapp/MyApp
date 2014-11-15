@@ -1,5 +1,11 @@
 package com.leo.appmaster.constants;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.model.AppLockerThemeBean;
+
 public class Constants {
 
 	/*
@@ -17,5 +23,10 @@ public class Constants {
 	 */
 	public static final int REQUEST_TIMEOUT = 5 * 1000;// 设置请求超时5秒钟
 	public static final int SO_TIMEOUT = 5 * 1000; // 设置等待数据超时时间5秒钟
+	/*
+	 * LockerTheme
+	 */
+	public static final String GONE="gone";
+	public static final String VISIBLE="visible";
 
 }
