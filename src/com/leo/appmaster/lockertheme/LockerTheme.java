@@ -1,6 +1,5 @@
 package com.leo.appmaster.lockertheme;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
-public class LockerTheme extends Activity{
+public class LockerTheme extends Activity {
 	private ListView listTheme;
 	private List<AppLockerThemeBean> mThemes;
 	private List<String> localThemes;
@@ -60,26 +59,15 @@ public class LockerTheme extends Activity{
 		listTheme=(ListView) findViewById(R.id.themeLV);	
 		sharedPreferences = getSharedPreferences("lockerTheme", Context.MODE_WORLD_WRITEABLE); 
 	}
+
 	@Override
-	protected void onCreate(Bundle arg0) {	
+	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
+		boolean flagPackge = false;
 		setContentView(R.layout.activity_locker_theme);
 		initUI();
 		localThemes=new ArrayList<String>();
 		mThemes=new ArrayList<AppLockerThemeBean>();
-		//定向主题
-		Intent intent=this.getIntent();
-		String temp=intent.getStringExtra("theme_package");
-		if(temp!=null&&!temp.equals("")){
-			for (int i = 0; i < mThemes.size(); i++) {
-				if(mThemes.get(i).getPackageName().equals(temp)){
-				number=i;
-				}
-			}
-		}else{
-			number=0;
-		}
-		
 /*
 * ------------------------------------------构造数据----------------------------------------------------------
 */
@@ -123,6 +111,19 @@ public class LockerTheme extends Activity{
 * ----------------------------------------------------------------------------------------------------------------------
 */
 		listTheme.setAdapter(new LockerThemeAdapter(this,mThemes));
+		// 定向主题
+		Intent intent = this.getIntent();
+		String temp = intent.getStringExtra("theme_package");
+		if (temp != null && !temp.equals("")) {
+			for (int i = 0; i < mThemes.size(); i++) {
+				if (mThemes.get(i).getPackageName().equals(temp)) {
+					number = i;
+				}
+			}
+		} else {
+			number = 0;
+		}
+		listTheme.setAdapter(new LockerThemeAdapter(this, mThemes));
 		/*
 		 * OnlineTheme
 		 */
@@ -131,8 +132,7 @@ public class LockerTheme extends Activity{
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-			
+					long arg3) {		
 			//Toast.makeText(LockerTheme.this, "在线主题"+(arg2+1),Toast.LENGTH_SHORT).show();
 			itemTheme=(AppLockerThemeBean) arg0.getItemAtPosition(arg2);
 				String[] urls=itemTheme.getUrl();			
@@ -156,7 +156,8 @@ public class LockerTheme extends Activity{
 		});
 		getTeme();
 	}
-	public  void showAlarmDialog(String title, String content) {
+
+	public void showAlarmDialog(String title, String content) {
 		if (mAlarmDialog == null) {
 			mAlarmDialog = new LEOAlarmDialog(this);
 			mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {
@@ -164,8 +165,10 @@ public class LockerTheme extends Activity{
 				public void onClick(int which) {
 					if(which==0){					
 					//	Toast.makeText(LockerTheme.this, "应用",Toast.LENGTH_SHORT).show();
+
 						Editor editor = sharedPreferences.edit();
-						editor.putString("packageName",itemTheme.getPackageName() );
+						editor.putString("packageName",
+								itemTheme.getPackageName());
 						editor.commit();
 					}else if(which==1){
 					//	Toast.makeText(LockerTheme.this, "卸载",Toast.LENGTH_SHORT).show();
@@ -177,7 +180,7 @@ public class LockerTheme extends Activity{
 						Toast.makeText(LockerTheme.this, "取消",Toast.LENGTH_SHORT).show();
 						mAlarmDialog.dismiss();
 					}
-				}					
+				}
 			});
 		}
 		mAlarmDialog.setLeftBtnStr("应用");
@@ -235,7 +238,7 @@ public class LockerTheme extends Activity{
 			}
 		
 		}
-	/*	//标记当前使用的主题
+		//标记当前使用的主题
 		String sharedPackageName=sharedPreferences.getString("packageName",PREFERENCESPACKAGE );
 		for (int i = 0; i <mThemes.size() ; i++) {
 				if(mThemes.get(i).getPackageName().equals(sharedPackageName))
@@ -244,7 +247,7 @@ public class LockerTheme extends Activity{
 				}else{
 					mThemes.get(i).setIsVisibility(Constants.GONE);
 				}
-		}*/
+		}
 			
 	}
 }
