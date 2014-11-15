@@ -3,21 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ImageView
-        android:id="@+id/iv_app_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/ic_launcher"
-        android:visibility="invisible" />
+    <RelativeLayout
+        android:id="@+id/iv_app_icon_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:layout_above="@+id/tv_gesture_tip" >
 
+        <ImageView
+            android:id="@+id/iv_app_icon_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@color/transparent"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_app_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_launcher"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_app_icon_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@color/transparent"
+            android:visibility="invisible" />
+    </RelativeLayout>
+    
     <TextView
         android:id="@+id/tv_gesture_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_app_icon"
+        android:layout_above="@+id/gesture_lockview" 
         android:enabled="false"
         android:gravity="center"
         android:layout_marginTop="10dp"
