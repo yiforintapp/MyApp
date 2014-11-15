@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
@@ -29,11 +30,13 @@ public class GestureLockFragment extends LockFragment implements
 		OnPatternListener {
 	private LockPatternView mLockPatternView;
 	private TextView mGestureTip;
+	private RelativeLayout mIconLayout;
 	private ImageView mAppIcon;
     private ImageView mAppIconTop;
     private ImageView mAppIconBottom;
     private int mBottomIconRes = 0;
     private int mTopIconRes = 0;
+    private Animation mShake;
     
 	@Override
 	protected int layoutResourceId() {
@@ -46,7 +49,7 @@ public class GestureLockFragment extends LockFragment implements
 		mLockPatternView.setOnPatternListener(this);
 		mLockPatternView.setLockFrom(mFrom);
 		mGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
-
+		mIconLayout = (RelativeLayout)findViewById(R.id.iv_app_icon_layout);
 		if (mPackageName != null) {
 			mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
 			mAppIcon.setImageDrawable(AppUtil.getDrawable(
@@ -141,14 +144,10 @@ public class GestureLockFragment extends LockFragment implements
 						mInputCount + "", (mMaxInput - mInputCount) + ""));
 			}
 			mLockPatternView.clearPattern();
+			shakeIcon();
 		}
 	}
 
-	private void shakeGestureTip() {
-		Animation shake = AnimationUtils.loadAnimation(mActivity,
-				R.anim.up_down_shake);
-		mGestureTip.startAnimation(shake);
-	}
 
 	@Override
 	public void onNewIntent(Intent intent) {
@@ -156,6 +155,14 @@ public class GestureLockFragment extends LockFragment implements
 	}
 	
     private boolean needChangeTheme() {
-        return  ThemeUtils.checkThemeNeed(getActivity()) &&  mFrom == LockFragment.FROM_OTHER;
+        return  ThemeUtils.checkThemeNeed(getActivity()) &&   (mFrom == LockFragment.FROM_OTHER || mFrom == LockFragment.FROM_SCREEN_ON);
+    }
+    
+    private void shakeIcon() {
+        if (mShake == null) {
+            mShake = AnimationUtils.loadAnimation(mActivity,
+                    R.anim.left_right_shake);
+        }
+        mIconLayout.startAnimation(mShake);
     }
 }

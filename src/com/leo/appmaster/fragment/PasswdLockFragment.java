@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,6 +44,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 	private String mTempPasswd = "";
 	
 	private String[] mPasswds = {"","","",""};
+    private RelativeLayout mIconLayout;
+    private Animation mShake;
 	
     private static final int BUTTON_STATE_NORMAL = 0;
     private static final int BUTTON_STATE_PRESS = 1;    
@@ -126,7 +130,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 		mPasswdHint = (TextView) findViewById(R.id.tv_passwd_hint);
 		mPasswdTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
 		mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
-		
+	    mIconLayout = (RelativeLayout)findViewById(R.id.iv_app_icon_layout);
 		//for multi theme
 		initAnimResource();
 		
@@ -360,6 +364,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 						mInputCount + "", (mMaxInput - mInputCount) + ""));
 			}
 			clearPasswd();
+			shakeIcon();
 		}
 	}
 
@@ -574,7 +579,15 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     }
 
     private boolean needChangeTheme() {
-        return  ThemeUtils.checkThemeNeed(getActivity()) &&  mFrom == LockFragment.FROM_OTHER;
+        return  ThemeUtils.checkThemeNeed(getActivity()) && (mFrom == LockFragment.FROM_OTHER || mFrom == LockFragment.FROM_SCREEN_ON);
+    }
+    
+    private void shakeIcon() {
+        if (mShake == null) {
+            mShake = AnimationUtils.loadAnimation(mActivity,
+                    R.anim.left_right_shake);
+        }
+        mIconLayout.startAnimation(mShake);
     }
     
 }
