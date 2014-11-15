@@ -209,10 +209,13 @@
         <item>30</item>
         <item>60</item>
     </string-array>
-    <!-- Theme -->
+    <!-- LockerTheme -->
     <string name="localtheme">本地</string>
     <string name="onlinetheme">在线</string>
-    <string name="lockerTheme">主题</string>
+    <string name="lockerTheme">应用锁主题</string>
     <string name="defaultTheme">默认</string>
+    <string name="moonightTheme">Moonnight&#160;Theme</string>
+    <string name="orangeTheme">Orange&#160;Theme</string>
+    <string name="ParadoxTheme">Paradox&#160;Theme</string>
 
 </resources>

@@ -2,19 +2,26 @@ package com.leo.appmaster.fragment;
 
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
+import com.leo.appmaster.theme.LeoResources;
+import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LockPatternUtils;
 
@@ -23,7 +30,11 @@ public class GestureLockFragment extends LockFragment implements
 	private LockPatternView mLockPatternView;
 	private TextView mGestureTip;
 	private ImageView mAppIcon;
-
+    private ImageView mAppIconTop;
+    private ImageView mAppIconBottom;
+    private int mBottomIconRes = 0;
+    private int mTopIconRes = 0;
+    
 	@Override
 	protected int layoutResourceId() {
 		return R.layout.fragment_lock_gesture;
@@ -33,7 +44,7 @@ public class GestureLockFragment extends LockFragment implements
 	protected void onInitUI() {
 		mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
 		mLockPatternView.setOnPatternListener(this);
-
+		mLockPatternView.setLockFrom(mFrom);
 		mGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
 
 		if (mPackageName != null) {
@@ -41,10 +52,53 @@ public class GestureLockFragment extends LockFragment implements
 			mAppIcon.setImageDrawable(AppUtil.getDrawable(
 					mActivity.getPackageManager(), mPackageName));
 			mAppIcon.setVisibility(View.VISIBLE);
+			if (needChangeTheme()) {
+		         mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
+		         mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
+		         mAppIconTop.setVisibility(View.VISIBLE);
+		         mAppIconBottom.setVisibility(View.VISIBLE);
+		         
+		         changeActivityBgAndIconByTheme();
+
+			}
 		}
+
 	}
 
+	private void changeActivityBgAndIconByTheme() {
+
+	      Context themeContext = LeoResources.getThemeContext(getActivity(), "com.leo.theme");//com.leo.appmaster:drawable/multi_theme_lock_bg
+	      Resources  themeRes = themeContext.getResources();
+	      int layoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "gesture_bg");
+
+	       if (themeRes != null) {
+	           if (layoutBgRes > 0) {
+	               RelativeLayout layout =  (RelativeLayout) getActivity().findViewById(R.id.activity_lock_layout);
+	               Drawable bgDrawable = themeRes.getDrawable(layoutBgRes);
+	               layout.setBackgroundDrawable(bgDrawable);
+	           }
+	       }
+
+	        mTopIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "top_icon");
+	        mBottomIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "bottom_icon");
+	        if (themeRes != null) {
+	            if (mTopIconRes > 0) {
+	                mAppIconTop.setBackgroundDrawable(themeRes.getDrawable(mTopIconRes));
+	            }
+	            if (mBottomIconRes > 0) {
+	                mAppIconBottom.setBackgroundDrawable(themeRes.getDrawable(mBottomIconRes));
+	            }
+	        }
+	}
+	
 	@Override
+    public void onDestroyView() {
+	    mLockPatternView.cleangifResource();
+
+        super.onDestroyView();
+    }
+
+    @Override
 	public void onPatternStart() {
 
 	}
@@ -100,4 +154,8 @@ public class GestureLockFragment extends LockFragment implements
 	public void onNewIntent(Intent intent) {
 
 	}
+	
+    private boolean needChangeTheme() {
+        return  ThemeUtils.checkThemeNeed(getActivity()) &&  mFrom == LockFragment.FROM_OTHER;
+    }
 }

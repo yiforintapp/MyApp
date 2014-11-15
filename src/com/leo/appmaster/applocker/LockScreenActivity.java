@@ -13,6 +13,7 @@ import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
@@ -89,16 +90,17 @@ public class LockScreenActivity extends FragmentActivity implements
 		Intent intent = getIntent();
 		int type = intent.getIntExtra(EXTRA_UKLOCK_TYPE,
 				LockFragment.LOCK_TYPE_PASSWD);
+	      mFromType = intent.getIntExtra(EXTRA_UNLOCK_FROM,
+	                LockFragment.FROM_SELF);
+	      
 		if (type == LockFragment.LOCK_TYPE_PASSWD) {
 			mFragment = new PasswdLockFragment();
 		} else {
 			mFragment = new GestureLockFragment();
 		}
-		mFromType = intent.getIntExtra(EXTRA_UNLOCK_FROM,
-				LockFragment.FROM_SELF);
 
-		if (mFromType == LockFragment.FROM_OTHER
-				|| mFromType == LockFragment.FROM_SCREEN_ON) {
+		if (!ThemeUtils.checkThemeNeed(this) &&  (mFromType == LockFragment.FROM_OTHER
+				|| mFromType == LockFragment.FROM_SCREEN_ON)) {
 			BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
 					getPackageManager(),
 					intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
@@ -369,5 +371,9 @@ public class LockScreenActivity extends FragmentActivity implements
 		} else if (which == 0) { // cancel
 			mDialog.dismiss();
 		}
+	}
+	
+	public int getFromType() {
+	    return mFromType;
 	}
 }
