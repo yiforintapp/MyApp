@@ -11,28 +11,22 @@
         android:layout_alignLeft="@+id/themLT"
         android:layout_alignParentTop="true"
         android:text="主题名称" />
-
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/themLT"
         android:layout_below="@id/themName"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
+        android:background="#ffff00"
         android:orientation="horizontal" >
+    <TextView
+        android:id="@+id/flagTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/white" />
 
-        <ImageView
-            android:id="@+id/leftImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="#ffff00" />
-
-        <ImageView
-            android:id="@+id/rightImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="10dp"
-            android:background="#00ff00" />
-    </LinearLayout>
+    </RelativeLayout>
     
 </RelativeLayout>

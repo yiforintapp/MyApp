@@ -44,8 +44,9 @@ public class LockerThemeAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
-		ImageView themeLeft,themeRight;
-		TextView themeName;
+		View image;
+		TextView themeName,flagName;
+		
 	}
 
 	@Override
@@ -54,11 +55,9 @@ public class LockerThemeAdapter extends BaseAdapter {
 		if (arg1 == null) {
 			viewHolder = new ViewHolder();
 			arg1 = layoutInflater.inflate(R.layout.list_item_lockerthem, null);
-			viewHolder.themeLeft = (ImageView) arg1
-					.findViewById(R.id.leftImage);
-			viewHolder.themeRight = (ImageView) arg1
-					.findViewById(R.id.rightImage);
 			viewHolder.themeName = (TextView) arg1.findViewById(R.id.themName);
+			viewHolder.image=(View) arg1.findViewById(R.id.themLT);
+			viewHolder.flagName=(TextView) arg1.findViewById(R.id.flagTV);
 			arg1.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) arg1.getTag();
@@ -72,9 +71,8 @@ public class LockerThemeAdapter extends BaseAdapter {
 		}
 		AppLockerThemeBean theme= themes.get(arg0);
 		viewHolder.themeName.setText(theme.getThemeName());
-		viewHolder.themeLeft.setImageResource(theme.getThemeImage()[0]);
-		viewHolder.themeRight.setImageResource(theme.getThemeImage()[1]);
-		
+		viewHolder.image.setBackgroundResource(theme.getThemeImage());
+		viewHolder.flagName.setText(theme.getFlagName());
 		//viewHolder.image.setImageResource(R.drawable.backedup_icon);
 		/*ImageLoader.getInstance().displayImage(imageUri, viewHolder.image,
 				options);*/
