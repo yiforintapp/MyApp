@@ -4,35 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-import com.leo.appmaster.SDKWrapper;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.appwall.AppWallActivity;
 import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.AppLockerThemeBean;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -40,18 +27,19 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
 
 public class LockerTheme extends Activity {
 	private ListView listTheme;
 	private List<AppLockerThemeBean> mThemes;
 	private List<String> localThemes;
+	private List<String> onlineThemes;//在线包名
 	private boolean flagGp=false;//判断是否存在GP
 	private LEOAlarmDialog mAlarmDialog;
 	private AppLockerThemeBean itemTheme;
 	private SharedPreferences sharedPreferences; 
 	private int number=0;
-	private static final  String  PREFERENCESPACKAGE="com.android.vending";//默认主题
+	private String sharedPackageName;
+	private LockerThemeAdapter mLockerThemeAdapter;
 	private void initUI(){
 		CommonTitleBar title = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		title.setTitle(R.string.lockerTheme);
@@ -60,12 +48,14 @@ public class LockerTheme extends Activity {
 		sharedPreferences = getSharedPreferences("lockerTheme", Context.MODE_WORLD_WRITEABLE); 
 	}
 
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		boolean flagPackge = false;
 		setContentView(R.layout.activity_locker_theme);
 		initUI();
+		onlineThemes=new ArrayList<String>();
 		localThemes=new ArrayList<String>();
 		mThemes=new ArrayList<AppLockerThemeBean>();
 /*
@@ -77,9 +67,9 @@ public class LockerTheme extends Activity {
 		moonnightTheme.setThemeName((String)this.getResources().getText(R.string.moonightTheme));
 		String[] moonnightUrl=new String[2];
 		moonnightUrl[1]="http://down2.iinmobi.com/group1/M01/09/73/ooYBAFRh45eAGQVaACCBUDfiyfw938.apk";
-		moonnightUrl[0]="com.mah.calldetailscreen";
+		moonnightUrl[0]="com.leo.theme";
 		moonnightTheme.setUrl(moonnightUrl);
-		moonnightTheme.setPackageName("com.mah.calldetailscreen");
+		moonnightTheme.setPackageName("com.leo.theme");
 		moonnightTheme.setFlagName((String)this.getResources().getText(R.string.onlinetheme));
 		moonnightTheme.setIsVisibility(Constants.VISIBLE);
 		mThemes.add(moonnightTheme);
@@ -107,10 +97,12 @@ public class LockerTheme extends Activity {
 		paradoxTheme.setFlagName((String)this.getResources().getText(R.string.onlinetheme));
 		paradoxTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(paradoxTheme);
+		getOnlineThemePackage();
 /*
 * ----------------------------------------------------------------------------------------------------------------------
 */
-		listTheme.setAdapter(new LockerThemeAdapter(this,mThemes));
+		mLockerThemeAdapter = new LockerThemeAdapter(this,mThemes);
+		listTheme.setAdapter(mLockerThemeAdapter);
 		// 定向主题
 		Intent intent = this.getIntent();
 		String temp = intent.getStringExtra("theme_package");
@@ -156,7 +148,7 @@ public class LockerTheme extends Activity {
 		});
 		getTeme();
 	}
-
+	
 	public void showAlarmDialog(String title, String content) {
 		if (mAlarmDialog == null) {
 			mAlarmDialog = new LEOAlarmDialog(this);
@@ -165,11 +157,22 @@ public class LockerTheme extends Activity {
 				public void onClick(int which) {
 					if(which==0){					
 					//	Toast.makeText(LockerTheme.this, "应用",Toast.LENGTH_SHORT).show();
-
-						Editor editor = sharedPreferences.edit();
+						/*Editor editor = sharedPreferences.edit();
 						editor.putString("packageName",
 								itemTheme.getPackageName());
-						editor.commit();
+						editor.commit();*/
+						AppMasterApplication.setSharedPreferencesValue(itemTheme.getPackageName());		
+						String sharedPackageName=itemTheme.getPackageName();
+						mAlarmDialog.dismiss();
+						
+								if(itemTheme.getPackageName().equals(sharedPackageName))
+							{
+									itemTheme.setIsVisibility(Constants.VISIBLE);
+							}else{
+								itemTheme.setIsVisibility(Constants.GONE);
+							}
+						mLockerThemeAdapter.notifyDataSetChanged();
+						//Toast.makeText(LockerTheme.this, "应用成功",Toast.LENGTH_SHORT).show();
 					}else if(which==1){
 					//	Toast.makeText(LockerTheme.this, "卸载",Toast.LENGTH_SHORT).show();
 						// 卸载主题
@@ -192,7 +195,12 @@ public class LockerTheme extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		getTeme();
+		getTeme();		
+	}
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		
 	}
 	//获取主题
 	public void getTeme(){
@@ -217,15 +225,21 @@ public class LockerTheme extends Activity {
 			} catch (NameNotFoundException e1) {
 				LeoLog.i("Context","getContext error");
 			}
-			boolean flag=mThemes.contains(localThemes.get(i));
+		
+			boolean flag=onlineThemes.contains(localThemes.get(i));
 			if(flag){
-				for (int j = 0; j <mThemes.size(); j++) {
-					if(mThemes.get(j).getPackageName().equals(localThemes.get(i))){
+				for (int j = 0; j <onlineThemes.size(); j++) {	
+					
+					if(onlineThemes.get(j).equals(localThemes.get(i))){
 						mThemes.get(j).setFlagName((String)getResources().getText(R.string.localtheme));	
-						mThemes.get(j).setThemeImage(saveContext.getResources().getDrawable(R.drawable.splash_icon));
+						/*
+						 * -------
+						 */
+					//	mThemes.get(j).setThemeImage(saveContext.getResources().getDrawable(R.drawable.moonnight_theme));
+						mThemes.get(j).setThemeImage(this.getResources().getDrawable(R.drawable.moonnight_theme));
 					}else{
 						mThemes.get(j).setFlagName((String)getResources().getText(R.string.onlinetheme));	
-						mThemes.get(j).setThemeImage(LockerTheme.this.getResources().getDrawable(R.drawable.select_all_press));
+						
 					}
 				}
 			}else{
@@ -239,7 +253,7 @@ public class LockerTheme extends Activity {
 		
 		}
 		//标记当前使用的主题
-		String sharedPackageName=sharedPreferences.getString("packageName",PREFERENCESPACKAGE );
+		sharedPackageName=AppMasterApplication.sharedPackage;
 		for (int i = 0; i <mThemes.size() ; i++) {
 				if(mThemes.get(i).getPackageName().equals(sharedPackageName))
 				{
@@ -248,6 +262,13 @@ public class LockerTheme extends Activity {
 					mThemes.get(i).setIsVisibility(Constants.GONE);
 				}
 		}
-			
+	
 	}
+	public void getOnlineThemePackage(){
+		//获取mThemes包名
+			for (int a= 0; a < mThemes.size(); a++) {
+				onlineThemes.add(mThemes.get(a).getPackageName());
+			}
+		}
+	
 }

@@ -12,6 +12,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
@@ -19,7 +21,6 @@ import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.RequestFinishedReporter;
-
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -33,11 +34,12 @@ public class AppMasterApplication extends Application implements
 	private static AppMasterApplication mInstance;
 
 	private static List<Activity> mActivityList;
-
 	private static final int MAX_MEMORY_CACHE_SIZE = 5 * (1 << 20);// 5M
 	private static final int MAX_DISK_CACHE_SIZE = 50 * (1 << 20);// 20 Mb
 	private static final int MAX_THREAD_POOL_SIZE = 3;
-
+	public  static SharedPreferences sharedPreferences; 
+	public static String sharedPackage;
+	public static String number;
 	static {
 		System.loadLibrary("leo_service");
 	}
@@ -52,6 +54,9 @@ public class AppMasterApplication extends Application implements
 		mAppsEngine = AppLoadEngine.getInstance(this);
 		mAppsEngine.preloadAllBaseInfo();
 		initImageLoader(getApplicationContext());
+		sharedPreferences = getSharedPreferences("lockerTheme", Context.MODE_WORLD_WRITEABLE); 
+		sharedPackage=sharedPreferences.getString("packageName",Constants.PREFERENCESPACKAGE );
+		number=sharedPreferences.getString("firstNumber","0" );
 		// Register intent receivers
 
 		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
@@ -78,6 +83,7 @@ public class AppMasterApplication extends Application implements
 		startInitTask(this);
 
 		restartApplocker(PhoneInfo.getAndroidVersion());
+		
 	}
 
 	private void startInitTask(final Context ctx) {
@@ -108,7 +114,6 @@ public class AppMasterApplication extends Application implements
 				.denyCacheImageMultipleSizesInMemory().build();
 		ImageLoader.getInstance().init(config);
 	}
-
 	private void judgeLockAlert() {
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		if (pref.isReminded()) {
@@ -202,5 +207,17 @@ public class AppMasterApplication extends Application implements
 	public void reportRequestFinished(String description) {
 		SDKWrapper.addEvent(getInstance(), LeoStat.P1, "leosdk", description);
 	}
-
+	
+	public static void setSharedPreferencesValue(String lockerTheme){
+		Editor editor = sharedPreferences.edit();
+		editor.putString("packageName",lockerTheme);
+		editor.commit();
+		sharedPackage=lockerTheme;
+	}
+	public static void setSharedPreferencesNumber(String lockerThemeNumber){
+		Editor editor = sharedPreferences.edit();
+		editor.putString("firstNumber",lockerThemeNumber);
+		editor.commit();
+		number = lockerThemeNumber;
+	}
 }

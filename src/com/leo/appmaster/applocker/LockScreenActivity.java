@@ -3,32 +3,10 @@ package com.leo.appmaster.applocker;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.R;
-import com.leo.appmaster.SDKWrapper;
-import com.leo.appmaster.applocker.logic.LockHandler;
-import com.leo.appmaster.applocker.service.LockService;
-import com.leo.appmaster.fragment.GestureLockFragment;
-import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.fragment.PasswdLockFragment;
-import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.theme.ThemeUtils;
-import com.leo.appmaster.lockertheme.LockerTheme;
-import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.LeoPopMenu;
-import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
-import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
-import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.FastBlur;
-import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
-
-import android.app.AlertDialog;
-import android.content.ComponentName;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -43,11 +21,30 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.logic.LockHandler;
+import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.fragment.GestureLockFragment;
+import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.fragment.PasswdLockFragment;
+import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.theme.ThemeUtils;
+import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.LeoPopMenu;
+import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
+import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
+import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.FastBlur;
+import com.leo.appmaster.utils.LeoLog;
 
 public class LockScreenActivity extends FragmentActivity implements
 		OnClickListener, OnDiaogClickListener {
@@ -67,17 +64,32 @@ public class LockScreenActivity extends FragmentActivity implements
 	private LeoDoubleLinesInputDialog mDialog;
 	private EditText mEtQuestion, mEtAnwser;
 	private String mLockTitle;
+	private ImageView spiner;
+	private String number;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lock_setting);
+		number=AppMasterApplication.number;
+		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+		   spiner=(ImageView) findViewById(R.id.image1);  
+			if (number.equals("0")) {
+				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.themetip_spiner_press));
+			} else {
+				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.theme_spiner_press));
+			}
 		handleIntent();
 		initUI();
 	}
 
 	@Override
 	protected void onResume() {
+		if (number.equals("0")) {
+			spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.themetip_spiner_press));
+		} else {
+			spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.theme_spiner_press));
+		}
 		super.onResume();
 	}
 
@@ -201,13 +213,25 @@ public class LockScreenActivity extends FragmentActivity implements
 	}
 
 	private void initUI() {
-		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-
+		
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			mTtileBar.setOptionImage(R.drawable.setting_selector);
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
 			mTtileBar.setOptionListener(this);
+			mTtileBar.setSpinerVibility(View.VISIBLE);
+			mTtileBar.setSpinerListener(this);
+			
 		}
+		spiner.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent=new Intent(LockScreenActivity.this,LockerTheme.class);
+				startActivityForResult(intent, 0);
+				AppMasterApplication.setSharedPreferencesNumber("1");
+				number = "1";
+			}
+		});
 
 		if (mFromType == LockFragment.FROM_SELF_HOME
 				|| mFromType == LockFragment.FROM_SELF) {
@@ -306,8 +330,7 @@ public class LockScreenActivity extends FragmentActivity implements
 						if (position == 0) {
 							findPasswd();
 						}else if(position == 1){
-							Intent intent=new Intent(LockScreenActivity.this,LockerTheme.class);
-							startActivityForResult(intent, 0);
+							
 						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
@@ -317,7 +340,7 @@ public class LockScreenActivity extends FragmentActivity implements
 			mLeoPopMenu.showPopMenu(this,
 					mTtileBar.findViewById(R.id.tv_option_image), null, null);
 			break;
-
+		
 		default:
 			break;
 		}
@@ -332,7 +355,6 @@ public class LockScreenActivity extends FragmentActivity implements
 		} else if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
 			listItems.add(resources.getString(R.string.find_passwd));
 		}
-		listItems.add(resources.getString(R.string.lockerTheme));
 		return listItems;
 	}
 

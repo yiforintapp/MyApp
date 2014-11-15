@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
+import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -17,7 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -57,6 +57,7 @@ import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CricleView;
@@ -87,11 +88,13 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 	private LeoPopMenu mLeoPopMenu;
 	private CricleView mCricleView;
-
+	private ImageView spiner;
+	private String number;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		 spiner=(ImageView) findViewById(R.id.image1);
 		initUI();
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		// commit feedbacks if any
@@ -186,14 +189,33 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 		mPressedEffect1 = findViewById(R.id.pressed_effect1);
 		mPressedEffect2 = findViewById(R.id.pressed_effect2);
-
+		
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+		number=AppMasterApplication.number;
+			if (number.equals("0")) {
+				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.themetip_spiner_press));
+			} else {
+				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.theme_spiner_press));
+			}
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
 		mTtileBar.setOptionImage(R.drawable.setting_btn);
 		mTtileBar.setOptionListener(this);
+		mTtileBar.setSpinerVibility(View.VISIBLE);
+		mTtileBar.setSpinerListener(this);
+		spiner=(ImageView) findViewById(R.id.image1);  
+		spiner.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(HomeActivity.this,
+						LockerTheme.class);
+				startActivityForResult(intent, 0);
+				AppMasterApplication.setSharedPreferencesNumber("1");
+				number = "1";
+			}
+		});
 
 		calculateAppCount();
 	}
@@ -208,6 +230,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
 
+		if (number.equals("0")) {
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.themetip_spiner_press));
+		} else {
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.theme_spiner_press));
+		}
+		
 		updateSettingIcon();
 		setLockedAppCount();
 

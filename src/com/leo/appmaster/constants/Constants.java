@@ -28,5 +28,6 @@ public class Constants {
 	 */
 	public static final String GONE="gone";
 	public static final String VISIBLE="visible";
+	public static final  String  PREFERENCESPACKAGE="com.leo.appmaster";//默认主题
 
 }
