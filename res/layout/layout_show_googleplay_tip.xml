@@ -8,46 +8,59 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@color/app_background"
         android:layout_margin="20dp"
+        android:background="@drawable/dialog_box_install"
         android:orientation="vertical" >
-        
+
         <TextView
             android:id="@+id/tv_make"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
-            android:paddingBottom="5dp"
+            android:background="@drawable/install_button_selecter"
+            android:gravity="center"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="5dp"
+            android:textSize="18sp"
             android:text="@string/grade"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:padding="10dp"
-            android:textColor="#ffffff"
-            android:gravity="center"
             android:layout_centerVertical="true"
-            android:text="@string/grade_tip" />
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/grade_tip"
+            android:textColor="#ffffff" />
 
         <ImageView
             android:id="@+id/imageView1"
+            android:layout_width="76dp"
+            android:layout_height="80dp"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="18dp"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/textView1"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/appspeed_icon" />
-
+            android:gravity="center"
+            android:text="@string/grade_tip"
+            android:textColor="#545454"
+            android:textSize="16sp" />
     </RelativeLayout>
 
 </RelativeLayout>

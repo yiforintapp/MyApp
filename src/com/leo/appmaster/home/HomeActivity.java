@@ -97,8 +97,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		// commit feedbacks if any
 		FeedbackHelper.getInstance().tryCommit();
 		installShortcut();
-
-		judgeShowGradeTip();
 	}
 
 	private void judgeShowGradeTip() {
@@ -212,6 +210,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 		updateSettingIcon();
 		setLockedAppCount();
+
+		judgeShowGradeTip();
 		super.onResume();
 	}
 
