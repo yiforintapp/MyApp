@@ -52,7 +52,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
     private int mButtonState = BUTTON_STATE_NORMAL;
     
-    private String mThemepkgName = "com.leo.theme";
+    private String mThemepkgName = AppMasterApplication.getSelectedTheme();;
 	/*---------------for theme----------------*/
     private Resources mThemeRes;
     private int mDigitalPressAnimRes = 0;

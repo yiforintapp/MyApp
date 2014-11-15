@@ -69,8 +69,8 @@ public class GestureLockFragment extends LockFragment implements
 	}
 
 	private void changeActivityBgAndIconByTheme() {
-
-	      Context themeContext = LeoResources.getThemeContext(getActivity(), "com.leo.theme");//com.leo.appmaster:drawable/multi_theme_lock_bg
+          String pkgName = AppMasterApplication.getSelectedTheme();
+	      Context themeContext = LeoResources.getThemeContext(getActivity(), pkgName);//com.leo.appmaster:drawable/multi_theme_lock_bg
 	      Resources  themeRes = themeContext.getResources();
 	      int layoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "gesture_bg");
 

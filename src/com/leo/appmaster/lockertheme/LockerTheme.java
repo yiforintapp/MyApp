@@ -79,9 +79,9 @@ public class LockerTheme extends Activity {
 		orangeTheme.setThemeName((String)this.getResources().getText(R.string.orangeTheme));
 		String[] orangeUrl=new String[2];
 		orangeUrl[1]="http://down2.iinmobi.com/group1/M01/09/73/ooYBAFRh45eAGQVaACCBUDfiyfw938.apk";
-		orangeUrl[0]="com.mah.calldetailscreen";
+		orangeUrl[0]="com.leo.theme.night";
 		orangeTheme.setUrl(orangeUrl);
-		orangeTheme.setPackageName("com.mah.calldetailscreen");
+		orangeTheme.setPackageName("com.leo.theme.night");
 		orangeTheme.setFlagName((String)this.getResources().getText(R.string.onlinetheme));
 		orangeTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(orangeTheme);

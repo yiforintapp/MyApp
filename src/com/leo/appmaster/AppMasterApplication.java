@@ -220,4 +220,8 @@ public class AppMasterApplication extends Application implements
 		editor.commit();
 		number = lockerThemeNumber;
 	}
+	
+	public static String getSelectedTheme() {
+	    return sharedPackage;
+	}
 }
