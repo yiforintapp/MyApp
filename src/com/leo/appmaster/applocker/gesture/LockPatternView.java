@@ -1137,10 +1137,13 @@ public class LockPatternView extends ViewGroup {
                         }
                     } else {
                         if (mLastParten.getRow() == i / 3 && mLastParten.getColumn() == i % 3) {
+                            
+                            Log.i("XXXX", "mLastParten.getColumn()="+mLastParten.getColumn()+",mCurrParten.getColumn()="+mCurrParten.getColumn());
                             if (mLastParten.getColumn() == mCurrParten.getColumn()) {
                                 mAnimDrawable[i].stop();
                                 if (mGestureVerticalDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureVerticalDrawable);
+                                    Log.i("XXXX", "vertical");
                                 } else {
                                     
                                 }
@@ -1148,6 +1151,7 @@ public class LockPatternView extends ViewGroup {
                                 mAnimDrawable[i].stop();
                                 if (mGestureRightDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureRightDrawable);
+                                    Log.i("XXXX", "right");
                                 } else {
                                     
                                 }
@@ -1155,6 +1159,7 @@ public class LockPatternView extends ViewGroup {
                                 mAnimDrawable[i].stop();
                                 if (mGestureLeftDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureLeftDrawable);
+                                    Log.i("XXXX", "left");
                                 } else {
                                     
                                 }
@@ -1373,6 +1378,6 @@ public class LockPatternView extends ViewGroup {
     }
     
     private boolean needChangeTheme() {
-        return  ThemeUtils.checkThemeNeed(mContext) &&  mFrom == LockFragment.FROM_OTHER;
+        return  ThemeUtils.checkThemeNeed(mContext) &&  (mFrom == LockFragment.FROM_OTHER || mFrom == LockFragment.FROM_SCREEN_ON);
     }
 }

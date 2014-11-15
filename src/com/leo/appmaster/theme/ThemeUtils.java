@@ -27,7 +27,7 @@ public class ThemeUtils {
 	 * @return true is had setup, otherwise nothing to be done.
 	 */
 	public static boolean checkThemeNeed(Context context) {
-		boolean need = false;
+		boolean need = true;
 		
 //		if (context != null) {
 //			SharedPreferences preferences = context.getSharedPreferences(THEME, Context.MODE_PRIVATE);

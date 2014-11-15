@@ -116,7 +116,7 @@ public class LockScreenActivity extends FragmentActivity implements
 			BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
 					getPackageManager(),
 					intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
-//			createChoiceDialog();
+			// createChoiceDialog();
 			setAppInfoBackground(bd);
 		}
 		mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
@@ -126,46 +126,45 @@ public class LockScreenActivity extends FragmentActivity implements
 		mFragment.setPackage(mToPackage);
 		mFragment.setActivity(mToActivity);
 	}
-	
-	
-//	private void createChoiceDialog() {
-//		final String[] valueString = getResources().getStringArray(
-//				R.array.det_lock_time_items);
-//
-//		AlertDialog scaleIconListDlg = new AlertDialog.Builder(this)
-//				.setTitle(R.string.change_lock_time)
-//				.setSingleChoiceItems(R.array.lock_time_entrys, -1,
-//						new DialogInterface.OnClickListener() {
-//							public void onClick(DialogInterface dialog,
-//									int whichButton) {
-//								AppMasterPreference.getInstance(
-//										LockScreenActivity.this)
-//										.setRelockTimeout(
-//												valueString[whichButton]);
-//								SDKWrapper.addEvent(LockScreenActivity.this,
-//										LeoStat.P1, "lock_setting",
-//										valueString[whichButton]);
-//								dialog.dismiss();
-//							}
-//						})
-//				.setNegativeButton(R.string.cancel,
-//						new DialogInterface.OnClickListener() {
-//							public void onClick(DialogInterface dialog,
-//									int whichButton) {
-//								/* User clicked No so do some stuff */
-//							}
-//						}).create();
-//		TextView title = new TextView(this);
-//		title.setText(getString(R.string.change_lock_time));
-//		title.setTextColor(Color.WHITE);
-//		title.setTextSize(20);
-//		title.setPadding(DipPixelUtil.dip2px(this, 20),
-//				DipPixelUtil.dip2px(this, 10), 0, DipPixelUtil.dip2px(this, 10));
-//		title.setBackgroundColor(getResources().getColor(
-//				R.color.dialog_title_area_bg));
-//		scaleIconListDlg.setCustomTitle(title);
-//		scaleIconListDlg.show();
-//	}
+
+	// private void createChoiceDialog() {
+	// final String[] valueString = getResources().getStringArray(
+	// R.array.det_lock_time_items);
+	//
+	// AlertDialog scaleIconListDlg = new AlertDialog.Builder(this)
+	// .setTitle(R.string.change_lock_time)
+	// .setSingleChoiceItems(R.array.lock_time_entrys, -1,
+	// new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog,
+	// int whichButton) {
+	// AppMasterPreference.getInstance(
+	// LockScreenActivity.this)
+	// .setRelockTimeout(
+	// valueString[whichButton]);
+	// SDKWrapper.addEvent(LockScreenActivity.this,
+	// LeoStat.P1, "lock_setting",
+	// valueString[whichButton]);
+	// dialog.dismiss();
+	// }
+	// })
+	// .setNegativeButton(R.string.cancel,
+	// new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog,
+	// int whichButton) {
+	// /* User clicked No so do some stuff */
+	// }
+	// }).create();
+	// TextView title = new TextView(this);
+	// title.setText(getString(R.string.change_lock_time));
+	// title.setTextColor(Color.WHITE);
+	// title.setTextSize(20);
+	// title.setPadding(DipPixelUtil.dip2px(this, 20),
+	// DipPixelUtil.dip2px(this, 10), 0, DipPixelUtil.dip2px(this, 10));
+	// title.setBackgroundColor(getResources().getColor(
+	// R.color.dialog_title_area_bg));
+	// scaleIconListDlg.setCustomTitle(title);
+	// scaleIconListDlg.show();
+	// }
 
 	private void setAppInfoBackground(Drawable drawable) {
 		int h = drawable.getIntrinsicHeight() * 9 / 10;
@@ -235,7 +234,7 @@ public class LockScreenActivity extends FragmentActivity implements
 
 		if (mFromType == LockFragment.FROM_SELF_HOME
 				|| mFromType == LockFragment.FROM_SELF) {
-			mTtileBar.openBackView();
+			mTtileBar.setBackViewListener(this);
 			if (TextUtils.isEmpty(mLockTitle)) {
 				mTtileBar.setTitle(R.string.app_lock);
 			} else {
@@ -272,9 +271,8 @@ public class LockScreenActivity extends FragmentActivity implements
 			intent.setClassName(this, mToActivity);
 			this.startActivity(intent);
 		}
-		
-		AppMasterPreference pref = AppMasterPreference
-				.getInstance(this);
+
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		pref.setUnlockCount(pref.getUnlockCount() + 1);
 		finish();
 	}
@@ -340,11 +338,30 @@ public class LockScreenActivity extends FragmentActivity implements
 			mLeoPopMenu.showPopMenu(this,
 					mTtileBar.findViewById(R.id.tv_option_image), null, null);
 			break;
-		
+		case R.id.layout_title_back:
+			onBack();
+			break;
 		default:
 			break;
 		}
 
+	}
+
+	private void onBack() {
+		Intent intent = new Intent();
+		if (mFromType == LockFragment.FROM_OTHER
+				|| mFromType == LockFragment.FROM_SCREEN_ON) {
+
+			intent.setAction(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+		} else {
+
+			intent.setClassName(getApplicationContext(),
+					HomeActivity.class.getName());
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		}
+		startActivity(intent);
+		finish();
 	}
 
 	private List<String> getPopMenuItems() {
