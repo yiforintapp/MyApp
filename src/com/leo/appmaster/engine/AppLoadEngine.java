@@ -608,6 +608,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	}
 	public void  receiveUninstall(){
+		
 		int temp=R.string.localtheme;
 		if(temp>0){
 		//LockerTheme.itemTheme.setFlagName((String).getApplicationContext().getResources().getText(temp));

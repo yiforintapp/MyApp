@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
@@ -24,6 +26,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.lockertheme.LockerThemeChanageDialog.OnDiaogClickListener;
 import com.leo.appmaster.model.AppDetailInfo;
@@ -38,7 +41,7 @@ public class LockerTheme extends Activity {
 	private List<String> localThemes;
 	private List<String> onlineThemes;// 在线包名
 	private boolean flagGp = false;// 判断是否存在GP
-	public  static  AppLockerThemeBean itemTheme;
+	public    AppLockerThemeBean itemTheme;
 	private SharedPreferences sharedPreferences;
 	private int number = 0;
 	private String sharedPackageName;
@@ -50,7 +53,7 @@ public class LockerTheme extends Activity {
 	private Button  mUninstall;
 	private Button  mCancel;
 	private TextView mText;
-
+	private LockerThemeReceive mLockerThemeReceive;
 	private void initUI() {
 		CommonTitleBar title = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		title.setTitle(R.string.lockerTheme);
@@ -59,12 +62,18 @@ public class LockerTheme extends Activity {
 		sharedPreferences = getSharedPreferences("lockerTheme",
 				Context.MODE_WORLD_WRITEABLE);
 	}
-
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		boolean flagPackge = false;
 		setContentView(R.layout.activity_locker_theme);
+		/*
+		 * 注册卸载监听
+		 */
+		IntentFilter intentFilter = new IntentFilter( Intent.ACTION_PACKAGE_REMOVED);
+		mLockerThemeReceive=new LockerThemeReceive();
+		registerReceiver( mLockerThemeReceive , intentFilter);
+		
 		mLayoutInflater=LayoutInflater.from(this);
 		View dialog=mLayoutInflater.inflate(R.layout. dialog_theme_alarm, null);
 		mApply=(Button)dialog. findViewById(R.id.apply);
@@ -95,7 +104,11 @@ public class LockerTheme extends Activity {
 		listTheme.setOnItemClickListener(item);
 		getTeme();
 	}
-
+@Override
+protected void onDestroy() {
+	super.onDestroy();
+	unregisterReceiver(mLockerThemeReceive);
+}
 	/**
 	 * AlarmDialog
 	 * 
@@ -333,7 +346,7 @@ public class LockerTheme extends Activity {
 		orangeTheme.setThemeName((String) this.getResources().getText(
 				R.string.orangeTheme));
 		String[] orangeUrl = new String[2];
-		orangeUrl[1] = "http://download.leoers.com/am/Theme1.apk";
+		orangeUrl[1] = "http://testd.leostat.com/am/Theme1.apk";
 		orangeUrl[0] = "com.mah.calldetailscreen";
 		orangeTheme.setUrl(orangeUrl);
 		orangeTheme.setPackageName("com.mah.calldetailscreen");
@@ -348,7 +361,7 @@ public class LockerTheme extends Activity {
 		paradoxTheme.setThemeName((String) this.getResources().getText(
 				R.string.ParadoxTheme));
 		String[] paradoxUrl = new String[2];
-		paradoxUrl[1] = "http://download.leoers.com/am/Theme1.apk";
+		paradoxUrl[1] = "http://testd.leostat.com/am/Theme1.apk";
 		paradoxUrl[0] = "com.mah.calldetailscreen";
 		paradoxTheme.setUrl(orangeUrl);
 		paradoxTheme.setPackageName("com.mah.calldetailscreen");
@@ -363,7 +376,7 @@ public class LockerTheme extends Activity {
 				moonnightTheme.setThemeName((String) this.getResources().getText(
 						R.string.moonightTheme));
 				String[] moonnightUrl = new String[2];
-				moonnightUrl[1] = "http://download.leoers.com/am/Theme1.apk";
+				moonnightUrl[1] = "http://testd.leostat.com/am/Theme1.apk";
 				moonnightUrl[0] = "com.leo.theme.moonight";
 				moonnightTheme.setUrl(moonnightUrl);
 				moonnightTheme.setPackageName("com.leo.theme.moonnight");
@@ -398,5 +411,14 @@ public class LockerTheme extends Activity {
 		defaultTheme.setThemeName((String)this.getResources().getText(R.string.defaultTheme));
 		defaultTheme.setIsVisibility(Constants.VISIBLE);
 		return defaultTheme;
+	}
+	private class LockerThemeReceive extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			
+			  
+		}
+		
 	}
 }
