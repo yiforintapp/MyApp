@@ -30,6 +30,8 @@
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
     <dimen name="hide_picture_checkbox_left">95dp</dimen>
     <dimen name="hide_picture_checkbox_top">95dp</dimen>
-    <dimen name="digital_item_width">50dp</dimen>
-    <dimen name="digital_item_height">50dp</dimen>
+    <dimen name="digital_item_width">55dp</dimen>
+    <dimen name="digital_item_height">55dp</dimen>
+    <dimen name="digital_item_marginTop">6dp</dimen>
+    <dimen name="digital_item_marginBottom">6dp</dimen>
 </resources>

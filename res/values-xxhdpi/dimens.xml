@@ -30,4 +30,6 @@
     <dimen name="hide_picture_checkbox_top">107dp</dimen>
     <dimen name="digital_item_width">65dp</dimen>
     <dimen name="digital_item_height">65dp</dimen>
+    <dimen name="digital_item_marginTop">8dp</dimen>
+    <dimen name="digital_item_marginBottom">8dp</dimen>
 </resources>
