@@ -118,7 +118,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 							HomeActivity.this).getUnlockCount();
 					boolean haveTip = AppMasterPreference.getInstance(
 							HomeActivity.this).getGoogleTipShowed();
-					if (count >= 50 && !haveTip) {
+					if (count >= 5 && !haveTip) {
 						Intent intent = new Intent(HomeActivity.this,
 								GradeTipActivity.class);
 						HomeActivity.this.startActivity(intent);

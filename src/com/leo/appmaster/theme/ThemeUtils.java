@@ -35,6 +35,7 @@ public class ThemeUtils {
         if (AppMasterApplication.getSelectedTheme().equals(
                 AppMasterApplication.getInstance().getPackageName())) {
             need = false;
+            return need;
         } else {
             need = true;
         }
