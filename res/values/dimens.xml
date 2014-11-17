@@ -24,7 +24,7 @@
     <dimen name="lock_icon_Y">26dp</dimen>
     <dimen name="about_logo_width">112dp</dimen>
     <dimen name="about_logo_height">120dp</dimen>
-    <dimen name="lock_pattern_button_width">70dp</dimen>
+    <dimen name="lock_pattern_button_width">60dp</dimen>
     <dimen name="hide_album_frame_width">149dp</dimen>
     <dimen name="hide_album_image_frame_width">115dp</dimen>
     <dimen name="hide_album_image_frame_left">16dp</dimen>
@@ -39,4 +39,7 @@
     <dimen name="digital_item_height">55dp</dimen>
     <dimen name="digital_item_marginTop">6dp</dimen>
     <dimen name="digital_item_marginBottom">6dp</dimen>
+    <dimen name="lockPatternView_height">280dp</dimen>
+    <dimen name="layout_passwd_marginTop">9dp</dimen>
+    <dimen name="layout_passwd_marginBottom">7dp</dimen>
 </resources>
