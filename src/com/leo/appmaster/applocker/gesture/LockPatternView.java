@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -534,28 +535,28 @@ public class LockPatternView extends ViewGroup {
         if (needChangeTheme()) {
             Context themeContext = getThemepkgConotext(mThemepkgName);
             mThemeRes = themeContext.getResources();
-            mGesturePressAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "gesture_press_anim");
-            mGestureLeftAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "gestrue_left_anim");
-            mGestureRightAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "gestrue_right_anim");
-            mGestureVerticalAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "gestrue_vertical_anim");
-            mGestureLeftRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "left_active");
+            mGesturePressAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", ResourceName.THEME_PRESS_ANIM);
+            mGestureLeftAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", ResourceName.THEME_LEFT_ANIM);
+            mGestureRightAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", ResourceName.THEME_RIGHT_ANIM);
+            mGestureVerticalAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", ResourceName.THEME_VERTICAL_ANIM);
+            mGestureLeftRes = ThemeUtils.getValueByResourceName(themeContext, "drawable",ResourceName.THEME_LEFT_ACTIVE);
             if (mGestureLeftRes > 0) {
                 mGestureLeftDrawable = mThemeRes.getDrawable(mGestureLeftRes);
             }
-            mGestureVerticalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "vertical_active");
+            mGestureVerticalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_VERTICAL_ACTIVE);
             if (mGestureVerticalRes > 0) {
                 mGestureVerticalDrawable = mThemeRes.getDrawable(mGestureVerticalRes);
             }
-            mGestureRightRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "right_active");
+            mGestureRightRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_GESTRUE_RIGHT_ACTIVE);
             if (mGestureRightRes > 0) {
                 mGestureRightDrawable = mThemeRes.getDrawable(mGestureRightRes);
             }
-            int upAnimationRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "gesture_up_anim");
+            int upAnimationRes = ThemeUtils.getValueByResourceName(themeContext, "anim",ResourceName.THEME_GESTRUE_UP_ANIM);
             if (upAnimationRes > 0) {
                 mUpAnimDrawable = (AnimationDrawable) mThemeRes.getDrawable(upAnimationRes);
             }
             
-            mGestureLineColorRes = ThemeUtils.getValueByResourceName(themeContext, "color", "gesture_line_color");
+            mGestureLineColorRes = ThemeUtils.getValueByResourceName(themeContext, "color",ResourceName.THEME_GESTRUE_LINE_COLOR);
             if (mGestureLineColorRes > 0) {
                 mColor = mThemeRes.getColor(mGestureLineColorRes);
             }
@@ -575,9 +576,8 @@ public class LockPatternView extends ViewGroup {
 	private void initGestureButtonByTmeme(Context themeContext) {
         int length = mButtonViews.length;
         int width = (int)mContext.getResources().getDimension(R.dimen.lock_pattern_button_width);
-        String resName;
         
-        mNormalViewRes =  ThemeUtils.getValueByResourceName(themeContext, "drawable", "gesture_normal");
+        mNormalViewRes =  ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_GESTRUE_NORMAL);
         
         for (int i = 0; i < mButtonViewRes.length; i++) {
             mButtonViewRes[i] = ThemeUtils.getValueByResourceName(themeContext, "drawable", "gesture_"+(i + 1)+"_normal");
@@ -1144,6 +1144,24 @@ public class LockPatternView extends ViewGroup {
         mPaint.setFilterBitmap(oldFlag); // restore default flag
         if (needChangeTheme()) {
             setCirclesResource(drawLookup);
+        } else {
+            int length = mButtonViews.length;
+            for (int i = 0; i < length; i++) {
+
+                if (!drawLookup[i / 3][i % 3]
+                        || (mInStealthMode && mPatternDisplayMode != DisplayMode.Wrong)) {
+                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                } else if (mPatternInProgress) {
+                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point);
+                }/* else if (mPatternDisplayMode == DisplayMode.Wrong) {
+                    mButtonViews[i] .setBackgroundResource(R.drawable.gesture_pattern_selected_wrong);
+                } else if (mPatternDisplayMode == DisplayMode.Correct
+                        || mPatternDisplayMode == DisplayMode.Animate) {
+                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                } else {
+                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                }*/
+            }
         }
         super.dispatchDraw(canvas);
 	}

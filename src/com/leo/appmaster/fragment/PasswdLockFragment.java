@@ -26,6 +26,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.AppUtil;
@@ -184,15 +185,15 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 	   Context themeContext = getThemepkgConotext(mThemepkgName);//com.leo.appmaster:drawable/multi_theme_lock_bg
 	   mThemeRes = themeContext.getResources();
 	   
-	   mLayoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_bg");
+	   mLayoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_BG);
        if (mLayoutBgRes <= 0) {
-           mLayoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "general_bg");  
+           mLayoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_GENERAL_BG);
        }
-       mDigitalBgNormalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_bg_normal");
-       mDigitalBgActiveRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_bg_active");
-       mDigitalPressAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "digital_press_anim");
-       mTopIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "top_icon");
-       mBottomIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "bottom_icon");
+       mDigitalBgNormalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable",ResourceName.THEME_DIGITAL_BUTTON_NOMAL_BG);
+       mDigitalBgActiveRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_BUTTON_ACTIVE_BG);
+       mDigitalPressAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", ResourceName.THEME_DIGITAL_PRESSANIM);
+       mTopIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_TOP_ICON);
+       mBottomIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_BOTTOM_ICON);
        
        
        if (mThemeRes != null) {
@@ -216,43 +217,43 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
              tv0Bottom.setBackgroundDrawable(normalDrawable);
            }
            
-           int digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_0_normal");
+           int digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_0);
            Drawable digitalDrawable = mThemeRes.getDrawable(digital);
            tv0.setImageDrawable(digitalDrawable);
-           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_1_normal");
+           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_1);
            digitalDrawable = mThemeRes.getDrawable(digital);
            tv1.setImageDrawable(digitalDrawable);
-           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_2_normal");
+           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_2);
            digitalDrawable = mThemeRes.getDrawable(digital);
            tv2.setImageDrawable(digitalDrawable);
-           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_3_normal");
+           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_3);
            digitalDrawable = mThemeRes.getDrawable(digital);
            tv3.setImageDrawable(digitalDrawable);
-           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_4_normal");
+           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_4);
            digitalDrawable = mThemeRes.getDrawable(digital);
            tv4.setImageDrawable(digitalDrawable);
-           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_5_normal");
+           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_5);
            digitalDrawable = mThemeRes.getDrawable(digital);
            tv5.setImageDrawable(digitalDrawable);
-           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_6_normal");
+           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_6);
            digitalDrawable = mThemeRes.getDrawable(digital);
            tv6.setImageDrawable(digitalDrawable);
-           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_7_normal");
+           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_7);
            digitalDrawable = mThemeRes.getDrawable(digital);
            tv7.setImageDrawable(digitalDrawable);
-           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_8_normal");
+           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_8);
            digitalDrawable = mThemeRes.getDrawable(digital);
            tv8.setImageDrawable(digitalDrawable);
-           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_9_normal");
+           digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_9);
            digitalDrawable = mThemeRes.getDrawable(digital);
            tv9.setImageDrawable(digitalDrawable);
            
            //get password resource
-           int passwordNormalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "password_displayed_normal");
+           int passwordNormalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_PASSWD_NORMAL);
            if (passwordNormalRes > 0) {
                mPasswdNormalDrawable = mThemeRes.getDrawable(passwordNormalRes);
            }
-           int passwordActiveRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "password_displayed_active");
+           int passwordActiveRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_PASSWD_ACTIVE);
            if (passwordActiveRes > 0) {
                mPasswdActiveDrawable = mThemeRes.getDrawable(passwordActiveRes);
            }
