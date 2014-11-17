@@ -73,7 +73,10 @@ public class GestureLockFragment extends LockFragment implements
 	      Context themeContext = LeoResources.getThemeContext(getActivity(), pkgName);//com.leo.appmaster:drawable/multi_theme_lock_bg
 	      Resources  themeRes = themeContext.getResources();
 	      int layoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "gesture_bg");
-
+          if (layoutBgRes <= 0) {
+              layoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "general_bg");  
+          }
+	      
 	       if (themeRes != null) {
 	           if (layoutBgRes > 0) {
 	               RelativeLayout layout =  (RelativeLayout) getActivity().findViewById(R.id.activity_lock_layout);

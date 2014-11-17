@@ -131,14 +131,24 @@ public class LockPatternView extends ViewGroup {
     private String mThemepkgName = AppMasterApplication.getSelectedTheme();
     private Resources mThemeRes = null;
     private int mGesturePressAnimRes = 0;
+    private int mGestureLeftRes = 0;
+    private int mGestureVerticalRes = 0;
+    private int mGestureRightRes = 0;
     private Drawable mGestureLeftDrawable;
     private Drawable mGestureRightDrawable;
     private Drawable mGestureVerticalDrawable;
     
+    private int mGestureLeftAnimRes = 0;
+    private int mGestureVerticalAnimRes = 0;
+    private int mGestureRightAnimRes = 0;
 	private ImageView[] mButtonViews = new ImageView[9];
-    private AnimationDrawable[] mAnimDrawable = new AnimationDrawable[9];
+    private AnimationDrawable[] mPressAnimDrawable = new AnimationDrawable[9];
+    private AnimationDrawable mUpAnimDrawable;
 	private int[] mButtonViewRes ={0,0,0,0,0,0,0,0,0};
-    
+	private int mNormalViewRes = 0;
+    private int mGestureLineColorRes = 0;
+    private int mColor = 0xafffffff;
+	
 	private Cell mLastParten;
 	private Cell mCurrParten;
 	
@@ -474,12 +484,18 @@ public class LockPatternView extends ViewGroup {
 	 */
 	private void clearGifAnimation() {
 	       if (!needChangeTheme()) return;
-	       for (AnimationDrawable button : mAnimDrawable) {
+	       for (AnimationDrawable button : mPressAnimDrawable) {
 	            button.stop();
 	        }
 	       
-	       for (int i = 0; i < mButtonViews.length; i++) {
-	           mButtonViews[i].setBackgroundDrawable(mThemeRes.getDrawable(mButtonViewRes[i]));
+        if (mButtonViewRes[0] <= 0) {
+            for (int i = 0; i < mButtonViews.length; i++) {
+                mButtonViews[i].setBackgroundDrawable(mThemeRes.getDrawable(mNormalViewRes));
+            }
+        } else {
+            for (int i = 0; i < mButtonViews.length; i++) {
+                mButtonViews[i].setBackgroundDrawable(mThemeRes.getDrawable(mButtonViewRes[i]));
+            }
         }
 	}
 
@@ -518,9 +534,30 @@ public class LockPatternView extends ViewGroup {
             Context themeContext = getThemepkgConotext(mThemepkgName);
             mThemeRes = themeContext.getResources();
             mGesturePressAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "gesture_press_anim");
-            mGestureLeftDrawable = mThemeRes.getDrawable(ThemeUtils.getValueByResourceName(themeContext, "drawable", "left_active"));
-            mGestureVerticalDrawable = mThemeRes.getDrawable(ThemeUtils.getValueByResourceName(themeContext, "drawable", "vertical_active"));
-            mGestureRightDrawable = mThemeRes.getDrawable(ThemeUtils.getValueByResourceName(themeContext, "drawable", "right_active"));
+            mGestureLeftAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "gestrue_left_anim");
+            mGestureRightAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "gestrue_right_anim");
+            mGestureVerticalAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "gestrue_vertical_anim");
+            mGestureLeftRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "left_active");
+            if (mGestureLeftRes > 0) {
+                mGestureLeftDrawable = mThemeRes.getDrawable(mGestureLeftRes);
+            }
+            mGestureVerticalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "vertical_active");
+            if (mGestureVerticalRes > 0) {
+                mGestureVerticalDrawable = mThemeRes.getDrawable(mGestureVerticalRes);
+            }
+            mGestureRightRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "right_active");
+            if (mGestureRightRes > 0) {
+                mGestureRightDrawable = mThemeRes.getDrawable(mGestureRightRes);
+            }
+            int upAnimationRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "gesture_up_anim");
+            if (upAnimationRes > 0) {
+                mUpAnimDrawable = (AnimationDrawable) mThemeRes.getDrawable(upAnimationRes);
+            }
+            
+            mGestureLineColorRes = ThemeUtils.getValueByResourceName(themeContext, "color", "gesture_line_color");
+            if (mGestureLineColorRes > 0) {
+                mColor = mThemeRes.getColor(mGestureLineColorRes);
+            }
             initGestureButtonByTmeme(themeContext);
         } else {
             for (int i = 0; i < length; i++) {
@@ -538,6 +575,9 @@ public class LockPatternView extends ViewGroup {
         int length = mButtonViews.length;
         int width = (int)mContext.getResources().getDimension(R.dimen.lock_pattern_button_width);
         String resName;
+        
+        mNormalViewRes =  ThemeUtils.getValueByResourceName(themeContext, "drawable", "gesture_normal");
+        
         for (int i = 0; i < mButtonViewRes.length; i++) {
             mButtonViewRes[i] = ThemeUtils.getValueByResourceName(themeContext, "drawable", "gesture_"+(i + 1)+"_normal");
         }
@@ -548,10 +588,12 @@ public class LockPatternView extends ViewGroup {
             mButtonViews[i].setLayoutParams(new Gallery.LayoutParams(width, width));
             // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
             if (mGesturePressAnimRes > 0) {
-                mAnimDrawable[i] = (AnimationDrawable) mThemeRes.getDrawable(mGesturePressAnimRes);
+                mPressAnimDrawable[i] = (AnimationDrawable) mThemeRes.getDrawable(mGesturePressAnimRes);
             }
             if (mButtonViewRes[i] > 0){
                 mButtonViews[i].setBackgroundDrawable( mThemeRes.getDrawable(mButtonViewRes[i]));
+            } else if (mNormalViewRes > 0) {
+                mButtonViews[i].setBackgroundDrawable( mThemeRes.getDrawable(mNormalViewRes));
             } else {
                 mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
             }
@@ -1080,7 +1122,7 @@ public class LockPatternView extends ViewGroup {
 			if (mPatternDisplayMode == DisplayMode.Wrong)
 				mPathPaint.setColor(0x7fbb0000);
 			else
-				mPathPaint.setColor(0xafffffff);
+				mPathPaint.setColor(mColor);
 			canvas.drawPath(currentPath, mPathPaint);
 		}
 
@@ -1131,33 +1173,44 @@ public class LockPatternView extends ViewGroup {
                 if (mLastParten != null && mCurrParten != null) {
                     if (mLastParten == mCurrParten && mCurrParten.getRow() == i / 3 && mCurrParten.getColumn() == i % 3) {
                         
-                        if (!mAnimDrawable[i].isRunning()) {
-                            mButtonViews[i].setBackgroundDrawable((mAnimDrawable[i]));
-                            mAnimDrawable[i].start();
+                        if (!mPressAnimDrawable[i].isRunning()) {
+                            mButtonViews[i].setBackgroundDrawable(mPressAnimDrawable[i]);
+                            mPressAnimDrawable[i].start();
                         }
                     } else {
                         if (mLastParten.getRow() == i / 3 && mLastParten.getColumn() == i % 3) {
                             
-                            Log.i("XXXX", "mLastParten.getColumn()="+mLastParten.getColumn()+",mCurrParten.getColumn()="+mCurrParten.getColumn());
                             if (mLastParten.getColumn() == mCurrParten.getColumn()) {
-                                mAnimDrawable[i].stop();
-                                if (mGestureVerticalDrawable != null) {
+                                mPressAnimDrawable[i].stop();
+                                if (mGestureVerticalAnimRes > 0) {
+                                    AnimationDrawable anim = (AnimationDrawable)mThemeRes.getDrawable(mGestureVerticalAnimRes);
+                                    mButtonViews[i].setBackgroundDrawable(anim);
+                                    anim.start();
+                                } else if (mGestureVerticalDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureVerticalDrawable);
                                     Log.i("XXXX", "vertical");
                                 } else {
                                     
                                 }
                             } else if (mLastParten.getColumn() < mCurrParten.getColumn()) {
-                                mAnimDrawable[i].stop();
-                                if (mGestureRightDrawable != null) {
+                                mPressAnimDrawable[i].stop();
+                                if (mGestureRightAnimRes > 0) {
+                                    AnimationDrawable anim = (AnimationDrawable)mThemeRes.getDrawable(mGestureRightAnimRes);
+                                    mButtonViews[i].setBackgroundDrawable(anim);
+                                    anim.start();
+                                } else if (mGestureRightDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureRightDrawable);
                                     Log.i("XXXX", "right");
                                 } else {
                                     
                                 }
                             } else if (mLastParten.getColumn() > mCurrParten.getColumn()) {
-                                mAnimDrawable[i].stop();
-                                if (mGestureLeftDrawable != null) {
+                                mPressAnimDrawable[i].stop();
+                                if (mGestureLeftAnimRes > 0) {
+                                    AnimationDrawable anim = (AnimationDrawable)mThemeRes.getDrawable(mGestureLeftAnimRes);
+                                    mButtonViews[i].setBackgroundDrawable(anim);
+                                    anim.start();
+                                } else if (mGestureLeftDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureLeftDrawable);
                                     Log.i("XXXX", "left");
                                 } else {
@@ -1167,9 +1220,9 @@ public class LockPatternView extends ViewGroup {
                             mLastParten = mCurrParten;
                         }
                         if (mCurrParten.getRow() == i / 3 && mCurrParten.getColumn() == i % 3) {
-                            if (!mAnimDrawable[i].isRunning()) {
-                                mButtonViews[i].setImageDrawable(mAnimDrawable[i]);
-                                mAnimDrawable[i].start();
+                            if (!mPressAnimDrawable[i].isRunning()) {
+                                mButtonViews[i].setBackgroundDrawable(mPressAnimDrawable[i]);
+                                mPressAnimDrawable[i].start();
                             }
                         }
                     }
@@ -1177,6 +1230,12 @@ public class LockPatternView extends ViewGroup {
 
             } else if (mGestureState == BUTTON_STATE_UP) {
                 // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                if(mCurrParten.getRow() == i / 3 && mCurrParten.getColumn() == i % 3) {
+                    if (mUpAnimDrawable != null) {
+                        mButtonViews[i].setImageDrawable(mUpAnimDrawable);
+                        mUpAnimDrawable.start();
+                    }
+                }
             }
 	            
 	    }

@@ -58,6 +58,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private int mDigitalPressAnimRes = 0;
     private int mLayoutBgRes = 0;
     private int mDigitalBgNormalRes = 0;
+    private int mDigitalBgActiveRes = 0;
     private int mBottomIconRes = 0;
     private int mTopIconRes = 0;
     
@@ -184,7 +185,11 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 	   mThemeRes = themeContext.getResources();
 	   
 	   mLayoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_bg");
+       if (mLayoutBgRes <= 0) {
+           mLayoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "general_bg");  
+       }
        mDigitalBgNormalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_bg_normal");
+       mDigitalBgActiveRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_bg_active");
        mDigitalPressAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", "digital_press_anim");
        mTopIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "top_icon");
        mBottomIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "bottom_icon");
@@ -464,11 +469,14 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     
     private void changeDigitalResourceByThem(final View view, int state) {
         AnimationDrawable animDrawable = null;
+        Drawable activeDrawable = null;
         ImageView bottomView;
         
         if (mThemeRes != null) {
             if (mDigitalPressAnimRes > 0) {
                 animDrawable = (AnimationDrawable)mThemeRes.getDrawable(mDigitalPressAnimRes);
+            } else {
+                activeDrawable = mThemeRes.getDrawable(mDigitalBgActiveRes);
             }
         }
 
@@ -520,9 +528,14 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 if (animDrawable != null) {
                     bottomView.setImageDrawable((animDrawable));
                     animDrawable.start();
+                } else {
+                    bottomView.setImageDrawable((activeDrawable));
                 }
             }
         } else if (state == BUTTON_STATE_NORMAL) {
+            if (mDigitalBgNormalRes > 0) {
+                bottomView.setImageDrawable(mThemeRes.getDrawable(mDigitalBgNormalRes));
+            }            
 //            view.setBackgroundResource(R.drawable.digital_bg_normal);
         }
     }

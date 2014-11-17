@@ -15,6 +15,7 @@
             android:id="@+id/iv_app_icon_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:scaleType="fitXY"
             android:layout_centerInParent="true"
             android:src="@color/transparent"
             android:visibility="invisible" />
@@ -23,6 +24,7 @@
             android:id="@+id/iv_app_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:scaleType="fitXY"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_launcher"
             android:visibility="invisible" />
@@ -31,6 +33,7 @@
             android:id="@+id/iv_app_icon_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:scaleType="fitXY"
             android:layout_centerInParent="true"
             android:src="@color/transparent"
             android:visibility="invisible" />
