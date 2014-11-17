@@ -132,7 +132,7 @@ public class LockerTheme extends Activity {
 						if(mThemes.get(i).getPackageName().equals(itemTheme.getPackageName())&&!onlineThemes.contains(itemTheme.getPackageName())){
 							mThemes.remove(i);
 						}else if((mThemes.get(i).getPackageName().equals(itemTheme.getPackageName()))){
-							mThemes.get(i).setFlagName((String)LockerTheme.this.getResources().getText(R.string.localtheme));			
+							mThemes.get(i).setFlagName((String)LockerTheme.this.getResources().getText(R.string.onlinetheme));	
 						}
 					}			    	
 			    	mLockerThemeAdapter.notifyDataSetChanged();
