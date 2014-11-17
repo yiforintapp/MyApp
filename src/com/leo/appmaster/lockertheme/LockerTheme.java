@@ -113,6 +113,7 @@ public class LockerTheme extends Activity {
 						}else{
 							itemTheme.setIsVisibility(Constants.GONE);
 						}
+						
 				mLockerThemeAdapter.notifyDataSetChanged();
 					mDialog.cancel();
 				}
@@ -126,13 +127,14 @@ public class LockerTheme extends Activity {
 			        Uri uri = Uri.fromParts("package", itemTheme.getPackageName(), null);
 			        Intent intent= new Intent(Intent.ACTION_DELETE, uri);
 			        startActivity(intent);   
-			    	getTheme();
-			    
-			    	for (int i = 0; i <mThemes.size(); i++) {
-						if(mThemes.get(i).getPackageName().equals(itemTheme.getPackageName())){
+			    	getTheme();			    
+			    	for (int i = 0; i <mThemes.size(); i++) {			    		
+						if(mThemes.get(i).getPackageName().equals(itemTheme.getPackageName())&&!onlineThemes.contains(itemTheme.getPackageName())){
 							mThemes.remove(i);
+						}else if((mThemes.get(i).getPackageName().equals(itemTheme.getPackageName()))){
+							mThemes.get(i).setFlagName((String)LockerTheme.this.getResources().getText(R.string.localtheme));			
 						}
-					}
+					}			    	
 			    	mLockerThemeAdapter.notifyDataSetChanged();
 			    	mDialog.cancel();
 				}
@@ -149,10 +151,6 @@ public class LockerTheme extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mLockerThemeAdapter = new LockerThemeAdapter(this,mThemes);
-		listTheme.setAdapter(mLockerThemeAdapter);
-		mLockerThemeAdapter.notifyDataSetChanged();
-    	
 	}
 	/**
 	 * getTeme

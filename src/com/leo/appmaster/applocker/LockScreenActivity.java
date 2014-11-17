@@ -217,10 +217,11 @@ public class LockScreenActivity extends FragmentActivity implements
 			mTtileBar.setOptionImage(R.drawable.setting_selector);
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
 			mTtileBar.setOptionListener(this);
+		}
 			mTtileBar.setSpinerVibility(View.VISIBLE);
 			mTtileBar.setSpinerListener(this);
 			
-		}
+		
 		spiner.setOnClickListener(new OnClickListener() {
 			
 			@Override
