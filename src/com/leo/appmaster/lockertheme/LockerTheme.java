@@ -38,7 +38,7 @@ public class LockerTheme extends Activity {
 	private List<String> localThemes;
 	private List<String> onlineThemes;// 在线包名
 	private boolean flagGp = false;// 判断是否存在GP
-	private AppLockerThemeBean itemTheme;
+	public  static  AppLockerThemeBean itemTheme;
 	private SharedPreferences sharedPreferences;
 	private int number = 0;
 	private String sharedPackageName;
@@ -137,14 +137,14 @@ public class LockerTheme extends Activity {
 						Uri uri = Uri.fromParts("package", itemTheme.getPackageName(),null);
 						Intent intent = new Intent(Intent.ACTION_DELETE, uri);
 						startActivity(intent);
-						getTheme();
+					/*	getTheme();
 						for (int i = 0; i < mThemes.size(); i++) {
 							if (mThemes.get(i).getPackageName().equals(itemTheme.getPackageName())&& !onlineThemes.contains(itemTheme.getPackageName())) {
 								mThemes.remove(i);
 							} else if ((mThemes.get(i).getPackageName().equals(itemTheme.getPackageName()))) {
 								mThemes.get(i).setFlagName((String) LockerTheme.this.getResources().getText(R.string.onlinetheme));
 							}
-						}
+						}*/
 						mLockerThemeAdapter.notifyDataSetChanged();
 						dialog.cancel();
 					}
@@ -291,8 +291,7 @@ public class LockerTheme extends Activity {
 	public OnItemClickListener item = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 			itemTheme = (AppLockerThemeBean) arg0.getItemAtPosition(arg2);
 			String[] urls = itemTheme.getUrl();
 			if (mThemes
@@ -326,22 +325,7 @@ public class LockerTheme extends Activity {
 		/*
 		 * ------------------------------------------构造数据------------------------
 		 * 
-		 */
-		// Theme1
-		AppLockerThemeBean moonnightTheme = new AppLockerThemeBean();
-		moonnightTheme.setThemeImage(this.getResources().getDrawable(
-				R.drawable.moonnight_theme));
-		moonnightTheme.setThemeName((String) this.getResources().getText(
-				R.string.moonightTheme));
-		String[] moonnightUrl = new String[2];
-		moonnightUrl[1] = "http://download.leoers.com/am/Theme1.apk";
-		moonnightUrl[0] = "com.leo.theme.moonight";
-		moonnightTheme.setUrl(moonnightUrl);
-		moonnightTheme.setPackageName("com.leo.theme");
-		moonnightTheme.setFlagName((String) this.getResources().getText(
-				R.string.onlinetheme));
-		moonnightTheme.setIsVisibility(Constants.VISIBLE);
-		mThemes.add(moonnightTheme);
+		 */	
 		// Theme2
 		AppLockerThemeBean orangeTheme = new AppLockerThemeBean();
 		orangeTheme.setThemeImage(this.getResources().getDrawable(
@@ -372,6 +356,21 @@ public class LockerTheme extends Activity {
 				R.string.onlinetheme));
 		paradoxTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(paradoxTheme);
+		// Theme1
+				AppLockerThemeBean moonnightTheme = new AppLockerThemeBean();
+				moonnightTheme.setThemeImage(this.getResources().getDrawable(
+						R.drawable.moonnight_theme));
+				moonnightTheme.setThemeName((String) this.getResources().getText(
+						R.string.moonightTheme));
+				String[] moonnightUrl = new String[2];
+				moonnightUrl[1] = "http://download.leoers.com/am/Theme1.apk";
+				moonnightUrl[0] = "com.leo.theme.moonight";
+				moonnightTheme.setUrl(moonnightUrl);
+				moonnightTheme.setPackageName("com.leo.theme.moonnight");
+				moonnightTheme.setFlagName((String) this.getResources().getText(
+						R.string.onlinetheme));
+				moonnightTheme.setIsVisibility(Constants.VISIBLE);
+				mThemes.add(moonnightTheme);
 		getOnlineThemePackage();
 		/*
 		 * ----------------------------------------------------------------------

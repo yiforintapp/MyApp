@@ -37,6 +37,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.CacheInfo;
@@ -377,6 +378,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 				if (!replacing) {
 					op = AppChangeListener.TYPE_REMOVE;
 					checkUnlockWhenRemove(packageName);
+				//	receiveUninstall();
+					
 				}
 				// else, we are replacing the package, so a PACKAGE_ADDED will
 				// be sent
@@ -604,5 +607,13 @@ public class AppLoadEngine extends BroadcastReceiver {
 		}
 
 	}
+	public void  receiveUninstall(){
+		int temp=R.string.localtheme;
+		if(temp>0){
+		//LockerTheme.itemTheme.setFlagName((String).getApplicationContext().getResources().getText(temp));
+		}else{
+			
+		}
+		}
 
 }
