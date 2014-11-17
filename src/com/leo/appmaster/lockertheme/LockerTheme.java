@@ -21,9 +21,12 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.AppLockerThemeBean;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -42,6 +45,7 @@ public class LockerTheme extends Activity {
 	private String sharedPackageName;
 	private LockerThemeAdapter mLockerThemeAdapter;
 	private  AlertDialog mDialog;
+	private boolean mShouldLockOnRestart=true;
 	private void initUI(){
 		CommonTitleBar title = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		title.setTitle(R.string.lockerTheme);
@@ -147,6 +151,39 @@ public class LockerTheme extends Activity {
 		}
 	});
 			
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		LeoLog.e("LockOptionActivity", "onActivityResault: requestCode = "
+				+ requestCode + "    resultCode = " + resultCode);
+		mShouldLockOnRestart = false;
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void showLockPage() {
+		Intent intent = new Intent(this, LockScreenActivity.class);
+		int lockType = AppMasterPreference.getInstance(this).getLockType();
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_PASSWD);
+		} else {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_GESTURE);
+		}
+		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		startActivityForResult(intent, 1000);
+	}
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		if (mShouldLockOnRestart ) {
+			showLockPage();
+		} else {
+			mShouldLockOnRestart  = true;
+		}
 	}
 	@Override
 	protected void onResume() {
