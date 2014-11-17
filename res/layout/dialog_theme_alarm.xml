@@ -20,9 +20,11 @@
         android:orientation="vertical" >
 	<TextView
 	    android:id="@+id/dialogTV"
-	    android:text="@string/apply_dialog"
-	    android:layout_width="250dp"
-	    android:layout_height="wrap_content"/>
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="25dp"
+	    android:textColor="#000000"
+	    android:layout_gravity="center_horizontal"/>
 	<Button
 	    android:id="@+id/apply"
 	   android:layout_width="173dp"
@@ -51,6 +53,7 @@
 	   android:text="@string/locker_cancel"
 	   android:background="@drawable/lockertheme_cacel_selecter"
 	   android:layout_marginTop="25dp"
+	   android:layout_marginBottom="25dp"
 	     />
       
     </LinearLayout>

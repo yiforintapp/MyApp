@@ -18,7 +18,7 @@ public class LockerThemeChanageDialog extends LEOBaseDialog {
 
 	private Context mContext;
 
-	private TextView mTitle;
+	private TextView mText;
 	private TextView mContent;
 	private Object mUserData;
 	private Button mApply;
@@ -50,7 +50,13 @@ public class LockerThemeChanageDialog extends LEOBaseDialog {
 			mContent.setText(titleStr);
 		}
 	}
-
+	public void setText(String titleStr) {
+		if (titleStr != null) {
+			mText.setText(titleStr);
+		} else {
+			mText.setText(R.string.tips);
+		}
+	}
 	public void setContentLineSpacing(int lineSpace) {
 		mContent.setLineSpacing(lineSpace, 1);
 	}
@@ -89,12 +95,20 @@ public class LockerThemeChanageDialog extends LEOBaseDialog {
 			}
 		});
 	}
+	public void setVisibleUninstal(int visible){
+		if(visible>0){
+			mUninstall.setVisibility(visible);
+		}else{
+			mUninstall.setVisibility(View.VISIBLE);
+		}
+	}
 
 	private void initUI() {
 		View dlgView = LayoutInflater.from(mContext).inflate(R.layout. dialog_theme_alarm, null);
 		mApply=(Button)dlgView. findViewById(R.id.apply);
 		mUninstall=(Button) dlgView. findViewById(R.id.uninstall);
 		mCancel=(Button) dlgView. findViewById(R.id.cancel);
+		mText=(TextView) dlgView.findViewById(R.id.dialogTV);
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int arg1) {
@@ -107,6 +121,7 @@ public class LockerThemeChanageDialog extends LEOBaseDialog {
 		setApplyListener(listener);
 		setUninstallListener(listener);
 		setCancelListener(listener);
+		setContentView(dlgView);
 		setCanceledOnTouchOutside(true);
 	}
 

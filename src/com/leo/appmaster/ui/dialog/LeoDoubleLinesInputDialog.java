@@ -47,7 +47,7 @@ public class LeoDoubleLinesInputDialog extends LEOBaseDialog {
 		if (titleStr != null) {
 			mTitle.setText(titleStr);
 		} else {
-			mTitle.setText(R.string.tips);
+			mTitle.setText("");
 		}
 	}
 
