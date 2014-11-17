@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="330dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical"
@@ -9,87 +9,48 @@
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
-        android:layout_width="330dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:maxHeight="274dp"
         android:minHeight="95dp"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/dlg_title"
-            style="@style/dlg_title_txt"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="@string/tips"
-            android:visibility="visible" />
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:minHeight="60dp"
-            android:paddingBottom="14dp"
-            android:paddingLeft="17dp"
-            android:paddingRight="17dp"
-            android:paddingTop="14dp" >
-
-            <ImageView
-                android:id="@+id/dlg_left_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@drawable/dlg_icon_fail"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/dlg_content"
-                style="@style/dlg_content_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/dlg_left_icon"
-                android:text="content" />
-        </RelativeLayout>
-    </LinearLayout>
-
-   <LinearLayout
-        android:id="@+id/dlg_2btn_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dlg_title_layout"
-        android:background="@color/item_backup_grey"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingLeft="17dp"
-        android:paddingRight="17dp"
-        android:paddingTop="10dp"
-        android:weightSum="2" >
+        android:background="@color/white"
+        android:orientation="vertical" >
+	<TextView
+	    android:id="@+id/dialogTV"
+	    android:text="@string/apply_dialog"
+	    android:layout_width="250dp"
+	    android:layout_height="wrap_content"/>
+	<Button
+	    android:id="@+id/apply"
+	   android:layout_width="173dp"
+	   android:layout_height="33dp"
+	     android:textColor="@color/white"
+	   android:text="@string/locker_apply"
+	   android:layout_marginTop="14dp"
+	   android:background="@drawable/lockertheme_apply_selecter"
+	     />
 
-        <TextView
-            android:id="@+id/dlg_left_btn"
-            style="@style/dlg_left_button_txt"
-            android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/cancel" />
-
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="wrap_content"
-            android:src="@android:color/transparent" >
-        </ImageView>
-
-        <TextView
-            android:id="@+id/dlg_right_btn"
-            style="@style/dlg_right_button_txt"
-            android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/makesure" />
+      <Button
+	    android:id="@+id/uninstall"
+	   android:layout_width="173dp"
+	   android:layout_height="33dp"
+	   android:text="@string/locker_uninstall"
+	   android:textColor="@color/white"
+	   android:background="@drawable/lockertheme_uniustall_selecter"
+	   android:layout_marginTop="14dp"
+	     />
+      	
+	<Button
+	    android:id="@+id/cancel"
+	   android:layout_width="173dp"
+	   android:layout_height="33dp"
+	     android:textColor="@color/white"
+	   android:text="@string/locker_cancel"
+	   android:background="@drawable/lockertheme_cacel_selecter"
+	   android:layout_marginTop="25dp"
+	     />
       
     </LinearLayout>
 
