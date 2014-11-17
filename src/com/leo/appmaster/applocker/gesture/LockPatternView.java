@@ -128,7 +128,7 @@ public class LockPatternView extends ViewGroup {
 	private int mAspect;
 	private final Matrix mCircleMatrix = new Matrix();
 
-    private String mThemepkgName = "com.leo.theme";
+    private String mThemepkgName = AppMasterApplication.getSelectedTheme();
     private Resources mThemeRes = null;
     private int mGesturePressAnimRes = 0;
     private Drawable mGestureLeftDrawable;

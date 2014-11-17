@@ -1,8 +1,11 @@
 package com.leo.appmaster.theme;
 
+import com.leo.appmaster.AppMasterApplication;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageInfo;
 
 /**
  * Theme utility for operate caller 
@@ -26,20 +29,30 @@ public class ThemeUtils {
 	 * @param context
 	 * @return true is had setup, otherwise nothing to be done.
 	 */
-	public static boolean checkThemeNeed(Context context) {
-		boolean need = true;
-		
-//		if (context != null) {
-//			SharedPreferences preferences = context.getSharedPreferences(THEME, Context.MODE_PRIVATE);
-//			String applyPkgName = preferences.getString(THEME_PREFERENCE, "");
-//			
-//			need =!"".equals(applyPkgName);
-//		}
-		
-		
-		return need;
-		
-	}
+    public static boolean checkThemeNeed(Context context) {
+        boolean need = false;
+
+        if (AppMasterApplication.getSelectedTheme().equals(
+                AppMasterApplication.getInstance().getPackageName())) {
+            need = false;
+        } else {
+            need = true;
+        }
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(
+                    AppMasterApplication.getSelectedTheme(), 0);
+            if (packageInfo == null) {
+                need = false;
+            } else {
+                need = true;
+            }
+        } catch (Exception e) {
+            need = false;
+        }
+
+        return need;
+
+    }
 
 	/**
 	 * Fetch the package name of theme, that was be setup for lock fragment. 
