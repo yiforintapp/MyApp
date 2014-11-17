@@ -5,17 +5,15 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -29,7 +27,6 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.AppLockerThemeBean;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -90,7 +87,7 @@ public class LockerTheme extends Activity {
  * @param content
  */
 
-	public void showAlarmDialog(String title, String content) {
+	public void showAlarmDialog() {
 		View inflater=LayoutInflater.from(this).inflate(R.layout.dialog_theme_alarm,null);
 		Button apply=(Button) inflater.findViewById(R.id.apply);
 		Button uninstall=(Button) inflater.findViewById(R.id.uninstall);
@@ -98,6 +95,8 @@ public class LockerTheme extends Activity {
 		mDialog=new AlertDialog.Builder(this).create();
 		mDialog.setView(inflater,0,0,0,0);
 		mDialog.show();
+		//LockerThemeChanageDialog lcd=new LockerThemeChanageDialog(this);
+		//lcd.show();
 			apply.setOnClickListener(new OnClickListener() {			
 				@Override
 				public void onClick(View arg0) {
@@ -191,7 +190,13 @@ public class LockerTheme extends Activity {
 				AppLockerThemeBean tempTheme=new AppLockerThemeBean();
 				//tempTheme.setFlagName((String)saveContext.getResources().getText(R.string.localtheme));
 				//tempTheme.setThemeImage(saveContext.getResources().getDrawable(R.drawable.splash_icon));				
-				tempTheme.setThemeImage(saveContext.getResources().getDrawable(saveContext.getResources().getIdentifier("theme", "drawable",saveContext.getPackageName() )));
+				
+				int themeres=saveContext.getResources().getIdentifier("theme", "drawable",saveContext.getPackageName() );
+				if(themeres>0){
+						tempTheme.setThemeImage(saveContext.getResources().getDrawable(saveContext.getResources().getIdentifier("theme", "drawable",saveContext.getPackageName() )));
+				}else{
+					tempTheme.setThemeImage(this.getResources().getDrawable(R.drawable.app_list_bg));
+				}
 				tempTheme.setFlagName((String)this.getResources().getText(R.string.localtheme));				
 				tempTheme.setThemeName("");
 				tempTheme.setPackageName(localThemes.get(i));
@@ -238,7 +243,7 @@ public class LockerTheme extends Activity {
 					}
 				}						
 			}else  if((mThemes.get(arg2).getFlagName().equals((String)getResources().getText(R.string.localtheme))||mThemes.get(arg2).getFlagName().equals((String)getResources().getText(R.string.defaultTheme)))&&!mThemes.get(arg2).getPackageName().equals(AppMasterApplication.sharedPackage)){						
-				showAlarmDialog(null,null);
+				showAlarmDialog();
 			}				
 		}
 	};

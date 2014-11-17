@@ -217,7 +217,7 @@
     <string name="moonightTheme">Moonnight&#160;Theme</string>
     <string name="orangeTheme">Orange&#160;Theme</string>
     <string name="ParadoxTheme">Paradox&#160;Theme</string>
-	<string name="apply_dialog">The&#160;lock&#160;interface&#160;will&#160;be&#160;changed&#160;to&#160;Moonnight&#160;Theme,continue?</string>
+	<string name="apply_dialog">是否将解锁界面更换为该主题？</string>
 	<string name="locker_apply">应用</string>
 	<string name="locker_uninstall">卸载</string>
 	<string name="locker_cancel">取消</string>

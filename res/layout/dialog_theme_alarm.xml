@@ -5,6 +5,7 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:paddingLeft="13dp"
+    style="@style/bt_dialog"
     android:paddingRight="13dp" >
 
     <LinearLayout

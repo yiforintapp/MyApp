@@ -218,8 +218,8 @@
         <item>30</item>
         <item>60</item>
     </string-array>
-	<string name="apply_dialog">The&#160;lock&#160;interface&#160;will&#160;be&#160;changed&#160;to&#160;Moonnight&#160;Theme,continue?</string>
-	<string name="locker_apply">应用</string>
-	<string name="locker_uninstall">卸载</string>
-	<string name="locker_cancel">取消</string>
+	<string name="apply_dialog">Tलॉक&#160; इंटरफ़ेस XXकी &#160;ओर &#160;बदल&#160; दिया &#160;जाएगा, जारी रखें?</string>
+	<string name="locker_apply">Apply</string>
+	<string name="locker_uninstall">Uninstall</string>
+	<string name="locker_cancel">Cancel</string>
 </resources>
