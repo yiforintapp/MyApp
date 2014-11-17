@@ -15,7 +15,7 @@
             android:id="@+id/iv_app_icon_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:layout_centerInParent="true"
             android:src="@color/transparent"
             android:visibility="invisible" />
@@ -24,7 +24,7 @@
             android:id="@+id/iv_app_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_launcher"
             android:visibility="invisible" />
@@ -33,7 +33,7 @@
             android:id="@+id/iv_app_icon_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
+            android:scaleType="center"
             android:layout_centerInParent="true"
             android:src="@color/transparent"
             android:visibility="invisible" />
@@ -129,15 +129,15 @@
 
                 <ImageView
                     android:id="@+id/tv_1_bottom"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
 
                     android:gravity="center"
                     android:background="@drawable/digital_bg_normal" />
                 <ImageView
                     android:id="@+id/tv_1_top"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:clickable="true"
                     android:src="@drawable/digital_1_normal" />
                 
@@ -151,15 +151,15 @@
 
                 <ImageView
                     android:id="@+id/tv_2_bottom"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:background="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 <ImageView
                     android:id="@+id/tv_2_top"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_2_normal" />
                 
             </FrameLayout>
@@ -170,16 +170,16 @@
 
                 <ImageView
                     android:id="@+id/tv_3_bottom"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:background="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center"/>
 
                 <ImageView
                     android:id="@+id/tv_3_top"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_3_normal" />
             </FrameLayout>
         </LinearLayout>
@@ -198,16 +198,16 @@
 
                 <ImageView
                     android:id="@+id/tv_4_bottom"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:clickable="true"
                     android:gravity="center"
                     android:background="@drawable/digital_bg_normal" />
                 
                 <ImageView
                     android:id="@+id/tv_4_top"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_4_normal" />
             </FrameLayout>
 
@@ -219,16 +219,16 @@
 
                 <ImageView
                     android:id="@+id/tv_5_bottom"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:background="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 
                 <ImageView
                     android:id="@+id/tv_5_top"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_5_normal" />
             </FrameLayout>
 
@@ -238,15 +238,15 @@
 
                 <ImageView
                     android:id="@+id/tv_6_bottom"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:background="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 <ImageView
                     android:id="@+id/tv_6_top"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_6_normal" />
             </FrameLayout>
         </LinearLayout>
@@ -264,16 +264,16 @@
                 android:layout_height="wrap_content" >
                 <ImageView
                     android:id="@+id/tv_7_bottom"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:clickable="true"
                     android:gravity="center"
                     android:background="@drawable/digital_bg_normal" />
 
                 <ImageView
                     android:id="@+id/tv_7_top"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_7_normal" />
             </FrameLayout>
 
@@ -284,15 +284,15 @@
                 android:layout_marginRight="40dp" >
                 <ImageView
                     android:id="@+id/tv_8_bottom"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:background="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 <ImageView
                     android:id="@+id/tv_8_top"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_8_normal" />
             </FrameLayout>
 
@@ -302,16 +302,16 @@
 
                 <ImageView
                     android:id="@+id/tv_9_bottom"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:background="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 
                 <ImageView
                     android:id="@+id/tv_9_top"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_9_normal" />
             </FrameLayout>
         </LinearLayout>
@@ -326,8 +326,8 @@
 
             <View
                 android:id="@+id/tv_ok"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="@dimen/digital_item_width"
+                android:layout_height="@dimen/digital_item_height"
                 android:background="#1effffff"
                 android:clickable="true"
                 android:gravity="center"
@@ -341,24 +341,24 @@
 
                 <ImageView
                     android:id="@+id/tv_0_bottom"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:background="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 
                 <ImageView
                     android:id="@+id/tv_0_top"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_0_normal" />
                 
             </FrameLayout>
 
             <ImageView
                 android:id="@+id/tv_delete"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="@dimen/digital_item_width"
+                android:layout_height="@dimen/digital_item_height"
                 android:clickable="true"
                 android:gravity="center"
                 android:scaleType="centerInside"
