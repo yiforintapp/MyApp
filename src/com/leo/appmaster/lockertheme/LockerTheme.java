@@ -95,8 +95,8 @@ public class LockerTheme extends Activity {
 		mDialog=new AlertDialog.Builder(this).create();
 		mDialog.setView(inflater,0,0,0,0);
 		mDialog.show();
-		//LockerThemeChanageDialog lcd=new LockerThemeChanageDialog(this);
-		//lcd.show();
+		/*LockerThemeChanageDialog lcd=new LockerThemeChanageDialog(this);
+		lcd.show();*/
 			apply.setOnClickListener(new OnClickListener() {			
 				@Override
 				public void onClick(View arg0) {
@@ -113,7 +113,7 @@ public class LockerTheme extends Activity {
 						}else{
 							itemTheme.setIsVisibility(Constants.GONE);
 						}
-					mLockerThemeAdapter.notifyDataSetChanged();
+				mLockerThemeAdapter.notifyDataSetChanged();
 					mDialog.cancel();
 				}
 				
@@ -121,12 +121,20 @@ public class LockerTheme extends Activity {
 			uninstall.setOnClickListener(new OnClickListener() {
 				
 				@Override
-				public void onClick(View arg0) {
-				
+				public void onClick(View arg0) {				
 					// 卸载主题
 			        Uri uri = Uri.fromParts("package", itemTheme.getPackageName(), null);
 			        Intent intent= new Intent(Intent.ACTION_DELETE, uri);
 			        startActivity(intent);   
+			    	getTheme();
+			    
+			    	for (int i = 0; i <mThemes.size(); i++) {
+						if(mThemes.get(i).getPackageName().equals(itemTheme.getPackageName())){
+							mThemes.remove(i);
+						}
+					}
+			    	mLockerThemeAdapter.notifyDataSetChanged();
+			    	mDialog.cancel();
 				}
 			});
 			cancel.setOnClickListener(new OnClickListener() {
@@ -134,7 +142,6 @@ public class LockerTheme extends Activity {
 		@Override
 		public void onClick(View arg0) {
 			mDialog.cancel();
-			
 		}
 	});
 			
@@ -142,7 +149,10 @@ public class LockerTheme extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-    	mLockerThemeAdapter.notifyDataSetChanged();
+		mLockerThemeAdapter = new LockerThemeAdapter(this,mThemes);
+		listTheme.setAdapter(mLockerThemeAdapter);
+		mLockerThemeAdapter.notifyDataSetChanged();
+    	
 	}
 	/**
 	 * getTeme

@@ -5,7 +5,6 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:paddingLeft="13dp"
-    style="@style/bt_dialog"
     android:paddingRight="13dp" >
 
     <LinearLayout
@@ -16,6 +15,7 @@
         android:maxHeight="274dp"
         android:minHeight="95dp"
         android:gravity="center"
+        style="@style/bt_dialog"
         android:background="@color/white"
         android:orientation="vertical" >
 	<TextView
