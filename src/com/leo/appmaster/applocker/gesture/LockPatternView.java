@@ -37,6 +37,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LockPatternUtils;
 import com.leo.appmaster.applocker.LockScreenActivity;
 /**
@@ -312,7 +313,7 @@ public class LockPatternView extends ViewGroup {
 //			mBitmapWidth = Math.max(mBitmapWidth, bitmap.getWidth());
 //			mBitmapHeight = Math.max(mBitmapHeight, bitmap.getHeight());
 //		}
-		mBitmapWidth =310;//DipPixelUtil.dip2px(mContext, mContext.getResources().getDimension(R.dimen.lock_pattern_button_width));
+		mBitmapWidth = (int)mContext.getResources().getDimension(R.dimen.lock_pattern_button_width);
 		mBitmapHeight = mBitmapWidth;
 		a.recycle();
 		

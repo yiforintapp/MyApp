@@ -72,15 +72,17 @@ public class PushUIHelper implements IPushUIHelper {
         LeoLog.d(TAG, "title=" + title + "; content=" + content);
         mTitle = title;
         mContent = content;
-        if (isActivityOnTop(mContext)) {
-            LeoLog.d(TAG, "push activity already on top, do nothing");
-        } else if (isAppOnTop(mContext)) {
-            mStatusBar = false;
-            showPushActivity(title, content, false);
-        } else {
-            mStatusBar = true;
-            sendPushNotification(title, content);
-        }
+        // if (isActivityOnTop(mContext)) {
+        // LeoLog.d(TAG, "push activity already on top, do nothing");
+        // } else if (isAppOnTop(mContext)) {
+        // mStatusBar = false;
+        // showPushActivity(title, content, false);
+        // } else {
+        // mStatusBar = true;
+        // sendPushNotification(title, content);
+        // }
+        mStatusBar = true;
+        sendPushNotification(title, content);
     }
 
     private void showPushActivity(String title, String content, boolean isFromStatusBar) {
