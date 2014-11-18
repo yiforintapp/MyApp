@@ -607,7 +607,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	public boolean tryHideThemeApk(final String pkg) {
 		if (pkg.startsWith("com.leo.theme")) {
-			sWorker.postDelayed(new Runnable() {
+			sWorker.post(new Runnable() {
 				@Override
 				public void run() {
 					PackageManager pm = mContext.getPackageManager();
@@ -622,7 +622,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 								PackageManager.DONT_KILL_APP);
 					}
 				}
-			}, 3000);
+			});
 
 			// return true;
 			return false; // add app list
