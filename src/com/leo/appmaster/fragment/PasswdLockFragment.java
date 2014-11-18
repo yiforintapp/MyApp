@@ -39,7 +39,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
     private ImageView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv0;
     private ImageView tv1Bottom, tv2Bottom, tv3Bottom, tv4Bottom, tv5Bottom, tv6Bottom, tv7Bottom, tv8Bottom, tv9Bottom, tv0Bottom;
-	private ImageView iv_delete;
+	private ImageView iv_delete,iv_delete_bottom;
 	private ImageView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
 	private TextView mPasswdTip, mPasswdHint;
 	private String mTempPasswd = "";
@@ -62,6 +62,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private int mDigitalBgActiveRes = 0;
     private int mBottomIconRes = 0;
     private int mTopIconRes = 0;
+    private int mDeleteNormalRes = 0;
     
     private Drawable mPasswdNormalDrawable;
     private Drawable mPasswdActiveDrawable;
@@ -92,6 +93,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 		tv9 = (ImageView) findViewById(R.id.tv_9_top);
 		tv0 = (ImageView) findViewById(R.id.tv_0_top);
 		iv_delete = (ImageView) findViewById(R.id.tv_delete);
+		iv_delete_bottom = (ImageView) findViewById(R.id.tv_delete_bottom);
 
 		tv1.setOnClickListener(this);
 		tv2.setOnClickListener(this);
@@ -220,9 +222,13 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
        mDigitalPressAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", ResourceName.THEME_DIGITAL_PRESSANIM);
        mTopIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_TOP_ICON);
        mBottomIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_BOTTOM_ICON);
-       
+       mDeleteNormalRes =  ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DELETE);
        
        if (mThemeRes != null) {
+           if (mDeleteNormalRes > 0) {
+               iv_delete_bottom.setImageDrawable(mThemeRes.getDrawable(mDeleteNormalRes));
+           }
+           
            if (mLayoutBgRes > 0) {
                RelativeLayout layout =  (RelativeLayout) getActivity().findViewById(R.id.activity_lock_layout);
                Drawable bgDrawable = mThemeRes.getDrawable(mLayoutBgRes);

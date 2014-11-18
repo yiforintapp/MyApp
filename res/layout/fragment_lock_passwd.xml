@@ -354,15 +354,27 @@
                     android:src="@drawable/digital_0_normal" />
                 
             </FrameLayout>
-
-            <ImageView
-                android:id="@+id/tv_delete"
+            
+            <FrameLayout
                 android:layout_width="@dimen/digital_item_width"
-                android:layout_height="@dimen/digital_item_height"
-                android:clickable="true"
-                android:gravity="center"
-                android:scaleType="centerInside"
-                android:src="@drawable/delete_button_selecter" />
+                android:layout_height="@dimen/digital_item_height" >
+
+                <ImageView
+                    android:id="@+id/tv_delete_bottom"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
+                    android:gravity="center" />
+
+                <ImageView
+                    android:id="@+id/tv_delete"
+                    android:layout_width="@dimen/digital_item_width"
+                    android:layout_height="@dimen/digital_item_height"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/delete_button_selecter" />
+            </FrameLayout>
+
         </LinearLayout>
     </LinearLayout>
 
