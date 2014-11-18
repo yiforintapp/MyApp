@@ -1207,7 +1207,6 @@ public class LockPatternView extends ViewGroup {
                                     anim.start();
                                 } else if (mGestureVerticalDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureVerticalDrawable);
-                                    Log.i("XXXX", "vertical");
                                 } else {
                                     
                                 }
@@ -1219,7 +1218,6 @@ public class LockPatternView extends ViewGroup {
                                     anim.start();
                                 } else if (mGestureRightDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureRightDrawable);
-                                    Log.i("XXXX", "right");
                                 } else {
                                     
                                 }
@@ -1231,7 +1229,6 @@ public class LockPatternView extends ViewGroup {
                                     anim.start();
                                 } else if (mGestureLeftDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureLeftDrawable);
-                                    Log.i("XXXX", "left");
                                 } else {
                                     
                                 }
