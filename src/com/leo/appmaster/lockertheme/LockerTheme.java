@@ -377,7 +377,7 @@ getOnlineThemePackage();
 		orangeUrl[1] = "http://testd.leostat.com/am/orange.apk";
 		orangeUrl[0] = "com.mah.calldetailscreen";
 		orangeTheme.setUrl(orangeUrl);
-		orangeTheme.setPackageName("com.mah.calldetailscreen");
+		orangeTheme.setPackageName("com.leo.theme.orange");
 		orangeTheme.setFlagName((String) this.getResources().getText(
 				R.string.onlinetheme));
 		orangeTheme.setIsVisibility(Constants.GONE);
@@ -435,16 +435,18 @@ getOnlineThemePackage();
 	        	if(packageName.equals(sharedPackageName)){
 			 		AppMasterApplication.setSharedPreferencesValue("com.leo.appmaster");			 
 			 		mThemes.get(0).setIsVisibility(Constants.VISIBLE);
+			 		mLockerThemeAdapter.notifyDataSetChanged();
 			 }
 				for (int i = 0; i < mThemes.size(); i++) {
 					if (mThemes.get(i).getPackageName().equals(itemTheme.getPackageName())&& !onlineThemes.contains(itemTheme.getPackageName())) {
 						mThemes.remove(i);
 					} else if ((mThemes.get(i).getPackageName().equals(itemTheme.getPackageName()))) {
-					if(packageName.equals(sharedPackageName)){
+					/*if(packageName.equals(sharedPackageName)){
 						 		AppMasterApplication.setSharedPreferencesValue("com.leo.appmaster");			 
 						 		mThemes.get(0).setIsVisibility(Constants.VISIBLE);
-						 }
-						mThemes.get(i).setFlagName((String) LockerTheme.this.getResources().getText(R.string.onlinetheme));						
+						 }*/
+						mThemes.get(i).setFlagName((String) LockerTheme.this.getResources().getText(R.string.onlinetheme));				
+						mThemes.get(i).setIsVisibility(Constants. GONE);
 					}
 				}
 	            itemTheme.setFlagName((String)LockerTheme.this.getResources().getText(R.string.onlinetheme));
