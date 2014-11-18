@@ -92,6 +92,8 @@ public class LockerTheme extends BaseActivity {
 		initUI();
 		onlineThemes = new ArrayList<String>();
 		localThemes = new ArrayList<String>();
+		AppMasterPreference    preference=AppMasterPreference.getInstance(LockerTheme.this);
+		localThemes=preference.getHideThemeList();
 		mThemes = new ArrayList<AppLockerThemeBean>();
 		mThemes.add(getDefaultData());
 		getData();
@@ -115,6 +117,7 @@ public class LockerTheme extends BaseActivity {
 		listTheme.setSelection(number);// Item定向跳转		
 		listTheme.setOnItemClickListener(item);
 		getTeme();
+
 	}
 	
 	@Override
@@ -184,12 +187,13 @@ public class LockerTheme extends BaseActivity {
 
 	@Override
 	protected void onResume() {
-		super.onResume();
+		super.onResume();	
 
 	}
 
     @Override
     public void onActivityRestart() {
+    	
         if (mNeedLock) {
             if (mShouldLockOnRestart) {
                 showLockPage();
@@ -226,21 +230,6 @@ public class LockerTheme extends BaseActivity {
 	 */
 	public void getTeme() {
 		boolean flagPackge = false;
-		// 获取本地已安装包信息
-		List<AppDetailInfo> pkgInfos = AppLoadEngine.getInstance(
-				LockerTheme.this).getAllPkgInfo();// 获取本地安装的所有包信息
-		// 本地包名
-		for (int i = 0; i < pkgInfos.size(); i++) {
-			Log.i("run","************"+pkgInfos.get(i).getPkg()+"\n");
-			if (pkgInfos.get(i).getPkg().equals(Constants.GPPACKAGE)) {
-				flagGp = true;
-			}
-			// flagPackge=mThemes.contains(pkgInfos.get(i).getPkg()); 
-			flagPackge = pkgInfos.get(i).getPkg().startsWith("com.leo.theme");
-			if (flagPackge) {
-				localThemes.add(pkgInfos.get(i).getPkg());
-			}
-		}
 		for (int i = 0; i < localThemes.size(); i++) { 
 			Context saveContext = null;
 			try {
@@ -250,7 +239,7 @@ public class LockerTheme extends BaseActivity {
 				LeoLog.i("Context", "getContext error");
 			}
 
-			boolean flag = onlineThemes.contains(localThemes.get(i));
+			boolean flag = onlineThemes.contains(localThemes.get(i)); 
 			if (flag) {
 				for (int j = 0; j < onlineThemes.size(); j++) {
 					if (onlineThemes.get(j).equals("com.leo.appmaster")) {

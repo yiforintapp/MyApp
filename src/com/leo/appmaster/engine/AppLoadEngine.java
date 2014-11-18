@@ -214,9 +214,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 		loadAllPkgInfo();
 		ArrayList<AppDetailInfo> dataList = new ArrayList<AppDetailInfo>();
 		for (AppDetailInfo app : mAppDetails.values()) {
-//			if (!app.getPkg().startsWith("com.leo.theme")) {
+			if (!app.getPkg().startsWith("com.leo.theme")) {
 				dataList.add(app);
-//			}
+			}
 		}
 
 		Collections.sort(dataList, new AppComparator());
@@ -625,8 +625,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 	}
 
 	public boolean tryHideThemeApk(final String pkg) {
-/*		if (pkg.startsWith("com.leo.theme")) {
-			sWorker.postDelayed(new Runnable() {
+//		if (pkg.startsWith("com.leo.theme")) {
+//			sWorker.postDelayed(new Runnable() {
 		if (pkg.startsWith("com.leo.theme")) {
 			sWorker.post(new Runnable() {
 				@Override
@@ -660,8 +660,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			return false; // add app list
 		} else {
 			return false;
-		}*/
-			return false;
+		}
 	}
 
 	public static class AppComparator implements Comparator<BaseInfo> {

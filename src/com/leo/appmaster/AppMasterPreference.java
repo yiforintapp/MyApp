@@ -252,11 +252,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		}
 		mRecommendList = Arrays.asList(mPref.getString(
 				PREF_RECOMMEND_LOCK_LIST, "").split(";"));
-		if (lockList.equals("")) {
-			mLockedAppList = new ArrayList<String>(0);
+		String themeList = mPref.getString(PREF_HIDE_THEME_PKGS, "");
+		if (themeList.equals("")) {
+			mHideThemeList = new ArrayList<String>(0);
 		} else {
-			mHideThemeList = Arrays.asList(mPref.getString(
-					PREF_HIDE_THEME_PKGS, "").split(";"));
+			mHideThemeList = Arrays.asList(themeList.split(";"));
 		}
 		mLockType = mPref.getInt(PREF_LOCK_TYPE, LOCK_TYPE_NONE);
 		mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
