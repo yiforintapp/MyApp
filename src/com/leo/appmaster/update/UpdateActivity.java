@@ -71,7 +71,6 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         // IUIHelper.TYPE_CHECKING);
         mUIType = mUIHelper.getLayoutType();
         mParam = mUIHelper.getLayoutParam();
-        LeoLog.e(TAG, "mUIType=" + mUIType);
         showView(mUIType, mParam);
         super.onResume();
     }

@@ -76,9 +76,7 @@ public class FeedbackHelper {
                         if (httpResponse.getStatusLine().getStatusCode() == 200) { // connection success
                             String strResult = EntityUtils.toString(httpResponse.getEntity());
                             JSONObject object = new JSONObject(strResult);
-//                            Log.i("XXXX", "params=" + params);
                             int code = object.getInt("code");
-//                            Log.i("XXXX", "code=" + code);
                             if (code == 0) { // commit success
                                 AppMasterDBHelper.getInstance().delete(TABLE_NAME, AppMasterDBHelper.COLUMN_ID + "=" + id, null); // delete from db
                                 success = true;

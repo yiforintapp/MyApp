@@ -421,7 +421,6 @@ public class LockPatternView extends ViewGroup {
 			mOnPatternListener.onPatternCellAdded(mPattern);
 		}
 		sendAccessEvent();
-	      Log.i("XXXX", "mPattern.size()="+mPattern.size());
 	        if (mPattern.size() == 1) {
 	            mLastParten = mCurrParten = mPattern.get(0);
 	        } else if (mPattern.size() > 1) {
@@ -1207,7 +1206,6 @@ public class LockPatternView extends ViewGroup {
                                     anim.start();
                                 } else if (mGestureVerticalDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureVerticalDrawable);
-                                    Log.i("XXXX", "vertical");
                                 } else {
                                     
                                 }
@@ -1219,7 +1217,6 @@ public class LockPatternView extends ViewGroup {
                                     anim.start();
                                 } else if (mGestureRightDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureRightDrawable);
-                                    Log.i("XXXX", "right");
                                 } else {
                                     
                                 }
@@ -1231,7 +1228,6 @@ public class LockPatternView extends ViewGroup {
                                     anim.start();
                                 } else if (mGestureLeftDrawable != null) {
                                     mButtonViews[i].setBackgroundDrawable(mGestureLeftDrawable);
-                                    Log.i("XXXX", "left");
                                 } else {
                                     
                                 }
