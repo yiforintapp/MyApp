@@ -234,7 +234,7 @@ public class LockerTheme extends BaseActivity {
 			if (pkgInfos.get(i).getPkg().equals(Constants.GPPACKAGE)) {
 				flagGp = true;
 			}
-			// flagPackge=mThemes.contains(pkgInfos.get(i).getPkg());
+			// flagPackge=mThemes.contains(pkgInfos.get(i).getPkg()); 
 			flagPackge = pkgInfos.get(i).getPkg().startsWith("com.leo.theme");
 			if (flagPackge) {
 				localThemes.add(pkgInfos.get(i).getPkg());
