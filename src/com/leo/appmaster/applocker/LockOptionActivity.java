@@ -79,12 +79,13 @@ public class LockOptionActivity extends PreferenceActivity implements
 		mChangePasswdTip = (Preference) findPreference("set_passwd_tip");
         mySharedPreferences= getSharedPreferences("LockerThemeOption",LockOptionActivity.this.MODE_WORLD_WRITEABLE);           
 
-		if (!mySharedPreferences.getBoolean("themeOption",false)) {
+		if (!mySharedPreferences.getBoolean("themeOption",false) && mComeFrom != FROM_IMAGEHIDE) {
 		    Spanned buttonText = Html.fromHtml(getString(R.string.lockerThemePoit));
             mLockerTheme.setTitle(buttonText);
 		}
 		
 		if (mComeFrom == FROM_IMAGEHIDE) {
+            getPreferenceScreen().removePreference(mLockerTheme);
 			getPreferenceScreen().removePreference(mAutoLock);
 			getPreferenceScreen().removePreference(mLockTime);
 			getPreferenceScreen().removePreference(
