@@ -72,18 +72,14 @@ public class LockerTheme extends Activity {
 		/*
 		 * 注册卸载监听
 		 */
-		/*try {
 			IntentFilter intentFilter = new IntentFilter( );
 			intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
 			intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
+			intentFilter.addDataScheme("package");
 			mLockerThemeReceive=new LockerThemeReceive();
 			registerReceiver( mLockerThemeReceive , intentFilter);
-			LeoLog.i("run","**************IntentFilterSuccess");
-		} catch (Exception e) {
-			LeoLog.i("run","**************IntentFilterFail");
-		}
-		*/
-		mLockerThemeReceive=new LockerThemeReceive(this);
+
+		
 		mLayoutInflater=LayoutInflater.from(this);
 		View dialog=mLayoutInflater.inflate(R.layout. dialog_theme_alarm, null);
 		mApply=(Button)dialog. findViewById(R.id.apply);
@@ -119,7 +115,7 @@ public class LockerTheme extends Activity {
 @Override
 protected void onDestroy() {
 	super.onDestroy();
-	//unregisterReceiver(mLockerThemeReceive);
+	unregisterReceiver(mLockerThemeReceive);
 }
 	/**
 	 * AlarmDialog
@@ -162,6 +158,7 @@ protected void onDestroy() {
 						Uri uri = Uri.fromParts("package", itemTheme.getPackageName(),null);
 						Intent intent = new Intent(Intent.ACTION_DELETE, uri);
 						startActivity(intent);
+						
 						mLockerThemeAdapter.notifyDataSetChanged();
 						dialog.cancel();
 					}
@@ -207,6 +204,7 @@ protected void onDestroy() {
 	@Override
 	protected void onResume() {
 		super.onResume();
+
 	}
 
 	/**
@@ -416,5 +414,30 @@ protected void onDestroy() {
 		defaultTheme.setIsVisibility(Constants.VISIBLE);
 		return defaultTheme;
 	}
-
+	private  class LockerThemeReceive extends BroadcastReceiver{
+		
+		@Override
+		public void onReceive(Context arg0, Intent intent) {
+			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {   
+	            String packageName = intent.getData().getSchemeSpecificPart();
+	        	getTheme();
+				for (int i = 0; i < mThemes.size(); i++) {
+					if (mThemes.get(i).getPackageName().equals(itemTheme.getPackageName())&& !onlineThemes.contains(itemTheme.getPackageName())) {
+						mThemes.remove(i);
+					} else if ((mThemes.get(i).getPackageName().equals(itemTheme.getPackageName()))) {
+					if(packageName.equals(sharedPackageName)){
+						 		AppMasterApplication.setSharedPreferencesValue("com.leo.appmaster");				 		
+						 }
+						mThemes.get(i).setFlagName((String) LockerTheme.this.getResources().getText(R.string.onlinetheme));
+						
+					}
+				}
+	            itemTheme.setFlagName((String)LockerTheme.this.getResources().getText(R.string.onlinetheme));
+				mLockerThemeAdapter.notifyDataSetChanged();
+			}  
+			if(intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)){
+				String packageName=intent.getData().getSchemeSpecificPart();
+			}
+		}
+	}
 }

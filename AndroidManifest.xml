@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
+    android:sharedUserId="leo.appmaster"
     android:versionCode="14"
     android:versionName="@string/version_name" >
 
@@ -214,7 +215,8 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.lockertheme.LockerTheme"
-            android:exported="true" >
+            android:exported="true" 
+            android:screenOrientation="portrait">
             <category android:name="android.intent.category.DEFAULT" />
         </activity>
 
@@ -230,13 +232,6 @@
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="com.leo.appmaster.restart" />
                 <action android:name="com.leo.appmaster.alarmlock" />
-            </intent-filter>
-        </receiver>
-        <!-- LockerTheme -->
-        <receiver android:name="com.leo.appmaster.lockertheme.LockerThemeReceive.java">
-            <intent-filter android:priority="1000" >
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-                <action android:name="android.intent.action.PACKAGE_ADDED"/>
             </intent-filter>
         </receiver>
         

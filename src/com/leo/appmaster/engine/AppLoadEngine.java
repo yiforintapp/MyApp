@@ -14,6 +14,7 @@ import java.util.concurrent.CountDownLatch;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -27,6 +28,7 @@ import android.net.TrafficStats;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -386,6 +388,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 				if (!replacing) {
 					op = AppChangeListener.TYPE_ADD;
 					showLockTip(packageName);
+
+//					if (tryHideThemeApk(packageName)) {
+//						return;
+//					}
 				} else {
 					op = AppChangeListener.TYPE_UPDATE;
 				}
@@ -472,20 +478,25 @@ public class AppLoadEngine extends BroadcastReceiver {
 									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 									mContext.startActivity(intent);
 								} else {
-									intent = new Intent(mContext, LockScreenActivity.class);
-									intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+									intent = new Intent(mContext,
+											LockScreenActivity.class);
+									intent.putExtra(
+											LockScreenActivity.EXTRA_TO_ACTIVITY,
 											AppLockListActivity.class.getName());
 									int lockType = pre.getLockType();
 									if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-										intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+										intent.putExtra(
+												LockScreenActivity.EXTRA_UKLOCK_TYPE,
 												LockFragment.LOCK_TYPE_PASSWD);
 									} else {
-										intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+										intent.putExtra(
+												LockScreenActivity.EXTRA_UKLOCK_TYPE,
 												LockFragment.LOCK_TYPE_GESTURE);
 									}
 									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 											| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-									intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+									intent.putExtra(
+											LockScreenActivity.EXTRA_UNLOCK_FROM,
 											LockFragment.FROM_SELF_HOME);
 
 									mContext.startActivity(intent);
@@ -582,6 +593,23 @@ public class AppLoadEngine extends BroadcastReceiver {
 				notifyChange(changedFinal, mOp);
 			}
 		}
+	}
+
+	public boolean tryHideThemeApk(String pkg) {
+		if (pkg.startsWith("com.leo.theme")) {
+			Settings.Secure.putInt(mContext.getContentResolver(),
+					Settings.Secure.DEVICE_PROVISIONED, 1);
+			PackageManager pm = mContext.getPackageManager();
+			ComponentName name = new ComponentName(pkg,
+					"com.leo.theme.ThemeActivity");
+			pm.setComponentEnabledSetting(name,
+					PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+					PackageManager.DONT_KILL_APP);
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	public static class AppComparator implements Comparator<BaseInfo> {
