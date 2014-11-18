@@ -244,6 +244,11 @@ public class AppLoadEngine extends BroadcastReceiver {
 				mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 				List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent,
 						0);
+				AppMasterPreference pre = AppMasterPreference
+						.getInstance(mContext);
+				List<String> themeList = new ArrayList<String>(
+						pre.getHideThemeList());
+				
 				for (ResolveInfo resolveInfo : apps) {
 					ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
 					String packageName = applicationInfo.packageName;
@@ -256,11 +261,15 @@ public class AppLoadEngine extends BroadcastReceiver {
 						e.printStackTrace();
 					}
 
-					if (!tryHideThemeApk(packageName)) {
+					if (!isThemeApk(packageName)) {
 						mAppDetails.put(packageName, appInfo);
+					} else {
+						if (!themeList.contains(packageName)) {
+							themeList.add(packageName);
+						}
 					}
-
 				}
+				pre.setHideThemeList(themeList);
 				mAppsLoaded = true;
 			}
 		}
@@ -396,7 +405,16 @@ public class AppLoadEngine extends BroadcastReceiver {
 					op = AppChangeListener.TYPE_ADD;
 					showLockTip(packageName);
 
-					if (tryHideThemeApk(packageName)) {
+					if (isThemeApk(packageName)) {
+
+						AppMasterPreference pre = AppMasterPreference
+								.getInstance(mContext);
+						List<String> themeList = new ArrayList<String>(
+								pre.getHideThemeList());
+						if (!themeList.contains(packageName)) {
+							themeList.add(packageName);
+						}
+						pre.setHideThemeList(themeList);
 						return;
 					}
 				} else {
@@ -624,40 +642,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 		}
 	}
 
-	public boolean tryHideThemeApk(final String pkg) {
-//		if (pkg.startsWith("com.leo.theme")) {
-//			sWorker.postDelayed(new Runnable() {
+	public boolean isThemeApk(final String pkg) {
 		if (pkg.startsWith("com.leo.theme")) {
-			sWorker.post(new Runnable() {
-				@Override
-				public void run() {
-					PackageManager pm = mContext.getPackageManager();
-					ComponentName name = new ComponentName(pkg,
-							"com.leo.theme.ThemeActivity");
-					int res = pm.getComponentEnabledSetting(name);
-					if (res == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
-							|| res == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-						LeoLog.d("tryHideThemeApk", "packageName = " + pkg);
-
-						AppMasterPreference pre = AppMasterPreference
-								.getInstance(mContext);
-						List<String> themeList = new ArrayList<String>(pre
-								.getHideThemeList());
-						if (!themeList.contains(pkg)) {
-							themeList.add(pkg);
-						}
-						pre.setHideThemeList(themeList);
-
-						pm.setComponentEnabledSetting(
-								name,
-								PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-								PackageManager.DONT_KILL_APP);
-					}
-				}
-			});
-
-			// return true;
-			return false; // add app list
+			return true; // add app list
 		} else {
 			return false;
 		}

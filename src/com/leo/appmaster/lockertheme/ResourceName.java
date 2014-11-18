@@ -18,6 +18,7 @@ public class ResourceName {
     public static final String THEME_DIGITAL_7 = "digital_7_normal";
     public static final String THEME_DIGITAL_8 = "digital_8_normal";
     public static final String THEME_DIGITAL_9 = "digital_9_normal";
+    public static final String THEME_DELETE = "delete_normal";
     public static final String THEME_PASSWD_NORMAL = "password_displayed_normal";
     public static final String THEME_PASSWD_ACTIVE= "password_displayed_active";
     
