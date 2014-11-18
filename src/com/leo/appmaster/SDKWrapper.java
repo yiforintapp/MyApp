@@ -16,9 +16,19 @@ import com.leoers.leoanalytics.LeoStat;
 
 public class SDKWrapper {
 
-    private final static String CHANNEL_CODE_FOR_91 = "0011a";
+    /*
+     * 这次打开百度统计的渠道： 
+     * 0000a,官网 
+     * 0002a,mobango 
+     * 0010a,uc 
+     * 0068a,帕尔加特-coo
+     * 0069a,帕尔加特-push
+     */
+    private final static String[] CHANNELS_NEED_MTJ = {
+            "0000a", "0002a", "0010a","0068a","0069a"
+    };
 
-    private static boolean sChannelFor91 = false;
+    private static boolean isMTJEnable = false;
 
     /**
      * initial leo analytics and flurry SDK, this will changed in the future.
@@ -29,14 +39,18 @@ public class SDKWrapper {
     public static void iniSDK(Context ctx) {
         iniLeoSdk(ctx.getApplicationContext());
         iniFlurry(ctx.getApplicationContext());
-        if (ctx.getString(R.string.channel_code).equalsIgnoreCase(CHANNEL_CODE_FOR_91)) {
-            sChannelFor91 = true;
-            iniBaidu(ctx);
+        isMTJEnable = false;
+        for (String channel : CHANNELS_NEED_MTJ) {
+            if (ctx.getString(R.string.channel_code).equalsIgnoreCase(channel)) {
+                isMTJEnable = true;
+                iniBaidu(ctx);
+                break;
+            }
         }
     }
 
     public static boolean isChannelFor91() {
-        return sChannelFor91;
+        return isMTJEnable;
     }
 
     /**
@@ -54,7 +68,7 @@ public class SDKWrapper {
         Map<String, String> params = new HashMap<String, String>();
         params.put("description", description);
         FlurryAgent.logEvent(id, params);
-        if (sChannelFor91) {
+        if (isMTJEnable) {
             // baidu
             StatService.onEvent(ctx, id, description);
         }
@@ -90,7 +104,7 @@ public class SDKWrapper {
         StatService.setSendLogStrategy(ctx, SendStrategyEnum.APP_START, 1, false);
         StatService.setLogSenderDelayed(5);
         // TODO: disable internal log when release
-        // StatService.setDebugOn(true);
+//         StatService.setDebugOn(true);
     }
 
 }
