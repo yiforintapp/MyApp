@@ -253,7 +253,11 @@ public class AppLoadEngine extends BroadcastReceiver {
 					} catch (NameNotFoundException e) {
 						e.printStackTrace();
 					}
-					mAppDetails.put(packageName, appInfo);
+
+					if (!tryHideThemeApk(packageName)) {
+						mAppDetails.put(packageName, appInfo);
+					}
+
 				}
 				mAppsLoaded = true;
 			}
@@ -261,7 +265,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 	}
 
 	private void loadAppInfoOfPackage(String packageName,
-			ApplicationInfo applicationInfo, AppDetailInfo appInfo) { 
+			ApplicationInfo applicationInfo, AppDetailInfo appInfo) {
 		// first fill base info
 		try {
 			PackageInfo pInfo = mPm.getPackageInfo(packageName, 0);
