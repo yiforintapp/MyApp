@@ -202,7 +202,7 @@
     <!-- 隐私策略 -->
     <string name="protocolBar">隐私保护协议</string>
     <string name="lock_more">加锁更多</string>
-    <string name="lock">Lock</string>
+    <string name="lock">加锁</string>
     <string name="det_change_lock_time">发现您的应用被频繁锁定，是否更改锁定时间？</string>
 
     <string-array name="det_lock_time_items">

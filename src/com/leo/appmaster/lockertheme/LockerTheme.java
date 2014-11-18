@@ -205,7 +205,6 @@ public class LockerTheme extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 	}
 
 	@Override
