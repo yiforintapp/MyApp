@@ -133,7 +133,7 @@
                     android:layout_height="@dimen/digital_item_height"
 
                     android:gravity="center"
-                    android:background="@drawable/digital_bg_normal" />
+                    android:src="@drawable/digital_bg_normal" />
                 <ImageView
                     android:id="@+id/tv_1_top"
                     android:layout_width="@dimen/digital_item_width"
@@ -153,7 +153,7 @@
                     android:id="@+id/tv_2_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:background="@drawable/digital_bg_normal"
+                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 <ImageView
@@ -172,7 +172,7 @@
                     android:id="@+id/tv_3_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:background="@drawable/digital_bg_normal"
+                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center"/>
 
@@ -202,7 +202,7 @@
                     android:layout_height="@dimen/digital_item_height"
                     android:clickable="true"
                     android:gravity="center"
-                    android:background="@drawable/digital_bg_normal" />
+                    android:src="@drawable/digital_bg_normal" />
                 
                 <ImageView
                     android:id="@+id/tv_4_top"
@@ -221,7 +221,7 @@
                     android:id="@+id/tv_5_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:background="@drawable/digital_bg_normal"
+                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 
@@ -240,7 +240,7 @@
                     android:id="@+id/tv_6_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:background="@drawable/digital_bg_normal"
+                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 <ImageView
@@ -268,7 +268,7 @@
                     android:layout_height="@dimen/digital_item_height"
                     android:clickable="true"
                     android:gravity="center"
-                    android:background="@drawable/digital_bg_normal" />
+                    android:src="@drawable/digital_bg_normal" />
 
                 <ImageView
                     android:id="@+id/tv_7_top"
@@ -286,7 +286,7 @@
                     android:id="@+id/tv_8_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:background="@drawable/digital_bg_normal"
+                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 <ImageView
@@ -304,7 +304,7 @@
                     android:id="@+id/tv_9_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:background="@drawable/digital_bg_normal"
+                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 
@@ -343,7 +343,7 @@
                     android:id="@+id/tv_0_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:background="@drawable/digital_bg_normal"
+                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
                     android:gravity="center" />
                 

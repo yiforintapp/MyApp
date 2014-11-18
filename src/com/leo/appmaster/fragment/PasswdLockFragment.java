@@ -53,7 +53,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
     private int mButtonState = BUTTON_STATE_NORMAL;
     
-    private String mThemepkgName = AppMasterApplication.getSelectedTheme();;
+    private String mThemepkgName = AppMasterApplication.getSelectedTheme();
 	/*---------------for theme----------------*/
     private Resources mThemeRes;
     private int mDigitalPressAnimRes = 0;
@@ -65,6 +65,12 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     
     private Drawable mPasswdNormalDrawable;
     private Drawable mPasswdActiveDrawable;
+    
+    private Drawable[] mPasswdNormalDrawables = new Drawable[4];
+    private Drawable[] mPasswdActiveDrawables = new Drawable[4];
+    
+    private Drawable[] mDigitalBgNormalDrawables = new  Drawable[10];
+    private Drawable[] mDigitalBgActiveDrawables = new  Drawable[10];
     /*-------------------end-------------------*/
     
 	@Override
@@ -174,10 +180,30 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 	}
 
 	private void initPasswdIcon() {
-        mTvPasswd1.setBackgroundDrawable(mPasswdNormalDrawable);
-        mTvPasswd2.setBackgroundDrawable(mPasswdNormalDrawable);
-        mTvPasswd3.setBackgroundDrawable(mPasswdNormalDrawable);
-        mTvPasswd4.setBackgroundDrawable(mPasswdNormalDrawable);
+//        mTvPasswd1.setBackgroundDrawable(mPasswdNormalDrawable);
+//        mTvPasswd2.setBackgroundDrawable(mPasswdNormalDrawable);
+//        mTvPasswd3.setBackgroundDrawable(mPasswdNormalDrawable);
+//        mTvPasswd4.setBackgroundDrawable(mPasswdNormalDrawable);
+        if(mPasswdNormalDrawables[0] != null) {
+            mTvPasswd1.setBackgroundDrawable(mPasswdNormalDrawables[0]);
+        } else {
+              mTvPasswd1.setBackgroundDrawable(mPasswdNormalDrawable);
+        }
+        if(mPasswdNormalDrawables[1] != null) {
+            mTvPasswd2.setBackgroundDrawable(mPasswdNormalDrawables[1]);
+        } else {
+              mTvPasswd2.setBackgroundDrawable(mPasswdNormalDrawable);
+        }
+        if(mPasswdNormalDrawables[2] != null) {
+            mTvPasswd3.setBackgroundDrawable(mPasswdNormalDrawables[2]);
+        } else {
+              mTvPasswd3.setBackgroundDrawable(mPasswdNormalDrawable);
+        }
+        if(mPasswdNormalDrawables[3] != null) {
+            mTvPasswd4.setBackgroundDrawable(mPasswdNormalDrawables[3]);
+        } else {
+              mTvPasswd4.setBackgroundDrawable(mPasswdNormalDrawable);
+        }
 	}
 	
 	private void initAnimResource() {
@@ -205,16 +231,18 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
            
            if (mDigitalBgNormalRes > 0) {
                Drawable normalDrawable = mThemeRes.getDrawable(mDigitalBgNormalRes);
-             tv1Bottom.setBackgroundDrawable(normalDrawable);
-             tv2Bottom.setBackgroundDrawable(normalDrawable);
-             tv3Bottom.setBackgroundDrawable(normalDrawable);
-             tv4Bottom.setBackgroundDrawable(normalDrawable);
-             tv5Bottom.setBackgroundDrawable(normalDrawable);
-             tv6Bottom.setBackgroundDrawable(normalDrawable);
-             tv7Bottom.setBackgroundDrawable(normalDrawable);
-             tv8Bottom.setBackgroundDrawable(normalDrawable);
-             tv9Bottom.setBackgroundDrawable(normalDrawable);
-             tv0Bottom.setBackgroundDrawable(normalDrawable);
+             tv1Bottom.setImageDrawable(normalDrawable);
+             tv2Bottom.setImageDrawable(normalDrawable);
+             tv3Bottom.setImageDrawable(normalDrawable);
+             tv4Bottom.setImageDrawable(normalDrawable);
+             tv5Bottom.setImageDrawable(normalDrawable);
+             tv6Bottom.setImageDrawable(normalDrawable);
+             tv7Bottom.setImageDrawable(normalDrawable);
+             tv8Bottom.setImageDrawable(normalDrawable);
+             tv9Bottom.setImageDrawable(normalDrawable);
+             tv0Bottom.setImageDrawable(normalDrawable);
+           } else if (ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_0_bg_normal") > 0){
+               getButtonMulticRes(themeContext);
            }
            
            int digital = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_DIGITAL_0);
@@ -252,17 +280,84 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
            int passwordNormalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_PASSWD_NORMAL);
            if (passwordNormalRes > 0) {
                mPasswdNormalDrawable = mThemeRes.getDrawable(passwordNormalRes);
+           } else {
+               int res = 0;
+               for (int i = 0; i < mPasswdNormalDrawables.length; i++) {
+                    res = ThemeUtils.getValueByResourceName(themeContext, "drawable", "password_displayed_normal_"+(i+1));
+                    if(res > 0) {
+                        mPasswdNormalDrawables[i] = mThemeRes.getDrawable(res);
+                    }
+               }
            }
            int passwordActiveRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_PASSWD_ACTIVE);
            if (passwordActiveRes > 0) {
                mPasswdActiveDrawable = mThemeRes.getDrawable(passwordActiveRes);
+           } else {
+               int res = 0;
+               for (int i = 0; i < mPasswdActiveDrawables.length; i++) {
+                   res = ThemeUtils.getValueByResourceName(themeContext, "drawable", "password_displayed_active_"+(i+1));
+                   if(res > 0) {
+                       mPasswdActiveDrawables[i] = mThemeRes.getDrawable(res);
+                   }
+               }
            }
        }
 
 	}
 	
+	private void getButtonMulticRes(Context themeContext){
+	    int length = mDigitalBgNormalDrawables.length;
+	    int buttonNormalRes;
+	    for (int i = 0; i < length; i++) {
+	        buttonNormalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_"+i+"_bg_normal");
+	           if (buttonNormalRes > 0) {
+	               mDigitalBgNormalDrawables[i] = mThemeRes.getDrawable(buttonNormalRes);
+	           }
+        }
+
+	    resetDigitalByDrawables();
+
+        for (int i = 0; i < length; i++) {
+            buttonNormalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "digital_"+i+"_bg_active");
+               if (buttonNormalRes > 0) {
+                   mDigitalBgActiveDrawables[i] = mThemeRes.getDrawable(buttonNormalRes);
+               }
+        }
+        
+	}
 	
-	
+	private void resetDigitalByDrawables() {
+	       if (mDigitalBgNormalDrawables[0] != null) {
+	            tv0Bottom.setImageDrawable(mDigitalBgNormalDrawables[0]);
+	        }
+	        if (mDigitalBgNormalDrawables[1] != null) {
+	            tv1Bottom.setImageDrawable(mDigitalBgNormalDrawables[1]);
+	        }
+	        if (mDigitalBgNormalDrawables[2] != null) {
+	            tv2Bottom.setImageDrawable(mDigitalBgNormalDrawables[2]);
+	        }
+	        if (mDigitalBgNormalDrawables[3] != null) {
+	            tv3Bottom.setImageDrawable(mDigitalBgNormalDrawables[3]);
+	        }
+	        if (mDigitalBgNormalDrawables[4] != null) {
+	            tv4Bottom.setImageDrawable(mDigitalBgNormalDrawables[4]);
+	        }
+	        if (mDigitalBgNormalDrawables[5] != null) {
+	            tv5Bottom.setImageDrawable(mDigitalBgNormalDrawables[5]);
+	        }
+	        if (mDigitalBgNormalDrawables[6] != null) {
+	            tv6Bottom.setImageDrawable(mDigitalBgNormalDrawables[6]);
+	        }
+	        if (mDigitalBgNormalDrawables[7] != null) {
+	            tv7Bottom.setImageDrawable(mDigitalBgNormalDrawables[7]);
+	        }
+	        if (mDigitalBgNormalDrawables[8] != null) {
+	            tv8Bottom.setImageDrawable(mDigitalBgNormalDrawables[8]);
+	        }
+	        if (mDigitalBgNormalDrawables[9] != null) {
+	            tv9Bottom.setImageDrawable(mDigitalBgNormalDrawables[9]);
+	        }
+	}
 	
     @Override
     public void onPause() {
@@ -272,16 +367,16 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 //            }
             if (mDigitalBgNormalRes > 0) {
                 Drawable normalDrawable = mThemeRes.getDrawable(mDigitalBgNormalRes);
-              tv1Bottom.setBackgroundDrawable(normalDrawable);
-              tv2Bottom.setBackgroundDrawable(normalDrawable);
-              tv3Bottom.setBackgroundDrawable(normalDrawable);
-              tv4Bottom.setBackgroundDrawable(normalDrawable);
-              tv5Bottom.setBackgroundDrawable(normalDrawable);
-              tv6Bottom.setBackgroundDrawable(normalDrawable);
-              tv7Bottom.setBackgroundDrawable(normalDrawable);
-              tv8Bottom.setBackgroundDrawable(normalDrawable);
-              tv9Bottom.setBackgroundDrawable(normalDrawable);
-              tv0Bottom.setBackgroundDrawable(normalDrawable);
+              tv1Bottom.setImageDrawable(normalDrawable);
+              tv2Bottom.setImageDrawable(normalDrawable);
+              tv3Bottom.setImageDrawable(normalDrawable);
+              tv4Bottom.setImageDrawable(normalDrawable);
+              tv5Bottom.setImageDrawable(normalDrawable);
+              tv6Bottom.setImageDrawable(normalDrawable);
+              tv7Bottom.setImageDrawable(normalDrawable);
+              tv8Bottom.setImageDrawable(normalDrawable);
+              tv9Bottom.setImageDrawable(normalDrawable);
+              tv0Bottom.setImageDrawable(normalDrawable);
             }
         } else {
             tv1Bottom.setImageResource(R.drawable.digital_bg_normal);
@@ -379,15 +474,15 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 			@Override
 			public void run() {
 			    mTempPasswd = "";
-				mTvPasswd1.setBackgroundDrawable(mPasswdNormalDrawable);
+//				mTvPasswd1.setBackgroundDrawable(mPasswdNormalDrawable);
 				mPasswds[0] = "";
-				mTvPasswd2.setBackgroundDrawable(mPasswdNormalDrawable);
+//				mTvPasswd2.setBackgroundDrawable(mPasswdNormalDrawable);
                 mPasswds[1] = "";
-				mTvPasswd3.setBackgroundDrawable(mPasswdNormalDrawable);
+//				mTvPasswd3.setBackgroundDrawable(mPasswdNormalDrawable);
                 mPasswds[2] = "";
-				mTvPasswd4.setBackgroundDrawable(mPasswdNormalDrawable);
+//				mTvPasswd4.setBackgroundDrawable(mPasswdNormalDrawable);
                 mPasswds[3] = "";
-				
+                initPasswdIcon();
 			}
 		}, 300);
 	}
@@ -395,19 +490,35 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 	private void deletePasswd() {
 		if (!mPasswds[3].equals("")) {
 		    mPasswds[3] = "";
-			mTvPasswd4.setBackgroundDrawable(mPasswdNormalDrawable);
+	        if(mPasswdNormalDrawables[3] != null) {
+	            mTvPasswd4.setBackgroundDrawable(mPasswdNormalDrawables[3]);
+	        } else {
+	              mTvPasswd4.setBackgroundDrawable(mPasswdNormalDrawable);
+	        }
 			mTempPasswd = mTempPasswd.substring(0, mTempPasswd.length() - 1);
 		} else if (!mPasswds[2].equals("")) {
 		    mPasswds[2] = "";
-			mTvPasswd3.setBackgroundDrawable(mPasswdNormalDrawable);
+	        if(mPasswdNormalDrawables[2] != null) {
+	            mTvPasswd3.setBackgroundDrawable(mPasswdNormalDrawables[2]);
+	        } else {
+	              mTvPasswd3.setBackgroundDrawable(mPasswdNormalDrawable);
+	        }
 			mTempPasswd = mTempPasswd.substring(0, mTempPasswd.length() - 1);
 		} else if (!mPasswds[1].equals("")) {
 		    mPasswds[1] = "";
-			mTvPasswd2.setBackgroundDrawable(mPasswdNormalDrawable);
+            if(mPasswdNormalDrawables[1] != null) {
+                mTvPasswd2.setBackgroundDrawable(mPasswdNormalDrawables[1]);
+            } else {
+                  mTvPasswd2.setBackgroundDrawable(mPasswdNormalDrawable);
+            }
 			mTempPasswd = mTempPasswd.substring(0, mTempPasswd.length() - 1);
 		} else if (!mPasswds[0].equals("")) {
             mPasswds[0] = "";
-            mTvPasswd1.setBackgroundDrawable(mPasswdNormalDrawable);
+            if(mPasswdNormalDrawables[0] != null) {
+                mTvPasswd1.setBackgroundDrawable(mPasswdNormalDrawables[0]);
+            } else {
+                  mTvPasswd1.setBackgroundDrawable(mPasswdNormalDrawable);
+            }
 			iv_delete.setEnabled(false);
 			mTempPasswd = "";
 		}
@@ -417,20 +528,36 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 	private void inputPasswd(String s) {
 		if (mPasswds[0].equals("")) {
 		    mPasswds[0] = "*";
-			mTvPasswd1.setBackgroundDrawable(mPasswdActiveDrawable);
+		    if(mPasswdActiveDrawables[0] != null) {
+                mTvPasswd1.setBackgroundDrawable(mPasswdActiveDrawables[0]);
+		    } else {
+		          mTvPasswd1.setBackgroundDrawable(mPasswdActiveDrawable);
+		    }
 			iv_delete.setEnabled(true);
 			mTempPasswd = s;
 		} else if (mPasswds[1].equals("")) {
 	          mPasswds[1] = "*";
-			mTvPasswd2.setBackgroundDrawable(mPasswdActiveDrawable);
+	          if(mPasswdActiveDrawables[1] != null) {
+	                mTvPasswd2.setBackgroundDrawable(mPasswdActiveDrawables[1]);
+	            } else {
+	                mTvPasswd2.setBackgroundDrawable(mPasswdActiveDrawable);
+	            }
 			mTempPasswd = mTempPasswd + s;
 		} else if (mPasswds[2].equals("")) {
 	          mPasswds[2] = "*";
-			mTvPasswd3.setBackgroundDrawable(mPasswdActiveDrawable);
+	          if(mPasswdActiveDrawables[2] != null) {
+	              mTvPasswd3.setBackgroundDrawable(mPasswdActiveDrawables[2]);
+	          } else {
+	              mTvPasswd3.setBackgroundDrawable(mPasswdActiveDrawable);
+	          }
 			mTempPasswd = mTempPasswd + s;
 		} else if (mPasswds[3].equals("")) {
 	        mPasswds[3] = "*";
-			mTvPasswd4.setBackgroundDrawable(mPasswdActiveDrawable);
+	        if(mPasswdActiveDrawables[3] != null) {
+	            mTvPasswd4.setBackgroundDrawable(mPasswdActiveDrawables[3]);
+	        } else {
+	            mTvPasswd4.setBackgroundDrawable(mPasswdActiveDrawable);
+	        }
 			mTempPasswd = mTempPasswd + s;
 
 			checkPasswd();
@@ -471,12 +598,13 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private void changeDigitalResourceByThem(final View view, int state) {
         AnimationDrawable animDrawable = null;
         Drawable activeDrawable = null;
+        Drawable normalDrawable = null;
         ImageView bottomView;
         
         if (mThemeRes != null) {
             if (mDigitalPressAnimRes > 0) {
                 animDrawable = (AnimationDrawable)mThemeRes.getDrawable(mDigitalPressAnimRes);
-            } else {
+            } else if (mDigitalBgActiveRes > 0) {
                 activeDrawable = mThemeRes.getDrawable(mDigitalBgActiveRes);
             }
         }
@@ -484,36 +612,102 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         switch (view.getId()) {
         case R.id.tv_1_top:
             bottomView = tv1Bottom;
+            if (mDigitalBgActiveDrawables[1] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[1];
+            }
+            if (mDigitalBgNormalDrawables[1] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[1];
+            }
             break;
         case R.id.tv_2_top:
             bottomView = tv2Bottom;
+            if (mDigitalBgActiveDrawables[2] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[2];
+            }
+            if (mDigitalBgNormalDrawables[2] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[2];
+            }
             break;
         case R.id.tv_3_top:
             bottomView = tv3Bottom;
+            if (mDigitalBgActiveDrawables[3] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[3];
+            }
+            if (mDigitalBgNormalDrawables[3] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[3];
+            }
             break;
         case R.id.tv_4_top:
             bottomView = tv4Bottom;
+            if (mDigitalBgActiveDrawables[4] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[4];
+            }
+            if (mDigitalBgNormalDrawables[4] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[4];
+            }
             break;
         case R.id.tv_5_top:
             bottomView = tv5Bottom;
+            if (mDigitalBgActiveDrawables[5] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[5];
+            }
+            if (mDigitalBgNormalDrawables[5] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[5];
+            }
             break;
         case R.id.tv_6_top:
             bottomView = tv6Bottom;
+            if (mDigitalBgActiveDrawables[6] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[6];
+            }
+            if (mDigitalBgNormalDrawables[6] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[6];
+            }
             break;
         case R.id.tv_7_top:
             bottomView = tv7Bottom;
+            if (mDigitalBgActiveDrawables[7] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[7];
+            }
+            if (mDigitalBgNormalDrawables[7] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[7];
+            }
             break;
         case R.id.tv_8_top:
             bottomView = tv8Bottom;
+            if (mDigitalBgActiveDrawables[8] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[8];
+            }
+            if (mDigitalBgNormalDrawables[8] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[8];
+            }
             break;
         case R.id.tv_9_top:
             bottomView = tv9Bottom;
+            if (mDigitalBgActiveDrawables[9] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[9];
+            }
+            if (mDigitalBgNormalDrawables[9] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[9];
+            }
             break;
         case R.id.tv_0_top:
             bottomView = tv0Bottom;
+            if (mDigitalBgActiveDrawables[0] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[0];
+            }
+            if (mDigitalBgNormalDrawables[0] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[0];
+            }
             break;
         default:
             bottomView = tv0Bottom;
+            if (mDigitalBgActiveDrawables[0] != null) {
+                activeDrawable = mDigitalBgActiveDrawables[0];
+            }
+            if (mDigitalBgNormalDrawables[0] != null) {
+                normalDrawable = mDigitalBgNormalDrawables[0];
+            }
             return;
         }
         if (state == BUTTON_STATE_PRESS) {
@@ -534,10 +728,12 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 }
             }
         } else if (state == BUTTON_STATE_NORMAL) {
-            AnimationDrawable digitalDrawable = (AnimationDrawable)bottomView.getDrawable();
-            if (mDigitalBgNormalRes > 0 && digitalDrawable == null) {
+            Drawable digitalDrawable =bottomView.getDrawable();
+            if (mDigitalBgNormalRes > 0 && !(digitalDrawable instanceof AnimationDrawable)) {
                 bottomView.setImageDrawable(mThemeRes.getDrawable(mDigitalBgNormalRes));
-            }            
+            } else if (mDigitalBgNormalRes <= 0 && !(digitalDrawable instanceof AnimationDrawable)) {
+                bottomView.setImageDrawable(normalDrawable);
+            }
 //            view.setBackgroundResource(R.drawable.digital_bg_normal);
         }
     }
@@ -580,9 +776,9 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             return;
         }
         if (state == BUTTON_STATE_PRESS) {
-           bottomView.setBackgroundResource(R.drawable.digital_bg_active);
+           bottomView.setImageResource(R.drawable.digital_bg_active);
         } else if (state == BUTTON_STATE_NORMAL) {
-           bottomView.setBackgroundResource(R.drawable.digital_bg_normal);
+           bottomView.setImageResource(R.drawable.digital_bg_normal);
         }
     }
     
