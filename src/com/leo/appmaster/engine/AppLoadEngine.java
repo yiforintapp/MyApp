@@ -261,7 +261,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 	}
 
 	private void loadAppInfoOfPackage(String packageName,
-			ApplicationInfo applicationInfo, AppDetailInfo appInfo) {
+			ApplicationInfo applicationInfo, AppDetailInfo appInfo) { 
 		// first fill base info
 		try {
 			PackageInfo pInfo = mPm.getPackageInfo(packageName, 0);
@@ -604,8 +604,6 @@ public class AppLoadEngine extends BroadcastReceiver {
 			sWorker.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					Settings.Secure.putInt(mContext.getContentResolver(),
-							Settings.Secure.DEVICE_PROVISIONED, 1);
 					PackageManager pm = mContext.getPackageManager();
 					ComponentName name = new ComponentName(pkg,
 							"com.leo.theme.ThemeActivity");
