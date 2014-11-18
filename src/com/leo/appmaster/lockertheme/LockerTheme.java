@@ -25,6 +25,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.fragment.LockFragment;
@@ -33,6 +34,7 @@ import com.leo.appmaster.model.AppLockerThemeBean;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leoers.leoanalytics.LeoStat;
 
 public class LockerTheme extends BaseActivity {
 	private ListView listTheme;
@@ -184,6 +186,7 @@ public class LockerTheme extends BaseActivity {
 						itemTheme.setIsVisibility(Constants.GONE);
 					}
 
+					SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_apply", itemTheme.getPackageName());
 					mLockerThemeAdapter.notifyDataSetChanged();
 					dialog.cancel();
 				} else if (which == 1) {
@@ -331,6 +334,8 @@ public class LockerTheme extends BaseActivity {
 				long arg3) {
 			itemTheme = (AppLockerThemeBean) arg0.getItemAtPosition(arg2);
 			String[] urls = itemTheme.getUrl();
+			 /* user click the theme */
+            SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice", itemTheme.getPackageName());
 			if (mThemes
 					.get(arg2)
 					.getFlagName()

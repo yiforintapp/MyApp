@@ -34,6 +34,7 @@ import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
@@ -48,6 +49,7 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
+import com.leoers.leoanalytics.LeoStat;
 
 public class AppLoadEngine extends BroadcastReceiver {
 	/**
@@ -548,6 +550,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 									mContext.startActivity(intent);
 								}
+								SDKWrapper.addEvent(mContext, LeoStat.P1, "lock_enter", "sug_lock_more");
 
 							} else if (which == 2) {
 

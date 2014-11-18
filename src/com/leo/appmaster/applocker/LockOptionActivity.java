@@ -261,6 +261,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 			Intent intent=new Intent(LockOptionActivity.this,LockerTheme.class);
 			intent.putExtra("need_lock", true);
 			startActivityForResult(intent, 0);
+			SDKWrapper.addEvent(LockOptionActivity.this, LeoStat.P1, "theme_enter", "setting");
 		}
 
 		return false;
