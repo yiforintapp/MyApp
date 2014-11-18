@@ -375,7 +375,7 @@ getOnlineThemePackage();
 				R.string.orangeTheme));
 		String[] orangeUrl = new String[2];
 		orangeUrl[1] = "http://testd.leostat.com/am/orange.apk";
-		orangeUrl[0] = "com.mah.calldetailscreen";
+		orangeUrl[0] = "com.leo.theme.orange";
 		orangeTheme.setUrl(orangeUrl);
 		orangeTheme.setPackageName("com.leo.theme.orange");
 		orangeTheme.setFlagName((String) this.getResources().getText(
@@ -411,7 +411,7 @@ getOnlineThemePackage();
 	private AppLockerThemeBean getDefaultData() {
 		AppLockerThemeBean defaultTheme = new AppLockerThemeBean();
 		defaultTheme.setThemeImage(this.getResources().getDrawable(
-				R.drawable.app_list_bg));
+				R.drawable.default_theme));
 		defaultTheme.setThemeName((String) this.getResources().getText(
 				R.string.ParadoxTheme));
 		String[] defaultUrl = new String[2];
