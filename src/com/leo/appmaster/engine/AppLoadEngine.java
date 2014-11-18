@@ -386,6 +386,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 				if (!replacing) {
 					op = AppChangeListener.TYPE_REMOVE;
 					checkUnlockWhenRemove(packageName);
+					checkThemeWhenRemove(packageName);
 				}
 				// else, we are replacing the package, so a PACKAGE_ADDED will
 				// be sent
@@ -426,6 +427,24 @@ public class AppLoadEngine extends BroadcastReceiver {
 			updateRecommendLockList(intent
 					.getStringArrayListExtra(Intent.EXTRA_PACKAGES));
 		}
+	}
+
+	private void checkThemeWhenRemove(final String packageName) {
+		sWorker.post(new Runnable() {
+			@Override
+			public void run() {
+				AppMasterPreference pre = AppMasterPreference
+						.getInstance(mContext);
+				List<String> themeList = new ArrayList<String>(pre
+						.getHideThemeList());
+				if (themeList.contains(packageName)) {
+					LeoLog.d("checkThemeWhenRemove", "packageName = "
+							+ packageName);
+					themeList.remove(packageName);
+				}
+				pre.setHideThemeList(themeList);
+			}
+		});
 	}
 
 	private void checkUnlockWhenRemove(final String packageName) {
@@ -616,6 +635,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 					int res = pm.getComponentEnabledSetting(name);
 					if (res == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
 							|| res == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+						LeoLog.d("tryHideThemeApk", "packageName = " + pkg);
 						pm.setComponentEnabledSetting(
 								name,
 								PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
