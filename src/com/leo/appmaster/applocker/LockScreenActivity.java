@@ -195,7 +195,7 @@ public class LockScreenActivity extends FragmentActivity implements
 
 	@Override
 	protected void onDestroy() {
-		LeoLog.e("LockScreenActivity", "onDestroy");
+		LeoLog.d("LockScreenActivity", "onDestroy");
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		if (mAppBaseInfoLayoutbg != null) {
@@ -206,9 +206,9 @@ public class LockScreenActivity extends FragmentActivity implements
 
 	@Override
 	protected void onStop() {
-		super.onStop();
 		LeoLog.d("LockScreenActivity", "onStop" + "      mFromType = "
 				+ mFromType);
+		super.onStop();
 		if (mFromType == LockFragment.FROM_OTHER) {
 			if (!AppMasterPreference.getInstance(this).isAutoLock() || toTheme) {
 				toTheme = false;

@@ -131,13 +131,11 @@ public class LockerTheme extends BaseActivity {
 
 	@Override
 	protected void onNewIntent(Intent intent) {
-		LeoLog.e("xxxx", "onNewIntent");
 		super.onNewIntent(intent);
 	}
 
 	@Override
 	public void onBackPressed() {
-		LeoLog.e("xxxx", "onNewIntent");
 		super.onBackPressed();
 	}
 
@@ -214,7 +212,6 @@ public class LockerTheme extends BaseActivity {
 
     @Override
     public void onActivityRestart() {
-        LeoLog.e("ImageHideMainActivity", "onActivityRestart");
         if (mNeedLock) {
             if (mShouldLockOnRestart) {
                 showLockPage();
@@ -225,7 +222,6 @@ public class LockerTheme extends BaseActivity {
     }
 
     private void showLockPage() {
-        LeoLog.e("ImageHideMainActivity", "showLockPage");
         Intent intent = new Intent(this, LockScreenActivity.class);
         int lockType = AppMasterPreference.getInstance(this).getLockType();
         if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
@@ -244,8 +240,6 @@ public class LockerTheme extends BaseActivity {
 
     @Override
     public void onActivityResault(int requestCode, int resultCode) {
-        LeoLog.e("AppLockListActivity", "onActivityResault: requestCode = "
-                + requestCode + "    resultCode = " + resultCode);
             mShouldLockOnRestart = false;
     }
 	

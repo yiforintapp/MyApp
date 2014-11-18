@@ -54,7 +54,7 @@ public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		LeoLog.e("LockOptionActivity", "onActivityResault: requestCode = "
+		LeoLog.d("LockOptionActivity", "onActivityResault: requestCode = "
 				+ requestCode + "    resultCode = " + resultCode);
 		mShouldLockOnRestart = false;
 		super.onActivityResult(requestCode, resultCode, data);

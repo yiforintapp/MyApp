@@ -378,13 +378,11 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     
     @Override
     public void onActivityCreate() {
-        LeoLog.e("ImageHideMainActivity", "onActivityCreate");
         // showLockPage();
     }
 
     @Override
     public void onActivityRestart() {
-        LeoLog.e("ImageHideMainActivity", "onActivityRestart");
         if (mShouldLockOnRestart) {
             showLockPage();
         } else {
@@ -393,7 +391,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     }
 
     private void showLockPage() {
-        LeoLog.e("ImageHideMainActivity", "showLockPage");
         Intent intent = new Intent(this, LockScreenActivity.class);
         int lockType = AppMasterPreference.getInstance(this).getLockType();
         if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
@@ -412,8 +409,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
     @Override
     public void onActivityResault(int requestCode, int resultCode) {
-        LeoLog.e("AppLockListActivity", "onActivityResault: requestCode = "
-                + requestCode + "    resultCode = " + resultCode);
             mShouldLockOnRestart = false;
     }
     
