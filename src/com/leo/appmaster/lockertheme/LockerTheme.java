@@ -3,7 +3,6 @@ package com.leo.appmaster.lockertheme;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,7 +20,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -30,11 +27,8 @@ import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.constants.Constants;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.lockertheme.LockerThemeChanageDialog.OnDiaogClickListener;
-import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.AppLockerThemeBean;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppwallHttpUtil;
@@ -383,14 +377,44 @@ public class LockerTheme extends BaseActivity {
 		/*
 		 * ------------------------------------------构造数据------------------------
 		 */
+		AppLockerThemeBean christmasTheme = new AppLockerThemeBean();
+		christmasTheme.setThemeImage(this.getResources().getDrawable(
+				R.drawable.christmas_theme));
+		christmasTheme.setThemeName((String) this.getResources().getText(
+				R.string.christmas_theme));
+		String[] christmasUrl = new String[2];
+		christmasUrl[1] = "http://testd.leostat.com/am/contradict.apk";
+		christmasUrl[0] = "com.leo.theme.christmas";
+		christmasTheme.setUrl(christmasUrl);
+		christmasTheme.setPackageName("com.leo.theme.christmas");
+		christmasTheme.setFlagName((String) this.getResources().getText(
+				R.string.onlinetheme));
+		christmasTheme.setIsVisibility(Constants.VISIBLE);
+		mThemes.add(christmasTheme);
 		// Theme2
+		AppLockerThemeBean moonnightTheme = new AppLockerThemeBean();
+		moonnightTheme.setThemeImage(this.getResources().getDrawable(
+				R.drawable.moonnight_theme));
+		moonnightTheme.setThemeName((String) this.getResources().getText(
+				R.string.moonightTheme));
+		String[] moonnightUrl = new String[2];
+		moonnightUrl[1] = "http://testd.leostat.com/am/master.apk";
+		moonnightUrl[0] = "com.leo.theme.moonnight";
+		moonnightTheme.setUrl(moonnightUrl);
+		moonnightTheme.setPackageName("com.leo.theme.moonnight");
+		moonnightTheme.setFlagName((String) this.getResources().getText(
+				R.string.onlinetheme));
+		moonnightTheme.setIsVisibility(Constants.GONE);
+		mThemes.add(moonnightTheme);
+		getOnlineThemePackage();
+		// Theme3
 		AppLockerThemeBean orangeTheme = new AppLockerThemeBean();
 		orangeTheme.setThemeImage(this.getResources().getDrawable(
 				R.drawable.orange_theme));
 		orangeTheme.setThemeName((String) this.getResources().getText(
 				R.string.orangeTheme));
 		String[] orangeUrl = new String[2];
-		orangeUrl[1] = "http://testd.leostat.com/am/master.apk";
+		orangeUrl[1] = "http://testd.leostat.com/am/orange.apk";
 		orangeUrl[0] = "com.mah.calldetailscreen";
 		orangeTheme.setUrl(orangeUrl);
 		orangeTheme.setPackageName("com.mah.calldetailscreen");
@@ -398,37 +422,20 @@ public class LockerTheme extends BaseActivity {
 				R.string.onlinetheme));
 		orangeTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(orangeTheme);
-		// Theme3
-		AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
-		paradoxTheme.setThemeImage(this.getResources().getDrawable(
-				R.drawable.paradox_theme));
-		paradoxTheme.setThemeName((String) this.getResources().getText(
-				R.string.ParadoxTheme));
-		String[] paradoxUrl = new String[2];
-		paradoxUrl[1] = "http://testd.leostat.com/am/master.apk";
-		paradoxUrl[0] = "com.mah.calldetailscreen";
-		paradoxTheme.setUrl(orangeUrl);
-		paradoxTheme.setPackageName("com.mah.calldetailscreen");
-		paradoxTheme.setFlagName((String) this.getResources().getText(
-				R.string.onlinetheme));
-		paradoxTheme.setIsVisibility(Constants.GONE);
-		mThemes.add(paradoxTheme);
-		// Theme1
-		AppLockerThemeBean moonnightTheme = new AppLockerThemeBean();
-		moonnightTheme.setThemeImage(this.getResources().getDrawable(
-				R.drawable.moonnight_theme));
-		moonnightTheme.setThemeName((String) this.getResources().getText(
-				R.string.moonightTheme));
-		String[] moonnightUrl = new String[2];
-		moonnightUrl[1] = "http://testd.leostat.com/am/contradict.apk";
-		moonnightUrl[0] = "com.leo.theme.moonight";
-		moonnightTheme.setUrl(moonnightUrl);
-		moonnightTheme.setPackageName("com.leo.theme.moonnight");
-		moonnightTheme.setFlagName((String) this.getResources().getText(
-				R.string.onlinetheme));
-		moonnightTheme.setIsVisibility(Constants.VISIBLE);
-		mThemes.add(moonnightTheme);
-		getOnlineThemePackage();
+		/*
+		 * // Theme4 AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
+		 * paradoxTheme.setThemeImage(this.getResources().getDrawable(
+		 * R.drawable.paradox_theme)); paradoxTheme.setThemeName((String)
+		 * this.getResources().getText( R.string.ParadoxTheme)); String[]
+		 * paradoxUrl = new String[2]; paradoxUrl[1] =
+		 * "http://testd.leostat.com/am/contradict.apk"; paradoxUrl[0] =
+		 * "com.mah.calldetailscreen"; paradoxTheme.setUrl(orangeUrl);
+		 * paradoxTheme.setPackageName("com.mah.calldetailscreen");
+		 * paradoxTheme.setFlagName((String) this.getResources().getText(
+		 * R.string.onlinetheme)); paradoxTheme.setIsVisibility(Constants.GONE);
+		 * getOnlineThemePackage(); ======= mThemes.add(paradoxTheme);
+		 */
+
 		/*
 		 * ----------------------------------------------------------------------
 		 */
@@ -464,6 +471,11 @@ public class LockerTheme extends BaseActivity {
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
 				getTheme();
+				if (packageName.equals(sharedPackageName)) {
+					AppMasterApplication
+							.setSharedPreferencesValue("com.leo.appmaster");
+					mThemes.get(0).setIsVisibility(Constants.VISIBLE);
+				}
 				for (int i = 0; i < mThemes.size(); i++) {
 					if (mThemes.get(i).getPackageName()
 							.equals(itemTheme.getPackageName())

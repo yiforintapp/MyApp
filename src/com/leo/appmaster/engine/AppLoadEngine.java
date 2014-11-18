@@ -648,6 +648,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		} else {
 			return false;
 		}
+		
 	}
 
 	public static class AppComparator implements Comparator<BaseInfo> {
