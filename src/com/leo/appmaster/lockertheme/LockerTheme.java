@@ -244,7 +244,7 @@ public class LockerTheme extends BaseActivity {
 				localThemes.add(pkgInfos.get(i).getPkg());
 			}
 		}
-		for (int i = 0; i < localThemes.size(); i++) {
+		for (int i = 0; i < localThemes.size(); i++) { 
 			Context saveContext = null;
 			try {
 				saveContext = LockerTheme.this.createPackageContext(
@@ -257,22 +257,14 @@ public class LockerTheme extends BaseActivity {
 			if (flag) {
 				for (int j = 0; j < onlineThemes.size(); j++) {
 					if (onlineThemes.get(j).equals("com.leo.appmaster")) {
-						mThemes.get(0).setFlagName(
-								(String) getResources().getText(
-										R.string.defaultTheme));
+						mThemes.get(0).setFlagName((String) getResources().getText(R.string.defaultTheme));
 					} else {
 						if (onlineThemes.get(j).equals(localThemes.get(i))) {
-							mThemes.get(j).setFlagName(
-									(String) getResources().getText(
-											R.string.localtheme));
+							mThemes.get(j).setFlagName((String) getResources().getText(R.string.localtheme));
 							// mThemes.get(j).setThemeImage(saveContext.getResources().getDrawable(R.drawable.moonnight_theme));
-							mThemes.get(j).setThemeImage(
-									this.getResources().getDrawable(
-											R.drawable.moonnight_theme));
+							mThemes.get(j).setThemeImage(this.getResources().getDrawable(R.drawable.moonnight_theme));
 						} else {
-							mThemes.get(j).setFlagName(
-									(String) getResources().getText(
-											R.string.onlinetheme));
+							mThemes.get(j).setFlagName((String) getResources().getText(R.string.onlinetheme));
 						}
 					}
 				}
@@ -313,7 +305,6 @@ public class LockerTheme extends BaseActivity {
 		}
 
 	}
-
 	public void getOnlineThemePackage() {
 		// 获取mThemes包名
 		for (int a = 0; a < mThemes.size(); a++) {
