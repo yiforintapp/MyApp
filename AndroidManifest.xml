@@ -215,7 +215,8 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.lockertheme.LockerTheme"
-            android:exported="true" >
+            android:exported="true" 
+            android:screenOrientation="portrait">
             <category android:name="android.intent.category.DEFAULT" />
         </activity>
 
@@ -233,11 +234,11 @@
                 <action android:name="com.leo.appmaster.alarmlock" />
             </intent-filter>
         </receiver>
+        
         <receiver android:name="com.leo.appmaster.applocker.receiver.DeviceReceiver" >
             <meta-data
                 android:name="android.app.device_admin"
                 android:resource="@xml/my_admin" />
-
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>

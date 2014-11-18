@@ -219,8 +219,8 @@
         <item>30</item>
         <item>60</item>
     </string-array>
-	<string name="apply_dialog">Tलॉक&#160; इंटरफ़ेस XXकी &#160;ओर &#160;बदल&#160; दिया &#160;जाएगा, जारी रखें?</string>
 	<string name="locker_apply">Apply</string>
 	<string name="locker_uninstall">Uninstall</string>
 	<string name="locker_cancel">Cancel</string>
+	<string name="christmas_theme">Christmas</string>
 </resources>
