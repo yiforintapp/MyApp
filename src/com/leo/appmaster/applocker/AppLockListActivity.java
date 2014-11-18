@@ -73,6 +73,11 @@ public class AppLockListActivity extends BaseActivity implements
 	@Override
 	protected void onResume() {
 		loadData();
+		if (mThemeSetting.equals("0")) {
+			mSettingIV.setImageResource(R.drawable.selector_applock_setting_tip);
+		} else {
+			mSettingIV.setImageResource(R.drawable.selector_applock_setting);
+		}
 		super.onResume();
 	}
 

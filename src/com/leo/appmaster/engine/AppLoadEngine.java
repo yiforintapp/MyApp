@@ -377,9 +377,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			} else if (Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
 				if (!replacing) {
 					op = AppChangeListener.TYPE_REMOVE;
-					checkUnlockWhenRemove(packageName);
-				//	receiveUninstall();
-					
+					checkUnlockWhenRemove(packageName);		
 				}
 				// else, we are replacing the package, so a PACKAGE_ADDED will
 				// be sent
@@ -607,14 +605,6 @@ public class AppLoadEngine extends BroadcastReceiver {
 		}
 
 	}
-	public void  receiveUninstall(){
-		
-		int temp=R.string.localtheme;
-		if(temp>0){
-		//LockerTheme.itemTheme.setFlagName((String).getApplicationContext().getResources().getText(temp));
-		}else{
-			
-		}
-		}
+	
 
 }

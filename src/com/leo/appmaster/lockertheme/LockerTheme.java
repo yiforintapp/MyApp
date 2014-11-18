@@ -89,20 +89,22 @@ public class LockerTheme extends Activity {
 		mLockerThemeAdapter = new LockerThemeAdapter(this, mThemes);
 		listTheme.setAdapter(mLockerThemeAdapter);
 		// 定向主题
-		Intent intent = this.getIntent();
-		String temp = intent.getStringExtra("theme_package");
-		if (temp != null && !temp.equals("")) {
-			for (int i = 0; i < mThemes.size(); i++) {
-				if (mThemes.get(i).getPackageName().equals(temp)) {
-					number = i;
+				Intent intent = this.getIntent();
+				String temp = intent.getStringExtra("theme_package");
+				if (temp != null && !temp.equals("")) {
+					for (int i = 0; i < mThemes.size(); i++) {
+						if (mThemes.get(i).getPackageName().equals(temp)) {
+							number=i;
+							showAlarmDialog(mThemes.get(i).getThemeName(),View.VISIBLE);
+							itemTheme=mThemes.get(i);
+						}
+					}
+				} else {
+					number = 0;
 				}
-			}
-		} else {
-			number = 0;
-		}
-		listTheme.setSelection(number);// Item定向跳转
-		listTheme.setOnItemClickListener(item);
-		getTeme();
+				listTheme.setSelection(number);// Item定向跳转		
+				listTheme.setOnItemClickListener(item);
+				getTeme();
 	}
 @Override
 protected void onDestroy() {
@@ -415,10 +417,12 @@ protected void onDestroy() {
 	private class LockerThemeReceive extends BroadcastReceiver{
 
 		@Override
-		public void onReceive(Context arg0, Intent arg1) {
-			
-			  
+		public void onReceive(Context arg0, Intent intent) {
+			final String action = intent.getAction();
+			if(Intent.ACTION_PACKAGE_REMOVED.equals(action)){
+				itemTheme.setFlagName((String)LockerTheme.this.getResources().getText(R.string.localtheme));
+				mLockerThemeAdapter.notifyDataSetChanged();
+				}
 		}
-		
 	}
 }
