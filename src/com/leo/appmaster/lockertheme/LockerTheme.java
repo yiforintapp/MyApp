@@ -231,6 +231,7 @@ public class LockerTheme extends BaseActivity {
 				LockerTheme.this).getAllPkgInfo();// 获取本地安装的所有包信息
 		// 本地包名
 		for (int i = 0; i < pkgInfos.size(); i++) {
+			Log.i("run","************"+pkgInfos.get(i).getPkg()+"\n");
 			if (pkgInfos.get(i).getPkg().equals(Constants.GPPACKAGE)) {
 				flagGp = true;
 			}
@@ -353,7 +354,7 @@ public class LockerTheme extends BaseActivity {
 		orangeTheme.setThemeName((String) this.getResources().getText(
 				R.string.orangeTheme));
 		String[] orangeUrl = new String[2];
-		orangeUrl[1] = "http://testd.leostat.com/am/Theme1.apk";
+		orangeUrl[1] = "http://testd.leostat.com/am/master.apk";
 		orangeUrl[0] = "com.mah.calldetailscreen";
 		orangeTheme.setUrl(orangeUrl);
 		orangeTheme.setPackageName("com.mah.calldetailscreen");
@@ -368,7 +369,7 @@ public class LockerTheme extends BaseActivity {
 		paradoxTheme.setThemeName((String) this.getResources().getText(
 				R.string.ParadoxTheme));
 		String[] paradoxUrl = new String[2];
-		paradoxUrl[1] = "http://testd.leostat.com/am/Theme1.apk";
+		paradoxUrl[1] = "http://testd.leostat.com/am/master.apk";
 		paradoxUrl[0] = "com.mah.calldetailscreen";
 		paradoxTheme.setUrl(orangeUrl);
 		paradoxTheme.setPackageName("com.mah.calldetailscreen");
@@ -383,7 +384,7 @@ public class LockerTheme extends BaseActivity {
 				moonnightTheme.setThemeName((String) this.getResources().getText(
 						R.string.moonightTheme));
 				String[] moonnightUrl = new String[2];
-				moonnightUrl[1] = "http://testd.leostat.com/am/Theme1.apk";
+				moonnightUrl[1] = "http://testd.leostat.com/am/contradict.apk";
 				moonnightUrl[0] = "com.leo.theme.moonight";
 				moonnightTheme.setUrl(moonnightUrl);
 				moonnightTheme.setPackageName("com.leo.theme.moonnight");
@@ -431,7 +432,10 @@ public class LockerTheme extends BaseActivity {
 						mThemes.remove(i);
 					} else if ((mThemes.get(i).getPackageName().equals(itemTheme.getPackageName()))) {
 					if(packageName.equals(sharedPackageName)){
-						 		AppMasterApplication.setSharedPreferencesValue("com.leo.appmaster");				 		
+						 		AppMasterApplication.setSharedPreferencesValue("com.leo.appmaster");			 
+						 		getDefaultData().setIsVisibility(Constants.VISIBLE);
+						 		
+						 		
 						 }
 						mThemes.get(i).setFlagName((String) LockerTheme.this.getResources().getText(R.string.onlinetheme));
 						
@@ -441,7 +445,7 @@ public class LockerTheme extends BaseActivity {
 				mLockerThemeAdapter.notifyDataSetChanged();
 			}  
 			if(intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)){
-				String packageName=intent.getData().getSchemeSpecificPart();	
+				String packageName=intent.getData().getSchemeSpecificPart();	 
 			}
 		}
 	}
