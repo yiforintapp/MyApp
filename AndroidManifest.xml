@@ -232,11 +232,18 @@
                 <action android:name="com.leo.appmaster.alarmlock" />
             </intent-filter>
         </receiver>
+        <!-- LockerTheme -->
+        <receiver android:name="com.leo.appmaster.lockertheme.LockerThemeReceive.java">
+            <intent-filter android:priority="1000" >
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+            </intent-filter>
+        </receiver>
+        
         <receiver android:name="com.leo.appmaster.applocker.receiver.DeviceReceiver" >
             <meta-data
                 android:name="android.app.device_admin"
                 android:resource="@xml/my_admin" />
-
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>

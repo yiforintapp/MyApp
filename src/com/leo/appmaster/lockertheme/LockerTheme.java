@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -70,10 +72,18 @@ public class LockerTheme extends Activity {
 		/*
 		 * 注册卸载监听
 		 */
-		IntentFilter intentFilter = new IntentFilter( Intent.ACTION_PACKAGE_REMOVED);
-		mLockerThemeReceive=new LockerThemeReceive();
-		registerReceiver( mLockerThemeReceive , intentFilter);
-		
+		/*try {
+			IntentFilter intentFilter = new IntentFilter( );
+			intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+			intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
+			mLockerThemeReceive=new LockerThemeReceive();
+			registerReceiver( mLockerThemeReceive , intentFilter);
+			LeoLog.i("run","**************IntentFilterSuccess");
+		} catch (Exception e) {
+			LeoLog.i("run","**************IntentFilterFail");
+		}
+		*/
+		mLockerThemeReceive=new LockerThemeReceive(this);
 		mLayoutInflater=LayoutInflater.from(this);
 		View dialog=mLayoutInflater.inflate(R.layout. dialog_theme_alarm, null);
 		mApply=(Button)dialog. findViewById(R.id.apply);
@@ -109,7 +119,7 @@ public class LockerTheme extends Activity {
 @Override
 protected void onDestroy() {
 	super.onDestroy();
-	unregisterReceiver(mLockerThemeReceive);
+	//unregisterReceiver(mLockerThemeReceive);
 }
 	/**
 	 * AlarmDialog
@@ -152,14 +162,6 @@ protected void onDestroy() {
 						Uri uri = Uri.fromParts("package", itemTheme.getPackageName(),null);
 						Intent intent = new Intent(Intent.ACTION_DELETE, uri);
 						startActivity(intent);
-					/*	getTheme();
-						for (int i = 0; i < mThemes.size(); i++) {
-							if (mThemes.get(i).getPackageName().equals(itemTheme.getPackageName())&& !onlineThemes.contains(itemTheme.getPackageName())) {
-								mThemes.remove(i);
-							} else if ((mThemes.get(i).getPackageName().equals(itemTheme.getPackageName()))) {
-								mThemes.get(i).setFlagName((String) LockerTheme.this.getResources().getText(R.string.onlinetheme));
-							}
-						}*/
 						mLockerThemeAdapter.notifyDataSetChanged();
 						dialog.cancel();
 					}
@@ -414,15 +416,5 @@ protected void onDestroy() {
 		defaultTheme.setIsVisibility(Constants.VISIBLE);
 		return defaultTheme;
 	}
-	private class LockerThemeReceive extends BroadcastReceiver{
 
-		@Override
-		public void onReceive(Context arg0, Intent intent) {
-			final String action = intent.getAction();
-			if(Intent.ACTION_PACKAGE_REMOVED.equals(action)){
-				itemTheme.setFlagName((String)LockerTheme.this.getResources().getText(R.string.localtheme));
-				mLockerThemeAdapter.notifyDataSetChanged();
-				}
-		}
-	}
 }
