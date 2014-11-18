@@ -9,12 +9,15 @@ import java.util.List;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.BaseActivity;
@@ -46,6 +49,9 @@ public class AppLockListActivity extends BaseActivity implements
 	private Object mLock = new Object();
 	private boolean mShouldLockOnRestart = true;
 	private String[] mSortType;
+	private String mThemeSetting;
+	private SharedPreferences mySharedPreferences;
+	private ImageView mSettingIV;
 
 	public static final int DEFAULT_SORT = 0;
 	public static final int NAME_SORT = 1;
@@ -59,6 +65,7 @@ public class AppLockListActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lock_app_list);
+		mSettingIV=(ImageView) findViewById(R.id.tv_option_image);
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		initUI();
 	}
@@ -66,6 +73,11 @@ public class AppLockListActivity extends BaseActivity implements
 	@Override
 	protected void onResume() {
 		loadData();
+		if (mThemeSetting.equals("0")) {
+			mSettingIV.setImageResource(R.drawable.selector_applock_setting_tip);
+		} else {
+			mSettingIV.setImageResource(R.drawable.selector_applock_setting);
+		}
 		super.onResume();
 	}
 
@@ -103,7 +115,6 @@ public class AppLockListActivity extends BaseActivity implements
 		mCurSortType = AppMasterPreference.getInstance(this).getSortType();
 
 		mInflater = LayoutInflater.from(this);
-
 		if (AppMasterPreference.getInstance(this).isFisrtUseLocker()) {
 			mMaskLayer = findViewById(R.id.mask_layer);
 			mMaskLayer.setOnClickListener(this);
@@ -114,10 +125,18 @@ public class AppLockListActivity extends BaseActivity implements
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 		mTtileBar.openBackView();
-		mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
+	
+		mySharedPreferences= getSharedPreferences("LockerThemeHome",AppLockListActivity.this.MODE_WORLD_WRITEABLE);			
+		mThemeSetting=mySharedPreferences.getString("themeHome","0");
+			if (mThemeSetting.equals("0")) {
+				mSettingIV.setImageResource(R.drawable.selector_applock_setting_tip);
+			} else {
+				mSettingIV.setImageResource(R.drawable.selector_applock_setting);
+			}
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionListener(this);
 		mTtileBar.setSpinerVibility(View.VISIBLE);
+
 		mTtileBar.setSpinerListener(this);
 		mTtileBar.setSpinerText(mSortType[mCurSortType]);
 
@@ -275,8 +294,14 @@ public class AppLockListActivity extends BaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.tv_option_image:
+
+			Editor editor=mySharedPreferences.edit();
+			editor.putString("themeHome","1");
+			editor.commit();
+			mThemeSetting="1";
 			Intent intent = new Intent(this, LockOptionActivity.class);
 			startActivityForResult(intent, REQUEST_CODE_OPTION);
+			
 			break;
 		case R.id.layout_right:
 			if (mLeoPopMenu == null) {

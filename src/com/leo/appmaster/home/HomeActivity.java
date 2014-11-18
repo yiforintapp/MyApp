@@ -89,7 +89,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	private LeoPopMenu mLeoPopMenu;
 	private CricleView mCricleView;
 	private ImageView spiner;
-	private String number;
+	private String themeHome;
+	private SharedPreferences mySharedPreferences;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -191,8 +192,9 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mPressedEffect2 = findViewById(R.id.pressed_effect2);
 		
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		number=AppMasterApplication.number;
-			if (number.equals("0")) {
+		 mySharedPreferences= getSharedPreferences("LockerThemeHome",HomeActivity.this.MODE_WORLD_WRITEABLE);			
+		themeHome=mySharedPreferences.getString("themeHome","0");
+			if (themeHome.equals("0")) {
 				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.themetip_spiner_press));
 			} else {
 				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.theme_spiner_press));
@@ -209,11 +211,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		spiner.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
+	
+				Editor editor=mySharedPreferences.edit();
+				editor.putString("themeHome","1");
+				editor.commit();
 				Intent intent = new Intent(HomeActivity.this,
 						LockerTheme.class);
 				startActivityForResult(intent, 0);
-				AppMasterApplication.setSharedPreferencesNumber("1");
-				number = "1";
+				themeHome = "1";
 			}
 		});
 
@@ -230,7 +235,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
 
-		if (number.equals("0")) {
+		if (themeHome.equals("0")) {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.themetip_spiner_press));
 		} else {

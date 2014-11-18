@@ -21,6 +21,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
+import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.AppUtil;
@@ -72,9 +73,9 @@ public class GestureLockFragment extends LockFragment implements
           String pkgName = AppMasterApplication.getSelectedTheme();
 	      Context themeContext = LeoResources.getThemeContext(getActivity(), pkgName);//com.leo.appmaster:drawable/multi_theme_lock_bg
 	      Resources  themeRes = themeContext.getResources();
-	      int layoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "gesture_bg");
+	      int layoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_GESTRUE_BG);
           if (layoutBgRes <= 0) {
-              layoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "general_bg");  
+              layoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_GENERAL_BG);
           }
 	      
 	       if (themeRes != null) {
@@ -85,8 +86,8 @@ public class GestureLockFragment extends LockFragment implements
 	           }
 	       }
 
-	        mTopIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "top_icon");
-	        mBottomIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", "bottom_icon");
+	        mTopIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_TOP_ICON);
+	        mBottomIconRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_BOTTOM_ICON);
 	        if (themeRes != null) {
 	            if (mTopIconRes > 0) {
 	                mAppIconTop.setBackgroundDrawable(themeRes.getDrawable(mTopIconRes));
