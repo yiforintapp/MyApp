@@ -379,7 +379,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			} else if (Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
 				if (!replacing) {
 					op = AppChangeListener.TYPE_REMOVE;
-					checkUnlockWhenRemove(packageName);		
+					checkUnlockWhenRemove(packageName);
 				}
 				// else, we are replacing the package, so a PACKAGE_ADDED will
 				// be sent
@@ -389,9 +389,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 					op = AppChangeListener.TYPE_ADD;
 					showLockTip(packageName);
 
-//					if (tryHideThemeApk(packageName)) {
-//						return;
-//					}
+					if (tryHideThemeApk(packageName)) {
+						return;
+					}
 				} else {
 					op = AppChangeListener.TYPE_UPDATE;
 				}
@@ -439,6 +439,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 	}
 
 	private void showLockTip(final String packageName) {
+
+		if (packageName.startsWith("com.leo.theme")) {
+			return;
+		}
 
 		if (AppMasterPreference.getInstance(mContext).isNewAppLockTip()) {
 			sWorker.postDelayed(new Runnable() {
@@ -595,16 +599,22 @@ public class AppLoadEngine extends BroadcastReceiver {
 		}
 	}
 
-	public boolean tryHideThemeApk(String pkg) {
+	public boolean tryHideThemeApk(final String pkg) {
 		if (pkg.startsWith("com.leo.theme")) {
-			Settings.Secure.putInt(mContext.getContentResolver(),
-					Settings.Secure.DEVICE_PROVISIONED, 1);
-			PackageManager pm = mContext.getPackageManager();
-			ComponentName name = new ComponentName(pkg,
-					"com.leo.theme.ThemeActivity");
-			pm.setComponentEnabledSetting(name,
-					PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-					PackageManager.DONT_KILL_APP);
+			sWorker.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					Settings.Secure.putInt(mContext.getContentResolver(),
+							Settings.Secure.DEVICE_PROVISIONED, 1);
+					PackageManager pm = mContext.getPackageManager();
+					ComponentName name = new ComponentName(pkg,
+							"com.leo.theme.ThemeActivity");
+					pm.setComponentEnabledSetting(name,
+							PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+							PackageManager.DONT_KILL_APP);
+				}
+			}, 3000);
+
 			return true;
 		} else {
 			return false;
@@ -633,6 +643,5 @@ public class AppLoadEngine extends BroadcastReceiver {
 		}
 
 	}
-	
 
 }
