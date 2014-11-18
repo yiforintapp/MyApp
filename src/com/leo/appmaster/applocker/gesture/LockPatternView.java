@@ -421,7 +421,6 @@ public class LockPatternView extends ViewGroup {
 			mOnPatternListener.onPatternCellAdded(mPattern);
 		}
 		sendAccessEvent();
-	      Log.i("XXXX", "mPattern.size()="+mPattern.size());
 	        if (mPattern.size() == 1) {
 	            mLastParten = mCurrParten = mPattern.get(0);
 	        } else if (mPattern.size() > 1) {

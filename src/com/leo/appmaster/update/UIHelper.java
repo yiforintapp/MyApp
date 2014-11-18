@@ -223,7 +223,6 @@ public class UIHelper implements IUIHelper {
         }
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
                 && !isRunningForeground(mContext)) {
-            LeoLog.e(TAG, "runing on background, show update notification");
             sendUpdateNotification();
         } else {
             showUI(ui_type, param);

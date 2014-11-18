@@ -214,7 +214,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 		loadAllPkgInfo();
 		ArrayList<AppDetailInfo> dataList = new ArrayList<AppDetailInfo>();
 		for (AppDetailInfo app : mAppDetails.values()) {
-			dataList.add(app);
+			if (!app.getPkg().startsWith("com.leo.theme")) {
+				dataList.add(app);
+			}
 		}
 
 		Collections.sort(dataList, new AppComparator());
@@ -611,13 +613,19 @@ public class AppLoadEngine extends BroadcastReceiver {
 					PackageManager pm = mContext.getPackageManager();
 					ComponentName name = new ComponentName(pkg,
 							"com.leo.theme.ThemeActivity");
-					pm.setComponentEnabledSetting(name,
-							PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-							PackageManager.DONT_KILL_APP);
+					int res = pm.getComponentEnabledSetting(name);
+					if (res == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
+							|| res == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+						pm.setComponentEnabledSetting(
+								name,
+								PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+								PackageManager.DONT_KILL_APP);
+					}
 				}
 			}, 3000);
 
-			return true;
+			// return true;
+			return false; // add app list
 		} else {
 			return false;
 		}

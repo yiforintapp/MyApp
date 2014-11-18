@@ -210,7 +210,7 @@
     <string name="grade">Rate Us!</string>
     <string name="grade_tip">Thank you for using App Master. Please leave your feedbacks here.</string>
     <string name="lock_more">Lock More</string>
-    <string name="lock">加锁</string>
+    <string name="lock">Lock</string>
     <string name="det_change_lock_time">Do you wish to change your Auto-lock time?</string>
 	 <string name="moonightTheme">Moonnight&#160;Theme</string>
     <string name="orangeTheme">Orange&#160;Theme</string>
