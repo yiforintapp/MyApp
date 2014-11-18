@@ -222,6 +222,7 @@
 	<string name="locker_apply">应用</string>
 	<string name="locker_uninstall">卸载</string>
 	<string name="locker_cancel">取消</string>
+	<string name="christmas_theme">Christmas</string>
 	
 
 </resources>

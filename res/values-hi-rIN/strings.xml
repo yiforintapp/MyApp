@@ -224,5 +224,6 @@
     <string name="locker_apply">लागू करें</string>
     <string name="locker_uninstall">अनिनस्टॉल</string>
     <string name="locker_cancel">रद्द करें</string>
+    <string name="christmas_theme">Christmas</string>
 
 </resources>
