@@ -39,7 +39,10 @@ public class GooglePlayGuideActivity extends Activity {
 		as.addAnimation(ta);
 		AlphaAnimation aa = new AlphaAnimation(1f, 0f);
 		as.addAnimation(aa);
-		as.setRepeatCount(2);
+		ta.setRepeatCount(1);
+		aa.setRepeatCount(1);
+		as.setFillEnabled(true);
+		as.setFillBefore(true);
 		as.setAnimationListener(new AnimationListenerAdapter() {
 			@Override
 			public void onAnimationEnd(Animation animation) {
