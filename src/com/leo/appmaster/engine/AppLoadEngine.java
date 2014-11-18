@@ -636,6 +636,16 @@ public class AppLoadEngine extends BroadcastReceiver {
 					if (res == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
 							|| res == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
 						LeoLog.d("tryHideThemeApk", "packageName = " + pkg);
+
+						AppMasterPreference pre = AppMasterPreference
+								.getInstance(mContext);
+						List<String> themeList = new ArrayList<String>(pre
+								.getHideThemeList());
+						if (!themeList.contains(pkg)) {
+							themeList.add(pkg);
+						}
+						pre.setHideThemeList(themeList);
+
 						pm.setComponentEnabledSetting(
 								name,
 								PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
