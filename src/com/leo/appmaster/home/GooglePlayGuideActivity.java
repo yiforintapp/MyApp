@@ -23,23 +23,23 @@ public class GooglePlayGuideActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.layout_googelplay_guide);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		openGooglePlayGuide();
 		super.onResume();
 	}
 
-
 	private void openGooglePlayGuide() {
 
 		final ImageView iv = (ImageView) findViewById(R.id.iv_animator);
 		AnimationSet as = new AnimationSet(true);
-		as.setDuration(1500);
+		as.setDuration(1000);
 		TranslateAnimation ta = new TranslateAnimation(0f, 0f, 0f, -500f);
 		as.addAnimation(ta);
 		AlphaAnimation aa = new AlphaAnimation(1f, 0f);
 		as.addAnimation(aa);
+		as.setRepeatCount(2);
 		as.setAnimationListener(new AnimationListenerAdapter() {
 			@Override
 			public void onAnimationEnd(Animation animation) {
