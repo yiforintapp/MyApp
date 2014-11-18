@@ -125,6 +125,18 @@ public class LockerTheme extends Activity {
 		unregisterReceiver(mLockerThemeReceive);
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		LeoLog.e("xxxx", "onNewIntent");
+		super.onNewIntent(intent);
+	}
+
+	@Override
+	public void onBackPressed() {
+		LeoLog.e("xxxx", "onNewIntent");
+		super.onBackPressed();
+	}
+
 	/**
 	 * AlarmDialog
 	 * 

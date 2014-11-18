@@ -67,18 +67,22 @@ public class LockScreenActivity extends FragmentActivity implements
 	private ImageView spiner;
 	private String number;
 
+	private boolean toTheme;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lock_setting);
-		number=AppMasterApplication.number;
+		number = AppMasterApplication.number;
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		   spiner=(ImageView) findViewById(R.id.image1);  
-			if (number.equals("0")) {
-				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.themetip_spiner_press));
-			} else {
-				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.theme_spiner_press));
-			}
+		spiner = (ImageView) findViewById(R.id.image1);
+		if (number.equals("0")) {
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.themetip_spiner_press));
+		} else {
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.theme_spiner_press));
+		}
 		handleIntent();
 		initUI();
 	}
@@ -86,9 +90,11 @@ public class LockScreenActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		if (number.equals("0")) {
-			spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.themetip_spiner_press));
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.themetip_spiner_press));
 		} else {
-			spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.theme_spiner_press));
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.theme_spiner_press));
 		}
 		super.onResume();
 	}
@@ -102,17 +108,17 @@ public class LockScreenActivity extends FragmentActivity implements
 		Intent intent = getIntent();
 		int type = intent.getIntExtra(EXTRA_UKLOCK_TYPE,
 				LockFragment.LOCK_TYPE_PASSWD);
-	      mFromType = intent.getIntExtra(EXTRA_UNLOCK_FROM,
-	                LockFragment.FROM_SELF);
-	      
+		mFromType = intent.getIntExtra(EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF);
+
 		if (type == LockFragment.LOCK_TYPE_PASSWD) {
 			mFragment = new PasswdLockFragment();
 		} else {
 			mFragment = new GestureLockFragment();
 		}
 
-		if (!ThemeUtils.checkThemeNeed(this) &&  (mFromType == LockFragment.FROM_OTHER
-				|| mFromType == LockFragment.FROM_SCREEN_ON)) {
+		if (!ThemeUtils.checkThemeNeed(this)
+				&& (mFromType == LockFragment.FROM_OTHER || mFromType == LockFragment.FROM_SCREEN_ON)) {
 			BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
 					getPackageManager(),
 					intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
@@ -204,29 +210,40 @@ public class LockScreenActivity extends FragmentActivity implements
 		LeoLog.d("LockScreenActivity", "onStop" + "      mFromType = "
 				+ mFromType);
 		if (mFromType == LockFragment.FROM_OTHER) {
-			if (!AppMasterPreference.getInstance(this).isAutoLock()) {
+			if (!AppMasterPreference.getInstance(this).isAutoLock() || toTheme) {
+				toTheme = false;
 				return;
 			}
 			finish();
 		}
 	}
 
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+	}
+
 	private void initUI() {
-		
+
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			mTtileBar.setOptionImage(R.drawable.setting_selector);
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
 			mTtileBar.setOptionListener(this);
 		}
-			mTtileBar.setSpinerVibility(View.VISIBLE);
-			mTtileBar.setSpinerListener(this);
-			
-		
+		mTtileBar.setSpinerVibility(View.VISIBLE);
+		mTtileBar.setSpinerListener(this);
+
 		spiner.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-				Intent intent=new Intent(LockScreenActivity.this,LockerTheme.class);
+				Intent intent = new Intent(LockScreenActivity.this,
+						LockerTheme.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
+						| Intent.FLAG_ACTIVITY_NEW_TASK);
+
+				toTheme = true;
+
 				startActivityForResult(intent, 0);
 				AppMasterApplication.setSharedPreferencesNumber("1");
 				number = "1";
@@ -328,8 +345,8 @@ public class LockScreenActivity extends FragmentActivity implements
 							int position, long id) {
 						if (position == 0) {
 							findPasswd();
-						}else if(position == 1){
-							
+						} else if (position == 1) {
+
 						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
@@ -394,8 +411,8 @@ public class LockScreenActivity extends FragmentActivity implements
 			mDialog.dismiss();
 		}
 	}
-	
+
 	public int getFromType() {
-	    return mFromType;
+		return mFromType;
 	}
 }
