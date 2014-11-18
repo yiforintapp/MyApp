@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -13,6 +14,8 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.text.Html;
+import android.text.Spanned;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -36,6 +40,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 			mChangePasswdTip;
 
 	private CheckBoxPreference mForbidUninstall, mAutoLock;
+	private Preference mLockerTheme;
 	private Preference mSetProtect;
 	private boolean mShouldLockOnRestart = true;
 
@@ -45,6 +50,8 @@ public class LockOptionActivity extends PreferenceActivity implements
 
 	private int mComeFrom = FROM_APPLOCK;
 
+    private SharedPreferences mySharedPreferences;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,6 +68,7 @@ public class LockOptionActivity extends PreferenceActivity implements
 	}
 
 	private void setupPreference() {
+	    mLockerTheme = findPreference(AppMasterPreference.PREF_LOCKER_THEME);
 		mForbidUninstall = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL);
 		mAutoLock = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_AUTO_LOCK);
 		mSetProtect = findPreference(AppMasterPreference.PREF_SET_PROTECT);
@@ -69,6 +77,12 @@ public class LockOptionActivity extends PreferenceActivity implements
 		mChangeProtectQuestion = (Preference) findPreference("set_passwd_protect");
 		mTheme= findPreference("set_locker_theme");
 		mChangePasswdTip = (Preference) findPreference("set_passwd_tip");
+        mySharedPreferences= getSharedPreferences("LockerThemeOption",LockOptionActivity.this.MODE_WORLD_WRITEABLE);           
+
+		if (!mySharedPreferences.getBoolean("themeOption",false)) {
+		    Spanned buttonText = Html.fromHtml(getString(R.string.lockerThemePoit));
+            mLockerTheme.setTitle(buttonText);
+		}
 		
 		if (mComeFrom == FROM_IMAGEHIDE) {
 			getPreferenceScreen().removePreference(mAutoLock);
@@ -147,7 +161,13 @@ public class LockOptionActivity extends PreferenceActivity implements
 			mSetProtect.setTitle(getString(R.string.passwd_protect) + "("
 					+ getString(R.string.not_set) + ")");
 		}
-
+		
+        if (!mySharedPreferences.getBoolean("themeOption", false)) {
+            Spanned buttonText = Html.fromHtml(getString(R.string.lockerThemePoit));
+            mLockerTheme.setTitle(buttonText);
+        } else {
+            mLockerTheme.setTitle(R.string.lockerTheme);
+        }
 		super.onResume();
 		SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "enter");
 	}
@@ -233,7 +253,12 @@ public class LockOptionActivity extends PreferenceActivity implements
 			startActivityForResult(intent, 0);
 			SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "pwdn");
 		}else if("set_locker_theme".equals(key)){
+            Editor editor=mySharedPreferences.edit();
+            editor.putBoolean("themeOption", true);
+            editor.commit();
+		    
 			Intent intent=new Intent(LockOptionActivity.this,LockerTheme.class);
+			intent.putExtra("need_lock", true);
 			startActivityForResult(intent, 0);
 		}
 

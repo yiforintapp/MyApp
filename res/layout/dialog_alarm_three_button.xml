@@ -64,8 +64,8 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
         android:paddingTop="10dp" >
 
         <TextView
@@ -77,20 +77,20 @@
             android:gravity="center"
             android:text="@string/lock"
             android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/dlg_mid_btn"
             android:layout_width="0dp"
             android:layout_height="33dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
             android:layout_weight="1"
             android:background="@drawable/dlg_right_button_selector"
             android:gravity="center"
             android:text="@string/lock_more"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/dlg_right_btn"
@@ -101,7 +101,7 @@
             android:gravity="center"
             android:text="@string/cancel"
             android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:textSize="13sp" />
     </LinearLayout>
 
 </RelativeLayout>

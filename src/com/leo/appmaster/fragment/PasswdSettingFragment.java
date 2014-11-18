@@ -295,12 +295,12 @@ public class PasswdSettingFragment extends BaseFragment implements
 		if (mInputCount == 1) {
 			if (mTempFirstPasswd.length() > 0) {
 				mTempFirstPasswd = mTempFirstPasswd.substring(0,
-						mTempFirstPasswd.length());
+						mTempFirstPasswd.length() - 1);
 			}
 		} else {
-			if (mTempFirstPasswd.length() > 0) {
+			if (mTempSecondPasswd.length() > 0) {
 				mTempSecondPasswd = mTempSecondPasswd.substring(0,
-						mTempSecondPasswd.length());
+						mTempSecondPasswd.length() - 1);
 			}
 		}
 
