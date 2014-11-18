@@ -534,7 +534,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 }
             }
         } else if (state == BUTTON_STATE_NORMAL) {
-            if (mDigitalBgNormalRes > 0) {
+            AnimationDrawable digitalDrawable = (AnimationDrawable)bottomView.getDrawable();
+            if (mDigitalBgNormalRes > 0 && digitalDrawable == null) {
                 bottomView.setImageDrawable(mThemeRes.getDrawable(mDigitalBgNormalRes));
             }            
 //            view.setBackgroundResource(R.drawable.digital_bg_normal);
