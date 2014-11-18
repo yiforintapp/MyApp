@@ -38,6 +38,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_RECOMMEND_LOCK_PERCENT = "recommend_lock_percent";
 	public static final String PREF_UNLOCK_COUNT = "unlock_count";
 	public static final String PREF_GUIDE_TIP_SHOW = "google_play_guide_tip_show";
+	public static final String PREF_HIDE_THEME_PKGS = "hide_theme_packages";
 
 	// other
 	public static final String PREF_LAST_VERSION = "last_version";
@@ -46,6 +47,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
 	private List<String> mLockedAppList;
 	private List<String> mRecommendList;
+	private List<String> mHideThemeList;
 	private String mPassword;
 	private String mGesture;
 	private String mLockPolicy;
@@ -69,14 +71,27 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 				: mInstance;
 	}
 
+	public void setHideThemeList(List<String> themeList) {
+		mHideThemeList = themeList;
+		String combined = "";
+		for (String string : mHideThemeList) {
+			combined = combined + string + ";";
+		}
+		mPref.edit().putString(PREF_HIDE_THEME_PKGS, combined).commit();
+	}
+
+	public List<String> getHideThemeList() {
+		return mHideThemeList;
+	}
+
 	public void setGoogleTipShowed(boolean show) {
 		mPref.edit().putBoolean(PREF_GUIDE_TIP_SHOW, show).commit();
 	}
-	
+
 	public boolean getGoogleTipShowed() {
 		return mPref.getBoolean(PREF_GUIDE_TIP_SHOW, false);
 	}
-	
+
 	public void setUnlockCount(long count) {
 		mPref.edit().putLong(PREF_UNLOCK_COUNT, count).commit();
 	}
@@ -237,6 +252,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		}
 		mRecommendList = Arrays.asList(mPref.getString(
 				PREF_RECOMMEND_LOCK_LIST, "").split(";"));
+		if (lockList.equals("")) {
+			mLockedAppList = new ArrayList<String>(0);
+		} else {
+			mHideThemeList = Arrays.asList(mPref.getString(
+					PREF_HIDE_THEME_PKGS, "").split(";"));
+		}
 		mLockType = mPref.getInt(PREF_LOCK_TYPE, LOCK_TYPE_NONE);
 		mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
 		if (mLockType == LOCK_TYPE_GESTURE) {
