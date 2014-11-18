@@ -64,8 +64,8 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:paddingTop="10dp" >
 
         <TextView
@@ -83,8 +83,8 @@
             android:id="@+id/dlg_mid_btn"
             android:layout_width="0dp"
             android:layout_height="33dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:background="@drawable/dlg_right_button_selector"
             android:gravity="center"

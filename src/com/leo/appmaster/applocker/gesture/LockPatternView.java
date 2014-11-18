@@ -486,18 +486,21 @@ public class LockPatternView extends ViewGroup {
 	private void clearGifAnimation() {
 	       if (!needChangeTheme()) return;
 	       for (AnimationDrawable button : mPressAnimDrawable) {
-	            button.stop();
+	            if (button != null) {
+	                button.stop();
+	            }
 	        }
-	       
-        if (mButtonViewRes[0] <= 0) {
-            for (int i = 0; i < mButtonViews.length; i++) {
-                mButtonViews[i].setBackgroundDrawable(mThemeRes.getDrawable(mNormalViewRes));
-            }
-        } else {
-            for (int i = 0; i < mButtonViews.length; i++) {
-                mButtonViews[i].setBackgroundDrawable(mThemeRes.getDrawable(mButtonViewRes[i]));
-            }
-        }
+	    if (mThemeRes != null) {
+	        if (mButtonViewRes[0] <= 0) {
+	            for (int i = 0; i < mButtonViews.length; i++) {
+	                mButtonViews[i].setBackgroundDrawable(mThemeRes.getDrawable(mNormalViewRes));
+	            }
+	        } else {
+	            for (int i = 0; i < mButtonViews.length; i++) {
+	                mButtonViews[i].setBackgroundDrawable(mThemeRes.getDrawable(mButtonViewRes[i]));
+	            }
+	        }
+	    }
 	}
 
 	public void cleangifResource() {
