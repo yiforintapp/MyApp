@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.constants.Constants;
@@ -37,7 +38,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 
-public class LockerTheme extends Activity {
+public class LockerTheme extends BaseActivity {
 	private ListView listTheme;
 	private List<AppLockerThemeBean> mThemes;
 	private List<String> localThemes;
@@ -49,13 +50,14 @@ public class LockerTheme extends Activity {
 	private String sharedPackageName;
 	private LockerThemeAdapter mLockerThemeAdapter;
 	private LockerThemeChanageDialog dialog;
-	private boolean mShouldLockOnRestart = false;
+	private boolean mShouldLockOnRestart = true;;
 	private LayoutInflater mLayoutInflater;
 	private Button mApply;
 	private Button mUninstall;
 	private Button mCancel;
 	private TextView mText;
 	private LockerThemeReceive mLockerThemeReceive;
+	private boolean mNeedLock = false;
 
 	private void initUI() {
 		CommonTitleBar title = (CommonTitleBar) findViewById(R.id.layout_title_bar);
@@ -103,6 +105,7 @@ public class LockerTheme extends Activity {
 		// 定向主题
 		Intent intent = this.getIntent();
 		String temp = intent.getStringExtra("theme_package");
+		mNeedLock = intent.getBooleanExtra("need_lock", false);
 		if (temp != null && !temp.equals("")) {
 			for (int i = 0; i < mThemes.size(); i++) {
 				if (mThemes.get(i).getPackageName().equals(temp)) {
@@ -119,6 +122,7 @@ public class LockerTheme extends Activity {
 		getTeme();
 	}
 
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -174,48 +178,65 @@ public class LockerTheme extends Activity {
 		});
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		LeoLog.e("LockOptionActivity", "onActivityResault: requestCode = "
-				+ requestCode + "    resultCode = " + resultCode);
-		mShouldLockOnRestart = false;
-		super.onActivityResult(requestCode, resultCode, data);
-	}
-
-	private void showLockPage() {
-		Intent intent = new Intent(this, LockScreenActivity.class);
-		int lockType = AppMasterPreference.getInstance(this).getLockType();
-		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_PASSWD);
-		} else {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_GESTURE);
-		}
-		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-				LockFragment.FROM_SELF);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-		startActivityForResult(intent, 1000);
-	}
-
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		if (mShouldLockOnRestart) {
-			if (!(AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE)) {
-				showLockPage();
-			}
-		} else {
-			mShouldLockOnRestart = true;
-		}
-	}
+//	private void showLockPage() {
+//		Intent intent = new Intent(this, LockScreenActivity.class);
+//		int lockType = AppMasterPreference.getInstance(this).getLockType();
+//		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+//			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+//					LockFragment.LOCK_TYPE_PASSWD);
+//		} else {
+//			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+//					LockFragment.LOCK_TYPE_GESTURE);
+//		}
+//		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+//				LockFragment.FROM_SELF);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+//		startActivityForResult(intent, 1000);
+//	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 	}
 
+    @Override
+    public void onActivityRestart() {
+        LeoLog.e("ImageHideMainActivity", "onActivityRestart");
+        if (mNeedLock) {
+            if (mShouldLockOnRestart) {
+                showLockPage();
+            } else {
+                mShouldLockOnRestart = true;
+            }
+        }
+    }
+
+    private void showLockPage() {
+        LeoLog.e("ImageHideMainActivity", "showLockPage");
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        int lockType = AppMasterPreference.getInstance(this).getLockType();
+        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_PASSWD);
+        } else {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_GESTURE);
+        }
+        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+                LockFragment.FROM_SELF);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivityForResult(intent, 1000);
+    }
+
+    @Override
+    public void onActivityResault(int requestCode, int resultCode) {
+        LeoLog.e("AppLockListActivity", "onActivityResault: requestCode = "
+                + requestCode + "    resultCode = " + resultCode);
+            mShouldLockOnRestart = false;
+    }
+	
 	/**
 	 * getTeme
 	 */
