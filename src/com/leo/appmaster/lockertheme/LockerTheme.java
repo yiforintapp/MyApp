@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -92,11 +93,27 @@ public class LockerTheme extends BaseActivity {
 		mText = (TextView) dialog.findViewById(R.id.dialogTV);
 		initUI();
 		onlineThemes = new ArrayList<String>();
-		localThemes = new ArrayList<String>();
+//		localThemes = new ArrayList<String>();
+	
+		mThemes = new ArrayList<AppLockerThemeBean>();
+		//mThemes.add(getDefaultData());
+
+
+		
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mThemes.clear();
+//		localThemes = new ArrayList<String>();
 		mPreference = AppMasterPreference.getInstance(LockerTheme.this);
 		localThemes = mPreference.getHideThemeList();
-		mThemes = new ArrayList<AppLockerThemeBean>();
+		onlineThemes.clear();
 		mThemes.add(getDefaultData());
+//		mPreference = AppMasterPreference.getInstance(LockerTheme.this);
+//		localThemes = mPreference.getHideThemeList();
+
 		getData();
 		getOnlineThemePackage();
 		mLockerThemeAdapter = new LockerThemeAdapter(this, mThemes);
@@ -120,25 +137,7 @@ public class LockerTheme extends BaseActivity {
 		listTheme.setSelection(number);// Item定向跳转
 		listTheme.setOnItemClickListener(item);
 		getTeme();
-
 		checkSendHideThemeBroadcast(temp);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		mThemes = null;
-		mThemes = new ArrayList<AppLockerThemeBean>();
-		localThemes = null;
-		localThemes = new ArrayList<String>();
-		onlineThemes = null;
-		onlineThemes = new ArrayList<String>();
-		mThemes.add(getDefaultData());
-		mPreference = AppMasterPreference.getInstance(LockerTheme.this);
-		localThemes = mPreference.getHideThemeList();
-		getData();
-		getOnlineThemePackage();
-		getTeme();
 	}
 
 	public void checkSendHideThemeBroadcast(String pkg) {
@@ -287,11 +286,11 @@ public class LockerTheme extends BaseActivity {
 									.getText(R.string.localtheme));
 							applockreTheme.setThemeImage(applockreTheme
 									.getThemeImage());
-						} else {
+						}/* else {
 							applockreTheme.setFlagName((String) this
 									.getResources().getText(
 											R.string.onlinetheme));
-						}
+						}*/
 					}
 				}
 			} else {
@@ -497,28 +496,26 @@ public class LockerTheme extends BaseActivity {
 					mThemes.get(0).setIsVisibility(Constants.VISIBLE);
 					mLockerThemeAdapter.notifyDataSetChanged();
 				}
+				
 				for (int i = 0; i < mThemes.size(); i++) {
 					if (mThemes.get(i).getPackageName().equals(packageName)
 							&& !onlineThemes.contains(packageName)) {
 						mThemes.remove(i);
 					} else if ((mThemes.get(i).getPackageName()
 							.equals(packageName))) {
-						/*
-						 * if(packageName.equals(sharedPackageName)){
-						 * AppMasterApplication
-						 * .setSharedPreferencesValue("com.leo.appmaster");
-						 * mThemes.get(0).setIsVisibility(Constants.VISIBLE); }
-						 */
 						mThemes.get(i).setFlagName(
 								(String) LockerTheme.this.getResources()
 										.getText(R.string.onlinetheme));
 						mThemes.get(i).setIsVisibility(Constants.GONE);
 						mLockerThemeAdapter.notifyDataSetChanged();
-					}
 				}
-				itemTheme.setFlagName((String) LockerTheme.this.getResources()
-						.getText(R.string.onlinetheme));
-				mLockerThemeAdapter.notifyDataSetChanged();
+			}		
+				if(itemTheme != null){
+					itemTheme.setFlagName((String) LockerTheme.this.getResources()
+							.getText(R.string.onlinetheme));
+					mLockerThemeAdapter.notifyDataSetChanged();
+				}
+				
 			}
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
@@ -534,8 +531,7 @@ public class LockerTheme extends BaseActivity {
 											.setFlagName(
 													(String) LockerTheme.this
 															.getResources()
-															.getText(
-																	R.string.localtheme));
+															.getText(R.string.localtheme));
 								}
 							}
 						} else {
