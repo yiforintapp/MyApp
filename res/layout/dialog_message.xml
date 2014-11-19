@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="6dp"
+                android:maxLines="4"
                 android:layout_toRightOf="@+id/dlg_left_icon"
                 android:text="content" />
         </RelativeLayout>
