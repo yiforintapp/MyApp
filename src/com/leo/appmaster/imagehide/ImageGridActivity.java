@@ -379,6 +379,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         mImageAdapter.notifyDataSetChanged();
         mBottomBar.setVisibility(View.GONE);
         mTtileBar.setOptionText(getString(R.string.app_hide_image_edit));
+        updateRightButton();
     }
     
     /**

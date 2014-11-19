@@ -219,6 +219,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 						LockerTheme.class);
 				startActivityForResult(intent, 0);
 				themeHome = "1";
+				SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "theme_enter", "home");
 			}
 		});
 
