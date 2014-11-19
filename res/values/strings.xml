@@ -198,8 +198,29 @@
     <string name="set_passwd">Enter the new password</string>
     <string name="lock_remind">App Master reminder: set a lock for your new App?</string>
     <string name="new_install_lock_remind">You have installed %1$s. Set a lock for it?</string>
-    
     <string name="lock_guide">Tap Apps to lock</string>
     <string name="start_guide">Most-used Apps</string>
 
+    <!-- Theme -->
+    <string name="localtheme">Local Theme</string>
+    <string name="onlinetheme">Online Theme</string>
+    <string name="lockerThemePoit">Theme<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
+    <string name="lockerTheme">Theme</string>
+    <string name="defaultTheme">Default</string>
+    <string name="grade">Rate Us!</string>
+    <string name="grade_tip">Thank you for using App Master. Please leave your feedbacks here.</string>
+    <string name="lock_more">Lock More</string>
+    <string name="lock">Lock</string>
+    <string name="det_change_lock_time">Do you wish to change your Auto-lock time?</string>
+	 <string name="moonightTheme">Night</string>
+    <string name="orangeTheme">Fruit</string>
+    <string name="ParadoxTheme">Paradox</string>
+    <string-array name="det_lock_time_items">
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+	<string name="locker_apply">Apply</string>
+	<string name="locker_uninstall">Uninstall</string>
+	<string name="locker_cancel">Cancel</string>
+	<string name="christmas_theme">Christmas</string>
 </resources>

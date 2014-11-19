@@ -3,9 +3,9 @@
     android:layout_width="330dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:orientation="vertical"
     android:paddingLeft="13dp"
-    android:paddingRight="13dp"
-    android:orientation="vertical" >
+    android:paddingRight="13dp" >
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
@@ -50,6 +50,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="6dp"
                 android:layout_toRightOf="@+id/dlg_left_icon"
+                android:maxLines="4"
+                android:scrollbars="vertical"
                 android:text="content" />
         </RelativeLayout>
     </LinearLayout>

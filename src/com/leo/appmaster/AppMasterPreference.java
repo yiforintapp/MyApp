@@ -23,6 +23,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	private static final String PREF_PASSWD_QUESTION = "passwd_question";
 	private static final String PREF_PASSWD_ANWSER = "passwd_anwser";
 	private static final String PREF_PASSWD_TIP = "passwd_tip";
+	public static final String PREF_LOCKER_THEME = "set_locker_theme";
 	public static final String PREF_RELOCK_TIME = "relock_time";
 	public static final String PREF_AUTO_LOCK = "set_auto_lock";
 	public static final String PREF_SET_PROTECT = "set_passwd_protect";
@@ -35,6 +36,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_RECOMMEND_LOCK_LIST = "recommend_app_lock_list";
 	public static final String PREF_LAST_ALARM_SET_TIME = "last_alarm_set_time";
 	public static final String PREF_RECOMMEND_LOCK_PERCENT = "recommend_lock_percent";
+	public static final String PREF_UNLOCK_COUNT = "unlock_count";
+	public static final String PREF_GUIDE_TIP_SHOW = "google_play_guide_tip_show";
+	public static final String PREF_HIDE_THEME_PKGS = "hide_theme_packages";
+	public static final String PREF_HAVE_EVER_LOAD_APPS = "have_ever_load_apps";
 
 	// other
 	public static final String PREF_LAST_VERSION = "last_version";
@@ -43,6 +48,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
 	private List<String> mLockedAppList;
 	private List<String> mRecommendList;
+	private List<String> mHideThemeList;
 	private String mPassword;
 	private String mGesture;
 	private String mLockPolicy;
@@ -66,10 +72,47 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 				: mInstance;
 	}
 
+	public void setHaveEverAppLoaded(boolean loaded) {
+		mPref.edit().putBoolean(PREF_HAVE_EVER_LOAD_APPS, loaded).commit();
+	}
+
+	public boolean haveEverAppLoaded() {
+		return mPref.getBoolean(PREF_HAVE_EVER_LOAD_APPS, false);
+	}
+
+	public void setHideThemeList(List<String> themeList) {
+		mHideThemeList = themeList;
+		String combined = "";
+		for (String string : mHideThemeList) {
+			combined = combined + string + ";";
+		}
+		mPref.edit().putString(PREF_HIDE_THEME_PKGS, combined).commit();
+	}
+
+	public List<String> getHideThemeList() {
+		return mHideThemeList;
+	}
+
+	public void setGoogleTipShowed(boolean show) {
+		mPref.edit().putBoolean(PREF_GUIDE_TIP_SHOW, show).commit();
+	}
+
+	public boolean getGoogleTipShowed() {
+		return mPref.getBoolean(PREF_GUIDE_TIP_SHOW, false);
+	}
+
+	public void setUnlockCount(long count) {
+		mPref.edit().putLong(PREF_UNLOCK_COUNT, count).commit();
+	}
+
+	public long getUnlockCount() {
+		return mPref.getLong(PREF_UNLOCK_COUNT, 0);
+	}
+
 	public void setRecommendLockPercent(float percent) {
 		mPref.edit().putFloat(PREF_RECOMMEND_LOCK_PERCENT, percent).commit();
 	}
-	
+
 	public float getRecommendLockPercent() {
 		return mPref.getFloat(PREF_RECOMMEND_LOCK_PERCENT, 0.0f);
 	}
@@ -209,15 +252,21 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	private void loadPreferences() {
-	    String lockList = mPref.getString(PREF_APPLICATION_LIST, "");
-        if (lockList.equals("")) {
-            mLockedAppList = new ArrayList<String>(0);
-        } else {
-            mLockedAppList = Arrays.asList(mPref.getString(PREF_APPLICATION_LIST,
-                    "").split(";"));
-        }
+		String lockList = mPref.getString(PREF_APPLICATION_LIST, "");
+		if (lockList.equals("")) {
+			mLockedAppList = new ArrayList<String>(0);
+		} else {
+			mLockedAppList = Arrays.asList(mPref.getString(
+					PREF_APPLICATION_LIST, "").split(";"));
+		}
 		mRecommendList = Arrays.asList(mPref.getString(
 				PREF_RECOMMEND_LOCK_LIST, "").split(";"));
+		String themeList = mPref.getString(PREF_HIDE_THEME_PKGS, "");
+		if (themeList.equals("")) {
+			mHideThemeList = new ArrayList<String>(0);
+		} else {
+			mHideThemeList = Arrays.asList(themeList.split(";"));
+		}
 		mLockType = mPref.getInt(PREF_LOCK_TYPE, LOCK_TYPE_NONE);
 		mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
 		if (mLockType == LOCK_TYPE_GESTURE) {
@@ -231,13 +280,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		if (PREF_APPLICATION_LIST.equals(key)) {
-            String lockList = mPref.getString(PREF_APPLICATION_LIST, "");
-            if (lockList.equals("")) {
-                mLockedAppList = new ArrayList<String>(0);
-            } else {
-                mLockedAppList = Arrays.asList(mPref.getString(PREF_APPLICATION_LIST,
-                        "").split(";"));
-            }
+			String lockList = mPref.getString(PREF_APPLICATION_LIST, "");
+			if (lockList.equals("")) {
+				mLockedAppList = new ArrayList<String>(0);
+			} else {
+				mLockedAppList = Arrays.asList(mPref.getString(
+						PREF_APPLICATION_LIST, "").split(";"));
+			}
 		} else if (PREF_PASSWORD.equals(key)) {
 			mPassword = mPref.getString(PREF_PASSWORD, "1234");
 		} else if (PREF_LOCK_POLICY.equals(key)) {
@@ -288,7 +337,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	public void setLastAlarmSetTime(long currentTimeMillis) {
-		mPref.edit().putLong(PREF_LAST_ALARM_SET_TIME, currentTimeMillis).commit();
+		mPref.edit().putLong(PREF_LAST_ALARM_SET_TIME, currentTimeMillis)
+				.commit();
 	}
 
 	public long getInstallTime() {

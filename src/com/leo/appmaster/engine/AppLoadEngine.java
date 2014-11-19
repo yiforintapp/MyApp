@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -25,20 +28,29 @@ import android.net.TrafficStats;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
+import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.CacheInfo;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
+import com.leoers.leoanalytics.LeoStat;
 
 public class AppLoadEngine extends BroadcastReceiver {
 	/**
@@ -205,7 +217,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 		loadAllPkgInfo();
 		ArrayList<AppDetailInfo> dataList = new ArrayList<AppDetailInfo>();
 		for (AppDetailInfo app : mAppDetails.values()) {
-			dataList.add(app);
+			if (!app.getPkg().startsWith("com.leo.theme")) {
+				dataList.add(app);
+			}
 		}
 
 		Collections.sort(dataList, new AppComparator());
@@ -229,10 +243,17 @@ public class AppLoadEngine extends BroadcastReceiver {
 	private void loadAllPkgInfo() {
 		synchronized (mLock) {
 			if (!mAppsLoaded) {
+				AppMasterPreference pre = AppMasterPreference
+						.getInstance(mContext);
 				Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 				mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 				List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent,
 						0);
+
+				// check first load, and save hide theme
+				boolean isFirstLoadApp = checkFirstLoad();
+				List<String> themeList = new ArrayList<String>(
+						pre.getHideThemeList());
 				for (ResolveInfo resolveInfo : apps) {
 					ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
 					String packageName = applicationInfo.packageName;
@@ -244,11 +265,50 @@ public class AppLoadEngine extends BroadcastReceiver {
 					} catch (NameNotFoundException e) {
 						e.printStackTrace();
 					}
-					mAppDetails.put(packageName, appInfo);
+
+					if (!isThemeApk(packageName)) {
+						mAppDetails.put(packageName, appInfo);
+					} else {
+						if (!themeList.contains(packageName)) {
+							themeList.add(packageName);
+						}
+					}
 				}
+				pre.setHideThemeList(themeList);
 				mAppsLoaded = true;
 			}
 		}
+	}
+
+	private boolean checkFirstLoad() {
+		AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
+		boolean isFirstLoadApp = !AppMasterPreference.getInstance(mContext)
+				.haveEverAppLoaded();
+		List<String> themeList = new ArrayList<String>(pre.getHideThemeList());
+		if (isFirstLoadApp) {
+			List<ApplicationInfo> all = mPm
+					.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
+			for (ApplicationInfo applicationInfo : all) {
+				String packageName = applicationInfo.packageName;
+				AppDetailInfo appInfo = new AppDetailInfo();
+				loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
+				try {
+					appInfo.installTime = mPm.getPackageInfo(packageName, 0).firstInstallTime;
+				} catch (NameNotFoundException e) {
+					e.printStackTrace();
+				}
+
+				LeoLog.e("xxxx", packageName);
+				if (isThemeApk(packageName)) {
+					if (!themeList.contains(packageName)) {
+						themeList.add(packageName);
+					}
+				}
+				pre.setHaveEverAppLoaded(true);
+				pre.setHideThemeList(themeList);
+			}
+		}
+		return isFirstLoadApp;
 	}
 
 	private void loadAppInfoOfPackage(String packageName,
@@ -371,6 +431,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 				if (!replacing) {
 					op = AppChangeListener.TYPE_REMOVE;
 					checkUnlockWhenRemove(packageName);
+					checkThemeWhenRemove(packageName);
 				}
 				// else, we are replacing the package, so a PACKAGE_ADDED will
 				// be sent
@@ -379,6 +440,19 @@ public class AppLoadEngine extends BroadcastReceiver {
 				if (!replacing) {
 					op = AppChangeListener.TYPE_ADD;
 					showLockTip(packageName);
+
+					if (isThemeApk(packageName)) {
+
+						AppMasterPreference pre = AppMasterPreference
+								.getInstance(mContext);
+						List<String> themeList = new ArrayList<String>(
+								pre.getHideThemeList());
+						if (!themeList.contains(packageName)) {
+							themeList.add(packageName);
+						}
+						pre.setHideThemeList(themeList);
+						return;
+					}
 				} else {
 					op = AppChangeListener.TYPE_UPDATE;
 				}
@@ -409,6 +483,30 @@ public class AppLoadEngine extends BroadcastReceiver {
 		}
 	}
 
+	private void checkThemeWhenRemove(final String packageName) {
+		sWorker.post(new Runnable() {
+			@Override
+			public void run() {
+
+				if (packageName.equals(AppMasterApplication.sharedPackage)) {
+					AppMasterApplication
+							.setSharedPreferencesValue("com.leo.appmaster");
+				}
+
+				AppMasterPreference pre = AppMasterPreference
+						.getInstance(mContext);
+				List<String> themeList = new ArrayList<String>(pre
+						.getHideThemeList());
+				if (themeList.contains(packageName)) {
+					LeoLog.d("checkThemeWhenRemove", "packageName = "
+							+ packageName);
+					themeList.remove(packageName);
+					pre.setHideThemeList(themeList);
+				}
+			}
+		});
+	}
+
 	private void checkUnlockWhenRemove(final String packageName) {
 		sWorker.post(new Runnable() {
 			@Override
@@ -427,13 +525,18 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	private void showLockTip(final String packageName) {
 
+		if (packageName.startsWith("com.leo.theme")) {
+			return;
+		}
+
 		if (AppMasterPreference.getInstance(mContext).isNewAppLockTip()) {
 			sWorker.postDelayed(new Runnable() {
 				@Override
 				public void run() {
 					// for (String str : sLocalLockArray) {
 					// if (str.equals(packageName)) {
-					LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
+					LEOThreeButtonDialog dialog = new LEOThreeButtonDialog(
+							mContext);
 					dialog.setTitle(R.string.app_name);
 					String tip = mContext.getString(
 							R.string.new_install_lock_remind,
@@ -442,21 +545,55 @@ public class AppLoadEngine extends BroadcastReceiver {
 					dialog.setOnClickListener(new OnDiaogClickListener() {
 						@Override
 						public void onClick(int which) {
+							AppMasterPreference pre = AppMasterPreference
+									.getInstance(mContext);
+							Intent intent = null;
 							if (which == 0) {
-							} else if (which == 1) {
-								AppMasterPreference pre = AppMasterPreference
-										.getInstance(mContext);
 								List<String> lockList = new ArrayList<String>(
 										pre.getLockedAppList());
 								lockList.add(packageName);
 								pre.setLockedAppList(lockList);
 
 								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-									Intent intent = new Intent(mContext,
+									intent = new Intent(mContext,
 											LockSettingActivity.class);
 									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 									mContext.startActivity(intent);
 								}
+							} else if (which == 1) {
+								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+									intent = new Intent(mContext,
+											LockSettingActivity.class);
+									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									mContext.startActivity(intent);
+								} else {
+									intent = new Intent(mContext,
+											LockScreenActivity.class);
+									intent.putExtra(
+											LockScreenActivity.EXTRA_TO_ACTIVITY,
+											AppLockListActivity.class.getName());
+									int lockType = pre.getLockType();
+									if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+										intent.putExtra(
+												LockScreenActivity.EXTRA_UKLOCK_TYPE,
+												LockFragment.LOCK_TYPE_PASSWD);
+									} else {
+										intent.putExtra(
+												LockScreenActivity.EXTRA_UKLOCK_TYPE,
+												LockFragment.LOCK_TYPE_GESTURE);
+									}
+									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+											| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+									intent.putExtra(
+											LockScreenActivity.EXTRA_UNLOCK_FROM,
+											LockFragment.FROM_SELF_HOME);
+
+									mContext.startActivity(intent);
+								}
+								SDKWrapper.addEvent(mContext, LeoStat.P1,
+										"lock_enter", "sug_lock_more");
+
+							} else if (which == 2) {
 
 							}
 						}
@@ -547,6 +684,15 @@ public class AppLoadEngine extends BroadcastReceiver {
 				notifyChange(changedFinal, mOp);
 			}
 		}
+	}
+
+	public boolean isThemeApk(final String pkg) {
+		if (pkg.startsWith("com.leo.theme")) {
+			return true; // add app list
+		} else {
+			return false;
+		}
+
 	}
 
 	public static class AppComparator implements Comparator<BaseInfo> {

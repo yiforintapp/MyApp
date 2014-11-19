@@ -45,7 +45,7 @@ public class BaseActivity extends Activity implements ILock {
     }
 	@Override
 	protected void onStart() {
-		FlurryAgent.onStartSession(this, "QCKRJN2WQNJN9QBKS5DD");
+		FlurryAgent.onStartSession(this, "N5ZHBYQH7FT5XBY52H7M");
 		super.onStart();
 	}
 

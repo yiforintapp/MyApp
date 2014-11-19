@@ -3,25 +3,10 @@ package com.leo.appmaster.applocker;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.logic.LockHandler;
-import com.leo.appmaster.applocker.service.LockService;
-import com.leo.appmaster.fragment.GestureLockFragment;
-import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.fragment.PasswdLockFragment;
-import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.LeoPopMenu;
-import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
-import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
-import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.FastBlur;
-import com.leo.appmaster.utils.LeoLog;
-
-import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -36,10 +21,32 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
+import com.leo.appmaster.applocker.logic.LockHandler;
+import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.fragment.GestureLockFragment;
+import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.fragment.PasswdLockFragment;
+import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.theme.ThemeUtils;
+import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.LeoPopMenu;
+import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
+import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
+import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.FastBlur;
+import com.leo.appmaster.utils.LeoLog;
+import com.leoers.leoanalytics.LeoStat;
 
 public class LockScreenActivity extends FragmentActivity implements
 		OnClickListener, OnDiaogClickListener {
@@ -59,17 +66,38 @@ public class LockScreenActivity extends FragmentActivity implements
 	private LeoDoubleLinesInputDialog mDialog;
 	private EditText mEtQuestion, mEtAnwser;
 	private String mLockTitle;
+	private ImageView spiner;
+	private String number;
+
+	private boolean toTheme;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lock_setting);
+		number = AppMasterApplication.number;
+		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+		spiner = (ImageView) findViewById(R.id.image1);
+		if (number.equals("0")) {
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.themetip_spiner_press));
+		} else {
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.theme_spiner_press));
+		}
 		handleIntent();
 		initUI();
 	}
 
 	@Override
 	protected void onResume() {
+		if (number.equals("0")) {
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.themetip_spiner_press));
+		} else {
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.theme_spiner_press));
+		}
 		super.onResume();
 	}
 
@@ -82,20 +110,21 @@ public class LockScreenActivity extends FragmentActivity implements
 		Intent intent = getIntent();
 		int type = intent.getIntExtra(EXTRA_UKLOCK_TYPE,
 				LockFragment.LOCK_TYPE_PASSWD);
+		mFromType = intent.getIntExtra(EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF);
+
 		if (type == LockFragment.LOCK_TYPE_PASSWD) {
 			mFragment = new PasswdLockFragment();
 		} else {
 			mFragment = new GestureLockFragment();
 		}
-		mFromType = intent.getIntExtra(EXTRA_UNLOCK_FROM,
-				LockFragment.FROM_SELF);
 
-		if (mFromType == LockFragment.FROM_OTHER
-				|| mFromType == LockFragment.FROM_SCREEN_ON) {
+		if (!ThemeUtils.checkThemeNeed(this)
+				&& (mFromType == LockFragment.FROM_OTHER || mFromType == LockFragment.FROM_SCREEN_ON)) {
 			BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
 					getPackageManager(),
 					intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG));
-
+			// createChoiceDialog();
 			setAppInfoBackground(bd);
 		}
 		mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
@@ -105,6 +134,45 @@ public class LockScreenActivity extends FragmentActivity implements
 		mFragment.setPackage(mToPackage);
 		mFragment.setActivity(mToActivity);
 	}
+
+	// private void createChoiceDialog() {
+	// final String[] valueString = getResources().getStringArray(
+	// R.array.det_lock_time_items);
+	//
+	// AlertDialog scaleIconListDlg = new AlertDialog.Builder(this)
+	// .setTitle(R.string.change_lock_time)
+	// .setSingleChoiceItems(R.array.lock_time_entrys, -1,
+	// new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog,
+	// int whichButton) {
+	// AppMasterPreference.getInstance(
+	// LockScreenActivity.this)
+	// .setRelockTimeout(
+	// valueString[whichButton]);
+	// SDKWrapper.addEvent(LockScreenActivity.this,
+	// LeoStat.P1, "lock_setting",
+	// valueString[whichButton]);
+	// dialog.dismiss();
+	// }
+	// })
+	// .setNegativeButton(R.string.cancel,
+	// new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog,
+	// int whichButton) {
+	// /* User clicked No so do some stuff */
+	// }
+	// }).create();
+	// TextView title = new TextView(this);
+	// title.setText(getString(R.string.change_lock_time));
+	// title.setTextColor(Color.WHITE);
+	// title.setTextSize(20);
+	// title.setPadding(DipPixelUtil.dip2px(this, 20),
+	// DipPixelUtil.dip2px(this, 10), 0, DipPixelUtil.dip2px(this, 10));
+	// title.setBackgroundColor(getResources().getColor(
+	// R.color.dialog_title_area_bg));
+	// scaleIconListDlg.setCustomTitle(title);
+	// scaleIconListDlg.show();
+	// }
 
 	private void setAppInfoBackground(Drawable drawable) {
 		int h = drawable.getIntrinsicHeight() * 9 / 10;
@@ -129,7 +197,7 @@ public class LockScreenActivity extends FragmentActivity implements
 
 	@Override
 	protected void onDestroy() {
-		LeoLog.e("LockScreenActivity", "onDestroy");
+		LeoLog.d("LockScreenActivity", "onDestroy");
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		if (mAppBaseInfoLayoutbg != null) {
@@ -140,29 +208,54 @@ public class LockScreenActivity extends FragmentActivity implements
 
 	@Override
 	protected void onStop() {
-		super.onStop();
 		LeoLog.d("LockScreenActivity", "onStop" + "      mFromType = "
 				+ mFromType);
+		super.onStop();
 		if (mFromType == LockFragment.FROM_OTHER) {
-			if (!AppMasterPreference.getInstance(this).isAutoLock()) {
+			if (!AppMasterPreference.getInstance(this).isAutoLock() || toTheme) {
+				toTheme = false;
 				return;
 			}
 			finish();
 		}
 	}
 
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+	}
+
 	private void initUI() {
-		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			mTtileBar.setOptionImage(R.drawable.setting_selector);
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
 			mTtileBar.setOptionListener(this);
 		}
+		mTtileBar.setSpinerVibility(View.VISIBLE);
+		mTtileBar.setSpinerListener(this);
+
+		spiner.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(LockScreenActivity.this,
+						LockerTheme.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
+						| Intent.FLAG_ACTIVITY_NEW_TASK);
+				SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1, "theme_enter", "unlock");
+
+				toTheme = true;
+
+				startActivityForResult(intent, 0);
+				AppMasterApplication.setSharedPreferencesNumber("1");
+				number = "1";
+			}
+		});
 
 		if (mFromType == LockFragment.FROM_SELF_HOME
 				|| mFromType == LockFragment.FROM_SELF) {
-			mTtileBar.openBackView();
+			mTtileBar.setBackViewListener(this);
 			if (TextUtils.isEmpty(mLockTitle)) {
 				mTtileBar.setTitle(R.string.app_lock);
 			} else {
@@ -199,6 +292,9 @@ public class LockScreenActivity extends FragmentActivity implements
 			intent.setClassName(this, mToActivity);
 			this.startActivity(intent);
 		}
+
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		pref.setUnlockCount(pref.getUnlockCount() + 1);
 		finish();
 	}
 
@@ -252,6 +348,8 @@ public class LockScreenActivity extends FragmentActivity implements
 							int position, long id) {
 						if (position == 0) {
 							findPasswd();
+						} else if (position == 1) {
+
 						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
@@ -261,11 +359,30 @@ public class LockScreenActivity extends FragmentActivity implements
 			mLeoPopMenu.showPopMenu(this,
 					mTtileBar.findViewById(R.id.tv_option_image), null, null);
 			break;
-
+		case R.id.layout_title_back:
+			onBack();
+			break;
 		default:
 			break;
 		}
 
+	}
+
+	private void onBack() {
+		Intent intent = new Intent();
+		if (mFromType == LockFragment.FROM_OTHER
+				|| mFromType == LockFragment.FROM_SCREEN_ON) {
+
+			intent.setAction(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+		} else {
+
+			intent.setClassName(getApplicationContext(),
+					HomeActivity.class.getName());
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		}
+		startActivity(intent);
+		finish();
 	}
 
 	private List<String> getPopMenuItems() {
@@ -296,5 +413,9 @@ public class LockScreenActivity extends FragmentActivity implements
 		} else if (which == 0) { // cancel
 			mDialog.dismiss();
 		}
+	}
+
+	public int getFromType() {
+		return mFromType;
 	}
 }

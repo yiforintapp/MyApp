@@ -60,7 +60,6 @@
     <string name="clean_memory">一键加速</string>
     <string name="clean_result">清理内存</string>
     <string name="best_mem">已经是最佳状态，无需再次加速</string>
-
     <string name="lock_count">"已加锁"</string>
     <string name="unlock_count">"未加锁"</string>
     <string name="lockscreen_access_pattern_detected">"图案绘制完成"</string>
@@ -136,6 +135,8 @@
     <string name="app_permission3">重要权限</string>
     <string name="app_setting_update">检查升级</string>
     <string name="feedback">用户反馈</string>
+    <string name="grade">给我们评分</string>
+    <string name="grade_tip">感谢您使用应用管理大师，为了让我们更加进步，请您为我们评分吧！</string>
     <string name="app_setting_about">关于</string>
     <string name="forbid_uninstall">禁止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>
@@ -152,7 +153,6 @@
     <string name="app_setting_has_update">&#160;&#160;&#160;检查升级 <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">密保问题不能超过40个字符，请重新输入</string>
     <string name="anwser_charsize_tip">密保答案不能超过40个字符，请重新输入</string>
-    
     <string name="query_delete">是否删除%1$s的备份文件，删除后不可恢复！</string>
     <string name="backuped_count">成功备份%1$d个文件。存放位置：%2$s</string>
     <string name="feedback_commit">提交</string>
@@ -167,7 +167,6 @@
     <string name="category_suggest">给我们建议</string>
     <string name="feedback_success_title">提交成功</string>
     <string name="feedback_success_content">感谢您的反馈，我们会尽快处理您的问题</string>
-        
     <string name="app_image_hide">图片隐藏</string>
     <string name="app_no_image_hide">请点击添加按钮，添加需要隐藏的图片</string>
     <string name="app_no_image">没有可添加的图片</string>
@@ -184,17 +183,16 @@
     <string name="app_unhide_pictures_dialog_content">是否取消隐藏你所选的图片？</string>
     <string name="app_hide_pictures_dialog_content">是否隐藏你所选的图片？</string>
     <string name="app_hide_image_fail">该图片没有写入权限，隐藏失败！</string>
-    
     <string name="lock_guide">点击应用，轻松加锁</string>
     <string name="start_guide">常用应用，推荐加锁</string>
-    
-        <!-- App lock -->
+
+    <!-- App lock -->
     <string-array name="sort_type">
         <item>默认排序</item>
         <item>应用名称排序</item>
         <item>安装时间排序</item>
     </string-array>
-    
+
     <!-- 版权 -->
     <string name="about_copy">Copyright © 2014 LEO Network Technology. All Rights Reserved</string>
     <!-- 应用墙 -->
@@ -203,4 +201,28 @@
     <string name="app_wall_click">点击重试</string>
     <!-- 隐私策略 -->
     <string name="protocolBar">隐私保护协议</string>
+    <string name="lock_more">加锁更多</string>
+    <string name="lock">加锁</string>
+    <string name="det_change_lock_time">发现您的应用被频繁锁定，是否更改锁定时间？</string>
+
+    <string-array name="det_lock_time_items">
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+    <!-- LockerTheme -->
+    <string name="localtheme">本地</string>
+    <string name="onlinetheme">在线</string>
+    <string name="lockerThemePoit">应用锁主题<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
+    <string name="lockerTheme">应用锁主题</string>
+    <string name="defaultTheme">默认</string>
+    <string name="moonightTheme">夜晚</string>
+    <string name="orangeTheme">切水果</string>
+    <string name="ParadoxTheme">空间矛盾</string>
+	<string name="apply_dialog">是否将解锁界面更换为该主题？</string>
+	<string name="locker_apply">应用</string>
+	<string name="locker_uninstall">卸载</string>
+	<string name="locker_cancel">取消</string>
+	<string name="christmas_theme">圣诞节</string>
+	
+
 </resources>

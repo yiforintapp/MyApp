@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="13"
+    android:versionCode="14"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -20,6 +21,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission
+        android:name="android.permission.DELETE_PACKAGES"
+        tools:ignore="ProtectedPermissions" />
 
     <!-- 统计sdk start -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -51,8 +55,7 @@
         android:theme="@style/activity_theme" >
         <activity
             android:name="com.leo.appmaster.home.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -65,9 +68,20 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.applocker.LockSettingActivity"
+            android:name="com.leo.appmaster.home.GooglePlayGuideActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.home.GradeTipActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.LockSettingActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
         <activity
@@ -197,6 +211,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
             android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.lockertheme.LockerTheme"
+            android:exported="true"
+            android:screenOrientation="portrait" >
+            <category android:name="android.intent.category.DEFAULT" />
         </activity>
 
         <service

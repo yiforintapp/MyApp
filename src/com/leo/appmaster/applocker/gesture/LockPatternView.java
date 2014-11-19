@@ -1,9 +1,12 @@
 package com.leo.appmaster.applocker.gesture;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.Resources.NotFoundException;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,19 +16,31 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Debug;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.Gallery;
+import android.widget.ImageView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.lockertheme.ResourceName;
+import com.leo.appmaster.theme.LeoResources;
+import com.leo.appmaster.theme.ThemeUtils;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LockPatternUtils;
-
+import com.leo.appmaster.applocker.LockScreenActivity;
 /**
  * Displays and detects the user's unlock attempt, which is a drag of a finger
  * across 9 regions of the screen.
@@ -35,7 +50,7 @@ import com.leo.appmaster.utils.LockPatternUtils;
  * 
  * @author way
  */
-public class LockPatternView extends View {
+public class LockPatternView extends ViewGroup {
 	private static final String TAG = "LockPatternView";
 	// Aspect to use when rendering this view
 	private static final int ASPECT_SQUARE = 0; // View will be the minimum of
@@ -54,6 +69,14 @@ public class LockPatternView extends View {
 	// TODO: make this common with PhoneWindow
 	static final int STATUS_BAR_HEIGHT = 25;
 
+	private static final int BUTTON_STATE_NAMAL = 0;
+    private static final int BUTTON_STATE_DOWN = 1;
+    private static final int BUTTON_STATE_UP = 2;
+    private static final int BUTTON_STATE_MOVE_LEFT = 3;
+    private static final int BUTTON_STATE_MOVE_RIGHT = 4;
+    
+    private int mGestureState = BUTTON_STATE_NAMAL;
+	
 	/**
 	 * How many milliseconds we spend animating each circle of a lock pattern if
 	 * the animating mode is set. The entire animation should take this constant
@@ -107,6 +130,32 @@ public class LockPatternView extends View {
 	private int mAspect;
 	private final Matrix mCircleMatrix = new Matrix();
 
+    private String mThemepkgName = AppMasterApplication.getSelectedTheme();
+    private Resources mThemeRes = null;
+    private int mGesturePressAnimRes = 0;
+    private int mGestureLeftRes = 0;
+    private int mGestureVerticalRes = 0;
+    private int mGestureRightRes = 0;
+    private Drawable mGestureLeftDrawable;
+    private Drawable mGestureRightDrawable;
+    private Drawable mGestureVerticalDrawable;
+    
+    private int mGestureLeftAnimRes = 0;
+    private int mGestureVerticalAnimRes = 0;
+    private int mGestureRightAnimRes = 0;
+	private ImageView[] mButtonViews = new ImageView[9];
+    private AnimationDrawable[] mPressAnimDrawable = new AnimationDrawable[9];
+    private AnimationDrawable mUpAnimDrawable;
+	private int[] mButtonViewRes ={0,0,0,0,0,0,0,0,0};
+	private int mNormalViewRes = 0;
+    private int mGestureLineColorRes = 0;
+    private int mColor = 0xafffffff;
+	
+	private Cell mLastParten;
+	private Cell mCurrParten;
+	
+    private int mFrom = LockFragment.FROM_SELF;
+	
 	/**
 	 * Represents a cell in the 3 X 3 matrix of the unlock pattern view.
 	 */
@@ -261,12 +310,15 @@ public class LockPatternView extends View {
 		// bitmaps have the size of the largest bitmap in this group
 		final Bitmap bitmaps[] = { mBitmapCircleDefault, mBitmapCircleGreen,
 				mBitmapCircleRed };
-		for (Bitmap bitmap : bitmaps) {
-			mBitmapWidth = Math.max(mBitmapWidth, bitmap.getWidth());
-			mBitmapHeight = Math.max(mBitmapHeight, bitmap.getHeight());
-		}
+//		for (Bitmap bitmap : bitmaps) {
+//			mBitmapWidth = Math.max(mBitmapWidth, bitmap.getWidth());
+//			mBitmapHeight = Math.max(mBitmapHeight, bitmap.getHeight());
+//		}
+		mBitmapWidth = (int)mContext.getResources().getDimension(R.dimen.lock_pattern_button_width);
+		mBitmapHeight = mBitmapWidth;
 		a.recycle();
-
+		
+		initChildView();
 	}
 
 	private Bitmap getBitmapFor(int resId) {
@@ -369,6 +421,12 @@ public class LockPatternView extends View {
 			mOnPatternListener.onPatternCellAdded(mPattern);
 		}
 		sendAccessEvent();
+	        if (mPattern.size() == 1) {
+	            mLastParten = mCurrParten = mPattern.get(0);
+	        } else if (mPattern.size() > 1) {
+	            mLastParten = mPattern.get(mPattern.size() - 2);
+	            mCurrParten = mPattern.get(mPattern.size() - 1);
+	        }
 	}
 
 	private void notifyPatternStarted() {
@@ -376,6 +434,7 @@ public class LockPatternView extends View {
 			mOnPatternListener.onPatternStart();
 		}
 		sendAccessEvent();
+
 	}
 
 	private void notifyPatternDetected() {
@@ -418,8 +477,41 @@ public class LockPatternView extends View {
 				mPatternDrawLookup[i][j] = false;
 			}
 		}
+
+	}
+	
+	/**
+	 * 
+	 */
+	private void clearGifAnimation() {
+	       if (!needChangeTheme()) return;
+	       for (AnimationDrawable button : mPressAnimDrawable) {
+	            if (button != null) {
+	                button.stop();
+	            }
+	        }
+	    if (mThemeRes != null) {
+	        if (mButtonViewRes[0] <= 0) {
+	            for (int i = 0; i < mButtonViews.length; i++) {
+	                mButtonViews[i].setBackgroundDrawable(mThemeRes.getDrawable(mNormalViewRes));
+	            }
+	        } else {
+	            for (int i = 0; i < mButtonViews.length; i++) {
+	                mButtonViews[i].setBackgroundDrawable(mThemeRes.getDrawable(mButtonViewRes[i]));
+	            }
+	        }
+	    }
 	}
 
+	public void cleangifResource() {
+	    if (!needChangeTheme()) return;
+	    clearGifAnimation();
+//	    
+//        for (GifDrawable button : mGifDrawables) {
+//            button.recycle();
+//        }
+	}
+	
 	/**
 	 * Disable input (for instance when displaying a message that will timeout
 	 * so user doesn't get view into messy state).
@@ -435,7 +527,84 @@ public class LockPatternView extends View {
 		mInputEnabled = true;
 	}
 
-	@Override
+	private void initChildView(){
+        int length = mButtonViews.length;
+        int width = (int)mContext.getResources().getDimension(R.dimen.lock_pattern_button_width);
+        if (mContext instanceof LockScreenActivity) {
+            mFrom = ((LockScreenActivity)mContext).getFromType();
+        }
+
+        if (needChangeTheme()) {
+            Context themeContext = getThemepkgConotext(mThemepkgName);
+            mThemeRes = themeContext.getResources();
+            mGesturePressAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", ResourceName.THEME_PRESS_ANIM);
+            mGestureLeftAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", ResourceName.THEME_LEFT_ANIM);
+            mGestureRightAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", ResourceName.THEME_RIGHT_ANIM);
+            mGestureVerticalAnimRes = ThemeUtils.getValueByResourceName(themeContext, "anim", ResourceName.THEME_VERTICAL_ANIM);
+            mGestureLeftRes = ThemeUtils.getValueByResourceName(themeContext, "drawable",ResourceName.THEME_LEFT_ACTIVE);
+            if (mGestureLeftRes > 0) {
+                mGestureLeftDrawable = mThemeRes.getDrawable(mGestureLeftRes);
+            }
+            mGestureVerticalRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_VERTICAL_ACTIVE);
+            if (mGestureVerticalRes > 0) {
+                mGestureVerticalDrawable = mThemeRes.getDrawable(mGestureVerticalRes);
+            }
+            mGestureRightRes = ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_GESTRUE_RIGHT_ACTIVE);
+            if (mGestureRightRes > 0) {
+                mGestureRightDrawable = mThemeRes.getDrawable(mGestureRightRes);
+            }
+            int upAnimationRes = ThemeUtils.getValueByResourceName(themeContext, "anim",ResourceName.THEME_GESTRUE_UP_ANIM);
+            if (upAnimationRes > 0) {
+                mUpAnimDrawable = (AnimationDrawable) mThemeRes.getDrawable(upAnimationRes);
+            }
+            
+            mGestureLineColorRes = ThemeUtils.getValueByResourceName(themeContext, "color",ResourceName.THEME_GESTRUE_LINE_COLOR);
+            if (mGestureLineColorRes > 0) {
+                mColor = mThemeRes.getColor(mGestureLineColorRes);
+            }
+            initGestureButtonByTmeme(themeContext);
+        } else {
+            for (int i = 0; i < length; i++) {
+                mButtonViews[i] = new ImageView(mContext);
+                mButtonViews[i].setScaleType(ImageView.ScaleType.FIT_XY);
+                mButtonViews[i].setLayoutParams(new Gallery.LayoutParams(width, width));
+                mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                addView(mButtonViews[i]);
+            }
+        }
+
+	}
+
+	private void initGestureButtonByTmeme(Context themeContext) {
+        int length = mButtonViews.length;
+        int width = (int)mContext.getResources().getDimension(R.dimen.lock_pattern_button_width);
+        
+        mNormalViewRes =  ThemeUtils.getValueByResourceName(themeContext, "drawable", ResourceName.THEME_GESTRUE_NORMAL);
+        
+        for (int i = 0; i < mButtonViewRes.length; i++) {
+            mButtonViewRes[i] = ThemeUtils.getValueByResourceName(themeContext, "drawable", "gesture_"+(i + 1)+"_normal");
+        }
+        
+        for (int i = 0; i < length; i++) {
+            mButtonViews[i] = new ImageView(mContext);
+            mButtonViews[i].setScaleType(ImageView.ScaleType.FIT_XY);
+            mButtonViews[i].setLayoutParams(new Gallery.LayoutParams(width, width));
+            // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+            if (mGesturePressAnimRes > 0) {
+                mPressAnimDrawable[i] = (AnimationDrawable) mThemeRes.getDrawable(mGesturePressAnimRes);
+            }
+            if (mButtonViewRes[i] > 0){
+                mButtonViews[i].setBackgroundDrawable( mThemeRes.getDrawable(mButtonViewRes[i]));
+            } else if (mNormalViewRes > 0) {
+                mButtonViews[i].setBackgroundDrawable( mThemeRes.getDrawable(mNormalViewRes));
+            } else {
+                mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+            }
+            addView(mButtonViews[i]);
+        }
+	}
+	
+    @Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		final int width = w - getPaddingLeft() - getPaddingRight();
 		mSquareWidth = width / 3.0f;
@@ -491,6 +660,9 @@ public class LockPatternView extends View {
 			viewWidth = Math.min(viewWidth, viewHeight);
 			break;
 		}
+		
+		measureChildren(widthMeasureSpec, heightMeasureSpec);
+		
 		setMeasuredDimension(viewWidth, viewHeight);
 	}
 
@@ -618,22 +790,28 @@ public class LockPatternView extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (!mInputEnabled || !isEnabled()) {
+		    mGestureState = BUTTON_STATE_NAMAL;
 			return false;
 		}
 
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
+            mGestureState = BUTTON_STATE_DOWN;
 			handleActionDown(event);
 			return true;
 		case MotionEvent.ACTION_UP:
+            mGestureState = BUTTON_STATE_UP;
+            clearGifAnimation();
 			handleActionUp(event);
 			return true;
 		case MotionEvent.ACTION_MOVE:
 			handleActionMove(event);
 			return true;
 		case MotionEvent.ACTION_CANCEL:
+            mGestureState = BUTTON_STATE_UP;
 			resetPattern();
 			mPatternInProgress = false;
+ 	        clearGifAnimation();
 			notifyPatternCleared();
 			if (PROFILE_DRAWING) {
 				if (mDrawingProfilingStarted) {
@@ -666,7 +844,7 @@ public class LockPatternView extends View {
 			// note current x and y for rubber banding of in progress patterns
 			final float dx = Math.abs(x - mInProgressX);
 			final float dy = Math.abs(y - mInProgressY);
-			if (dx + dy > mSquareWidth * 0.01f) {
+			if (dx + dy > mSquareWidth * 0.04f) {
 				float oldX = mInProgressX;
 				float oldY = mInProgressY;
 
@@ -707,9 +885,9 @@ public class LockPatternView extends View {
 
 					// Invalidate between the pattern's last cell and the
 					// current location
-					invalidateRect.set((int) (left - radius),
-							(int) (top - radius), (int) (right + radius),
-							(int) (bottom + radius));
+					invalidateRect.set((int) (left - radius * 2),
+							(int) (top -  radius * 2), (int) (right +  radius * 2),
+							(int) (bottom +  radius * 2));
 
 					if (startX < oldX) {
 						left = startX;
@@ -729,9 +907,9 @@ public class LockPatternView extends View {
 
 					// Invalidate between the pattern's last cell and the
 					// previous location
-					invalidateRect.union((int) (left - radius),
-							(int) (top - radius), (int) (right + radius),
-							(int) (bottom + radius));
+					invalidateRect.union((int) (left -  radius * 2),
+							(int) (top -  radius * 2), (int) (right +  radius * 2),
+							(int) (bottom +  radius * 2));
 
 					// Invalidate between the pattern's new cell and the
 					// pattern's previous cell
@@ -805,6 +983,7 @@ public class LockPatternView extends View {
 
 	private void handleActionDown(MotionEvent event) {
 		resetPattern();
+		
 		final float x = event.getX();
 		final float y = event.getY();
 		final Cell hitCell = detectAndAddHit(x, y);
@@ -846,7 +1025,7 @@ public class LockPatternView extends View {
 	}
 
 	@Override
-	protected void onDraw(Canvas canvas) {
+	protected void dispatchDraw(Canvas canvas) {
 		final ArrayList<Cell> pattern = mPattern;
 		final int count = pattern.size();
 		final boolean[][] drawLookup = mPatternDrawLookup;
@@ -946,27 +1125,140 @@ public class LockPatternView extends View {
 			if (mPatternDisplayMode == DisplayMode.Wrong)
 				mPathPaint.setColor(0x7fbb0000);
 			else
-				mPathPaint.setColor(0xafffffff);
+				mPathPaint.setColor(mColor);
 			canvas.drawPath(currentPath, mPathPaint);
 		}
 
 		// draw the circles
-		final int paddingTop = getPaddingTop();
-		final int paddingLeft = getPaddingLeft();
+//		final int paddingTop = getPaddingTop();
+//		final int paddingLeft = getPaddingLeft();
+//
+//		for (int i = 0; i < 3; i++) {
+//			float topY = paddingTop + i * squareHeight;
+//			// float centerY = mPaddingTop + i * mSquareHeight + (mSquareHeight
+//			// / 2);
+//			for (int j = 0; j < 3; j++) {
+//				float leftX = paddingLeft + j * squareWidth;
+//				drawCircle(canvas, (int) leftX, (int) topY, drawLookup[i][j]);
+//			}
+//		}
 
-		for (int i = 0; i < 3; i++) {
-			float topY = paddingTop + i * squareHeight;
-			// float centerY = mPaddingTop + i * mSquareHeight + (mSquareHeight
-			// / 2);
-			for (int j = 0; j < 3; j++) {
-				float leftX = paddingLeft + j * squareWidth;
-				drawCircle(canvas, (int) leftX, (int) topY, drawLookup[i][j]);
-			}
-		}
+        mPaint.setFilterBitmap(oldFlag); // restore default flag
+        if (needChangeTheme()) {
+            setCirclesResource(drawLookup);
+        } else {
+            int length = mButtonViews.length;
+            for (int i = 0; i < length; i++) {
 
-		mPaint.setFilterBitmap(oldFlag); // restore default flag
+                if (!drawLookup[i / 3][i % 3]
+                        || (mInStealthMode && mPatternDisplayMode != DisplayMode.Wrong)) {
+                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                } else if (mPatternInProgress) {
+                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point);
+                }/* else if (mPatternDisplayMode == DisplayMode.Wrong) {
+                    mButtonViews[i] .setBackgroundResource(R.drawable.gesture_pattern_selected_wrong);
+                } else if (mPatternDisplayMode == DisplayMode.Correct
+                        || mPatternDisplayMode == DisplayMode.Animate) {
+                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                } else {
+                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                }*/
+            }
+        }
+        super.dispatchDraw(canvas);
 	}
 
+	
+	
+	private void setCirclesResource(boolean[][] partOfPattern) {
+	       int length = mButtonViews.length;
+
+	        for (int i = 0; i < length; i++) {
+
+//	            if (!partOfPattern[i / 3][ i % 3] || (mInStealthMode && mPatternDisplayMode != DisplayMode.Wrong)) {
+//                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+//	            } else if (mPatternInProgress) {
+//                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point);
+//	            } else if (mPatternDisplayMode == DisplayMode.Wrong) {
+//                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_pattern_selected_wrong);
+//	            } else if (mPatternDisplayMode == DisplayMode.Correct || mPatternDisplayMode == DisplayMode.Animate) {
+//                    mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+//	            } else {
+//	                mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+//	            }
+	             
+            if (!partOfPattern[i / 3][i % 3]) {
+                // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+            } else if (mGestureState == BUTTON_STATE_DOWN || mPatternInProgress) {
+                // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point);
+                if (mLastParten != null && mCurrParten != null) {
+                    if (mLastParten == mCurrParten && mCurrParten.getRow() == i / 3 && mCurrParten.getColumn() == i % 3) {
+                        
+                        if (!mPressAnimDrawable[i].isRunning()) {
+                            mButtonViews[i].setBackgroundDrawable(mPressAnimDrawable[i]);
+                            mPressAnimDrawable[i].start();
+                        }
+                    } else {
+                        if (mLastParten.getRow() == i / 3 && mLastParten.getColumn() == i % 3) {
+                            
+                            if (mLastParten.getColumn() == mCurrParten.getColumn()) {
+                                mPressAnimDrawable[i].stop();
+                                if (mGestureVerticalAnimRes > 0) {
+                                    AnimationDrawable anim = (AnimationDrawable)mThemeRes.getDrawable(mGestureVerticalAnimRes);
+                                    mButtonViews[i].setBackgroundDrawable(anim);
+                                    anim.start();
+                                } else if (mGestureVerticalDrawable != null) {
+                                    mButtonViews[i].setBackgroundDrawable(mGestureVerticalDrawable);
+                                } else {
+                                    
+                                }
+                            } else if (mLastParten.getColumn() < mCurrParten.getColumn()) {
+                                mPressAnimDrawable[i].stop();
+                                if (mGestureRightAnimRes > 0) {
+                                    AnimationDrawable anim = (AnimationDrawable)mThemeRes.getDrawable(mGestureRightAnimRes);
+                                    mButtonViews[i].setBackgroundDrawable(anim);
+                                    anim.start();
+                                } else if (mGestureRightDrawable != null) {
+                                    mButtonViews[i].setBackgroundDrawable(mGestureRightDrawable);
+                                } else {
+                                    
+                                }
+                            } else if (mLastParten.getColumn() > mCurrParten.getColumn()) {
+                                mPressAnimDrawable[i].stop();
+                                if (mGestureLeftAnimRes > 0) {
+                                    AnimationDrawable anim = (AnimationDrawable)mThemeRes.getDrawable(mGestureLeftAnimRes);
+                                    mButtonViews[i].setBackgroundDrawable(anim);
+                                    anim.start();
+                                } else if (mGestureLeftDrawable != null) {
+                                    mButtonViews[i].setBackgroundDrawable(mGestureLeftDrawable);
+                                } else {
+                                    
+                                }
+                            }
+                            mLastParten = mCurrParten;
+                        }
+                        if (mCurrParten.getRow() == i / 3 && mCurrParten.getColumn() == i % 3) {
+                            if (!mPressAnimDrawable[i].isRunning()) {
+                                mButtonViews[i].setBackgroundDrawable(mPressAnimDrawable[i]);
+                                mPressAnimDrawable[i].start();
+                            }
+                        }
+                    }
+                }
+
+            } else if (mGestureState == BUTTON_STATE_UP) {
+                // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                if(mCurrParten.getRow() == i / 3 && mCurrParten.getColumn() == i % 3) {
+                    if (mUpAnimDrawable != null) {
+                        mButtonViews[i].setImageDrawable(mUpAnimDrawable);
+                        mUpAnimDrawable.start();
+                    }
+                }
+            }
+	            
+	    }
+	}
+	
 	/**
 	 * @param canvas
 	 * @param leftX
@@ -1123,4 +1415,46 @@ public class LockPatternView extends View {
 			}
 		};
 	}
+
+	@Override
+    public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs)
+    {
+        return new MarginLayoutParams(getContext(), attrs);
+    }
+	
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        final int paddingTop = getPaddingTop();
+        final int paddingLeft = getPaddingLeft();
+        int cWidth = getChildAt(0).getMeasuredWidth();
+        int cHeight= getChildAt(0).getMeasuredHeight();
+        for (int i = 0; i < 3; i++) {
+            float topY = paddingTop + i * mSquareHeight;
+            topY += (mSquareHeight - cHeight) / 2;
+            for (int j = 0; j < 3; j++) {
+                float leftX = paddingLeft + j * mSquareWidth;
+                View childView = getChildAt(i * 3 + j);
+                cWidth = childView.getMeasuredWidth();
+                cHeight = childView.getMeasuredHeight();
+                leftX += (mSquareWidth - cWidth) / 2;
+                
+                childView.layout((int)leftX, (int)topY, (int)leftX + cWidth, (int)topY + cHeight);;
+            }
+        }
+    }
+    
+    public void setLockFrom(int from) {
+        mFrom = from;
+    }
+    
+    private Context getThemepkgConotext(String pkgName) {
+        Context context= AppMasterApplication.getInstance();
+        
+        Context themeContext = LeoResources.getThemeContext(context,  pkgName);
+        return themeContext;
+    }
+    
+    private boolean needChangeTheme() {
+        return  ThemeUtils.checkThemeNeed(mContext) &&  (mFrom == LockFragment.FROM_OTHER || mFrom == LockFragment.FROM_SCREEN_ON);
+    }
 }

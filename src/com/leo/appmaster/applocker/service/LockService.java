@@ -60,7 +60,6 @@ public class LockService extends Service {
 			if (intent.getBooleanExtra("lock_service", true)) {
 				if (!mServiceStarted) {
 					startLockService();
-
 				}
 			} else {
 				stopLockService();

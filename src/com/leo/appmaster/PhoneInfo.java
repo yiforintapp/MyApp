@@ -90,7 +90,6 @@ public class PhoneInfo {
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		String simoperator = tm.getSimOperator();
 
-		LeoLog.e(TAG, "simperator :" + simoperator);
 		String[] liantong = { "46001", "46006" };
 		String[] yidong = { "46000", "46002", "46007" };
 		String[] dianxin = { "46003", "46005" };

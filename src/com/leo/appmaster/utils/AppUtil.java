@@ -19,6 +19,18 @@ public class AppUtil {
 		}
 		return false;
 	}
+	
+	public static boolean appInstalled(Context ctx, String pkg) {
+		
+		PackageManager pm = ctx.getPackageManager();
+		try {
+			pm.getApplicationInfo(pkg, PackageManager.GET_ACTIVITIES);
+			return true;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	public static ApplicationInfo getApplicationInfo(String pkg, Context ctx) {
 		ApplicationInfo info = null;

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Spanned;
+import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -71,7 +72,6 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         // IUIHelper.TYPE_CHECKING);
         mUIType = mUIHelper.getLayoutType();
         mParam = mUIHelper.getLayoutParam();
-        LeoLog.e(TAG, "mUIType=" + mUIType);
         showView(mUIType, mParam);
         super.onResume();
     }
@@ -157,6 +157,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
+        tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
         tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         ImageView iv = (ImageView) findViewById(R.id.dlg_left_icon);
@@ -343,6 +344,9 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
+        tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
+        tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         TextView tvYes = (TextView) findViewById(R.id.dlg_right_btn);
         tvYes.setText(getString(R.string.do_update));
         tvYes.setOnClickListener(new View.OnClickListener() {

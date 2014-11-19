@@ -3,15 +3,19 @@ package com.leo.appmaster.home;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
+import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.MainViewActivity;
@@ -43,6 +46,7 @@ import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CricleView;
@@ -73,20 +77,47 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 	private LeoPopMenu mLeoPopMenu;
 	private CricleView mCricleView;
-
+	private ImageView spiner;
+	private String themeHome;
+	private SharedPreferences mySharedPreferences;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		 spiner=(ImageView) findViewById(R.id.image1);
 		initUI();
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		// commit feedbacks if any
 		FeedbackHelper.getInstance().tryCommit();
-
 		installShortcut();
 	}
 
-	
+	private void judgeShowGradeTip() {
+		mTtileBar.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				ActivityManager mActivityManager = (ActivityManager) HomeActivity.this
+						.getSystemService(Context.ACTIVITY_SERVICE);
+
+				RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(
+						1).get(0);
+
+				String pkg = HomeActivity.this.getPackageName();
+				if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
+					long count = AppMasterPreference.getInstance(
+							HomeActivity.this).getUnlockCount();
+					boolean haveTip = AppMasterPreference.getInstance(
+							HomeActivity.this).getGoogleTipShowed();
+					if (count >= 5 && !haveTip) {
+						Intent intent = new Intent(HomeActivity.this,
+								GradeTipActivity.class);
+						HomeActivity.this.startActivity(intent);
+					}
+				}
+			}
+		}, 5000);
+	}
+
 	private void installShortcut() {
 		SharedPreferences prefernece = PreferenceManager
 				.getDefaultSharedPreferences(this);
@@ -110,9 +141,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
 			shortcut.putExtra("duplicate", false);
 			shortcut.putExtra("from_shortcut", true);
-
 			sendBroadcast(shortcut);
-
 			prefernece.edit().putBoolean("shortcut", true).commit();
 		}
 	}
@@ -150,14 +179,38 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 		mPressedEffect1 = findViewById(R.id.pressed_effect1);
 		mPressedEffect2 = findViewById(R.id.pressed_effect2);
-
+		
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+		 mySharedPreferences= getSharedPreferences("LockerThemeHome",HomeActivity.this.MODE_WORLD_WRITEABLE);			
+		themeHome=mySharedPreferences.getString("themeHome","0");
+			if (themeHome.equals("0")) {
+				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.themetip_spiner_press));
+			} else {
+				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.theme_spiner_press));
+			}
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionText("");
 		mTtileBar.setOptionImage(R.drawable.setting_btn);
 		mTtileBar.setOptionListener(this);
+		mTtileBar.setSpinerVibility(View.VISIBLE);
+		mTtileBar.setSpinerListener(this);
+		spiner=(ImageView) findViewById(R.id.image1);  
+		spiner.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+	
+				Editor editor=mySharedPreferences.edit();
+				editor.putString("themeHome","1");
+				editor.commit();
+				Intent intent = new Intent(HomeActivity.this,
+						LockerTheme.class);
+				startActivityForResult(intent, 0);
+				themeHome = "1";
+				SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "theme_enter", "home");
+			}
+		});
 
 		calculateAppCount();
 	}
@@ -172,10 +225,19 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
 
+		if (themeHome.equals("0")) {
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.themetip_spiner_press));
+		} else {
+			spiner.setImageDrawable(this.getResources().getDrawable(
+					R.drawable.theme_spiner_press));
+		}
+		
 		updateSettingIcon();
 		setLockedAppCount();
+
+		judgeShowGradeTip();
 		super.onResume();
-		LeoLog.d("HOME", "homepage onResume");
 	}
 
 	private void calculateAppCount() {
@@ -185,14 +247,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	}
 
 	private void setLockedAppCount() {
-	    View v = findViewById(R.id.lock_count_layout);
+		View v = findViewById(R.id.lock_count_layout);
 		int lockedAppCount = AppMasterPreference.getInstance(this)
 				.getLockedAppList().size();
-		if(lockedAppCount == 0){
-		    v.setVisibility(View.INVISIBLE);
-		}else{
-		    v.setVisibility(View.VISIBLE);
-		    mLockedApp.setText(Integer.toString(lockedAppCount));
+		if (lockedAppCount == 0) {
+			v.setVisibility(View.INVISIBLE);
+		} else {
+			v.setVisibility(View.VISIBLE);
+			mLockedApp.setText(Integer.toString(lockedAppCount));
 		}
 	}
 
@@ -292,6 +354,39 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 							Intent intent = new Intent(HomeActivity.this,
 									AboutActivity.class);
 							startActivity(intent);
+						} else if (position == 4) {
+
+							if (AppUtil.appInstalled(getApplicationContext(),
+									"com.android.vending")) {
+								Intent intent = new Intent(Intent.ACTION_VIEW);
+								Uri uri = Uri
+										.parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+								intent.setData(uri);
+								ComponentName cn = new ComponentName(
+										"com.android.vending",
+										"com.google.android.finsky.activities.MainActivity");
+								intent.setComponent(cn);
+								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								startActivity(intent);
+								mPictureHide.postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										Intent intent2 = new Intent(
+												HomeActivity.this,
+												GooglePlayGuideActivity.class);
+										intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										startActivity(intent2);
+									}
+								}, 200);
+							} else {
+								Intent intent = new Intent(Intent.ACTION_VIEW);
+								Uri uri = Uri
+										.parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+								intent.setData(uri);
+								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								startActivity(intent);
+							}
+
 						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
@@ -333,6 +428,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			listItems.add(resources.getString(R.string.app_setting_update));
 		}
 		listItems.add(resources.getString(R.string.app_setting_about));
+		listItems.add(resources.getString(R.string.grade));
 		return listItems;
 	}
 
