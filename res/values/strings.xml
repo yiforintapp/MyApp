@@ -202,8 +202,8 @@
     <string name="start_guide">Most-used Apps</string>
 
     <!-- Theme -->
-    <string name="localtheme">Local Theme</string>
-    <string name="onlinetheme">Online Theme</string>
+    <string name="localtheme">Local</string>
+    <string name="onlinetheme">Online</string>
     <string name="lockerThemePoit">Theme<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="lockerTheme">Theme</string>
     <string name="defaultTheme">Default</string>
