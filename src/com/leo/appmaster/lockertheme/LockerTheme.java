@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -285,11 +286,11 @@ public class LockerTheme extends BaseActivity {
 									.getText(R.string.localtheme));
 							applockreTheme.setThemeImage(applockreTheme
 									.getThemeImage());
-						} else {
+						}/* else {
 							applockreTheme.setFlagName((String) this
 									.getResources().getText(
 											R.string.onlinetheme));
-						}
+						}*/
 					}
 				}
 			} else {
@@ -437,7 +438,7 @@ public class LockerTheme extends BaseActivity {
 				R.string.onlinetheme));
 		orangeTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(orangeTheme);
-
+/*
 		// Theme4
 		AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
 		paradoxTheme.setThemeImage(this.getResources().getDrawable(
@@ -452,7 +453,7 @@ public class LockerTheme extends BaseActivity {
 		paradoxTheme.setFlagName((String) this.getResources().getText(
 				R.string.onlinetheme));
 		paradoxTheme.setIsVisibility(Constants.GONE);
-		mThemes.add(paradoxTheme);
+		mThemes.add(paradoxTheme);*/
 
 		/*
 		 * ----------------------------------------------------------------------
@@ -534,8 +535,7 @@ public class LockerTheme extends BaseActivity {
 											.setFlagName(
 													(String) LockerTheme.this
 															.getResources()
-															.getText(
-																	R.string.localtheme));
+															.getText(R.string.localtheme));
 								}
 							}
 						} else {
