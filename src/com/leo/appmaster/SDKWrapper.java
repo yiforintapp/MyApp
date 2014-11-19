@@ -22,10 +22,17 @@ public class SDKWrapper {
      * 0002a,mobango 
      * 0010a,uc 
      * 0068a,帕尔加特-coo
-     * 0069a,帕尔加特-push
+     * 0069a,帕尔加特-push 
+     * 
+     * 0087a,帕尔加特-A
+     * 0088a,帕尔加特-B 
+     * 0089a,帕尔加特-C 
+     * 0090a,帕尔加特-D
+     * 0091a,帕尔加特-E
      */
     private final static String[] CHANNELS_NEED_MTJ = {
-            "0000a", "0002a", "0010a","0068a","0069a"
+            "0000a", "0002a", "0010a", "0068a", "0069a",
+            "0087a", "0088a", "0089a", "0090a", "0091a"
     };
 
     private static boolean isMTJEnable = false;
@@ -104,7 +111,7 @@ public class SDKWrapper {
         StatService.setSendLogStrategy(ctx, SendStrategyEnum.APP_START, 1, false);
         StatService.setLogSenderDelayed(5);
         // TODO: disable internal log when release
-//         StatService.setDebugOn(true);
+        // StatService.setDebugOn(true);
     }
 
 }
