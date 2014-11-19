@@ -93,8 +93,7 @@ public class LockerTheme extends BaseActivity {
 		initUI();
 		onlineThemes = new ArrayList<String>();
 		localThemes = new ArrayList<String>();
-		mPreference = AppMasterPreference
-				.getInstance(LockerTheme.this);
+		mPreference = AppMasterPreference.getInstance(LockerTheme.this);
 		localThemes = mPreference.getHideThemeList();
 		mThemes = new ArrayList<AppLockerThemeBean>();
 		mThemes.add(getDefaultData());
@@ -115,8 +114,6 @@ public class LockerTheme extends BaseActivity {
 
 				}
 			}
-
-			tryHideThemeApk(temp);
 		} else {
 			number = 0;
 		}
@@ -124,6 +121,7 @@ public class LockerTheme extends BaseActivity {
 		listTheme.setOnItemClickListener(item);
 		getTeme();
 
+		checkSendHideThemeBroadcast(temp);
 	}
 
 	@Override
@@ -131,32 +129,26 @@ public class LockerTheme extends BaseActivity {
 		super.onResume();
 		mThemes = null;
 		mThemes = new ArrayList<AppLockerThemeBean>();
-		localThemes=null;
+		localThemes = null;
 		localThemes = new ArrayList<String>();
-		onlineThemes=null;
+		onlineThemes = null;
 		onlineThemes = new ArrayList<String>();
 		mThemes.add(getDefaultData());
-		mPreference = AppMasterPreference
-				.getInstance(LockerTheme.this);
+		mPreference = AppMasterPreference.getInstance(LockerTheme.this);
 		localThemes = mPreference.getHideThemeList();
 		getData();
 		getOnlineThemePackage();
 		getTeme();
 	}
 
-	public void tryHideThemeApk(String pkg) {
+	public void checkSendHideThemeBroadcast(String pkg) {
+		if (pkg == null)
+			return;
 		if (pkg.startsWith("com.leo.theme")) {
-			PackageManager pm = this.getPackageManager();
-			ComponentName name = new ComponentName(pkg,
-					"com.leo.theme.ThemeActivity");
-			int res = pm.getComponentEnabledSetting(name);
-			if (res == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
-					|| res == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-				LeoLog.d("tryHideThemeApk", "packageName = " + pkg);
-				pm.setComponentEnabledSetting(name,
-						PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-						PackageManager.DONT_KILL_APP);
-			}
+			String action = "disable_theme_" + pkg;
+			LeoLog.e("sendHideThemeBroadcast", action);
+			Intent intent = new Intent(action);
+			this.sendBroadcast(intent);
 		}
 	}
 
@@ -270,7 +262,7 @@ public class LockerTheme extends BaseActivity {
 	 */
 	public void getTeme() {
 		boolean flagPackge = false;
-		AppLockerThemeBean applockreTheme=null;
+		AppLockerThemeBean applockreTheme = null;
 		for (int i = 0; i < localThemes.size(); i++) {
 			Context saveContext = null;
 			try {
@@ -283,20 +275,21 @@ public class LockerTheme extends BaseActivity {
 			boolean flag = onlineThemes.contains(localThemes.get(i));
 			if (flag) {
 				for (int j = 0; j < onlineThemes.size(); j++) {
-					applockreTheme=mThemes.get(j);
+					applockreTheme = mThemes.get(j);
 					if (onlineThemes.get(j).equals("com.leo.appmaster")) {
 						mThemes.get(0).setFlagName(
-								(String)this. getResources().getText(
+								(String) this.getResources().getText(
 										R.string.defaultTheme));
 					} else {
 						if (onlineThemes.get(j).equals(localThemes.get(i))) {
-							applockreTheme.setFlagName(
-									(String) this.getResources().getText(
-											R.string.localtheme));
-							applockreTheme.setThemeImage(applockreTheme.getThemeImage());
+							applockreTheme.setFlagName((String) this
+									.getResources()
+									.getText(R.string.localtheme));
+							applockreTheme.setThemeImage(applockreTheme
+									.getThemeImage());
 						} else {
-							applockreTheme.setFlagName(
-									(String) this.getResources().getText(
+							applockreTheme.setFlagName((String) this
+									.getResources().getText(
 											R.string.onlinetheme));
 						}
 					}
@@ -446,7 +439,7 @@ public class LockerTheme extends BaseActivity {
 				R.string.onlinetheme));
 		orangeTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(orangeTheme);
-		
+
 		// Theme4
 		AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
 		paradoxTheme.setThemeImage(this.getResources().getDrawable(
@@ -462,7 +455,6 @@ public class LockerTheme extends BaseActivity {
 				R.string.onlinetheme));
 		paradoxTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(paradoxTheme);
-		 
 
 		/*
 		 * ----------------------------------------------------------------------

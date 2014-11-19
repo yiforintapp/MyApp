@@ -203,14 +203,14 @@
     <!-- Theme -->
     <string name="localtheme">स्थानीय थीम</string>
     <string name="onlinetheme"> ऑनलाइन थीम</string>
-    <string name="lockerThemePoit"><Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data>थीम</string>
+    <string name="lockerThemePoit">थीम<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="lockerTheme">थीम</string>
     <string name="defaultTheme">चूक</string>
     <string name="grade">रेट करें</string>
     <string name="grade_tip">ऐप मास्टर का यूस के लिए धन्यवाद. यहाँ फ़ीडबैक दें</string>
-    <string name="moonightTheme">Moonnight&#160;Theme</string>
-    <string name="orangeTheme">Orange&#160;Theme</string>
-    <string name="ParadoxTheme">Paradox&#160;Theme</string>
+    <string name="moonightTheme">रात&#160;थीम</string>
+    <string name="orangeTheme">फल&#160;थीम</string>
+    <string name="ParadoxTheme">Paradox&#160;थीम</string>
     <string name="lock_more">ज्यादा लॉक</string>
     <string name="lock">लॉक</string>
     <string name="det_change_lock_time">ओटो-लॉक टाइम बदलना चाहते？</string>
@@ -224,6 +224,6 @@
     <string name="locker_apply">लागू करें</string>
     <string name="locker_uninstall">अनिनस्टॉल</string>
     <string name="locker_cancel">रद्द करें</string>
-    <string name="christmas_theme">Christmas</string>
+    <string name="christmas_theme">क्रिसमस&#160;थीम</string>
 
 </resources>
