@@ -530,7 +530,7 @@ public class LockerTheme extends BaseActivity {
 			}
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
-				boolean installNameContainOnline = onlineThemes
+/*				boolean installNameContainOnline = onlineThemes
 						.contains(packageName);
 				if (installNameContainOnline) {
 					for (int i = 0; i < onlineThemes.size(); i++) {
@@ -551,7 +551,7 @@ public class LockerTheme extends BaseActivity {
 						}
 					}
 				}
-
+*/
 			}
 		}
 	}
