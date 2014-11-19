@@ -438,7 +438,7 @@ public class LockerTheme extends BaseActivity {
 				R.string.onlinetheme));
 		orangeTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(orangeTheme);
-/*
+
 		// Theme4
 		AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
 		paradoxTheme.setThemeImage(this.getResources().getDrawable(
@@ -453,7 +453,7 @@ public class LockerTheme extends BaseActivity {
 		paradoxTheme.setFlagName((String) this.getResources().getText(
 				R.string.onlinetheme));
 		paradoxTheme.setIsVisibility(Constants.GONE);
-		mThemes.add(paradoxTheme);*/
+		mThemes.add(paradoxTheme);
 
 		/*
 		 * ----------------------------------------------------------------------
@@ -503,23 +503,19 @@ public class LockerTheme extends BaseActivity {
 						mThemes.remove(i);
 					} else if ((mThemes.get(i).getPackageName()
 							.equals(packageName))) {
-						
-						if (packageName.equals(sharedPackageName)) {
-							AppMasterApplication
-									.setSharedPreferencesValue("com.leo.appmaster");
-							mThemes.get(0).setIsVisibility(Constants.VISIBLE);
-						}
-						 
 						mThemes.get(i).setFlagName(
 								(String) LockerTheme.this.getResources()
 										.getText(R.string.onlinetheme));
 						mThemes.get(i).setIsVisibility(Constants.GONE);
 						mLockerThemeAdapter.notifyDataSetChanged();
 				}
-			}
-				itemTheme.setFlagName((String) LockerTheme.this.getResources()
-						.getText(R.string.onlinetheme));
-				mLockerThemeAdapter.notifyDataSetChanged();
+			}		
+				if(itemTheme != null){
+					itemTheme.setFlagName((String) LockerTheme.this.getResources()
+							.getText(R.string.onlinetheme));
+					mLockerThemeAdapter.notifyDataSetChanged();
+				}
+				
 			}
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
