@@ -282,10 +282,18 @@ public class LockerTheme extends BaseActivity {
 							mThemes.get(j).setFlagName(
 									(String) getResources().getText(
 											R.string.localtheme));
-							// mThemes.get(j).setThemeImage(saveContext.getResources().getDrawable(R.drawable.moonnight_theme));
-							mThemes.get(j).setThemeImage(
-									this.getResources().getDrawable(
-											R.drawable.moonnight_theme));
+							mThemes.get(j).setThemeImage(mThemes.get(j).getThemeImage());
+							/*int themeres = saveContext.getResources()
+									.getIdentifier("lockertheme", "drawable",
+											saveContext.getPackageName());
+
+							if (themeres > 0) {
+								mThemes.get(j).setThemeImage(saveContext.getResources()
+										.getDrawable(themeres));
+							} else {
+								mThemes.get(j).setThemeImage(this.getResources().getDrawable(
+										R.drawable.app_list_bg));
+							}*/
 						} else {
 							mThemes.get(j).setFlagName(
 									(String) getResources().getText(
@@ -438,19 +446,23 @@ public class LockerTheme extends BaseActivity {
 				R.string.onlinetheme));
 		orangeTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(orangeTheme);
-		/*
-		 * // Theme4 AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
-		 * paradoxTheme.setThemeImage(this.getResources().getDrawable(
-		 * R.drawable.paradox_theme)); paradoxTheme.setThemeName((String)
-		 * this.getResources().getText( R.string.ParadoxTheme)); String[]
-		 * paradoxUrl = new String[2]; paradoxUrl[1] =
-		 * "http://testd.leostat.com/am/contradict.apk"; paradoxUrl[0] =
-		 * "com.mah.calldetailscreen"; paradoxTheme.setUrl(orangeUrl);
-		 * paradoxTheme.setPackageName("com.mah.calldetailscreen");
-		 * paradoxTheme.setFlagName((String) this.getResources().getText(
-		 * R.string.onlinetheme)); paradoxTheme.setIsVisibility(Constants.GONE);
-		 * mThemes.add(paradoxTheme);
-		 */
+		
+		// Theme4
+		AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
+		paradoxTheme.setThemeImage(this.getResources().getDrawable(
+				R.drawable.paradox_theme));
+		paradoxTheme.setThemeName((String) this.getResources().getText(
+				R.string.ParadoxTheme));
+		String[] paradoxUrl = new String[2];
+		paradoxUrl[1] = "http://testd.leostat.com/am/contradict.apk";
+		paradoxUrl[0] = "com.leo.theme.contradict";
+		paradoxTheme.setUrl(orangeUrl);
+		paradoxTheme.setPackageName("com.leo.theme.contradict");
+		paradoxTheme.setFlagName((String) this.getResources().getText(
+				R.string.onlinetheme));
+		paradoxTheme.setIsVisibility(Constants.GONE);
+		mThemes.add(paradoxTheme);
+		 
 
 		/*
 		 * ----------------------------------------------------------------------
