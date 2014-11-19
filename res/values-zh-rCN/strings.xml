@@ -136,7 +136,7 @@
     <string name="app_setting_update">检查升级</string>
     <string name="feedback">用户反馈</string>
     <string name="grade">给我们评分</string>
-    <string name="grade_tip">感谢您使用App Master，为了让我们更加进步，请您为我们评分吧！</string>
+    <string name="grade_tip">感谢您使用应用管理大师，为了让我们更加进步，请您为我们评分吧！</string>
     <string name="app_setting_about">关于</string>
     <string name="forbid_uninstall">禁止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>
