@@ -208,9 +208,9 @@
     <string name="defaultTheme">चूक</string>
     <string name="grade">रेट करें</string>
     <string name="grade_tip">ऐप मास्टर का यूस के लिए धन्यवाद. यहाँ फ़ीडबैक दें</string>
-    <string name="moonightTheme">रात&#160;थीम</string>
-    <string name="orangeTheme">फल&#160;थीम</string>
-    <string name="ParadoxTheme">Paradox&#160;थीम</string>
+    <string name="moonightTheme">रात</string>
+    <string name="orangeTheme">फल</string>
+    <string name="ParadoxTheme">स्थानिक</string>
     <string name="lock_more">ज्यादा लॉक</string>
     <string name="lock">लॉक</string>
     <string name="det_change_lock_time">ओटो-लॉक टाइम बदलना चाहते？</string>
@@ -224,6 +224,6 @@
     <string name="locker_apply">लागू करें</string>
     <string name="locker_uninstall">अनिनस्टॉल</string>
     <string name="locker_cancel">रद्द करें</string>
-    <string name="christmas_theme">क्रिसमस&#160;थीम</string>
+    <string name="christmas_theme">क्रिसमस</string>
 
 </resources>
