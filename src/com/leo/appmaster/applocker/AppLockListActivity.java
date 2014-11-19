@@ -127,7 +127,7 @@ public class AppLockListActivity extends BaseActivity implements
 		mTtileBar.openBackView();
 	
 		mySharedPreferences= getSharedPreferences("LockerThemeHome",AppLockListActivity.this.MODE_WORLD_WRITEABLE);			
-		mThemeSetting=mySharedPreferences.getString("themeHome","0");
+		mThemeSetting=mySharedPreferences.getString("themeLockList","0");
 			if (mThemeSetting.equals("0")) {
 				mSettingIV.setImageResource(R.drawable.selector_applock_setting_tip);
 			} else {
@@ -296,7 +296,7 @@ public class AppLockListActivity extends BaseActivity implements
 		case R.id.tv_option_image:
 
 			Editor editor=mySharedPreferences.edit();
-			editor.putString("themeHome","1");
+			editor.putString("themeLockList","1");
 			editor.commit();
 			mThemeSetting="1";
 			Intent intent = new Intent(this, LockOptionActivity.class);
