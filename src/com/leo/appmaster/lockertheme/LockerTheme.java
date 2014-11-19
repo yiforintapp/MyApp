@@ -115,6 +115,9 @@ public class LockerTheme extends BaseActivity {
 
 	@Override
 	protected void onResume() {
+		loadThemeData();
+		mLockerThemeAdapter.notifyDataSetChanged();
+		
 		super.onResume();
 	}
 
