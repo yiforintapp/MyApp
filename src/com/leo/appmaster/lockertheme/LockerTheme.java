@@ -25,6 +25,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.fragment.LockFragment;
@@ -33,6 +34,7 @@ import com.leo.appmaster.model.AppLockerThemeBean;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leoers.leoanalytics.LeoStat;
 
 public class LockerTheme extends BaseActivity {
 	private ListView listTheme;
@@ -69,6 +71,7 @@ public class LockerTheme extends BaseActivity {
 		super.onCreate(arg0);
 		boolean flagPackge = false;
 		setContentView(R.layout.activity_locker_theme);
+
 		/*
 		 * 注册卸载监听
 		 */
@@ -95,6 +98,7 @@ public class LockerTheme extends BaseActivity {
 		mThemes = new ArrayList<AppLockerThemeBean>();
 		mThemes.add(getDefaultData());
 		getData();
+		getOnlineThemePackage();
 		mLockerThemeAdapter = new LockerThemeAdapter(this, mThemes);
 		listTheme.setAdapter(mLockerThemeAdapter);
 		// 定向主题
@@ -107,6 +111,7 @@ public class LockerTheme extends BaseActivity {
 					number = i;
 					showAlarmDialog(mThemes.get(i).getThemeName(), View.VISIBLE);
 					itemTheme = mThemes.get(i);
+
 				}
 			}
 
@@ -118,6 +123,17 @@ public class LockerTheme extends BaseActivity {
 		listTheme.setOnItemClickListener(item);
 		getTeme();
 
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mThemes = null;
+		mThemes = new ArrayList<AppLockerThemeBean>();
+		mThemes.add(getDefaultData());
+		getData();
+		getOnlineThemePackage();
+		getTeme();
 	}
 
 	public void tryHideThemeApk(String pkg) {
@@ -177,13 +193,18 @@ public class LockerTheme extends BaseActivity {
 					}
 					AppMasterApplication.setSharedPreferencesValue(itemTheme
 							.getPackageName());
+
 					String sharedPackageName = itemTheme.getPackageName();
 					if (itemTheme.getPackageName().equals(sharedPackageName)) {
 						itemTheme.setIsVisibility(Constants.VISIBLE);
+						itemTheme.setFlagName((String) LockerTheme.this
+								.getResources().getText(R.string.localtheme));
 					} else {
 						itemTheme.setIsVisibility(Constants.GONE);
 					}
 
+					SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
+							"theme_apply", itemTheme.getPackageName());
 					mLockerThemeAdapter.notifyDataSetChanged();
 					dialog.cancel();
 				} else if (which == 1) {
@@ -194,17 +215,11 @@ public class LockerTheme extends BaseActivity {
 							itemTheme.getPackageName(), null);
 					Intent intent = new Intent(Intent.ACTION_DELETE, uri);
 					startActivity(intent);
-
 					mLockerThemeAdapter.notifyDataSetChanged();
 					dialog.cancel();
 				}
 			}
 		});
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
 	}
 
 	@Override
@@ -267,10 +282,18 @@ public class LockerTheme extends BaseActivity {
 							mThemes.get(j).setFlagName(
 									(String) getResources().getText(
 											R.string.localtheme));
-							// mThemes.get(j).setThemeImage(saveContext.getResources().getDrawable(R.drawable.moonnight_theme));
-							mThemes.get(j).setThemeImage(
-									this.getResources().getDrawable(
-											R.drawable.moonnight_theme));
+							mThemes.get(j).setThemeImage(mThemes.get(j).getThemeImage());
+							/*int themeres = saveContext.getResources()
+									.getIdentifier("lockertheme", "drawable",
+											saveContext.getPackageName());
+
+							if (themeres > 0) {
+								mThemes.get(j).setThemeImage(saveContext.getResources()
+										.getDrawable(themeres));
+							} else {
+								mThemes.get(j).setThemeImage(this.getResources().getDrawable(
+										R.drawable.app_list_bg));
+							}*/
 						} else {
 							mThemes.get(j).setFlagName(
 									(String) getResources().getText(
@@ -318,8 +341,8 @@ public class LockerTheme extends BaseActivity {
 
 	public void getOnlineThemePackage() {
 		// 获取mThemes包名
-		for (int a = 0; a < mThemes.size(); a++) {
-			onlineThemes.add(mThemes.get(a).getPackageName());
+		for (int i = 0; i < mThemes.size(); i++) {
+			onlineThemes.add(mThemes.get(i).getPackageName());
 		}
 	}
 
@@ -330,6 +353,9 @@ public class LockerTheme extends BaseActivity {
 				long arg3) {
 			itemTheme = (AppLockerThemeBean) arg0.getItemAtPosition(arg2);
 			String[] urls = itemTheme.getUrl();
+			/* user click the theme */
+			SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice",
+					itemTheme.getPackageName());
 			if (mThemes
 					.get(arg2)
 					.getFlagName()
@@ -382,7 +408,7 @@ public class LockerTheme extends BaseActivity {
 		christmasTheme.setThemeName((String) this.getResources().getText(
 				R.string.christmas_theme));
 		String[] christmasUrl = new String[2];
-		christmasUrl[1] = "http://testd.leostat.com/am/contradict.apk";
+		christmasUrl[1] = "http://testd.leostat.com/am/christmas.apk";
 		christmasUrl[0] = "com.leo.theme.christmas";
 		christmasTheme.setUrl(christmasUrl);
 		christmasTheme.setPackageName("com.leo.theme.christmas");
@@ -405,7 +431,6 @@ public class LockerTheme extends BaseActivity {
 				R.string.onlinetheme));
 		moonnightTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(moonnightTheme);
-		getOnlineThemePackage();
 		// Theme3
 		AppLockerThemeBean orangeTheme = new AppLockerThemeBean();
 		orangeTheme.setThemeImage(this.getResources().getDrawable(
@@ -414,26 +439,30 @@ public class LockerTheme extends BaseActivity {
 				R.string.orangeTheme));
 		String[] orangeUrl = new String[2];
 		orangeUrl[1] = "http://testd.leostat.com/am/orange.apk";
-		orangeUrl[0] = "com.mah.calldetailscreen";
+		orangeUrl[0] = "com.leo.theme.orange";
 		orangeTheme.setUrl(orangeUrl);
 		orangeTheme.setPackageName("com.leo.theme.orange");
 		orangeTheme.setFlagName((String) this.getResources().getText(
 				R.string.onlinetheme));
 		orangeTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(orangeTheme);
-		/*
-		 * // Theme4 AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
-		 * paradoxTheme.setThemeImage(this.getResources().getDrawable(
-		 * R.drawable.paradox_theme)); paradoxTheme.setThemeName((String)
-		 * this.getResources().getText( R.string.ParadoxTheme)); String[]
-		 * paradoxUrl = new String[2]; paradoxUrl[1] =
-		 * "http://testd.leostat.com/am/contradict.apk"; paradoxUrl[0] =
-		 * "com.mah.calldetailscreen"; paradoxTheme.setUrl(orangeUrl);
-		 * paradoxTheme.setPackageName("com.mah.calldetailscreen");
-		 * paradoxTheme.setFlagName((String) this.getResources().getText(
-		 * R.string.onlinetheme)); paradoxTheme.setIsVisibility(Constants.GONE);
-		 * getOnlineThemePackage(); ======= mThemes.add(paradoxTheme);
-		 */
+		
+		// Theme4
+		AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
+		paradoxTheme.setThemeImage(this.getResources().getDrawable(
+				R.drawable.paradox_theme));
+		paradoxTheme.setThemeName((String) this.getResources().getText(
+				R.string.ParadoxTheme));
+		String[] paradoxUrl = new String[2];
+		paradoxUrl[1] = "http://testd.leostat.com/am/contradict.apk";
+		paradoxUrl[0] = "com.leo.theme.contradict";
+		paradoxTheme.setUrl(orangeUrl);
+		paradoxTheme.setPackageName("com.leo.theme.contradict");
+		paradoxTheme.setFlagName((String) this.getResources().getText(
+				R.string.onlinetheme));
+		paradoxTheme.setIsVisibility(Constants.GONE);
+		mThemes.add(paradoxTheme);
+		 
 
 		/*
 		 * ----------------------------------------------------------------------
@@ -447,7 +476,7 @@ public class LockerTheme extends BaseActivity {
 	private AppLockerThemeBean getDefaultData() {
 		AppLockerThemeBean defaultTheme = new AppLockerThemeBean();
 		defaultTheme.setThemeImage(this.getResources().getDrawable(
-				R.drawable.app_list_bg));
+				R.drawable.default_theme));
 		defaultTheme.setThemeName((String) this.getResources().getText(
 				R.string.ParadoxTheme));
 		String[] defaultUrl = new String[2];
@@ -477,10 +506,8 @@ public class LockerTheme extends BaseActivity {
 					mLockerThemeAdapter.notifyDataSetChanged();
 				}
 				for (int i = 0; i < mThemes.size(); i++) {
-					if (mThemes.get(i).getPackageName()
-							.equals(itemTheme.getPackageName())
-							&& !onlineThemes.contains(itemTheme
-									.getPackageName())) {
+					if (mThemes.get(i).getPackageName().equals(packageName)
+							&& !onlineThemes.contains(packageName)) {
 						mThemes.remove(i);
 					} else if ((mThemes.get(i).getPackageName()
 							.equals(itemTheme.getPackageName()))) {
@@ -494,6 +521,7 @@ public class LockerTheme extends BaseActivity {
 								(String) LockerTheme.this.getResources()
 										.getText(R.string.onlinetheme));
 						mThemes.get(i).setIsVisibility(Constants.GONE);
+						mLockerThemeAdapter.notifyDataSetChanged();
 					}
 				}
 				itemTheme.setFlagName((String) LockerTheme.this.getResources()
@@ -502,6 +530,28 @@ public class LockerTheme extends BaseActivity {
 			}
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
+/*				boolean installNameContainOnline = onlineThemes
+						.contains(packageName);
+				if (installNameContainOnline) {
+					for (int i = 0; i < onlineThemes.size(); i++) {
+						if (onlineThemes.get(i).equals(packageName)) {
+							for (int j = 0; j < mThemes.size(); j++) {
+								if (packageName.equals(mThemes.get(j)
+										.getPackageName())) {
+									mThemes.get(j)
+											.setFlagName(
+													(String) LockerTheme.this
+															.getResources()
+															.getText(
+																	R.string.localtheme));
+								}
+							}
+						} else {
+
+						}
+					}
+				}
+*/
 			}
 		}
 	}

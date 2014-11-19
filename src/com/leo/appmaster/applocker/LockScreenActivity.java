@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.fragment.GestureLockFragment;
@@ -45,6 +46,7 @@ import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListene
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
+import com.leoers.leoanalytics.LeoStat;
 
 public class LockScreenActivity extends FragmentActivity implements
 		OnClickListener, OnDiaogClickListener {
@@ -241,6 +243,7 @@ public class LockScreenActivity extends FragmentActivity implements
 						LockerTheme.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
 						| Intent.FLAG_ACTIVITY_NEW_TASK);
+				SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1, "theme_enter", "unlock");
 
 				toTheme = true;
 
