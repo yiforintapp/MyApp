@@ -299,6 +299,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     @Override
     public void onActivityRestart() {
         if (mShouldLockOnRestart) {
+            LeoLog.d("Hide Image", "showLockPage");
             showLockPage();
         } else {
             mShouldLockOnRestart = true;
