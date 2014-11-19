@@ -197,6 +197,7 @@ public class LockerTheme extends BaseActivity {
 						if (mThemes.get(i).getPackageName()
 								.equals(AppMasterApplication.sharedPackage)) {
 							mThemes.get(i).setIsVisibility(Constants.GONE);
+							mLockerThemeAdapter.notifyDataSetChanged();
 						}
 					}
 					AppMasterApplication.setSharedPreferencesValue(itemTheme
@@ -210,10 +211,10 @@ public class LockerTheme extends BaseActivity {
 					} else {
 						itemTheme.setIsVisibility(Constants.GONE);
 					}
-
+					mLockerThemeAdapter.notifyDataSetChanged();
 					SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
 							"theme_apply", itemTheme.getPackageName());
-					mLockerThemeAdapter.notifyDataSetChanged();
+
 					dialog.cancel();
 				} else if (which == 1) {
 					dialog.cancel();
@@ -509,7 +510,7 @@ public class LockerTheme extends BaseActivity {
 							&& !onlineThemes.contains(packageName)) {
 						mThemes.remove(i);
 					} else if ((mThemes.get(i).getPackageName()
-							.equals(itemTheme.getPackageName()))) {
+							.equals(packageName))) {
 						/*
 						 * if(packageName.equals(sharedPackageName)){
 						 * AppMasterApplication
