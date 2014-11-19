@@ -114,15 +114,14 @@ public class LockerTheme extends BaseActivity {
 
 				}
 			}
-
-			tryHideThemeApk(temp);
 		} else {
 			number = 0;
 		}
 		listTheme.setSelection(number);// Item定向跳转
 		listTheme.setOnItemClickListener(item);
 		getTeme();
-
+		
+		checkSendHideThemeBroadcast(temp);
 	}
 
 	@Override
@@ -136,19 +135,12 @@ public class LockerTheme extends BaseActivity {
 		getTeme();
 	}
 
-	public void tryHideThemeApk(String pkg) {
+	public void checkSendHideThemeBroadcast(String pkg) {
 		if (pkg.startsWith("com.leo.theme")) {
-			PackageManager pm = this.getPackageManager();
-			ComponentName name = new ComponentName(pkg,
-					"com.leo.theme.ThemeActivity");
-			int res = pm.getComponentEnabledSetting(name);
-			if (res == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
-					|| res == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-				LeoLog.d("tryHideThemeApk", "packageName = " + pkg);
-				pm.setComponentEnabledSetting(name,
-						PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-						PackageManager.DONT_KILL_APP);
-			}
+			String action = "disable_theme_" + pkg;
+			LeoLog.e("sendHideThemeBroadcast", action);
+			Intent intent = new Intent(action);
+			this.sendBroadcast(intent);
 		}
 	}
 
@@ -282,18 +274,20 @@ public class LockerTheme extends BaseActivity {
 							mThemes.get(j).setFlagName(
 									(String) getResources().getText(
 											R.string.localtheme));
-							mThemes.get(j).setThemeImage(mThemes.get(j).getThemeImage());
-							/*int themeres = saveContext.getResources()
-									.getIdentifier("lockertheme", "drawable",
-											saveContext.getPackageName());
-
-							if (themeres > 0) {
-								mThemes.get(j).setThemeImage(saveContext.getResources()
-										.getDrawable(themeres));
-							} else {
-								mThemes.get(j).setThemeImage(this.getResources().getDrawable(
-										R.drawable.app_list_bg));
-							}*/
+							mThemes.get(j).setThemeImage(
+									mThemes.get(j).getThemeImage());
+							/*
+							 * int themeres = saveContext.getResources()
+							 * .getIdentifier("lockertheme", "drawable",
+							 * saveContext.getPackageName());
+							 * 
+							 * if (themeres > 0) {
+							 * mThemes.get(j).setThemeImage(saveContext
+							 * .getResources() .getDrawable(themeres)); } else {
+							 * mThemes
+							 * .get(j).setThemeImage(this.getResources().
+							 * getDrawable ( R.drawable.app_list_bg)); }
+							 */
 						} else {
 							mThemes.get(j).setFlagName(
 									(String) getResources().getText(
@@ -446,7 +440,7 @@ public class LockerTheme extends BaseActivity {
 				R.string.onlinetheme));
 		orangeTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(orangeTheme);
-		
+
 		// Theme4
 		AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
 		paradoxTheme.setThemeImage(this.getResources().getDrawable(
@@ -462,7 +456,6 @@ public class LockerTheme extends BaseActivity {
 				R.string.onlinetheme));
 		paradoxTheme.setIsVisibility(Constants.GONE);
 		mThemes.add(paradoxTheme);
-		 
 
 		/*
 		 * ----------------------------------------------------------------------
@@ -530,28 +523,18 @@ public class LockerTheme extends BaseActivity {
 			}
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
-/*				boolean installNameContainOnline = onlineThemes
-						.contains(packageName);
-				if (installNameContainOnline) {
-					for (int i = 0; i < onlineThemes.size(); i++) {
-						if (onlineThemes.get(i).equals(packageName)) {
-							for (int j = 0; j < mThemes.size(); j++) {
-								if (packageName.equals(mThemes.get(j)
-										.getPackageName())) {
-									mThemes.get(j)
-											.setFlagName(
-													(String) LockerTheme.this
-															.getResources()
-															.getText(
-																	R.string.localtheme));
-								}
-							}
-						} else {
-
-						}
-					}
-				}
-*/
+				/*
+				 * boolean installNameContainOnline = onlineThemes
+				 * .contains(packageName); if (installNameContainOnline) { for
+				 * (int i = 0; i < onlineThemes.size(); i++) { if
+				 * (onlineThemes.get(i).equals(packageName)) { for (int j = 0; j
+				 * < mThemes.size(); j++) { if
+				 * (packageName.equals(mThemes.get(j) .getPackageName())) {
+				 * mThemes.get(j) .setFlagName( (String) LockerTheme.this
+				 * .getResources() .getText( R.string.localtheme)); } } } else {
+				 * 
+				 * } } }
+				 */
 			}
 		}
 	}
