@@ -32,6 +32,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
@@ -486,6 +487,12 @@ public class AppLoadEngine extends BroadcastReceiver {
 		sWorker.post(new Runnable() {
 			@Override
 			public void run() {
+
+				if (packageName.equals(AppMasterApplication.sharedPackage)) {
+					AppMasterApplication
+							.setSharedPreferencesValue("com.leo.appmaster");
+				}
+
 				AppMasterPreference pre = AppMasterPreference
 						.getInstance(mContext);
 				List<String> themeList = new ArrayList<String>(pre
@@ -494,8 +501,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 					LeoLog.d("checkThemeWhenRemove", "packageName = "
 							+ packageName);
 					themeList.remove(packageName);
+					pre.setHideThemeList(themeList);
 				}
-				pre.setHideThemeList(themeList);
 			}
 		});
 	}
@@ -583,7 +590,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 									mContext.startActivity(intent);
 								}
-								SDKWrapper.addEvent(mContext, LeoStat.P1, "lock_enter", "sug_lock_more");
+								SDKWrapper.addEvent(mContext, LeoStat.P1,
+										"lock_enter", "sug_lock_more");
 
 							} else if (which == 2) {
 
