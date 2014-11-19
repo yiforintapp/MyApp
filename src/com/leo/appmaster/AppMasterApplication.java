@@ -126,6 +126,7 @@ public class AppMasterApplication extends Application implements
 		if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(this))) { // is
 																				// new
 																				// version
+			pref.setHaveEverAppLoaded(false);
 			pref.setLastVersion(PhoneInfo.getVersionCode(this));
 			intent = new Intent(this, LockReceiver.class);
 			intent.setAction(LockReceiver.ALARM_LOCK_ACTION);

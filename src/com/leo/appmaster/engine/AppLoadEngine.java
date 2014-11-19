@@ -240,15 +240,17 @@ public class AppLoadEngine extends BroadcastReceiver {
 	private void loadAllPkgInfo() {
 		synchronized (mLock) {
 			if (!mAppsLoaded) {
+				AppMasterPreference pre = AppMasterPreference
+						.getInstance(mContext);
 				Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 				mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 				List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent,
 						0);
-				AppMasterPreference pre = AppMasterPreference
-						.getInstance(mContext);
+
+				// check first load, and save hide theme
+				boolean isFirstLoadApp = checkFirstLoad();
 				List<String> themeList = new ArrayList<String>(
 						pre.getHideThemeList());
-				
 				for (ResolveInfo resolveInfo : apps) {
 					ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
 					String packageName = applicationInfo.packageName;
@@ -273,6 +275,37 @@ public class AppLoadEngine extends BroadcastReceiver {
 				mAppsLoaded = true;
 			}
 		}
+	}
+
+	private boolean checkFirstLoad() {
+		AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
+		boolean isFirstLoadApp = !AppMasterPreference.getInstance(mContext)
+				.haveEverAppLoaded();
+		List<String> themeList = new ArrayList<String>(pre.getHideThemeList());
+		if (isFirstLoadApp) {
+			List<ApplicationInfo> all = mPm
+					.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
+			for (ApplicationInfo applicationInfo : all) {
+				String packageName = applicationInfo.packageName;
+				AppDetailInfo appInfo = new AppDetailInfo();
+				loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
+				try {
+					appInfo.installTime = mPm.getPackageInfo(packageName, 0).firstInstallTime;
+				} catch (NameNotFoundException e) {
+					e.printStackTrace();
+				}
+
+				LeoLog.e("xxxx", packageName);
+				if (isThemeApk(packageName)) {
+					if (!themeList.contains(packageName)) {
+						themeList.add(packageName);
+					}
+				}
+				pre.setHaveEverAppLoaded(true);
+				pre.setHideThemeList(themeList);
+			}
+		}
+		return isFirstLoadApp;
 	}
 
 	private void loadAppInfoOfPackage(String packageName,
@@ -648,7 +681,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		} else {
 			return false;
 		}
-		
+
 	}
 
 	public static class AppComparator implements Comparator<BaseInfo> {

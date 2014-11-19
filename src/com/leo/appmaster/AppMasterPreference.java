@@ -39,6 +39,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_UNLOCK_COUNT = "unlock_count";
 	public static final String PREF_GUIDE_TIP_SHOW = "google_play_guide_tip_show";
 	public static final String PREF_HIDE_THEME_PKGS = "hide_theme_packages";
+	public static final String PREF_HAVE_EVER_LOAD_APPS = "have_ever_load_apps";
 
 	// other
 	public static final String PREF_LAST_VERSION = "last_version";
@@ -69,6 +70,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static synchronized AppMasterPreference getInstance(Context context) {
 		return mInstance == null ? (mInstance = new AppMasterPreference(context))
 				: mInstance;
+	}
+
+	public void setHaveEverAppLoaded(boolean loaded) {
+		mPref.edit().putBoolean(PREF_HAVE_EVER_LOAD_APPS, loaded).commit();
+	}
+
+	public boolean haveEverAppLoaded() {
+		return mPref.getBoolean(PREF_HAVE_EVER_LOAD_APPS, false);
 	}
 
 	public void setHideThemeList(List<String> themeList) {
