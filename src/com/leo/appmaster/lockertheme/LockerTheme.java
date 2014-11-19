@@ -142,6 +142,8 @@ public class LockerTheme extends BaseActivity {
 	}
 
 	public void checkSendHideThemeBroadcast(String pkg) {
+		if (pkg == null)
+			return;
 		if (pkg.startsWith("com.leo.theme")) {
 			String action = "disable_theme_" + pkg;
 			LeoLog.e("sendHideThemeBroadcast", action);
