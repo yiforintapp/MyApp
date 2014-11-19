@@ -50,7 +50,9 @@
 			        android:layout_height="wrap_content"
 			        android:layout_centerVertical="true"
 			        android:layout_marginLeft="10dp"
-			        android:layout_toRightOf="@+id/dlg_left_icon"
+			        android:layout_toRightOf="@id/dlg_left_icon"
+			        android:maxLines="4"
+                    android:scrollbars="vertical"
 			        android:text="content" />
 
         </RelativeLayout>
