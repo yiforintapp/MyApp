@@ -47,7 +47,7 @@ public class LockerTheme extends BaseActivity {
 	private int number = 0;
 	private LockerThemeAdapter mLockerThemeAdapter;
 	private LockerThemeChanageDialog dialog;
-	private boolean mShouldLockOnRestart = false;
+	private boolean mShouldLockOnRestart = true;
 	private LayoutInflater mLayoutInflater;
 	// private Button mApply;
 	// private Button mUninstall;
