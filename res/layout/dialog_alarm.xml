@@ -43,11 +43,6 @@
                 android:src="@drawable/dlg_icon_fail"
                 android:visibility="gone" />
 			
-			<ScrollView
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:scrollbars="none" >
-			
 			    <TextView
 			        android:id="@+id/dlg_content"
 			        style="@style/dlg_content_txt"
@@ -55,9 +50,10 @@
 			        android:layout_height="wrap_content"
 			        android:layout_centerVertical="true"
 			        android:layout_marginLeft="10dp"
-			        android:layout_toRightOf="@+id/dlg_left_icon"
+			        android:layout_toRightOf="@id/dlg_left_icon"
+			        android:maxLines="4"
+                    android:scrollbars="vertical"
 			        android:text="content" />
-			</ScrollView>
 
         </RelativeLayout>
     </LinearLayout>

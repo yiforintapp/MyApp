@@ -212,7 +212,7 @@
     <!-- LockerTheme -->
     <string name="localtheme">本地</string>
     <string name="onlinetheme">在线</string>
-    <string name="lockerThemePoit"> <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data>应用锁主题</string>
+    <string name="lockerThemePoit">应用锁主题<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="lockerTheme">应用锁主题</string>
     <string name="defaultTheme">默认</string>
     <string name="moonightTheme">夜晚&#160;主题</string>

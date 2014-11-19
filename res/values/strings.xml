@@ -204,7 +204,7 @@
     <!-- Theme -->
     <string name="localtheme">Local Theme</string>
     <string name="onlinetheme">Online Theme</string>
-    <string name="lockerThemePoit"> <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data>Theme</string>
+    <string name="lockerThemePoit">Theme<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="lockerTheme">Theme</string>
     <string name="defaultTheme">Default</string>
     <string name="grade">Rate Us!</string>
