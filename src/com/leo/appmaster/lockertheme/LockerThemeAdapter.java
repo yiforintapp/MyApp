@@ -6,6 +6,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.model.AppLockerThemeBean;
 import com.leo.appmaster.model.AppWallBean;
+import com.leo.appmaster.utils.LeoLog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.content.Context;
@@ -48,47 +49,45 @@ public class LockerThemeAdapter extends BaseAdapter {
 	class ViewHolder {
 		View image;
 		ImageView isvisible;
-		TextView themeName,flagName;
-		
+		TextView themeName, flagName;
+
 	}
 
 	@Override
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 		ViewHolder viewHolder = null;
+
 		if (arg1 == null) {
 			viewHolder = new ViewHolder();
 			arg1 = layoutInflater.inflate(R.layout.list_item_lockerthem, null);
-			viewHolder.themeName = (TextView) arg1.findViewById(R.id.lockerThemName);
-			viewHolder.image=(View) arg1.findViewById(R.id.themLT);
-			viewHolder.flagName=(TextView) arg1.findViewById(R.id.flagTV);
-			viewHolder.isvisible=(ImageView) arg1.findViewById(R.id.visibilityIV);
+			viewHolder.themeName = (TextView) arg1
+					.findViewById(R.id.lockerThemName);
+			viewHolder.image = (View) arg1.findViewById(R.id.themLT);
+			viewHolder.flagName = (TextView) arg1.findViewById(R.id.flagTV);
+			viewHolder.isvisible = (ImageView) arg1
+					.findViewById(R.id.visibilityIV);
 			arg1.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) arg1.getTag();
 		}
-		if (arg0 % 2 == 0) {
-			arg1.setBackgroundDrawable(context.getResources().getDrawable(
-					R.drawable.backup_list_item_one));
-		} else {
-			arg1.setBackgroundDrawable(context.getResources().getDrawable(
-					R.drawable.backup_list_item_two));
-		}
-		AppLockerThemeBean theme= themes.get(arg0);
-		if(theme.getThemeName()==null&&theme.getThemeName().equals("")){
+		AppLockerThemeBean theme = themes.get(arg0);
+		if (theme.getThemeName() == null && theme.getThemeName().equals("")) {
 			viewHolder.themeName.setText("");
-		}else{
-			
+		} else {
+
 			viewHolder.themeName.setText(theme.getThemeName());
 		}
 		viewHolder.image.setBackgroundDrawable(theme.getThemeImage());
 		viewHolder.flagName.setText(theme.getFlagName());
-		if(theme.getIsVisibility().equals(Constants.GONE)){
-				viewHolder.isvisible.setVisibility(View.GONE);
-		}else if(theme.getIsVisibility().equals(Constants.VISIBLE)){
+		if (theme.getIsVisibility().equals(Constants.GONE)) {
+			viewHolder.isvisible.setVisibility(View.GONE);
+		} else if (theme.getIsVisibility().equals(Constants.VISIBLE)) {
 			viewHolder.isvisible.setVisibility(View.VISIBLE);
 		}
-		/*ImageLoader.getInstance().displayImage(imageUri, viewHolder.image,
-				options);*/
+		/*
+		 * ImageLoader.getInstance().displayImage(imageUri, viewHolder.image,
+		 * options);
+		 */
 		return arg1;
 	}
 }
