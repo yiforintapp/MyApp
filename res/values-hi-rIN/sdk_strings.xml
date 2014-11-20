@@ -3,7 +3,7 @@
     <!-- auto check update -->
     <string name="update_title">अद्यतन टिप्स</string>
     <string name="do_update">तुरंत अपडेट करें</string>
-    <string name="ignore_update">अभी अपडेट न करें</string>
+    <string name="ignore_update">बाद में</string>
     <string name="cancel_download">अपडेट रद्द करें</string>
     <string name="hide_download_window">विंडो बंद करें</string>
     <string name="downloading"><xliff:g id="app_name">%1$s</xliff:g>&#160;डाउनलोडिंग</string>
