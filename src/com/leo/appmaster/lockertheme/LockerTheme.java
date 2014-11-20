@@ -443,7 +443,7 @@ public class LockerTheme extends BaseActivity {
 		String[] paradoxUrl = new String[2];
 		paradoxUrl[1] = "http://dl.leomaster.com/files/paradox.apk";
 		paradoxUrl[0] = "com.leo.theme.contradict";
-		paradoxTheme.setUrl(orangeUrl);
+		paradoxTheme.setUrl(paradoxUrl);
 		paradoxTheme.setPackageName("com.leo.theme.contradict");
 
 		if (localThemes.contains("com.leo.theme.contradict")) {
