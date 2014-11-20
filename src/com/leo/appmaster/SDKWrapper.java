@@ -104,7 +104,9 @@ public class SDKWrapper {
     }
 
     private static void iniBaidu(Context ctx) {
-        StatService.setAppKey("1004e462a2");
+		// TODO: use release Key when release
+        StatService.setAppKey("88ce739ea6"); // debug Key
+        // StatService.setAppKey("1004e462a2"); // release key
         StatService.setAppChannel(ctx, ctx.getString(R.string.channel_code), true);
         StatService.setSessionTimeOut(30);
         StatService.setOn(ctx, StatService.EXCEPTION_LOG);
