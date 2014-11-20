@@ -325,7 +325,11 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
     @Override
     public void onActivityResault(int requestCode, int resultCode) {
+        if (REQUEST_CODE_LOCK == requestCode) {
             mShouldLockOnRestart = false;
+        } else if (REQUEST_CODE_OPTION == requestCode) {
+            mShouldLockOnRestart = false;
+        }
     }
     
 }
