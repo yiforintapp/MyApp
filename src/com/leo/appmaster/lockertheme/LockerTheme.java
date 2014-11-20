@@ -4,25 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.BaseActivity;
@@ -42,17 +34,12 @@ public class LockerTheme extends BaseActivity {
 	private ListView listTheme;
 	private List<AppLockerThemeBean> mThemes;
 	private List<String> localThemes;
-	private boolean mFlagGp =false;// 判断是否存在GP
+	private boolean mFlagGp =false;
 	public AppLockerThemeBean itemTheme;
 	private int number = 0;
 	private LockerThemeAdapter mLockerThemeAdapter;
 	private LockerThemeChanageDialog dialog;
 	private boolean mShouldLockOnRestart = true;
-	private LayoutInflater mLayoutInflater;
-	// private Button mApply;
-	// private Button mUninstall;
-	// private Button mCancel;
-	// private TextView mText;
 	private LockerThemeReceive mLockerThemeReceive;
 	private boolean mNeedLock = false;
 	private AppMasterPreference mPreference;
@@ -70,7 +57,7 @@ public class LockerTheme extends BaseActivity {
 		setContentView(R.layout.activity_locker_theme);
 
 		/*
-		 * 注册卸载监听
+		 * Uninstall Listener
 		 */
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
@@ -78,21 +65,13 @@ public class LockerTheme extends BaseActivity {
 		intentFilter.addDataScheme("package");
 		mLockerThemeReceive = new LockerThemeReceive();
 		registerReceiver(mLockerThemeReceive, intentFilter);
-
-		// mLayoutInflater = LayoutInflater.from(this);
-		// View dialog = mLayoutInflater
-		// .inflate(R.layout.dialog_theme_alarm, null);
-		// mApply = (Button) dialog.findViewById(R.id.apply);
-		// mUninstall = (Button) dialog.findViewById(R.id.uninstall);
-		// mCancel = (Button) dialog.findViewById(R.id.cancel);
-		// mText = (TextView) dialog.findViewById(R.id.dialogTV);
 		initUI();
 		mThemes = new ArrayList<AppLockerThemeBean>();
 
 		loadThemeData();
 		mLockerThemeAdapter = new LockerThemeAdapter(this, mThemes);
 		listTheme.setAdapter(mLockerThemeAdapter);
-		// 定向主题
+		// Directional Theme
 		Intent intent = this.getIntent();
 		String temp = intent.getStringExtra("theme_package");
 		mNeedLock = intent.getBooleanExtra("need_lock", false);
@@ -103,12 +82,13 @@ public class LockerTheme extends BaseActivity {
 					number = i;
 					showAlarmDialog(mThemes.get(i).getThemeName(), View.VISIBLE);
 					itemTheme = mThemes.get(i);
+					mLockerThemeAdapter.notifyDataSetChanged();
 				}
 			}
 		} else {
 			number = 0;
 		}
-		listTheme.setSelection(number);// Item定向跳转
+		listTheme.setSelection(number);
 		listTheme.setOnItemClickListener(itemListener);
 		mFlagGp=isInstallPackageName("com.android.vending");
 	}
@@ -116,8 +96,7 @@ public class LockerTheme extends BaseActivity {
 	@Override
 	protected void onResume() {
 		loadThemeData();
-		mLockerThemeAdapter.notifyDataSetChanged();
-		
+		mLockerThemeAdapter.notifyDataSetChanged();		
 		super.onResume();
 	}
 
@@ -126,7 +105,6 @@ public class LockerTheme extends BaseActivity {
 		mPreference = AppMasterPreference.getInstance(LockerTheme.this);
 		localThemes = mPreference.getHideThemeList();
 		mThemes.add(getDefaultData());
-
 		getOriginalTheme();
 		getThirdTheme();
 	}
@@ -176,32 +154,23 @@ public class LockerTheme extends BaseActivity {
 			public void onClick(int which) {
 				if (which == 0) {
 					for (int i = 0; i < mThemes.size(); i++) {
-						if (mThemes.get(i).getPackageName()
-								.equals(AppMasterApplication.sharedPackage)) {
 							mThemes.get(i).setIsVisibility(Constants.GONE);
-							mLockerThemeAdapter.notifyDataSetChanged();
-						}
 					}
 					AppMasterApplication.setSharedPreferencesValue(itemTheme
 							.getPackageName());
-
-					String sharedPackageName = itemTheme.getPackageName();
-					if (itemTheme.getPackageName().equals(sharedPackageName)) {
 						itemTheme.setIsVisibility(Constants.VISIBLE);
 						itemTheme.setFlagName((String) LockerTheme.this
 								.getResources().getText(R.string.localtheme));
-					} else {
-						itemTheme.setIsVisibility(Constants.GONE);
-					}
+						LeoLog.e("xxxx", "itemTheme = " + itemTheme);
+						 loadThemeData() ;
 					mLockerThemeAdapter.notifyDataSetChanged();
 					SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
 							"theme_apply", itemTheme.getPackageName());
-
 					dialog.cancel();
 				} else if (which == 1) {
 					dialog.cancel();
 				} else if (which == 2) {
-					// 卸载主题
+					// Uninstall Theme
 					Uri uri = Uri.fromParts("package",
 							itemTheme.getPackageName(), null);
 					Intent intent = new Intent(Intent.ACTION_DELETE, uri);
@@ -248,7 +217,7 @@ public class LockerTheme extends BaseActivity {
 	}
 
 	/**
-	 * getTeme
+	 * getThirdTheme
 	 */
 	public void getThirdTheme() {
 		Context saveContext = null;
@@ -304,7 +273,7 @@ public class LockerTheme extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			itemTheme = (AppLockerThemeBean) arg0.getItemAtPosition(arg2);
-			String[] urls = itemTheme.getUrl();
+			String[] urls = itemTheme.getUrl(); 
 			/* user click the theme */
 			SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice",
 					itemTheme.getPackageName());
@@ -314,8 +283,7 @@ public class LockerTheme extends BaseActivity {
 					.equals((String) getResources().getText(
 							R.string.onlinetheme))) {
 				for (int i = 0; i < urls.length; i++) {
-					boolean flag = AppwallHttpUtil.isHttpUrl(urls[i]);
-					
+					boolean flag = AppwallHttpUtil.isHttpUrl(urls[i]);					
 					if (mFlagGp) {
 						if (!flag) {
 							AppwallHttpUtil	.requestGp(LockerTheme.this, urls[i]);
@@ -433,7 +401,6 @@ public class LockerTheme extends BaseActivity {
 			orangeTheme.setIsVisibility(Constants.GONE);
 		}
 		mThemes.add(orangeTheme);
-
 		// Theme4
 		AppLockerThemeBean paradoxTheme = new AppLockerThemeBean();
 		paradoxTheme.setThemeImage(this.getResources().getDrawable(
@@ -443,7 +410,7 @@ public class LockerTheme extends BaseActivity {
 		String[] paradoxUrl = new String[2];
 		paradoxUrl[1] = "http://dl.leomaster.com/files/paradox.apk";
 		paradoxUrl[0] = "com.leo.theme.contradict";
-		paradoxTheme.setUrl(orangeUrl);
+		paradoxTheme.setUrl(paradoxUrl);
 		paradoxTheme.setPackageName("com.leo.theme.contradict");
 
 		if (localThemes.contains("com.leo.theme.contradict")) {
@@ -467,7 +434,7 @@ public class LockerTheme extends BaseActivity {
 	}
 
 	/**
-	 * 默认主题
+	 * Default Theme
 	 */
 	private AppLockerThemeBean getDefaultData() {
 		AppLockerThemeBean defaultTheme = new AppLockerThemeBean();
@@ -501,9 +468,6 @@ public class LockerTheme extends BaseActivity {
 		public void onReceive(Context arg0, Intent intent) {
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
-//				if (packageName.equals(AppMasterApplication.sharedPackage)) {
-//					AppMasterApplication
-//							.setSharedPreferencesValue("com.leo.appmaster");
 					listTheme.postDelayed(new Runnable() {
 						@Override
 						public void run() {
@@ -511,7 +475,6 @@ public class LockerTheme extends BaseActivity {
 							mLockerThemeAdapter.notifyDataSetChanged();
 						}
 					}, 2000);
-//				}
 			}
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
