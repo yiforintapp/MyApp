@@ -408,7 +408,7 @@ public class LockerTheme extends BaseActivity {
 		paradoxTheme.setThemeName((String) this.getResources().getText(
 				R.string.ParadoxTheme));
 		String[] paradoxUrl = new String[2];
-		paradoxUrl[1] = "http://dl.leomaster.com/files/paradox.apk";
+		paradoxUrl[1] = "http://dl.leomaster.com/files/spatial.apk";
 		paradoxUrl[0] = "com.leo.theme.contradict";
 		paradoxTheme.setUrl(paradoxUrl);
 		paradoxTheme.setPackageName("com.leo.theme.contradict");
