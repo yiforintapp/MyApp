@@ -856,13 +856,16 @@ public class GridLayout extends ViewGroup {
 	 * state. This implementation is a catch-all, invalidating on any change in
 	 * the visibility flags.
 	 * 
-	 * @hide
 	 */
-	@Override
 	protected void onChildVisibilityChanged(View child, int visibility) {
 		super.onChildVisibilityChanged(child, visibility);
 		invalidateStructure();
 	}
+	
+	   protected void onChildVisibilityChanged(View child, int oldVisibility, int newVisible) {
+	        super.onChildVisibilityChanged(child, oldVisibility, newVisible);
+	        invalidateStructure();
+	    }
 
 	// Measurement
 

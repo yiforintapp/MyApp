@@ -1,17 +1,20 @@
 package com.leo.appmaster.applocker.service;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.ActivityManager;
+import android.app.ActivityManager.AppTask;
+import android.app.ActivityManager.RecentTaskInfo;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
 import android.os.IBinder;
 
 import com.leo.appmaster.applocker.logic.LockHandler;
@@ -115,30 +118,51 @@ public class LockService extends Service {
 
 		@Override
 		public void run() {
-			RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1)
-					.get(0);
+            String pkgName = null;
+            String activityName = null;
+            if (Build.VERSION.SDK_INT > 19) { // Android L and above
+                List<RunningAppProcessInfo> list = mActivityManager.getRunningAppProcesses();
+                for (RunningAppProcessInfo pi : list) {
+                    if (pi.importance <= RunningAppProcessInfo.IMPORTANCE_VISIBLE  // Foreground or Visible
+                            && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter provider and service
+                            && (0x4 & pi.flags) > 0) { // Must have activities
+                        String pkgList[] = pi.pkgList;
+                        if(pkgList != null && pkgList.length > 0) {
+                            pkgName = pkgList[0];
+                            activityName = pkgList[0];
+                            if(pkgName.equals(getApplication().getPackageName())) {
+                                List<AppTask> tasks = mActivityManager.getAppTasks();
+                                if(tasks.size() > 0) {
+                                    RecentTaskInfo rti =  tasks.get(0).getTaskInfo();
+                                    if(rti != null) {
+                                        Intent intent = rti.baseIntent;
+                                        ComponentName cn = intent.getComponent();
+                                        if(cn != null) {
+                                            activityName = cn.getShortClassName();
+                                        }
+                                    }
+                                }
+                            } else {
+                                activityName = pi.processName;
+                            }
+                            break;
+                        }
+                    }
+                }
+            } else {
+                RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1).get(0);
+                if (topTaskInfo.topActivity == null) {
+                    return;
+                }
+                pkgName = topTaskInfo.topActivity.getPackageName();
+                activityName = topTaskInfo.topActivity.getShortClassName();
+            }
 
-			if (topTaskInfo.topActivity == null)
-				return;
-			String topActivityPackageName = topTaskInfo.topActivity
-					.getPackageName();
-			PackageManager pm = getPackageManager();
-			PackageInfo topPackageInfo = null;
 
-			String topActivityName = topTaskInfo.topActivity
-					.getShortClassName();
-
-			try {
-				topPackageInfo = pm.getPackageInfo(topActivityPackageName, 0);
-			} catch (NameNotFoundException e) {
-				e.printStackTrace();
-			}
-
-			if (mLockHandler != null) {
-				mLockHandler.handleAppLaunch(topPackageInfo.packageName,
-						topActivityName);
-			}
-		}
+            if (mLockHandler != null && pkgName != null && activityName != null) {
+                mLockHandler.handleAppLaunch(pkgName, activityName);
+            }           
+        }
 	}
 
 }
