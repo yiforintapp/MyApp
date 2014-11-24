@@ -132,7 +132,7 @@ public class LockService extends Service {
                             activityName = pkgList[0];
                             if(pkgName.equals(getApplication().getPackageName())) {
                                 List<AppTask> tasks = mActivityManager.getAppTasks();
-                                if(tasks.size() > 0) {
+                                if(tasks != null && tasks.size() > 0) {
                                     RecentTaskInfo rti =  tasks.get(0).getTaskInfo();
                                     if(rti != null) {
                                         Intent intent = rti.baseIntent;
@@ -150,14 +150,16 @@ public class LockService extends Service {
                     }
                 }
             } else {
-                RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1).get(0);
-                if (topTaskInfo.topActivity == null) {
-                    return;
+                List<RunningTaskInfo> tasks = mActivityManager.getRunningTasks(1);
+                if(tasks != null && tasks.size() > 0) {
+                    RunningTaskInfo topTaskInfo = tasks.get(0);
+                    if (topTaskInfo.topActivity == null) {
+                        return;
+                    }
+                    pkgName = topTaskInfo.topActivity.getPackageName();
+                    activityName = topTaskInfo.topActivity.getShortClassName();
                 }
-                pkgName = topTaskInfo.topActivity.getPackageName();
-                activityName = topTaskInfo.topActivity.getShortClassName();
             }
-
 
             if (mLockHandler != null && pkgName != null && activityName != null) {
                 mLockHandler.handleAppLaunch(pkgName, activityName);
