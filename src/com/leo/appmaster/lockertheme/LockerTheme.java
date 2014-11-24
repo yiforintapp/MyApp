@@ -286,8 +286,12 @@ public class LockerTheme extends BaseActivity {
 					boolean flag = AppwallHttpUtil.isHttpUrl(urls[i]);					
 					if (mFlagGp) {
 						if (!flag) {
-							AppwallHttpUtil	.requestGp(LockerTheme.this, urls[i]);
-							break;
+						    // AM-437, may not find the activity to answer the intent
+						    try {
+		                          AppwallHttpUtil .requestGp(LockerTheme.this, urls[i]);
+		                          break;
+						    } catch(Exception e) {						        
+						    }
 						}
 					} else if (flag) {
 						AppwallHttpUtil.requestUrl(LockerTheme.this, urls[i]);
