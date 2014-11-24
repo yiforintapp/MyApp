@@ -1328,14 +1328,19 @@ public class LockPatternView extends ViewGroup {
 
 	@Override
 	protected void onRestoreInstanceState(Parcelable state) {
-		final SavedState ss = (SavedState) state;
-		super.onRestoreInstanceState(ss.getSuperState());
-		setPattern(DisplayMode.Correct,
-				LockPatternUtils.stringToPattern(ss.getSerializedPattern()));
-		mPatternDisplayMode = DisplayMode.values()[ss.getDisplayMode()];
-		mInputEnabled = ss.isInputEnabled();
-		mInStealthMode = ss.isInStealthMode();
-		mEnableHapticFeedback = ss.isTactileFeedbackEnabled();
+	    // AM-432, add protect
+	    if(state instanceof SavedState) {
+	        final SavedState ss = (SavedState) state;
+	        super.onRestoreInstanceState(ss.getSuperState());
+	        setPattern(DisplayMode.Correct,
+	                LockPatternUtils.stringToPattern(ss.getSerializedPattern()));
+	        mPatternDisplayMode = DisplayMode.values()[ss.getDisplayMode()];
+	        mInputEnabled = ss.isInputEnabled();
+	        mInStealthMode = ss.isInStealthMode();
+	        mEnableHapticFeedback = ss.isTactileFeedbackEnabled();
+	    } else {
+	        super.onRestoreInstanceState(state);
+	    }
 	}
 
 	/**
