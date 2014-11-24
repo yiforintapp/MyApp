@@ -34,7 +34,7 @@ public class LockerTheme extends BaseActivity {
 	private ListView listTheme;
 	private List<AppLockerThemeBean> mThemes;
 	private List<String> localThemes;
-	private boolean mFlagGp =false;
+	private boolean mFlagGp = false;
 	public AppLockerThemeBean itemTheme;
 	private int number = 0;
 	private LockerThemeAdapter mLockerThemeAdapter;
@@ -90,13 +90,13 @@ public class LockerTheme extends BaseActivity {
 		}
 		listTheme.setSelection(number);
 		listTheme.setOnItemClickListener(itemListener);
-		mFlagGp=isInstallPackageName("com.android.vending");
+		mFlagGp = isInstallPackageName("com.android.vending");
 	}
 
 	@Override
 	protected void onResume() {
 		loadThemeData();
-		mLockerThemeAdapter.notifyDataSetChanged();		
+		mLockerThemeAdapter.notifyDataSetChanged();
 		super.onResume();
 	}
 
@@ -154,15 +154,15 @@ public class LockerTheme extends BaseActivity {
 			public void onClick(int which) {
 				if (which == 0) {
 					for (int i = 0; i < mThemes.size(); i++) {
-							mThemes.get(i).setIsVisibility(Constants.GONE);
+						mThemes.get(i).setIsVisibility(Constants.GONE);
 					}
 					AppMasterApplication.setSharedPreferencesValue(itemTheme
 							.getPackageName());
-						itemTheme.setIsVisibility(Constants.VISIBLE);
-						itemTheme.setFlagName((String) LockerTheme.this
-								.getResources().getText(R.string.localtheme));
-						LeoLog.e("xxxx", "itemTheme = " + itemTheme);
-						 loadThemeData() ;
+					itemTheme.setIsVisibility(Constants.VISIBLE);
+					itemTheme.setFlagName((String) LockerTheme.this
+							.getResources().getText(R.string.localtheme));
+					LeoLog.e("xxxx", "itemTheme = " + itemTheme);
+					loadThemeData();
 					mLockerThemeAdapter.notifyDataSetChanged();
 					SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
 							"theme_apply", itemTheme.getPackageName());
@@ -273,7 +273,7 @@ public class LockerTheme extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			itemTheme = (AppLockerThemeBean) arg0.getItemAtPosition(arg2);
-			String[] urls = itemTheme.getUrl(); 
+			String[] urls = itemTheme.getUrl();
 			/* user click the theme */
 			SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice",
 					itemTheme.getPackageName());
@@ -283,10 +283,11 @@ public class LockerTheme extends BaseActivity {
 					.equals((String) getResources().getText(
 							R.string.onlinetheme))) {
 				for (int i = 0; i < urls.length; i++) {
-					boolean flag = AppwallHttpUtil.isHttpUrl(urls[i]);					
+					boolean flag = AppwallHttpUtil.isHttpUrl(urls[i]);
 					if (mFlagGp) {
 						if (!flag) {
-							AppwallHttpUtil	.requestGp(LockerTheme.this, urls[i]);
+							AppwallHttpUtil
+									.requestGp(LockerTheme.this, urls[i]);
 							break;
 						}
 					} else if (flag) {
@@ -305,21 +306,23 @@ public class LockerTheme extends BaseActivity {
 			}
 		}
 	};
-	private boolean isInstallPackageName(String packageName){
-		boolean installed=true;
-        try {
-            PackageInfo packageInfo = this.getPackageManager().getPackageInfo(
-            		packageName, 0);
-            if (packageInfo == null) {
-            	installed = false;
-            } else {
-            	installed = true;
-            }
-        } catch (Exception e) {
-        	installed = false;
-        }
-        return installed;
+
+	private boolean isInstallPackageName(String packageName) {
+		boolean installed = true;
+		try {
+			PackageInfo packageInfo = this.getPackageManager().getPackageInfo(
+					packageName, 0);
+			if (packageInfo == null) {
+				installed = false;
+			} else {
+				installed = true;
+			}
+		} catch (Exception e) {
+			installed = false;
+		}
+		return installed;
 	}
+
 	private void getOriginalTheme() {
 		/*
 		 * ------------------------------------------构造数据------------------------
@@ -468,6 +471,7 @@ public class LockerTheme extends BaseActivity {
 		public void onReceive(Context arg0, Intent intent) {
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
+				if (packageName != null && packageName.equals("com.leo.theme")) {
 					listTheme.postDelayed(new Runnable() {
 						@Override
 						public void run() {
@@ -475,6 +479,7 @@ public class LockerTheme extends BaseActivity {
 							mLockerThemeAdapter.notifyDataSetChanged();
 						}
 					}, 2000);
+				}
 			}
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
