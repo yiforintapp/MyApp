@@ -19,12 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LockerThemeAdapter extends BaseAdapter {
-	private Context context;
 	private List<AppLockerThemeBean> themes;
 	private LayoutInflater layoutInflater;
 
 	public LockerThemeAdapter(Context context, List<AppLockerThemeBean> themes) {
-		this.context = context;
 		this.themes = themes;
 		this.layoutInflater = LayoutInflater.from(context);
 	}
@@ -79,10 +77,10 @@ public class LockerThemeAdapter extends BaseAdapter {
 		}
 		viewHolder.image.setBackgroundDrawable(theme.getThemeImage());
 		viewHolder.flagName.setText(theme.getFlagName());
-		if (theme.getIsVisibility().equals(Constants.GONE)) {
-			viewHolder.isvisible.setVisibility(View.GONE);
-		} else if (theme.getIsVisibility().equals(Constants.VISIBLE)) {
+		if (theme.isVisiable()) {
 			viewHolder.isvisible.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.isvisible.setVisibility(View.GONE);
 		}
 		/*
 		 * ImageLoader.getInstance().displayImage(imageUri, viewHolder.image,

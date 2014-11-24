@@ -154,14 +154,13 @@ public class LockerTheme extends BaseActivity {
 			public void onClick(int which) {
 				if (which == 0) {
 					for (int i = 0; i < mThemes.size(); i++) {
-						mThemes.get(i).setIsVisibility(Constants.GONE);
+						mThemes.get(i).setVisiable(false);
 					}
 					AppMasterApplication.setSharedPreferencesValue(itemTheme
 							.getPackageName());
-					itemTheme.setIsVisibility(Constants.VISIBLE);
+					itemTheme.setVisiable(true);
 					itemTheme.setFlagName((String) LockerTheme.this
 							.getResources().getText(R.string.localtheme));
-					LeoLog.e("xxxx", "itemTheme = " + itemTheme);
 					loadThemeData();
 					mLockerThemeAdapter.notifyDataSetChanged();
 					SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
@@ -258,9 +257,9 @@ public class LockerTheme extends BaseActivity {
 
 				if (AppMasterApplication.sharedPackage.equals(localThemes
 						.get(i))) {
-					tempTheme.setIsVisibility(Constants.VISIBLE);
+					tempTheme.setVisiable(true);
 				} else {
-					tempTheme.setIsVisibility(Constants.GONE);
+					tempTheme.setVisiable(false);
 				}
 				mThemes.add(tempTheme);
 			}
@@ -346,9 +345,9 @@ public class LockerTheme extends BaseActivity {
 		}
 		if (AppMasterApplication.sharedPackage
 				.equals("com.leo.theme.christmas")) {
-			christmasTheme.setIsVisibility(Constants.VISIBLE);
+			christmasTheme.setVisiable(true);
 		} else {
-			christmasTheme.setIsVisibility(Constants.GONE);
+			christmasTheme.setVisiable(false);
 		}
 
 		mThemes.add(christmasTheme);
@@ -373,9 +372,9 @@ public class LockerTheme extends BaseActivity {
 		}
 		if (AppMasterApplication.sharedPackage
 				.equals("com.leo.theme.moonnight")) {
-			moonnightTheme.setIsVisibility(Constants.VISIBLE);
+			moonnightTheme.setVisiable(true);
 		} else {
-			moonnightTheme.setIsVisibility(Constants.GONE);
+			moonnightTheme.setVisiable(false);
 		}
 		mThemes.add(moonnightTheme);
 
@@ -399,9 +398,9 @@ public class LockerTheme extends BaseActivity {
 		}
 
 		if (AppMasterApplication.sharedPackage.equals("com.leo.theme.orange")) {
-			orangeTheme.setIsVisibility(Constants.VISIBLE);
+			orangeTheme.setVisiable(true);
 		} else {
-			orangeTheme.setIsVisibility(Constants.GONE);
+			orangeTheme.setVisiable(false);
 		}
 		mThemes.add(orangeTheme);
 		// Theme4
@@ -425,9 +424,9 @@ public class LockerTheme extends BaseActivity {
 		}
 		if (AppMasterApplication.sharedPackage
 				.equals("com.leo.theme.contradict")) {
-			paradoxTheme.setIsVisibility(Constants.VISIBLE);
+			paradoxTheme.setVisiable(true);
 		} else {
-			paradoxTheme.setIsVisibility(Constants.GONE);
+			paradoxTheme.setVisiable(false);
 		}
 		mThemes.add(paradoxTheme);
 		/*
@@ -454,12 +453,12 @@ public class LockerTheme extends BaseActivity {
 				R.string.defaultTheme));
 		defaultTheme.setThemeName((String) this.getResources().getText(
 				R.string.defaultTheme));
-		defaultTheme.setIsVisibility(Constants.VISIBLE);
+		defaultTheme.setVisiable(true);
 
 		if (AppMasterApplication.sharedPackage.equals("com.leo.appmaster")) {
-			defaultTheme.setIsVisibility(Constants.VISIBLE);
+			defaultTheme.setVisiable(true);
 		} else {
-			defaultTheme.setIsVisibility(Constants.GONE);
+			defaultTheme.setVisiable(false);
 		}
 
 		return defaultTheme;
