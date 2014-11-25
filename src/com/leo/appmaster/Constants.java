@@ -1,4 +1,4 @@
-package com.leo.appmaster.constants;
+package com.leo.appmaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,10 @@ public class Constants {
 	public static final String APP_LOCK_LIST_DEBUG = "http://test.leostat.com/appmaster/applockerrecommend";
 
 	public static final String APP_LOCK_LIST_DEBUG2 = "http://192.168.1.142:8080/appmaster/appmaster/applockerrecommend";
-	public static final String GPPACKAGE = "com.android.vending";// GP包名
+	public static final String GP_PACKAGE = "com.android.vending";// GP包名
 	public static final int LOCK_TIP_INTERVAL_OF_DATE = 3;
 	public static final int LOCK_TIP_INTERVAL_OF_MS = 3 * 24 * 60 * 60 * 1000;
-//	 public static final int LOCK_TIP_INTERVAL_OF_MS = 1 * 60 * 1000;
+	// public static final int LOCK_TIP_INTERVAL_OF_MS = 1 * 60 * 1000;
 	/*
 	 * AppWall RequestTime
 	 */
@@ -26,6 +26,16 @@ public class Constants {
 	/*
 	 * LockerTheme
 	 */
-	public static final  String  PREFERENCESPACKAGE="com.leo.appmaster";//默认主题
+	public static final String PREFERENCESPACKAGE = "com.leo.appmaster";// 默认主题
+	/**
+	 * theme type
+	 */
+	public static final int THEME_TYPE_DEFAULT = 0;
+	public static final int THEME_TYPE_LOCAL = 1;
+	public static final int THEME_TYPE_ONLINE = 2;
+	/**
+	 * online theme url
+	 */
+	public static final String ONLINE_THEME_URL = "http://test.leostat.com/appmaster/applockerrecommend?page=";
 
 }

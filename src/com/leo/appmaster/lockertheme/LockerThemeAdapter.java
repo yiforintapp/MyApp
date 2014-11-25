@@ -2,8 +2,8 @@ package com.leo.appmaster.lockertheme;
 
 import java.util.List;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.model.AppLockerThemeBean;
 import com.leo.appmaster.model.AppWallBean;
 import com.leo.appmaster.utils.LeoLog;
@@ -69,15 +69,15 @@ public class LockerThemeAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) arg1.getTag();
 		}
 		AppLockerThemeBean theme = themes.get(arg0);
-		if (theme.getThemeName() == null && theme.getThemeName().equals("")) {
+		if (theme.themeName == null || theme.themeName.equals("")) {
 			viewHolder.themeName.setText("");
 		} else {
 
-			viewHolder.themeName.setText(theme.getThemeName());
+			viewHolder.themeName.setText(theme.themeName);
 		}
-		viewHolder.image.setBackgroundDrawable(theme.getThemeImage());
-		viewHolder.flagName.setText(theme.getFlagName());
-		if (theme.isVisiable()) {
+		viewHolder.image.setBackgroundDrawable(theme.themeImage);
+		viewHolder.flagName.setText(theme.label);
+		if (theme.curUsedTheme) {
 			viewHolder.isvisible.setVisibility(View.VISIBLE);
 		} else {
 			viewHolder.isvisible.setVisibility(View.GONE);

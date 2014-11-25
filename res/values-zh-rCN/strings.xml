@@ -218,11 +218,16 @@
     <string name="moonightTheme">夜晚</string>
     <string name="orangeTheme">切水果</string>
     <string name="ParadoxTheme">空间矛盾</string>
-	<string name="apply_dialog">是否将解锁界面更换为该主题？</string>
-	<string name="locker_apply">应用</string>
-	<string name="locker_uninstall">卸载</string>
-	<string name="locker_cancel">取消</string>
-	<string name="christmas_theme">圣诞节</string>
-	
+    <string name="apply_dialog">是否将解锁界面更换为该主题？</string>
+    <string name="locker_apply">应用</string>
+    <string name="locker_uninstall">卸载</string>
+    <string name="locker_cancel">取消</string>
+    <string name="christmas_theme">圣诞节</string>
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载...</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
 
 </resources>

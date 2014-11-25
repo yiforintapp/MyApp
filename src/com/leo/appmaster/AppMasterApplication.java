@@ -17,7 +17,6 @@ import android.content.SharedPreferences.Editor;
 
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
-import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.RequestFinishedReporter;

@@ -14,7 +14,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="14dp"
-        android:background="@drawable/moonnight_theme" >
+        android:background="@drawable/default_theme" >
 
         <TextView
             android:id="@+id/flagTV"
