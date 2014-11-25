@@ -36,6 +36,6 @@ public class Constants {
 	/**
 	 * online theme url
 	 */
-	public static final String ONLINE_THEME_URL = "http://test.leostat.com/appmaster/applockerrecommend?page=";
+	public static final String ONLINE_THEME_URL = "http://fasf.com/appmaster/theme?page=";
 
 }

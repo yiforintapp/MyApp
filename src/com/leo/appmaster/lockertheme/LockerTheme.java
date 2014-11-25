@@ -28,6 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -42,7 +43,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.lockertheme.LockerThemeChanageDialog.OnDiaogClickListener;
-import com.leo.appmaster.lockertheme.XListView.IXListViewListener;
+import com.leo.appmaster.lockertheme.PullLoadListView.IXListViewListener;
 import com.leo.appmaster.model.AppLockerThemeBean;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppUtil;
@@ -53,19 +54,22 @@ import com.leoers.leoanalytics.LeoStat;
 public class LockerTheme extends BaseActivity implements OnClickListener,
 		IXListViewListener, OnPageChangeListener {
 
+	private View mTabContainer;
 	private ViewPager mViewPager;
 	private ListView localThemeList;
-	private View onlineTheme;
+	private PullLoadListView mOnlineThemeList;
+	private View mOnlineThemeView;
 	private View mOnlineThemeHolder;
-	private TextView mTvRetry, mTvLocal, mTvOnline;
+	private View mErrorView;
+	private TextView mTvRetry, mTvLocal, mTvOnline, mTvEmptyTip;
 	private ProgressBar mProgressBar;
 	private LockerThemeChanageDialog dialog;
 
-	private List<AppLockerThemeBean> mLocalTheme;
-	private List<AppLockerThemeBean> mOnlineTheme;
+	private List<AppLockerThemeBean> mLocalThemes;
+	private List<AppLockerThemeBean> mOnlineThemes;
 	private LockerThemeAdapter mLocalThemeAdapter;
 	private LockerThemeAdapter mOnlineThemeAdapter;
-	private List<String> localThemes;
+	private List<String> mHideThemes;
 	private ThemeItemClickListener itemListener;
 	public AppLockerThemeBean lastSelectedItem;
 
@@ -73,7 +77,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	private LockerThemeReceive mLockerThemeReceive;
 	private boolean mNeedLock = false;
 	private int number = 0;
-	private AppMasterPreference mPreference;
+	private int mCurrentShowPage = 0;
+	private int mNextLoadPage = 0;
 
 	private static final int MSG_LOAD_INIT_FAILED = 0;
 	private static final int MSG_LOAD_INIT_SUCCESSED = 1;
@@ -104,17 +109,29 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				}
 				break;
 			case MSG_LOAD_PAGE_DATA_FAILED:
-
+				if (lockerTheme.get() != null) {
+					Toast.makeText(lockerTheme.get(),
+							R.string.network_error_msg, 0).show();
+					lockerTheme.get().mOnlineThemeList.stopLoadMore();
+				}
 				break;
 			case MSG_LOAD_PAGE_DATA_SUCCESS:
-
+				if (lockerTheme.get() != null) {
+					lockerTheme.get().mOnlineThemeList.stopLoadMore();
+					List<AppLockerThemeBean> loadList = (List<AppLockerThemeBean>) msg.obj;
+					if (lockerTheme.get().mOnlineThemes.containsAll(loadList)) {
+						Toast.makeText(lockerTheme.get(),
+								R.string.no_more_onlinetheme, 0).show();
+					} else {
+						lockerTheme.get().addMoreTheme(loadList);
+					}
+				}
 				break;
 
 			default:
 				break;
 			}
 		}
-
 	}
 
 	@Override
@@ -130,11 +147,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		mNeedLock = intent.getBooleanExtra("need_lock", false);
 		if (temp != null && !temp.equals("")) {
 			tryHideThemeApk(temp);
-			for (int i = 0; i < mLocalTheme.size(); i++) {
-				if (mLocalTheme.get(i).packageName.equals(temp)) {
+			for (int i = 0; i < mLocalThemes.size(); i++) {
+				if (mLocalThemes.get(i).packageName.equals(temp)) {
 					number = i;
-					showAlarmDialog(mLocalTheme.get(i).themeName, View.VISIBLE);
-					lastSelectedItem = mLocalTheme.get(i);
+					showAlarmDialog(mLocalThemes.get(i).themeName, View.VISIBLE);
+					lastSelectedItem = mLocalThemes.get(i);
 				}
 			}
 		} else {
@@ -151,15 +168,22 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	}
 
 	private void loadData() {
-		mLocalTheme = new ArrayList<AppLockerThemeBean>();
-		mOnlineTheme = new ArrayList<AppLockerThemeBean>();
-		mPreference = AppMasterPreference.getInstance(LockerTheme.this);
-
+		mLocalThemes = new ArrayList<AppLockerThemeBean>();
+		mOnlineThemes = new ArrayList<AppLockerThemeBean>();
 		// load local theme
-		localThemes = mPreference.getHideThemeList();
-		mLocalTheme.add(getDefaultTheme());
+		loadLocalTheme();
+		// load online theme
+		loadInitOnlineTheme();
+	}
+
+	private void loadLocalTheme() {
+		AppMasterPreference pref = AppMasterPreference
+				.getInstance(LockerTheme.this);
+		mLocalThemes.clear();
+		mHideThemes = pref.getHideThemeList();
+		mLocalThemes.add(getDefaultTheme());
 		Context themeContext = null;
-		for (String thmemPackage : localThemes) {
+		for (String thmemPackage : mHideThemes) {
 			AppLockerThemeBean bean = new AppLockerThemeBean();
 			bean.themeType = Constants.THEME_TYPE_LOCAL;
 			try {
@@ -188,17 +212,35 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				} else {
 					bean.curUsedTheme = false;
 				}
-				mLocalTheme.add(bean);
+				mLocalThemes.add(bean);
 			} catch (NameNotFoundException e1) {
 				LeoLog.i("Context", "getContext error");
 			}
 		}
+	}
 
-		// load online theme
-		 loadInitOnlineTheme();
+	private void loadInitOnlineTheme() {
+		mOnlineThemes.clear();
+		HttpRequestAgent.getInstance(this).loadOnlineTheme(mCurrentShowPage,
+				new Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						List<AppLockerThemeBean> list = ThemeJsonObjectParser
+								.parserJsonObject(response);
+						Message msg = mHandler.obtainMessage(
+								MSG_LOAD_INIT_SUCCESSED, list);
+						mHandler.sendMessage(msg);
+					}
+				}, new ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+					}
+				});
 	}
 
 	private void initUI() {
+		mTabContainer = findViewById(R.id.tab_container);
 		mTvLocal = (TextView) findViewById(R.id.local);
 		mTvOnline = (TextView) findViewById(R.id.online);
 		mTvLocal.setOnClickListener(this);
@@ -213,27 +255,29 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		// inflate local theme
 		localThemeList = (ListView) inflater.inflate(R.layout.theme_local_list,
 				null);
-		mLocalThemeAdapter = new LockerThemeAdapter(this, mLocalTheme);
+		mLocalThemeAdapter = new LockerThemeAdapter(this, mLocalThemes);
 		localThemeList.setAdapter(mLocalThemeAdapter);
 		itemListener = new ThemeItemClickListener();
 		localThemeList.setOnItemClickListener(itemListener);
 
 		// inflate online theme
-		onlineTheme = inflater.inflate(R.layout.theme_online_list, null);
-		mProgressBar = (ProgressBar) onlineTheme
+		mOnlineThemeView = inflater.inflate(R.layout.theme_online_list, null);
+		mProgressBar = (ProgressBar) mOnlineThemeView
 				.findViewById(R.id.progressbar_loading);
-		mTvRetry = (TextView) onlineTheme.findViewById(R.id.tv_reload);
+		mErrorView = mOnlineThemeView.findViewById(R.id.layout_load_error);
+		mTvEmptyTip = (TextView) mOnlineThemeView.findViewById(R.id.tv_empty);
+		mTvRetry = (TextView) mOnlineThemeView.findViewById(R.id.tv_reload);
 		mTvRetry.setOnClickListener(this);
-		mOnlineThemeHolder = onlineTheme.findViewById(R.id.content_holder);
-		XListView pullLoadListView = (XListView) onlineTheme
-				.findViewById(android.R.id.list);
-		pullLoadListView.setPullLoadEnable(true);
-		mOnlineThemeAdapter = new LockerThemeAdapter(this, mOnlineTheme);
-		pullLoadListView.setAdapter(mOnlineThemeAdapter);
-		pullLoadListView.setPullLoadEnable(true);
-		pullLoadListView.setPullRefreshEnable(false);
-		pullLoadListView.setXListViewListener(this);
-		pullLoadListView.setOnItemClickListener(itemListener);
+		mOnlineThemeHolder = mOnlineThemeView.findViewById(R.id.content_holder);
+		mOnlineThemeList = (PullLoadListView) mOnlineThemeView
+				.findViewById(R.id.list_online);
+		mOnlineThemeList.setPullLoadEnable(true);
+		mOnlineThemeAdapter = new LockerThemeAdapter(this, mOnlineThemes);
+		mOnlineThemeList.setAdapter(mOnlineThemeAdapter);
+		mOnlineThemeList.setPullLoadEnable(true);
+		mOnlineThemeList.setPullRefreshEnable(false);
+		mOnlineThemeList.setXListViewListener(this);
+		mOnlineThemeList.setOnItemClickListener(itemListener);
 
 		// fill viewpager
 		mViewPager.setAdapter(new PagerAdapter() {
@@ -253,7 +297,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				if (position == 0) {
 					view = localThemeList;
 				} else {
-					view = onlineTheme;
+					view = mOnlineThemeView;
 				}
 				container.addView(view, LayoutParams.MATCH_PARENT,
 						LayoutParams.MATCH_PARENT);
@@ -266,35 +310,59 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	}
 
 	private void onLoadInitThemeFinish(boolean succeed, Object object) {
-		if (succeed) {
-			mOnlineTheme.clear();
-			if (object != null) {
-				mOnlineTheme = (List<AppLockerThemeBean>) object;
-			}
-			mOnlineThemeAdapter.notifyDataSetChanged();
-		}
-
-		mProgressBar.setVisibility(View.INVISIBLE);
 		mOnlineThemeHolder.setVisibility(View.VISIBLE);
+		if (!succeed) {
+			mOnlineThemeHolder.setVisibility(View.VISIBLE);
+
+			// mOnlineThemes.clear();
+			// if (object != null) {
+			// mOnlineThemes = (List<AppLockerThemeBean>) object;
+			// }
+
+			mOnlineThemes.addAll(mLocalThemes);
+			mOnlineThemes.addAll(mLocalThemes);
+			mOnlineThemes.addAll(mLocalThemes);
+
+			mOnlineThemeAdapter.notifyDataSetChanged();
+			if (mOnlineThemes.isEmpty()) {
+				mTvEmptyTip.setVisibility(View.VISIBLE);
+			} else {
+				mOnlineThemeList.setVisibility(View.VISIBLE);
+			}
+		} else {
+			mOnlineThemeList.setVisibility(View.INVISIBLE);
+			mErrorView.setVisibility(View.VISIBLE);
+			mTvEmptyTip.setVisibility(View.INVISIBLE);
+		}
+		mProgressBar.setVisibility(View.INVISIBLE);
 	}
 
-	private void loadInitOnlineTheme() {
-		HttpRequestAgent.getInstance(this).loadOnlineTheme(0,
+	private void loadMoreOnlineTheme() {
+		mNextLoadPage = mCurrentShowPage + 1;
+		HttpRequestAgent.getInstance(this).loadOnlineTheme(mNextLoadPage,
 				new Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
 						List<AppLockerThemeBean> list = ThemeJsonObjectParser
 								.parserJsonObject(response);
 						Message msg = mHandler.obtainMessage(
-								MSG_LOAD_INIT_SUCCESSED, list);
+								MSG_LOAD_PAGE_DATA_SUCCESS, list);
 						mHandler.sendMessage(msg);
 					}
 				}, new ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+						mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
 					}
 				});
+	}
+
+	public void addMoreTheme(List<AppLockerThemeBean> loadList) {
+		for (AppLockerThemeBean appLockerThemeBean : loadList) {
+			if (!mOnlineThemes.contains(appLockerThemeBean)) {
+				mOnlineThemes.add(appLockerThemeBean);
+			}
+		}
 	}
 
 	private void tryHideThemeApk(String pkg) {
@@ -329,13 +397,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		super.onBackPressed();
 	}
 
-	/**
-	 * AlarmDialog
-	 * 
-	 * @param title
-	 * @param content
-	 */
-
 	public void showAlarmDialog(String packageName, int visible) {
 		dialog = new LockerThemeChanageDialog(this);
 		dialog.setText(packageName);
@@ -346,8 +407,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			@Override
 			public void onClick(int which) {
 				if (which == 0) {
-					for (int i = 0; i < mLocalTheme.size(); i++) {
-						mLocalTheme.get(i).curUsedTheme = false;
+					for (int i = 0; i < mLocalThemes.size(); i++) {
+						mLocalThemes.get(i).curUsedTheme = false;
 					}
 					AppMasterApplication
 							.setSharedPreferencesValue(lastSelectedItem.packageName);
@@ -355,7 +416,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					lastSelectedItem.label = (String) LockerTheme.this
 							.getResources().getText(R.string.localtheme);
 					// loadThemeData();
-					// mLockerThemeAdapter.notifyDataSetChanged();
+					mLocalThemeAdapter.notifyDataSetChanged();
 
 					SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
 							"theme_apply", lastSelectedItem.packageName);
@@ -409,39 +470,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		mShouldLockOnRestart = false;
 	}
 
-	private class ThemeItemClickListener implements OnItemClickListener {
-
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-			lastSelectedItem = (AppLockerThemeBean) arg0
-					.getItemAtPosition(arg2);
-			SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice",
-					lastSelectedItem.packageName);
-			if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
-				if (AppUtil
-						.appInstalled(LockerTheme.this, Constants.GP_PACKAGE)) {
-					AppwallHttpUtil.requestGp(LockerTheme.this,
-							lastSelectedItem.packageName);
-				} else {
-					AppwallHttpUtil.requestUrl(LockerTheme.this,
-							lastSelectedItem.downloadUrl);
-				}
-			} else if (!lastSelectedItem.packageName
-					.equals(AppMasterApplication.sharedPackage)) {
-				if (mLocalTheme.get(arg2).packageName
-						.equals("com.leo.theme.default")) {
-					showAlarmDialog(lastSelectedItem.themeName, View.GONE);
-				} else {
-					showAlarmDialog(lastSelectedItem.themeName, View.VISIBLE);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Default Theme
-	 */
 	private AppLockerThemeBean getDefaultTheme() {
 		AppLockerThemeBean defaultTheme = new AppLockerThemeBean();
 		defaultTheme.themeImage = getResources().getDrawable(
@@ -468,45 +496,20 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		if (page == 0) {
 			mTvLocal.setTextColor(getResources().getColor(
 					R.color.tab_select_text));
-			mTvLocal.setTextColor(getResources().getColor(R.color.white));
-			mTvLocal.setBackgroundResource(R.drawable.stacked_tabs_l);
-		} else {
 			mTvOnline.setTextColor(getResources().getColor(R.color.white));
+			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_l);
+		} else {
+			mTvLocal.setTextColor(getResources().getColor(R.color.white));
 			mTvOnline.setTextColor(getResources().getColor(
 					R.color.tab_select_text));
-			mTvOnline.setBackgroundResource(R.drawable.stacked_tabs_r);
+			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_r);
 		}
 	}
 
-	private class LockerThemeReceive extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context arg0, Intent intent) {
-			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
-				String packageName = intent.getData().getSchemeSpecificPart();
-				if (packageName != null && packageName.equals("com.leo.theme")) {
-					mHandler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							loadData();
-							mLocalThemeAdapter.notifyDataSetChanged();
-						}
-					}, 2000);
-				}
-			}
-			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
-				String packageName = intent.getData().getSchemeSpecificPart();
-				if (packageName != null && packageName.equals("com.leo.theme")) {
-					mHandler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							loadData();
-							mLocalThemeAdapter.notifyDataSetChanged();
-						}
-					}, 2000);
-				}
-			}
-		}
+	private void doReload() {
+		mOnlineThemeHolder.setVisibility(View.INVISIBLE);
+		mProgressBar.setVisibility(View.VISIBLE);
+		loadInitOnlineTheme();
 	}
 
 	@Override
@@ -514,7 +517,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		int id = v.getId();
 		switch (id) {
 		case R.id.tv_reload:
-			onReload();
+			doReload();
 			break;
 		case R.id.local:
 			mViewPager.setCurrentItem(0, true);
@@ -528,10 +531,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 
 	}
 
-	private void onReload() {
-
-	}
-
 	@Override
 	public void onRefresh() {
 
@@ -539,7 +538,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 
 	@Override
 	public void onLoadMore() {
-
+		loadMoreOnlineTheme();
 	}
 
 	@Override
@@ -553,5 +552,64 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	@Override
 	public void onPageSelected(int arg0) {
 		setCurrentPage(arg0);
+	}
+
+	private class LockerThemeReceive extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context arg0, Intent intent) {
+			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
+				String packageName = intent.getData().getSchemeSpecificPart();
+				if (packageName != null && packageName.startsWith("com.leo.theme")) {
+					mHandler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							loadLocalTheme();
+							mLocalThemeAdapter.notifyDataSetChanged();
+						}
+					}, 1000);
+				}
+			}
+			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
+				String packageName = intent.getData().getSchemeSpecificPart();
+				if (packageName != null && packageName.startsWith("com.leo.theme")) {
+					mHandler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							loadLocalTheme();
+							mLocalThemeAdapter.notifyDataSetChanged();
+						}
+					}, 1000);
+				}
+			}
+		}
+	}
+
+	private class ThemeItemClickListener implements OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			lastSelectedItem = (AppLockerThemeBean) arg0
+					.getItemAtPosition(arg2);
+			SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice",
+					lastSelectedItem.packageName);
+			if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
+				if (AppUtil
+						.appInstalled(LockerTheme.this, Constants.GP_PACKAGE)) {
+					AppwallHttpUtil.requestGp(LockerTheme.this,
+							lastSelectedItem.packageName);
+				} else {
+					AppwallHttpUtil.requestUrl(LockerTheme.this,
+							lastSelectedItem.downloadUrl);
+				}
+			} else if (!lastSelectedItem.packageName
+					.equals(AppMasterApplication.sharedPackage)) {
+				if (mLocalThemes.get(arg2).packageName
+						.equals("com.leo.theme.default")) {
+					showAlarmDialog(lastSelectedItem.themeName, View.GONE);
+				} else {
+					showAlarmDialog(lastSelectedItem.themeName, View.VISIBLE);
+				}
+			}
+		}
 	}
 }

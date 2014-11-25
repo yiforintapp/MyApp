@@ -223,4 +223,7 @@
 	<string name="locker_uninstall">Uninstall</string>
 	<string name="locker_cancel">Cancel</string>
 	<string name="christmas_theme">Christmas</string>
+	
+	<string name="no_theme">暂无在线主题</string>
+	<string name="no_more_onlinetheme">已下载所有主题，我们会尽快增加新主题</string>
 </resources>
