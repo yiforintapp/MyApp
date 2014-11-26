@@ -105,15 +105,16 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
                                 startActivity(intent);
                             } else if (position == 1) {
 
-                                if (AppUtil.appInstalled(getApplicationContext(),
-                                        "com.android.vending")) {
+                                /*if (AppUtil.appInstalled(getApplicationContext(),
+                                        "com.facebook.katana")) {
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
                                     Uri uri = Uri
                                             .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
                                     intent.setData(uri);
-                                    ComponentName cn = new ComponentName(
-                                            "com.android.vending",
-                                            "com.google.android.finsky.activities.MainActivity");
+
+                                            ComponentName cn = new ComponentName(
+                                                    "com.facebook.katana",
+                                                    "com.google.android.finsky.activities.MainActivity");
                                     intent.setComponent(cn);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
@@ -127,15 +128,14 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
                                             startActivity(intent2);
                                         }
                                     }, 200);
-                                } else {
+                                } else {*/
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
                                     Uri uri = Uri
-                                            .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                                            .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
                                     intent.setData(uri);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
-                                }
-
+//                                }
                             }
                             mLeoPopMenu.dismissSnapshotList();
                         }
