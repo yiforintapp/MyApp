@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.ui;
 
 import android.content.Context;
@@ -7,13 +8,21 @@ import android.view.View;
 
 public class RocketDock extends View {
 
-	public RocketDock(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    public RocketDock(Context context) {
+        this(context, null);
+    }
 
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-	}
+    public RocketDock(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public RocketDock(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
 
 }

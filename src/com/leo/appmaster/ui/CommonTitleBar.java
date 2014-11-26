@@ -14,7 +14,7 @@ import com.leo.appmaster.R;
 
 public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
-	private ImageView mIvBackArrow;
+    private ImageView mIvBackArrow;
 	private TextView mTvTitle;
 	private TextView mTvLayoutRight;
 	private TextView mTvOptionText;
@@ -22,13 +22,17 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
 	private View mLayoutBackView, mLayoutSpiner;
 
-	public CommonTitleBar(Context context) {
-		super(context);
-	}
+    public CommonTitleBar(Context context) {
+        this(context, null);
+    }
 
-	public CommonTitleBar(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    public CommonTitleBar(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+    
+    public CommonTitleBar(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
 	@Override
 	protected void onFinishInflate() {

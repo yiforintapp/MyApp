@@ -12,7 +12,7 @@ import android.view.animation.LinearInterpolator;
 
 public class ShadeView extends View implements AnimatorUpdateListener {
 
-	public static int DEFAULT_COLOR_RED = 0x28;
+    public static int DEFAULT_COLOR_RED = 0x28;
 	public static int DEFAULT_COLOR_GREEN = 0x93;
 	public static int DEFAULT_COLOR_BLUE = 0xfe;
 	
@@ -25,9 +25,17 @@ public class ShadeView extends View implements AnimatorUpdateListener {
 	private ValueAnimator rVa;
 	private ValueAnimator bVa;
 
-	public ShadeView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    public ShadeView(Context context) {
+        this(context, null);
+    }
+    
+    public ShadeView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+    
+    public ShadeView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
 	@Override
 	protected void onDraw(Canvas canvas) {
