@@ -29,9 +29,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.MainViewActivity;
 import com.leo.appmaster.R;
-import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
@@ -48,6 +46,8 @@ import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.sdk.MainViewActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CricleView;
 import com.leo.appmaster.ui.LeoPopMenu;

@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.push;
+package com.leo.appmaster.sdk.push;
 
 import android.app.ActivityManager;
 import android.app.Notification;

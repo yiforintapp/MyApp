@@ -9,10 +9,10 @@ import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.TimeView;
 
 public class WaitActivity extends BaseActivity {

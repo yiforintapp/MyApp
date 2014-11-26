@@ -3,11 +3,11 @@ package com.leo.appmaster.appmanage;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.GestureLayout.IGestureListener;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CustomViewPager;
 import com.leo.appmaster.utils.DipPixelUtil;

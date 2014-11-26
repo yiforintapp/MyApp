@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 
-import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 public class ProtocolActivity extends BaseActivity implements OnClickListener{

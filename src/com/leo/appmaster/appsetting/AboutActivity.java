@@ -1,9 +1,9 @@
 package com.leo.appmaster.appsetting;
 import java.util.Locale;
 
-import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.home.ProtocolActivity;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leoers.leoanalytics.LeoStat;

@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.push;
+package com.leo.appmaster.sdk.push;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -24,9 +24,9 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
-import com.leo.appmaster.SDKWrapper;
+import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 

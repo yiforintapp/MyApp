@@ -1,5 +1,5 @@
 
-package com.leo.appmaster;
+package com.leo.appmaster.sdk;
 
 import com.leoers.leoanalytics.LeoStat;
 

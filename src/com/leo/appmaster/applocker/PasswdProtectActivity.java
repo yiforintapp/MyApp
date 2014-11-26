@@ -1,9 +1,9 @@
 package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 import android.app.Activity;

@@ -19,6 +19,7 @@ import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.RequestFinishedReporter;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;

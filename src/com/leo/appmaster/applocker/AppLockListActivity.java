@@ -20,14 +20,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
-import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.model.AppDetailInfo;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;

@@ -1,4 +1,4 @@
-package com.leo.appmaster;
+package com.leo.appmaster.sdk;
 
 /**
  * Author: stonelam@leoers.com
@@ -7,6 +7,7 @@ package com.leo.appmaster;
 
 import com.baidu.mobstat.StatService;
 import com.flurry.android.FlurryAgent;
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.applocker.ILock;
 
 import android.app.Activity;

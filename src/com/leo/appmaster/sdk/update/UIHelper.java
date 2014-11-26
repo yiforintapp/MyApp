@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.update;
+package com.leo.appmaster.sdk.update;
 
 import android.app.ActivityManager;
 import android.app.Notification;

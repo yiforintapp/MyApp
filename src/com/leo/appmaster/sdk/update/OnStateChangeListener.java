@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.update;
+package com.leo.appmaster.sdk.update;
 
 public interface OnStateChangeListener {
     public void onProgress(int complete, int total);

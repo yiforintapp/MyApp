@@ -43,11 +43,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
-import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;

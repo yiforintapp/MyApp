@@ -1,5 +1,5 @@
 
-package com.leo.appmaster;
+package com.leo.appmaster.sdk;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +10,10 @@ import android.util.Log;
 import com.baidu.mobstat.SendStrategyEnum;
 import com.baidu.mobstat.StatService;
 import com.flurry.android.FlurryAgent;
-import com.leo.appmaster.push.PushUIHelper;
-import com.leo.appmaster.update.UIHelper;
+import com.leo.appmaster.R;
+import com.leo.appmaster.R.string;
+import com.leo.appmaster.sdk.push.PushUIHelper;
+import com.leo.appmaster.sdk.update.UIHelper;
 import com.leoers.leoanalytics.LeoStat;
 
 public class SDKWrapper {

@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.update;
+package com.leo.appmaster.sdk.update;
 
 import java.lang.ref.WeakReference;
 
@@ -21,8 +21,8 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.BaseActivity;
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.update.IUIHelper;

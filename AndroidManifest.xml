@@ -193,13 +193,13 @@
         </activity>
         <!-- add for the app update of leosdk -->
         <activity
-            android:name=".update.UpdateActivity"
+            android:name="com.leo.appmaster.sdk.update.UpdateActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
         <activity
-            android:name=".push.PushActivity"
+            android:name="com.leo.appmaster.sdk.push.PushActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame" />
