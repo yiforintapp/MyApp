@@ -37,6 +37,7 @@ import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -232,26 +233,32 @@ public class LockScreenActivity extends FragmentActivity implements
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
 			mTtileBar.setOptionListener(this);
 		}
-		mTtileBar.setSpinerVibility(View.VISIBLE);
-		mTtileBar.setSpinerListener(this);
+		     
+        if(ImageHideMainActivity.class.getName().equals(mToActivity)) { // AM-423, for image hide, do not show theme icon
+            mTtileBar.setSpinerVibility(View.GONE);
+        } else {
+            
+            mTtileBar.setSpinerVibility(View.VISIBLE);
+            mTtileBar.setSpinerListener(this);
 
-		spiner.setOnClickListener(new OnClickListener() {
+            spiner.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-				Intent intent = new Intent(LockScreenActivity.this,
-						LockerTheme.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
-						| Intent.FLAG_ACTIVITY_NEW_TASK);
-				SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1, "theme_enter", "unlock");
+                @Override
+                public void onClick(View arg0) {
+                    Intent intent = new Intent(LockScreenActivity.this,
+                            LockerTheme.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
+                            | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1, "theme_enter", "unlock");
 
-				toTheme = true;
+                    toTheme = true;
 
-				startActivityForResult(intent, 0);
-				AppMasterApplication.setSharedPreferencesNumber("1");
-				number = "1";
-			}
-		});
+                    startActivityForResult(intent, 0);
+                    AppMasterApplication.setSharedPreferencesNumber("1");
+                    number = "1";
+                }
+            });
+        }
 
 		if (mFromType == LockFragment.FROM_SELF_HOME
 				|| mFromType == LockFragment.FROM_SELF) {
