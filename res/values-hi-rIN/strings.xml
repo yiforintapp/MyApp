@@ -227,4 +227,5 @@
     <string name="christmas_theme">क्रिसमस</string>
 	<string name="about_group">加入内测团</string>
     <string name="about_praise">给我们点赞</string>
+    <string  name="locker_guide">点击更换解锁主题</string>
 </resources>

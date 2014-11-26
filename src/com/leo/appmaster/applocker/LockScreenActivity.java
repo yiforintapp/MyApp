@@ -70,7 +70,7 @@ public class LockScreenActivity extends FragmentActivity implements
 	private String number;
 
 	private boolean toTheme;
-
+	private RelativeLayout lockerGuide;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,6 +81,10 @@ public class LockScreenActivity extends FragmentActivity implements
 		if (number.equals("0")) {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.themetip_spiner_press));
+			/* 
+		    lockerGuide.startAnimation(anim);
+		    lockerGuide.setVisibility(View.VISIBLE);*/
+			
 		} else {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.theme_spiner_press));
@@ -88,6 +92,7 @@ public class LockScreenActivity extends FragmentActivity implements
 		handleIntent();
 		initUI();
 	}
+	
 
 	@Override
 	protected void onResume() {
@@ -226,7 +231,7 @@ public class LockScreenActivity extends FragmentActivity implements
 	}
 
 	private void initUI() {
-
+	    lockerGuide=(RelativeLayout) findViewById(R.id.lockerGuide);
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			mTtileBar.setOptionImage(R.drawable.setting_selector);
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);

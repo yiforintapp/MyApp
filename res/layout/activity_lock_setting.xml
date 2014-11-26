@@ -10,6 +10,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
+        <RelativeLayout
+        android:id="@+id/lockerGuide"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:visibility="gone"
+    	android:gravity="center"
+    	android:background="@drawable/lock_tutorails_button"
+         >
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/locker_guide"
+        android:textColor="#FFFFFF"
+        />
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/fragment_contain"

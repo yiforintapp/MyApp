@@ -71,6 +71,11 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mLeoPopMenu != null)
+        {
+            mLeoPopMenu.dismissSnapshotList();
+            mLeoPopMenu = null;
+        }
     }
 
     @Override
@@ -98,6 +103,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                     mLeoPopMenu.setPopMenuItems(getPopMenuItems());
                     mLeoPopMenu.setItemSpaned(true);
                     mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
+                    mLeoPopMenu.setPopMenuItems(getPopMenuItems());
                     mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view,
@@ -108,53 +114,47 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                                 startActivity(intent);
                             } else if (position == 1) {
-
-                                /*
-                                 * if
-                                 * (AppUtil.appInstalled(getApplicationContext
-                                 * (), "com.facebook.katana")) { Intent intent =
-                                 * new Intent(Intent.ACTION_VIEW); Uri uri = Uri
-                                 * .parse(
-                                 * "market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster"
-                                 * ); intent.setData(uri); ComponentName cn =
-                                 * new ComponentName( "com.facebook.katana",
-                                 * "com.google.android.finsky.activities.MainActivity"
-                                 * ); intent.setComponent(cn);
-                                 * intent.setFlags(Intent
-                                 * .FLAG_ACTIVITY_NEW_TASK);
-                                 * startActivity(intent);
-                                 * mAppVersion.postDelayed(new Runnable() {
-                                 * @Override public void run() { Intent intent2
-                                 * = new Intent( AboutActivity.this,
-                                 * GooglePlayGuideActivity.class);
-                                 * intent2.setFlags
-                                 * (Intent.FLAG_ACTIVITY_NEW_TASK);
-                                 * startActivity(intent2); } }, 200); } else {
-                                 */
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                Uri uri = Uri
-                                        .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                // }
+                                if (AppUtil.appInstalled(getApplicationContext(),
+                                        "com.facebook.katana")) {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    Uri uri = Uri
+                                            .parse("fb://page/1709302419294051");
+                                    intent.setData(uri);
+                                    ComponentName cn = new ComponentName("com.facebook.katana",
+                                            "com.facebook.katana.IntentUriHandler");
+                                    intent.setComponent(cn);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    try {
+                                        startActivity(intent);
+                                    } catch (Exception e) {
+                                    }
+                                } else {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    Uri uri = Uri
+                                            .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
+                                    intent.setData(uri);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
                             }
                             mLeoPopMenu.dismissSnapshotList();
                         }
                     });
-                }
-                mLeoPopMenu.setPopMenuItems(getPopMenuItems());
-                mLeoPopMenu.showPopMenu(this, mTtileBar.findViewById(R.id.tv_option_image), null,null);
+                }               
+                mLeoPopMenu.showPopMenu(this, mTtileBar.findViewById(R.id.tv_option_image), null,
+                        null);
                 break;
             default:
                 break;
         }
 
     }
-/**
- * getPopMenuItems
- * @return
- */
+
+    /**
+     * getPopMenuItems
+     * 
+     * @return
+     */
     private List<String> getPopMenuItems() {
         List<String> listItems = new ArrayList<String>();
         Resources resources = AppMasterApplication.getInstance().getResources();
