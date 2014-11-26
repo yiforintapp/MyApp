@@ -18,27 +18,6 @@ import com.leoers.leoanalytics.LeoStat;
 
 public class SDKWrapper {
 
-    /*
-     * 这次打开百度统计的渠道： 
-     * 0000a,官网 
-     * 0002a,mobango 
-     * 0010a,uc 
-     * 0068a,帕尔加特-coo
-     * 0069a,帕尔加特-push 
-     * 
-     * 0087a,帕尔加特-A
-     * 0088a,帕尔加特-B 
-     * 0089a,帕尔加特-C 
-     * 0090a,帕尔加特-D
-     * 0091a,帕尔加特-E
-     */
-    private final static String[] CHANNELS_NEED_MTJ = {
-            "0000a", "0002a", "0010a", "0068a", "0069a",
-            "0087a", "0088a", "0089a", "0090a", "0091a"
-    };
-
-    private static boolean isMTJEnable = false;
-
     /**
      * initial leo analytics and flurry SDK, this will changed in the future.
      * this should be called in application's onCreate method.
@@ -48,18 +27,7 @@ public class SDKWrapper {
     public static void iniSDK(Context ctx) {
         iniLeoSdk(ctx.getApplicationContext());
         iniFlurry(ctx.getApplicationContext());
-        isMTJEnable = false;
-        for (String channel : CHANNELS_NEED_MTJ) {
-            if (ctx.getString(R.string.channel_code).equalsIgnoreCase(channel)) {
-                isMTJEnable = true;
-                iniBaidu(ctx);
-                break;
-            }
-        }
-    }
-
-    public static boolean isMTJActivated() {
-        return isMTJEnable;
+        iniBaidu(ctx);
     }
 
     /**
@@ -77,10 +45,7 @@ public class SDKWrapper {
         Map<String, String> params = new HashMap<String, String>();
         params.put("description", description);
         FlurryAgent.logEvent(id, params);
-        if (isMTJEnable) {
-            // baidu
-            StatService.onEvent(ctx, id, description);
-        }
+        StatService.onEvent(ctx, id, description);
     }
 
     public static void endSession(Context ctx) {
@@ -106,7 +71,7 @@ public class SDKWrapper {
     }
 
     private static void iniBaidu(Context ctx) {
-		// TODO: use release Key when release
+        // TODO: use release Key when release
         StatService.setAppKey("88ce739ea6"); // debug Key
         // StatService.setAppKey("1004e462a2"); // release key
         StatService.setAppChannel(ctx, ctx.getString(R.string.channel_code), true);
@@ -115,7 +80,7 @@ public class SDKWrapper {
         StatService.setSendLogStrategy(ctx, SendStrategyEnum.APP_START, 1, false);
         StatService.setLogSenderDelayed(5);
         // TODO: disable internal log when release
-         StatService.setDebugOn(true);
+        StatService.setDebugOn(true);
     }
 
 }

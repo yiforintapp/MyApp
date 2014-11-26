@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.sdk;
 
 /**
@@ -16,73 +17,71 @@ import android.os.Bundle;
 
 public class BaseActivity extends Activity implements ILock {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		onActivityCreate();
-		AppMasterApplication.getInstance().addActivity(this);
-		super.onCreate(savedInstanceState);
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        onActivityCreate();
+        AppMasterApplication.getInstance().addActivity(this);
+        super.onCreate(savedInstanceState);
+    }
 
-	@Override
-	protected void onDestroy() {
-		AppMasterApplication.getInstance().removeActivity(this);
-		super.onDestroy();
-	}
+    @Override
+    protected void onDestroy() {
+        AppMasterApplication.getInstance().removeActivity(this);
+        super.onDestroy();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (SDKWrapper.isMTJActivated()) {
-            StatService.onResume(this);
-        }
+        StatService.onResume(this);
     }
 
     @Override
     protected void onPause() {
-        if (SDKWrapper.isMTJActivated()) {
-            StatService.onPause(this);
-        }
+        StatService.onPause(this);
         super.onPause();
     }
-	@Override
-	protected void onStart() {
+
+    @Override
+    protected void onStart() {
         // TODO: switch this when release
         FlurryAgent.onStartSession(this, "N5ZHBYQH7FT5XBY52H7M"); // debug Key
-        // FlurryAgent.onStartSession(this, "QCKRJN2WQNJN9QBKS5DD"); // release key
-		super.onStart();
-	}
+        // FlurryAgent.onStartSession(this, "QCKRJN2WQNJN9QBKS5DD"); // release
+        // key
+        super.onStart();
+    }
 
-	@Override
-	protected void onStop() {
-		FlurryAgent.onEndSession(this);
-		super.onStop();
-	}
+    @Override
+    protected void onStop() {
+        FlurryAgent.onEndSession(this);
+        super.onStop();
+    }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		onActivityResault(requestCode, resultCode);
-		super.onActivityResult(requestCode, resultCode, data);
-	}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        onActivityResault(requestCode, resultCode);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
-	@Override
-	protected void onRestart() {
-		onActivityRestart();
-		super.onRestart();
-	}
+    @Override
+    protected void onRestart() {
+        onActivityRestart();
+        super.onRestart();
+    }
 
-	@Override
-	public void onActivityCreate() {
+    @Override
+    public void onActivityCreate() {
 
-	}
+    }
 
-	@Override
-	public void onActivityRestart() {
+    @Override
+    public void onActivityRestart() {
 
-	}
+    }
 
-	@Override
-	public void onActivityResault(int requestCode, int resultCode) {
+    @Override
+    public void onActivityResault(int requestCode, int resultCode) {
 
-	}
+    }
 
 }
