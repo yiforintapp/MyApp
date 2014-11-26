@@ -1,13 +1,14 @@
 package com.leo.appmaster;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppLockerThemeBean;
-
 public class Constants {
 
+	/**
+	 * Image Loader
+	 */
+	public static final int MAX_MEMORY_CACHE_SIZE = 5 * (1 << 20);// 5M
+	public static final int MAX_DISK_CACHE_SIZE = 50 * (1 << 20);// 20 Mb
+	public static final int MAX_THREAD_POOL_SIZE = 3;
+	
 	/*
 	 * Server URL
 	 */
@@ -37,5 +38,6 @@ public class Constants {
 	 * online theme url
 	 */
 	public static final String ONLINE_THEME_URL = "http://fasf.com/appmaster/theme?page=";
+	public static final String CHECK_NEW_THEME = "http://fasfasf/appmaster/newtheme?serial_number=";
 
 }

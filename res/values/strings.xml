@@ -212,18 +212,22 @@
     <string name="lock_more">Lock More</string>
     <string name="lock">Lock</string>
     <string name="det_change_lock_time">Do you wish to change your Auto-lock time?</string>
-	 <string name="moonightTheme">Night</string>
+    <string name="moonightTheme">Night</string>
     <string name="orangeTheme">Fruit</string>
     <string name="ParadoxTheme">Spatial</string>
+
     <string-array name="det_lock_time_items">
         <item>30</item>
         <item>60</item>
     </string-array>
-	<string name="locker_apply">Apply</string>
-	<string name="locker_uninstall">Uninstall</string>
-	<string name="locker_cancel">Cancel</string>
-	<string name="christmas_theme">Christmas</string>
-	
-	<string name="no_theme">暂无在线主题</string>
-	<string name="no_more_onlinetheme">已下载所有主题，我们会尽快增加新主题</string>
+
+    <string name="locker_apply">Apply</string>
+    <string name="locker_uninstall">Uninstall</string>
+    <string name="locker_cancel">Cancel</string>
+    <string name="christmas_theme">Christmas</string>
+    <string name="no_theme">暂无在线主题</string>
+    <string name="no_more_onlinetheme">已下载所有主题，我们会尽快增加新主题</string>
+    <string name="find_new_theme">发现新主题</string>
+    <string name="find_new_theme_content">您的应用锁有新主题，点击查看</string>
+
 </resources>

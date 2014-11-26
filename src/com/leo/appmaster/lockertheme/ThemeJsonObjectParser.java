@@ -7,23 +7,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.leo.appmaster.model.AppLockerThemeBean;
+import com.leo.appmaster.model.ThemeInfo;
 import com.leo.appmaster.utils.LeoLog;
 
 public class ThemeJsonObjectParser {
 
-	public static List<AppLockerThemeBean> parserJsonObject(JSONObject jsonObject) {
-		ArrayList<AppLockerThemeBean> list = null;
+	public static List<ThemeInfo> parserJsonObject(JSONObject jsonObject) {
+		ArrayList<ThemeInfo> list = null;
 		if (jsonObject != null) {
 			try {
 				JSONArray array = jsonObject.getJSONArray("data");
-				list = new ArrayList<AppLockerThemeBean>();
+				list = new ArrayList<ThemeInfo>();
 				JSONObject temp = null;
-				AppLockerThemeBean bean = null;
+				ThemeInfo bean = null;
 				for (int i = 0; i < array.length(); i++) {
 					try {
 						temp = array.getJSONObject(i);
-						bean = new AppLockerThemeBean();
+						bean = new ThemeInfo();
+						bean.packageName = temp.getString("package_name");
 						bean.downloadUrl = temp.getString("download_url");
 						bean.themeName = temp.getString("theme_name");
 						bean.previewUrl = temp.getString("preview_url");

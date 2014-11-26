@@ -7,7 +7,9 @@ import org.json.JSONObject;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.android.volley.Response.Listener;
 import com.android.volley.Response.ErrorListener;
@@ -52,8 +54,21 @@ public class HttpRequestAgent {
 		String url = Constants.ONLINE_THEME_URL + start;
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("local_language", AppwallHttpUtil.getLanguage());
+		map.put("channel_id", mContext.getString(R.string.channel_code));
+		map.put("appmaster_version", mContext.getString(R.string.version_name));
 		JSONObject json = new JSONObject(map);
 		JsonObjectRequest request = new JsonObjectRequest(url, json, listener,
+				eListener);
+		request.setShouldCache(true);
+		mRequestQueue.add(request);
+	}
+
+	public void checkNewTheme(Listener<JSONObject> listener,
+			ErrorListener eListener) {
+		String url = Constants.CHECK_NEW_THEME
+				+ AppMasterPreference.getInstance(mContext)
+						.getLocalSerialNumber();
+		JsonObjectRequest request = new JsonObjectRequest(url, null, listener,
 				eListener);
 		request.setShouldCache(true);
 		mRequestQueue.add(request);

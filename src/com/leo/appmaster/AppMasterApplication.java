@@ -5,19 +5,31 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.widget.RemoteViews;
 
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.RequestFinishedReporter;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -33,10 +45,8 @@ public class AppMasterApplication extends Application implements
 	private static AppMasterApplication mInstance;
 
 	private static List<Activity> mActivityList;
-	private static final int MAX_MEMORY_CACHE_SIZE = 5 * (1 << 20);// 5M
-	private static final int MAX_DISK_CACHE_SIZE = 50 * (1 << 20);// 20 Mb
-	private static final int MAX_THREAD_POOL_SIZE = 3;
-	public  static SharedPreferences sharedPreferences; 
+
+	public static SharedPreferences sharedPreferences;
 	public static String sharedPackage;
 	public static String number;
 	static {
@@ -53,9 +63,11 @@ public class AppMasterApplication extends Application implements
 		mAppsEngine = AppLoadEngine.getInstance(this);
 		mAppsEngine.preloadAllBaseInfo();
 		initImageLoader(getApplicationContext());
-		sharedPreferences = getSharedPreferences("lockerTheme", Context.MODE_WORLD_WRITEABLE); 
-		sharedPackage=sharedPreferences.getString("packageName",Constants.PREFERENCESPACKAGE );
-		number=sharedPreferences.getString("firstNumber","0" );
+		sharedPreferences = getSharedPreferences("lockerTheme",
+				Context.MODE_WORLD_WRITEABLE);
+		sharedPackage = sharedPreferences.getString("packageName",
+				Constants.PREFERENCESPACKAGE);
+		number = sharedPreferences.getString("firstNumber", "0");
 		// Register intent receivers
 
 		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
@@ -78,11 +90,9 @@ public class AppMasterApplication extends Application implements
 
 		SDKWrapper.iniSDK(this);
 		LeoStat.registerRequestFailedReporter(this);
-		
-		startInitTask(this);
 
+		startInitTask(this);
 		restartApplocker(PhoneInfo.getAndroidVersion());
-		
 	}
 
 	private void startInitTask(final Context ctx) {
@@ -93,6 +103,7 @@ public class AppMasterApplication extends Application implements
 				judgeLockAlert();
 				judgeStatictiUnlockCount();
 				initImageLoader();
+				checkNewTheme();
 			}
 		}).start();
 	}
@@ -106,13 +117,15 @@ public class AppMasterApplication extends Application implements
 
 	private void initImageLoader() {
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				getApplicationContext()).threadPoolSize(MAX_THREAD_POOL_SIZE)
+				getApplicationContext())
+				.threadPoolSize(Constants.MAX_THREAD_POOL_SIZE)
 				.threadPriority(Thread.NORM_PRIORITY - 2)
 				.memoryCacheSizePercentage(12)
-				.diskCacheSize(MAX_DISK_CACHE_SIZE) // 50 Mb
+				.diskCacheSize(Constants.MAX_DISK_CACHE_SIZE) // 50 Mb
 				.denyCacheImageMultipleSizesInMemory().build();
 		ImageLoader.getInstance().init(config);
 	}
+
 	private void judgeLockAlert() {
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		if (pref.isReminded()) {
@@ -165,6 +178,78 @@ public class AppMasterApplication extends Application implements
 		}
 	}
 
+	private void showNewThemeTip() {
+		Notification notif = new Notification();
+
+		Intent intent = new Intent(this, LockerTheme.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		intent.putExtra("from", "new_theme_tip");
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+				intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+		notif.icon = R.drawable.ic_launcher;
+		notif.tickerText = getString(R.string.find_new_theme);
+		notif.flags = Notification.FLAG_ONGOING_EVENT
+				| Notification.FLAG_AUTO_CANCEL;
+
+		notif.setLatestEventInfo(this, getString(R.string.find_new_theme),
+				getString(R.string.find_new_theme_content), contentIntent);
+
+		notif.when = System.currentTimeMillis();
+		NotificationManager nm = (NotificationManager) this
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		nm.notify(0, notif);
+	}
+
+	private void checkNewTheme() {
+		final AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		long curTime = System.currentTimeMillis();
+
+		long lastCheckTime = pref.getLastCheckTheme();
+		if (lastCheckTime == 0
+				|| (curTime - pref.getLastCheckTheme()) > 12 * 60 * 60) {
+
+			if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber()) {
+				showNewThemeTip();
+				return;
+			}
+
+			HttpRequestAgent.getInstance(this).checkNewTheme(
+					new Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							if (response != null) {
+								try {
+									boolean hasNewTheme = response.getBoolean("new_theme");
+									String serialNumber = response
+											.getString("serial_number");
+									pref.setOnlineSerialNumber(serialNumber);
+
+									if (hasNewTheme) {
+										showNewThemeTip();
+									}
+									pref.setLastCheckTheme(System
+											.currentTimeMillis());
+								} catch (JSONException e) {
+									e.printStackTrace();
+									LeoLog.e("checkNewTheme", e.getMessage());
+								}
+							}
+						}
+
+					}, new ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							LeoLog.e("checkNewTheme", error.getMessage());
+							showNewThemeTip();
+						}
+					});
+		}
+	}
+
 	@Override
 	public void onTerminate() {
 		super.onTerminate();
@@ -207,21 +292,22 @@ public class AppMasterApplication extends Application implements
 	public void reportRequestFinished(String description) {
 		SDKWrapper.addEvent(getInstance(), LeoStat.P1, "leosdk", description);
 	}
-	
-	public static void setSharedPreferencesValue(String lockerTheme){
+
+	public static void setSharedPreferencesValue(String lockerTheme) {
 		Editor editor = sharedPreferences.edit();
-		editor.putString("packageName",lockerTheme);
+		editor.putString("packageName", lockerTheme);
 		editor.commit();
-		sharedPackage=lockerTheme;
+		sharedPackage = lockerTheme;
 	}
-	public static void setSharedPreferencesNumber(String lockerThemeNumber){
+
+	public static void setSharedPreferencesNumber(String lockerThemeNumber) {
 		Editor editor = sharedPreferences.edit();
-		editor.putString("firstNumber",lockerThemeNumber);
+		editor.putString("firstNumber", lockerThemeNumber);
 		editor.commit();
 		number = lockerThemeNumber;
 	}
-	
+
 	public static String getSelectedTheme() {
-	    return sharedPackage;
+		return sharedPackage;
 	}
 }

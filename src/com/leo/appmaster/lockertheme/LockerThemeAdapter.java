@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppLockerThemeBean;
+import com.leo.appmaster.model.ThemeInfo;
 import com.leo.appmaster.model.AppWallBean;
 import com.leo.appmaster.utils.LeoLog;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -19,10 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LockerThemeAdapter extends BaseAdapter {
-	private List<AppLockerThemeBean> themes;
+	private List<ThemeInfo> themes;
 	private LayoutInflater layoutInflater;
 
-	public LockerThemeAdapter(Context context, List<AppLockerThemeBean> themes) {
+	public LockerThemeAdapter(Context context, List<ThemeInfo> themes) {
 		this.themes = themes;
 		this.layoutInflater = LayoutInflater.from(context);
 	}
@@ -68,7 +68,7 @@ public class LockerThemeAdapter extends BaseAdapter {
 		} else {
 			viewHolder = (ViewHolder) arg1.getTag();
 		}
-		AppLockerThemeBean theme = themes.get(arg0);
+		ThemeInfo theme = themes.get(arg0);
 		if (theme.themeName == null || theme.themeName.equals("")) {
 			viewHolder.themeName.setText("");
 		} else {

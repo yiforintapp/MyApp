@@ -41,6 +41,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_HIDE_THEME_PKGS = "hide_theme_packages";
 	public static final String PREF_HAVE_EVER_LOAD_APPS = "have_ever_load_apps";
 
+	// online theme
+	public static final String PREF_ONLINE_THEME_SERIAL = "online_theme_serialnumber";
+	public static final String PREF_LOCAL_THEME_SERIAL = "online_theme_serialnumber";
+	public static final String PREF_LAST_CHECK_NEW_THEME = "last_check_new_theme_time";
+
 	// other
 	public static final String PREF_LAST_VERSION = "last_version";
 	public static final String PREF_LAST_VERSION_INSTALL_TIME = "last_version_install_tiem";
@@ -78,6 +83,31 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
 	public boolean haveEverAppLoaded() {
 		return mPref.getBoolean(PREF_HAVE_EVER_LOAD_APPS, false);
+	}
+
+	public String getOnlineSerialNumber() {
+		return mPref.getString(PREF_ONLINE_THEME_SERIAL, "");
+	}
+
+	public void setOnlineSerialNumber(String serial) {
+		mPref.edit().putString(PREF_ONLINE_THEME_SERIAL, serial).commit();
+	}
+	
+	public String getLocalSerialNumber() {
+		return mPref.getString(PREF_LOCAL_THEME_SERIAL, "");
+	}
+
+	public void setLocalSerialNumber(String serial) {
+		mPref.edit().putString(PREF_LOCAL_THEME_SERIAL, serial).commit();
+	}
+
+	public long getLastCheckTheme() {
+		return mPref.getLong(PREF_LAST_CHECK_NEW_THEME, 0);
+	}
+
+	public void setLastCheckTheme(long lastTime) {
+		mPref.edit().putLong(PREF_LAST_CHECK_NEW_THEME, lastTime)
+				.commit();
 	}
 
 	public void setHideThemeList(List<String> themeList) {
