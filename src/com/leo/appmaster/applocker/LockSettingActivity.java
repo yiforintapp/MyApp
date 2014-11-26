@@ -5,6 +5,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 import android.content.Intent;
@@ -16,7 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-public class LockSettingActivity extends FragmentActivity implements
+public class LockSettingActivity extends BaseFragmentActivity implements
 		OnClickListener {
 
 	public static final String RESET_PASSWD_FLAG = "reset_passwd";

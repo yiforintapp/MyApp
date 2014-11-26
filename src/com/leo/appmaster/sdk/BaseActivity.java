@@ -32,14 +32,14 @@ public class BaseActivity extends Activity implements ILock {
     @Override
     protected void onResume() {
         super.onResume();
-        if (SDKWrapper.isChannelFor91()) {
+        if (SDKWrapper.isMTJActivated()) {
             StatService.onResume(this);
         }
     }
 
     @Override
     protected void onPause() {
-        if (SDKWrapper.isChannelFor91()) {
+        if (SDKWrapper.isMTJActivated()) {
             StatService.onPause(this);
         }
         super.onPause();

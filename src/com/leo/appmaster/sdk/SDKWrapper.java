@@ -58,7 +58,7 @@ public class SDKWrapper {
         }
     }
 
-    public static boolean isChannelFor91() {
+    public static boolean isMTJActivated() {
         return isMTJEnable;
     }
 
@@ -115,7 +115,7 @@ public class SDKWrapper {
         StatService.setSendLogStrategy(ctx, SendStrategyEnum.APP_START, 1, false);
         StatService.setLogSenderDelayed(5);
         // TODO: disable internal log when release
-        // StatService.setDebugOn(true);
+         StatService.setDebugOn(true);
     }
 
 }

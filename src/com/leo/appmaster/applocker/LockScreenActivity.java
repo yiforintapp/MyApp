@@ -38,6 +38,7 @@ import com.leo.appmaster.fragment.PasswdLockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -49,7 +50,7 @@ import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
-public class LockScreenActivity extends FragmentActivity implements
+public class LockScreenActivity extends BaseFragmentActivity implements
 		OnClickListener, OnDiaogClickListener {
 
 	public static String EXTRA_UNLOCK_FROM = "extra_unlock_from";
@@ -134,6 +135,12 @@ public class LockScreenActivity extends FragmentActivity implements
 		mToActivity = intent.getStringExtra(EXTRA_TO_ACTIVITY);
 		mFragment.setPackage(mToPackage);
 		mFragment.setActivity(mToActivity);
+		
+        /* SDK: mark user what to unlock which app */
+       if(mFromType == LockFragment.FROM_OTHER || mFromType == LockFragment.FROM_SCREEN_ON){
+           SDKWrapper.addEvent(this, LeoStat.P1, "access_locked_app", mToPackage);
+       }
+
 	}
 
 	// private void createChoiceDialog() {

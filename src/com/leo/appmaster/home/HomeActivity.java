@@ -238,6 +238,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 		judgeShowGradeTip();
 		super.onResume();
+		
+		SDKWrapper.addEvent(this, LeoStat.P1, "home", "enter");
 	}
 
 	private void calculateAppCount() {
