@@ -225,5 +225,6 @@
     <string name="locker_uninstall">अनिनस्टॉल</string>
     <string name="locker_cancel">रद्द करें</string>
     <string name="christmas_theme">क्रिसमस</string>
-
+	<string name="about_group">加入内测团</string>
+    <string name="about_praise">给我们点赞</string>
 </resources>

@@ -223,4 +223,6 @@
 	<string name="locker_uninstall">Uninstall</string>
 	<string name="locker_cancel">Cancel</string>
 	<string name="christmas_theme">Christmas</string>
+	<string name="about_group">加入内测团</string>
+    <string name="about_praise">给我们点赞</string>
 </resources>
