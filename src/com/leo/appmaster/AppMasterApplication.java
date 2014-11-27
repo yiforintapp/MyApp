@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +21,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.widget.RemoteViews;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -180,7 +181,6 @@ public class AppMasterApplication extends Application implements
 
 	private void showNewThemeTip() {
 		Notification notif = new Notification();
-
 		Intent intent = new Intent(this, LockerTheme.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -189,12 +189,12 @@ public class AppMasterApplication extends Application implements
 				intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 		notif.icon = R.drawable.ic_launcher;
-		notif.tickerText = getString(R.string.find_new_theme);
+		notif.tickerText = this.getString(R.string.find_new_theme);
 		notif.flags = Notification.FLAG_ONGOING_EVENT
 				| Notification.FLAG_AUTO_CANCEL;
 
-		notif.setLatestEventInfo(this, getString(R.string.find_new_theme),
-				getString(R.string.find_new_theme_content), contentIntent);
+		notif.setLatestEventInfo(this, this.getString(R.string.find_new_theme),
+				this.getString(R.string.find_new_theme_content), contentIntent);
 
 		notif.when = System.currentTimeMillis();
 		NotificationManager nm = (NotificationManager) this
@@ -202,13 +202,14 @@ public class AppMasterApplication extends Application implements
 		nm.notify(0, notif);
 	}
 
-	private void checkNewTheme() {
+	public void checkNewTheme() {
+
 		final AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		long curTime = System.currentTimeMillis();
 
-		long lastCheckTime = pref.getLastCheckTheme();
+		long lastCheckTime = pref.getLastCheckThemeTime();
 		if (lastCheckTime == 0
-				|| (curTime - pref.getLastCheckTheme()) > 12 * 60 * 60) {
+				|| (curTime - pref.getLastCheckThemeTime()) > 12 * 60 * 60 * 1000) {
 
 			if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber()) {
 				showNewThemeTip();
@@ -244,7 +245,15 @@ public class AppMasterApplication extends Application implements
 						@Override
 						public void onErrorResponse(VolleyError error) {
 							LeoLog.e("checkNewTheme", error.getMessage());
-							showNewThemeTip();
+//							showNewThemeTip();
+							TimerTask recheckTask = new TimerTask() {
+								@Override
+								public void run() {
+									checkNewTheme();
+								}
+							};
+							Timer timer = new Timer();
+							timer.schedule(recheckTask, 2 * 60 * 60 * 1000);
 						}
 					});
 		}
@@ -261,7 +270,7 @@ public class AppMasterApplication extends Application implements
 		return mInstance;
 	}
 
-	// 初始化ImageLoader
+	// init ImageLoader
 	public static void initImageLoader(Context context) {
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				context).threadPriority(Thread.NORM_PRIORITY - 2)

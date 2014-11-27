@@ -101,7 +101,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		mPref.edit().putString(PREF_LOCAL_THEME_SERIAL, serial).commit();
 	}
 
-	public long getLastCheckTheme() {
+	public long getLastCheckThemeTime() {
 		return mPref.getLong(PREF_LAST_CHECK_NEW_THEME, 0);
 	}
 

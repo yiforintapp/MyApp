@@ -8,7 +8,7 @@ public class Constants {
 	public static final int MAX_MEMORY_CACHE_SIZE = 5 * (1 << 20);// 5M
 	public static final int MAX_DISK_CACHE_SIZE = 50 * (1 << 20);// 20 Mb
 	public static final int MAX_THREAD_POOL_SIZE = 3;
-	
+
 	/*
 	 * Server URL
 	 */
@@ -34,10 +34,17 @@ public class Constants {
 	public static final int THEME_TYPE_DEFAULT = 0;
 	public static final int THEME_TYPE_LOCAL = 1;
 	public static final int THEME_TYPE_ONLINE = 2;
+
+	/**
+	 * theme tag
+	 */
+	public static final int THEME_TAG_NEW = 0;
+	public static final int THEME_TAG_HOT = 1;
+
 	/**
 	 * online theme url
 	 */
-	public static final String ONLINE_THEME_URL = "http://fasf.com/appmaster/theme?page=";
+	public static final String ONLINE_THEME_URL = "http://192.168.1.41:9090/appmaster_interface/appmaster/themes";
 	public static final String CHECK_NEW_THEME = "http://fasfasf/appmaster/newtheme?serial_number=";
 
 }

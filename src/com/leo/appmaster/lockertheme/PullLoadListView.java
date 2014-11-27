@@ -265,12 +265,11 @@ public class PullLoadListView extends ListView implements OnScrollListener {
 		switch (ev.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			mLastY = ev.getRawY();
+			mScroller.abortAnimation();
 			break;
 		case MotionEvent.ACTION_MOVE:
 			final float deltaY = ev.getRawY() - mLastY;
 			mLastY = ev.getRawY();
-			System.out.println("数据监测：" + getFirstVisiblePosition() + "---->"
-					+ getLastVisiblePosition());
 			if (getFirstVisiblePosition() == 0
 					&& (mHeaderView.getVisiableHeight() > 0 || deltaY > 0)) {
 				// the first item is showing, header has shown or pull down.
@@ -282,7 +281,7 @@ public class PullLoadListView extends ListView implements OnScrollListener {
 				updateFooterHeight(-deltaY / OFFSET_RADIO);
 			}
 			break;
-		default:
+		case MotionEvent.ACTION_UP:
 			mLastY = -1; // reset
 			if (getFirstVisiblePosition() == 0) {
 				// invoke refresh

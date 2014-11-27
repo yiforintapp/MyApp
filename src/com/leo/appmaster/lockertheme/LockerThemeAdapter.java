@@ -45,9 +45,9 @@ public class LockerThemeAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
-		View image;
-		ImageView isvisible;
-		TextView themeName, flagName;
+		ImageView image;
+		ImageView selectedView;
+		TextView themeName, tag;
 
 	}
 
@@ -60,32 +60,49 @@ public class LockerThemeAdapter extends BaseAdapter {
 			arg1 = layoutInflater.inflate(R.layout.list_item_lockerthem, null);
 			viewHolder.themeName = (TextView) arg1
 					.findViewById(R.id.lockerThemName);
-			viewHolder.image = (View) arg1.findViewById(R.id.themLT);
-			viewHolder.flagName = (TextView) arg1.findViewById(R.id.flagTV);
-			viewHolder.isvisible = (ImageView) arg1
+			viewHolder.image = (ImageView) arg1
+					.findViewById(R.id.theme_preview);
+			viewHolder.tag = (TextView) arg1.findViewById(R.id.flagTV);
+			viewHolder.selectedView = (ImageView) arg1
 					.findViewById(R.id.visibilityIV);
 			arg1.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) arg1.getTag();
 		}
 		ThemeInfo theme = themes.get(arg0);
+
 		if (theme.themeName == null || theme.themeName.equals("")) {
 			viewHolder.themeName.setText("");
 		} else {
-
 			viewHolder.themeName.setText(theme.themeName);
 		}
-		viewHolder.image.setBackgroundDrawable(theme.themeImage);
-		viewHolder.flagName.setText(theme.label);
-		if (theme.curUsedTheme) {
-			viewHolder.isvisible.setVisibility(View.VISIBLE);
+		if (theme.themeType == Constants.THEME_TYPE_ONLINE) {
+			if (theme.tag == Constants.THEME_TAG_NEW) {
+				viewHolder.tag
+						.setBackgroundResource(R.drawable.theme_tag_new);
+				viewHolder.tag.setText(R.string.theme_tag_new);
+			} else if (theme.tag == Constants.THEME_TAG_HOT) {
+				viewHolder.tag
+						.setBackgroundResource(R.drawable.theme_tag_hot);
+				viewHolder.tag.setText(R.string.theme_tag_hot);
+			} else {
+				viewHolder.tag.setVisibility(View.INVISIBLE);
+			}
+
+			ImageLoader.getInstance().displayImage(theme.previewUrl,
+					viewHolder.image);
+
 		} else {
-			viewHolder.isvisible.setVisibility(View.GONE);
+			viewHolder.image.setImageDrawable(theme.themeImage);
+			viewHolder.tag.setVisibility(View.INVISIBLE);
 		}
-		/*
-		 * ImageLoader.getInstance().displayImage(imageUri, viewHolder.image,
-		 * options);
-		 */
+
+		if (theme.curUsedTheme) {
+			viewHolder.selectedView.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.selectedView.setVisibility(View.GONE);
+		}
+
 		return arg1;
 	}
 }

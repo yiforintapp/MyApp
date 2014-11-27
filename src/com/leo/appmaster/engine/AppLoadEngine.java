@@ -298,7 +298,6 @@ public class AppLoadEngine extends BroadcastReceiver {
 					e.printStackTrace();
 				}
 
-				LeoLog.e("xxxx", packageName);
 				if (isThemeApk(packageName)) {
 					if (!themeList.contains(packageName)) {
 						themeList.add(packageName);
