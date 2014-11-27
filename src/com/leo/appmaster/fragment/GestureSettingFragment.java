@@ -31,6 +31,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LockPatternUtils;
 import com.leoers.leoanalytics.LeoStat;
 
@@ -146,15 +147,18 @@ public class GestureSettingFragment extends BaseFragment implements
 				// now we can start lock service
 				intent = new Intent(mActivity, LockService.class);
 				mActivity.startService(intent);
+				
+                if(AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE){
+                    SDKWrapper.addEvent(GestureSettingFragment.this.mActivity, LeoStat.P1, "first", "usehand");
+                }
+				
 				AppMasterPreference.getInstance(mActivity).saveGesture(
 						mTempGesture2);
 				if (((LockSettingActivity) mActivity).isResetPasswd()) {
 					showResetSuc();
 					return;
 				}
-				if(AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE){
-                    SDKWrapper.addEvent(GestureSettingFragment.this.mActivity, LeoStat.P1, "first", "usehand");
-                }
+
 				Toast.makeText(mActivity, R.string.set_gesture_suc, 1).show();
 				if (!AppMasterPreference.getInstance(mActivity)
 						.hasPswdProtect()) {
