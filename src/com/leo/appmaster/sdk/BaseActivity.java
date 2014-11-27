@@ -7,7 +7,6 @@ package com.leo.appmaster.sdk;
  * */
 
 import com.baidu.mobstat.StatService;
-import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.applocker.ILock;
 
@@ -40,21 +39,6 @@ public class BaseActivity extends Activity implements ILock {
     protected void onPause() {
         StatService.onPause(this);
         super.onPause();
-    }
-
-    @Override
-    protected void onStart() {
-        // TODO: switch this when release
-        FlurryAgent.onStartSession(this, "N5ZHBYQH7FT5XBY52H7M"); // debug Key
-        // FlurryAgent.onStartSession(this, "QCKRJN2WQNJN9QBKS5DD"); // release
-        // key
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        FlurryAgent.onEndSession(this);
-        super.onStop();
     }
 
     @Override

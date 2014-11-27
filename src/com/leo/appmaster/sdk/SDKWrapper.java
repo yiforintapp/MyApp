@@ -9,9 +9,7 @@ import android.util.Log;
 
 import com.baidu.mobstat.SendStrategyEnum;
 import com.baidu.mobstat.StatService;
-import com.flurry.android.FlurryAgent;
 import com.leo.appmaster.R;
-import com.leo.appmaster.R.string;
 import com.leo.appmaster.sdk.push.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leoers.leoanalytics.LeoStat;
@@ -26,7 +24,6 @@ public class SDKWrapper {
      */
     public static void iniSDK(Context ctx) {
         iniLeoSdk(ctx.getApplicationContext());
-        iniFlurry(ctx.getApplicationContext());
         iniBaidu(ctx);
     }
 
@@ -44,7 +41,6 @@ public class SDKWrapper {
         // flurry
         Map<String, String> params = new HashMap<String, String>();
         params.put("description", description);
-        FlurryAgent.logEvent(id, params);
         StatService.onEvent(ctx, id, description);
     }
 
@@ -61,15 +57,7 @@ public class SDKWrapper {
                 true);
         LeoStat.initPushEngine(PushUIHelper.getInstance(ctx));
     }
-
-    private static void iniFlurry(Context ctx) {
-        FlurryAgent.setVersionName(ctx.getString(R.string.version_name) + "_"
-                + ctx.getString(R.string.channel_code));
-        FlurryAgent.setLogEvents(true);
-        // TODO: disable internal log when release
-        FlurryAgent.setLogEnabled(false);
-    }
-
+    
     private static void iniBaidu(Context ctx) {
         // TODO: use release Key when release
         StatService.setAppKey("88ce739ea6"); // debug Key
