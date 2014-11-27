@@ -852,10 +852,10 @@ public class LockPatternView extends ViewGroup {
 				mInProgressY = y;
 
 				if (mPatternInProgress && patternSize > 0) {
-					final ArrayList<Cell> pattern = mPattern;
+					final Cell[] pattern = mPattern.toArray(new Cell[0]);
 					final float radius = mSquareWidth * mDiameterFactor * 0.5f;
 
-					final Cell lastCell = pattern.get(patternSize - 1);
+					final Cell lastCell = pattern[patternSize - 1];
 
 					float startX = getCenterXForColumn(lastCell.column);
 					float startY = getCenterYForRow(lastCell.row);
@@ -919,8 +919,8 @@ public class LockPatternView extends ViewGroup {
 
 						if (patternSize >= 2) {
 							// (re-using hitcell for old cell)
-							hitCell = pattern.get(patternSize - 1
-									- (patternSize - patternSizePreHitDetect));
+							hitCell = pattern[patternSize - 1
+									- (patternSize - patternSizePreHitDetect)];
 							oldX = getCenterXForColumn(hitCell.column);
 							oldY = getCenterYForRow(hitCell.row);
 
