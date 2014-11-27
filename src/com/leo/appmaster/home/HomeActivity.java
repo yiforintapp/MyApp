@@ -354,7 +354,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 							Intent intent = new Intent(HomeActivity.this,
 									AboutActivity.class);
 							startActivity(intent);
-						} /*else if (position == 4) {
+						} else if (position == 4) {
 
 							if (AppUtil.appInstalled(getApplicationContext(),
 									"com.android.vending")) {
@@ -387,7 +387,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 								startActivity(intent);
 							}
 
-						}*/
+						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
 				});
@@ -428,7 +428,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			listItems.add(resources.getString(R.string.app_setting_update));
 		}
 		listItems.add(resources.getString(R.string.app_setting_about));
-//		listItems.add(resources.getString(R.string.grade));
+		listItems.add(resources.getString(R.string.grade));
 		return listItems;
 	}
 
