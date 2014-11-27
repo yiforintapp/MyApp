@@ -2,9 +2,9 @@ package com.leo.appmaster.home;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.utils.AppUtil;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,7 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.TextView;
 
-public class GradeTipActivity extends Activity implements OnClickListener {
+public class GradeTipActivity extends BaseActivity implements OnClickListener {
 
 	private TextView mTvMakeSure;
 

@@ -25,13 +25,14 @@ import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
-public class LockOptionActivity extends PreferenceActivity implements
+public class LockOptionActivity extends BasePreferenceActivity implements
 		OnPreferenceChangeListener, OnPreferenceClickListener {
 
 	private CommonTitleBar mTtileBar;

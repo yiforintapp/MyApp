@@ -2,8 +2,8 @@ package com.leo.appmaster.home;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
+import com.leo.appmaster.sdk.BaseActivity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,7 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
-public class GooglePlayGuideActivity extends Activity {
+public class GooglePlayGuideActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
