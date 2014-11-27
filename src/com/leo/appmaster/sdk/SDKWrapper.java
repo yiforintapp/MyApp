@@ -38,9 +38,7 @@ public class SDKWrapper {
     public static void addEvent(Context ctx, int level, String id, String description) {
         // leo
         LeoStat.addEvent(level, id, description);
-        // flurry
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("description", description);
+        // baidu
         StatService.onEvent(ctx, id, description);
     }
 
