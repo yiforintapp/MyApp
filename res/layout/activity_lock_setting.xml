@@ -12,10 +12,12 @@
         android:layout_alignParentTop="true" />
         <RelativeLayout
         android:id="@+id/lockerGuide"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
+        android:layout_width="150dp"
+    	android:layout_height="50dp"
     	android:visibility="gone"
     	android:gravity="center"
+    	android:layout_below="@id/layout_title_bar"
+    	android:layout_alignParentRight="true"
     	android:background="@drawable/lock_tutorails_button"
          >
     <TextView 
