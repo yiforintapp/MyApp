@@ -14,12 +14,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.constants.Constants;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.RootChecker;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.RequestFinishedReporter;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -30,6 +32,8 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 public class AppMasterApplication extends Application implements
 		RequestFinishedReporter {
 
+    private final static String KEY_ROOT_CHECK = "root_check";
+    
 	private AppLoadEngine mAppsEngine;
 
 	private static AppMasterApplication mInstance;
@@ -95,6 +99,13 @@ public class AppMasterApplication extends Application implements
 				judgeLockAlert();
 				judgeStatictiUnlockCount();
 				initImageLoader();
+				SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				if(sp.getBoolean(KEY_ROOT_CHECK, true)) {
+	                boolean root = RootChecker.isRoot();
+	                SDKWrapper.addEvent(getApplicationContext(), LeoStat.P1, KEY_ROOT_CHECK, "root?-" + root);
+	                sp.edit().putBoolean(KEY_ROOT_CHECK, false).commit();
+				}
+				
 			}
 		}).start();
 	}
