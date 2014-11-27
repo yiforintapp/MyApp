@@ -14,10 +14,10 @@
         android:id="@+id/lockerGuide"
         android:layout_width="150dp"
     	android:layout_height="50dp"
-    	android:visibility="gone"
     	android:gravity="center"
     	android:layout_below="@id/layout_title_bar"
     	android:layout_alignParentRight="true"
+    	android:layout_marginRight="5dp"
     	android:background="@drawable/lock_tutorails_button"
          >
     <TextView 

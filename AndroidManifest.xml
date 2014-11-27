@@ -218,6 +218,11 @@
             android:screenOrientation="portrait" >
             <category android:name="android.intent.category.DEFAULT" />
         </activity>
+        <!-- lockerThemeGuide -->
+        <activity
+            android:name="com.leo.appmaster.lockertheme.LockerThemeGuideActivity"
+            android:theme="@style/Theme.UpdateDialog.NoFrame" >
+        </activity>
 
         <service
             android:name="com.leo.appmaster.applocker.service.LockService"

@@ -80,11 +80,15 @@ public class LockScreenActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_setting);
+        /**
+         * lockerTheme Guide
+         */
         mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
+        mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
+
         number = AppMasterApplication.number;
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         spiner = (ImageView) findViewById(R.id.image1);
-        mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
         if (number.equals("0")) {
             spiner.setImageDrawable(this.getResources().getDrawable(
                     R.drawable.themetip_spiner_press));
@@ -438,6 +442,5 @@ public class LockScreenActivity extends FragmentActivity implements
      */
     private void themeGuide(View view, Animation anim) {
         view.startAnimation(anim);
-        view.setVisibility(View.VISIBLE);
     }
 }

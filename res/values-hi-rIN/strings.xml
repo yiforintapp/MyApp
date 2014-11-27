@@ -228,4 +228,5 @@
 	<string name="about_group">加入内测团</string>
     <string name="about_praise">给我们点赞</string>
     <string  name="locker_guide">点击更换解锁主题</string>
+    <string  name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
 </resources>
