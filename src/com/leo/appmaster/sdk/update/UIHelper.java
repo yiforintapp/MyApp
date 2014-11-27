@@ -218,7 +218,7 @@ public class UIHelper implements IUIHelper {
     public void onNewState(int ui_type, int param) {
         mUIType = ui_type;
         mUIParam = param;
-        if(ui_type == IUIHelper.TYPE_DOWNLOAD_DONE && param == UpdateManager.FORCE_UPDATE){
+        if (ui_type == IUIHelper.TYPE_DOWNLOAD_DONE && param == UpdateManager.FORCE_UPDATE) {
             AppMasterApplication.getInstance().exitApplication();
         }
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
@@ -395,6 +395,13 @@ public class UIHelper implements IUIHelper {
         // Toast.LENGTH_SHORT).show();
         /* show UI corresponding to current state of download manager */
         showUI(mUIType, mUIParam);
+    }
+
+    @Override
+    public void onUpdateChannel(int channel) {
+        if (listener != null) {
+            listener.onNotifyUpdateChannel(channel);
+        }
     }
 
 }

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.update.IUIHelper;
@@ -146,6 +147,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     }
 
     private void showForceUpdate() {
+        /* sdk mark */
+        SDKWrapper.addEvent(this, LeoStat.P1, "update", "pop_up");
         String appName = getString(R.string.app_name);
         String version = mManager.getVersion();
         Spanned feature = mManager.getFeature();
@@ -167,6 +170,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         tvYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* sdk mark */
+                SDKWrapper.addEvent(UpdateActivity.this, LeoStat.P1, "update", "sure");
                 mManager.onConfirmDownload();
                 // finish(); DO NOT finish here, download UI need it
             }
@@ -332,6 +337,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     }
 
     private void showNeedUpdate() {
+        /* sdk mark */
+        SDKWrapper.addEvent(this, LeoStat.P1, "update", "pop_up");
         mUIHelper.cancelUpdateNotification();
         String appName = getString(R.string.app_name);
         String version = mManager.getVersion();
@@ -352,6 +359,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         tvYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* sdk mark */
+                SDKWrapper.addEvent(UpdateActivity.this, LeoStat.P1, "update", "sure");
                 mManager.onConfirmDownload();
                 // finish(); do not finish, downloading UI need the activity
             }
@@ -361,6 +370,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         tvNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* sdk mark */
+                SDKWrapper.addEvent(UpdateActivity.this, LeoStat.P1, "update", "cancel");
                 mManager.onCancelUpdate();
                 finish();
             }
@@ -401,6 +412,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                         finish();
                         AppMasterApplication.getInstance().exitApplication();
                     }
+                    /* sdk mark */
+                    SDKWrapper.addEvent(UpdateActivity.this, LeoStat.P1, "update", "cancel");
                     break;
                 case IUIHelper.TYPE_DOWNLOADING:
                     if (mParam == UpdateManager.FORCE_UPDATE) {
@@ -499,4 +512,16 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         mProgressHandler.obtainMessage(MSG_NOTIFY_LAYOUT, type, param)
                 .sendToTarget();
     }
+
+    @Override
+    public void onNotifyUpdateChannel(int channel) {
+        String channelStr = "unknown";
+        if (channel == IUIHelper.APP_MARKET) {
+            channelStr = "GP";
+        } else if (channel == IUIHelper.DIRECT_DOWNLOAD) {
+            channelStr = "link";
+        }
+        SDKWrapper.addEvent(this, LeoStat.P1, "update_channel", channelStr);
+    }
+
 }
