@@ -487,7 +487,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			@Override
 			public void run() {
 
-				if (packageName.equals(AppMasterApplication.sharedPackage)) {
+				if (packageName.equals(AppMasterApplication.usedThemePackage)) {
 					AppMasterApplication
 							.setSharedPreferencesValue("com.leo.appmaster");
 				}

@@ -219,7 +219,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 						R.string.localtheme);
 				bean.packageName = thmemPackage;
 
-				if (AppMasterApplication.sharedPackage.equals(thmemPackage)) {
+				if (AppMasterApplication.usedThemePackage.equals(thmemPackage)) {
 					bean.curUsedTheme = true;
 				} else {
 					bean.curUsedTheme = false;
@@ -553,7 +553,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				R.string.defaultTheme);
 		defaultTheme.curUsedTheme = true;
 
-		if (AppMasterApplication.sharedPackage.equals("com.leo.theme.default")) {
+		if (AppMasterApplication.usedThemePackage.equals("com.leo.theme.default")) {
 			defaultTheme.curUsedTheme = true;
 		} else {
 			defaultTheme.curUsedTheme = false;
@@ -695,7 +695,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 							lastSelectedItem.downloadUrl);
 				}
 			} else if (!lastSelectedItem.packageName
-					.equals(AppMasterApplication.sharedPackage)) {
+					.equals(AppMasterApplication.usedThemePackage)) {
 				if (lastSelectedItem.packageName
 						.equals("com.leo.theme.default")) {
 					showAlarmDialog(lastSelectedItem.themeName, View.GONE);

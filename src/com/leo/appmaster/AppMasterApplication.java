@@ -48,7 +48,7 @@ public class AppMasterApplication extends Application implements
 	private static List<Activity> mActivityList;
 
 	public static SharedPreferences sharedPreferences;
-	public static String sharedPackage;
+	public static String usedThemePackage;
 	public static String number;
 	static {
 		System.loadLibrary("leo_service");
@@ -66,7 +66,7 @@ public class AppMasterApplication extends Application implements
 		initImageLoader(getApplicationContext());
 		sharedPreferences = getSharedPreferences("lockerTheme",
 				Context.MODE_WORLD_WRITEABLE);
-		sharedPackage = sharedPreferences.getString("packageName",
+		usedThemePackage = sharedPreferences.getString("packageName",
 				Constants.PREFERENCESPACKAGE);
 		number = sharedPreferences.getString("firstNumber", "0");
 		// Register intent receivers
@@ -311,7 +311,7 @@ public class AppMasterApplication extends Application implements
 		Editor editor = sharedPreferences.edit();
 		editor.putString("packageName", lockerTheme);
 		editor.commit();
-		sharedPackage = lockerTheme;
+		usedThemePackage = lockerTheme;
 	}
 
 	public static void setSharedPreferencesNumber(String lockerThemeNumber) {
@@ -322,6 +322,6 @@ public class AppMasterApplication extends Application implements
 	}
 
 	public static String getSelectedTheme() {
-		return sharedPackage;
+		return usedThemePackage;
 	}
 }

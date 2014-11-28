@@ -27,7 +27,7 @@ public class Constants {
 	/*
 	 * LockerTheme
 	 */
-	public static final String PREFERENCESPACKAGE = "com.leo.appmaster";// 默认主题
+	public static final String PREFERENCESPACKAGE = "com.leo.theme.default";// 默认主题
 	/**
 	 * theme type
 	 */
