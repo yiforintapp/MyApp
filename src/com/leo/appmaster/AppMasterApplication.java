@@ -220,7 +220,7 @@ public class AppMasterApplication extends Application implements
 
 	@Override
 	public void reportRequestFinished(String description) {
-		SDKWrapper.addEvent(getInstance(), LeoStat.P1, "leosdk", description);
+//		SDKWrapper.addEvent(getInstance(), LeoStat.P1, "leosdk", description);
 	}
 	
 	public static void setSharedPreferencesValue(String lockerTheme){

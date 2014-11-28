@@ -24,7 +24,8 @@ public class SDKWrapper {
      */
     public static void iniSDK(Context ctx) {
         iniLeoSdk(ctx.getApplicationContext());
-        iniBaidu(ctx);
+        /* try initiate BaiduMTJ in AndroidManifest.xml */
+//        iniBaidu(ctx);
     }
 
     /**
@@ -56,17 +57,19 @@ public class SDKWrapper {
         LeoStat.initPushEngine(PushUIHelper.getInstance(ctx));
     }
     
-    private static void iniBaidu(Context ctx) {
-        // TODO: use release Key when release
-        StatService.setAppKey("88ce739ea6"); // debug Key
-        // StatService.setAppKey("1004e462a2"); // release key
-        StatService.setAppChannel(ctx, ctx.getString(R.string.channel_code), true);
-        StatService.setSessionTimeOut(30);
-        StatService.setOn(ctx, StatService.EXCEPTION_LOG);
-        StatService.setSendLogStrategy(ctx, SendStrategyEnum.APP_START, 1, false);
-        StatService.setLogSenderDelayed(5);
-        // TODO: disable internal log when release
-        StatService.setDebugOn(true);
-    }
+    // private static void iniBaidu(Context ctx) {
+    // // TODO: use release Key when release
+    // StatService.setAppKey("88ce739ea6"); // debug Key
+    // // StatService.setAppKey("1004e462a2"); // release key
+    // StatService.setAppChannel(ctx, ctx.getString(R.string.channel_code),
+    // true);
+    // StatService.setSessionTimeOut(30);
+    // StatService.setOn(ctx, StatService.EXCEPTION_LOG);
+    // StatService.setSendLogStrategy(ctx, SendStrategyEnum.APP_START, 1,
+    // false);
+    // StatService.setLogSenderDelayed(5);
+    // // TODO: disable internal log when release
+    // StatService.setDebugOn(true);
+    // }
 
 }
