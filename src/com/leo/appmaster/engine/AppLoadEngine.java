@@ -34,6 +34,7 @@ import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.AppLockListActivity;
@@ -489,7 +490,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 				if (packageName.equals(AppMasterApplication.usedThemePackage)) {
 					AppMasterApplication
-							.setSharedPreferencesValue("com.leo.appmaster");
+							.setSharedPreferencesValue(Constants.DEFAULT_THEME);
 				}
 
 				AppMasterPreference pre = AppMasterPreference

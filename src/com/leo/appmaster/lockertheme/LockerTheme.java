@@ -553,7 +553,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				R.string.defaultTheme);
 		defaultTheme.curUsedTheme = true;
 
-		if (AppMasterApplication.usedThemePackage.equals("com.leo.theme.default")) {
+		if (AppMasterApplication.usedThemePackage.equals(Constants.DEFAULT_THEME)) {
 			defaultTheme.curUsedTheme = true;
 		} else {
 			defaultTheme.curUsedTheme = false;

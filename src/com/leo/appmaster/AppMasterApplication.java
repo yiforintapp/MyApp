@@ -67,7 +67,7 @@ public class AppMasterApplication extends Application implements
 		sharedPreferences = getSharedPreferences("lockerTheme",
 				Context.MODE_WORLD_WRITEABLE);
 		usedThemePackage = sharedPreferences.getString("packageName",
-				Constants.PREFERENCESPACKAGE);
+				Constants.DEFAULT_THEME);
 		number = sharedPreferences.getString("firstNumber", "0");
 		// Register intent receivers
 
