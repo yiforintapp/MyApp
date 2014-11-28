@@ -447,7 +447,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 						List<String> themeList = new ArrayList<String>(
 								pre.getHideThemeList());
 						if (!themeList.contains(packageName)) {
-							themeList.add(packageName);
+							themeList.add(0, packageName);
 						}
 						pre.setHideThemeList(themeList);
 						return;
