@@ -224,11 +224,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 
-		LeoLog.e(
-				"xxxx",
-				pref.getLocalSerialNumber() + "       "
-						+ pref.getOnlineSerialNumber());
-
 		mNewTheme = pref.getLocalSerialNumber() != pref.getOnlineSerialNumber();
 
 		if (mNewTheme) {

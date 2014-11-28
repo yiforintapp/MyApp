@@ -204,22 +204,11 @@ public class AppMasterApplication extends Application implements
 
 	public void checkNewTheme() {
 		final AppMasterPreference pref = AppMasterPreference.getInstance(this);
-
-		LeoLog.e(
-				"xxxx",
-				pref.getLocalSerialNumber() + "       "
-						+ pref.getOnlineSerialNumber());
 		long curTime = System.currentTimeMillis();
 
 		long lastCheckTime = pref.getLastCheckThemeTime();
-		if (lastCheckTime == 0 || (curTime - pref.getLastCheckThemeTime()) > 12/*
-																				 * *
-																				 * 60
-																				 * *
-																				 * 60
-																				 * *
-																				 * 1000
-																				 */) {
+		if (lastCheckTime == 0
+				|| (curTime - pref.getLastCheckThemeTime()) > 12 * 60 * 60 * 1000) {
 
 			if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber()) {
 				showNewThemeTip();
@@ -269,8 +258,7 @@ public class AppMasterApplication extends Application implements
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask, 2 /** 60 * 60 * 1000 */
-							);
+							timer.schedule(recheckTask, 2 * 60 * 60 * 1000);
 						}
 					});
 		}
