@@ -199,10 +199,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent(HomeActivity.this, LockerTheme.class);
+				AppMasterPreference pref = AppMasterPreference
+						.getInstance(HomeActivity.this);
+
+				mNewTheme = !pref.getLocalSerialNumber().equals(
+						pref.getOnlineSerialNumber());
 				if (mNewTheme) {
 					intent.putExtra("from", "new_theme_tip");
 				}
-				intent.putExtra("from", "new_theme_tip");
 				startActivityForResult(intent, 0);
 				SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
 						"theme_enter", "home");
@@ -224,8 +228,13 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 
-		mNewTheme = pref.getLocalSerialNumber() != pref.getOnlineSerialNumber();
-
+		mNewTheme = !pref.getLocalSerialNumber().equals(
+				pref.getOnlineSerialNumber());
+		LeoLog.e(
+				"xxxx",
+				"mNewTheme = " + mNewTheme + "   "
+						+ pref.getLocalSerialNumber() + "    "
+						+ pref.getOnlineSerialNumber());
 		if (mNewTheme) {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.themetip_spiner_press));

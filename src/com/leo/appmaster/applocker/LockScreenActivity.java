@@ -93,7 +93,8 @@ public class LockScreenActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
-		mNewTheme = pref.getLocalSerialNumber() != pref.getOnlineSerialNumber();
+		mNewTheme = !pref.getLocalSerialNumber().equals(
+				pref.getOnlineSerialNumber());
 
 		if (mNewTheme) {
 			spiner.setImageDrawable(this.getResources().getDrawable(
@@ -206,6 +207,10 @@ public class LockScreenActivity extends FragmentActivity implements
 			public void onClick(View arg0) {
 				Intent intent = new Intent(LockScreenActivity.this,
 						LockerTheme.class);
+				AppMasterPreference pref = AppMasterPreference
+						.getInstance(LockScreenActivity.this);
+				mNewTheme = !pref.getLocalSerialNumber().equals(
+						pref.getOnlineSerialNumber());
 				if (mNewTheme) {
 					intent.putExtra("from", "new_theme_tip");
 				}

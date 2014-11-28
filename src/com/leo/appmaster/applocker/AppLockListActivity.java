@@ -82,7 +82,8 @@ public class AppLockListActivity extends BaseActivity implements
 		}
 
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
-		mNewTheme = pref.getLocalSerialNumber() != pref.getOnlineSerialNumber();
+		mNewTheme = !pref.getLocalSerialNumber().equals(
+				pref.getOnlineSerialNumber());
 		if (mNewTheme) {
 			mSettingIV
 					.setImageResource(R.drawable.selector_applock_setting_tip);

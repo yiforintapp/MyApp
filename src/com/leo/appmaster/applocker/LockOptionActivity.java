@@ -168,8 +168,8 @@ public class LockOptionActivity extends PreferenceActivity implements
 		}
 
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
-		mNewTheme = pref.getLocalSerialNumber() != pref.getOnlineSerialNumber();
-
+		mNewTheme = !pref.getLocalSerialNumber().equals(
+				pref.getOnlineSerialNumber());
 		if (mNewTheme) {
 			Spanned buttonText = Html
 					.fromHtml(getString(R.string.lockerThemePoit));
@@ -273,6 +273,10 @@ public class LockOptionActivity extends PreferenceActivity implements
 			editor.commit();
 			Intent intent = new Intent(LockOptionActivity.this,
 					LockerTheme.class);
+			AppMasterPreference pref = AppMasterPreference
+					.getInstance(this);
+			mNewTheme = !pref.getLocalSerialNumber().equals(
+					pref.getOnlineSerialNumber());
 			if (mNewTheme) {
 				intent.putExtra("from", "new_theme_tip");
 			}
