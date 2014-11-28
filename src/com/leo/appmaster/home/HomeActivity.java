@@ -53,12 +53,15 @@ import com.leo.appmaster.ui.CricleView;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
 public class HomeActivity extends MainViewActivity implements OnClickListener,
 		OnTouchListener, AppChangeListener {
 
+    private final static String KEY_ROOT_CHECK = "root_check";
+    
 	private View mPictureHide;
 	private View mAppLock;
 	private View mAppBackup;
@@ -90,6 +93,16 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		// commit feedbacks if any
 		FeedbackHelper.getInstance().tryCommit();
 		installShortcut();
+		
+		// Root chack
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if(sp.getBoolean(KEY_ROOT_CHECK, true)) {
+            boolean root = RootChecker.isRoot();
+            if(root) {
+                SDKWrapper.addEvent(getApplicationContext(), LeoStat.P1, KEY_ROOT_CHECK, "root");
+            }
+            sp.edit().putBoolean(KEY_ROOT_CHECK, false).commit();
+        }
 	}
 
 	private void judgeShowGradeTip() {

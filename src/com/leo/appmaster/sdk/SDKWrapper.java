@@ -1,13 +1,9 @@
 
 package com.leo.appmaster.sdk;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Context;
 import android.util.Log;
 
-import com.baidu.mobstat.SendStrategyEnum;
 import com.baidu.mobstat.StatService;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.PushUIHelper;

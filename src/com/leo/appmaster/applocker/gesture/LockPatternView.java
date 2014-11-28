@@ -1,11 +1,9 @@
 package com.leo.appmaster.applocker.gesture;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.content.res.Resources.NotFoundException;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -23,7 +21,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,13 +31,12 @@ import android.widget.ImageView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
-import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LockPatternUtils;
-import com.leo.appmaster.applocker.LockScreenActivity;
 /**
  * Displays and detects the user's unlock attempt, which is a drag of a finger
  * across 9 regions of the screen.
