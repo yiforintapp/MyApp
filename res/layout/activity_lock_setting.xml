@@ -10,8 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
-
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/fragment_contain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_title_bar" >
+    </FrameLayout>
+ <RelativeLayout
         android:id="@+id/lockerGuide"
         android:layout_width="150dp"
         android:layout_height="50dp"
@@ -21,21 +26,12 @@
         android:background="@drawable/lock_tutorails_button"
         android:visibility="gone"
         android:gravity="center" >
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/locker_guide"
             android:textColor="#FFFFFF" />
     </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/fragment_contain"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/layout_title_bar" >
-    </FrameLayout>
-
     <ImageView
         android:id="@+id/lockCleanIV"
         android:layout_width="wrap_content"
