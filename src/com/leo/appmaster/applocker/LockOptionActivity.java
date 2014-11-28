@@ -273,13 +273,6 @@ public class LockOptionActivity extends PreferenceActivity implements
 			editor.commit();
 			Intent intent = new Intent(LockOptionActivity.this,
 					LockerTheme.class);
-			AppMasterPreference pref = AppMasterPreference
-					.getInstance(this);
-			mNewTheme = !pref.getLocalSerialNumber().equals(
-					pref.getOnlineSerialNumber());
-			if (mNewTheme) {
-				intent.putExtra("from", "new_theme_tip");
-			}
 			intent.putExtra("need_lock", true);
 			startActivityForResult(intent, 0);
 			SDKWrapper.addEvent(LockOptionActivity.this, LeoStat.P1,

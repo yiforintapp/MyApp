@@ -18,7 +18,6 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,7 +35,6 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
@@ -155,15 +153,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	}
 
 	private void handleIntent() {
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		Intent intent = this.getIntent();
 		String temp = intent.getStringExtra("theme_package");
 		mNeedLock = intent.getBooleanExtra("need_lock", false);
 		mFrom = intent.getStringExtra("from");
-		if ("new_theme_tip".equals(mFrom)) {
-			AppMasterPreference pref = AppMasterPreference.getInstance(this);
-			pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
-			mViewPager.setCurrentItem(1);
-		}
 		if (temp != null && !temp.equals("")) {
 			tryHideThemeApk(temp);
 			for (int i = 0; i < mLocalThemes.size(); i++) {
@@ -177,6 +171,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			number = 0;
 		}
 		// localThemeList.setSelection(number);
+		boolean newTheme = !pref.getLocalSerialNumber().equals(
+				pref.getOnlineSerialNumber());
+		if (newTheme) {
+			pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
+			mViewPager.setCurrentItem(1);
+		}
+
 		localThemeList.getRefreshableView().setSelection(number);
 	}
 

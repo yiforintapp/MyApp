@@ -63,7 +63,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	private View mAppLock;
 	private View mAppBackup;
 	private View mCleanMem;
-	private ImageView mSettingIcon;
 
 	private View mPressedEffect1;
 	private View mPressedEffect2;
@@ -169,9 +168,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mAppLock = findViewById(R.id.tv_app_lock);
 		mAppBackup = findViewById(R.id.tv_app_backup);
 		mCleanMem = findViewById(R.id.tv_clean_memory);
-
-		mSettingIcon = (ImageView) findViewById(R.id.setting_icon);
-
 		mPictureHide.setOnClickListener(this);
 		mAppLock.setOnClickListener(this);
 		mAppBackup.setOnTouchListener(this);
@@ -199,14 +195,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent(HomeActivity.this, LockerTheme.class);
-				AppMasterPreference pref = AppMasterPreference
-						.getInstance(HomeActivity.this);
-
-				mNewTheme = !pref.getLocalSerialNumber().equals(
-						pref.getOnlineSerialNumber());
-				if (mNewTheme) {
-					intent.putExtra("from", "new_theme_tip");
-				}
 				startActivityForResult(intent, 0);
 				SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
 						"theme_enter", "home");
@@ -230,11 +218,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 		mNewTheme = !pref.getLocalSerialNumber().equals(
 				pref.getOnlineSerialNumber());
-		LeoLog.e(
-				"xxxx",
-				"mNewTheme = " + mNewTheme + "   "
-						+ pref.getLocalSerialNumber() + "    "
-						+ pref.getOnlineSerialNumber());
 		if (mNewTheme) {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.themetip_spiner_press));

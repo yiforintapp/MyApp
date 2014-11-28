@@ -207,13 +207,6 @@ public class LockScreenActivity extends FragmentActivity implements
 			public void onClick(View arg0) {
 				Intent intent = new Intent(LockScreenActivity.this,
 						LockerTheme.class);
-				AppMasterPreference pref = AppMasterPreference
-						.getInstance(LockScreenActivity.this);
-				mNewTheme = !pref.getLocalSerialNumber().equals(
-						pref.getOnlineSerialNumber());
-				if (mNewTheme) {
-					intent.putExtra("from", "new_theme_tip");
-				}
 
 				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
 						| Intent.FLAG_ACTIVITY_NEW_TASK);
