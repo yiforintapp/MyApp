@@ -34,6 +34,11 @@ import android.widget.Toast;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.BaseActivity;
@@ -45,7 +50,6 @@ import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.lockertheme.LockerThemeChanageDialog.OnDiaogClickListener;
-import com.leo.appmaster.lockertheme.PullLoadListView.IXListViewListener;
 import com.leo.appmaster.model.ThemeInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppUtil;
@@ -54,12 +58,12 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
 public class LockerTheme extends BaseActivity implements OnClickListener,
-		IXListViewListener, OnPageChangeListener {
+		OnPageChangeListener, OnRefreshListener2<ListView> {
 
 	private View mTabContainer;
 	private ViewPager mViewPager;
-	private PullLoadListView localThemeList;
-	private PullLoadListView mOnlineThemeList;
+	private PullToRefreshListView localThemeList;
+	private PullToRefreshListView mOnlineThemeList;
 	private View mOnlineThemeView;
 	private View mOnlineThemeHolder;
 	private View mErrorView, mLayoutEmptyTip;
@@ -113,13 +117,14 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				break;
 			case MSG_LOAD_PAGE_DATA_FAILED:
 				if (lockerTheme.get() != null) {
-					lockerTheme.get().mOnlineThemeList.stopLoadMore();
+					lockerTheme.get().mOnlineThemeList.onRefreshComplete();
+
 					lockerTheme.get().onLoadMoreThemeFinish(false, null);
 				}
 				break;
 			case MSG_LOAD_PAGE_DATA_SUCCESS:
 				if (lockerTheme.get() != null) {
-					lockerTheme.get().mOnlineThemeList.stopLoadMore();
+					lockerTheme.get().mOnlineThemeList.onRefreshComplete();
 					List<ThemeInfo> loadList = (List<ThemeInfo>) msg.obj;
 					lockerTheme.get().onLoadMoreThemeFinish(true, loadList);
 				}
@@ -157,6 +162,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		if ("new_theme_tip".equals(mFrom)) {
 			AppMasterPreference pref = AppMasterPreference.getInstance(this);
 			pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
+			mViewPager.setCurrentItem(1);
 		}
 		if (temp != null && !temp.equals("")) {
 			tryHideThemeApk(temp);
@@ -170,7 +176,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		} else {
 			number = 0;
 		}
-		localThemeList.setSelection(number);
+		// localThemeList.setSelection(number);
+		localThemeList.getRefreshableView().setSelection(number);
 	}
 
 	private void loadData() {
@@ -263,10 +270,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 
 		// inflate local theme
-		localThemeList = (PullLoadListView) inflater.inflate(
+		localThemeList = (PullToRefreshListView) inflater.inflate(
 				R.layout.theme_local_list, null);
-		localThemeList.setPullLoadEnable(false);
-		localThemeList.setPullRefreshEnable(false);
+		localThemeList.setMode(Mode.DISABLED);
 		mLocalThemeAdapter = new LockerThemeAdapter(this, mLocalThemes);
 		localThemeList.setAdapter(mLocalThemeAdapter);
 		itemListener = new ThemeItemClickListener();
@@ -281,13 +287,12 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		mTvRetry = (TextView) mOnlineThemeView.findViewById(R.id.tv_reload);
 		mTvRetry.setOnClickListener(this);
 		mOnlineThemeHolder = mOnlineThemeView.findViewById(R.id.content_holder);
-		mOnlineThemeList = (PullLoadListView) mOnlineThemeView
+		mOnlineThemeList = (PullToRefreshListView) mOnlineThemeView
 				.findViewById(R.id.list_online);
-		mOnlineThemeList.setPullLoadEnable(true);
-		mOnlineThemeList.setPullRefreshEnable(false);
+		mOnlineThemeList.setMode(Mode.PULL_FROM_END);
 		mOnlineThemeAdapter = new LockerThemeAdapter(this, mOnlineThemes);
 		mOnlineThemeList.setAdapter(mOnlineThemeAdapter);
-		mOnlineThemeList.setXListViewListener(this);
+		mOnlineThemeList.setOnRefreshListener(this);
 		mOnlineThemeList.setOnItemClickListener(itemListener);
 
 		// fill viewpager
@@ -324,7 +329,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		if (succeed) {
 			List<ThemeInfo> list = (List<ThemeInfo>) object;
 			if (list == null && list.isEmpty()) {
-				Toast.makeText(this, R.string.no_more_onlinetheme, 0).show();
+				Toast.makeText(this, R.string.no_more_theme, 0).show();
 			} else {
 				addMoreOnlineTheme(list);
 			}
@@ -338,7 +343,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		mOnlineThemeHolder.setVisibility(View.VISIBLE);
 		if (succeed) {
 			mOnlineThemeHolder.setVisibility(View.VISIBLE);
-
+			mErrorView.setVisibility(View.INVISIBLE);
 			mOnlineThemes.clear();
 			if (object != null) {
 				mOnlineThemes.addAll((List<ThemeInfo>) object);
@@ -380,8 +385,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		for (ThemeInfo info : mOnlineThemes) {
 			loadedTheme.add(info.packageName);
 		}
-		
-		LeoLog.e("xxxx", "loaded list = " + loadedTheme.toString());
+
 		HttpRequestAgent.getInstance(this).loadOnlineTheme(loadedTheme,
 				new Listener<JSONObject>() {
 					@Override
@@ -432,7 +436,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		if (newTheme) {
 			mOnlineThemeAdapter.notifyDataSetChanged();
 		} else {
-			Toast.makeText(this, R.string.no_more_onlinetheme, 0).show();
+			Toast.makeText(this, R.string.no_more_theme, 0).show();
 		}
 	}
 
@@ -441,7 +445,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			return;
 		if (pkg.startsWith("com.leo.theme")) {
 			String action = "disable_theme_" + pkg;
-			LeoLog.e("sendHideThemeBroadcast", action);
 			Intent intent = new Intent(action);
 			this.sendBroadcast(intent);
 		}
@@ -613,13 +616,12 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	}
 
 	@Override
-	public void onRefresh() {
+	public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
 
 	}
 
 	@Override
-	public void onLoadMore() {
-		Log.e("xxxx", "onLoadMore");
+	public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
 		loadMoreOnlineTheme();
 	}
 
@@ -640,7 +642,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		@Override
 		public void onReceive(Context arg0, Intent intent) {
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
-				String packageName = intent.getData().getSchemeSpecificPart();
+				final String packageName = intent.getData()
+						.getSchemeSpecificPart();
 				if (packageName != null
 						&& packageName.startsWith("com.leo.theme")) {
 					mHandler.postDelayed(new Runnable() {
@@ -648,15 +651,14 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 						public void run() {
 							loadLocalTheme();
 							mLocalThemeAdapter.notifyDataSetChanged();
-
 							// if need to load online theme
-
 						}
 					}, 1000);
 				}
 			}
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
-				String packageName = intent.getData().getSchemeSpecificPart();
+				final String packageName = intent.getData()
+						.getSchemeSpecificPart();
 				if (packageName != null
 						&& packageName.startsWith("com.leo.theme")) {
 					mHandler.postDelayed(new Runnable() {
@@ -664,9 +666,17 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 						public void run() {
 							loadLocalTheme();
 							mLocalThemeAdapter.notifyDataSetChanged();
-
 							// if need to load online theme
-
+							ThemeInfo remove = null;
+							for (ThemeInfo info : mOnlineThemes) {
+								if (info.packageName.equals(packageName)) {
+									remove = info;
+								}
+							}
+							if (remove != null) {
+								mOnlineThemes.remove(remove);
+								mOnlineThemeAdapter.notifyDataSetChanged();
+							}
 						}
 					}, 1000);
 				}

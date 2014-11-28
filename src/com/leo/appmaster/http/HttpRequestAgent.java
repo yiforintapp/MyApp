@@ -72,8 +72,6 @@ public class HttpRequestAgent {
 				+ mContext.getString(R.string.version_name) + "&loaded_theme="
 				+ combined + "&pgsize=" + "6";
 
-		
-		
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
 				body, listener, eListener);
 		request.setShouldCache(false);
@@ -82,11 +80,12 @@ public class HttpRequestAgent {
 
 	public void checkNewTheme(Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = Constants.CHECK_NEW_THEME
+		String url = Constants.CHECK_NEW_THEME;
+		String body = "update_flag="
 				+ AppMasterPreference.getInstance(mContext)
 						.getLocalSerialNumber();
-		JsonObjectRequest request = new JsonObjectRequest(url, null, listener,
-				eListener);
+		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+				body, listener, eListener);
 		request.setShouldCache(false);
 		mRequestQueue.add(request);
 	}

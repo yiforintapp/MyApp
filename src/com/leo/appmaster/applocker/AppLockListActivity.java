@@ -57,6 +57,7 @@ public class AppLockListActivity extends BaseActivity implements
 	public static final int NAME_SORT = 1;
 	public static final int INSTALL_TIME_SORT = 2;
 	private int mCurSortType = DEFAULT_SORT;
+	private boolean mNewTheme;
 
 	public static final int REQUEST_CODE_LOCK = 9999;
 	public static final int REQUEST_CODE_OPTION = 1001;
@@ -65,7 +66,7 @@ public class AppLockListActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lock_app_list);
-		mSettingIV=(ImageView) findViewById(R.id.tv_option_image);
+		mSettingIV = (ImageView) findViewById(R.id.tv_option_image);
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		initUI();
 	}
@@ -74,10 +75,21 @@ public class AppLockListActivity extends BaseActivity implements
 	protected void onResume() {
 		loadData();
 		if (mThemeSetting.equals("0")) {
-			mSettingIV.setImageResource(R.drawable.selector_applock_setting_tip);
+			mSettingIV
+					.setImageResource(R.drawable.selector_applock_setting_tip);
 		} else {
 			mSettingIV.setImageResource(R.drawable.selector_applock_setting);
 		}
+
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		mNewTheme = pref.getLocalSerialNumber() != pref.getOnlineSerialNumber();
+		if (mNewTheme) {
+			mSettingIV
+					.setImageResource(R.drawable.selector_applock_setting_tip);
+		} else {
+			mSettingIV.setImageResource(R.drawable.selector_applock_setting);
+		}
+
 		super.onResume();
 	}
 
@@ -125,14 +137,16 @@ public class AppLockListActivity extends BaseActivity implements
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
 		mTtileBar.openBackView();
-	
-		mySharedPreferences= getSharedPreferences("LockerThemeHome",AppLockListActivity.this.MODE_WORLD_WRITEABLE);			
-		mThemeSetting=mySharedPreferences.getString("themeLockList","0");
-			if (mThemeSetting.equals("0")) {
-				mSettingIV.setImageResource(R.drawable.selector_applock_setting_tip);
-			} else {
-				mSettingIV.setImageResource(R.drawable.selector_applock_setting);
-			}
+
+		mySharedPreferences = getSharedPreferences("LockerThemeHome",
+				AppLockListActivity.this.MODE_WORLD_WRITEABLE);
+		mThemeSetting = mySharedPreferences.getString("themeLockList", "0");
+		if (mThemeSetting.equals("0")) {
+			mSettingIV
+					.setImageResource(R.drawable.selector_applock_setting_tip);
+		} else {
+			mSettingIV.setImageResource(R.drawable.selector_applock_setting);
+		}
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
 		mTtileBar.setOptionListener(this);
 		mTtileBar.setSpinerVibility(View.VISIBLE);
@@ -295,13 +309,13 @@ public class AppLockListActivity extends BaseActivity implements
 		switch (v.getId()) {
 		case R.id.tv_option_image:
 
-			Editor editor=mySharedPreferences.edit();
-			editor.putString("themeLockList","1");
+			Editor editor = mySharedPreferences.edit();
+			editor.putString("themeLockList", "1");
 			editor.commit();
-			mThemeSetting="1";
+			mThemeSetting = "1";
 			Intent intent = new Intent(this, LockOptionActivity.class);
 			startActivityForResult(intent, REQUEST_CODE_OPTION);
-			
+
 			break;
 		case R.id.layout_right:
 			if (mLeoPopMenu == null) {
@@ -398,8 +412,6 @@ public class AppLockListActivity extends BaseActivity implements
 		}
 
 	}
-	
-	
 
 	@Override
 	protected void onNewIntent(Intent intent) {

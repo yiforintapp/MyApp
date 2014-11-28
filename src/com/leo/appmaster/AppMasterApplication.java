@@ -203,13 +203,23 @@ public class AppMasterApplication extends Application implements
 	}
 
 	public void checkNewTheme() {
-
 		final AppMasterPreference pref = AppMasterPreference.getInstance(this);
+
+		LeoLog.e(
+				"xxxx",
+				pref.getLocalSerialNumber() + "       "
+						+ pref.getOnlineSerialNumber());
 		long curTime = System.currentTimeMillis();
 
 		long lastCheckTime = pref.getLastCheckThemeTime();
-		if (lastCheckTime == 0
-				|| (curTime - pref.getLastCheckThemeTime()) > 12 * 60 * 60 * 1000) {
+		if (lastCheckTime == 0 || (curTime - pref.getLastCheckThemeTime()) > 12/*
+																				 * *
+																				 * 60
+																				 * *
+																				 * 60
+																				 * *
+																				 * 1000
+																				 */) {
 
 			if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber()) {
 				showNewThemeTip();
@@ -223,16 +233,23 @@ public class AppMasterApplication extends Application implements
 						public void onResponse(JSONObject response) {
 							if (response != null) {
 								try {
-									boolean hasNewTheme = response.getBoolean("new_theme");
-									String serialNumber = response
-											.getString("serial_number");
-									pref.setOnlineSerialNumber(serialNumber);
+									JSONObject jsonObject = response.getJSONObject("data");
+									LeoLog.e("checkNewTheme",
+											response.toString());
+									if (jsonObject != null) {
+										boolean hasNewTheme = jsonObject
+												.getBoolean("need_update");
+										String serialNumber = jsonObject
+												.getString("update_flag");
+										pref.setOnlineSerialNumber(serialNumber);
 
-									if (hasNewTheme) {
-										showNewThemeTip();
+										if (hasNewTheme) {
+											showNewThemeTip();
+										}
+										pref.setLastCheckTheme(System
+												.currentTimeMillis());
 									}
-									pref.setLastCheckTheme(System
-											.currentTimeMillis());
+
 								} catch (JSONException e) {
 									e.printStackTrace();
 									LeoLog.e("checkNewTheme", e.getMessage());
@@ -245,7 +262,6 @@ public class AppMasterApplication extends Application implements
 						@Override
 						public void onErrorResponse(VolleyError error) {
 							LeoLog.e("checkNewTheme", error.getMessage());
-//							showNewThemeTip();
 							TimerTask recheckTask = new TimerTask() {
 								@Override
 								public void run() {
@@ -253,7 +269,8 @@ public class AppMasterApplication extends Application implements
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask, 2 * 60 * 60 * 1000);
+							timer.schedule(recheckTask, 2 /** 60 * 60 * 1000 */
+							);
 						}
 					});
 		}
@@ -273,11 +290,11 @@ public class AppMasterApplication extends Application implements
 	// init ImageLoader
 	public static void initImageLoader(Context context) {
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				context).threadPriority(Thread.NORM_PRIORITY - 2)
-				.denyCacheImageMultipleSizesInMemory()
+				context).threadPriority(Thread.NORM_PRIORITY)
+				.memoryCacheSizePercentage(10)
 				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
 				.diskCacheSize(50 * 1024 * 1024)
-				.tasksProcessingOrder(QueueProcessingType.LIFO)
+				.tasksProcessingOrder(QueueProcessingType.FIFO)
 				.writeDebugLogs().build();
 		ImageLoader.getInstance().init(config);
 	}

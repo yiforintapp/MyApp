@@ -7,7 +7,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.model.ThemeInfo;
 import com.leo.appmaster.model.AppWallBean;
 import com.leo.appmaster.utils.LeoLog;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.content.Context;
 import android.opengl.Visibility;
@@ -21,10 +23,16 @@ import android.widget.TextView;
 public class LockerThemeAdapter extends BaseAdapter {
 	private List<ThemeInfo> themes;
 	private LayoutInflater layoutInflater;
+	private DisplayImageOptions option;
 
 	public LockerThemeAdapter(Context context, List<ThemeInfo> themes) {
 		this.themes = themes;
 		this.layoutInflater = LayoutInflater.from(context);
+		option = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.online_theme_loading)
+				.showImageOnFail(R.drawable.online_theme_loading_failed)
+				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
+				.build();
 	}
 
 	@Override
@@ -78,21 +86,20 @@ public class LockerThemeAdapter extends BaseAdapter {
 		}
 		if (theme.themeType == Constants.THEME_TYPE_ONLINE) {
 			if (theme.tag == Constants.THEME_TAG_NEW) {
-				viewHolder.tag
-						.setBackgroundResource(R.drawable.theme_tag_new);
+				viewHolder.tag.setBackgroundResource(R.drawable.theme_tag_new);
 				viewHolder.tag.setText(R.string.theme_tag_new);
 			} else if (theme.tag == Constants.THEME_TAG_HOT) {
-				viewHolder.tag
-						.setBackgroundResource(R.drawable.theme_tag_hot);
+				viewHolder.tag.setBackgroundResource(R.drawable.theme_tag_hot);
 				viewHolder.tag.setText(R.string.theme_tag_hot);
 			} else {
 				viewHolder.tag.setVisibility(View.INVISIBLE);
 			}
 
 			ImageLoader.getInstance().displayImage(theme.previewUrl,
-					viewHolder.image);
+					viewHolder.image, option);
 
 		} else {
+
 			viewHolder.image.setImageDrawable(theme.themeImage);
 			viewHolder.tag.setVisibility(View.INVISIBLE);
 		}

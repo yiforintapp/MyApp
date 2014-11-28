@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:gravity="center" >
 
-        <com.leo.appmaster.lockertheme.PullLoadListView
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
             android:id="@+id/list_online"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -67,22 +67,21 @@
 
             <TextView
                 android:id="@+id/tv_reload"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="27dp"
-                android:layout_marginRight="27dp"
+                android:layout_width="129dp"
+                android:layout_height="33dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/mycheck_button_selecter"
+                android:background="@drawable/dlg_single_button_selector"
                 android:gravity="center"
                 android:text="@string/retry"
                 android:textColor="#ffffff"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </LinearLayout>
     </FrameLayout>
 
     <ProgressBar
         android:id="@+id/progressbar_loading"
-        style="@style/ProgressBarCricle"
+        style="@style/theme_loading"
         android:layout_width="30dp"
         android:layout_height="110dp"
         android:layout_gravity="center"

@@ -50,7 +50,7 @@ public class ThemeInfo {
 	public String toString() {
 		return "ThemeInfo: themeName = " + themeName + "   packageName = "
 				+ packageName + "    previewUrl = " + previewUrl
-				+ "    downloadUrl = " + downloadUrl;
+				+ "    downloadUrl = " + downloadUrl + "   tag = " + tag;
 	}
 
 }

@@ -43,7 +43,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
 	// online theme
 	public static final String PREF_ONLINE_THEME_SERIAL = "online_theme_serialnumber";
-	public static final String PREF_LOCAL_THEME_SERIAL = "online_theme_serialnumber";
+	public static final String PREF_LOCAL_THEME_SERIAL = "local_theme_serialnumber";
 	public static final String PREF_LAST_CHECK_NEW_THEME = "last_check_new_theme_time";
 
 	// other
