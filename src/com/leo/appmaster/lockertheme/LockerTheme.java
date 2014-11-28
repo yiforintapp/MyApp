@@ -158,6 +158,10 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		String temp = intent.getStringExtra("theme_package");
 		mNeedLock = intent.getBooleanExtra("need_lock", false);
 		mFrom = intent.getStringExtra("from");
+		/* SDK event mark */
+		if (mFrom != null && mFrom.equals("new_theme_tip")) {
+		    SDKWrapper.addEvent(this, LeoStat.P1, "theme_enter", "statusbar");
+		}
 		if (temp != null && !temp.equals("")) {
 			tryHideThemeApk(temp);
 			for (int i = 0; i < mLocalThemes.size(); i++) {
