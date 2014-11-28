@@ -273,15 +273,15 @@ public class LockerTheme extends BaseActivity {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			itemTheme = (AppLockerThemeBean) arg0.getItemAtPosition(arg2);
-			String[] urls = itemTheme.getUrl(); 
-			/* user click the theme */
-			SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice",
-					itemTheme.getPackageName());
+			String[] urls = itemTheme.getUrl();
 			if (mThemes
 					.get(arg2)
 					.getFlagName()
 					.equals((String) getResources().getText(
 							R.string.onlinetheme))) {
+			    /* user click an online theme */
+			    SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice_online",
+                        itemTheme.getPackageName());
 				for (int i = 0; i < urls.length; i++) {
 					boolean flag = AppwallHttpUtil.isHttpUrl(urls[i]);					
 					if (mFlagGp) {
@@ -300,6 +300,9 @@ public class LockerTheme extends BaseActivity {
 				}
 			} else if (!mThemes.get(arg2).getPackageName()
 					.equals(AppMasterApplication.sharedPackage)) {
+			    /* user click a local theme */
+			    SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice_local",
+	                    itemTheme.getPackageName());
 				if (mThemes.get(arg2).getPackageName()
 						.equals("com.leo.appmaster")) {
 					showAlarmDialog(itemTheme.getThemeName(), View.GONE);
