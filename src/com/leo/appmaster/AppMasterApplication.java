@@ -102,7 +102,9 @@ public class AppMasterApplication extends Application implements
 				SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 				if(sp.getBoolean(KEY_ROOT_CHECK, true)) {
 	                boolean root = RootChecker.isRoot();
-	                SDKWrapper.addEvent(getApplicationContext(), LeoStat.P1, KEY_ROOT_CHECK, "root?-" + root);
+	                if(root) {
+	                    SDKWrapper.addEvent(getApplicationContext(), LeoStat.P1, KEY_ROOT_CHECK, "root");
+	                }
 	                sp.edit().putBoolean(KEY_ROOT_CHECK, false).commit();
 				}
 				
