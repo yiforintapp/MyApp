@@ -34,4 +34,5 @@
     <color name="appwall_Name">#222222</color>
     <color name="appwall_desc">#B0B0B0</color>
     <color name="blue">#1068F3</color>
+     <color name="lockerclean_background">#50000000</color>
 </resources>

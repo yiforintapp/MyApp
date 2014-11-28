@@ -1,13 +1,21 @@
 
 package com.leo.appmaster.applocker;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -19,23 +27,30 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.AndroidAuthenticator;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.SDKWrapper;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
@@ -47,8 +62,11 @@ import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.ProcessUtils;
+import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
 public class LockScreenActivity extends FragmentActivity implements
@@ -75,6 +93,11 @@ public class LockScreenActivity extends FragmentActivity implements
     private boolean toTheme;
     private RelativeLayout mLockerGuide;
     private Animation mAnim;
+    private String mCleanRate;
+    private TextView mText;
+    private View mLockClean;
+    // private ImageView mImage;
+    private ActivityManager mAm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +124,11 @@ public class LockScreenActivity extends FragmentActivity implements
         }
         handleIntent();
         initUI();
+        // mImage = (ImageView) findViewById(R.id.lockCleanIV);
+        /**
+         * cleanMemToast
+         */
+        cleanMem();
     }
 
     @Override
@@ -298,6 +326,41 @@ public class LockScreenActivity extends FragmentActivity implements
             Intent intent = new Intent(LockHandler.ACTION_APP_UNLOCKED);
             intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mToPackage);
             sendBroadcast(intent);
+            /*
+             * mImage.setVisibility(View.VISIBLE); mAnim = new
+             * TranslateAnimation(0, 0, 0, -1500);
+             * mAnim.setInterpolator(LockScreenActivity.this,
+             * android.R.anim.accelerate_interpolator); mAnim.setDuration(500);
+             * mAnim.setAnimationListener(new AnimationListener() {
+             * @Override public void onAnimationStart(Animation arg0) { }
+             * @Override public void onAnimationRepeat(Animation arg0) { }
+             * @Override public void onAnimationEnd(Animation arg0) {
+             * mImage.setVisibility(View.GONE); finish(); } });
+             * mImage.startAnimation(mAnim);
+             */
+            Toast mToast = new Toast(this);
+            LayoutInflater mLayoutInflater = LayoutInflater.from(LockScreenActivity.this);
+            mLockClean = mLayoutInflater.inflate(R.layout.activity_lockclean_toast, null);
+            mText = (TextView) mLockClean.findViewById(R.id.textToast);
+            String textResource = getResources().getString(R.string.locker_clean);
+            String cleanRate = String.format(textResource, mCleanRate);
+            mText.setText(cleanRate);
+            mToast.setGravity(Gravity.BOTTOM, 0, 66);
+            mToast.setDuration(1000);
+            mToast.setView(mLockClean);
+            mToast.show();
+
+            AppMasterPreference pref = AppMasterPreference.getInstance(this);
+            pref.setUnlockCount(pref.getUnlockCount() + 1);
+
+            spiner.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 500);
+
+            return;
         } else if (mFromType == LockFragment.FROM_SELF_HOME) {
             Intent intent = null;
             // try start lock service
@@ -305,7 +368,7 @@ public class LockScreenActivity extends FragmentActivity implements
             this.startService(intent);
             intent = new Intent();
             intent.setClassName(this, mToActivity);
-            this.startActivity(intent);
+            startActivity(intent);
         }
 
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
@@ -442,5 +505,50 @@ public class LockScreenActivity extends FragmentActivity implements
      */
     private void themeGuide(View view, Animation anim) {
         view.startAnimation(anim);
+    }
+
+    /**
+     * cleanMem
+     */
+    private void cleanMem() {
+        long totalMem = ProcessUtils.getTotalMem();
+        long lastUsedMem = totalMem - ProcessUtils.getAvailableMem(this);
+        cleanAllProcess();
+        long curUsedMem = totalMem - ProcessUtils.getAvailableMem(this);
+        long cleanMem = Math.abs(lastUsedMem - curUsedMem);
+        double number = ((double) cleanMem / lastUsedMem) * 2;
+        if (number <= 1) {
+            mCleanRate = "10%";
+        } else {
+            int cleanNumber = (int) (number * 100);
+            mCleanRate = cleanNumber + "%";
+        }
+    }
+
+    private void cleanAllProcess() {
+        mAm = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        List<RunningAppProcessInfo> list = mAm.getRunningAppProcesses();
+        List<String> launchers = getLauncherPkgs(this);
+        for (RunningAppProcessInfo runningAppProcessInfo : list) {
+            if (runningAppProcessInfo.importance > RunningAppProcessInfo.IMPORTANCE_CANT_SAVE_STATE) {
+                if (!launchers.contains(runningAppProcessInfo.processName)) {
+                    mAm.killBackgroundProcesses(runningAppProcessInfo.processName);
+                }
+            }
+        }
+    }
+
+    private List<String> getLauncherPkgs(Context ctx) {
+        PackageManager pm = ctx.getPackageManager();
+        List<String> pkgs = new ArrayList<String>();
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_HOME);
+        List<ResolveInfo> apps = pm.queryIntentActivities(mainIntent, 0);
+        for (ResolveInfo resolveInfo : apps) {
+            ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
+            String packageName = applicationInfo.packageName;
+            pkgs.add(packageName);
+        }
+        return pkgs;
     }
 }

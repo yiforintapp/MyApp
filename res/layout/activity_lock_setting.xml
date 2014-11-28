@@ -2,37 +2,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_lock_layout"
     android:layout_width="match_parent"
-    android:background="@color/app_background"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/app_background" >
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
-        <RelativeLayout
+    <RelativeLayout
         android:id="@+id/lockerGuide"
         android:layout_width="150dp"
-    	android:layout_height="50dp"
-    	android:gravity="center"
-    	android:layout_below="@id/layout_title_bar"
-    	android:layout_alignParentRight="true"
-    	android:layout_marginRight="5dp"
-    	android:background="@drawable/lock_tutorails_button"
-         >
-    <TextView 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/locker_guide"
-        android:textColor="#FFFFFF"
-        />
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/layout_title_bar"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/lock_tutorails_button"
+        android:gravity="center" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/locker_guide"
+            android:textColor="#FFFFFF" />
     </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/fragment_contain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layout_title_bar" />
+        android:layout_below="@id/layout_title_bar" >
+    </FrameLayout>
 
+    <ImageView
+        android:id="@+id/lockCleanIV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rocket_fly"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
 
 </RelativeLayout>
