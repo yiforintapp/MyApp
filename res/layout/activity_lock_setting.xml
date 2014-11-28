@@ -18,7 +18,7 @@
     </FrameLayout>
  <RelativeLayout
         android:id="@+id/lockerGuide"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:layout_below="@id/layout_title_bar"
