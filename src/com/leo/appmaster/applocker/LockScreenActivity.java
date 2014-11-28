@@ -115,16 +115,12 @@ public class LockScreenActivity extends FragmentActivity implements
         if (number.equals("0")) {
             spiner.setImageDrawable(this.getResources().getDrawable(
                     R.drawable.themetip_spiner_press));
-            themeGuide(mLockerGuide, mAnim);
-
         } else {
             spiner.setImageDrawable(this.getResources().getDrawable(
                     R.drawable.theme_spiner_press));
-            mLockerGuide.setVisibility(View.GONE);
         }
         handleIntent();
         initUI();
-        // mImage = (ImageView) findViewById(R.id.lockCleanIV);
         /**
          * cleanMemToast
          */
@@ -136,11 +132,18 @@ public class LockScreenActivity extends FragmentActivity implements
         if (number.equals("0")) {
             spiner.setImageDrawable(this.getResources().getDrawable(
                     R.drawable.themetip_spiner_press));
-            themeGuide(mLockerGuide, mAnim);
         } else {
             spiner.setImageDrawable(this.getResources().getDrawable(
                     R.drawable.theme_spiner_press));
+        }
+        if (mFromType == LockFragment.FROM_OTHER
+                || mFromType == LockFragment.FROM_SCREEN_ON) {
+        if (number.equals("0")) {
+            mLockerGuide.setVisibility(View.VISIBLE);
+            themeGuide(mLockerGuide, mAnim);
+        } else {
             mLockerGuide.setVisibility(View.GONE);
+        }
         }
         super.onResume();
     }
