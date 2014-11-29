@@ -224,7 +224,9 @@
             android:exported="true" >
         </service>
 
-        <receiver android:name="com.leo.appmaster.applocker.receiver.LockReceiver" >
+        <receiver
+            android:name="com.leo.appmaster.applocker.receiver.LockReceiver"
+            android:exported="true" >
             <intent-filter android:priority="1000" >
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -243,15 +245,22 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
-        
+
         <!-- for Baidu MTJ begin -->
         <!-- 您从百度网站获取的APP KEY -->
-        <meta-data android:name="BaiduMobAd_STAT_ID" android:value="88ce739ea6" /> <!-- debug key -->
-        <!--  meta-data android:name="BaiduMobAd_STAT_ID" android:value="1004e462a2" / --> <!-- release key -->
+        <meta-data
+            android:name="BaiduMobAd_STAT_ID"
+            android:value="88ce739ea6" /> <!-- debug key -->
+        <!-- meta-data android:name="BaiduMobAd_STAT_ID" android:value="1004e462a2" / -->
+        <!-- release key -->
         <!-- 渠道商编号 -->
-        <meta-data android:name="BaiduMobAd_CHANNEL" android:value="@string/channel_code" />
+        <meta-data
+            android:name="BaiduMobAd_CHANNEL"
+            android:value="@string/channel_code" />
         <!-- 是否开启错误日志统计，默认为false -->
-        <meta-data android:name="BaiduMobAd_EXCEPTION_LOG" android:value="true" />
+        <meta-data
+            android:name="BaiduMobAd_EXCEPTION_LOG"
+            android:value="true" />
         <!-- for Baidu MTJ end -->
     </application>
 
