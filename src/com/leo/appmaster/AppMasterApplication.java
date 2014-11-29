@@ -186,7 +186,7 @@ public class AppMasterApplication extends Application implements
 				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		intent.putExtra("from", "new_theme_tip");
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				intent, PendingIntent.FLAG_CANCEL_CURRENT);
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		notif.icon = R.drawable.ic_launcher;
 		notif.tickerText = this.getString(R.string.find_new_theme);
@@ -208,7 +208,7 @@ public class AppMasterApplication extends Application implements
 
 		long lastCheckTime = pref.getLastCheckThemeTime();
 		if (lastCheckTime == 0
-				|| (curTime - pref.getLastCheckThemeTime()) > /*12 * 60 * 60*/ 2 * 1000) {
+				|| (curTime - pref.getLastCheckThemeTime()) > /* 12 * 60 * 60 */2 * 1000) {
 
 			if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber()) {
 				showNewThemeTip();
@@ -239,6 +239,18 @@ public class AppMasterApplication extends Application implements
 												.currentTimeMillis());
 									}
 
+									LeoLog.e("checkNewTheme",
+											"next checkNewTheme");
+									TimerTask recheckTask = new TimerTask() {
+										@Override
+										public void run() {
+											checkNewTheme();
+										}
+									};
+									Timer timer = new Timer();
+									timer.schedule(recheckTask,
+											2/* * 60 * 60 */* 1000);
+
 								} catch (JSONException e) {
 									e.printStackTrace();
 									LeoLog.e("checkNewTheme", e.getMessage());
@@ -258,7 +270,7 @@ public class AppMasterApplication extends Application implements
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask, 2/* * 60 * 60*/ * 1000);
+							timer.schedule(recheckTask, 2/* * 60 * 60 */* 1000);
 						}
 					});
 		}
