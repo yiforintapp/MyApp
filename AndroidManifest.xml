@@ -88,7 +88,7 @@
             android:name="com.leo.appmaster.applocker.LockScreenActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.PasswdProtectActivity"

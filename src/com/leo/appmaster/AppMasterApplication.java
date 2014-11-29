@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Handler;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -44,8 +45,9 @@ public class AppMasterApplication extends Application implements
 	private AppLoadEngine mAppsEngine;
 
 	private static AppMasterApplication mInstance;
-
 	private static List<Activity> mActivityList;
+
+	private Handler mHandler;
 
 	public static SharedPreferences sharedPreferences;
 	public static String usedThemePackage;
@@ -61,6 +63,7 @@ public class AppMasterApplication extends Application implements
 		super.onCreate();
 		mActivityList = new ArrayList<Activity>();
 		mInstance = this;
+		mHandler = new Handler();
 		mAppsEngine = AppLoadEngine.getInstance(this);
 		mAppsEngine.preloadAllBaseInfo();
 		initImageLoader(getApplicationContext());
@@ -93,6 +96,12 @@ public class AppMasterApplication extends Application implements
 		LeoStat.registerRequestFailedReporter(this);
 
 		startInitTask(this);
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				checkNewTheme();
+			}
+		}, 10000);
 		restartApplocker(PhoneInfo.getAndroidVersion());
 	}
 
@@ -104,7 +113,6 @@ public class AppMasterApplication extends Application implements
 				judgeLockAlert();
 				judgeStatictiUnlockCount();
 				initImageLoader();
-				checkNewTheme();
 			}
 		}).start();
 	}
@@ -211,10 +219,11 @@ public class AppMasterApplication extends Application implements
 		if (lastCheckTime == 0
 				|| (curTime - pref.getLastCheckThemeTime()) > /* 12 * 60 * 60 */60 * 1000) {
 
-//			if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber()) {
-//				showNewThemeTip();
-//				return;
-//			}
+			// if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber())
+			// {
+			// showNewThemeTip();
+			// return;
+			// }
 
 			HttpRequestAgent.getInstance(this).checkNewTheme(
 					new Listener<JSONObject>() {

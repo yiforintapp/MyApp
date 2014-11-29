@@ -12,6 +12,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.AppwallHttpUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.android.volley.Request.Method;
 import com.android.volley.Response.Listener;
 import com.android.volley.Response.ErrorListener;
@@ -54,18 +55,10 @@ public class HttpRequestAgent {
 	public void loadOnlineTheme(List<String> loadedTheme,
 			Listener<JSONObject> listener, ErrorListener eListener) {
 		String url = Constants.ONLINE_THEME_URL;
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("language", AppwallHttpUtil.getLanguage());
-		map.put("market_id", mContext.getString(R.string.channel_code));
-		map.put("app_ver", mContext.getString(R.string.version_name));
 		String combined = "";
 		for (String string : loadedTheme) {
 			combined = combined + string + ";";
 		}
-		map.put("loaded_theme", combined);
-		map.put("pgsize", "6");
-		JSONObject json = new JSONObject(map);
-
 		String body = null;
 		body = "language=" + AppwallHttpUtil.getLanguage() + "&market_id="
 				+ mContext.getString(R.string.channel_code) + "&app_ver="
@@ -81,9 +74,16 @@ public class HttpRequestAgent {
 	public void checkNewTheme(Listener<JSONObject> listener,
 			ErrorListener eListener) {
 		String url = Constants.CHECK_NEW_THEME;
+		List<String> hideThemes = AppMasterPreference.getInstance(mContext)
+				.getHideThemeList();
+		String combined = "";
+		for (String string : hideThemes) {
+			combined = combined + string + ";";
+		}
 		String body = "update_flag="
 				+ AppMasterPreference.getInstance(mContext)
-						.getLocalSerialNumber();
+						.getLocalSerialNumber() + "&loaded_theme=" + combined;
+		LeoLog.e("xxxx", "body = " + body);
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
 				body, listener, eListener);
 		request.setShouldCache(false);
