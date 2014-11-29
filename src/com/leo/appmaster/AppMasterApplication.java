@@ -240,6 +240,10 @@ public class AppMasterApplication extends Application implements
 												.getBoolean("need_update");
 										String serialNumber = jsonObject
 												.getString("update_flag");
+
+										if (!hasNewTheme) {
+											pref.setLocalSerialNumber(serialNumber);
+										}
 										pref.setOnlineSerialNumber(serialNumber);
 
 										if (hasNewTheme) {
