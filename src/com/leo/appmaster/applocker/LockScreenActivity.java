@@ -521,7 +521,8 @@ public class LockScreenActivity extends FragmentActivity implements
         long cleanMem = Math.abs(lastUsedMem - curUsedMem);
         double number = ((double) cleanMem / lastUsedMem) * 2;
         if (number <= 1) {
-            mCleanRate = "10%";
+            int random=(int)(Math.random() * 10+1);
+            mCleanRate =random+ "%";
         } else {
             int cleanNumber = (int) (number * 100);
             mCleanRate = cleanNumber + "%";
