@@ -15,19 +15,21 @@ public class Constants {
 	public static final String APP_LOCK_LIST_DEBUG = "http://test.leostat.com/appmaster/applockerrecommend";
 
 	public static final String APP_LOCK_LIST_DEBUG2 = "http://192.168.1.142:8080/appmaster/appmaster/applockerrecommend";
-	public static final String GP_PACKAGE = "com.android.vending";// GP包名
+	public static final String GP_PACKAGE = "com.android.vending";// GP package
+																	// name
 	public static final int LOCK_TIP_INTERVAL_OF_DATE = 3;
 	public static final int LOCK_TIP_INTERVAL_OF_MS = 3 * 24 * 60 * 60 * 1000;
 	// public static final int LOCK_TIP_INTERVAL_OF_MS = 1 * 60 * 1000;
 	/*
 	 * AppWall RequestTime
 	 */
-	public static final int REQUEST_TIMEOUT = 5 * 1000;// 设置请求超时5秒钟
-	public static final int SO_TIMEOUT = 5 * 1000; // 设置等待数据超时时间5秒钟
+	public static final int REQUEST_TIMEOUT = 5 * 1000;
+	public static final int SO_TIMEOUT = 5 * 1000;
 	/*
 	 * LockerTheme
 	 */
-	public static final String DEFAULT_THEME = "com.leo.theme.default";// 默认主题
+	public static final String DEFAULT_THEME = "com.leo.theme.default";// default
+																		// theme
 	/**
 	 * theme type
 	 */
@@ -46,5 +48,21 @@ public class Constants {
 	 */
 	public static final String ONLINE_THEME_URL = "http://192.168.1.41:9090/appmaster_interface/appmaster/themes";
 	public static final String CHECK_NEW_THEME = "http://192.168.1.41:9090/appmaster_interface/appmaster/themesupdatecheck";
+
+	/**
+	 * for compat first version theme preview url
+	 */
+	public static final String THEME_MOONNIGHT_URL = "http://testd.leostat.com/moonnight/night.jpg";
+	public static final String THEME_CHRISTMAS_URL = "http://testd.leostat.com/shendna/christmas.jpg";
+	public static final String THEME_FRUIT_URL = "http://testd.leostat.com/fruit/fruit.jpg";
+	public static final String THEME_SPATIAL_URL = "http://testd.leostat.com/spatial/spatial.jpg";
+
+	/**
+	 * compat theme package
+	 */
+	public static final String THEME_PACKAGE_NIGHT = "com.leo.theme.moonnight";
+	public static final String THEME_PACKAGE_CHRITMAS = "com.leo.theme.christmas";
+	public static final String THEME_PACKAGE_FRUIT = "com.leo.theme.orange";
+	public static final String THEME_PACKAGE_SPATIAL = "com.leo.theme.contradict";
 
 }
