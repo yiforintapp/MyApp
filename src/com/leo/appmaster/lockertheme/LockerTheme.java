@@ -91,6 +91,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	private static final int MSG_LOAD_PAGE_DATA_SUCCESS = 4;
 
 	private EventHandler mHandler;
+	private String mFromTheme;
 
 	private static class EventHandler extends Handler {
 		WeakReference<LockerTheme> lockerTheme;
@@ -155,13 +156,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	private void handleIntent() {
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		Intent intent = this.getIntent();
-		String temp = intent.getStringExtra("theme_package");
+		mFromTheme = intent.getStringExtra("theme_package");
 		mNeedLock = intent.getBooleanExtra("need_lock", false);
 		mFrom = intent.getStringExtra("from");
-		if (temp != null && !temp.equals("")) {
-			tryHideThemeApk(temp);
+		if (mFromTheme != null && !mFromTheme.equals("")) {
+			tryHideThemeApk(mFromTheme);
 			for (int i = 0; i < mLocalThemes.size(); i++) {
-				if (mLocalThemes.get(i).packageName.equals(temp)) {
+				if (mLocalThemes.get(i).packageName.equals(mFromTheme)) {
 					number = i;
 					showAlarmDialog(mLocalThemes.get(i).themeName, View.VISIBLE);
 					lastSelectedItem = mLocalThemes.get(i);
@@ -468,7 +469,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 
 	@Override
 	public void onBackPressed() {
-		if (mFrom != null && mFrom.equals("new_theme_tip")) {
+		LeoLog.e("xxxx", "mFromTheme = " + mFromTheme);
+		if ((mFromTheme != null && !mFromTheme.equals(""))
+				|| (mFrom != null && mFrom.equals("new_theme_tip"))) {
 			Intent intent = new Intent(this, HomeActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
@@ -600,7 +603,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			mViewPager.setCurrentItem(0, true);
 			break;
 		case R.id.layout_title_back:
-			if (mFrom != null && mFrom.equals("new_theme_tip")) {
+			if ((mFromTheme != null && !mFromTheme.equals(""))
+					|| (mFrom != null && mFrom.equals("new_theme_tip"))) {
 				Intent intent = new Intent(this, HomeActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
