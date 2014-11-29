@@ -54,13 +54,19 @@ public class FileOperationUtil {
     public static String getNoExtNameFromHideFilepath(String filepath) {
         String filename;
         int pos = filepath.lastIndexOf('/');
-        if (pos != -1) {
+        if (pos > -1) {
             filename = filepath.substring(pos + 1); 
             if (filename.startsWith(".")) {
                 filename = filename.substring(1); 
-                filename = filename.substring(0, filename.indexOf("."));
+                int index = filename.indexOf(".");
+                if(index > 0) {
+                    filename = filename.substring(0, index);
+                }
             } else {
-                filename = filename.substring(0, filename.indexOf("."));
+                int index = filename.indexOf(".");
+                if(index > 0) {
+                    filename = filename.substring(0, index);
+                }
             }
              return filename;
         }
