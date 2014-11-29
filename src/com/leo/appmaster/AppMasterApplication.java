@@ -180,6 +180,7 @@ public class AppMasterApplication extends Application implements
 	}
 
 	private void showNewThemeTip() {
+		LeoLog.e("showNewThemeTip", "showNewThemeTip");
 		Notification notif = new Notification();
 		Intent intent = new Intent(this, LockerTheme.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -208,7 +209,7 @@ public class AppMasterApplication extends Application implements
 
 		long lastCheckTime = pref.getLastCheckThemeTime();
 		if (lastCheckTime == 0
-				|| (curTime - pref.getLastCheckThemeTime()) > /* 12 * 60 * 60 */2 * 1000) {
+				|| (curTime - pref.getLastCheckThemeTime()) > /* 12 * 60 * 60 */60 * 1000) {
 
 			if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber()) {
 				showNewThemeTip();
@@ -249,7 +250,7 @@ public class AppMasterApplication extends Application implements
 									};
 									Timer timer = new Timer();
 									timer.schedule(recheckTask,
-											2/* * 60 * 60 */* 1000);
+											60/* * 60 * 60 */* 1000);
 
 								} catch (JSONException e) {
 									e.printStackTrace();

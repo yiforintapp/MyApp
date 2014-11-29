@@ -158,10 +158,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		String temp = intent.getStringExtra("theme_package");
 		mNeedLock = intent.getBooleanExtra("need_lock", false);
 		mFrom = intent.getStringExtra("from");
-		/* SDK event mark */
-		if (mFrom != null && mFrom.equals("new_theme_tip")) {
-		    SDKWrapper.addEvent(this, LeoStat.P1, "theme_enter", "statusbar");
-		}
 		if (temp != null && !temp.equals("")) {
 			tryHideThemeApk(temp);
 			for (int i = 0; i < mLocalThemes.size(); i++) {
@@ -179,6 +175,12 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				pref.getOnlineSerialNumber());
 		if (newTheme) {
 			pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
+			mViewPager.setCurrentItem(1);
+		}
+
+		if (mFrom != null && mFrom.equals("new_theme_tip")) {
+			/* SDK event mark */
+			SDKWrapper.addEvent(this, LeoStat.P1, "theme_enter", "statusbar");
 			mViewPager.setCurrentItem(1);
 		}
 
@@ -557,7 +559,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				R.string.defaultTheme);
 		defaultTheme.curUsedTheme = true;
 
-		if (AppMasterApplication.usedThemePackage.equals(Constants.DEFAULT_THEME)) {
+		if (AppMasterApplication.usedThemePackage
+				.equals(Constants.DEFAULT_THEME)) {
 			defaultTheme.curUsedTheme = true;
 		} else {
 			defaultTheme.curUsedTheme = false;
