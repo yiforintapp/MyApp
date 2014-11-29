@@ -230,5 +230,5 @@
     <string name="locker_guide">थीम बदलने क्लिक करें</string>
     <string name="locker_theme_guide"> स्क्रीन लॉक करने थीम लागू किया जाएगा!</string>
     <string name="locker_clean">सफलतापूर्वक %1$s तक बढ़ाया</string>
-
+	<string name="setting_locker_clean">थीम बदलने क्लिक करें</string>
 </resources>

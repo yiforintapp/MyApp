@@ -24,6 +24,12 @@
         android:layout="@layout/pref_list_item_mid"
         android:title="@string/new_app_lock_tip"
         android:widgetLayout="@layout/pref_widget_checkbox" />
+     <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="app_lock_clean"
+        android:layout="@layout/pref_list_item_mid"
+        android:title="@string/setting_locker_clean"
+        android:widgetLayout="@layout/pref_widget_checkbox" />
 
     <Preference
         android:key="relock_time"

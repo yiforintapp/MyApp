@@ -228,4 +228,5 @@
 	<string  name="locker_guide">点击更换解锁主题</string>
 	<string  name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
 	<string name="locker_clean">优化成功，已提速%1$s</string>
+	<string name="setting_locker_clean">解锁后加速</string>
 </resources>

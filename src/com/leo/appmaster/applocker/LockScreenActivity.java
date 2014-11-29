@@ -121,10 +121,6 @@ public class LockScreenActivity extends FragmentActivity implements
         }
         handleIntent();
         initUI();
-        /**
-         * cleanMemToast
-         */
-        cleanMem();
     }
 
     @Override
@@ -341,17 +337,25 @@ public class LockScreenActivity extends FragmentActivity implements
              * mImage.setVisibility(View.GONE); finish(); } });
              * mImage.startAnimation(mAnim);
              */
-            Toast mToast = new Toast(this);
-            LayoutInflater mLayoutInflater = LayoutInflater.from(LockScreenActivity.this);
-            mLockClean = mLayoutInflater.inflate(R.layout.activity_lockclean_toast, null);
-            mText = (TextView) mLockClean.findViewById(R.id.textToast);
-            String textResource = getResources().getString(R.string.locker_clean);
-            String cleanRate = String.format(textResource, mCleanRate);
-            mText.setText(cleanRate);
-            mToast.setGravity(Gravity.BOTTOM, 0, 66);
-            mToast.setDuration(1000);
-            mToast.setView(mLockClean);
-            mToast.show();
+            /**
+             * cleanMemToast
+             */
+        
+            if(AppMasterPreference.getInstance(LockScreenActivity.this).isLockerClean()){
+                cleanMem();
+                Toast mToast = new Toast(this);
+                LayoutInflater mLayoutInflater = LayoutInflater.from(LockScreenActivity.this);
+                mLockClean = mLayoutInflater.inflate(R.layout.activity_lockclean_toast, null);
+                mText = (TextView) mLockClean.findViewById(R.id.textToast);
+                String textResource = getResources().getString(R.string.locker_clean);
+                String cleanRate = String.format(textResource, mCleanRate);
+                mText.setText(cleanRate);
+                mToast.setGravity(Gravity.BOTTOM, 0, 66);
+                mToast.setDuration(1000);
+                mToast.setView(mLockClean);
+                mToast.show();
+            }
+      
 
             AppMasterPreference pref = AppMasterPreference.getInstance(this);
             pref.setUnlockCount(pref.getUnlockCount() + 1);

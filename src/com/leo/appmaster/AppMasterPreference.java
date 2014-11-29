@@ -40,6 +40,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_GUIDE_TIP_SHOW = "google_play_guide_tip_show";
 	public static final String PREF_HIDE_THEME_PKGS = "hide_theme_packages";
 	public static final String PREF_HAVE_EVER_LOAD_APPS = "have_ever_load_apps";
+	public static final String PREF_SETTING_LOCKER_CLEAN ="setting_locker_clean";
 
 	// other
 	public static final String PREF_LAST_VERSION = "last_version";
@@ -316,10 +317,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		mPref.edit().putBoolean(PREF_AUTO_LOCK, autoLock).commit();
 	}
 
-	public boolean isAutoLock() {
-		return mPref.getBoolean(PREF_AUTO_LOCK, false);
-	}
+    public boolean isAutoLock() {
+        return mPref.getBoolean(PREF_AUTO_LOCK, false);
+    }
 
+    public boolean isLockerClean() {
+        return mPref.getBoolean(PREF_SETTING_LOCKER_CLEAN, true);
+    }
+    public void setLockerClean(boolean lockerClean) {
+        mPref.edit().putBoolean(PREF_SETTING_LOCKER_CLEAN, lockerClean).commit();
+    }
 	public void setLastLocklistPullTime(long time) {
 		mPref.edit().putLong(PREF_LAST_PULL_LOCK_LIST_TIME, time).commit();
 	}
