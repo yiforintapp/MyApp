@@ -72,6 +72,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	private String number;
 
 	private boolean toTheme;
+	private boolean mNewTheme;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,14 +82,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		spiner = (ImageView) findViewById(R.id.image1);
 		// AM-463, add protect
-		if(spiner != null) {
-		      if ("0".equals(number)) {
-		            spiner.setImageDrawable(this.getResources().getDrawable(
-		                    R.drawable.themetip_spiner_press));
-		        } else {
-		            spiner.setImageDrawable(this.getResources().getDrawable(
-		                    R.drawable.theme_spiner_press));
-		        }
+		if (spiner != null) {
+			if ("0".equals(number)) {
+				spiner.setImageDrawable(this.getResources().getDrawable(
+						R.drawable.themetip_spiner_press));
+			} else {
+				spiner.setImageDrawable(this.getResources().getDrawable(
+						R.drawable.theme_spiner_press));
+			}
 		}
 		handleIntent();
 		initUI();
@@ -96,7 +97,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 	@Override
 	protected void onResume() {
-		if (number.equals("0")) {
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		mNewTheme = !pref.getLocalSerialNumber().equals(
+				pref.getOnlineSerialNumber());
+
+		if (mNewTheme) {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.themetip_spiner_press));
 		} else {
@@ -138,52 +143,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		mToActivity = intent.getStringExtra(EXTRA_TO_ACTIVITY);
 		mFragment.setPackage(mToPackage);
 		mFragment.setActivity(mToActivity);
-		
-        /* SDK: mark user what to unlock which app */
-       if(mFromType == LockFragment.FROM_OTHER || mFromType == LockFragment.FROM_SCREEN_ON){
-           SDKWrapper.addEvent(this, LeoStat.P1, "access_locked_app", mToPackage);
-       }
+
+		/* SDK: mark user what to unlock which app */
+		if (mFromType == LockFragment.FROM_OTHER
+				|| mFromType == LockFragment.FROM_SCREEN_ON) {
+			SDKWrapper.addEvent(this, LeoStat.P1, "access_locked_app",
+					mToPackage);
+		}
 
 	}
-
-	// private void createChoiceDialog() {
-	// final String[] valueString = getResources().getStringArray(
-	// R.array.det_lock_time_items);
-	//
-	// AlertDialog scaleIconListDlg = new AlertDialog.Builder(this)
-	// .setTitle(R.string.change_lock_time)
-	// .setSingleChoiceItems(R.array.lock_time_entrys, -1,
-	// new DialogInterface.OnClickListener() {
-	// public void onClick(DialogInterface dialog,
-	// int whichButton) {
-	// AppMasterPreference.getInstance(
-	// LockScreenActivity.this)
-	// .setRelockTimeout(
-	// valueString[whichButton]);
-	// SDKWrapper.addEvent(LockScreenActivity.this,
-	// LeoStat.P1, "lock_setting",
-	// valueString[whichButton]);
-	// dialog.dismiss();
-	// }
-	// })
-	// .setNegativeButton(R.string.cancel,
-	// new DialogInterface.OnClickListener() {
-	// public void onClick(DialogInterface dialog,
-	// int whichButton) {
-	// /* User clicked No so do some stuff */
-	// }
-	// }).create();
-	// TextView title = new TextView(this);
-	// title.setText(getString(R.string.change_lock_time));
-	// title.setTextColor(Color.WHITE);
-	// title.setTextSize(20);
-	// title.setPadding(DipPixelUtil.dip2px(this, 20),
-	// DipPixelUtil.dip2px(this, 10), 0, DipPixelUtil.dip2px(this, 10));
-	// title.setBackgroundColor(getResources().getColor(
-	// R.color.dialog_title_area_bg));
-	// scaleIconListDlg.setCustomTitle(title);
-	// scaleIconListDlg.show();
-	// }
 
 	private void setAppInfoBackground(Drawable drawable) {
 		int h = drawable.getIntrinsicHeight() * 9 / 10;
@@ -243,33 +211,40 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
 			mTtileBar.setOptionListener(this);
 		}
-		     
-        if(ImageHideMainActivity.class.getName().equals(mToActivity)) { // AM-423, for image hide, do not show theme icon
-            mTtileBar.setSpinerVibility(View.GONE);
-        } else {
-            
-            mTtileBar.setSpinerVibility(View.VISIBLE);
-            mTtileBar.setSpinerListener(this);
 
-            spiner.setOnClickListener(new OnClickListener() {
+		if (ImageHideMainActivity.class.getName().equals(mToActivity)) { // AM-423,
+																			// for
+																			// image
+																			// hide,
+																			// do
+																			// not
+																			// show
+																			// theme
+																			// icon
+			mTtileBar.setSpinerVibility(View.GONE);
+		} else {
 
-                @Override
-                public void onClick(View arg0) {
-                    Intent intent = new Intent(LockScreenActivity.this,
-                            LockerTheme.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
-                            | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1, "theme_enter", "unlock");
+			mTtileBar.setSpinerVibility(View.VISIBLE);
+			mTtileBar.setSpinerListener(this);
 
-                    toTheme = true;
+			spiner.setOnClickListener(new OnClickListener() {
 
-                    startActivityForResult(intent, 0);
-                    AppMasterApplication.setSharedPreferencesNumber("1");
-                    number = "1";
-                }
-            });
-        }
+				@Override
+				public void onClick(View arg0) {
+					Intent intent = new Intent(LockScreenActivity.this,
+							LockerTheme.class);
 
+					intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
+							| Intent.FLAG_ACTIVITY_NEW_TASK);
+					SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,
+							"theme_enter", "unlock");
+					toTheme = true;
+					startActivityForResult(intent, 0);
+					AppMasterApplication.setSharedPreferencesNumber("1");
+					number = "1";
+				}
+			});
+		}
 		if (mFromType == LockFragment.FROM_SELF_HOME
 				|| mFromType == LockFragment.FROM_SELF) {
 			mTtileBar.setBackViewListener(this);
@@ -286,6 +261,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		FragmentTransaction tans = fm.beginTransaction();
 		tans.replace(R.id.fragment_contain, mFragment);
 		tans.commit();
+
 	}
 
 	public void onUnlockSucceed() {

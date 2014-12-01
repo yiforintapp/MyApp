@@ -17,8 +17,8 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
 
 import android.app.Activity;
 import android.content.Context;

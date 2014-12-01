@@ -212,15 +212,31 @@
     <string name="lock_more">Lock More</string>
     <string name="lock">Lock</string>
     <string name="det_change_lock_time">Do you wish to change your Auto-lock time?</string>
-	 <string name="moonightTheme">Night</string>
+    <string name="moonightTheme">Night</string>
     <string name="orangeTheme">Fruit</string>
     <string name="ParadoxTheme">Spatial</string>
+
     <string-array name="det_lock_time_items">
         <item>30</item>
         <item>60</item>
     </string-array>
-	<string name="locker_apply">Apply</string>
-	<string name="locker_uninstall">Uninstall</string>
-	<string name="locker_cancel">Cancel</string>
-	<string name="christmas_theme">Christmas</string>
+
+    <string name="locker_apply">Apply</string>
+    <string name="locker_uninstall">Uninstall</string>
+    <string name="locker_cancel">Cancel</string>
+    <string name="christmas_theme">Christmas</string>
+    <string name="no_more_theme">No more themes</string>
+    <string name="pull_to_refresh_pull_label">Pull-refresh…</string>
+    <string name="pull_to_refresh_release_label">Refresh release…</string>
+    <string name="pull_to_refresh_refreshing_label">Loading…</string>
+    <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
+    <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
+    <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
+    <string name="no_more_onlinetheme">All themes downloaded!</string>
+    <string name="find_new_theme">New Themes</string>
+    <string name="find_new_theme_content">Click to view the new themes</string>
+    <string name="theme_tag_new">New</string>
+    <string name="theme_tag_hot">Hot</string>
+
 </resources>

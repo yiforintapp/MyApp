@@ -66,7 +66,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	private View mAppLock;
 	private View mAppBackup;
 	private View mCleanMem;
-	private ImageView mSettingIcon;
 
 	private View mPressedEffect1;
 	private View mPressedEffect2;
@@ -83,11 +82,13 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	private ImageView spiner;
 	private String themeHome;
 	private SharedPreferences mySharedPreferences;
+	private boolean mNewTheme;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		 spiner=(ImageView) findViewById(R.id.image1);
+		spiner = (ImageView) findViewById(R.id.image1);
 		initUI();
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		// commit feedbacks if any
@@ -180,9 +181,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mAppLock = findViewById(R.id.tv_app_lock);
 		mAppBackup = findViewById(R.id.tv_app_backup);
 		mCleanMem = findViewById(R.id.tv_clean_memory);
-
-		mSettingIcon = (ImageView) findViewById(R.id.setting_icon);
-
 		mPictureHide.setOnClickListener(this);
 		mAppLock.setOnClickListener(this);
 		mAppBackup.setOnTouchListener(this);
@@ -192,15 +190,11 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 		mPressedEffect1 = findViewById(R.id.pressed_effect1);
 		mPressedEffect2 = findViewById(R.id.pressed_effect2);
-		
+
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		 mySharedPreferences= getSharedPreferences("LockerThemeHome",HomeActivity.this.MODE_WORLD_WRITEABLE);			
-		themeHome=mySharedPreferences.getString("themeHome","0");
-			if (themeHome.equals("0")) {
-				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.themetip_spiner_press));
-			} else {
-				spiner.setImageDrawable(this.getResources().getDrawable(R.drawable.theme_spiner_press));
-			}
+		mySharedPreferences = getSharedPreferences("LockerThemeHome",
+				HomeActivity.this.MODE_WORLD_WRITEABLE);
+
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
@@ -209,19 +203,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mTtileBar.setOptionListener(this);
 		mTtileBar.setSpinerVibility(View.VISIBLE);
 		mTtileBar.setSpinerListener(this);
-		spiner=(ImageView) findViewById(R.id.image1);  
+		spiner = (ImageView) findViewById(R.id.image1);
 		spiner.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-	
-				Editor editor=mySharedPreferences.edit();
-				editor.putString("themeHome","1");
-				editor.commit();
-				Intent intent = new Intent(HomeActivity.this,
-						LockerTheme.class);
+				Intent intent = new Intent(HomeActivity.this, LockerTheme.class);
 				startActivityForResult(intent, 0);
-				themeHome = "1";
-				SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "theme_enter", "home");
+				SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
+						"theme_enter", "home");
 			}
 		});
 
@@ -238,14 +227,18 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mTvFlow.setText(TextFormater.dataSizeFormat(AppUtil.getTotalTriffic()));
 		mCricleView.updateDegrees(360f / total * used);
 
-		if (themeHome.equals("0")) {
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
+
+		mNewTheme = !pref.getLocalSerialNumber().equals(
+				pref.getOnlineSerialNumber());
+		if (mNewTheme) {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.themetip_spiner_press));
 		} else {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.theme_spiner_press));
 		}
-		
+
 		updateSettingIcon();
 		setLockedAppCount();
 

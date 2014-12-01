@@ -2,15 +2,14 @@ package com.leo.appmaster.lockertheme;
 
 import java.util.List;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.constants.Constants;
-import com.leo.appmaster.model.AppLockerThemeBean;
-import com.leo.appmaster.model.AppWallBean;
-import com.leo.appmaster.utils.LeoLog;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.leo.appmaster.model.ThemeInfo;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.ImageScaleType;
 
 import android.content.Context;
-import android.opengl.Visibility;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +18,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LockerThemeAdapter extends BaseAdapter {
-	private Context context;
-	private List<AppLockerThemeBean> themes;
+	private List<ThemeInfo> themes;
 	private LayoutInflater layoutInflater;
+	private DisplayImageOptions commonOption;
+	private DisplayImageOptions compatibleOption;
 
-	public LockerThemeAdapter(Context context, List<AppLockerThemeBean> themes) {
-		this.context = context;
+	public LockerThemeAdapter(Context context, List<ThemeInfo> themes) {
 		this.themes = themes;
 		this.layoutInflater = LayoutInflater.from(context);
+		commonOption = new DisplayImageOptions.Builder()
+				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+				.showImageOnLoading(R.drawable.online_theme_loading)
+				.showImageOnFail(R.drawable.online_theme_loading_failed)
+				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
+				.build();
 	}
 
 	@Override
@@ -47,9 +52,9 @@ public class LockerThemeAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
-		View image;
-		ImageView isvisible;
-		TextView themeName, flagName;
+		ImageView image;
+		ImageView selectedView;
+		TextView themeName, tag;
 
 	}
 
@@ -62,32 +67,71 @@ public class LockerThemeAdapter extends BaseAdapter {
 			arg1 = layoutInflater.inflate(R.layout.list_item_lockerthem, null);
 			viewHolder.themeName = (TextView) arg1
 					.findViewById(R.id.lockerThemName);
-			viewHolder.image = (View) arg1.findViewById(R.id.themLT);
-			viewHolder.flagName = (TextView) arg1.findViewById(R.id.flagTV);
-			viewHolder.isvisible = (ImageView) arg1
+			viewHolder.image = (ImageView) arg1
+					.findViewById(R.id.theme_preview);
+			viewHolder.tag = (TextView) arg1.findViewById(R.id.flagTV);
+			viewHolder.selectedView = (ImageView) arg1
 					.findViewById(R.id.visibilityIV);
 			arg1.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) arg1.getTag();
 		}
-		AppLockerThemeBean theme = themes.get(arg0);
-		if (theme.getThemeName() == null && theme.getThemeName().equals("")) {
+		ThemeInfo theme = themes.get(arg0);
+
+		if (theme.themeName == null || theme.themeName.equals("")) {
 			viewHolder.themeName.setText("");
 		} else {
+			viewHolder.themeName.setText(theme.themeName);
+		}
+		if (theme.themeType == Constants.THEME_TYPE_ONLINE) {
+			if (theme.tag == Constants.THEME_TAG_NEW) {
+				viewHolder.tag.setBackgroundResource(R.drawable.theme_tag_new);
+				viewHolder.tag.setText(R.string.theme_tag_new);
+			} else if (theme.tag == Constants.THEME_TAG_HOT) {
+				viewHolder.tag.setBackgroundResource(R.drawable.theme_tag_hot);
+				viewHolder.tag.setText(R.string.theme_tag_hot);
+			} else {
+				viewHolder.tag.setVisibility(View.INVISIBLE);
+			}
 
-			viewHolder.themeName.setText(theme.getThemeName());
+			ImageLoader.getInstance().displayImage(theme.previewUrl,
+					viewHolder.image, commonOption);
+
+		} else {
+			viewHolder.tag.setVisibility(View.INVISIBLE);
+			compatibleOption = new DisplayImageOptions.Builder()
+					.showImageOnLoading(theme.themeImage)
+					.showImageOnFail(theme.themeImage).cacheInMemory(true)
+					.cacheOnDisk(true).considerExifParams(true).build();
+			if (Constants.THEME_PACKAGE_NIGHT.equals(theme.packageName)) {
+				ImageLoader.getInstance().displayImage(
+						Constants.THEME_MOONNIGHT_URL, viewHolder.image,
+						compatibleOption);
+			} else if (Constants.THEME_PACKAGE_CHRITMAS
+					.equals(theme.packageName)) {
+				ImageLoader.getInstance().displayImage(
+						Constants.THEME_CHRISTMAS_URL, viewHolder.image,
+						compatibleOption);
+			} else if (Constants.THEME_PACKAGE_FRUIT.equals(theme.packageName)) {
+				ImageLoader.getInstance().displayImage(
+						Constants.THEME_FRUIT_URL, viewHolder.image,
+						compatibleOption);
+			} else if (Constants.THEME_PACKAGE_SPATIAL
+					.equals(theme.packageName)) {
+				ImageLoader.getInstance().displayImage(
+						Constants.THEME_SPATIAL_URL, viewHolder.image,
+						compatibleOption);
+			} else {
+				viewHolder.image.setImageDrawable(theme.themeImage);
+			}
 		}
-		viewHolder.image.setBackgroundDrawable(theme.getThemeImage());
-		viewHolder.flagName.setText(theme.getFlagName());
-		if (theme.getIsVisibility().equals(Constants.GONE)) {
-			viewHolder.isvisible.setVisibility(View.GONE);
-		} else if (theme.getIsVisibility().equals(Constants.VISIBLE)) {
-			viewHolder.isvisible.setVisibility(View.VISIBLE);
+
+		if (theme.curUsedTheme) {
+			viewHolder.selectedView.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.selectedView.setVisibility(View.GONE);
 		}
-		/*
-		 * ImageLoader.getInstance().displayImage(imageUri, viewHolder.image,
-		 * options);
-		 */
+
 		return arg1;
 	}
 }

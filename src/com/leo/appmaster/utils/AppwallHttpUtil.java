@@ -30,7 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.leo.appmaster.constants.Constants;
+import com.leo.appmaster.Constants;
 
 
 public class AppwallHttpUtil {
@@ -126,7 +126,7 @@ public class AppwallHttpUtil {
 		public static void requestGp(Context context, String packageGp) {
 			Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("market://details?id=" + packageGp));
-			intent.setPackage(Constants.GPPACKAGE);
+			intent.setPackage(Constants.GP_PACKAGE);
 			context.startActivity(intent);
 		}
 		

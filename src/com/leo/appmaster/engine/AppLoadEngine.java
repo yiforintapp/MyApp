@@ -34,6 +34,7 @@ import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
@@ -298,7 +299,6 @@ public class AppLoadEngine extends BroadcastReceiver {
 					e.printStackTrace();
 				}
 
-				LeoLog.e("xxxx", packageName);
 				if (isThemeApk(packageName)) {
 					if (!themeList.contains(packageName)) {
 						themeList.add(packageName);
@@ -448,7 +448,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 						List<String> themeList = new ArrayList<String>(
 								pre.getHideThemeList());
 						if (!themeList.contains(packageName)) {
-							themeList.add(packageName);
+							themeList.add(0, packageName);
 						}
 						pre.setHideThemeList(themeList);
 						return;
@@ -488,9 +488,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 			@Override
 			public void run() {
 
-				if (packageName.equals(AppMasterApplication.sharedPackage)) {
+				if (packageName.equals(AppMasterApplication.usedThemePackage)) {
 					AppMasterApplication
-							.setSharedPreferencesValue("com.leo.appmaster");
+							.setSharedPreferencesValue(Constants.DEFAULT_THEME);
 				}
 
 				AppMasterPreference pre = AppMasterPreference

@@ -35,12 +35,12 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageScaleType;
 
 public class PictureViewPager extends BaseActivity implements OnClickListener {
     private CommonTitleBar mTtileBar;

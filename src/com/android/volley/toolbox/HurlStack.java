@@ -236,7 +236,9 @@ public class HurlStack implements HttpStack {
         byte[] body = request.getBody();
         if (body != null) {
             connection.setDoOutput(true);
-            connection.addRequestProperty(HEADER_CONTENT_TYPE, request.getBodyContentType());
+//            connection.addRequestProperty(HEADER_CONTENT_TYPE, request.getBodyContentType());
+            connection.setRequestProperty("Content-Type",  
+                    "application/x-www-form-urlencoded");
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             out.write(body);
             out.close();

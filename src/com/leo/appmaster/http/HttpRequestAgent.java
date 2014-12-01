@@ -1,11 +1,19 @@
 package com.leo.appmaster.http;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.json.JSONObject;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.leo.appmaster.constants.Constants;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
+import com.leo.appmaster.utils.AppwallHttpUtil;
+import com.leo.appmaster.utils.LeoLog;
+import com.android.volley.Request.Method;
 import com.android.volley.Response.Listener;
 import com.android.volley.Response.ErrorListener;
 
@@ -41,6 +49,43 @@ public class HttpRequestAgent {
 		JsonObjectRequest request = new JsonObjectRequest(
 				Constants.APP_LOCK_LIST_DEBUG, null, listener, eListener);
 		request.setShouldCache(true);
+		mRequestQueue.add(request);
+	}
+
+	public void loadOnlineTheme(List<String> loadedTheme,
+			Listener<JSONObject> listener, ErrorListener eListener) {
+		String url = Constants.ONLINE_THEME_URL;
+		String combined = "";
+		for (String string : loadedTheme) {
+			combined = combined + string + ";";
+		}
+		String body = null;
+		body = "language=" + AppwallHttpUtil.getLanguage() + "&market_id="
+				+ mContext.getString(R.string.channel_code) + "&app_ver="
+				+ mContext.getString(R.string.version_name) + "&loaded_theme="
+				+ combined + "&pgsize=" + "6";
+
+		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+				body, listener, eListener);
+		request.setShouldCache(false);
+		mRequestQueue.add(request);
+	}
+
+	public void checkNewTheme(Listener<JSONObject> listener,
+			ErrorListener eListener) {
+		String url = Constants.CHECK_NEW_THEME;
+		List<String> hideThemes = AppMasterPreference.getInstance(mContext)
+				.getHideThemeList();
+		String combined = "";
+		for (String string : hideThemes) {
+			combined = combined + string + ";";
+		}
+		String body = "update_flag="
+				+ AppMasterPreference.getInstance(mContext)
+						.getLocalSerialNumber() + "&loaded_theme=" + combined;
+		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+				body, listener, eListener);
+		request.setShouldCache(false);
 		mRequestQueue.add(request);
 	}
 }
