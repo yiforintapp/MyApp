@@ -113,21 +113,18 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                                         "com.google.android.apps.plus")) {
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
                                     Uri uri = Uri
-                                            .parse("market://page/112552044334117834440");
-                                    ComponentName cn = new ComponentName(
-                                            "com.google.android.apps.plus",
-                                            "com.google.android.apps.plus.activities.MainActivity");
-                                    intent.setComponent(cn);
+                                            .parse("https://plus.google.com/u/0/communities/112552044334117834440");
+                                    intent.setData(uri);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     try {
                                         startActivity(intent);
                                     } catch (Exception e) {
                                     }
-                                }else{
-                                Uri uri = Uri
-                                        .parse("https://plus.google.com/u/0/communities/112552044334117834440");
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                startActivity(intent);
+                                } else {
+                                    Uri uri = Uri
+                                            .parse("https://plus.google.com/u/0/communities/112552044334117834440");
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                    startActivity(intent);
                                 }
                             } else if (position == 1) {
                                 if (AppUtil.appInstalled(getApplicationContext(),
