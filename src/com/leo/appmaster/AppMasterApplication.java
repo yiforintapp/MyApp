@@ -188,7 +188,6 @@ public class AppMasterApplication extends Application implements
 	}
 
 	private void showNewThemeTip() {
-		LeoLog.e("showNewThemeTip", "showNewThemeTip");
 		Notification notif = new Notification();
 		Intent intent = new Intent(this, LockerTheme.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -217,7 +216,7 @@ public class AppMasterApplication extends Application implements
 
 		long lastCheckTime = pref.getLastCheckThemeTime();
 		if (lastCheckTime == 0
-				|| (curTime - pref.getLastCheckThemeTime()) > /* 12 * 60 * 60 */60 * 1000) {
+				|| (curTime - pref.getLastCheckThemeTime()) > /* 12 * 60 * 60 */5 * 60 * 1000) {
 
 			// if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber())
 			// {
@@ -233,8 +232,8 @@ public class AppMasterApplication extends Application implements
 							if (response != null) {
 								try {
 									JSONObject jsonObject = response.getJSONObject("data");
-//									LeoLog.e("checkNewTheme",
-//											response.toString());
+									// LeoLog.e("checkNewTheme",
+									// response.toString());
 									if (jsonObject != null) {
 										boolean hasNewTheme = jsonObject
 												.getBoolean("need_update");
@@ -261,11 +260,12 @@ public class AppMasterApplication extends Application implements
 									};
 									Timer timer = new Timer();
 									timer.schedule(recheckTask,
-											60/* * 60 * 60 */* 1000);
+											5 * 60/* * 60 * 60 */* 1000);
 
 								} catch (JSONException e) {
 									e.printStackTrace();
-//									LeoLog.e("checkNewTheme", e.getMessage());
+									// LeoLog.e("checkNewTheme",
+									// e.getMessage());
 								}
 							}
 						}
@@ -282,7 +282,8 @@ public class AppMasterApplication extends Application implements
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask, 2/* * 60 * 60 */* 1000);
+							timer.schedule(recheckTask,
+									5 * 60/* * 60 * 60 */* 1000);
 						}
 					});
 		}

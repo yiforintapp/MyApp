@@ -1,5 +1,6 @@
 package com.leo.appmaster.lockertheme;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,6 +56,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.ImageLoader;
 import com.leoers.leoanalytics.LeoStat;
 
 public class LockerTheme extends BaseActivity implements OnClickListener,
@@ -208,31 +212,104 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		mHideThemes = pref.getHideThemeList();
 		mLocalThemes.add(getDefaultTheme());
 		Context themeContext = null;
-		for (String thmemPackage : mHideThemes) {
+		for (String themePackage : mHideThemes) {
 			ThemeInfo bean = new ThemeInfo();
 			bean.themeType = Constants.THEME_TYPE_LOCAL;
 			try {
-				themeContext = createPackageContext(thmemPackage,
+				themeContext = createPackageContext(themePackage,
 						Context.CONTEXT_IGNORE_SECURITY);
 				String str = (String) themeContext.getResources().getText(
 						themeContext.getResources().getIdentifier("app_name",
 								"string", themeContext.getPackageName()));
 				bean.themeName = str;
+				bean.packageName = themePackage;
 				int themePreview = themeContext.getResources().getIdentifier(
 						"lockertheme", "drawable",
 						themeContext.getPackageName());
 				if (themePreview > 0) {
-					bean.themeImage = themeContext.getResources().getDrawable(
-							themePreview);
+					ImageLoader imageLoader = ImageLoader.getInstance();
+					File file = null;
+					boolean loaded = false;
+					if (Constants.THEME_PACKAGE_NIGHT.equals(bean.packageName)) {
+						loaded = false;
+						file = imageLoader.getDiskCache().get(
+								Constants.THEME_MOONNIGHT_URL);
+						if (file != null && file.exists()) {
+							BitmapDrawable bd = new BitmapDrawable(
+									this.getResources(), file.getAbsolutePath());
+							if (bd != null) {
+								bean.themeImage = bd;
+								loaded = true;
+							}
+						}
+						if (!loaded) {
+							bean.themeImage = themeContext.getResources()
+									.getDrawable(themePreview);
+						}
+					} else if (Constants.THEME_PACKAGE_CHRITMAS
+							.equals(bean.packageName)) {
+						loaded = false;
+						file = imageLoader.getDiskCache().get(
+								Constants.THEME_CHRISTMAS_URL);
+						if (file != null && file.exists()) {
+							BitmapDrawable bd = new BitmapDrawable(
+									this.getResources(), file.getAbsolutePath());
+							if (bd != null) {
+								bean.themeImage = bd;
+								loaded = true;
+							}
+						}
+						if (!loaded) {
+							bean.themeImage = themeContext.getResources()
+									.getDrawable(themePreview);
+						}
+					} else if (Constants.THEME_PACKAGE_FRUIT
+							.equals(bean.packageName)) {
+						loaded = false;
+						file = imageLoader.getDiskCache().get(
+								Constants.THEME_FRUIT_URL);
+						if (file != null && file.exists()) {
+							BitmapDrawable bd = new BitmapDrawable(
+									this.getResources(), file.getAbsolutePath());
+							if (bd != null) {
+								bean.themeImage = bd;
+								loaded = true;
+							}
+						}
+						if (!loaded) {
+							bean.themeImage = themeContext.getResources()
+									.getDrawable(themePreview);
+						}
+					} else if (Constants.THEME_PACKAGE_SPATIAL
+							.equals(bean.packageName)) {
+						loaded = false;
+						file = imageLoader.getDiskCache().get(
+								Constants.THEME_SPATIAL_URL);
+						if (file != null && file.exists()) {
+							BitmapDrawable bd = new BitmapDrawable(
+									this.getResources(), file.getAbsolutePath());
+							if (bd != null) {
+								bean.themeImage = bd;
+								loaded = true;
+							}
+						}
+						if (!loaded) {
+							bean.themeImage = themeContext.getResources()
+									.getDrawable(themePreview);
+						}
+					} else {
+						bean.themeImage = themeContext.getResources()
+								.getDrawable(themePreview);
+					}
+
 				} else {
 					bean.themeImage = this.getResources().getDrawable(
 							R.drawable.app_list_bg);
 				}
 				bean.label = (String) this.getResources().getText(
 						R.string.localtheme);
-				bean.packageName = thmemPackage;
 
-				if (AppMasterApplication.usedThemePackage.equals(thmemPackage)) {
+				if (AppMasterApplication.usedThemePackage.equals(themePackage)) {
 					bean.curUsedTheme = true;
 				} else {
 					bean.curUsedTheme = false;
