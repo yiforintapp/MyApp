@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -115,6 +114,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				break;
 			case MSG_LOAD_INIT_SUCCESSED:
 				if (lockerTheme.get() != null) {
+					AppMasterPreference pref = AppMasterPreference
+							.getInstance(lockerTheme.get());
+					pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
 					lockerTheme.get().onLoadInitThemeFinish(true, msg.obj);
 				}
 				break;
@@ -128,6 +130,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			case MSG_LOAD_PAGE_DATA_SUCCESS:
 				if (lockerTheme.get() != null) {
 					lockerTheme.get().mOnlineThemeList.onRefreshComplete();
+					AppMasterPreference pref = AppMasterPreference
+							.getInstance(lockerTheme.get());
+					pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
 					List<ThemeInfo> loadList = (List<ThemeInfo>) msg.obj;
 					lockerTheme.get().onLoadMoreThemeFinish(true, loadList);
 				}
@@ -330,7 +335,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 						LeoLog.d("response", response.toString());
 						List<ThemeInfo> list = ThemeJsonObjectParser
 								.parserJsonObject(response);
-
 						Message msg = mHandler.obtainMessage(
 								MSG_LOAD_INIT_SUCCESSED, list);
 						mHandler.sendMessage(msg);
