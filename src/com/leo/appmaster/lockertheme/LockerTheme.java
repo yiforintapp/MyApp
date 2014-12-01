@@ -375,7 +375,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			mOnlineThemeAdapter.notifyDataSetChanged();
 			if (mOnlineThemes.isEmpty()) {
 				mLayoutEmptyTip.setVisibility(View.VISIBLE);
-				mOnlineThemeList.setVisibility(View.INVISIBLE);
+				mOnlineThemeList.setVisibility(View.VISIBLE);
 			} else {
 				mOnlineThemeList.setVisibility(View.VISIBLE);
 				mLayoutEmptyTip.setVisibility(View.INVISIBLE);
@@ -441,6 +441,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			}
 		}
 		if (newTheme) {
+			mLayoutEmptyTip.setVisibility(View.INVISIBLE);
 			mOnlineThemeAdapter.notifyDataSetChanged();
 		} else {
 			Toast.makeText(this, R.string.no_more_theme, 0).show();
