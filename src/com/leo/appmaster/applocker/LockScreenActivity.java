@@ -80,12 +80,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		number = AppMasterApplication.number;
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		spiner = (ImageView) findViewById(R.id.image1);
-		if (number.equals("0")) {
-			spiner.setImageDrawable(this.getResources().getDrawable(
-					R.drawable.themetip_spiner_press));
-		} else {
-			spiner.setImageDrawable(this.getResources().getDrawable(
-					R.drawable.theme_spiner_press));
+		// AM-463, add protect
+		if(spiner != null) {
+		      if ("0".equals(number)) {
+		            spiner.setImageDrawable(this.getResources().getDrawable(
+		                    R.drawable.themetip_spiner_press));
+		        } else {
+		            spiner.setImageDrawable(this.getResources().getDrawable(
+		                    R.drawable.theme_spiner_press));
+		        }
 		}
 		handleIntent();
 		initUI();
