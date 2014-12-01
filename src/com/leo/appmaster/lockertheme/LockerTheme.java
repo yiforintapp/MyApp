@@ -785,8 +785,15 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			lastSelectedItem = (ThemeInfo) arg0.getItemAtPosition(arg2);
-			SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice",
-					lastSelectedItem.packageName);
+			/* SDK mark user click theme - begin */
+			if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
+			    SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice_online",
+	                    lastSelectedItem.packageName);
+			}else if(lastSelectedItem.themeType == Constants.THEME_TYPE_LOCAL){
+			    SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice_local",
+	                    lastSelectedItem.packageName);
+			}
+			/* SDK mark user click theme - end */
 			if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
 				if (AppUtil
 						.appInstalled(LockerTheme.this, Constants.GP_PACKAGE)) {
