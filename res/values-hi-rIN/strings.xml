@@ -225,9 +225,18 @@
     <string name="locker_uninstall">अनिनस्टॉल</string>
     <string name="locker_cancel">रद्द करें</string>
     <string name="christmas_theme">क्रिसमस</string>
-    <string name="no_theme">暂无在线主题</string>
-    <string name="no_more_onlinetheme">已下载所有主题，我们会尽快增加新主题</string>
-    <string name="find_new_theme">发现新主题</string>
-    <string name="find_new_theme_content">您的应用锁有新主题，点击查看</string>
+    <string name="no_more_onlinetheme">सभी थीम्स का डाउनलोड हो गया</string>
+    <string name="find_new_theme">नए थीम्स</string>
+    <string name="find_new_theme_content">नए थीम्स देखने क्लिक करें</string>
+    <string name="no_more_theme">कोई और अधिक विषयों</string>
+    <string name="pull_to_refresh_pull_label">पुल-ताज़ा करे…</string>
+    <string name="pull_to_refresh_release_label">ताज़ा करे रिलीज…</string>
+    <string name="pull_to_refresh_refreshing_label">लोडिंग…</string>
+    <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
+    <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
+    <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
+    <string name="theme_tag_new">न्यू</string>
+    <string name="theme_tag_hot">हॉट</string>
 
 </resources>

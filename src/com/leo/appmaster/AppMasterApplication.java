@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +21,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.widget.RemoteViews;
+import android.os.Handler;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -30,12 +32,12 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.ImageLoaderConfiguration;
+import com.leo.imageloader.cache.Md5FileNameGenerator;
+import com.leo.imageloader.core.QueueProcessingType;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.RequestFinishedReporter;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 public class AppMasterApplication extends Application implements
 		RequestFinishedReporter {
@@ -43,11 +45,12 @@ public class AppMasterApplication extends Application implements
 	private AppLoadEngine mAppsEngine;
 
 	private static AppMasterApplication mInstance;
-
 	private static List<Activity> mActivityList;
 
+	private Handler mHandler;
+
 	public static SharedPreferences sharedPreferences;
-	public static String sharedPackage;
+	public static String usedThemePackage;
 	public static String number;
 	static {
 		System.loadLibrary("leo_service");
@@ -60,13 +63,14 @@ public class AppMasterApplication extends Application implements
 		super.onCreate();
 		mActivityList = new ArrayList<Activity>();
 		mInstance = this;
+		mHandler = new Handler();
 		mAppsEngine = AppLoadEngine.getInstance(this);
 		mAppsEngine.preloadAllBaseInfo();
 		initImageLoader(getApplicationContext());
 		sharedPreferences = getSharedPreferences("lockerTheme",
 				Context.MODE_WORLD_WRITEABLE);
-		sharedPackage = sharedPreferences.getString("packageName",
-				Constants.PREFERENCESPACKAGE);
+		usedThemePackage = sharedPreferences.getString("packageName",
+				Constants.DEFAULT_THEME);
 		number = sharedPreferences.getString("firstNumber", "0");
 		// Register intent receivers
 
@@ -92,6 +96,12 @@ public class AppMasterApplication extends Application implements
 		LeoStat.registerRequestFailedReporter(this);
 
 		startInitTask(this);
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				checkNewTheme();
+			}
+		}, 10000);
 		restartApplocker(PhoneInfo.getAndroidVersion());
 	}
 
@@ -103,7 +113,6 @@ public class AppMasterApplication extends Application implements
 				judgeLockAlert();
 				judgeStatictiUnlockCount();
 				initImageLoader();
-				checkNewTheme();
 			}
 		}).start();
 	}
@@ -179,22 +188,22 @@ public class AppMasterApplication extends Application implements
 	}
 
 	private void showNewThemeTip() {
+		LeoLog.e("showNewThemeTip", "showNewThemeTip");
 		Notification notif = new Notification();
-
 		Intent intent = new Intent(this, LockerTheme.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		intent.putExtra("from", "new_theme_tip");
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				intent, PendingIntent.FLAG_CANCEL_CURRENT);
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		notif.icon = R.drawable.ic_launcher;
-		notif.tickerText = getString(R.string.find_new_theme);
+		notif.tickerText = this.getString(R.string.find_new_theme);
 		notif.flags = Notification.FLAG_ONGOING_EVENT
 				| Notification.FLAG_AUTO_CANCEL;
 
-		notif.setLatestEventInfo(this, getString(R.string.find_new_theme),
-				getString(R.string.find_new_theme_content), contentIntent);
+		notif.setLatestEventInfo(this, this.getString(R.string.find_new_theme),
+				this.getString(R.string.find_new_theme_content), contentIntent);
 
 		notif.when = System.currentTimeMillis();
 		NotificationManager nm = (NotificationManager) this
@@ -202,18 +211,19 @@ public class AppMasterApplication extends Application implements
 		nm.notify(0, notif);
 	}
 
-	private void checkNewTheme() {
+	public void checkNewTheme() {
 		final AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		long curTime = System.currentTimeMillis();
 
-		long lastCheckTime = pref.getLastCheckTheme();
+		long lastCheckTime = pref.getLastCheckThemeTime();
 		if (lastCheckTime == 0
-				|| (curTime - pref.getLastCheckTheme()) > 12 * 60 * 60) {
+				|| (curTime - pref.getLastCheckThemeTime()) > /* 12 * 60 * 60 */60 * 1000) {
 
-			if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber()) {
-				showNewThemeTip();
-				return;
-			}
+			// if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber())
+			// {
+			// showNewThemeTip();
+			// return;
+			// }
 
 			HttpRequestAgent.getInstance(this).checkNewTheme(
 					new Listener<JSONObject>() {
@@ -222,19 +232,40 @@ public class AppMasterApplication extends Application implements
 						public void onResponse(JSONObject response) {
 							if (response != null) {
 								try {
-									boolean hasNewTheme = response.getBoolean("new_theme");
-									String serialNumber = response
-											.getString("serial_number");
-									pref.setOnlineSerialNumber(serialNumber);
+									JSONObject jsonObject = response.getJSONObject("data");
+//									LeoLog.e("checkNewTheme",
+//											response.toString());
+									if (jsonObject != null) {
+										boolean hasNewTheme = jsonObject
+												.getBoolean("need_update");
+										String serialNumber = jsonObject
+												.getString("update_flag");
 
-									if (hasNewTheme) {
-										showNewThemeTip();
+										if (!hasNewTheme) {
+											pref.setLocalSerialNumber(serialNumber);
+										}
+										pref.setOnlineSerialNumber(serialNumber);
+
+										if (hasNewTheme) {
+											showNewThemeTip();
+										}
+										pref.setLastCheckTheme(System
+												.currentTimeMillis());
 									}
-									pref.setLastCheckTheme(System
-											.currentTimeMillis());
+
+									TimerTask recheckTask = new TimerTask() {
+										@Override
+										public void run() {
+											checkNewTheme();
+										}
+									};
+									Timer timer = new Timer();
+									timer.schedule(recheckTask,
+											60/* * 60 * 60 */* 1000);
+
 								} catch (JSONException e) {
 									e.printStackTrace();
-									LeoLog.e("checkNewTheme", e.getMessage());
+//									LeoLog.e("checkNewTheme", e.getMessage());
 								}
 							}
 						}
@@ -244,7 +275,14 @@ public class AppMasterApplication extends Application implements
 						@Override
 						public void onErrorResponse(VolleyError error) {
 							LeoLog.e("checkNewTheme", error.getMessage());
-							showNewThemeTip();
+							TimerTask recheckTask = new TimerTask() {
+								@Override
+								public void run() {
+									checkNewTheme();
+								}
+							};
+							Timer timer = new Timer();
+							timer.schedule(recheckTask, 2/* * 60 * 60 */* 1000);
 						}
 					});
 		}
@@ -261,14 +299,14 @@ public class AppMasterApplication extends Application implements
 		return mInstance;
 	}
 
-	// 初始化ImageLoader
+	// init ImageLoader
 	public static void initImageLoader(Context context) {
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				context).threadPriority(Thread.NORM_PRIORITY - 2)
-				.denyCacheImageMultipleSizesInMemory()
+				context).threadPriority(Thread.NORM_PRIORITY)
+				.memoryCacheSizePercentage(10)
 				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
 				.diskCacheSize(50 * 1024 * 1024)
-				.tasksProcessingOrder(QueueProcessingType.LIFO)
+				.tasksProcessingOrder(QueueProcessingType.FIFO)
 				.writeDebugLogs().build();
 		ImageLoader.getInstance().init(config);
 	}
@@ -297,7 +335,7 @@ public class AppMasterApplication extends Application implements
 		Editor editor = sharedPreferences.edit();
 		editor.putString("packageName", lockerTheme);
 		editor.commit();
-		sharedPackage = lockerTheme;
+		usedThemePackage = lockerTheme;
 	}
 
 	public static void setSharedPreferencesNumber(String lockerThemeNumber) {
@@ -308,6 +346,6 @@ public class AppMasterApplication extends Application implements
 	}
 
 	public static String getSelectedTheme() {
-		return sharedPackage;
+		return usedThemePackage;
 	}
 }

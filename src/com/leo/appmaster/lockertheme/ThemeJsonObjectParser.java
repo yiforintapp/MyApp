@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.model.ThemeInfo;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -26,10 +27,11 @@ public class ThemeJsonObjectParser {
 						bean = new ThemeInfo();
 						bean.packageName = temp.getString("package_name");
 						bean.downloadUrl = temp.getString("download_url");
-						bean.themeName = temp.getString("theme_name");
-						bean.previewUrl = temp.getString("preview_url");
+						bean.themeName = temp.getString("theme_title");
+						bean.previewUrl = temp.getString("image_url");
 						bean.size = temp.getInt("size");
 						bean.tag = temp.getInt("tag");
+						bean.themeType = Constants.THEME_TYPE_ONLINE;
 						list.add(bean);
 					} catch (JSONException e) {
 						LeoLog.e("parserJsonObject", e.getMessage());

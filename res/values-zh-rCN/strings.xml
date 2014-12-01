@@ -126,7 +126,6 @@
         <item>300</item>
     </string-array>
 
-    <string name="picture_hide">图片隐藏</string>
     <string name="app_details">应用详情</string>
     <string name="app_memory">"系统占用&#058;<xliff:g>%1$s</xliff:g>"</string>
     <string name="app_cache_size">"占用缓存&#058;<xliff:g>%1$s</xliff:g>"</string>
@@ -223,18 +222,18 @@
     <string name="locker_uninstall">卸载</string>
     <string name="locker_cancel">取消</string>
     <string name="christmas_theme">圣诞节</string>
-    <string name="xlistview_header_hint_normal">下拉刷新</string>
-    <string name="xlistview_header_hint_ready">松开刷新数据</string>
-    <string name="xlistview_header_hint_loading">正在加载...</string>
-    <string name="xlistview_header_last_time">上次更新时间：</string>
-    <string name="xlistview_footer_hint_normal">查看更多</string>
-    <string name="xlistview_footer_hint_ready">松开载入更多</string>
-    
-    <string name="no_theme">暂无在线主题</string>
+    <string name="pull_to_refresh_pull_label">下拉刷新…</string>
+    <string name="pull_to_refresh_release_label">放开刷新…</string>
+    <string name="pull_to_refresh_refreshing_label">正在载入…</string>
+    <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
+    <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
+    <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
+    <string name="no_more_theme">没有更多主题</string>
     <string name="no_more_onlinetheme">已下载所有主题，我们会尽快增加新主题</string>
-    
-    
     <string name="find_new_theme">发现新主题</string>
     <string name="find_new_theme_content">您的应用锁有新主题，点击查看</string>
+    <string name="theme_tag_new">新</string>
+    <string name="theme_tag_hot">热</string>
 
 </resources>

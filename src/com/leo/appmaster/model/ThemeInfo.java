@@ -14,7 +14,7 @@ public class ThemeInfo {
 	 */
 	public String packageName;
 	/**
-	 * local , online,
+	 * local , online, defalut,
 	 */
 	public String label;
 	/**
@@ -44,5 +44,13 @@ public class ThemeInfo {
 	/**
 	 * hot , new, and so on...
 	 */
-	public int tag;
+	public int tag = -1;
+
+	@Override
+	public String toString() {
+		return "ThemeInfo: themeName = " + themeName + "   packageName = "
+				+ packageName + "    previewUrl = " + previewUrl
+				+ "    downloadUrl = " + downloadUrl + "   tag = " + tag;
+	}
+
 }

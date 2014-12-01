@@ -70,6 +70,7 @@ public class LockScreenActivity extends FragmentActivity implements
 	private String number;
 
 	private boolean toTheme;
+	private boolean mNewTheme;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,11 @@ public class LockScreenActivity extends FragmentActivity implements
 
 	@Override
 	protected void onResume() {
-		if (number.equals("0")) {
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		mNewTheme = !pref.getLocalSerialNumber().equals(
+				pref.getOnlineSerialNumber());
+
+		if (mNewTheme) {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.themetip_spiner_press));
 		} else {
@@ -134,45 +139,6 @@ public class LockScreenActivity extends FragmentActivity implements
 		mFragment.setPackage(mToPackage);
 		mFragment.setActivity(mToActivity);
 	}
-
-	// private void createChoiceDialog() {
-	// final String[] valueString = getResources().getStringArray(
-	// R.array.det_lock_time_items);
-	//
-	// AlertDialog scaleIconListDlg = new AlertDialog.Builder(this)
-	// .setTitle(R.string.change_lock_time)
-	// .setSingleChoiceItems(R.array.lock_time_entrys, -1,
-	// new DialogInterface.OnClickListener() {
-	// public void onClick(DialogInterface dialog,
-	// int whichButton) {
-	// AppMasterPreference.getInstance(
-	// LockScreenActivity.this)
-	// .setRelockTimeout(
-	// valueString[whichButton]);
-	// SDKWrapper.addEvent(LockScreenActivity.this,
-	// LeoStat.P1, "lock_setting",
-	// valueString[whichButton]);
-	// dialog.dismiss();
-	// }
-	// })
-	// .setNegativeButton(R.string.cancel,
-	// new DialogInterface.OnClickListener() {
-	// public void onClick(DialogInterface dialog,
-	// int whichButton) {
-	// /* User clicked No so do some stuff */
-	// }
-	// }).create();
-	// TextView title = new TextView(this);
-	// title.setText(getString(R.string.change_lock_time));
-	// title.setTextColor(Color.WHITE);
-	// title.setTextSize(20);
-	// title.setPadding(DipPixelUtil.dip2px(this, 20),
-	// DipPixelUtil.dip2px(this, 10), 0, DipPixelUtil.dip2px(this, 10));
-	// title.setBackgroundColor(getResources().getColor(
-	// R.color.dialog_title_area_bg));
-	// scaleIconListDlg.setCustomTitle(title);
-	// scaleIconListDlg.show();
-	// }
 
 	private void setAppInfoBackground(Drawable drawable) {
 		int h = drawable.getIntrinsicHeight() * 9 / 10;
@@ -241,12 +207,12 @@ public class LockScreenActivity extends FragmentActivity implements
 			public void onClick(View arg0) {
 				Intent intent = new Intent(LockScreenActivity.this,
 						LockerTheme.class);
+
 				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
 						| Intent.FLAG_ACTIVITY_NEW_TASK);
-				SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1, "theme_enter", "unlock");
-
+				SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,
+						"theme_enter", "unlock");
 				toTheme = true;
-
 				startActivityForResult(intent, 0);
 				AppMasterApplication.setSharedPreferencesNumber("1");
 				number = "1";
