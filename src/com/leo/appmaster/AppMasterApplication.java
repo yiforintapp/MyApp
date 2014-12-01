@@ -233,8 +233,8 @@ public class AppMasterApplication extends Application implements
 							if (response != null) {
 								try {
 									JSONObject jsonObject = response.getJSONObject("data");
-									LeoLog.e("checkNewTheme",
-											response.toString());
+//									LeoLog.e("checkNewTheme",
+//											response.toString());
 									if (jsonObject != null) {
 										boolean hasNewTheme = jsonObject
 												.getBoolean("need_update");
@@ -253,8 +253,6 @@ public class AppMasterApplication extends Application implements
 												.currentTimeMillis());
 									}
 
-									LeoLog.e("checkNewTheme",
-											"next checkNewTheme");
 									TimerTask recheckTask = new TimerTask() {
 										@Override
 										public void run() {
@@ -267,7 +265,7 @@ public class AppMasterApplication extends Application implements
 
 								} catch (JSONException e) {
 									e.printStackTrace();
-									LeoLog.e("checkNewTheme", e.getMessage());
+//									LeoLog.e("checkNewTheme", e.getMessage());
 								}
 							}
 						}

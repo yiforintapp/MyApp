@@ -83,7 +83,6 @@ public class HttpRequestAgent {
 		String body = "update_flag="
 				+ AppMasterPreference.getInstance(mContext)
 						.getLocalSerialNumber() + "&loaded_theme=" + combined;
-		LeoLog.e("xxxx", "body = " + body);
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
 				body, listener, eListener);
 		request.setShouldCache(false);

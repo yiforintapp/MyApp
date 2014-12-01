@@ -469,7 +469,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 
 	@Override
 	public void onBackPressed() {
-		LeoLog.e("xxxx", "mFromTheme = " + mFromTheme);
 		if ((mFromTheme != null && !mFromTheme.equals(""))
 				|| (mFrom != null && mFrom.equals("new_theme_tip"))) {
 			Intent intent = new Intent(this, HomeActivity.class);
