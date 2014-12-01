@@ -687,6 +687,10 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 							if (remove != null) {
 								mOnlineThemes.remove(remove);
 								mOnlineThemeAdapter.notifyDataSetChanged();
+
+								if (mOnlineThemes.isEmpty()) {
+									mLayoutEmptyTip.setVisibility(View.VISIBLE);
+								}
 							}
 						}
 					}, 1000);
