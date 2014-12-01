@@ -115,6 +115,10 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                                     Uri uri = Uri
                                             .parse("https://plus.google.com/u/0/communities/112552044334117834440");
                                     intent.setData(uri);
+                                    ComponentName cn = new ComponentName(
+                                            "com.google.android.apps.plus",
+                                            "com.google.android.libraries.social.gateway.GatewayActivity");
+                                    intent.setComponent(cn);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     try {
                                         startActivity(intent);
