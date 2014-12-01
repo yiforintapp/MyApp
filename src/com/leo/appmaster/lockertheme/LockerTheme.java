@@ -179,10 +179,16 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			mViewPager.setCurrentItem(1);
 		}
 
+		// form statusbar
 		if (mFrom != null && mFrom.equals("new_theme_tip")) {
 			/* SDK event mark */
 			SDKWrapper.addEvent(this, LeoStat.P1, "theme_enter", "statusbar");
 			mViewPager.setCurrentItem(1);
+		}
+
+		// but if from theme app, select page 0
+		if (mFromTheme != null && !mFromTheme.equals("")) {
+			mViewPager.setCurrentItem(0);
 		}
 
 		localThemeList.getRefreshableView().setSelection(number);
