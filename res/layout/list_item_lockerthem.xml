@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:src="@drawable/default_theme" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="42dp"
+            android:layout_marginLeft="45dp"
             android:layout_marginTop="145dp"
             android:textColor="@color/white"
             android:textSize="14sp" />

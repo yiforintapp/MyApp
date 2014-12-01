@@ -5,14 +5,11 @@ import java.util.List;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.ThemeInfo;
-import com.leo.appmaster.model.AppWallBean;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.RoundedBitmapDisplayer;
+import com.leo.imageloader.core.ImageScaleType;
 
 import android.content.Context;
-import android.opengl.Visibility;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +27,7 @@ public class LockerThemeAdapter extends BaseAdapter {
 		this.themes = themes;
 		this.layoutInflater = LayoutInflater.from(context);
 		commonOption = new DisplayImageOptions.Builder()
+				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
 				.showImageOnLoading(R.drawable.online_theme_loading)
 				.showImageOnFail(R.drawable.online_theme_loading_failed)
 				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
