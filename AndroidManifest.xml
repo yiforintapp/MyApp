@@ -229,6 +229,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_ON" />
                 <action android:name="com.leo.appmaster.restart" />
                 <action android:name="com.leo.appmaster.alarmlock" />
             </intent-filter>
