@@ -91,6 +91,7 @@ public class LockOptionActivity extends PreferenceActivity implements
             getPreferenceScreen().removePreference(mLockerTheme);
             getPreferenceScreen().removePreference(mAutoLock);
             getPreferenceScreen().removePreference(mLockTime);
+            getPreferenceScreen().removePreference(mLockerClean);
             getPreferenceScreen().removePreference(
                     findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP));
         }
