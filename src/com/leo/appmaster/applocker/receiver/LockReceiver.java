@@ -30,7 +30,6 @@ public class LockReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		String action = intent.getAction();
 		if (ALARM_LOCK_ACTION.equals(action)) {
-
 			AppMasterPreference pref = AppMasterPreference.getInstance(context);
 			if (pref.getRecommendLockPercent() >= 0.5f) {
 				intent = new Intent();
