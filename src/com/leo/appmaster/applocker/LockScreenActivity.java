@@ -99,6 +99,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 	@Override
 	protected void onResume() {
+		String locSerial = AppMasterPreference.getInstance(this)
+				.getLocalSerialNumber();
+		String onlineSerial = AppMasterPreference.getInstance(this)
+				.getOnlineSerialNumber();
+
+		if (!locSerial.equals(onlineSerial)) {
+			mNewTheme = true;
+		} else {
+			mNewTheme = false;
+		}
+
 		if (mNewTheme) {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.themetip_spiner_press));
@@ -181,8 +192,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 	@Override
 	protected void onDestroy() {
-		LeoLog.d("LockScreenActivity", "onDestroy");
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		if (mAppBaseInfoLayoutbg != null) {
 			mAppBaseInfoLayoutbg.recycle();
@@ -192,8 +201,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 	@Override
 	protected void onStop() {
-		LeoLog.d("LockScreenActivity", "onStop" + "      mFromType = "
-				+ mFromType);
 		super.onStop();
 		if (mFromType == LockFragment.FROM_OTHER) {
 			if (!AppMasterPreference.getInstance(this).isAutoLock() || toTheme) {
@@ -210,7 +217,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	}
 
 	private void initUI() {
-
 		/**
 		 * lockerTheme Guide
 		 */
@@ -224,6 +230,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			mTtileBar.setOptionListener(this);
 		}
 		spiner = (ImageView) findViewById(R.id.image1);
+		LeoLog.e("LockScreenActivity", "spiner = " + spiner);
 		// AM-463, add protect
 		if (spiner != null) {
 			if ("0".equals(number)) {
@@ -237,23 +244,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 		if (ImageHideMainActivity.class.getName().equals(mToActivity)) { // AM-423
 			mTtileBar.setSpinerVibility(View.INVISIBLE);
+			LeoLog.e("LockScreenActivity", "ImageHideMainActivity");
 		} else {
 			mTtileBar.setSpinerVibility(View.VISIBLE);
-			spiner.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View arg0) {
-					Intent intent = new Intent(LockScreenActivity.this,
-							LockerTheme.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
-							| Intent.FLAG_ACTIVITY_NEW_TASK);
-					SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,
-							"theme_enter", "unlock");
-					toTheme = true;
-					startActivityForResult(intent, 0);
-					AppMasterApplication.setSharedPreferencesNumber("1");
-					number = "1";
-				}
-			});
+			LeoLog.e("LockScreenActivity", "spiner.setOnClickListener");
+			spiner.setOnClickListener(this);
 		}
 
 		if (mFromType == LockFragment.FROM_SELF_HOME
@@ -414,6 +409,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			break;
 		case R.id.layout_title_back:
 			onBack();
+			break;
+		case R.id.image1:
+			Intent intent = new Intent(LockScreenActivity.this,
+					LockerTheme.class);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
+//					| Intent.FLAG_ACTIVITY_NEW_TASK);
+			SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,
+					"theme_enter", "unlock");
+			toTheme = true;
+			startActivityForResult(intent, 0);
+			AppMasterApplication.setSharedPreferencesNumber("1");
+			number = "1";
 			break;
 		default:
 			break;
