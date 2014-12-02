@@ -53,10 +53,10 @@ public class Constants {
 	/**
 	 * for compat first version theme preview url
 	 */
-	public static final String THEME_MOONNIGHT_URL = "http://testd.leostat.com/moonnight/night.jpg";
-	public static final String THEME_CHRISTMAS_URL = "http://testd.leostat.com/shendna/christmas.jpg";
-	public static final String THEME_FRUIT_URL = "http://testd.leostat.com/fruit/fruit.jpg";
-	public static final String THEME_SPATIAL_URL = "http://testd.leostat.com/spatial/spatial.jpg";
+	public static final String THEME_MOONNIGHT_URL = "http://files.leostat.com/theme/img/night.jpg";
+	public static final String THEME_CHRISTMAS_URL = "http://files.leostat.com/theme/img/christmas.jpg";
+	public static final String THEME_FRUIT_URL = "http://files.leostat.com/theme/img/fruit.jpg";
+	public static final String THEME_SPATIAL_URL = "http://files.leostat.com/theme/img/spatial.jpg";
 
 	/**
 	 * compat theme package
