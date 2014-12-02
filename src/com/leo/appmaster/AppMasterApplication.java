@@ -189,22 +189,24 @@ public class AppMasterApplication extends Application implements
 	}
 
 	private void showNewThemeTip() {
+		// send new theme broadcast
+		Intent intent = new Intent(Constants.ACTION_NEW_THEME);
+		sendBroadcast(intent);
+
+		// show new theme status tip
 		Notification notif = new Notification();
-		Intent intent = new Intent(this, LockerTheme.class);
+		intent = new Intent(this, LockerTheme.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		intent.putExtra("from", "new_theme_tip");
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
 		notif.icon = R.drawable.ic_launcher;
 		notif.tickerText = this.getString(R.string.find_new_theme);
 		notif.flags = Notification.FLAG_ONGOING_EVENT
 				| Notification.FLAG_AUTO_CANCEL;
-
 		notif.setLatestEventInfo(this, this.getString(R.string.find_new_theme),
 				this.getString(R.string.find_new_theme_content), contentIntent);
-
 		notif.when = System.currentTimeMillis();
 		NotificationManager nm = (NotificationManager) this
 				.getSystemService(Context.NOTIFICATION_SERVICE);

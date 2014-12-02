@@ -7,16 +7,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.model.ThemeInfo;
 import com.leo.appmaster.utils.LeoLog;
 
 public class ThemeJsonObjectParser {
 
-	public static List<ThemeInfo> parserJsonObject(JSONObject jsonObject) {
+	public static List<ThemeInfo> parserJsonObject(Context ctx,
+			JSONObject jsonObject) {
 		ArrayList<ThemeInfo> list = null;
 		if (jsonObject != null) {
 			try {
+				
+				String serialNumber = jsonObject.getString("update_flag");
+				AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
+				pref.setLocalSerialNumber(serialNumber);
+				pref.setOnlineSerialNumber(serialNumber);
+				LeoLog.e("parserJsonObject", "serialNumber = " + serialNumber);
+				
 				JSONArray array = jsonObject.getJSONArray("data");
 				list = new ArrayList<ThemeInfo>();
 				JSONObject temp = null;
