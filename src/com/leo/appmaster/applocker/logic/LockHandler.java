@@ -105,14 +105,12 @@ public class LockHandler extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		LeoLog.e("LockReceiver", "action = " + intent.getAction());
 		if (ACTION_APP_UNLOCKED.equals(intent.getAction())) {
 			String pkg = intent.getStringExtra(EXTRA_LOCKED_APP_PKG);
 			mLockPolicy.onUnlocked(pkg);
 		} else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
 			if (mLockPolicy instanceof TimeoutRelockPolicy) {
 				if (AppMasterPreference.getInstance(context).isAutoLock()) {
-					LeoLog.e("LockReceiver", "isAutoLock");
 					((TimeoutRelockPolicy) mLockPolicy).clearLockApp();
 				}
 			}
@@ -130,6 +128,7 @@ public class LockHandler extends BroadcastReceiver {
 
 	private void judgeShowLockPage() {
 		AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+
 		if (!pref.isAutoLock()) {
 			return;
 		}

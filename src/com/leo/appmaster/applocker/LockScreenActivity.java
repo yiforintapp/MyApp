@@ -245,13 +245,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
 			mTtileBar.setOptionListener(this);
 		}
-		mTtileBar.setSpinerVibility(View.VISIBLE);
-		mTtileBar.setSpinerListener(this);
 
 		if (ImageHideMainActivity.class.getName().equals(mToActivity)) { // AM-423
-			mTtileBar.setSpinerVibility(View.GONE);
+			mTtileBar.setSpinerVibility(View.INVISIBLE);
 		} else {
-			spiner.setOnClickListener(new OnClickListener() {
+			mTtileBar.setSpinerVibility(View.VISIBLE);
+			mTtileBar.setSpinerListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
 					Intent intent = new Intent(LockScreenActivity.this,

@@ -348,7 +348,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	}
 
     public boolean isAutoLock() {
-        return mPref.getBoolean(PREF_AUTO_LOCK, false);
+        return mPref.getBoolean(PREF_AUTO_LOCK, true);
     }
 
     public boolean isLockerClean() {
