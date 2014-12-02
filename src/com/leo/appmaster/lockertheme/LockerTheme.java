@@ -337,7 +337,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					public void onResponse(JSONObject response) {
 						LeoLog.d("response", response.toString());
 						List<ThemeInfo> list = ThemeJsonObjectParser
-								.parserJsonObject(response);
+								.parserJsonObject(LockerTheme.this, response);
 						Message msg = mHandler.obtainMessage(
 								MSG_LOAD_INIT_SUCCESSED, list);
 						mHandler.sendMessage(msg);
@@ -485,7 +485,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					@Override
 					public void onResponse(JSONObject response) {
 						List<ThemeInfo> list = ThemeJsonObjectParser
-								.parserJsonObject(response);
+								.parserJsonObject(LockerTheme.this, response);
 						Message msg = mHandler.obtainMessage(
 								MSG_LOAD_PAGE_DATA_SUCCESS, list);
 						mHandler.sendMessage(msg);

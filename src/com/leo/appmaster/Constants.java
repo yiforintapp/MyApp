@@ -28,6 +28,7 @@ public class Constants {
 	/*
 	 * LockerTheme
 	 */
+	public static final String ACTION_NEW_THEME = "com.leo.appmaster.newtheme";
 	public static final String DEFAULT_THEME = "com.leo.theme.default";// default
 																		// theme
 	/**
