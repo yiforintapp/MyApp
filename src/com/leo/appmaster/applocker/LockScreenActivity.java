@@ -26,6 +26,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -502,12 +503,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		cleanAllProcess();
 		long curUsedMem = totalMem - ProcessUtils.getAvailableMem(this);
 		long cleanMem = Math.abs(lastUsedMem - curUsedMem);
-		double number = ((double) cleanMem / lastUsedMem) * 2;
-		if (number <= 1) {
+		double number = (double) cleanMem / lastUsedMem ;
+		int numberRate=(int) (number*100);
+		if (numberRate <= 0) {
 			int random = (int) (Math.random() * 10 + 1);
 			mCleanRate = random + "%";
 		} else {
-			int cleanNumber = (int) (number * 100);
+			int cleanNumber =numberRate;
 			mCleanRate = cleanNumber + "%";
 		}
 	}
