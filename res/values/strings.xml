@@ -242,7 +242,7 @@
     <string name="about_praise">"Like" us</string>
     <string name="locker_guide">Click to change a theme</string>
     <string name="locker_theme_guide">Themes will be applied to lock screen!</string>
-    <string name="locker_clean">Boosted successfully up to%1$s</string>
+    <string name="locker_clean">Boosted successfully up to %1$s</string>
     <string name="setting_locker_clean">Unlock to boost</string>
 
 </resources>
