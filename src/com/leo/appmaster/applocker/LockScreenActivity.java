@@ -533,6 +533,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			String packageName = applicationInfo.packageName;
 			pkgs.add(packageName);
 		}
+        if (mToPackage != null) {
+            pkgs.add(mToPackage);
+        }
 		return pkgs;
 	}
 }
