@@ -422,7 +422,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	private void onLoadMoreThemeFinish(boolean succeed, Object object) {
 		if (succeed) {
 			List<ThemeInfo> list = (List<ThemeInfo>) object;
-			if (list == null && list.isEmpty()) {
+			if (list == null || list.isEmpty()) {
 				Toast.makeText(this, R.string.no_more_theme, 0).show();
 			} else {
 				addMoreOnlineTheme(list);
