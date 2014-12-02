@@ -44,7 +44,7 @@ public class ThemeInfo {
 	/**
 	 * hot , new, and so on...
 	 */
-	public int tag = -1;
+	public int tag = Constants.THEME_TAG_NONE;
 
 	@Override
 	public String toString() {

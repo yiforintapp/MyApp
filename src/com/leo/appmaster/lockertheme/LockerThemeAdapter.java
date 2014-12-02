@@ -5,6 +5,7 @@ import java.util.List;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.ThemeInfo;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.ImageScaleType;
@@ -85,9 +86,11 @@ public class LockerThemeAdapter extends BaseAdapter {
 		}
 		if (theme.themeType == Constants.THEME_TYPE_ONLINE) {
 			if (theme.tag == Constants.THEME_TAG_NEW) {
+				viewHolder.tag.setVisibility(View.VISIBLE);
 				viewHolder.tag.setBackgroundResource(R.drawable.theme_tag_new);
 				viewHolder.tag.setText(R.string.theme_tag_new);
 			} else if (theme.tag == Constants.THEME_TAG_HOT) {
+				viewHolder.tag.setVisibility(View.VISIBLE);
 				viewHolder.tag.setBackgroundResource(R.drawable.theme_tag_hot);
 				viewHolder.tag.setText(R.string.theme_tag_hot);
 			} else {

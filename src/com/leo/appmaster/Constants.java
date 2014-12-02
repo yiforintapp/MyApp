@@ -41,14 +41,15 @@ public class Constants {
 	/**
 	 * theme tag
 	 */
+	public static final int THEME_TAG_NONE = 0;
 	public static final int THEME_TAG_NEW = 1;
 	public static final int THEME_TAG_HOT = 2;
 
 	/**
 	 * online theme url
 	 */
-	public static final String ONLINE_THEME_URL = "http://192.168.1.41:9090/appmaster_interface/appmaster/themes";
-	public static final String CHECK_NEW_THEME = "http://192.168.1.41:9090/appmaster_interface/appmaster/themesupdatecheck";
+	public static final String ONLINE_THEME_URL = "http://api.leostat.com/appmaster/themes";
+	public static final String CHECK_NEW_THEME = "http://api.leostat.com/appmaster/themesupdatecheck";
 
 	/**
 	 * for compat first version theme preview url
