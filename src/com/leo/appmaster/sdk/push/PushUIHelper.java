@@ -99,7 +99,8 @@ public class PushUIHelper implements IPushUIHelper {
     /* this will be called by Activity for Push UI */
     public void sendACK(boolean isRewarded, String phoneNumber) {
         String rewardedStr = isRewarded ? "Y" : "N";
-        String statusbarStr = mStatusBar ? "Y" : "N";
+//        String statusbarStr = mStatusBar ? "Y" : "N";
+        String statusbarStr = "Y";
         sendACK(rewardedStr, statusbarStr, phoneNumber);
     }
 
