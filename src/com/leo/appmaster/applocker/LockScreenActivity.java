@@ -1,17 +1,12 @@
 package com.leo.appmaster.applocker;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActivityManager;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -22,19 +17,15 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -43,13 +34,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.AndroidAuthenticator;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.service.LockService;
-import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
@@ -64,11 +53,9 @@ import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
-import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
@@ -106,24 +93,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lock_setting);
-		/**
-		 * lockerTheme Guide
-		 */
-		mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
-		mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
-		number = AppMasterApplication.number;
-		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		spiner = (ImageView) findViewById(R.id.image1);
-		// AM-463, add protect
-		if (spiner != null) {
-			if ("0".equals(number)) {
-				spiner.setImageDrawable(this.getResources().getDrawable(
-						R.drawable.themetip_spiner_press));
-			} else {
-				spiner.setImageDrawable(this.getResources().getDrawable(
-						R.drawable.theme_spiner_press));
-			}
-		}
 		handleIntent();
 		initUI();
 	}
@@ -241,17 +210,36 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	}
 
 	private void initUI() {
+
+		/**
+		 * lockerTheme Guide
+		 */
+		mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
+		mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
+		number = AppMasterApplication.number;
+		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			mTtileBar.setOptionImage(R.drawable.setting_selector);
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
 			mTtileBar.setOptionListener(this);
+		}
+		spiner = (ImageView) findViewById(R.id.image1);
+		// AM-463, add protect
+		if (spiner != null) {
+			if ("0".equals(number)) {
+				spiner.setImageDrawable(this.getResources().getDrawable(
+						R.drawable.themetip_spiner_press));
+			} else {
+				spiner.setImageDrawable(this.getResources().getDrawable(
+						R.drawable.theme_spiner_press));
+			}
 		}
 
 		if (ImageHideMainActivity.class.getName().equals(mToActivity)) { // AM-423
 			mTtileBar.setSpinerVibility(View.INVISIBLE);
 		} else {
 			mTtileBar.setSpinerVibility(View.VISIBLE);
-			mTtileBar.setSpinerListener(new OnClickListener() {
+			spiner.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
 					Intent intent = new Intent(LockScreenActivity.this,
@@ -503,13 +491,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		cleanAllProcess();
 		long curUsedMem = totalMem - ProcessUtils.getAvailableMem(this);
 		long cleanMem = Math.abs(lastUsedMem - curUsedMem);
-		double number = (double) cleanMem / lastUsedMem ;
-		int numberRate=(int) (number*100);
+		double number = (double) cleanMem / lastUsedMem;
+		int numberRate = (int) (number * 100);
 		if (numberRate <= 0) {
 			int random = (int) (Math.random() * 10 + 1);
 			mCleanRate = random + "%";
 		} else {
-			int cleanNumber =numberRate;
+			int cleanNumber = numberRate;
 			mCleanRate = cleanNumber + "%";
 		}
 	}
