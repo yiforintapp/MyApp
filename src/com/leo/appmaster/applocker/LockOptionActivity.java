@@ -40,7 +40,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 	private Preference mTheme, mLockTime, mResetPasswd, mChangeProtectQuestion,
 			mChangePasswdTip;
 
-	private CheckBoxPreference mForbidUninstall, mAutoLock;
+	private CheckBoxPreference mForbidUninstall, mAutoLock, mLockerClean;
 	private Preference mLockerTheme;
 	private Preference mSetProtect;
 	private boolean mShouldLockOnRestart = true;
@@ -73,6 +73,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 		mLockerTheme = findPreference(AppMasterPreference.PREF_LOCKER_THEME);
 		mForbidUninstall = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL);
 		mAutoLock = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_AUTO_LOCK);
+		mLockerClean = (CheckBoxPreference) findPreference("app_lock_clean");
 		mSetProtect = findPreference(AppMasterPreference.PREF_SET_PROTECT);
 		mLockTime = (Preference) findPreference(AppMasterPreference.PREF_RELOCK_TIME);
 		mResetPasswd = (Preference) findPreference("change_passwd");
@@ -93,6 +94,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 			getPreferenceScreen().removePreference(mLockerTheme);
 			getPreferenceScreen().removePreference(mAutoLock);
 			getPreferenceScreen().removePreference(mLockTime);
+			getPreferenceScreen().removePreference(mLockerClean);
 			getPreferenceScreen().removePreference(
 					findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP));
 		}
@@ -101,6 +103,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 		if (mComeFrom == FROM_APPLOCK) {
 			mAutoLock.setOnPreferenceChangeListener(this);
 			mLockTime.setOnPreferenceClickListener(this);
+			mLockerClean.setOnPreferenceChangeListener(this);
 		}
 		mTheme.setOnPreferenceClickListener(this);
 		mChangeProtectQuestion.setOnPreferenceClickListener(this);
@@ -160,7 +163,6 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 		} else {
 			mForbidUninstall.setChecked(false);
 		}
-
 		if (haveProtect()) {
 			mSetProtect.setTitle(R.string.passwd_protect);
 		} else {
@@ -237,8 +239,11 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 				SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting",
 						"cancel_auto");
 			}
+		} else if ("app_lock_clean".equals(key)) {
+			mLockerClean.setChecked((Boolean) newValue);
+			AppMasterPreference.getInstance(LockOptionActivity.this)
+					.setLockerClean((Boolean) newValue);
 		}
-
 		return false;
 	}
 
@@ -279,7 +284,6 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 			SDKWrapper.addEvent(LockOptionActivity.this, LeoStat.P1,
 					"theme_enter", "setting");
 		}
-
 		return false;
 	}
 

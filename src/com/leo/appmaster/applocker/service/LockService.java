@@ -3,7 +3,7 @@ package com.leo.appmaster.applocker.service;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.AppTask;
 import android.app.ActivityManager.RecentTaskInfo;
@@ -16,10 +16,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
-
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
 
+@SuppressLint("NewApi")
 public class LockService extends Service {
 
 	public static final String EXTRA_STARTUP_FROM = "start_from";

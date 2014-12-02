@@ -11,6 +11,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -85,6 +87,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	private boolean mNeedLock = false;
 	private int number = 0;
 	private String mFrom;
+	private String mGuideFlag;
 	// private int mCurrentShowPage = 0;
 	// private int mNextLoadPage = 0;
 
@@ -589,6 +592,16 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
 							"theme_apply", lastSelectedItem.packageName);
 					dialog.cancel();
+					/**
+					 * LockerTheme first use Guide
+					 */
+					SharedPreferences mLockerGuideShared = getSharedPreferences(
+							"LockerThemeGuide",
+							LockerTheme.this.MODE_WORLD_WRITEABLE);
+					mGuideFlag = mLockerGuideShared.getString("guideFlag", "0");
+					if (mGuideFlag.equals("0")) {
+						setLockerGuideShare();
+					}
 				} else if (which == 1) {
 					dialog.cancel();
 				} else if (which == 2) {
@@ -671,6 +684,25 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					R.color.tab_select_text));
 			mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_r);
 		}
+	}
+
+	/**
+	 * setLockerGuideShare
+	 */
+	private void setLockerGuideShare() {
+		Intent intent = new Intent(LockerTheme.this,
+				LockerThemeGuideActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		try {
+			startActivity(intent);
+		} catch (Exception e) {
+		}
+		SharedPreferences mLockerGuideShared = getSharedPreferences(
+				"LockerThemeGuide", LockerTheme.this.MODE_WORLD_WRITEABLE);
+		Editor editor = mLockerGuideShared.edit();
+		editor.putString("guideFlag", "1");
+		mGuideFlag = "1";
+		editor.commit();
 	}
 
 	private void doReload() {
@@ -787,11 +819,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			lastSelectedItem = (ThemeInfo) arg0.getItemAtPosition(arg2);
 			/* SDK mark user click theme - begin */
 			if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
-			    SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice_online",
-	                    lastSelectedItem.packageName);
-			}else if(lastSelectedItem.themeType == Constants.THEME_TYPE_LOCAL){
-			    SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1, "theme_choice_local",
-	                    lastSelectedItem.packageName);
+				SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
+						"theme_choice_online", lastSelectedItem.packageName);
+			} else if (lastSelectedItem.themeType == Constants.THEME_TYPE_LOCAL) {
+				SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
+						"theme_choice_local", lastSelectedItem.packageName);
 			}
 			/* SDK mark user click theme - end */
 			if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {

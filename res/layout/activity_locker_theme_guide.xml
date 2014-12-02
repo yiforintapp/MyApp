@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="317dp"
+    android:layout_height="428dp" >
+
+    <LinearLayout
+        android:id="@+id/lockerThemeGuideLT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#159fff"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/guideTitleTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="41dp"
+            android:text="@string/locker_theme_guide"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/guideImageIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="41dp"
+            android:src="@drawable/online_theme_tutorails_image" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/lockerThemeGuideRT"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_below="@id/lockerThemeGuideLT"
+        android:background="@color/white"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="300dp"
+            android:layout_height="47dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/guide_button_selecter"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="@string/makesure"
+            android:textColor="#ffffff"
+            android:textSize="22sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

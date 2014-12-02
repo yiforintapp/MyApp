@@ -235,5 +235,11 @@
     <string name="find_new_theme_content">您的应用锁有新主题，点击查看</string>
     <string name="theme_tag_new">新</string>
     <string name="theme_tag_hot">热</string>
+    <string name="about_group">加入内测团</string>
+    <string name="about_praise">给我们点赞</string>
+    <string name="locker_guide">点击更换解锁主题</string>
+    <string name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
+    <string name="locker_clean">优化成功，已提速%1$s</string>
+    <string name="setting_locker_clean">解锁后加速</string>
 
 </resources>
