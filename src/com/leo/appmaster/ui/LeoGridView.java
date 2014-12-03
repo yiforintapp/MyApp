@@ -18,7 +18,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 
-import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.model.BaseAppInfo;
 
 public class LeoGridView extends GridView {
 
@@ -54,7 +54,7 @@ public class LeoGridView extends GridView {
 		setLayerType(View.LAYER_TYPE_HARDWARE, null);
 	}
 
-	public void removeItemAnimation(final int position, BaseInfo removeApp) {
+	public void removeItemAnimation(final int position, BaseAppInfo removeApp) {
 		mDragAdapter.removeItem(position);
 		final ViewTreeObserver observer = getViewTreeObserver();
 		observer.addOnPreDrawListener(new OnPreDrawListener() {

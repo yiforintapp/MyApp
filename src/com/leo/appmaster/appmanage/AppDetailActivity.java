@@ -120,17 +120,17 @@ public class AppDetailActivity extends BaseActivity implements
 		mTitle.openBackView();
 		mTitle.setOptionTextVisibility(View.INVISIBLE);
 		mAppIcon = (ImageView) findViewById(R.id.app_info_icon);
-		mAppIcon.setImageDrawable(mAppInfo.getAppIcon());
+		mAppIcon.setImageDrawable(mAppInfo.icon);
 		mAppName = (TextView) findViewById(R.id.app_name);
-		mAppName.setText(mAppInfo.getAppLabel());
+		mAppName.setText(mAppInfo.label);
 		mAppVersion = (TextView) findViewById(R.id.version_name);
-		mAppVersion.setText(mAppInfo.getVersionName());
+		mAppVersion.setText(mAppInfo.versionName);
 		mAppMemory = (TextView) findViewById(R.id.app_memory);
 		mAppMemory.setText(String.format(getString(R.string.app_memory),
-				mAppInfo.getCacheInfo().getCodeSize()));
+				mAppInfo.mCacheInfo.codeSize));
 		mAppUsedFlow = (TextView) findViewById(R.id.app_cache_size);
 		mAppUsedFlow.setText(String.format(getString(R.string.app_cache_size),
-				mAppInfo.getCacheInfo().getCacheSize()));
+				mAppInfo.mCacheInfo.cacheSize));
 
 		mUninstall = (Button) findViewById(R.id.uninstall_app);
 		mUninstall.setOnClickListener(this);
@@ -154,7 +154,7 @@ public class AppDetailActivity extends BaseActivity implements
 		// mGestureLayout = (GestureLayout)
 		// mPager1.findViewById(R.id.gesture_layout);
 		// mGestureLayout.setListener(this);
-		setAppInfoBackground(mAppInfo.getAppIcon());
+		setAppInfoBackground(mAppInfo.icon);
 		//
 		// mCurrdate = mCalendar.getTime();
 		// setWeekString(mCurrdate);
@@ -236,8 +236,7 @@ public class AppDetailActivity extends BaseActivity implements
 		LinearLayout permissionContent = (LinearLayout) mPager2
 				.findViewById(R.id.permission_content);
 		PackageManager packageManager = this.getPackageManager();
-		String[] sharedPkgList = mAppInfo.getPermissionInfo()
-				.getPermissionList();
+		String[] sharedPkgList = mAppInfo.mPermissionInfo.mPermissionList;
 		if (sharedPkgList == null)
 			return;
 		ArrayList<PermissionInfo> nomalPermissions = new ArrayList<PermissionInfo>();
@@ -328,7 +327,7 @@ public class AppDetailActivity extends BaseActivity implements
 					continue;
 				}
 				permissionName.setText(pName);
-				
+
 				TextView permissionDiscr = (TextView) permissionItem
 						.findViewById(R.id.permission_discription);
 				permissionDiscr.setText(sinatruePermissions.get(i)
@@ -365,7 +364,7 @@ public class AppDetailActivity extends BaseActivity implements
 					continue;
 				}
 				permissionName.setText(pName);
-			
+
 				TextView permissionDiscr = (TextView) permissionItem
 						.findViewById(R.id.permission_discription);
 				permissionDiscr.setText(nomalPermissions.get(i)
@@ -440,12 +439,12 @@ public class AppDetailActivity extends BaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.uninstall_app:
-			RemoveApp(mAppInfo.getPkg());
+			RemoveApp(mAppInfo.packageName);
 			break;
 		case R.id.stop_app:
 			Intent intent = new Intent(
 					Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-			Uri uri = Uri.fromParts("package", mAppInfo.getPkg(), null);
+			Uri uri = Uri.fromParts("package", mAppInfo.packageName, null);
 			intent.setData(uri);
 			startActivity(intent);
 			break;
@@ -499,7 +498,7 @@ public class AppDetailActivity extends BaseActivity implements
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
 				String packageName = intent.getData().getSchemeSpecificPart();
 				if (mAppInfo != null) {
-					if (mAppInfo.getPkg().equals(packageName)) {
+					if (mAppInfo.packageName.equals(packageName)) {
 						finish();
 					}
 				}

@@ -1,26 +1,25 @@
 
 package com.leo.appmaster.model;
 
-// app Detail info
-public class AppDetailInfo extends BaseInfo {
+public class AppDetailInfo extends BaseAppInfo {
     /*
      * app cache info
      */
-    private CacheInfo mCacheInfo;
+	public CacheInfo mCacheInfo;
     /*
      * all user permission of app
      */
-    private AppPermissionInfo mPermissionInfo;
+    public AppPermissionInfo mPermissionInfo;
     /*
      * app traffic info
      */
-    private TrafficInfo mTrafficInfo;
+    public TrafficInfo mTrafficInfo;
     /*
      * app power comsumption info
      */
-    private double mPowerComsuPercent;
+    public double mPowerComsuPercent;
 
-    private String mSourceDir;
+    public String sourceDir;
     
     public boolean isChecked;
     
@@ -32,44 +31,5 @@ public class AppDetailInfo extends BaseInfo {
         mTrafficInfo = new TrafficInfo();
     }
 
-    public CacheInfo getCacheInfo() {
-        return mCacheInfo;
-    }
-
-    public void setCacheInfo(CacheInfo mCacheInfo) {
-        this.mCacheInfo = mCacheInfo;
-    }
-
-    public AppPermissionInfo getPermissionInfo() {
-        return mPermissionInfo;
-    }
-
-    public void setPermissionInfo(AppPermissionInfo permissionInfo) {
-        this.mPermissionInfo = permissionInfo;
-    }
-
-    public TrafficInfo getTrafficInfo() {
-        return mTrafficInfo;
-    }
-
-    public void setTrafficInfo(TrafficInfo mTrafficInfo) {
-        this.mTrafficInfo = mTrafficInfo;
-    }
-
-    public double getPowerComsuPercent() {
-        return mPowerComsuPercent;
-    }
-
-    public void setPowerComsuPercent(double percentOfTotal) {
-        this.mPowerComsuPercent = percentOfTotal;
-    }
-
-    public String getSourceDir() {
-        return mSourceDir;
-    }
-
-    public void setSourceDir(String dir) {
-        this.mSourceDir = dir;
-    }
 
 }

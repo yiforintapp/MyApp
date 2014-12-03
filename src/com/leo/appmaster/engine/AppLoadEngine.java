@@ -43,7 +43,7 @@ import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppDetailInfo;
-import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.model.BaseAppInfo;
 import com.leo.appmaster.model.CacheInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
@@ -172,8 +172,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 		mRecommendLocklist = list;
 		Collection<AppDetailInfo> collection = mAppDetails.values();
 		for (AppDetailInfo appDetailInfo : collection) {
-			appDetailInfo.topPos = mRecommendLocklist.indexOf(appDetailInfo
-					.getPkg());
+			appDetailInfo.topPos = mRecommendLocklist
+					.indexOf(appDetailInfo.packageName);
 		}
 		AppMasterPreference.getInstance(mContext).setRecommendList(list);
 	}
@@ -218,7 +218,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		loadAllPkgInfo();
 		ArrayList<AppDetailInfo> dataList = new ArrayList<AppDetailInfo>();
 		for (AppDetailInfo app : mAppDetails.values()) {
-			if (!app.getPkg().startsWith("com.leo.theme")) {
+			if (!app.packageName.startsWith("com.leo.theme")) {
 				dataList.add(app);
 			}
 		}
@@ -316,17 +316,17 @@ public class AppLoadEngine extends BroadcastReceiver {
 		// first fill base info
 		try {
 			PackageInfo pInfo = mPm.getPackageInfo(packageName, 0);
-			appInfo.setVersionCode(pInfo.versionCode);
-			appInfo.setVersionName(pInfo.versionName);
+			appInfo.versionCode = pInfo.versionCode;
+			appInfo.versionName = pInfo.versionName;
 		} catch (NameNotFoundException e) {
 		}
-		appInfo.setPkg(packageName);
-		appInfo.setAppLabel(applicationInfo.loadLabel(mPm).toString().trim());
-		appInfo.setAppIcon(applicationInfo.loadIcon(mPm));
-		appInfo.setSystemApp(AppUtil.isSystemApp(applicationInfo));
-		appInfo.setInSdcard(AppUtil.isInstalledInSDcard(applicationInfo));
-		appInfo.setUid(applicationInfo.uid);
-		appInfo.setSourceDir(applicationInfo.sourceDir);
+		appInfo.packageName = packageName;
+		appInfo.label = applicationInfo.loadLabel(mPm).toString().trim();
+		appInfo.icon = applicationInfo.loadIcon(mPm);
+		appInfo.systemApp = AppUtil.isSystemApp(applicationInfo);
+		appInfo.inSdcard = AppUtil.isInstalledInSDcard(applicationInfo);
+		appInfo.uid = applicationInfo.uid;
+		appInfo.sourceDir = applicationInfo.sourceDir;
 		appInfo.topPos = mRecommendLocklist.indexOf(packageName);
 	}
 
@@ -336,15 +336,15 @@ public class AppLoadEngine extends BroadcastReceiver {
 		for (BatteryComsuption batterySipper : list) {
 			String packageName = batterySipper.getDefaultPackageName();
 			if (packageName != null && mAppDetails.containsKey(packageName)) {
-				mAppDetails.get(packageName).setPowerComsuPercent(
-						batterySipper.getPercentOfTotal());
+				mAppDetails.get(packageName).mPowerComsuPercent = batterySipper
+						.getPercentOfTotal();
 			}
 		}
 	}
 
 	private void loadCacheInfo(String pkgName) {
 		AppDetailInfo info = mAppDetails.get(pkgName);
-		getCacheInfo(pkgName, info.getCacheInfo());
+		getCacheInfo(pkgName, info.mCacheInfo);
 	}
 
 	private void loadPermissionInfo(String pkgName) {
@@ -355,8 +355,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 					PackageManager.GET_PERMISSIONS);
 			// info.getPermissionInfo().setPermissions(packangeInfo.permissions);
 
-			info.getPermissionInfo().setPermissionList(
-					packangeInfo.requestedPermissions);
+			info.mPermissionInfo.mPermissionList = packangeInfo.requestedPermissions;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -365,14 +364,14 @@ public class AppLoadEngine extends BroadcastReceiver {
 	private void loadTrafficInfo(String pkgName) {
 		AppDetailInfo info = mAppDetails.get(pkgName);
 		if (info != null) {
-			long received = TrafficStats.getUidRxBytes(info.getUid());
+			long received = TrafficStats.getUidRxBytes(info.uid);
 			if (received < 0)
 				received = 0;
-			long transmitted = TrafficStats.getUidTxBytes(info.getUid());
+			long transmitted = TrafficStats.getUidTxBytes(info.uid);
 			if (transmitted < 0)
 				transmitted = 0;
-			info.getTrafficInfo().setTransmittedData(transmitted);
-			info.getTrafficInfo().setReceivedData(received);
+			info.mTrafficInfo.mTransmittedData = transmitted;
+			info.mTrafficInfo.mReceivedData = received;
 		}
 
 	}
@@ -391,11 +390,11 @@ public class AppLoadEngine extends BroadcastReceiver {
 							long codeSize = pStats.codeSize;
 							long dataSize = pStats.dataSize;
 
-							cacheInfo.setCacheSize(TextFormater
+							cacheInfo.cacheSize = (TextFormater
 									.dataSizeFormat(cacheSize));
-							cacheInfo.setCodeSize(TextFormater
+							cacheInfo.codeSize = (TextFormater
 									.dataSizeFormat(codeSize));
-							cacheInfo.setDataSize(TextFormater
+							cacheInfo.dataSize = (TextFormater
 									.dataSizeFormat(dataSize));
 
 							mLatch.countDown();
@@ -695,10 +694,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	}
 
-	public static class AppComparator implements Comparator<BaseInfo> {
+	public static class AppComparator implements Comparator<BaseAppInfo> {
 
 		@Override
-		public int compare(BaseInfo lhs, BaseInfo rhs) {
+		public int compare(BaseAppInfo lhs, BaseAppInfo rhs) {
 			if (lhs.topPos > -1 && rhs.topPos < 0) {
 				return -1;
 			} else if (lhs.topPos < 0 && rhs.topPos > -1) {
@@ -706,9 +705,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 			} else if (lhs.topPos > -1 && rhs.topPos > -1) {
 				return lhs.topPos - rhs.topPos;
 			}
-			return Collator.getInstance().compare(
-					trimString(lhs.getAppLabel()),
-					trimString(rhs.getAppLabel()));
+			return Collator.getInstance().compare(trimString(lhs.label),
+					trimString(rhs.label));
 		}
 
 		private String trimString(String s) {

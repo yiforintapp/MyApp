@@ -54,11 +54,11 @@ public class AppInfoBaseLayout extends LinearLayout implements OnClickListener {
 	}
 
 	private void inflateUI() {
-		mIvIcon.setImageDrawable(mAppInfo.getAppIcon());
-		mTvAppName.setText(mAppInfo.getAppLabel());
+		mIvIcon.setImageDrawable(mAppInfo.icon);
+		mTvAppName.setText(mAppInfo.label);
 
 		if (ProcessUtils.isAppRunning((ActivityManager) getContext()
-				.getSystemService(Context.ACTIVITY_SERVICE), mAppInfo.getPkg())) {
+				.getSystemService(Context.ACTIVITY_SERVICE), mAppInfo.packageName)) {
 			mBtnStop.setEnabled(false);
 		}
 	}

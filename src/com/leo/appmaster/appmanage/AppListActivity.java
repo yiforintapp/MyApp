@@ -183,9 +183,9 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 					.findViewById(R.id.tv_app_name);
 
 			AppDetailInfo info = mAppDetails.get(startLoc + position);
-			imageView.setImageDrawable(info.getAppIcon());
-			textView.setText(info.getAppLabel());
-			convertView.setTag(info.getPkg());
+			imageView.setImageDrawable(info.icon);
+			textView.setText(info.label);
+			convertView.setTag(info.packageName);
 			return convertView;
 		}
 

@@ -203,10 +203,10 @@ public class AppWallActivity extends BaseActivity implements
 				// 获取包名
 				StringBuilder sb = new StringBuilder();
 				for (int i = 0; i < pkgInfos.size(); i++) {
-					if (pkgInfos.get(i).getPkg().equals("com.android.vending")) {
+					if (pkgInfos.get(i).packageName.equals("com.android.vending")) {
 						flagGp = true;
 					}
-					pkgName.add(pkgInfos.get(i).getPkg());
+					pkgName.add(pkgInfos.get(i).packageName);
 
 				}
 

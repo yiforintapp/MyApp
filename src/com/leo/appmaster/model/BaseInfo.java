@@ -1,125 +1,33 @@
 package com.leo.appmaster.model;
 
 import android.graphics.drawable.Drawable;
-// app class
+
 public class BaseInfo {
-	/*
-	 * app package name
-	 */
-	private String mPkg;
-	/*
-	 * app name
-	 */
-	private String mAppLabel;
 
-	/*
-	 * app icon, read from pm
+	/**
+	 * item type
 	 */
-	private Drawable mAppIcon;
+	public static final int ITEM_TYPE_APP = 0;
+	public static final int ITEM_TYPE_FOLDER = 1;
+	public static final int ITEM_TYPE_BUSINESS_APP = 2;
 
-	/*
-	 * is system app
+	/**
+	 * label
 	 */
-	private boolean mSystemApp;
-	/*
-	 * install in external
-	 */
-	private boolean mInSdcard;
-	
-	/*
-	 * app uid
-	 */
-	private int mUid;
+	public String label;
 
-	/*
-	 * is locked
+	/**
+	 * icon
 	 */
-	private boolean mLocked;
-	
-	/*
+	public Drawable icon;
+
+	/**
 	 * top index
 	 */
 	public int topPos = -1;
-	
-	/*
-	 * app install time
+
+	/**
+	 * item type
 	 */
-	public long installTime = -1l;
-	
-	private int versionCode;
-    private String versionName;
-	
-	public String getPkg() {
-		return mPkg;
-	}
-
-	public void setPkg(String mPkg) {
-		this.mPkg = mPkg;
-	}
-
-	public String getAppLabel() {
-		return mAppLabel;
-	}
-
-	public void setAppLabel(String mAppLabel) {
-		this.mAppLabel = mAppLabel;
-	}
-
-	public Drawable getAppIcon() {
-		return mAppIcon;
-	}
-
-	public void setAppIcon(Drawable mAppIcon) {
-		this.mAppIcon = mAppIcon;
-	}
-
-	public boolean isSystemApp() {
-		return mSystemApp;
-	}
-
-	public void setSystemApp(boolean mIsSystem) {
-		this.mSystemApp = mIsSystem;
-	}
-
-	public boolean isInSdcard() {
-		return mInSdcard;
-	}
-
-	public void setInSdcard(boolean mIsInSdcard) {
-		this.mInSdcard = mIsInSdcard;
-	}
-
-	public int getUid() {
-		return mUid;
-	}
-
-	public void setUid(int mUid) {
-		this.mUid = mUid;
-	}
-
-	public boolean isLocked() {
-		return mLocked;
-	}
-
-	public void setLocked(boolean mLocked) {
-		this.mLocked = mLocked;
-	}
-	
-	public int getVersionCode() {
-        return versionCode;
-    }
-
-    public void setVersionCode(int versionCode) {
-        this.versionCode = versionCode;
-    }
-
-    public String getVersionName() {
-        return versionName;
-    }
-
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
-    }
-
-	
+	public int type = ITEM_TYPE_APP;
 }

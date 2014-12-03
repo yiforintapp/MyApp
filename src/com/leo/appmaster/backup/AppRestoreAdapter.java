@@ -12,63 +12,68 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppDetailInfo;
 
 public class AppRestoreAdapter extends BaseAdapter {
-    
-    private ArrayList<AppDetailInfo> mRestoreList; 
-    
-    private AppBackupRestoreManager mBackupManager;
-    
-    public AppRestoreAdapter(AppBackupRestoreManager manager) {
-        mBackupManager = manager;
-        mRestoreList = new ArrayList<AppDetailInfo>();
-    }
-    
-    public void updateData() {
-        mRestoreList.clear();
-        ArrayList<AppDetailInfo> apps = mBackupManager.getRestoreList();
-        for(AppDetailInfo app : apps) {
-            mRestoreList.add(app);
-        }
-        notifyDataSetChanged();
-    }
 
-    @Override
-    public int getCount() {
-        return mRestoreList.size();
-    }
+	private ArrayList<AppDetailInfo> mRestoreList;
 
-    @Override
-    public Object getItem(int arg0) {
-        return mRestoreList.get(arg0);
-    }
+	private AppBackupRestoreManager mBackupManager;
 
-    @Override
-    public long getItemId(int arg0) {
-        return 0;
-    }
+	public AppRestoreAdapter(AppBackupRestoreManager manager) {
+		mBackupManager = manager;
+		mRestoreList = new ArrayList<AppDetailInfo>();
+	}
 
-    @Override
-    public View getView(int arg0, View arg1, ViewGroup arg2) {
-        AppRestoreItemView itemView = null;
-        if(arg1 instanceof AppBackupItemView) {
-            itemView = (AppRestoreItemView) arg1;
-        } else {
-            LayoutInflater inflater = LayoutInflater.from(arg2.getContext());
-            itemView = (AppRestoreItemView)inflater.inflate(R.layout.item_app_restore, null);
-        }
-        AppDetailInfo app = mRestoreList.get(arg0);
-        Context context = itemView.getContext();
-        if(arg0 % 2 == 0) {
-           itemView.setBackgroundColor(context.getResources().getColor(R.color.white));
-        
-        } else {
-            itemView.setBackgroundColor(context.getResources().getColor(R.color.item_backup_grey));
-        }
-        itemView.setIcon(app.getAppIcon());
-        itemView.setTitle(app.getAppLabel());
-        itemView.setVersion(String.format(context.getResources().getString(R.string.app_version), app.getVersionName()));
-        itemView.setSize(mBackupManager.getApkSize(app));
-        itemView.setTag(app);
-        return itemView;
-    }
+	public void updateData() {
+		mRestoreList.clear();
+		ArrayList<AppDetailInfo> apps = mBackupManager.getRestoreList();
+		for (AppDetailInfo app : apps) {
+			mRestoreList.add(app);
+		}
+		notifyDataSetChanged();
+	}
+
+	@Override
+	public int getCount() {
+		return mRestoreList.size();
+	}
+
+	@Override
+	public Object getItem(int arg0) {
+		return mRestoreList.get(arg0);
+	}
+
+	@Override
+	public long getItemId(int arg0) {
+		return 0;
+	}
+
+	@Override
+	public View getView(int arg0, View arg1, ViewGroup arg2) {
+		AppRestoreItemView itemView = null;
+		if (arg1 instanceof AppBackupItemView) {
+			itemView = (AppRestoreItemView) arg1;
+		} else {
+			LayoutInflater inflater = LayoutInflater.from(arg2.getContext());
+			itemView = (AppRestoreItemView) inflater.inflate(
+					R.layout.item_app_restore, null);
+		}
+		AppDetailInfo app = mRestoreList.get(arg0);
+		Context context = itemView.getContext();
+		if (arg0 % 2 == 0) {
+			itemView.setBackgroundColor(context.getResources().getColor(
+					R.color.white));
+
+		} else {
+			itemView.setBackgroundColor(context.getResources().getColor(
+					R.color.item_backup_grey));
+		}
+		itemView.setIcon(app.icon);
+		itemView.setTitle(app.label);
+		itemView.setVersion(String.format(
+				context.getResources().getString(R.string.app_version),
+				app.versionName));
+		itemView.setSize(mBackupManager.getApkSize(app));
+		itemView.setTag(app);
+		return itemView;
+	}
 
 }

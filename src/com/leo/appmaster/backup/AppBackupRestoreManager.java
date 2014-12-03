@@ -162,7 +162,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 						}
 						if (mBackupListener != null) {
 							mBackupListener.onBackupProcessChanged(doneNum,
-									totalNum, app.getAppLabel());
+									totalNum, app.label);
 						}
 						doneNum++;
 						failType = tryBackupApp(app);
@@ -198,7 +198,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		mExecutorService.execute(new Runnable() {
 			@Override
 			public void run() {
-				File apkFile = new File(app.getSourceDir());
+				File apkFile = new File(app.sourceDir);
 				boolean success = false;
 				if (apkFile.exists()) {
 					success = apkFile.delete();
@@ -207,9 +207,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
 				}
 				if (success) {
 					mSavedList.remove(app);
-					String pName = app.getPkg();
+					String pName = app.packageName;
 					for (AppDetailInfo a : mBackupList) {
-						if (pName.equals(a.getPkg())) {
+						if (pName.equals(a.packageName)) {
 							a.isBackuped = false;
 							break;
 						}
@@ -224,8 +224,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 
 	public void restoreApp(Context context, AppDetailInfo app) {
 		Intent intent = new Intent();
-		intent.setDataAndType(Uri.fromFile(new File(app.getSourceDir())),
-				DATA_TYPE);
+		intent.setDataAndType(Uri.fromFile(new File(app.sourceDir)), DATA_TYPE);
 		try {
 			// check android package installer
 			mPackageManager.getPackageInfo(INSTALL_PACKAGE, 0);
@@ -233,8 +232,8 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		} catch (NameNotFoundException e) {
 		}
 		context.startActivity(intent);
-		SDKWrapper.addEvent(context, LeoStat.P1, "backup",
-				"recover: " + app.getPkg());
+		SDKWrapper.addEvent(context, LeoStat.P1, "backup", "recover: "
+				+ app.packageName);
 	}
 
 	public void checkDataUpdate() {
@@ -244,11 +243,11 @@ public class AppBackupRestoreManager implements AppChangeListener {
 				public void run() {
 					ArrayList<AppDetailInfo> deleteSavedList = new ArrayList<AppDetailInfo>();
 					for (AppDetailInfo app : mSavedList) {
-						File apkFile = new File(app.getSourceDir());
+						File apkFile = new File(app.sourceDir);
 						if (!apkFile.isFile() || !apkFile.exists()) {
 							deleteSavedList.add(app);
 							for (AppDetailInfo a : mBackupList) {
-								if (app.getPkg().equals(a.getPkg())) {
+								if (app.packageName.equals(a.packageName)) {
 									a.isBackuped = false;
 								}
 							}
@@ -276,7 +275,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 	public String getApkSize(AppDetailInfo app) {
 		String s = AppMasterApplication.getInstance().getString(
 				R.string.apk_size);
-		File file = new File(app.getSourceDir());
+		File file = new File(app.sourceDir);
 		if (file.isFile() && file.exists()) {
 			long size = file.length();
 			return String.format(s, convertToSizeString(size));
@@ -317,7 +316,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 	}
 
 	private int tryBackupApp(AppDetailInfo app) {
-		File apkFile = new File(app.getSourceDir());
+		File apkFile = new File(app.sourceDir);
 		if (apkFile.exists() == false) {
 			return FAIL_TYPE_SOURCE_NOT_FOUND;
 		}
@@ -334,7 +333,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		} catch (FileNotFoundException e) {
 			return FAIL_TYPE_SOURCE_NOT_FOUND;
 		}
-		String pName = app.getPkg();
+		String pName = app.packageName;
 		// do file copy operation
 		byte[] c = new byte[1024 * 5];
 		int slen;
@@ -376,7 +375,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		AppDetailInfo newApp = null;
 		boolean add = true;
 		for (AppDetailInfo appInfo : mSavedList) {
-			if (pName.equals(appInfo.getPkg())) {
+			if (pName.equals(appInfo.packageName)) {
 				newApp = appInfo;
 				add = false;
 				break;
@@ -385,12 +384,12 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		if (newApp == null) {
 			newApp = new AppDetailInfo();
 		}
-		newApp.setAppLabel(app.getAppLabel());
-		newApp.setAppIcon(app.getAppIcon());
-		newApp.setPkg(app.getPkg());
-		newApp.setVersionCode(app.getVersionCode());
-		newApp.setVersionName(app.getVersionName());
-		newApp.setSourceDir(dest);
+		newApp.label = app.label;
+		newApp.icon = app.icon;
+		newApp.packageName = app.packageName;
+		newApp.versionCode = app.versionCode;
+		newApp.versionName = app.versionName;
+		newApp.sourceDir = dest;
 		app.isBackuped = true;
 		app.isChecked = false;
 		if (add) {
@@ -405,15 +404,15 @@ public class AppBackupRestoreManager implements AppChangeListener {
 			ArrayList<AppDetailInfo> allApps = AppLoadEngine.getInstance(null)
 					.getAllPkgInfo();
 			for (AppDetailInfo app : allApps) {
-				if (app.isSystemApp()) {
+				if (app.systemApp) {
 					continue;
 				}
-				String pName = app.getPkg();
-				int versionCode = app.getVersionCode();
+				String pName = app.packageName;
+				int versionCode = app.versionCode;
 				for (AppDetailInfo a : mSavedList) { // check if already
 														// backuped
-					if (pName.equals(a.getPkg())
-							&& versionCode == a.getVersionCode()) {
+					if (pName.equals(a.packageName)
+							&& versionCode == a.versionCode) {
 						app.isBackuped = true;
 						break;
 					}
@@ -476,12 +475,12 @@ public class AppBackupRestoreManager implements AppChangeListener {
 								icon = mPackageManager
 										.getApplicationIcon(appInfo);
 							}
-							app.setAppLabel(label);
-							app.setAppIcon(icon);
-							app.setSourceDir(fPath);
-							app.setPkg(appInfo.packageName);
-							app.setVersionCode(pInfo.versionCode);
-							app.setVersionName(pInfo.versionName);
+							app.label = label;
+							app.icon = icon;
+							app.sourceDir = fPath;
+							app.packageName = appInfo.packageName;
+							app.versionCode = pInfo.versionCode;
+							app.versionName = pInfo.versionName;
 							mSavedList.add(app);
 						}
 					}
@@ -582,11 +581,11 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		} else if (type == AppChangeListener.TYPE_UPDATE) {
 			for (AppDetailInfo app : changes) {
 				if (app.isBackuped) {
-					String pkg = app.getPkg();
-					int vCode = app.getVersionCode();
+					String pkg = app.packageName;
+					int vCode = app.versionCode;
 					for (AppDetailInfo a : mSavedList) {
-						if (pkg.equals(a.getPkg())
-								&& vCode != a.getVersionCode()) {
+						if (pkg.equals(a.packageName)
+								&& vCode != a.versionCode){
 							app.isBackuped = false;
 							break;
 						}
