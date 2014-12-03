@@ -14,6 +14,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class GooglePlayGuideActivity extends BaseActivity {
 
@@ -32,7 +33,7 @@ public class GooglePlayGuideActivity extends BaseActivity {
 
 	private void openGooglePlayGuide() {
 
-		final ImageView iv = (ImageView) findViewById(R.id.iv_animator);
+		final LinearLayout iv = (LinearLayout) findViewById(R.id.iv_animator);
 		AnimationSet as = new AnimationSet(true);
 		as.setDuration(1000);
 		TranslateAnimation ta = new TranslateAnimation(0f, 0f, 0f, -500f);

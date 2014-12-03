@@ -244,5 +244,7 @@
     <string name="locker_theme_guide">Themes will be applied to lock screen!</string>
     <string name="locker_clean">Boosted successfully up to %1$s</string>
     <string name="setting_locker_clean">Unlock to boost</string>
+    <string name="feedback_error">邮箱错误，请重新输入</string>
+   <string name="googlePlayGuide">请向下拉动给我们评分</string>
 
 </resources>
