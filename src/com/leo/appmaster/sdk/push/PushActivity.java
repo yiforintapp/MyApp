@@ -34,6 +34,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
 
     private final static String TAG = PushActivity.class.getSimpleName();
 
+    private boolean mFromStatusBar;
     private EditText mPhoneNumber = null;
 
     private final static String GP_MARKET_PACKAGE_NAME = "com.android.vending";
@@ -51,8 +52,8 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
         super.onResume();
         SDKWrapper.addEvent(this, LeoStat.P1, "act", "popup");
         Intent i = getIntent();
-        boolean isFromStatusBar = i.getBooleanExtra(PushUIHelper.EXTRA_WHERE, false);
-        if(isFromStatusBar){
+        mFromStatusBar = i.getBooleanExtra(PushUIHelper.EXTRA_WHERE, false);
+        if(mFromStatusBar){
             SDKWrapper.addEvent(this, LeoStat.P1, "act", "notbar");
         }
     }
@@ -89,7 +90,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
             case R.id.dlg_left_btn:
                 /* user ignore this activity */
                 SDKWrapper.addEvent(this, LeoStat.P1, "act", "cancel");
-                PushUIHelper.getInstance(this).sendACK(false, "");
+                PushUIHelper.getInstance(this).sendACK(false, mFromStatusBar, "");
                 finish();
                 break;
             case R.id.dlg_right_btn:
@@ -102,7 +103,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            PushUIHelper.getInstance(this).sendACK(false, "");
+            PushUIHelper.getInstance(this).sendACK(false, mFromStatusBar, "");
             SDKWrapper.addEvent(this, LeoStat.P1, "act", "cancel");
         }
         return super.onKeyDown(keyCode, event);
@@ -155,7 +156,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
             startActivity(intent);
         }
         SDKWrapper.addEvent(this, LeoStat.P1, "act", "cligp");
-        PushUIHelper.getInstance(this).sendACK(true, phone);
+        PushUIHelper.getInstance(this).sendACK(true, mFromStatusBar, phone);
         finish();
     }
 

@@ -68,21 +68,21 @@ public class PushUIHelper implements IPushUIHelper {
     }
 
     @Override
-    public void onPush(String title, String content) {
+    public void onPush(String title, String content, int showType) {
         LeoLog.d(TAG, "title=" + title + "; content=" + content);
         mTitle = title;
         mContent = content;
-        // if (isActivityOnTop(mContext)) {
-        // LeoLog.d(TAG, "push activity already on top, do nothing");
-        // } else if (isAppOnTop(mContext)) {
-        // mStatusBar = false;
-        // showPushActivity(title, content, false);
-        // } else {
-        // mStatusBar = true;
-        // sendPushNotification(title, content);
-        // }
-        mStatusBar = true;
-        sendPushNotification(title, content);
+        if (showType == PushManager.SHOW_DIALOG_FIRST && isActivityOnTop(mContext)) {
+            LeoLog.d(TAG, "push activity already on top, do nothing");
+        } else if (showType == PushManager.SHOW_DIALOG_FIRST && isAppOnTop(mContext)) {
+            LeoLog.d(TAG, "notify user with dialog");
+            mStatusBar = false;
+            showPushActivity(title, content, false);
+        } else {
+            LeoLog.d(TAG, "notify user with status bar");
+            mStatusBar = true;
+            sendPushNotification(title, content);
+        }
     }
 
     private void showPushActivity(String title, String content, boolean isFromStatusBar) {
@@ -97,10 +97,9 @@ public class PushUIHelper implements IPushUIHelper {
     }
 
     /* this will be called by Activity for Push UI */
-    public void sendACK(boolean isRewarded, String phoneNumber) {
+    public void sendACK(boolean isRewarded, boolean isStatusBar, String phoneNumber) {
         String rewardedStr = isRewarded ? "Y" : "N";
-//        String statusbarStr = mStatusBar ? "Y" : "N";
-        String statusbarStr = "Y";
+        String statusbarStr = isStatusBar ? "Y" : "N";
         sendACK(rewardedStr, statusbarStr, phoneNumber);
     }
 

@@ -47,7 +47,7 @@ public class SDKWrapper {
         LeoStat.init(ctx, ctx.getString(R.string.channel_code),
                 "appmaster");
         // TODO: change log level to ERROR when release
-        LeoStat.setDebugLevel(Log.DEBUG);
+        LeoStat.setDebugLevel(Log.VERBOSE);
         LeoStat.initUpdateEngine(UIHelper.getInstance(ctx),
                 true);
         LeoStat.initPushEngine(PushUIHelper.getInstance(ctx));
