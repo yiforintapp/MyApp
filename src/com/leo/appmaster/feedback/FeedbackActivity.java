@@ -181,9 +181,6 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
             });
             mCategoryImg.setImageResource(R.drawable.choose_active);
         } else if (v == mBtnCommit) {
-            /**
-             * AM-496
-             */
             if (mEditEmail.getText().toString().trim().contains("@")) {
                 FeedbackHelper.getInstance().tryCommit(mCategory.getText().toString(),
                         mEditEmail.getText().toString().trim(),
@@ -195,7 +192,9 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
                 mCategory.setText(mCategory.getText().toString());
                 mCategory.setTag(1);
             } else {
-                Toast.makeText(FeedbackActivity.this, this.getResources().getText(R.string.feedback_error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FeedbackActivity.this,
+                        this.getResources().getText(R.string.feedback_error), Toast.LENGTH_SHORT)
+                        .show();
             }
             SDKWrapper.addEvent(this, LeoStat.P1, "setting", "fb_submit");
         }
@@ -212,9 +211,6 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
             mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    /**
-                     * AM-496
-                     */
                     mEditContent.setText("");
                     mEditEmail.setText("");
                     mCategory.setText(R.string.feedback_category_tip);
