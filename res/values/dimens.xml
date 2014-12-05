@@ -47,5 +47,9 @@
     <dimen name="indicator_internal_padding">4dp</dimen>
     <dimen name="header_footer_left_right_padding">24dp</dimen>
     <dimen name="header_footer_top_bottom_padding">12dp</dimen>
+    
+    <!-- action view  -->
+    <dimen name="new_install_prompt_offsetx">36dp</dimen>
+    <dimen name="new_install_prompt_offsety">1dp</dimen>
 
 </resources>

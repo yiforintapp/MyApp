@@ -46,6 +46,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_ONLINE_THEME_SERIAL = "online_theme_serialnumber";
 	public static final String PREF_LOCAL_THEME_SERIAL = "local_theme_serialnumber";
 	public static final String PREF_LAST_CHECK_NEW_THEME = "last_check_new_theme_time";
+	
+	//applist business 
+	public static final String PREF_LAST_SYNC_BUSINESS_TIME = "last_sync_business_time";
 
 	// other
 	public static final String PREF_LAST_VERSION = "last_version";
@@ -106,8 +109,17 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		return mPref.getLong(PREF_LAST_CHECK_NEW_THEME, 0);
 	}
 
-	public void setLastCheckTheme(long lastTime) {
+	public void setLastCheckThemeTime(long lastTime) {
 		mPref.edit().putLong(PREF_LAST_CHECK_NEW_THEME, lastTime)
+				.commit();
+	}
+	
+	public long getLastSyncBusinessTime() {
+		return mPref.getLong(PREF_LAST_SYNC_BUSINESS_TIME, 0);
+	}
+
+	public void setLastSyncBusinessTime(long lastTime) {
+		mPref.edit().putLong(PREF_LAST_SYNC_BUSINESS_TIME, lastTime)
 				.commit();
 	}
 

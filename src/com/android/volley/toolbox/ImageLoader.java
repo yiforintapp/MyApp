@@ -226,7 +226,7 @@ public class ImageLoader {
     protected Request<Bitmap> makeImageRequest(String requestUrl, int maxWidth, int maxHeight, final String cacheKey) {
         return new ImageRequest(requestUrl, new Listener<Bitmap>() {
             @Override
-            public void onResponse(Bitmap response) {
+            public void onResponse(Bitmap response, boolean noMidify) {
                 onGetImageSuccess(cacheKey, response);
             }
         }, maxWidth, maxHeight,

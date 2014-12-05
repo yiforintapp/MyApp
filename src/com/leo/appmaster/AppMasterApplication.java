@@ -21,7 +21,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -48,11 +50,18 @@ public class AppMasterApplication extends Application implements
 	private static AppMasterApplication mInstance;
 	private static List<Activity> mActivityList;
 
-	private Handler mHandler;
+	public Handler mHandler;
 
 	public static SharedPreferences sharedPreferences;
 	public static String usedThemePackage;
 	public static String number;
+
+	public static int SDK_VERSION;
+	public static float density;
+	public static int densityDpi;
+	public static String densityString;
+	public static int MAX_OUTER_BLUR_RADIUS;
+
 	static {
 		System.loadLibrary("leo_service");
 	}
@@ -62,6 +71,7 @@ public class AppMasterApplication extends Application implements
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		initDensity(this);
 		mActivityList = new ArrayList<Activity>();
 		mInstance = this;
 		mHandler = new Handler();
@@ -231,7 +241,7 @@ public class AppMasterApplication extends Application implements
 					new Listener<JSONObject>() {
 
 						@Override
-						public void onResponse(JSONObject response) {
+						public void onResponse(JSONObject response, boolean noMidify) {
 							if (response != null) {
 								try {
 									JSONObject jsonObject = response.getJSONObject("data");
@@ -251,7 +261,7 @@ public class AppMasterApplication extends Application implements
 										if (hasNewTheme) {
 											showNewThemeTip();
 										}
-										pref.setLastCheckTheme(System
+										pref.setLastCheckThemeTime(System
 												.currentTimeMillis());
 									}
 
@@ -350,5 +360,29 @@ public class AppMasterApplication extends Application implements
 
 	public static String getSelectedTheme() {
 		return usedThemePackage;
+	}
+
+	private static void initDensity(Context context) {
+		SDK_VERSION = android.os.Build.VERSION.SDK_INT;
+		Resources res = context.getResources();
+		DisplayMetrics dm = res.getDisplayMetrics();
+
+		density = dm.density;
+		densityDpi = dm.densityDpi;
+		switch (densityDpi) {
+		case DisplayMetrics.DENSITY_XHIGH:
+			densityString = "xhdpi";
+			break;
+		}
+		MAX_OUTER_BLUR_RADIUS = (int) (density * 12.0f);
+	}
+
+	/**
+	 * Whether the sdk level is higher than 14 (android 4.0)
+	 * 
+	 * @return true if sdk level is higher than android 4.0, false otherwise
+	 */
+	public static boolean isAboveICS() {
+		return AppMasterApplication.SDK_VERSION >= 14;
 	}
 }

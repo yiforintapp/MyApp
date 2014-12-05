@@ -3,18 +3,16 @@ package com.leo.appmaster.appmanage;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager.PageTransformer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -25,29 +23,30 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.model.FolderItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoGridBaseAdapter;
 import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.PageIndicator;
 
-@SuppressLint("InflateParams")
 public class AppListActivity extends BaseActivity implements AppChangeListener,
 		OnClickListener, OnItemClickListener {
 
-	View mLoadingView;
-
+	private View mLoadingView;
 	private CommonTitleBar mTtileBar;
 	private PageIndicator mPageIndicator;
 	private LeoAppViewPager mViewPager;
 	private View mPagerContain;
-	
-	List<AppDetailInfo> mAppDetails;
-	LayoutInflater mInflater;
-	private Animation animate;
+	private LayoutInflater mInflater;
+
+	private List<BaseInfo> mAllItems;
+	private List<BaseInfo> mFolderItems;
+	private List<BaseInfo> mBusinessItems;
+	private List<AppItemInfo> mAppDetails;
 	private int pageItemCount = 20;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +54,7 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 		setContentView(R.layout.activity_app_manager);
 
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
-	//	animate=AnimationUtils.loadAnimation(AppListActivity.this,R.anim.locker_scale);
+		// animate=AnimationUtils.loadAnimation(AppListActivity.this,R.anim.locker_scale);
 		intiUI();
 	}
 
@@ -77,19 +76,33 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 		mPagerContain = findViewById(R.id.layout_pager_container);
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
 		mViewPager = (LeoAppViewPager) findViewById(R.id.pager);
-		mViewPager.setPageTransformer(true, (com.leo.appmaster.ui.LeoAppViewPager.PageTransformer) new DepthPageTransformer());
 		fillData();
 	}
 
 	public void fillData() {
+		mAllItems = new ArrayList<BaseInfo>();
+
+		// first, add four folders
+		mFolderItems = new ArrayList<BaseInfo>();
+		loadFolderData();
+		mAllItems.addAll(mFolderItems);
+
+		// second, add business items
+		mBusinessItems = new ArrayList<BaseInfo>();
+		loadBusinessData();
+
+		// third, add all local apps
 		mAppDetails = AppLoadEngine.getInstance(this).getAllPkgInfo();
+		mAllItems.addAll(mAppDetails);
+
+		// data load finished
 		mLoadingView.setVisibility(View.INVISIBLE);
-		int pageCount = Math.round(((long) mAppDetails.size()) / pageItemCount);
+		int pageCount = Math.round(((long) mAllItems.size()) / pageItemCount);
 		int itemCounts[] = new int[pageCount];
 		int i;
 		for (i = 0; i < itemCounts.length; i++) {
 			if (i == itemCounts.length - 1) {
-				itemCounts[i] = mAppDetails.size() / pageItemCount;
+				itemCounts[i] = mAllItems.size() / pageItemCount;
 			} else {
 				itemCounts[i] = pageItemCount;
 			}
@@ -97,13 +110,13 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 		ArrayList<View> viewList = new ArrayList<View>();
 
 		for (i = 0; i < pageCount; i++) {
-		    GridView gridView = (GridView) mInflater.inflate(
-					R.layout.appmanage_gridview, mViewPager, false);
+			GridView gridView = (GridView) mInflater.inflate(
+					R.layout.grid_page_item, mViewPager, false);
 			if (i == pageCount) {
-				gridView.setAdapter(new DataAdapter(mAppDetails, i
+				gridView.setAdapter(new DataAdapter(mAllItems, i
 						* pageItemCount, mAppDetails.size() - 1));
 			} else {
-				gridView.setAdapter(new DataAdapter(mAppDetails, i
+				gridView.setAdapter(new DataAdapter(mAllItems, i
 						* pageItemCount, i * pageItemCount + pageItemCount - 1));
 			}
 			gridView.setOnItemClickListener(this);
@@ -114,8 +127,58 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 		mPagerContain.setVisibility(View.VISIBLE);
 	}
 
-	private class DataPagerAdapter extends PagerAdapter {
+	/**
+	 * we should judge load sync or not
+	 */
+	private void loadBusinessData() {
 
+	}
+
+	private void loadFolderData() {
+		FolderItemInfo folder = null;
+		// add system app folder
+		folder = new FolderItemInfo();
+		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
+		folder.folderType = FolderItemInfo.FOLDER_SYSTEM_APP;
+		folder.icon = getResources().getDrawable(R.drawable.folder);
+		folder.label = getString(R.string.folder_system_preset);
+		mFolderItems.add(folder);
+		// add running app folder
+		folder = new FolderItemInfo();
+		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
+		folder.folderType = FolderItemInfo.FOLDER_RUNNING_APP;
+		folder.icon = getResources().getDrawable(R.drawable.folder);
+		folder.label = getString(R.string.folder_running);
+		mFolderItems.add(folder);
+		// add restore folder
+		folder = new FolderItemInfo();
+		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
+		folder.folderType = FolderItemInfo.FOLDER_BACKUP_APP;
+		folder.icon = getResources().getDrawable(R.drawable.folder);
+		folder.label = getString(R.string.folder_restore);
+		mFolderItems.add(folder);
+		// add business app folder
+		folder = new FolderItemInfo();
+		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
+		folder.folderType = FolderItemInfo.FOLDER_BUSINESS_APP;
+		folder.icon = getResources().getDrawable(R.drawable.folder);
+		folder.label = getString(R.string.folder_recommend);
+		mFolderItems.add(folder);
+	}
+
+	private void animateItem(View view) {
+
+		AnimatorSet as = new AnimatorSet();
+		as.setDuration(300);
+		ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f,
+				0.8f, 1f);
+		ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f,
+				0.8f, 1f);
+		as.playTogether(scaleX, scaleY);
+		as.start();
+	}
+
+	private class DataPagerAdapter extends PagerAdapter {
 		List<View> pagerList;
 
 		public DataPagerAdapter(ArrayList<View> viewList) {
@@ -139,7 +202,7 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
-		    View view = pagerList.get(position);
+			View view = pagerList.get(position);
 			container.addView(view);
 			return view;
 		}
@@ -150,7 +213,7 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 		int startLoc;
 		int endLoc;
 
-		public DataAdapter(List<AppDetailInfo> appDetails, int start, int end) {
+		public DataAdapter(List<BaseInfo> appDetails, int start, int end) {
 			super();
 			startLoc = start;
 			endLoc = end;
@@ -182,10 +245,10 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 			TextView textView = (TextView) convertView
 					.findViewById(R.id.tv_app_name);
 
-			AppDetailInfo info = mAppDetails.get(startLoc + position);
+			BaseInfo info = mAllItems.get(startLoc + position);
 			imageView.setImageDrawable(info.icon);
 			textView.setText(info.label);
-			convertView.setTag(info.packageName);
+			convertView.setTag(info);
 			return convertView;
 		}
 
@@ -208,61 +271,48 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 
 	}
 
-	public class DepthPageTransformer implements PageTransformer {
-		private static final float MIN_SCALE = 0.75f;
-
-		@SuppressLint("NewApi")
-		@Override
-		public void transformPage(View view, float position) {
-			int pageWidth = view.getWidth();
-			if (position < -1) { // [-Infinity,-1)
-									// This page is way off-screen to the left.
-				view.setAlpha(0);
-			} else if (position <= 0) { // [-1,0]
-										// Use the default slide transition when
-										// moving to the left page
-				view.setAlpha(1);
-				view.setTranslationX(0);
-				view.setScaleX(1);
-				view.setScaleY(1);
-			} else if (position <= 1) { // (0,1]
-										// Fade the page out.
-				view.setAlpha(1 - position);
-				// Counteract the default slide transition
-				view.setTranslationX(pageWidth * -position);
-				// Scale the page down (between MIN_SCALE and 1)
-				float scaleFactor = MIN_SCALE + (1 - MIN_SCALE)
-						* (1 - Math.abs(position));
-				view.setScaleX(scaleFactor);
-				view.setScaleY(scaleFactor);
-			} else { // (1,+Infinity]
-						// This page is way off-screen to the right.
-				view.setAlpha(0);
-
-			}
-		}
-
-	}
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		view.startAnimation(animate);
-		String pkg = (String) view.getTag();
-		Intent intent = new Intent(this, AppDetailActivity.class);
-		intent.putExtra(AppDetailActivity.EXTRA_LOAD_PKG, pkg);
-		this.startActivity(intent);
+		animateItem(view);
+		BaseInfo itemInfo = (BaseInfo) view.getTag();
+		handleItemClick(itemInfo);
+	}
+
+	private void handleItemClick(BaseInfo itemInfo) {
+		Intent intent = null;
+		switch (itemInfo.type) {
+		case BaseInfo.ITEM_TYPE_NORMAL_APP:
+			AppItemInfo appinfo = (AppItemInfo) itemInfo;
+			intent = new Intent(this, AppDetailActivity.class);
+			intent.putExtra(AppDetailActivity.EXTRA_LOAD_PKG,
+					appinfo.packageName);
+			this.startActivity(intent);
+			break;
+		case BaseInfo.ITEM_TYPE_FOLDER:
+			intent = new Intent(this, FolderActivity.class);
+			FolderItemInfo folderInfo = (FolderItemInfo) itemInfo;
+			intent.putExtra("from_type", folderInfo.folderType);
+			this.startActivity(intent);
+			break;
+		case BaseInfo.ITEM_TYPE_BUSINESS_APP:
+
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	@Override
-	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
+	public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
 		runOnUiThread(new Runnable() {
-
 			@Override
 			public void run() {
 				fillData();
 			}
 		});
+
 	}
 
 }

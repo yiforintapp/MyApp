@@ -9,22 +9,22 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 
 public class AppBackupAdapter extends BaseAdapter {
 
-	private ArrayList<AppDetailInfo> mBackupList;
+	private ArrayList<AppItemInfo> mBackupList;
 
 	private AppBackupRestoreManager mBackupManager;
 
 	public AppBackupAdapter(AppBackupRestoreManager manager) {
 		mBackupManager = manager;
-		mBackupList = new ArrayList<AppDetailInfo>();
+		mBackupList = new ArrayList<AppItemInfo>();
 	}
 
-	public ArrayList<AppDetailInfo> getSelectedItems() {
-		ArrayList<AppDetailInfo> selectedItems = new ArrayList<AppDetailInfo>();
-		for (AppDetailInfo app : mBackupList) {
+	public ArrayList<AppItemInfo> getSelectedItems() {
+		ArrayList<AppItemInfo> selectedItems = new ArrayList<AppItemInfo>();
+		for (AppItemInfo app : mBackupList) {
 			if (app.isChecked) {
 				selectedItems.add(app);
 			}
@@ -33,7 +33,7 @@ public class AppBackupAdapter extends BaseAdapter {
 	}
 
 	public boolean hasBackupApp() {
-		for (AppDetailInfo app : mBackupList) {
+		for (AppItemInfo app : mBackupList) {
 			if (!app.isBackuped) {
 				return true;
 			}
@@ -43,8 +43,8 @@ public class AppBackupAdapter extends BaseAdapter {
 
 	public void updateData() {
 		mBackupList.clear();
-		ArrayList<AppDetailInfo> apps = mBackupManager.getBackupList();
-		for (AppDetailInfo app : apps) {
+		ArrayList<AppItemInfo> apps = mBackupManager.getBackupList();
+		for (AppItemInfo app : apps) {
 			app.isChecked = false;
 			mBackupList.add(app);
 		}
@@ -52,7 +52,7 @@ public class AppBackupAdapter extends BaseAdapter {
 	}
 
 	public void checkAll(boolean check) {
-		for (AppDetailInfo app : mBackupList) {
+		for (AppItemInfo app : mBackupList) {
 			if (app.isBackuped)
 				continue;
 			app.isChecked = check;
@@ -85,7 +85,7 @@ public class AppBackupAdapter extends BaseAdapter {
 			itemView = (AppBackupItemView) inflater.inflate(
 					R.layout.item_app_backup, null);
 		}
-		AppDetailInfo app = mBackupList.get(arg0);
+		AppItemInfo app = mBackupList.get(arg0);
 		Context context = itemView.getContext();
 		if (arg0 % 2 == 0) {
 			itemView.setBackgroundDrawable(context.getResources().getDrawable(

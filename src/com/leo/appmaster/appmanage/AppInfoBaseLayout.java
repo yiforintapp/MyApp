@@ -1,7 +1,7 @@
 package com.leo.appmaster.appmanage;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.utils.ProcessUtils;
 
 import android.app.ActivityManager;
@@ -21,7 +21,7 @@ public class AppInfoBaseLayout extends LinearLayout implements OnClickListener {
 	TextView mBtnUninstall;
 	TextView mTvAppName;
 
-	AppDetailInfo mAppInfo;
+	AppItemInfo mAppInfo;
 
 	public AppInfoBaseLayout(Context context) {
 		super(context);
@@ -48,7 +48,7 @@ public class AppInfoBaseLayout extends LinearLayout implements OnClickListener {
 		mBtnUninstall.setOnClickListener(this);
 	}
 
-	public void setAppDetailInfo(AppDetailInfo info) {
+	public void setAppDetailInfo(AppItemInfo info) {
 		mAppInfo = info;
 		inflateUI();
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.leo.appmaster.AppMasterPreference;
@@ -18,6 +19,8 @@ import com.android.volley.Response.Listener;
 import com.android.volley.Response.ErrorListener;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 
 /**
  * Http request Proxy
@@ -85,6 +88,64 @@ public class HttpRequestAgent {
 						.getLocalSerialNumber() + "&loaded_theme=" + combined;
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
 				body, listener, eListener);
+		request.setShouldCache(false);
+		mRequestQueue.add(request);
+	}
+
+	/**
+	 * get system preset page recommend apps
+	 * 
+	 * @param listener
+	 * @param eListener
+	 */
+	public void loadApplistRecomApp(Listener<JSONObject> listener,
+			ErrorListener eListener) {
+
+	}
+
+	/**
+	 * get system preset page recommend apps
+	 * 
+	 * @param listener
+	 * @param eListener
+	 */
+	public void loadSysPresetRecomApp(Listener<JSONObject> listener,
+			ErrorListener eListener) {
+
+	}
+
+	/**
+	 * get running page recommend apps
+	 * 
+	 * @param listener
+	 * @param eListener
+	 */
+	public void loadRunningRecomApp(Listener<JSONObject> listener,
+			ErrorListener eListener) {
+
+	}
+
+	/**
+	 * get business page recommend apps
+	 * 
+	 * @param listener
+	 * @param eListener
+	 */
+	public void loadBusinessRecomApp(Listener<JSONObject> listener,
+			ErrorListener eListener) {
+
+	}
+
+	/**
+	 * get business page recommend apps
+	 * 
+	 * @param listener
+	 * @param eListener
+	 */
+	public void loadBusinessAppIcon(final String url,
+			Listener<Bitmap> listener, ErrorListener eListener) {
+		ImageRequest request = new ImageRequest(url, listener, 200, 200,
+				Config.ARGB_8888, eListener);
 		request.setShouldCache(false);
 		mRequestQueue.add(request);
 	}

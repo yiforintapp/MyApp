@@ -4,7 +4,7 @@ import com.leo.appmaster.Constants;
 
 import android.graphics.drawable.Drawable;
 
-public class ThemeInfo {
+public class ThemeItemInfo {
 	/**
 	 * theme name
 	 */

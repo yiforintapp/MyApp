@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 
 public class AppRestoreItemView extends FrameLayout implements OnClickListener {
 
@@ -53,8 +53,8 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
         AppBackupRestoreActivity activity = (AppBackupRestoreActivity)context;
         AppBackupRestoreManager backupManager = activity.getBackupManager();
         Object tag = getTag();
-        if(tag instanceof AppDetailInfo) {
-            AppDetailInfo app = (AppDetailInfo) tag;
+        if(tag instanceof AppItemInfo) {
+            AppItemInfo app = (AppItemInfo) tag;
             if(v == mInstall) {
                 backupManager.restoreApp(context, app);
             } else if (v == mDelete) {

@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -58,7 +58,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 	private LEOAlarmDialog mAlarmDialog;
 	private LEOMessageDialog mMessageDialog;
 
-	private AppDetailInfo mPendingDelApp;
+	private AppItemInfo mPendingDelApp;
 
 	private Handler mHandler = new Handler();
 
@@ -255,14 +255,14 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		} else if (v == mViewRestore) {
 			mPager.setCurrentItem(1, true);
 		} else if (v == mButtonBackup) {
-			ArrayList<AppDetailInfo> items = mBackupAdapter.getSelectedItems();
+			ArrayList<AppItemInfo> items = mBackupAdapter.getSelectedItems();
 			int size = items.size();
 			if (size > 0) {
 				showProgressDialog(getString(R.string.button_backup), "", size,
 						false, true);
 				mBackupManager.backupApps(items);
 				// track backup
-				for (AppDetailInfo info : items) {
+				for (AppItemInfo info : items) {
 					SDKWrapper.addEvent(this, LeoStat.P1, "backup", "backup: "
 							+ info.packageName);
 				}
@@ -290,7 +290,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 			long id) {
 		if (view instanceof AppBackupItemView) {
 			AppBackupItemView item = (AppBackupItemView) view;
-			AppDetailInfo app = (AppDetailInfo) item.getTag();
+			AppItemInfo app = (AppItemInfo) item.getTag();
 			if (app.isBackuped) {
 				app.isChecked = false;
 			} else {
@@ -302,7 +302,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		}
 	}
 
-	public void tryDeleteApp(AppDetailInfo app) {
+	public void tryDeleteApp(AppItemInfo app) {
 		mPendingDelApp = app;
 		showAlarmDialog(getString(R.string.delete),
 				String.format(getString(R.string.query_delete), app.label));

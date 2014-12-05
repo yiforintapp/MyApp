@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.appmanage.GestureLayout.IGestureListener;
+import com.leo.appmaster.appmanage.view.GestureLayout.IGestureListener;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CustomViewPager;
@@ -74,7 +74,7 @@ public class AppDetailActivity extends BaseActivity implements
 
 	private Bitmap mAppBaseInfoLayoutbg;
 
-	private AppDetailInfo mAppInfo;
+	private AppItemInfo mAppInfo;
 	private DeleteReceiver mDeleteReceiver;
 	private Date mCurrdate;
 

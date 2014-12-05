@@ -1,6 +1,93 @@
 package com.leo.appmaster;
 
+import android.net.Uri;
+
 public class Constants {
+
+	public static final String DATABASE_NAME = "appmaster.db";
+	public static final int DATABASE_VERSION = 2;
+
+	public static final String AUTHORITY = "com.leo.appmaster.provider";
+	public static final String ID = "_id";
+
+	public static final String TABLE_DOWNLOAD = "download";
+	public static final String TABLE_FEEDBACK = "feedback";
+	public static final String TABLE_APPLIST_BUSINESS = "applist_business";
+
+	public static final Uri DOWNLOAD_URI = Uri.parse("content://" + AUTHORITY
+			+ "/" + TABLE_DOWNLOAD);
+
+	public static final Uri FEEDBACK_URI = Uri.parse("content://" + AUTHORITY
+			+ "/" + TABLE_FEEDBACK);
+
+	public static final Uri APPLIST_BUSINESS_URI = Uri.parse("content://"
+			+ AUTHORITY + "/" + TABLE_APPLIST_BUSINESS);
+
+	// download table
+	public static final String COLUMN_DOWNLOAD_FILE_NAME = "file_name";
+	public static final String COLUMN_DOWNLOAD_DESTINATION = "dest";
+	public static final String COLUMN_DOWNLOAD_URL = "url";
+	public static final String COLUMN_DOWNLOAD_MIME_TYPE = "mime_type";
+	public static final String COLUMN_DOWNLOAD_TOTAL_SIZE = "total_size";
+	public static final String COLUMN_DOWNLOAD_CURRENT_SIZE = "current_size";
+	public static final String COLUMN_DOWNLOAD_STATUS = "status";
+	public static final String COLUMN_DOWNLOAD_DATE = "download_date";
+	public static final String COLUMN_DOWNLOAD_TITLE = "title";
+	public static final String COLUMN_DOWNLOAD_DESCRIPTION = "description";
+	public static final String COLUMN_DOWNLOAD_WIFIONLY = "wifionly";
+
+	// download status
+	public static final int RESULT_SUCCESS = 0;
+	public static final int RESULT_FAILED = 1;
+	public static final int RESULT_CANCELLED = 2;
+	public static final int RESULT_FAILED_SDCARD = 3;
+	public static final int RESULT_FAILED_NO_NETWORK = 4;
+	public static final int RESULT_FAILED_SDCARD_INSUFFICIENT = 5;
+
+	public static final String PARAMETER_NOTIFY = "notify";
+
+	// download type
+	public static final String MIME_TYPE_THEME_ICON = "theme/ICON";
+
+	public static final String MIME_TYPE_WALLPAPER = "wallpaper";
+
+	public static final String MIME_TYPE_PUSH = "apk";
+
+	// action
+	public static final String ACTION_DOWNLOAD_ADD = "com.coco.launcher.download.add";
+	public static final String ACTION_DOWNLOAD_STOP = "com.coco.launcher.download.stop";
+	// public static final String ACTION_DOWNLOAD_PAUSE =
+	// "com.coco.launcher.download.pause";
+	public static final String ACTION_DOWNLOAD_START = "com.coco.launcher.download_start";
+	public static final String ACTION_DOWNLOAD_PROGRESS = "com.coco.launcher.download_progress";
+	public static final String ACTION_DOWNLOAD_COMPOLETED = "com.coco.launcher.download_completed";
+
+	public static final String TYPE = "type";
+
+	public static final String EXTRA_TIME = "extra_time";
+
+	public static final int PROGRESS_INTERVAL = 1000;
+
+	// mimetype
+	public static final String MIME_TYPE_BUSINESS_APK = "application";
+
+	// download notify
+	public static final String EXTRA_ID = "extra_id";
+	public static final String EXTRA_TOTAL = "extra_total";
+	public static final String EXTRA_CURRENT = "extra_current";
+	public static final String EXTRA_TITLE = "extra_title";
+	public static final String EXTRA_PROGRESS = "extra_progress";
+	public static final String EXTRA_RESULT = "extra_result";
+	public static final String EXTRA_NOTIFY_TYPE = "extra_notify_type";
+	public static final String EXTRA_DEST_PATH = "extra_dest_path";
+	public static final String EXTRA_URL = "extra_url";
+	public static final String EXTRA_MIMETYPE = "extra_mimetype";
+
+	// Message
+	public static final int MESSAGE_SHORTCUT_INSTALLED = 100;
+	public static final int MESSAGE_SHORTCUT_NOSPACE = 101;
+	public static final int MESSAGE_SHORTCUT_UNINSTALLED = 102;
+	public static final int MESSAGE_DOWNLOAD_FAILED = 103;
 
 	/**
 	 * Image Loader

@@ -612,7 +612,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
 	 *            The parsed response returned by
 	 *            {@link #parseNetworkResponse(NetworkResponse)}
 	 */
-	abstract protected void deliverResponse(T response);
+	abstract protected void deliverResponse(T response, boolean noMidify);
 
 	/**
 	 * Delivers error message to the ErrorListener that the Request was

@@ -244,5 +244,9 @@
     <string name="locker_theme_guide">Themes will be applied to lock screen!</string>
     <string name="locker_clean">Boosted successfully up to %1$s</string>
     <string name="setting_locker_clean">Unlock to boost</string>
+    <string name="folder_system_preset">系统预装</string>
+    <string name="folder_running">正在运行</string>
+    <string name="folder_restore">应用恢复</string>
+    <string name="folder_recommend">精品速递</string>
 
 </resources>

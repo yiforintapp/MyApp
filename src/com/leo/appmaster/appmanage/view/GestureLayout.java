@@ -1,4 +1,4 @@
-package com.leo.appmaster.appmanage;
+package com.leo.appmaster.appmanage.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

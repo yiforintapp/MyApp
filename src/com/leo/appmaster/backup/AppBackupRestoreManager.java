@@ -33,7 +33,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
@@ -98,8 +98,8 @@ public class AppBackupRestoreManager implements AppChangeListener {
 
 	private AppBackupDataListener mBackupListener;
 
-	private ArrayList<AppDetailInfo> mSavedList;
-	private ArrayList<AppDetailInfo> mBackupList;
+	private ArrayList<AppItemInfo> mSavedList;
+	private ArrayList<AppItemInfo> mBackupList;
 
 	private boolean mDataReady = false;
 
@@ -111,8 +111,8 @@ public class AppBackupRestoreManager implements AppChangeListener {
 			AppBackupDataListener listener) {
 		mPackageManager = context.getPackageManager();
 		mBackupListener = listener;
-		mSavedList = new ArrayList<AppDetailInfo>();
-		mBackupList = new ArrayList<AppDetailInfo>();
+		mSavedList = new ArrayList<AppItemInfo>();
+		mBackupList = new ArrayList<AppItemInfo>();
 		AppLoadEngine.getInstance(context).registerAppChangeListener(this);
 
 		mSDReceiver = new SDCardReceiver();
@@ -139,7 +139,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		});
 	}
 
-	public void backupApps(final ArrayList<AppDetailInfo> apps) {
+	public void backupApps(final ArrayList<AppItemInfo> apps) {
 		mBackupCanceled = false;
 		String backupPath = getBackupPath();
 		final int totalNum = apps.size();
@@ -154,7 +154,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 					int successNum = 0;
 					int failType = FAIL_TYPE_NONE;
 					boolean success = true;
-					for (AppDetailInfo app : apps) {
+					for (AppItemInfo app : apps) {
 						if (mBackupCanceled) {
 							failType = FAIL_TYPE_CANCELED;
 							success = false;
@@ -194,7 +194,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		mBackupCanceled = true;
 	}
 
-	public void deleteApp(final AppDetailInfo app) {
+	public void deleteApp(final AppItemInfo app) {
 		mExecutorService.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -208,7 +208,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 				if (success) {
 					mSavedList.remove(app);
 					String pName = app.packageName;
-					for (AppDetailInfo a : mBackupList) {
+					for (AppItemInfo a : mBackupList) {
 						if (pName.equals(a.packageName)) {
 							a.isBackuped = false;
 							break;
@@ -222,7 +222,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		});
 	}
 
-	public void restoreApp(Context context, AppDetailInfo app) {
+	public void restoreApp(Context context, AppItemInfo app) {
 		Intent intent = new Intent();
 		intent.setDataAndType(Uri.fromFile(new File(app.sourceDir)), DATA_TYPE);
 		try {
@@ -241,12 +241,12 @@ public class AppBackupRestoreManager implements AppChangeListener {
 			mExecutorService.execute(new Runnable() {
 				@Override
 				public void run() {
-					ArrayList<AppDetailInfo> deleteSavedList = new ArrayList<AppDetailInfo>();
-					for (AppDetailInfo app : mSavedList) {
+					ArrayList<AppItemInfo> deleteSavedList = new ArrayList<AppItemInfo>();
+					for (AppItemInfo app : mSavedList) {
 						File apkFile = new File(app.sourceDir);
 						if (!apkFile.isFile() || !apkFile.exists()) {
 							deleteSavedList.add(app);
-							for (AppDetailInfo a : mBackupList) {
+							for (AppItemInfo a : mBackupList) {
 								if (app.packageName.equals(a.packageName)) {
 									a.isBackuped = false;
 								}
@@ -272,7 +272,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		return tips;
 	}
 
-	public String getApkSize(AppDetailInfo app) {
+	public String getApkSize(AppItemInfo app) {
 		String s = AppMasterApplication.getInstance().getString(
 				R.string.apk_size);
 		File file = new File(app.sourceDir);
@@ -315,7 +315,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		return sSize;
 	}
 
-	private int tryBackupApp(AppDetailInfo app) {
+	private int tryBackupApp(AppItemInfo app) {
 		File apkFile = new File(app.sourceDir);
 		if (apkFile.exists() == false) {
 			return FAIL_TYPE_SOURCE_NOT_FOUND;
@@ -372,9 +372,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
 			}
 		}
 
-		AppDetailInfo newApp = null;
+		AppItemInfo newApp = null;
 		boolean add = true;
-		for (AppDetailInfo appInfo : mSavedList) {
+		for (AppItemInfo appInfo : mSavedList) {
 			if (pName.equals(appInfo.packageName)) {
 				newApp = appInfo;
 				add = false;
@@ -382,7 +382,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 			}
 		}
 		if (newApp == null) {
-			newApp = new AppDetailInfo();
+			newApp = new AppItemInfo();
 		}
 		newApp.label = app.label;
 		newApp.icon = app.icon;
@@ -398,18 +398,18 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		return FAIL_TYPE_NONE;
 	}
 
-	public synchronized ArrayList<AppDetailInfo> getBackupList() {
+	public synchronized ArrayList<AppItemInfo> getBackupList() {
 		if (mBackupList.isEmpty()) {
 			getRestoreList();
-			ArrayList<AppDetailInfo> allApps = AppLoadEngine.getInstance(null)
+			ArrayList<AppItemInfo> allApps = AppLoadEngine.getInstance(null)
 					.getAllPkgInfo();
-			for (AppDetailInfo app : allApps) {
+			for (AppItemInfo app : allApps) {
 				if (app.systemApp) {
 					continue;
 				}
 				String pName = app.packageName;
 				int versionCode = app.versionCode;
-				for (AppDetailInfo a : mSavedList) { // check if already
+				for (AppItemInfo a : mSavedList) { // check if already
 														// backuped
 					if (pName.equals(a.packageName)
 							&& versionCode == a.versionCode) {
@@ -422,9 +422,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
 
 		}
 
-		Collections.sort(mBackupList, new Comparator<AppDetailInfo>() {
+		Collections.sort(mBackupList, new Comparator<AppItemInfo>() {
 			@Override
-			public int compare(AppDetailInfo lhs, AppDetailInfo rhs) {
+			public int compare(AppItemInfo lhs, AppItemInfo rhs) {
 				if (lhs.isBackuped && !rhs.isBackuped) {
 					return 1;
 				}
@@ -438,7 +438,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		return mBackupList;
 	}
 
-	public synchronized ArrayList<AppDetailInfo> getRestoreList() {
+	public synchronized ArrayList<AppItemInfo> getRestoreList() {
 
 		try {
 			if (!mSavedList.isEmpty()) {
@@ -454,7 +454,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 						PackageInfo pInfo = mPackageManager
 								.getPackageArchiveInfo(fPath, 0);
 						if (pInfo != null) {
-							AppDetailInfo app = new AppDetailInfo();
+							AppItemInfo app = new AppItemInfo();
 							Resources res = getResources(fPath);
 							ApplicationInfo appInfo = pInfo.applicationInfo;
 							String label = null;
@@ -571,7 +571,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 	}
 
 	@Override
-	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
+	public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
 		if (type == AppChangeListener.TYPE_ADD
 				|| type == AppChangeListener.TYPE_AVAILABLE) {
 			mBackupList.addAll(changes);
@@ -579,11 +579,11 @@ public class AppBackupRestoreManager implements AppChangeListener {
 				|| type == AppChangeListener.TYPE_UNAVAILABLE) {
 			mBackupList.removeAll(changes);
 		} else if (type == AppChangeListener.TYPE_UPDATE) {
-			for (AppDetailInfo app : changes) {
+			for (AppItemInfo app : changes) {
 				if (app.isBackuped) {
 					String pkg = app.packageName;
 					int vCode = app.versionCode;
-					for (AppDetailInfo a : mSavedList) {
+					for (AppItemInfo a : mSavedList) {
 						if (pkg.equals(a.packageName)
 								&& vCode != a.versionCode){
 							app.isBackuped = false;
@@ -600,7 +600,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		String backupPath = getBackupPath();
 		if (backupPath == null) {
 			mSavedList.clear();
-			for (AppDetailInfo app : mBackupList) {
+			for (AppItemInfo app : mBackupList) {
 				app.isBackuped = false;
 			}
 			mBackupListener.onDataUpdate();

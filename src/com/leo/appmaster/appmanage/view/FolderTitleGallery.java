@@ -1,21 +1,4 @@
-/*
- * Copyright 2013 David Schreiber
- *           2013 John Paul Nalog
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
-package com.leo.appmaster.appmanage;
+package com.leo.appmaster.appmanage.view;
 
 import com.leo.appmaster.R;
 
@@ -29,11 +12,7 @@ import android.view.animation.Transformation;
 import android.widget.Gallery;
 import android.widget.SpinnerAdapter;
 
-public class FancyCoverFlow extends Gallery {
-
-	// =============================================================================
-	// Constants
-	// =============================================================================
+public class FolderTitleGallery extends Gallery {
 
 	public static final int ACTION_DISTANCE_AUTO = Integer.MAX_VALUE;
 
@@ -43,69 +22,32 @@ public class FancyCoverFlow extends Gallery {
 
 	public static final float SCALEDOWN_GRAVITY_BOTTOM = 1.0f;
 
-	// =============================================================================
-	// Private members
-	// =============================================================================
-
 	private float reflectionRatio = 0.4f;
 
 	private int reflectionGap = 20;
 
 	private boolean reflectionEnabled = false;
-
-	/**
-	 * TODO: Doc
-	 */
 	private float unselectedAlpha;
 
-	/**
-	 * Camera used for view transformation.
-	 */
 	private Camera transformationCamera;
-
-	/**
-	 * TODO: Doc
-	 */
 	private int maxRotation = 75;
-
-	/**
-	 * Factor (0-1) that defines how much the unselected children should be
-	 * scaled down. 1 means no scaledown.
-	 */
 	private float unselectedScale;
-
-	/**
-	 * TODO: Doc
-	 */
 	private float scaleDownGravity = SCALEDOWN_GRAVITY_CENTER;
-
-	/**
-	 * Distance in pixels between the transformation effects (alpha, rotation,
-	 * zoom) are applied.
-	 */
 	private int actionDistance;
-
-	/**
-	 * Saturation factor (0-1) of items that reach the outer effects distance.
-	 */
 	private float unselectedSaturation;
 
-	// =============================================================================
-	// Constructors
-	// =============================================================================
-
-	public FancyCoverFlow(Context context) {
+	public FolderTitleGallery(Context context) {
 		super(context);
 		this.initialize();
 	}
 
-	public FancyCoverFlow(Context context, AttributeSet attrs) {
+	public FolderTitleGallery(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.initialize();
 		this.applyXmlAttributes(attrs);
 	}
 
-	public FancyCoverFlow(Context context, AttributeSet attrs, int defStyle) {
+	public FolderTitleGallery(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		this.initialize();
 		this.applyXmlAttributes(attrs);
@@ -118,26 +60,22 @@ public class FancyCoverFlow extends Gallery {
 
 	private void applyXmlAttributes(AttributeSet attrs) {
 		TypedArray a = getContext().obtainStyledAttributes(attrs,
-				R.styleable.FancyCoverFlow);
+				R.styleable.FolderTitleGallery);
 
-		this.actionDistance = a
-				.getInteger(R.styleable.FancyCoverFlow_actionDistance,
-						ACTION_DISTANCE_AUTO);
+		this.actionDistance = a.getInteger(
+				R.styleable.FolderTitleGallery_actionDistance,
+				ACTION_DISTANCE_AUTO);
 		this.scaleDownGravity = a.getFloat(
-				R.styleable.FancyCoverFlow_scaleDownGravity, 1.0f);
-		this.maxRotation = a.getInteger(R.styleable.FancyCoverFlow_maxRotation,
-				45);
+				R.styleable.FolderTitleGallery_scaleDownGravity, 1.0f);
+		this.maxRotation = a.getInteger(
+				R.styleable.FolderTitleGallery_maxRotation, 45);
 		this.unselectedAlpha = a.getFloat(
-				R.styleable.FancyCoverFlow_unselectedAlpha, 0.3f);
+				R.styleable.FolderTitleGallery_unselectedAlpha, 0.3f);
 		this.unselectedSaturation = a.getFloat(
-				R.styleable.FancyCoverFlow_unselectedSaturation, 0.0f);
+				R.styleable.FolderTitleGallery_unselectedSaturation, 0.0f);
 		this.unselectedScale = a.getFloat(
-				R.styleable.FancyCoverFlow_unselectedScale, 0.75f);
+				R.styleable.FolderTitleGallery_unselectedScale, 0.75f);
 	}
-
-	// =============================================================================
-	// Getter / Setter
-	// =============================================================================
 
 	public float getReflectionRatio() {
 		return reflectionRatio;
@@ -152,7 +90,8 @@ public class FancyCoverFlow extends Gallery {
 		this.reflectionRatio = reflectionRatio;
 
 		if (this.getAdapter() != null) {
-			((FancyCoverFlowAdapter) this.getAdapter()).notifyDataSetChanged();
+			((FolderTitleGalleryAdapter) this.getAdapter())
+					.notifyDataSetChanged();
 		}
 	}
 
@@ -164,7 +103,8 @@ public class FancyCoverFlow extends Gallery {
 		this.reflectionGap = reflectionGap;
 
 		if (this.getAdapter() != null) {
-			((FancyCoverFlowAdapter) this.getAdapter()).notifyDataSetChanged();
+			((FolderTitleGalleryAdapter) this.getAdapter())
+					.notifyDataSetChanged();
 		}
 	}
 
@@ -176,23 +116,25 @@ public class FancyCoverFlow extends Gallery {
 		this.reflectionEnabled = reflectionEnabled;
 
 		if (this.getAdapter() != null) {
-			((FancyCoverFlowAdapter) this.getAdapter()).notifyDataSetChanged();
+			((FolderTitleGalleryAdapter) this.getAdapter())
+					.notifyDataSetChanged();
 		}
 	}
 
 	/**
-	 * Use this to provide a {@link FancyCoverFlowAdapter} to the coverflow.
+	 * Use this to provide a {@link FolderTitleGalleryAdapter} to the coverflow.
 	 * This method will throw an {@link ClassCastException} if the passed
-	 * adapter does not subclass {@link FancyCoverFlowAdapter}.
+	 * adapter does not subclass {@link FolderTitleGalleryAdapter}.
 	 * 
 	 * @param adapter
 	 */
 	@Override
 	public void setAdapter(SpinnerAdapter adapter) {
-		if (!(adapter instanceof FancyCoverFlowAdapter)) {
-			throw new ClassCastException(FancyCoverFlow.class.getSimpleName()
-					+ " only works in conjunction with a "
-					+ FancyCoverFlowAdapter.class.getSimpleName());
+		if (!(adapter instanceof FolderTitleGalleryAdapter)) {
+			throw new ClassCastException(
+					FolderTitleGallery.class.getSimpleName()
+							+ " only works in conjunction with a "
+							+ FolderTitleGalleryAdapter.class.getSimpleName());
 		}
 
 		super.setAdapter(adapter);
@@ -218,106 +160,52 @@ public class FancyCoverFlow extends Gallery {
 		this.maxRotation = maxRotation;
 	}
 
-	/**
-	 * TODO: Write doc
-	 * 
-	 * @return
-	 */
 	public float getUnselectedAlpha() {
 		return this.unselectedAlpha;
 	}
 
-	/**
-	 * TODO: Write doc
-	 * 
-	 * @return
-	 */
 	public float getUnselectedScale() {
 		return unselectedScale;
 	}
 
-	/**
-	 * TODO: Write doc
-	 * 
-	 * @param unselectedScale
-	 */
 	public void setUnselectedScale(float unselectedScale) {
 		this.unselectedScale = unselectedScale;
 	}
 
-	/**
-	 * TODO: Doc
-	 * 
-	 * @return
-	 */
 	public float getScaleDownGravity() {
 		return scaleDownGravity;
 	}
 
-	/**
-	 * TODO: Doc
-	 * 
-	 * @param scaleDownGravity
-	 */
 	public void setScaleDownGravity(float scaleDownGravity) {
 		this.scaleDownGravity = scaleDownGravity;
 	}
 
-	/**
-	 * TODO: Write doc
-	 * 
-	 * @return
-	 */
 	public int getActionDistance() {
 		return actionDistance;
 	}
 
-	/**
-	 * TODO: Write doc
-	 * 
-	 * @param actionDistance
-	 */
 	public void setActionDistance(int actionDistance) {
 		this.actionDistance = actionDistance;
 	}
 
-	/**
-	 * TODO: Write doc
-	 * 
-	 * @param unselectedAlpha
-	 */
 	@Override
 	public void setUnselectedAlpha(float unselectedAlpha) {
 		super.setUnselectedAlpha(unselectedAlpha);
 		this.unselectedAlpha = unselectedAlpha;
 	}
 
-	/**
-	 * TODO: Write doc
-	 * 
-	 * @return
-	 */
 	public float getUnselectedSaturation() {
 		return unselectedSaturation;
 	}
 
-	/**
-	 * TODO: Write doc
-	 * 
-	 * @param unselectedSaturation
-	 */
 	public void setUnselectedSaturation(float unselectedSaturation) {
 		this.unselectedSaturation = unselectedSaturation;
 	}
 
-	// =============================================================================
-	// Supertype overrides
-	// =============================================================================
-
 	@Override
 	protected boolean getChildStaticTransformation(View child, Transformation t) {
 		// We can cast here because FancyCoverFlowAdapter only creates wrappers.
-		FancyCoverFlowItemWrapper item = (FancyCoverFlowItemWrapper) child;
+		FolderTitleGalleryItemWrapper item = (FolderTitleGalleryItemWrapper) child;
 
 		// Since Jelly Bean childs won't get invalidated automatically, needs to
 		// be added for the smooth coverflow animation
@@ -386,10 +274,6 @@ public class FancyCoverFlow extends Gallery {
 
 		return true;
 	}
-
-	// =============================================================================
-	// Public classes
-	// =============================================================================
 
 	public static class LayoutParams extends Gallery.LayoutParams {
 		public LayoutParams(Context c, AttributeSet attrs) {

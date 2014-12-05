@@ -1,6 +1,6 @@
 package com.leo.appmaster.model;
 
-public class BaseAppInfo extends BaseInfo {
+public class AppInfo extends BaseInfo {
 	/*
 	 * app package name
 	 */

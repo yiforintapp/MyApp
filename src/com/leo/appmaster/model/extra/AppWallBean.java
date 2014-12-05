@@ -1,6 +1,7 @@
-package com.leo.appmaster.model;
+package com.leo.appmaster.model.extra;
 
 import java.util.List;
+
 //APP墙每个应用的信息实体
 public class AppWallBean {
 	private String image;

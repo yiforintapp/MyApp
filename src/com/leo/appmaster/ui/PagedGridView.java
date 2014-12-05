@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.model.BaseAppInfo;
+import com.leo.appmaster.model.AppInfo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -32,7 +32,7 @@ public class PagedGridView extends LinearLayout {
 	private PagerAdapter mAdapter;
 	private int mPageItemCount;
 	private ArrayList<GridView> mGridViewList;
-	private ArrayList<List<BaseAppInfo>> mPageDatas;
+	private ArrayList<List<AppInfo>> mPageDatas;
 
 	private OnItemClickListener mClickListener;
 	private OnTouchListener mTouchListener;
@@ -44,14 +44,14 @@ public class PagedGridView extends LinearLayout {
 		mInflater = LayoutInflater.from(context);
 	}
 
-	public void setDatas(List<BaseAppInfo> data, int cellX, int cellY) {
+	public void setDatas(List<AppInfo> data, int cellX, int cellY) {
 		mCellX = cellX;
 		mCellY = cellY;
 		mPageItemCount = mCellX * mCellY;
 		updateUI(data);
 	}
 
-	private void updateUI(List<BaseAppInfo> data) {
+	private void updateUI(List<AppInfo> data) {
 		mPageCount = (int) Math
 				.ceil(((double) data.size()) / (mCellX * mCellY));
 		int itemCounts[] = new int[mPageCount];
@@ -65,11 +65,11 @@ public class PagedGridView extends LinearLayout {
 		}
 
 		mGridViewList = new ArrayList<GridView>();
-		mPageDatas = new ArrayList<List<BaseAppInfo>>();
+		mPageDatas = new ArrayList<List<AppInfo>>();
 
 		for (i = 0; i < mPageCount; i++) {
 			GridviewAdapter adapter = null;
-			List<BaseAppInfo> pageData = null;
+			List<AppInfo> pageData = null;
 			GridView gridView = (GridView) mInflater.inflate(
 					R.layout.grid_page_item, mViewPager, false);
 			if (i == mPageCount - 1) {
@@ -98,17 +98,17 @@ public class PagedGridView extends LinearLayout {
 		mIndicator.setViewPager(mViewPager);
 	}
 
-	public void notifyChange(List<BaseAppInfo> list) {
+	public void notifyChange(List<AppInfo> list) {
 		updateUI(list);
 	}
 
-	private List<BaseAppInfo> copyFrom(List<BaseAppInfo> source) {
-		ArrayList<BaseAppInfo> list = null;
+	private List<AppInfo> copyFrom(List<AppInfo> source) {
+		ArrayList<AppInfo> list = null;
 		if (source != null) {
-			list = new ArrayList<BaseAppInfo>();
-			BaseAppInfo item;
-			for (BaseAppInfo info : source) {
-				item = new BaseAppInfo();
+			list = new ArrayList<AppInfo>();
+			AppInfo item;
+			for (AppInfo info : source) {
+				item = new AppInfo();
 				item.packageName = info.packageName;
 				item.icon = info.icon;
 				item.label = info.label;
@@ -168,17 +168,17 @@ public class PagedGridView extends LinearLayout {
 	}
 
 	private class GridviewAdapter extends BaseAdapter {
-		List<BaseAppInfo> mList;
+		List<AppInfo> mList;
 
 		private int mPageIndex;
 
-		public GridviewAdapter(List<BaseAppInfo> list, int page) {
+		public GridviewAdapter(List<AppInfo> list, int page) {
 			super();
 			mPageIndex = page;
 			initData(list);
 		}
 
-		private void initData(List<BaseAppInfo> list) {
+		private void initData(List<AppInfo> list) {
 			mList = list;
 		}
 
@@ -207,7 +207,7 @@ public class PagedGridView extends LinearLayout {
 					.findViewById(R.id.iv_app_icon);
 			TextView textView = (TextView) convertView
 					.findViewById(R.id.tv_app_name);
-			BaseAppInfo info = mList.get(position);
+			AppInfo info = mList.get(position);
 
 			if (AppLoadEngine.getInstance(getContext()).getRecommendLockList()
 					.contains(info.packageName)) {

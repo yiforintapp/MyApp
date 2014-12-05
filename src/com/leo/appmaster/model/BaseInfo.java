@@ -7,7 +7,7 @@ public class BaseInfo {
 	/**
 	 * item type
 	 */
-	public static final int ITEM_TYPE_APP = 0;
+	public static final int ITEM_TYPE_NORMAL_APP = 0;
 	public static final int ITEM_TYPE_FOLDER = 1;
 	public static final int ITEM_TYPE_BUSINESS_APP = 2;
 
@@ -29,5 +29,5 @@ public class BaseInfo {
 	/**
 	 * item type
 	 */
-	public int type = ITEM_TYPE_APP;
+	public int type = ITEM_TYPE_NORMAL_APP;
 }

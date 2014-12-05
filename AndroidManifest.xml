@@ -6,7 +6,7 @@
     android:versionName="@string/version_name" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.BATTERY_STATS" />
@@ -223,6 +223,10 @@
             android:name="com.leo.appmaster.lockertheme.LockerThemeGuideActivity"
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
+        <activity
+            android:name="com.leo.appmaster.appmanage.FolderActivity"
+            android:theme="@style/activity_theme" >
+        </activity>
 
         <service
             android:name="com.leo.appmaster.applocker.service.LockService"
@@ -250,6 +254,12 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name="com.leo.appmaster.db.AppMasterProvider"
+            android:authorities="com.leo.appmaster.provider"
+            android:exported="false" >
+        </provider>
 
         <!-- for Baidu MTJ begin -->
         <!-- 您从百度网站获取的APP KEY -->

@@ -26,7 +26,7 @@ public class Response<T> {
     /** Callback interface for delivering parsed responses. */
     public interface Listener<T> {
         /** Called when a response is received. */
-        public void onResponse(T response);
+        public void onResponse(T response, boolean noMidify);
     }
 
     /** Callback interface for delivering error responses. */
@@ -39,8 +39,8 @@ public class Response<T> {
     }
 
     /** Returns a successful response containing the parsed result. */
-    public static <T> Response<T> success(T result, Cache.Entry cacheEntry) {
-        return new Response<T>(result, cacheEntry);
+    public static <T> Response<T> success(T result, Cache.Entry cacheEntry, boolean noModify) {
+        return new Response<T>(result, cacheEntry, noModify);
     }
 
     /**
@@ -56,6 +56,9 @@ public class Response<T> {
 
     /** Cache metadata for this response, or null in the case of error. */
     public final Cache.Entry cacheEntry;
+    
+    /** no midify*/
+    boolean noMidify;
 
     /** Detailed error information if <code>errorCode != OK</code>. */
     public final VolleyError error;
@@ -71,15 +74,17 @@ public class Response<T> {
     }
 
 
-    private Response(T result, Cache.Entry cacheEntry) {
+    private Response(T result, Cache.Entry cacheEntry, boolean noModify) {
         this.result = result;
         this.cacheEntry = cacheEntry;
         this.error = null;
+        this.noMidify = noModify;
     }
 
     private Response(VolleyError error) {
         this.result = null;
         this.cacheEntry = null;
         this.error = error;
+        this.noMidify = false;
     }
 }

@@ -33,6 +33,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
@@ -45,7 +46,7 @@ import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.MainViewActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -325,7 +326,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			break;
 		case R.id.tv_app_backup:
 			SDKWrapper.addEvent(this, LeoStat.P1, "home", "backup");
-			intent = new Intent(this, AppBackupRestoreActivity.class);
+//			intent = new Intent(this, AppBackupRestoreActivity.class);
+			intent = new Intent(this, AppListActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.tv_clean_memory:
@@ -497,7 +499,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	}
 
 	@Override
-	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
+	public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {

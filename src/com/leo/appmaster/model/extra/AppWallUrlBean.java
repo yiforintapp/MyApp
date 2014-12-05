@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.model;
+package com.leo.appmaster.model.extra;
 
 public class AppWallUrlBean {
 	private String url;

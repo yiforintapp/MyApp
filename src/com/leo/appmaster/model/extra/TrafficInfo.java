@@ -1,4 +1,4 @@
-package com.leo.appmaster.model;
+package com.leo.appmaster.model.extra;
 
 public class TrafficInfo {
 	public long mReceivedData;

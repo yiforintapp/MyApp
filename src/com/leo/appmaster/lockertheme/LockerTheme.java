@@ -52,7 +52,7 @@ import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.lockertheme.LockerThemeChanageDialog.OnDiaogClickListener;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.model.ThemeInfo;
+import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.AppwallHttpUtil;
@@ -74,13 +74,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	private ProgressBar mProgressBar;
 	private LockerThemeChanageDialog dialog;
 
-	private List<ThemeInfo> mLocalThemes;
-	private List<ThemeInfo> mOnlineThemes;
+	private List<ThemeItemInfo> mLocalThemes;
+	private List<ThemeItemInfo> mOnlineThemes;
 	private LockerThemeAdapter mLocalThemeAdapter;
 	private LockerThemeAdapter mOnlineThemeAdapter;
 	private List<String> mHideThemes;
 	private ThemeItemClickListener itemListener;
-	public ThemeInfo lastSelectedItem;
+	public ThemeItemInfo lastSelectedItem;
 
 	private boolean mShouldLockOnRestart = true;
 	private LockerThemeReceive mLockerThemeReceive;
@@ -136,7 +136,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					AppMasterPreference pref = AppMasterPreference
 							.getInstance(lockerTheme.get());
 					pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
-					List<ThemeInfo> loadList = (List<ThemeInfo>) msg.obj;
+					List<ThemeItemInfo> loadList = (List<ThemeItemInfo>) msg.obj;
 					lockerTheme.get().onLoadMoreThemeFinish(true, loadList);
 				}
 				break;
@@ -207,8 +207,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	}
 
 	private void loadData() {
-		mLocalThemes = new ArrayList<ThemeInfo>();
-		mOnlineThemes = new ArrayList<ThemeInfo>();
+		mLocalThemes = new ArrayList<ThemeItemInfo>();
+		mOnlineThemes = new ArrayList<ThemeItemInfo>();
 		loadLocalTheme();
 		loadInitOnlineTheme();
 	}
@@ -221,7 +221,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		mLocalThemes.add(getDefaultTheme());
 		Context themeContext = null;
 		for (String themePackage : mHideThemes) {
-			ThemeInfo bean = new ThemeInfo();
+			ThemeItemInfo bean = new ThemeItemInfo();
 			bean.themeType = Constants.THEME_TYPE_LOCAL;
 			try {
 				themeContext = createPackageContext(themePackage,
@@ -334,9 +334,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemes,
 				new Listener<JSONObject>() {
 					@Override
-					public void onResponse(JSONObject response) {
+					public void onResponse(JSONObject response, boolean noModify) {
 						LeoLog.d("response", response.toString());
-						List<ThemeInfo> list = ThemeJsonObjectParser
+						List<ThemeItemInfo> list = ThemeJsonObjectParser
 								.parserJsonObject(LockerTheme.this, response);
 						Message msg = mHandler.obtainMessage(
 								MSG_LOAD_INIT_SUCCESSED, list);
@@ -421,7 +421,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 
 	private void onLoadMoreThemeFinish(boolean succeed, Object object) {
 		if (succeed) {
-			List<ThemeInfo> list = (List<ThemeInfo>) object;
+			List<ThemeItemInfo> list = (List<ThemeItemInfo>) object;
 			if (list == null || list.isEmpty()) {
 				Toast.makeText(this, R.string.no_more_theme, 0).show();
 			} else {
@@ -440,14 +440,14 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			mErrorView.setVisibility(View.INVISIBLE);
 			mOnlineThemes.clear();
 			if (object != null) {
-				mOnlineThemes.addAll((List<ThemeInfo>) object);
+				mOnlineThemes.addAll((List<ThemeItemInfo>) object);
 			}
 
 			// filter local theme
 			if (!mOnlineThemes.isEmpty()) {
-				List<ThemeInfo> removeList = new ArrayList<ThemeInfo>();
-				for (ThemeInfo themeInfo : mOnlineThemes) {
-					for (ThemeInfo localInfo : mLocalThemes) {
+				List<ThemeItemInfo> removeList = new ArrayList<ThemeItemInfo>();
+				for (ThemeItemInfo themeInfo : mOnlineThemes) {
+					for (ThemeItemInfo localInfo : mLocalThemes) {
 						if (themeInfo.packageName.equals(localInfo.packageName)) {
 							removeList.add(themeInfo);
 							break;
@@ -476,15 +476,15 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		// mNextLoadPage = mCurrentShowPage + 1;
 		List<String> loadedTheme = new ArrayList<String>();
 		loadedTheme.addAll(mHideThemes);
-		for (ThemeInfo info : mOnlineThemes) {
+		for (ThemeItemInfo info : mOnlineThemes) {
 			loadedTheme.add(info.packageName);
 		}
 
 		HttpRequestAgent.getInstance(this).loadOnlineTheme(loadedTheme,
 				new Listener<JSONObject>() {
 					@Override
-					public void onResponse(JSONObject response) {
-						List<ThemeInfo> list = ThemeJsonObjectParser
+					public void onResponse(JSONObject response, boolean noModify) {
+						List<ThemeItemInfo> list = ThemeJsonObjectParser
 								.parserJsonObject(LockerTheme.this, response);
 						Message msg = mHandler.obtainMessage(
 								MSG_LOAD_PAGE_DATA_SUCCESS, list);
@@ -498,12 +498,12 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				});
 	}
 
-	public void addMoreOnlineTheme(List<ThemeInfo> loadList) {
+	public void addMoreOnlineTheme(List<ThemeItemInfo> loadList) {
 		boolean add;
 		boolean newTheme = false;
-		for (ThemeInfo appLockerThemeBean : loadList) {
+		for (ThemeItemInfo appLockerThemeBean : loadList) {
 			add = true;
-			for (ThemeInfo themeInfo : mLocalThemes) {
+			for (ThemeItemInfo themeInfo : mLocalThemes) {
 				if (themeInfo.packageName
 						.equals(appLockerThemeBean.packageName)) {
 					add = false;
@@ -511,7 +511,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				}
 			}
 			if (add) {
-				for (ThemeInfo themeInfo : mOnlineThemes) {
+				for (ThemeItemInfo themeInfo : mOnlineThemes) {
 					if (themeInfo.packageName
 							.equals(appLockerThemeBean.packageName)) {
 						add = false;
@@ -649,8 +649,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		mShouldLockOnRestart = false;
 	}
 
-	private ThemeInfo getDefaultTheme() {
-		ThemeInfo defaultTheme = new ThemeInfo();
+	private ThemeItemInfo getDefaultTheme() {
+		ThemeItemInfo defaultTheme = new ThemeItemInfo();
 		defaultTheme.themeImage = getResources().getDrawable(
 				R.drawable.default_theme);
 		defaultTheme.themeName = (String) this.getResources().getText(
@@ -791,8 +791,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 							loadLocalTheme();
 							mLocalThemeAdapter.notifyDataSetChanged();
 							// if need to load online theme
-							ThemeInfo remove = null;
-							for (ThemeInfo info : mOnlineThemes) {
+							ThemeItemInfo remove = null;
+							for (ThemeItemInfo info : mOnlineThemes) {
 								if (info.packageName.equals(packageName)) {
 									remove = info;
 								}
@@ -816,7 +816,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-			lastSelectedItem = (ThemeInfo) arg0.getItemAtPosition(arg2);
+			lastSelectedItem = (ThemeItemInfo) arg0.getItemAtPosition(arg2);
 			/* SDK mark user click theme - begin */
 			if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
 				SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,

@@ -9,23 +9,23 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 
 public class AppRestoreAdapter extends BaseAdapter {
 
-	private ArrayList<AppDetailInfo> mRestoreList;
+	private ArrayList<AppItemInfo> mRestoreList;
 
 	private AppBackupRestoreManager mBackupManager;
 
 	public AppRestoreAdapter(AppBackupRestoreManager manager) {
 		mBackupManager = manager;
-		mRestoreList = new ArrayList<AppDetailInfo>();
+		mRestoreList = new ArrayList<AppItemInfo>();
 	}
 
 	public void updateData() {
 		mRestoreList.clear();
-		ArrayList<AppDetailInfo> apps = mBackupManager.getRestoreList();
-		for (AppDetailInfo app : apps) {
+		ArrayList<AppItemInfo> apps = mBackupManager.getRestoreList();
+		for (AppItemInfo app : apps) {
 			mRestoreList.add(app);
 		}
 		notifyDataSetChanged();
@@ -56,7 +56,7 @@ public class AppRestoreAdapter extends BaseAdapter {
 			itemView = (AppRestoreItemView) inflater.inflate(
 					R.layout.item_app_restore, null);
 		}
-		AppDetailInfo app = mRestoreList.get(arg0);
+		AppItemInfo app = mRestoreList.get(arg0);
 		Context context = itemView.getContext();
 		if (arg0 % 2 == 0) {
 			itemView.setBackgroundColor(context.getResources().getColor(
