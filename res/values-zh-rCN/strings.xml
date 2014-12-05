@@ -242,6 +242,6 @@
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
     <string name="setting_locker_clean">解锁后加速</string>
     <string name="feedback_error">邮箱错误，请重新输入</string>
-    <string name="googlePlayGuide">请向下拉动给我们评分</string>
+    <string name="googlePlayGuide">请向上滑动给我们评分</string>
 
 </resources>

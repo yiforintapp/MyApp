@@ -245,6 +245,6 @@
     <string name="locker_clean">सफलतापूर्वक %1$s तक बढ़ाया</string>
     <string name="setting_locker_clean">थीम बदलने क्लिक करें</string>
     <string name="feedback_error">邮箱错误，请重新输入</string>
-    <string name="googlePlayGuide">请向下拉动给我们评分</string>
+    <string name="googlePlayGuide">请向上滑动给我们评分</string>
 
 </resources>
