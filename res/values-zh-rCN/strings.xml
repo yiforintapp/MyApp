@@ -241,23 +241,22 @@
     <string name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
     <string name="setting_locker_clean">解锁后加速</string>
-    
     <string name="folder_backup_restore">应用恢复</string>
     <string name="folder_sort_flow">最耗流量</string>
     <string name="folder_sort_capacity">最占容量</string>
     <string name="folder_recommend">精品速递</string>
-    
-        <string name="toast_download_fail_network">"没有可用网络，主题下载失败，请重试。"</string>
+    <string name="toast_download_fail_network">"没有可用网络，主题下载失败，请重试。"</string>
     <string name="toast_download_fail_storage">"下载失败，SD卡空间不足!"</string>
     <string name="toast_exit_when_storagemode">"当前正在使用大存储模式，主题部分功能可能无法使用。"</string>
     <string name="toast_download_failstart">"没有可用网络，请稍后再试。"</string>
     <string name="toast_download_fail_sdcard_unmount">"当前正在使用大存储模式,下载功能暂时不可使用。"</string>
-	<string name="download_sdcard_status_error">下载失败,SD卡无法访问。</string>
+    <string name="download_sdcard_status_error">下载失败,SD卡无法访问。</string>
     <string name="download_failed_toast">"下载失败"</string>
     <string name="download_network_invalid_toast">"没有可用网络，请稍候重试。"</string>
     <string name="download_success_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载成功</string>
     <string name="downloaded_success">下载成功，点击应用</string>
     <string name="download_failure_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载失败</string>
     <string name="downloaded_failure">下载失败</string>
+    <string name="backup">备份</string>
 
 </resources>

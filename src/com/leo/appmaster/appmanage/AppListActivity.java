@@ -3,6 +3,8 @@ package com.leo.appmaster.appmanage;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -21,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.view.OpenFolder;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppItemInfo;
@@ -48,11 +51,36 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 	private List<AppItemInfo> mAppDetails;
 	private int pageItemCount = 20;
 
+	private OpenFolder mOpenFolder;
+	private View mFolderBgView;
+	private View mFolderContentView;
+
+	public void openFolderUp(View view) {
+
+		if (mFolderBgView == null) {
+			mFolderBgView = getWindow().getDecorView();
+			mFolderContentView = getLayoutInflater().inflate(
+					R.layout.main_openview, null);
+		}
+		mOpenFolder.openFolderView(view, mFolderBgView, mFolderContentView,
+				300, 0);
+	}
+
+	public void openFolderDown(View view) {
+		if (mFolderBgView == null) {
+			mFolderBgView = getWindow().getDecorView();
+			mFolderContentView = getLayoutInflater().inflate(
+					R.layout.main_openview, null);
+		}
+		mOpenFolder.openFolderView(view, mFolderBgView, mFolderContentView,
+				300, 1);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_app_manager);
-
+		mOpenFolder = new OpenFolder(this);
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		// animate=AnimationUtils.loadAnimation(AppListActivity.this,R.anim.locker_scale);
 		intiUI();
@@ -136,26 +164,26 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 
 	private void loadFolderData() {
 		FolderItemInfo folder = null;
-		// add system app folder
-		folder = new FolderItemInfo();
-		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
-		folder.folderType = FolderItemInfo.FOLDER_FLOW_SORT;
-		folder.icon = getResources().getDrawable(R.drawable.folder);
-		folder.label = getString(R.string.folder_sort_flow);
-		mFolderItems.add(folder);
-		// add running app folder
-		folder = new FolderItemInfo();
-		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
-		folder.folderType = FolderItemInfo.FOLDER_CAPACITY_SORT;
-		folder.icon = getResources().getDrawable(R.drawable.folder);
-		folder.label = getString(R.string.folder_sort_capacity);
-		mFolderItems.add(folder);
 		// add restore folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_BACKUP_RESTORE;
 		folder.icon = getResources().getDrawable(R.drawable.folder);
 		folder.label = getString(R.string.folder_backup_restore);
+		mFolderItems.add(folder);
+		// add flow sort folder
+		folder = new FolderItemInfo();
+		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
+		folder.folderType = FolderItemInfo.FOLDER_FLOW_SORT;
+		folder.icon = getResources().getDrawable(R.drawable.folder);
+		folder.label = getString(R.string.folder_sort_flow);
+		mFolderItems.add(folder);
+		// add capacity folder
+		folder = new FolderItemInfo();
+		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
+		folder.folderType = FolderItemInfo.FOLDER_CAPACITY_SORT;
+		folder.icon = getResources().getDrawable(R.drawable.folder);
+		folder.label = getString(R.string.folder_sort_capacity);
 		mFolderItems.add(folder);
 		// add business app folder
 		folder = new FolderItemInfo();
@@ -166,14 +194,39 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 		mFolderItems.add(folder);
 	}
 
-	private void animateItem(View view) {
-
+	private void animateItem(final View view, final int position) {
+		final BaseInfo itemInfo = (BaseInfo) view.getTag();
 		AnimatorSet as = new AnimatorSet();
-		as.setDuration(300);
+		as.setDuration(200);
 		ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f,
 				0.8f, 1f);
 		ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f,
 				0.8f, 1f);
+		as.addListener(new AnimatorListener() {
+			@Override
+			public void onAnimationStart(Animator arg0) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator arg0) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animator arg0) {
+				// handleItemClick(itemInfo);
+
+				if (position > 12) {
+					openFolderUp(view);
+				} else {
+					openFolderDown(view);
+				}
+
+			}
+
+			@Override
+			public void onAnimationCancel(Animator arg0) {
+			}
+		});
 		as.playTogether(scaleX, scaleY);
 		as.start();
 	}
@@ -274,9 +327,7 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		animateItem(view);
-		BaseInfo itemInfo = (BaseInfo) view.getTag();
-		handleItemClick(itemInfo);
+		animateItem(view, position);
 	}
 
 	private void handleItemClick(BaseInfo itemInfo) {

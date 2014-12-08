@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -19,6 +20,30 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 public class BitmapUtils {
+
+	public static Bitmap createGaryBitmap(Bitmap source) {
+		if (source == null)
+			return null;
+		Bitmap mGaryBitmap = source.copy(source.getConfig(), true);
+		int red, green, blue, alpha, agr;
+		int pixel;
+		for (int i = 0; i < mGaryBitmap.getWidth(); i++) {
+			for (int j = 0; j < mGaryBitmap.getHeight(); j++) {
+				pixel = mGaryBitmap.getPixel(i, j);
+				agr = (Color.red(pixel) + Color.green(pixel) + Color
+						.blue(pixel)) / 3;
+
+				alpha = (int) (Color.alpha(pixel));
+				red = (int) (Color.red(pixel) * 0.35);
+				green = (int) (Color.green(pixel) * 0.35);
+				blue = (int) (Color.blue(pixel) * 0.35);
+
+				pixel = Color.argb(alpha, red, green, blue);
+				mGaryBitmap.setPixel(i, j, pixel);
+			}
+		}
+		return mGaryBitmap;
+	}
 
 	public static byte[] Bitmap2Bytes(Bitmap bm) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

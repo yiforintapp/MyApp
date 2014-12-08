@@ -248,5 +248,6 @@
     <string name="folder_sort_flow">最耗流量</string>
     <string name="folder_sort_capacity">最占容量</string>
     <string name="folder_recommend">精品速递</string>
+    <string name="backup">备份</string>
 
 </resources>
