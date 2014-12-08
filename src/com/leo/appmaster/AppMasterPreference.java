@@ -352,7 +352,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean isLockerClean() {
-        return mPref.getBoolean(PREF_SETTING_LOCKER_CLEAN, true);
+        return mPref.getBoolean(PREF_SETTING_LOCKER_CLEAN, false);
     }
     public void setLockerClean(boolean lockerClean) {
         mPref.edit().putBoolean(PREF_SETTING_LOCKER_CLEAN, lockerClean).commit();

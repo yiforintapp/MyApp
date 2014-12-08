@@ -95,6 +95,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		setContentView(R.layout.activity_lock_setting);
 		handleIntent();
 		initUI();
+        cleanMem();
 	}
 
 	@Override
@@ -303,7 +304,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 			if (AppMasterPreference.getInstance(LockScreenActivity.this)
 					.isLockerClean()) {
-				cleanMem();
 				Toast mToast = new Toast(this);
 				LayoutInflater mLayoutInflater = LayoutInflater
 						.from(LockScreenActivity.this);
