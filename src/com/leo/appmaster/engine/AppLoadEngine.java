@@ -224,22 +224,26 @@ public class AppLoadEngine extends BroadcastReceiver {
 			}
 		}
 
-		Collections.sort(dataList, new AppComparator());
+		Collections.sort(dataList, new FolwComparator());
 
 		return dataList;
 	}
 
 	public AppItemInfo loadAppDetailInfo(String pkgName) {
-		mLatch = new CountDownLatch(1);
-		loadTrafficInfo(pkgName);
-		loadPermissionInfo(pkgName);
-		loadCacheInfo(pkgName);
-		try {
-			mLatch.await();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		AppItemInfo info = mAppDetails.get(pkgName);
+		if (!info.mDetailLoaded) {
+			mLatch = new CountDownLatch(1);
+			loadTrafficInfo(pkgName);
+			loadPermissionInfo(pkgName);
+			loadCacheInfo(pkgName);
+			try {
+				mLatch.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			info.mDetailLoaded = true;
 		}
-		return mAppDetails.get(pkgName);
+		return info;
 	}
 
 	private void loadAllPkgInfo() {
@@ -374,6 +378,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 				transmitted = 0;
 			info.mTrafficInfo.mTransmittedData = transmitted;
 			info.mTrafficInfo.mReceivedData = received;
+			info.mTrafficInfo.mTotal = transmitted + received;
 		}
 
 	}
@@ -392,13 +397,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 							long codeSize = pStats.codeSize;
 							long dataSize = pStats.dataSize;
 
-							cacheInfo.cacheSize = (TextFormater
-									.dataSizeFormat(cacheSize));
-							cacheInfo.codeSize = (TextFormater
-									.dataSizeFormat(codeSize));
-							cacheInfo.dataSize = (TextFormater
-									.dataSizeFormat(dataSize));
-
+							cacheInfo.cacheSize = cacheSize;
+							cacheInfo.codeSize = codeSize;
+							cacheInfo.dataSize = dataSize;
+							cacheInfo.total = cacheSize + codeSize + dataSize;
 							mLatch.countDown();
 						}
 					} });
@@ -696,10 +698,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	}
 
-	public static class AppComparator implements Comparator<AppInfo> {
+	public static class FolwComparator implements Comparator<AppItemInfo> {
 
 		@Override
-		public int compare(AppInfo lhs, AppInfo rhs) {
+		public int compare(AppItemInfo lhs, AppItemInfo rhs) {
 			if (lhs.topPos > -1 && rhs.topPos < 0) {
 				return -1;
 			} else if (lhs.topPos < 0 && rhs.topPos > -1) {

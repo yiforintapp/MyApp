@@ -2,10 +2,12 @@ package com.leo.appmaster.model.extra;
 
 public class CacheInfo {
 	// app size
-	public String codeSize;
+	public long codeSize;
 	// data size
-	public String dataSize;
+	public long dataSize;
 	// cache size
-	public String cacheSize;
+	public long cacheSize;
+	//taotal
+	public long total;
 
 }

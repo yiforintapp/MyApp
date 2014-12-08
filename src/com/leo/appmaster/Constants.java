@@ -44,31 +44,27 @@ public class Constants {
 	public static final int RESULT_FAILED_NO_NETWORK = 4;
 	public static final int RESULT_FAILED_SDCARD_INSUFFICIENT = 5;
 
+	// download parameter
 	public static final String PARAMETER_NOTIFY = "notify";
 
 	// download type
-	public static final String MIME_TYPE_THEME_ICON = "theme/ICON";
-
-	public static final String MIME_TYPE_WALLPAPER = "wallpaper";
-
+	public static final String MIME_TYPE_THEME_ICON = "ICON";
+	// public static final String MIME_TYPE_WALLPAPER = "wallpaper";
 	public static final String MIME_TYPE_PUSH = "apk";
 
-	// action
-	public static final String ACTION_DOWNLOAD_ADD = "com.coco.launcher.download.add";
-	public static final String ACTION_DOWNLOAD_STOP = "com.coco.launcher.download.stop";
-	// public static final String ACTION_DOWNLOAD_PAUSE =
-	// "com.coco.launcher.download.pause";
-	public static final String ACTION_DOWNLOAD_START = "com.coco.launcher.download_start";
-	public static final String ACTION_DOWNLOAD_PROGRESS = "com.coco.launcher.download_progress";
-	public static final String ACTION_DOWNLOAD_COMPOLETED = "com.coco.launcher.download_completed";
+	// download action
+	public static final String ACTION_DOWNLOAD_ADD = "com.leo.appmaster.download.add";
+	public static final String ACTION_DOWNLOAD_STOP = "com.leo.appmaster.download.stop";
+	public static final String ACTION_DOWNLOAD_PAUSE = "com.leo.appmaster.download.pause";
+	public static final String ACTION_DOWNLOAD_START = "com.leo.appmaster.download_start";
+	public static final String ACTION_DOWNLOAD_PROGRESS = "com.leo.appmaster.download_progress";
+	public static final String ACTION_DOWNLOAD_COMPOLETED = "com.leo.appmaster.download_completed";
 
 	public static final String TYPE = "type";
-
 	public static final String EXTRA_TIME = "extra_time";
-
 	public static final int PROGRESS_INTERVAL = 1000;
 
-	// mimetype
+	// mime type
 	public static final String MIME_TYPE_BUSINESS_APK = "application";
 
 	// download notify
@@ -100,10 +96,8 @@ public class Constants {
 	 * Server URL
 	 */
 	public static final String APP_LOCK_LIST_DEBUG = "http://test.leostat.com/appmaster/applockerrecommend";
-
 	public static final String APP_LOCK_LIST_DEBUG2 = "http://192.168.1.142:8080/appmaster/appmaster/applockerrecommend";
-	public static final String GP_PACKAGE = "com.android.vending";// GP package
-																	// name
+	public static final String GP_PACKAGE = "com.android.vending";// GP package name
 	public static final int LOCK_TIP_INTERVAL_OF_DATE = 3;
 	public static final int LOCK_TIP_INTERVAL_OF_MS = 3 * 24 * 60 * 60 * 1000;
 	// public static final int LOCK_TIP_INTERVAL_OF_MS = 1 * 60 * 1000;

@@ -8,6 +8,6 @@
     android:gravity="center"
     android:padding="5dp"
     android:singleLine="true"
-    android:text="@string/folder_system_preset"
+    android:text="@string/folder_sort_flow"
     android:textColor="#ffffff"
     android:textSize="12dp" />

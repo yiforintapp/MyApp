@@ -22,6 +22,8 @@ public class AppItemInfo extends AppInfo {
 	 */
 	public double mPowerComsuPercent;
 
+	public boolean mDetailLoaded = false;
+	
 	public String sourceDir;
 
 	public boolean isChecked;

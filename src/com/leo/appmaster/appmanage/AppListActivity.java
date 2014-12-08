@@ -139,23 +139,23 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 		// add system app folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
-		folder.folderType = FolderItemInfo.FOLDER_SYSTEM_APP;
+		folder.folderType = FolderItemInfo.FOLDER_FLOW_SORT;
 		folder.icon = getResources().getDrawable(R.drawable.folder);
-		folder.label = getString(R.string.folder_system_preset);
+		folder.label = getString(R.string.folder_sort_flow);
 		mFolderItems.add(folder);
 		// add running app folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
-		folder.folderType = FolderItemInfo.FOLDER_RUNNING_APP;
+		folder.folderType = FolderItemInfo.FOLDER_CAPACITY_SORT;
 		folder.icon = getResources().getDrawable(R.drawable.folder);
-		folder.label = getString(R.string.folder_running);
+		folder.label = getString(R.string.folder_sort_capacity);
 		mFolderItems.add(folder);
 		// add restore folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
-		folder.folderType = FolderItemInfo.FOLDER_BACKUP_APP;
+		folder.folderType = FolderItemInfo.FOLDER_BACKUP_RESTORE;
 		folder.icon = getResources().getDrawable(R.drawable.folder);
-		folder.label = getString(R.string.folder_restore);
+		folder.label = getString(R.string.folder_backup_restore);
 		mFolderItems.add(folder);
 		// add business app folder
 		folder = new FolderItemInfo();

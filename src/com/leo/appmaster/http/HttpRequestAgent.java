@@ -23,7 +23,9 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 
 /**
- * Http request Proxy
+ * Http request Proxy, use volley framework <br>
+ * NOTE: all those request is async, when you start a request ,you should
+ * consider whether open cache
  * 
  * @author zhangwenyang
  * 

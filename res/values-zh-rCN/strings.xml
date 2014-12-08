@@ -242,10 +242,9 @@
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
     <string name="setting_locker_clean">解锁后加速</string>
     
-    
-    <string name="folder_system_preset">系统预装</string>
-    <string name="folder_running">正在运行</string>
-    <string name="folder_restore">应用恢复</string>
+    <string name="folder_backup_restore">应用恢复</string>
+    <string name="folder_sort_flow">最耗流量</string>
+    <string name="folder_sort_capacity">最占容量</string>
     <string name="folder_recommend">精品速递</string>
     
         <string name="toast_download_fail_network">"没有可用网络，主题下载失败，请重试。"</string>

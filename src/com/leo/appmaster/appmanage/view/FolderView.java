@@ -21,7 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
-public class FolderShowView extends RelativeLayout implements OnClickListener,
+public class FolderView extends RelativeLayout implements OnClickListener,
 		IHomeGalleryListener, OnItemSelectedListener {
 
 	public static class ItemHolder {
@@ -40,7 +40,7 @@ public class FolderShowView extends RelativeLayout implements OnClickListener,
 
 	private int mCurPosition;
 
-	public FolderShowView(Context context, AttributeSet attrs) {
+	public FolderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mItemTitles = new ArrayList<String>();
 		mPagerViews = new ArrayList<View>();

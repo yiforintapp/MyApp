@@ -61,7 +61,6 @@ public class ApplistBusinessManager {
 	private List<BusinessListener> mBusinessListeners;
 	private Vector<BusinessItemInfo> mBusinessList;
 	private FutureTask<Vector<BusinessItemInfo>> mLoadInitDataTask;
-	private Object mLock = new Object();
 
 	private final ExecutorService mExecutorService = Executors
 			.newSingleThreadExecutor();
@@ -72,6 +71,10 @@ public class ApplistBusinessManager {
 		mContext = ctx.getApplicationContext();
 		mBusinessListeners = new ArrayList<ApplistBusinessManager.BusinessListener>();
 		mBusinessList = new Vector<BusinessItemInfo>();
+		init();
+	}
+	
+	public void init() {
 		loadInitData();
 		trySyncServerData();
 	}
@@ -237,7 +240,7 @@ public class ApplistBusinessManager {
 
 	}
 
-	protected void syncLocalData(final List<BusinessItemInfo> list) {
+	protected void syncLocalData(final List<BusinessItemInfo> list) {  
 		mExecutorService.execute(new Runnable() {
 			@Override
 			public void run() {
