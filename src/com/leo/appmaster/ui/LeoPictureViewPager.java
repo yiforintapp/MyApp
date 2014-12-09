@@ -1282,7 +1282,11 @@ public class LeoPictureViewPager extends ViewGroup {
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         if (!(state instanceof SavedState)) {
-            super.onRestoreInstanceState(state);
+            // AM-507
+            try {
+                super.onRestoreInstanceState(state);
+            } catch (Exception e) {               
+            }
             return;
         }
 
