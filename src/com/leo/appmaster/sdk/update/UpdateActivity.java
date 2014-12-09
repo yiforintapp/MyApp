@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.home.GooglePlayGuideActivity;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
@@ -518,6 +520,17 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         String channelStr = "unknown";
         if (channel == IUIHelper.APP_MARKET) {
             channelStr = "GP";
+            Handler handler=new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent2 = new Intent(
+                            UpdateActivity.this,
+                            GooglePlayGuideActivity.class);
+                    intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent2);
+                }
+            }, 200);
         } else if (channel == IUIHelper.DIRECT_DOWNLOAD) {
             channelStr = "link";
         }
