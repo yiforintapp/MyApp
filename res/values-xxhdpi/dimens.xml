@@ -36,4 +36,7 @@
     <dimen name="lockPatternView_height">330dp</dimen>
     <dimen name="layout_passwd_marginTop">20dp</dimen>
     <dimen name="layout_passwd_marginBottom">15dp</dimen>
+    
+    
+    <dimen name="folder_content_height">310dp</dimen>
 </resources>

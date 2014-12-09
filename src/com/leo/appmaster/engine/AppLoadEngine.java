@@ -231,7 +231,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	public AppItemInfo loadAppDetailInfo(String pkgName) {
 		AppItemInfo info = mAppDetails.get(pkgName);
-		if (!info.mDetailLoaded) {
+		if (!info.detailLoaded) {
 			mLatch = new CountDownLatch(1);
 			loadTrafficInfo(pkgName);
 			loadPermissionInfo(pkgName);
@@ -241,7 +241,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			info.mDetailLoaded = true;
+			info.detailLoaded = true;
 		}
 		return info;
 	}
@@ -342,7 +342,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		for (BatteryComsuption batterySipper : list) {
 			String packageName = batterySipper.getDefaultPackageName();
 			if (packageName != null && mAppDetails.containsKey(packageName)) {
-				mAppDetails.get(packageName).mPowerComsuPercent = batterySipper
+				mAppDetails.get(packageName).powerComsuPercent = batterySipper
 						.getPercentOfTotal();
 			}
 		}
@@ -350,7 +350,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	private void loadCacheInfo(String pkgName) {
 		AppItemInfo info = mAppDetails.get(pkgName);
-		getCacheInfo(pkgName, info.mCacheInfo);
+		getCacheInfo(pkgName, info.cacheInfo);
 	}
 
 	private void loadPermissionInfo(String pkgName) {
@@ -361,7 +361,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 					PackageManager.GET_PERMISSIONS);
 			// info.getPermissionInfo().setPermissions(packangeInfo.permissions);
 
-			info.mPermissionInfo.mPermissionList = packangeInfo.requestedPermissions;
+			info.permissionInfo.mPermissionList = packangeInfo.requestedPermissions;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -376,9 +376,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 			long transmitted = TrafficStats.getUidTxBytes(info.uid);
 			if (transmitted < 0)
 				transmitted = 0;
-			info.mTrafficInfo.mTransmittedData = transmitted;
-			info.mTrafficInfo.mReceivedData = received;
-			info.mTrafficInfo.mTotal = transmitted + received;
+			info.trafficInfo.mTransmittedData = transmitted;
+			info.trafficInfo.mReceivedData = received;
+			info.trafficInfo.mTotal = transmitted + received;
 		}
 
 	}

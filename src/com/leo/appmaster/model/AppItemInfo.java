@@ -8,21 +8,21 @@ public class AppItemInfo extends AppInfo {
 	/*
 	 * app cache info
 	 */
-	public CacheInfo mCacheInfo;
+	public CacheInfo cacheInfo;
 	/*
 	 * all user permission of app
 	 */
-	public AppPermissionInfo mPermissionInfo;
+	public AppPermissionInfo permissionInfo;
 	/*
 	 * app traffic info
 	 */
-	public TrafficInfo mTrafficInfo;
+	public TrafficInfo trafficInfo;
 	/*
 	 * app power comsumption info
 	 */
-	public double mPowerComsuPercent;
+	public double powerComsuPercent;
 
-	public boolean mDetailLoaded = false;
+	public boolean detailLoaded = false;
 	
 	public String sourceDir;
 
@@ -31,9 +31,9 @@ public class AppItemInfo extends AppInfo {
 	public boolean isBackuped;
 
 	public AppItemInfo() {
-		mCacheInfo = new CacheInfo();
-		mPermissionInfo = new AppPermissionInfo();
-		mTrafficInfo = new TrafficInfo();
+		cacheInfo = new CacheInfo();
+		permissionInfo = new AppPermissionInfo();
+		trafficInfo = new TrafficInfo();
 	}
 
 	@Override

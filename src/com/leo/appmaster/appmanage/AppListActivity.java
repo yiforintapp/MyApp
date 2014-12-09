@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.appmanage.view.OpenFolder;
+import com.leo.appmaster.appmanage.view.FolderLayer;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppItemInfo;
@@ -34,10 +34,13 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoGridBaseAdapter;
 import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.PageIndicator;
+import com.leo.appmaster.utils.ProcessUtils;
+import com.leo.appmaster.utils.TextFormater;
 
 public class AppListActivity extends BaseActivity implements AppChangeListener,
 		OnClickListener, OnItemClickListener {
 
+	private View mContainer;
 	private View mLoadingView;
 	private CommonTitleBar mTtileBar;
 	private PageIndicator mPageIndicator;
@@ -51,36 +54,61 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 	private List<AppItemInfo> mAppDetails;
 	private int pageItemCount = 20;
 
-	private OpenFolder mOpenFolder;
+	private FolderLayer mOpenFolder;
 	private View mFolderBgView;
 	private View mFolderContentView;
+	private FolderContentViewHolder mFolderHolder;
 
-	public void openFolderUp(View view) {
-
-		if (mFolderBgView == null) {
-			mFolderBgView = getWindow().getDecorView();
-			mFolderContentView = getLayoutInflater().inflate(
-					R.layout.main_openview, null);
-		}
-		mOpenFolder.openFolderView(view, mFolderBgView, mFolderContentView,
-				300, 0);
+	private static class FolderContentViewHolder {
+		TextView capacity;
+		TextView cache;
+		TextView power;
+		TextView flow;
+		TextView memory;
 	}
 
-	public void openFolderDown(View view) {
+	public void openFolder(View view) {
+
 		if (mFolderBgView == null) {
-			mFolderBgView = getWindow().getDecorView();
+			mFolderBgView = mContainer;
 			mFolderContentView = getLayoutInflater().inflate(
-					R.layout.main_openview, null);
+					R.layout.folder_content_view, null);
+
+			mFolderHolder = new FolderContentViewHolder();
+			mFolderHolder.capacity = (TextView) mFolderContentView
+					.findViewById(R.id.capacity);
+			mFolderHolder.cache = (TextView) mFolderContentView
+					.findViewById(R.id.cache);
+			mFolderHolder.flow = (TextView) mFolderContentView
+					.findViewById(R.id.flow);
+			mFolderHolder.power = (TextView) mFolderContentView
+					.findViewById(R.id.power);
+			mFolderHolder.memory = (TextView) mFolderContentView
+					.findViewById(R.id.memory);
 		}
-		mOpenFolder.openFolderView(view, mFolderBgView, mFolderContentView,
-				300, 1);
+		AppItemInfo appinfo = (AppItemInfo) view.getTag();
+		appinfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(
+				appinfo.packageName);
+
+		mFolderHolder.capacity.setText(TextFormater
+				.dataSizeFormat(appinfo.cacheInfo.codeSize
+						+ appinfo.cacheInfo.codeSize));
+		mFolderHolder.cache.setText(TextFormater
+				.dataSizeFormat(appinfo.cacheInfo.cacheSize));
+		mFolderHolder.flow.setText(TextFormater
+				.dataSizeFormat(appinfo.trafficInfo.mTotal));
+		mFolderHolder.power.setText(appinfo.powerComsuPercent * 100 + "%");
+		mFolderHolder.memory.setText(TextFormater.dataSizeFormat(ProcessUtils
+				.getAppUsedMem(this, appinfo.packageName)));
+
+		mOpenFolder.openFolderView(view, mFolderBgView, mFolderContentView);
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_app_manager);
-		mOpenFolder = new OpenFolder(this);
+		mOpenFolder = new FolderLayer(this);
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		// animate=AnimationUtils.loadAnimation(AppListActivity.this,R.anim.locker_scale);
 		intiUI();
@@ -94,6 +122,7 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 
 	private void intiUI() {
 		mInflater = getLayoutInflater();
+		mContainer = findViewById(R.id.container);
 		mLoadingView = findViewById(R.id.rl_loading);
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
@@ -194,7 +223,7 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 		mFolderItems.add(folder);
 	}
 
-	private void animateItem(final View view, final int position) {
+	private void animateItem(final View view) {
 		final BaseInfo itemInfo = (BaseInfo) view.getTag();
 		AnimatorSet as = new AnimatorSet();
 		as.setDuration(200);
@@ -213,14 +242,7 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 
 			@Override
 			public void onAnimationEnd(Animator arg0) {
-				// handleItemClick(itemInfo);
-
-				if (position > 12) {
-					openFolderUp(view);
-				} else {
-					openFolderDown(view);
-				}
-
+				openFolder(view);
 			}
 
 			@Override
@@ -327,22 +349,20 @@ public class AppListActivity extends BaseActivity implements AppChangeListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		animateItem(view, position);
+		handleItemClick(view);
 	}
 
-	private void handleItemClick(BaseInfo itemInfo) {
+	private void handleItemClick(View view) {
 		Intent intent = null;
-		switch (itemInfo.type) {
+		BaseInfo info = (BaseInfo) view.getTag();
+		switch (info.type) {
 		case BaseInfo.ITEM_TYPE_NORMAL_APP:
-			AppItemInfo appinfo = (AppItemInfo) itemInfo;
-			intent = new Intent(this, AppDetailActivity.class);
-			intent.putExtra(AppDetailActivity.EXTRA_LOAD_PKG,
-					appinfo.packageName);
-			this.startActivity(intent);
+			AppItemInfo appinfo = (AppItemInfo) info;
+			animateItem(view);
 			break;
 		case BaseInfo.ITEM_TYPE_FOLDER:
 			intent = new Intent(this, FolderActivity.class);
-			FolderItemInfo folderInfo = (FolderItemInfo) itemInfo;
+			FolderItemInfo folderInfo = (FolderItemInfo) info;
 			intent.putExtra("from_type", folderInfo.folderType);
 			this.startActivity(intent);
 			break;

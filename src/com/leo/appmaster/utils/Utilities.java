@@ -7,9 +7,22 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.view.Display;
+import android.view.WindowManager;
 
 public final class Utilities {
 
+	
+	public static int[] getScreenSize(Context ctx) {
+		WindowManager wm = (WindowManager) ctx
+				.getSystemService(Context.WINDOW_SERVICE);
+		Display displayer = wm.getDefaultDisplay();
+		int size[] = new int[2];
+		size[0] = displayer.getWidth();
+		size[1] = displayer.getHeight();
+		return size;
+	}
+	
 	public static boolean isEmpty(String s) {
 		return s == null || s.isEmpty();
 	}

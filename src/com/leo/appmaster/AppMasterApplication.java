@@ -366,7 +366,6 @@ public class AppMasterApplication extends Application implements
 		SDK_VERSION = android.os.Build.VERSION.SDK_INT;
 		Resources res = context.getResources();
 		DisplayMetrics dm = res.getDisplayMetrics();
-
 		density = dm.density;
 		densityDpi = dm.densityDpi;
 		switch (densityDpi) {

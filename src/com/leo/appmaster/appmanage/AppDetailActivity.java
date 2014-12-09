@@ -127,10 +127,10 @@ public class AppDetailActivity extends BaseActivity implements
 		mAppVersion.setText(mAppInfo.versionName);
 		mAppMemory = (TextView) findViewById(R.id.app_memory);
 		mAppMemory.setText(String.format(getString(R.string.app_memory),
-				mAppInfo.mCacheInfo.codeSize));
+				mAppInfo.cacheInfo.codeSize));
 		mAppUsedFlow = (TextView) findViewById(R.id.app_cache_size);
 		mAppUsedFlow.setText(String.format(getString(R.string.app_cache_size),
-				mAppInfo.mCacheInfo.cacheSize));
+				mAppInfo.cacheInfo.cacheSize));
 
 		mUninstall = (Button) findViewById(R.id.uninstall_app);
 		mUninstall.setOnClickListener(this);
@@ -236,7 +236,7 @@ public class AppDetailActivity extends BaseActivity implements
 		LinearLayout permissionContent = (LinearLayout) mPager2
 				.findViewById(R.id.permission_content);
 		PackageManager packageManager = this.getPackageManager();
-		String[] sharedPkgList = mAppInfo.mPermissionInfo.mPermissionList;
+		String[] sharedPkgList = mAppInfo.permissionInfo.mPermissionList;
 		if (sharedPkgList == null)
 			return;
 		ArrayList<PermissionInfo> nomalPermissions = new ArrayList<PermissionInfo>();

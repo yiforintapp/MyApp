@@ -53,43 +53,43 @@ public class FolderActivity extends Activity implements AppBackupDataListener {
 
 	private void loadData() {
 
-		mFolderPagers = new GridView[4];
-		mFolderDatas = new SparseArray<Object>();
-
-		// load backup app
-		AppBackupRestoreManager abm = new AppBackupRestoreManager(this, this);
-		ArrayList<AppItemInfo> restoreList = abm.getRestoreList();
-		mFolderDatas.put(FolderItemInfo.FOLDER_BACKUP_RESTORE, restoreList);
-
-		AppLoadEngine laodEngine = AppLoadEngine.getInstance(this);
-		ArrayList<AppItemInfo> sourceList = laodEngine.getAllPkgInfo();
-		for (AppItemInfo appItemInfo : sourceList) {
-			laodEngine.loadAppDetailInfo(appItemInfo.packageName);
-		}
-		// sorted by flow
-		ArrayList<AppItemInfo> flowList = new ArrayList<AppItemInfo>();
-		Collections.copy(flowList, sourceList);
-		Collections.sort(flowList, new FlowComparator());
-
-		// sorted by capacity
-		ArrayList<AppItemInfo> capacityList = new ArrayList<AppItemInfo>();
-		Collections.copy(capacityList, sourceList);
-		Collections.sort(capacityList, new CapacityComparator());
-		
-		
-		//load business data
-		
-		
-
-		if (mFromType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
-
-		} else if (mFromType == FolderItemInfo.FOLDER_FLOW_SORT) {
-
-		} else if (mFromType == FolderItemInfo.FOLDER_CAPACITY_SORT) {
-
-		} else if (mFromType == FolderItemInfo.FOLDER_BUSINESS_APP) {
-
-		}
+//		mFolderPagers = new GridView[4];
+//		mFolderDatas = new SparseArray<Object>();
+//
+//		// load backup app
+//		AppBackupRestoreManager abm = new AppBackupRestoreManager(this, this);
+//		ArrayList<AppItemInfo> restoreList = abm.getRestoreList();
+//		mFolderDatas.put(FolderItemInfo.FOLDER_BACKUP_RESTORE, restoreList);
+//
+//		AppLoadEngine laodEngine = AppLoadEngine.getInstance(this);
+//		ArrayList<AppItemInfo> sourceList = laodEngine.getAllPkgInfo();
+//		for (AppItemInfo appItemInfo : sourceList) {
+//			laodEngine.loadAppDetailInfo(appItemInfo.packageName);
+//		}
+//		// sorted by flow
+//		ArrayList<AppItemInfo> flowList = new ArrayList<AppItemInfo>();
+//		Collections.copy(flowList, sourceList);
+//		Collections.sort(flowList, new FlowComparator());
+//
+//		// sorted by capacity
+//		ArrayList<AppItemInfo> capacityList = new ArrayList<AppItemInfo>();
+//		Collections.copy(capacityList, sourceList);
+//		Collections.sort(capacityList, new CapacityComparator());
+//		
+//		
+//		//load business data
+//		
+//		
+//
+//		if (mFromType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
+//
+//		} else if (mFromType == FolderItemInfo.FOLDER_FLOW_SORT) {
+//
+//		} else if (mFromType == FolderItemInfo.FOLDER_CAPACITY_SORT) {
+//
+//		} else if (mFromType == FolderItemInfo.FOLDER_BUSINESS_APP) {
+//
+//		}
 
 		List<ItemHolder> holder = new ArrayList<FolderView.ItemHolder>();
 		ItemHolder item;
@@ -153,9 +153,9 @@ public class FolderActivity extends Activity implements AppBackupDataListener {
 
 		@Override
 		public int compare(AppItemInfo lhs, AppItemInfo rhs) {
-			if (lhs.mTrafficInfo.mTotal > rhs.mTrafficInfo.mTotal) {
+			if (lhs.trafficInfo.mTotal > rhs.trafficInfo.mTotal) {
 				return -1;
-			} else if (lhs.mTrafficInfo.mTotal < rhs.mTrafficInfo.mTotal) {
+			} else if (lhs.trafficInfo.mTotal < rhs.trafficInfo.mTotal) {
 				return 1;
 			}
 			return Collator.getInstance().compare(trimString(lhs.label),
@@ -171,9 +171,9 @@ public class FolderActivity extends Activity implements AppBackupDataListener {
 
 		@Override
 		public int compare(AppItemInfo lhs, AppItemInfo rhs) {
-			if (lhs.mCacheInfo.total > rhs.mCacheInfo.total) {
+			if (lhs.cacheInfo.total > rhs.cacheInfo.total) {
 				return -1;
-			} else if (lhs.mCacheInfo.total < rhs.mCacheInfo.total) {
+			} else if (lhs.cacheInfo.total < rhs.cacheInfo.total) {
 				return 1;
 			}
 			return Collator.getInstance().compare(trimString(lhs.label),
