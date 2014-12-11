@@ -14,6 +14,8 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.videohide.VideoGriActivity;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leoers.leoanalytics.LeoStat;
 
 import android.app.Activity;
@@ -154,6 +156,13 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                                     startActivity(intent);
                                 }
                             }
+                            /**
+                             * AM-494
+                             */
+                            else if(position == 2){
+                                Intent intent=new Intent(AboutActivity.this,VideoHideMainActivity.class);
+                                AboutActivity.this.startActivity(intent);              
+                            }
                             mLeoPopMenu.dismissSnapshotList();
                         }
                     });
@@ -177,6 +186,10 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
         Resources resources = AppMasterApplication.getInstance().getResources();
         listItems.add(resources.getString(R.string.about_group));
         listItems.add(resources.getString(R.string.about_praise));
+        /**
+         * AM-494
+         */
+        listItems.add("视频隐藏");
         return listItems;
     }
 }

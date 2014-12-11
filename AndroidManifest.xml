@@ -223,6 +223,23 @@
             android:name="com.leo.appmaster.lockertheme.LockerThemeGuideActivity"
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
+        <!-- AM-494 -->
+        <activity
+            android:name="com.leo.appmaster.videohide.VideoGriActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" />
+        <activity
+            android:name="com.leo.appmaster.videohide.VideoHideMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" />
+        <activity
+            android:name="com.leo.appmaster.videohide.VideoHideGalleryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" />
+        <activity
+            android:name="com.leo.appmaster.videohide.VideoViewPager"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" />
 
         <service
             android:name="com.leo.appmaster.applocker.service.LockService"

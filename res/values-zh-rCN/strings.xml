@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">应用管理大师</string>
+    <string name="app_name">Privacy Lock</string>
     <string name="app_count">应用数量</string>
     <string name="used_memory">使用内存</string>
     <string name="used_flow">使用流量</string>
@@ -241,5 +241,13 @@
     <string name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
     <string name="setting_locker_clean">解锁后加速</string>
+    <string name="app_no_video_hide">请点击添加按钮，添加需要隐藏的视频</string>
+    <string name="app_video_hide">视频隐藏</string>
+    <string name="app_video_gallery">视频库</string>
+    <string name="app_unhide_dialog_content_video">是否取消隐藏此视频？</string>
+    <string name="app_delete_dialog_content_video">是否删除此视频？</string>
+    <string name="app_unhide_video_dialog_content">是否取消隐藏你所选的视频？</string>
+    <string name="app_hide_video_dialog_content">是否隐藏你所选的视频？</string>
+    
 
 </resources>
