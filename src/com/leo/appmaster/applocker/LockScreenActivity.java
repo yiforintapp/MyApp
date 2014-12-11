@@ -47,6 +47,7 @@ import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.push.PushUIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
@@ -127,10 +128,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				mLockerGuide.setVisibility(View.GONE);
 			}
 		}
+		
+        if (mFromType == LockFragment.FROM_OTHER
+                || mFromType == LockFragment.FROM_SCREEN_ON) {
+            /* tell PushUIHelper than do not show dialog when lockscreen is shown */
+            PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(true);
+        }
 		super.onResume();
 	}
 
 	@Override
+    protected void onPause() {
+	    PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(false);
+        super.onPause();
+    }
+
+    @Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 	}

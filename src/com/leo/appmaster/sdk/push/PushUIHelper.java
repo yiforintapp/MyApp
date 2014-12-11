@@ -38,6 +38,7 @@ public class PushUIHelper implements IPushUIHelper {
     private String mContent = null;
     /* had status bar shown? */
     private boolean mStatusBar = false;
+    private boolean mIsLockScreen = false;
 
     public static PushUIHelper getInstance(Context ctx) {
         if (sPushUIHelper == null) {
@@ -60,6 +61,10 @@ public class PushUIHelper implements IPushUIHelper {
         filter.addAction(ACTION_IGNORE_PUSH);
         mContext.registerReceiver(mReceiver, filter);
     }
+    
+    public synchronized void setIsLockScreen(boolean flag){
+        mIsLockScreen = flag;
+    }
 
     /* all methods which need manager MUST call after this */
     @Override
@@ -74,7 +79,8 @@ public class PushUIHelper implements IPushUIHelper {
         mContent = content;
         if (showType == PushManager.SHOW_DIALOG_FIRST && isActivityOnTop(mContext)) {
             LeoLog.d(TAG, "push activity already on top, do nothing");
-        } else if (showType == PushManager.SHOW_DIALOG_FIRST && isAppOnTop(mContext)) {
+        } else if (showType == PushManager.SHOW_DIALOG_FIRST && isAppOnTop(mContext)
+                && !mIsLockScreen) {
             LeoLog.d(TAG, "notify user with dialog");
             mStatusBar = false;
             showPushActivity(title, content, false);
