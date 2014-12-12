@@ -56,6 +56,7 @@ import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leoers.leoanalytics.LeoStat;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
@@ -246,7 +247,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			}
 		}
 
-		if (ImageHideMainActivity.class.getName().equals(mToActivity)) { // AM-423
+		if (ImageHideMainActivity.class.getName().equals(mToActivity) || VideoHideMainActivity.class.getName().equals(mToActivity)) { // AM-423
 			mTtileBar.setSpinerVibility(View.INVISIBLE);
 			LeoLog.e("LockScreenActivity", "ImageHideMainActivity");
 		} else {
