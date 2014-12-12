@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -95,36 +96,27 @@ public class HttpRequestAgent {
 	}
 
 	/**
-	 * get system preset page recommend apps
-	 * 
-	 * @param listener
-	 * @param eListener
-	 */
-	public void loadApplistRecomApp(Listener<JSONObject> listener,
-			ErrorListener eListener) {
-
-	}
-
-	/**
-	 * get system preset page recommend apps
-	 * 
-	 * @param listener
-	 * @param eListener
-	 */
-	public void loadSysPresetRecomApp(Listener<JSONObject> listener,
-			ErrorListener eListener) {
-
-	}
-
-	/**
 	 * get running page recommend apps
 	 * 
 	 * @param listener
 	 * @param eListener
 	 */
-	public void loadRunningRecomApp(Listener<JSONObject> listener,
+	public void loadRecomApp(int type, Listener<JSONObject> listener,
 			ErrorListener eListener) {
-
+		String url = Constants.APP_RECOMMEND_URL;
+		List<String> hideThemes = AppMasterPreference.getInstance(mContext)
+				.getHideThemeList();
+		String combined = "";
+		for (String string : hideThemes) {
+			combined = combined + string + ";";
+		}
+		String body = "re_position=" + type + "&market_id="
+				+ mContext.getString(R.string.channel_code) + "&language="
+				+ AppwallHttpUtil.getLanguage();
+		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+				body, listener, eListener);
+		request.setShouldCache(true);
+		mRequestQueue.add(request);
 	}
 
 	/**
@@ -133,9 +125,23 @@ public class HttpRequestAgent {
 	 * @param listener
 	 * @param eListener
 	 */
-	public void loadBusinessRecomApp(Listener<JSONObject> listener,
+	public void loadBusinessRecomApp(int page, Listener<JSONObject> listener,
 			ErrorListener eListener) {
-
+		String url = Constants.APP_RECOMMEND_URL;
+		List<String> hideThemes = AppMasterPreference.getInstance(mContext)
+				.getHideThemeList();
+		String combined = "";
+		for (String string : hideThemes) {
+			combined = combined + string + ";";
+		}
+		String body = "re_position=" + 4 + "&market_id="
+				+ mContext.getString(R.string.channel_name) + "&language="
+				+ AppwallHttpUtil.getLanguage() + "&pgcurrent=" + page
+				+ "&pgsize=" + 40;
+		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+				body, listener, eListener);
+		request.setShouldCache(false);
+		mRequestQueue.add(request);
 	}
 
 	/**

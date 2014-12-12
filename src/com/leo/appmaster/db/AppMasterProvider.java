@@ -29,19 +29,36 @@ public class AppMasterProvider extends ContentProvider {
 	}
 
 	@Override
+	public int bulkInsert(Uri uri, ContentValues[] values) {
+		int numValues = 0;
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		db.beginTransaction();
+		try {
+			numValues = values.length;
+			for (int i = 0; i < numValues; i++) {
+				insert(uri, values[i]);
+			}
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
+		}
+		return numValues;
+	}
+
+	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String orderBy) {
 		SqlArguments args = new SqlArguments(uri, selection, selectionArgs);
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		Cursor c = null;
 
 		try {
-			if (Constants.TABLE_DOWNLOAD.equals(args.table)) {
-				c = db.query(Constants.TABLE_DOWNLOAD, projection, selection,
-						selectionArgs, null, null, orderBy);
-			}
+			// if (Constants.TABLE_DOWNLOAD.equals(args.table)) {
+			c = db.query(args.table, projection, selection, selectionArgs,
+					null, null, orderBy);
+			// }
 		} catch (Exception e) {
-			LeoLog.e("DownloadProvider", e.getMessage());
+			LeoLog.e(TAG, e.getMessage());
 		}
 
 		if (c != null) {
@@ -68,7 +85,7 @@ public class AppMasterProvider extends ContentProvider {
 			rowId = db.insert(args.table, Constants.ID, values);
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
-			LeoLog.e("DownloadProvider", e.getMessage());
+			LeoLog.e(TAG, e.getMessage());
 		} finally {
 			db.endTransaction();
 		}
@@ -97,7 +114,7 @@ public class AppMasterProvider extends ContentProvider {
 			count = db.delete(args.table, selection, selectionArgs);
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
-			LeoLog.e("DownloadProvider", e.getMessage());
+			LeoLog.e(TAG, e.getMessage());
 		} finally {
 			db.endTransaction();
 		}
@@ -118,19 +135,13 @@ public class AppMasterProvider extends ContentProvider {
 			count = db.update(args.table, values, selection, selectionArgs);
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
-			LeoLog.e("DownloadProvider", e.getMessage());
+			LeoLog.e(TAG, e.getMessage());
 		} finally {
 			db.endTransaction();
 		}
 
 		getContext().getContentResolver().notifyChange(uri, null);
 		return count;
-	}
-
-	@Override
-	public int bulkInsert(Uri uri, ContentValues[] values) {
-		SqlArguments args = new SqlArguments(uri);
-		return super.bulkInsert(uri, values);
 	}
 
 	static class SqlArguments {

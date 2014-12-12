@@ -9,17 +9,16 @@
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#33000000"
-        android:paddingBottom="5dp"
+        android:paddingBottom="10dp"
         android:paddingLeft="20dp"
-        android:paddingTop="5dp"
+        android:paddingTop="10dp"
         android:text="17天前使用"
-        android:textColor="@color/gray"
+        android:textColor="@color/white"
         android:textSize="12sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingTop="10dp" >
@@ -28,7 +27,7 @@
             android:id="@+id/imageView1"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/app_list_icon_1" />
+            android:src="@drawable/details_system_icon" />
 
         <TextView
             android:id="@+id/textView2"
@@ -37,8 +36,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView1"
-            android:text="系统占用： "
-            android:textColor="@color/gray" />
+            android:text="空间占用： "
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/capacity"
@@ -46,9 +45,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="16dp"
             android:text="30Ｍ "
-            android:textColor="@color/gray" />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <View
@@ -60,7 +59,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingTop="10dp" >
@@ -69,7 +68,7 @@
             android:id="@+id/imageView2"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/app_list_icon_2" />
+            android:src="@drawable/details_cache_icon" />
 
         <TextView
             android:id="@+id/textView3"
@@ -79,7 +78,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView2"
             android:text="缓存： "
-            android:textColor="@color/gray" />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/cache"
@@ -87,9 +86,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="16dp"
             android:text="30Ｍ "
-            android:textColor="@color/gray" />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <View
@@ -101,7 +100,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingTop="10dp" >
@@ -110,7 +109,7 @@
             android:id="@+id/imageView３"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/app_list_icon_3" />
+            android:src="@drawable/details_electric_icon" />
 
         <TextView
             android:id="@+id/textView４"
@@ -120,7 +119,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView３"
             android:text="电量消耗： "
-            android:textColor="@color/gray" />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/power"
@@ -128,9 +127,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="16dp"
             android:text="10% "
-            android:textColor="@color/gray" />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <View
@@ -142,7 +141,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingTop="10dp" >
@@ -151,7 +150,7 @@
             android:id="@+id/imageView4"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/app_list_icon_4" />
+            android:src="@drawable/details_flow_icon" />
 
         <TextView
             android:id="@+id/textView5"
@@ -161,7 +160,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView4"
             android:text="流量消耗： "
-            android:textColor="@color/gray" />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/flow"
@@ -169,9 +168,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="16dp"
             android:text="30Ｍ "
-            android:textColor="@color/gray" />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <View
@@ -183,7 +182,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingTop="10dp" >
@@ -192,7 +191,7 @@
             android:id="@+id/imageView5"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/app_list_icon_1" />
+            android:src="@drawable/details_memory_icon" />
 
         <TextView
             android:id="@+id/textView6"
@@ -202,7 +201,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView5"
             android:text="内存占用： "
-            android:textColor="@color/gray" />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/memory"
@@ -210,9 +209,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="16dp"
             android:text="30Ｍ "
-            android:textColor="@color/gray" />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <View
@@ -225,8 +224,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
@@ -234,31 +232,31 @@
 
         <TextView
             android:id="@+id/backup_restore"
-            style="@style/dlg_right_button_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
+            android:background="@drawable/folder_left_button_selector"
             android:gravity="center"
             android:padding="3dp"
             android:text="@string/backup"
-            android:textColor="@color/gray"
-            android:textSize="18sp" />
+            android:textColor="#064f6d"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/uninstall"
-            style="@style/dlg_right_button_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
             android:layout_weight="1"
+            android:background="@drawable/folder_right_button_selector"
             android:gravity="center"
             android:padding="3dp"
             android:text="@string/uninstall"
-            android:textColor="@color/gray"
-            android:textSize="18sp" />
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </LinearLayout>
 
 </LinearLayout>

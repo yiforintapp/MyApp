@@ -231,6 +231,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	public AppItemInfo loadAppDetailInfo(String pkgName) {
 		AppItemInfo info = mAppDetails.get(pkgName);
+		if (info == null)
+			return null;
 		if (!info.detailLoaded) {
 			mLatch = new CountDownLatch(1);
 			loadTrafficInfo(pkgName);

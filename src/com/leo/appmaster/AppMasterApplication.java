@@ -30,6 +30,8 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.appmanage.business.ApplistBusinessManager;
+import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.http.HttpRequestAgent;
@@ -46,6 +48,7 @@ public class AppMasterApplication extends Application implements
 		RequestFinishedReporter {
 
 	private AppLoadEngine mAppsEngine;
+	private AppBackupRestoreManager mBackupManager;
 
 	private static AppMasterApplication mInstance;
 	private static List<Activity> mActivityList;
@@ -77,6 +80,7 @@ public class AppMasterApplication extends Application implements
 		mHandler = new Handler();
 		mAppsEngine = AppLoadEngine.getInstance(this);
 		mAppsEngine.preloadAllBaseInfo();
+		mBackupManager = new AppBackupRestoreManager(this);
 		initImageLoader(getApplicationContext());
 		sharedPreferences = getSharedPreferences("lockerTheme",
 				Context.MODE_WORLD_WRITEABLE);
@@ -120,6 +124,8 @@ public class AppMasterApplication extends Application implements
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				ApplistBusinessManager.getInstance(mInstance).init();
+				mBackupManager.getBackupList();
 				judgeLockService();
 				judgeLockAlert();
 				judgeStatictiUnlockCount();
@@ -198,6 +204,10 @@ public class AppMasterApplication extends Application implements
 		}
 	}
 
+	public AppBackupRestoreManager getBuckupManager() {
+		return mBackupManager;
+	}
+
 	private void showNewThemeTip() {
 		// send new theme broadcast
 		Intent intent = new Intent(Constants.ACTION_NEW_THEME);
@@ -241,7 +251,8 @@ public class AppMasterApplication extends Application implements
 					new Listener<JSONObject>() {
 
 						@Override
-						public void onResponse(JSONObject response, boolean noMidify) {
+						public void onResponse(JSONObject response,
+								boolean noMidify) {
 							if (response != null) {
 								try {
 									JSONObject jsonObject = response.getJSONObject("data");
@@ -303,6 +314,7 @@ public class AppMasterApplication extends Application implements
 	@Override
 	public void onTerminate() {
 		super.onTerminate();
+		mBackupManager.onDestory(this);
 		unregisterReceiver(mAppsEngine);
 		SDKWrapper.endSession(this);
 	}

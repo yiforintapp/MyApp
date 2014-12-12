@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.model.AppItemInfo;
@@ -125,7 +126,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		mBackupManager.onDestory(this);
+		mBackupManager.unregisterBackupListener(this);
 		if (mProgressDialog != null) {
 			mProgressDialog.dismiss();
 			mProgressDialog = null;
@@ -160,7 +161,8 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 
 		mPager = (ViewPager) findViewById(R.id.pager);
 
-		mBackupManager = new AppBackupRestoreManager(this, this);
+		mBackupManager = AppMasterApplication.getInstance().getBuckupManager();
+		mBackupManager.registerBackupListener(this);
 
 		LayoutInflater inflater = LayoutInflater.from(this);
 		final View backupList = inflater.inflate(R.layout.view_backup_list,

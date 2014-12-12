@@ -1,337 +1,145 @@
 package com.leo.appmaster.appmanage.view;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.Utilities;
+import java.util.List;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import com.leo.appmaster.R;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BusinessItemInfo;
+
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.IBinder;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class FolderLayer {
 
 	public static String TAG = "FolderLayer";
-	private static int ANIMALTION_TIME = 350;
+	private static int ANIMALTION_TIME = 500;
 
-	private Context mContext;
-	private LayoutInflater mInflater;
-	private FolderLayerContainer container;
-	private View mBackgroundView;
-	private ViewGroup mBackgroundViewParent;
-	private View mContentView;
-	private View mTopView;
-	private View mBottomView;
-
-	private int[] mAnchorLocation = new int[2];
-	private int mSrceenwidth;
-	private int mSrceenheight;
-	private int mFolderheight;
-	private int mFolderUpY;
-	private int mFolderDownY;
-
+	private FolderView mFolderView;
+	private View mBrotherView;
+	private View mAnchorView;
+	private OnItemClickListener mFolderItemClickListener;
+	private boolean mIsAnimating;
 	private boolean mIsOpened = false;
-	private boolean mMoveFolder = false;
+	private OnFolderListener mOnFolderClosedListener;
+	private Context mContext;
+	private int[] mAnchorLocation;
 
-	private int mFolderTop;
-	private int mCutLine;
-	private int mTopOfffsetY;
-	private int mBottomOffsetY;
-
-	public interface OnClosedListener {
+	public interface OnFolderListener {
+		public void onOpened();
 
 		public void onClosed();
 	}
 
-	private OnClosedListener mOnFolderClosedListener;
-
-	public void setOnClosedListener(OnClosedListener onFolderClosedListener) {
-		this.mOnFolderClosedListener = onFolderClosedListener;
+	public FolderLayer(Context context, FolderView folderView) {
+		mContext = context;
+		mFolderView = folderView;
+		mFolderView.setFolderLayer(this);
 	}
 
-	private Animation.AnimationListener mOpenAnimationListener = new Animation.AnimationListener() {
+	public void setAnchorView(View anchor) {
+		mAnchorView = anchor;
+	}
 
-		@Override
-		public void onAnimationStart(Animation animation) {
-			mBackgroundView.setVisibility(View.INVISIBLE);
-		}
+	public boolean isFolderOpened() {
+		return mIsOpened;
+	}
 
-		@Override
-		public void onAnimationRepeat(Animation animation) {
-		}
+	public boolean isAnimating() {
+		return mIsAnimating;
+	}
 
-		@Override
-		public void onAnimationEnd(Animation animation) {
-			mIsOpened = true;
-		}
-	};
-
-	/**
-	 * the folder close Animation Listener
-	 */
-	private Animation.AnimationListener mClosedAnimationListener = new Animation.AnimationListener() {
-
-		@Override
-		public void onAnimationStart(Animation animation) {
-		}
-
-		@Override
-		public void onAnimationRepeat(Animation animation) {
-		}
-
-		@Override
-		public void onAnimationEnd(Animation animation) {
-			mBackgroundView.setVisibility(View.VISIBLE);
-			container.removeAllViews();
-			mBackgroundViewParent.removeView(container);
-			mBackgroundView.setDrawingCacheEnabled(false);
-			mIsOpened = false;
-			if (mOnFolderClosedListener != null) {
-				mOnFolderClosedListener.onClosed();
-			}
-		}
-	};
-
-	public FolderLayer(Context context) {
-		mContext = context;
-		container = new FolderLayerContainer(mContext);
-		// container.setBackgroundResource(R.drawable.app_manage_bg);
-		mInflater = LayoutInflater.from(context);
-		mFolderheight = mContext.getResources().getDimensionPixelSize(
-				R.dimen.folder_content_height);
+	public void setOnClosedListener(OnFolderListener onFolderClosedListener) {
+		this.mOnFolderClosedListener = onFolderClosedListener;
 	}
 
 	/**
 	 * 
-	 * @param anchor
-	 * @param backgroundView
-	 * @param folderView
-	 * @param derection
+	 * @param type
+	 * @param anchorView
 	 */
-	public void openFolderView(View anchor, View backgroundView, View folderView) {
-
-		mBackgroundView = backgroundView;
-		mBackgroundViewParent = (ViewGroup) mBackgroundView.getParent();
-
-		mContentView = folderView;
-		mSrceenwidth = mBackgroundViewParent.getWidth();
-		mSrceenheight = mBackgroundViewParent.getHeight();
-		mFolderTop = (mSrceenheight - mFolderheight) / 2;
-
-		int bottomHeight = mSrceenheight - mCutLine;
-		if (bottomHeight < mFolderTop) {
-			mMoveFolder = true;
-		}
-		
-		int[] parentLoaction = new int[2];
-		mBackgroundViewParent.getLocationInWindow(parentLoaction);
-		anchor.getLocationInWindow(mAnchorLocation);
-		mAnchorLocation[1] -= parentLoaction[1];
-
-		// anchor is below of folder
-		if (mAnchorLocation[1] > (mFolderTop + mFolderheight)) {
-			mCutLine = mAnchorLocation[1];
-			mTopOfffsetY = mCutLine + mFolderTop;
-			mBottomOffsetY = mFolderTop + mFolderheight - mCutLine;
-		} else if ((mAnchorLocation[1] + anchor.getHeight()) < mFolderTop) {
-			// anchor is above of folder
-			mCutLine = mAnchorLocation[1] + anchor.getHeight();
-			mTopOfffsetY = mFolderTop - mCutLine;
-			mBottomOffsetY = mFolderTop + mFolderheight - mCutLine;
-		} else {
-			mCutLine = mAnchorLocation[1] + anchor.getHeight();
-			mTopOfffsetY = mFolderTop - mCutLine;
-			mBottomOffsetY = mFolderTop + mFolderheight - mCutLine;
-		}
-
-		fillUI();
-		startOpenAnimation();
+	public void openFolderView(int type, View anchorView) {
+		mFolderView.setCurrentPosition(type);
+		startOpenAnimation(anchorView);
 	}
 
-	private void fillUI() {
-		container.removeAllViews();
-		
-		int bottomHeight = mSrceenheight - mCutLine;
-		Bitmap bottom;
-		if (bottomHeight < mFolderTop) {
-			mMoveFolder = true;
-		}
-		
-		// add content view
-		RelativeLayout.LayoutParams fp = new RelativeLayout.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT, mFolderheight);
-		
-		if(mMoveFolder) {
-			fp.setMargins(0, mFolderTop, 0, 0);
-		} else {
-			fp.setMargins(0, mFolderTop, 0, 0);
-		}
-		
-		container.addView(mContentView, fp);
+	private void startOpenAnimation(View anchorView) {
+		mFolderView.setVisibility(View.VISIBLE);
 
-		BitmapDrawable bd;
-		mBackgroundView.setDrawingCacheEnabled(true);
-		Bitmap srceen = mBackgroundView.getDrawingCache(true);
+		AnimationSet as = new AnimationSet(true);
+		as.setDuration(ANIMALTION_TIME);
+		AlphaAnimation aa = new AlphaAnimation(0f, 1f);
+		as.addAnimation(aa);
+		as.setInterpolator(new AccelerateDecelerateInterpolator());
 
-		// add top view
-		Bitmap top = Bitmap.createBitmap(srceen, 0, 0, mSrceenwidth, mCutLine);
-		bd = new BitmapDrawable(mContext.getResources(), top);
-		mTopView = mInflater.inflate(R.layout.move_frame, null);
-		mTopView.setId(1000);
-		mTopView.setBackgroundDrawable(bd);
-		RelativeLayout.LayoutParams ft = new RelativeLayout.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT, mCutLine);
-		container.addView(mTopView, ft);
+		mAnchorLocation = new int[2];
+		anchorView.getLocationInWindow(mAnchorLocation);
+		ScaleAnimation sa = new ScaleAnimation(0f, 1f, 0f, 1f,
+				mAnchorLocation[0], mAnchorLocation[1]);
+		sa.setDuration(ANIMALTION_TIME);
+		as.setAnimationListener(new AnimationListenerAdapter() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+				mIsAnimating = true;
+			}
 
-		// add bottom view
-		bottom = Bitmap.createBitmap(srceen, 0, mCutLine, mSrceenwidth,
-				mSrceenheight - mCutLine);
-		LeoLog.e("xxxx", "bottomHeight = " + bottomHeight + "   mFolderTop = "
-				+ mFolderTop);
-		bd = new BitmapDrawable(mContext.getResources(), bottom);
-		mBottomView = mInflater.inflate(R.layout.move_frame, null);
-		mBottomView.setBackgroundDrawable(bd);
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				mIsOpened = true;
+				mIsAnimating = false;
+				if (mOnFolderClosedListener != null) {
+					mOnFolderClosedListener.onOpened();
+				}
+			}
+		});
 
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT, bottomHeight);
-
-		lp.addRule(RelativeLayout.BELOW, 1000);
-		container.addView(mBottomView, lp);
-
-		mBackgroundViewParent.addView(container);
+		as.addAnimation(sa);
+		mFolderView.startAnimation(as);
 	}
 
-	private void startOpenAnimation() {
-
-		// move top view
-		TranslateAnimation topTrans = new TranslateAnimation(0, 0, 0,
-				mTopOfffsetY);
-		// topTrans.setInterpolator(new DecelerateInterpolator());
-		topTrans.setDuration(ANIMALTION_TIME);
-		topTrans.setFillAfter(true);
-		topTrans.setAnimationListener(mOpenAnimationListener);
-		mTopView.startAnimation(topTrans);
-
-		// move folder
-		// ScaleAnimation sa = new ScaleAnimation(fromX, toX, fromY, toY,
-		// pivotX, pivotY)
-
-		// move bottom view
-		TranslateAnimation bottomTrans = new TranslateAnimation(0, 0, 0,
-				mBottomOffsetY);
-		// bottomTrans.setInterpolator(new DecelerateInterpolator());
-		bottomTrans.setDuration(ANIMALTION_TIME);
-		bottomTrans.setFillAfter(true);
-		bottomTrans.setAnimationListener(mOpenAnimationListener);
-		mBottomView.startAnimation(bottomTrans);
-	}
-
-	public boolean isOpened() {
-		return mIsOpened;
-	}
-
-	private void closeFloder() {
+	public void closeFloder() {
 		if (!mIsOpened) {
 			return;
 		}
+		mIsOpened = false;
+		ScaleAnimation sa = new ScaleAnimation(1f, 0f, 1f, 0f,
+				mAnchorLocation[0], mAnchorLocation[1]);
+		sa.setAnimationListener(new AnimationListenerAdapter() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+				mIsAnimating = true;
+			}
 
-		// move top view
-		TranslateAnimation topTrans = new TranslateAnimation(0, 0,
-				mTopOfffsetY, 0);
-		topTrans.setInterpolator(new DecelerateInterpolator());
-		topTrans.setDuration(ANIMALTION_TIME);
-		topTrans.setFillAfter(true);
-		topTrans.setAnimationListener(mClosedAnimationListener);
-		mTopView.startAnimation(topTrans);
-
-		// move bottom view
-		TranslateAnimation bottomTrans = new TranslateAnimation(0, 0,
-				mBottomOffsetY, 0);
-		bottomTrans.setInterpolator(new DecelerateInterpolator());
-		bottomTrans.setDuration(ANIMALTION_TIME);
-		bottomTrans.setFillAfter(true);
-		mBottomView.startAnimation(bottomTrans);
-
-		// AlphaAnimation aa = new AlphaAnimation(1.0f, 0.0f);
-		// aa.setDuration(ANIMALTION_TIME);
-		// container.startAnimation(aa);
-
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				super.onAnimationEnd(animation);
+				mFolderView.setVisibility(View.INVISIBLE);
+				mIsOpened = false;
+				mIsAnimating = false;
+				if (mOnFolderClosedListener != null) {
+					mOnFolderClosedListener.onClosed();
+				}
+			}
+		});
+		sa.setDuration(ANIMALTION_TIME);
+		mFolderView.startAnimation(sa);
 	}
 
-	private class FolderLayerContainer extends RelativeLayout {
-
-		long lasttime = 0;
-		boolean isvalid = false;
-
-		public FolderLayerContainer(Context context) {
-			super(context);
-		}
-
-		@Override
-		public boolean dispatchKeyEvent(KeyEvent event) {
-			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-				if (getKeyDispatcherState() == null) {
-					return super.dispatchKeyEvent(event);
-				}
-
-				if (event.getAction() == KeyEvent.ACTION_DOWN
-						&& event.getRepeatCount() == 0) {
-					KeyEvent.DispatcherState state = getKeyDispatcherState();
-					if (state != null) {
-						state.startTracking(event, this);
-					}
-					return true;
-				} else if (event.getAction() == KeyEvent.ACTION_UP) {
-					KeyEvent.DispatcherState state = getKeyDispatcherState();
-					if (state != null && state.isTracking(event)
-							&& !event.isCanceled()) {
-						closeFloder();
-						return true;
-					}
-				}
-				return super.dispatchKeyEvent(event);
-			} else {
-				return super.dispatchKeyEvent(event);
-			}
-		}
-
-		@Override
-		public boolean onTouchEvent(MotionEvent event) {
-			final int y = (int) event.getY();
-
-			if (System.currentTimeMillis() - lasttime > ANIMALTION_TIME) {
-				isvalid = true;
-			} else {
-				isvalid = false;
-			}
-			lasttime = System.currentTimeMillis();
-
-			if ((event.getAction() == MotionEvent.ACTION_DOWN) && isvalid
-					&& (y < mFolderUpY || y > mFolderDownY)) {
-				closeFloder();
-				return true;
-			} else {
-				return super.onTouchEvent(event);
-			}
-		}
+	public void updateFolderData(int folderFlowSort,
+			List<AppItemInfo> contentData, List<BusinessItemInfo> reccommendData) {
+		// TODO Auto-generated method stub
+		mFolderView.updateData(folderFlowSort, contentData, reccommendData);
 	}
+
+	public void setFolderItemClickListener(
+			OnItemClickListener folderItemClickListener) {
+		mFolderView.setFolderItemClickListener(folderItemClickListener);
+	}
+
 }

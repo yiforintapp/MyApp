@@ -247,7 +247,7 @@
     <string name="folder_backup_restore">应用恢复</string>
     <string name="folder_sort_flow">最耗流量</string>
     <string name="folder_sort_capacity">最占容量</string>
-    <string name="folder_recommend">精品速递</string>
+    <string name="folder_recommend">新品速递</string>
     <string name="backup">备份</string>
-
+<string name="backuped">已备份</string>
 </resources>

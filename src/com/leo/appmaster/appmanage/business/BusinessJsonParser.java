@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -18,7 +19,6 @@ public class BusinessJsonParser {
 		ArrayList<BusinessItemInfo> list = null;
 		if (jsonObject != null) {
 			try {
-
 				int code = jsonObject.getInt("code");
 				if (code == 0) {
 					JSONArray array = jsonObject.getJSONArray("data");
@@ -32,6 +32,7 @@ public class BusinessJsonParser {
 							bean.iconUrl = temp.getString("app_icon");
 							bean.label = temp.getString("app_name");
 							bean.packageName = temp.getString("package_name");
+							bean.type = BaseInfo.ITEM_TYPE_BUSINESS_APP;
 							bean.appSize = Long.parseLong(temp
 									.getString("size"));
 							bean.gpPriority = Integer.parseInt(temp

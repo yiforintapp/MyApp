@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
@@ -42,8 +44,11 @@ import android.graphics.drawable.BitmapDrawable;
  */
 public class ApplistBusinessManager {
 
-	private static final int DELAY_2_HOUR = 2 * 60 * 60 * 1000;
-	public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
+	// private static final int DELAY_2_HOUR = 2 * 60 * 60 * 1000;
+	// public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
+
+	private static final int DELAY_2_HOUR = 5 * 1000;
+	public static final int DELAY_12_HOUR = 5 * 1000;
 
 	/**
 	 * applist business data change listener
@@ -61,6 +66,7 @@ public class ApplistBusinessManager {
 	private List<BusinessListener> mBusinessListeners;
 	private Vector<BusinessItemInfo> mBusinessList;
 	private FutureTask<Vector<BusinessItemInfo>> mLoadInitDataTask;
+	private boolean mInitDataLoaded = false;
 
 	private final ExecutorService mExecutorService = Executors
 			.newSingleThreadExecutor();
@@ -71,9 +77,9 @@ public class ApplistBusinessManager {
 		mContext = ctx.getApplicationContext();
 		mBusinessListeners = new ArrayList<ApplistBusinessManager.BusinessListener>();
 		mBusinessList = new Vector<BusinessItemInfo>();
-		init();
+		// init();
 	}
-	
+
 	public void init() {
 		loadInitData();
 		trySyncServerData();
@@ -83,57 +89,56 @@ public class ApplistBusinessManager {
 		mLoadInitDataTask = new FutureTask<Vector<BusinessItemInfo>>(
 				new Callable<Vector<BusinessItemInfo>>() {
 					@Override
-					public Vector<BusinessItemInfo> call() throws Exception {
+					public Vector<BusinessItemInfo> call() {
 						final ContentResolver resolver = mContext
 								.getContentResolver();
 						String[] projection = { "lebal", "package_name",
 								"app_size", "icon_status", "gp_priority",
 								"gp_url", };
 						Cursor c = resolver.query(
-								Constants.APPLIST_BUSINESS_URI, projection,
-								null, null, Constants.ID);
+								Constants.APPLIST_BUSINESS_URI, null, null,
+								null, Constants.ID);
 						BusinessItemInfo info;
-						int lebalIndex, pkgIndex, iconStatusIndex, iconIndex, downloadUrlIndex, appSizeIndex, gpPriorityIndex, gpUrlIndex;
-						if (c != null) {
-							while (c.moveToNext()) {
+						int lebalIndex, pkgIndex, iconStatusIndex, iconUrlIndex, iconIndex, downloadUrlIndex, appSizeIndex, gpPriorityIndex, gpUrlIndex, containerId;
+						lebalIndex = c.getColumnIndex("lebal");
+						pkgIndex = c.getColumnIndex("package_name");
+						iconUrlIndex = c.getColumnIndex("icon_url");
+						downloadUrlIndex = c.getColumnIndex("download_url");
+						iconIndex = c.getColumnIndex("icon");
+						containerId = c.getColumnIndex("container_id");
+						gpPriorityIndex = c.getColumnIndex("gp_priority");
+						gpUrlIndex = c.getColumnIndex("gp_url");
+						appSizeIndex = c.getColumnIndex("app_size");
+						iconStatusIndex = c.getColumnIndex("icon_status");
+						mBusinessList.clear();
+						if (c != null && c.moveToFirst()) {
+							do {
 								info = new BusinessItemInfo();
-
-								lebalIndex = c.getColumnIndex("lebal");
 								info.label = c.getString(lebalIndex);
-
-								pkgIndex = c.getColumnIndex("lebal");
 								info.packageName = c.getString(pkgIndex);
-
-								downloadUrlIndex = c
-										.getColumnIndex("download_url");
-								info.iconUrl = c.getString(downloadUrlIndex);
-
-								appSizeIndex = c.getColumnIndex("app_size");
-								info.appDownloadUrl = c.getString(appSizeIndex);
-
-								gpPriorityIndex = c
-										.getColumnIndex("gp_priority");
-								info.iconUrl = c.getString(gpPriorityIndex);
-
-								gpUrlIndex = c.getColumnIndex("gp_url");
-								info.appDownloadUrl = c.getString(gpUrlIndex);
-
-								iconStatusIndex = c
-										.getColumnIndex("icon_status");
+								info.iconUrl = c.getString(iconUrlIndex);
+								info.appDownloadUrl = c
+										.getString(downloadUrlIndex);
+								info.containType = c.getInt(containerId);
+								info.gpPriority = c.getInt(gpPriorityIndex);
+								info.gpUrl = c.getString(gpUrlIndex);
+								info.appSize = c.getInt(appSizeIndex);
 								info.iconLoaded = c.getInt(iconStatusIndex) == 1 ? true
 										: false;
-
 								if (info.iconLoaded) {
-									iconIndex = c.getColumnIndex("icon");
 									byte[] bytes = c.getBlob(iconIndex);
 									info.icon = BitmapUtils
 											.bitmapToDrawable(BitmapUtils
 													.bytes2Bimap(bytes));
 								}
-
+								info.type = BaseInfo.ITEM_TYPE_BUSINESS_APP;
 								mBusinessList.add(info);
-							}
+							} while (c.moveToNext());
+							c.close();
 						}
+						LeoLog.e("xxxx", mBusinessList.toString());
+						mInitDataLoaded = true;
+						loadAppIcon();
 						return mBusinessList;
 					}
 				});
@@ -155,15 +160,19 @@ public class ApplistBusinessManager {
 		mBusinessListeners.remove(listener);
 	}
 
-	public Vector<BusinessItemInfo> getInitData() {
-		try {
-			return mLoadInitDataTask.get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			return null;
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-			return null;
+	public Vector<BusinessItemInfo> getBusinessData() {
+		if (mInitDataLoaded) {
+			return mBusinessList;
+		} else {
+			try {
+				return mLoadInitDataTask.get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				return null;
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 	}
 
@@ -177,7 +186,8 @@ public class ApplistBusinessManager {
 		if (lastSyncTime == 0
 				|| (curTime - pref.getLastSyncBusinessTime()) > DELAY_12_HOUR) {
 
-			HttpRequestAgent.getInstance(mContext).loadApplistRecomApp(
+			HttpRequestAgent.getInstance(mContext).loadRecomApp(
+					BusinessItemInfo.CONTAIN_BUSINESS_FOLDER,
 					new Listener<JSONObject>() {
 
 						@Override
@@ -185,16 +195,22 @@ public class ApplistBusinessManager {
 								boolean noModify) {
 							if (response != null) {
 								try {
-									JSONObject jsonObject = response.getJSONObject("data");
-									if (jsonObject != null) {
+									if (response != null) {
 										pref.setLastSyncBusinessTime(System
 												.currentTimeMillis());
+										List<BusinessItemInfo> list = BusinessJsonParser
+												.parserJsonObject(mContext,
+														response);
 										if (!noModify) {
 											// to paser data
-											List<BusinessItemInfo> list = BusinessJsonParser
-													.parserJsonObject(mContext,
-															jsonObject);
-											syncLocalData(list);
+											LeoLog.e("trySyncServerData",
+													list.toString());
+											syncLocalData(
+													BusinessItemInfo.CONTAIN_APPLIST,
+													list);
+										} else {
+											LeoLog.e("trySyncServerData",
+													"noModify");
 										}
 									}
 
@@ -207,7 +223,7 @@ public class ApplistBusinessManager {
 									Timer timer = new Timer();
 									timer.schedule(recheckTask, DELAY_12_HOUR);
 
-								} catch (JSONException e) {
+								} catch (Exception e) {
 									e.printStackTrace();
 									LeoLog.e("syncServerData", e.getMessage());
 									TimerTask recheckTask = new TimerTask() {
@@ -240,7 +256,8 @@ public class ApplistBusinessManager {
 
 	}
 
-	protected void syncLocalData(final List<BusinessItemInfo> list) {  
+	protected void syncLocalData(final int containerType,
+			final List<BusinessItemInfo> list) {
 		mExecutorService.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -261,6 +278,7 @@ public class ApplistBusinessManager {
 					value.put("download_url", businessItemInfo.appDownloadUrl);
 					value.put("app_size", businessItemInfo.appSize);
 					value.put("icon_status", 0);
+					value.put("container_id", containerType);
 					value.put("gp_priority", businessItemInfo.gpPriority);
 					value.put("gp_url", businessItemInfo.gpUrl);
 					values[i] = value;
@@ -298,6 +316,7 @@ public class ApplistBusinessManager {
 							resolver.update(Constants.APPLIST_BUSINESS_URI,
 									value, "icon_url=" + info.iconUrl, null);
 
+							LeoLog.e("loadAppIcon", "true");
 							info.icon = BitmapUtils.bitmapToDrawable(response);
 							info.iconLoaded = true;
 							notifyBusinessChange();
@@ -305,7 +324,7 @@ public class ApplistBusinessManager {
 					}, new ErrorListener() {
 						@Override
 						public void onErrorResponse(VolleyError error) {
-							LeoLog.e("syncLocalData", error.getMessage());
+							LeoLog.e("loadAppIcon", "false");
 						}
 					});
 		}

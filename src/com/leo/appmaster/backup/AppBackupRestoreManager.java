@@ -96,7 +96,8 @@ public class AppBackupRestoreManager implements AppChangeListener {
 
 	private SDCardReceiver mSDReceiver;
 
-	private AppBackupDataListener mBackupListener;
+	// private AppBackupDataListener mBackupListener;
+	private ArrayList<AppBackupDataListener> mBackupListeners;
 
 	private ArrayList<AppItemInfo> mSavedList;
 	private ArrayList<AppItemInfo> mBackupList;
@@ -107,10 +108,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
 
 	private PackageManager mPackageManager;
 
-	public AppBackupRestoreManager(Context context,
-			AppBackupDataListener listener) {
+	public AppBackupRestoreManager(Context context) {
 		mPackageManager = context.getPackageManager();
-		mBackupListener = listener;
+		mBackupListeners = new ArrayList<AppBackupRestoreManager.AppBackupDataListener>();
 		mSavedList = new ArrayList<AppItemInfo>();
 		mBackupList = new ArrayList<AppItemInfo>();
 		AppLoadEngine.getInstance(context).registerAppChangeListener(this);
@@ -127,13 +127,23 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		context.registerReceiver(mSDReceiver, intentFilter);
 	}
 
+	public void registerBackupListener(AppBackupDataListener listener) {
+		if (!mBackupListeners.contains(listener)) {
+			mBackupListeners.add(listener);
+		}
+	}
+
+	public void unregisterBackupListener(AppBackupDataListener listener) {
+		mBackupListeners.remove(listener);
+	}
+
 	public void prepareDate() {
 		mExecutorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				getBackupList();
-				if (mBackupListener != null) {
-					mBackupListener.onDataReady();
+				for (AppBackupDataListener listener : mBackupListeners) {
+					listener.onDataReady();
 				}
 			}
 		});
@@ -144,8 +154,10 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		String backupPath = getBackupPath();
 		final int totalNum = apps.size();
 		if (backupPath == null) {
-			mBackupListener.onBackupFinish(false, 0, totalNum,
-					getFailMessage(FAIL_TYPE_SDCARD_UNAVAILABLE));
+			for (AppBackupDataListener listener : mBackupListeners) {
+				listener.onBackupFinish(false, 0, totalNum,
+						getFailMessage(FAIL_TYPE_SDCARD_UNAVAILABLE));
+			}
 		} else {
 			mExecutorService.execute(new Runnable() {
 				@Override
@@ -160,9 +172,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
 							success = false;
 							break;
 						}
-						if (mBackupListener != null) {
-							mBackupListener.onBackupProcessChanged(doneNum,
-									totalNum, app.label);
+						for (AppBackupDataListener listener : mBackupListeners) {
+							listener.onBackupProcessChanged(doneNum, totalNum,
+									app.label);
 						}
 						doneNum++;
 						failType = tryBackupApp(app);
@@ -177,13 +189,14 @@ public class AppBackupRestoreManager implements AppChangeListener {
 					if (successNum == 0) {
 						success = false;
 					}
-					if (mBackupListener != null) {
+
+					for (AppBackupDataListener listener : mBackupListeners) {
 						if (doneNum == totalNum) {
-							mBackupListener.onBackupProcessChanged(doneNum,
-									totalNum, null);
+							listener.onBackupProcessChanged(doneNum, totalNum,
+									null);
 						}
-						mBackupListener.onBackupFinish(success, successNum,
-								totalNum, getFailMessage(failType));
+						listener.onBackupFinish(success, successNum, totalNum,
+								getFailMessage(failType));
 					}
 				}
 			});
@@ -215,8 +228,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
 						}
 					}
 				}
-				if (mBackupListener != null) {
-					mBackupListener.onApkDeleted(success);
+
+				for (AppBackupDataListener listener : mBackupListeners) {
+					listener.onApkDeleted(success);
 				}
 			}
 		});
@@ -255,8 +269,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
 					}
 					if (deleteSavedList.size() > 0) {
 						mSavedList.removeAll(deleteSavedList);
-						if (mBackupListener != null) {
-							mBackupListener.onDataUpdate();
+
+						for (AppBackupDataListener listener : mBackupListeners) {
+							listener.onDataUpdate();
 						}
 					}
 				}
@@ -410,7 +425,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 				String pName = app.packageName;
 				int versionCode = app.versionCode;
 				for (AppItemInfo a : mSavedList) { // check if already
-														// backuped
+													// backuped
 					if (pName.equals(a.packageName)
 							&& versionCode == a.versionCode) {
 						app.isBackuped = true;
@@ -563,7 +578,8 @@ public class AppBackupRestoreManager implements AppChangeListener {
 	}
 
 	public void onDestory(Context context) {
-		mBackupListener = null;
+		mBackupListeners.clear();
+		mBackupListeners = null;
 		mSavedList.clear();
 		mBackupList.clear();
 		AppLoadEngine.getInstance(null).unregisterAppChangeListener(this);
@@ -584,8 +600,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 					String pkg = app.packageName;
 					int vCode = app.versionCode;
 					for (AppItemInfo a : mSavedList) {
-						if (pkg.equals(a.packageName)
-								&& vCode != a.versionCode){
+						if (pkg.equals(a.packageName) && vCode != a.versionCode) {
 							app.isBackuped = false;
 							break;
 						}
@@ -593,7 +608,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
 				}
 			}
 		}
-		mBackupListener.onDataUpdate();
+		for (AppBackupDataListener listener : mBackupListeners) {
+			listener.onDataUpdate();
+		}
 	}
 
 	private void onSDCardChange(boolean mounted) {
@@ -603,7 +620,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
 			for (AppItemInfo app : mBackupList) {
 				app.isBackuped = false;
 			}
-			mBackupListener.onDataUpdate();
+			for (AppBackupDataListener listener : mBackupListeners) {
+				listener.onDataUpdate();
+			}
 		} else {
 			mExecutorService.execute(new Runnable() {
 				@Override
@@ -612,8 +631,8 @@ public class AppBackupRestoreManager implements AppChangeListener {
 					mSavedList.clear();
 					mDataReady = false;
 					getBackupList();
-					if (mBackupListener != null) {
-						mBackupListener.onDataUpdate();
+					for (AppBackupDataListener listener : mBackupListeners) {
+						listener.onDataUpdate();
 					}
 				}
 			});

@@ -4,19 +4,19 @@ public class BusinessItemInfo extends BaseInfo {
 	/**
 	 * app list
 	 */
-	public static final int CONTAIN_APPLIST = 0;
+	public static final int CONTAIN_APPLIST = 1;
 	/**
 	 * system folder
 	 */
-	public static final int CONTAIN_SYSTEM_FOLDER = 1;
+	public static final int CONTAIN_SORT_FLOW = 2;
 	/**
 	 * running folder
 	 */
-	public static final int CONTAIN_RUNNING_FOLDER = 2;
+	public static final int CONTAIN_CAPACITY_SORT = 3;
 	/**
 	 * business folder
 	 */
-	public static final int CONTAIN_BUSINESS_FOLDER = 3;
+	public static final int CONTAIN_BUSINESS_FOLDER = 4;
 
 	/**
 	 * contain type of four above
@@ -47,25 +47,31 @@ public class BusinessItemInfo extends BaseInfo {
 	 * app package size
 	 */
 	public long appSize;
-	
+
 	/**
 	 * the download priority
 	 */
 	public int gpPriority;
-	
+
 	/**
 	 * gp url
 	 */
 	public String gpUrl;
 
-	/**
-	 * app type
-	 */
-	public int appType;
+//	/**
+//	 * app type
+//	 */
+//	public int appType;
 
 	/**
 	 * Tag
 	 */
 	public Object tag;
 
+	@Override
+	public String toString() {
+		return "label = " + label + "    iconUrl = " + iconUrl + "  appSize = "
+				+ appSize + "    type = " + type + "  appDownloadUrl =  "
+				+ appDownloadUrl + "    gpUrl = " + gpUrl + "   icon = " + icon;
+	}
 }

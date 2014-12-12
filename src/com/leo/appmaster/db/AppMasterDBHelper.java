@@ -53,22 +53,25 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
 
 		db.execSQL("CREATE TABLE IF NOT EXISTS applist_business ("
 				+ "_id INTEGER PRIMARY KEY," + "lebal TEXT,"
-				+ "package_name TEXT," + "icon_url TEXT," + "download_url TEXT"
-				+ "icon BLOB," + "app_size INTEGER," + "icon_status INTEGER"
-				+ "gp_priority INTEGER" + "gp_url TEXT" + ");");
+				+ "package_name TEXT," + "icon_url TEXT,"
+				+ "download_url TEXT," + "icon BLOB," + "container_id INTEGER,"
+				+ "gp_priority INTEGER," + "gp_url TEXT," + "app_size INTEGER,"
+				+ "icon_status INTEGER" + ");");
 
 		db.execSQL(CREATE_DOWNLOAD_TABLE);
 	}
 
+	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		if (newVersion == 2) {
 			db.execSQL("CREATE TABLE IF NOT EXISTS applist_business ("
 					+ "_id INTEGER PRIMARY KEY," + "lebal TEXT,"
 					+ "package_name TEXT," + "icon_url TEXT,"
-					+ "download_url TEXT" + "icon BLOB,"
-					+ "gp_priority INTEGER," + "gp_url TEXT," + "size INTEGER,"
-					+ "icon_status INTEGER" + ");");
+					+ "download_url TEXT," + "icon BLOB,"
+					+ "container_id INTEGER," + "gp_priority INTEGER,"
+					+ "gp_url TEXT," + "app_size INTEGER," + "icon_status INTEGER"
+					+ ");");
 
 			db.execSQL(CREATE_DOWNLOAD_TABLE);
 		}

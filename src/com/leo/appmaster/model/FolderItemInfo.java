@@ -3,17 +3,17 @@ package com.leo.appmaster.model;
 public class FolderItemInfo extends BaseInfo {
 
 	/**
-	 * system backup folder
-	 */
-	public static final int FOLDER_BACKUP_RESTORE = 0;
-	/**
 	 * system app folder
 	 */
-	public static final int FOLDER_FLOW_SORT = 1;
+	public static final int FOLDER_FLOW_SORT = 0;
 	/**
 	 * running app folder
 	 */
-	public static final int FOLDER_CAPACITY_SORT = 2;
+	public static final int FOLDER_CAPACITY_SORT = 1;
+	/**
+	 * system backup folder
+	 */
+	public static final int FOLDER_BACKUP_RESTORE = 2;
 	/**
 	 * business app folder
 	 */
