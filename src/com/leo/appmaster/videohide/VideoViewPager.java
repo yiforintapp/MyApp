@@ -217,6 +217,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         public VideoPagerAdapter(Context context) {
             this.context = context;
         }
+
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {
             return arg0 == arg1;
@@ -313,25 +314,42 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
      * delete Video
      */
     private void deleteVideo() {
+        boolean flag = false;
         String filePath = mAllPath.get(mPosition);
         if (!FileOperationUtil.DeleteFile(filePath)) {
             return;
         }
         mResultPath.add(filePath);
-        // mImageView.remove(mPosition);
-        FileOperationUtil.deleteFileMediaEntry(filePath, this);
-        int number = mImageView.size();
-        if (number == 0) {
-            Intent intent = new Intent();
-            intent.setClass(VideoViewPager.this, VideoHideMainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        } else {
-            if (number == mPosition) {
-                mPosition = 0;
+
+        try {
+            FileOperationUtil.deleteFileMediaEntry(filePath, this);
+            mAllPath.remove(mPosition);
+            flag = true;
+        } catch (Exception e) {
+        }
+        if (flag) {
+            int number = mAllPath.size();
+            if (mPosition == 0) {
+                mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mAllPath
+                        .get(mPosition)));
             }
-            mPagerAdapter.notifyDataSetChanged();
-            viewPager.setCurrentItem(mPosition, true);
+            if (number == 0) {
+                Intent intent = new Intent();
+                intent.setClass(VideoViewPager.this, VideoHideMainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            } else {
+                if (mPosition == number) {
+                    mPosition = 0;
+                    mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mAllPath
+                            .get(mPosition)));
+                }
+                mPagerAdapter.notifyDataSetChanged();
+                mPagerAdapter = null;
+                mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
+                viewPager.setAdapter(mPagerAdapter);
+                viewPager.setCurrentItem(mPosition, true);
+            }
         }
     }
 
@@ -452,7 +470,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                         if (true) {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             Uri uri = Uri
-                                    .parse("market://details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01");
+                                    .parse(Constants.VIDEO_PLUS_GP);
                             intent.setData(uri);
                             ComponentName cn = new ComponentName(
                                     "com.android.vending",
@@ -460,30 +478,14 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                             intent.setComponent(cn);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            Uri uri = Uri
-                                    .parse("market://details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01");
-                            intent.setData(uri);
-                            ComponentName cn = new ComponentName(
-                                    "com.android.vending",
-                                    "com.google.android.finsky.activities.MainActivity");
-                            intent.setComponent(cn);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
+                        } 
                     } else {
                         if (true) {
                             Uri uri = Uri
-                                    .parse("https://play.google.com/store/apps/details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01market://details?id= com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01");
+                                    .parse(Constants.VIDEO_PLUS_GP_URL);
                             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                             startActivity(intent);
-                        } else {
-                            Uri uri = Uri
-                                    .parse("https://play.google.com/store/apps/details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01market://details?id= com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01");
-                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(intent);
-                        }
+                        } 
                     }
                 }
             }
