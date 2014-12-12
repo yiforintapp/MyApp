@@ -251,5 +251,13 @@
     <string name="hide_video_dialog_title">播放视频</string>
     <string name="hide_video_dialog_content">为了保护您的隐私播放隐藏视频需要使用Video&#160;Plus，是否安装？</string>
     
+     <string name="hide_pic_text">已隐藏图片</string>
+    <string name="hide_pic_empty_text">没有隐藏图片</string>
+    <string name="hide_video_text">已隐藏视频</string>
+    <string name="hide_video_empty_text">没有隐藏视频</string>
+    <string name="app_backup_uninstall">备份卸载</string>
+    <string name="circle_lock_tip_text">已加锁应用</string>
+    <string name="circle_lock_empty_tip_text">没有加锁应用</string>
+    
 
 </resources>
