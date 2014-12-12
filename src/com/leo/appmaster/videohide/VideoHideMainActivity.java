@@ -2,6 +2,7 @@
 package com.leo.appmaster.videohide;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -30,13 +31,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockOptionActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.appsetting.AboutActivity;
+import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 
 @SuppressLint("NewApi")
@@ -48,9 +53,11 @@ public class VideoHideMainActivity extends BaseActivity implements
     private RelativeLayout mNoHidePictureHint;
     private Cursor mCursor;
     private List<VideoBean> hideVideos;
-    public static final int REQUEST_CODE_OPTION = 1001;
     private TextView mNohideVideo;
-    private  HideVideoAdapter adapter;
+    private HideVideoAdapter adapter;
+    private boolean mShouldLockOnRestart = true;
+    public static final int REQUEST_CODE_LOCK = 1000;
+    public static final int REQUEST_CODE_OPTION = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +101,7 @@ public class VideoHideMainActivity extends BaseActivity implements
         mGridView.setOnItemClickListener(this);
 
     }
+
     @Override
     protected void onDestroy() {
         mCursor.close();
@@ -104,8 +112,9 @@ public class VideoHideMainActivity extends BaseActivity implements
     public void onClick(View arg0) {
         switch (arg0.getId()) {
             case R.id.add_hide_image:
-                Intent intent=new Intent(VideoHideMainActivity.this,VideoHideGalleryActivity.class);
-                VideoHideMainActivity.this.startActivity(intent);       
+                Intent intent = new Intent(VideoHideMainActivity.this,
+                        VideoHideGalleryActivity.class);
+                VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
             case R.id.tv_option_image:
                 intent = new Intent(this, LockOptionActivity.class);
@@ -160,7 +169,7 @@ public class VideoHideMainActivity extends BaseActivity implements
             ViewHolder viewHolder = null;
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(
-                        R.layout.item_gridview_album, parent, false);
+                        R.layout.item_video_gridview_album, parent, false);
                 viewHolder = new ViewHolder();
                 viewHolder.imageView = (ImageView) convertView
                         .findViewById(R.id.img_item_album);
@@ -178,14 +187,14 @@ public class VideoHideMainActivity extends BaseActivity implements
             viewHolder.text.setText(video.getName() + "(" + video.getCount()
                     + ")");
             viewHolder.imageView.setBackgroundDrawable(context.getResources()
-                    .getDrawable(R.drawable.photo_bg_loding));
+                    .getDrawable(R.drawable.video_loading));
             Drawable drawableCache = asyncLoadImage.loadImage(imageView, path,
                     new ImageCallback() {
 
                         @Override
                         public void imageLoader(Drawable drawable) {
                             if (imageView != null
-                                    && imageView.getTag().equals(path)) {
+                                    && imageView.getTag().equals(path) && drawable!=null) {
                                 imageView.setBackgroundDrawable(drawable);
                             }
                         }
@@ -199,15 +208,7 @@ public class VideoHideMainActivity extends BaseActivity implements
     }
 
     /**
-     * getThumbnail
-     */
-    // public Bitmap getThumbnail(String path) {
-    // return ThumbnailUtils.createVideoThumbnail(path,
-    // Video.Thumbnails.FULL_SCREEN_KIND);
-    // }
-
-    /**
-     * 获取系统中视频文件信息
+     * getVideoInfo
      */
     public List<VideoBean> getVideoInfo() {
         List<VideoBean> videoBeans = new ArrayList<VideoBean>();
@@ -215,7 +216,7 @@ public class VideoHideMainActivity extends BaseActivity implements
         String selection = MediaColumns.DATA + " LIKE '%.leotmv'";
         try {
             mCursor = getContentResolver().query(uri, null, selection, null,
-                    MediaColumns.DATE_MODIFIED + " desc");
+                    MediaColumns.DATE_ADDED + " desc");
         } catch (Exception e) {
         }
         if (mCursor != null) {
@@ -249,13 +250,13 @@ public class VideoHideMainActivity extends BaseActivity implements
             for (String key : it) {
                 videoBeans.add(countMap.get(key));
             }
-            // Collections.sort(videoBeans, mFolderCamparator);
+             Collections.sort(videoBeans, mFolderCamparator);
         }
         return videoBeans;
     }
 
     /**
-     * 按日期排序
+     * Comparator date
      */
     public Comparator<VideoBean> mFolderCamparator = new Comparator<VideoBean>() {
 
@@ -280,9 +281,44 @@ public class VideoHideMainActivity extends BaseActivity implements
         bundle.putInt("mode", Constants.CANCLE_HIDE_MODE);
         intent.putExtras(bundle);
         try {
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CODE_OPTION);
         } catch (Exception e) {
         }
 
     }
+
+    @Override
+    public void onActivityRestart() {
+        if (mShouldLockOnRestart) {
+            showLockPage();
+        } else {
+            mShouldLockOnRestart = true;
+        }
+    }
+    private void showLockPage() {
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        int lockType = AppMasterPreference.getInstance(this).getLockType();
+        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_PASSWD);
+        } else {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_GESTURE);
+        }
+        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+                LockFragment.FROM_SELF);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivityForResult(intent, REQUEST_CODE_LOCK);
+    }
+
+    @Override
+    public void onActivityResault(int requestCode, int resultCode) {
+        if (REQUEST_CODE_LOCK == requestCode) {
+            mShouldLockOnRestart = false;
+        } else if (REQUEST_CODE_OPTION == requestCode) {
+            mShouldLockOnRestart = false;
+        }
+    }
+
 }

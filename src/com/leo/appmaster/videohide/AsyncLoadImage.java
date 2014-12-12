@@ -28,7 +28,7 @@ public class AsyncLoadImage {
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
     private Handler handler = new Handler();
 
-    public Drawable loadImage(final ImageView imageView, final String path,
+    public Drawable loadImage(final View imageView, final String path,
             final ImageCallback callback) {
         if (cacheMap.containsKey(path)) {
             SoftReference<Drawable> softReference = cacheMap.get(path);
@@ -45,6 +45,7 @@ public class AsyncLoadImage {
 
                 Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(path,
                         Video.Thumbnails.FULL_SCREEN_KIND);
+              if(bitmap != null){
                 final Drawable drawable = new BitmapDrawable(bitmap);
                 if (drawable != null) {
                     cacheMap.put(path, new SoftReference<Drawable>(drawable));
@@ -57,7 +58,20 @@ public class AsyncLoadImage {
                         }
                     });
                 }
+              }else{
+                  final Drawable drawable = null;
+                  if (drawable == null) {
+                      cacheMap.put(path, new SoftReference<Drawable>(drawable));
+                      handler.post(new Runnable() {
 
+                          @Override
+                          public void run() {
+                              callback.imageLoader(drawable);
+
+                          }
+                      });
+                  }
+              }
             }
         });
 

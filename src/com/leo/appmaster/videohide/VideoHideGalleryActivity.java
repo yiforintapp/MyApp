@@ -2,6 +2,7 @@
 package com.leo.appmaster.videohide;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -157,7 +158,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             ViewHolder viewHolder = null;
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(
-                        R.layout.item_gridview_album, parent, false);
+                        R.layout.item_video_gridview_album, parent, false);
                 viewHolder = new ViewHolder();
                 viewHolder.imageView = (ImageView) convertView
                         .findViewById(R.id.img_item_album);
@@ -175,14 +176,14 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             viewHolder.text.setText(video.getName() + "(" + video.getCount()
                     + ")");
             viewHolder.imageView.setBackgroundDrawable(context.getResources()
-                    .getDrawable(R.drawable.photo_bg_loding));
+                    .getDrawable(R.drawable.video_loading));
             Drawable drawableCache = asyncLoadImage.loadImage(imageView, path,
                     new ImageCallback() {
 
                         @Override
                         public void imageLoader(Drawable drawable) {
                             if (imageView != null
-                                    && imageView.getTag().equals(path)) {
+                                    && imageView.getTag().equals(path) && drawable!=null) {
                                 imageView.setBackgroundDrawable(drawable);
                             }
                         }
@@ -237,7 +238,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             for (String key : it) {
                 videoBeans.add(countMap.get(key));
             }
-            // Collections.sort(videoBeans, mFolderCamparator);
+             Collections.sort(videoBeans, mFolderCamparator);
         }
         return videoBeans;
     }

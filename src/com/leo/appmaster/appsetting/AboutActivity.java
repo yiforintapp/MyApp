@@ -6,9 +6,15 @@ import java.util.List;
 import java.util.Locale;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.GooglePlayGuideActivity;
 import com.leo.appmaster.home.ProtocolActivity;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
@@ -159,9 +165,12 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                             /**
                              * AM-494
                              */
-                            else if(position == 2){
-                                Intent intent=new Intent(AboutActivity.this,VideoHideMainActivity.class);
-                                AboutActivity.this.startActivity(intent);              
+                            else if(position == 2){     
+                                if (AppMasterPreference.getInstance(AboutActivity.this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                                    enterHideVideo();
+                                } else {
+                                    startVideoLockSetting();
+                                }
                             }
                             mLeoPopMenu.dismissSnapshotList();
                         }
@@ -175,7 +184,34 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
         }
 
     }
+    //*****************************AM-494*********************************
+    private void enterHideVideo() {
+        Intent intent = null;
+        int lockType = AppMasterPreference.getInstance(this).getLockType();
+        intent = new Intent(this, LockScreenActivity.class);
+        intent.putExtra(LockScreenActivity.EXTRA_LOCK_TITLE,
+                getString(R.string.app_image_hide));
+        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+                LockFragment.FROM_SELF_HOME);
+        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+                VideoHideMainActivity.class.getName());
+        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_PASSWD);
+        } else {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_GESTURE);
+        }
+        startActivity(intent);
+    }
 
+    private void startVideoLockSetting() {
+        Intent intent = new Intent(this, LockSettingActivity.class);
+        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+                VideoHideMainActivity.class.getName());
+        startActivity(intent);
+    }
+  //**************************************************************
     /**
      * getPopMenuItems
      * 

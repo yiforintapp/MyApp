@@ -17,6 +17,7 @@
             android:layout_marginLeft="@dimen/hide_picture_image_frame_left"
             android:layout_marginTop="@dimen/hide_pictrue_image_frame_top"
             android:adjustViewBounds="true"
+            android:background="@drawable/video_loading"
             android:scaleType="center" />
 
         <ImageView
@@ -27,6 +28,14 @@
             android:adjustViewBounds="true"
             android:background="@drawable/selector_over_frame"
             android:scaleType="center" />
+
+          <ImageView
+              android:layout_width="29dp"
+              android:layout_height="29dp"
+              android:layout_marginLeft="70dp"
+              android:layout_marginTop="60dp"
+              android:src="@drawable/play_icon" />
+
     </FrameLayout>
 
     <TextView

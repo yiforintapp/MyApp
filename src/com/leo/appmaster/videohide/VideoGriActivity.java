@@ -41,8 +41,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
@@ -51,7 +55,7 @@ import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 
 @SuppressLint("NewApi")
-public class VideoGriActivity extends Activity implements OnItemClickListener, OnClickListener {
+public class VideoGriActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private Cursor mCursor;
     private GridView mHideVideo;
     private List<VideoItemBean> mVideoItems;
@@ -69,8 +73,11 @@ public class VideoGriActivity extends Activity implements OnItemClickListener, O
     private LEOCircleProgressDialog mProgressDialog;
     private List<Integer> mClickPosList;
     private ArrayList<String> mAllPath;
-    private static final int REQUEST_CODE=0;
-    
+    private static final int REQUEST_CODE = 0;
+    private boolean mShouldLockOnRestart = true;
+    public static final int REQUEST_CODE_LOCK = 1000;
+    public static final int REQUEST_CODE_OPTION = 1001;
+
     private void init() {
         mSelectAll = (Button) findViewById(R.id.select_all);
         mBottomBar = (LinearLayout) findViewById(R.id.bottom_bar);
@@ -82,10 +89,7 @@ public class VideoGriActivity extends Activity implements OnItemClickListener, O
         mActivityMode = intent.getIntExtra("mode", Constants.SELECT_HIDE_MODE);
         VideoBean video = (VideoBean) intent.getExtras().getSerializable("data");
         mVideoItems = video.getBitList();
-        for (VideoItemBean videoItem : mVideoItems) {
-            String path=videoItem.getPath();
-            mAllPath.add(path);
-        }
+        getVideoPath();
         if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
             String optionName = getString(R.string.app_hide_image_edit);
             mCommonTtileBar.setOptionTextVisibility(View.VISIBLE);
@@ -93,7 +97,7 @@ public class VideoGriActivity extends Activity implements OnItemClickListener, O
             mCommonTtileBar.setOptionText(optionName);
             mBottomBar.setVisibility(View.GONE);
         } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
-           
+
         }
         if (mVideoItems != null && mVideoItems.size() != 0) {
             mHideVideoAdapter = new HideVideoAdapter(this, mVideoItems);
@@ -107,18 +111,27 @@ public class VideoGriActivity extends Activity implements OnItemClickListener, O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_gridview);
         mClickList = new ArrayList<VideoItemBean>();
-        mClickPosList=new ArrayList<Integer>();
-        mAllPath=new ArrayList<String>();
+        mClickPosList = new ArrayList<Integer>();
+        mAllPath = new ArrayList<String>();
         init();
         mHideVideo.setOnItemClickListener(this);
         mSelectAll.setOnClickListener(this);
         mHideButton.setOnClickListener(this);
     }
-@Override
-protected void onResume() {
- 
-    super.onResume();
-}
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+    }
+
+    private void getVideoPath() {
+        for (VideoItemBean videoItem : mVideoItems) {
+            String path = videoItem.getPath();
+            mAllPath.add(path);
+        }
+    }
+
     /**
      * HideVideoAdapter
      */
@@ -189,13 +202,14 @@ protected void onResume() {
             final ImageView imageView = viewHolder.imageView;
             imageView.setTag(path);
             viewHolder.imageView.setBackgroundDrawable(context.getResources()
-                    .getDrawable(R.drawable.photo_bg_loding));
+                    .getDrawable(R.drawable.video_loading));
             Drawable drawableCache = asyncLoadImage.loadImage(imageView, path,
                     new ImageCallback() {
+                        @SuppressWarnings("deprecation")
                         @Override
                         public void imageLoader(Drawable drawable) {
                             if (imageView != null
-                                    && imageView.getTag().equals(path)) {
+                                    && imageView.getTag().equals(path) && drawable != null) {
                                 imageView.setBackgroundDrawable(drawable);
                             }
                         }
@@ -220,7 +234,7 @@ protected void onResume() {
      */
     public void getVideoInfo(String dirPath) {
         Uri uri = Files.getContentUri("external");
-        String selection =Constants.VIDEO_FORMAT;
+        String selection = Constants.VIDEO_FORMAT;
         try {
             mCursor = getContentResolver().query(uri, null, selection, null,
                     MediaColumns.DATE_MODIFIED + " desc");
@@ -235,7 +249,6 @@ protected void onResume() {
                         .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
                 String dirName = FileOperationUtil.getDirNameFromFilepath(path);
                 FileOperationUtil.getDirPathFromFilepath(path);
-                getThumbnail(path);
                 video.setPath(path);
                 video.setName(dirName);
                 countMap.add(video);
@@ -251,30 +264,22 @@ protected void onResume() {
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         VideoItemBean video = mVideoItems.get(position);
         if (mActivityMode == Constants.CANCLE_HIDE_MODE && !mIsEditmode && mVideoItems.size() > 0) {
-            Intent intent=new Intent();
-            intent.setClass(VideoGriActivity.this,VideoViewPager.class);
-            intent.putExtra("path",video.getPath());
+            Intent intent = new Intent();
+            intent.setClass(VideoGriActivity.this, VideoViewPager.class);
+            intent.putExtra("path", video.getPath());
             intent.putStringArrayListExtra("mAllPath", mAllPath);
-            intent.putExtra("position",position);
-//            VideoGriActivity.this.startActivity(intent);
+            intent.putExtra("position", position);
             startActivityForResult(intent, REQUEST_CODE);
-            /*
-             * String url = video.getPath(); Uri uri = Uri.parse(url); Intent intent
-             * = new Intent(Intent.ACTION_VIEW); intent.setData(uri);
-             * intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-             * intent.setType("video/*"); intent.setDataAndType(uri, "video/*");
-             * startActivity(intent);
-             */
         } else {
             ImageView cView = (ImageView) view.findViewById(R.id.photo_select);
             if (!mClickList.contains(mVideoItems.get(position))) {
                 cView.setImageResource(R.drawable.pic_choose_active);
-                mClickList.add(mVideoItems.get(position));          
-                mClickPosList.add((Integer)position);
+                mClickList.add(mVideoItems.get(position));
+                mClickPosList.add((Integer) position);
             } else {
                 cView.setImageResource(R.drawable.pic_choose_normal);
                 mClickList.remove(mVideoItems.get(position));
-                 mClickPosList.remove((Integer)position);
+                mClickPosList.remove((Integer) position);
             }
             if (mClickList.size() < mVideoItems.size()) {
                 mSelectAll.setText(R.string.app_select_all);
@@ -283,26 +288,8 @@ protected void onResume() {
             }
             updateRightButton();
         }
-        
 
     }
-    
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if(REQUEST_CODE == requestCode){
-       ArrayList<String> resultPath=(ArrayList<String>) data.getExtras().get("path");
-       if(resultPath.size()>0){
-       for (int i = 0; i <mVideoItems.size(); i++) {
-           String path=mVideoItems.get(i).getPath();
-           if(resultPath.contains(path)){
-               mVideoItems.remove(i);
-           }
-    }
-       mHideVideoAdapter.notifyDataSetChanged();
-       }     
-    }
-}
 
     @Override
     public void onClick(View arg0) {
@@ -318,6 +305,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                 }
                 updateRightButton();
                 mHideVideoAdapter.notifyDataSetChanged();
+                break;
             case R.id.hide_image:
                 showAlarmDialog();
                 break;
@@ -342,12 +330,12 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     private void cancelEditMode() {
         mIsEditmode = false;
-         mClickList.clear();
-         mHideVideoAdapter.notifyDataSetChanged();
+        mClickList.clear();
+        mHideVideoAdapter.notifyDataSetChanged();
         mBottomBar.setVisibility(View.GONE);
         mCommonTtileBar.setOptionText(getString(R.string.app_hide_image_edit));
         mSelectImage.setVisibility(View.GONE);
-         updateRightButton();
+        updateRightButton();
     }
 
     private void updateRightButton() {
@@ -369,6 +357,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             mHideButton.setEnabled(false);
         }
     }
+
     private void showAlarmDialog() {
         if (mDialog == null) {
             mDialog = new LEOAlarmDialog(this);
@@ -379,17 +368,20 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                 if (which == 1) {
                     if (mClickList.size() > 0) {
                         if (mActivityMode == Constants.SELECT_HIDE_MODE) {
-                            showProgressDialog(getString(R.string.tips), getString(R.string.app_hide_image)+"...", true,true);
+                            showProgressDialog(getString(R.string.tips),
+                                    getString(R.string.app_hide_image) + "...", true, true);
                             BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
                             task.execute(true);
                             mHideVideoAdapter.notifyDataSetChanged();
                         } else if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
-                            showProgressDialog(getString(R.string.tips), getString(R.string.app_cancel_hide_image)+"...", true,true);
+                            showProgressDialog(getString(R.string.tips),
+                                    getString(R.string.app_cancel_hide_image) + "...", true, true);
                             BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
                             task.execute(false);
                             mHideVideoAdapter.notifyDataSetChanged();
                         }
                     }
+
                 }
 
             }
@@ -398,49 +390,61 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mActivityMode == Constants.SELECT_HIDE_MODE) {
             mDialog.setTitle(R.string.app_hide_image);
             mDialog.setContent(getString(R.string.app_hide_video_dialog_content));
-       
-        } else if (mActivityMode == Constants.CANCLE_HIDE_MODE) {          
+
+        } else if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
             mDialog.setTitle(R.string.app_cancel_hide_image);
             mDialog.setContent(getString(R.string.app_unhide_video_dialog_content));
         }
         mDialog.show();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mClickList.clear();
+    }
+
     /**
      * hideVideo and unVideo
+     * 
      * @author run
-     *
      */
-    private class BackgoundTask extends AsyncTask<Boolean ,Integer,Boolean>{
-        private Context context;  
+    private class BackgoundTask extends AsyncTask<Boolean, Integer, Boolean> {
+        private Context context;
         private Toast mHideFailToast = null;
-        BackgoundTask(Context context) {  
-            this.context = context;  
-        }  
 
-        @Override  
-        protected void onPreExecute() {  
+        BackgoundTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
             mIsBackgoundRunning = true;
-            showProgressDialog(getString(R.string.tips), getString(R.string.app_hide_image)+"...", true,true);
-        }  
+            showProgressDialog(getString(R.string.tips),
+                    getString(R.string.app_hide_image) + "...", true, true);
+        }
 
-        @Override  
-        protected Boolean doInBackground(Boolean... params) {  
+        @Override
+        protected Boolean doInBackground(Boolean... params) {
             String newFileName;
             Boolean isSuccess = true;
             boolean isHide = params[0];
             if (mClickList != null && mClickList.size() > 0) {
                 if (isHide) {
                     for (VideoItemBean item : mClickList) {
-                        if (!mIsBackgoundRunning) break;
+                        if (!mIsBackgoundRunning)
+                            break;
                         newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
                         if (newFileName.startsWith(".")) {
-                            newFileName = newFileName+".leotmv";
+                            newFileName = newFileName + ".leotmv";
                         } else {
-                            newFileName = "."+newFileName+".leotmv";
+                            newFileName = "." + newFileName + ".leotmv";
                         }
                         if (FileOperationUtil.RenameFile(item.getPath(), newFileName)) {
-                            FileOperationUtil.saveFileMediaEntry(FileOperationUtil.makePath(FileOperationUtil.getDirPathFromFilepath(item.getPath()), newFileName),context);
-                            FileOperationUtil.deleteVideoMediaEntry(item.getPath(),context);
+                            FileOperationUtil.saveFileMediaEntry(FileOperationUtil.makePath(
+                                    FileOperationUtil.getDirPathFromFilepath(item.getPath()),
+                                    newFileName), context);
+                            FileOperationUtil.deleteVideoMediaEntry(item.getPath(), context);
                             mVideoItems.remove(item);
                         } else {
                             isSuccess = false;
@@ -449,39 +453,52 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                     }
                 } else {
                     for (VideoItemBean item : mClickList) {
-                        if (!mIsBackgoundRunning) break;
+                        if (!mIsBackgoundRunning)
+                            break;
                         newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
                         newFileName = newFileName.substring(1, newFileName.indexOf(".leotmv"));
                         if (FileOperationUtil.RenameFile(item.getPath(), newFileName)) {
-                            FileOperationUtil.saveImageMediaEntry(FileOperationUtil.makePath(FileOperationUtil.getDirPathFromFilepath(item.getPath()), newFileName),context);
-                            FileOperationUtil.deleteFileMediaEntry(item.getPath(),context);
+                            FileOperationUtil.saveImageMediaEntry(FileOperationUtil.makePath(
+                                    FileOperationUtil.getDirPathFromFilepath(item.getPath()),
+                                    newFileName), context);
+                            FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
                             mVideoItems.remove(item);
                         }
                     }
                 }
             }
-            return isSuccess;  
+            return isSuccess;
         }
-  
-        @Override  
+
+        @Override
         protected void onPostExecute(final Boolean isSuccess) {
             mClickList.clear();
             if (!isSuccess) {
-                Toast.makeText(VideoGriActivity.this, getString(R.string.app_hide_image_fail), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VideoGriActivity.this, getString(R.string.app_hide_image_fail),
+                        Toast.LENGTH_SHORT).show();
             }
             dismissProgressDialog();
             if (mVideoItems.size() > 0) {
                 animateReorder();
                 updateRightButton();
             } else {
-                finish();
+                if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
+                    finish();
+                } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
+                    Intent intent = new Intent(VideoGriActivity.this, VideoHideMainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+
             }
         }
     }
-    private void showProgressDialog(String title, String message, boolean indeterminate, boolean cancelable) {
-        if(mProgressDialog == null) {
+
+    private void showProgressDialog(String title, String message, boolean indeterminate,
+            boolean cancelable) {
+        if (mProgressDialog == null) {
             mProgressDialog = new LEOCircleProgressDialog(this);
-            mProgressDialog.setOnCancelListener(new OnCancelListener() {            
+            mProgressDialog.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     mIsBackgoundRunning = false;
@@ -496,14 +513,14 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         mProgressDialog.setMessage(message);
         mProgressDialog.show();
     }
-    
+
     private void dismissProgressDialog() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
         }
     }
-    
+
     private void animateReorder() {
         int length = mClickPosList.size();
         List<Animator> resultList = new LinkedList<Animator>();
@@ -511,15 +528,15 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         int lastVisblePos = mHideVideo.getLastVisiblePosition();
         int pos;
         final List<Integer> viewList = new LinkedList<Integer>();
-        for (int i = 0; i < length;  i++) {
+        for (int i = 0; i < length; i++) {
             pos = mClickPosList.get(i);
-           if (pos >= fistVisblePos && pos <= lastVisblePos) {
-               View view = mHideVideo.getChildAt(pos - fistVisblePos);
-               viewList.add((Integer)(pos - fistVisblePos));
-               resultList.add(createZoomAnimations(view));
-           }
+            if (pos >= fistVisblePos && pos <= lastVisblePos) {
+                View view = mHideVideo.getChildAt(pos - fistVisblePos);
+                viewList.add((Integer) (pos - fistVisblePos));
+                resultList.add(createZoomAnimations(view));
+            }
         }
-        
+
         AnimatorSet resultSet = new AnimatorSet();
         resultSet.playTogether(resultList);
         resultSet.setDuration(500);
@@ -538,13 +555,61 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         });
         resultSet.start();
     }
-    
+
     private Animator createZoomAnimations(View view) {
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.5f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.5f);
-        ObjectAnimator zoomIn = ObjectAnimator.ofFloat(view,  "alpha", 1f, 0f);
+        ObjectAnimator zoomIn = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
         AnimatorSet animZoom = new AnimatorSet();
-        animZoom.playTogether( scaleX, scaleY,zoomIn);
+        animZoom.playTogether(scaleX, scaleY, zoomIn);
         return animZoom;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE == requestCode) {
+            ArrayList<String> resultPath = (ArrayList<String>) data.getExtras().get("path");
+            if (resultPath.size() > 0) {
+                for (int i = 0; i < mVideoItems.size(); i++) {
+                    String path = mVideoItems.get(i).getPath();
+                    if (resultPath.contains(path)) {
+                        mVideoItems.remove(i);
+                    }
+                }
+                mAllPath.clear();
+                getVideoPath();
+                mHideVideoAdapter.notifyDataSetChanged();
+            }
+        }
+        mShouldLockOnRestart = false;
+    }
+
+    @Override
+    public void onActivityRestart() {
+        super.onActivityRestart();
+        if (mShouldLockOnRestart) {
+            showLockPage();
+        } else {
+            mShouldLockOnRestart = true;
+        }
+    }
+
+    private void showLockPage() {
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        int lockType = AppMasterPreference.getInstance(this).getLockType();
+        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_PASSWD);
+        } else {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_GESTURE);
+        }
+        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+                LockFragment.FROM_SELF);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivityForResult(intent, 1000);
+    }
+
 }

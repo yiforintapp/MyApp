@@ -74,7 +74,8 @@ public class Constants {
      */
     public static final int CANCLE_HIDE_MODE = 0;
     public static final int SELECT_HIDE_MODE = 1;
-    public static final  String VIDEO_FORMAT= MediaColumns.DATA + " LIKE '%.mp4'" + " or " + MediaColumns.DATA
+    public static final String VIDEO_FORMAT = MediaColumns.DATA + " LIKE '%.mp4'" + " or "
+            + MediaColumns.DATA
             + " LIKE '%.avi'" + " or " + MediaColumns.DATA + " LIKE '%.mpe'" + " or "
             + MediaColumns.DATA + " LIKE '%.rm'" + " or " + MediaColumns.DATA + " LIKE '%.wmv'"
             + " or " + MediaColumns.DATA + " LIKE '%.vob'"
@@ -85,5 +86,5 @@ public class Constants {
             + MediaColumns.DATA + " LIKE '%.asf'"
             + " or " + MediaColumns.DATA + " LIKE '%.m4v'" + " or " + MediaColumns.DATA
             + " LIKE '%.rmvb'" + " or " + MediaColumns.DATA + " LIKE '%.mkv'";
-
+    public static final String VIDEO_PLUS_GP_URL = "https://play.google.com/store/apps/details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01market://details?id= com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
 }

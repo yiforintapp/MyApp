@@ -42,6 +42,7 @@ public class VideoBean implements Serializable {
     }
     public void setDirPath(String dirPath) {
         this.dirPath = dirPath;
+        setmLastModifyDate();
     }
     public Date getmLastModifyDate() {
         return mLastModifyDate;

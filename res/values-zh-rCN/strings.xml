@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">Privacy Lock</string>
+    <string name="app_name">隐私卫士</string>
     <string name="app_count">应用数量</string>
     <string name="used_memory">使用内存</string>
     <string name="used_flow">使用流量</string>
@@ -248,6 +248,8 @@
     <string name="app_delete_dialog_content_video">是否删除此视频？</string>
     <string name="app_unhide_video_dialog_content">是否取消隐藏你所选的视频？</string>
     <string name="app_hide_video_dialog_content">是否隐藏你所选的视频？</string>
+    <string name="hide_video_dialog_title">播放视频</string>
+    <string name="hide_video_dialog_content">为了保护您的隐私播放隐藏视频需要使用Video&#160;Plus，是否安装？</string>
     
 
 </resources>

@@ -8,26 +8,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#80000000" />
-    <RelativeLayout
+<!--     <RelativeLayout
         android:id="@+id/videoRT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
          android:layout_marginBottom="66dp"
          android:background="@drawable/photo_bg_loding"
         android:layout_below="@id/layout_title_bar" >
-        <ImageView 
-            android:id="@+id/clickIV"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:src="@drawable/splash_icon"
-            />
+         -->
   <com.leo.appmaster.ui.LeoPictureViewPager
         android:id="@+id/picture_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="66dp"
+        android:layout_below="@id/layout_title_bar"
        >
     </com.leo.appmaster.ui.LeoPictureViewPager>
-    </RelativeLayout>
+     <!--        <ImageView 
+            android:id="@+id/clickIV"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:src="@drawable/splash_icon"
+            
+            />
+    </RelativeLayout> -->
     <LinearLayout
         android:id="@+id/bottom_button_bar"
         android:layout_width="match_parent"
