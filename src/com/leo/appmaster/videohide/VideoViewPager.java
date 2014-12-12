@@ -46,7 +46,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private String mPath;
     private ArrayList<String> mAllPath;
     private LeoPictureViewPager viewPager;
-    private List<ImageView> mImageView;
+    private List<View> mImageView;
     private int mPosition = 0;
     private LEOAlarmDialog mDialog;
     private static final int DIALOG_CANCLE_VIDEO = 0;
@@ -67,7 +67,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_video);
         mAllPath = new ArrayList<String>();
-        mImageView = new ArrayList<ImageView>();
+        mImageView = new ArrayList<View>();
         mResultPath = new ArrayList<String>();
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle("");
@@ -79,7 +79,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         mUnhideVideo.setOnClickListener(this);
         /* get Path */
         getIntentPath();
-//        getVideo();
+        getVideo();
         viewPager = (LeoPictureViewPager) findViewById(R.id.picture_view_pager);
         mPagerAdapter = new VideoPagerAdapter(this);
         viewPager.setAdapter(mPagerAdapter);
@@ -180,7 +180,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     /**
      * getVideo
      */
-/*    public void getVideo() {
+    public void getVideo() {
         for (String path : mAllPath) {
             View view = LayoutInflater.from(this).inflate(R.layout.item_pager_video, null);
             ImageView imageView = (ImageView) view.findViewById(R.id.zoom_image_view);
@@ -206,7 +206,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             }
             mImageView.add(view);
         }
-    }*/
+    }
 
     /**
      * ViewPagerAdapter PagerAdapter
