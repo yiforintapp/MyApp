@@ -149,7 +149,12 @@ public class CommonFlowFragment extends BaseFolderFragment {
 					.findViewById(R.id.tv_app_name);
 			BaseInfo info = mList.get(position);
 
-			imageView.setImageDrawable(info.icon);
+			if (info.icon == null) {
+				imageView.setImageResource(R.drawable.default_icon);
+			} else {
+				imageView.setImageDrawable(info.icon);
+			}
+
 			textView.setText(info.label);
 			convertView.setTag(info);
 			return convertView;

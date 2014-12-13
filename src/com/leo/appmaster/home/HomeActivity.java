@@ -2,6 +2,7 @@ package com.leo.appmaster.home;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -34,6 +35,7 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.appmanage.AppListActivity;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
 import com.leo.appmaster.backup.AppBackupRestoreActivity;
@@ -47,6 +49,7 @@ import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.sdk.MainViewActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -61,8 +64,8 @@ import com.leoers.leoanalytics.LeoStat;
 public class HomeActivity extends MainViewActivity implements OnClickListener,
 		OnTouchListener, AppChangeListener {
 
-    private final static String KEY_ROOT_CHECK = "root_check";
-    
+	private final static String KEY_ROOT_CHECK = "root_check";
+
 	private View mPictureHide;
 	private View mAppLock;
 	private View mAppBackup;
@@ -95,16 +98,18 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		// commit feedbacks if any
 		FeedbackHelper.getInstance().tryCommit();
 		installShortcut();
-		
+
 		// Root chack
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if(sp.getBoolean(KEY_ROOT_CHECK, true)) {
-            boolean root = RootChecker.isRoot();
-            if(root) {
-                SDKWrapper.addEvent(getApplicationContext(), LeoStat.P1, KEY_ROOT_CHECK, "root");
-            }
-            sp.edit().putBoolean(KEY_ROOT_CHECK, false).commit();
-        }
+		SharedPreferences sp = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		if (sp.getBoolean(KEY_ROOT_CHECK, true)) {
+			boolean root = RootChecker.isRoot();
+			if (root) {
+				SDKWrapper.addEvent(getApplicationContext(), LeoStat.P1,
+						KEY_ROOT_CHECK, "root");
+			}
+			sp.edit().putBoolean(KEY_ROOT_CHECK, false).commit();
+		}
 	}
 
 	private void judgeShowGradeTip() {
@@ -245,7 +250,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 		judgeShowGradeTip();
 		super.onResume();
-		
+
 		SDKWrapper.addEvent(this, LeoStat.P1, "home", "enter");
 	}
 
@@ -326,7 +331,12 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			break;
 		case R.id.tv_app_backup:
 			SDKWrapper.addEvent(this, LeoStat.P1, "home", "backup");
-//			intent = new Intent(this, AppBackupRestoreActivity.class);
+
+			Vector<BusinessItemInfo> list = AppBusinessManager
+					.getInstance(this).getBusinessData();
+			LeoLog.e("xxxx", list.toString());
+
+			// intent = new Intent(this, AppBackupRestoreActivity.class);
 			intent = new Intent(this, AppListActivity.class);
 			startActivity(intent);
 			break;

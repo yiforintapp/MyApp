@@ -42,7 +42,7 @@ import android.graphics.drawable.BitmapDrawable;
  * @author zhangwenyang
  * 
  */
-public class ApplistBusinessManager {
+public class AppBusinessManager {
 
 	// private static final int DELAY_2_HOUR = 2 * 60 * 60 * 1000;
 	// public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
@@ -71,11 +71,11 @@ public class ApplistBusinessManager {
 	private final ExecutorService mExecutorService = Executors
 			.newSingleThreadExecutor();
 
-	private static ApplistBusinessManager mInstance;
+	private static AppBusinessManager mInstance;
 
-	private ApplistBusinessManager(Context ctx) {
+	private AppBusinessManager(Context ctx) {
 		mContext = ctx.getApplicationContext();
-		mBusinessListeners = new ArrayList<ApplistBusinessManager.BusinessListener>();
+		mBusinessListeners = new ArrayList<AppBusinessManager.BusinessListener>();
 		mBusinessList = new Vector<BusinessItemInfo>();
 		// init();
 	}
@@ -145,9 +145,9 @@ public class ApplistBusinessManager {
 		mExecutorService.execute(mLoadInitDataTask);
 	}
 
-	public static synchronized ApplistBusinessManager getInstance(Context ctx) {
+	public static synchronized AppBusinessManager getInstance(Context ctx) {
 		if (mInstance == null) {
-			mInstance = new ApplistBusinessManager(ctx);
+			mInstance = new AppBusinessManager(ctx);
 		}
 		return mInstance;
 	}
@@ -264,7 +264,6 @@ public class ApplistBusinessManager {
 				final ContentResolver resolver = mContext.getContentResolver();
 				resolver.delete(Constants.APPLIST_BUSINESS_URI, null, null);
 				mBusinessList.clear();
-				notifyBusinessChange();
 				if (list == null || list.isEmpty())
 					return;
 				ContentValues[] values = new ContentValues[list.size()];
@@ -282,7 +281,9 @@ public class ApplistBusinessManager {
 					value.put("gp_priority", businessItemInfo.gpPriority);
 					value.put("gp_url", businessItemInfo.gpUrl);
 					values[i] = value;
+					mBusinessList.add(businessItemInfo);
 				}
+				notifyBusinessChange();
 				// write db
 				resolver.bulkInsert(Constants.APPLIST_BUSINESS_URI, values);
 				// goto laod app icon

@@ -14,6 +14,7 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,8 +35,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.appmanage.business.ApplistBusinessManager;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.appmanage.view.FolderLayer;
 import com.leo.appmaster.appmanage.view.FolderView;
 import com.leo.appmaster.appmanage.view.SlicingLayer;
@@ -43,6 +45,7 @@ import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
@@ -52,6 +55,8 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoGridBaseAdapter;
 import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.PageIndicator;
+import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 
@@ -279,8 +284,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		List<AppItemInfo> list = AppLoadEngine.getInstance(this)
 				.getAllPkgInfo();
 		for (AppItemInfo appItemInfo : list) {
-			// if (!appItemInfo.systemApp)
-			mAppDetails.add(appItemInfo);
+			if (!appItemInfo.systemApp)
+				mAppDetails.add(appItemInfo);
 		}
 		mAllItems.addAll(mAppDetails);
 
@@ -372,12 +377,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 		});
 		as.playTogether(scaleX, scaleY);
 		as.start();
-	}
-
-	private void uninstallApp(String packageName) {
-		Uri uri = Uri.fromParts("package", packageName, null);
-		Intent intentdel = new Intent(Intent.ACTION_DELETE, uri);
-		startActivity(intentdel);
 	}
 
 	private class DataPagerAdapter extends PagerAdapter {
@@ -477,7 +476,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mBackupManager.backupApps(list);
 			break;
 		case R.id.uninstall:
-			uninstallApp(((AppItemInfo) mLastSelectedInfo).packageName);
+			AppUtil.uninstallApp(this,
+					((AppItemInfo) mLastSelectedInfo).packageName);
 			break;
 
 		default:
@@ -500,7 +500,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mFolderLayer.openFolderView(folderInfo.folderType, view);
 			break;
 		case BaseInfo.ITEM_TYPE_BUSINESS_APP:
-
+			BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
+			if (AppUtil.appInstalled(this, Constants.GP_PACKAGE)) {
+				AppUtil.downloadFromGp(this, bif.packageName);
+			} else {
+				AppUtil.downloadFromBrowser(this, bif.appDownloadUrl);
+			}
 			break;
 
 		default:
@@ -547,7 +552,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	private List<BusinessItemInfo> getRecommendData(int containerId) {
-		Vector<BusinessItemInfo> businessDatas = ApplistBusinessManager
+		Vector<BusinessItemInfo> businessDatas = AppBusinessManager
 				.getInstance(this).getBusinessData();
 		List<BusinessItemInfo> list = new ArrayList<BusinessItemInfo>();
 		for (BusinessItemInfo businessItemInfo : businessDatas) {

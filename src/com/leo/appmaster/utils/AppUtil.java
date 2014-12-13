@@ -1,11 +1,15 @@
 package com.leo.appmaster.utils;
 
+import com.leo.appmaster.Constants;
+
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
+import android.net.Uri;
 
 public class AppUtil {
 	public static boolean isSystemApp(ApplicationInfo info) {
@@ -19,9 +23,9 @@ public class AppUtil {
 		}
 		return false;
 	}
-	
+
 	public static boolean appInstalled(Context ctx, String pkg) {
-		
+
 		PackageManager pm = ctx.getPackageManager();
 		try {
 			pm.getApplicationInfo(pkg, PackageManager.GET_ACTIVITIES);
@@ -30,6 +34,25 @@ public class AppUtil {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public static void uninstallApp(Context ctx, String pkg) {
+		Uri uri = Uri.fromParts("package", pkg, null);
+		Intent intent = new Intent(Intent.ACTION_DELETE, uri);
+		ctx.startActivity(intent);
+	}
+
+	public static void downloadFromBrowser(Context context, String url) {
+		Uri uri = Uri.parse(url);
+		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		context.startActivity(intent);
+	}
+
+	public static void downloadFromGp(Context context, String packageGp) {
+		Intent intent = new Intent(Intent.ACTION_VIEW,
+				Uri.parse("market://details?id=" + packageGp));
+		intent.setPackage(Constants.GP_PACKAGE);
+		context.startActivity(intent);
 	}
 
 	public static ApplicationInfo getApplicationInfo(String pkg, Context ctx) {

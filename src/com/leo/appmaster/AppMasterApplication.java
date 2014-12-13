@@ -30,7 +30,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
-import com.leo.appmaster.appmanage.business.ApplistBusinessManager;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -124,7 +124,7 @@ public class AppMasterApplication extends Application implements
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ApplistBusinessManager.getInstance(mInstance).init();
+				AppBusinessManager.getInstance(mInstance).init();
 				mBackupManager.getBackupList();
 				judgeLockService();
 				judgeLockAlert();
