@@ -3,47 +3,26 @@ package com.leo.appmaster.appsetting;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.home.GooglePlayGuideActivity;
 import com.leo.appmaster.home.ProtocolActivity;
-import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.videohide.VideoGriActivity;
-import com.leo.appmaster.videohide.VideoHideMainActivity;
-import com.leoers.leoanalytics.LeoStat;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.PopupWindow.OnDismissListener;
 
 public class AboutActivity extends BaseActivity implements OnClickListener {
 
@@ -162,16 +141,6 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                                     startActivity(intent);
                                 }
                             }
-                            /**
-                             * AM-494
-                             */
-                            else if(position == 2){     
-                                if (AppMasterPreference.getInstance(AboutActivity.this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-                                    enterHideVideo();
-                                } else {
-                                    startVideoLockSetting();
-                                }
-                            }
                             mLeoPopMenu.dismissSnapshotList();
                         }
                     });
@@ -182,36 +151,8 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
             default:
                 break;
         }
-
-    }
-    //*****************************AM-494*********************************
-    private void enterHideVideo() {
-        Intent intent = null;
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        intent = new Intent(this, LockScreenActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_LOCK_TITLE,
-                getString(R.string.app_image_hide));
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF_HOME);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                VideoHideMainActivity.class.getName());
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        startActivity(intent);
     }
 
-    private void startVideoLockSetting() {
-        Intent intent = new Intent(this, LockSettingActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                VideoHideMainActivity.class.getName());
-        startActivity(intent);
-    }
-  //**************************************************************
     /**
      * getPopMenuItems
      * 
@@ -222,10 +163,6 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
         Resources resources = AppMasterApplication.getInstance().getResources();
         listItems.add(resources.getString(R.string.about_group));
         listItems.add(resources.getString(R.string.about_praise));
-        /**
-         * AM-494
-         */
-        listItems.add("视频隐藏");
         return listItems;
     }
 }

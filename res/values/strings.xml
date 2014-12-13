@@ -245,6 +245,7 @@
     <string name="locker_clean">Boosted successfully up to %1$s</string>
     <string name="setting_locker_clean">Unlock to boost</string>
     <string name="app_no_video_hide">请点击添加按钮，添加需要隐藏的视频</string>
+    <string name="app_no_video_gallery_hide">没有需要隐藏的视频</string>
     <string name="app_video_hide">视频隐藏</string>
     <string name="app_video_gallery">视频库</string>
     <string name="app_unhide_dialog_content_video">是否取消隐藏此视频？</string>

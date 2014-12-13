@@ -2,56 +2,42 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
+
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#80000000" />
-<!--     <RelativeLayout
-        android:id="@+id/videoRT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         android:layout_marginBottom="66dp"
-         android:background="@drawable/photo_bg_loding"
-        android:layout_below="@id/layout_title_bar" >
-         -->
-  <com.leo.appmaster.ui.LeoPictureViewPager
+    <com.leo.appmaster.ui.LeoPictureViewPager
         android:id="@+id/picture_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="66dp"
         android:layout_below="@id/layout_title_bar"
-       >
+        android:layout_marginBottom="66dp" >
     </com.leo.appmaster.ui.LeoPictureViewPager>
-     <!--        <ImageView 
-            android:id="@+id/clickIV"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:src="@drawable/splash_icon"
-            
-            />
-    </RelativeLayout> -->
+
     <LinearLayout
         android:id="@+id/bottom_button_bar"
         android:layout_width="match_parent"
         android:layout_height="66dp"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_button"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
-        android:background="@drawable/bottom_button" >
+        android:paddingTop="10dp" >
+
         <Button
             android:id="@+id/unhide_video"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:drawableTop="@drawable/unhide_picture_selector"
-            android:textColor="@drawable/selector_button_text"
             android:text="@string/app_cancel_hide_image"
-            android:background="@android:color/transparent" />
-        
+            android:textColor="@drawable/selector_button_text" />
+
         <View
             android:layout_width="5dp"
             android:layout_height="match_parent" />
@@ -61,10 +47,10 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:drawableTop="@drawable/delete_picture_selector"
-            android:textColor="@drawable/selector_button_text"
             android:text="@string/button_delete"
-            android:background="@android:color/transparent"  />
+            android:textColor="@drawable/selector_button_text" />
     </LinearLayout>
 
 </RelativeLayout>

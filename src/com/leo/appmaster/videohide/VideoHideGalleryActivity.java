@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
@@ -31,9 +32,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockOptionActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -45,11 +49,12 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     private GridView mGridView;
     private CommonTitleBar mTtileBar;
     private RelativeLayout mNoHidePictureHint;
-    private Cursor mCursor;
     private List<VideoBean> hideVideos;
-    public static final int REQUEST_CODE_OPTION = 1001;
     private TextView mNohideVideo;
     private HideVideoAdapter adapter;
+    private boolean mShouldLockOnRestart = true;
+    public static final int REQUEST_CODE_LOCK = 1000;
+    public static final int REQUEST_CODE_OPTION = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +76,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             } else {
                 mNoHidePictureHint.setVisibility(View.VISIBLE);
                 mGridView.setVisibility(View.GONE);
-                mNohideVideo.setText(getString(R.string.app_no_video_hide));
+                mNohideVideo.setText(getString(R.string.app_no_video_gallery_hide));
             }
 
         }
@@ -93,7 +98,6 @@ public class VideoHideGalleryActivity extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
-        mCursor.close();
         super.onDestroy();
     }
 
@@ -152,10 +156,13 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             ImageView imageView;
             TextView text;
         }
-
+/**
+ * TODO
+ */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
+            final Handler handler=new Handler();
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(
                         R.layout.item_video_gridview_album, parent, false);
@@ -179,7 +186,6 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                     .getDrawable(R.drawable.video_loading));
             Drawable drawableCache = asyncLoadImage.loadImage(imageView, path,
                     new ImageCallback() {
-
                         @Override
                         public void imageLoader(Drawable drawable) {
                             if (imageView != null
@@ -202,44 +208,48 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         List<VideoBean> videoBeans = new ArrayList<VideoBean>();
         Uri uri = Files.getContentUri("external");
         String selection =Constants.VIDEO_FORMAT;
+         Cursor cursor=null;
         try {
-            mCursor = getContentResolver().query(uri, null, selection, null,
+            cursor = getContentResolver().query(uri, null, selection, null,
                     MediaColumns.DATE_MODIFIED + " desc");
-        } catch (Exception e) {
-        }
-        if (mCursor != null) {
-            Map<String, VideoBean> countMap = new HashMap<String, VideoBean>();
-            while (mCursor.moveToNext()) {
-                VideoBean video = new VideoBean();
-                String path = mCursor
-                        .getString(mCursor
-                                .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
-                String dirName = FileOperationUtil.getDirNameFromFilepath(path);
-                String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
-                video.setDirPath(dirPath);
-                video.setName(dirName);
+            if (cursor != null) {
+                Map<String, VideoBean> countMap = new HashMap<String, VideoBean>();
+                while (cursor.moveToNext()) {
+                    VideoBean video = new VideoBean();
+                    String path = cursor
+                            .getString(cursor
+                                    .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+                    String dirName = FileOperationUtil.getDirNameFromFilepath(path);
+                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
+                    video.setDirPath(dirPath);
+                    video.setName(dirName);
 
-                VideoBean vb = null;
-                if (!countMap.containsKey(dirPath)) {
-                    vb = new VideoBean();
-                    vb.setName(dirName);
-                    vb.setCount("1");
-                    vb.setDirPath(dirPath);
-                    vb.getBitList().add(new VideoItemBean(path));
-                    vb.setPath(path);
-                    countMap.put(dirPath, vb);
-                } else {
-                    vb = countMap.get(dirPath);
-                    vb.setCount(String.valueOf(Integer.parseInt(vb.getCount()) + 1));
-                    vb.getBitList().add(new VideoItemBean(path));
+                    VideoBean vb = null;
+                    if (!countMap.containsKey(dirPath)) {
+                        vb = new VideoBean();
+                        vb.setName(dirName);
+                        vb.setCount("1");
+                        vb.setDirPath(dirPath);
+                        vb.getBitList().add(new VideoItemBean(path));
+                        vb.setPath(path);
+                        countMap.put(dirPath, vb);
+                    } else {
+                        vb = countMap.get(dirPath);
+                        vb.setCount(String.valueOf(Integer.parseInt(vb.getCount()) + 1));
+                        vb.getBitList().add(new VideoItemBean(path));
+                    }
                 }
+                Iterable<String> it = countMap.keySet();
+                for (String key : it) {
+                    videoBeans.add(countMap.get(key));
+                }
+                 Collections.sort(videoBeans, mFolderCamparator);
             }
-            Iterable<String> it = countMap.keySet();
-            for (String key : it) {
-                videoBeans.add(countMap.get(key));
-            }
-             Collections.sort(videoBeans, mFolderCamparator);
+        } catch (Exception e) {
+        }finally{
+            cursor.close();
         }
+       
         return videoBeans;
     }
 
@@ -273,5 +283,39 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         } catch (Exception e) {
         }
 
+    }
+    @Override
+    public void onActivityRestart() {
+        if (mShouldLockOnRestart) {
+            showLockPage();
+        } else {
+            mShouldLockOnRestart = true;
+        }
+    }
+
+    private void showLockPage() {
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        int lockType = AppMasterPreference.getInstance(this).getLockType();
+        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_PASSWD);
+        } else {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_GESTURE);
+        }
+        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+                LockFragment.FROM_SELF);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivityForResult(intent, REQUEST_CODE_LOCK);
+    }
+
+    @Override
+    public void onActivityResault(int requestCode, int resultCode) {
+        if (REQUEST_CODE_LOCK == requestCode) {
+            mShouldLockOnRestart = false;
+        } else if (REQUEST_CODE_OPTION == requestCode) {
+            mShouldLockOnRestart = false;
+        }
     }
 }

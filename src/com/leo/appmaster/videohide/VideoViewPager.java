@@ -46,7 +46,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private String mPath;
     private ArrayList<String> mAllPath;
     private LeoPictureViewPager viewPager;
-    private List<View> mImageView;
     private int mPosition = 0;
     private LEOAlarmDialog mDialog;
     private static final int DIALOG_CANCLE_VIDEO = 0;
@@ -67,7 +66,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_video);
         mAllPath = new ArrayList<String>();
-        mImageView = new ArrayList<View>();
+        new ArrayList<View>();
         mResultPath = new ArrayList<String>();
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle("");
@@ -79,7 +78,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         mUnhideVideo.setOnClickListener(this);
         /* get Path */
         getIntentPath();
-        getVideo();
         viewPager = (LeoPictureViewPager) findViewById(R.id.picture_view_pager);
         mPagerAdapter = new VideoPagerAdapter(this);
         viewPager.setAdapter(mPagerAdapter);
@@ -113,7 +111,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -149,7 +146,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     public void onClick(View arg0) {
         switch (arg0.getId()) {
             case R.id.unhide_video:
-                String thumbnailPath = (String) mImageView.get(mPosition).getTag();
                 String cancleHideVideoText = getString(R.string.app_unhide_dialog_content_video);
                 showAlarmDialog(cancleHideVideoText, DIALOG_CANCLE_VIDEO);
                 break;
@@ -175,37 +171,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             }
         }
         return flag;
-    }
-
-    /**
-     * getVideo
-     */
-    public void getVideo() {
-        for (String path : mAllPath) {
-            View view = LayoutInflater.from(this).inflate(R.layout.item_pager_video, null);
-            ImageView imageView = (ImageView) view.findViewById(R.id.zoom_image_view);
-            imageView.setTag(path);
-            final ImageView imageViewT = imageView;
-            final String pathT = path;
-            imageViewT.setTag(path);
-            imageView.setImageDrawable(VideoViewPager.this.getResources()
-                    .getDrawable(R.drawable.video_loading));
-            AsyncLoadImage asyncLoadImage = new AsyncLoadImage();
-            Drawable drawableCache = asyncLoadImage.loadImage(imageView, pathT,
-                    new ImageCallback() {
-                        @Override
-                        public void imageLoader(Drawable drawable) {
-                            if (imageViewT != null && imageViewT.getTag().equals(pathT)
-                                    && drawable != null) {
-                                imageViewT.setImageDrawable(drawable);
-                            }
-                        }
-                    });
-            if (drawableCache != null) {
-                imageView.setImageDrawable(drawableCache);
-            }
-            mImageView.add(view);
-        }
     }
 
     /**
@@ -268,14 +233,16 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     boolean isVideoFlag = isVideo(VIDEO_PLUS_PACKAGE_NAME);
                     if (isVideoFlag) {
                         String path = mAllPath.get(mPosition);
-                        ComponentName componentName = new ComponentName(VIDEO_PLUS_PACKAGE_NAME,
-                                VIDEO_PLAYER_ACTIVITY);
+                        // ComponentName componentName = new
+                        // ComponentName(VIDEO_PLUS_PACKAGE_NAME,
+                        // VIDEO_PLAYER_ACTIVITY);
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.parse("file://" + path), "video/*");
-                        intent.setComponent(componentName);
+                        // intent.setComponent(componentName);
                         startActivity(intent);
+
                     } else {
-                        showAlarmDialogPlayer();
+                        // showAlarmDialogPlayer();
                     }
                 }
 
@@ -286,6 +253,12 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         }
     };
 
+    /**
+     * showAlarmDialog
+     * 
+     * @param string
+     * @param flag
+     */
     private void showAlarmDialog(final String string, final int flag) {
         if (mDialog == null) {
             mDialog = new LEOAlarmDialog(this);
@@ -296,7 +269,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 if (which == 1) {
                     if (flag == DIALOG_CANCLE_VIDEO) {
                         BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
-                        String path = (String) mImageView.get(mPosition).getTag();
                         backgoundTask.execute(true);
                     } else if (flag == DIALOG_DELECTE_VIDEO) {
                         deleteVideo();
@@ -307,6 +279,49 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.setTitle(R.string.app_cancel_hide_image);
         mDialog.setContent(string);
+        mDialog.show();
+    }
+
+    /**
+     * showAlarmDialogPlayer , Download Video Plus
+     */
+    private void showAlarmDialogPlayer() {
+        if (mDialog == null) {
+            mDialog = new LEOAlarmDialog(this);
+        }
+        mDialog.setOnClickListener(new OnDiaogClickListener() {
+            @Override
+            public void onClick(int which) {
+                if (which == 1) {
+                    boolean isGpFlag = isVideo(Constants.GP_PACKAGE);
+                    if (isGpFlag) {
+                        if (true) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            Uri uri = Uri
+                                    .parse(Constants.VIDEO_PLUS_GP);
+                            intent.setData(uri);
+                            ComponentName cn = new ComponentName(
+                                    "com.android.vending",
+                                    "com.google.android.finsky.activities.MainActivity");
+                            intent.setComponent(cn);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    } else {
+                        if (true) {
+                            Uri uri = Uri
+                                    .parse(Constants.VIDEO_PLUS_GP_URL);
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(intent);
+                        }
+                    }
+                }
+            }
+        });
+        mDialog.setTitle(getString(R.string.hide_video_dialog_title));
+        mDialog.setContent(getString(R.string.hide_video_dialog_content));
+        mDialog.setLeftBtnStr(getString(R.string.cancel));
+        mDialog.setRightBtnStr(getString(R.string.button_install));
         mDialog.show();
     }
 
@@ -329,32 +344,31 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         }
         if (flag) {
             int number = mAllPath.size();
-            if (mPosition == 0) {
-                mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mAllPath
-                        .get(mPosition)));
-            }
             if (number == 0) {
                 Intent intent = new Intent();
                 intent.setClass(VideoViewPager.this, VideoHideMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+            } else if (mPosition == 0) {
+                mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mAllPath
+                        .get(mPosition)));
             } else {
                 if (mPosition == number) {
                     mPosition = 0;
                     mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mAllPath
                             .get(mPosition)));
                 }
-                mPagerAdapter.notifyDataSetChanged();
-                mPagerAdapter = null;
-                mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
-                viewPager.setAdapter(mPagerAdapter);
-                viewPager.setCurrentItem(mPosition, true);
             }
+            mPagerAdapter.notifyDataSetChanged();
+            mPagerAdapter = null;
+            mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
+            viewPager.setAdapter(mPagerAdapter);
+            viewPager.setCurrentItem(mPosition, true);
         }
     }
 
     /**
-     * hideVideo and unVideo
+     * unHideVideo BackgoundTask
      * 
      * @author run
      */
@@ -399,27 +413,26 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         protected void onPostExecute(final Boolean isSuccess) {
             if (isSuccess) {
                 int number = mAllPath.size();
-                if (mPosition == 0) {
-                    mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mAllPath
-                            .get(mPosition)));
-                }
                 if (number == 0) {
                     Intent intent = new Intent();
                     intent.setClass(VideoViewPager.this, VideoHideMainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
+                } else if (mPosition == 0) {
+                    mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mAllPath
+                            .get(mPosition)));
                 } else {
                     if (mPosition == number) {
                         mPosition = 0;
                         mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mAllPath
                                 .get(mPosition)));
                     }
-                    mPagerAdapter.notifyDataSetChanged();
-                    mPagerAdapter = null;
-                    mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
-                    viewPager.setAdapter(mPagerAdapter);
-                    viewPager.setCurrentItem(mPosition, true);
                 }
+                mPagerAdapter.notifyDataSetChanged();
+                mPagerAdapter = null;
+                mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
+                viewPager.setAdapter(mPagerAdapter);
+                viewPager.setCurrentItem(mPosition, true);
             } else {
             }
         }
@@ -455,45 +468,5 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivityForResult(intent, 1000);
-    }
-
-    private void showAlarmDialogPlayer() {
-        if (mDialog == null) {
-            mDialog = new LEOAlarmDialog(this);
-        }
-        mDialog.setOnClickListener(new OnDiaogClickListener() {
-            @Override
-            public void onClick(int which) {
-                if (which == 1) {
-                    boolean isGpFlag = isVideo(Constants.GP_PACKAGE);
-                    if (isGpFlag) {
-                        if (true) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            Uri uri = Uri
-                                    .parse(Constants.VIDEO_PLUS_GP);
-                            intent.setData(uri);
-                            ComponentName cn = new ComponentName(
-                                    "com.android.vending",
-                                    "com.google.android.finsky.activities.MainActivity");
-                            intent.setComponent(cn);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        } 
-                    } else {
-                        if (true) {
-                            Uri uri = Uri
-                                    .parse(Constants.VIDEO_PLUS_GP_URL);
-                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(intent);
-                        } 
-                    }
-                }
-            }
-        });
-        mDialog.setTitle(getString(R.string.hide_video_dialog_title));
-        mDialog.setContent(getString(R.string.hide_video_dialog_content));
-        mDialog.setLeftBtnStr(getString(R.string.cancel));
-        mDialog.setRightBtnStr(getString(R.string.button_install));
-        mDialog.show();
     }
 }

@@ -51,7 +51,6 @@ public class VideoHideMainActivity extends BaseActivity implements
     private CommonTitleBar mTtileBar;
     private Button mAddButton;
     private RelativeLayout mNoHidePictureHint;
-    private Cursor mCursor;
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
     private HideVideoAdapter adapter;
@@ -81,7 +80,6 @@ public class VideoHideMainActivity extends BaseActivity implements
                 mGridView.setVisibility(View.GONE);
                 mNohideVideo.setText(getString(R.string.app_no_video_hide));
             }
-
         }
 
     }
@@ -99,12 +97,11 @@ public class VideoHideMainActivity extends BaseActivity implements
         mNohideVideo = (TextView) findViewById(R.id.nohideTV);
         mGridView = (GridView) findViewById(R.id.Video_hide_folder);
         mGridView.setOnItemClickListener(this);
-
     }
 
     @Override
     protected void onDestroy() {
-        mCursor.close();
+
         super.onDestroy();
     }
 
@@ -124,7 +121,6 @@ public class VideoHideMainActivity extends BaseActivity implements
             default:
                 break;
         }
-
     }
 
     /**
@@ -194,7 +190,7 @@ public class VideoHideMainActivity extends BaseActivity implements
                         @Override
                         public void imageLoader(Drawable drawable) {
                             if (imageView != null
-                                    && imageView.getTag().equals(path) && drawable!=null) {
+                                    && imageView.getTag().equals(path) && drawable != null) {
                                 imageView.setBackgroundDrawable(drawable);
                             }
                         }
@@ -214,44 +210,48 @@ public class VideoHideMainActivity extends BaseActivity implements
         List<VideoBean> videoBeans = new ArrayList<VideoBean>();
         Uri uri = Files.getContentUri("external");
         String selection = MediaColumns.DATA + " LIKE '%.leotmv'";
+        Cursor cursor=null;
         try {
-            mCursor = getContentResolver().query(uri, null, selection, null,
+            cursor = getContentResolver().query(uri, null, selection, null,
                     MediaColumns.DATE_ADDED + " desc");
-        } catch (Exception e) {
-        }
-        if (mCursor != null) {
-            Map<String, VideoBean> countMap = new HashMap<String, VideoBean>();
-            while (mCursor.moveToNext()) {
-                VideoBean video = new VideoBean();
-                String path = mCursor
-                        .getString(mCursor
-                                .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
-                String dirName = FileOperationUtil.getDirNameFromFilepath(path);
-                String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
-                video.setDirPath(dirPath);
-                video.setName(dirName);
+            if (cursor != null) {
+                Map<String, VideoBean> countMap = new HashMap<String, VideoBean>();
+                while (cursor.moveToNext()) {
+                    VideoBean video = new VideoBean();
+                    String path = cursor
+                            .getString(cursor
+                                    .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+                    String dirName = FileOperationUtil.getDirNameFromFilepath(path);
+                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
+                    video.setDirPath(dirPath);
+                    video.setName(dirName);
 
-                VideoBean vb = null;
-                if (!countMap.containsKey(dirPath)) {
-                    vb = new VideoBean();
-                    vb.setName(dirName);
-                    vb.setCount("1");
-                    vb.setDirPath(dirPath);
-                    vb.getBitList().add(new VideoItemBean(path));
-                    vb.setPath(path);
-                    countMap.put(dirPath, vb);
-                } else {
-                    vb = countMap.get(dirPath);
-                    vb.setCount(String.valueOf(Integer.parseInt(vb.getCount()) + 1));
-                    vb.getBitList().add(new VideoItemBean(path));
+                    VideoBean vb = null;
+                    if (!countMap.containsKey(dirPath)) {
+                        vb = new VideoBean();
+                        vb.setName(dirName);
+                        vb.setCount("1");
+                        vb.setDirPath(dirPath);
+                        vb.getBitList().add(new VideoItemBean(path));
+                        vb.setPath(path);
+                        countMap.put(dirPath, vb);
+                    } else {
+                        vb = countMap.get(dirPath);
+                        vb.setCount(String.valueOf(Integer.parseInt(vb.getCount()) + 1));
+                        vb.getBitList().add(new VideoItemBean(path));
+                    }
                 }
+                Iterable<String> it = countMap.keySet();
+                for (String key : it) {
+                    videoBeans.add(countMap.get(key));
+                }
+                Collections.sort(videoBeans, mFolderCamparator);
             }
-            Iterable<String> it = countMap.keySet();
-            for (String key : it) {
-                videoBeans.add(countMap.get(key));
-            }
-             Collections.sort(videoBeans, mFolderCamparator);
+        } catch (Exception e) {
+        }finally{
+            cursor.close();
         }
+     
         return videoBeans;
     }
 
@@ -295,6 +295,7 @@ public class VideoHideMainActivity extends BaseActivity implements
             mShouldLockOnRestart = true;
         }
     }
+
     private void showLockPage() {
         Intent intent = new Intent(this, LockScreenActivity.class);
         int lockType = AppMasterPreference.getInstance(this).getLockType();

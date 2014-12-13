@@ -221,14 +221,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         }
 
     }
-
-    /**
-     * getThumbnail
-     */
-    public Bitmap getThumbnail(String path) {
-        return ThumbnailUtils.createVideoThumbnail(path, Video.Thumbnails.FULL_SCREEN_KIND);
-    }
-
     /**
      * getVideoInfo
      */
