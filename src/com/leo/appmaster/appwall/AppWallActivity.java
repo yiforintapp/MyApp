@@ -189,7 +189,10 @@ public class AppWallActivity extends BaseActivity implements
 		@Override
 		protected void onPostExecute(String result) {
 			boolean flag = false;
-			p.dismiss();
+			// AM-524
+			if(p != null && !p.isShowing()) {
+		         p.dismiss();
+			}
 			if (result != null && !result.equals("")) {
 				List<AppWallBean> apps = getJson(result);// 从服务器解析
 				appwallLV.setVisibility(View.VISIBLE);
