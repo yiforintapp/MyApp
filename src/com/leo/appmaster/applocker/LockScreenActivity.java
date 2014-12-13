@@ -16,6 +16,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -411,17 +412,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			onBack();
 			break;
 		case R.id.image1:
-			Intent intent = new Intent(LockScreenActivity.this,
-					LockerTheme.class);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
-//					| Intent.FLAG_ACTIVITY_NEW_TASK);
-			SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,
-					"theme_enter", "unlock");
-			toTheme = true;
-			startActivityForResult(intent, 0);
-			AppMasterApplication.setSharedPreferencesNumber("1");
-			number = "1";
-			break;
+                Intent intent = new Intent(LockScreenActivity.this,
+                        LockerTheme.class);
+                //AM-512, for android L and above, make a special here 
+                if (Build.VERSION.SDK_INT > 19 && (mFromType == LockFragment.FROM_OTHER
+                        || mFromType == LockFragment.FROM_SCREEN_ON)) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
+                }
+                SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,
+                        "theme_enter", "unlock");
+                toTheme = true;
+                startActivityForResult(intent, 0);
+                AppMasterApplication.setSharedPreferencesNumber("1");
+                number = "1";
+                break;
 		default:
 			break;
 		}
