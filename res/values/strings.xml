@@ -243,13 +243,24 @@
     <string name="locker_theme_guide">Themes will be applied to lock screen!</string>
     <string name="locker_clean">Boosted successfully up to %1$s</string>
     <string name="setting_locker_clean">Unlock to boost</string>
-    <string name="folder_backup_restore">应用恢复</string>
-    <string name="folder_sort_flow">最耗流量</string>
-    <string name="folder_sort_capacity">最占容量</string>
-    <string name="folder_recommend">新品速递</string>
-    <string name="backup">备份</string>
-    <string name="restore">恢复</string>
-    <string name="backuped">已备份</string>
-    <string name="no_more_business_app">没有新应用了，过段时间再来看看吧 </string>
- <string name="uninstall_backup">卸载与备份</string>
+    <string name="folder_backup_restore">App Restore</string>
+    <string name="folder_sort_flow">Network Killer</string>
+    <string name="folder_sort_capacity">Storage Killer</string>
+    <string name="folder_recommend">New Arrival</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="backuped">Backuped</string>
+    <string name="no_more_business_app">No new applications, look back over time  </string>
+    <string name="uninstall_backup">Uninstall Backup</string>
+    
+    <string name="space_consumption ">Storage Killer: </string>
+    <string name="cache_size ">Cache： </string>
+    <string name="power_consumption ">Battery Usage: </string>
+    <string name="flow_consumption ">Net Flow Usage: </string>
+    <string name="memory_consumption ">Memory Used: </string>
+    <string name="backup_path ">Backup route: </string>
+    <string name="backup_time">Backup date: </string>
+    <string name="app_size ">APK file size: </string>
+    <string name="version">Version: </string>
+
 </resources>

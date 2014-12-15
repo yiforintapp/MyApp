@@ -240,13 +240,6 @@ public class AppMasterApplication extends Application implements
 		long lastCheckTime = pref.getLastCheckThemeTime();
 		if (lastCheckTime == 0
 				|| (curTime - pref.getLastCheckThemeTime()) > 12 * 60 * 60 * 1000) {
-
-			// if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber())
-			// {
-			// showNewThemeTip();
-			// return;
-			// }
-
 			HttpRequestAgent.getInstance(this).checkNewTheme(
 					new Listener<JSONObject>() {
 
@@ -256,8 +249,6 @@ public class AppMasterApplication extends Application implements
 							if (response != null) {
 								try {
 									JSONObject jsonObject = response.getJSONObject("data");
-									// LeoLog.e("checkNewTheme",
-									// response.toString());
 									if (jsonObject != null) {
 										boolean hasNewTheme = jsonObject
 												.getBoolean("need_update");

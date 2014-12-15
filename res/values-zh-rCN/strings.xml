@@ -261,5 +261,15 @@
     <string name="restore">恢复</string>
     <string name="backuped">已备份</string>
     <string name="no_more_business_app">没有新应用了，过段时间再来看看吧 </string>
+    
+    <string name="space_consumption ">空间占用： </string>
+    <string name="cache_size ">缓存大小： </string>
+    <string name="power_consumption ">电量消耗： </string>
+    <string name="flow_consumption ">电量消耗： </string>
+    <string name="memory_consumption ">空间占用： </string>
+    <string name="backup_path ">备份路径： </string>
+    <string name="backup_time">备份时间： </string>
+    <string name="app_size ">app大小： </string>
+    <string name="version">版本号： </string>
 
 </resources>
