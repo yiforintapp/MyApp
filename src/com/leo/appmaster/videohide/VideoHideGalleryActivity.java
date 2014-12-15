@@ -279,7 +279,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         bundle.putInt("mode", Constants.SELECT_HIDE_MODE);
         intent.putExtras(bundle);
         try {
-            startActivity(intent);
+            startActivityForResult(intent, 1001);
         } catch (Exception e) {
         }
 
@@ -311,11 +311,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     }
 
     @Override
-    public void onActivityResault(int requestCode, int resultCode) {
-        if (REQUEST_CODE_LOCK == requestCode) {
+    public void onActivityResault(int requestCode, int resultCode) {  
             mShouldLockOnRestart = false;
-        } else if (REQUEST_CODE_OPTION == requestCode) {
-            mShouldLockOnRestart = false;
-        }
     }
 }

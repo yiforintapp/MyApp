@@ -245,7 +245,7 @@
     <string name="locker_clean">Boosted successfully up to %1$s</string>
     <string name="setting_locker_clean">Unlock to boost</string>
     <string name="app_no_video_hide">Click "Add" to hide videos</string>
-    <string name="app_no_video_gallery_hide">There is no need to hide the video!</string>
+    <string name="app_no_video_gallery_hide">Click \'Add\' to select videos</string>
     <string name="app_video_hide">Hide Video</string>
     <string name="app_video_gallery">Video gallery</string>
     <string name="app_unhide_dialog_content_video">Unhide this video ?</string>

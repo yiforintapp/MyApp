@@ -242,7 +242,7 @@
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
     <string name="setting_locker_clean">解锁后加速</string>
     <string name="app_no_video_hide">请点击添加按钮，添加需要隐藏的视频</string>
-     <string name="app_no_video_gallery_hide">没有需要隐藏的视频</string>
+     <string name="app_no_video_gallery_hide">没有可隐藏的视频</string>
     <string name="app_video_hide">视频隐藏</string>
     <string name="app_video_gallery">视频库</string>
     <string name="app_unhide_dialog_content_video">是否取消隐藏此视频？</string>

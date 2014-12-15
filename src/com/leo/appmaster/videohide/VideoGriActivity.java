@@ -26,6 +26,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
 import android.provider.MediaStore.Video;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -420,8 +421,6 @@ public void onBackPressed() {
         @Override
         protected void onPreExecute() {
             mIsBackgoundRunning = true;
-            showProgressDialog(getString(R.string.tips),
-                    getString(R.string.app_hide_image) + "...", true, true);
         }
 
         @Override
@@ -485,7 +484,7 @@ public void onBackPressed() {
                 if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                     finish();
                 } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
-                    Intent intent = new Intent(VideoGriActivity.this, VideoHideMainActivity.class);
+                    Intent intent = new Intent(VideoGriActivity.this, VideoHideGalleryActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
