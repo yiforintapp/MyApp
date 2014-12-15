@@ -131,7 +131,15 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             mAllPath.add(path);
         }
     }
-
+@Override
+public void onBackPressed() {
+  
+    if (mActivityMode == Constants.CANCLE_HIDE_MODE && mIsEditmode) {
+            cancelEditMode();
+    }else{
+        super.onBackPressed();
+    }
+}
     /**
      * HideVideoAdapter
      */
