@@ -38,5 +38,5 @@
     <dimen name="layout_passwd_marginBottom">15dp</dimen>
     
     <dimen name="common_scling_content_height">280dp</dimen>
-    <dimen name="backup_scling_content_height">215dp</dimen>
+    <dimen name="backup_scling_content_height">220dp</dimen>
 </resources>

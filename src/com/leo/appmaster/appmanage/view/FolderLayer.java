@@ -2,10 +2,10 @@ package com.leo.appmaster.appmanage.view;
 
 import java.util.List;
 
-import com.leo.appmaster.R;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Context;
 import android.view.View;
@@ -64,26 +64,33 @@ public class FolderLayer {
 	 * @param type
 	 * @param anchorView
 	 */
-	public void openFolderView(int type, View anchorView) {
+	public void openFolderView(int type, View anchorView, View brotherView) {
+		mBrotherView = brotherView;
 		mFolderView.setCurrentPosition(type);
 		startOpenAnimation(anchorView);
 	}
 
 	private void startOpenAnimation(View anchorView) {
 		mFolderView.setVisibility(View.VISIBLE);
-
-		AnimationSet as = new AnimationSet(true);
-		as.setDuration(ANIMALTION_TIME);
-		AlphaAnimation aa = new AlphaAnimation(0f, 1f);
-		as.addAnimation(aa);
-		as.setInterpolator(new AccelerateDecelerateInterpolator());
-
+		AnimationSet as1 = new AnimationSet(true);
+		as1.setDuration(ANIMALTION_TIME);
+		as1.setInterpolator(new AccelerateDecelerateInterpolator());
+		AlphaAnimation aa1 = new AlphaAnimation(0f, 1f);
+		as1.addAnimation(aa1);
 		mAnchorLocation = new int[2];
 		anchorView.getLocationInWindow(mAnchorLocation);
-		ScaleAnimation sa = new ScaleAnimation(0f, 1f, 0f, 1f,
+
+		int[] parentLocation = new int[2];
+		View parent = (View) mFolderView.getParent();
+		parent.getLocationInWindow(parentLocation);
+
+		mAnchorLocation[0] += anchorView.getWidth() / 2;
+		mAnchorLocation[1] += anchorView.getHeight() / 2 - parentLocation[1];
+
+		ScaleAnimation sa1 = new ScaleAnimation(0f, 1f, 0f, 1f,
 				mAnchorLocation[0], mAnchorLocation[1]);
-		sa.setDuration(ANIMALTION_TIME);
-		as.setAnimationListener(new AnimationListenerAdapter() {
+		sa1.setDuration(ANIMALTION_TIME);
+		as1.setAnimationListener(new AnimationListenerAdapter() {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				mIsAnimating = true;
@@ -93,14 +100,25 @@ public class FolderLayer {
 			public void onAnimationEnd(Animation animation) {
 				mIsOpened = true;
 				mIsAnimating = false;
+				mBrotherView.setVisibility(View.INVISIBLE);
 				if (mOnFolderClosedListener != null) {
 					mOnFolderClosedListener.onOpened();
 				}
 			}
 		});
+		as1.addAnimation(sa1);
 
-		as.addAnimation(sa);
-		mFolderView.startAnimation(as);
+		AnimationSet as2 = new AnimationSet(true);
+		as2.setDuration(ANIMALTION_TIME);
+		as2.setInterpolator(new AccelerateDecelerateInterpolator());
+		AlphaAnimation aa2 = new AlphaAnimation(0.85f, 0f);
+		as2.addAnimation(aa2);
+		ScaleAnimation sa2 = new ScaleAnimation(1f, 0.5f, 1f, 0.5f,
+				mBrotherView.getWidth() / 2, mBrotherView.getHeight() / 2);
+		as2.addAnimation(sa2);
+
+		mBrotherView.startAnimation(as2);
+		mFolderView.startAnimation(as1);
 	}
 
 	public void closeFloder() {
@@ -108,11 +126,18 @@ public class FolderLayer {
 			return;
 		}
 		mIsOpened = false;
+		AnimationSet as1 = new AnimationSet(true);
+		as1.setDuration(ANIMALTION_TIME);
+		as1.setInterpolator(new AccelerateDecelerateInterpolator());
+		AlphaAnimation aa1 = new AlphaAnimation(1f, 0f);
+		as1.addAnimation(aa1);
 		ScaleAnimation sa = new ScaleAnimation(1f, 0f, 1f, 0f,
 				mAnchorLocation[0], mAnchorLocation[1]);
-		sa.setAnimationListener(new AnimationListenerAdapter() {
+		as1.addAnimation(sa);
+		as1.setAnimationListener(new AnimationListenerAdapter() {
 			@Override
 			public void onAnimationStart(Animation animation) {
+				mBrotherView.setVisibility(View.VISIBLE);
 				mIsAnimating = true;
 			}
 
@@ -127,13 +152,22 @@ public class FolderLayer {
 				}
 			}
 		});
-		sa.setDuration(ANIMALTION_TIME);
-		mFolderView.startAnimation(sa);
+
+		AnimationSet as2 = new AnimationSet(true);
+		as2.setDuration(ANIMALTION_TIME );
+		as2.setInterpolator(new AccelerateDecelerateInterpolator());
+		AlphaAnimation aa2 = new AlphaAnimation(0f, 1f);
+		as2.addAnimation(aa2);
+		ScaleAnimation sa2 = new ScaleAnimation(0.5f, 1f, 0.5f, 1f,
+				mBrotherView.getWidth() / 2, mBrotherView.getHeight() / 2);
+		as2.addAnimation(sa2);
+
+		mBrotherView.startAnimation(as2);
+		mFolderView.startAnimation(as1);
 	}
 
 	public void updateFolderData(int folderFlowSort,
 			List<AppItemInfo> contentData, List<BusinessItemInfo> reccommendData) {
-		// TODO Auto-generated method stub
 		mFolderView.updateData(folderFlowSort, contentData, reccommendData);
 	}
 

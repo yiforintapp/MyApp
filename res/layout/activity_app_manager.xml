@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/app_manage_bg" >
 
     <RelativeLayout
         android:id="@+id/applist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/app_manage_bg" >
+        android:layout_height="match_parent" >
 
         <com.leo.appmaster.ui.CommonTitleBar
             android:id="@+id/layout_title_bar"

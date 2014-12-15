@@ -63,6 +63,7 @@ import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
+import com.leo.appmaster.utils.Utilities;
 
 public class AppListActivity extends BaseFragmentActivity implements
 		AppChangeListener, OnClickListener, AppBackupDataListener {
@@ -72,7 +73,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private CommonTitleBar mTtileBar;
 	private PageIndicator mPageIndicator;
 	private LeoAppViewPager mViewPager;
-	private View mPagerContain;
+	private View mPagerContain, mAllAppList;
 	private SlicingLayer mSlicingLayer;
 	private FolderLayer mFolderLayer;
 	private View mSclingBgView;
@@ -92,6 +93,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private EventHandler mHandler;
 
 	private OnItemClickListener mListItemClickListener;
+	private List<AppItemInfo> mRestoreFolderData;
+	private List<AppItemInfo> mCapacityFolderData;
+	private List<AppItemInfo> mFlowFolderData;
 
 	private static final int MSG_BACKUP_SUCCESSFUL = 1000;
 
@@ -158,6 +162,11 @@ public class AppListActivity extends BaseFragmentActivity implements
 		fillData();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
 	public void openSlicingLayer(View view, int from) {
 		mSclingBgView = mContainer;
 		AppItemInfo appinfo = (AppItemInfo) view.getTag();
@@ -179,7 +188,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 						.findViewById(R.id.memory);
 
 				mCommenScilingHolder.backup = (TextView) mCommenScilingContentView
-						.findViewById(R.id.backup_restore);
+						.findViewById(R.id.backup);
 				mCommenScilingHolder.uninstall = (TextView) mCommenScilingContentView
 						.findViewById(R.id.uninstall);
 
@@ -245,7 +254,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 						.findViewById(R.id.path);
 
 				mBackupScilingHolder.restore = (TextView) mBackupSclingContentView
-						.findViewById(R.id.backup_restore);
+						.findViewById(R.id.restore);
 				mBackupScilingHolder.delete = (TextView) mBackupSclingContentView
 						.findViewById(R.id.uninstall);
 
@@ -257,10 +266,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 					.getApkSize(appinfo));
 			mBackupScilingHolder.version.setText(String.format(getResources()
 					.getString(R.string.app_version), appinfo.versionName));
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat formatter = new SimpleDateFormat(
+					"yyyy-MM-dd hh:mm:ss");
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(appinfo.backupTime);
-			mBackupScilingHolder.backupTime.setText(formatter.format(calendar.getTime()));
+			mBackupScilingHolder.backupTime.setText(formatter.format(calendar
+					.getTime()));
 			mBackupScilingHolder.path.setText(mBackupManager.getBackupPath());
 
 			int contentheight = getResources().getDimensionPixelSize(
@@ -312,6 +323,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mTtileBar.openBackView();
 		mTtileBar.setOptionTextVisibility(View.INVISIBLE);
 
+		mAllAppList = findViewById(R.id.applist);
 		mPagerContain = findViewById(R.id.layout_pager_container);
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
 		mViewPager = (LeoAppViewPager) findViewById(R.id.pager);
@@ -322,10 +334,21 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mSlicingLayer.closeSlicing();
 		}
 
+		// load apps
+		mAppDetails = new ArrayList<AppItemInfo>();
+		List<AppItemInfo> list = AppLoadEngine.getInstance(this)
+				.getAllPkgInfo();
+		for (AppItemInfo appItemInfo : list) {
+			if (!appItemInfo.systemApp)
+				mAppDetails.add(appItemInfo);
+		}
+		// load all folder items
+		getFolderData();
+
 		mAllItems = new ArrayList<BaseInfo>();
 		// first, add four folders
 		mFolderItems = new ArrayList<BaseInfo>();
-		loadFolderData();
+		loadFolderItems();
 		mAllItems.addAll(mFolderItems);
 
 		// second, add business items
@@ -334,13 +357,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mAllItems.addAll(mBusinessItems);
 
 		// third, add all local apps
-		mAppDetails = new ArrayList<AppItemInfo>();
-		List<AppItemInfo> list = AppLoadEngine.getInstance(this)
-				.getAllPkgInfo();
-		for (AppItemInfo appItemInfo : list) {
-			if (!appItemInfo.systemApp)
-				mAppDetails.add(appItemInfo);
-		}
 		mAllItems.addAll(mAppDetails);
 
 		// data load finished
@@ -384,34 +400,38 @@ public class AppListActivity extends BaseFragmentActivity implements
 		return getRecommendData(BusinessItemInfo.CONTAIN_APPLIST);
 	}
 
-	private void loadFolderData() {
+	private void loadFolderItems() {
 		FolderItemInfo folder = null;
 		// add flow sort folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_FLOW_SORT;
-		folder.icon = getResources().getDrawable(R.drawable.folder);
+		folder.icon = Utilities.getFolderScalePicture(this, mFlowFolderData,
+				false);
 		folder.label = getString(R.string.folder_sort_flow);
 		mFolderItems.add(folder);
 		// add capacity folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_CAPACITY_SORT;
-		folder.icon = getResources().getDrawable(R.drawable.folder);
+		folder.icon = folder.icon = Utilities.getFolderScalePicture(this,
+				mCapacityFolderData, false);
 		folder.label = getString(R.string.folder_sort_capacity);
 		mFolderItems.add(folder);
 		// add restore folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_BACKUP_RESTORE;
-		folder.icon = getResources().getDrawable(R.drawable.folder);
+		folder.icon = folder.icon = folder.icon = Utilities
+				.getFolderScalePicture(this, mRestoreFolderData, true);
 		folder.label = getString(R.string.folder_backup_restore);
 		mFolderItems.add(folder);
 		// add business app folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_BUSINESS_APP;
-		folder.icon = getResources().getDrawable(R.drawable.folder);
+		folder.icon = getResources().getDrawable(
+				R.drawable.folder_icon_recommend);
 		folder.label = getString(R.string.folder_recommend);
 		mFolderItems.add(folder);
 	}
@@ -524,10 +544,13 @@ public class AppListActivity extends BaseFragmentActivity implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.backup_restore:
+		case R.id.backup:
 			ArrayList<AppItemInfo> list = new ArrayList<AppItemInfo>();
 			list.add((AppItemInfo) mLastSelectedInfo);
 			mBackupManager.backupApps(list);
+			break;
+		case R.id.restore:
+			mBackupManager.restoreApp(this, (AppItemInfo) mLastSelectedInfo);
 			break;
 		case R.id.uninstall:
 			AppUtil.uninstallApp(this,
@@ -550,8 +573,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 			break;
 		case BaseInfo.ITEM_TYPE_FOLDER:
 			FolderItemInfo folderInfo = (FolderItemInfo) mLastSelectedInfo;
-			fillFolderData();
-			mFolderLayer.openFolderView(folderInfo.folderType, view);
+			fillFolder();
+			mFolderLayer.openFolderView(folderInfo.folderType, view,
+					mAllAppList);
 			break;
 		case BaseInfo.ITEM_TYPE_BUSINESS_APP:
 			BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
@@ -567,42 +591,47 @@ public class AppListActivity extends BaseFragmentActivity implements
 		}
 	}
 
-	private void fillFolderData() {
+	private void getFolderData() {
 		int contentMaxCount = 20;
-
 		List<AppItemInfo> tempList = new ArrayList<AppItemInfo>(mAppDetails);
 
 		// load folw sort data
 		Collections.sort(tempList, new FlowComparator());
 		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_APPLIST);
 		contentMaxCount = flowDataReccommendData.size() > 0 ? 16 : 20;
-		List<AppItemInfo> flowData = tempList.subList(0,
+		mFlowFolderData = tempList.subList(0,
 				tempList.size() < contentMaxCount ? tempList.size()
 						: contentMaxCount);
-		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_FLOW_SORT,
-				flowData, flowDataReccommendData);
 
 		// load capacity sort data
 		Collections.sort(tempList, new CapacityComparator());
 		List<BusinessItemInfo> capacityReccommendData = getRecommendData(FolderItemInfo.FOLDER_CAPACITY_SORT);
 		contentMaxCount = capacityReccommendData.size() > 0 ? 16 : 20;
-		List<AppItemInfo> capacityData = tempList.subList(0,
+		mCapacityFolderData = tempList.subList(0,
 				tempList.size() < contentMaxCount ? tempList.size()
 						: contentMaxCount);
-		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_CAPACITY_SORT,
-				capacityData, capacityReccommendData);
 
 		// load restore sort data
 		List<BusinessItemInfo> restoreReccommendData = getRecommendData(FolderItemInfo.FOLDER_BACKUP_RESTORE);
-		contentMaxCount = capacityReccommendData.size() > 0 ? 16 : 20;
+		contentMaxCount = restoreReccommendData.size() > 0 ? 16 : 20;
 		ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
-		List<AppItemInfo> restoreData = temp.subList(0,
+		mRestoreFolderData = temp.subList(0,
 				temp.size() < contentMaxCount ? temp.size() : contentMaxCount);
-		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
-				capacityData, capacityReccommendData);
-		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
-				restoreData, restoreReccommendData);
+	}
 
+	private void fillFolder() {
+		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_APPLIST);
+		List<BusinessItemInfo> capacityReccommendData = getRecommendData(FolderItemInfo.FOLDER_CAPACITY_SORT);
+		List<BusinessItemInfo> restoreReccommendData = getRecommendData(FolderItemInfo.FOLDER_BACKUP_RESTORE);
+
+		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_FLOW_SORT,
+				mFlowFolderData, flowDataReccommendData);
+
+		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_CAPACITY_SORT,
+				mCapacityFolderData, capacityReccommendData);
+
+		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
+				mRestoreFolderData, restoreReccommendData);
 	}
 
 	private List<BusinessItemInfo> getRecommendData(int containerId) {
