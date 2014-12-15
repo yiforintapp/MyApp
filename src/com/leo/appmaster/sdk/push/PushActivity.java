@@ -12,15 +12,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +32,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
     private final static String TAG = PushActivity.class.getSimpleName();
 
     private boolean mFromStatusBar;
+    private String mAdID;
     private EditText mPhoneNumber = null;
 
     private final static String GP_MARKET_PACKAGE_NAME = "com.android.vending";
@@ -53,7 +51,11 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
         SDKWrapper.addEvent(this, LeoStat.P1, "act", "popup");
         Intent i = getIntent();
         mFromStatusBar = i.getBooleanExtra(PushUIHelper.EXTRA_WHERE, false);
-        if(mFromStatusBar){
+        mAdID = i.getStringExtra(PushUIHelper.EXTRA_AD_ID);
+        if (mAdID == null) {
+            mAdID = "unknown";
+        }
+        if (mFromStatusBar) {
             SDKWrapper.addEvent(this, LeoStat.P1, "act", "notbar");
         }
     }
@@ -90,7 +92,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
             case R.id.dlg_left_btn:
                 /* user ignore this activity */
                 SDKWrapper.addEvent(this, LeoStat.P1, "act", "cancel");
-                PushUIHelper.getInstance(this).sendACK(false, mFromStatusBar, "");
+                PushUIHelper.getInstance(this).sendACK(mAdID, false, mFromStatusBar, "");
                 finish();
                 break;
             case R.id.dlg_right_btn:
@@ -103,7 +105,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            PushUIHelper.getInstance(this).sendACK(false, mFromStatusBar, "");
+            PushUIHelper.getInstance(this).sendACK(mAdID, false, mFromStatusBar, "");
             SDKWrapper.addEvent(this, LeoStat.P1, "act", "cancel");
         }
         return super.onKeyDown(keyCode, event);
@@ -156,7 +158,7 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
             startActivity(intent);
         }
         SDKWrapper.addEvent(this, LeoStat.P1, "act", "cligp");
-        PushUIHelper.getInstance(this).sendACK(true, mFromStatusBar, phone);
+        PushUIHelper.getInstance(this).sendACK(mAdID, true, mFromStatusBar, phone);
         finish();
     }
 

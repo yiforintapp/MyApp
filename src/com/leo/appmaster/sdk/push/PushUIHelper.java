@@ -14,6 +14,7 @@ import android.text.TextUtils;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
+import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.push.IPushUIHelper;
 import com.leoers.leoanalytics.push.PushManager;
 
@@ -29,6 +30,7 @@ public class PushUIHelper implements IPushUIHelper {
     public final static String EXTRA_TITLE = "leoappmaster.push.title";
     public final static String EXTRA_CONTENT = "leoappmaster.push.content";
     public final static String EXTRA_WHERE = "leoappmaster.push.fromwhere";
+    public final static String EXTRA_AD_ID = "leoappmaster.push.adid";
 
     private Context mContext = null;
     private NotificationManager nm = null;
@@ -73,7 +75,7 @@ public class PushUIHelper implements IPushUIHelper {
     }
 
     @Override
-    public void onPush(String title, String content, int showType) {
+    public void onPush(String adID, String title, String content, int showType) {
         LeoLog.d(TAG, "title=" + title + "; content=" + content);
         mTitle = title;
         mContent = content;
@@ -83,19 +85,20 @@ public class PushUIHelper implements IPushUIHelper {
                 && !mIsLockScreen) {
             LeoLog.d(TAG, "notify user with dialog");
             mStatusBar = false;
-            showPushActivity(title, content, false);
+            showPushActivity(adID, title, content, false);
         } else {
             LeoLog.d(TAG, "notify user with status bar");
             mStatusBar = true;
-            sendPushNotification(title, content);
+            sendPushNotification(adID, title, content);
         }
     }
 
-    private void showPushActivity(String title, String content, boolean isFromStatusBar) {
+    private void showPushActivity(String id, String title, String content, boolean isFromStatusBar) {
         Intent i = new Intent(mContext, PushActivity.class);
         i.putExtra(EXTRA_WHERE, isFromStatusBar);
         i.putExtra(EXTRA_TITLE, title);
         i.putExtra(EXTRA_CONTENT, content);
+        i.putExtra(EXTRA_AD_ID, id);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -103,35 +106,37 @@ public class PushUIHelper implements IPushUIHelper {
     }
 
     /* this will be called by Activity for Push UI */
-    public void sendACK(boolean isRewarded, boolean isStatusBar, String phoneNumber) {
+    public void sendACK(String adID, boolean isRewarded, boolean isStatusBar, String phoneNumber) {
         String rewardedStr = isRewarded ? "Y" : "N";
         String statusbarStr = isStatusBar ? "Y" : "N";
-        sendACK(rewardedStr, statusbarStr, phoneNumber);
+        sendACK(adID, rewardedStr, statusbarStr, phoneNumber);
     }
 
-    private void sendACK(String rewardedStr, String statusbarStr, String phoneNumber) {
+    private void sendACK(String adID, String rewardedStr, String statusbarStr, String phoneNumber) {
         if (mManager != null) {
-            mManager.sendACK(rewardedStr, statusbarStr, phoneNumber);
+            mManager.sendACK(adID, rewardedStr, statusbarStr, phoneNumber);
         }
     }
 
     @SuppressWarnings("deprecation")
-    private void sendPushNotification(String title, String content) {
+    private void sendPushNotification(String id, String title, String content) {
         Intent intent = new Intent(ACTION_CHECK_PUSH);
+        intent.putExtra(EXTRA_AD_ID, id);
         PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, 0,
-                intent, 0);
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification pushNotification = new Notification(
                 R.drawable.ic_launcher_notification, content,
                 System.currentTimeMillis());
 
         Intent dIntent = new Intent(ACTION_IGNORE_PUSH);
-        PendingIntent delIntent = PendingIntent.getBroadcast(mContext, 0,
-                dIntent, 0);
+        dIntent.putExtra(EXTRA_AD_ID, id);
+        PendingIntent delIntent = PendingIntent.getBroadcast(mContext, 1,
+                dIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        pushNotification.deleteIntent = delIntent;
         pushNotification.setLatestEventInfo(mContext, title, content,
                 contentIntent);
+        pushNotification.deleteIntent = delIntent;
         pushNotification.flags = Notification.FLAG_AUTO_CANCEL
                 // | Notification.FLAG_ONGOING_EVENT;
                 | Notification.FLAG_ONLY_ALERT_ONCE;
@@ -164,13 +169,17 @@ public class PushUIHelper implements IPushUIHelper {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            String adID = intent.getStringExtra(EXTRA_AD_ID);
+            LeoLog.d(TAG, "adID=" + adID + "mTitle=" + mTitle + "; mContent= " + mContent);
+            if(adID == null){
+                adID = "unknown-id";
+            }
             if (action.equals(ACTION_CHECK_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
-                LeoLog.d(TAG, "mTitle=" + mTitle + "; mContent= " + mContent);
-                showPushActivity(mTitle, mContent, true);
+                showPushActivity(adID, mTitle, mContent, true);
             } else if (action.equals(ACTION_IGNORE_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
-                sendACK("N", "Q", "");
+                sendACK(adID, "N", "Q", "");
             }
         }
     };
