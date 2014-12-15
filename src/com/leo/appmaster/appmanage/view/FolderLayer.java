@@ -109,11 +109,11 @@ public class FolderLayer {
 		as1.addAnimation(sa1);
 
 		AnimationSet as2 = new AnimationSet(true);
-		as2.setDuration(ANIMALTION_TIME);
+		as2.setDuration(ANIMALTION_TIME );
 		as2.setInterpolator(new AccelerateDecelerateInterpolator());
 		AlphaAnimation aa2 = new AlphaAnimation(0.85f, 0f);
 		as2.addAnimation(aa2);
-		ScaleAnimation sa2 = new ScaleAnimation(1f, 0.5f, 1f, 0.5f,
+		ScaleAnimation sa2 = new ScaleAnimation(1f, 0.75f, 1f, 0.75f,
 				mBrotherView.getWidth() / 2, mBrotherView.getHeight() / 2);
 		as2.addAnimation(sa2);
 
