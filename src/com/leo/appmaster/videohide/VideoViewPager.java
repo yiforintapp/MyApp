@@ -231,7 +231,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 @Override
                 public void onClick(View arg0) {
                     boolean isVideoFlag = isVideo(VIDEO_PLUS_PACKAGE_NAME);
-                    if (isVideoFlag) {
+//                    if (isVideoFlag) {
                         String path = mAllPath.get(mPosition);
                         // ComponentName componentName = new
                         // ComponentName(VIDEO_PLUS_PACKAGE_NAME,
@@ -241,9 +241,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                         // intent.setComponent(componentName);
                         startActivity(intent);
 
-                    } else {
+//                    } else {
                         // showAlarmDialogPlayer();
-                    }
+//                    }
                 }
 
             });
