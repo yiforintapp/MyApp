@@ -6,8 +6,6 @@ import java.util.List;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
-import com.leo.appmaster.ui.LeoAppViewPager;
-import com.leo.appmaster.ui.LeoAppViewPager.OnPageChangeListener;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,13 +13,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -44,11 +43,10 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	private LayoutInflater mInlater;
 	private View mBackView;
 	private FolderTitleGallery mTitleCoverFlowView;
-	private LeoAppViewPager mViewPager;
+	private ViewPager mViewPager;
 	private ArrayList<String> mItemTitles;
 	private TitleAdapter mTitleAdapter;
 	private int mCurPosition;
-	private OnItemClickListener mItemClickListener;
 
 	public FolderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -72,7 +70,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 		mTitleCoverFlowView = (FolderTitleGallery) findViewById(R.id.title_cover_flow);
 		mTitleCoverFlowView.setAdapter(mTitleAdapter);
-//		mTitleCoverFlowView.setUnselectedAlpha(0.1f);
+		// mTitleCoverFlowView.setUnselectedAlpha(0.1f);
 		mTitleCoverFlowView.setUnselectedSaturation(1.0f);
 		mTitleCoverFlowView.setUnselectedScale(0.6f);
 		mTitleCoverFlowView.setMaxRotation(0);
@@ -85,15 +83,13 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 		// add four fragment
 		BaseFolderFragment flowFragment = new CommonFlowFragment();
+		flowFragment.setType(BaseFolderFragment.FOLER_TYPE_FLOW);
 		BaseFolderFragment capacityFragment = new CommonFlowFragment();
+		capacityFragment.setType(BaseFolderFragment.FOLER_TYPE_CAPACITY);
 		BaseFolderFragment backupFragment = new CommonFlowFragment();
-		BaseFolderFragment businessFragment = new CommonFlowFragment();
-		if (mItemClickListener != null) {
-			flowFragment.setItemClickListener(mItemClickListener);
-			capacityFragment.setItemClickListener(mItemClickListener);
-			backupFragment.setItemClickListener(mItemClickListener);
-			businessFragment.setItemClickListener(mItemClickListener);
-		}
+		backupFragment.setType(BaseFolderFragment.FOLER_TYPE_BACKUP);
+		BaseFolderFragment businessFragment = new BusinessAppFragment();
+		businessFragment.setType(BaseFolderFragment.FOLER_TYPE_RECOMMEND);
 
 		mFragmentList.add(flowFragment);
 		mFragmentList.add(capacityFragment);
@@ -102,7 +98,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		mPagerAdapter = new FolderPagerAdapter(
 				((FragmentActivity) mContext).getSupportFragmentManager());
 
-		mViewPager = (LeoAppViewPager) findViewById(R.id.folder_pager);
+		mViewPager = (ViewPager) findViewById(R.id.folder_pager);
 		mViewPager.setOffscreenPageLimit(3);
 		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setOnPageChangeListener(this);
@@ -271,14 +267,6 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		@Override
 		public int getCount() {
 			return mFragmentList.size();
-		}
-	}
-
-	public void setFolderItemClickListener(
-			OnItemClickListener folderItemClickListener) {
-		mItemClickListener = folderItemClickListener;
-		for (BaseFolderFragment fragment : mFragmentList) {
-			fragment.setItemClickListener(folderItemClickListener);
 		}
 	}
 

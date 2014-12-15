@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.handmark.pulltorefresh.library;
+package com.handmark.pulltorefresh.library.internal;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -41,8 +41,7 @@ public class RotateLoadingLayout extends LoadingLayout {
 	public RotateLoadingLayout(Context context, Mode mode, Orientation scrollDirection, TypedArray attrs) {
 		super(context, mode, scrollDirection, attrs);
 
-		mRotateDrawableWhilePulling = attrs.getBoolean(
-				R.styleable.PullToRefresh_ptrRotateDrawableWhilePulling, true);
+		mRotateDrawableWhilePulling = attrs.getBoolean(R.styleable.PullToRefresh_ptrRotateDrawableWhilePulling, true);
 
 		mHeaderImage.setScaleType(ScaleType.MATRIX);
 		mHeaderImageMatrix = new Matrix();

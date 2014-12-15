@@ -2,8 +2,10 @@ package com.leo.appmaster.appmanage;
 
 import java.lang.ref.WeakReference;
 import java.text.Collator;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -21,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +41,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
+import com.leo.appmaster.appmanage.view.BaseFolderFragment;
 import com.leo.appmaster.appmanage.view.FolderLayer;
 import com.leo.appmaster.appmanage.view.FolderView;
 import com.leo.appmaster.appmanage.view.SlicingLayer;
@@ -71,9 +75,11 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private View mPagerContain;
 	private SlicingLayer mSlicingLayer;
 	private FolderLayer mFolderLayer;
-	private View mFolderBgView;
-	private View mFolderContentView;
-	private FolderContentViewHolder mFolderHolder;
+	private View mSclingBgView;
+	private View mCommenScilingContentView;
+	private View mBackupSclingContentView;
+	private CommonSclingContentViewHolder mCommenScilingHolder;
+	private BackupContentViewHolder mBackupScilingHolder;
 	private LayoutInflater mInflater;
 
 	private List<BaseInfo> mAllItems;
@@ -85,12 +91,11 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private AppBackupRestoreManager mBackupManager;
 	private EventHandler mHandler;
 
-	private OnItemClickListener mListItemClickListener,
-			mFolderItemClickListener;
+	private OnItemClickListener mListItemClickListener;
 
 	private static final int MSG_BACKUP_SUCCESSFUL = 1000;
 
-	private static class FolderContentViewHolder {
+	private static class CommonSclingContentViewHolder {
 		TextView capacity;
 		TextView cache;
 		TextView power;
@@ -98,6 +103,15 @@ public class AppListActivity extends BaseFragmentActivity implements
 		TextView memory;
 		TextView backup;
 		TextView uninstall;
+	}
+
+	private static class BackupContentViewHolder {
+		TextView size;
+		TextView version;
+		TextView backupTime;
+		TextView path;
+		TextView restore;
+		TextView delete;
 	}
 
 	private static class EventHandler extends Handler {
@@ -115,9 +129,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 			case MSG_BACKUP_SUCCESSFUL:
 				if (activity != null) {
 					Toast.makeText(activity, "备份成功", 0).show();
-					activity.mFolderHolder.backup.setText(R.string.backuped);
-					activity.mFolderHolder.backup.setEnabled(false);
-					activity.mFolderHolder.backup
+					activity.mCommenScilingHolder.backup
+							.setText(R.string.backuped);
+					activity.mCommenScilingHolder.backup.setEnabled(false);
+					activity.mCommenScilingHolder.backup
 							.setBackgroundResource(R.drawable.dlg_left_button_selector);
 				}
 				break;
@@ -144,69 +159,116 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public void openSlicingLayer(View view, int from) {
-		if (mFolderBgView == null) {
-			mFolderBgView = mContainer;
-			mFolderContentView = getLayoutInflater().inflate(
-					R.layout.folder_content_view, null);
-
-			mFolderHolder = new FolderContentViewHolder();
-			mFolderHolder.capacity = (TextView) mFolderContentView
-					.findViewById(R.id.capacity);
-			mFolderHolder.cache = (TextView) mFolderContentView
-					.findViewById(R.id.cache);
-			mFolderHolder.flow = (TextView) mFolderContentView
-					.findViewById(R.id.flow);
-			mFolderHolder.power = (TextView) mFolderContentView
-					.findViewById(R.id.power);
-			mFolderHolder.memory = (TextView) mFolderContentView
-					.findViewById(R.id.memory);
-
-			mFolderHolder.backup = (TextView) mFolderContentView
-					.findViewById(R.id.backup_restore);
-			mFolderHolder.uninstall = (TextView) mFolderContentView
-					.findViewById(R.id.uninstall);
-
-			mFolderHolder.backup.setOnClickListener(this);
-			mFolderHolder.uninstall.setOnClickListener(this);
-		}
+		mSclingBgView = mContainer;
 		AppItemInfo appinfo = (AppItemInfo) view.getTag();
-		appinfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(
-				appinfo.packageName);
+		if (from != BaseFolderFragment.FOLER_TYPE_BACKUP) {
+			if (mCommenScilingContentView == null) {
+				mCommenScilingContentView = getLayoutInflater().inflate(
+						R.layout.comon_scling_content_view, null);
 
-		mFolderHolder.capacity.setText(TextFormater
-				.dataSizeFormat(appinfo.cacheInfo.codeSize
-						+ appinfo.cacheInfo.codeSize));
-		mFolderHolder.cache.setText(TextFormater
-				.dataSizeFormat(appinfo.cacheInfo.cacheSize));
-		mFolderHolder.flow.setText(TextFormater
-				.dataSizeFormat(appinfo.trafficInfo.mTotal));
-		mFolderHolder.power.setText(appinfo.powerComsuPercent * 100 + "%");
-		mFolderHolder.memory.setText(TextFormater.dataSizeFormat(ProcessUtils
-				.getAppUsedMem(this, appinfo.packageName)));
+				mCommenScilingHolder = new CommonSclingContentViewHolder();
+				mCommenScilingHolder.capacity = (TextView) mCommenScilingContentView
+						.findViewById(R.id.capacity);
+				mCommenScilingHolder.cache = (TextView) mCommenScilingContentView
+						.findViewById(R.id.cache);
+				mCommenScilingHolder.flow = (TextView) mCommenScilingContentView
+						.findViewById(R.id.flow);
+				mCommenScilingHolder.power = (TextView) mCommenScilingContentView
+						.findViewById(R.id.power);
+				mCommenScilingHolder.memory = (TextView) mCommenScilingContentView
+						.findViewById(R.id.memory);
 
-		if (appinfo.isBackuped) {
-			mFolderHolder.backup.setText(R.string.backuped);
-			mFolderHolder.backup.setEnabled(false);
-			mFolderHolder.backup
-					.setBackgroundResource(R.drawable.folder_left_button_selector);
+				mCommenScilingHolder.backup = (TextView) mCommenScilingContentView
+						.findViewById(R.id.backup_restore);
+				mCommenScilingHolder.uninstall = (TextView) mCommenScilingContentView
+						.findViewById(R.id.uninstall);
+
+				mCommenScilingHolder.backup.setOnClickListener(this);
+				mCommenScilingHolder.uninstall.setOnClickListener(this);
+			}
+			appinfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(
+					appinfo.packageName);
+
+			mCommenScilingHolder.capacity.setText(TextFormater
+					.dataSizeFormat(appinfo.cacheInfo.codeSize
+							+ appinfo.cacheInfo.codeSize));
+			mCommenScilingHolder.cache.setText(TextFormater
+					.dataSizeFormat(appinfo.cacheInfo.cacheSize));
+			mCommenScilingHolder.flow.setText(TextFormater
+					.dataSizeFormat(appinfo.trafficInfo.mTotal));
+			mCommenScilingHolder.power.setText(appinfo.powerComsuPercent * 100
+					+ "%");
+			mCommenScilingHolder.memory.setText(TextFormater
+					.dataSizeFormat(ProcessUtils.getAppUsedMem(this,
+							appinfo.packageName)));
+
+			if (appinfo.isBackuped) {
+				mCommenScilingHolder.backup.setText(R.string.backuped);
+				mCommenScilingHolder.backup.setEnabled(false);
+				mCommenScilingHolder.backup
+						.setBackgroundResource(R.drawable.folder_left_button_selector);
+			} else {
+				mCommenScilingHolder.backup.setText(R.string.backup);
+				mCommenScilingHolder.backup.setEnabled(true);
+				mCommenScilingHolder.backup
+						.setBackgroundResource(R.drawable.folder_left_button_selector);
+			}
+
+			if (appinfo.systemApp) {
+				mCommenScilingHolder.uninstall.setEnabled(false);
+				mCommenScilingHolder.uninstall
+						.setBackgroundResource(R.drawable.folder_right_button_selector);
+			} else {
+				mCommenScilingHolder.uninstall.setEnabled(true);
+				mCommenScilingHolder.uninstall
+						.setBackgroundResource(R.drawable.folder_right_button_selector);
+			}
+
+			int contentheight = getResources().getDimensionPixelSize(
+					R.dimen.common_scling_content_height);
+
+			mSlicingLayer.startSlicing(view, mSclingBgView,
+					mCommenScilingContentView, contentheight);
 		} else {
-			mFolderHolder.backup.setText(R.string.backup);
-			mFolderHolder.backup.setEnabled(true);
-			mFolderHolder.backup
-					.setBackgroundResource(R.drawable.folder_left_button_selector);
+			if (mBackupSclingContentView == null) {
+				mBackupSclingContentView = getLayoutInflater().inflate(
+						R.layout.backup_scling_content_view, null);
+
+				mBackupScilingHolder = new BackupContentViewHolder();
+				mBackupScilingHolder.size = (TextView) mBackupSclingContentView
+						.findViewById(R.id.app_size);
+				mBackupScilingHolder.version = (TextView) mBackupSclingContentView
+						.findViewById(R.id.app_version);
+				mBackupScilingHolder.backupTime = (TextView) mBackupSclingContentView
+						.findViewById(R.id.backup_time);
+				mBackupScilingHolder.path = (TextView) mBackupSclingContentView
+						.findViewById(R.id.path);
+
+				mBackupScilingHolder.restore = (TextView) mBackupSclingContentView
+						.findViewById(R.id.backup_restore);
+				mBackupScilingHolder.delete = (TextView) mBackupSclingContentView
+						.findViewById(R.id.uninstall);
+
+				mBackupScilingHolder.restore.setOnClickListener(this);
+				mBackupScilingHolder.delete.setOnClickListener(this);
+			}
+
+			mBackupScilingHolder.size.setText(mBackupManager
+					.getApkSize(appinfo));
+			mBackupScilingHolder.version.setText(String.format(getResources()
+					.getString(R.string.app_version), appinfo.versionName));
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(appinfo.backupTime);
+			mBackupScilingHolder.backupTime.setText(formatter.format(calendar.getTime()));
+			mBackupScilingHolder.path.setText(mBackupManager.getBackupPath());
+
+			int contentheight = getResources().getDimensionPixelSize(
+					R.dimen.backup_scling_content_height);
+			mSlicingLayer.startSlicing(view, mSclingBgView,
+					mBackupSclingContentView, contentheight);
 		}
 
-		if (appinfo.systemApp) {
-			mFolderHolder.uninstall.setEnabled(false);
-			mFolderHolder.uninstall
-					.setBackgroundResource(R.drawable.folder_right_button_selector);
-		} else {
-			mFolderHolder.uninstall.setEnabled(true);
-			mFolderHolder.uninstall
-					.setBackgroundResource(R.drawable.folder_right_button_selector);
-		}
-
-		mSlicingLayer.startSlicing(view, mFolderBgView, mFolderContentView);
 	}
 
 	@Override
@@ -240,16 +302,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 			}
 		};
 
-		mFolderItemClickListener = new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View view, int arg2,
-					long arg3) {
-				handleItemClick(view, SlicingLayer.SLICING_FROM_FOLDER);
-			}
-		};
 		FolderView folderView = (FolderView) findViewById(R.id.folderView);
 		mFolderLayer = new FolderLayer(this, folderView);
-		mFolderLayer.setFolderItemClickListener(mFolderItemClickListener);
 		mContainer = findViewById(R.id.container);
 		mLoadingView = findViewById(R.id.rl_loading);
 
@@ -485,7 +539,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		}
 	}
 
-	private void handleItemClick(View view, int from) {
+	public void handleItemClick(View view, int from) {
 		if (mSlicingLayer.isAnimating() || mFolderLayer.isAnimating())
 			return;
 		Intent intent = null;

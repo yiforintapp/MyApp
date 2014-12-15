@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.handmark.pulltorefresh.library;
+package com.handmark.pulltorefresh.library.extras;
 
 import java.util.HashMap;
-
-import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.State;
 
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.view.View;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.State;
 
 public class SoundPullEventListener<V extends View> implements PullToRefreshBase.OnPullEventListener<V> {
 
@@ -43,8 +43,7 @@ public class SoundPullEventListener<V extends View> implements PullToRefreshBase
 	}
 
 	@Override
-	public final void onPullEvent(PullToRefreshBase<V> refreshView,
-			State event, Mode direction) {
+	public final void onPullEvent(PullToRefreshBase<V> refreshView, State event, Mode direction) {
 		Integer soundResIdObj = mSoundMap.get(event);
 		if (null != soundResIdObj) {
 			playSound(soundResIdObj.intValue());

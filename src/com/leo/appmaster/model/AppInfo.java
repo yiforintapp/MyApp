@@ -33,5 +33,11 @@ public class AppInfo extends BaseInfo {
 	 * app version name
 	 */
 	public String versionName;
+	
+	public boolean isChecked;
+
+	public boolean isBackuped;
+	
+	public long backupTime;
 
 }

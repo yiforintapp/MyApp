@@ -69,8 +69,6 @@ public class SlicingLayer {
 		mContext = context;
 		container = new SlicingLayerContainer(mContext);
 		mInflater = LayoutInflater.from(context);
-		mContentheight = mContext.getResources().getDimensionPixelSize(
-				R.dimen.folder_content_height);
 	}
 
 	public boolean isSlicinged() {
@@ -139,8 +137,10 @@ public class SlicingLayer {
 	 * @param contentView
 	 * @param derection
 	 */
-	public void startSlicing(View anchor, View backgroundView, View contentView) {
-
+	public void startSlicing(View anchor, View backgroundView, View contentView, int contentHeight) {
+		
+		mContentheight = contentHeight;
+		
 		mBackgroundView = backgroundView;
 		mBackgroundViewParent = (ViewGroup) mBackgroundView.getParent();
 

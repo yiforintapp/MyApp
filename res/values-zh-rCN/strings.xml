@@ -258,6 +258,8 @@
     <string name="download_failure_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载失败</string>
     <string name="downloaded_failure">下载失败</string>
     <string name="backup">备份</string>
+    <string name="restore">恢复</string>
     <string name="backuped">已备份</string>
+    <string name="no_more_business_app">没有新应用了，过段时间再来看看吧 </string>
 
 </resources>

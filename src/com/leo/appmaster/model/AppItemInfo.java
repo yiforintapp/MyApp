@@ -26,9 +26,6 @@ public class AppItemInfo extends AppInfo {
 	
 	public String sourceDir;
 
-	public boolean isChecked;
-
-	public boolean isBackuped;
 
 	public AppItemInfo() {
 		cacheInfo = new CacheInfo();

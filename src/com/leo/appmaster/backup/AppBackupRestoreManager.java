@@ -469,6 +469,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 						PackageInfo pInfo = mPackageManager
 								.getPackageArchiveInfo(fPath, 0);
 						if (pInfo != null) {
+							long backupTime = f.lastModified();
 							AppItemInfo app = new AppItemInfo();
 							Resources res = getResources(fPath);
 							ApplicationInfo appInfo = pInfo.applicationInfo;
@@ -496,6 +497,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 							app.packageName = appInfo.packageName;
 							app.versionCode = pInfo.versionCode;
 							app.versionName = pInfo.versionName;
+							app.backupTime = backupTime;
 							mSavedList.add(app);
 						}
 					}
@@ -542,7 +544,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 				.getExternalStorageState());
 	}
 
-	private String getBackupPath() {
+	public String getBackupPath() {
 		if (isSDReady()) {
 			String path = Environment.getExternalStorageDirectory()
 					.getAbsolutePath();

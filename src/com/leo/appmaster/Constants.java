@@ -152,6 +152,6 @@ public class Constants {
 	/*
 	 * RECOMMEND URL
 	 */
-	public static final String APP_RECOMMEND_URL = "http://test.leostat.com/appmaster/apprecommend/list";
+	public static final String APP_RECOMMEND_URL = "http://192.168.1.201:8080/leo/appmaster/apprecommend/list";
 
 }

@@ -29,6 +29,8 @@ import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.handmark.pulltorefresh.library.internal.EmptyViewMethodAccessor;
+import com.handmark.pulltorefresh.library.internal.LoadingLayout;
 import com.leo.appmaster.R;
 
 public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView> {
@@ -224,8 +226,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 	protected void handleStyledAttributes(TypedArray a) {
 		super.handleStyledAttributes(a);
 
-		mListViewExtrasEnabled = a.getBoolean(
-				R.styleable.PullToRefresh_ptrListViewExtrasEnabled, true);
+		mListViewExtrasEnabled = a.getBoolean(R.styleable.PullToRefresh_ptrListViewExtrasEnabled, true);
 
 		if (mListViewExtrasEnabled) {
 			final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,

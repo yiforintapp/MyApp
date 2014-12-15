@@ -5,18 +5,21 @@ import java.util.List;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.ui.LockImageView;
 
-public class CommonFlowFragment extends BaseFolderFragment {
+public class CommonFlowFragment extends BaseFolderFragment implements
+		OnItemClickListener {
 
 	private GridView mContentGrid;
 	private View mRecommendLayout;
@@ -42,10 +45,8 @@ public class CommonFlowFragment extends BaseFolderFragment {
 		mRecommendLayout = findViewById(R.id.recommend_layout);
 		mRecommendGrid = (GridView) findViewById(R.id.recommend_gridview);
 
-		if (mFolderItemClickListener != null) {
-			mContentGrid.setOnItemClickListener(mFolderItemClickListener);
-			mRecommendGrid.setOnItemClickListener(mFolderItemClickListener);
-		}
+		mContentGrid.setOnItemClickListener(this);
+		mRecommendGrid.setOnItemClickListener(this);
 	}
 
 	public void updateData(List<AppItemInfo> contentData,
@@ -161,14 +162,9 @@ public class CommonFlowFragment extends BaseFolderFragment {
 		}
 	}
 
-	public void setItemClickListener(OnItemClickListener folderItemClickListener) {
-		mFolderItemClickListener = folderItemClickListener;
-
-		if (mContentGrid != null) {
-			mContentGrid.setOnItemClickListener(mFolderItemClickListener);
-		}
-		if (mRecommendGrid != null) {
-			mRecommendGrid.setOnItemClickListener(mFolderItemClickListener);
-		}
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		((AppListActivity) mActivity).handleItemClick(view, mType);
 	}
 }

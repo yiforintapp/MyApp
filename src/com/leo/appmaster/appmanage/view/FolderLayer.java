@@ -137,9 +137,4 @@ public class FolderLayer {
 		mFolderView.updateData(folderFlowSort, contentData, reccommendData);
 	}
 
-	public void setFolderItemClickListener(
-			OnItemClickListener folderItemClickListener) {
-		mFolderView.setFolderItemClickListener(folderItemClickListener);
-	}
-
 }
