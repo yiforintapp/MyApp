@@ -473,7 +473,7 @@ public void onBackPressed() {
         protected void onPostExecute(final Boolean isSuccess) {
             mClickList.clear();
             if (!isSuccess) {
-                Toast.makeText(VideoGriActivity.this, getString(R.string.app_hide_image_fail),
+                Toast.makeText(VideoGriActivity.this, getString(R.string.app_hide_video_fail),
                         Toast.LENGTH_SHORT).show();
             }
             dismissProgressDialog();

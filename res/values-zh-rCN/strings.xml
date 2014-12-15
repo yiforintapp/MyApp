@@ -251,7 +251,7 @@
     <string name="app_hide_video_dialog_content">是否隐藏你所选的视频？</string>
     <string name="hide_video_dialog_title">播放视频</string>
     <string name="hide_video_dialog_content">为了保护您的隐私播放隐藏视频需要使用Video&#160;Plus，是否安装？</string>
-    
+    <string name="app_hide_video_fail">该视频没有写入权限，隐藏失败！</string>
      <string name="hide_pic_text">已隐藏图片</string>
     <string name="hide_pic_empty_text">没有隐藏图片</string>
     <string name="hide_video_text">已隐藏视频</string>
