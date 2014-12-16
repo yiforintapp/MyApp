@@ -486,7 +486,6 @@ public void onBackPressed() {
                 animateReorder();
                 updateRightButton();
             } else {
-<<<<<<< HEAD
 //                if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
 //                    finish();
 //                } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
@@ -495,15 +494,6 @@ public void onBackPressed() {
 //                    startActivity(intent);
 //                }
                 finish();
-=======
-                if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
-                    finish();
-                } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
-                    Intent intent = new Intent(VideoGriActivity.this, VideoHideGalleryActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
->>>>>>> branch 'master_AM-494' of http://gitlab.leoers.com/leo/appmaster.git
 
             }
         }
