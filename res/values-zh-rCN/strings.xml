@@ -243,7 +243,7 @@
     <string name="setting_locker_clean">解锁后加速</string>
     <string name="folder_backup_restore">应用恢复</string>
     <string name="folder_sort_flow">最耗流量</string>
-    <string name="folder_sort_capacity">最占容量</string>
+    <string name="folder_sort_capacity">最占空间</string>
     <string name="folder_recommend">新品速递</string>
     <string name="toast_download_fail_network">"没有可用网络，主题下载失败，请重试。"</string>
     <string name="toast_download_fail_storage">"下载失败，SD卡空间不足!"</string>
