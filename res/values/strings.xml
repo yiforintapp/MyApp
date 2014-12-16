@@ -75,7 +75,7 @@
     <string name="find_gesture">Forget passwd</string>
     <string name="pp_success">Security question set!</string>
     <string name="passwd_setting">Password Settings</string>
-    <string name="set_success">Password set successfully</string>
+    <string name="set_success">Set successfully</string>
     <string name="passwd_hint_cant_null">Please enter your password hint</string>
     <string name="please_input_gesture_again">Confirm your pattern</string>
     <string name="reset_gesture_passwd">Reset a pattern passwd</string>

@@ -115,7 +115,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mClickList = new ArrayList<VideoItemBean>();
         mClickPosList = new ArrayList<Integer>();
         mAllPath = new ArrayList<String>();
-        mUnhide=new ArrayList<VideoItemBean>();
+        mUnhide = new ArrayList<VideoItemBean>();
         init();
         mHideVideo.setOnItemClickListener(this);
         mSelectAll.setOnClickListener(this);
@@ -134,15 +134,17 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             mAllPath.add(path);
         }
     }
-@Override
-public void onBackPressed() {
-  
-    if (mActivityMode == Constants.CANCLE_HIDE_MODE && mIsEditmode) {
+
+    @Override
+    public void onBackPressed() {
+
+        if (mActivityMode == Constants.CANCLE_HIDE_MODE && mIsEditmode) {
             cancelEditMode();
-    }else{
-        super.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
     }
-}
+
     /**
      * HideVideoAdapter
      */
@@ -232,6 +234,7 @@ public void onBackPressed() {
         }
 
     }
+
     /**
      * getVideoInfo
      */
@@ -371,7 +374,7 @@ public void onBackPressed() {
                 if (which == 1) {
                     if (mClickList.size() > 0) {
                         if (mActivityMode == Constants.SELECT_HIDE_MODE) {
-                            
+
                             showProgressDialog(getString(R.string.tips),
                                     getString(R.string.app_hide_image) + "...", true, true);
                             BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
@@ -465,7 +468,7 @@ public void onBackPressed() {
                                     FileOperationUtil.getDirPathFromFilepath(item.getPath()),
                                     newFileName), context);
                             FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
-                            mVideoItems.remove(item);                          
+                            mVideoItems.remove(item);
                         }
                     }
                 }
@@ -480,21 +483,12 @@ public void onBackPressed() {
                 Toast.makeText(VideoGriActivity.this, getString(R.string.app_hide_video_fail),
                         Toast.LENGTH_SHORT).show();
             }
-            
             dismissProgressDialog();
             if (mVideoItems.size() > 0) {
                 animateReorder();
                 updateRightButton();
             } else {
-//                if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
-//                    finish();
-//                } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
-//                    Intent intent = new Intent(VideoGriActivity.this, VideoHideGalleryActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(intent);
-//                }
                 finish();
-
             }
         }
     }

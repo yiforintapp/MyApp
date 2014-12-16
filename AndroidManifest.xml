@@ -170,27 +170,11 @@
         <activity
             android:name="com.leo.appmaster.appwall.AppWallActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-
-            <!--
-         <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            -->
-        </activity>
+            android:theme="@style/activity_theme" />
         <!-- 用户协议 -->
         <activity
             android:name="com.leo.appmaster.home.ProtocolActivity"
-            android:theme="@style/activity_theme" >
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            -->
-        </activity>
+            android:theme="@style/activity_theme" />
         <!-- add for the app update of leosdk -->
         <activity
             android:name="com.leo.appmaster.sdk.update.UpdateActivity"
@@ -223,7 +207,6 @@
             android:name="com.leo.appmaster.lockertheme.LockerThemeGuideActivity"
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
-        <!-- AM-494 -->
         <activity
             android:name="com.leo.appmaster.videohide.VideoGriActivity"
             android:screenOrientation="portrait"

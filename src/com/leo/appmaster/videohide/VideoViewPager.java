@@ -54,7 +54,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private static final String VIDEO_PLAYER_ACTIVITY = "com.leo.xplayer.VodPlayActivity";
     private VideoPagerAdapter mPagerAdapter;
     private ArrayList<String> mResultPath;
-    private RelativeLayout mVideoRT;
     private boolean mShouldLockOnRestart = true;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
@@ -68,7 +67,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         mAllPath = new ArrayList<String>();
         new ArrayList<View>();
         mResultPath = new ArrayList<String>();
-        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar_video);
         mTtileBar.setTitle("");
         mTtileBar.openBackView();
         mBottomButtonBar = (LinearLayout) findViewById(R.id.bottom_button_bar);

@@ -606,6 +606,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     mIsBackgoundRunning = false;
+                    mSelectAll.setText(R.string.app_select_all);
+                    mImageAdapter.notifyDataSetChanged();
                 }
             });
         }
