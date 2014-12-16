@@ -8,6 +8,7 @@ import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -29,6 +30,7 @@ public class FolderLayer {
 	private boolean mIsOpened = false;
 	private OnFolderListener mOnFolderClosedListener;
 	private Context mContext;
+	private Handler handler;
 	private int[] mAnchorLocation;
 
 	public interface OnFolderListener {
@@ -41,6 +43,7 @@ public class FolderLayer {
 		mContext = context;
 		mFolderView = folderView;
 		mFolderView.setFolderLayer(this);
+		handler = new Handler();
 	}
 
 	public void setAnchorView(View anchor) {
@@ -71,8 +74,7 @@ public class FolderLayer {
 	}
 
 	private void startOpenAnimation(View anchorView) {
-		mFolderView.setVisibility(View.VISIBLE);
-		AnimationSet as1 = new AnimationSet(true);
+		final AnimationSet as1 = new AnimationSet(true);
 		as1.setDuration(ANIMALTION_TIME);
 		as1.setInterpolator(new AccelerateDecelerateInterpolator());
 		AlphaAnimation aa1 = new AlphaAnimation(0f, 1f);
@@ -92,15 +94,9 @@ public class FolderLayer {
 		sa1.setDuration(ANIMALTION_TIME);
 		as1.setAnimationListener(new AnimationListenerAdapter() {
 			@Override
-			public void onAnimationStart(Animation animation) {
-				mIsAnimating = true;
-			}
-
-			@Override
 			public void onAnimationEnd(Animation animation) {
 				mIsOpened = true;
 				mIsAnimating = false;
-				mBrotherView.setVisibility(View.INVISIBLE);
 				if (mOnFolderClosedListener != null) {
 					mOnFolderClosedListener.onOpened();
 				}
@@ -111,14 +107,36 @@ public class FolderLayer {
 		AnimationSet as2 = new AnimationSet(true);
 		as2.setDuration(ANIMALTION_TIME );
 		as2.setInterpolator(new AccelerateDecelerateInterpolator());
-		AlphaAnimation aa2 = new AlphaAnimation(0.85f, 0f);
+		as2.setFillEnabled(true);
+		as2.setFillAfter(true);
+		AlphaAnimation aa2 = new AlphaAnimation(1f, 0.0f);
 		as2.addAnimation(aa2);
-		ScaleAnimation sa2 = new ScaleAnimation(1f, 0.75f, 1f, 0.75f,
+		ScaleAnimation sa2 = new ScaleAnimation(1f, 0.95f, 1f, 0.95f,
 				mBrotherView.getWidth() / 2, mBrotherView.getHeight() / 2);
+		as2.addAnimation(sa2);
+		
+		as2.setAnimationListener(new AnimationListenerAdapter() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+				mIsAnimating = true;
+			}
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				mBrotherView.setVisibility(View.INVISIBLE);
+			}
+		});
 		as2.addAnimation(sa2);
 
 		mBrotherView.startAnimation(as2);
-		mFolderView.startAnimation(as1);
+		
+//		handler.postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+				mFolderView.setVisibility(View.VISIBLE);
+				mFolderView.startAnimation(as1);
+//			}
+//		}, ANIMALTION_TIME / 2);
+
 	}
 
 	public void closeFloder() {
@@ -127,7 +145,7 @@ public class FolderLayer {
 		}
 		mIsOpened = false;
 		AnimationSet as1 = new AnimationSet(true);
-		as1.setDuration(ANIMALTION_TIME);
+		as1.setDuration(ANIMALTION_TIME );
 		as1.setInterpolator(new AccelerateDecelerateInterpolator());
 		AlphaAnimation aa1 = new AlphaAnimation(1f, 0f);
 		as1.addAnimation(aa1);
@@ -154,11 +172,11 @@ public class FolderLayer {
 		});
 
 		AnimationSet as2 = new AnimationSet(true);
-		as2.setDuration(ANIMALTION_TIME );
+		as2.setDuration(ANIMALTION_TIME);
 		as2.setInterpolator(new AccelerateDecelerateInterpolator());
 		AlphaAnimation aa2 = new AlphaAnimation(0f, 1f);
 		as2.addAnimation(aa2);
-		ScaleAnimation sa2 = new ScaleAnimation(0.5f, 1f, 0.5f, 1f,
+		ScaleAnimation sa2 = new ScaleAnimation(0.9f, 1f, 0.9f, 1f,
 				mBrotherView.getWidth() / 2, mBrotherView.getHeight() / 2);
 		as2.addAnimation(sa2);
 

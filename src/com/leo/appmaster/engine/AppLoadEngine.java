@@ -285,7 +285,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 						}
 					}
 				}
-				pre.setHideThemeList(themeList);
+				pre.setHideThemeList(themeList); 
 				mAppsLoaded = true;
 			}
 		}
