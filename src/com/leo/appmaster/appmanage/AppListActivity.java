@@ -708,6 +708,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			@Override
 			public void run() {
 				fillData();
+				fillFolder();
 			}
 		});
 
