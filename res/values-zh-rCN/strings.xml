@@ -260,6 +260,7 @@
     <string name="backup">备份</string>
     <string name="restore">恢复</string>
     <string name="backuped">已备份</string>
+    <string name="delete_successfully">删除成功！</string>
     <string name="no_more_business_app">没有新应用了，过段时间再来看看吧 </string>
     <string name="space_consumption">空间占用： </string>
     <string name="cache_size ">缓存大小： </string>

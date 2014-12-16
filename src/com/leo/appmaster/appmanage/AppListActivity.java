@@ -152,7 +152,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 				break;
 			case MSG_BACKUP_DELETE:
 				if (activity != null) {
-					Toast.makeText(activity, "已删除", 1).show();
+					Toast.makeText(activity, R.string.delete_successfully, 1).show();
 					if (activity.mSlicingLayer.isSlicinged()) {
 						activity.mSlicingLayer.closeSlicing();
 					}
