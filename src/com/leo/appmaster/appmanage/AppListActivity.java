@@ -144,7 +144,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 					ArrayList<AppItemInfo> temp = activity.mBackupManager
 							.getRestoreList();
 					activity.mRestoreFolderData = temp.subList(0, temp.size());
-					Collections.sort(activity.mRestoreFolderData, new BackupItemComparator());
+					Collections.sort(activity.mRestoreFolderData,
+							new BackupItemComparator());
 					activity.mFolderLayer.updateFolderData(
 							FolderItemInfo.FOLDER_BACKUP_RESTORE,
 							activity.mRestoreFolderData, null);
@@ -152,7 +153,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 				break;
 			case MSG_BACKUP_DELETE:
 				if (activity != null) {
-					Toast.makeText(activity, R.string.delete_successfully, 1).show();
+					Toast.makeText(activity, R.string.delete_successfully, 1)
+							.show();
 					if (activity.mSlicingLayer.isSlicinged()) {
 						activity.mSlicingLayer.closeSlicing();
 					}
@@ -160,7 +162,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 					ArrayList<AppItemInfo> temp = activity.mBackupManager
 							.getRestoreList();
 					activity.mRestoreFolderData = temp.subList(0, temp.size());
-					Collections.sort(activity.mRestoreFolderData, new BackupItemComparator());
+					Collections.sort(activity.mRestoreFolderData,
+							new BackupItemComparator());
 					activity.mFolderLayer.updateFolderData(
 							FolderItemInfo.FOLDER_BACKUP_RESTORE,
 							activity.mRestoreFolderData, null);
@@ -186,7 +189,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		mHandler = new EventHandler(this);
 		intiUI();
-		fillData();
+		fillAppListData();
 	}
 
 	@Override
@@ -360,7 +363,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		return mFolderLayer;
 	}
 
-	public void fillData() {
+	public void fillAppListData() {
 		if (mSlicingLayer.isSlicinged()) {
 			mSlicingLayer.closeSlicing();
 		}
@@ -392,11 +395,16 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 		// data load finished
 		mLoadingView.setVisibility(View.INVISIBLE);
-		int pageCount = Math.round(((float) mAllItems.size()) / pageItemCount);
+		int pageCount = (int) Math.ceil(((double) mAllItems.size())
+				/ pageItemCount);
+
+		LeoLog.e("xxxx", " mAllItems.size() = " + mAllItems.size()
+				+ "  pageCount = " + pageCount);
+
 		int itemCounts[] = new int[pageCount];
 		int i;
-		for (i = 0; i < itemCounts.length; i++) {
-			if (i == itemCounts.length - 1) {
+		for (i = 0; i < pageCount; i++) {
+			if (i == pageCount - 1) {
 				itemCounts[i] = mAllItems.size() % pageItemCount;
 			} else {
 				itemCounts[i] = pageItemCount;
@@ -409,10 +417,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 					R.layout.grid_page_item, mViewPager, false);
 			if (i == pageCount - 1) {
 				gridView.setAdapter(new DataAdapter(mAllItems, i
-						* pageItemCount, mAppDetails.size() - 1));
+						* pageItemCount, mAllItems.size() - 1));
 			} else {
 				gridView.setAdapter(new DataAdapter(mAllItems, i
-						* pageItemCount, i * pageItemCount + pageItemCount - 1));
+						* pageItemCount, (i + 1) * pageItemCount  - 1));
 			}
 			gridView.setOnItemClickListener(mListItemClickListener);
 			viewList.add(gridView);
@@ -523,6 +531,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			super();
 			startLoc = start;
 			endLoc = end;
+			LeoLog.e("xxxx", "count = " + (end - start + 1));
 		}
 
 		@Override
@@ -707,7 +716,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				fillData();
+				fillAppListData();
 				fillFolder();
 			}
 		});
