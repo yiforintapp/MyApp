@@ -47,6 +47,8 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	private ArrayList<String> mItemTitles;
 	private TitleAdapter mTitleAdapter;
 	private int mCurPosition;
+	
+	private int folderTitleItemSize;
 
 	public FolderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -54,6 +56,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		mItemTitles = new ArrayList<String>();
 		mFragmentList = new ArrayList<BaseFolderFragment>();
 		mTitleAdapter = new TitleAdapter();
+		folderTitleItemSize = mContext.getResources().getDimensionPixelSize(R.dimen.folder_title_item_size);
 	}
 
 	@Override
@@ -215,7 +218,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 				reusableView = new TextView(getContext());
 				reusableView
 						.setLayoutParams(new FolderTitleGallery.LayoutParams(
-								320, 90));
+								folderTitleItemSize, 80));
 			}
 			TextView textView = (TextView) reusableView;
 

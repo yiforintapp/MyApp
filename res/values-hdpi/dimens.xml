@@ -3,6 +3,7 @@
 <resources>
     <dimen name="gridview_vertical_spacing">14dip</dimen>
     <integer name="gridview_row_count">4</integer>
+    <integer name="applist_cell_count">16</integer>
     <dimen name="digital_height">82dp</dimen>
     <dimen name="digital_width">51dp</dimen>
     <dimen name="memory_flow_marginTop">2dp</dimen>
@@ -38,4 +39,7 @@
     <dimen name="lockPatternView_height">280dp</dimen>
     <dimen name="layout_passwd_marginTop">9dp</dimen>
     <dimen name="layout_passwd_marginBottom">7dp</dimen>
+    <dimen name="folder_title_margintop">15dp</dimen>
+    <dimen name="folder_title_item_size">103dp</dimen>
+    <dimen name="folder_title_mask_size">80dp</dimen>
 </resources>

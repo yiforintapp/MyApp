@@ -147,14 +147,12 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		mRecommendGrid.setAdapter(mRecommendAdapter);
 		mRecommendGrid.setOnRefreshListener(this);
 		mRecommendGrid.setOnItemClickListener(this);
-		mRecommendGrid.setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View arg0) {
-						((AppListActivity) mActivity).getFolderLayer()
-								.closeFloder();
-					}
-				});
+		mRecommendGrid.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				((AppListActivity) mActivity).getFolderLayer().closeFloder();
+			}
+		});
 		loadInitBusinessData();
 	}
 
@@ -208,7 +206,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			mRecommendDatas.clear();
 			if (object != null) {
 				List<BusinessItemInfo> list = (List<BusinessItemInfo>) object;
-				LeoLog.e("xxxx", list.toString());
 				for (BusinessItemInfo businessItemInfo : list) {
 					if (businessItemInfo.packageName != null) {
 						if (!filterLocalApp(businessItemInfo.packageName)) {

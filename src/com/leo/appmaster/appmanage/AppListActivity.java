@@ -150,8 +150,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 					activity.mFolderLayer.updateFolderData(
 							FolderItemInfo.FOLDER_BACKUP_RESTORE,
 							activity.mRestoreFolderData, null);
-					
-//					activity.fillFolder();
+
+					// activity.fillFolder();
 
 				}
 				break;
@@ -374,6 +374,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public void fillAppListData() {
+		pageItemCount = getResources().getInteger(R.integer.applist_cell_count);
 		if (mSlicingLayer.isSlicinged()) {
 			mSlicingLayer.closeSlicing();
 		}
@@ -636,12 +637,13 @@ public class AppListActivity extends BaseFragmentActivity implements
 		// filter loacal app
 		checkInstalledFormBusinessApp();
 
-		int contentMaxCount = 20;
+		int contentMaxCount = pageItemCount;
 		List<AppItemInfo> tempList = new ArrayList<AppItemInfo>(mAppDetails);
 		// load folw sort data
 		Collections.sort(tempList, new FlowComparator());
 		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_FLOW_SORT);
-		contentMaxCount = flowDataReccommendData.size() > 0 ? 16 : 20;
+		contentMaxCount = flowDataReccommendData.size() > 0 ? contentMaxCount - 4
+				: contentMaxCount;
 		mFlowFolderData = tempList.subList(0,
 				tempList.size() < contentMaxCount ? tempList.size()
 						: contentMaxCount);
@@ -650,7 +652,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		tempList = new ArrayList<AppItemInfo>(mAppDetails);
 		Collections.sort(tempList, new CapacityComparator());
 		List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
-		contentMaxCount = capacityReccommendData.size() > 0 ? 16 : 20;
+		contentMaxCount = capacityReccommendData.size() > 0 ? contentMaxCount - 4
+				: contentMaxCount;
 		mCapacityFolderData = tempList.subList(0,
 				tempList.size() < contentMaxCount ? tempList.size()
 						: contentMaxCount);
@@ -768,9 +771,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 		@Override
 		public int compare(AppItemInfo lhs, AppItemInfo rhs) {
-
-			LeoLog.e("xxxx", "lhs.mTotal = " + lhs.trafficInfo.mTotal
-					+ "    rhs.mTotal = " + rhs.trafficInfo.mTotal);
 			if (lhs.trafficInfo.mTotal > rhs.trafficInfo.mTotal) {
 				return -1;
 			} else if (lhs.trafficInfo.mTotal < rhs.trafficInfo.mTotal) {

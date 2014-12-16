@@ -4,6 +4,7 @@
     <dimen name="gridview_vertical_spacing">14dip</dimen>
 
     <integer name="gridview_row_count">4</integer>
+    <integer name="applist_cell_count">20</integer>
 
     <dimen name="digital_height">82dp</dimen>
     <dimen name="digital_width">51dp</dimen>
@@ -53,5 +54,7 @@
     <!-- action view -->
     <dimen name="new_install_prompt_offsetx">36dp</dimen>
     <dimen name="new_install_prompt_offsety">1dp</dimen>
-
+    <dimen name="folder_title_margintop">7dp</dimen>
+    <dimen name="folder_title_item_size">103dp</dimen>
+<dimen name="folder_title_mask_size">100dp</dimen>
 </resources>
