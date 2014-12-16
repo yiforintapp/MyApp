@@ -149,6 +149,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 					activity.mFolderLayer.updateFolderData(
 							FolderItemInfo.FOLDER_BACKUP_RESTORE,
 							activity.mRestoreFolderData, null);
+					
+					
 				}
 				break;
 			case MSG_BACKUP_DELETE:
@@ -441,7 +443,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_CAPACITY_SORT;
-		folder.icon = folder.icon = Utilities.getFolderScalePicture(this,
+		folder.icon = Utilities.getFolderScalePicture(this,
 				mCapacityFolderData, false);
 		folder.label = getString(R.string.folder_sort_capacity);
 		mFolderItems.add(folder);
@@ -449,8 +451,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_BACKUP_RESTORE;
-		folder.icon = folder.icon = folder.icon = Utilities
-				.getFolderScalePicture(this, mRestoreFolderData, true);
+		folder.icon = Utilities.getFolderScalePicture(this, mRestoreFolderData,
+				true);
 		folder.label = getString(R.string.folder_backup_restore);
 		mFolderItems.add(folder);
 		// add business app folder
@@ -519,7 +521,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 			super();
 			startLoc = start;
 			endLoc = end;
-			LeoLog.e("xxxx", "count = " + (end - start + 1));
 		}
 
 		@Override

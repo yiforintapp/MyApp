@@ -387,6 +387,8 @@ public class AppBackupRestoreManager implements AppChangeListener {
 			}
 		}
 
+		File f = new File(dest);
+		long backupTime = f.lastModified();
 		AppItemInfo newApp = null;
 		boolean add = true;
 		for (AppItemInfo appInfo : mSavedList) {
@@ -404,6 +406,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		newApp.packageName = app.packageName;
 		newApp.versionCode = app.versionCode;
 		newApp.versionName = app.versionName;
+		newApp.backupTime = backupTime;
 		newApp.sourceDir = dest;
 		app.isBackuped = true;
 		app.isChecked = false;
@@ -498,6 +501,8 @@ public class AppBackupRestoreManager implements AppChangeListener {
 							app.versionCode = pInfo.versionCode;
 							app.versionName = pInfo.versionName;
 							app.backupTime = backupTime;
+							LeoLog.e("backup app", "label = " + label
+									+ "      back time = " + backupTime);
 							mSavedList.add(app);
 						}
 					}

@@ -36,7 +36,12 @@ public final class Utilities {
 		int size = folderList.size();
 		Drawable folderBg;
 		if (isBackup) {
-			folderBg = res.getDrawable(R.drawable.backup_folder_empty_bg_icon);
+			if (folderList == null || folderList.isEmpty()) {
+				folderBg = res
+						.getDrawable(R.drawable.backup_folder_empty_bg_icon);
+			} else {
+				folderBg = res.getDrawable(R.drawable.common_folder_bg_icon);
+			}
 		} else {
 			folderBg = res.getDrawable(R.drawable.common_folder_bg_icon);
 		}
