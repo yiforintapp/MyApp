@@ -398,20 +398,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		int pageCount = (int) Math.ceil(((double) mAllItems.size())
 				/ pageItemCount);
 
-		LeoLog.e("xxxx", " mAllItems.size() = " + mAllItems.size()
-				+ "  pageCount = " + pageCount);
-
-		int itemCounts[] = new int[pageCount];
 		int i;
-		for (i = 0; i < pageCount; i++) {
-			if (i == pageCount - 1) {
-				itemCounts[i] = mAllItems.size() % pageItemCount;
-			} else {
-				itemCounts[i] = pageItemCount;
-			}
-		}
 		ArrayList<View> viewList = new ArrayList<View>();
-
 		for (i = 0; i < pageCount; i++) {
 			GridView gridView = (GridView) mInflater.inflate(
 					R.layout.grid_page_item, mViewPager, false);
@@ -420,7 +408,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 						* pageItemCount, mAllItems.size() - 1));
 			} else {
 				gridView.setAdapter(new DataAdapter(mAllItems, i
-						* pageItemCount, (i + 1) * pageItemCount  - 1));
+						* pageItemCount, (i + 1) * pageItemCount - 1));
 			}
 			gridView.setOnItemClickListener(mListItemClickListener);
 			viewList.add(gridView);
