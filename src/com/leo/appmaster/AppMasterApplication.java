@@ -115,10 +115,12 @@ public class AppMasterApplication extends Application implements
 			@Override
 			public void run() {
 				checkNewTheme();
+				checkNewAppBusiness();
 			}
 		}, 10000);
 		restartApplocker(PhoneInfo.getAndroidVersion());
 	}
+
 
 	private void startInitTask(final Context ctx) {
 		new Thread(new Runnable() {
@@ -231,6 +233,12 @@ public class AppMasterApplication extends Application implements
 		NotificationManager nm = (NotificationManager) this
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.notify(0, notif);
+	}
+	
+	
+	protected void checkNewAppBusiness() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void checkNewTheme() {

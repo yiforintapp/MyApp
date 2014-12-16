@@ -99,6 +99,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private List<AppItemInfo> mFlowFolderData;
 
 	private static final int MSG_BACKUP_SUCCESSFUL = 1000;
+	private static final int MSG_BACKUP_DELETE = 1001;
 
 	private static class CommonSclingContentViewHolder {
 		TextView capacity;
@@ -133,12 +134,37 @@ public class AppListActivity extends BaseFragmentActivity implements
 			switch (msg.what) {
 			case MSG_BACKUP_SUCCESSFUL:
 				if (activity != null) {
-					Toast.makeText(activity, "备份成功", 0).show();
+					Toast.makeText(activity, R.string.backup_finish, 0).show();
 					activity.mCommenScilingHolder.backup
 							.setText(R.string.backuped);
 					activity.mCommenScilingHolder.backup.setEnabled(false);
 					activity.mCommenScilingHolder.backup
 							.setBackgroundResource(R.drawable.dlg_left_button_selector);
+					// load restore sort data
+					ArrayList<AppItemInfo> temp = activity.mBackupManager
+							.getRestoreList();
+					activity.mRestoreFolderData = temp.subList(0, temp.size());
+					Collections.sort(activity.mRestoreFolderData, new BackupItemComparator());
+					activity.mFolderLayer.updateFolderData(
+							FolderItemInfo.FOLDER_BACKUP_RESTORE,
+							activity.mRestoreFolderData, null);
+				}
+				break;
+			case MSG_BACKUP_DELETE:
+				if (activity != null) {
+					Toast.makeText(activity, "已删除", 1).show();
+					if (activity.mSlicingLayer.isSlicinged()) {
+						activity.mSlicingLayer.closeSlicing();
+					}
+					// load restore sort data
+					ArrayList<AppItemInfo> temp = activity.mBackupManager
+							.getRestoreList();
+					activity.mRestoreFolderData = temp.subList(0, temp.size());
+					Collections.sort(activity.mRestoreFolderData, new BackupItemComparator());
+					activity.mFolderLayer.updateFolderData(
+							FolderItemInfo.FOLDER_BACKUP_RESTORE,
+							activity.mRestoreFolderData, null);
+
 				}
 				break;
 
@@ -257,7 +283,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 				mBackupScilingHolder.restore = (TextView) mBackupSclingContentView
 						.findViewById(R.id.restore);
 				mBackupScilingHolder.delete = (TextView) mBackupSclingContentView
-						.findViewById(R.id.uninstall);
+						.findViewById(R.id.delete);
 
 				mBackupScilingHolder.restore.setOnClickListener(this);
 				mBackupScilingHolder.delete.setOnClickListener(this);
@@ -328,6 +354,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mPagerContain = findViewById(R.id.layout_pager_container);
 		mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
 		mViewPager = (LeoAppViewPager) findViewById(R.id.pager);
+	}
+
+	public FolderLayer getFolderLayer() {
+		return mFolderLayer;
 	}
 
 	public void fillData() {
@@ -553,6 +583,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 		case R.id.restore:
 			mBackupManager.restoreApp(this, (AppItemInfo) mLastSelectedInfo);
 			break;
+		case R.id.delete:
+			mBackupManager.deleteApp((AppItemInfo) mLastSelectedInfo);
+			break;
 		case R.id.uninstall:
 			AppUtil.uninstallApp(this,
 					((AppItemInfo) mLastSelectedInfo).packageName);
@@ -618,6 +651,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		// load restore sort data
 		ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
 		mRestoreFolderData = temp.subList(0, temp.size());
+		Collections.sort(mRestoreFolderData, new BackupItemComparator());
 	}
 
 	private void fillFolder() {
@@ -651,13 +685,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private List<BusinessItemInfo> getRecommendData(int containerId) {
 		Vector<BusinessItemInfo> businessDatas = AppBusinessManager
 				.getInstance(this).getBusinessData();
-		LeoLog.e("xxxx", "containerId = " + containerId);
 		List<BusinessItemInfo> list = new ArrayList<BusinessItemInfo>();
 		for (BusinessItemInfo businessItemInfo : businessDatas) {
 			if (businessItemInfo.installed)
 				continue;
-			LeoLog.e("xxxx", "businessItemInfo.containType = "
-					+ businessItemInfo.containType);
 			if (businessItemInfo.containType == containerId) {
 				if (containerId == BusinessItemInfo.CONTAIN_APPLIST) {
 					if (businessItemInfo.iconLoaded) {
@@ -699,10 +730,30 @@ public class AppListActivity extends BaseFragmentActivity implements
 	public void onBackupFinish(boolean success, int successNum, int totalNum,
 			String message) {
 		mHandler.sendEmptyMessage(MSG_BACKUP_SUCCESSFUL);
+
 	}
 
 	@Override
 	public void onApkDeleted(boolean success) {
+		mHandler.sendEmptyMessage(MSG_BACKUP_DELETE);
+	}
+
+	public static class BackupItemComparator implements Comparator<AppItemInfo> {
+
+		@Override
+		public int compare(AppItemInfo lhs, AppItemInfo rhs) {
+			if (lhs.backupTime > rhs.backupTime) {
+				return -1;
+			} else if (lhs.backupTime < rhs.backupTime) {
+				return 1;
+			}
+			return Collator.getInstance().compare(trimString(lhs.label),
+					trimString(rhs.label));
+		}
+
+		private String trimString(String s) {
+			return s.replaceAll("\u00A0", "").trim();
+		}
 	}
 
 	public static class FlowComparator implements Comparator<AppItemInfo> {

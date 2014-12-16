@@ -136,7 +136,6 @@ public class AppBusinessManager {
 							} while (c.moveToNext());
 							c.close();
 						}
-						LeoLog.e("xxxx", mBusinessList.toString());
 						mInitDataLoaded = true;
 						loadAppIcon();
 						return mBusinessList;
@@ -202,7 +201,6 @@ public class AppBusinessManager {
 												.parserJsonObject(mContext,
 														response);
 										if (!noModify) {
-											// to paser data
 											LeoLog.e("trySyncServerData",
 													list.toString());
 											syncLocalData(

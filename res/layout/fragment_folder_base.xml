@@ -1,12 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <GridView
         android:id="@+id/content_gridview"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:horizontalSpacing="3dp"

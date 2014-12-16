@@ -3,6 +3,7 @@ package com.leo.appmaster.appmanage.view;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import org.json.JSONObject;
 
@@ -29,8 +30,11 @@ import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.appmanage.business.BusinessJsonParser;
+import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.utils.LeoLog;
@@ -123,6 +127,13 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		mInflater = LayoutInflater.from(mActivity);
 
 		mRecommendHolder = findViewById(R.id.content_holder);
+		mRecommendHolder.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				((AppListActivity) mActivity).getFolderLayer().closeFloder();
+			}
+		});
+
 		mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
 		mErrorView = findViewById(R.id.layout_load_error);
 		mLayoutEmptyTip = findViewById(R.id.layout_empty);
@@ -136,6 +147,14 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		mRecommendGrid.setAdapter(mRecommendAdapter);
 		mRecommendGrid.setOnRefreshListener(this);
 		mRecommendGrid.setOnItemClickListener(this);
+		mRecommendGrid.setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						((AppListActivity) mActivity).getFolderLayer()
+								.closeFloder();
+					}
+				});
 		loadInitBusinessData();
 	}
 
@@ -146,8 +165,12 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			add = true;
 			for (BusinessItemInfo appInfo : mRecommendDatas) {
 				if (appInfo.packageName.equals(businessAppInfo.packageName)) {
-					add = false;
-					break;
+					if (appInfo.packageName != null) {
+						if (filterLocalApp(appInfo.packageName)) {
+							add = false;
+							break;
+						}
+					}
 				}
 			}
 			if (add) {
@@ -167,7 +190,8 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		if (succeed) {
 			List<BusinessItemInfo> list = (List<BusinessItemInfo>) object;
 			if (list == null || list.isEmpty()) {
-				Toast.makeText(mActivity, R.string.no_more_business_app, 0).show();
+				Toast.makeText(mActivity, R.string.no_more_business_app, 0)
+						.show();
 			} else {
 				addMoreOnlineTheme(list);
 			}
@@ -184,8 +208,14 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			mRecommendDatas.clear();
 			if (object != null) {
 				List<BusinessItemInfo> list = (List<BusinessItemInfo>) object;
-				mRecommendDatas.addAll(list);
 				LeoLog.e("xxxx", list.toString());
+				for (BusinessItemInfo businessItemInfo : list) {
+					if (businessItemInfo.packageName != null) {
+						if (!filterLocalApp(businessItemInfo.packageName)) {
+							mRecommendDatas.add(businessItemInfo);
+						}
+					}
+				}
 			}
 			// if filter local app
 			mRecommendAdapter.notifyDataSetChanged();
@@ -203,6 +233,21 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		mProgressBar.setVisibility(View.INVISIBLE);
 	}
 
+	private boolean filterLocalApp(String pkg) {
+		if (pkg == null)
+			return false;
+		ArrayList<AppItemInfo> appDetails = AppLoadEngine
+				.getInstance(mActivity).getAllPkgInfo();
+
+		for (AppItemInfo info : appDetails) {
+			if (pkg.equals(info.packageName)) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+
 	private void loadInitBusinessData() {
 		mRecommendDatas.clear();
 		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1,
@@ -211,8 +256,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 					public void onResponse(JSONObject response, boolean noModify) {
 						List<BusinessItemInfo> list = BusinessJsonParser
 								.parserJsonObject(mActivity, response);
-						LeoLog.e("xxxx",
-								"onResponse  list = " + list.toString());
 						Message msg = mHandler.obtainMessage(
 								MSG_LOAD_INIT_SUCCESSED, list);
 						mHandler.sendMessage(msg);

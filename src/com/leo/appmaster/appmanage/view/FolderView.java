@@ -65,9 +65,9 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	}
 
 	private void initUI() {
+
 		mBackView = findViewById(R.id.iv_back_arrow);
 		mBackView.setOnClickListener(this);
-
 		mTitleCoverFlowView = (FolderTitleGallery) findViewById(R.id.title_cover_flow);
 		mTitleCoverFlowView.setAdapter(mTitleAdapter);
 		// mTitleCoverFlowView.setUnselectedAlpha(0.1f);
@@ -102,6 +102,13 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		mViewPager.setOffscreenPageLimit(3);
 		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setOnPageChangeListener(this);
+
+		mViewPager.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				mFolderLayer.closeFloder();
+			}
+		});
 	}
 
 	public void fillTitle() {

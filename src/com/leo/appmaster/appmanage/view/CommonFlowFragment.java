@@ -5,6 +5,7 @@ import java.util.List;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -13,6 +14,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity;
+import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
@@ -22,7 +25,7 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 		OnItemClickListener {
 
 	private GridView mContentGrid;
-	private View mRecommendLayout;
+	private View mRecommendLayout, mHolder;
 	private GridView mRecommendGrid;
 
 	private List<AppItemInfo> mContentData;
@@ -40,6 +43,13 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 	@Override
 	protected void onInitUI() {
 		mInflater = LayoutInflater.from(mActivity);
+		mHolder = findViewById(R.id.holder);
+		mHolder.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				((AppListActivity) mActivity).getFolderLayer().closeFloder();
+			}
+		});
 		// mIconLayout = (RelativeLayout) findViewById(R.id.iv_app_icon_layout);
 		mContentGrid = (GridView) findViewById(R.id.content_gridview);
 		mRecommendLayout = findViewById(R.id.recommend_layout);
@@ -69,7 +79,6 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 
 	@Override
 	public void onDestroyView() {
-
 		super.onDestroyView();
 	}
 

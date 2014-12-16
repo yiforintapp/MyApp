@@ -334,7 +334,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 			Vector<BusinessItemInfo> list = AppBusinessManager
 					.getInstance(this).getBusinessData();
-			LeoLog.e("xxxx", list.toString());
 
 			// intent = new Intent(this, AppBackupRestoreActivity.class);
 			intent = new Intent(this, AppListActivity.class);

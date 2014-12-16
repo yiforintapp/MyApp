@@ -50,6 +50,7 @@ public class SlicingLayer {
 	private boolean mIsAnimating;
 	private boolean mIsOpened = false;
 	private boolean mBottomViewStop = false;
+	private boolean mTopViewStop;
 
 	private int mContentMarginTop;
 	private int mContentMarginBottom;
@@ -75,11 +76,10 @@ public class SlicingLayer {
 		return mIsOpened;
 	}
 
-	
 	public boolean isAnimating() {
 		return mIsAnimating;
 	}
-	
+
 	public void setOnClosedListener(OnClosedListener onFolderClosedListener) {
 		this.mOnClosedListener = onFolderClosedListener;
 	}
@@ -137,10 +137,11 @@ public class SlicingLayer {
 	 * @param contentView
 	 * @param derection
 	 */
-	public void startSlicing(View anchor, View backgroundView, View contentView, int contentHeight) {
-		
+	public void startSlicing(View anchor, View backgroundView,
+			View contentView, int contentHeight) {
+
 		mContentheight = contentHeight;
-		
+
 		mBackgroundView = backgroundView;
 		mBackgroundViewParent = (ViewGroup) mBackgroundView.getParent();
 
@@ -157,7 +158,15 @@ public class SlicingLayer {
 		mSlicingLine = mAnchorLocation[1] + anchor.getHeight();
 		int bottomHeight = mSrceenheight - mSlicingLine;
 		mBottomViewStop = false;
-		if (bottomHeight < mContentMarginTop) {
+		mTopViewStop = false;
+		if (mSlicingLine < mContentMarginTop) {
+			mTopViewStop = true;
+			mContentMarginTop = mSlicingLine;
+			mContentMarginBottom = mSrceenheight - mContentMarginBottom
+					- mContentheight;
+			mTopOfffsetY = 0;
+			mBottomOffsetY = mContentheight;
+		} else if (bottomHeight < mContentMarginBottom) {
 			mBottomViewStop = true;
 			mContentMarginBottom = bottomHeight;
 			mContentMarginTop = mSrceenheight - mContentMarginBottom
@@ -178,7 +187,7 @@ public class SlicingLayer {
 
 		// add content view
 		RelativeLayout.LayoutParams fp = new RelativeLayout.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT, mContentheight + 5);
+				ViewGroup.LayoutParams.MATCH_PARENT, mContentheight + 1);
 		fp.setMargins(0, mContentMarginTop, 0, 0);
 		container.addView(mContentView, fp);
 
@@ -229,42 +238,68 @@ public class SlicingLayer {
 
 	private void startSlicingAnimation() {
 
-		// move top view
-		TranslateAnimation topTrans = new TranslateAnimation(0, 0, 0,
-				mTopOfffsetY);
-		// topTrans.setInterpolator(new DecelerateInterpolator());
-		topTrans.setDuration(ANIMALTION_TIME);
-		topTrans.setFillAfter(true);
-		topTrans.setAnimationListener(mOpenAnimationListener);
-		mTopView.startAnimation(topTrans);
-
-		if (!mBottomViewStop) {
+		if (mTopViewStop) {
+			// move content view
+			ScaleAnimation sa2 = new ScaleAnimation(1f, 1f, 0f, 1f, 0, 0);
+			sa2.setDuration(ANIMALTION_TIME);
+			mContentView.startAnimation(sa2);
 			// move bottom view
 			TranslateAnimation bottomTrans = new TranslateAnimation(0, 0, 0,
 					mBottomOffsetY);
 			bottomTrans.setDuration(ANIMALTION_TIME);
 			bottomTrans.setFillAfter(true);
 			mBottomView.startAnimation(bottomTrans);
+			bottomTrans.setAnimationListener(mOpenAnimationListener);
+			ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f, 0,
+					mSlicingLine - mContentMarginTop);
+			sa.setDuration(ANIMALTION_TIME);
+			mContentView.startAnimation(sa);
+		} else if (mBottomViewStop) {
+			// //move content view
+			ScaleAnimation sa2 = new ScaleAnimation(1f, 1f, 0f, 1f, 0,
+					mContentheight);
+			sa2.setDuration(ANIMALTION_TIME);
+			mContentView.startAnimation(sa2);
+			// move top view
+			TranslateAnimation topTrans = new TranslateAnimation(0, 0, 0,
+					mTopOfffsetY);
+			topTrans.setAnimationListener(mOpenAnimationListener);
+			topTrans.setDuration(ANIMALTION_TIME);
+			topTrans.setFillAfter(true);
+			topTrans.setAnimationListener(mOpenAnimationListener);
+			mTopView.startAnimation(topTrans);
+		} else {
+			// move bottom view
+			TranslateAnimation bottomTrans = new TranslateAnimation(0, 0, 0,
+					mBottomOffsetY);
+			bottomTrans.setDuration(ANIMALTION_TIME);
+			bottomTrans.setFillAfter(true);
+			mBottomView.startAnimation(bottomTrans);
+			bottomTrans.setAnimationListener(mOpenAnimationListener);
 
+			// move content view
 			ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f, 0,
 					mSlicingLine - mContentMarginTop);
 			sa.setDuration(ANIMALTION_TIME);
 			mContentView.startAnimation(sa);
 
-		} else {
-			// move folder
-			ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f, 0,
-					mContentheight);
-			sa.setDuration(ANIMALTION_TIME);
-			mContentView.startAnimation(sa);
+			// move top view
+			TranslateAnimation topTrans = new TranslateAnimation(0, 0, 0,
+					mTopOfffsetY);
+			topTrans.setAnimationListener(mOpenAnimationListener);
+			topTrans.setDuration(ANIMALTION_TIME);
+			topTrans.setFillAfter(true);
+			topTrans.setAnimationListener(mOpenAnimationListener);
+			mTopView.startAnimation(topTrans);
 		}
+
 	}
 
 	private Bitmap createMoveBitmap(Bitmap source, Bitmap anchor, int[] location) {
 		Canvas canvas = new Canvas(source);
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
-//		canvas.drawARGB(200, 255, 255, 255);
+		// canvas.drawARGB(200, 255, 255, 255);
 		if (anchor != null) {
 			canvas.drawBitmap(anchor, location[0], location[1], paint);
 		}
