@@ -102,6 +102,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private static final int MSG_BACKUP_DELETE = 1001;
 
 	private static class CommonSclingContentViewHolder {
+		TextView installTime;
 		TextView capacity;
 		TextView cache;
 		TextView power;
@@ -207,6 +208,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 						R.layout.comon_scling_content_view, null);
 
 				mCommenScilingHolder = new CommonSclingContentViewHolder();
+				mCommenScilingHolder.installTime = (TextView) mCommenScilingContentView
+						.findViewById(R.id.install_time);
 				mCommenScilingHolder.capacity = (TextView) mCommenScilingContentView
 						.findViewById(R.id.capacity);
 				mCommenScilingHolder.cache = (TextView) mCommenScilingContentView
@@ -228,6 +231,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 			}
 			appinfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(
 					appinfo.packageName);
+
+			int day = (int) ((System.currentTimeMillis() - appinfo.installTime) / (1000 * 60 * 60 * 24));
+			mCommenScilingHolder.installTime.setText(getString(
+					R.string.install_time, day));
 
 			mCommenScilingHolder.capacity.setText(TextFormater
 					.dataSizeFormat(appinfo.cacheInfo.codeSize

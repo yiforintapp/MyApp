@@ -270,7 +270,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 					loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
 					try {
 						appInfo.installTime = mPm
-								.getPackageInfo(packageName, 0).firstInstallTime;
+								.getPackageInfo(packageName, 0).lastUpdateTime;
 					} catch (NameNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -285,7 +285,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 						}
 					}
 				}
-				pre.setHideThemeList(themeList); 
+				pre.setHideThemeList(themeList);
 				mAppsLoaded = true;
 			}
 		}
@@ -335,6 +335,11 @@ public class AppLoadEngine extends BroadcastReceiver {
 		appInfo.icon = applicationInfo.loadIcon(mPm);
 		appInfo.systemApp = AppUtil.isSystemApp(applicationInfo);
 		appInfo.inSdcard = AppUtil.isInstalledInSDcard(applicationInfo);
+		try {
+			appInfo.installTime = mPm.getPackageInfo(packageName, 0).lastUpdateTime;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
 		appInfo.uid = applicationInfo.uid;
 		appInfo.sourceDir = applicationInfo.sourceDir;
 		appInfo.topPos = mRecommendLocklist.indexOf(packageName);

@@ -271,5 +271,6 @@
     <string name="backup_time">备份时间： </string>
     <string name="app_size ">app大小： </string>
     <string name="version">版本号： </string>
+    <string name="install_time">%1$s天前使用</string>
 
 </resources>
