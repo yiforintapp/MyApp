@@ -255,12 +255,12 @@
     <string name="hide_video_dialog_title">Play</string>
     <string name="hide_video_dialog_content">Video+ is required to play "Private" videos, continue to install?</string> 
     <string name="app_hide_video_fail">Video not selectable! Hide failed !</string>
-    <string name="hide_pic_text">Hidden Pictures</string>
+    <string name="hide_pic_text">images hidden</string>
     <string name="hide_pic_empty_text">No Hidden Pictures</string>
-    <string name="hide_video_text">Hidden Videos</string>
+    <string name="hide_video_text">videos hidden</string>
     <string name="hide_video_empty_text">No Hidden Videos</string>
-    <string name="app_backup_uninstall">Backup &#038; Uninstall</string>
-    <string name="circle_lock_tip_text">Locked Apps</string>
+    <string name="app_backup_uninstall">Uninstall&#038;Backup</string>
+    <string name="circle_lock_tip_text">Apps locked</string>
     <string name="circle_lock_empty_tip_text">No Locked Apps</string>
 
 </resources>

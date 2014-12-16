@@ -85,8 +85,8 @@
     <string name="first_set_passwd_hint">首次使用请设置密码</string>
     <string name="make_passwd">确认密码</string>
     <string name="input_again">请再次输入</string>
-    <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>
-    <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片隐藏功能中</string>
+    <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片视频隐藏功能中</string>
+    <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片视频隐藏功能中</string>
     <string name="gesture_start_hint">画完后松开手指</string>
     <string name="lock_right_now">立即锁定</string>
     <string name="lock_15_sec">15秒</string>

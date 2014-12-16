@@ -78,6 +78,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private boolean mShouldLockOnRestart = true;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
+    public List<VideoItemBean> mUnhide;
 
     private void init() {
         mSelectAll = (Button) findViewById(R.id.select_all);
@@ -114,6 +115,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mClickList = new ArrayList<VideoItemBean>();
         mClickPosList = new ArrayList<Integer>();
         mAllPath = new ArrayList<String>();
+        mUnhide=new ArrayList<VideoItemBean>();
         init();
         mHideVideo.setOnItemClickListener(this);
         mSelectAll.setOnClickListener(this);
@@ -369,6 +371,7 @@ public void onBackPressed() {
                 if (which == 1) {
                     if (mClickList.size() > 0) {
                         if (mActivityMode == Constants.SELECT_HIDE_MODE) {
+                            
                             showProgressDialog(getString(R.string.tips),
                                     getString(R.string.app_hide_image) + "...", true, true);
                             BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
@@ -403,6 +406,7 @@ public void onBackPressed() {
     protected void onDestroy() {
         super.onDestroy();
         mClickList.clear();
+        mUnhide.clear();
     }
 
     /**
@@ -461,7 +465,7 @@ public void onBackPressed() {
                                     FileOperationUtil.getDirPathFromFilepath(item.getPath()),
                                     newFileName), context);
                             FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
-                            mVideoItems.remove(item);
+                            mVideoItems.remove(item);                          
                         }
                     }
                 }
@@ -476,6 +480,7 @@ public void onBackPressed() {
                 Toast.makeText(VideoGriActivity.this, getString(R.string.app_hide_video_fail),
                         Toast.LENGTH_SHORT).show();
             }
+            
             dismissProgressDialog();
             if (mVideoItems.size() > 0) {
                 animateReorder();
@@ -501,6 +506,8 @@ public void onBackPressed() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     mIsBackgoundRunning = false;
+                    mSelectAll.setText(R.string.app_select_all);
+                    mHideVideoAdapter.notifyDataSetChanged();
                 }
             });
         }
