@@ -389,7 +389,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 				transmitted = 0;
 			info.trafficInfo.mTransmittedData = transmitted;
 			info.trafficInfo.mReceivedData = received;
-			info.trafficInfo.mTotal = transmitted + received;
+			info.trafficInfo.total = transmitted + received;
 		}
 
 	}

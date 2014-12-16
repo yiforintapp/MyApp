@@ -89,7 +89,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private List<BusinessItemInfo> mBusinessItems;
 	private List<AppItemInfo> mAppDetails;
 	private BaseInfo mLastSelectedInfo;
-	private int pageItemCount = 20;
+	private int mPageItemCount = 20;
 	private AppBackupRestoreManager mBackupManager;
 	private EventHandler mHandler;
 
@@ -239,12 +239,13 @@ public class AppListActivity extends BaseFragmentActivity implements
 					R.string.install_time, day));
 
 			mCommenScilingHolder.capacity.setText(TextFormater
-					.dataSizeFormat(appinfo.cacheInfo.codeSize
-							+ appinfo.cacheInfo.codeSize));
+					.dataSizeFormat(appinfo.cacheInfo.total
+							+ appinfo.cacheInfo.total));
+
 			mCommenScilingHolder.cache.setText(TextFormater
 					.dataSizeFormat(appinfo.cacheInfo.cacheSize));
 			mCommenScilingHolder.flow.setText(TextFormater
-					.dataSizeFormat(appinfo.trafficInfo.mTotal));
+					.dataSizeFormat(appinfo.trafficInfo.total));
 			mCommenScilingHolder.power.setText(appinfo.powerComsuPercent * 100
 					+ "%");
 			mCommenScilingHolder.memory.setText(TextFormater
@@ -374,7 +375,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public void fillAppListData() {
-		pageItemCount = getResources().getInteger(R.integer.applist_cell_count);
+		mPageItemCount = getResources()
+				.getInteger(R.integer.applist_cell_count);
 		if (mSlicingLayer.isSlicinged()) {
 			mSlicingLayer.closeSlicing();
 		}
@@ -407,7 +409,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		// data load finished
 		mLoadingView.setVisibility(View.INVISIBLE);
 		int pageCount = (int) Math.ceil(((double) mAllItems.size())
-				/ pageItemCount);
+				/ mPageItemCount);
 
 		int i;
 		ArrayList<View> viewList = new ArrayList<View>();
@@ -416,10 +418,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 					R.layout.grid_page_item, mViewPager, false);
 			if (i == pageCount - 1) {
 				gridView.setAdapter(new DataAdapter(mAllItems, i
-						* pageItemCount, mAllItems.size() - 1));
+						* mPageItemCount, mAllItems.size() - 1));
 			} else {
 				gridView.setAdapter(new DataAdapter(mAllItems, i
-						* pageItemCount, (i + 1) * pageItemCount - 1));
+						* mPageItemCount, (i + 1) * mPageItemCount - 1));
 			}
 			gridView.setOnItemClickListener(mListItemClickListener);
 			viewList.add(gridView);
@@ -637,7 +639,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		// filter loacal app
 		checkInstalledFormBusinessApp();
 
-		int contentMaxCount = pageItemCount;
+		int contentMaxCount = mPageItemCount;
 		List<AppItemInfo> tempList = new ArrayList<AppItemInfo>(mAppDetails);
 		// load folw sort data
 		Collections.sort(tempList, new FlowComparator());
@@ -649,13 +651,16 @@ public class AppListActivity extends BaseFragmentActivity implements
 						: contentMaxCount);
 
 		// load capacity sort data
-		tempList = new ArrayList<AppItemInfo>(mAppDetails);
-		Collections.sort(tempList, new CapacityComparator());
+		contentMaxCount = mPageItemCount;
+		List<AppItemInfo> tempList1 = new ArrayList<AppItemInfo>(mAppDetails);
+		LeoLog.e("1", tempList1.toString());
+		Collections.sort(tempList1, new CapacityComparator());
+		LeoLog.e("1", tempList1.toString());
 		List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
 		contentMaxCount = capacityReccommendData.size() > 0 ? contentMaxCount - 4
 				: contentMaxCount;
-		mCapacityFolderData = tempList.subList(0,
-				tempList.size() < contentMaxCount ? tempList.size()
+		mCapacityFolderData = tempList1.subList(0,
+				tempList1.size() < contentMaxCount ? tempList1.size()
 						: contentMaxCount);
 
 		// load restore sort data
@@ -768,16 +773,17 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public static class FlowComparator implements Comparator<AppItemInfo> {
-
 		@Override
 		public int compare(AppItemInfo lhs, AppItemInfo rhs) {
-			if (lhs.trafficInfo.mTotal > rhs.trafficInfo.mTotal) {
+			if (lhs.trafficInfo.total > rhs.trafficInfo.total) {
 				return -1;
-			} else if (lhs.trafficInfo.mTotal < rhs.trafficInfo.mTotal) {
+			} else if (lhs.trafficInfo.total < rhs.trafficInfo.total) {
 				return 1;
+			} else {
+				return Collator.getInstance().compare(trimString(lhs.label),
+						trimString(rhs.label));
 			}
-			return Collator.getInstance().compare(trimString(lhs.label),
-					trimString(rhs.label));
+
 		}
 
 		private String trimString(String s) {
@@ -786,16 +792,17 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public static class CapacityComparator implements Comparator<AppItemInfo> {
-
 		@Override
 		public int compare(AppItemInfo lhs, AppItemInfo rhs) {
 			if (lhs.cacheInfo.total > rhs.cacheInfo.total) {
 				return -1;
 			} else if (lhs.cacheInfo.total < rhs.cacheInfo.total) {
 				return 1;
+			} else {
+				return Collator.getInstance().compare(trimString(lhs.label),
+						trimString(rhs.label));
 			}
-			return Collator.getInstance().compare(trimString(lhs.label),
-					trimString(rhs.label));
+
 		}
 
 		private String trimString(String s) {
