@@ -238,6 +238,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     // VIDEO_PLAYER_ACTIVITY);
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.parse("file://" + path), "video/*");
+<<<<<<< HEAD
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     // intent.setComponent(componentName);
                     try {
@@ -258,6 +259,29 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             return view;
         }
     }
+=======
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    // intent.setComponent(componentName);
+                    try {
+                        // startActivityForResult(intent, 1001);
+                        startActivity(intent);
+                    } catch (Exception e) {
+
+                    }
+
+                    // } else {
+                    // showAlarmDialogPlayer();
+                    // }
+                }
+
+            });
+
+            ((LeoPictureViewPager) container).addView(view);
+            return view;
+        }
+    };
+
+>>>>>>> branch 'master_AM-494' of http://gitlab.leoers.com/leo/appmaster.git
     /**
      * showAlarmDialog
      * 

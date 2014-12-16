@@ -264,5 +264,4 @@
     <string name="circle_lock_empty_tip_text">No Locked Apps</string>
     <string name="feedback_error">邮箱错误，请重新输入</string>
     <string name="googlePlayGuide">请向上滑动给我们评分</string>
-
 </resources>
