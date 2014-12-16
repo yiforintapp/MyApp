@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">&#160;App Master&#160;</string>
+    <string name="app_name">&#160;Privacy Lock&#160;</string>
     <string name="app_count">Apps Installed</string>
     <string name="used_memory">Memory Used</string>
     <string name="used_flow">Traffic Used</string>
@@ -196,7 +196,7 @@
     <string name="passwd_set_gesture_tip">Connect at least 4 dots</string>
     <string name="set_gesture">Draw a new pattern</string>
     <string name="set_passwd">Enter the new password</string>
-    <string name="lock_remind">App Master reminder: set a lock for your new App?</string>
+    <string name="lock_remind">Privacy Lock reminder: set a lock for your new App?</string>
     <string name="new_install_lock_remind">You have installed %1$s. Set a lock for it?</string>
     <string name="lock_guide">Tap Apps to lock</string>
     <string name="start_guide">Most-used Apps</string>
@@ -208,7 +208,7 @@
     <string name="lockerTheme">Theme</string>
     <string name="defaultTheme">Default</string>
     <string name="grade">Rate Us</string>
-    <string name="grade_tip">Thank you for using App Master. Please leave your feedbacks here.</string>
+    <string name="grade_tip">Thank you for using Privacy Lock. Please leave your feedbacks here.</string>
     <string name="lock_more">Lock More</string>
     <string name="lock">Lock</string>
     <string name="det_change_lock_time">Do you wish to change your Auto-lock time?</string>
@@ -244,7 +244,25 @@
     <string name="locker_theme_guide">Themes will be applied to lock screen!</string>
     <string name="locker_clean">Boosted successfully up to %1$s</string>
     <string name="setting_locker_clean">Unlock to boost</string>
+    <string name="app_no_video_hide">Click "Add" to hide videos</string>
+    <string name="app_no_video_gallery_hide">Click \'Add\' to select videos</string>
+    <string name="app_video_hide">Hide Video</string>
+    <string name="app_video_gallery">Video gallery</string>
+    <string name="app_unhide_dialog_content_video">Unhide this video ?</string>
+    <string name="app_delete_dialog_content_video">Delete this video ?</string>
+    <string name="app_unhide_video_dialog_content">Unhide the selected videos ?</string>
+    <string name="app_hide_video_dialog_content">Hide the selected videos ?</string>
+    <string name="hide_video_dialog_title">Play</string>
+    <string name="hide_video_dialog_content">Video+ is required to play "Private" videos, continue to install?</string>
+    <string name="app_hide_video_fail">Video not selectable! Hide failed !</string>
+    <string name="hide_pic_text">images hidden</string>
+    <string name="hide_pic_empty_text">No Hidden Pictures</string>
+    <string name="hide_video_text">videos hidden</string>
+    <string name="hide_video_empty_text">No Hidden Videos</string>
+    <string name="app_backup_uninstall">Uninstall&#038;Backup</string>
+    <string name="circle_lock_tip_text">Apps locked</string>
+    <string name="circle_lock_empty_tip_text">No Locked Apps</string>
     <string name="feedback_error">邮箱错误，请重新输入</string>
-   <string name="googlePlayGuide">请向上滑动给我们评分</string>
+    <string name="googlePlayGuide">请向上滑动给我们评分</string>
 
 </resources>

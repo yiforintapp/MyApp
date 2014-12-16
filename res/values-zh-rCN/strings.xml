@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">应用管理大师</string>
+    <string name="app_name">隐私卫士</string>
     <string name="app_count">应用数量</string>
     <string name="used_memory">使用内存</string>
     <string name="used_flow">使用流量</string>
@@ -85,8 +85,8 @@
     <string name="first_set_passwd_hint">首次使用请设置密码</string>
     <string name="make_passwd">确认密码</string>
     <string name="input_again">请再次输入</string>
-    <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片隐藏功能中</string>
-    <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片隐藏功能中</string>
+    <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片视频隐藏功能中</string>
+    <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片视频隐藏功能中</string>
     <string name="gesture_start_hint">画完后松开手指</string>
     <string name="lock_right_now">立即锁定</string>
     <string name="lock_15_sec">15秒</string>
@@ -135,7 +135,7 @@
     <string name="app_setting_update">检查升级</string>
     <string name="feedback">用户反馈</string>
     <string name="grade">给我们评分</string>
-    <string name="grade_tip">感谢您使用应用管理大师，为了让我们更加进步，请您为我们评分吧！</string>
+    <string name="grade_tip">感谢您使用隐私卫士，为了让我们更加进步，请您为我们评分吧！</string>
     <string name="app_setting_about">关于</string>
     <string name="forbid_uninstall">禁止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>
@@ -146,7 +146,7 @@
     <string name="change_passwd">更改密码</string>
     <string name="passwd_notify">密码提示</string>
     <string name="no_lock_item_tip">暂无加锁应用</string>
-    <string name="lock_remind">App Master 提醒您对应用加锁</string>
+    <string name="lock_remind">隐私卫士 提醒您对应用加锁</string>
     <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string>
     <string name="no_unlocked_item_tip">没有未加锁应用</string>
     <string name="app_setting_has_update">&#160;&#160;&#160;检查升级 <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
@@ -241,6 +241,24 @@
     <string name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
     <string name="setting_locker_clean">解锁后加速</string>
+    <string name="app_no_video_hide">请点击添加按钮，添加需要隐藏的视频</string>
+    <string name="app_no_video_gallery_hide">没有可隐藏的视频</string>
+    <string name="app_video_hide">视频隐藏</string>
+    <string name="app_video_gallery">视频库</string>
+    <string name="app_unhide_dialog_content_video">是否取消隐藏此视频？</string>
+    <string name="app_delete_dialog_content_video">是否删除此视频？</string>
+    <string name="app_unhide_video_dialog_content">是否取消隐藏你所选的视频？</string>
+    <string name="app_hide_video_dialog_content">是否隐藏你所选的视频？</string>
+    <string name="hide_video_dialog_title">播放视频</string>
+    <string name="hide_video_dialog_content">为了保护您的隐私播放隐藏视频需要使用Video&#160;Plus，是否安装？</string>
+    <string name="app_hide_video_fail">该视频没有写入权限，隐藏失败！</string>
+    <string name="hide_pic_text">已隐藏图片</string>
+    <string name="hide_pic_empty_text">没有隐藏图片</string>
+    <string name="hide_video_text">已隐藏视频</string>
+    <string name="hide_video_empty_text">没有隐藏视频</string>
+    <string name="app_backup_uninstall">备份卸载</string>
+    <string name="circle_lock_tip_text">已加锁应用</string>
+    <string name="circle_lock_empty_tip_text">没有加锁应用</string>
     <string name="feedback_error">邮箱错误，请重新输入</string>
     <string name="googlePlayGuide">请向上滑动给我们评分</string>
 

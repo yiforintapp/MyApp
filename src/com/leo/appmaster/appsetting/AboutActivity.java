@@ -3,39 +3,26 @@ package com.leo.appmaster.appsetting;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-import com.leo.appmaster.home.GooglePlayGuideActivity;
 import com.leo.appmaster.home.ProtocolActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leoers.leoanalytics.LeoStat;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.PopupWindow.OnDismissListener;
 
 public class AboutActivity extends BaseActivity implements OnClickListener {
 
@@ -164,7 +151,6 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
             default:
                 break;
         }
-
     }
 
     /**

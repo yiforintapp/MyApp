@@ -244,6 +244,13 @@
     <string name="locker_theme_guide"> स्क्रीन लॉक करने थीम लागू किया जाएगा!</string>
     <string name="locker_clean">सफलतापूर्वक %1$s तक बढ़ाया</string>
     <string name="setting_locker_clean">थीम बदलने क्लिक करें</string>
+    <string name="app_no_video_hide">请点击添加按钮，添加需要隐藏的视频</string>
+    <string name="app_video_hide">视频隐藏</string>
+    <string name="app_video_gallery">视频库</string>
+    <string name="app_unhide_dialog_content_video">是否取消隐藏此视频？</string>
+    <string name="app_delete_dialog_content_video">是否删除此视频？</string>
+    <string name="app_unhide_video_dialog_content">是否取消隐藏你所选的视频？</string>
+    <string name="app_hide_video_dialog_content">是否隐藏你所选的视频？</string>
     <string name="feedback_error">邮箱错误，请重新输入</string>
     <string name="googlePlayGuide">请向上滑动给我们评分</string>
 
