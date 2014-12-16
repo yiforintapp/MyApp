@@ -150,6 +150,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 					activity.mFolderLayer.updateFolderData(
 							FolderItemInfo.FOLDER_BACKUP_RESTORE,
 							activity.mRestoreFolderData, null);
+					
+//					activity.fillFolder();
 
 				}
 				break;

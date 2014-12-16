@@ -39,6 +39,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
@@ -654,6 +656,18 @@ public class AppLoadEngine extends BroadcastReceiver {
 						AppItemInfo appInfo = new AppItemInfo();
 						loadAppInfoOfPackage(packages[i], applicationInfo,
 								appInfo);
+
+						AppBackupRestoreManager ab = new AppBackupRestoreManager(
+								mContext);
+						ArrayList<AppItemInfo> restoreList = ab
+								.getRestoreList();
+						for (AppItemInfo restoreItemInfo : restoreList) {
+							if (restoreItemInfo.packageName
+									.equals(appInfo.packageName)) {
+								appInfo.isBackuped = true;
+								break;
+							}
+						}
 						mAppDetails.put(packages[i], appInfo);
 						changedFinal.add(appInfo);
 					}
