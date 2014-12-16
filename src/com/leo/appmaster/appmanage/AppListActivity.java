@@ -601,7 +601,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		List<AppItemInfo> tempList = new ArrayList<AppItemInfo>(mAppDetails);
 		// load folw sort data
 		Collections.sort(tempList, new FlowComparator());
-		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_APPLIST);
+		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_FLOW_SORT);
 		contentMaxCount = flowDataReccommendData.size() > 0 ? 16 : 20;
 		mFlowFolderData = tempList.subList(0,
 				tempList.size() < contentMaxCount ? tempList.size()
@@ -609,7 +609,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 		// load capacity sort data
 		Collections.sort(tempList, new CapacityComparator());
-		List<BusinessItemInfo> capacityReccommendData = getRecommendData(FolderItemInfo.FOLDER_CAPACITY_SORT);
+		List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
 		contentMaxCount = capacityReccommendData.size() > 0 ? 16 : 20;
 		mCapacityFolderData = tempList.subList(0,
 				tempList.size() < contentMaxCount ? tempList.size()
