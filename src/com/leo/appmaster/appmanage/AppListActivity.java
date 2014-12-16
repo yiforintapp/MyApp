@@ -61,6 +61,7 @@ import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.PageIndicator;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.AppwallHttpUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
@@ -344,7 +345,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		}
 		// load all folder items
 		getFolderData();
-		
+
 		mAllItems = new ArrayList<BaseInfo>();
 		// first, add four folders
 		mFolderItems = new ArrayList<BaseInfo>();
@@ -592,10 +593,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	private void getFolderData() {
-		
-		//filter loacal app
+
+		// filter loacal app
 		checkInstalledFormBusinessApp();
-		
+
 		int contentMaxCount = 20;
 		List<AppItemInfo> tempList = new ArrayList<AppItemInfo>(mAppDetails);
 		// load folw sort data
@@ -615,23 +616,19 @@ public class AppListActivity extends BaseFragmentActivity implements
 						: contentMaxCount);
 
 		// load restore sort data
-		List<BusinessItemInfo> restoreReccommendData = getRecommendData(FolderItemInfo.FOLDER_BACKUP_RESTORE);
-		contentMaxCount = restoreReccommendData.size() > 0 ? 16 : 20;
 		ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
-		mRestoreFolderData = temp.subList(0,
-				temp.size() < contentMaxCount ? temp.size() : contentMaxCount);
+		mRestoreFolderData = temp.subList(0, temp.size());
 	}
 
 	private void fillFolder() {
-		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_APPLIST);
-		List<BusinessItemInfo> capacityReccommendData = getRecommendData(FolderItemInfo.FOLDER_CAPACITY_SORT);
-		List<BusinessItemInfo> restoreReccommendData = getRecommendData(FolderItemInfo.FOLDER_BACKUP_RESTORE);
+		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_FLOW_SORT);
+		List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_FLOW_SORT,
 				mFlowFolderData, flowDataReccommendData);
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_CAPACITY_SORT,
 				mCapacityFolderData, capacityReccommendData);
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
-				mRestoreFolderData, restoreReccommendData);
+				mRestoreFolderData, null);
 	}
 
 	private void checkInstalledFormBusinessApp() {
@@ -654,10 +651,13 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private List<BusinessItemInfo> getRecommendData(int containerId) {
 		Vector<BusinessItemInfo> businessDatas = AppBusinessManager
 				.getInstance(this).getBusinessData();
+		LeoLog.e("xxxx", "containerId = " + containerId);
 		List<BusinessItemInfo> list = new ArrayList<BusinessItemInfo>();
 		for (BusinessItemInfo businessItemInfo : businessDatas) {
 			if (businessItemInfo.installed)
 				continue;
+			LeoLog.e("xxxx", "businessItemInfo.containType = "
+					+ businessItemInfo.containType);
 			if (businessItemInfo.containType == containerId) {
 				if (containerId == BusinessItemInfo.CONTAIN_APPLIST) {
 					if (businessItemInfo.iconLoaded) {

@@ -8,7 +8,7 @@ public class BusinessItemInfo extends BaseInfo {
 	/**
 	 * system folder
 	 */
-	public static final int CONTAIN_SORT_FLOW = 2;
+	public static final int CONTAIN_FLOW_SORT = 2;
 	/**
 	 * running folder
 	 */
