@@ -144,9 +144,9 @@
     <string name="feedback_email_tip">Your Email</string>
     <string name="feedback_category_tip">Select A Question</string>
     <string name="category_lock">App Lock</string>
-    <string name="category_backup">App Backup</string>
-    <string name="category_boost">Boost</string>
-    <string name="category_hide">Hide Image</string>
+    <string name="category_backup_uninstall">Uninstall&#038;Backup</string>
+    <string name="category_hide_image">Hide Image</string>
+    <string name="category_hide_video">Hide Video</string>
     <string name="category_other">Other Questions</string>
     <string name="category_suggest">Give Us Feedback</string>
     <string name="feedback_success_title">Submission Successful</string>
