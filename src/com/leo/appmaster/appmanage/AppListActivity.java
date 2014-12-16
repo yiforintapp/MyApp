@@ -149,8 +149,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 					activity.mFolderLayer.updateFolderData(
 							FolderItemInfo.FOLDER_BACKUP_RESTORE,
 							activity.mRestoreFolderData, null);
-					
-					
+
 				}
 				break;
 			case MSG_BACKUP_DELETE:
@@ -639,6 +638,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 						: contentMaxCount);
 
 		// load capacity sort data
+		tempList = new ArrayList<AppItemInfo>(mAppDetails);
 		Collections.sort(tempList, new CapacityComparator());
 		List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
 		contentMaxCount = capacityReccommendData.size() > 0 ? 16 : 20;
@@ -759,6 +759,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 		@Override
 		public int compare(AppItemInfo lhs, AppItemInfo rhs) {
+
+			LeoLog.e("xxxx", "lhs.mTotal = " + lhs.trafficInfo.mTotal
+					+ "    rhs.mTotal = " + rhs.trafficInfo.mTotal);
 			if (lhs.trafficInfo.mTotal > rhs.trafficInfo.mTotal) {
 				return -1;
 			} else if (lhs.trafficInfo.mTotal < rhs.trafficInfo.mTotal) {

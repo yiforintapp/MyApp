@@ -501,8 +501,6 @@ public class AppBackupRestoreManager implements AppChangeListener {
 							app.versionCode = pInfo.versionCode;
 							app.versionName = pInfo.versionName;
 							app.backupTime = backupTime;
-							LeoLog.e("backup app", "label = " + label
-									+ "      back time = " + backupTime);
 							mSavedList.add(app);
 						}
 					}

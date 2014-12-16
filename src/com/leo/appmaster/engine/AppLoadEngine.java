@@ -277,6 +277,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 					if (!isThemeApk(packageName)) {
 						mAppDetails.put(packageName, appInfo);
+						// TODO
+						loadAppDetailInfo(packageName);
 					} else {
 						if (!themeList.contains(packageName)) {
 							themeList.add(packageName);
