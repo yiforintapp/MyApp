@@ -67,10 +67,15 @@ public class BusinessItemInfo extends BaseInfo {
 	 * Tag
 	 */
 	public Object tag;
+	
+	/**
+	 * is local app
+	 */
+	public boolean installed;
 
 	@Override
 	public String toString() {
-		return "label = " + label + "    iconUrl = " + iconUrl + "  appSize = "
+		return "label = " + label +  "       packageName = "+ packageName +"    iconUrl = " + iconUrl + "  appSize = "
 				+ appSize + "    type = " + type + "  appDownloadUrl =  "
 				+ appDownloadUrl + "    gpUrl = " + gpUrl + "   icon = " + icon;
 	}

@@ -344,7 +344,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		}
 		// load all folder items
 		getFolderData();
-
+		
 		mAllItems = new ArrayList<BaseInfo>();
 		// first, add four folders
 		mFolderItems = new ArrayList<BaseInfo>();
@@ -592,9 +592,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	private void getFolderData() {
+		
+		//filter loacal app
+		checkInstalledFormBusinessApp();
+		
 		int contentMaxCount = 20;
 		List<AppItemInfo> tempList = new ArrayList<AppItemInfo>(mAppDetails);
-
 		// load folw sort data
 		Collections.sort(tempList, new FlowComparator());
 		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_APPLIST);
@@ -623,15 +626,29 @@ public class AppListActivity extends BaseFragmentActivity implements
 		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_APPLIST);
 		List<BusinessItemInfo> capacityReccommendData = getRecommendData(FolderItemInfo.FOLDER_CAPACITY_SORT);
 		List<BusinessItemInfo> restoreReccommendData = getRecommendData(FolderItemInfo.FOLDER_BACKUP_RESTORE);
-
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_FLOW_SORT,
 				mFlowFolderData, flowDataReccommendData);
-
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_CAPACITY_SORT,
 				mCapacityFolderData, capacityReccommendData);
-
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
 				mRestoreFolderData, restoreReccommendData);
+	}
+
+	private void checkInstalledFormBusinessApp() {
+		Vector<BusinessItemInfo> businessDatas = AppBusinessManager
+				.getInstance(this).getBusinessData();
+
+		for (BusinessItemInfo businessItemInfo : businessDatas) {
+			boolean installed = false;
+			for (AppItemInfo info : mAppDetails) {
+				if (businessItemInfo.packageName.equals(info.packageName)) {
+					installed = true;
+					break;
+				}
+			}
+			businessItemInfo.installed = installed;
+		}
+
 	}
 
 	private List<BusinessItemInfo> getRecommendData(int containerId) {
@@ -639,16 +656,17 @@ public class AppListActivity extends BaseFragmentActivity implements
 				.getInstance(this).getBusinessData();
 		List<BusinessItemInfo> list = new ArrayList<BusinessItemInfo>();
 		for (BusinessItemInfo businessItemInfo : businessDatas) {
-			// if (businessItemInfo.containType == containerId) {
-			if (containerId == BusinessItemInfo.CONTAIN_APPLIST) {
-				if (businessItemInfo.iconLoaded) {
+			if (businessItemInfo.installed)
+				continue;
+			if (businessItemInfo.containType == containerId) {
+				if (containerId == BusinessItemInfo.CONTAIN_APPLIST) {
+					if (businessItemInfo.iconLoaded) {
+						list.add(businessItemInfo);
+					}
+				} else {
 					list.add(businessItemInfo);
 				}
-			} else {
-				list.add(businessItemInfo);
 			}
-
-			// }
 		}
 		return list;
 	}
