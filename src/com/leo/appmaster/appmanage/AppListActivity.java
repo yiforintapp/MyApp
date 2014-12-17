@@ -171,9 +171,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 			int day = (int) ((System.currentTimeMillis() - appinfo.installTime) / (1000 * 60 * 60 * 24));
 
 			if (day > 10000) {
-				day /= 100;
+				day /= 50;
 			} else if (day > 1000) {
-				day /= 5;
+				day /= 2;
 			}
 			mCommenScilingHolder.installTime.setText(getString(
 					R.string.install_time, day));
