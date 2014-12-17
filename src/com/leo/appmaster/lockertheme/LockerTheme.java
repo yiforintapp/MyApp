@@ -773,9 +773,24 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					mHandler.postDelayed(new Runnable() {
 						@Override
 						public void run() {
-							loadLocalTheme();
-							mLocalThemeAdapter.notifyDataSetChanged();
+							
 							// if need to load online theme
+							 ThemeInfo addThemeOnline = null;
+	                            for (ThemeInfo info : mLocalThemes) {
+	                                if (info.packageName.equals(packageName)) {
+	                                    addThemeOnline = info;
+	                                }
+	                            }
+	                            if (addThemeOnline != null) {
+	                                mOnlineThemes.add(addThemeOnline);
+	                                mOnlineThemeAdapter.notifyDataSetChanged();
+
+	                                if (mOnlineThemes.isEmpty()) {
+	                                    mLayoutEmptyTip.setVisibility(View.VISIBLE);
+	                                }
+	                            }
+	                            loadLocalTheme();
+	                            mLocalThemeAdapter.notifyDataSetChanged();
 						}
 					}, 1000);
 				}
