@@ -162,19 +162,11 @@ public class AppBackupRestoreManager implements AppChangeListener {
                 @Override
                 public void run() {
                     int failType = FAIL_TYPE_NONE;
-                    boolean success = true;
-                    if (mBackupCanceled) {
-                        failType = FAIL_TYPE_CANCELED;
-                        success = false;
-                    }
+                    boolean success = false;
                     failType = tryBackupApp(app, true);
                     if (failType == FAIL_TYPE_NONE) {
                         success = true;
-                    } else if (failType == FAIL_TYPE_SDCARD_UNAVAILABLE
-                            || failType == FAIL_TYPE_FULL) {
-                        success = false;
                     }
-
                     for (AppBackupDataListener listener : mBackupListeners) {
                         listener.onBackupFinish(success, 1, 1,
                                 getFailMessage(failType));
@@ -617,6 +609,10 @@ public class AppBackupRestoreManager implements AppChangeListener {
 			return path;
 		}
 		return null;
+	}
+	
+	public String getDisplayPath() {
+	    return getFailMessage(FAIL_TYPE_NONE);
 	}
 
 	private String getFailMessage(int failType) {

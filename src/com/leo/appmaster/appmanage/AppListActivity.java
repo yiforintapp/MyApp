@@ -196,7 +196,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 				mCommenScilingHolder.backup.setText(R.string.backuped);
 				mCommenScilingHolder.backup.setEnabled(false);
 				mCommenScilingHolder.backup
-						.setBackgroundResource(R.drawable.folder_left_button_selector);
+						.setBackgroundResource(R.drawable.dlg_left_button_selector);
 			} else {
 				mCommenScilingHolder.backup.setText(R.string.backup);
 				mCommenScilingHolder.backup.setEnabled(true);
@@ -253,7 +253,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			calendar.setTimeInMillis(appinfo.backupTime);
 			mBackupScilingHolder.backupTime.setText(formatter.format(calendar
 					.getTime()));
-			mBackupScilingHolder.path.setText(mBackupManager.getBackupPath());
+			mBackupScilingHolder.path.setText(mBackupManager.getDisplayPath());
 
 			int contentheight = getResources().getDimensionPixelSize(
 					R.dimen.backup_scling_content_height);
