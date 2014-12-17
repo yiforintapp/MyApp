@@ -79,14 +79,16 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 		mRecommendData = reccommendData;
 
 		mContentAdapter = new ContentAdapter(contentData);
-		mContentGrid.setAdapter(mContentAdapter);
+		if(mContentGrid != null) {
+		      mContentGrid.setAdapter(mContentAdapter);
 
-		if (mRecommendData != null && !mRecommendData.isEmpty()) {
-			mRecommendLayout.setVisibility(View.VISIBLE);
-			mRecommendAdapter = new RecommendAdapter(reccommendData);
-			mRecommendGrid.setAdapter(mRecommendAdapter);
-		} else {
-			mRecommendLayout.setVisibility(View.INVISIBLE);
+		        if (mRecommendData != null && !mRecommendData.isEmpty()) {
+		            mRecommendLayout.setVisibility(View.VISIBLE);
+		            mRecommendAdapter = new RecommendAdapter(reccommendData);
+		            mRecommendGrid.setAdapter(mRecommendAdapter);
+		        } else {
+		            mRecommendLayout.setVisibility(View.INVISIBLE);
+		        }
 		}
 	}
 
