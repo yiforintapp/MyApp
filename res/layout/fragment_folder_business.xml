@@ -17,12 +17,16 @@
             android:layout_marginRight="8dp"
             android:gravity="fill"
             android:horizontalSpacing="3dp"
-            android:scrollbars="none"
             android:listSelector="@drawable/selector_app_item"
             android:numColumns="4"
             android:paddingTop="5dp"
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="0dp"
+            android:scrollbars="none"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="5dp" />
+            android:verticalSpacing="5dp"
+            ptr:ptrHeaderSubTextColor="@color/white"
+            ptr:ptrHeaderTextColor="@color/white" />
 
         <LinearLayout
             android:id="@+id/layout_empty"
