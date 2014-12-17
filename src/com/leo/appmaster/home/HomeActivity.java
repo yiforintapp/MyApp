@@ -289,9 +289,10 @@ public class HomeActivity extends MainViewActivity implements OnClickListener, O
         if (mHidePic != null && mHidePicText != null) {
             if (count > 0) {
                 FontMetrics fm = mHidePic.getPaint().getFontMetrics();
-                int textH = (int) Math.ceil(fm.descent - fm.ascent) + 1;
+                int textH = (int) Math.ceil(fm.descent - fm.ascent) * 4 / 5;
                 Drawable iconPic = getResources().getDrawable(R.drawable.home_photo_icon);
                 int width = (int) (iconPic.getIntrinsicWidth() * (((float) textH) / iconPic.getIntrinsicHeight()));
+
                 iconPic.setBounds(0, 0, width, textH);
                 mHidePic.setText(String.valueOf(count));
                 mHidePic.setCompoundDrawables(null, null, iconPic, null);
@@ -318,7 +319,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener, O
 	       if (mHideVideo != null) {
 	            if (count > 0) {
 	                FontMetrics fm = mHideVideo.getPaint().getFontMetrics();
-	                int textH = (int) Math.ceil(fm.descent - fm.ascent) + 1;
+	                int textH = (int) Math.ceil(fm.descent - fm.ascent) * 4 / 5;
 	                Drawable iconVideo = getResources().getDrawable(R.drawable.home_video_icon);
 	                int width = (int) (iconVideo.getIntrinsicWidth() * (((float) textH) / iconVideo.getIntrinsicHeight()));
 	                iconVideo.setBounds(0, 0, width, textH);

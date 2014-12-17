@@ -144,9 +144,9 @@
     <string name="feedback_email_tip">Your Email</string>
     <string name="feedback_category_tip">Select A Question</string>
     <string name="category_lock">App Lock</string>
-    <string name="category_backup">App Backup</string>
-    <string name="category_boost">Boost</string>
-    <string name="category_hide">Hide Image</string>
+    <string name="category_backup_uninstall">Uninstall&#038;Backup</string>
+    <string name="category_hide_image">Hide Image</string>
+    <string name="category_hide_video">Hide Video</string>
     <string name="category_other">Other Questions</string>
     <string name="category_suggest">Give Us Feedback</string>
     <string name="feedback_success_title">Submission Successful</string>
@@ -256,9 +256,9 @@
     <string name="hide_video_dialog_content">Video+ is required to play "Private" videos, continue to install?</string>
     <string name="app_hide_video_fail">Video not selectable! Hide failed !</string>
     <string name="hide_pic_text">images hidden</string>
-    <string name="hide_pic_empty_text">No Hidden Pictures</string>
+    <string name="hide_pic_empty_text">&#160;&#160;No Hidden Pictures</string>
     <string name="hide_video_text">videos hidden</string>
-    <string name="hide_video_empty_text">No Hidden Videos</string>
+    <string name="hide_video_empty_text">&#160;&#160;No Hidden Videos</string>
     <string name="app_backup_uninstall">Uninstall&#038;Backup</string>
     <string name="circle_lock_tip_text">Apps locked</string>
     <string name="circle_lock_empty_tip_text">No Locked Apps</string>
