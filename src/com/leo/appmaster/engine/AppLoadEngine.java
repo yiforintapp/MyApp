@@ -690,6 +690,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 				mAppDetails.clear();
 				mAppsLoaded = false;
 				loadAllPkgInfo();
+				AppMasterApplication.getInstance().getBuckupManager().resetList();
 				break;
 
 			}

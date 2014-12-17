@@ -250,7 +250,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mBackupScilingHolder.version.setText(String.format(getResources()
 					.getString(R.string.app_version), appinfo.versionName));
 			SimpleDateFormat formatter = new SimpleDateFormat(
-					"yyyy-MM-dd hh:mm:ss");
+					"yyyy-MM-dd HH:mm:ss");
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(appinfo.backupTime);
 			mBackupScilingHolder.backupTime.setText(formatter.format(calendar
@@ -353,9 +353,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 		checkInstalledFormBusinessApp();
 
 		// second, add business items
-		mBusinessItems = new ArrayList<BusinessItemInfo>();
 		mBusinessItems = loadBusinessData();
-		mAllItems.addAll(mBusinessItems);
+		if(mBusinessItems != null) {
+		      mAllItems.addAll(mBusinessItems);
+		}
 
 		// third, add all local apps
 		mAllItems.addAll(mAppDetails);

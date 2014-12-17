@@ -638,6 +638,13 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		AppLoadEngine.getInstance(null).unregisterAppChangeListener(this);
 		context.unregisterReceiver(mSDReceiver);
 	}
+	
+	public void resetList() {
+	    mSavedList.clear();
+        mBackupList.clear();
+        mDataReady = false;
+        getBackupList();
+	}
 
 	@Override
 	public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
