@@ -15,7 +15,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -55,7 +54,6 @@ import com.leo.appmaster.ui.LeoGridBaseAdapter;
 import com.leo.appmaster.ui.PageIndicator;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
@@ -342,6 +340,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 		loadFolderItems();
 		mAllItems.addAll(mFolderItems);
 
+		// filter loacal app
+		checkInstalledFormBusinessApp();
+
 		// second, add business items
 		mBusinessItems = new ArrayList<BusinessItemInfo>();
 		mBusinessItems = loadBusinessData();
@@ -381,7 +382,13 @@ public class AppListActivity extends BaseFragmentActivity implements
 	 * @return
 	 */
 	private List<BusinessItemInfo> loadBusinessData() {
-		return getRecommendData(BusinessItemInfo.CONTAIN_APPLIST);
+		List<BusinessItemInfo> list = getRecommendData(BusinessItemInfo.CONTAIN_APPLIST);
+
+		if (list == null || list.size() == 0)
+			return null;
+		List<BusinessItemInfo> resault;
+		resault = list.subList(0, list.size() > 4 ? 4 : list.size());
+		return resault;
 	}
 
 	private void loadFolderItems() {
@@ -430,7 +437,32 @@ public class AppListActivity extends BaseFragmentActivity implements
 		as.addListener(new AnimatorListenerAdapter() {
 			@Override
 			public void onAnimationEnd(Animator arg0) {
-				openSlicingLayer(view, from);
+				switch (mLastSelectedInfo.type) {
+				case BaseInfo.ITEM_TYPE_NORMAL_APP:
+					openSlicingLayer(view, from);
+					break;
+				case BaseInfo.ITEM_TYPE_FOLDER:
+					FolderItemInfo folderInfo = (FolderItemInfo) mLastSelectedInfo;
+					fillFolder();
+					mFolderLayer.openFolderView(folderInfo.folderType, view,
+							mAllAppList);
+					break;
+				case BaseInfo.ITEM_TYPE_BUSINESS_APP:
+					BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
+					if (AppUtil.appInstalled(AppListActivity.this,
+							Constants.GP_PACKAGE)) {
+						AppUtil.downloadFromGp(AppListActivity.this,
+								bif.packageName);
+					} else {
+						AppUtil.downloadFromBrowser(AppListActivity.this,
+								bif.appDownloadUrl);
+					}
+					break;
+
+				default:
+					break;
+				}
+
 			}
 		});
 		as.playTogether(scaleX, scaleY);
@@ -559,30 +591,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 	public void handleItemClick(View view, int from) {
 		if (mSlicingLayer.isAnimating() || mFolderLayer.isAnimating())
 			return;
-		Intent intent = null;
 		mLastSelectedInfo = (BaseInfo) view.getTag();
-		switch (mLastSelectedInfo.type) {
-		case BaseInfo.ITEM_TYPE_NORMAL_APP:
-			animateItem(view, from);
-			break;
-		case BaseInfo.ITEM_TYPE_FOLDER:
-			FolderItemInfo folderInfo = (FolderItemInfo) mLastSelectedInfo;
-			fillFolder();
-			mFolderLayer.openFolderView(folderInfo.folderType, view,
-					mAllAppList);
-			break;
-		case BaseInfo.ITEM_TYPE_BUSINESS_APP:
-			BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
-			if (AppUtil.appInstalled(this, Constants.GP_PACKAGE)) {
-				AppUtil.downloadFromGp(this, bif.packageName);
-			} else {
-				AppUtil.downloadFromBrowser(this, bif.appDownloadUrl);
-			}
-			break;
-
-		default:
-			break;
-		}
+		animateItem(view, from);
 	}
 
 	private void getFolderData() {
@@ -605,8 +615,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	private void fillFolder() {
-		// filter loacal app
-		checkInstalledFormBusinessApp();
 
 		// fill restore folder
 		Collections.sort(mRestoreFolderData, new BackupItemComparator());

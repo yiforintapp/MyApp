@@ -64,9 +64,6 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 				.getDimensionPixelSize(R.dimen.folder_title_height);
 		mFolderTitleWidth = res
 				.getDimensionPixelSize(R.dimen.folder_title_width);
-
-		LeoLog.e("xxxx", "mFolderTitleHeight = " + mFolderTitleHeight
-				+ "           mFolderTitleWidth = " + mFolderTitleWidth);
 	}
 
 	@Override
