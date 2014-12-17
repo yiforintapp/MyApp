@@ -237,7 +237,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     // VIDEO_PLAYER_ACTIVITY);
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.parse("file://" + path), "video/*");
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     // intent.setComponent(componentName);
                     try {
                         // startActivityForResult(intent, 1001);
@@ -454,11 +454,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
     @Override
     public void onActivityResault(int requestCode, int resultCode) {
-        if (REQUEST_CODE_LOCK == requestCode) {
             mShouldLockOnRestart = false;
-        } else if (REQUEST_CODE_OPTION == requestCode) {
-            mShouldLockOnRestart = false;
-        }
     }
 
     private void showLockPage() {
