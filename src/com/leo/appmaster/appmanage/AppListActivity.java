@@ -344,9 +344,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 		checkInstalledFormBusinessApp();
 
 		// second, add business items
-		mBusinessItems = new ArrayList<BusinessItemInfo>();
 		mBusinessItems = loadBusinessData();
-		mAllItems.addAll(mBusinessItems);
+		if(mBusinessItems != null) {
+		      mAllItems.addAll(mBusinessItems);
+		}
 
 		// third, add all local apps
 		mAllItems.addAll(mAppDetails);
