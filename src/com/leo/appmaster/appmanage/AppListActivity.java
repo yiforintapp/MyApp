@@ -462,10 +462,15 @@ public class AppListActivity extends BaseFragmentActivity implements
 					break;
 				case BaseInfo.ITEM_TYPE_BUSINESS_APP:
 					BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
-					if (AppUtil.appInstalled(AppListActivity.this,
-							Constants.GP_PACKAGE)) {
-						AppUtil.downloadFromGp(AppListActivity.this,
-								bif.packageName);
+					if(bif.gpPriority == 1) {
+						if (AppUtil.appInstalled(AppListActivity.this,
+								Constants.GP_PACKAGE)) {
+							AppUtil.downloadFromGp(AppListActivity.this,
+									bif.packageName);
+						} else {
+							AppUtil.downloadFromBrowser(AppListActivity.this,
+									bif.appDownloadUrl);
+						}
 					} else {
 						AppUtil.downloadFromBrowser(AppListActivity.this,
 								bif.appDownloadUrl);
