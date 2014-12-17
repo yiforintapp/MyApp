@@ -184,9 +184,9 @@ public class FolderLayer {
 		mFolderView.startAnimation(as1);
 	}
 
-	public void updateFolderData(int folderFlowSort,
+	public void updateFolderData(int folderType,
 			List<AppItemInfo> contentData, List<BusinessItemInfo> reccommendData) {
-		mFolderView.updateData(folderFlowSort, contentData, reccommendData);
+		mFolderView.updateData(folderType, contentData, reccommendData);
 	}
 
 }

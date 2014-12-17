@@ -6,8 +6,10 @@ import java.util.List;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -47,8 +49,8 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	private ArrayList<String> mItemTitles;
 	private TitleAdapter mTitleAdapter;
 	private int mCurPosition;
-	
-	private int folderTitleItemSize;
+
+	private int mFolderTitleHeight, mFolderTitleWidth;
 
 	public FolderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -56,7 +58,15 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		mItemTitles = new ArrayList<String>();
 		mFragmentList = new ArrayList<BaseFolderFragment>();
 		mTitleAdapter = new TitleAdapter();
-		folderTitleItemSize = mContext.getResources().getDimensionPixelSize(R.dimen.folder_title_item_size);
+
+		Resources res = mContext.getResources();
+		mFolderTitleHeight = res
+				.getDimensionPixelSize(R.dimen.folder_title_height);
+		mFolderTitleWidth = res
+				.getDimensionPixelSize(R.dimen.folder_title_width);
+
+		LeoLog.e("xxxx", "mFolderTitleHeight = " + mFolderTitleHeight
+				+ "           mFolderTitleWidth = " + mFolderTitleWidth);
 	}
 
 	@Override
@@ -85,18 +95,18 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		fillTitle();
 
 		// add four fragment
+		BaseFolderFragment backupFragment = new CommonFlowFragment();
+		backupFragment.setType(BaseFolderFragment.FOLER_TYPE_BACKUP);
 		BaseFolderFragment flowFragment = new CommonFlowFragment();
 		flowFragment.setType(BaseFolderFragment.FOLER_TYPE_FLOW);
 		BaseFolderFragment capacityFragment = new CommonFlowFragment();
 		capacityFragment.setType(BaseFolderFragment.FOLER_TYPE_CAPACITY);
-		BaseFolderFragment backupFragment = new CommonFlowFragment();
-		backupFragment.setType(BaseFolderFragment.FOLER_TYPE_BACKUP);
 		BaseFolderFragment businessFragment = new BusinessAppFragment();
 		businessFragment.setType(BaseFolderFragment.FOLER_TYPE_RECOMMEND);
 
+		mFragmentList.add(backupFragment);
 		mFragmentList.add(flowFragment);
 		mFragmentList.add(capacityFragment);
-		mFragmentList.add(backupFragment);
 		mFragmentList.add(businessFragment);
 		mPagerAdapter = new FolderPagerAdapter(
 				((FragmentActivity) mContext).getSupportFragmentManager());
@@ -118,24 +128,6 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		List<ItemHolder> holder = new ArrayList<FolderView.ItemHolder>();
 		ItemHolder item;
 		ImageView iv;
-		item = new ItemHolder();
-		item.itmeTitle = mContext.getString(R.string.folder_sort_flow);
-		iv = new ImageView(mContext);
-		iv.setLayoutParams(new LeoHomeGallery.LayoutParams(
-				LeoHomeGallery.LayoutParams.MATCH_PARENT,
-				LeoHomeGallery.LayoutParams.MATCH_PARENT));
-		iv.setImageResource(R.drawable.ic_launcher);
-		item.pagerView = iv;
-		holder.add(item);
-		item = new ItemHolder();
-		item.itmeTitle = mContext.getString(R.string.folder_sort_capacity);
-		iv = new ImageView(mContext);
-		iv.setLayoutParams(new LeoHomeGallery.LayoutParams(
-				LeoHomeGallery.LayoutParams.MATCH_PARENT,
-				LeoHomeGallery.LayoutParams.MATCH_PARENT));
-		iv.setImageResource(R.drawable.ic_launcher);
-		item.pagerView = iv;
-		holder.add(item);
 
 		item = new ItemHolder();
 		item.itmeTitle = mContext.getString(R.string.folder_backup_restore);
@@ -146,6 +138,27 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		iv.setImageResource(R.drawable.ic_launcher);
 		item.pagerView = iv;
 		holder.add(item);
+
+		item = new ItemHolder();
+		item.itmeTitle = mContext.getString(R.string.folder_sort_flow);
+		iv = new ImageView(mContext);
+		iv.setLayoutParams(new LeoHomeGallery.LayoutParams(
+				LeoHomeGallery.LayoutParams.MATCH_PARENT,
+				LeoHomeGallery.LayoutParams.MATCH_PARENT));
+		iv.setImageResource(R.drawable.ic_launcher);
+		item.pagerView = iv;
+		holder.add(item);
+
+		item = new ItemHolder();
+		item.itmeTitle = mContext.getString(R.string.folder_sort_capacity);
+		iv = new ImageView(mContext);
+		iv.setLayoutParams(new LeoHomeGallery.LayoutParams(
+				LeoHomeGallery.LayoutParams.MATCH_PARENT,
+				LeoHomeGallery.LayoutParams.MATCH_PARENT));
+		iv.setImageResource(R.drawable.ic_launcher);
+		item.pagerView = iv;
+		holder.add(item);
+
 		item = new ItemHolder();
 		item.itmeTitle = mContext.getString(R.string.folder_recommend);
 		iv = new ImageView(mContext);
@@ -218,10 +231,11 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 				reusableView = new TextView(getContext());
 				reusableView
 						.setLayoutParams(new FolderTitleGallery.LayoutParams(
-								folderTitleItemSize, 85));
+								mFolderTitleWidth, mFolderTitleHeight));
 			}
 			TextView textView = (TextView) reusableView;
 
+			textView.setSingleLine(true);
 			textView.setTextColor(Color.WHITE);
 			textView.setTextSize(22);
 			textView.setText(mItemTitles.get(position));

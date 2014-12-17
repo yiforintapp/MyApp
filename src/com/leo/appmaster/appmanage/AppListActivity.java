@@ -442,6 +442,14 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	private void loadFolderItems() {
 		FolderItemInfo folder = null;
+		// add restore folder
+		folder = new FolderItemInfo();
+		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
+		folder.folderType = FolderItemInfo.FOLDER_BACKUP_RESTORE;
+		folder.icon = Utilities.getFolderScalePicture(this, mRestoreFolderData,
+				true);
+		folder.label = getString(R.string.folder_backup_restore);
+		mFolderItems.add(folder);
 		// add flow sort folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
@@ -457,14 +465,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 		folder.icon = Utilities.getFolderScalePicture(this,
 				mCapacityFolderData, false);
 		folder.label = getString(R.string.folder_sort_capacity);
-		mFolderItems.add(folder);
-		// add restore folder
-		folder = new FolderItemInfo();
-		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
-		folder.folderType = FolderItemInfo.FOLDER_BACKUP_RESTORE;
-		folder.icon = Utilities.getFolderScalePicture(this, mRestoreFolderData,
-				true);
-		folder.label = getString(R.string.folder_backup_restore);
 		mFolderItems.add(folder);
 		// add business app folder
 		folder = new FolderItemInfo();
@@ -670,14 +670,15 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	private void fillFolder() {
+		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
+				mRestoreFolderData, null);
+
 		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_FLOW_SORT);
 		List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_FLOW_SORT,
 				mFlowFolderData, flowDataReccommendData);
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_CAPACITY_SORT,
 				mCapacityFolderData, capacityReccommendData);
-		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
-				mRestoreFolderData, null);
 	}
 
 	private void checkInstalledFormBusinessApp() {

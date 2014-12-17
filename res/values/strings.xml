@@ -252,7 +252,6 @@
     <string name="backuped">Backuped</string>
     <string name="no_more_business_app">No new applications, look back over time  </string>
     <string name="uninstall_backup">Uninstall Backup</string>
-    
     <string name="delete_successfully">Delete Successfully!</string>
     <string name="space_consumption">Storage Killer: </string>
     <string name="cache_size ">Cache： </string>
@@ -263,5 +262,6 @@
     <string name="backup_time">Backup date: </string>
     <string name="app_size ">APK file size: </string>
     <string name="version">Version: </string>
+    <string name="install_time">%1$ days from now</string>
 
 </resources>
