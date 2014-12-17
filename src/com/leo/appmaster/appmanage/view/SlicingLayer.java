@@ -120,6 +120,10 @@ public class SlicingLayer {
 				public void onAnimationEnd(Animation animation) {
 					container.removeAllViews();
 					mBackgroundViewParent.removeView(container);
+					mTopBitmap.recycle();
+					mBottomBitmap.recycle();
+					mTopBitmap = null;
+					mBottomBitmap = null;
 				}
 			});
 			container.startAnimation(aa);
@@ -129,6 +133,8 @@ public class SlicingLayer {
 			}
 		}
 	};
+	private Bitmap mTopBitmap;
+	private Bitmap mBottomBitmap;
 
 	/**
 	 * 
@@ -196,10 +202,10 @@ public class SlicingLayer {
 		Bitmap srceen = getScreenBg();
 		mAnchorView.setDrawingCacheEnabled(true);
 		Bitmap anchorBitmap = mAnchorView.getDrawingCache(true);
-		Bitmap top = Bitmap.createBitmap(srceen, 0, 0, mSrceenwidth,
+		mTopBitmap = Bitmap.createBitmap(srceen, 0, 0, mSrceenwidth,
 				mSlicingLine);
-		top = createMoveBitmap(top, anchorBitmap, mAnchorLocation);
-		bd = new BitmapDrawable(mContext.getResources(), top);
+		mTopBitmap = createMoveBitmap(mTopBitmap, anchorBitmap, mAnchorLocation);
+		bd = new BitmapDrawable(mContext.getResources(), mTopBitmap);
 		mTopView = mInflater.inflate(R.layout.folder_move_frame, null);
 		mTopView.setId(1000);
 		mTopView.setBackgroundDrawable(bd);
@@ -208,11 +214,11 @@ public class SlicingLayer {
 		container.addView(mTopView, ft);
 
 		// add bottom view
-		Bitmap bottom = Bitmap.createBitmap(srceen, 0, mSlicingLine,
+		mBottomBitmap = Bitmap.createBitmap(srceen, 0, mSlicingLine,
 				mSrceenwidth, mSrceenheight - mSlicingLine);
-		bottom = createMoveBitmap(bottom, null, null);
+		mBottomBitmap = createMoveBitmap(mBottomBitmap, null, null);
 		int bottomHeight = mSrceenheight - mSlicingLine;
-		bd = new BitmapDrawable(mContext.getResources(), bottom);
+		bd = new BitmapDrawable(mContext.getResources(), mBottomBitmap);
 		mBottomView = mInflater.inflate(R.layout.folder_move_frame, null);
 		mBottomView.setBackgroundDrawable(bd);
 

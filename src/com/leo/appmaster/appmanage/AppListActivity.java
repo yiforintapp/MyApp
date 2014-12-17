@@ -93,9 +93,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	private static final int MSG_BACKUP_SUCCESSFUL = 1000;
 	private static final int MSG_BACKUP_DELETE = 1001;
-	
-    private LEOProgressDialog mProgressDialog;
-    private Handler mHandler = new Handler();
+
+	private LEOProgressDialog mProgressDialog;
+	private Handler mHandler = new Handler();
 
 	private static class CommonSclingContentViewHolder {
 		TextView installTime;
@@ -169,6 +169,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 					appinfo.packageName);
 
 			int day = (int) ((System.currentTimeMillis() - appinfo.installTime) / (1000 * 60 * 60 * 24));
+
+			if (day > 10000) {
+				day /= 100;
+			} else if (day > 1000) {
+				day /= 5;
+			}
 			mCommenScilingHolder.installTime.setText(getString(
 					R.string.install_time, day));
 
@@ -276,10 +282,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 		super.onDestroy();
 		mBackupManager.unregisterBackupListener(this);
 		AppLoadEngine.getInstance(this).unregisterAppChangeListener(this);
-	      if (mProgressDialog != null) {
-	            mProgressDialog.dismiss();
-	            mProgressDialog = null;
-	        }
+		if (mProgressDialog != null) {
+			mProgressDialog.dismiss();
+			mProgressDialog = null;
+		}
 	}
 
 	private void intiUI() {
@@ -521,33 +527,33 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onClick(View v) {
-	    if(mLastSelectedInfo instanceof AppItemInfo) {
-	        AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
-	        switch (v.getId()) {
-	        case R.id.backup:
-	             showProgressDialog(getString(R.string.button_backup),String.format(getString(R.string.backuping),
-	                     pending.label), 100,
-	                     false, true, false);
-	            mBackupManager.backupApp(pending);
-	            break;
-	        case R.id.restore:
-	            mBackupManager.restoreApp(this, pending);
-	            break;
-	        case R.id.delete:
-	            showProgressDialog(getString(R.string.delete), String
-	                    .format(getString(R.string.deleting_app),
-	                            pending.label), 0, true, false, false);
-	            mBackupManager.deleteApp(pending);
-	            break;
-	        case R.id.uninstall:
-	            AppUtil.uninstallApp(this,
-	                    ((AppItemInfo) mLastSelectedInfo).packageName);
-	            break;
+		if (mLastSelectedInfo instanceof AppItemInfo) {
+			AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
+			switch (v.getId()) {
+			case R.id.backup:
+				showProgressDialog(getString(R.string.button_backup),
+						String.format(getString(R.string.backuping),
+								pending.label), 100, false, true, false);
+				mBackupManager.backupApp(pending);
+				break;
+			case R.id.restore:
+				mBackupManager.restoreApp(this, pending);
+				break;
+			case R.id.delete:
+				showProgressDialog(getString(R.string.delete), String.format(
+						getString(R.string.deleting_app), pending.label), 0,
+						true, false, false);
+				mBackupManager.deleteApp(pending);
+				break;
+			case R.id.uninstall:
+				AppUtil.uninstallApp(this,
+						((AppItemInfo) mLastSelectedInfo).packageName);
+				break;
 
-	        default:
-	            break;
-	        }
-	    }
+			default:
+				break;
+			}
+		}
 	}
 
 	public void handleItemClick(View view, int from) {
@@ -665,14 +671,15 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
-	    for(AppItemInfo change : changes) {
-	        for(AppItemInfo saved : mBackupManager.getRestoreList()) {
-	            if(saved.packageName.equals(change.packageName) && saved.versionCode == change.versionCode) {
-	                change.isBackuped = true;
-	                break;
-	            }
-	        }
-	    }
+		for (AppItemInfo change : changes) {
+			for (AppItemInfo saved : mBackupManager.getRestoreList()) {
+				if (saved.packageName.equals(change.packageName)
+						&& saved.versionCode == change.versionCode) {
+					change.isBackuped = true;
+					break;
+				}
+			}
+		}
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -689,128 +696,129 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onDataUpdate() {
-	       mHandler.post(new Runnable() {
-	            @Override
-	            public void run() {
-	                updateRestoreData();
-	            }
-	        });
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				updateRestoreData();
+			}
+		});
 	}
 
 	@Override
 	public void onBackupProcessChanged(final int doneNum, final int totalNum,
 			final String currentApp) {
-	    mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                    mProgressDialog.setProgress(doneNum);
-                    if (currentApp != null) {
-                        String backup = getString(R.string.backuping);
-                        mProgressDialog.setMessage(String.format(backup,
-                                currentApp));
-                    }
-                }
-            }
-        });
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				if (mProgressDialog != null && mProgressDialog.isShowing()) {
+					mProgressDialog.setProgress(doneNum);
+					if (currentApp != null) {
+						String backup = getString(R.string.backuping);
+						mProgressDialog.setMessage(String.format(backup,
+								currentApp));
+					}
+				}
+			}
+		});
 	}
 
 	@Override
-	public void onBackupFinish(final boolean success, int successNum, int totalNum,
-			final String message) {
-	       mHandler.post(new Runnable() {
-	            @Override
-	            public void run() {
-	                if(success) {
-	                    Toast.makeText(AppListActivity.this, R.string.backup_finish, 0).show();
-	                    mCommenScilingHolder.backup
-	                            .setText(R.string.backuped);
-	                    mCommenScilingHolder.backup.setEnabled(false);
-	                    mCommenScilingHolder.backup
-	                            .setBackgroundResource(R.drawable.dlg_left_button_selector);
-	                    updateRestoreData();
-	                } else {
-	                    Toast.makeText(AppListActivity.this, message,
-	                            Toast.LENGTH_LONG).show();
-	                }
-	                
-	                if (mProgressDialog != null) {
-	                    mProgressDialog.dismiss();
-	                }
-	            }
-	        });
+	public void onBackupFinish(final boolean success, int successNum,
+			int totalNum, final String message) {
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				if (success) {
+					Toast.makeText(AppListActivity.this,
+							R.string.backup_finish, 0).show();
+					mCommenScilingHolder.backup.setText(R.string.backuped);
+					mCommenScilingHolder.backup.setEnabled(false);
+					mCommenScilingHolder.backup
+							.setBackgroundResource(R.drawable.dlg_left_button_selector);
+					updateRestoreData();
+				} else {
+					Toast.makeText(AppListActivity.this, message,
+							Toast.LENGTH_LONG).show();
+				}
+
+				if (mProgressDialog != null) {
+					mProgressDialog.dismiss();
+				}
+			}
+		});
 	}
 
 	@Override
 	public void onApkDeleted(final boolean success) {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (success) {
-                    Toast.makeText(AppListActivity.this, R.string.delete_successfully, 1).show();
-                    if (mSlicingLayer.isSlicinged()) {
-                        mSlicingLayer.closeSlicing();
-                    }
-                    updateRestoreData();
-                } else {
-                    Toast.makeText(AppListActivity.this,
-                            R.string.delete_fail, Toast.LENGTH_LONG).show();
-                }
-                if (mProgressDialog != null) {
-                    mProgressDialog.dismiss();
-                }
-            }
-        });
-    }
-	
-	private void updateRestoreData() {
-        // load restore sort data
-        ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
-        mRestoreFolderData = temp.subList(0, temp.size());
-        Collections.sort(mRestoreFolderData,  new BackupItemComparator());
-        mFolderLayer.updateFolderData(
-                FolderItemInfo.FOLDER_BACKUP_RESTORE,
-                mRestoreFolderData, null);
-        // update folder icon
-        for(FolderItemInfo restore : mFolderItems) {
-            if(restore.folderType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
-                restore.icon = Utilities.getFolderScalePicture(this, mRestoreFolderData, true);
-                View v = mViewPager.getChildAt(0);
-                if(v instanceof GridView) {
-                    GridView grid = (GridView) mViewPager.getChildAt(0);
-                    ListAdapter adapter =  grid.getAdapter();
-                    if(adapter instanceof DataAdapter) {
-                        grid.setAdapter(adapter);
-                    }
-                }
-                break;
-            }         
-        }
-       
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				if (success) {
+					Toast.makeText(AppListActivity.this,
+							R.string.delete_successfully, 1).show();
+					if (mSlicingLayer.isSlicinged()) {
+						mSlicingLayer.closeSlicing();
+					}
+					updateRestoreData();
+				} else {
+					Toast.makeText(AppListActivity.this, R.string.delete_fail,
+							Toast.LENGTH_LONG).show();
+				}
+				if (mProgressDialog != null) {
+					mProgressDialog.dismiss();
+				}
+			}
+		});
 	}
-	
-	   private void showProgressDialog(String title, String message, int max,
-	            boolean indeterminate, boolean cancelable, boolean state) {
-	        if (mProgressDialog == null) {
-	            mProgressDialog = new LEOProgressDialog(this);
-	            mProgressDialog.setOnCancelListener(new OnCancelListener() {
-	                @Override
-	                public void onCancel(DialogInterface dialog) {
-	                    mBackupManager.cancelBackup();
-	                }
-	            });
-	        }
-	        mProgressDialog.setCancelable(cancelable);
-	        mProgressDialog.setButtonVisiable(cancelable);
-	        mProgressDialog.setCanceledOnTouchOutside(false);
-	        mProgressDialog.setIndeterminate(indeterminate);
-	        mProgressDialog.setStateTextVisiable(state);
-	        mProgressDialog.setMax(max);
-	        mProgressDialog.setProgress(0);
-	        mProgressDialog.setMessage(message);
-	        mProgressDialog.setTitle(title);
-	        mProgressDialog.show();
-	    }
+
+	private void updateRestoreData() {
+		// load restore sort data
+		ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
+		mRestoreFolderData = temp.subList(0, temp.size());
+		Collections.sort(mRestoreFolderData, new BackupItemComparator());
+		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
+				mRestoreFolderData, null);
+		// update folder icon
+		for (FolderItemInfo restore : mFolderItems) {
+			if (restore.folderType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
+				restore.icon = Utilities.getFolderScalePicture(this,
+						mRestoreFolderData, true);
+				View v = mViewPager.getChildAt(0);
+				if (v instanceof GridView) {
+					GridView grid = (GridView) mViewPager.getChildAt(0);
+					ListAdapter adapter = grid.getAdapter();
+					if (adapter instanceof DataAdapter) {
+						grid.setAdapter(adapter);
+					}
+				}
+				break;
+			}
+		}
+
+	}
+
+	private void showProgressDialog(String title, String message, int max,
+			boolean indeterminate, boolean cancelable, boolean state) {
+		if (mProgressDialog == null) {
+			mProgressDialog = new LEOProgressDialog(this);
+			mProgressDialog.setOnCancelListener(new OnCancelListener() {
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					mBackupManager.cancelBackup();
+				}
+			});
+		}
+		mProgressDialog.setCancelable(cancelable);
+		mProgressDialog.setButtonVisiable(cancelable);
+		mProgressDialog.setCanceledOnTouchOutside(false);
+		mProgressDialog.setIndeterminate(indeterminate);
+		mProgressDialog.setStateTextVisiable(state);
+		mProgressDialog.setMax(max);
+		mProgressDialog.setProgress(0);
+		mProgressDialog.setMessage(message);
+		mProgressDialog.setTitle(title);
+		mProgressDialog.show();
+	}
 
 	public static class BackupItemComparator implements Comparator<AppItemInfo> {
 
