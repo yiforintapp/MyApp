@@ -88,7 +88,21 @@ public class HttpRequestAgent {
 		}
 		String body = "update_flag="
 				+ AppMasterPreference.getInstance(mContext)
-						.getLocalSerialNumber() + "&loaded_theme=" + combined;
+						.getLocalThemeSerialNumber() + "&loaded_theme="
+				+ combined;
+		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+				body, listener, eListener);
+		request.setShouldCache(false);
+		mRequestQueue.add(request);
+	}
+
+	public void checkNewBusinessData(Listener<JSONObject> listener,
+			ErrorListener eListener) {
+		String url = Constants.CHECK_NEW_BUSINESS_APP;
+		String body = "update_flag="
+				+ AppMasterPreference.getInstance(mContext)
+						.getLocalBusinessSerialNumber() + "&market_id="
+								+ mContext.getString(R.string.channel_code);
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
 				body, listener, eListener);
 		request.setShouldCache(false);

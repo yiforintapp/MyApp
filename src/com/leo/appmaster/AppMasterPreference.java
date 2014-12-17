@@ -50,6 +50,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	// applist business
 	public static final String PREF_LAST_SYNC_BUSINESS_TIME = "last_sync_business_time";
 	public static final String PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME = "last_check_new_business_app_time";
+	public static final String PREF_ONLINE_BUSINESS_SERIAL = "online_business_serialnumber";
+	public static final String PREF_LOCAL_BUSINESS_SERIAL = "local_business_serialnumber";
 
 	// other
 	public static final String PREF_LAST_VERSION = "last_version";
@@ -90,19 +92,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		return mPref.getBoolean(PREF_HAVE_EVER_LOAD_APPS, false);
 	}
 
-	public String getOnlineSerialNumber() {
+	public String getOnlineThemeSerialNumber() {
 		return mPref.getString(PREF_ONLINE_THEME_SERIAL, "");
 	}
 
-	public void setOnlineSerialNumber(String serial) {
+	public void setOnlineThemeSerialNumber(String serial) {
 		mPref.edit().putString(PREF_ONLINE_THEME_SERIAL, serial).commit();
 	}
 
-	public String getLocalSerialNumber() {
+	public String getLocalThemeSerialNumber() {
 		return mPref.getString(PREF_LOCAL_THEME_SERIAL, "");
 	}
 
-	public void setLocalSerialNumber(String serial) {
+	public void setLocalThemeSerialNumber(String serial) {
 		mPref.edit().putString(PREF_LOCAL_THEME_SERIAL, serial).commit();
 	}
 
@@ -121,8 +123,31 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public void setLastSyncBusinessTime(long lastTime) {
 		mPref.edit().putLong(PREF_LAST_SYNC_BUSINESS_TIME, lastTime).commit();
 	}
-	
-	
+
+	public long getLastCheckBusinessTime() {
+		return mPref.getLong(PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME, 0);
+	}
+
+	public void setLastCheckBusinessTime(long lastTime) {
+		mPref.edit().putLong(PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME, lastTime)
+				.commit();
+	}
+
+	public String getOnlineBusinessSerialNumber() {
+		return mPref.getString(PREF_ONLINE_BUSINESS_SERIAL, "");
+	}
+
+	public void setOnlineBusinessSerialNumber(String serial) {
+		mPref.edit().putString(PREF_ONLINE_BUSINESS_SERIAL, serial).commit();
+	}
+
+	public String getLocalBusinessSerialNumber() {
+		return mPref.getString(PREF_LOCAL_BUSINESS_SERIAL, "");
+	}
+
+	public void setLocalBusinessSerialNumber(String serial) {
+		mPref.edit().putString(PREF_LOCAL_BUSINESS_SERIAL, serial).commit();
+	}
 
 	public void setHideThemeList(List<String> themeList) {
 		mHideThemeList = themeList;

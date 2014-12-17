@@ -100,9 +100,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	@Override
 	protected void onResume() {
 		String locSerial = AppMasterPreference.getInstance(this)
-				.getLocalSerialNumber();
+				.getLocalThemeSerialNumber();
 		String onlineSerial = AppMasterPreference.getInstance(this)
-				.getOnlineSerialNumber();
+				.getOnlineThemeSerialNumber();
 
 		if (!locSerial.equals(onlineSerial)) {
 			mNewTheme = true;

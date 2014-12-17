@@ -9,7 +9,7 @@ public class TextFormater {
 		DecimalFormat formater = new DecimalFormat("####.00");
 		DecimalFormat formater2 = new DecimalFormat("####");
 		if (size < 1024) {
-			return size + "byte";
+			return size + "B";
 		} else if (size < (1 << 20)) // 左移20位，相当于1024 * 1024
 		{
 			float kSize = (float) size / 1024; // 右移10位，相当于除以1024

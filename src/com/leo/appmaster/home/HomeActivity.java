@@ -235,8 +235,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 
-		mNewTheme = !pref.getLocalSerialNumber().equals(
-				pref.getOnlineSerialNumber());
+		mNewTheme = !pref.getLocalThemeSerialNumber().equals(
+				pref.getOnlineThemeSerialNumber());
 		if (mNewTheme) {
 			spiner.setImageDrawable(this.getResources().getDrawable(
 					R.drawable.themetip_spiner_press));

@@ -24,8 +24,8 @@ public class ThemeJsonObjectParser {
 
 				String serialNumber = jsonObject.getString("update_flag");
 				AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
-				pref.setLocalSerialNumber(serialNumber);
-				pref.setOnlineSerialNumber(serialNumber);
+				pref.setLocalThemeSerialNumber(serialNumber);
+				pref.setOnlineThemeSerialNumber(serialNumber);
 				LeoLog.d("parserJsonObject", "serialNumber = " + serialNumber);
 
 				JSONArray array = jsonObject.getJSONArray("data");

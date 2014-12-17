@@ -15,6 +15,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -43,6 +44,7 @@ import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
@@ -94,6 +96,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	private LEOProgressDialog mProgressDialog;
 	private Handler mHandler = new Handler();
+	private boolean mFromStatusbar;
 
 	private static class CommonSclingContentViewHolder {
 		TextView installTime;
@@ -119,6 +122,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_app_manager);
+		mFromStatusbar = getIntent().getBooleanExtra("from_statubar", false);
 		mSlicingLayer = new SlicingLayer(this);
 		mBackupManager = AppMasterApplication.getInstance().getBuckupManager();
 		mBackupManager.registerBackupListener(this);
@@ -272,6 +276,11 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mFolderLayer.closeFloder();
 			return;
 		}
+
+		if (mFromStatusbar) {
+			Intent intent = new Intent(this, HomeActivity.class);
+			this.startActivity(intent);
+		}
 		super.onBackPressed();
 	}
 
@@ -398,7 +407,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_BACKUP_RESTORE;
 		folder.icon = Utilities.getFolderScalePicture(this, mRestoreFolderData,
-				true);
+				FolderItemInfo.FOLDER_BACKUP_RESTORE);
 		folder.label = getString(R.string.folder_backup_restore);
 		mFolderItems.add(folder);
 		// add flow sort folder
@@ -406,7 +415,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_FLOW_SORT;
 		folder.icon = Utilities.getFolderScalePicture(this, mFlowFolderData,
-				false);
+				FolderItemInfo.FOLDER_FLOW_SORT);
 		folder.label = getString(R.string.folder_sort_flow);
 		mFolderItems.add(folder);
 		// add capacity folder
@@ -414,15 +423,15 @@ public class AppListActivity extends BaseFragmentActivity implements
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_CAPACITY_SORT;
 		folder.icon = Utilities.getFolderScalePicture(this,
-				mCapacityFolderData, false);
+				mCapacityFolderData, FolderItemInfo.FOLDER_CAPACITY_SORT);
 		folder.label = getString(R.string.folder_sort_capacity);
 		mFolderItems.add(folder);
 		// add business app folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
 		folder.folderType = FolderItemInfo.FOLDER_BUSINESS_APP;
-		folder.icon = getResources().getDrawable(
-				R.drawable.folder_icon_recommend);
+		folder.icon = Utilities.getFolderScalePicture(this, null,
+				FolderItemInfo.FOLDER_BUSINESS_APP);
 		folder.label = getString(R.string.folder_recommend);
 		mFolderItems.add(folder);
 	}
@@ -805,7 +814,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		for (FolderItemInfo restore : mFolderItems) {
 			if (restore.folderType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
 				restore.icon = Utilities.getFolderScalePicture(this,
-						mRestoreFolderData, true);
+						mRestoreFolderData,
+						FolderItemInfo.FOLDER_BACKUP_RESTORE);
 				View v = mViewPager.getChildAt(0);
 				if (v instanceof GridView) {
 					GridView grid = (GridView) mViewPager.getChildAt(0);

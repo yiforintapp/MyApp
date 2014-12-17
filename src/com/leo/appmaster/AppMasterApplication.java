@@ -30,6 +30,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -120,7 +121,6 @@ public class AppMasterApplication extends Application implements
 		}, 10000);
 		restartApplocker(PhoneInfo.getAndroidVersion());
 	}
-
 
 	private void startInitTask(final Context ctx) {
 		new Thread(new Runnable() {
@@ -234,11 +234,108 @@ public class AppMasterApplication extends Application implements
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.notify(0, notif);
 	}
-	
-	
+
+	private void showNewBusinessTip(String mainTitle, String content) {
+		// send new theme broadcast
+		Intent intent = new Intent(Constants.ACTION_NEW_THEME);
+		sendBroadcast(intent);
+
+		// show new theme status tip
+		Notification notif = new Notification();
+		intent = new Intent(this, AppListActivity.class);
+		intent.putExtra("from_statubar", true);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		notif.icon = R.drawable.ic_launcher;
+		notif.tickerText = mainTitle;
+		notif.flags = Notification.FLAG_ONGOING_EVENT
+				| Notification.FLAG_AUTO_CANCEL;
+		notif.setLatestEventInfo(this, mainTitle, content, contentIntent);
+		notif.when = System.currentTimeMillis();
+		NotificationManager nm = (NotificationManager) this
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		nm.notify(0, notif);
+	}
+
 	protected void checkNewAppBusiness() {
-		// TODO Auto-generated method stub
-		
+		final AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		long curTime = System.currentTimeMillis();
+
+		long lastCheckTime = pref.getLastCheckBusinessTime();
+		if (lastCheckTime == 0
+				|| (curTime - lastCheckTime) > /*12 * 60 * 60 * 1000*/ 10 * 60 * 1000) {
+			HttpRequestAgent.getInstance(this).checkNewBusinessData(
+					new Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response,
+								boolean noMidify) {
+							if (response != null) {
+								try {
+									LeoLog.e("xxxx", "checkNewBusinessData = " + response.toString());
+									JSONObject jsonObject = response.getJSONObject("data");
+									if (jsonObject != null) {
+										boolean hasNewBusinessData = jsonObject
+												.getBoolean("need_update");
+										String serialNumber = jsonObject
+												.getString("update_flag");
+										
+//										String mainTitle = jsonObject
+//												.getString("main_title");
+//										String content = jsonObject
+//												.getString("content");
+										String mainTitle = "有新应用推荐给您，请查收";
+										String content = "新应用提醒";
+
+										if (!hasNewBusinessData) {
+											pref.setLocalBusinessSerialNumber(serialNumber);
+										}
+										pref.setOnlineBusinessSerialNumber(serialNumber);
+
+										if (hasNewBusinessData) {
+											showNewBusinessTip(mainTitle,
+													content);
+										}
+										pref.setLastCheckThemeTime(System
+												.currentTimeMillis());
+									}
+
+									TimerTask recheckTask = new TimerTask() {
+										@Override
+										public void run() {
+											checkNewAppBusiness();
+										}
+									};
+									Timer timer = new Timer();
+									timer.schedule(recheckTask,
+											/*12 * 60 * 60 * 1000*/ 10 * 60 * 1000);
+
+								} catch (JSONException e) {
+									e.printStackTrace();
+									LeoLog.e("checkNewAppBusiness", e.getMessage());
+								}
+							}
+						}
+
+					}, new ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							LeoLog.e("checkNewAppBusiness", error.getMessage());
+							TimerTask recheckTask = new TimerTask() {
+								@Override
+								public void run() {
+									checkNewAppBusiness();
+								}
+							};
+							Timer timer = new Timer();
+							timer.schedule(recheckTask, /*2 * 60 * 60 * 1000*/ 10 * 60 * 1000);
+						}
+					});
+		}
+
 	}
 
 	public void checkNewTheme() {
@@ -264,9 +361,9 @@ public class AppMasterApplication extends Application implements
 												.getString("update_flag");
 
 										if (!hasNewTheme) {
-											pref.setLocalSerialNumber(serialNumber);
+											pref.setLocalThemeSerialNumber(serialNumber);
 										}
-										pref.setOnlineSerialNumber(serialNumber);
+										pref.setOnlineThemeSerialNumber(serialNumber);
 
 										if (hasNewTheme) {
 											showNewThemeTip();

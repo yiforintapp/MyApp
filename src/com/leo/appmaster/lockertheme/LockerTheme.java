@@ -119,7 +119,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 				if (lockerTheme.get() != null) {
 					AppMasterPreference pref = AppMasterPreference
 							.getInstance(lockerTheme.get());
-					pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
+					pref.setLocalThemeSerialNumber(pref.getOnlineThemeSerialNumber());
 					lockerTheme.get().onLoadInitThemeFinish(true, msg.obj);
 				}
 				break;
@@ -135,7 +135,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					lockerTheme.get().mOnlineThemeList.onRefreshComplete();
 					AppMasterPreference pref = AppMasterPreference
 							.getInstance(lockerTheme.get());
-					pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
+					pref.setLocalThemeSerialNumber(pref.getOnlineThemeSerialNumber());
 					List<ThemeItemInfo> loadList = (List<ThemeItemInfo>) msg.obj;
 					lockerTheme.get().onLoadMoreThemeFinish(true, loadList);
 				}
@@ -184,10 +184,10 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			number = 0;
 		}
 		// localThemeList.setSelection(number);
-		boolean newTheme = !pref.getLocalSerialNumber().equals(
-				pref.getOnlineSerialNumber());
+		boolean newTheme = !pref.getLocalThemeSerialNumber().equals(
+				pref.getOnlineThemeSerialNumber());
 		if (newTheme) {
-			pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
+			pref.setLocalThemeSerialNumber(pref.getOnlineThemeSerialNumber());
 			mViewPager.setCurrentItem(1);
 		}
 

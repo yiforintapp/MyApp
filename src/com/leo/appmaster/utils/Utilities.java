@@ -4,9 +4,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.model.FolderItemInfo;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -14,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -24,18 +27,44 @@ import android.view.WindowManager;
 
 public final class Utilities {
 
-	private static int ICON_L_PADDING = -1;
-	private static int ICON_L_SPACING = -1;
 	private static final int MAX_ICON = 4;
 
 	public static Drawable getFolderScalePicture(Context context,
-			List<AppItemInfo> folderList, boolean isBackup) {
+			List<AppItemInfo> folderList, int type) {
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		Resources res = context.getResources();
+		int iconWidth = res.getDimensionPixelSize(R.dimen.app_size);
+		Bitmap folderPic = Bitmap.createBitmap(iconWidth, iconWidth,
+				Bitmap.Config.ARGB_8888);
+		if (type == FolderItemInfo.FOLDER_BUSINESS_APP) {
+			BitmapDrawable resault = (BitmapDrawable) res
+					.getDrawable(R.drawable.folder_icon_recommend);
+
+			AppMasterPreference pref = AppMasterPreference.getInstance(context);
+			String online = pref.getOnlineBusinessSerialNumber();
+			String local = pref.getLocalBusinessSerialNumber();
+			if (online != null && !online.equals(local)) {
+				pref.setLocalBusinessSerialNumber(online);
+				int tipSize = 80;
+				Bitmap newTipBitamp = BitmapFactory.decodeResource(res,
+						R.drawable.tick_normal);
+				newTipBitamp = Bitmap.createScaledBitmap(newTipBitamp, tipSize,
+						tipSize, true);
+
+				Canvas canvas = new Canvas(folderPic);
+				canvas.drawBitmap(resault.getBitmap(), 0, 0, paint);
+				canvas.drawBitmap(newTipBitamp, iconWidth - tipSize, 0, paint);
+
+				BitmapDrawable dd = new BitmapDrawable(res, folderPic);
+				return dd;
+			} else {
+				return resault;
+			}
+		}
 		int size = folderList.size();
 		Drawable folderBg;
-		if (isBackup) {
+		if (type == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
 			if (folderList == null || folderList.isEmpty()) {
 				folderBg = res
 						.getDrawable(R.drawable.backup_folder_empty_bg_icon);
@@ -50,10 +79,6 @@ public final class Utilities {
 		final int picWidth = folderBg.getIntrinsicWidth();
 		final int picHeight = folderBg.getIntrinsicHeight();
 
-		int iconWidth = res.getDimensionPixelSize(R.dimen.app_size);
-
-		Bitmap folderPic = Bitmap.createBitmap(iconWidth, iconWidth,
-				Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(folderPic);
 
 		canvas.save();
