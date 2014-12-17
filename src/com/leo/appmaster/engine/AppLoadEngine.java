@@ -656,18 +656,6 @@ public class AppLoadEngine extends BroadcastReceiver {
 						AppItemInfo appInfo = new AppItemInfo();
 						loadAppInfoOfPackage(packages[i], applicationInfo,
 								appInfo);
-
-						AppBackupRestoreManager ab = new AppBackupRestoreManager(
-								mContext);
-						ArrayList<AppItemInfo> restoreList = ab
-								.getRestoreList();
-						for (AppItemInfo restoreItemInfo : restoreList) {
-							if (restoreItemInfo.packageName
-									.equals(appInfo.packageName)) {
-								appInfo.isBackuped = true;
-								break;
-							}
-						}
 						mAppDetails.put(packages[i], appInfo);
 						changedFinal.add(appInfo);
 					}

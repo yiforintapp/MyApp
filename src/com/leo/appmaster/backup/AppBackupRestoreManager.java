@@ -27,7 +27,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StatFs;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
@@ -61,7 +60,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 	private static final String sUnitKB = "KB";
 	private static final String sUnitMB = "MB";
 	private static final String sUnitGB = "GB";
-
+	
 	private static final DecimalFormat sFormat = new DecimalFormat("#.0");
 
 	public interface AppBackupDataListener {
@@ -148,6 +147,42 @@ public class AppBackupRestoreManager implements AppChangeListener {
 			}
 		});
 	}
+	
+	public void backupApp(final AppItemInfo app) {
+        mBackupCanceled = false;
+        String backupPath = getBackupPath();
+        final int totalNum = 1;
+        if (backupPath == null) {
+            for (AppBackupDataListener listener : mBackupListeners) {
+                listener.onBackupFinish(false, 0, totalNum,
+                        getFailMessage(FAIL_TYPE_SDCARD_UNAVAILABLE));
+            }
+        } else {
+            mExecutorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    int failType = FAIL_TYPE_NONE;
+                    boolean success = true;
+                    if (mBackupCanceled) {
+                        failType = FAIL_TYPE_CANCELED;
+                        success = false;
+                    }
+                    failType = tryBackupApp(app, true);
+                    if (failType == FAIL_TYPE_NONE) {
+                        success = true;
+                    } else if (failType == FAIL_TYPE_SDCARD_UNAVAILABLE
+                            || failType == FAIL_TYPE_FULL) {
+                        success = false;
+                    }
+
+                    for (AppBackupDataListener listener : mBackupListeners) {
+                        listener.onBackupFinish(success, 1, 1,
+                                getFailMessage(failType));
+                    }
+                }
+            });
+        }
+    }
 
 	public void backupApps(final ArrayList<AppItemInfo> apps) {
 		mBackupCanceled = false;
@@ -177,7 +212,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 									app.label);
 						}
 						doneNum++;
-						failType = tryBackupApp(app);
+						failType = tryBackupApp(app, false);
 						if (failType == FAIL_TYPE_NONE) {
 							successNum++;
 						} else if (failType == FAIL_TYPE_SDCARD_UNAVAILABLE
@@ -330,7 +365,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		return sSize;
 	}
 
-	private int tryBackupApp(AppItemInfo app) {
+	private int tryBackupApp(AppItemInfo app, boolean single) {
 		File apkFile = new File(app.sourceDir);
 		if (apkFile.exists() == false) {
 			return FAIL_TYPE_SOURCE_NOT_FOUND;
@@ -339,7 +374,8 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		if (dest == null) {
 			return FAIL_TYPE_SDCARD_UNAVAILABLE;
 		}
-		if (apkFile.length() > getAvaiableSize()) {
+		long totalSize = apkFile.length();
+		if (totalSize > getAvaiableSize()) {
 			return FAIL_TYPE_FULL;
 		}
 		FileInputStream in = null;
@@ -352,7 +388,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		// do file copy operation
 		byte[] c = new byte[1024 * 5];
 		int slen;
+		long writeSize = 0;
 		FileOutputStream out = null;
+		long lastUpdateTime = System.currentTimeMillis();
 		try {
 			dest += pName + ".apk";
 			out = new FileOutputStream(dest);
@@ -361,6 +399,20 @@ public class AppBackupRestoreManager implements AppChangeListener {
 					break;
 				}
 				out.write(c, 0, slen);
+				writeSize += slen;
+				if(single) {
+	               int currentPercent = (int)((((float)writeSize) / totalSize) * 100);
+	               if(currentPercent > 100) {
+	                   currentPercent = 100;
+	               }
+	               long current =  System.currentTimeMillis();
+	               if(current - lastUpdateTime > 200) {
+	                   lastUpdateTime = current;
+	                    for (AppBackupDataListener listener : mBackupListeners) {
+	                        listener.onBackupProcessChanged(currentPercent, 1,  app.label);
+	                    }
+	               }
+				}
 			}
 		} catch (IOException e) {
 			return FAIL_TYPE_OTHER;
