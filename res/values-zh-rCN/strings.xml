@@ -256,7 +256,7 @@
     <string name="hide_pic_empty_text">&#160;&#160;没有隐藏图片</string>
     <string name="hide_video_text">已隐藏视频</string>
     <string name="hide_video_empty_text">&#160;&#160;没有隐藏视频</string>
-    <string name="app_backup_uninstall">备份卸载</string>
+    <string name="app_backup_uninstall">卸载与备份</string>
     <string name="circle_lock_tip_text">已加锁应用</string>
     <string name="circle_lock_empty_tip_text">没有加锁应用</string>
     <string name="feedback_error">邮箱错误，请重新输入</string>
