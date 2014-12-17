@@ -40,12 +40,18 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_GUIDE_TIP_SHOW = "google_play_guide_tip_show";
 	public static final String PREF_HIDE_THEME_PKGS = "hide_theme_packages";
 	public static final String PREF_HAVE_EVER_LOAD_APPS = "have_ever_load_apps";
-	public static final String PREF_SETTING_LOCKER_CLEAN ="setting_locker_clean";
+	public static final String PREF_SETTING_LOCKER_CLEAN = "setting_locker_clean";
 
 	// online theme
 	public static final String PREF_ONLINE_THEME_SERIAL = "online_theme_serialnumber";
 	public static final String PREF_LOCAL_THEME_SERIAL = "local_theme_serialnumber";
 	public static final String PREF_LAST_CHECK_NEW_THEME = "last_check_new_theme_time";
+
+	// applist business
+	public static final String PREF_LAST_SYNC_BUSINESS_TIME = "last_sync_business_time";
+	public static final String PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME = "last_check_new_business_app_time";
+	public static final String PREF_ONLINE_BUSINESS_SERIAL = "online_business_serialnumber";
+	public static final String PREF_LOCAL_BUSINESS_SERIAL = "local_business_serialnumber";
 
 	// other
 	public static final String PREF_LAST_VERSION = "last_version";
@@ -86,19 +92,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		return mPref.getBoolean(PREF_HAVE_EVER_LOAD_APPS, false);
 	}
 
-	public String getOnlineSerialNumber() {
+	public String getOnlineThemeSerialNumber() {
 		return mPref.getString(PREF_ONLINE_THEME_SERIAL, "");
 	}
 
-	public void setOnlineSerialNumber(String serial) {
+	public void setOnlineThemeSerialNumber(String serial) {
 		mPref.edit().putString(PREF_ONLINE_THEME_SERIAL, serial).commit();
 	}
-	
-	public String getLocalSerialNumber() {
+
+	public String getLocalThemeSerialNumber() {
 		return mPref.getString(PREF_LOCAL_THEME_SERIAL, "");
 	}
 
-	public void setLocalSerialNumber(String serial) {
+	public void setLocalThemeSerialNumber(String serial) {
 		mPref.edit().putString(PREF_LOCAL_THEME_SERIAL, serial).commit();
 	}
 
@@ -106,9 +112,41 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		return mPref.getLong(PREF_LAST_CHECK_NEW_THEME, 0);
 	}
 
-	public void setLastCheckTheme(long lastTime) {
-		mPref.edit().putLong(PREF_LAST_CHECK_NEW_THEME, lastTime)
+	public void setLastCheckThemeTime(long lastTime) {
+		mPref.edit().putLong(PREF_LAST_CHECK_NEW_THEME, lastTime).commit();
+	}
+
+	public long getLastSyncBusinessTime() {
+		return mPref.getLong(PREF_LAST_SYNC_BUSINESS_TIME, 0);
+	}
+
+	public void setLastSyncBusinessTime(long lastTime) {
+		mPref.edit().putLong(PREF_LAST_SYNC_BUSINESS_TIME, lastTime).commit();
+	}
+
+	public long getLastCheckBusinessTime() {
+		return mPref.getLong(PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME, 0);
+	}
+
+	public void setLastCheckBusinessTime(long lastTime) {
+		mPref.edit().putLong(PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME, lastTime)
 				.commit();
+	}
+
+	public String getOnlineBusinessSerialNumber() {
+		return mPref.getString(PREF_ONLINE_BUSINESS_SERIAL, "");
+	}
+
+	public void setOnlineBusinessSerialNumber(String serial) {
+		mPref.edit().putString(PREF_ONLINE_BUSINESS_SERIAL, serial).commit();
+	}
+
+	public String getLocalBusinessSerialNumber() {
+		return mPref.getString(PREF_LOCAL_BUSINESS_SERIAL, "");
+	}
+
+	public void setLocalBusinessSerialNumber(String serial) {
+		mPref.edit().putString(PREF_LOCAL_BUSINESS_SERIAL, serial).commit();
 	}
 
 	public void setHideThemeList(List<String> themeList) {
@@ -347,16 +385,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		mPref.edit().putBoolean(PREF_AUTO_LOCK, autoLock).commit();
 	}
 
-    public boolean isAutoLock() {
-        return mPref.getBoolean(PREF_AUTO_LOCK, true);
-    }
+	public boolean isAutoLock() {
+		return mPref.getBoolean(PREF_AUTO_LOCK, true);
+	}
 
-    public boolean isLockerClean() {
-        return mPref.getBoolean(PREF_SETTING_LOCKER_CLEAN, false);
-    }
-    public void setLockerClean(boolean lockerClean) {
-        mPref.edit().putBoolean(PREF_SETTING_LOCKER_CLEAN, lockerClean).commit();
-    }
+	public boolean isLockerClean() {
+		return mPref.getBoolean(PREF_SETTING_LOCKER_CLEAN, false);
+	}
+
+	public void setLockerClean(boolean lockerClean) {
+		mPref.edit().putBoolean(PREF_SETTING_LOCKER_CLEAN, lockerClean)
+				.commit();
+	}
+
 	public void setLastLocklistPullTime(long time) {
 		mPref.edit().putLong(PREF_LAST_PULL_LOCK_LIST_TIME, time).commit();
 	}

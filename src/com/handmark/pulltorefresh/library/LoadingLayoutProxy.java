@@ -5,6 +5,7 @@ import java.util.HashSet;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
+import com.handmark.pulltorefresh.library.internal.LoadingLayout;
 
 public class LoadingLayoutProxy implements ILoadingLayout {
 

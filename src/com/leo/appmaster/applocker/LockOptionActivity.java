@@ -171,16 +171,16 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                     + getString(R.string.not_set) + ")");
         }
 
-        AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        mNewTheme = !pref.getLocalSerialNumber().equals(
-                pref.getOnlineSerialNumber());
-        if (mNewTheme) {
-            Spanned buttonText = Html
-                    .fromHtml(getString(R.string.lockerThemePoit));
-            mLockerTheme.setTitle(buttonText);
-        } else {
-            mLockerTheme.setTitle(R.string.lockerTheme);
-        }
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		mNewTheme = !pref.getLocalThemeSerialNumber().equals(
+				pref.getOnlineThemeSerialNumber());
+		if (mNewTheme) {
+			Spanned buttonText = Html
+					.fromHtml(getString(R.string.lockerThemePoit));
+			mLockerTheme.setTitle(buttonText);
+		} else {
+			mLockerTheme.setTitle(R.string.lockerTheme);
+		}
 
         // if (!mySharedPreferences.getBoolean("themeOption", false)) {
         // Spanned buttonText =

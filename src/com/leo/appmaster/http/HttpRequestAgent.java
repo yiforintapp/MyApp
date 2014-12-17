@@ -6,8 +6,10 @@ import java.util.List;
 import org.json.JSONObject;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -18,9 +20,13 @@ import com.android.volley.Response.Listener;
 import com.android.volley.Response.ErrorListener;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 
 /**
- * Http request Proxy
+ * Http request Proxy, use volley framework <br>
+ * NOTE: all those request is async, when you start a request ,you should
+ * consider whether open cache
  * 
  * @author zhangwenyang
  * 
@@ -82,9 +88,73 @@ public class HttpRequestAgent {
 		}
 		String body = "update_flag="
 				+ AppMasterPreference.getInstance(mContext)
-						.getLocalSerialNumber() + "&loaded_theme=" + combined;
+						.getLocalThemeSerialNumber() + "&loaded_theme="
+				+ combined;
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
 				body, listener, eListener);
+		request.setShouldCache(false);
+		mRequestQueue.add(request);
+	}
+
+	public void checkNewBusinessData(Listener<JSONObject> listener,
+			ErrorListener eListener) {
+		String url = Constants.CHECK_NEW_BUSINESS_APP;
+		String body = "update_flag="
+				+ AppMasterPreference.getInstance(mContext)
+						.getLocalBusinessSerialNumber() + "&market_id="
+								+ mContext.getString(R.string.channel_code);
+		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+				body, listener, eListener);
+		request.setShouldCache(false);
+		mRequestQueue.add(request);
+	}
+
+	/**
+	 * get running page recommend apps
+	 * 
+	 * @param listener
+	 * @param eListener
+	 */
+	public void loadRecomApp(int type, Listener<JSONObject> listener,
+			ErrorListener eListener) {
+		String url = Constants.APP_RECOMMEND_URL + "?re_position=" + type;
+		String body = "&market_id=" + mContext.getString(R.string.channel_code)
+				+ "&language=" + AppwallHttpUtil.getLanguage();
+		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+				body, listener, eListener);
+		request.setShouldCache(true);
+		mRequestQueue.add(request);
+	}
+
+	/**
+	 * get business page recommend apps
+	 * 
+	 * @param listener
+	 * @param eListener
+	 */
+	public void loadBusinessRecomApp(int page, Listener<JSONObject> listener,
+			ErrorListener eListener) {
+		String url = Constants.APP_RECOMMEND_URL + "?re_position=4"
+				+ "&pgcurrent=" + page;
+		String body = "&market_id=" + mContext.getString(R.string.channel_code)
+				+ "&language=" + AppwallHttpUtil.getLanguage() + "&pgsize="
+				+ 40;
+		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+				body, listener, eListener);
+		request.setShouldCache(false);
+		mRequestQueue.add(request);
+	}
+
+	/**
+	 * get business page recommend apps
+	 * 
+	 * @param listener
+	 * @param eListener
+	 */
+	public void loadBusinessAppIcon(final String url,
+			Listener<Bitmap> listener, ErrorListener eListener) {
+		ImageRequest request = new ImageRequest(url, listener, 200, 200,
+				Config.ARGB_8888, eListener);
 		request.setShouldCache(false);
 		mRequestQueue.add(request);
 	}

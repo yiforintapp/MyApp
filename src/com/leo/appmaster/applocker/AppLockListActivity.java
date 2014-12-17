@@ -24,8 +24,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.model.AppDetailInfo;
-import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -40,12 +40,12 @@ public class AppLockListActivity extends BaseActivity implements
 	public LayoutInflater mInflater;
 	private CommonTitleBar mTtileBar;
 	private View mMaskLayer;
-	private List<BaseInfo> mLockedList;
-	private List<BaseInfo> mUnlockList;
+	private List<AppInfo> mLockedList;
+	private List<AppInfo> mUnlockList;
 	private PagedGridView mAppPager;
 	private LeoPopMenu mLeoPopMenu;
 
-	private BaseInfo mLastSelectApp;
+	private AppInfo mLastSelectApp;
 	private Object mLock = new Object();
 	private boolean mShouldLockOnRestart = true;
 	private String[] mSortType;
@@ -82,8 +82,8 @@ public class AppLockListActivity extends BaseActivity implements
 		}
 
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
-		mNewTheme = !pref.getLocalSerialNumber().equals(
-				pref.getOnlineSerialNumber());
+		mNewTheme = !pref.getLocalThemeSerialNumber().equals(
+				pref.getOnlineThemeSerialNumber());
 		if (mNewTheme) {
 			mSettingIV
 					.setImageResource(R.drawable.selector_applock_setting_tip);
@@ -155,8 +155,8 @@ public class AppLockListActivity extends BaseActivity implements
 		mTtileBar.setSpinerListener(this);
 		mTtileBar.setSpinerText(mSortType[mCurSortType]);
 
-		mLockedList = new ArrayList<BaseInfo>();
-		mUnlockList = new ArrayList<BaseInfo>();
+		mLockedList = new ArrayList<AppInfo>();
+		mUnlockList = new ArrayList<AppInfo>();
 		mAppPager = (PagedGridView) findViewById(R.id.pager_unlock);
 		mAppPager.setItemClickListener(this);
 	}
@@ -168,18 +168,18 @@ public class AppLockListActivity extends BaseActivity implements
 		}
 		mUnlockList.clear();
 		mLockedList.clear();
-		ArrayList<AppDetailInfo> list = AppLoadEngine.getInstance(this)
+		ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(this)
 				.getAllPkgInfo();
 		List<String> lockList = AppMasterPreference.getInstance(this)
 				.getLockedAppList();
-		for (AppDetailInfo appDetailInfo : list) {
-			if (appDetailInfo.getPkg().equals(this.getPackageName()))
+		for (AppItemInfo appDetailInfo : list) {
+			if (appDetailInfo.packageName.equals(this.getPackageName()))
 				continue;
-			if (lockList.contains(appDetailInfo.getPkg())) {
-				appDetailInfo.setLocked(true);
+			if (lockList.contains(appDetailInfo.packageName)) {
+				appDetailInfo.isLocked = true;
 				mLockedList.add(appDetailInfo);
 			} else {
-				appDetailInfo.setLocked(false);
+				appDetailInfo.isLocked = false;
 				mUnlockList.add(appDetailInfo);
 			}
 		}
@@ -192,7 +192,7 @@ public class AppLockListActivity extends BaseActivity implements
 			Collections.sort(mUnlockList, new InstallTimeComparator());
 		}
 
-		ArrayList<BaseInfo> resault = new ArrayList<BaseInfo>(mLockedList);
+		ArrayList<AppInfo> resault = new ArrayList<AppInfo>(mLockedList);
 		resault.addAll(mUnlockList);
 
 		int rowCount = getResources().getInteger(R.integer.gridview_row_count);
@@ -205,14 +205,14 @@ public class AppLockListActivity extends BaseActivity implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		animateItem(view);
-		mLastSelectApp = (BaseInfo) view.getTag();
-		BaseInfo info = null;
-		if (mLastSelectApp.isLocked()) {
-			mLastSelectApp.setLocked(false);
-			for (BaseInfo baseInfo : mLockedList) {
-				if (baseInfo.getPkg().equals(mLastSelectApp.getPkg())) {
+		mLastSelectApp = (AppInfo) view.getTag();
+		AppInfo info = null;
+		if (mLastSelectApp.isLocked) {
+			mLastSelectApp.isLocked = false;
+			for (AppInfo baseInfo : mLockedList) {
+				if (baseInfo.packageName.equals(mLastSelectApp.packageName)) {
 					info = baseInfo;
-					info.setLocked(false);
+					info.isLocked = false;
 					break;
 				}
 			}
@@ -224,13 +224,13 @@ public class AppLockListActivity extends BaseActivity implements
 					.setLocked(false);
 
 			SDKWrapper.addEvent(this, LeoStat.P1, "app", "unlock: "
-					+ mLastSelectApp.getPkg());
+					+ mLastSelectApp.packageName);
 		} else {
-			mLastSelectApp.setLocked(true);
-			for (BaseInfo baseInfo : mUnlockList) {
-				if (baseInfo.getPkg().equals(mLastSelectApp.getPkg())) {
+			mLastSelectApp.isLocked = true;
+			for (AppInfo baseInfo : mUnlockList) {
+				if (baseInfo.packageName.equals(mLastSelectApp.packageName)) {
 					info = baseInfo;
-					info.setLocked(true);
+					info.isLocked = true;
 					break;
 				}
 			}
@@ -241,7 +241,7 @@ public class AppLockListActivity extends BaseActivity implements
 					.setLocked(true);
 
 			SDKWrapper.addEvent(this, LeoStat.P1, "app", " lock: "
-					+ mLastSelectApp.getPkg());
+					+ mLastSelectApp.packageName);
 		}
 		saveLockList();
 	}
@@ -272,8 +272,8 @@ public class AppLockListActivity extends BaseActivity implements
 		public void run() {
 			synchronized (mLock) {
 				List<String> list = new ArrayList<String>();
-				for (BaseInfo info : AppLockListActivity.this.mLockedList) {
-					list.add(info.getPkg());
+				for (AppInfo info : AppLockListActivity.this.mLockedList) {
+					list.add(info.packageName);
 				}
 				List<String> recommendList = AppLoadEngine.getInstance(
 						getApplicationContext()).getRecommendLockList();
@@ -296,7 +296,7 @@ public class AppLockListActivity extends BaseActivity implements
 	}
 
 	@Override
-	public void onAppChanged(ArrayList<AppDetailInfo> changes, int type) {
+	public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -381,7 +381,7 @@ public class AppLockListActivity extends BaseActivity implements
 		return listItems;
 	}
 
-	private class LockedAppComparator implements Comparator<BaseInfo> {
+	private class LockedAppComparator implements Comparator<AppInfo> {
 		List<String> sortBase;
 
 		public LockedAppComparator(List<String> sortBase) {
@@ -390,8 +390,9 @@ public class AppLockListActivity extends BaseActivity implements
 		}
 
 		@Override
-		public int compare(BaseInfo lhs, BaseInfo rhs) {
-			if (sortBase.indexOf(lhs.getPkg()) > sortBase.indexOf(rhs.getPkg())) {
+		public int compare(AppInfo lhs, AppInfo rhs) {
+			if (sortBase.indexOf(lhs.packageName) > sortBase
+					.indexOf(rhs.packageName)) {
 				return 1;
 			} else {
 				return -1;
@@ -399,13 +400,12 @@ public class AppLockListActivity extends BaseActivity implements
 		}
 	}
 
-	public static class NameComparator implements Comparator<BaseInfo> {
+	public static class NameComparator implements Comparator<AppInfo> {
 
 		@Override
-		public int compare(BaseInfo lhs, BaseInfo rhs) {
-			return Collator.getInstance().compare(
-					trimString(lhs.getAppLabel()),
-					trimString(rhs.getAppLabel()));
+		public int compare(AppInfo lhs, AppInfo rhs) {
+			return Collator.getInstance().compare(trimString(lhs.label),
+					trimString(rhs.label));
 		}
 
 		private String trimString(String s) {
@@ -419,18 +419,18 @@ public class AppLockListActivity extends BaseActivity implements
 		super.onNewIntent(intent);
 	}
 
-	public static class InstallTimeComparator implements Comparator<BaseInfo> {
+	public static class InstallTimeComparator implements
+			Comparator<AppInfo> {
 
 		@Override
-		public int compare(BaseInfo lhs, BaseInfo rhs) {
+		public int compare(AppInfo lhs, AppInfo rhs) {
 			if (lhs.installTime > rhs.installTime) {
 				return -1;
 			} else if (lhs.installTime < rhs.installTime) {
 				return 1;
 			} else {
-				return Collator.getInstance().compare(
-						trimString(lhs.getAppLabel()),
-						trimString(rhs.getAppLabel()));
+				return Collator.getInstance().compare(trimString(lhs.label),
+						trimString(rhs.label));
 			}
 		}
 
@@ -439,9 +439,9 @@ public class AppLockListActivity extends BaseActivity implements
 		}
 	}
 
-	public static class DefalutAppComparator implements Comparator<BaseInfo> {
+	public static class DefalutAppComparator implements Comparator<AppInfo> {
 		@Override
-		public int compare(BaseInfo lhs, BaseInfo rhs) {
+		public int compare(AppInfo lhs, AppInfo rhs) {
 			if (lhs.topPos > -1 && rhs.topPos < 0) {
 				return -1;
 			} else if (lhs.topPos < 0 && rhs.topPos > -1) {
@@ -450,15 +450,14 @@ public class AppLockListActivity extends BaseActivity implements
 				return lhs.topPos - rhs.topPos;
 			}
 
-			if (lhs.isSystemApp() && !rhs.isSystemApp()) {
+			if (lhs.systemApp && !rhs.systemApp) {
 				return -1;
-			} else if (!lhs.isSystemApp() && rhs.isSystemApp()) {
+			} else if (!lhs.systemApp && rhs.systemApp) {
 				return 1;
 			}
 
-			return Collator.getInstance().compare(
-					trimString(lhs.getAppLabel()),
-					trimString(rhs.getAppLabel()));
+			return Collator.getInstance().compare(trimString(lhs.label),
+					trimString(rhs.label));
 		}
 
 		private String trimString(String s) {

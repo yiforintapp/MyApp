@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
+
     <dimen name="gridview_vertical_spacing">14dip</dimen>
+
     <integer name="gridview_row_count">4</integer>
+    <integer name="applist_cell_count">16</integer>
+
     <dimen name="digital_height">82dp</dimen>
     <dimen name="digital_width">51dp</dimen>
     <dimen name="memory_flow_marginTop">2dp</dimen>
@@ -38,8 +41,7 @@
     <dimen name="lockPatternView_height">280dp</dimen>
     <dimen name="layout_passwd_marginTop">9dp</dimen>
     <dimen name="layout_passwd_marginBottom">7dp</dimen>
-    
-     <dimen name="home_bottom_height">190dp</dimen>
+    <dimen name="home_bottom_height">190dp</dimen>
     <dimen name="home_hide_issues_height">56dp</dimen>
     <dimen name="home_hide_issues_padding_bottom">40dp</dimen>
     <dimen name="circle_count_text_size">42dp</dimen>
@@ -49,4 +51,10 @@
     <dimen name="circle_lock_icon_small_size">16dp</dimen>
     <dimen name="circle_lock_icon_big_size">28dp</dimen>
     <dimen name="circle_text_vertical_padding">10dp</dimen>
+    <dimen name="folder_title_margintop">15dp</dimen>
+    <dimen name="folder_title_item_size">103dp</dimen>
+    <dimen name="folder_title_mask_size">80dp</dimen>
+    <dimen name="folder_title_text_size">16dp</dimen>
+    <dimen name="folder_title_height">80px</dimen>
+
 </resources>

@@ -1,7 +1,7 @@
 package com.leo.appmaster.appmanage;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.utils.ProcessUtils;
 
 import android.app.ActivityManager;
@@ -21,7 +21,7 @@ public class AppInfoBaseLayout extends LinearLayout implements OnClickListener {
 	TextView mBtnUninstall;
 	TextView mTvAppName;
 
-	AppDetailInfo mAppInfo;
+	AppItemInfo mAppInfo;
 
 	public AppInfoBaseLayout(Context context) {
 		super(context);
@@ -48,17 +48,17 @@ public class AppInfoBaseLayout extends LinearLayout implements OnClickListener {
 		mBtnUninstall.setOnClickListener(this);
 	}
 
-	public void setAppDetailInfo(AppDetailInfo info) {
+	public void setAppDetailInfo(AppItemInfo info) {
 		mAppInfo = info;
 		inflateUI();
 	}
 
 	private void inflateUI() {
-		mIvIcon.setImageDrawable(mAppInfo.getAppIcon());
-		mTvAppName.setText(mAppInfo.getAppLabel());
+		mIvIcon.setImageDrawable(mAppInfo.icon);
+		mTvAppName.setText(mAppInfo.label);
 
 		if (ProcessUtils.isAppRunning((ActivityManager) getContext()
-				.getSystemService(Context.ACTIVITY_SERVICE), mAppInfo.getPkg())) {
+				.getSystemService(Context.ACTIVITY_SERVICE), mAppInfo.packageName)) {
 			mBtnStop.setEnabled(false);
 		}
 	}

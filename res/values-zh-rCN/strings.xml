@@ -5,7 +5,7 @@
     <string name="app_count">应用数量</string>
     <string name="used_memory">使用内存</string>
     <string name="used_flow">使用流量</string>
-    <string name="app_manage">应用管理</string>
+    <string name="uninstall_backup">卸载与备份</string>
     <string name="app_detail">应用详情</string>
     <string name="app_lock">应用锁</string>
     <string name="app_backup">应用备份</string>
@@ -97,14 +97,14 @@
     <string name="app_version">版本: %1$s</string>
     <string name="backuping">正在备份: ( %1$s )</string>
     <string name="no_application_selected">没有选择任何应用</string>
-    <string name="backup_finish">备份完成</string>
+    <string name="backup_finish">备份成功</string>
     <string name="delete_fail">删除失败！</string>
     <string name="deleting_app">正在删除: %1$s</string>
     <string name="installed_app_size">已安装应用: %1$d</string>
     <string name="apk_size">大小: %1$s</string>
     <string name="storage_size">剩余存储空间: %1$s</string>
     <string name="unavailable">不可用</string>
-    <string name="bakup_fail_cancel">备份恢复已取消</string>
+    <string name="bakup_fail_cancel">备份已取消</string>
     <string name="bakup_fail_full">存储空间不足</string>
     <string name="bakup_fail_unavailable">存储卡不可用</string>
     <string name="no_app_backuped">没有应用备份数据</string>
@@ -222,9 +222,9 @@
     <string name="locker_uninstall">卸载</string>
     <string name="locker_cancel">取消</string>
     <string name="christmas_theme">圣诞节</string>
-    <string name="pull_to_refresh_pull_label">下拉刷新…</string>
-    <string name="pull_to_refresh_release_label">放开刷新…</string>
-    <string name="pull_to_refresh_refreshing_label">正在载入…</string>
+    <string name="pull_to_refresh_pull_label">上拉刷新</string>
+    <string name="pull_to_refresh_release_label">放开刷新</string>
+    <string name="pull_to_refresh_refreshing_label">正在载入</string>
     <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
     <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
     <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
@@ -260,6 +260,37 @@
     <string name="circle_lock_tip_text">已加锁应用</string>
     <string name="circle_lock_empty_tip_text">没有加锁应用</string>
     <string name="feedback_error">邮箱错误，请重新输入</string>
-    <string name="googlePlayGuide">请向上滑动给我们评分</string>   
+    <string name="googlePlayGuide">请向上滑动给我们评分</string>
+    <string name="folder_backup_restore">应用恢复</string>
+    <string name="folder_sort_flow">最耗流量</string>
+    <string name="folder_sort_capacity">最占空间</string>
+    <string name="folder_recommend">新品速递</string>
+    <string name="toast_download_fail_network">"没有可用网络，主题下载失败，请重试。"</string>
+    <string name="toast_download_fail_storage">"下载失败，SD卡空间不足!"</string>
+    <string name="toast_exit_when_storagemode">"当前正在使用大存储模式，主题部分功能可能无法使用。"</string>
+    <string name="toast_download_failstart">"没有可用网络，请稍后再试。"</string>
+    <string name="toast_download_fail_sdcard_unmount">"当前正在使用大存储模式,下载功能暂时不可使用。"</string>
+    <string name="download_sdcard_status_error">下载失败,SD卡无法访问。</string>
+    <string name="download_failed_toast">"下载失败"</string>
+    <string name="download_network_invalid_toast">"没有可用网络，请稍候重试。"</string>
+    <string name="download_success_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载成功</string>
+    <string name="downloaded_success">下载成功，点击应用</string>
+    <string name="download_failure_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载失败</string>
+    <string name="downloaded_failure">下载失败</string>
+    <string name="backup">备份</string>
+    <string name="restore">恢复</string>
+    <string name="backuped">已备份</string>
+    <string name="delete_successfully">删除成功！</string>
+    <string name="no_more_business_app">没有新应用了，过段时间再来看看吧 </string>
+    <string name="space_consumption">空间占用： </string>
+    <string name="cache_size ">缓存大小： </string>
+    <string name="power_consumption ">电量消耗： </string>
+    <string name="flow_consumption ">电量消耗： </string>
+    <string name="memory_consumption ">空间占用： </string>
+    <string name="backup_path ">备份路径： </string>
+    <string name="backup_time">备份时间： </string>
+    <string name="app_size ">app大小： </string>
+    <string name="version">版本号： </string>
+    <string name="install_time">%1$s天前使用</string>
 
 </resources>

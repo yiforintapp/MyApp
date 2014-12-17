@@ -22,9 +22,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -58,7 +59,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 	private LEOAlarmDialog mAlarmDialog;
 	private LEOMessageDialog mMessageDialog;
 
-	private AppDetailInfo mPendingDelApp;
+	private AppItemInfo mPendingDelApp;
 
 	private Handler mHandler = new Handler();
 
@@ -81,7 +82,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		File file = new File(path);
 		if (file.exists()) {
 			boolean ret;
-	try {
+			try {
 				ret = file.renameTo(new File(newName));
 			} catch (Exception e) {
 				String newPath = path + AppBackupRestoreManager.BACKUP_PATH;
@@ -90,7 +91,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 				ret = file.renameTo(new File(newPath));
 				e.printStackTrace();
 			}
-	if (ret) {
+			if (ret) {
 				// Toast.makeText(this, "success",Toast.LENGTH_LONG).show();
 				LeoLog.i("AppBackupRestoreActivity", "*******rename success");
 			} else {
@@ -125,7 +126,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		mBackupManager.onDestory(this);
+		mBackupManager.unregisterBackupListener(this);
 		if (mProgressDialog != null) {
 			mProgressDialog.dismiss();
 			mProgressDialog = null;
@@ -160,7 +161,8 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 
 		mPager = (ViewPager) findViewById(R.id.pager);
 
-		mBackupManager = new AppBackupRestoreManager(this, this);
+		mBackupManager = AppMasterApplication.getInstance().getBuckupManager();
+		mBackupManager.registerBackupListener(this);
 
 		LayoutInflater inflater = LayoutInflater.from(this);
 		final View backupList = inflater.inflate(R.layout.view_backup_list,
@@ -255,16 +257,16 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		} else if (v == mViewRestore) {
 			mPager.setCurrentItem(1, true);
 		} else if (v == mButtonBackup) {
-			ArrayList<AppDetailInfo> items = mBackupAdapter.getSelectedItems();
+			ArrayList<AppItemInfo> items = mBackupAdapter.getSelectedItems();
 			int size = items.size();
 			if (size > 0) {
 				showProgressDialog(getString(R.string.button_backup), "", size,
 						false, true);
 				mBackupManager.backupApps(items);
 				// track backup
-				for (AppDetailInfo info : items) {
+				for (AppItemInfo info : items) {
 					SDKWrapper.addEvent(this, LeoStat.P1, "backup", "backup: "
-							+ info.getPkg());
+							+ info.packageName);
 				}
 			} else {
 				Toast.makeText(this, R.string.no_application_selected,
@@ -275,8 +277,9 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 			if (tag instanceof Boolean) {
 				boolean checkAll = !(Boolean) tag;
 				mBackupAdapter.checkAll(checkAll);
-				mCheckAll.setImageResource(checkAll ? R.drawable.check_all_selected_selector
-						: R.drawable.check_all_selector);
+				mCheckAll
+						.setImageResource(checkAll ? R.drawable.check_all_selected_selector
+								: R.drawable.check_all_selector);
 				mCheckAll.setTag(checkAll);
 			}
 		} else if (v.getId() == R.id.tv_option_image) {
@@ -289,7 +292,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 			long id) {
 		if (view instanceof AppBackupItemView) {
 			AppBackupItemView item = (AppBackupItemView) view;
-			AppDetailInfo app = (AppDetailInfo) item.getTag();
+			AppItemInfo app = (AppItemInfo) item.getTag();
 			if (app.isBackuped) {
 				app.isChecked = false;
 			} else {
@@ -301,12 +304,10 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		}
 	}
 
-	public void tryDeleteApp(AppDetailInfo app) {
+	public void tryDeleteApp(AppItemInfo app) {
 		mPendingDelApp = app;
-		showAlarmDialog(
-				getString(R.string.delete),
-				String.format(getString(R.string.query_delete),
-						app.getAppLabel()));
+		showAlarmDialog(getString(R.string.delete),
+				String.format(getString(R.string.query_delete), app.label));
 	}
 
 	@Override
@@ -346,7 +347,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 				if (success) {
 					showMessageDialog(getString(R.string.backup_finish), String
 							.format(getString(R.string.backuped_count),
-							        successNum, message));
+									successNum, message));
 				} else {
 					Toast.makeText(AppBackupRestoreActivity.this, message,
 							Toast.LENGTH_LONG).show();
@@ -392,7 +393,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		mBackupAdapter.updateData();
 		mInstallText.setText(mBackupManager.getInstalledAppSize());
 		mStorageText.setText(mBackupManager.getAvaiableSizeString());
-		//mCheckAll.setImageResource(R.drawable.tick_all_normal);
+		// mCheckAll.setImageResource(R.drawable.tick_all_normal);
 		mCheckAll.setTag(false);
 		mCheckAll.setEnabled(mBackupAdapter.hasBackupApp());
 		if (mRestoreAdapter.isEmpty()) {
@@ -433,8 +434,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 					if (which == 1 && mPendingDelApp != null) {
 						showProgressDialog(getString(R.string.delete), String
 								.format(getString(R.string.deleting_app),
-										mPendingDelApp.getAppLabel()), 0, true,
-								false);
+										mPendingDelApp.label), 0, true, false);
 						mBackupManager.deleteApp(mPendingDelApp);
 					}
 					mPendingDelApp = null;

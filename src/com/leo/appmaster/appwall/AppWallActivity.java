@@ -32,9 +32,9 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.model.AppDetailInfo;
-import com.leo.appmaster.model.AppWallBean;
-import com.leo.appmaster.model.AppWallUrlBean;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.extra.AppWallBean;
+import com.leo.appmaster.model.extra.AppWallUrlBean;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
@@ -197,16 +197,16 @@ public class AppWallActivity extends BaseActivity implements
 				text.setVisibility(View.GONE);
 				all = new ArrayList<AppWallBean>();// 对比后本地没有的应用
 				temp = new ArrayList<AppWallBean>();
-				List<AppDetailInfo> pkgInfos = AppLoadEngine.getInstance(
+				List<AppItemInfo> pkgInfos = AppLoadEngine.getInstance(
 						AppWallActivity.this).getAllPkgInfo();// 获取本地安装的所有包信息
 				List<String> pkgName = new ArrayList<String>();
 				// 获取包名
 				StringBuilder sb = new StringBuilder();
 				for (int i = 0; i < pkgInfos.size(); i++) {
-					if (pkgInfos.get(i).getPkg().equals("com.android.vending")) {
+					if (pkgInfos.get(i).packageName.equals("com.android.vending")) {
 						flagGp = true;
 					}
-					pkgName.add(pkgInfos.get(i).getPkg());
+					pkgName.add(pkgInfos.get(i).packageName);
 
 				}
 

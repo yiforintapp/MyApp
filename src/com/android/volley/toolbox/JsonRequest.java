@@ -61,8 +61,8 @@ public abstract class JsonRequest<T> extends Request<T> {
     }
 
     @Override
-    protected void deliverResponse(T response) {
-        mListener.onResponse(response);
+    protected void deliverResponse(T response, boolean noMidify) {
+        mListener.onResponse(response, noMidify);
     }
 
     @Override

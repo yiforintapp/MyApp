@@ -41,7 +41,7 @@ public class GestureLockFragment extends LockFragment implements
     
 	@Override
 	protected int layoutResourceId() {
-		return R.layout.fragment_lock_gesture;
+		return R.layout.fragment_folder_base;
 	}
 
 	@Override

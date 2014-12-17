@@ -32,12 +32,15 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 
+import com.handmark.pulltorefresh.library.internal.EmptyViewMethodAccessor;
+import com.handmark.pulltorefresh.library.internal.IndicatorLayout;
 import com.leo.appmaster.R;
 
-public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extends PullToRefreshBase<T> implements
-		OnScrollListener {
+public abstract class PullToRefreshAdapterViewBase<T extends AbsListView>
+		extends PullToRefreshBase<T> implements OnScrollListener {
 
-	private static FrameLayout.LayoutParams convertEmptyViewLayoutParams(ViewGroup.LayoutParams lp) {
+	private static FrameLayout.LayoutParams convertEmptyViewLayoutParams(
+			ViewGroup.LayoutParams lp) {
 		FrameLayout.LayoutParams newLp = null;
 
 		if (null != lp) {
@@ -79,7 +82,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 		mRefreshableView.setOnScrollListener(this);
 	}
 
-	public PullToRefreshAdapterViewBase(Context context, Mode mode, AnimationStyle animStyle) {
+	public PullToRefreshAdapterViewBase(Context context, Mode mode,
+			AnimationStyle animStyle) {
 		super(context, mode, animStyle);
 		mRefreshableView.setOnScrollListener(this);
 	}
@@ -98,12 +102,14 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 		return mShowIndicator;
 	}
 
-	public final void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount,
+	public final void onScroll(final AbsListView view,
+			final int firstVisibleItem, final int visibleItemCount,
 			final int totalItemCount) {
 
 		if (DEBUG) {
-			Log.d(LOG_TAG, "First Visible: " + firstVisibleItem + ". Visible Count: " + visibleItemCount
-					+ ". Total Items:" + totalItemCount);
+			Log.d(LOG_TAG, "First Visible: " + firstVisibleItem
+					+ ". Visible Count: " + visibleItemCount + ". Total Items:"
+					+ totalItemCount);
 		}
 
 		/**
@@ -111,7 +117,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 		 * zero-based index, so we minus one totalItemCount to check
 		 */
 		if (null != mOnLastItemVisibleListener) {
-			mLastItemVisible = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount - 1);
+			mLastItemVisible = (totalItemCount > 0)
+					&& (firstVisibleItem + visibleItemCount >= totalItemCount - 1);
 		}
 
 		// If we're showing the indicator, check positions...
@@ -121,16 +128,19 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 
 		// Finally call OnScrollListener if we have one
 		if (null != mOnScrollListener) {
-			mOnScrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+			mOnScrollListener.onScroll(view, firstVisibleItem,
+					visibleItemCount, totalItemCount);
 		}
 	}
 
-	public final void onScrollStateChanged(final AbsListView view, final int state) {
+	public final void onScrollStateChanged(final AbsListView view,
+			final int state) {
 		/**
 		 * Check that the scrolling has stopped, and that the last item is
 		 * visible.
 		 */
-		if (state == OnScrollListener.SCROLL_STATE_IDLE && null != mOnLastItemVisibleListener && mLastItemVisible) {
+		if (state == OnScrollListener.SCROLL_STATE_IDLE
+				&& null != mOnLastItemVisibleListener && mLastItemVisible) {
 			mOnLastItemVisibleListener.onLastItemVisible();
 		}
 
@@ -145,7 +155,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	 * {@link AdapterView#setAdapter(android.widget.Adapter)}
 	 * setAdapter(adapter)}. This is just for convenience!
 	 * 
-	 * @param adapter - Adapter to set
+	 * @param adapter
+	 *            - Adapter to set
 	 */
 	public void setAdapter(ListAdapter adapter) {
 		((AdapterView<ListAdapter>) mRefreshableView).setAdapter(adapter);
@@ -162,7 +173,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	 * this method and set everything up. This includes when the Android
 	 * Framework automatically sets the Empty View based on it's ID.
 	 * 
-	 * @param newEmptyView - Empty View to be used
+	 * @param newEmptyView
+	 *            - Empty View to be used
 	 */
 	public final void setEmptyView(View newEmptyView) {
 		FrameLayout refreshableViewWrapper = getRefreshableViewWrapper();
@@ -173,13 +185,15 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 			newEmptyView.setClickable(true);
 
 			ViewParent newEmptyViewParent = newEmptyView.getParent();
-			if (null != newEmptyViewParent && newEmptyViewParent instanceof ViewGroup) {
+			if (null != newEmptyViewParent
+					&& newEmptyViewParent instanceof ViewGroup) {
 				((ViewGroup) newEmptyViewParent).removeView(newEmptyView);
 			}
 
 			// We need to convert any LayoutParams so that it works in our
 			// FrameLayout
-			FrameLayout.LayoutParams lp = convertEmptyViewLayoutParams(newEmptyView.getLayoutParams());
+			FrameLayout.LayoutParams lp = convertEmptyViewLayoutParams(newEmptyView
+					.getLayoutParams());
 			if (null != lp) {
 				refreshableViewWrapper.addView(newEmptyView, lp);
 			} else {
@@ -188,7 +202,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 		}
 
 		if (mRefreshableView instanceof EmptyViewMethodAccessor) {
-			((EmptyViewMethodAccessor) mRefreshableView).setEmptyViewInternal(newEmptyView);
+			((EmptyViewMethodAccessor) mRefreshableView)
+					.setEmptyViewInternal(newEmptyView);
 		} else {
 			mRefreshableView.setEmptyView(newEmptyView);
 		}
@@ -201,13 +216,15 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	 * {@link AdapterView#setOnItemClickListener(OnItemClickListener)
 	 * setOnItemClickListener(listener)}. This is just for convenience!
 	 * 
-	 * @param listener - OnItemClickListener to use
+	 * @param listener
+	 *            - OnItemClickListener to use
 	 */
 	public void setOnItemClickListener(OnItemClickListener listener) {
 		mRefreshableView.setOnItemClickListener(listener);
 	}
 
-	public final void setOnLastItemVisibleListener(OnLastItemVisibleListener listener) {
+	public final void setOnLastItemVisibleListener(
+			OnLastItemVisibleListener listener) {
 		mOnLastItemVisibleListener = listener;
 	}
 
@@ -225,7 +242,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	 * when the Adapter View is scrolled to the top and the mode is set to
 	 * {@link Mode#PULL_FROM_START}
 	 * 
-	 * @param showIndicator - true if the indicators should be shown.
+	 * @param showIndicator
+	 *            - true if the indicators should be shown.
 	 */
 	public void setShowIndicator(boolean showIndicator) {
 		mShowIndicator = showIndicator;
@@ -247,15 +265,15 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 
 		if (getShowIndicatorInternal()) {
 			switch (getCurrentMode()) {
-				case PULL_FROM_END:
-					mIndicatorIvBottom.pullToRefresh();
-					break;
-				case PULL_FROM_START:
-					mIndicatorIvTop.pullToRefresh();
-					break;
-				default:
-					// NO-OP
-					break;
+			case PULL_FROM_END:
+				mIndicatorIvBottom.pullToRefresh();
+				break;
+			case PULL_FROM_START:
+				mIndicatorIvTop.pullToRefresh();
+				break;
+			default:
+				// NO-OP
+				break;
 			}
 		}
 	}
@@ -274,15 +292,15 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 
 		if (getShowIndicatorInternal()) {
 			switch (getCurrentMode()) {
-				case PULL_FROM_END:
-					mIndicatorIvBottom.releaseToRefresh();
-					break;
-				case PULL_FROM_START:
-					mIndicatorIvTop.releaseToRefresh();
-					break;
-				default:
-					// NO-OP
-					break;
+			case PULL_FROM_END:
+				mIndicatorIvBottom.releaseToRefresh();
+				break;
+			case PULL_FROM_START:
+				mIndicatorIvTop.releaseToRefresh();
+				break;
+			default:
+				// NO-OP
+				break;
 			}
 		}
 	}
@@ -299,7 +317,9 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 	@Override
 	protected void handleStyledAttributes(TypedArray a) {
 		// Set Show Indicator to the XML value, or default value
-		mShowIndicator = a.getBoolean(R.styleable.PullToRefresh_ptrShowIndicator, !isPullToRefreshOverScrollEnabled());
+		mShowIndicator = a.getBoolean(
+				R.styleable.PullToRefresh_ptrShowIndicator,
+				!isPullToRefreshOverScrollEnabled());
 	}
 
 	protected boolean isReadyForPullStart() {
@@ -336,10 +356,13 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 
 		if (mode.showHeaderLoadingLayout() && null == mIndicatorIvTop) {
 			// If the mode can pull down, and we don't have one set already
-			mIndicatorIvTop = new IndicatorLayout(getContext(), Mode.PULL_FROM_START);
-			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+			mIndicatorIvTop = new IndicatorLayout(getContext(),
+					Mode.PULL_FROM_START);
+			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+					ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-			params.rightMargin = getResources().getDimensionPixelSize(R.dimen.indicator_right_padding);
+			params.rightMargin = getResources().getDimensionPixelSize(
+					R.dimen.indicator_right_padding);
 			params.gravity = Gravity.TOP | Gravity.RIGHT;
 			refreshableViewWrapper.addView(mIndicatorIvTop, params);
 
@@ -351,14 +374,18 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 
 		if (mode.showFooterLoadingLayout() && null == mIndicatorIvBottom) {
 			// If the mode can pull down, and we don't have one set already
-			mIndicatorIvBottom = new IndicatorLayout(getContext(), Mode.PULL_FROM_END);
-			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+			mIndicatorIvBottom = new IndicatorLayout(getContext(),
+					Mode.PULL_FROM_END);
+			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+					ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-			params.rightMargin = getResources().getDimensionPixelSize(R.dimen.indicator_right_padding);
+			params.rightMargin = getResources().getDimensionPixelSize(
+					R.dimen.indicator_right_padding);
 			params.gravity = Gravity.BOTTOM | Gravity.RIGHT;
 			refreshableViewWrapper.addView(mIndicatorIvBottom, params);
 
-		} else if (!mode.showFooterLoadingLayout() && null != mIndicatorIvBottom) {
+		} else if (!mode.showFooterLoadingLayout()
+				&& null != mIndicatorIvBottom) {
 			// If we can't pull down, but have a View then remove it
 			refreshableViewWrapper.removeView(mIndicatorIvBottom);
 			mIndicatorIvBottom = null;
@@ -390,7 +417,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 			if (mRefreshableView.getFirstVisiblePosition() <= 1) {
 				final View firstVisibleChild = mRefreshableView.getChildAt(0);
 				if (firstVisibleChild != null) {
-					return firstVisibleChild.getTop() >= mRefreshableView.getTop();
+					return firstVisibleChild.getTop() >= mRefreshableView
+							.getTop();
 				}
 			}
 		}
@@ -408,10 +436,12 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 			return true;
 		} else {
 			final int lastItemPosition = mRefreshableView.getCount() - 1;
-			final int lastVisiblePosition = mRefreshableView.getLastVisiblePosition();
+			final int lastVisiblePosition = mRefreshableView
+					.getLastVisiblePosition();
 
 			if (DEBUG) {
-				Log.d(LOG_TAG, "isLastItemVisible. Last Item Position: " + lastItemPosition + " Last Visible Pos: "
+				Log.d(LOG_TAG, "isLastItemVisible. Last Item Position: "
+						+ lastItemPosition + " Last Visible Pos: "
 						+ lastVisiblePosition);
 			}
 
@@ -423,10 +453,13 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 			 * getBottom().
 			 */
 			if (lastVisiblePosition >= lastItemPosition - 1) {
-				final int childIndex = lastVisiblePosition - mRefreshableView.getFirstVisiblePosition();
-				final View lastVisibleChild = mRefreshableView.getChildAt(childIndex);
+				final int childIndex = lastVisiblePosition
+						- mRefreshableView.getFirstVisiblePosition();
+				final View lastVisibleChild = mRefreshableView
+						.getChildAt(childIndex);
 				if (lastVisibleChild != null) {
-					return lastVisibleChild.getBottom() <= mRefreshableView.getBottom();
+					return lastVisibleChild.getBottom() <= mRefreshableView
+							.getBottom();
 				}
 			}
 		}

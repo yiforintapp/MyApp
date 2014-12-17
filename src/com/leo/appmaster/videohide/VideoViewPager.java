@@ -28,7 +28,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
@@ -162,9 +162,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
      */
     private boolean isVideo(String packageName) {
         boolean flag = false;
-        ArrayList<AppDetailInfo> appInfo = AppLoadEngine.getInstance(this).getAllPkgInfo();
-        for (AppDetailInfo appDetailInfo : appInfo) {
-            String pn = appDetailInfo.getPkg();
+        ArrayList<AppItemInfo> appInfo = AppLoadEngine.getInstance(this).getAllPkgInfo();
+        for (AppItemInfo appDetailInfo : appInfo) {
+            String pn = appDetailInfo.packageName;
             if (pn.equals(packageName)) {
                 return flag = true;
             }

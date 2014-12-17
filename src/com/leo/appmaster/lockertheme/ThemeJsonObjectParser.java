@@ -11,31 +11,31 @@ import android.content.Context;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.model.ThemeInfo;
+import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.utils.LeoLog;
 
 public class ThemeJsonObjectParser {
 
-	public static List<ThemeInfo> parserJsonObject(Context ctx,
+	public static List<ThemeItemInfo> parserJsonObject(Context ctx,
 			JSONObject jsonObject) {
-		ArrayList<ThemeInfo> list = null;
+		ArrayList<ThemeItemInfo> list = null;
 		if (jsonObject != null) {
 			try {
 
 				String serialNumber = jsonObject.getString("update_flag");
 				AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
-				pref.setLocalSerialNumber(serialNumber);
-				pref.setOnlineSerialNumber(serialNumber);
+				pref.setLocalThemeSerialNumber(serialNumber);
+				pref.setOnlineThemeSerialNumber(serialNumber);
 				LeoLog.d("parserJsonObject", "serialNumber = " + serialNumber);
 
 				JSONArray array = jsonObject.getJSONArray("data");
-				list = new ArrayList<ThemeInfo>();
+				list = new ArrayList<ThemeItemInfo>();
 				JSONObject temp = null;
-				ThemeInfo bean = null;
+				ThemeItemInfo bean = null;
 				for (int i = 0; i < array.length(); i++) {
 					try {
 						temp = array.getJSONObject(i);
-						bean = new ThemeInfo();
+						bean = new ThemeItemInfo();
 						bean.packageName = temp.getString("package_name");
 						bean.downloadUrl = temp.getString("download_url");
 						bean.themeName = temp.getString("theme_title");

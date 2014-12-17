@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.model.ThemeInfo;
+import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -19,12 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LockerThemeAdapter extends BaseAdapter {
-	private List<ThemeInfo> themes;
+	private List<ThemeItemInfo> themes;
 	private LayoutInflater layoutInflater;
 	private DisplayImageOptions commonOption;
 	private DisplayImageOptions compatibleOption;
 
-	public LockerThemeAdapter(Context context, List<ThemeInfo> themes) {
+	public LockerThemeAdapter(Context context, List<ThemeItemInfo> themes) {
 		this.themes = themes;
 		this.layoutInflater = LayoutInflater.from(context);
 		commonOption = new DisplayImageOptions.Builder()
@@ -77,7 +77,7 @@ public class LockerThemeAdapter extends BaseAdapter {
 		} else {
 			viewHolder = (ViewHolder) arg1.getTag();
 		}
-		ThemeInfo theme = themes.get(arg0);
+		ThemeItemInfo theme = themes.get(arg0);
 
 		if (theme.themeName == null || theme.themeName.equals("")) {
 			viewHolder.themeName.setText("");

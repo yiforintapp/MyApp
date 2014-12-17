@@ -3,7 +3,7 @@ package com.leo.appmaster.cleanmemory;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.utils.ProcessUtils;
 
 import android.app.ActivityManager;

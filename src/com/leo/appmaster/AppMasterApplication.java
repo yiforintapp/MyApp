@@ -21,13 +21,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.appmanage.AppListActivity;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
+import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.http.HttpRequestAgent;
@@ -44,15 +49,23 @@ public class AppMasterApplication extends Application implements
 		RequestFinishedReporter {
 
 	private AppLoadEngine mAppsEngine;
+	private AppBackupRestoreManager mBackupManager;
 
 	private static AppMasterApplication mInstance;
 	private static List<Activity> mActivityList;
 
-	private Handler mHandler;
+	public Handler mHandler;
 
 	public static SharedPreferences sharedPreferences;
 	public static String usedThemePackage;
 	public static String number;
+
+	public static int SDK_VERSION;
+	public static float density;
+	public static int densityDpi;
+	public static String densityString;
+	public static int MAX_OUTER_BLUR_RADIUS;
+
 	static {
 		System.loadLibrary("leo_service");
 	}
@@ -62,11 +75,13 @@ public class AppMasterApplication extends Application implements
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		initDensity(this);
 		mActivityList = new ArrayList<Activity>();
 		mInstance = this;
 		mHandler = new Handler();
 		mAppsEngine = AppLoadEngine.getInstance(this);
 		mAppsEngine.preloadAllBaseInfo();
+		mBackupManager = new AppBackupRestoreManager(this);
 		initImageLoader(getApplicationContext());
 		sharedPreferences = getSharedPreferences("lockerTheme",
 				Context.MODE_WORLD_WRITEABLE);
@@ -101,6 +116,7 @@ public class AppMasterApplication extends Application implements
 			@Override
 			public void run() {
 				checkNewTheme();
+				checkNewAppBusiness();
 			}
 		}, 10000);
 		restartApplocker(PhoneInfo.getAndroidVersion());
@@ -110,6 +126,8 @@ public class AppMasterApplication extends Application implements
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				AppBusinessManager.getInstance(mInstance).init();
+				mBackupManager.getBackupList();
 				judgeLockService();
 				judgeLockAlert();
 				judgeStatictiUnlockCount();
@@ -188,6 +206,10 @@ public class AppMasterApplication extends Application implements
 		}
 	}
 
+	public AppBackupRestoreManager getBuckupManager() {
+		return mBackupManager;
+	}
+
 	private void showNewThemeTip() {
 		// send new theme broadcast
 		Intent intent = new Intent(Constants.ACTION_NEW_THEME);
@@ -213,6 +235,109 @@ public class AppMasterApplication extends Application implements
 		nm.notify(0, notif);
 	}
 
+	private void showNewBusinessTip(String mainTitle, String content) {
+		// send new theme broadcast
+		Intent intent = new Intent(Constants.ACTION_NEW_THEME);
+		sendBroadcast(intent);
+
+		// show new theme status tip
+		Notification notif = new Notification();
+		intent = new Intent(this, AppListActivity.class);
+		intent.putExtra("from_statubar", true);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		notif.icon = R.drawable.ic_launcher;
+		notif.tickerText = mainTitle;
+		notif.flags = Notification.FLAG_ONGOING_EVENT
+				| Notification.FLAG_AUTO_CANCEL;
+		notif.setLatestEventInfo(this, mainTitle, content, contentIntent);
+		notif.when = System.currentTimeMillis();
+		NotificationManager nm = (NotificationManager) this
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		nm.notify(0, notif);
+	}
+
+	protected void checkNewAppBusiness() {
+		final AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		long curTime = System.currentTimeMillis();
+
+		long lastCheckTime = pref.getLastCheckBusinessTime();
+		if (lastCheckTime == 0
+				|| (curTime - lastCheckTime) > /*12 * 60 * 60 * 1000*/ 10 * 60 * 1000) {
+			HttpRequestAgent.getInstance(this).checkNewBusinessData(
+					new Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response,
+								boolean noMidify) {
+							if (response != null) {
+								try {
+									LeoLog.e("xxxx", "checkNewBusinessData = " + response.toString());
+									JSONObject jsonObject = response.getJSONObject("data");
+									if (jsonObject != null) {
+										boolean hasNewBusinessData = jsonObject
+												.getBoolean("need_update");
+										String serialNumber = jsonObject
+												.getString("update_flag");
+										
+//										String mainTitle = jsonObject
+//												.getString("main_title");
+//										String content = jsonObject
+//												.getString("content");
+										String mainTitle = "有新应用推荐给您，请查收";
+										String content = "新应用提醒";
+
+										if (!hasNewBusinessData) {
+											pref.setLocalBusinessSerialNumber(serialNumber);
+										}
+										pref.setOnlineBusinessSerialNumber(serialNumber);
+
+										if (hasNewBusinessData) {
+											showNewBusinessTip(mainTitle,
+													content);
+										}
+										pref.setLastCheckThemeTime(System
+												.currentTimeMillis());
+									}
+
+									TimerTask recheckTask = new TimerTask() {
+										@Override
+										public void run() {
+											checkNewAppBusiness();
+										}
+									};
+									Timer timer = new Timer();
+									timer.schedule(recheckTask,
+											/*12 * 60 * 60 * 1000*/ 10 * 60 * 1000);
+
+								} catch (JSONException e) {
+									e.printStackTrace();
+									LeoLog.e("checkNewAppBusiness", e.getMessage());
+								}
+							}
+						}
+
+					}, new ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							LeoLog.e("checkNewAppBusiness", error.getMessage());
+							TimerTask recheckTask = new TimerTask() {
+								@Override
+								public void run() {
+									checkNewAppBusiness();
+								}
+							};
+							Timer timer = new Timer();
+							timer.schedule(recheckTask, /*2 * 60 * 60 * 1000*/ 10 * 60 * 1000);
+						}
+					});
+		}
+
+	}
+
 	public void checkNewTheme() {
 		final AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		long curTime = System.currentTimeMillis();
@@ -220,23 +345,15 @@ public class AppMasterApplication extends Application implements
 		long lastCheckTime = pref.getLastCheckThemeTime();
 		if (lastCheckTime == 0
 				|| (curTime - pref.getLastCheckThemeTime()) > 12 * 60 * 60 * 1000) {
-
-			// if (pref.getLocalSerialNumber() != pref.getOnlineSerialNumber())
-			// {
-			// showNewThemeTip();
-			// return;
-			// }
-
 			HttpRequestAgent.getInstance(this).checkNewTheme(
 					new Listener<JSONObject>() {
 
 						@Override
-						public void onResponse(JSONObject response) {
+						public void onResponse(JSONObject response,
+								boolean noMidify) {
 							if (response != null) {
 								try {
 									JSONObject jsonObject = response.getJSONObject("data");
-									// LeoLog.e("checkNewTheme",
-									// response.toString());
 									if (jsonObject != null) {
 										boolean hasNewTheme = jsonObject
 												.getBoolean("need_update");
@@ -244,14 +361,14 @@ public class AppMasterApplication extends Application implements
 												.getString("update_flag");
 
 										if (!hasNewTheme) {
-											pref.setLocalSerialNumber(serialNumber);
+											pref.setLocalThemeSerialNumber(serialNumber);
 										}
-										pref.setOnlineSerialNumber(serialNumber);
+										pref.setOnlineThemeSerialNumber(serialNumber);
 
 										if (hasNewTheme) {
 											showNewThemeTip();
 										}
-										pref.setLastCheckTheme(System
+										pref.setLastCheckThemeTime(System
 												.currentTimeMillis());
 									}
 
@@ -293,6 +410,7 @@ public class AppMasterApplication extends Application implements
 	@Override
 	public void onTerminate() {
 		super.onTerminate();
+		mBackupManager.onDestory(this);
 		unregisterReceiver(mAppsEngine);
 		SDKWrapper.endSession(this);
 	}
@@ -305,9 +423,9 @@ public class AppMasterApplication extends Application implements
 	public static void initImageLoader(Context context) {
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				context).threadPriority(Thread.NORM_PRIORITY)
-				.memoryCacheSizePercentage(10)
+				.memoryCacheSizePercentage(3)
 				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
-				.diskCacheSize(50 * 1024 * 1024)
+				.diskCacheSize(100 * 1024 * 1024)
 				.tasksProcessingOrder(QueueProcessingType.FIFO)
 				.writeDebugLogs().build();
 		ImageLoader.getInstance().init(config);
@@ -350,5 +468,28 @@ public class AppMasterApplication extends Application implements
 
 	public static String getSelectedTheme() {
 		return usedThemePackage;
+	}
+
+	private static void initDensity(Context context) {
+		SDK_VERSION = android.os.Build.VERSION.SDK_INT;
+		Resources res = context.getResources();
+		DisplayMetrics dm = res.getDisplayMetrics();
+		density = dm.density;
+		densityDpi = dm.densityDpi;
+		switch (densityDpi) {
+		case DisplayMetrics.DENSITY_XHIGH:
+			densityString = "xhdpi";
+			break;
+		}
+		MAX_OUTER_BLUR_RADIUS = (int) (density * 12.0f);
+	}
+
+	/**
+	 * Whether the sdk level is higher than 14 (android 4.0)
+	 * 
+	 * @return true if sdk level is higher than android 4.0, false otherwise
+	 */
+	public static boolean isAboveICS() {
+		return AppMasterApplication.SDK_VERSION >= 14;
 	}
 }

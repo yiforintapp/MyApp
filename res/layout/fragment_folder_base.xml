@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/holder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <GridView
+        android:id="@+id/content_gridview"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:horizontalSpacing="3dp"
+        android:listSelector="@drawable/selector_app_item"
+        android:numColumns="4"
+        android:paddingTop="5dp"
+        android:verticalSpacing="5dp" >
+    </GridView>
+
+    <LinearLayout
+        android:id="@+id/recommend_layout"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="2dp"
+            android:paddingLeft="30dp"
+            android:paddingTop="2dp" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/other_people_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="其他人正在使用"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/recommend_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:horizontalSpacing="3dp"
+            android:listSelector="@drawable/selector_app_item"
+            android:numColumns="4"
+            android:paddingTop="5dp"
+            android:verticalSpacing="5dp" >
+        </GridView>
+    </LinearLayout>
+
+</RelativeLayout>

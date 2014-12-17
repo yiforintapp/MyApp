@@ -28,4 +28,5 @@
     <color name="appwall_desc">#B0B0B0</color>
     <color name="blue">#1068F3</color>
      <color name="lockerclean_background">#50000000</color>
+     <color name="pressed_view_color">#2b7cef</color>
 </resources>

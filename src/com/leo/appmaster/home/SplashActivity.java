@@ -79,7 +79,7 @@ public class SplashActivity extends BaseActivity {
 					HttpRequestAgent.getInstance(getApplicationContext())
 							.getAppLockList(new Listener<JSONObject>() {
 								@Override
-								public void onResponse(JSONObject response) {
+								public void onResponse(JSONObject response, boolean noModify) {
 									JSONArray list;
 									ArrayList<String> lockList = new ArrayList<String>();
 									long next_pull;

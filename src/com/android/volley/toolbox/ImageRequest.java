@@ -177,13 +177,13 @@ public class ImageRequest extends Request<Bitmap> {
         if (bitmap == null) {
             return Response.error(new ParseError(response));
         } else {
-            return Response.success(bitmap, HttpHeaderParser.parseCacheHeaders(response));
+            return Response.success(bitmap, HttpHeaderParser.parseCacheHeaders(response), response.notModified);
         }
     }
 
     @Override
-    protected void deliverResponse(Bitmap response) {
-        mListener.onResponse(response);
+    protected void deliverResponse(Bitmap response, boolean noMidify) {
+        mListener.onResponse(response, noMidify);
     }
 
     /**

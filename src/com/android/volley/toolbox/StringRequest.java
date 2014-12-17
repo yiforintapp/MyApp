@@ -56,8 +56,8 @@ public class StringRequest extends Request<String> {
     }
 
     @Override
-    protected void deliverResponse(String response) {
-        mListener.onResponse(response);
+    protected void deliverResponse(String response, boolean noMidify) {
+        mListener.onResponse(response, noMidify);
     }
 
     @Override
@@ -68,6 +68,6 @@ public class StringRequest extends Request<String> {
         } catch (UnsupportedEncodingException e) {
             parsed = new String(response.data);
         }
-        return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
+        return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response), response.notModified);
     }
 }

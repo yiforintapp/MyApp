@@ -39,12 +39,15 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
-import com.leo.appmaster.model.AppDetailInfo;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.model.CacheInfo;
+import com.leo.appmaster.model.extra.CacheInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
@@ -98,7 +101,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		 *            we have 5 change types currently, {@link #TYPE_ADD},
 		 *            {@link #TYPE_REMOVE}, {@link #TYPE_UPDATE}
 		 */
-		public void onAppChanged(final ArrayList<AppDetailInfo> changes,
+		public void onAppChanged(final ArrayList<AppItemInfo> changes,
 				final int type);
 	}
 
@@ -126,7 +129,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 	 * do not change this data structure, because it is thread-safety
 	 */
 
-	private ConcurrentHashMap<String, AppDetailInfo> mAppDetails;
+	private ConcurrentHashMap<String, AppItemInfo> mAppDetails;
 
 	private final static String[] sLocalLockArray = new String[] {
 			"com.whatsapp", "com.android.gallery3d", "com.android.mms",
@@ -152,7 +155,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		mContext = context.getApplicationContext();
 		mPm = mContext.getPackageManager();
 		mLatch = new CountDownLatch(1);
-		mAppDetails = new ConcurrentHashMap<String, AppDetailInfo>();
+		mAppDetails = new ConcurrentHashMap<String, AppItemInfo>();
 		mListeners = new ArrayList<AppChangeListener>(1);
 
 		List<String> list = AppMasterPreference.getInstance(mContext)
@@ -170,10 +173,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	public void updateRecommendLockList(List<String> list) {
 		mRecommendLocklist = list;
-		Collection<AppDetailInfo> collection = mAppDetails.values();
-		for (AppDetailInfo appDetailInfo : collection) {
-			appDetailInfo.topPos = mRecommendLocklist.indexOf(appDetailInfo
-					.getPkg());
+		Collection<AppItemInfo> collection = mAppDetails.values();
+		for (AppItemInfo appDetailInfo : collection) {
+			appDetailInfo.topPos = mRecommendLocklist
+					.indexOf(appDetailInfo.packageName);
 		}
 		AppMasterPreference.getInstance(mContext).setRecommendList(list);
 	}
@@ -199,7 +202,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		mListeners.clear();
 	}
 
-	private void notifyChange(ArrayList<AppDetailInfo> changed, int type) {
+	private void notifyChange(ArrayList<AppItemInfo> changed, int type) {
 		for (AppChangeListener listener : mListeners) {
 			listener.onAppChanged(changed, type);
 		}
@@ -214,31 +217,37 @@ public class AppLoadEngine extends BroadcastReceiver {
 		});
 	}
 
-	public ArrayList<AppDetailInfo> getAllPkgInfo() {
+	public ArrayList<AppItemInfo> getAllPkgInfo() {
 		loadAllPkgInfo();
-		ArrayList<AppDetailInfo> dataList = new ArrayList<AppDetailInfo>();
-		for (AppDetailInfo app : mAppDetails.values()) {
-			if (!app.getPkg().startsWith("com.leo.theme")) {
+		ArrayList<AppItemInfo> dataList = new ArrayList<AppItemInfo>();
+		for (AppItemInfo app : mAppDetails.values()) {
+			if (!app.packageName.startsWith("com.leo.theme")) {
 				dataList.add(app);
 			}
 		}
 
-		Collections.sort(dataList, new AppComparator());
+		Collections.sort(dataList, new FolwComparator());
 
 		return dataList;
 	}
 
-	public AppDetailInfo loadAppDetailInfo(String pkgName) {
-		mLatch = new CountDownLatch(1);
-		loadTrafficInfo(pkgName);
-		loadPermissionInfo(pkgName);
-		loadCacheInfo(pkgName);
-		try {
-			mLatch.await();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	public AppItemInfo loadAppDetailInfo(String pkgName) {
+		AppItemInfo info = mAppDetails.get(pkgName);
+		if (info == null)
+			return null;
+		if (!info.detailLoaded) {
+			mLatch = new CountDownLatch(1);
+			loadTrafficInfo(pkgName);
+			loadPermissionInfo(pkgName);
+			loadCacheInfo(pkgName);
+			try {
+				mLatch.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			info.detailLoaded = true;
 		}
-		return mAppDetails.get(pkgName);
+		return info;
 	}
 
 	private void loadAllPkgInfo() {
@@ -258,17 +267,20 @@ public class AppLoadEngine extends BroadcastReceiver {
 				for (ResolveInfo resolveInfo : apps) {
 					ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
 					String packageName = applicationInfo.packageName;
-					AppDetailInfo appInfo = new AppDetailInfo();
+					AppItemInfo appInfo = new AppItemInfo();
+					appInfo.type = BaseInfo.ITEM_TYPE_NORMAL_APP;
 					loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
 					try {
 						appInfo.installTime = mPm
-								.getPackageInfo(packageName, 0).firstInstallTime;
+								.getPackageInfo(packageName, 0).lastUpdateTime;
 					} catch (NameNotFoundException e) {
 						e.printStackTrace();
 					}
 
 					if (!isThemeApk(packageName)) {
 						mAppDetails.put(packageName, appInfo);
+						// TODO
+						loadAppDetailInfo(packageName);
 					} else {
 						if (!themeList.contains(packageName)) {
 							themeList.add(packageName);
@@ -291,7 +303,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 					.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
 			for (ApplicationInfo applicationInfo : all) {
 				String packageName = applicationInfo.packageName;
-				AppDetailInfo appInfo = new AppDetailInfo();
+				AppItemInfo appInfo = new AppItemInfo();
 				loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
 				try {
 					appInfo.installTime = mPm.getPackageInfo(packageName, 0).firstInstallTime;
@@ -312,21 +324,26 @@ public class AppLoadEngine extends BroadcastReceiver {
 	}
 
 	private void loadAppInfoOfPackage(String packageName,
-			ApplicationInfo applicationInfo, AppDetailInfo appInfo) {
+			ApplicationInfo applicationInfo, AppItemInfo appInfo) {
 		// first fill base info
 		try {
 			PackageInfo pInfo = mPm.getPackageInfo(packageName, 0);
-			appInfo.setVersionCode(pInfo.versionCode);
-			appInfo.setVersionName(pInfo.versionName);
+			appInfo.versionCode = pInfo.versionCode;
+			appInfo.versionName = pInfo.versionName;
 		} catch (NameNotFoundException e) {
 		}
-		appInfo.setPkg(packageName);
-		appInfo.setAppLabel(applicationInfo.loadLabel(mPm).toString().trim());
-		appInfo.setAppIcon(applicationInfo.loadIcon(mPm));
-		appInfo.setSystemApp(AppUtil.isSystemApp(applicationInfo));
-		appInfo.setInSdcard(AppUtil.isInstalledInSDcard(applicationInfo));
-		appInfo.setUid(applicationInfo.uid);
-		appInfo.setSourceDir(applicationInfo.sourceDir);
+		appInfo.packageName = packageName;
+		appInfo.label = applicationInfo.loadLabel(mPm).toString().trim();
+		appInfo.icon = applicationInfo.loadIcon(mPm);
+		appInfo.systemApp = AppUtil.isSystemApp(applicationInfo);
+		appInfo.inSdcard = AppUtil.isInstalledInSDcard(applicationInfo);
+		try {
+			appInfo.installTime = mPm.getPackageInfo(packageName, 0).lastUpdateTime;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		appInfo.uid = applicationInfo.uid;
+		appInfo.sourceDir = applicationInfo.sourceDir;
 		appInfo.topPos = mRecommendLocklist.indexOf(packageName);
 	}
 
@@ -336,43 +353,43 @@ public class AppLoadEngine extends BroadcastReceiver {
 		for (BatteryComsuption batterySipper : list) {
 			String packageName = batterySipper.getDefaultPackageName();
 			if (packageName != null && mAppDetails.containsKey(packageName)) {
-				mAppDetails.get(packageName).setPowerComsuPercent(
-						batterySipper.getPercentOfTotal());
+				mAppDetails.get(packageName).powerComsuPercent = batterySipper
+						.getPercentOfTotal();
 			}
 		}
 	}
 
 	private void loadCacheInfo(String pkgName) {
-		AppDetailInfo info = mAppDetails.get(pkgName);
-		getCacheInfo(pkgName, info.getCacheInfo());
+		AppItemInfo info = mAppDetails.get(pkgName);
+		getCacheInfo(pkgName, info.cacheInfo);
 	}
 
 	private void loadPermissionInfo(String pkgName) {
 		PackageInfo packangeInfo;
-		AppDetailInfo info = mAppDetails.get(pkgName);
+		AppItemInfo info = mAppDetails.get(pkgName);
 		try {
 			packangeInfo = mPm.getPackageInfo(pkgName,
 					PackageManager.GET_PERMISSIONS);
 			// info.getPermissionInfo().setPermissions(packangeInfo.permissions);
 
-			info.getPermissionInfo().setPermissionList(
-					packangeInfo.requestedPermissions);
+			info.permissionInfo.mPermissionList = packangeInfo.requestedPermissions;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void loadTrafficInfo(String pkgName) {
-		AppDetailInfo info = mAppDetails.get(pkgName);
+		AppItemInfo info = mAppDetails.get(pkgName);
 		if (info != null) {
-			long received = TrafficStats.getUidRxBytes(info.getUid());
+			long received = TrafficStats.getUidRxBytes(info.uid);
 			if (received < 0)
 				received = 0;
-			long transmitted = TrafficStats.getUidTxBytes(info.getUid());
+			long transmitted = TrafficStats.getUidTxBytes(info.uid);
 			if (transmitted < 0)
 				transmitted = 0;
-			info.getTrafficInfo().setTransmittedData(transmitted);
-			info.getTrafficInfo().setReceivedData(received);
+			info.trafficInfo.mTransmittedData = transmitted;
+			info.trafficInfo.mReceivedData = received;
+			info.trafficInfo.total = transmitted + received;
 		}
 
 	}
@@ -391,13 +408,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 							long codeSize = pStats.codeSize;
 							long dataSize = pStats.dataSize;
 
-							cacheInfo.setCacheSize(TextFormater
-									.dataSizeFormat(cacheSize));
-							cacheInfo.setCodeSize(TextFormater
-									.dataSizeFormat(codeSize));
-							cacheInfo.setDataSize(TextFormater
-									.dataSizeFormat(dataSize));
-
+							cacheInfo.cacheSize = cacheSize;
+							cacheInfo.codeSize = codeSize;
+							cacheInfo.dataSize = dataSize;
+							cacheInfo.total = cacheSize + codeSize + dataSize;
 							mLatch.countDown();
 						}
 					} });
@@ -624,7 +638,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 		}
 
 		public void run() {
-			final ArrayList<AppDetailInfo> changedFinal = new ArrayList<AppDetailInfo>(
+			final ArrayList<AppItemInfo> changedFinal = new ArrayList<AppItemInfo>(
 					1);
 			final String[] packages = mPackages;
 			final int N = packages.length;
@@ -639,7 +653,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 							mainIntent, 0);
 					if (apps.size() > 0) {
 						ApplicationInfo applicationInfo = apps.get(0).activityInfo.applicationInfo;
-						AppDetailInfo appInfo = new AppDetailInfo();
+						AppItemInfo appInfo = new AppItemInfo();
 						loadAppInfoOfPackage(packages[i], applicationInfo,
 								appInfo);
 						mAppDetails.put(packages[i], appInfo);
@@ -649,7 +663,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 				break;
 			case AppChangeListener.TYPE_UPDATE:
 				for (int i = 0; i < N; i++) {
-					AppDetailInfo appInfo = mAppDetails.get(packages[i]);
+					AppItemInfo appInfo = mAppDetails.get(packages[i]);
 					if (appInfo != null) {
 						Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 						mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -668,7 +682,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 			case AppChangeListener.TYPE_REMOVE:
 			case AppChangeListener.TYPE_UNAVAILABLE:
 				for (int i = 0; i < N; i++) {
-					AppDetailInfo appInfo = mAppDetails.remove(packages[i]);
+					AppItemInfo appInfo = mAppDetails.remove(packages[i]);
 					changedFinal.add(appInfo);
 				}
 				break;
@@ -676,6 +690,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 				mAppDetails.clear();
 				mAppsLoaded = false;
 				loadAllPkgInfo();
+				AppMasterApplication.getInstance().getBuckupManager().resetList();
 				break;
 
 			}
@@ -695,10 +710,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 	}
 
-	public static class AppComparator implements Comparator<BaseInfo> {
+	public static class FolwComparator implements Comparator<AppItemInfo> {
 
 		@Override
-		public int compare(BaseInfo lhs, BaseInfo rhs) {
+		public int compare(AppItemInfo lhs, AppItemInfo rhs) {
 			if (lhs.topPos > -1 && rhs.topPos < 0) {
 				return -1;
 			} else if (lhs.topPos < 0 && rhs.topPos > -1) {
@@ -706,9 +721,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 			} else if (lhs.topPos > -1 && rhs.topPos > -1) {
 				return lhs.topPos - rhs.topPos;
 			}
-			return Collator.getInstance().compare(
-					trimString(lhs.getAppLabel()),
-					trimString(rhs.getAppLabel()));
+			return Collator.getInstance().compare(trimString(lhs.label),
+					trimString(rhs.label));
 		}
 
 		private String trimString(String s) {

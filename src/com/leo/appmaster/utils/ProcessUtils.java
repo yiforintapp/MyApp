@@ -9,6 +9,10 @@ import java.util.List;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Debug.MemoryInfo;
 
 public class ProcessUtils {
 
@@ -26,12 +30,38 @@ public class ProcessUtils {
 		return false;
 	}
 
-	
-	//获取已用内存大小
-	public  static long getUsedMem(Context mContext) {
+	// get app used memory
+	public static long getAppUsedMem(Context ctx, String pkg) {
+		if (pkg == null || pkg.equals("")) {
+			return 0;
+		} else {
+			ActivityManager am = (ActivityManager) ctx
+					.getSystemService(Context.ACTIVITY_SERVICE);
+			try {
+				List<RunningAppProcessInfo> list = am.getRunningAppProcesses();
+				for (RunningAppProcessInfo runningAppProcessInfo : list) {
+
+					if (runningAppProcessInfo.processName.equals(pkg)) {
+						MemoryInfo[] memInfos = am
+								.getProcessMemoryInfo(new int[] { runningAppProcessInfo.pid });
+						return memInfos[0].dalvikPrivateDirty;
+					}
+				}
+				return 0;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+
+		}
+
+	}
+
+	// 获取已用内存大小
+	public static long getUsedMem(Context mContext) {
 		return getTotalMem() - getAvailableMem(mContext);
 	}
-	
+
 	// 获得可用的内存,以B为单位
 	public static long getAvailableMem(Context mContext) {
 		long MEM_UNUSED;
@@ -82,7 +112,7 @@ public class ProcessUtils {
 		// 截取字符串信息
 
 		content = content.substring(begin + 1, end).trim();
-		
+
 		mTotal = Integer.parseInt(content) * 1024L;
 		return mTotal;
 	}

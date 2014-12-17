@@ -51,6 +51,10 @@ public class LEOProgressDialog extends LEOBaseDialog {
 	    mProgressBar.setIndeterminate(indeterminate);
 	    mState.setVisibility(indeterminate ? View.GONE : View.VISIBLE);
 	}
+	
+	public void setStateTextVisiable(boolean visiable) {
+	    mState.setVisibility(visiable ? View.VISIBLE : View.GONE);
+	}
 
 	public void setProgress(int currentValue) {
 	    mCurrent = currentValue;
