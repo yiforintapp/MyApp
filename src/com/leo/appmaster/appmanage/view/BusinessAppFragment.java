@@ -252,7 +252,10 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 					@Override
 					public void onResponse(JSONObject response, boolean noModify) {
 						List<BusinessItemInfo> list = BusinessJsonParser
-								.parserJsonObject(mActivity, response);
+								.parserJsonObject(
+										mActivity,
+										response,
+										BusinessItemInfo.CONTAIN_BUSINESS_FOLDER);
 						Message msg = mHandler.obtainMessage(
 								MSG_LOAD_INIT_SUCCESSED, list);
 						mHandler.sendMessage(msg);
@@ -272,7 +275,10 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 					public void onResponse(JSONObject response, boolean noModify) {
 						mCurrentPage++;
 						List<BusinessItemInfo> list = BusinessJsonParser
-								.parserJsonObject(mActivity, response);
+								.parserJsonObject(
+										mActivity,
+										response,
+										BusinessItemInfo.CONTAIN_BUSINESS_FOLDER);
 						Message msg = mHandler.obtainMessage(
 								MSG_LOAD_PAGE_DATA_SUCCESS, list);
 						mHandler.sendMessage(msg);

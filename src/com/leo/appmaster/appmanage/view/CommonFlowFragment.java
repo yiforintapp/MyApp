@@ -20,6 +20,9 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.ui.LockImageView;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.ImageScaleType;
 
 public class CommonFlowFragment extends BaseFolderFragment implements
 		OnItemClickListener {
@@ -34,6 +37,8 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 
 	private ContentAdapter mContentAdapter;
 	private RecommendAdapter mRecommendAdapter;
+	private DisplayImageOptions mDisplayerOption;
+	private ImageLoader mImageLoader;
 
 	@Override
 	protected int layoutResourceId() {
@@ -42,6 +47,13 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 
 	@Override
 	protected void onInitUI() {
+		mImageLoader = ImageLoader.getInstance();
+		mDisplayerOption = new DisplayImageOptions.Builder()
+				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+				.showImageOnLoading(R.drawable.default_icon)
+				.showImageOnFail(R.drawable.default_icon).cacheInMemory(true)
+				.cacheOnDisk(true).considerExifParams(true).build();
+
 		mInflater = LayoutInflater.from(mActivity);
 		mHolder = findViewById(R.id.holder);
 		mHolder.setOnClickListener(new OnClickListener() {
@@ -157,13 +169,10 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 					.findViewById(R.id.iv_app_icon);
 			TextView textView = (TextView) convertView
 					.findViewById(R.id.tv_app_name);
-			BaseInfo info = mList.get(position);
+			BusinessItemInfo info = mList.get(position);
 
-			if (info.icon == null) {
-				imageView.setImageResource(R.drawable.default_icon);
-			} else {
-				imageView.setImageDrawable(info.icon);
-			}
+			mImageLoader
+					.displayImage(info.iconUrl, imageView, mDisplayerOption);
 
 			textView.setText(info.label);
 			convertView.setTag(info);

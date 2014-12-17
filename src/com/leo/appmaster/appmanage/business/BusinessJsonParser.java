@@ -15,7 +15,7 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class BusinessJsonParser {
 	public static List<BusinessItemInfo> parserJsonObject(Context ctx,
-			JSONObject jsonObject) {
+			JSONObject jsonObject, int type) {
 		ArrayList<BusinessItemInfo> list = null;
 		if (jsonObject != null) {
 			try {
@@ -37,6 +37,7 @@ public class BusinessJsonParser {
 									.getString("size"));
 							bean.gpPriority = Integer.parseInt(temp
 									.getString("gp_priority"));
+							bean.containType = type;
 							bean.gpUrl = temp.getString("gp_url");
 							bean.appDownloadUrl = temp
 									.getString("download_url");

@@ -82,7 +82,9 @@ public class AppBusinessManager {
 
 	public void init() {
 		loadInitData();
-		trySyncServerData();
+		syncServerAppListData();
+		syncOtherRecommend(BusinessItemInfo.CONTAIN_FLOW_SORT);
+		syncOtherRecommend(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
 	}
 
 	private void loadInitData() {
@@ -136,6 +138,7 @@ public class AppBusinessManager {
 							} while (c.moveToNext());
 							c.close();
 						}
+						LeoLog.e("xxxx", mBusinessList.toString());
 						mInitDataLoaded = true;
 						loadAppIcon();
 						return mBusinessList;
@@ -175,7 +178,7 @@ public class AppBusinessManager {
 		}
 	}
 
-	private void trySyncServerData() {
+	private void syncServerAppListData() {
 
 		final AppMasterPreference pref = AppMasterPreference
 				.getInstance(mContext);
@@ -186,7 +189,7 @@ public class AppBusinessManager {
 				|| (curTime - pref.getLastSyncBusinessTime()) > DELAY_12_HOUR) {
 
 			HttpRequestAgent.getInstance(mContext).loadRecomApp(
-					BusinessItemInfo.CONTAIN_BUSINESS_FOLDER,
+					BusinessItemInfo.CONTAIN_APPLIST,
 					new Listener<JSONObject>() {
 
 						@Override
@@ -199,11 +202,12 @@ public class AppBusinessManager {
 												.currentTimeMillis());
 										List<BusinessItemInfo> list = BusinessJsonParser
 												.parserJsonObject(mContext,
-														response);
+														response, BusinessItemInfo.CONTAIN_APPLIST);
 										if (!noModify) {
+											// to paser data
 											LeoLog.e("trySyncServerData",
 													list.toString());
-											syncLocalData(
+											syncApplistData(
 													BusinessItemInfo.CONTAIN_APPLIST,
 													list);
 										} else {
@@ -215,7 +219,7 @@ public class AppBusinessManager {
 									TimerTask recheckTask = new TimerTask() {
 										@Override
 										public void run() {
-											trySyncServerData();
+											syncServerAppListData();
 										}
 									};
 									Timer timer = new Timer();
@@ -227,7 +231,7 @@ public class AppBusinessManager {
 									TimerTask recheckTask = new TimerTask() {
 										@Override
 										public void run() {
-											trySyncServerData();
+											syncServerAppListData();
 										}
 									};
 									Timer timer = new Timer();
@@ -243,7 +247,7 @@ public class AppBusinessManager {
 							TimerTask recheckTask = new TimerTask() {
 								@Override
 								public void run() {
-									trySyncServerData();
+									syncServerAppListData();
 								}
 							};
 							Timer timer = new Timer();
@@ -251,10 +255,75 @@ public class AppBusinessManager {
 						}
 					});
 		}
-
 	}
 
-	protected void syncLocalData(final int containerType,
+	private void syncOtherRecommend(final int type) {
+		HttpRequestAgent.getInstance(mContext).loadRecomApp(type,
+				new Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response, boolean noModify) {
+						if (response != null) {
+							try {
+								if (response != null) {
+									if (!noModify) {
+										List<BusinessItemInfo> list = BusinessJsonParser
+												.parserJsonObject(mContext,
+														response, type);
+										LeoLog.e("syncRecommendData",
+												list.toString());
+										syncOtherRecommendData(type, list);
+									} else {
+										LeoLog.e("trySyncServerData",
+												"noModify");
+									}
+								}
+
+								TimerTask recheckTask = new TimerTask() {
+									@Override
+									public void run() {
+										syncOtherRecommend(type);
+									}
+								};
+								Timer timer = new Timer();
+								timer.schedule(recheckTask, DELAY_12_HOUR);
+
+							} catch (Exception e) {
+								e.printStackTrace();
+								LeoLog.e("syncServerData", e.getMessage());
+								TimerTask recheckTask = new TimerTask() {
+									@Override
+									public void run() {
+										syncOtherRecommend(type);
+									}
+								};
+								Timer timer = new Timer();
+								timer.schedule(recheckTask, DELAY_2_HOUR);
+							}
+						}
+					}
+
+				}, new ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						LeoLog.e("syncServerData", error.getMessage());
+						TimerTask recheckTask = new TimerTask() {
+							@Override
+							public void run() {
+								syncOtherRecommend(type);
+							}
+						};
+						Timer timer = new Timer();
+						timer.schedule(recheckTask, DELAY_2_HOUR);
+					}
+				});
+	}
+
+	private void syncOtherRecommendData(int type,
+			List<BusinessItemInfo> list) {
+		mBusinessList.addAll(list);
+	}
+	
+	protected void syncApplistData(final int containerType,
 			final List<BusinessItemInfo> list) {
 		mExecutorService.execute(new Runnable() {
 			@Override
