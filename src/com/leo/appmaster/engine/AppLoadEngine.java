@@ -267,6 +267,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 				for (ResolveInfo resolveInfo : apps) {
 					ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
 					String packageName = applicationInfo.packageName;
+					if (packageName.equals(mContext.getPackageName()))
+						continue;
 					AppItemInfo appInfo = new AppItemInfo();
 					appInfo.type = BaseInfo.ITEM_TYPE_NORMAL_APP;
 					loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
@@ -690,7 +692,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 				mAppDetails.clear();
 				mAppsLoaded = false;
 				loadAllPkgInfo();
-				AppMasterApplication.getInstance().getBuckupManager().resetList();
+				AppMasterApplication.getInstance().getBuckupManager()
+						.resetList();
 				break;
 
 			}
