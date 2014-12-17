@@ -44,11 +44,11 @@ import android.graphics.drawable.BitmapDrawable;
  */
 public class AppBusinessManager {
 
-	// private static final int DELAY_2_HOUR = 2 * 60 * 60 * 1000;
-	// public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
+	 private static final int DELAY_2_HOUR = 2 * 60 * 60 * 1000;
+	 public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
 
-	private static final int DELAY_2_HOUR = 5 * 1000;
-	public static final int DELAY_12_HOUR = 5 * 1000;
+//	private static final int DELAY_2_HOUR = 5 * 1000;
+//	public static final int DELAY_12_HOUR = 5 * 1000;
 
 	/**
 	 * applist business data change listener

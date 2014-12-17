@@ -326,9 +326,9 @@ public class AppMasterApplication extends Application implements
 	public static void initImageLoader(Context context) {
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				context).threadPriority(Thread.NORM_PRIORITY)
-				.memoryCacheSizePercentage(10)
+				.memoryCacheSizePercentage(3)
 				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
-				.diskCacheSize(50 * 1024 * 1024)
+				.diskCacheSize(100 * 1024 * 1024)
 				.tasksProcessingOrder(QueueProcessingType.FIFO)
 				.writeDebugLogs().build();
 		ImageLoader.getInstance().init(config);
