@@ -120,8 +120,9 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		commonOption = new DisplayImageOptions.Builder()
 				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
 				.showImageOnLoading(R.drawable.recommend_loading_icon)
-				.showImageOnFail(R.drawable.recommend_loading_icon).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
+				.showImageOnFail(R.drawable.recommend_loading_icon)
+				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
+				.build();
 
 		mHandler = new EventHandler(this);
 		mInflater = LayoutInflater.from(mActivity);
@@ -352,16 +353,15 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.app_item, null);
-			}
+			// if (convertView == null) {
+			convertView = mInflater.inflate(R.layout.app_item, null);
+			// }
 
 			LockImageView imageView = (LockImageView) convertView
 					.findViewById(R.id.iv_app_icon);
 			TextView textView = (TextView) convertView
 					.findViewById(R.id.tv_app_name);
 			BusinessItemInfo info = mRecommendDatas.get(position);
-
 			ImageLoader.getInstance().displayImage(info.iconUrl, imageView,
 					commonOption);
 			textView.setText(info.label);
