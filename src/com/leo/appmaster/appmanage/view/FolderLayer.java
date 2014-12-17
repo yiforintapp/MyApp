@@ -122,7 +122,7 @@ public class FolderLayer {
 			}
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				mBrotherView.setVisibility(View.INVISIBLE);
+				mBrotherView.setVisibility(View.GONE);
 			}
 		});
 		as2.addAnimation(sa2);
@@ -162,7 +162,7 @@ public class FolderLayer {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				super.onAnimationEnd(animation);
-				mFolderView.setVisibility(View.INVISIBLE);
+				mFolderView.setVisibility(View.GONE);
 				mIsOpened = false;
 				mIsAnimating = false;
 				if (mOnFolderClosedListener != null) {

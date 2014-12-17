@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
+import android.telecom.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,6 +57,7 @@ import com.leo.appmaster.ui.LeoGridBaseAdapter;
 import com.leo.appmaster.ui.PageIndicator;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
@@ -267,6 +269,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onBackPressed() {
+
 		if (mSlicingLayer.isSlicinged()) {
 			mSlicingLayer.closeSlicing();
 			return;
@@ -276,7 +279,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mFolderLayer.closeFloder();
 			return;
 		}
-
 		if (mFromStatusbar) {
 			Intent intent = new Intent(this, HomeActivity.class);
 			this.startActivity(intent);
@@ -312,7 +314,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.uninstall_backup);
-		mTtileBar.openBackView();
+		// mTtileBar.openBackView();
+		mTtileBar.setBackViewListener(this);
 		mTtileBar.setOptionTextVisibility(View.INVISIBLE);
 
 		mAllAppList = findViewById(R.id.applist);
@@ -354,8 +357,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 		// second, add business items
 		mBusinessItems = loadBusinessData();
-		if(mBusinessItems != null) {
-		      mAllItems.addAll(mBusinessItems);
+		if (mBusinessItems != null) {
+			mAllItems.addAll(mBusinessItems);
 		}
 
 		// third, add all local apps
@@ -590,6 +593,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 			case R.id.uninstall:
 				AppUtil.uninstallApp(this,
 						((AppItemInfo) mLastSelectedInfo).packageName);
+				break;
+			case R.id.layout_title_back:
+				if (!mSlicingLayer.isSlicinged()
+						&& !mFolderLayer.isFolderOpened()) {
+					finish();
+				}
 				break;
 
 			default:
