@@ -103,16 +103,9 @@ public class HttpRequestAgent {
 	 */
 	public void loadRecomApp(int type, Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = Constants.APP_RECOMMEND_URL;
-		List<String> hideThemes = AppMasterPreference.getInstance(mContext)
-				.getHideThemeList();
-		String combined = "";
-		for (String string : hideThemes) {
-			combined = combined + string + ";";
-		}
-		String body = "re_position=" + type + "&market_id="
-				+ mContext.getString(R.string.channel_code) + "&language="
-				+ AppwallHttpUtil.getLanguage();
+		String url = Constants.APP_RECOMMEND_URL + "?re_position=" + type;
+		String body = "&market_id=" + mContext.getString(R.string.channel_code)
+				+ "&language=" + AppwallHttpUtil.getLanguage();
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
 				body, listener, eListener);
 		request.setShouldCache(true);
@@ -127,11 +120,11 @@ public class HttpRequestAgent {
 	 */
 	public void loadBusinessRecomApp(int page, Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = Constants.APP_RECOMMEND_URL;
-		String body = "re_position=" + 4 + "&market_id="
-				+ mContext.getString(R.string.channel_code) + "&language="
-				+ AppwallHttpUtil.getLanguage() + "&pgcurrent=" + page
-				+ "&pgsize=" + 40;
+		String url = Constants.APP_RECOMMEND_URL + "?re_position=4"
+				+ "&pgcurrent=" + page;
+		String body = "&market_id=" + mContext.getString(R.string.channel_code)
+				+ "&language=" + AppwallHttpUtil.getLanguage() + "&pgsize="
+				+ 40;
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
 				body, listener, eListener);
 		request.setShouldCache(false);

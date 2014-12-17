@@ -586,34 +586,18 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	private void getFolderData() {
-
-		// filter loacal app
-		checkInstalledFormBusinessApp();
-
-		int contentMaxCount = mPageItemCount;
 		List<AppItemInfo> tempList = new ArrayList<AppItemInfo>(mAppDetails);
 		// load folw sort data
 		Collections.sort(tempList, new FlowComparator());
-		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_FLOW_SORT);
-		contentMaxCount = flowDataReccommendData.size() > 0 ? contentMaxCount - 4
-				: contentMaxCount;
 		mFlowFolderData = tempList.subList(0,
-				tempList.size() < contentMaxCount ? tempList.size()
-						: contentMaxCount);
-
+				tempList.size() < mPageItemCount ? tempList.size()
+						: mPageItemCount);
 		// load capacity sort data
-		contentMaxCount = mPageItemCount;
-		List<AppItemInfo> tempList1 = new ArrayList<AppItemInfo>(mAppDetails);
-		LeoLog.e("1", tempList1.toString());
-		Collections.sort(tempList1, new CapacityComparator());
-		LeoLog.e("1", tempList1.toString());
-		List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
-		contentMaxCount = capacityReccommendData.size() > 0 ? contentMaxCount - 4
-				: contentMaxCount;
-		mCapacityFolderData = tempList1.subList(0,
-				tempList1.size() < contentMaxCount ? tempList1.size()
-						: contentMaxCount);
-
+		tempList = new ArrayList<AppItemInfo>(mAppDetails);
+		Collections.sort(tempList, new CapacityComparator());
+		mCapacityFolderData = tempList.subList(0,
+				tempList.size() < mPageItemCount ? tempList.size()
+						: mPageItemCount);
 		// load restore sort data
 		ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
 		mRestoreFolderData = temp.subList(0, temp.size());
@@ -621,15 +605,46 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	private void fillFolder() {
+		// filter loacal app
+		checkInstalledFormBusinessApp();
+
+		// fill restore folder
+		Collections.sort(mRestoreFolderData, new BackupItemComparator());
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
 				mRestoreFolderData, null);
 
+		// fill flow folder
+		int contentMaxCount = mPageItemCount;
 		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_FLOW_SORT);
+		int flowBusinessCount = flowDataReccommendData.size();
+		contentMaxCount = flowBusinessCount > 0 ? contentMaxCount - 4
+				: contentMaxCount;
+		mFolderLayer
+				.updateFolderData(
+						FolderItemInfo.FOLDER_FLOW_SORT,
+						mFlowFolderData.subList(
+								0,
+								mFlowFolderData.size() < contentMaxCount ? mFlowFolderData
+										.size() : contentMaxCount),
+						flowDataReccommendData.subList(0,
+								flowBusinessCount <= 4 ? flowBusinessCount : 4));
+
+		// fill capacity folder
+		contentMaxCount = mPageItemCount;
 		List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
-		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_FLOW_SORT,
-				mFlowFolderData, flowDataReccommendData);
-		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_CAPACITY_SORT,
-				mCapacityFolderData, capacityReccommendData);
+		int capacityBusinessCount = capacityReccommendData.size();
+		contentMaxCount = capacityBusinessCount > 0 ? contentMaxCount - 4
+				: contentMaxCount;
+		mFolderLayer
+				.updateFolderData(
+						FolderItemInfo.FOLDER_CAPACITY_SORT,
+						mCapacityFolderData.subList(
+								0,
+								mCapacityFolderData.size() <= contentMaxCount ? mCapacityFolderData
+										.size() : contentMaxCount),
+						capacityReccommendData.subList(0,
+								flowBusinessCount <= 4 ? flowBusinessCount : 4));
+
 	}
 
 	private void checkInstalledFormBusinessApp() {
