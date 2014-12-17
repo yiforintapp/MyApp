@@ -50,9 +50,10 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 		mImageLoader = ImageLoader.getInstance();
 		mDisplayerOption = new DisplayImageOptions.Builder()
 				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-				.showImageOnLoading(R.drawable.default_icon)
-				.showImageOnFail(R.drawable.default_icon).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
+				.showImageOnLoading(R.drawable.recommend_loading_icon)
+				.showImageOnFail(R.drawable.recommend_loading_icon)
+				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
+				.build();
 
 		mInflater = LayoutInflater.from(mActivity);
 		mHolder = findViewById(R.id.holder);

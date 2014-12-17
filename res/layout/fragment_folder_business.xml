@@ -17,6 +17,7 @@
             android:layout_marginRight="8dp"
             android:gravity="fill"
             android:horizontalSpacing="3dp"
+            android:scrollbars="none"
             android:listSelector="@drawable/selector_app_item"
             android:numColumns="4"
             android:paddingTop="5dp"

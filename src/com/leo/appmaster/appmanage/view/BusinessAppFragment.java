@@ -119,8 +119,8 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	protected void onInitUI() {
 		commonOption = new DisplayImageOptions.Builder()
 				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-				.showImageOnLoading(R.drawable.default_icon)
-				.showImageOnFail(R.drawable.default_icon).cacheInMemory(true)
+				.showImageOnLoading(R.drawable.recommend_loading_icon)
+				.showImageOnFail(R.drawable.recommend_loading_icon).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
 
 		mHandler = new EventHandler(this);

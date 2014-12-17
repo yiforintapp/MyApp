@@ -138,7 +138,6 @@ public class AppBusinessManager {
 							} while (c.moveToNext());
 							c.close();
 						}
-						LeoLog.e("xxxx", mBusinessList.toString());
 						mInitDataLoaded = true;
 						loadAppIcon();
 						return mBusinessList;
@@ -179,7 +178,6 @@ public class AppBusinessManager {
 	}
 
 	private void syncServerAppListData() {
-
 		final AppMasterPreference pref = AppMasterPreference
 				.getInstance(mContext);
 		long curTime = System.currentTimeMillis();
@@ -201,8 +199,10 @@ public class AppBusinessManager {
 										pref.setLastSyncBusinessTime(System
 												.currentTimeMillis());
 										List<BusinessItemInfo> list = BusinessJsonParser
-												.parserJsonObject(mContext,
-														response, BusinessItemInfo.CONTAIN_APPLIST);
+												.parserJsonObject(
+														mContext,
+														response,
+														BusinessItemInfo.CONTAIN_APPLIST);
 										if (!noModify) {
 											// to paser data
 											LeoLog.e("trySyncServerData",
@@ -265,17 +265,17 @@ public class AppBusinessManager {
 						if (response != null) {
 							try {
 								if (response != null) {
+									List<BusinessItemInfo> list = BusinessJsonParser
+											.parserJsonObject(mContext,
+													response, type);
 									if (!noModify) {
-										List<BusinessItemInfo> list = BusinessJsonParser
-												.parserJsonObject(mContext,
-														response, type);
-										LeoLog.e("syncRecommendData",
+										LeoLog.e("syncOtherRecommend",
 												list.toString());
-										syncOtherRecommendData(type, list);
 									} else {
-										LeoLog.e("trySyncServerData",
+										LeoLog.e("syncOtherRecommend",
 												"noModify");
 									}
+									syncOtherRecommendData(type, list, noModify);
 								}
 
 								TimerTask recheckTask = new TimerTask() {
@@ -318,11 +318,18 @@ public class AppBusinessManager {
 				});
 	}
 
-	private void syncOtherRecommendData(int type,
-			List<BusinessItemInfo> list) {
+	private void syncOtherRecommendData(int type, List<BusinessItemInfo> list,
+			boolean noModify) {
+		List<BusinessItemInfo> removeList = new ArrayList<BusinessItemInfo>();
+		for (BusinessItemInfo businessItemInfo : mBusinessList) {
+			if (businessItemInfo.containType == type) {
+				removeList.add(businessItemInfo);
+			}
+		}
+		mBusinessList.removeAll(removeList);
 		mBusinessList.addAll(list);
 	}
-	
+
 	protected void syncApplistData(final int containerType,
 			final List<BusinessItemInfo> list) {
 		mExecutorService.execute(new Runnable() {
