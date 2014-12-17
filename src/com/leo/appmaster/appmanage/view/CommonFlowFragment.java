@@ -70,6 +70,8 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 
 		mContentGrid.setOnItemClickListener(this);
 		mRecommendGrid.setOnItemClickListener(this);
+		
+		updateUI();
 	}
 
 	public void updateData(List<AppItemInfo> contentData,
@@ -78,18 +80,28 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 		mContentData = contentData;
 		mRecommendData = reccommendData;
 
-		mContentAdapter = new ContentAdapter(contentData);
-		if(mContentGrid != null) {
-		      mContentGrid.setAdapter(mContentAdapter);
+		updateUI();
+	}
+	
+	private void updateUI() {
+	    if(mContentData != null) {
+	        mContentAdapter = new ContentAdapter(mContentData);
+	        if(mContentGrid != null) {
+	               mContentGrid.setAdapter(mContentAdapter);
+	        }
+	    }
 
-		        if (mRecommendData != null && !mRecommendData.isEmpty()) {
-		            mRecommendLayout.setVisibility(View.VISIBLE);
-		            mRecommendAdapter = new RecommendAdapter(reccommendData);
-		            mRecommendGrid.setAdapter(mRecommendAdapter);
-		        } else {
-		            mRecommendLayout.setVisibility(View.INVISIBLE);
-		        }
-		}
+        if (mRecommendData != null && !mRecommendData.isEmpty()) {
+            mRecommendAdapter = new RecommendAdapter(mRecommendData);
+            if(mRecommendLayout != null) {
+                mRecommendLayout.setVisibility(View.VISIBLE);
+                mRecommendGrid.setAdapter(mRecommendAdapter);
+            }
+        } else {
+            if(mRecommendLayout != null) {
+                mRecommendLayout.setVisibility(View.INVISIBLE);
+            }
+        }
 	}
 
 	@Override
