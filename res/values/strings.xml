@@ -282,6 +282,6 @@
     <string name="backup_time">Backup date: </string>
     <string name="app_size ">APK file size: </string>
     <string name="version">Version: </string>
-    <string name="install_time">%1$ days from now</string>
+    <string name="install_time"><xliff:g id="day">%1$s</xliff:g>&#160;days from now</string>
 
 </resources>
