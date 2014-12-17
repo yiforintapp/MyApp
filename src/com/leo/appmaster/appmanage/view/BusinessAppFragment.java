@@ -146,6 +146,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		mRecommendDatas = new ArrayList<BusinessItemInfo>();
 		mRecommendAdapter = new RecommendAdapter();
 		mRecommendGrid.setAdapter(mRecommendAdapter);
+		mRecommendGrid.setScrollbarFadingEnabled(false);
 		mRecommendGrid.setOnRefreshListener(this);
 		mRecommendGrid.setOnItemClickListener(this);
 		mRecommendGrid.setOnClickListener(new OnClickListener() {
