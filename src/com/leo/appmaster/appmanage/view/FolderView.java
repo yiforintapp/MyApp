@@ -218,7 +218,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 				reusableView = new TextView(getContext());
 				reusableView
 						.setLayoutParams(new FolderTitleGallery.LayoutParams(
-								folderTitleItemSize, 80));
+								folderTitleItemSize, 85));
 			}
 			TextView textView = (TextView) reusableView;
 
