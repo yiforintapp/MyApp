@@ -30,6 +30,7 @@ public class CommonFolderFragment extends BaseFolderFragment implements
 	private GridView mContentGrid;
 	private View mRecommendLayout, mHolder;
 	private GridView mRecommendGrid;
+	private View mEmptyTip;
 
 	private List<AppItemInfo> mContentData;
 	private List<BusinessItemInfo> mRecommendData;
@@ -66,10 +67,10 @@ public class CommonFolderFragment extends BaseFolderFragment implements
 		mContentGrid = (GridView) findViewById(R.id.content_gridview);
 		mRecommendLayout = findViewById(R.id.recommend_layout);
 		mRecommendGrid = (GridView) findViewById(R.id.recommend_gridview);
-
+		mEmptyTip = findViewById(R.id.empty_tip);
 		mContentGrid.setOnItemClickListener(this);
 		mRecommendGrid.setOnItemClickListener(this);
-		
+
 		updateUI();
 	}
 
@@ -81,26 +82,33 @@ public class CommonFolderFragment extends BaseFolderFragment implements
 
 		updateUI();
 	}
-	
-	private void updateUI() {
-	    if(mContentData != null) {
-	        mContentAdapter = new ContentAdapter(mContentData);
-	        if(mContentGrid != null) {
-	               mContentGrid.setAdapter(mContentAdapter);
-	        }
-	    }
 
-        if (mRecommendData != null && !mRecommendData.isEmpty()) {
-            mRecommendAdapter = new RecommendAdapter(mRecommendData);
-            if(mRecommendLayout != null) {
-                mRecommendLayout.setVisibility(View.VISIBLE);
-                mRecommendGrid.setAdapter(mRecommendAdapter);
-            }
-        } else {
-            if(mRecommendLayout != null) {
-                mRecommendLayout.setVisibility(View.INVISIBLE);
-            }
-        }
+	private void updateUI() {
+		if (mContentData != null && !mContentData.isEmpty()) {
+			mContentAdapter = new ContentAdapter(mContentData);
+			if (mContentGrid != null) {
+				mContentGrid.setAdapter(mContentAdapter);
+			}
+			mContentGrid.setVisibility(View.VISIBLE);
+			mEmptyTip.setVisibility(View.INVISIBLE);
+		} else {
+			mContentGrid.setVisibility(View.INVISIBLE);
+			if (mType == BaseFolderFragment.FOLER_TYPE_BACKUP) {
+				mEmptyTip.setVisibility(View.VISIBLE);
+			}
+		}
+
+		if (mRecommendData != null && !mRecommendData.isEmpty()) {
+			mRecommendAdapter = new RecommendAdapter(mRecommendData);
+			if (mRecommendLayout != null) {
+				mRecommendLayout.setVisibility(View.VISIBLE);
+				mRecommendGrid.setAdapter(mRecommendAdapter);
+			}
+		} else {
+			if (mRecommendLayout != null) {
+				mRecommendLayout.setVisibility(View.INVISIBLE);
+			}
+		}
 	}
 
 	@Override

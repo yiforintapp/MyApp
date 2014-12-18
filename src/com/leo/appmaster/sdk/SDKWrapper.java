@@ -10,10 +10,11 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.push.PushManager;
 import com.leoers.leoanalytics.LeoStat;
 
 public class SDKWrapper {
-    
+
     private final static String TAG = "SDKWrapper";
 
     /**
@@ -25,7 +26,20 @@ public class SDKWrapper {
     public static void iniSDK(Context ctx) {
         iniLeoSdk(ctx.getApplicationContext());
         /* try initiate BaiduMTJ in AndroidManifest.xml */
-//        iniBaidu(ctx);
+        // iniBaidu(ctx);
+        iniPushSDK(ctx);
+    }
+
+    private static void iniPushSDK(Context ctx) {
+        /* TODO: change this from Log.DEBUG to Log.ERROR when release */
+        PushManager.getInstance(ctx).setDebugLevel(Log.DEBUG);
+        try {
+            int resId = ctx.getResources().getIdentifier("ic_launcher", "drawable", ctx.getPackageName());
+            PushManager.getInstance(ctx).setIcon(resId);
+        } catch (NotFoundException e) {
+            LeoLog.e(TAG, "failed to get ICON");
+        }
+        PushManager.getInstance(ctx).startPush(ctx.getString(R.string.channel_code), "privacylock");
     }
 
     /**
@@ -62,7 +76,7 @@ public class SDKWrapper {
                 true);
         LeoStat.initPushEngine(PushUIHelper.getInstance(ctx));
     }
-    
+
     // private static void iniBaidu(Context ctx) {
     // // TODO: use release Key when release
     // StatService.setAppKey("88ce739ea6"); // debug Key

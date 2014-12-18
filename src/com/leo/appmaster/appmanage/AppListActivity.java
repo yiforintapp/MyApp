@@ -52,6 +52,7 @@ import com.leo.appmaster.model.FolderItemInfo;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoAppViewPager;
+import com.leo.appmaster.ui.LeoAppViewPager.OnPageChangeListener;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.ui.LeoGridBaseAdapter;
 import com.leo.appmaster.ui.PageIndicator;
@@ -62,7 +63,8 @@ import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
 
 public class AppListActivity extends BaseFragmentActivity implements
-		AppChangeListener, OnClickListener, AppBackupDataListener {
+		AppChangeListener, OnClickListener, AppBackupDataListener,
+		OnPageChangeListener {
 
 	private View mContainer;
 	private View mLoadingView;
@@ -78,6 +80,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private CommonSclingContentViewHolder mCommenScilingHolder;
 	private BackupContentViewHolder mBackupScilingHolder;
 	private LayoutInflater mInflater;
+	private ViewGroup mPager1;
 
 	private List<BaseInfo> mAllItems;
 	private List<FolderItemInfo> mFolderItems;
@@ -85,12 +88,13 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private List<AppItemInfo> mAppDetails;
 	private BaseInfo mLastSelectedInfo;
 	private int mPageItemCount = 20;
+	private int mCurrentPage = -1;
 	private AppBackupRestoreManager mBackupManager;
 
 	private OnItemClickListener mListItemClickListener;
-	private List<AppItemInfo> mRestoreFolderData;
-	private List<AppItemInfo> mCapacityFolderData;
-	private List<AppItemInfo> mFlowFolderData;
+	private Vector<AppItemInfo> mRestoreFolderData;
+	private Vector<AppItemInfo> mCapacityFolderData;
+	private Vector<AppItemInfo> mFlowFolderData;
 
 	private static final int MSG_BACKUP_SUCCESSFUL = 1000;
 	private static final int MSG_BACKUP_DELETE = 1001;
@@ -98,6 +102,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private LEOProgressDialog mProgressDialog;
 	private Handler mHandler = new Handler();
 	private boolean mFromStatusbar;
+	private boolean mOpenedBusinessFolder;
+
+	// private View mBusinessFolderView;
 
 	private static class CommonSclingContentViewHolder {
 		TextView installTime;
@@ -128,14 +135,24 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mBackupManager = AppMasterApplication.getInstance().getBuckupManager();
 		mBackupManager.registerBackupListener(this);
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
-		intiUI();
-		fillAppListData();		
+		initUI();
+		fillAppListData();
 	}
 
 	@Override
 	protected void onResume() {
-		super.onResume();
 		mBackupManager.checkDataUpdate();
+		super.onResume();
+		if (mFromStatusbar && !mOpenedBusinessFolder) {
+			mContainer.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					handleItemClick(mPager1.getChildAt(3),
+							SlicingLayer.SLICING_FROM_APPLIST);
+					mOpenedBusinessFolder = true;
+				}
+			}, 0);
+		}
 	}
 
 	public void openSlicingLayer(View view, int from) {
@@ -286,8 +303,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 		super.onBackPressed();
 	}
 
-	
-	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -300,7 +315,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	}
 
-	private void intiUI() {
+	private void initUI() {
 		mInflater = getLayoutInflater();
 		mListItemClickListener = new OnItemClickListener() {
 			@Override
@@ -386,10 +401,26 @@ public class AppListActivity extends BaseFragmentActivity implements
 			}
 			gridView.setOnItemClickListener(mListItemClickListener);
 			viewList.add(gridView);
+			if (i == 0) {
+				mPager1 = gridView;
+			}
+		}
+		if (mCurrentPage != -1) {
+			if ((pageCount - 1) < mCurrentPage) {
+				mCurrentPage = pageCount - 1;
+				if (mCurrentPage < 0) {
+					mCurrentPage = 0;
+				}
+			}
+		} else {
+			mCurrentPage = 0;
 		}
 		mViewPager.setAdapter(new DataPagerAdapter(viewList));
 		mPageIndicator.setViewPager(mViewPager);
+		mViewPager.setCurrentItem(mCurrentPage);
+		mPageIndicator.setOnPageChangeListener(this);
 		mPagerContain.setVisibility(View.VISIBLE);
+
 	}
 
 	/**
@@ -455,7 +486,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			public void onAnimationEnd(Animator arg0) {
 				switch (mLastSelectedInfo.type) {
 				case BaseInfo.ITEM_TYPE_NORMAL_APP:
-					
+
 					openSlicingLayer(view, from);
 					break;
 				case BaseInfo.ITEM_TYPE_FOLDER:
@@ -581,7 +612,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	}
 
-    
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -619,6 +649,11 @@ public class AppListActivity extends BaseFragmentActivity implements
 			if (!mSlicingLayer.isSlicinged() && !mFolderLayer.isFolderOpened()) {
 				finish();
 			}
+
+			if (mFromStatusbar) {
+				Intent intent = new Intent(this, HomeActivity.class);
+				this.startActivity(intent);
+			}
 			break;
 
 		default:
@@ -635,21 +670,24 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	private void getFolderData() {
 		List<AppItemInfo> tempList = new ArrayList<AppItemInfo>(mAppDetails);
+
 		// load folw sort data
 		Collections.sort(tempList, new FlowComparator());
-		mFlowFolderData = tempList.subList(0,
-				tempList.size() < mPageItemCount ? tempList.size()
-						: mPageItemCount);
+		mFlowFolderData = new Vector<AppItemInfo>(tempList.subList(0, tempList
+				.size() < mPageItemCount ? tempList.size() : mPageItemCount));
+
 		// load capacity sort data
 		tempList = new ArrayList<AppItemInfo>(mAppDetails);
 		Collections.sort(tempList, new CapacityComparator());
-		mCapacityFolderData = tempList.subList(0,
+		mCapacityFolderData = new Vector<AppItemInfo>(tempList.subList(0,
 				tempList.size() < mPageItemCount ? tempList.size()
-						: mPageItemCount);
+						: mPageItemCount));
+
 		// load restore sort data
 		ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
-		mRestoreFolderData = temp.subList(0, temp.size());
-		Collections.sort(mRestoreFolderData, new BackupItemComparator());
+		Collections.sort(temp, new BackupItemComparator());
+		mRestoreFolderData = new Vector<AppItemInfo>(temp.subList(0,
+				temp.size()));
 	}
 
 	private void fillFolder() {
@@ -741,6 +779,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 				}
 			}
 		}
+
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -835,7 +874,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private void updateRestoreData() {
 		// load restore sort data
 		ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
-		mRestoreFolderData = temp.subList(0, temp.size());
+		// mRestoreFolderData = temp.subList(0, temp.size());
+		mRestoreFolderData = new Vector<AppItemInfo>(temp.subList(0,
+				temp.size()));
 		Collections.sort(mRestoreFolderData, new BackupItemComparator());
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
 				mRestoreFolderData, null);
@@ -936,5 +977,20 @@ public class AppListActivity extends BaseFragmentActivity implements
 		private String trimString(String s) {
 			return s.replaceAll("\u00A0", "").trim();
 		}
+	}
+
+	@Override
+	public void onPageScrolled(int position, float positionOffset,
+			int positionOffsetPixels) {
+	}
+
+	@Override
+	public void onPageSelected(int position) {
+		mCurrentPage = position;
+		LeoLog.d("xxxx", "position = " + position);
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int state) {
 	}
 }

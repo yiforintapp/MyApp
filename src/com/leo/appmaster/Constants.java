@@ -168,7 +168,8 @@ public class Constants {
 			+ MediaColumns.DATA + " LIKE '%.3gp'" + " or " + MediaColumns.DATA
 			+ " LIKE '%.asf'" + " or " + MediaColumns.DATA + " LIKE '%.m4v'"
 			+ " or " + MediaColumns.DATA + " LIKE '%.rmvb'" + " or "
-			+ MediaColumns.DATA + " LIKE '%.mkv'" + " or " + MediaColumns.DATA + " LIKE '%.ts'" ;
+			+ MediaColumns.DATA + " LIKE '%.mkv'" + " or " + MediaColumns.DATA
+			+ " LIKE '%.ts'";
 	public static final String VIDEO_PLUS_GP_URL = "https://play.google.com/store/apps/details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01market://details?id= com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
 	public static final String VIDEO_PLUS_GP = "market://details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
 
@@ -177,5 +178,8 @@ public class Constants {
 	 */
 	public static final String APP_RECOMMEND_URL = "http://192.168.1.201:8080/leo/appmaster/apprecommend/list";
 	public static final String CHECK_NEW_BUSINESS_APP = "http://192.168.1.201:8080/leo/appmaster/apprecommend/checkappupdate";
+
+	public static final int TIME_2_HOUR = 2 * 60 * 60 * 1000;
+	public static final int TIME_12_HOUR = 12 * 60 * 60 * 1000;
 
 }

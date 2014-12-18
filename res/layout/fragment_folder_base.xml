@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="其他人正在使用"
+                android:text="@string/other_people_use_tip"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -60,6 +60,30 @@
             android:paddingTop="5dp"
             android:verticalSpacing="5dp" >
         </GridView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/empty_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible" >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/empty_icon" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/no_backup_app_tip" />
     </LinearLayout>
 
 </RelativeLayout>
