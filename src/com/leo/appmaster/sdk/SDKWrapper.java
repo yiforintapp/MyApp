@@ -2,6 +2,7 @@
 package com.leo.appmaster.sdk;
 
 import android.content.Context;
+import android.content.res.Resources.NotFoundException;
 import android.util.Log;
 
 import com.baidu.mobstat.StatService;
@@ -48,8 +49,13 @@ public class SDKWrapper {
     }
 
     private static void iniLeoSdk(Context ctx) {
-        LeoStat.init(ctx, ctx.getString(R.string.channel_code),
-                "appmaster");
+        try {
+            LeoStat.init(ctx, ctx.getString(R.string.channel_code),
+                    "appmaster");
+        } catch (NotFoundException e) {
+            /* this happened rarely, but got a user feedback AM-593 */
+            LeoStat.init(ctx, "0000a", "appmaster");
+        }
         // TODO: change log level to ERROR when release
         LeoStat.setDebugLevel(Log.VERBOSE);
         LeoStat.initUpdateEngine(UIHelper.getInstance(ctx),
