@@ -38,7 +38,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView1"
-            android:text="@string/memory_consumption"
+            android:text="@string/space_consumption"
             android:textColor="@color/white" />
 
         <TextView

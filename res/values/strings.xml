@@ -273,7 +273,7 @@
     <string name="no_more_business_app">No new applications, look back over time  </string>
     <string name="uninstall_backup">Uninstall Backup</string>
     <string name="delete_successfully">Delete Successfully!</string>
-    <string name="space_consumption">Storage Killer: </string>
+    <string name="space_consumption">Storage Used: </string>
     <string name="cache_size">Cache： </string>
     <string name="power_consumption">Battery Usage: </string>
     <string name="flow_consumption">Net Flow Usage: </string>
