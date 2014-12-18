@@ -52,6 +52,7 @@ import com.leo.appmaster.model.FolderItemInfo;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoAppViewPager;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.ui.LeoGridBaseAdapter;
 import com.leo.appmaster.ui.PageIndicator;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
@@ -138,8 +139,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public void openSlicingLayer(View view, int from) {
-		if(mSlicingLayer.isAnimating() || mSlicingLayer.isSlicinged())
-			return ;
+		if (mSlicingLayer.isAnimating() || mSlicingLayer.isSlicinged())
+			return;
 		mSclingBgView = mContainer;
 		AppItemInfo appinfo = (AppItemInfo) view.getTag();
 		if (from != BaseFolderFragment.FOLER_TYPE_BACKUP) {
@@ -182,9 +183,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mCommenScilingHolder.installTime.setText(getString(
 					R.string.install_time, day));
 
+			LeoLog.d(appinfo.label, appinfo.cacheInfo.toString());
 			mCommenScilingHolder.capacity.setText(TextFormater
-					.dataSizeFormat(appinfo.cacheInfo.total
-							+ appinfo.cacheInfo.total));
+					.dataSizeFormat(appinfo.cacheInfo.total));
 
 			mCommenScilingHolder.cache.setText(TextFormater
 					.dataSizeFormat(appinfo.cacheInfo.cacheSize));
@@ -578,48 +579,47 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	@Override
-	public void onClick(View v) {		
+	public void onClick(View v) {
 		switch (v.getId()) {
-            case R.id.backup:
-                if (mLastSelectedInfo instanceof AppItemInfo) {
-                    AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
-                    showProgressDialog(getString(R.string.button_backup),
-                            String.format(getString(R.string.backuping),
-                                    pending.label), 100, false, true, false);
-                    mBackupManager.backupApp(pending);
-                }
-                break;
-            case R.id.restore:
-                if (mLastSelectedInfo instanceof AppItemInfo) {
-                    AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
-                    mBackupManager.restoreApp(this, pending);
-                }
-                break;
-            case R.id.delete:
-                if (mLastSelectedInfo instanceof AppItemInfo) {
-                    AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
-                    showProgressDialog(getString(R.string.delete), String.format(
-                        getString(R.string.deleting_app), pending.label), 0,
-                        true, false, false);
-                   mBackupManager.deleteApp(pending);
-                }
-                break;
-            case R.id.uninstall:
-                if (mLastSelectedInfo instanceof AppItemInfo) {
-                    AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
-                    AppUtil.uninstallApp(this, pending.packageName);
-                }
-                break;
-            case R.id.layout_title_back:
-                if (!mSlicingLayer.isSlicinged()
-                        && !mFolderLayer.isFolderOpened()) {
-                    finish();
-                }
-                break;
+		case R.id.backup:
+			if (mLastSelectedInfo instanceof AppItemInfo) {
+				AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
+				showProgressDialog(getString(R.string.button_backup),
+						String.format(getString(R.string.backuping),
+								pending.label), 100, false, true, false);
+				mBackupManager.backupApp(pending);
+			}
+			break;
+		case R.id.restore:
+			if (mLastSelectedInfo instanceof AppItemInfo) {
+				AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
+				mBackupManager.restoreApp(this, pending);
+			}
+			break;
+		case R.id.delete:
+			if (mLastSelectedInfo instanceof AppItemInfo) {
+				AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
+				showProgressDialog(getString(R.string.delete), String.format(
+						getString(R.string.deleting_app), pending.label), 0,
+						true, false, false);
+				mBackupManager.deleteApp(pending);
+			}
+			break;
+		case R.id.uninstall:
+			if (mLastSelectedInfo instanceof AppItemInfo) {
+				AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
+				AppUtil.uninstallApp(this, pending.packageName);
+			}
+			break;
+		case R.id.layout_title_back:
+			if (!mSlicingLayer.isSlicinged() && !mFolderLayer.isFolderOpened()) {
+				finish();
+			}
+			break;
 
-            default:
-                break;
-            }
+		default:
+			break;
+		}
 	}
 
 	public void handleItemClick(View view, int from) {

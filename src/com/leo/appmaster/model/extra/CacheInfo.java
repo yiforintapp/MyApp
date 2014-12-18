@@ -7,7 +7,13 @@ public class CacheInfo {
 	public long dataSize;
 	// cache size
 	public long cacheSize;
-	//taotal
+	// taotal
 	public long total;
+
+	@Override
+	public String toString() {
+		return "codeSize = " + codeSize + "       dataSize = " + dataSize
+				+ "        cacheSize = " + cacheSize + "      total = " + total;
+	}
 
 }
