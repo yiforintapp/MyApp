@@ -3,7 +3,9 @@ package com.leo.appmaster.appmanage.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.utils.LeoLog;
@@ -101,22 +103,22 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		capacityFragment.setType(BaseFolderFragment.FOLER_TYPE_CAPACITY);
 		BaseFolderFragment businessFragment = new BusinessAppFragment();
 		businessFragment.setType(BaseFolderFragment.FOLER_TYPE_RECOMMEND);
-		
-		
-		FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
+
+		FragmentManager fm = ((FragmentActivity) mContext)
+				.getSupportFragmentManager();
 		// AM-614, remove cached fragments
-		 try {
-	            FragmentTransaction ft = fm.beginTransaction();
-	            List<Fragment> list = fm.getFragments();
-	            if(list != null) {
-	                for (Fragment f : fm.getFragments()) {
-	                    ft.remove(f);
-	                }
-	            }
-	            ft.commit();
-	        } catch (Exception e) {
-	            
-	        }
+		try {
+			FragmentTransaction ft = fm.beginTransaction();
+			List<Fragment> list = fm.getFragments();
+			if (list != null) {
+				for (Fragment f : fm.getFragments()) {
+					ft.remove(f);
+				}
+			}
+			ft.commit();
+		} catch (Exception e) {
+
+		}
 
 		mFragmentList.add(backupFragment);
 		mFragmentList.add(flowFragment);
@@ -270,6 +272,17 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 	@Override
 	public void onPageSelected(int arg0) {
+		if (arg0 == 3) {
+			AppMasterPreference pref = AppMasterPreference
+					.getInstance(mContext);
+			String online = pref.getOnlineBusinessSerialNumber();
+			String local = pref.getLocalBusinessSerialNumber();
+			if (online != null && !online.equals(local)) {
+				pref.setLocalBusinessSerialNumber(online);
+				((AppListActivity)mContext).fillAppListData();
+			}
+		}
+
 		if (mCurPosition == arg0)
 			return;
 		int temp = mCurPosition;
@@ -291,11 +304,11 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	}
 
 	class FolderPagerAdapter extends FragmentPagerAdapter {
-	    
+
 		public FolderPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
-		
+
 		@Override
 		public Fragment getItem(int position) {
 			return mFragmentList.get(position);

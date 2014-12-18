@@ -118,6 +118,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 
 	@Override
 	protected void onInitUI() {
+		
 		commonOption = new DisplayImageOptions.Builder()
 				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
 				.showImageOnLoading(R.drawable.recommend_loading_icon)
