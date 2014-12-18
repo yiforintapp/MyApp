@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
@@ -275,7 +276,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	}
 
 	class FolderPagerAdapter extends FragmentPagerAdapter {
-
+	    
 		public FolderPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}

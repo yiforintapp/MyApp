@@ -18,8 +18,12 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
-import android.telecom.Log;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,7 +61,6 @@ import com.leo.appmaster.ui.LeoGridBaseAdapter;
 import com.leo.appmaster.ui.PageIndicator;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
@@ -131,6 +134,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		intiUI();
 		fillAppListData();
+		
+		Log.e("XXX", "onCreate");
 	}
 
 	@Override
@@ -286,6 +291,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		super.onBackPressed();
 	}
 
+	
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -295,6 +302,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mProgressDialog.dismiss();
 			mProgressDialog = null;
 		}
+
 	}
 
 	private void intiUI() {
@@ -575,6 +583,35 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	}
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        removeCachedFragment();
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        removeCachedFragment();
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+    
+    private void removeCachedFragment() {
+        try {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            List<Fragment> list = fm.getFragments();
+            if(list != null) {
+                for (Fragment f : fm.getFragments()) {
+                    ft.remove(f);
+                }
+            }
+            ft.commit();
+        } catch (Exception e) {
+            
+        }
+
+    }
+    
 	@Override
 	public void onClick(View v) {		
 		switch (v.getId()) {
