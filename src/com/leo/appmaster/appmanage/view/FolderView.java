@@ -93,11 +93,11 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		fillTitle();
 
 		// add four fragment
-		BaseFolderFragment backupFragment = new CommonFlowFragment();
+		BaseFolderFragment backupFragment = new CommonFolderFragment();
 		backupFragment.setType(BaseFolderFragment.FOLER_TYPE_BACKUP);
-		BaseFolderFragment flowFragment = new CommonFlowFragment();
+		BaseFolderFragment flowFragment = new CommonFolderFragment();
 		flowFragment.setType(BaseFolderFragment.FOLER_TYPE_FLOW);
-		BaseFolderFragment capacityFragment = new CommonFlowFragment();
+		BaseFolderFragment capacityFragment = new CommonFolderFragment();
 		capacityFragment.setType(BaseFolderFragment.FOLER_TYPE_CAPACITY);
 		BaseFolderFragment businessFragment = new BusinessAppFragment();
 		businessFragment.setType(BaseFolderFragment.FOLER_TYPE_RECOMMEND);
@@ -178,7 +178,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	public void updateData(int folderFlowSort, List<AppItemInfo> contentData,
 			List<BusinessItemInfo> reccommendData) {
 		if (folderFlowSort < mFragmentList.size()) {
-			((CommonFlowFragment) mFragmentList.get(folderFlowSort))
+			((CommonFolderFragment) mFragmentList.get(folderFlowSort))
 					.updateData(contentData, reccommendData);
 		}
 	}

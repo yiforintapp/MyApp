@@ -24,7 +24,7 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.ImageScaleType;
 
-public class CommonFlowFragment extends BaseFolderFragment implements
+public class CommonFolderFragment extends BaseFolderFragment implements
 		OnItemClickListener {
 
 	private GridView mContentGrid;
@@ -63,7 +63,6 @@ public class CommonFlowFragment extends BaseFolderFragment implements
 				((AppListActivity) mActivity).getFolderLayer().closeFloder();
 			}
 		});
-		// mIconLayout = (RelativeLayout) findViewById(R.id.iv_app_icon_layout);
 		mContentGrid = (GridView) findViewById(R.id.content_gridview);
 		mRecommendLayout = findViewById(R.id.recommend_layout);
 		mRecommendGrid = (GridView) findViewById(R.id.recommend_gridview);

@@ -59,7 +59,6 @@
         android:id="@+id/video_gallery_buttom"
         android:layout_width="match_parent"
         android:layout_height="66dp"
-        android:visibility="gone"
         android:background="@drawable/bottom_button" >
         <Button 
             android:id="@+id/add_hide_image"

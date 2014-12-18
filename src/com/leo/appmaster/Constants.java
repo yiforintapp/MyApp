@@ -168,7 +168,7 @@ public class Constants {
 			+ MediaColumns.DATA + " LIKE '%.3gp'" + " or " + MediaColumns.DATA
 			+ " LIKE '%.asf'" + " or " + MediaColumns.DATA + " LIKE '%.m4v'"
 			+ " or " + MediaColumns.DATA + " LIKE '%.rmvb'" + " or "
-			+ MediaColumns.DATA + " LIKE '%.mkv'";
+			+ MediaColumns.DATA + " LIKE '%.mkv'" + " or " + MediaColumns.DATA + " LIKE '%.ts'" ;
 	public static final String VIDEO_PLUS_GP_URL = "https://play.google.com/store/apps/details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01market://details?id= com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
 	public static final String VIDEO_PLUS_GP = "market://details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
 

@@ -8,9 +8,12 @@ import com.baidu.mobstat.StatService;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
 public class SDKWrapper {
+    
+    private final static String TAG = "SDKWrapper";
 
     /**
      * initial leo analytics and flurry SDK, this will changed in the future.
@@ -33,6 +36,7 @@ public class SDKWrapper {
      * @param eventDescription detail of this event
      */
     public static void addEvent(Context ctx, int level, String id, String description) {
+        LeoLog.d(TAG, "addEvent: id=" + id + ";   desc=" + description);
         // leo
         LeoStat.addEvent(level, id, description);
         // baidu
