@@ -18,10 +18,6 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -450,7 +446,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	private void animateItem(final View view, final int from) {
 		AnimatorSet as = new AnimatorSet();
-		as.setDuration(200);
+		as.setDuration(150);
 		ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f,
 				0.8f, 1f);
 		ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f,
@@ -460,6 +456,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			public void onAnimationEnd(Animator arg0) {
 				switch (mLastSelectedInfo.type) {
 				case BaseInfo.ITEM_TYPE_NORMAL_APP:
+					
 					openSlicingLayer(view, from);
 					break;
 				case BaseInfo.ITEM_TYPE_FOLDER:
