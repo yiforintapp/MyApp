@@ -385,20 +385,24 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onBackPressed() {
-		Intent intent = new Intent();
-		if (mFromType == LockFragment.FROM_OTHER
-				|| mFromType == LockFragment.FROM_SCREEN_ON) {
+	    if(mFromType == LockFragment.FROM_SELF_HOME) {
+            super.onBackPressed();
+        } else {
+            Intent intent = new Intent();
+            if (mFromType == LockFragment.FROM_OTHER
+                    || mFromType == LockFragment.FROM_SCREEN_ON) {
 
-			intent.setAction(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_HOME);
-		} else {
+                intent.setAction(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+            } else {
 
-			intent.setClassName(getApplicationContext(),
-					HomeActivity.class.getName());
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		}
-		startActivity(intent);
-		finish();
+                intent.setClassName(getApplicationContext(),
+                        HomeActivity.class.getName());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            }
+            startActivity(intent);
+            finish();
+        }
 	}
 
 	@Override
@@ -446,20 +450,24 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	}
 
 	private void onBack() {
-		Intent intent = new Intent();
-		if (mFromType == LockFragment.FROM_OTHER
-				|| mFromType == LockFragment.FROM_SCREEN_ON) {
+	    if(mFromType == LockFragment.FROM_SELF_HOME) {
+	        super.onBackPressed();
+	    } else {
+	        Intent intent = new Intent();
+	        if (mFromType == LockFragment.FROM_OTHER
+	                || mFromType == LockFragment.FROM_SCREEN_ON) {
 
-			intent.setAction(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_HOME);
-		} else {
+	            intent.setAction(Intent.ACTION_MAIN);
+	            intent.addCategory(Intent.CATEGORY_HOME);
+	        } else {
 
-			intent.setClassName(getApplicationContext(),
-					HomeActivity.class.getName());
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		}
-		startActivity(intent);
-		finish();
+	            intent.setClassName(getApplicationContext(),
+	                    HomeActivity.class.getName());
+	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        }
+	        startActivity(intent);
+	        finish();
+	    }
 	}
 
 	private List<String> getPopMenuItems() {
