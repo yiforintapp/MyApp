@@ -53,8 +53,9 @@
     <dimen name="circle_text_vertical_padding">10dp</dimen>
     <dimen name="folder_title_margintop">15dp</dimen>
     <dimen name="folder_title_item_size">103dp</dimen>
-    <dimen name="folder_title_mask_size">80dp</dimen>
+    <dimen name="folder_title_mask_size">70dp</dimen>
     <dimen name="folder_title_text_size">16dp</dimen>
     <dimen name="folder_title_height">80px</dimen>
-<dimen name="folder_title_width">120dp</dimen>
+    <dimen name="folder_title_width">137dp</dimen>
+
 </resources>

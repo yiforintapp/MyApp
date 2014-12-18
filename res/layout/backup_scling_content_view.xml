@@ -25,7 +25,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView1"
-            android:text="apk大小： "
+            android:text="@string/app_size"
             android:textColor="@color/white" />
 
         <TextView
@@ -65,7 +65,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView2"
-            android:text="版本号： "
+            android:text="@string/version"
             android:textColor="@color/white" />
 
         <TextView
@@ -105,7 +105,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView3"
-            android:text="备份时间： "
+            android:text="@string/backup_time"
             android:textColor="@color/white" />
 
         <TextView
@@ -146,7 +146,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView4"
-            android:text="备份路径： "
+            android:text="@string/backup_path"
             android:textColor="@color/white" />
 
         <TextView

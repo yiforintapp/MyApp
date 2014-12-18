@@ -55,6 +55,6 @@
     <dimen name="backup_scling_content_height">240dp</dimen>
     <dimen name="folder_title_text_size">8dp</dimen>
     <dimen name="folder_title_height">28dp</dimen>
-    <dimen name="folder_title_width">120dp</dimen>
+    <dimen name="folder_title_width">137dp</dimen>
 
 </resources>

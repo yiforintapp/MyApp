@@ -15,8 +15,8 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center_vertical"
-            android:layout_marginLeft="42dp"
-            android:layout_marginRight="42dp" />
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp" />
 
         <View
             android:layout_width="@dimen/folder_title_mask_size"

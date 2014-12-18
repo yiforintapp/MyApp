@@ -12,7 +12,7 @@
         android:paddingBottom="5dp"
         android:paddingLeft="20dp"
         android:paddingTop="5dp"
-        android:text="17天前使用"
+        android:text="17 days uesed"
         android:textColor="@color/white"
         android:textSize="12sp" />
 
@@ -38,7 +38,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView1"
-            android:text="空间占用： "
+            android:text="@string/memory_consumption"
             android:textColor="@color/white" />
 
         <TextView
@@ -81,7 +81,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView2"
-            android:text="缓存： "
+            android:text="@string/cache_size"
             android:textColor="@color/white" />
 
         <TextView
@@ -124,7 +124,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView3"
-            android:text="电量消耗： "
+            android:text="@string/power_consumption"
             android:textColor="@color/white" />
 
         <TextView
@@ -167,7 +167,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView4"
-            android:text="流量消耗： "
+            android:text="@string/flow_consumption"
             android:textColor="@color/white" />
 
         <TextView
@@ -210,7 +210,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView5"
-            android:text="内存占用： "
+            android:text="@string/memory_consumption"
             android:textColor="@color/white" />
 
         <TextView
