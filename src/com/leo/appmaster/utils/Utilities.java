@@ -18,10 +18,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextPaint;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -45,16 +48,28 @@ public final class Utilities {
 			String online = pref.getOnlineBusinessSerialNumber();
 			String local = pref.getLocalBusinessSerialNumber();
 			if (online != null && !online.equals(local)) {
-				pref.setLocalBusinessSerialNumber(online);
-				int tipSize = 80;
+				int tipSize = 63;
 				Bitmap newTipBitamp = BitmapFactory.decodeResource(res,
-						R.drawable.tick_normal);
+						R.drawable.folder_new_icon);
 				newTipBitamp = Bitmap.createScaledBitmap(newTipBitamp, tipSize,
 						tipSize, true);
 
 				Canvas canvas = new Canvas(folderPic);
 				canvas.drawBitmap(resault.getBitmap(), 0, 0, paint);
 				canvas.drawBitmap(newTipBitamp, iconWidth - tipSize, 0, paint);
+
+				String newTag = context.getString(R.string.folder_new);
+
+				Rect rect = new Rect();
+				paint.setTextSize(25);
+				paint.getTextBounds(newTag, 0, newTag.length(), rect);
+				int textWidth = rect.width();
+				int textHeight = rect.height();
+
+				float x = iconWidth - tipSize + (tipSize - textWidth) / 2;
+				float y = (tipSize - textHeight) / 2 + 10;
+				paint.setColor(Color.WHITE);
+				canvas.drawText(newTag, x, y, paint);
 
 				BitmapDrawable dd = new BitmapDrawable(res, folderPic);
 				return dd;
