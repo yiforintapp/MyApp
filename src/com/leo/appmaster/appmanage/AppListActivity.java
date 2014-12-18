@@ -632,6 +632,11 @@ public class AppListActivity extends BaseFragmentActivity implements
 			if (!mSlicingLayer.isSlicinged() && !mFolderLayer.isFolderOpened()) {
 				finish();
 			}
+			
+			if (mFromStatusbar) {
+				Intent intent = new Intent(this, HomeActivity.class);
+				this.startActivity(intent);
+			}
 			break;
 
 		default:
