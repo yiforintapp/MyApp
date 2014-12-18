@@ -455,14 +455,16 @@ public class AppListActivity extends BaseFragmentActivity implements
 					openSlicingLayer(view, from);
 					break;
 				case BaseInfo.ITEM_TYPE_FOLDER:
-					FolderItemInfo folderInfo = (FolderItemInfo) mLastSelectedInfo;
-					fillFolder();
-					mFolderLayer.openFolderView(folderInfo.folderType, view,
-							mAllAppList);
+					if (!mFolderLayer.isFolderOpened()) {
+						FolderItemInfo folderInfo = (FolderItemInfo) mLastSelectedInfo;
+						fillFolder();
+						mFolderLayer.openFolderView(folderInfo.folderType,
+								view, mAllAppList);
+					}
 					break;
 				case BaseInfo.ITEM_TYPE_BUSINESS_APP:
 					BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
-					if(bif.gpPriority == 1) {
+					if (bif.gpPriority == 1) {
 						if (AppUtil.appInstalled(AppListActivity.this,
 								Constants.GP_PACKAGE)) {
 							AppUtil.downloadFromGp(AppListActivity.this,
