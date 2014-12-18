@@ -236,11 +236,7 @@ public class AppMasterApplication extends Application implements
 	}
 
 	private void showNewBusinessTip(String mainTitle, String content) {
-		// send new theme broadcast
-		Intent intent = new Intent(Constants.ACTION_NEW_THEME);
-		sendBroadcast(intent);
-
-		// show new theme status tip
+		Intent intent = null;
 		Notification notif = new Notification();
 		intent = new Intent(this, AppListActivity.class);
 		intent.putExtra("from_statubar", true);
@@ -256,7 +252,7 @@ public class AppMasterApplication extends Application implements
 		notif.when = System.currentTimeMillis();
 		NotificationManager nm = (NotificationManager) this
 				.getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.notify(0, notif);
+		nm.notify(1, notif);
 	}
 
 	protected void checkNewAppBusiness() {
@@ -264,10 +260,9 @@ public class AppMasterApplication extends Application implements
 		long curTime = System.currentTimeMillis();
 
 		long lastCheckTime = pref.getLastCheckBusinessTime();
-		if (lastCheckTime == 0 || (curTime - lastCheckTime) > /*
-															 * 12 * 60 * 60 *
-															 * 1000
-															 */2 * 60 * 1000) {
+		if (lastCheckTime == 0
+				|| (curTime - lastCheckTime) > Constants.TIME_12_HOUR
+		/* 2 * 60 * 1000 */) {
 			HttpRequestAgent.getInstance(this).checkNewBusinessData(
 					new Listener<JSONObject>() {
 
@@ -315,7 +310,7 @@ public class AppMasterApplication extends Application implements
 									};
 									Timer timer = new Timer();
 									timer.schedule(recheckTask,
-									/* 12 * 60 * 60 * 1000 */2 * 60 * 1000);
+											Constants.TIME_12_HOUR/* 2 * 60 * 1000 */);
 
 								} catch (JSONException e) {
 									e.printStackTrace();
@@ -337,8 +332,8 @@ public class AppMasterApplication extends Application implements
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask, /* 2 * 60 * 60 * 1000 */
-									2 * 60 * 1000);
+							timer.schedule(recheckTask, Constants.TIME_2_HOUR
+							/* 2 * 60 * 1000 */);
 						}
 					});
 		}
@@ -351,7 +346,7 @@ public class AppMasterApplication extends Application implements
 
 		long lastCheckTime = pref.getLastCheckThemeTime();
 		if (lastCheckTime == 0
-				|| (curTime - pref.getLastCheckThemeTime()) > 12 * 60 * 60 * 1000) {
+				|| (curTime - pref.getLastCheckThemeTime()) > Constants.TIME_12_HOUR) {
 			HttpRequestAgent.getInstance(this).checkNewTheme(
 					new Listener<JSONObject>() {
 
@@ -387,7 +382,7 @@ public class AppMasterApplication extends Application implements
 									};
 									Timer timer = new Timer();
 									timer.schedule(recheckTask,
-											12 * 60 * 60 * 1000);
+											Constants.TIME_12_HOUR);
 
 								} catch (JSONException e) {
 									e.printStackTrace();
@@ -408,7 +403,7 @@ public class AppMasterApplication extends Application implements
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask, 2 * 60 * 60 * 1000);
+							timer.schedule(recheckTask, Constants.TIME_2_HOUR);
 						}
 					});
 		}

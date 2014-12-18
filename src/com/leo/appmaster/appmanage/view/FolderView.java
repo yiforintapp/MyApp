@@ -8,7 +8,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
-import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -281,6 +280,8 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 				pref.setLocalBusinessSerialNumber(online);
 				((AppListActivity)mContext).fillAppListData();
 			}
+			BusinessAppFragment ba = (BusinessAppFragment) mFragmentList.get(3);
+			ba.loadInitBusinessData();
 		}
 
 		if (mCurPosition == arg0)
