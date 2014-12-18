@@ -648,28 +648,24 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	private void getFolderData() {
 		List<AppItemInfo> tempList = new ArrayList<AppItemInfo>(mAppDetails);
+		
 		// load folw sort data
 		Collections.sort(tempList, new FlowComparator());
-//		mFlowFolderData = tempList.subList(0,
-//				tempList.size() < mPageItemCount ? tempList.size()
-//						: mPageItemCount);
 		mFlowFolderData = new Vector<AppItemInfo>(tempList.subList(0,
 				tempList.size() < mPageItemCount ? tempList.size()
 						: mPageItemCount));
+		
 		// load capacity sort data
 		tempList = new ArrayList<AppItemInfo>(mAppDetails);
 		Collections.sort(tempList, new CapacityComparator());
-//		mCapacityFolderData = tempList.subList(0,
-//				tempList.size() < mPageItemCount ? tempList.size()
-//						: mPageItemCount);
 		mCapacityFolderData = new Vector<AppItemInfo>(tempList.subList(0,
 				tempList.size() < mPageItemCount ? tempList.size()
 						: mPageItemCount));
+		
 		// load restore sort data
 		ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
-//		mRestoreFolderData = temp.subList(0, temp.size());
+		Collections.sort(temp, new BackupItemComparator());
 		mRestoreFolderData = new Vector<AppItemInfo>(temp.subList(0, temp.size()));
-		Collections.sort(mRestoreFolderData, new BackupItemComparator());
 	}
 
 	private void fillFolder() {
@@ -761,6 +757,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 				}
 			}
 		}
+		
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {

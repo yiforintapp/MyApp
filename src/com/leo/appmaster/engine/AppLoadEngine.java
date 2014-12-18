@@ -660,6 +660,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 								appInfo);
 						mAppDetails.put(packages[i], appInfo);
 						changedFinal.add(appInfo);
+						loadAppDetailInfo(appInfo.packageName);
 					}
 				}
 				break;
