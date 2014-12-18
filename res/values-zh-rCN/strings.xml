@@ -297,4 +297,7 @@
     <string name="new_app_tip_content">有好玩的新应用，快看看吧</string>
     <string name="new_app_tip_title">发现新应用</string>
     
+    <string name="no_backup_app_tip">您还没有备份应用</string>
+    <string name="other_people_use_tip">其他人正在使用</string>
+    
 </resources>
