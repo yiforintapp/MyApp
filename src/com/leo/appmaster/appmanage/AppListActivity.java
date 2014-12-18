@@ -131,7 +131,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mBackupManager = AppMasterApplication.getInstance().getBuckupManager();
 		mBackupManager.registerBackupListener(this);
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
-		intiUI();
+		initUI();
 		fillAppListData();
 	}
 
@@ -302,7 +302,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	}
 
-	private void intiUI() {
+	private void initUI() {
 		mInflater = getLayoutInflater();
 		mListItemClickListener = new OnItemClickListener() {
 			@Override
@@ -402,7 +402,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mViewPager.setAdapter(new DataPagerAdapter(viewList));
 		mPageIndicator.setViewPager(mViewPager);
 		mViewPager.setCurrentItem(mCurrentPage);
-		mViewPager.setOnPageChangeListener(this);
+		mPageIndicator.setOnPageChangeListener(this);
 		mPagerContain.setVisibility(View.VISIBLE);
 	}
 
