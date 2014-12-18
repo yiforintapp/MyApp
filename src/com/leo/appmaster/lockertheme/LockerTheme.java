@@ -346,6 +346,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+						SDKWrapper.addEvent(LockerTheme.this,
+								LeoStat.P1, "load_failed", "theme");
 					}
 				});
 	}
@@ -494,6 +496,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
+						SDKWrapper.addEvent(LockerTheme.this,
+								LeoStat.P1, "load_failed", "theme");
 					}
 				});
 	}

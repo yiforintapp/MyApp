@@ -37,11 +37,13 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.ImageScaleType;
+import com.leoers.leoanalytics.LeoStat;
 
 public class BusinessAppFragment extends BaseFolderFragment implements
 		OnItemClickListener, OnClickListener, OnRefreshListener2<GridView> {
@@ -61,7 +63,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	private static final int MSG_LOAD_PAGE_DATA_SUCCESS = 4;
 	private EventHandler mHandler;
 	private DisplayImageOptions commonOption;
-	
+
 	private boolean mInitDataLoaded;
 
 	private static class EventHandler extends Handler {
@@ -120,7 +122,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 
 	@Override
 	protected void onInitUI() {
-		
+
 		commonOption = new DisplayImageOptions.Builder()
 				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
 				.showImageOnLoading(R.drawable.recommend_loading_icon)
@@ -159,14 +161,15 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 				((AppListActivity) mActivity).getFolderLayer().closeFloder();
 			}
 		});
-//		loadInitBusinessData();
+		// loadInitBusinessData();
 
-//		AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
-//		String online = pref.getOnlineBusinessSerialNumber();
-//		String local = pref.getLocalBusinessSerialNumber();
-//		if (online != null && !online.equals(local)) {
-//			pref.setLocalBusinessSerialNumber(online);
-//		}
+		// AppMasterPreference pref =
+		// AppMasterPreference.getInstance(mActivity);
+		// String online = pref.getOnlineBusinessSerialNumber();
+		// String local = pref.getLocalBusinessSerialNumber();
+		// if (online != null && !online.equals(local)) {
+		// pref.setLocalBusinessSerialNumber(online);
+		// }
 
 	}
 
@@ -260,8 +263,8 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	}
 
 	public void loadInitBusinessData() {
-		if(mInitDataLoaded)
-		return;
+		if (mInitDataLoaded)
+			return;
 		mRecommendDatas.clear();
 		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1,
 				new Listener<JSONObject>() {
@@ -281,6 +284,8 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+						SDKWrapper.addEvent(BusinessAppFragment.this.mActivity,
+								LeoStat.P1, "load_failed", "new_apps");
 					}
 				});
 	}
@@ -304,6 +309,8 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
+						SDKWrapper.addEvent(BusinessAppFragment.this.mActivity,
+								LeoStat.P1, "load_failed", "new_apps");
 					}
 				});
 	}

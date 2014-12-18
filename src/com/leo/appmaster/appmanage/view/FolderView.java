@@ -8,6 +8,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
+import com.leo.appmaster.model.FolderItemInfo;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leoers.leoanalytics.LeoStat;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -271,6 +274,21 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 	@Override
 	public void onPageSelected(int arg0) {
+		if(arg0 == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
+			SDKWrapper.addEvent(mContext, LeoStat.P1,
+					"ub_restore", "glide");
+		} else if(arg0 == FolderItemInfo.FOLDER_FLOW_SORT){
+			SDKWrapper.addEvent(mContext, LeoStat.P1,
+					"ub_liuliang", "glide");
+		}else if(arg0 == FolderItemInfo.FOLDER_CAPACITY_SORT){
+			SDKWrapper.addEvent(mContext, LeoStat.P1,
+					"ub_space", "glide");
+		}else if(arg0 == FolderItemInfo.FOLDER_BUSINESS_APP){
+			SDKWrapper.addEvent(mContext, LeoStat.P1,
+					"ub_newapp", "glide");
+		}
+		
+		
 		if (arg0 == 3) {
 			AppMasterPreference pref = AppMasterPreference
 					.getInstance(mContext);
