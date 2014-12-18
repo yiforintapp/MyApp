@@ -17,6 +17,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -250,6 +251,10 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mLockerClean.setChecked((Boolean) newValue);
             AppMasterPreference.getInstance(LockOptionActivity.this)
                     .setLockerClean((Boolean) newValue);
+            /*SDK:use Unlock the acceleration*/
+            if((Boolean) newValue){
+                SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "lockboost");
+            }
         }
         return false;
     }
