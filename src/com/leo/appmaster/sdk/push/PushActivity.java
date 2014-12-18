@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.Gravity;
@@ -27,13 +28,15 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
-public class PushActivity extends BaseActivity implements View.OnClickListener {
+public class PushActivity extends BaseActivity implements View.OnClickListener, PushUIHelper.NewActListener{
 
     private final static String TAG = PushActivity.class.getSimpleName();
 
     private boolean mFromStatusBar;
     private String mAdID;
     private EditText mPhoneNumber = null;
+    
+    private Handler mHandler;
 
     private final static String GP_MARKET_PACKAGE_NAME = "com.android.vending";
     private final static String GP_WEB_URL = "https://play.google.com/store/apps/details?id=com.leo.appmaster";
@@ -42,14 +45,19 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initUI(getIntent());
+        mHandler = new Handler(getMainLooper());
+        PushUIHelper.getInstance(this).registerNewActListener(this);
+        handleIntent(getIntent());
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onDestroy() {
+        PushUIHelper.getInstance(this).unRegisterNewActListener(this);
+        super.onDestroy();
+    }
+
+    private void handleIntent(Intent i) {
         SDKWrapper.addEvent(this, LeoStat.P1, "act", "popup");
-        Intent i = getIntent();
         mFromStatusBar = i.getBooleanExtra(PushUIHelper.EXTRA_WHERE, false);
         mAdID = i.getStringExtra(PushUIHelper.EXTRA_AD_ID);
         if (mAdID == null) {
@@ -58,9 +66,18 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
         if (mFromStatusBar) {
             SDKWrapper.addEvent(this, LeoStat.P1, "act", "notbar");
         }
+        String title = i.getStringExtra(PushUIHelper.EXTRA_TITLE);
+        String content = i.getStringExtra(PushUIHelper.EXTRA_CONTENT);
+        initUI(title, content);
     }
 
-    private void initUI(Intent i) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    private void initUI(String title, String content) {
         setContentView(R.layout.dialog_single_input_alarm);
 
         mPhoneNumber = (EditText) findViewById(R.id.et_input);
@@ -70,8 +87,6 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
                 new InputFilter.LengthFilter(INDIAN_MOBILE_LENGTH)
         });
 
-        String title = i.getStringExtra(PushUIHelper.EXTRA_TITLE);
-        String content = i.getStringExtra(PushUIHelper.EXTRA_CONTENT);
         TextView tvTitle = (TextView) findViewById(R.id.dlg_title);
         tvTitle.setText(title);
         TextView tvContent = (TextView) findViewById(R.id.dlg_content);
@@ -175,5 +190,27 @@ public class PushActivity extends BaseActivity implements View.OnClickListener {
             }
         }
         return false;
+    }
+
+    private void reLayout(boolean fromStatusbar, String adID, String title, String content) {
+        mFromStatusBar = fromStatusbar;
+        mAdID = adID;
+        SDKWrapper.addEvent(this, LeoStat.P1, "act", "popup");
+        if (mFromStatusBar) {
+            SDKWrapper.addEvent(this, LeoStat.P1, "act", "notbar");
+        }
+        initUI(title, content);
+    }
+
+    @Override
+    public void onNewAct(final boolean fromStatusbar, final String adID, final String title, final String content) {
+        mHandler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                LeoLog.d(TAG, "new act arrived: adID=" + adID + ";    title=" + title + ";    content=" + content);
+                reLayout(fromStatusbar, adID, title, content);
+            }
+        });
     }
 }

@@ -41,6 +41,7 @@ public class PushUIHelper implements IPushUIHelper {
     /* had status bar shown? */
     private boolean mStatusBar = false;
     private boolean mIsLockScreen = false;
+private NewActListener mListener;
 
     public static PushUIHelper getInstance(Context ctx) {
         if (sPushUIHelper == null) {
@@ -74,6 +75,18 @@ public class PushUIHelper implements IPushUIHelper {
         mManager = manager;
     }
 
+    public interface NewActListener {
+        public void onNewAct(final boolean fromStatusbar, final String adID, final String title, final String content);
+    }
+
+    public void registerNewActListener(NewActListener l) {
+        mListener = l;
+    }
+
+    public void unRegisterNewActListener(NewActListener l) {
+        mListener = null;
+    }
+
     @Override
     public void onPush(String adID, String title, String content, int showType) {
         LeoLog.d(TAG, "title=" + title + "; content=" + content);
@@ -81,10 +94,16 @@ public class PushUIHelper implements IPushUIHelper {
         mContent = content;
         if (showType == PushManager.SHOW_DIALOG_FIRST && isActivityOnTop(mContext)) {
             LeoLog.d(TAG, "push activity already on top, do nothing");
+            if (mListener != null) {
+                mListener.onNewAct(false, adID, title, content);
+                                }
         } else if (showType == PushManager.SHOW_DIALOG_FIRST && isAppOnTop(mContext)
                 && !mIsLockScreen) {
             LeoLog.d(TAG, "notify user with dialog");
             mStatusBar = false;
+            if (mListener != null) {
+                mListener.onNewAct(false, adID, title, content);
+                                }
             showPushActivity(adID, title, content, false);
         } else {
             LeoLog.d(TAG, "notify user with status bar");
@@ -122,7 +141,8 @@ public class PushUIHelper implements IPushUIHelper {
     private void sendPushNotification(String id, String title, String content) {
         Intent intent = new Intent(ACTION_CHECK_PUSH);
         intent.putExtra(EXTRA_AD_ID, id);
-        PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, 0,
+        int requestCode = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
+        PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, requestCode,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification pushNotification = new Notification(
@@ -138,7 +158,6 @@ public class PushUIHelper implements IPushUIHelper {
                 contentIntent);
         pushNotification.deleteIntent = delIntent;
         pushNotification.flags = Notification.FLAG_AUTO_CANCEL
-                // | Notification.FLAG_ONGOING_EVENT;
                 | Notification.FLAG_ONLY_ALERT_ONCE;
         nm.notify(PUSH_NOTIFICATION_ID, pushNotification);
     }
@@ -176,6 +195,9 @@ public class PushUIHelper implements IPushUIHelper {
             }
             if (action.equals(ACTION_CHECK_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
+                if (mListener != null) {
+                    mListener.onNewAct(true, adID, mTitle, mContent);
+                                           }
                 showPushActivity(adID, mTitle, mContent, true);
             } else if (action.equals(ACTION_IGNORE_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);

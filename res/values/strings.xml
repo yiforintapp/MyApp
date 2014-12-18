@@ -259,10 +259,10 @@
     <string name="hide_video_text">Videos Hidden</string>
     <string name="hide_video_empty_text">&#160;&#160;No Videos Hidden</string>
     <string name="app_backup_uninstall">Uninstall&#038;Backup</string>
-    <string name="circle_lock_tip_text">Apps locked</string>
-    <string name="circle_lock_empty_tip_text">No Locked Apps</string>
-    <string name="feedback_error">邮箱错误，请重新输入</string>
-    <string name="googlePlayGuide">请向上滑动给我们评分</string>
+    <string name="circle_lock_tip_text">Apps Locked</string>
+    <string name="circle_lock_empty_tip_text">No Apps Locked </string>
+    <string name="feedback_error">Incorrect email address</string>
+    <string name="googlePlayGuide">Pull down to rate</string>
     <string name="folder_backup_restore">App Restore</string>
     <string name="folder_sort_flow">Network Killer</string>
     <string name="folder_sort_capacity">Storage Killer</string>
