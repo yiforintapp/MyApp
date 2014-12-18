@@ -262,5 +262,8 @@
     <string name="app_size">APK file size: </string>
     <string name="version">Version: </string>
     <string name="install_time">%1$ days from now</string>
+    <string name="folder_new">new</string>
+    <string name="new_app_tip_content">有好玩的新应用，快看看吧</string>
+    <string name="new_app_tip_title">发现新应用</string>
 
 </resources>

@@ -264,8 +264,10 @@ public class AppMasterApplication extends Application implements
 		long curTime = System.currentTimeMillis();
 
 		long lastCheckTime = pref.getLastCheckBusinessTime();
-		if (lastCheckTime == 0
-				|| (curTime - lastCheckTime) > /*12 * 60 * 60 * 1000*/ 10 * 60 * 1000) {
+		if (lastCheckTime == 0 || (curTime - lastCheckTime) > /*
+															 * 12 * 60 * 60 *
+															 * 1000
+															 */2 * 60 * 1000) {
 			HttpRequestAgent.getInstance(this).checkNewBusinessData(
 					new Listener<JSONObject>() {
 
@@ -274,20 +276,23 @@ public class AppMasterApplication extends Application implements
 								boolean noMidify) {
 							if (response != null) {
 								try {
-									LeoLog.e("xxxx", "checkNewBusinessData = " + response.toString());
+									LeoLog.e("xxxx", "checkNewBusinessData = "
+											+ response.toString());
 									JSONObject jsonObject = response.getJSONObject("data");
 									if (jsonObject != null) {
 										boolean hasNewBusinessData = jsonObject
 												.getBoolean("need_update");
 										String serialNumber = jsonObject
 												.getString("update_flag");
-										
-//										String mainTitle = jsonObject
-//												.getString("main_title");
-//										String content = jsonObject
-//												.getString("content");
-										String mainTitle = "有新应用推荐给您，请查收";
-										String content = "新应用提醒";
+
+										// String mainTitle = jsonObject
+										// .getString("main_title");
+										// String content = jsonObject
+										// .getString("content");
+										String mainTitle = AppMasterApplication.this
+												.getString(R.string.new_app_tip_title);
+										String content = AppMasterApplication.this
+												.getString(R.string.new_app_tip_content);
 
 										if (!hasNewBusinessData) {
 											pref.setLocalBusinessSerialNumber(serialNumber);
@@ -310,11 +315,12 @@ public class AppMasterApplication extends Application implements
 									};
 									Timer timer = new Timer();
 									timer.schedule(recheckTask,
-											/*12 * 60 * 60 * 1000*/ 10 * 60 * 1000);
+									/* 12 * 60 * 60 * 1000 */2 * 60 * 1000);
 
 								} catch (JSONException e) {
 									e.printStackTrace();
-									LeoLog.e("checkNewAppBusiness", e.getMessage());
+									LeoLog.e("checkNewAppBusiness",
+											e.getMessage());
 								}
 							}
 						}
@@ -331,7 +337,8 @@ public class AppMasterApplication extends Application implements
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask, /*2 * 60 * 60 * 1000*/ 10 * 60 * 1000);
+							timer.schedule(recheckTask, /* 2 * 60 * 60 * 1000 */
+									2 * 60 * 1000);
 						}
 					});
 		}

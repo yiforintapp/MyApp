@@ -28,6 +28,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
@@ -156,6 +157,14 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			}
 		});
 		loadInitBusinessData();
+
+//		AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
+//		String online = pref.getOnlineBusinessSerialNumber();
+//		String local = pref.getLocalBusinessSerialNumber();
+//		if (online != null && !online.equals(local)) {
+//			pref.setLocalBusinessSerialNumber(online);
+//		}
+
 	}
 
 	public void addMoreOnlineTheme(List<BusinessItemInfo> loadList) {

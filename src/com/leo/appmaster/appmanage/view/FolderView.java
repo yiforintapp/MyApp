@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
@@ -100,13 +101,28 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		capacityFragment.setType(BaseFolderFragment.FOLER_TYPE_CAPACITY);
 		BaseFolderFragment businessFragment = new BusinessAppFragment();
 		businessFragment.setType(BaseFolderFragment.FOLER_TYPE_RECOMMEND);
+		
+		
+		FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
+		// AM-614, remove cached fragments
+		 try {
+	            FragmentTransaction ft = fm.beginTransaction();
+	            List<Fragment> list = fm.getFragments();
+	            if(list != null) {
+	                for (Fragment f : fm.getFragments()) {
+	                    ft.remove(f);
+	                }
+	            }
+	            ft.commit();
+	        } catch (Exception e) {
+	            
+	        }
 
 		mFragmentList.add(backupFragment);
 		mFragmentList.add(flowFragment);
 		mFragmentList.add(capacityFragment);
 		mFragmentList.add(businessFragment);
-		mPagerAdapter = new FolderPagerAdapter(
-				((FragmentActivity) mContext).getSupportFragmentManager());
+		mPagerAdapter = new FolderPagerAdapter(fm);
 
 		mViewPager = (ViewPager) findViewById(R.id.folder_pager);
 		mViewPager.setOffscreenPageLimit(3);
@@ -275,11 +291,11 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	}
 
 	class FolderPagerAdapter extends FragmentPagerAdapter {
-
+	    
 		public FolderPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
-
+		
 		@Override
 		public Fragment getItem(int position) {
 			return mFragmentList.get(position);
