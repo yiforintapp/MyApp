@@ -80,6 +80,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private CommonSclingContentViewHolder mCommenScilingHolder;
 	private BackupContentViewHolder mBackupScilingHolder;
 	private LayoutInflater mInflater;
+	private ViewGroup mPager1;
 
 	private List<BaseInfo> mAllItems;
 	private List<FolderItemInfo> mFolderItems;
@@ -101,6 +102,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private LEOProgressDialog mProgressDialog;
 	private Handler mHandler = new Handler();
 	private boolean mFromStatusbar;
+	private boolean mOpenedBusinessFolder;
+
+	// private View mBusinessFolderView;
 
 	private static class CommonSclingContentViewHolder {
 		TextView installTime;
@@ -137,8 +141,18 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	@Override
 	protected void onResume() {
-		super.onResume();
 		mBackupManager.checkDataUpdate();
+		super.onResume();
+		if (mFromStatusbar && !mOpenedBusinessFolder) {
+			mContainer.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					handleItemClick(mPager1.getChildAt(3),
+							SlicingLayer.SLICING_FROM_APPLIST);
+					mOpenedBusinessFolder = true;
+				}
+			}, 0);
+		}
 	}
 
 	public void openSlicingLayer(View view, int from) {
@@ -388,6 +402,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 			}
 			gridView.setOnItemClickListener(mListItemClickListener);
 			viewList.add(gridView);
+			if (i == 0) {
+				mPager1 = gridView;
+			}
 		}
 		if (mCurrentPage != -1) {
 			if ((pageCount - 1) < mCurrentPage) {
@@ -404,6 +421,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mViewPager.setCurrentItem(mCurrentPage);
 		mPageIndicator.setOnPageChangeListener(this);
 		mPagerContain.setVisibility(View.VISIBLE);
+
 	}
 
 	/**
@@ -632,7 +650,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			if (!mSlicingLayer.isSlicinged() && !mFolderLayer.isFolderOpened()) {
 				finish();
 			}
-			
+
 			if (mFromStatusbar) {
 				Intent intent = new Intent(this, HomeActivity.class);
 				this.startActivity(intent);
@@ -653,24 +671,24 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	private void getFolderData() {
 		List<AppItemInfo> tempList = new ArrayList<AppItemInfo>(mAppDetails);
-		
+
 		// load folw sort data
 		Collections.sort(tempList, new FlowComparator());
-		mFlowFolderData = new Vector<AppItemInfo>(tempList.subList(0,
-				tempList.size() < mPageItemCount ? tempList.size()
-						: mPageItemCount));
-		
+		mFlowFolderData = new Vector<AppItemInfo>(tempList.subList(0, tempList
+				.size() < mPageItemCount ? tempList.size() : mPageItemCount));
+
 		// load capacity sort data
 		tempList = new ArrayList<AppItemInfo>(mAppDetails);
 		Collections.sort(tempList, new CapacityComparator());
 		mCapacityFolderData = new Vector<AppItemInfo>(tempList.subList(0,
 				tempList.size() < mPageItemCount ? tempList.size()
 						: mPageItemCount));
-		
+
 		// load restore sort data
 		ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
 		Collections.sort(temp, new BackupItemComparator());
-		mRestoreFolderData = new Vector<AppItemInfo>(temp.subList(0, temp.size()));
+		mRestoreFolderData = new Vector<AppItemInfo>(temp.subList(0,
+				temp.size()));
 	}
 
 	private void fillFolder() {
@@ -762,7 +780,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 				}
 			}
 		}
-		
+
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -857,8 +875,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private void updateRestoreData() {
 		// load restore sort data
 		ArrayList<AppItemInfo> temp = mBackupManager.getRestoreList();
-//		mRestoreFolderData = temp.subList(0, temp.size());
-		mRestoreFolderData = new Vector<AppItemInfo>(temp.subList(0, temp.size()));
+		// mRestoreFolderData = temp.subList(0, temp.size());
+		mRestoreFolderData = new Vector<AppItemInfo>(temp.subList(0,
+				temp.size()));
 		Collections.sort(mRestoreFolderData, new BackupItemComparator());
 		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
 				mRestoreFolderData, null);

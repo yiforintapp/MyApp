@@ -61,6 +61,8 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	private static final int MSG_LOAD_PAGE_DATA_SUCCESS = 4;
 	private EventHandler mHandler;
 	private DisplayImageOptions commonOption;
+	
+	private boolean mInitDataLoaded;
 
 	private static class EventHandler extends Handler {
 		WeakReference<BusinessAppFragment> fragmemtHolder;
@@ -157,7 +159,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 				((AppListActivity) mActivity).getFolderLayer().closeFloder();
 			}
 		});
-		loadInitBusinessData();
+//		loadInitBusinessData();
 
 //		AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
 //		String online = pref.getOnlineBusinessSerialNumber();
@@ -257,7 +259,9 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 
 	}
 
-	private void loadInitBusinessData() {
+	public void loadInitBusinessData() {
+		if(mInitDataLoaded)
+		return;
 		mRecommendDatas.clear();
 		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1,
 				new Listener<JSONObject>() {
@@ -271,6 +275,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 						Message msg = mHandler.obtainMessage(
 								MSG_LOAD_INIT_SUCCESSED, list);
 						mHandler.sendMessage(msg);
+						mInitDataLoaded = true;
 					}
 				}, new ErrorListener() {
 					@Override
