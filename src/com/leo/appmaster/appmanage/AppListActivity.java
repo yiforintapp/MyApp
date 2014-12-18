@@ -250,8 +250,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 			mBackupScilingHolder.size.setText(mBackupManager
 					.getApkSize(appinfo));
-			mBackupScilingHolder.version.setText(String.format(getResources()
-					.getString(R.string.app_version), appinfo.versionName));
+			mBackupScilingHolder.version.setText( appinfo.versionName);
 			SimpleDateFormat formatter = new SimpleDateFormat(
 					"yyyy-MM-dd HH:mm:ss");
 			Calendar calendar = Calendar.getInstance();
