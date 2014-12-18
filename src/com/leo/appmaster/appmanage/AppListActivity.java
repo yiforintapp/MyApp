@@ -138,6 +138,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public void openSlicingLayer(View view, int from) {
+		if(mSlicingLayer.isAnimating() || mSlicingLayer.isSlicinged())
+			return ;
 		mSclingBgView = mContainer;
 		AppItemInfo appinfo = (AppItemInfo) view.getTag();
 		if (from != BaseFolderFragment.FOLER_TYPE_BACKUP) {
