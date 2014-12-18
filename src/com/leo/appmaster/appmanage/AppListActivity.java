@@ -585,34 +585,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	}
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        removeCachedFragment();
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        removeCachedFragment();
-        super.onSaveInstanceState(outState, outPersistentState);
-    }
-    
-    private void removeCachedFragment() {
-        try {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            List<Fragment> list = fm.getFragments();
-            if(list != null) {
-                for (Fragment f : fm.getFragments()) {
-                    ft.remove(f);
-                }
-            }
-            ft.commit();
-        } catch (Exception e) {
-            
-        }
-
-    }
     
 	@Override
 	public void onClick(View v) {
