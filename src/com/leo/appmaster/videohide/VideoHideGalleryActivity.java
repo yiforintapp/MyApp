@@ -87,8 +87,8 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.app_video_gallery);
         mTtileBar.openBackView();
-//        RelativeLayout addButton = (RelativeLayout) findViewById(R.id.video_gallery_buttom);
-//        addButton.setVisibility(View.INVISIBLE);
+        RelativeLayout addButton = (RelativeLayout) findViewById(R.id.video_gallery_buttom);
+        addButton.setVisibility(View.GONE);
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
         mNohideVideo = (TextView) findViewById(R.id.nohideTV);
         mGridView = (GridView) findViewById(R.id.Video_hide_folder);
