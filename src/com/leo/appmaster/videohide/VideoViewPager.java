@@ -110,6 +110,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+        getWindow().getDecorView().requestLayout();
     }
 
     @Override

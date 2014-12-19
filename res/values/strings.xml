@@ -151,7 +151,6 @@
     <string name="feedback_success_title">Submission Successful</string>
     <string name="feedback_success_content">Thank you for your feedback, we\'ll follow up ASAP!</string>
     <string name="app_image_hide">Hide Image</string>
-    <string name="app_no_image_hide">Click \'Add\' to select images</string>
     <string name="app_no_image">No Images Selectable</string>
     <string name="app_image_gallery">Gallery</string>
     <string name="app_select_all">Select All</string>
@@ -244,7 +243,7 @@
     <string name="locker_clean">Boosted successfully up to %1$s</string>
     <string name="setting_locker_clean">Unlock to boost</string>
     <string name="app_no_video_hide">Click "Add" to hide videos</string>
-    <string name="app_no_video_gallery_hide">Click \'Add\' to select videos</string>
+    <string name="app_no_video_gallery_hide">No Videos Selectable</string>
     <string name="app_video_hide">Hide Video</string>
     <string name="app_video_gallery">Video gallery</string>
     <string name="app_unhide_dialog_content_video">Unhide this video ?</string>
