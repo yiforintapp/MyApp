@@ -56,6 +56,7 @@ public class LockReceiver extends BroadcastReceiver {
 				|| "com.leo.appmaster.restart".equals(action)) {
 			if (AppMasterPreference.getInstance(context).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
 				Intent serviceIntent = new Intent(context, LockService.class);
+				serviceIntent.putExtra("lock_service", true);
 				serviceIntent.putExtra(LockService.EXTRA_STARTUP_FROM, action);
 				context.startService(serviceIntent);
 			}

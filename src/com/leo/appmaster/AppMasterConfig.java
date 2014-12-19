@@ -23,6 +23,8 @@ public class AppMasterConfig {
 
 	public static final int TIME_2_HOUR = 2 * 60 * 60 * 1000;
 	public static final int TIME_12_HOUR = 12 * 60 * 60 * 1000;
+//	public static final int TIME_2_HOUR = 2 * 60 * 1000;
+//	public static final int TIME_12_HOUR = 2 * 60 * 1000;
     /*-----    Debug configurations  end  ------ */
 	
 	

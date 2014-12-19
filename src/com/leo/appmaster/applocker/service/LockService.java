@@ -17,6 +17,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
+
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
 
@@ -77,8 +79,13 @@ public class LockService extends Service {
 	}
 
 	private void startLockService() {
-		startDetectTask();
-		mServiceStarted = true;
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		List<String> lockList = pref.getLockedAppList();
+		
+		if(lockList != null && !lockList.isEmpty()) {
+			startDetectTask();
+			mServiceStarted = true;
+		}
 	}
 
 	private void stopLockService() {
