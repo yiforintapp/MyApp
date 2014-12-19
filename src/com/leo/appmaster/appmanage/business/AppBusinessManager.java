@@ -47,11 +47,11 @@ import android.graphics.drawable.BitmapDrawable;
  */
 public class AppBusinessManager {
 
-	 private static final int DELAY_2_HOUR = 2 * 60 * 60 * 1000;
-	 public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
+	private static final int DELAY_2_HOUR = 2 * 60 * 60 * 1000;
+	public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
 
-//	private static final int DELAY_2_HOUR = 5 * 1000;
-//	public static final int DELAY_12_HOUR = 5 * 1000;
+	// private static final int DELAY_2_HOUR = 5 * 1000;
+	// public static final int DELAY_12_HOUR = 5 * 1000;
 
 	/**
 	 * applist business data change listener
@@ -255,8 +255,8 @@ public class AppBusinessManager {
 							};
 							Timer timer = new Timer();
 							timer.schedule(recheckTask, DELAY_2_HOUR);
-							SDKWrapper.addEvent(mContext,
-									LeoStat.P1, "load_failed", "home_apps");
+							SDKWrapper.addEvent(mContext, LeoStat.P1,
+									"load_failed", "home_apps");
 						}
 					});
 		}
@@ -319,13 +319,13 @@ public class AppBusinessManager {
 						};
 						Timer timer = new Timer();
 						timer.schedule(recheckTask, DELAY_2_HOUR);
-						
-						if(type == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-							SDKWrapper.addEvent(mContext,
-									LeoStat.P1, "load_failed", "flow_apps");
+
+						if (type == BusinessItemInfo.CONTAIN_FLOW_SORT) {
+							SDKWrapper.addEvent(mContext, LeoStat.P1,
+									"load_failed", "flow_apps");
 						} else {
-							SDKWrapper.addEvent(mContext,
-									LeoStat.P1, "load_failed", "space_apps");
+							SDKWrapper.addEvent(mContext, LeoStat.P1,
+									"load_failed", "space_apps");
 						}
 					}
 				});
@@ -402,9 +402,8 @@ public class AppBusinessManager {
 									BitmapUtils.Bitmap2Bytes(response));
 							value.put("icon_status", 1);
 							resolver.update(Constants.APPLIST_BUSINESS_URI,
-									value, "icon_url=" + info.iconUrl, null);
-
-							LeoLog.e("loadAppIcon", "true");
+									value, "icon_url=" + "\"" + info.iconUrl
+											+ "\"", null);
 							info.icon = BitmapUtils.bitmapToDrawable(response);
 							info.iconLoaded = true;
 							notifyBusinessChange();

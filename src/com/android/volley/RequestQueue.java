@@ -28,6 +28,8 @@ import java.util.Set;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.leo.appmaster.utils.LeoLog;
+
 /**
  * A request dispatch queue with a thread pool of dispatchers.
  *
@@ -214,6 +216,9 @@ public class RequestQueue {
      * @return The passed-in request
      */
     public <T> Request<T> add(Request<T> request) {
+    	
+    	LeoLog.e("Volley", "add request");
+    	
         // Tag the request as belonging to this queue and add it to the set of current requests.
         request.setRequestQueue(this);
         synchronized (mCurrentRequests) {

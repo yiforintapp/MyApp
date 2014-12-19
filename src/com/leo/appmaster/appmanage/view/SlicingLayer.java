@@ -7,6 +7,7 @@ import com.leo.appmaster.utils.LeoLog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -184,7 +185,12 @@ public class SlicingLayer {
 			mBottomOffsetY = mSrceenheight - mContentMarginBottom
 					- mSlicingLine;
 		}
+		long startTime = System.currentTimeMillis();
+		LeoLog.d("fill ui", " start time = " + startTime);
 		fillUI();
+		LeoLog.d("fill ui", " end time = " + System.currentTimeMillis());
+		LeoLog.d("fill ui",
+				" spend = " + (System.currentTimeMillis() - startTime));
 		startSlicingAnimation();
 	}
 
@@ -237,10 +243,11 @@ public class SlicingLayer {
 		mBackgroundView.setDrawingCacheEnabled(true);
 		Bitmap srceen = mBackgroundView.getDrawingCache(true);
 		Canvas canvas = new Canvas(srceen);
+		Options o = new Options();
 		Bitmap bg = BitmapFactory.decodeResource(mContext.getResources(),
 				R.drawable.folder_move_bg);
 		Paint paint = new Paint();
-		paint.setAntiAlias(true);
+//		paint.setAntiAlias(true);
 		canvas.drawBitmap(bg, 0, 0, paint);
 		return srceen;
 	}
@@ -307,7 +314,7 @@ public class SlicingLayer {
 	private Bitmap createMoveBitmap(Bitmap source, Bitmap anchor, int[] location) {
 		Canvas canvas = new Canvas(source);
 		Paint paint = new Paint();
-		paint.setAntiAlias(true);
+//		paint.setAntiAlias(true);
 		// canvas.drawARGB(200, 255, 255, 255);
 		if (anchor != null) {
 			canvas.drawBitmap(anchor, location[0], location[1], paint);

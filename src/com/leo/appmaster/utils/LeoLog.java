@@ -160,7 +160,7 @@ public class LeoLog {
 	 *            An exception to log
 	 */
 	public static void log(int aLogLevel, String aTag, String aMessage,
-			Throwable aThrowable)  throws ArrayIndexOutOfBoundsException {
+			Throwable aThrowable) throws ArrayIndexOutOfBoundsException {
 		if (isLoggable(aLogLevel)) {
 			switch (aLogLevel) {
 			case VERBOSE:
@@ -192,13 +192,11 @@ public class LeoLog {
 						Log.getStackTraceString(aThrowable));
 			}
 
-			if (SAVE_TO_FILE) {
-				LogEntry entry = new LogEntry();
-				entry.logLevel = aLogLevel;
-				entry.tag = aTag;
-				entry.msg = sStringBuilder.toString();
-				collectLogEntry(entry);
-			}
+			/*
+			 * if (SAVE_TO_FILE) { LogEntry entry = new LogEntry();
+			 * entry.logLevel = aLogLevel; entry.tag = aTag; entry.msg =
+			 * sStringBuilder.toString(); collectLogEntry(entry); }
+			 */
 		}
 	}
 
@@ -436,6 +434,15 @@ public class LeoLog {
 			@Override
 			public void uncaughtException(Thread thread, Throwable ex) {
 				log(ERROR, CRASH_TAG, getAppInfo(), ex);
+
+				if (SAVE_TO_FILE) {
+					LogEntry entry = new LogEntry();
+					entry.logLevel = ERROR;
+					entry.tag = CRASH_TAG;
+					entry.msg = sStringBuilder.toString();
+					collectLogEntry(entry);
+				}
+
 				flush();
 				if (originalHandler != null) {
 					originalHandler.uncaughtException(thread, ex);

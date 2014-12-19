@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.service.LockService;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
@@ -304,6 +306,17 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		for (String string : applicationList) {
 			combined = combined + string + ";";
 		}
+		
+		if(applicationList == null || applicationList.isEmpty()) {
+			Intent serviceIntent = new Intent(AppMasterApplication.getInstance(), LockService.class);
+			serviceIntent.putExtra("lock_service", false);
+			AppMasterApplication.getInstance().startService(serviceIntent);
+		} else {
+			Intent serviceIntent = new Intent(AppMasterApplication.getInstance(), LockService.class);
+			serviceIntent.putExtra("lock_service", true);
+			AppMasterApplication.getInstance().startService(serviceIntent);
+		}
+		
 		mPref.edit().putString(PREF_APPLICATION_LIST, combined).commit();
 	}
 

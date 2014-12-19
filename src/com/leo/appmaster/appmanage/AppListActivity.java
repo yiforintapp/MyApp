@@ -158,6 +158,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public void openSlicingLayer(View view, int from) {
+		long startTime = System.currentTimeMillis();
+		LeoLog.d("start slicing", "start time = " + startTime);
+		
 		if (mSlicingLayer.isAnimating() || mSlicingLayer.isSlicinged())
 			return;
 		mSclingBgView = mContainer;
@@ -205,7 +208,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mCommenScilingHolder.installTime.setText(getString(
 					R.string.install_time, day));
 
-			LeoLog.d(appinfo.label, appinfo.cacheInfo.toString());
 			mCommenScilingHolder.capacity.setText(TextFormater
 					.dataSizeFormat(appinfo.cacheInfo.total));
 
@@ -286,7 +288,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mSlicingLayer.startSlicing(view, mSclingBgView,
 					mBackupSclingContentView, contentheight);
 		}
-
+		LeoLog.d("end slicing", " end time = " + System.currentTimeMillis());
+		LeoLog.d("end slicing", " spend = " + (System.currentTimeMillis() - startTime));
 	}
 
 	@Override
@@ -772,7 +775,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 								mCapacityFolderData.size() <= contentMaxCount ? mCapacityFolderData
 										.size() : contentMaxCount),
 						capacityReccommendData.subList(0,
-								flowBusinessCount <= 4 ? flowBusinessCount : 4));
+								capacityBusinessCount <= 4 ? capacityBusinessCount : 4));
 
 	}
 

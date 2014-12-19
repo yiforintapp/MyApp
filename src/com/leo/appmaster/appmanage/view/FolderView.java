@@ -203,6 +203,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	}
 
 	public void setCurrentPosition(int currentItem) {
+		mCurPosition = currentItem;
 		mTitleCoverFlowView.setSelection(currentItem);
 		mViewPager.setCurrentItem(currentItem, false);
 	}
