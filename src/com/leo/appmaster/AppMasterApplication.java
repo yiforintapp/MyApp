@@ -328,7 +328,6 @@ public class AppMasterApplication extends Application implements
 
 						@Override
 						public void onErrorResponse(VolleyError error) {
-							LeoLog.e("checkNewAppBusiness", error.getMessage());
 							TimerTask recheckTask = new TimerTask() {
 								@Override
 								public void run() {

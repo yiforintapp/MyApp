@@ -48,11 +48,9 @@ public final class Utilities {
 			String online = pref.getOnlineBusinessSerialNumber();
 			String local = pref.getLocalBusinessSerialNumber();
 			if (online != null && !online.equals(local)) {
-				int tipSize = 63;
 				Bitmap newTipBitamp = BitmapFactory.decodeResource(res,
 						R.drawable.folder_new_icon);
-				newTipBitamp = Bitmap.createScaledBitmap(newTipBitamp, tipSize,
-						tipSize, true);
+				int tipSize = newTipBitamp.getWidth();
 
 				Canvas canvas = new Canvas(folderPic);
 				canvas.drawBitmap(resault.getBitmap(), 0, 0, paint);
@@ -61,13 +59,13 @@ public final class Utilities {
 				String newTag = context.getString(R.string.folder_new);
 
 				Rect rect = new Rect();
-				paint.setTextSize(25);
+				paint.setTextSize(tipSize / 2.8f);
 				paint.getTextBounds(newTag, 0, newTag.length(), rect);
 				int textWidth = rect.width();
 				int textHeight = rect.height();
 
 				float x = iconWidth - tipSize + (tipSize - textWidth) / 2;
-				float y = (tipSize - textHeight) / 2 + 10;
+				float y = (tipSize - textHeight) / 2 + tipSize / 5.5f;
 				paint.setColor(Color.WHITE);
 				canvas.drawText(newTag, x, y, paint);
 
@@ -106,10 +104,10 @@ public final class Utilities {
 		canvas.restore();
 
 		int row_num = 2;
-		int folder_icon_x = 15;
-		int folder_icon_y = 15;
-		int folder_icon_h = 15;
-		int folder_icon_v = 15;
+		int folder_icon_x = (int) (iconWidth / 9.5);
+		int folder_icon_y = folder_icon_x;
+		int folder_icon_h = folder_icon_x;
+		int folder_icon_v = folder_icon_x;
 		int folder_icon_size = (iconWidth - (row_num + 1) * folder_icon_x)
 				/ row_num;
 
