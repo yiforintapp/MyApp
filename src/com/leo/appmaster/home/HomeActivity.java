@@ -205,7 +205,9 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mHideVideo = (TextView) findViewById(R.id.hide_video_icon);
 		mHideVideo.setOnClickListener(this);
 		mHidePicText = (TextView) findViewById(R.id.hide_pic_text);
+		mHidePicText.setOnClickListener(this);
 		mHideVideoText = (TextView) findViewById(R.id.hide_video_text);
+		mHideVideoText.setOnClickListener(this);
 
 		mAnimView = (CircleAnimView) findViewById(R.id.lock_circle_view);
 		mAnimView.setOnClickListener(this);
@@ -215,7 +217,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mVideoHide = findViewById(R.id.tv_video_hide);
 		mPictureHide.setOnClickListener(this);
 		mAppLock.setOnClickListener(this);
-		mAppBackup.setOnTouchListener(this);
+		mVideoHide.setOnTouchListener(this);
 		mAppLock.setOnTouchListener(this);
 		mAppBackup.setOnClickListener(this);
 		mVideoHide.setOnClickListener(this);
@@ -487,9 +489,11 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			break;
 			
 		case R.id.hide_pic_icon:
+		case R.id.hide_pic_text:
 		    gotoHidePic();
 		    break;
 		case R.id.hide_video_icon:
+		case R.id.hide_video_text:
 		    gotoHideVideo();
 		    break;
 		case R.id.lock_circle_view:
