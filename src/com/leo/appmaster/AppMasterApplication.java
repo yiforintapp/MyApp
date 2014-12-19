@@ -298,7 +298,7 @@ public class AppMasterApplication extends Application implements
 											showNewBusinessTip(mainTitle,
 													content);
 										}
-										pref.setLastCheckThemeTime(System
+										pref.setLastCheckBusinessTime(System
 												.currentTimeMillis());
 									}
 
