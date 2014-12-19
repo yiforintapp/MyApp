@@ -2,7 +2,6 @@
 package com.leo.appmaster.videohide;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -110,7 +109,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        getWindow().getDecorView().requestLayout();
     }
 
     @Override
@@ -447,7 +445,16 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     public void onActivityRestart() {
         super.onActivityRestart();
         if (mShouldLockOnRestart) {
-            showLockPage();
+            Handler handler=new Handler();
+            handler.post(new Runnable() {
+                
+                @Override
+                public void run() {
+                    showLockPage();
+                    
+                }
+            });
+          
         } else {
             mShouldLockOnRestart = true;
         }

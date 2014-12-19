@@ -11,9 +11,7 @@ public class AppMasterConfig {
      /*-----    Debug configurations   ------ */
 	public static final boolean LOGGABLE = true;
 	
-	public static final int SDK_LOG_LEVER = Log.DEBUG;
-	
-	
+	public static final int SDK_LOG_LEVER = Log.DEBUG;	
 	
 	/*
 	 * RECOMMEND URL
@@ -29,10 +27,17 @@ public class AppMasterConfig {
 	
 	
 	
+	
 //	/*-----     Release configurations   ------*/
 //    public static final boolean LOGGABLE = false;
 //    
 //    public static final int SDK_LOG_LEVER = Log.ERROR;
+//	
+//	   /*
+//     * RECOMMEND URL
+//     */
+//    public static final String APP_RECOMMEND_URL = "http://192.168.1.201:8080/leo/appmaster/apprecommend/list";
+//    public static final String CHECK_NEW_BUSINESS_APP = "http://192.168.1.201:8080/leo/appmaster/apprecommend/checkappupdate";
 //    
 //    
 //    public static final int TIME_2_HOUR = 2 * 60 * 60 * 1000;

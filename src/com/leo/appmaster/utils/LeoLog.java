@@ -7,10 +7,6 @@ import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.ref.WeakReference;
 import java.sql.Timestamp;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
-import com.leo.appmaster.AppMasterConfig;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -18,6 +14,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Environment;
 import android.util.Log;
+
+import com.leo.appmaster.AppMasterConfig;
 
 /**
  * Custom Log class, add catch exception and crash support
@@ -43,7 +41,7 @@ public class LeoLog {
 	/**
 	 * Save log to file flag.
 	 */
-	public static boolean SAVE_TO_FILE = true;
+//	public static boolean SAVE_TO_FILE = false;
 
 	/**
 	 * Default log level,the log above default will be logged.
@@ -58,7 +56,7 @@ public class LeoLog {
 	/**
 	 * set batch size of write LogEntry to file.
 	 */
-	public static final int BATCH_SIZE = 20;
+//	public static final int BATCH_SIZE = 20;
 
 	/**
 	 * The Android context to get the application information, like versionCode
@@ -66,21 +64,21 @@ public class LeoLog {
 	 */
 	private static WeakReference<Context> sContext;
 
-	private static BlockingQueue<LogEntry> sLogEntryQueue = new LinkedBlockingQueue<LogEntry>();
+//	private static BlockingQueue<LogEntry> sLogEntryQueue = new LinkedBlockingQueue<LogEntry>();
 
 	/**
 	 * Flag of whether LogEntryWriterThread should exit.
 	 */
-	private static boolean sWriterThreadExit = false;
-
-	private static boolean sFlushNow = false;
+//	private static boolean sWriterThreadExit = false;
+//
+//	private static boolean sFlushNow = false;
 
 	private static File sLogFile;
 
 	/**
 	 * Use static StringBuilder instance to avoid allocating object frequently
 	 */
-	private static final StringBuilder sStringBuilder = new StringBuilder();
+//	private static final StringBuilder sStringBuilder = new StringBuilder();
 
 	/**
 	 * Use static Timestamp instance to avoid allocating object frequently
@@ -89,9 +87,9 @@ public class LeoLog {
 			System.currentTimeMillis());
 
 	static {
-		if (AppMasterConfig.LOGGABLE && SAVE_TO_FILE) {
-			new LogEntryWriterThread().start();
-		}
+//		if (AppMasterConfig.LOGGABLE && SAVE_TO_FILE) {
+//			new LogEntryWriterThread().start();
+//		}
 		if (AppMasterConfig.LOGGABLE && EXCEPTION_HANDLER_ENABLE) {
 			collectApplicationCrash();
 		}
@@ -182,15 +180,15 @@ public class LeoLog {
 				Log.v(TAG, aTag + ": " + aMessage, aThrowable);
 			}
 
-			sStringBuilder.setLength(0);
-			if (aMessage != null) {
-				sStringBuilder.append(aMessage);
-			}
-
-			if (aThrowable != null) {
-				sStringBuilder.append("\t").append(
-						Log.getStackTraceString(aThrowable));
-			}
+//			sStringBuilder.setLength(0);
+//			if (aMessage != null) {
+//				sStringBuilder.append(aMessage);
+//			}
+//
+//			if (aThrowable != null) {
+//				sStringBuilder.append("\t").append(
+//						Log.getStackTraceString(aThrowable));
+//			}
 
 			/*
 			 * if (SAVE_TO_FILE) { LogEntry entry = new LogEntry();
@@ -257,30 +255,30 @@ public class LeoLog {
 		}
 	}
 
-	private static void collectLogEntry(LogEntry entry) {
-		try {
-			sLogEntryQueue.put(entry);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+//	private static void collectLogEntry(LogEntry entry) {
+//		try {
+//			sLogEntryQueue.put(entry);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	static class LogEntryWriterThread extends Thread {
-		@Override
-		public void run() {
-			while (!sWriterThreadExit) {
-				if (sLogEntryQueue.size() >= BATCH_SIZE) {
-					writeLogEntryToFileByBatch(BATCH_SIZE);
-				} else if (sFlushNow && !sLogEntryQueue.isEmpty()) {
-					writeLogEntryToFileByBatch(sLogEntryQueue.size());
-				}
-			}
-			if (!sLogEntryQueue.isEmpty()) {
-				writeLogEntryToFileByBatch(sLogEntryQueue.size());
-			}
-		}
-
-	}
+//	static class LogEntryWriterThread extends Thread {
+//		@Override
+//		public void run() {
+//			while (!sWriterThreadExit) {
+//				if (sLogEntryQueue.size() >= BATCH_SIZE) {
+//					writeLogEntryToFileByBatch(BATCH_SIZE);
+//				} else if (sFlushNow && !sLogEntryQueue.isEmpty()) {
+//					writeLogEntryToFileByBatch(sLogEntryQueue.size());
+//				}
+//			}
+//			if (!sLogEntryQueue.isEmpty()) {
+//				writeLogEntryToFileByBatch(sLogEntryQueue.size());
+//			}
+//		}
+//
+//	}
 
 	public static String getTimestamp() {
 		sTimestamp.setTime(System.currentTimeMillis());
@@ -290,7 +288,7 @@ public class LeoLog {
 	/**
 	 * in order to improve performance, write LogEntry to file by batch
 	 */
-	private static void writeLogEntryToFileByBatch(int aBatchSize) {
+	private static void writeToFile(String message) {
 		if (!isSDCardAvaible())
 			return;
 
@@ -320,21 +318,8 @@ public class LeoLog {
 			// use BufferedWriter for performance, true to set append to file
 			// flag
 			buf = new BufferedWriter(new FileWriter(sLogFile, true));
-
-			final int N = sLogEntryQueue.size() > aBatchSize ? aBatchSize
-					: sLogEntryQueue.size();
-			LogEntry entry = null;
-			for (int i = 0; i < N; i++) {
-				entry = sLogEntryQueue.take();
-				buf.append(getLogLevel(entry.logLevel) + "\t" + getTimestamp()
-						+ " (" + entry.tag + ")\t" + entry.msg);
-				buf.newLine();
-			}
-
+			buf.append(message);
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		} finally {
 			try {
 				buf.close();
@@ -433,17 +418,18 @@ public class LeoLog {
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread thread, Throwable ex) {
-				log(ERROR, CRASH_TAG, getAppInfo(), ex);
+			    String appInfo = getAppInfo();
+				log(ERROR, CRASH_TAG, appInfo, ex);
+				StringBuilder sStringBuilder = new StringBuilder();
+                  if (appInfo != null) {
+                      sStringBuilder.append(appInfo);
+                  }
+                  if (ex != null) {
+                      sStringBuilder.append("\t").append(
+                              Log.getStackTraceString(ex));
+                  }
+                 writeToFile(sStringBuilder.toString());
 
-				if (SAVE_TO_FILE) {
-					LogEntry entry = new LogEntry();
-					entry.logLevel = ERROR;
-					entry.tag = CRASH_TAG;
-					entry.msg = sStringBuilder.toString();
-					collectLogEntry(entry);
-				}
-
-				flush();
 				if (originalHandler != null) {
 					originalHandler.uncaughtException(thread, ex);
 				}
@@ -455,9 +441,9 @@ public class LeoLog {
 	 * set sFlushNow tag to true, ensure the LogEntry Queue will be saved to
 	 * file completely right now.
 	 */
-	public synchronized static void flush() {
-		sFlushNow = true;
-	}
+//	public synchronized static void flush() {
+//		sFlushNow = true;
+//	}
 
 	/**
 	 * when the application is destroyed, call this method to ensure the child
@@ -466,8 +452,8 @@ public class LeoLog {
 	 * use LogEx to log any more.
 	 */
 	public static void clear() {
-		sWriterThreadExit = true;
-		sLogEntryQueue.clear();
-		sStringBuilder.setLength(0);
+//		sWriterThreadExit = true;
+//		sLogEntryQueue.clear();
+//		sStringBuilder.setLength(0);
 	}
 }
