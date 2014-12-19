@@ -80,7 +80,7 @@ public class AppMasterApplication extends Application implements
 		mInstance = this;
 		mHandler = new Handler();
 		mAppsEngine = AppLoadEngine.getInstance(this);
-		mAppsEngine.preloadAllBaseInfo();
+		
 		mBackupManager = new AppBackupRestoreManager(this);
 		initImageLoader(getApplicationContext());
 		sharedPreferences = getSharedPreferences("lockerTheme",
@@ -126,6 +126,7 @@ public class AppMasterApplication extends Application implements
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				mAppsEngine.preloadAllBaseInfo();
 				AppBusinessManager.getInstance(mInstance).init();
 				mBackupManager.getBackupList();
 				judgeLockService();
