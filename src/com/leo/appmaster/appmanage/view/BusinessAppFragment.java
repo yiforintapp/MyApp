@@ -64,7 +64,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	private EventHandler mHandler;
 	private DisplayImageOptions commonOption;
 
-	private boolean mInitDataLoaded;
+	private boolean mInitDataLoaded, mInitLoading;
 
 	private static class EventHandler extends Handler {
 		WeakReference<BusinessAppFragment> fragmemtHolder;
@@ -85,9 +85,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 				break;
 			case MSG_LOAD_INIT_SUCCESSED:
 				if (fragmemtHolder.get() != null) {
-					// AppMasterPreference pref = AppMasterPreference
-					// .getInstance(fragmemtHolder.get().mActivity);
-					// pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
 					fragmemtHolder.get().onLoadInitAppFinish(true, msg.obj);
 				}
 				break;
@@ -101,9 +98,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			case MSG_LOAD_PAGE_DATA_SUCCESS:
 				if (fragmemtHolder.get() != null) {
 					fragmemtHolder.get().mRecommendGrid.onRefreshComplete();
-					// AppMasterPreference pref = AppMasterPreference
-					// .getInstance(fragmemtHolder.get().mActivity);
-					// pref.setLocalSerialNumber(pref.getOnlineSerialNumber());
 					List<BusinessItemInfo> loadList = (List<BusinessItemInfo>) msg.obj;
 					fragmemtHolder.get().onLoadMoreBusinessDataFinish(true,
 							loadList);
@@ -152,7 +146,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		mRecommendDatas = new ArrayList<BusinessItemInfo>();
 		mRecommendAdapter = new RecommendAdapter();
 		mRecommendGrid.setAdapter(mRecommendAdapter);
-		mRecommendGrid.setScrollbarFadingEnabled(false);
 		mRecommendGrid.setOnRefreshListener(this);
 		mRecommendGrid.setOnItemClickListener(this);
 		mRecommendGrid.setOnClickListener(new OnClickListener() {
@@ -161,16 +154,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 				((AppListActivity) mActivity).getFolderLayer().closeFloder();
 			}
 		});
-		// loadInitBusinessData();
-
-		// AppMasterPreference pref =
-		// AppMasterPreference.getInstance(mActivity);
-		// String online = pref.getOnlineBusinessSerialNumber();
-		// String local = pref.getLocalBusinessSerialNumber();
-		// if (online != null && !online.equals(local)) {
-		// pref.setLocalBusinessSerialNumber(online);
-		// }
-
 	}
 
 	public void addMoreOnlineTheme(List<BusinessItemInfo> loadList) {
@@ -232,8 +215,8 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 				}
 			}
 			// if filter local app
-			mRecommendAdapter.notifyDataSetChanged();
 			mRecommendGrid.setVisibility(View.VISIBLE);
+			mRecommendAdapter.notifyDataSetChanged();
 			if (mRecommendDatas.isEmpty()) {
 				mLayoutEmptyTip.setVisibility(View.VISIBLE);
 			} else {
@@ -263,13 +246,16 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	}
 
 	public void loadInitBusinessData() {
-		if (mInitDataLoaded)
+		if (mInitDataLoaded || mInitLoading)
 			return;
 		mRecommendDatas.clear();
+		mInitLoading = true;
 		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1,
 				new Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response, boolean noModify) {
+						LeoLog.e("loadBusinessRecomApp", "response = "
+								+ response);
 						List<BusinessItemInfo> list = BusinessJsonParser
 								.parserJsonObject(
 										mActivity,
@@ -279,11 +265,15 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 								MSG_LOAD_INIT_SUCCESSED, list);
 						mHandler.sendMessage(msg);
 						mInitDataLoaded = true;
+						mInitLoading = false;
 					}
 				}, new ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
+						LeoLog.e("loadBusinessRecomApp", "onErrorResponse = "
+								+ error.getMessage());
 						mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+						mInitLoading = false;
 						SDKWrapper.addEvent(BusinessAppFragment.this.mActivity,
 								LeoStat.P1, "load_failed", "new_apps");
 					}

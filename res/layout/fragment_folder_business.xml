@@ -25,15 +25,14 @@
             android:scrollbars="none"
             android:stretchMode="columnWidth"
             android:verticalSpacing="5dp"
-            android:visibility="invisible"
+            android:visibility="visible"
             ptr:ptrHeaderSubTextColor="@color/white"
             ptr:ptrHeaderTextColor="@color/white" />
 
         <LinearLayout
             android:id="@+id/layout_empty"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone" >
@@ -41,7 +40,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/online_theme_empty_button" />
+                android:background="@drawable/business_empty_icon" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -49,8 +48,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="@string/no_more_onlinetheme"
-                android:textColor="@color/gray" />
+                android:text="@string/no_more_business_app"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,7 +58,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="invisible" >
+            android:visibility="gone" >
 
             <ImageView
                 android:layout_width="wrap_content"

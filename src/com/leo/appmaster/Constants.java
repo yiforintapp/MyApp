@@ -173,10 +173,5 @@ public class Constants {
 	public static final String VIDEO_PLUS_GP_URL = "https://play.google.com/store/apps/details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01market://details?id= com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
 	public static final String VIDEO_PLUS_GP = "market://details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
 
-	/*
-	 * RECOMMEND URL
-	 */
-	public static final String APP_RECOMMEND_URL = "http://192.168.1.201:8080/leo/appmaster/apprecommend/list";
-	public static final String CHECK_NEW_BUSINESS_APP = "http://192.168.1.201:8080/leo/appmaster/apprecommend/checkappupdate";
 
 }

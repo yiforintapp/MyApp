@@ -10,6 +10,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -98,7 +99,7 @@ public class HttpRequestAgent {
 
 	public void checkNewBusinessData(Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = Constants.CHECK_NEW_BUSINESS_APP;
+		String url = AppMasterConfig.CHECK_NEW_BUSINESS_APP;
 		String body = "update_flag="
 				+ AppMasterPreference.getInstance(mContext)
 						.getLocalBusinessSerialNumber() + "&market_id="
@@ -117,7 +118,7 @@ public class HttpRequestAgent {
 	 */
 	public void loadRecomApp(int type, Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = Constants.APP_RECOMMEND_URL + "?re_position=" + type;
+		String url = AppMasterConfig.APP_RECOMMEND_URL + "?re_position=" + type;
 		String body = "&market_id=" + mContext.getString(R.string.channel_code)
 				+ "&language=" + AppwallHttpUtil.getLanguage();
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
@@ -134,7 +135,7 @@ public class HttpRequestAgent {
 	 */
 	public void loadBusinessRecomApp(int page, Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = Constants.APP_RECOMMEND_URL + "?re_position=4"
+		String url = AppMasterConfig.APP_RECOMMEND_URL + "?re_position=4"
 				+ "&pgcurrent=" + page;
 		String body = "&market_id=" + mContext.getString(R.string.channel_code)
 				+ "&language=" + AppwallHttpUtil.getLanguage() + "&pgsize="
