@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.videohide;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -223,7 +224,9 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
                     video.setDirPath(dirPath);
                     video.setName(dirName);
-
+                    File videoFile=new File(path);
+                    boolean videoExists=videoFile.exists();
+                    if(videoExists){
                     VideoBean vb = null;
                     if (!countMap.containsKey(dirPath)) {
                         vb = new VideoBean();
@@ -238,6 +241,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                         vb.setCount(String.valueOf(Integer.parseInt(vb.getCount()) + 1));
                         vb.getBitList().add(new VideoItemBean(path));
                     }
+                }
                 }
                 Iterable<String> it = countMap.keySet();
                 for (String key : it) {

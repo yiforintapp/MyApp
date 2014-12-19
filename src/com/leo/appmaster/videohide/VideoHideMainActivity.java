@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.videohide;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,10 +19,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
+import android.telecom.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -36,12 +38,10 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 
 @SuppressLint("NewApi")
@@ -101,8 +101,9 @@ public class VideoHideMainActivity extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
-
+        
         super.onDestroy();
+        hideVideos.clear();
     }
 
     @Override
@@ -207,6 +208,7 @@ public class VideoHideMainActivity extends BaseActivity implements
      * getVideoInfo
      */
     public List<VideoBean> getVideoInfo() {
+
         List<VideoBean> videoBeans = new ArrayList<VideoBean>();
         Uri uri = Files.getContentUri("external");
         String selection = MediaColumns.DATA + " LIKE '%.leotmv'";
@@ -225,7 +227,9 @@ public class VideoHideMainActivity extends BaseActivity implements
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
                     video.setDirPath(dirPath);
                     video.setName(dirName);
-
+                    File videoFile=new File(path);
+                    boolean videoExists=videoFile.exists();
+                    if(videoExists){
                     VideoBean vb = null;
                     if (!countMap.containsKey(dirPath)) {
                         vb = new VideoBean();
@@ -241,6 +245,8 @@ public class VideoHideMainActivity extends BaseActivity implements
                         vb.getBitList().add(new VideoItemBean(path));
                     }
                 }
+                }
+      
                 Iterable<String> it = countMap.keySet();
                 for (String key : it) {
                     videoBeans.add(countMap.get(key));
