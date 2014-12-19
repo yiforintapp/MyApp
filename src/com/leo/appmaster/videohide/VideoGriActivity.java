@@ -484,6 +484,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         protected void onPostExecute(final Boolean isSuccess) {
             mClickList.clear();
             if (!isSuccess) {
+                mSelectAll.setText(R.string.app_select_all);
                 Toast.makeText(VideoGriActivity.this, getString(R.string.app_hide_video_fail),
                         Toast.LENGTH_SHORT).show();
             }
