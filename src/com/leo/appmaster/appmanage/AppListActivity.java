@@ -154,6 +154,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 					mOpenedBusinessFolder = true;
 				}
 			});
+			
+			SDKWrapper.addEvent(this, LeoStat.P1, "ub_newapp", "statusbar");
 		}
 	}
 
