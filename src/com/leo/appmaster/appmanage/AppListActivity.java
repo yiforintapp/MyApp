@@ -45,7 +45,6 @@ import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
@@ -103,7 +102,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private static final int MSG_BACKUP_DELETE = 1001;
 
 	private LEOProgressDialog mProgressDialog;
-	private Handler mHandler = new Handler();
+	public Handler mHandler = new Handler();
 	private boolean mFromStatusbar;
 	private boolean mOpenedBusinessFolder;
 
@@ -147,14 +146,14 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mBackupManager.checkDataUpdate();
 		super.onResume();
 		if (mFromStatusbar && !mOpenedBusinessFolder) {
-			mContainer.postDelayed(new Runnable() {
+			mContainer.post(new Runnable() {
 				@Override
 				public void run() {
 					handleItemClick(mPager1.getChildAt(3),
 							SlicingLayer.SLICING_FROM_APPLIST);
 					mOpenedBusinessFolder = true;
 				}
-			}, 0);
+			});
 		}
 	}
 
@@ -273,7 +272,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 			mBackupScilingHolder.size.setText(mBackupManager
 					.getApkSize(appinfo));
-			mBackupScilingHolder.version.setText( appinfo.versionName);
+			mBackupScilingHolder.version.setText(appinfo.versionName);
 			SimpleDateFormat formatter = new SimpleDateFormat(
 					"yyyy-MM-dd HH:mm:ss");
 			Calendar calendar = Calendar.getInstance();

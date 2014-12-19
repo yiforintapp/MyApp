@@ -274,21 +274,16 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 	@Override
 	public void onPageSelected(int arg0) {
-		if(arg0 == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
-			SDKWrapper.addEvent(mContext, LeoStat.P1,
-					"ub_restore", "glide");
-		} else if(arg0 == FolderItemInfo.FOLDER_FLOW_SORT){
-			SDKWrapper.addEvent(mContext, LeoStat.P1,
-					"ub_liuliang", "glide");
-		}else if(arg0 == FolderItemInfo.FOLDER_CAPACITY_SORT){
-			SDKWrapper.addEvent(mContext, LeoStat.P1,
-					"ub_space", "glide");
-		}else if(arg0 == FolderItemInfo.FOLDER_BUSINESS_APP){
-			SDKWrapper.addEvent(mContext, LeoStat.P1,
-					"ub_newapp", "glide");
+		if (arg0 == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
+			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_restore", "glide");
+		} else if (arg0 == FolderItemInfo.FOLDER_FLOW_SORT) {
+			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_liuliang", "glide");
+		} else if (arg0 == FolderItemInfo.FOLDER_CAPACITY_SORT) {
+			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_space", "glide");
+		} else if (arg0 == FolderItemInfo.FOLDER_BUSINESS_APP) {
+			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_newapp", "glide");
 		}
-		
-		
+
 		if (arg0 == 3) {
 			AppMasterPreference pref = AppMasterPreference
 					.getInstance(mContext);
@@ -296,7 +291,13 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 			String local = pref.getLocalBusinessSerialNumber();
 			if (online != null && !online.equals(local)) {
 				pref.setLocalBusinessSerialNumber(online);
-				((AppListActivity)mContext).fillAppListData();
+				((AppListActivity) mContext).mHandler.postDelayed(
+						new Runnable() {
+							@Override
+							public void run() {
+								((AppListActivity) mContext).fillAppListData();
+							}
+						}, 200);
 			}
 			BusinessAppFragment ba = (BusinessAppFragment) mFragmentList.get(3);
 			ba.loadInitBusinessData();
