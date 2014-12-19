@@ -215,7 +215,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mVideoHide = findViewById(R.id.tv_video_hide);
 		mPictureHide.setOnClickListener(this);
 		mAppLock.setOnClickListener(this);
-		mAppBackup.setOnTouchListener(this);
+		mVideoHide.setOnTouchListener(this);
 		mAppLock.setOnTouchListener(this);
 		mAppBackup.setOnClickListener(this);
 		mVideoHide.setOnClickListener(this);

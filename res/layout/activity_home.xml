@@ -174,7 +174,7 @@
                 android:background="#FFF5F5F5" />
 
             <LinearLayout
-                android:id="@+id/ tv_app_backup"
+                android:id="@+id/ tv_video_hide"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -185,13 +185,13 @@
                 <ImageView
                     android:layout_width="38dp"
                     android:layout_height="38dp"
-                    android:src="@drawable/home_backup_icon" />
+                    android:src="@drawable/home_hidden_video_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/app_backup_uninstall"
+                    android:text="@string/app_video_hide"
                     android:textColor="@color/text_color_blue"
                     android:textSize="14dp" />
             </LinearLayout>
@@ -236,7 +236,7 @@
                 android:background="#FFF5F5F5" />
 
             <LinearLayout
-                android:id="@+id/ tv_video_hide"
+                android:id="@+id/ tv_app_backup"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -248,13 +248,13 @@
                     android:id="@+id/setting_icon"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
-                    android:src="@drawable/home_hidden_video_icon" />
+                    android:src="@drawable/home_backup_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/app_video_hide"
+                    android:text="@string/app_backup_uninstall"
                     android:textColor="@color/text_color_blue"
                     android:textSize="14dp" />
             </LinearLayout>
