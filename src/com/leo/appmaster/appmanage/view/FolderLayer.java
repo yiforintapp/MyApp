@@ -105,7 +105,7 @@ public class FolderLayer {
 		as1.addAnimation(sa1);
 
 		AnimationSet as2 = new AnimationSet(true);
-		as2.setDuration(ANIMALTION_TIME );
+		as2.setDuration(ANIMALTION_TIME);
 		as2.setInterpolator(new AccelerateDecelerateInterpolator());
 		as2.setFillEnabled(true);
 		as2.setFillAfter(true);
@@ -114,28 +114,23 @@ public class FolderLayer {
 		ScaleAnimation sa2 = new ScaleAnimation(1f, 0.95f, 1f, 0.95f,
 				mBrotherView.getWidth() / 2, mBrotherView.getHeight() / 2);
 		as2.addAnimation(sa2);
-		
+
 		as2.setAnimationListener(new AnimationListenerAdapter() {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				mIsAnimating = true;
 			}
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				mBrotherView.setVisibility(View.GONE);
 			}
 		});
 		as2.addAnimation(sa2);
-
 		mBrotherView.startAnimation(as2);
-		
-//		handler.postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-				mFolderView.setVisibility(View.VISIBLE);
-				mFolderView.startAnimation(as1);
-//			}
-//		}, ANIMALTION_TIME / 2);
+
+		mFolderView.setVisibility(View.VISIBLE);
+		mFolderView.startAnimation(as1);
 
 	}
 
@@ -145,7 +140,7 @@ public class FolderLayer {
 		}
 		mIsOpened = false;
 		AnimationSet as1 = new AnimationSet(true);
-		as1.setDuration(ANIMALTION_TIME );
+		as1.setDuration(ANIMALTION_TIME);
 		as1.setInterpolator(new AccelerateDecelerateInterpolator());
 		AlphaAnimation aa1 = new AlphaAnimation(1f, 0f);
 		as1.addAnimation(aa1);
@@ -184,8 +179,8 @@ public class FolderLayer {
 		mFolderView.startAnimation(as1);
 	}
 
-	public void updateFolderData(int folderType,
-			List<AppItemInfo> contentData, List<BusinessItemInfo> reccommendData) {
+	public void updateFolderData(int folderType, List<AppItemInfo> contentData,
+			List<BusinessItemInfo> reccommendData) {
 		mFolderView.updateData(folderType, contentData, reccommendData);
 	}
 

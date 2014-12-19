@@ -261,7 +261,7 @@ public class AppMasterApplication extends Application implements
 
 		long lastCheckTime = pref.getLastCheckBusinessTime();
 		if (lastCheckTime == 0
-				|| (curTime - lastCheckTime) > Constants.TIME_12_HOUR
+				|| (curTime - lastCheckTime) > AppMasterConfig.TIME_12_HOUR
 		/* 2 * 60 * 1000 */) {
 			HttpRequestAgent.getInstance(this).checkNewBusinessData(
 					new Listener<JSONObject>() {
@@ -310,7 +310,11 @@ public class AppMasterApplication extends Application implements
 									};
 									Timer timer = new Timer();
 									timer.schedule(recheckTask,
-											Constants.TIME_12_HOUR/* 2 * 60 * 1000 */);
+											AppMasterConfig.TIME_12_HOUR/*
+																		 * 2 *
+																		 * 60 *
+																		 * 1000
+																		 */);
 
 								} catch (JSONException e) {
 									e.printStackTrace();
@@ -332,7 +336,8 @@ public class AppMasterApplication extends Application implements
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask, Constants.TIME_2_HOUR
+							timer.schedule(recheckTask,
+									AppMasterConfig.TIME_2_HOUR
 							/* 2 * 60 * 1000 */);
 						}
 					});
@@ -346,7 +351,7 @@ public class AppMasterApplication extends Application implements
 
 		long lastCheckTime = pref.getLastCheckThemeTime();
 		if (lastCheckTime == 0
-				|| (curTime - pref.getLastCheckThemeTime()) > Constants.TIME_12_HOUR) {
+				|| (curTime - pref.getLastCheckThemeTime()) > AppMasterConfig.TIME_12_HOUR) {
 			HttpRequestAgent.getInstance(this).checkNewTheme(
 					new Listener<JSONObject>() {
 
@@ -382,7 +387,7 @@ public class AppMasterApplication extends Application implements
 									};
 									Timer timer = new Timer();
 									timer.schedule(recheckTask,
-											Constants.TIME_12_HOUR);
+											AppMasterConfig.TIME_12_HOUR);
 
 								} catch (JSONException e) {
 									e.printStackTrace();
@@ -403,7 +408,8 @@ public class AppMasterApplication extends Application implements
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask, Constants.TIME_2_HOUR);
+							timer.schedule(recheckTask,
+									AppMasterConfig.TIME_2_HOUR);
 						}
 					});
 		}

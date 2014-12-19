@@ -26,6 +26,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView1"
             android:text="@string/app_size"
+            android:textSize="@dimen/folder_backup_text_size"
             android:textColor="@color/white" />
 
         <TextView
@@ -36,6 +37,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
             android:text="30Ｍ "
+            android:textSize="@dimen/folder_backup_text_size"
             android:textColor="@color/white" />
     </RelativeLayout>
 
@@ -66,6 +68,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView2"
             android:text="@string/version"
+             android:textSize="@dimen/folder_backup_text_size"
             android:textColor="@color/white" />
 
         <TextView
@@ -76,6 +79,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
             android:text="30Ｍ "
+             android:textSize="@dimen/folder_backup_text_size"
             android:textColor="@color/white" />
     </RelativeLayout>
 
@@ -106,6 +110,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView3"
             android:text="@string/backup_time"
+             android:textSize="@dimen/folder_backup_text_size"
             android:textColor="@color/white" />
 
         <TextView
@@ -116,6 +121,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
             android:text="10% "
+             android:textSize="@dimen/folder_backup_text_size"
             android:textColor="@color/white" />
     </RelativeLayout>
 
@@ -147,6 +153,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imageView4"
             android:text="@string/backup_path"
+             android:textSize="@dimen/folder_backup_text_size"
             android:textColor="@color/white" />
 
         <TextView
@@ -159,6 +166,7 @@
             android:layout_toRightOf="@id/textView5"
             android:gravity="right"
             android:text="10% "
+             android:textSize="@dimen/folder_backup_text_size"
             android:textColor="@color/white" />
     </RelativeLayout>
 
