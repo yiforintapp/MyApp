@@ -39,7 +39,7 @@ public class SDKWrapper {
         } catch (NotFoundException e) {
             LeoLog.e(TAG, "failed to get ICON");
         }
-        PushManager.getInstance(ctx).startPush(ctx.getString(R.string.channel_code), "privacylock");
+        PushManager.getInstance(ctx).startPush(ctx.getString(R.string.channel_code));
     }
 
     /**
