@@ -17,6 +17,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -142,11 +143,13 @@ public class CircleAnimView extends View {
             mPaint.setTextSize(mCountTextSize);
             mPaint.setStrokeWidth(0);
             mPaint.setTypeface(Typeface.DEFAULT_BOLD);
+            mPaint.getFontMetrics(mFontMetrics);
+            int textOffset = (int) Math.ceil(mFontMetrics.descent - mFontMetrics.ascent) / 10;
             int textSize = computeTextSize(count, mCountTextSize, mContentBound.width() - mIconSmallSize - mTextVerrticalPadding, mPaint);
             offset = (mContentBound.width() - textSize - mIconSmallSize - mTextVerrticalPadding) / 2;
-            mCountTextPoint.set(mContentBound.left + offset, mContentBound.top + (mContentBound.height() / 2));
+            mCountTextPoint.set(mContentBound.left + offset, mContentBound.top + (mContentBound.height() / 2) + textOffset);
             int iconLeft = mCountTextPoint.x + textSize + mTextVerrticalPadding;
-            int iconTop = mContentBound.top + ((mContentBound.height()) / 2) - mIconSmallSize;
+            int iconTop = mContentBound.top + ((mContentBound.height()) / 2) - mIconSmallSize + textOffset;
             mLockIconFinalBound.set(iconLeft, iconTop, iconLeft + mIconSmallSize, iconTop + mIconSmallSize);
             mTipText = getResources().getString(R.string.circle_lock_tip_text);
         } else {
@@ -318,6 +321,21 @@ public class CircleAnimView extends View {
         if(mLockAnim != null) {
             mLockAnim.end();
         }
+    }
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        switch (action & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_UP:
+                int upX = (int)event.getX();
+                int upY = (int)event.getY();
+                if(mOuterCircleBound.contains(upX, upY)) {
+                    performClick();
+                }
+                break;
+        }
+        return true;
     }
 
 }

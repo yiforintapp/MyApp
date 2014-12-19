@@ -264,8 +264,8 @@
     <string name="feedback_error">Incorrect email address</string>
     <string name="googlePlayGuide">Pull down to rate</string>
     <string name="folder_backup_restore">App Restore</string>
-    <string name="folder_sort_flow">Network Killer</string>
-    <string name="folder_sort_capacity">Storage Killer</string>
+    <string name="folder_sort_flow">High data usage</string>
+    <string name="folder_sort_capacity">High space usage</string>
     <string name="folder_recommend">New Arrival</string>
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>

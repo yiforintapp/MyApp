@@ -19,6 +19,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 	private TextView mTvLayoutRight;
 	private TextView mTvOptionText;
 	private ImageView mTvOptionImage;
+	private ImageView mTvLogo;
 
 	private View mLayoutBackView, mLayoutSpiner;
 
@@ -45,6 +46,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 		mTvOptionText = (TextView) findViewById(R.id.tv_option_text);
 		mTvOptionImage = (ImageView) findViewById(R.id.tv_option_image);
 		mLayoutSpiner = findViewById(R.id.layout_right);
+		mTvLogo = (ImageView) findViewById(R.id.iv_logo);
 		super.onFinishInflate();
 	}
 
@@ -107,6 +109,10 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
 	public void setOptionImage(int resID) {
 		mTvOptionImage.setImageResource(resID);
+	}
+	
+	public void showLogo() {
+	    mTvLogo.setVisibility(View.VISIBLE);
 	}
 
 	@Override

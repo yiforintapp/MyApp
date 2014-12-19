@@ -45,11 +45,13 @@ import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.model.FolderItemInfo;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.LeoAppViewPager.OnPageChangeListener;
@@ -61,6 +63,7 @@ import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
+import com.leoers.leoanalytics.LeoStat;
 
 public class AppListActivity extends BaseFragmentActivity implements
 		AppChangeListener, OnClickListener, AppBackupDataListener,
@@ -159,6 +162,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 		if (mSlicingLayer.isAnimating() || mSlicingLayer.isSlicinged())
 			return;
 		mSclingBgView = mContainer;
+
+		if (!(view.getTag() instanceof AppItemInfo))
+			return;
 		AppItemInfo appinfo = (AppItemInfo) view.getTag();
 		if (from != BaseFolderFragment.FOLER_TYPE_BACKUP) {
 			if (mCommenScilingContentView == null) {
@@ -267,8 +273,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 			mBackupScilingHolder.size.setText(mBackupManager
 					.getApkSize(appinfo));
-			mBackupScilingHolder.version.setText(String.format(getResources()
-					.getString(R.string.app_version), appinfo.versionName));
+			mBackupScilingHolder.version.setText( appinfo.versionName);
 			SimpleDateFormat formatter = new SimpleDateFormat(
 					"yyyy-MM-dd HH:mm:ss");
 			Calendar calendar = Calendar.getInstance();
@@ -487,15 +492,34 @@ public class AppListActivity extends BaseFragmentActivity implements
 			public void onAnimationEnd(Animator arg0) {
 				switch (mLastSelectedInfo.type) {
 				case BaseInfo.ITEM_TYPE_NORMAL_APP:
-
+					SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+							"ub_listpress", "app");
 					openSlicingLayer(view, from);
 					break;
 				case BaseInfo.ITEM_TYPE_FOLDER:
 					if (!mFolderLayer.isFolderOpened()) {
+
 						FolderItemInfo folderInfo = (FolderItemInfo) mLastSelectedInfo;
 						fillFolder();
 						mFolderLayer.openFolderView(folderInfo.folderType,
 								view, mAllAppList);
+						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+								"ub_listpress", "folder"
+										+ (folderInfo.folderType + 1));
+						if (folderInfo.folderType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
+							SDKWrapper.addEvent(AppListActivity.this,
+									LeoStat.P1, "ub_restore", "list");
+						} else if (folderInfo.folderType == FolderItemInfo.FOLDER_FLOW_SORT) {
+							SDKWrapper.addEvent(AppListActivity.this,
+									LeoStat.P1, "ub_liuliang", "list");
+						} else if (folderInfo.folderType == FolderItemInfo.FOLDER_CAPACITY_SORT) {
+							SDKWrapper.addEvent(AppListActivity.this,
+									LeoStat.P1, "ub_space", "list");
+						} else if (folderInfo.folderType == FolderItemInfo.FOLDER_BUSINESS_APP) {
+							SDKWrapper.addEvent(AppListActivity.this,
+									LeoStat.P1, "ub_newapp", "list");
+						}
+
 					}
 					break;
 				case BaseInfo.ITEM_TYPE_BUSINESS_APP:
@@ -513,6 +537,23 @@ public class AppListActivity extends BaseFragmentActivity implements
 						AppUtil.downloadFromBrowser(AppListActivity.this,
 								bif.appDownloadUrl);
 					}
+					SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+							"app_cli_pn", "$" + bif.packageName);
+
+					if (bif.containType == BusinessItemInfo.CONTAIN_APPLIST) {
+						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+								"app_cli_ps", "home");
+					} else if (bif.containType == BusinessItemInfo.CONTAIN_FLOW_SORT) {
+						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+								"app_cli_ps", "flow");
+					} else if (bif.containType == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
+						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+								"app_cli_ps", "capacity");
+					} else if (bif.containType == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
+						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+								"app_cli_ps", "new");
+					}
+
 					break;
 
 				default:
@@ -624,12 +665,15 @@ public class AppListActivity extends BaseFragmentActivity implements
 								pending.label), 100, false, true, false);
 				mBackupManager.backupApp(pending);
 			}
+
+			SDKWrapper.addEvent(this, LeoStat.P1, "ub_backup", "list");
 			break;
 		case R.id.restore:
 			if (mLastSelectedInfo instanceof AppItemInfo) {
 				AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
 				mBackupManager.restoreApp(this, pending);
 			}
+
 			break;
 		case R.id.delete:
 			if (mLastSelectedInfo instanceof AppItemInfo) {
@@ -645,6 +689,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 				AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
 				AppUtil.uninstallApp(this, pending.packageName);
 			}
+			SDKWrapper.addEvent(this, LeoStat.P1, "ub_uninstall", "list");
 			break;
 		case R.id.layout_title_back:
 			if (!mSlicingLayer.isSlicinged() && !mFolderLayer.isFolderOpened()) {
@@ -766,6 +811,16 @@ public class AppListActivity extends BaseFragmentActivity implements
 				}
 			}
 		}
+		if (containerId == BusinessItemInfo.CONTAIN_APPLIST) {
+			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
+		} else if (containerId == BusinessItemInfo.CONTAIN_FLOW_SORT) {
+			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "flow");
+		} else if (containerId == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
+			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "capacity");
+		} else if (containerId == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
+			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "new");
+		}
+
 		return list;
 	}
 

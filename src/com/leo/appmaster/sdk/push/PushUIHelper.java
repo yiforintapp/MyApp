@@ -94,12 +94,18 @@ private NewActListener mListener;
         mContent = content;
         if (showType == PushManager.SHOW_DIALOG_FIRST && isActivityOnTop(mContext)) {
             LeoLog.d(TAG, "push activity already on top, do nothing");
+            if(nm != null){
+                nm.cancel(PUSH_NOTIFICATION_ID);
+            }
             if (mListener != null) {
                 mListener.onNewAct(false, adID, title, content);
                                 }
         } else if (showType == PushManager.SHOW_DIALOG_FIRST && isAppOnTop(mContext)
                 && !mIsLockScreen) {
             LeoLog.d(TAG, "notify user with dialog");
+            if(nm != null){
+                nm.cancel(PUSH_NOTIFICATION_ID);
+            }
             mStatusBar = false;
             if (mListener != null) {
                 mListener.onNewAct(false, adID, title, content);

@@ -189,6 +189,9 @@ public class SlicingLayer {
 	}
 
 	private void fillUI() {
+		if (mBackgroundViewParent == container.getParent()) {
+			mBackgroundViewParent.removeView(container);
+		}
 		container.removeAllViews();
 
 		// add content view
