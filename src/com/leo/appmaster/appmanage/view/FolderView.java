@@ -296,10 +296,18 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 							public void run() {
 								((AppListActivity) mContext).fillAppListData();
 							}
-						}, 200);
+						}, 2000);
 			}
-			BusinessAppFragment ba = (BusinessAppFragment) mFragmentList.get(3);
-			ba.loadInitBusinessData();
+
+			((AppListActivity) mContext).mHandler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					BusinessAppFragment ba = (BusinessAppFragment) mFragmentList
+							.get(3);
+					ba.loadInitBusinessData();
+				}
+			}, 800);
+
 		}
 
 		if (mCurPosition == arg0)

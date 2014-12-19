@@ -341,6 +341,17 @@ public class AppMasterApplication extends Application implements
 							/* 2 * 60 * 1000 */);
 						}
 					});
+		} else {
+			TimerTask recheckTask = new TimerTask() {
+				@Override
+				public void run() {
+					checkNewAppBusiness();
+				}
+			};
+			Timer timer = new Timer();
+			long delay = AppMasterConfig.TIME_12_HOUR
+					- (curTime - lastCheckTime);
+			timer.schedule(recheckTask, delay);
 		}
 
 	}
