@@ -422,6 +422,17 @@ public class AppMasterApplication extends Application implements
 									AppMasterConfig.TIME_2_HOUR);
 						}
 					});
+		} else {
+			TimerTask recheckTask = new TimerTask() {
+				@Override
+				public void run() {
+					checkNewTheme();
+				}
+			};
+			Timer timer = new Timer();
+			long delay = AppMasterConfig.TIME_12_HOUR
+					- (curTime - lastCheckTime);
+			timer.schedule(recheckTask, delay);
 		}
 	}
 
