@@ -88,14 +88,16 @@ public class CommonFolderFragment extends BaseFolderFragment implements
 			mContentAdapter = new ContentAdapter(mContentData);
 			if (mContentGrid != null) {
 				mContentGrid.setAdapter(mContentAdapter);
+	            mContentGrid.setVisibility(View.VISIBLE);
+	            mEmptyTip.setVisibility(View.INVISIBLE);
 			}
-			mContentGrid.setVisibility(View.VISIBLE);
-			mEmptyTip.setVisibility(View.INVISIBLE);
 		} else {
-			mContentGrid.setVisibility(View.INVISIBLE);
-			if (mType == BaseFolderFragment.FOLER_TYPE_BACKUP) {
-				mEmptyTip.setVisibility(View.VISIBLE);
-			}
+		    if (mContentGrid != null) {
+		          mContentGrid.setVisibility(View.INVISIBLE);
+		            if (mType == BaseFolderFragment.FOLER_TYPE_BACKUP) {
+		                mEmptyTip.setVisibility(View.VISIBLE);
+		            }
+		    }
 		}
 
 		if (mRecommendData != null && !mRecommendData.isEmpty()) {
