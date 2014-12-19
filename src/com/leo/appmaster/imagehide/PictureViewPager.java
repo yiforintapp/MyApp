@@ -88,7 +88,12 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         mIntent = getIntent();
         if (null != mIntent) {
             mPicturesList = mIntent.getStringArrayListExtra("list");
+            int maxSize = mPicturesList.size() - 1;
             mListPos = mIntent.getIntExtra("pos", 0);
+            // AM-533, add protect
+            if(mListPos > maxSize) {
+                mListPos = maxSize;
+            }
         }
 
         mPager = (LeoPictureViewPager) findViewById(R.id.picture_view_pager);
