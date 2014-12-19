@@ -1045,7 +1045,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 	@Override
 	public void onPageSelected(int position) {
 		mCurrentPage = position;
-		LeoLog.d("xxxx", "position = " + position);
 	}
 
 	@Override

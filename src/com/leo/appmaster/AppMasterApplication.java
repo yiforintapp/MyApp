@@ -271,8 +271,6 @@ public class AppMasterApplication extends Application implements
 								boolean noMidify) {
 							if (response != null) {
 								try {
-									LeoLog.e("xxxx", "checkNewBusinessData = "
-											+ response.toString());
 									JSONObject jsonObject = response.getJSONObject("data");
 									if (jsonObject != null) {
 										boolean hasNewBusinessData = jsonObject
