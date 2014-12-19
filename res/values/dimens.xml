@@ -69,5 +69,7 @@
     <dimen name="folder_title_mask_size">80dp</dimen>
     <dimen name="folder_title_height">28dp</dimen>
     <dimen name="folder_title_width">137dp</dimen>
+    
+    <dimen name="folder_backup_text_size">14dp</dimen>
 
 </resources>
