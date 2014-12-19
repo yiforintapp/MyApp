@@ -81,6 +81,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
     public List<VideoItemBean> mUnhide;
+    private ArrayList<String> mUnhidePath;
 
     private void init() {
         mSelectAll = (Button) findViewById(R.id.select_all);
@@ -118,10 +119,12 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mClickPosList = new ArrayList<Integer>();
         mAllPath = new ArrayList<String>();
         mUnhide = new ArrayList<VideoItemBean>();
+        mUnhidePath=new ArrayList<String>();
         init();
         mHideVideo.setOnItemClickListener(this);
         mSelectAll.setOnClickListener(this);
         mHideButton.setOnClickListener(this);
+        getResultValue();
     }
 
     @Override
@@ -444,6 +447,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                     for (VideoItemBean item : mClickList) {
                         if (!mIsBackgoundRunning)
                             break;
+                        mUnhidePath.add(item.getPath());
                         newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
                         if (newFileName.startsWith(".")) {
                             newFileName = newFileName + ".leotmv";
@@ -617,5 +621,11 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivityForResult(intent, 1000);
     }
-
+    private void getResultValue() {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("path", mUnhidePath);
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+    }
 }

@@ -15,14 +15,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,12 +36,14 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.appwall.AppWallDialog;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -56,32 +62,27 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     private boolean mShouldLockOnRestart = true;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
+    private VideoHideDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_hide);
         initUI();
+        adapter = new HideVideoAdapter(VideoHideGalleryActivity.this);
+        dialog = new VideoHideDialog(this);
+        Window window=dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();   
+        lp.alpha = 0.5f;   
+        lp.dimAmount = 0.0f;  
+        window.setAttributes(lp);   
+        VideoHideGalleryTask videoTask=new VideoHideGalleryTask();
+        videoTask.execute(true);
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
-        hideVideos = getVideoInfo();
-        adapter = new HideVideoAdapter(this, hideVideos);
-        mGridView.setAdapter(adapter);
-        if (hideVideos != null) {
-            if (hideVideos.size() > 0) {
-                mNoHidePictureHint.setVisibility(View.GONE);
-                mGridView.setVisibility(View.VISIBLE);
-            } else {
-                mNoHidePictureHint.setVisibility(View.VISIBLE);
-                mGridView.setVisibility(View.GONE);
-                mNohideVideo.setText(getString(R.string.app_no_video_gallery_hide));
-            }
-
-        }
-
+        super.onResume();      
     }
 
     private void initUI() {
@@ -127,25 +128,25 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     class HideVideoAdapter extends BaseAdapter {
         AsyncLoadImage asyncLoadImage;
         Context context;
-        List<VideoBean> videos;
+//        List<VideoBean> videos;
         LayoutInflater layoutInflater;
 
-        public HideVideoAdapter(Context context, List<VideoBean> videos) {
+        public HideVideoAdapter(Context context) {
             this.context = context;
-            this.videos = videos;
+//            this.videos = videos;
             layoutInflater = LayoutInflater.from(context);
             asyncLoadImage = new AsyncLoadImage();
         }
 
         @Override
         public int getCount() {
-            return videos != null ? videos.size() : 0;
+            return hideVideos != null ? hideVideos.size() : 0;
         }
 
         @Override
         public Object getItem(int position) {
 
-            return videos != null ? videos.get(position) : null;
+            return hideVideos != null ? hideVideos.get(position) : null;
         }
 
         @Override
@@ -177,7 +178,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            VideoBean video = videos.get(position);
+            VideoBean video = hideVideos.get(position);
             final String path = video.getPath();
             final ImageView imageView = viewHolder.imageView;
             imageView.setTag(path);
@@ -238,7 +239,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                         countMap.put(dirPath, vb);
                     } else {
                         vb = countMap.get(dirPath);
-                        vb.setCount(String.valueOf(Integer.parseInt(vb.getCount()) + 1));
+                        vb.setCount(String.valueOf(vb.getCount() + 1));
                         vb.getBitList().add(new VideoItemBean(path));
                     }
                 }
@@ -315,7 +316,61 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     }
 
     @Override
-    public void onActivityResault(int requestCode, int resultCode) {  
-            mShouldLockOnRestart = false;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mShouldLockOnRestart = false;
+        ArrayList<String> resultPath = (ArrayList<String>) data.getExtras().get("path");
+        if (resultPath.size() > 0) {
+            for (int i = 0; i < hideVideos.size(); i++) {
+                VideoBean bin = hideVideos.get(i);
+                ArrayList<VideoItemBean> remove = new ArrayList<VideoItemBean>();
+                for (VideoItemBean itemBean : bin.getBitList()) {
+                    String path = itemBean.getPath();
+                    if (resultPath.contains(path)) {
+                        remove.add(itemBean);
+                    }
+                }
+                bin.getBitList().removeAll(remove);
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+    }
+    private class VideoHideGalleryTask extends AsyncTask<Boolean, Integer, List<VideoBean>> {   
+        @Override
+        protected void onPreExecute() {
+            dialog.show();
+        }
+
+        @Override
+        protected List<VideoBean> doInBackground(Boolean... params) {
+            boolean isHide = params[0];
+            List<VideoBean> hideVideos=null;
+            if(isHide){
+                hideVideos=getVideoInfo();
+            }
+            return hideVideos;
+            
+        }
+
+        @Override
+        protected void onPostExecute( List<VideoBean> videos) {
+            dialog.dismiss();
+           hideVideos=videos;
+           mGridView.setAdapter(adapter);
+           if (hideVideos != null) {
+               if (hideVideos.size() > 0) {
+                   mNoHidePictureHint.setVisibility(View.GONE);
+                   mGridView.setVisibility(View.VISIBLE);
+               } else {
+                   mNoHidePictureHint.setVisibility(View.VISIBLE);
+                   mGridView.setVisibility(View.GONE);
+                   mNohideVideo.setText(getString(R.string.app_no_video_gallery_hide));
+               }
+               
+
+           }
+
+        }
     }
 }

@@ -241,7 +241,7 @@ public class VideoHideMainActivity extends BaseActivity implements
                         countMap.put(dirPath, vb);
                     } else {
                         vb = countMap.get(dirPath);
-                        vb.setCount(String.valueOf(Integer.parseInt(vb.getCount()) + 1));
+                        vb.setCount(String.valueOf(vb.getCount() + 1));
                         vb.getBitList().add(new VideoItemBean(path));
                     }
                 }

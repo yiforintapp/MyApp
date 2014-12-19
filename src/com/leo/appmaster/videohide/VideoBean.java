@@ -57,8 +57,8 @@ public class VideoBean implements Serializable {
     public void setBitList(List<VideoItemBean> bitList) {
         this.bitList = bitList;
     }
-    public String getCount() {
-        return count;
+    public int getCount() {
+        return bitList.size();
     }
     public void setCount(String count) {
         this.count = count;
