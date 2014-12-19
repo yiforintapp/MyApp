@@ -69,11 +69,10 @@ public class FolderLayer {
 	 */
 	public void openFolderView(int type, View anchorView, View brotherView) {
 		mBrotherView = brotherView;
-		mFolderView.setCurrentPosition(type);
-		startOpenAnimation(anchorView);
+		startOpenAnimation(anchorView, type);
 	}
 
-	private void startOpenAnimation(View anchorView) {
+	private void startOpenAnimation(View anchorView, final int type) {
 		final AnimationSet as1 = new AnimationSet(true);
 		as1.setDuration(ANIMALTION_TIME);
 		as1.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -93,6 +92,11 @@ public class FolderLayer {
 				mAnchorLocation[0], mAnchorLocation[1]);
 		sa1.setDuration(ANIMALTION_TIME);
 		as1.setAnimationListener(new AnimationListenerAdapter() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+				mFolderView.setCurrentPosition(type);
+				super.onAnimationStart(animation);
+			}
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				mIsOpened = true;

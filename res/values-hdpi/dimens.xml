@@ -52,7 +52,7 @@
     <dimen name="circle_lock_icon_small_size">20dp</dimen>
     <dimen name="circle_lock_icon_big_size">36dp</dimen>
     <dimen name="circle_text_vertical_padding">10dp</dimen>
-    <dimen name="folder_title_margintop">15dp</dimen>
+    <dimen name="folder_title_margintop">8dp</dimen>
     <dimen name="folder_title_item_size">103dp</dimen>
     <dimen name="folder_title_mask_size">70dp</dimen>
     <dimen name="folder_title_text_size">16dp</dimen>
