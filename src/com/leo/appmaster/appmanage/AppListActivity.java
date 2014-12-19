@@ -336,7 +336,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mLoadingView = findViewById(R.id.rl_loading);
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		mTtileBar.setTitle(R.string.uninstall_backup);
+		mTtileBar.setTitle(R.string.app_backup_uninstall);
 		// mTtileBar.openBackView();
 		mTtileBar.setBackViewListener(this);
 		mTtileBar.setOptionTextVisibility(View.INVISIBLE);
