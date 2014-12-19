@@ -5,7 +5,6 @@
     <string name="app_count">应用数量</string>
     <string name="used_memory">使用内存</string>
     <string name="used_flow">使用流量</string>
-    <string name="uninstall_backup">卸载与备份</string>
     <string name="app_detail">应用详情</string>
     <string name="app_lock">应用锁</string>
     <string name="app_backup">应用备份</string>
