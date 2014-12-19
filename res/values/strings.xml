@@ -28,7 +28,7 @@
     <string name="passwd_set_passwd_tip">Please enter a 4-character password</string>
     <string name="passwd_hint">Enter Password</string>
     <string name="tip_no_the_same_pswd">Invalid password. Please try again.</string>
-    <string name="input_error_tip">incorrectly drawn %1$s times，%2$s times left </string>
+    <string name="input_error_tip">You have used %1$s login attempt(s), %2$s remaining.</string>
     <string name="use_gesture">Pattern Lock</string>
     <string name="use_passwd">Password Lock</string>
     <string name="reset_passwd">Reset a password</string>
@@ -88,7 +88,7 @@
     <string name="app_version">Version: %1$s</string>
     <string name="backuping">Processing data: ( %1$s )</string>
     <string name="no_application_selected">Please select an App</string>
-    <string name="backup_finish">Backup Successful</string>
+    <string name="backup_finish">Backup successfully!</string>
     <string name="delete_fail">Delete Failed</string>
     <string name="deleting_app">Deleting: %1$s</string>
     <string name="installed_app_size">Installed Apps: %1$d</string>
@@ -176,7 +176,7 @@
     <string name="recom_lock_tip">Reminder of most-used Apps</string>
     <string name="new_app_lock_tip">Reminder of new Apps</string>
     <string name="feedback">Feedbacks</string>
-    <string name="first_set_passwd_hint">Set a password for your first login.</string>
+    <string name="first_set_passwd_hint">Enter your password</string>
     <string name="gestur_passwd_function_hint">Pattern available in Lock&amp;hide</string>
     <string name="digital_passwd_function_hint">Password available in Lock&amp;Hide</string>
     <string name="gesture_start_hint">Release finger when done</string>
@@ -264,8 +264,8 @@
     <string name="feedback_error">Incorrect email address</string>
     <string name="googlePlayGuide">Pull down to rate</string>
     <string name="folder_backup_restore">App Restore</string>
-    <string name="folder_sort_flow">High data usage</string>
-    <string name="folder_sort_capacity">High space usage</string>
+    <string name="folder_sort_flow">Most Data</string>
+    <string name="folder_sort_capacity">Most Space</string>
     <string name="folder_recommend">New Arrival</string>
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
@@ -273,20 +273,20 @@
     <string name="no_more_business_app">No new applications, look back over time  </string>
     <string name="uninstall_backup">Uninstall Backup</string>
     <string name="delete_successfully">Delete Successfully!</string>
-    <string name="space_consumption">Storage Used: </string>
+    <string name="space_consumption">Space used: </string>
     <string name="cache_size">Cache： </string>
     <string name="power_consumption">Battery Usage: </string>
-    <string name="flow_consumption">Net Flow Usage: </string>
+    <string name="flow_consumption">Data usage: </string>
     <string name="memory_consumption">Memory Used: </string>
-    <string name="backup_path">Backup route: </string>
+    <string name="backup_path">Backup path: </string>
     <string name="backup_time">Backup date: </string>
     <string name="app_size">APK file size: </string>
     <string name="version">Version: </string>
-    <string name="install_time"><xliff:g id="day">%1$s</xliff:g>&#160;days from now</string>
+    <string name="install_time">%1$s day(s) ago</string>
     <string name="folder_new">NEW</string>
     <string name="new_app_tip_content">Find hot apps here!</string>
     <string name="new_app_tip_title">New Apps!</string>
-    <string name="no_backup_app_tip">No Apps backed up</string>
-    <string name="other_people_use_tip">其他人正在使用</string>
+    <string name="no_backup_app_tip">No backed up App</string>
+    <string name="other_people_use_tip">Other people use</string>
 
 </resources>
