@@ -6,40 +6,45 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/folder_title_margintop" >
 
-        <com.leo.appmaster.appmanage.view.FolderTitleGallery
-            android:id="@+id/title_cover_flow"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp" />
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/folder_title_margintop" >
 
-        <View
-            android:layout_width="@dimen/folder_title_mask_size"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/folder_title_mask_left" />
+            <com.leo.appmaster.appmanage.view.FolderTitleGallery
+                android:id="@+id/title_cover_flow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:gravity="center_vertical" />
 
-        <View
-            android:layout_width="@dimen/folder_title_mask_size"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/folder_title_mask_right" />
+            <View
+                android:layout_width="@dimen/folder_title_mask_size"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/folder_title_mask_left" />
 
+            <View
+                android:layout_width="@dimen/folder_title_mask_size"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/folder_title_mask_right" />
+        </RelativeLayout>
+        
         <ImageView
             android:id="@+id/iv_back_arrow"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_alignBottom="@id/title_cover_flow"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="3dp"
-            android:padding="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="3dp"
+            android:padding="7dp"
             android:src="@drawable/folder_close_selector" />
     </RelativeLayout>
 
@@ -47,6 +52,6 @@
         android:id="@+id/folder_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>
