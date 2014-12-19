@@ -182,15 +182,15 @@ public class LeoLog {
 				Log.v(TAG, aTag + ": " + aMessage, aThrowable);
 			}
 
-			sStringBuilder.setLength(0);
-			if (aMessage != null) {
-				sStringBuilder.append(aMessage);
-			}
-
-			if (aThrowable != null) {
-				sStringBuilder.append("\t").append(
-						Log.getStackTraceString(aThrowable));
-			}
+//			sStringBuilder.setLength(0);
+//			if (aMessage != null) {
+//				sStringBuilder.append(aMessage);
+//			}
+//
+//			if (aThrowable != null) {
+//				sStringBuilder.append("\t").append(
+//						Log.getStackTraceString(aThrowable));
+//			}
 
 			/*
 			 * if (SAVE_TO_FILE) { LogEntry entry = new LogEntry();
@@ -433,9 +433,18 @@ public class LeoLog {
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread thread, Throwable ex) {
-				log(ERROR, CRASH_TAG, getAppInfo(), ex);
+			    String appInfo = getAppInfo();
+				log(ERROR, CRASH_TAG, appInfo, ex);
 
 				if (SAVE_TO_FILE) {
+		            sStringBuilder.setLength(0);
+		            if (appInfo != null) {
+		                sStringBuilder.append(appInfo);
+		            }
+		            if (ex != null) {
+		                sStringBuilder.append("\t").append(
+		                        Log.getStackTraceString(ex));
+		            }
 					LogEntry entry = new LogEntry();
 					entry.logLevel = ERROR;
 					entry.tag = CRASH_TAG;
