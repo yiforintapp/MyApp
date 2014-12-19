@@ -6,6 +6,7 @@ import android.content.res.Resources.NotFoundException;
 import android.util.Log;
 
 import com.baidu.mobstat.StatService;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
@@ -32,7 +33,7 @@ public class SDKWrapper {
 
     private static void iniPushSDK(Context ctx) {
         /* TODO: change this from Log.DEBUG to Log.ERROR when release */
-        PushManager.getInstance(ctx).setDebugLevel(Log.DEBUG);
+        PushManager.getInstance(ctx).setDebugLevel(AppMasterConfig.SDK_LOG_LEVER);
         try {
             int resId = ctx.getResources().getIdentifier("ic_launcher", "drawable", ctx.getPackageName());
             PushManager.getInstance(ctx).setIcon(resId);
