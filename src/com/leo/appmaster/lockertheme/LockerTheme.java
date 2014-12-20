@@ -783,9 +783,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 							int number=mOnlineThemes.size();
 	                            for (ThemeItemInfo info : mLocalThemes) {
 	                                if (info.packageName.equals(packageName)) {
-//	                                    addThemeOnline = info;
-	                                    
-	                                    
 	                                    String remove = null;
 	                                    for (String hide : mHideThemes) {
 	                                        if(info.packageName.equals(hide))  {
@@ -799,18 +796,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	                                    break;
 	                                }
 	                            }
-/*	                            
-	                            if (addThemeOnline != null) {
-	                                
-	                                addThemeOnline.themeType=Constants.THEME_TYPE_ONLINE;
-	                                addThemeOnline.tag=Constants.THEME_TAG_NONE;
-	                                mOnlineThemes.add(addThemeOnline);	                               
-	                                mOnlineThemeAdapter.notifyDataSetChanged();
-
-	                                if (mOnlineThemes.isEmpty()) {
-	                                    mLayoutEmptyTip.setVisibility(View.VISIBLE);
-	                                }
-	                            }*/
 	                            loadLocalTheme();
 	                            mLocalThemeAdapter.notifyDataSetChanged();
 						}
