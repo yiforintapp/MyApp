@@ -154,32 +154,39 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         String selection = MediaColumns.DATA + " LIKE '%.leotmp'";
         
         Cursor cursor = getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null, MediaColumns.DATE_ADDED + " desc");
-        
-        Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
-        PhotoAibum pa = null;
-        while (cursor.moveToNext()) {
-            String path = cursor.getString(1);
-            String dirName = FileOperationUtil.getDirNameFromFilepath(path);
-            String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
-            if (!countMap.containsKey(dirPath)) {
-                pa = new PhotoAibum();
-                pa.setName(dirName);
-                pa.setCount("1");
-                pa.setDirPath(dirPath);
-                pa.getBitList().add(new PhotoItem(path));
-                countMap.put(dirPath, pa);
-            } else {
-                pa = countMap.get(dirPath);
-                pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                pa.getBitList().add(new PhotoItem(path));
+        if(cursor != null) {
+            try {
+                Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
+                PhotoAibum pa = null;
+                while (cursor.moveToNext()) {
+                    String path = cursor.getString(1);
+                    String dirName = FileOperationUtil.getDirNameFromFilepath(path);
+                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
+                    if (!countMap.containsKey(dirPath)) {
+                        pa = new PhotoAibum();
+                        pa.setName(dirName);
+                        pa.setCount("1");
+                        pa.setDirPath(dirPath);
+                        pa.getBitList().add(new PhotoItem(path));
+                        countMap.put(dirPath, pa);
+                    } else {
+                        pa = countMap.get(dirPath);
+                        pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                        pa.getBitList().add(new PhotoItem(path));
+                    }
+                }
+                Iterable<String> it = countMap.keySet();
+                for (String key : it) {
+                    aibumList.add(countMap.get(key));
+                }
+                Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
+            } catch(Exception e) {
+                
+            } finally {
+                cursor.close();
             }
         }
-        cursor.close();
-        Iterable<String> it = countMap.keySet();
-        for (String key : it) {
-            aibumList.add(countMap.get(key));
-        }
-        Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
+
         return aibumList;
     }    
     

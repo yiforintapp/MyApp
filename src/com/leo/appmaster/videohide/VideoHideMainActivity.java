@@ -255,7 +255,9 @@ public class VideoHideMainActivity extends BaseActivity implements
             }
         } catch (Exception e) {
         }finally{
-            cursor.close();
+            if(cursor != null) {
+                cursor.close();
+            }
         }
      
         return videoBeans;
