@@ -123,7 +123,6 @@ public class AppWallActivity extends BaseActivity implements
 					urlStr = sort.get(i)[1];
 					if (i == 0) {
 						if (flagGp) {
-							LeoLog.i("run","********************"+urlStr);
 							requestGp(AppWallActivity.this, urlStr);
 							break;// 访问成功直接跳出
 						} else {
@@ -234,6 +233,7 @@ public class AppWallActivity extends BaseActivity implements
 				appwallLV.setAdapter(adapter);
 				appwallLV.setOnItemClickListener(AppWallActivity.this);
 			} else {
+			    p.dismiss();
 				appwallLV.setVisibility(View.GONE);
 				button.setVisibility(View.VISIBLE);
 				text.setVisibility(View.VISIBLE);
