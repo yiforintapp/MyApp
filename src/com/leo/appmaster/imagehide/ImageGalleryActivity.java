@@ -1,23 +1,17 @@
 package com.leo.appmaster.imagehide;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.MediaStore;
-import android.provider.MediaStore.MediaColumns;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -25,7 +19,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -34,7 +27,7 @@ import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.videohide.VideoHideDialog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 
@@ -57,6 +50,7 @@ public class ImageGalleryActivity extends BaseActivity{
     private int mTopChildOffset = 0;
     
     private boolean mShouldLockOnRestart = true;
+    private VideoHideDialog mImageDialog;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +58,12 @@ public class ImageGalleryActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         initImageLoder();
         setContentView(R.layout.activity_image_gallery);
+        mImageDialog = new VideoHideDialog(this);
+        Window window=mImageDialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();   
+        layoutParams.alpha = 0.5f;   
+        layoutParams.dimAmount = 0.0f;  
+        window.setAttributes(layoutParams);   
         mTtileBar = (CommonTitleBar)findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.app_image_gallery);
         mTtileBar.openBackView();
@@ -220,7 +220,7 @@ public class ImageGalleryActivity extends BaseActivity{
 
         @Override  
         protected void onPreExecute() {  
-
+             mImageDialog.show();
         }  
 
         @Override  
@@ -231,6 +231,7 @@ public class ImageGalleryActivity extends BaseActivity{
   
         @Override  
         protected void onPostExecute(Integer integer) {
+            mImageDialog.dismiss();
             if (mAlbumList != null) {
                 if (mAlbumList.size() > 0) {
                     mNoPictureHint.setVisibility(View.GONE);

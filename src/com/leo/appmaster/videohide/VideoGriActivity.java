@@ -463,6 +463,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             FileOperationUtil.deleteVideoMediaEntry(item.getPath(), context);
                             mVideoItems.remove(item);
                         } else {
+                            mUnhidePath.remove(item.getPath());
                             isSuccess = false;
                         }
 
