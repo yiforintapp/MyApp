@@ -98,6 +98,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 
 	private EventHandler mHandler;
 	private String mFromTheme;
+	
 
 	private static class EventHandler extends Handler {
 		WeakReference<LockerTheme> lockerTheme;
@@ -330,7 +331,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	}
 
 	private void loadInitOnlineTheme() {
-		mOnlineThemes.clear();
 		HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemes,
 				new Listener<JSONObject>() {
 					@Override
@@ -780,17 +780,20 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 							
 							// if need to load online theme
 							ThemeItemInfo addThemeOnline = null;
+							int number=mOnlineThemes.size();
 	                            for (ThemeItemInfo info : mLocalThemes) {
 	                                if (info.packageName.equals(packageName)) {
-	                                    addThemeOnline = info;
-	                                }
-	                            }
-	                            if (addThemeOnline != null) {
-	                                mOnlineThemes.add(addThemeOnline);
-	                                mOnlineThemeAdapter.notifyDataSetChanged();
-
-	                                if (mOnlineThemes.isEmpty()) {
-	                                    mLayoutEmptyTip.setVisibility(View.VISIBLE);
+	                                    String remove = null;
+	                                    for (String hide : mHideThemes) {
+	                                        if(info.packageName.equals(hide))  {
+	                                            remove = hide;
+	                                            break;
+	                                        }
+                                        }
+	                                    mHideThemes.remove(remove);
+	                                    loadMoreOnlineTheme();    
+	                                    
+	                                    break;
 	                                }
 	                            }
 	                            loadLocalTheme();
@@ -813,13 +816,12 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 							ThemeItemInfo remove = null;
 							for (ThemeItemInfo info : mOnlineThemes) {
 								if (info.packageName.equals(packageName)) {
-									remove = info;
+									remove = info;									
 								}
 							}
 							if (remove != null) {
 								mOnlineThemes.remove(remove);
-								mOnlineThemeAdapter.notifyDataSetChanged();
-
+								mOnlineThemeAdapter.notifyDataSetChanged();								
 								if (mOnlineThemes.isEmpty()) {
 									mLayoutEmptyTip.setVisibility(View.VISIBLE);
 								}
