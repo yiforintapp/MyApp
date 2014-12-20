@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -324,7 +325,18 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                 | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivityForResult(intent, REQUEST_CODE_LOCK);
     }
+    public Comparator<VideoBean> folderamparator = new Comparator<VideoBean>() {
 
+        public final int compare(VideoBean a, VideoBean b) {
+            File fileA = new File(a.getDirPath());
+            File fileB = new File(b.getDirPath());
+            if (new Date(fileA.lastModified()).before(new Date(fileB.lastModified())))
+                return 1;
+            if (new Date(fileA.lastModified()).after(new Date(fileB.lastModified())))
+                return -1;
+            return 0;
+        }
+    };
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -349,6 +361,8 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                 } catch (Exception e) {
                 }
             }
+
+            Collections.sort(hideVideos, folderamparator);
             adapter.notifyDataSetChanged();
         }
 
