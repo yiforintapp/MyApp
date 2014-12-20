@@ -64,7 +64,9 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	private EventHandler mHandler;
 	private DisplayImageOptions commonOption;
 
-	private boolean mInitDataLoaded, mInitLoading;
+	private boolean mInitLoading;
+	private boolean mInitDataLoadFinish;
+	private boolean mHaveInitData;
 
 	private static class EventHandler extends Handler {
 		WeakReference<BusinessAppFragment> fragmemtHolder;
@@ -180,6 +182,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			mLayoutEmptyTip.setVisibility(View.INVISIBLE);
 			mRecommendAdapter.notifyDataSetChanged();
 		} else {
+			mRecommendAdapter.notifyDataSetChanged();
 			Toast.makeText(mActivity, R.string.no_more_theme, 0).show();
 		}
 	}
@@ -218,8 +221,10 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			mRecommendGrid.setVisibility(View.VISIBLE);
 			mRecommendAdapter.notifyDataSetChanged();
 			if (mRecommendDatas.isEmpty()) {
+				mHaveInitData = false;
 				mLayoutEmptyTip.setVisibility(View.VISIBLE);
 			} else {
+				mHaveInitData = true;
 				mLayoutEmptyTip.setVisibility(View.INVISIBLE);
 			}
 			
@@ -249,7 +254,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	}
 
 	public void loadInitBusinessData() {
-		if (mInitDataLoaded || mInitLoading)
+		if (mInitDataLoadFinish || mInitLoading)
 			return;
 		mRecommendDatas.clear();
 		mInitLoading = true;
@@ -267,7 +272,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 						Message msg = mHandler.obtainMessage(
 								MSG_LOAD_INIT_SUCCESSED, list);
 						mHandler.sendMessage(msg);
-						mInitDataLoaded = true;
+						mInitDataLoadFinish = true;
 						mInitLoading = false;
 					}
 				}, new ErrorListener() {
@@ -284,6 +289,17 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	}
 
 	private void loadMoreBusiness() {
+		
+		if(mInitLoading){
+			mRecommendGrid.onRefreshComplete();
+			return;
+		}
+		
+		if(mInitDataLoadFinish && !mHaveInitData) {
+			loadInitBusinessData();
+			return;
+		}
+		
 		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(
 				mCurrentPage + 1, new Listener<JSONObject>() {
 					@Override
