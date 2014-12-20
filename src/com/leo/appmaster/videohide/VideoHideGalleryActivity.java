@@ -177,7 +177,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
             final Handler handler=new Handler();
-            if (convertView == null) {
+            if (convertView == null) { 
                 convertView = getLayoutInflater().inflate(
                         R.layout.item_video_gridview_album, parent, false);
                 viewHolder = new ViewHolder();
@@ -191,7 +191,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             VideoBean video = hideVideos.get(position);
-            final String path = video.getPath();
+            final String path = video.getBitList().get(0).getPath();
             final ImageView imageView = viewHolder.imageView;
             imageView.setTag(path);
             viewHolder.text.setText(video.getName() + "(" + video.getCount()
@@ -244,14 +244,14 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                     if (!countMap.containsKey(dirPath)) {
                         vb = new VideoBean();
                         vb.setName(dirName);
-                        vb.setCount("1");
+                        vb.setCount(1);
                         vb.setDirPath(dirPath);
                         vb.getBitList().add(new VideoItemBean(path));
                         vb.setPath(path);
                         countMap.put(dirPath, vb);
                     } else {
                         vb = countMap.get(dirPath); 
-                        vb.setCount(String.valueOf(vb.getCount() + 1));
+                        vb.setCount(vb.getCount() + 1);
                         vb.getBitList().add(new VideoItemBean(path));
                     }
                 }

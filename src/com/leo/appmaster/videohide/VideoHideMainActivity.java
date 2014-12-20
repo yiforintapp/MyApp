@@ -234,14 +234,14 @@ public class VideoHideMainActivity extends BaseActivity implements
                     if (!countMap.containsKey(dirPath)) {
                         vb = new VideoBean();
                         vb.setName(dirName);
-                        vb.setCount("1");
+                        vb.setCount(1);
                         vb.setDirPath(dirPath);
                         vb.getBitList().add(new VideoItemBean(path));
                         vb.setPath(path);
                         countMap.put(dirPath, vb);
                     } else {
                         vb = countMap.get(dirPath);
-                        vb.setCount(String.valueOf(vb.getCount() + 1));
+                        vb.setCount(vb.getCount() + 1);
                         vb.getBitList().add(new VideoItemBean(path));
                     }
                 }

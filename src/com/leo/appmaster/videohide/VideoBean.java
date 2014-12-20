@@ -11,14 +11,14 @@ import android.graphics.Bitmap;
 
 public class VideoBean implements Serializable {
     private String name;
-     private String count;
+     private int count;
     private String dirPath;
     private Date mLastModifyDate;
     private List<VideoItemBean> bitList = new ArrayList<VideoItemBean>();
     private String path;
 
     
-    public VideoBean(String name, String count, String dirPath,
+    public VideoBean(String name, int count, String dirPath,
 			Date mLastModifyDate, List<VideoItemBean> bitList, String path) {
 		super();
 		this.name = name;
@@ -60,7 +60,7 @@ public class VideoBean implements Serializable {
     public int getCount() {
         return bitList.size();
     }
-    public void setCount(String count) {
+    public void setCount(int count) {
         this.count = count;
     }
 	public String getPath() {
