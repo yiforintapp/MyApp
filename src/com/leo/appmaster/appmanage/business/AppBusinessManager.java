@@ -208,13 +208,13 @@ public class AppBusinessManager {
 														BusinessItemInfo.CONTAIN_APPLIST);
 										if (!noModify) {
 											// to paser data
-											LeoLog.e("trySyncServerData",
+											LeoLog.d("trySyncServerData",
 													list.toString());
 											syncApplistData(
 													BusinessItemInfo.CONTAIN_APPLIST,
 													list);
 										} else {
-											LeoLog.e("trySyncServerData",
+											LeoLog.d("trySyncServerData",
 													"noModify");
 										}
 									}
@@ -274,10 +274,10 @@ public class AppBusinessManager {
 											.parserJsonObject(mContext,
 													response, type);
 									if (!noModify) {
-										LeoLog.e("syncOtherRecommend",
+										LeoLog.d("syncOtherRecommend",
 												list.toString());
 									} else {
-										LeoLog.e("syncOtherRecommend",
+										LeoLog.d("syncOtherRecommend",
 												"noModify");
 									}
 									syncOtherRecommendData(type, list, noModify);

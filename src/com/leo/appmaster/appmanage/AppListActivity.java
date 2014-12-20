@@ -200,6 +200,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			appinfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(
 					appinfo.packageName);
 
+			
 			int day = Math
 					.abs((int) ((System.currentTimeMillis() - appinfo.installTime) / (1000 * 60 * 60 * 24)));
 
