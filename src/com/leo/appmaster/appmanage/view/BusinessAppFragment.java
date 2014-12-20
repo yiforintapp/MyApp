@@ -202,6 +202,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	}
 
 	public void onLoadInitAppFinish(boolean succeed, Object object) {
+		mRecommendGrid.onRefreshComplete();
 		mRecommendHolder.setVisibility(View.VISIBLE);
 		if (succeed) {
 			mRecommendHolder.setVisibility(View.VISIBLE);
@@ -254,7 +255,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	}
 
 	public void loadInitBusinessData() {
-		if (mInitDataLoadFinish || mInitLoading)
+		if ((mInitDataLoadFinish && mHaveInitData) || mInitLoading)
 			return;
 		mRecommendDatas.clear();
 		mInitLoading = true;

@@ -274,7 +274,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 					loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
 					try {
 						appInfo.installTime = mPm
-								.getPackageInfo(packageName, 0).lastUpdateTime;
+								.getPackageInfo(packageName, 0).firstInstallTime;
 					} catch (NameNotFoundException e) {
 						e.printStackTrace();
 					}

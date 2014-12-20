@@ -134,7 +134,7 @@ public class LockHandler extends BroadcastReceiver {
 		}
 		List<String> list = pref.getLockedAppList();
 		if (list.contains(mLastRunningPkg)) {
-			LeoLog.e("mLastRunningPkg = " + mLastRunningPkg, "is in lock list");
+			LeoLog.d("mLastRunningPkg = " + mLastRunningPkg, "is in lock list");
 			Intent intent2 = new Intent(mContext, LockScreenActivity.class);
 			if (!mLockPolicy.onHandleLock(mLastRunningPkg)) {
 				int lockType = AppMasterPreference.getInstance(mContext)

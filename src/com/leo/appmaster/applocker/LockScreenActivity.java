@@ -249,7 +249,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			mTtileBar.setOptionListener(this);
 		}
 		spiner = (ImageView) findViewById(R.id.image1);
-		LeoLog.e("LockScreenActivity", "spiner = " + spiner);
+		LeoLog.d("LockScreenActivity", "spiner = " + spiner);
 		// AM-463, add protect
 		if (spiner != null) {
 			if ("0".equals(number)) {
@@ -263,10 +263,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 		if (ImageHideMainActivity.class.getName().equals(mToActivity) || VideoHideMainActivity.class.getName().equals(mToActivity)) { // AM-423
 			mTtileBar.setSpinerVibility(View.INVISIBLE);
-			LeoLog.e("LockScreenActivity", "ImageHideMainActivity");
+			LeoLog.d("LockScreenActivity", "ImageHideMainActivity");
 		} else {
 			mTtileBar.setSpinerVibility(View.VISIBLE);
-			LeoLog.e("LockScreenActivity", "spiner.setOnClickListener");
+			LeoLog.d("LockScreenActivity", "spiner.setOnClickListener");
 			spiner.setOnClickListener(this);
 		}
 
