@@ -142,11 +142,6 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.cleanmemory.CleanMemActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
-        <activity
             android:name="com.leo.appmaster.backup.AppBackupRestoreActivity"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
