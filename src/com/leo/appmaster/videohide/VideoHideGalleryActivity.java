@@ -112,6 +112,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        hideVideos.clear();
     }
 
     @Override
@@ -341,31 +342,34 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mShouldLockOnRestart = false;
-        ArrayList<String> resultPath = (ArrayList<String>) data.getExtras().get("path");
-        if (resultPath.size() > 0) {
-            for (int i = 0; i < hideVideos.size(); i++) {
-                VideoBean bin = hideVideos.get(i);
-                ArrayList<VideoItemBean> remove = new ArrayList<VideoItemBean>();
-                for (VideoItemBean itemBean : bin.getBitList()) {
-                    String path = itemBean.getPath();
-                    if (resultPath.contains(path)) {
-                        remove.add(itemBean);
-                    }
-                }
-                bin.getBitList().removeAll(remove);
+        if (data != null) {
+            ArrayList<String> resultPath = (ArrayList<String>) data.getExtras().get("path");
+            if (resultPath != null) {
+                if (resultPath.size() > 0) {
+                    for (int i = 0; i < hideVideos.size(); i++) {
+                        VideoBean bin = hideVideos.get(i);
+                        ArrayList<VideoItemBean> remove = new ArrayList<VideoItemBean>();
+                        for (VideoItemBean itemBean : bin.getBitList()) {
+                            String path = itemBean.getPath();
+                            if (resultPath.contains(path)) {
+                                remove.add(itemBean);
+                            }
+                        }
+                        bin.getBitList().removeAll(remove);
 
-                try {
-                    if (bin.getBitList().size() <= 0) {
-                        hideVideos.remove(bin);
+                        try {
+                            if (bin.getBitList().size() <= 0) {
+                                hideVideos.remove(bin);
+                            }
+                        } catch (Exception e) {
+                        }
                     }
-                } catch (Exception e) {
+
+                    Collections.sort(hideVideos, folderamparator);
+                    adapter.notifyDataSetChanged();
                 }
             }
-
-            Collections.sort(hideVideos, folderamparator);
-            adapter.notifyDataSetChanged();
         }
-
     }
     private class VideoHideGalleryTask extends AsyncTask<Boolean, Integer, List<VideoBean>> {   
         @Override
