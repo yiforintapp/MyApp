@@ -647,9 +647,9 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			if (v.getId() == R.id.tv_app_lock) {
 				mPressedEffect1.setBackgroundResource(R.drawable.home_sel);
 				mAppLock.setBackgroundResource(R.drawable.home_sel);
-			} else if (v.getId() == R.id.tv_app_backup) {
+			} else if (v.getId() == R.id.tv_video_hide) {
 				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
-				mAppBackup.setBackgroundResource(R.drawable.home_sel);
+				mVideoHide.setBackgroundResource(R.drawable.home_sel);
 			}
 			break;
 		case MotionEvent.ACTION_UP:
@@ -658,9 +658,9 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			if (v.getId() == R.id.tv_app_lock) {
 				mPressedEffect1.setBackgroundColor(Color.WHITE);
 				mAppLock.setBackgroundColor(Color.WHITE);
-			} else if (v.getId() == R.id.tv_app_backup) {
+			} else if (v.getId() == R.id.tv_video_hide) {
 				mPressedEffect2.setBackgroundColor(Color.WHITE);
-				mAppBackup.setBackgroundColor(Color.WHITE);
+				mVideoHide.setBackgroundColor(Color.WHITE);
 			}
 			break;
 		default:

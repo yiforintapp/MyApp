@@ -32,13 +32,5 @@
             android:text="@string/locker_guide"
             android:textColor="#FFFFFF" />
     </RelativeLayout>
-    <ImageView
-        android:id="@+id/lockCleanIV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/rocket_fly"
-        android:visibility="gone" />
 
 </RelativeLayout>
