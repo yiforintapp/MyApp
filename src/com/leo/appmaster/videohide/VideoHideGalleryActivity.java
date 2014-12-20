@@ -83,6 +83,16 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();      
+        if (hideVideos != null) {
+            if (hideVideos.size() > 0) {
+                mNoHidePictureHint.setVisibility(View.GONE);
+                mGridView.setVisibility(View.VISIBLE);
+            } else {
+                mNoHidePictureHint.setVisibility(View.VISIBLE);
+                mGridView.setVisibility(View.GONE);
+                mNohideVideo.setText(getString(R.string.app_no_video_gallery_hide));
+            }
+        }
     }
 
     private void initUI() {
@@ -238,7 +248,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                         vb.setPath(path);
                         countMap.put(dirPath, vb);
                     } else {
-                        vb = countMap.get(dirPath);
+                        vb = countMap.get(dirPath); 
                         vb.setCount(String.valueOf(vb.getCount() + 1));
                         vb.getBitList().add(new VideoItemBean(path));
                     }
@@ -331,6 +341,13 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                     }
                 }
                 bin.getBitList().removeAll(remove);
+
+                try {
+                    if (bin.getBitList().size() <= 0) {
+                        hideVideos.remove(bin);
+                    }
+                } catch (Exception e) {
+                }
             }
             adapter.notifyDataSetChanged();
         }
@@ -357,7 +374,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         protected void onPostExecute( List<VideoBean> videos) {
             dialog.dismiss();
            hideVideos=videos;
-           mGridView.setAdapter(adapter);
+           mGridView.setAdapter(adapter);   
            if (hideVideos != null) {
                if (hideVideos.size() > 0) {
                    mNoHidePictureHint.setVisibility(View.GONE);
@@ -367,10 +384,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                    mGridView.setVisibility(View.GONE);
                    mNohideVideo.setText(getString(R.string.app_no_video_gallery_hide));
                }
-               
-
            }
-
         }
     }
 }
