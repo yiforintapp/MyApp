@@ -419,6 +419,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mUnhide.clear();
         mUnhidePath.clear();
         mVideoItems.clear();
+        mClickPosList.clear();
     }
 
     /**
