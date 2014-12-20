@@ -158,7 +158,7 @@
     <string name="feedback_email_tip">您的常用邮箱</string>
     <string name="feedback_category_tip">请选择问题类型</string>
     <string name="category_lock">应用锁</string>
-    <string name="category_backup_uninstall">备份卸载</string>
+    <string name="category_backup_uninstall">卸载与备份</string>
     <string name="category_hide_image">图片隐藏</string>
     <string name="category_hide_video">视频隐藏</string>
     <string name="category_other">其他问题</string>
