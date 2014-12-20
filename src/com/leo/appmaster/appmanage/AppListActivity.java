@@ -154,7 +154,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 					mOpenedBusinessFolder = true;
 				}
 			});
-			
+
 			SDKWrapper.addEvent(this, LeoStat.P1, "ub_newapp", "statusbar");
 		}
 	}
@@ -162,7 +162,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	public void openSlicingLayer(View view, int from) {
 		long startTime = System.currentTimeMillis();
 		LeoLog.d("start slicing", "start time = " + startTime);
-		
+
 		if (mSlicingLayer.isAnimating() || mSlicingLayer.isSlicinged())
 			return;
 		mSclingBgView = mContainer;
@@ -200,7 +200,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 			appinfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(
 					appinfo.packageName);
 
-			int day = (int) ((System.currentTimeMillis() - appinfo.installTime) / (1000 * 60 * 60 * 24));
+			int day = Math
+					.abs((int) ((System.currentTimeMillis() - appinfo.installTime) / (1000 * 60 * 60 * 24)));
 
 			if (day > 10000) {
 				day /= 50;
@@ -291,7 +292,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 					mBackupSclingContentView, contentheight);
 		}
 		LeoLog.d("end slicing", " end time = " + System.currentTimeMillis());
-		LeoLog.d("end slicing", " spend = " + (System.currentTimeMillis() - startTime));
+		LeoLog.d("end slicing", " spend = "
+				+ (System.currentTimeMillis() - startTime));
 	}
 
 	@Override
@@ -776,8 +778,11 @@ public class AppListActivity extends BaseFragmentActivity implements
 								0,
 								mCapacityFolderData.size() <= contentMaxCount ? mCapacityFolderData
 										.size() : contentMaxCount),
-						capacityReccommendData.subList(0,
-								capacityBusinessCount <= 4 ? capacityBusinessCount : 4));
+						capacityReccommendData
+								.subList(
+										0,
+										capacityBusinessCount <= 4 ? capacityBusinessCount
+												: 4));
 
 	}
 
