@@ -45,14 +45,15 @@ public class NewYearActivity extends BaseActivity implements View.OnClickListene
     private boolean mFromStatusBar;
     private String mAdID;
     private EditText mPhoneNumber = null;
+    private EditText mCustomMsgET;
     
     /* popup window stuff */
     private LeoPopMenu mLeoPopMenu;
     private ImageView mCategoryImg;
     private TextView mCategory;
     private final static int[] sCategoryIds = {
-        R.string.category_lock, R.string.category_backup_uninstall, R.string.category_hide_image,
-        R.string.category_hide_video, R.string.category_other, R.string.category_suggest
+        R.string.wish_msg1, R.string.wish_msg2, R.string.wish_msg3,
+        R.string.wish_msg4, R.string.wish_msg5, R.string.wish_custom
 };
 
 private final ArrayList<String> mCategories = new ArrayList<String>();
@@ -124,6 +125,9 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
         tvGO.setText(getString(R.string.send_sms));
         tvGO.setOnClickListener(this);
         
+        mCustomMsgET = (EditText) findViewById(R.id.custom_msg_content);
+        mCustomMsgET.setVisibility(View.GONE);
+        
         /* init popup for default messages */
         View dropView = findViewById(R.id.default_wishes_layout);
         mCategory = (TextView) findViewById(R.id.wishes_title);
@@ -161,9 +165,16 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                         int position, long id) {
-                    mCategory.setText(mCategories.get(position));
-                    mCategory.setTag(1);
+                    String text = mCategories.get(position);
+                    mCategory.setText(text);
                     mLeoPopMenu.dismissSnapshotList();
+                    if(NewYearActivity.this.getString(R.string.wish_custom).equals(text)){
+                        /* user want to send a custom wish message */
+                        mCustomMsgET.setVisibility(View.VISIBLE);
+                        mCustomMsgET.requestFocus();
+                    }else{
+                        mCustomMsgET.setVisibility(View.GONE);
+                    }
                 }
             });
         }
@@ -171,6 +182,7 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
         styles.width = LayoutParams.MATCH_PARENT;
         styles.height = LayoutParams.WRAP_CONTENT;
         styles.animation = R.style.PopupListAnimUpDown;
+        styles.direction = LeoPopMenu.DIRECTION_DOWN;
         mLeoPopMenu.showPopMenu(this, mCategory, styles, new OnDismissListener() {
             @Override
             public void onDismiss() {
