@@ -40,6 +40,7 @@ import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.ImageScaleType;
@@ -283,8 +284,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 								+ error.getMessage());
 						mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
 						mInitLoading = false;
-						SDKWrapper.addEvent(BusinessAppFragment.this.mActivity,
-								LeoStat.P1, "load_failed", "new_apps");
+						 LoadFailUtils.sendLoadFail(BusinessAppFragment.this.mActivity, "new_apps");
 					}
 				});
 	}
@@ -319,8 +319,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
-						SDKWrapper.addEvent(BusinessAppFragment.this.mActivity,
-								LeoStat.P1, "load_failed", "new_apps");
+						 LoadFailUtils.sendLoadFail(BusinessAppFragment.this.mActivity, "new_apps");
 					}
 				});
 	}
