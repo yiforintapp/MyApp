@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.sdk.push;
+package com.leo.appmaster.sdk.push.ui;
 
 import java.util.List;
 import java.util.regex.Pattern;
