@@ -46,6 +46,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.appmanage.view.BusinessAppFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
@@ -57,6 +58,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.imageloader.ImageLoader;
 import com.leoers.leoanalytics.LeoStat;
 
@@ -346,8 +348,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
-						SDKWrapper.addEvent(LockerTheme.this,
-								LeoStat.P1, "load_failed", "theme");
+						LoadFailUtils.sendLoadFail(LockerTheme.this, "theme");
 					}
 				});
 	}
@@ -496,8 +497,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
-						SDKWrapper.addEvent(LockerTheme.this,
-								LeoStat.P1, "load_failed", "theme");
+						LoadFailUtils.sendLoadFail(LockerTheme.this, "theme");
 					}
 				});
 	}
