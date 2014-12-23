@@ -126,12 +126,12 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
         
         /* init popup for default messages */
         View dropView = findViewById(R.id.default_wishes_layout);
-        dropView.setOnClickListener(this);
         mCategory = (TextView) findViewById(R.id.wishes_title);
         mCategoryImg = (ImageView) findViewById(R.id.feedback_category_arrow);
         for (int i = 0; i < sCategoryIds.length; i++) {
             mCategories.add(getString(sCategoryIds[i]));
         }
+        dropView.setOnClickListener(this);
     }
 
     @Override

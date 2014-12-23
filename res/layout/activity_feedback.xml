@@ -23,7 +23,7 @@
         android:clickable="true" >
 
         <TextView
-            android:id="@+id/wishes_title"
+            android:id="@+id/feedback_category_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="32dp"
