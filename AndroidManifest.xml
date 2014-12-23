@@ -44,6 +44,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
     <!--  LEO push: end -->
 
 
@@ -188,11 +189,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
+        <!-- activity
+            android:name="com.leo.appmaster.sdk.push.ui.NormalPushActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.UpdateDialog.NoFrame" / -->
         <activity
-            android:name="com.leo.appmaster.sdk.push.ui.PushActivity"
+            android:name="com.leo.appmaster.sdk.push.ui.NewYearActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame" />
+
         <!-- add for the app update of leosdk -->
 
         <activity

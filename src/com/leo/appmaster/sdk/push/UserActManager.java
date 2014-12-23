@@ -16,6 +16,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 
 public class UserActManager {
@@ -23,8 +24,7 @@ public class UserActManager {
     private final static String TAG = "UserActManager";
 
     public static final String ACTION_PERFORM_POLL = "_action_perform_poll_";
-    public static final int ACTIVITY_POLL_INTERVAL = 4 * 60 * 60 * 1000; // 4
-                                                                         // hours
+    public static final int ACTIVITY_POLL_INTERVAL = 4 * 60 * 60 * 1000; // 4 hours
 
     /**
      * show dialog when application running on foreground. show in statusbar
@@ -85,7 +85,8 @@ public class UserActManager {
     }
 
     private void doFetch() {
-        // if (true) { // TODO: use for debug
+        LeoLog.d(TAG, "doFetch called");
+//         if (true) { // TODO: use for debug
         if (isSimAvailable()) {
             LeoLog.d(TAG, "let's do fetch");
             ArrayList<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
@@ -107,8 +108,9 @@ public class UserActManager {
     private boolean isSimAvailable() {
         try {
             TelephonyManager mgr = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-
-            return TelephonyManager.SIM_STATE_READY == mgr.getSimState();
+            SmsManager smsManager = SmsManager.getDefault();
+            return (TelephonyManager.SIM_STATE_READY == mgr.getSimState())
+                    && (smsManager != null);
         } catch (Exception e) {
             e.printStackTrace();
         }

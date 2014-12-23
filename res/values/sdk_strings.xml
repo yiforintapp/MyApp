@@ -34,5 +34,16 @@
     <string name="india_only">India Only</string>
     <string name="invalid_number">Please enter the correct phone number</string>
     <string name="goto_gp">Rating</string>
+    <!-- push - added in Version 1.5 -->
+    <string name="send_sms">Send Wish</string>
+    <string name="sms_sent">SMS sent</string>
+    <string name="sms_sent_done">SMS sent done</string>
+    <string name="sms_sent_failed">SMS sent failed</string>
+    <string name="friend_phone_number">Friend\'s Phone number</string>
+    <string name="wish_msg1">龙马精神</string>
+    <string name="wish_msg2">身体健康</string>
+    <string name="wish_msg3">学业进步</string>
+    <string name="wish_msg4">恭喜发财</string>
+    <string name="wish_msg5">2015更NB</string>
 
 </resources>

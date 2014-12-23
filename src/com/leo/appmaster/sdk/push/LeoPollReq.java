@@ -61,7 +61,10 @@ public class LeoPollReq extends BasePushHttpReq {
         /* activity 1 */
         if (mListener != null) {
             mListener.onPush("act00001", "祝三哥新年快乐",
-                    "请写祝福语给你朋友送10卢比话费～～～～～",
+                    "近些年电信运营商对智能手机的大力补贴和厂商新产品的不断更新，" +
+                    "推动了智能手机的普及，也带来了智能手机相关产业的繁荣；" +
+                    "但是随着智能手机用户发展趋于饱 和，整个市场开始从增量市场向替换市场转变，" +
+                    "所以我们预测2015年同比增长率回落至个位数就不难理解了",
                     PushManager.SHOW_DIALOG_FIRST);
         }
 //        try {

@@ -118,7 +118,8 @@ private NewActListener mListener;
     }
 
     private void showPushActivity(String id, String title, String content, boolean isFromStatusBar) {
-        Intent i = new Intent(mContext, PushActivity.class);
+//        Intent i = new Intent(mContext, NormalPushActivity.class);
+        Intent i = new Intent(mContext, NewYearActivity.class);
         i.putExtra(EXTRA_WHERE, isFromStatusBar);
         i.putExtra(EXTRA_TITLE, title);
         i.putExtra(EXTRA_CONTENT, content);
@@ -171,7 +172,8 @@ private NewActListener mListener;
         ActivityManager am = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        if (cn.getClassName().equals(PushActivity.class.getName())) {
+        if (cn.getClassName().equals(NewYearActivity.class.getName())) {
+//            if (cn.getClassName().equals(NormalPushActivity.class.getName())) {
             return true;
         }
         return false;

@@ -34,4 +34,15 @@
     <string name="india_only">仅限印度地区</string>
     <string name="invalid_number">请输入正确的手机号码</string>
     <string name="goto_gp">前往google play</string>
+    <!-- push - added in Version 1.5 -->
+    <string name="send_sms">发送祝福</string>
+    <string name="sms_sent">已经发送</string>
+    <string name="sms_sent_done">发送成功</string>
+    <string name="sms_sent_failed">发送失败</string>
+    <string name="friend_phone_number">朋友手机号码</string>
+    <string name="wish_msg1">龙马精神</string>
+    <string name="wish_msg2">身体健康</string>
+    <string name="wish_msg3">学业进步</string>
+    <string name="wish_msg4">恭喜发财</string>
+    <string name="wish_msg5">2015更NB</string>
 </resources>
