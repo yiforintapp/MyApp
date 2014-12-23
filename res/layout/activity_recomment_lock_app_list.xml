@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_list_bg"
+    android:gravity="center" >
+
+    <com.leo.appmaster.ui.CommonTitleBar
+        android:id="@+id/layout_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/app_background" />
+	<TextView 
+	    android:id="@+id/recommentList_title"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textSize="16dp"
+	    android:text="@string/recomment_list_title"
+	    android:layout_below="@id/layout_title_bar"
+	    android:textColor="@color/white"
+	    android:layout_centerHorizontal="true"
+	    />
+
+    <com.leo.appmaster.ui.PagedGridView
+        android:id="@+id/recomment_pager_unlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recommentList_title"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp" />
+    
+    <TextView 
+        android:id="@+id/recomment_lock"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/recomment_lock"
+        android:textColor="@color/white"
+        android:background="@drawable/folder_left_button_selector"
+        android:gravity="center"
+	    android:layout_centerHorizontal="true"	   
+	    android:layout_alignParentBottom="true"
+	    android:layout_marginBottom="50dp"
+	      />
+    
+</RelativeLayout>

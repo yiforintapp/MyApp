@@ -37,6 +37,7 @@ public class PagedGridView extends LinearLayout {
 	private OnItemClickListener mClickListener;
 	private OnTouchListener mTouchListener;
 	private int mPageCount;
+	private boolean mFlag;
 
 	public PagedGridView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -49,6 +50,9 @@ public class PagedGridView extends LinearLayout {
 		mCellY = cellY;
 		mPageItemCount = mCellX * mCellY;
 		updateUI(data);
+	}
+	public void setFlag(boolean flag){
+	    mFlag=flag;
 	}
 
 	private void updateUI(List<AppInfo> data) {
@@ -202,7 +206,22 @@ public class PagedGridView extends LinearLayout {
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.app_item, null);
 			}
+			if(mFlag){		    
+			    LockImageView imageView = (LockImageView) convertView
+	                    .findViewById(R.id.iv_app_icon);
+	            TextView textView = (TextView) convertView
+	                    .findViewById(R.id.tv_app_name);
+	            AppInfo info = mList.get(position);
 
+	            if (AppLoadEngine.getInstance(getContext()).getRecommendLockList()
+	                    .contains(info.packageName)) {
+	                imageView.setRecommend(false);
+	            }
+	            imageView.setLocked(info.isLocked);
+	            imageView.setImageDrawable(info.icon);
+	            textView.setText(info.label);
+	            convertView.setTag(info);
+			}else{	
 			LockImageView imageView = (LockImageView) convertView
 					.findViewById(R.id.iv_app_icon);
 			TextView textView = (TextView) convertView
@@ -213,11 +232,11 @@ public class PagedGridView extends LinearLayout {
 					.contains(info.packageName)) {
 				imageView.setRecommend(true);
 			}
-
 			imageView.setLocked(info.isLocked);
 			imageView.setImageDrawable(info.icon);
 			textView.setText(info.label);
 			convertView.setTag(info);
+			}
 			return convertView;
 		}
 	}

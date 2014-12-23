@@ -197,7 +197,7 @@ public class AppLockListActivity extends BaseActivity implements
 
 		int rowCount = getResources().getInteger(R.integer.gridview_row_count);
 		mAppPager.setDatas(resault, 4, rowCount);
-
+		mAppPager.setFlag(false);      
 		updateLockText();
 	}
 

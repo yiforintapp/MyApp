@@ -229,6 +229,11 @@
             android:name="com.leo.appmaster.videohide.VideoViewPager"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" />
+		<activity
+		    android:name="com.leo.appmaster.applocker.RecommentAppLockListActivity"
+		    android:screenOrientation="portrait"
+		    android:theme="@style/activity_theme" >
+		</activity>
 
         <service
             android:name="com.leo.appmaster.applocker.service.LockService"

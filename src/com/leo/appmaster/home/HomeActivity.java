@@ -36,6 +36,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -580,9 +581,10 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	}
 
 	private void startLockSetting() {
-		Intent intent = new Intent(this, LockSettingActivity.class);
-		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-				AppLockListActivity.class.getName());
+	    
+		Intent intent = new Intent(this, RecommentAppLockListActivity.class);
+//		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+//				AppLockListActivity.class.getName());
 		startActivity(intent);
 	}
 
