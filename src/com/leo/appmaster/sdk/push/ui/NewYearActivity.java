@@ -102,66 +102,66 @@ public class NewYearActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initUI(String title, String content) {
-        setContentView(R.layout.dialog_newyear_act_input_alarm);
+        setContentView(R.layout.activity_new_year);
 
-        mPhoneNumber = (EditText) findViewById(R.id.et_input);
-        mPhoneNumber.setGravity(Gravity.CENTER_HORIZONTAL);
-        mPhoneNumber.setRawInputType(InputType.TYPE_CLASS_PHONE);
-        mPhoneNumber.setFilters(new InputFilter[] {
-                new InputFilter.LengthFilter(INDIAN_MOBILE_LENGTH)
-        });
-
-        TextView tvInputHeader = (TextView) findViewById(R.id.tv_input_header);
-        tvInputHeader.setText(getString(R.string.friend_phone_number));
-
-        TextView tvTitle = (TextView) findViewById(R.id.dlg_title);
-        tvTitle.setText(title);
-
-        TextView tvContent = (TextView) findViewById(R.id.dlg_content);
-        tvContent.setText(content);
-        tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
-
-        TextView tvCancel = (TextView) findViewById(R.id.dlg_left_btn);
-        tvCancel.setText(getString(R.string.cancel));
-        tvCancel.setOnClickListener(this);
-
-        TextView tvGO = (TextView) findViewById(R.id.dlg_right_btn);
-        tvGO.setText(getString(R.string.send_sms));
-        tvGO.setOnClickListener(this);
-
-        /* init custom wish mesage input box and max char hint */
-        mMaxCharHint = (TextView) findViewById(R.id.tv_max_char_hint);
-        mMaxCharHint.setVisibility(View.GONE);
-        mCustomMsgET = (EditText) findViewById(R.id.custom_msg_content);
-        mCustomMsgET.setVisibility(View.GONE);
-        mCustomMsgET.setFilters(new InputFilter[] {
-                new InputFilter.LengthFilter(CUSTOM_WISH_CHAR_LIMITED)
-        });
-        mCustomMsgET.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                LeoLog.d(TAG, "length = " + arg0.length());
-                handleWishMsgLimit(arg0.length());
-            }
-        });
-
-        /* init popup for default messages */
-        View dropView = findViewById(R.id.default_wishes_layout);
-        mCategory = (TextView) findViewById(R.id.wishes_title);
-        mCategoryImg = (ImageView) findViewById(R.id.feedback_category_arrow);
-        for (int i = 0; i < sCategoryIds.length; i++) {
-            mCategories.add(getString(sCategoryIds[i]));
-        }
-        dropView.setOnClickListener(this);
+//        mPhoneNumber = (EditText) findViewById(R.id.et_input);
+//        mPhoneNumber.setGravity(Gravity.CENTER_HORIZONTAL);
+//        mPhoneNumber.setRawInputType(InputType.TYPE_CLASS_PHONE);
+//        mPhoneNumber.setFilters(new InputFilter[] {
+//                new InputFilter.LengthFilter(INDIAN_MOBILE_LENGTH)
+//        });
+//
+//        TextView tvInputHeader = (TextView) findViewById(R.id.tv_input_header);
+//        tvInputHeader.setText(getString(R.string.friend_phone_number));
+//
+//        TextView tvTitle = (TextView) findViewById(R.id.dlg_title);
+//        tvTitle.setText(title);
+//
+//        TextView tvContent = (TextView) findViewById(R.id.dlg_content);
+//        tvContent.setText(content);
+//        tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
+//
+//        TextView tvCancel = (TextView) findViewById(R.id.dlg_left_btn);
+//        tvCancel.setText(getString(R.string.cancel));
+//        tvCancel.setOnClickListener(this);
+//
+//        TextView tvGO = (TextView) findViewById(R.id.dlg_right_btn);
+//        tvGO.setText(getString(R.string.send_sms));
+//        tvGO.setOnClickListener(this);
+//
+//        /* init custom wish mesage input box and max char hint */
+//        mMaxCharHint = (TextView) findViewById(R.id.tv_max_char_hint);
+//        mMaxCharHint.setVisibility(View.GONE);
+//        mCustomMsgET = (EditText) findViewById(R.id.custom_msg_content);
+//        mCustomMsgET.setVisibility(View.GONE);
+//        mCustomMsgET.setFilters(new InputFilter[] {
+//                new InputFilter.LengthFilter(CUSTOM_WISH_CHAR_LIMITED)
+//        });
+//        mCustomMsgET.addTextChangedListener(new TextWatcher() {
+//
+//            @Override
+//            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable arg0) {
+//                LeoLog.d(TAG, "length = " + arg0.length());
+//                handleWishMsgLimit(arg0.length());
+//            }
+//        });
+//
+//        /* init popup for default messages */
+//        View dropView = findViewById(R.id.default_wishes_layout);
+//        mCategory = (TextView) findViewById(R.id.wishes_title);
+//        mCategoryImg = (ImageView) findViewById(R.id.feedback_category_arrow);
+//        for (int i = 0; i < sCategoryIds.length; i++) {
+//            mCategories.add(getString(sCategoryIds[i]));
+//        }
+//        dropView.setOnClickListener(this);
     }
     
     private void handleWishMsgLimit(int length){
