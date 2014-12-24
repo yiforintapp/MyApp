@@ -133,13 +133,13 @@ public class HttpRequestAgent {
 	 * @param listener
 	 * @param eListener
 	 */
-	public void loadBusinessRecomApp(int page, Listener<JSONObject> listener,
+	public void loadBusinessRecomApp(int page, int number, Listener<JSONObject> listener,
 			ErrorListener eListener) {
 		String url = AppMasterConfig.APP_RECOMMEND_URL + "?re_position=4"
 				+ "&pgcurrent=" + page;
 		String body = "&market_id=" + mContext.getString(R.string.channel_code)
 				+ "&language=" + AppwallHttpUtil.getLanguage() + "&pgsize="
-				+ 40;
+				+ number;
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
 				body, listener, eListener);
 		request.setShouldCache(false);

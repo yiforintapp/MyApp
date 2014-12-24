@@ -274,6 +274,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 	@Override
 	public void onPageSelected(int arg0) {
+	    mViewPager.interceptVerticalEvent(true);
 		if (arg0 == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
 			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_restore", "glide");
 		} else if (arg0 == FolderItemInfo.FOLDER_FLOW_SORT) {
@@ -288,9 +289,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
             }
 		} else if (arg0 == FolderItemInfo.FOLDER_BUSINESS_APP) {
 			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_newapp", "glide");
-            if (AppBusinessManager.getInstance(mContext).hasBusinessData(BusinessItemInfo.CONTAIN_BUSINESS_FOLDER)) {
-                SDKWrapper.addEvent(mContext, LeoStat.P1, "app_rec", "new");
-            }
+			mViewPager.interceptVerticalEvent(false);
 		}
 
 		if (arg0 == 3) {

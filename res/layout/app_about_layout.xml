@@ -23,7 +23,8 @@
             android:layout_height="@dimen/about_logo_height"
             android:layout_below="@+id/about_title_bar"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="49dp"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="@dimen/about_icon_margin_top"
             android:src="@drawable/splash_icon" />
 
         <TextView
@@ -60,20 +61,68 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="207dp"
+        android:layout_height="@dimen/about_bottom_height"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:background="@android:color/white"
         android:gravity="center"
         android:orientation="vertical" >
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/check_update_button"
-            android:layout_width="289dp"
-            android:layout_height="43dp"
-            android:layout_gravity="center"
-            android:background="@drawable/mycheck_button_selecter"
-            android:text="@string/protocolBar"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/join_beta"
+                android:layout_width="289dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:background="@drawable/mycheck_button_selecter"
+                android:text="@string/about_group"
+                android:textColor="@android:color/white"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/like_us"
+                android:layout_width="289dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:background="@drawable/mycheck_button_selecter"
+                android:text="@string/about_praise"
+                android:textColor="@android:color/white"
+                android:textSize="18dp" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/check_update_button"
+                android:layout_width="289dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:background="@drawable/mycheck_button_selecter"
+                android:text="@string/protocolBar"
+                android:textColor="@android:color/white"
+                android:textSize="18dp" />
+        </LinearLayout>
+        
+        
+        </LinearLayout>
 
 </LinearLayout>
