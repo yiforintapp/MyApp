@@ -15,8 +15,6 @@
     <dimen name="memory_flow_text2_marginTop">5dp</dimen>
     <dimen name="splash_width">206dp</dimen>
     <dimen name="splash_height">220dp</dimen>
-    <dimen name="about_logo_width">144dp</dimen>
-    <dimen name="about_logo_height">152dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
     <dimen name="hide_album_frame_width">167dp</dimen>
@@ -60,5 +58,13 @@
     
     <dimen name="folder_backup_text_size">10dp</dimen>
     <dimen name="recomment_tip">500dp</dimen>
+    
+      <dimen name="splash_icon_margin_top">60dp</dimen>
+     <dimen name="splash_icon_height">120dp</dimen>
+     
+     <dimen name="about_icon_margin_top">2dp</dimen>
+     <dimen name="about_bottom_height">180dp</dimen>
+     <dimen name="about_logo_width">72dp</dimen>
+    <dimen name="about_logo_height">72dp</dimen>
 
 </resources>
