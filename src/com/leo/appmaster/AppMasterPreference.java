@@ -59,6 +59,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_LAST_VERSION = "last_version";
 	public static final String PREF_LAST_VERSION_INSTALL_TIME = "last_version_install_tiem";
 	public static final String PREF_LOCK_REMIND = "lock_remind";
+	public static final String PREF_RECOMMENT_TIP_LIST="recomment_tip_list";
 
 	private List<String> mLockedAppList;
 	private List<String> mRecommendList;
@@ -66,6 +67,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	private String mPassword;
 	private String mGesture;
 	private String mLockPolicy;
+	private List<String> mRecommentAppList;
 
 	public static final int LOCK_TYPE_NONE = -1;
 	public static final int LOCK_TYPE_PASSWD = 0;
@@ -85,7 +87,27 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		return mInstance == null ? (mInstance = new AppMasterPreference(context))
 				: mInstance;
 	}
-
+	public List<String> getRecommentTipList(){
+	    return mRecommentAppList;
+	}
+	public void setRecommentTipList(List<String> appList){
+	    mRecommentAppList=appList;
+	    String combined = "";
+        for (String string : appList) {
+            combined = combined + string + ";";
+        }
+        if(appList == null || appList.isEmpty()) {
+            Intent serviceIntent = new Intent(AppMasterApplication.getInstance(), LockService.class);
+            serviceIntent.putExtra("lock_service", false);
+            AppMasterApplication.getInstance().startService(serviceIntent);
+        } else {
+            Intent serviceIntent = new Intent(AppMasterApplication.getInstance(), LockService.class);
+            serviceIntent.putExtra("lock_service", true);
+            AppMasterApplication.getInstance().startService(serviceIntent);
+        }
+    mPref.edit().putString(PREF_RECOMMENT_TIP_LIST, combined).commit();
+	}
+        
 	public void setHaveEverAppLoaded(boolean loaded) {
 		mPref.edit().putBoolean(PREF_HAVE_EVER_LOAD_APPS, loaded).commit();
 	}
@@ -93,7 +115,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public boolean haveEverAppLoaded() {
 		return mPref.getBoolean(PREF_HAVE_EVER_LOAD_APPS, false);
 	}
-
+	
 	public String getOnlineThemeSerialNumber() {
 		return mPref.getString(PREF_ONLINE_THEME_SERIAL, "");
 	}
@@ -343,6 +365,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		}
 		mRecommendList = Arrays.asList(mPref.getString(
 				PREF_RECOMMEND_LOCK_LIST, "").split(";"));
+		mRecommentAppList = Arrays.asList(mPref.getString(
+		        PREF_RECOMMENT_TIP_LIST, "").split(";"));
 		String themeList = mPref.getString(PREF_HIDE_THEME_PKGS, "");
 		if (themeList.equals("")) {
 			mHideThemeList = new ArrayList<String>(0);

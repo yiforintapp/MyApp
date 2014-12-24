@@ -2377,7 +2377,9 @@ public class LeoAppViewPager extends ViewGroup {
         final long time = SystemClock.uptimeMillis();
         final MotionEvent ev = MotionEvent.obtain(mFakeDragBeginTime, time, MotionEvent.ACTION_MOVE,
                 mLastMotionX, 0, 0);
-        mVelocityTracker.addMovement(ev);
+        if(mVelocityTracker != null) {
+            mVelocityTracker.addMovement(ev);
+        }
         ev.recycle();
     }
 

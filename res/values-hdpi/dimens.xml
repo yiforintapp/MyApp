@@ -60,5 +60,6 @@
     <dimen name="folder_title_width">137dp</dimen>
     
     <dimen name="folder_backup_text_size">12dp</dimen>
+    <dimen name="recomment_tip">500dp</dimen>
 
 </resources>

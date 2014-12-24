@@ -18,6 +18,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -159,6 +160,24 @@ public class AppListActivity extends BaseFragmentActivity implements
         } else if (AppBusinessManager.getInstance(this).hasBusinessData(BusinessItemInfo.CONTAIN_APPLIST)) {
             SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
         }
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	    try {
+	        super.onRestoreInstanceState(savedInstanceState);
+	    } catch (Exception e) {
+	        
+	    }
+	}
+	
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+	    try {
+	        super.onRestoreInstanceState(savedInstanceState, persistentState);
+	    } catch (Exception e) {
+	        
+	    }
 	}
 
 	public void openSlicingLayer(View view, int from) {
@@ -364,7 +383,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	public void fillAppListData() {
 		mPageItemCount = getResources()
 				.getInteger(R.integer.applist_cell_count);
-		if (mSlicingLayer.isSlicinged()) {
+		if (mSlicingLayer != null && mSlicingLayer.isSlicinged()) {
 			mSlicingLayer.closeSlicing();
 		}
 
@@ -398,7 +417,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mAllItems.addAll(mAppDetails);
 
 		// data load finished
-		mLoadingView.setVisibility(View.INVISIBLE);
+		if(mLoadingView != null) {
+		      mLoadingView.setVisibility(View.INVISIBLE);
+		}
 		int pageCount = (int) Math.ceil(((double) mAllItems.size())
 				/ mPageItemCount);
 
@@ -717,7 +738,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public void handleItemClick(View view, int from) {
-		if (mSlicingLayer.isAnimating() || mFolderLayer.isAnimating())
+		if ((mSlicingLayer != null && mSlicingLayer.isAnimating()) || (mFolderLayer != null && mFolderLayer.isAnimating()))
 			return;
 		mLastSelectedInfo = (BaseInfo) view.getTag();
 		animateItem(view, from);
@@ -946,21 +967,25 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mRestoreFolderData = new Vector<AppItemInfo>(temp.subList(0,
 				temp.size()));
 		Collections.sort(mRestoreFolderData, new BackupItemComparator());
-		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
-				mRestoreFolderData, null);
+		if(mFolderLayer != null) {
+		      mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
+		                mRestoreFolderData, null);
+		}
 		// update folder icon
 		for (FolderItemInfo restore : mFolderItems) {
 			if (restore.folderType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
 				restore.icon = Utilities.getFolderScalePicture(this,
 						mRestoreFolderData,
 						FolderItemInfo.FOLDER_BACKUP_RESTORE);
-				View v = mViewPager.getChildAt(0);
-				if (v instanceof GridView) {
-					GridView grid = (GridView) mViewPager.getChildAt(0);
-					ListAdapter adapter = grid.getAdapter();
-					if (adapter instanceof DataAdapter) {
-						grid.setAdapter(adapter);
-					}
+				if(mViewPager != null) {
+	                View v = mViewPager.getChildAt(0);
+	                if (v instanceof GridView) {
+	                    GridView grid = (GridView) mViewPager.getChildAt(0);
+	                    ListAdapter adapter = grid.getAdapter();
+	                    if (adapter instanceof DataAdapter) {
+	                        grid.setAdapter(adapter);
+	                    }
+	                }
 				}
 				break;
 			}

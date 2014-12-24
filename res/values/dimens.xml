@@ -71,5 +71,9 @@
     <dimen name="folder_title_width">137dp</dimen>
     
     <dimen name="folder_backup_text_size">14dp</dimen>
+    
+    
+    <dimen name="recomment_tip">500dp</dimen>
+    <integer name="recomment_gridview_row_count">3</integer>
 
 </resources>
