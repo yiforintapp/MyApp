@@ -211,8 +211,11 @@ public class SlicingLayer {
 		Bitmap srceen = getScreenBg();
 		mAnchorView.setDrawingCacheEnabled(true);
 		Bitmap anchorBitmap = mAnchorView.getDrawingCache(true);
-		mTopBitmap = Bitmap.createBitmap(srceen, 0, 0, mSrceenwidth,
-				mSlicingLine);
+		int srceenW = srceen.getWidth();
+		int srceenH = srceen.getHeight();
+		int bitmapW = mSrceenwidth > srceenW ? srceenW : mSrceenwidth;
+		int birmapH = mSlicingLine > srceenH ? srceenH : mSlicingLine;
+		mTopBitmap = Bitmap.createBitmap(srceen, 0, 0, bitmapW, birmapH);
 		mTopBitmap = createMoveBitmap(mTopBitmap, anchorBitmap, mAnchorLocation);
 		bd = new BitmapDrawable(mContext.getResources(), mTopBitmap);
 		mTopView = mInflater.inflate(R.layout.folder_move_frame, null);
@@ -223,8 +226,10 @@ public class SlicingLayer {
 		container.addView(mTopView, ft);
 
 		// add bottom view
+	    bitmapW = mSrceenwidth > srceenW ? srceenW : mSrceenwidth;
+	    birmapH = mSrceenheight > srceenH ? srceenH : (mSrceenheight - mSlicingLine);
 		mBottomBitmap = Bitmap.createBitmap(srceen, 0, mSlicingLine,
-				mSrceenwidth, mSrceenheight - mSlicingLine);
+		        bitmapW, birmapH);
 		mBottomBitmap = createMoveBitmap(mBottomBitmap, null, null);
 		int bottomHeight = mSrceenheight - mSlicingLine;
 		bd = new BitmapDrawable(mContext.getResources(), mBottomBitmap);
