@@ -60,5 +60,6 @@
     
     <dimen name="folder_backup_text_size">10dp</dimen>
     <dimen name="recomment_tip">500dp</dimen>
+    <dimen name="success_lock_imageiv">75dp</dimen>
 
 </resources>

@@ -20,6 +20,7 @@
     <dimen name="memory_flow_text2_marginTop">3dp</dimen>
     <dimen name="setting_item_height">55dp</dimen>
     <dimen name="lock_icon_width">22dp</dimen>
+    <dimen name="default_lock_icon_width">23dp</dimen>
     <dimen name="lock_icon_height">24dp</dimen>
     <dimen name="lock_icon_X">28dp</dimen>
     <dimen name="lock_icon_Y">26dp</dimen>
@@ -74,6 +75,7 @@
     
     
     <dimen name="recomment_tip">500dp</dimen>
-    <integer name="recomment_gridview_row_count">3</integer>
+    <integer name="recomment_gridview_row_count">4</integer>
+    <dimen name="success_lock_imageiv">75dp</dimen>
 
 </resources>
