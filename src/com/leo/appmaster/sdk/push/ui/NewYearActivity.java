@@ -7,10 +7,14 @@ import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -19,12 +23,15 @@ import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,13 +65,19 @@ public class NewYearActivity extends BaseActivity implements View.OnClickListene
             R.string.wish_msg1, R.string.wish_msg2, R.string.wish_msg3,
             R.string.wish_msg4, R.string.wish_msg5, R.string.wish_custom
     };
+    private String mWishMessage = "Happy new year!";
 
     private final ArrayList<String> mCategories = new ArrayList<String>();
 
     private Handler mHandler;
 
+    /* view pager */
+    private View view1, view2, view3;
+    private ViewPager viewPager; // 对应的viewPager
+    private List<View> viewList;// view数组
+
     private final static int INDIAN_MOBILE_LENGTH = 10;
-    private final static int CUSTOM_WISH_CHAR_LIMITED = 60;
+    private final static int CUSTOM_WISH_CHAR_LIMITED = 79;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,72 +117,76 @@ public class NewYearActivity extends BaseActivity implements View.OnClickListene
     private void initUI(String title, String content) {
         setContentView(R.layout.activity_new_year);
 
-//        mPhoneNumber = (EditText) findViewById(R.id.et_input);
-//        mPhoneNumber.setGravity(Gravity.CENTER_HORIZONTAL);
-//        mPhoneNumber.setRawInputType(InputType.TYPE_CLASS_PHONE);
-//        mPhoneNumber.setFilters(new InputFilter[] {
-//                new InputFilter.LengthFilter(INDIAN_MOBILE_LENGTH)
-//        });
-//
-//        TextView tvInputHeader = (TextView) findViewById(R.id.tv_input_header);
-//        tvInputHeader.setText(getString(R.string.friend_phone_number));
-//
-//        TextView tvTitle = (TextView) findViewById(R.id.dlg_title);
-//        tvTitle.setText(title);
-//
-//        TextView tvContent = (TextView) findViewById(R.id.dlg_content);
-//        tvContent.setText(content);
-//        tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
-//
-//        TextView tvCancel = (TextView) findViewById(R.id.dlg_left_btn);
-//        tvCancel.setText(getString(R.string.cancel));
-//        tvCancel.setOnClickListener(this);
-//
-//        TextView tvGO = (TextView) findViewById(R.id.dlg_right_btn);
-//        tvGO.setText(getString(R.string.send_sms));
-//        tvGO.setOnClickListener(this);
-//
-//        /* init custom wish mesage input box and max char hint */
-//        mMaxCharHint = (TextView) findViewById(R.id.tv_max_char_hint);
-//        mMaxCharHint.setVisibility(View.GONE);
-//        mCustomMsgET = (EditText) findViewById(R.id.custom_msg_content);
-//        mCustomMsgET.setVisibility(View.GONE);
-//        mCustomMsgET.setFilters(new InputFilter[] {
-//                new InputFilter.LengthFilter(CUSTOM_WISH_CHAR_LIMITED)
-//        });
-//        mCustomMsgET.addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable arg0) {
-//                LeoLog.d(TAG, "length = " + arg0.length());
-//                handleWishMsgLimit(arg0.length());
-//            }
-//        });
-//
-//        /* init popup for default messages */
-//        View dropView = findViewById(R.id.default_wishes_layout);
-//        mCategory = (TextView) findViewById(R.id.wishes_title);
-//        mCategoryImg = (ImageView) findViewById(R.id.feedback_category_arrow);
-//        for (int i = 0; i < sCategoryIds.length; i++) {
-//            mCategories.add(getString(sCategoryIds[i]));
-//        }
-//        dropView.setOnClickListener(this);
+        mPhoneNumber = (EditText) findViewById(R.id.et_phone);
+        mPhoneNumber.setRawInputType(InputType.TYPE_CLASS_PHONE);
+        mPhoneNumber.setFilters(new InputFilter[] {
+                new InputFilter.LengthFilter(INDIAN_MOBILE_LENGTH)
+        });
+        //
+        // TextView tvInputHeader = (TextView)
+        // findViewById(R.id.tv_input_header);
+        // tvInputHeader.setText(getString(R.string.friend_phone_number));
+        //
+        // TextView tvTitle = (TextView) findViewById(R.id.dlg_title);
+        // tvTitle.setText(title);
+        //
+        // TextView tvContent = (TextView) findViewById(R.id.dlg_content);
+        // tvContent.setText(content);
+        // tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
+        //
+        // TextView tvCancel = (TextView) findViewById(R.id.dlg_left_btn);
+        // tvCancel.setText(getString(R.string.cancel));
+        // tvCancel.setOnClickListener(this);
+        //
+        Button btnSend = (Button) findViewById(R.id.btn_send_sms);
+        btnSend.setOnClickListener(this);
+
+        testViewPager();
+        //
+        // /* init custom wish mesage input box and max char hint */
+        // mMaxCharHint = (TextView) findViewById(R.id.tv_max_char_hint);
+        // mMaxCharHint.setVisibility(View.GONE);
+        // mCustomMsgET = (EditText) findViewById(R.id.custom_msg_content);
+        // mCustomMsgET.setVisibility(View.GONE);
+        // mCustomMsgET.setFilters(new InputFilter[] {
+        // new InputFilter.LengthFilter(CUSTOM_WISH_CHAR_LIMITED)
+        // });
+        // mCustomMsgET.addTextChangedListener(new TextWatcher() {
+        //
+        // @Override
+        // public void onTextChanged(CharSequence arg0, int arg1, int arg2, int
+        // arg3) {
+        // }
+        //
+        // @Override
+        // public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+        // int arg3) {
+        // }
+        //
+        // @Override
+        // public void afterTextChanged(Editable arg0) {
+        // LeoLog.d(TAG, "length = " + arg0.length());
+        // handleWishMsgLimit(arg0.length());
+        // }
+        // });
+        //
+        // /* init popup for default messages */
+        // View dropView = findViewById(R.id.default_wishes_layout);
+        // mCategory = (TextView) findViewById(R.id.wishes_title);
+        // mCategoryImg = (ImageView)
+        // findViewById(R.id.feedback_category_arrow);
+        // for (int i = 0; i < sCategoryIds.length; i++) {
+        // mCategories.add(getString(sCategoryIds[i]));
+        // }
+        // dropView.setOnClickListener(this);
     }
-    
-    private void handleWishMsgLimit(int length){
-        if(CUSTOM_WISH_CHAR_LIMITED - length < 10){
+
+    private void handleWishMsgLimit(int length) {
+        if (CUSTOM_WISH_CHAR_LIMITED - length < 10) {
             String hint = getString(R.string.wish_char_hint, CUSTOM_WISH_CHAR_LIMITED - length);
             mMaxCharHint.setText(hint);
             mMaxCharHint.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mMaxCharHint.setVisibility(View.GONE);
         }
     }
@@ -183,61 +200,53 @@ public class NewYearActivity extends BaseActivity implements View.OnClickListene
                 PushUIHelper.getInstance(this).sendACK(mAdID, false, mFromStatusBar, "");
                 finish();
                 break;
-            case R.id.dlg_right_btn:
+            case R.id.btn_send_sms:
                 /* get money */
                 handleCommit();
                 break;
-            case R.id.default_wishes_layout:
-                showPopup();
-                break;
         }
     }
 
-    private void showPopup() {
-        if (mLeoPopMenu == null) {
-            mLeoPopMenu = new LeoPopMenu();
-            mLeoPopMenu.setPopMenuItems(mCategories);
-            mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                        int position, long id) {
-                    String text = mCategories.get(position);
-                    mCategory.setText(text);
-                    mLeoPopMenu.dismissSnapshotList();
-                    if (NewYearActivity.this.getString(R.string.wish_custom).equals(text)) {
-                        /* user want to send a custom wish message */
-                        mCustomMsgET.setVisibility(View.VISIBLE);
-                        mCustomMsgET.requestFocus();
-                    } else {
-                        mMaxCharHint.setVisibility(View.GONE);
-                        mCustomMsgET.setVisibility(View.GONE);
-                    }
-                }
-            });
-        }
-        LayoutStyles styles = new LayoutStyles();
-        styles.width = LayoutParams.MATCH_PARENT;
-        styles.height = LayoutParams.WRAP_CONTENT;
-        styles.animation = R.style.CenterEnterAnim;
-        styles.direction = LeoPopMenu.DIRECTION_DOWN;
-        mLeoPopMenu.showPopMenu(this, mCategory, styles, new OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                mCategoryImg.setImageResource(R.drawable.choose_normal);
-            }
-        });
-        mCategoryImg.setImageResource(R.drawable.choose_active);
+    private void addToOutbox(String address, String content) {
+        final String ADDRESS = "address";
+        final String DATE = "date";
+        final String READ = "read";
+        final String STATUS = "status";
+        final String TYPE = "type";
+        final String BODY = "body";
+        int MESSAGE_TYPE_SENT = 2;
+        ContentValues values = new ContentValues();
+        /* 手机号 */
+        values.put(ADDRESS, address);
+        /* 时间 */
+        values.put(DATE, System.currentTimeMillis());
+        values.put(READ, 1);
+        values.put(STATUS, -1);
+        /* 类型1为收件箱，2为发件箱 */
+        values.put(TYPE, MESSAGE_TYPE_SENT);
+        /* 短信体内容 */
+        values.put(BODY, content);
+        /* 插入数据库操作 */
+        Uri inserted = getContentResolver().insert(Uri.parse("content://sms"),
+                values);
     }
 
     private void sendSMS(String destAddress, String content,
-            PendingIntent sentIntent, PendingIntent deliveryIntent)
-    {
-        SmsManager smsManager = SmsManager.getDefault();
-        List<String> divideContents = smsManager.divideMessage(content);
-        for (String text : divideContents) {
-            smsManager.sendTextMessage(destAddress, null, text, sentIntent,
-                    deliveryIntent);
-        }
+            PendingIntent sentIntent, PendingIntent deliveryIntent) {
+        // SmsManager smsManager = SmsManager.getDefault();
+        // List<String> divideContents = smsManager.divideMessage(content);
+        // for (String text : divideContents) {
+        // smsManager.sendTextMessage(destAddress, null, text, sentIntent,
+        // deliveryIntent);
+        // }
+        LeoLog.d(TAG, "sms=" + content);
+        LeoLog.d(TAG, "phone_num=" + destAddress);
+
+        /* add this SMS to OUTBOX */
+        addToOutbox(destAddress, content);
+
+        /* send toast */
+        Toast.makeText(this, getString(R.string.wish_sms_sent), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -269,6 +278,51 @@ public class NewYearActivity extends BaseActivity implements View.OnClickListene
         return super.onTouchEvent(event);
     }
 
+    private void testViewPager() {
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        LayoutInflater inflater = getLayoutInflater();
+
+        viewList = new ArrayList<View>();// 将要分页显示的View装入数组中
+        for (int i = 0; i < 10; i++) {
+            view1 = new ImageView(this);
+//            view1.setBackgroundResource(R.drawable.newyear_act_poster);
+            viewList.add(view1);
+        }
+
+        PagerAdapter pagerAdapter = new PagerAdapter() {
+
+            @Override
+            public boolean isViewFromObject(View arg0, Object arg1) {
+                // TODO Auto-generated method stub
+                return arg0 == arg1;
+            }
+
+            @Override
+            public int getCount() {
+                // TODO Auto-generated method stub
+                return viewList.size();
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position,
+                    Object object) {
+                // TODO Auto-generated method stub
+                container.removeView(viewList.get(position));
+            }
+
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                // TODO Auto-generated method stub
+                container.addView(viewList.get(position));
+                ImageView imgView = (ImageView) viewList.get(position);
+                imgView.setBackgroundResource(R.drawable.newyear_act_poster);
+                return viewList.get(position);
+            }
+        };
+
+        viewPager.setAdapter(pagerAdapter);
+    }
+
     private void handleCommit() {
         String phone = mPhoneNumber.getText().toString().trim();
         String regexp = "([0-9]+)";
@@ -281,7 +335,9 @@ public class NewYearActivity extends BaseActivity implements View.OnClickListene
         }
 
         /* TODO: phone number available, send SMS to user's best friend */
-        sendSMS("13632840685", phone, null, null);
+        String smsTail = getString(R.string.sms_tail);
+        String smsBody = mWishMessage + smsTail;
+        sendSMS(phone, smsBody, null, null);
 
         SDKWrapper.addEvent(this, LeoStat.P1, "act", "cligp");
         PushUIHelper.getInstance(this).sendACK(mAdID, true, mFromStatusBar, phone);

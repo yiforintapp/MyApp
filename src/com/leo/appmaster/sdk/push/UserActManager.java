@@ -69,7 +69,7 @@ public class UserActManager {
                 intent, 0);
         AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + 3 * 1000,
+                System.currentTimeMillis() + 10 * 1000,
                 // /* debug */30 * 1000, pi);
                 ACTIVITY_POLL_INTERVAL, pi);
     }

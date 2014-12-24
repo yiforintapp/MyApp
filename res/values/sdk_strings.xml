@@ -40,13 +40,21 @@
     <string name="sms_sent_done">SMS sent done</string>
     <string name="sms_sent_failed">SMS sent failed</string>
     <string name="friend_phone_number">Friend\'s Phone number</string>
-    <string name="wish_msg1">龙马精神</string>
-    <string name="wish_msg2">身体健康</string>
-    <string name="wish_msg3">学业进步</string>
-    <string name="wish_msg4">恭喜发财</string>
-    <string name="wish_msg5">2015更NB</string>
-    <string name="wish_custom">自定义</string>
+    <string name="wish_msg1">Let us leave behind sadness &#38; regrets and have a new start full of joy in 2015!</string>
+    <string name="wish_msg2">Wish you a super-duper extra luck Happy New Year and all your dreams come true!</string>
+    <string name="wish_msg3">3, 2, 1, wait, what am I supposed to write afterwards? Oh yes, HAPPY NEW YEAR!</string>
+    <string name="wish_msg4">Wish you and your lovely family a very happy joyous New Year, my dear friend!</string>
+    <string name="wish_msg5">May Dec 31st be the end of sorrows and Jan 1st 2015 be the beginning of joys!</string>
+    <string name="wish_msg6">Wish you a Happy 2015 with hope that you’ll be super lucky in the year to come.</string>
+    <string name="wish_msg7">Counting my blessings, wishing you more. Hope you enjoy the New Year in store! </string>
+    <string name="wish_msg8">Wish all the negativity end with this year and 2015 brings success to you!</string>
+    <string name="wish_msg9">May God spread prosperity and joy in your life on this New Year!</string>
+    <string name="wish_msg10">Embrace simplicity and sincerity and you shall have a wonderful New Year ahead.</string>
+    <string name="wish_custom">Write your own greetings…</string>
     <string name="custom_msg_hint">自定义祝福语(最多输入50个字符)</string>
     <string name="default_wishes">点击选择祝福语</string>
+    <string name="wish_sms_sent">Greetings sent successfully!</string>
     <string name="wish_char_hint">还能输入%1$d个字符</string>
+    <string name="newyear_act_info">Privacy Lock helps you give your best wishes to your loved ones! Enter your friend’s number below and select a greeting, this greeting will be sent directly to him/her PLUS a free 10 Rs recharge as a gift!</string>
+    <string name="sms_tail">&#160;Free 10 Rs recharge was sent to you via http://goo.gl/z6Th5N, check your message!</string>
 </resources>

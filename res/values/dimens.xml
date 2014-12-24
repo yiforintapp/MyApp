@@ -24,8 +24,6 @@
     <dimen name="lock_icon_height">24dp</dimen>
     <dimen name="lock_icon_X">28dp</dimen>
     <dimen name="lock_icon_Y">26dp</dimen>
-    <dimen name="about_logo_width">112dp</dimen>
-    <dimen name="about_logo_height">120dp</dimen>
     <dimen name="lock_pattern_button_width">60dp</dimen>
     <dimen name="hide_album_frame_width">149dp</dimen>
     <dimen name="hide_album_image_frame_width">115dp</dimen>
@@ -70,12 +68,17 @@
     <dimen name="folder_title_mask_size">80dp</dimen>
     <dimen name="folder_title_height">28dp</dimen>
     <dimen name="folder_title_width">137dp</dimen>
-    
     <dimen name="folder_backup_text_size">14dp</dimen>
-    
-    
     <dimen name="recomment_tip">500dp</dimen>
+
     <integer name="recomment_gridview_row_count">4</integer>
+
     <dimen name="success_lock_imageiv">75dp</dimen>
+    <dimen name="splash_icon_margin_top">100dp</dimen>
+    <dimen name="splash_icon_height">160dp</dimen>
+    <dimen name="about_icon_margin_top">20dp</dimen>
+    <dimen name="about_bottom_height">200dp</dimen>
+    <dimen name="about_logo_width">112dp</dimen>
+    <dimen name="about_logo_height">120dp</dimen>
 
 </resources>

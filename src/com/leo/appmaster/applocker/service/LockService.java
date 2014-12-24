@@ -106,7 +106,8 @@ public class LockService extends Service {
 		stopDetectTsk();
 		mTimer = new Timer();
 		mDetectTask = new DetectTask();
-		mTimer.schedule(mDetectTask, 0, 100);
+		// AM-663
+		mTimer.schedule(mDetectTask, 100, 100);
 	}
 
 	@Override
@@ -139,16 +140,21 @@ public class LockService extends Service {
                             pkgName = pkgList[0];
                             activityName = pkgList[0];
                             if(pkgName.equals(getApplication().getPackageName())) {
-                                List<AppTask> tasks = mActivityManager.getAppTasks();
-                                if(tasks != null && tasks.size() > 0) {
-                                    RecentTaskInfo rti =  tasks.get(0).getTaskInfo();
-                                    if(rti != null) {
-                                        Intent intent = rti.baseIntent;
-                                        ComponentName cn = intent.getComponent();
-                                        if(cn != null) {
-                                            activityName = cn.getShortClassName();
+                                activityName = "LockScreenActivity";
+                                try {
+                                    List<AppTask> tasks = mActivityManager.getAppTasks();
+                                    if(tasks != null && tasks.size() > 0) {
+                                        RecentTaskInfo rti =  tasks.get(0).getTaskInfo();
+                                        if(rti != null) {
+                                            Intent intent = rti.baseIntent;
+                                            ComponentName cn = intent.getComponent();
+                                            if(cn != null) {
+                                                activityName = cn.getShortClassName();
+                                            }
                                         }
                                     }
+                                } catch (Exception e) {
+                                    
                                 }
                             } else {
                                 activityName = pi.processName;

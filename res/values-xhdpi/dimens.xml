@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
+
     <dimen name="gridview_vertical_spacing">15dip</dimen>
+
     <integer name="gridview_row_count">5</integer>
+
     <dimen name="digital_height">92dp</dimen>
     <dimen name="digital_width">58dp</dimen>
     <dimen name="memory_flow_marginTop">10dp</dimen>
@@ -17,8 +19,6 @@
     <dimen name="memory_flow_text2_marginTop">5dp</dimen>
     <dimen name="splash_width">206dp</dimen>
     <dimen name="splash_height">220dp</dimen>
-    <dimen name="about_logo_width">144dp</dimen>
-    <dimen name="about_logo_height">152dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
     <dimen name="hide_album_frame_width">167dp</dimen>
@@ -38,20 +38,25 @@
     <dimen name="lockPatternView_height">330dp</dimen>
     <dimen name="layout_passwd_marginTop">20dp</dimen>
     <dimen name="layout_passwd_marginBottom">10dp</dimen>
-    
-     <dimen name="home_bottom_height">250dp</dimen>
+    <dimen name="home_bottom_height">250dp</dimen>
     <dimen name="home_hide_issues_height">76dp</dimen>
     <dimen name="home_hide_issues_padding_bottom">14dp</dimen>
     <dimen name="circle_count_text_size">74dp</dimen>
     <dimen name="circle_tip_text_size">14dp</dimen>
     <dimen name="circle_vertical_padding">14dp</dimen>
-      <dimen name="hide_issues_text_size">35dp</dimen>
+    <dimen name="hide_issues_text_size">35dp</dimen>
     <dimen name="hide_empty_icon_padding">6dp</dimen>
     <dimen name="circle_lock_icon_small_size">20dp</dimen>
     <dimen name="circle_lock_icon_big_size">44dp</dimen>
     <dimen name="circle_text_vertical_padding">10dp</dimen>
-    
     <dimen name="folder_backup_text_size">14dp</dimen>
     <dimen name="recomment_tip">500dp</dimen>
     <dimen name="success_lock_imageiv">75dp</dimen>
+    <dimen name="splash_icon_margin_top">120dp</dimen>
+    <dimen name="splash_icon_height">200dp</dimen>
+    <dimen name="about_icon_margin_top">26dp</dimen>
+    <dimen name="about_bottom_height">220dp</dimen>
+    <dimen name="about_logo_width">144dp</dimen>
+    <dimen name="about_logo_height">152dp</dimen>
+
 </resources>
