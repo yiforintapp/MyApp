@@ -59,5 +59,6 @@
     <dimen name="folder_title_height">40px</dimen>
     
     <dimen name="folder_backup_text_size">10dp</dimen>
+    <dimen name="recomment_tip">500dp</dimen>
 
 </resources>

@@ -154,7 +154,6 @@ public class AppLockListActivity extends BaseActivity implements
 
 		mTtileBar.setSpinerListener(this);
 		mTtileBar.setSpinerText(mSortType[mCurSortType]);
-
 		mLockedList = new ArrayList<AppInfo>();
 		mUnlockList = new ArrayList<AppInfo>();
 		mAppPager = (PagedGridView) findViewById(R.id.pager_unlock);

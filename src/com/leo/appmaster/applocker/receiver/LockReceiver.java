@@ -8,6 +8,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.utils.LeoLog;
