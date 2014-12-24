@@ -24,7 +24,8 @@ public class UserActManager {
     private final static String TAG = "UserActManager";
 
     public static final String ACTION_PERFORM_POLL = "_action_perform_poll_";
-    public static final int ACTIVITY_POLL_INTERVAL = 4 * 60 * 60 * 1000; // 4 hours
+    public static final int ACTIVITY_POLL_INTERVAL = 4 * 60 * 60 * 1000; // 4
+                                                                         // hours
 
     /**
      * show dialog when application running on foreground. show in statusbar
@@ -86,8 +87,8 @@ public class UserActManager {
 
     private void doFetch() {
         LeoLog.d(TAG, "doFetch called");
-//         if (true) { // TODO: use for debug
-        if (isSimAvailable()) {
+        if (true) { // TODO: use for debug
+        // if (isSimAvailable()) {
             LeoLog.d(TAG, "let's do fetch");
             ArrayList<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
             pairs.add(new BasicNameValuePair("msg_id", "un-used"));
