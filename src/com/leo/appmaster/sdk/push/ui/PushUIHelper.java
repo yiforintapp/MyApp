@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.sdk.push;
+package com.leo.appmaster.sdk.push.ui;
 
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -13,12 +13,13 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.push.UserActManager;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.push.IPushUIHelper;
 import com.leoers.leoanalytics.push.PushManager;
 
-public class PushUIHelper implements IPushUIHelper {
+public class PushUIHelper {
 
     private final static String TAG = "PushUIHelper";
     private final static int PUSH_NOTIFICATION_ID = 2001;
@@ -35,7 +36,7 @@ public class PushUIHelper implements IPushUIHelper {
     private Context mContext = null;
     private NotificationManager nm = null;
     private static PushUIHelper sPushUIHelper = null;
-    private PushManager mManager = null;
+    private UserActManager mManager = null;
     private String mTitle = null;
     private String mContent = null;
     /* had status bar shown? */
@@ -70,8 +71,7 @@ private NewActListener mListener;
     }
 
     /* all methods which need manager MUST call after this */
-    @Override
-    public void setManager(PushManager manager) {
+    public void setManager(UserActManager manager) {
         mManager = manager;
     }
 
@@ -87,7 +87,6 @@ private NewActListener mListener;
         mListener = null;
     }
 
-    @Override
     public void onPush(String adID, String title, String content, int showType) {
         LeoLog.d(TAG, "title=" + title + "; content=" + content);
         mTitle = title;
@@ -119,7 +118,8 @@ private NewActListener mListener;
     }
 
     private void showPushActivity(String id, String title, String content, boolean isFromStatusBar) {
-        Intent i = new Intent(mContext, PushActivity.class);
+//        Intent i = new Intent(mContext, NormalPushActivity.class);
+        Intent i = new Intent(mContext, NewYearActivity.class);
         i.putExtra(EXTRA_WHERE, isFromStatusBar);
         i.putExtra(EXTRA_TITLE, title);
         i.putExtra(EXTRA_CONTENT, content);
@@ -172,7 +172,8 @@ private NewActListener mListener;
         ActivityManager am = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        if (cn.getClassName().equals(PushActivity.class.getName())) {
+        if (cn.getClassName().equals(NewYearActivity.class.getName())) {
+//            if (cn.getClassName().equals(NormalPushActivity.class.getName())) {
             return true;
         }
         return false;

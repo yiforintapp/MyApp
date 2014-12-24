@@ -29,6 +29,7 @@ import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.LoadFailUtils;
 import com.leoers.leoanalytics.LeoStat;
 
 import android.content.ContentResolver;
@@ -179,6 +180,18 @@ public class AppBusinessManager {
 			}
 		}
 	}
+	
+    public boolean hasBusinessData(int type) {
+        Vector<BusinessItemInfo> businessDatas = getBusinessData();
+        for (BusinessItemInfo businessItemInfo : businessDatas) {
+            if (businessItemInfo.installed)
+                continue;
+            if (businessItemInfo.containType == type) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	private void syncServerAppListData() {
 		final AppMasterPreference pref = AppMasterPreference
@@ -218,27 +231,26 @@ public class AppBusinessManager {
 													"noModify");
 										}
 									}
-
-									TimerTask recheckTask = new TimerTask() {
-										@Override
-										public void run() {
-											syncServerAppListData();
-										}
-									};
-									Timer timer = new Timer();
-									timer.schedule(recheckTask, DELAY_12_HOUR);
-
 								} catch (Exception e) {
-									e.printStackTrace();
-									LeoLog.e("syncServerData", e.getMessage());
-									TimerTask recheckTask = new TimerTask() {
-										@Override
-										public void run() {
-											syncServerAppListData();
-										}
-									};
-									Timer timer = new Timer();
-									timer.schedule(recheckTask, DELAY_2_HOUR);
+//									e.printStackTrace();
+//									LeoLog.e("syncServerData", e.getMessage());
+//									TimerTask recheckTask = new TimerTask() {
+//										@Override
+//										public void run() {
+//											syncServerAppListData();
+//										}
+//									};
+//									Timer timer = new Timer();
+//									timer.schedule(recheckTask, DELAY_2_HOUR);
+								} finally {
+                                    TimerTask recheckTask = new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            syncServerAppListData();
+                                        }
+                                    };
+                                    Timer timer = new Timer();
+                                    timer.schedule(recheckTask, DELAY_12_HOUR);
 								}
 							}
 						}
@@ -255,8 +267,7 @@ public class AppBusinessManager {
 							};
 							Timer timer = new Timer();
 							timer.schedule(recheckTask, DELAY_2_HOUR);
-							SDKWrapper.addEvent(mContext, LeoStat.P1,
-									"load_failed", "home_apps");
+							LoadFailUtils.sendLoadFail(mContext, "home_apps");
 						}
 					});
 		}
@@ -282,27 +293,26 @@ public class AppBusinessManager {
 									}
 									syncOtherRecommendData(type, list, noModify);
 								}
-
-								TimerTask recheckTask = new TimerTask() {
-									@Override
-									public void run() {
-										syncOtherRecommend(type);
-									}
-								};
-								Timer timer = new Timer();
-								timer.schedule(recheckTask, DELAY_12_HOUR);
-
 							} catch (Exception e) {
-								e.printStackTrace();
-								LeoLog.e("syncServerData", e.getMessage());
-								TimerTask recheckTask = new TimerTask() {
-									@Override
-									public void run() {
-										syncOtherRecommend(type);
-									}
-								};
-								Timer timer = new Timer();
-								timer.schedule(recheckTask, DELAY_2_HOUR);
+//								e.printStackTrace();
+//								LeoLog.e("syncServerData", e.getMessage());
+//								TimerTask recheckTask = new TimerTask() {
+//									@Override
+//									public void run() {
+//										syncOtherRecommend(type);
+//									}
+//								};
+//								Timer timer = new Timer();
+//								timer.schedule(recheckTask, DELAY_2_HOUR);
+							} finally {
+                                TimerTask recheckTask = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        syncOtherRecommend(type);
+                                    }
+                                };
+                                Timer timer = new Timer();
+                                timer.schedule(recheckTask, DELAY_12_HOUR);
 							}
 						}
 					}
@@ -321,11 +331,9 @@ public class AppBusinessManager {
 						timer.schedule(recheckTask, DELAY_2_HOUR);
 
 						if (type == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-							SDKWrapper.addEvent(mContext, LeoStat.P1,
-									"load_failed", "flow_apps");
+						    LoadFailUtils.sendLoadFail(mContext, "flow_apps");
 						} else {
-							SDKWrapper.addEvent(mContext, LeoStat.P1,
-									"load_failed", "space_apps");
+						    LoadFailUtils.sendLoadFail(mContext, "space_apps");
 						}
 					}
 				});

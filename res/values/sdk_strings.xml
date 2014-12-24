@@ -34,5 +34,19 @@
     <string name="india_only">India Only</string>
     <string name="invalid_number">Please enter the correct phone number</string>
     <string name="goto_gp">Rating</string>
-
+    <!-- push - added in Version 1.5 -->
+    <string name="send_sms">Send Wish</string>
+    <string name="sms_sent">SMS sent</string>
+    <string name="sms_sent_done">SMS sent done</string>
+    <string name="sms_sent_failed">SMS sent failed</string>
+    <string name="friend_phone_number">Friend\'s Phone number</string>
+    <string name="wish_msg1">龙马精神</string>
+    <string name="wish_msg2">身体健康</string>
+    <string name="wish_msg3">学业进步</string>
+    <string name="wish_msg4">恭喜发财</string>
+    <string name="wish_msg5">2015更NB</string>
+    <string name="wish_custom">自定义</string>
+    <string name="custom_msg_hint">自定义祝福语(最多输入50个字符)</string>
+    <string name="default_wishes">点击选择祝福语</string>
+    <string name="wish_char_hint">还能输入%1$d个字符</string>
 </resources>
