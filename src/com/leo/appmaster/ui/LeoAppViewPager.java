@@ -259,6 +259,8 @@ public class LeoAppViewPager extends ViewGroup {
     };
 
     private int mScrollState = SCROLL_STATE_IDLE;
+    
+    private boolean mInterceptVerticalEvent = true;
 
     /**
      * Callback interface for responding to changing state of the selected page.
@@ -1788,6 +1790,10 @@ public class LeoAppViewPager extends ViewGroup {
             ViewCompat.setLayerType(getChildAt(i), layerType, null);
         }
     }
+    
+    public void interceptVerticalEvent(boolean intercept) {
+        mInterceptVerticalEvent = intercept;
+    }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -1850,33 +1856,46 @@ public class LeoAppViewPager extends ViewGroup {
                 final float y = MotionEventCompat.getY(ev, pointerIndex);
                 final float yDiff = Math.abs(y - mInitialMotionY);
                 if (DEBUG) LeoLog.v(TAG, "Moved x to " + x + "," + y + " diff=" + xDiff + "," + yDiff);
-
-//                if (dx != 0 && !isGutterDrag(mLastMotionX, dx) &&
-//                        canScroll(this, false, (int) dx, (int) x, (int) y)) {
-//                    // Nested view has scrollable area under this point. Let it be handled there.
-//                    mLastMotionX = x;
-//                    mLastMotionY = y;
-//                    mIsUnableToDrag = true;
-//                    return false;
-//                }
-                if (xDiff > mTouchSlop || yDiff > mTouchSlop) {
-                    if (DEBUG) LeoLog.v(TAG, "Starting drag!");
-                    mIsBeingDragged = true;
-                    requestParentDisallowInterceptTouchEvent(true);
-                    setScrollState(SCROLL_STATE_DRAGGING);
-                    mLastMotionX = dx > 0 ? mInitialMotionX + mTouchSlop :
-                            mInitialMotionX - mTouchSlop;
-                    mLastMotionY = y;
-                    setScrollingCacheEnabled(true);
-                } 
-//                else if (yDiff > mTouchSlop) {
-//                    // The finger has moved enough in the vertical
-//                    // direction to be counted as a drag...  abort
-//                    // any attempt to drag horizontally, to work correctly
-//                    // with children that have scrolling containers.
-//                    if (DEBUG) LeoLog.v(TAG, "Starting unable to drag!");
-//                    mIsUnableToDrag = true;
-//                }
+                
+                if(mInterceptVerticalEvent ) {                    
+                    if (xDiff > mTouchSlop || yDiff > mTouchSlop) {
+                        if (DEBUG) LeoLog.v(TAG, "Starting drag!");
+                        mIsBeingDragged = true;
+                        requestParentDisallowInterceptTouchEvent(true);
+                        setScrollState(SCROLL_STATE_DRAGGING);
+                        mLastMotionX = dx > 0 ? mInitialMotionX + mTouchSlop :
+                                mInitialMotionX - mTouchSlop;
+                        mLastMotionY = y;
+                        setScrollingCacheEnabled(true);
+                    } 
+                } else {                    
+                    if (yDiff > xDiff * 2 && dx != 0 && !isGutterDrag(mLastMotionX, dx) &&
+                            canScroll(this, false, (int) dx, (int) x, (int) y)) {
+                        // Nested view has scrollable area under this point. Let it be handled there.
+                        mLastMotionX = x;
+                        mLastMotionY = y;
+                        mIsUnableToDrag = true;
+                        return false;
+                    }
+                    if (xDiff > mTouchSlop && xDiff  > yDiff) {
+                        if (DEBUG) LeoLog.v(TAG, "Starting drag!");
+                        mIsBeingDragged = true;
+                        requestParentDisallowInterceptTouchEvent(true);
+                        setScrollState(SCROLL_STATE_DRAGGING);
+                        mLastMotionX = dx > 0 ? mInitialMotionX + mTouchSlop :
+                                mInitialMotionX - mTouchSlop;
+                        mLastMotionY = y;
+                        setScrollingCacheEnabled(true);
+                    } else if (yDiff > mTouchSlop) {
+                        // The finger has moved enough in the vertical
+                        // direction to be counted as a drag...  abort
+                        // any attempt to drag horizontally, to work correctly
+                        // with children that have scrolling containers.
+                        if (DEBUG) LeoLog.v(TAG, "Starting unable to drag!");
+                        mIsUnableToDrag = true;
+                    }
+                }
+                              
                 if (mIsBeingDragged) {
                     // Scroll to follow the motion event
                     if (performDrag(x)) {

@@ -23,8 +23,8 @@ public class LockHandler extends BroadcastReceiver {
 
 	private Context mContext;
 	private ActivityManager mAm;
-	private String mLastRunningPkg;
-	private String mLastRuningActivity;
+	private String mLastRunningPkg = "";
+	private String mLastRuningActivity = "";
 
 	private ILockPolicy mLockPolicy;
 
