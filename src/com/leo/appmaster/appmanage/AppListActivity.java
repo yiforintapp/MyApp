@@ -156,7 +156,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 			});
 
 			SDKWrapper.addEvent(this, LeoStat.P1, "ub_newapp", "statusbar");
-		}
+        } else if (AppBusinessManager.getInstance(this).hasBusinessData(BusinessItemInfo.CONTAIN_APPLIST)) {
+            SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
+        }
 	}
 
 	public void openSlicingLayer(View view, int from) {
@@ -821,15 +823,15 @@ public class AppListActivity extends BaseFragmentActivity implements
 				}
 			}
 		}
-		if (containerId == BusinessItemInfo.CONTAIN_APPLIST) {
-			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
-		} else if (containerId == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "flow");
-		} else if (containerId == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
-			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "capacity");
-		} else if (containerId == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
-			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "new");
-		}
+//		if (containerId == BusinessItemInfo.CONTAIN_APPLIST) {
+//			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
+//		} else if (containerId == BusinessItemInfo.CONTAIN_FLOW_SORT) {
+//			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "flow");
+//		} else if (containerId == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
+//			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "capacity");
+//		} else if (containerId == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
+//			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "new");
+//		}
 
 		return list;
 	}

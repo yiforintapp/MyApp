@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.model.FolderItemInfo;
@@ -277,10 +278,19 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_restore", "glide");
 		} else if (arg0 == FolderItemInfo.FOLDER_FLOW_SORT) {
 			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_liuliang", "glide");
+            if (AppBusinessManager.getInstance(mContext).hasBusinessData(BusinessItemInfo.CONTAIN_FLOW_SORT)) {
+                SDKWrapper.addEvent(mContext, LeoStat.P1, "app_rec", "flow");
+            }
 		} else if (arg0 == FolderItemInfo.FOLDER_CAPACITY_SORT) {
 			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_space", "glide");
+            if (AppBusinessManager.getInstance(mContext).hasBusinessData(BusinessItemInfo.CONTAIN_CAPACITY_SORT)) {
+                SDKWrapper.addEvent(mContext, LeoStat.P1, "app_rec", "capacity");
+            }
 		} else if (arg0 == FolderItemInfo.FOLDER_BUSINESS_APP) {
 			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_newapp", "glide");
+            if (AppBusinessManager.getInstance(mContext).hasBusinessData(BusinessItemInfo.CONTAIN_BUSINESS_FOLDER)) {
+                SDKWrapper.addEvent(mContext, LeoStat.P1, "app_rec", "new");
+            }
 		}
 
 		if (arg0 == 3) {

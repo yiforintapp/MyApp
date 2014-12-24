@@ -229,9 +229,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 				mHaveInitData = true;
 				mLayoutEmptyTip.setVisibility(View.INVISIBLE);
 			}
-			
-			
-			SDKWrapper.addEvent(mActivity, LeoStat.P1, "app_rec", "new");
+						
 		} else {
 			mRecommendGrid.setVisibility(View.INVISIBLE);
 			mErrorView.setVisibility(View.VISIBLE);
