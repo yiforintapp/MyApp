@@ -180,6 +180,18 @@ public class AppBusinessManager {
 			}
 		}
 	}
+	
+    public boolean hasBusinessData(int type) {
+        Vector<BusinessItemInfo> businessDatas = getBusinessData();
+        for (BusinessItemInfo businessItemInfo : businessDatas) {
+            if (businessItemInfo.installed)
+                continue;
+            if (businessItemInfo.containType == type) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	private void syncServerAppListData() {
 		final AppMasterPreference pref = AppMasterPreference
