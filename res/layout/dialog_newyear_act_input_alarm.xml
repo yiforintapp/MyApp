@@ -100,7 +100,7 @@
                 android:layout_marginRight="32dp"
                 android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
-                android:text="@string/feedback_category_tip"
+                android:text="@string/default_wishes"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
@@ -124,6 +124,16 @@
             android:hint="@string/custom_msg_hint"
             android:textColor="@color/black"
             android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_max_char_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/custom_msg_content"
+            android:text="@string/phone_number"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#dd1f1f1f" />
+        
     </RelativeLayout>
 
     <!-- 双btn -->

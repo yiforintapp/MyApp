@@ -12,8 +12,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -46,21 +48,23 @@ public class NewYearActivity extends BaseActivity implements View.OnClickListene
     private String mAdID;
     private EditText mPhoneNumber = null;
     private EditText mCustomMsgET;
-    
+    private TextView mMaxCharHint;
+
     /* popup window stuff */
     private LeoPopMenu mLeoPopMenu;
     private ImageView mCategoryImg;
     private TextView mCategory;
     private final static int[] sCategoryIds = {
-        R.string.wish_msg1, R.string.wish_msg2, R.string.wish_msg3,
-        R.string.wish_msg4, R.string.wish_msg5, R.string.wish_custom
-};
+            R.string.wish_msg1, R.string.wish_msg2, R.string.wish_msg3,
+            R.string.wish_msg4, R.string.wish_msg5, R.string.wish_custom
+    };
 
-private final ArrayList<String> mCategories = new ArrayList<String>();
+    private final ArrayList<String> mCategories = new ArrayList<String>();
 
     private Handler mHandler;
 
     private final static int INDIAN_MOBILE_LENGTH = 10;
+    private final static int CUSTOM_WISH_CHAR_LIMITED = 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,13 +110,13 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
         mPhoneNumber.setFilters(new InputFilter[] {
                 new InputFilter.LengthFilter(INDIAN_MOBILE_LENGTH)
         });
-        
+
         TextView tvInputHeader = (TextView) findViewById(R.id.tv_input_header);
         tvInputHeader.setText(getString(R.string.friend_phone_number));
 
         TextView tvTitle = (TextView) findViewById(R.id.dlg_title);
         tvTitle.setText(title);
-        
+
         TextView tvContent = (TextView) findViewById(R.id.dlg_content);
         tvContent.setText(content);
         tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -124,10 +128,32 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
         TextView tvGO = (TextView) findViewById(R.id.dlg_right_btn);
         tvGO.setText(getString(R.string.send_sms));
         tvGO.setOnClickListener(this);
-        
+
+        /* init custom wish mesage input box and max char hint */
+        mMaxCharHint = (TextView) findViewById(R.id.tv_max_char_hint);
+        mMaxCharHint.setVisibility(View.GONE);
         mCustomMsgET = (EditText) findViewById(R.id.custom_msg_content);
         mCustomMsgET.setVisibility(View.GONE);
-        
+        mCustomMsgET.setFilters(new InputFilter[] {
+                new InputFilter.LengthFilter(CUSTOM_WISH_CHAR_LIMITED)
+        });
+        mCustomMsgET.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                LeoLog.d(TAG, "length = " + arg0.length());
+                handleWishMsgLimit(arg0.length());
+            }
+        });
+
         /* init popup for default messages */
         View dropView = findViewById(R.id.default_wishes_layout);
         mCategory = (TextView) findViewById(R.id.wishes_title);
@@ -136,6 +162,16 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
             mCategories.add(getString(sCategoryIds[i]));
         }
         dropView.setOnClickListener(this);
+    }
+    
+    private void handleWishMsgLimit(int length){
+        if(CUSTOM_WISH_CHAR_LIMITED - length < 10){
+            String hint = getString(R.string.wish_char_hint, CUSTOM_WISH_CHAR_LIMITED - length);
+            mMaxCharHint.setText(hint);
+            mMaxCharHint.setVisibility(View.VISIBLE);
+        }else{
+            mMaxCharHint.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -156,8 +192,8 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
                 break;
         }
     }
-    
-    private void showPopup(){
+
+    private void showPopup() {
         if (mLeoPopMenu == null) {
             mLeoPopMenu = new LeoPopMenu();
             mLeoPopMenu.setPopMenuItems(mCategories);
@@ -168,11 +204,12 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
                     String text = mCategories.get(position);
                     mCategory.setText(text);
                     mLeoPopMenu.dismissSnapshotList();
-                    if(NewYearActivity.this.getString(R.string.wish_custom).equals(text)){
+                    if (NewYearActivity.this.getString(R.string.wish_custom).equals(text)) {
                         /* user want to send a custom wish message */
                         mCustomMsgET.setVisibility(View.VISIBLE);
                         mCustomMsgET.requestFocus();
-                    }else{
+                    } else {
+                        mMaxCharHint.setVisibility(View.GONE);
                         mCustomMsgET.setVisibility(View.GONE);
                     }
                 }
@@ -181,7 +218,7 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
         LayoutStyles styles = new LayoutStyles();
         styles.width = LayoutParams.MATCH_PARENT;
         styles.height = LayoutParams.WRAP_CONTENT;
-        styles.animation = R.style.PopupListAnimUpDown;
+        styles.animation = R.style.CenterEnterAnim;
         styles.direction = LeoPopMenu.DIRECTION_DOWN;
         mLeoPopMenu.showPopMenu(this, mCategory, styles, new OnDismissListener() {
             @Override
@@ -191,9 +228,9 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
         });
         mCategoryImg.setImageResource(R.drawable.choose_active);
     }
-    
+
     private void sendSMS(String destAddress, String content,
-            PendingIntent sentIntent, PendingIntent deliveryIntent) 
+            PendingIntent sentIntent, PendingIntent deliveryIntent)
     {
         SmsManager smsManager = SmsManager.getDefault();
         List<String> divideContents = smsManager.divideMessage(content);
@@ -242,10 +279,10 @@ private final ArrayList<String> mCategories = new ArrayList<String>();
             Toast.makeText(this, getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
         /* TODO: phone number available, send SMS to user's best friend */
         sendSMS("13632840685", phone, null, null);
-        
+
         SDKWrapper.addEvent(this, LeoStat.P1, "act", "cligp");
         PushUIHelper.getInstance(this).sendACK(mAdID, true, mFromStatusBar, phone);
         finish();

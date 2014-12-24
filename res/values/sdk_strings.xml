@@ -46,5 +46,7 @@
     <string name="wish_msg4">恭喜发财</string>
     <string name="wish_msg5">2015更NB</string>
     <string name="wish_custom">自定义</string>
-    <string name="custom_msg_hint">自定义祝福语</string>
+    <string name="custom_msg_hint">自定义祝福语(最多输入50个字符)</string>
+    <string name="default_wishes">点击选择祝福语</string>
+    <string name="wish_char_hint">还能输入%1$d个字符</string>
 </resources>
