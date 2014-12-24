@@ -64,7 +64,7 @@ public class NewYearActivity extends BaseActivity implements View.OnClickListene
     private Handler mHandler;
 
     private final static int INDIAN_MOBILE_LENGTH = 10;
-    private final static int CUSTOM_WISH_CHAR_LIMITED = 60;
+    private final static int CUSTOM_WISH_CHAR_LIMITED = 79;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

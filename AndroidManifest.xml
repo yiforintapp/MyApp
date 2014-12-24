@@ -197,8 +197,7 @@
         <activity
             android:name="com.leo.appmaster.sdk.push.ui.NewYearActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.UpdateDialog.NoFrame" />
+            android:screenOrientation="portrait" />
 
         <!-- add for the app update of leosdk -->
 

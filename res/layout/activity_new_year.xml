@@ -2,40 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/stone_bg"
+    android:background="@drawable/newyear_act_bg"
     android:orientation="vertical" >
-
-    <ImageView
-        android:id="@+id/iv_header"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/stone_ny_header" />
 
     <TextView
         android:id="@+id/tv_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iv_header"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="this is the new year activity info" />
+        android:layout_marginTop="231dp"
+        android:textSize="10dp"
+        android:text="this is the new year activity info, send a SMS to your friend, and he/she will get 10rb phone feed" />
 
     <EditText
         android:id="@+id/et_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="247dp"
+        android:layout_height="46dp"
         android:layout_below="@id/tv_info"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/input_box_line"
+        android:layout_marginTop="46dp"
         android:ems="10"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:hint="@string/india_only"
         android:singleLine="true"
+        android:background="@drawable/phone_number_textbox_bg_selector"
         android:text="phone number of your friend"
-        android:textColor="#dd1f1f1f"
+        android:textColor="#ffffffff"
         android:textSize="14dp" >
 
         <requestFocus />
@@ -43,22 +35,22 @@
 
     <ImageView
         android:id="@+id/iv_view_pager"
-        android:layout_width="350dp"
-        android:layout_height="262dp"
+        android:layout_width="273dp"
+        android:layout_height="162dp"
         android:layout_below="@id/et_phone"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/stone_post" />
+        android:layout_marginTop="16dp"
+        android:src="@drawable/newyear_act_poster" />
 
     <Button
         android:id="@+id/send_sms"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
+        android:layout_width="248dp"
+        android:layout_height="33dp"
+        android:layout_below="@id/iv_view_pager"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:background="@drawable/mycheck_button_selecter"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/send_sms_button_selecter"
         android:text="@string/send_sms"
         android:textColor="@android:color/white"
         android:textSize="18dp" />
