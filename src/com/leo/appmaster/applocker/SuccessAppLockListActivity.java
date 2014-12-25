@@ -19,14 +19,15 @@ import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.PagedGridView;
+import com.leoers.leoanalytics.LeoStat;
 
 public class SuccessAppLockListActivity extends BaseActivity implements OnClickListener {
     private List<AppInfo> mLockList;
     private PagedGridView mAppPager;
     private TextView lockTV;
-    private Object mLock = new Object();
     private ArrayList<AppInfo> resault;
     private boolean mShouldLockOnRestart = true;
     public static final int REQUEST_CODE_LOCK = 1000;
@@ -76,12 +77,14 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         if(lockList.contains(app.packageName)){
             app.isLocked=false;
             mLockList.add(app);
+            /*SDK*/
+            SDKWrapper.addEvent(this, LeoStat.P1, "first_lock", app.packageName);
         }
     }
     Collections.sort(mLockList, new LockedAppComparator(mLockList));
         resault = new ArrayList<AppInfo>(mLockList);
         int rowCount = getResources().getInteger(R.integer.recomment_gridview_row_count);
-        mAppPager.setDatas(resault, 4, rowCount);
+        mAppPager.setDatas(resault, 3, rowCount);
         mAppPager.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
     }
     private class LockedAppComparator implements Comparator<AppInfo> {
@@ -146,5 +149,9 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     @Override
     public void onActivityResault(int requestCode, int resultCode) {
             mShouldLockOnRestart = false;
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

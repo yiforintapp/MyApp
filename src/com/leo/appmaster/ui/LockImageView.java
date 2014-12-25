@@ -85,9 +85,9 @@ public class LockImageView extends ImageView {
 	                                .blue(pixel)) / 3;
 
 	                        alpha = (int) (Color.alpha(pixel));
-	                        red = (int) (Color.red(pixel) * 0.35);
-	                        green = (int) (Color.green(pixel) * 0.35);
-	                        blue = (int) (Color.blue(pixel) * 0.35);
+	                        red = (int) (Color.red(pixel) * 0.5);
+	                        green = (int) (Color.green(pixel) * 0.5);
+	                        blue = (int) (Color.blue(pixel) * 0.5);
 
 	                        pixel = Color.argb(alpha, red, green, blue);
 	                        mGaryBitmap.setPixel(i, j, pixel);
@@ -180,9 +180,9 @@ public class LockImageView extends ImageView {
 	                                    .blue(pixel)) / 3;
 
 	                            alpha = (int) (Color.alpha(pixel));
-	                            red = (int) (Color.red(pixel) * 0.35);
-	                            green = (int) (Color.green(pixel) * 0.35);
-	                            blue = (int) (Color.blue(pixel) * 0.35);
+	                            red = (int) (Color.red(pixel) * 0.5);
+	                            green = (int) (Color.green(pixel) * 0.5);
+	                            blue = (int) (Color.blue(pixel) * 0.5);
 
 	                            pixel = Color.argb(alpha, red, green, blue);
 	                            mGaryBitmap.setPixel(i, j, pixel);

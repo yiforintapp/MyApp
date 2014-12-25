@@ -26,6 +26,7 @@ import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
@@ -33,7 +34,6 @@ import com.leo.appmaster.ui.PagedGridView;
 public class RecommentAppLockListActivity extends BaseActivity implements OnClickListener,
         OnItemClickListener, AppChangeListener {
     private List<AppInfo> mLockList;
-    private List<AppInfo> mRecommentList;
     private List<AppInfo> mUnLockList;
     private PagedGridView mAppPager;
     private TextView lockTV;
@@ -65,7 +65,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recomment_lock_app_list);
         mLockList = new ArrayList<AppInfo>();
-        mRecommentList = new ArrayList<AppInfo>();
         mUnLockList = new ArrayList<AppInfo>();
         initUI();
         getIntentFrom();
@@ -146,8 +145,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
     }
 
     private void loadData() {
-        mUnLockList.clear();
-        mLockList.clear();
         ArrayList<AppItemInfo> localAppList = AppLoadEngine.getInstance(this).getAllPkgInfo();
         List<String> defaultLockList = getDefaultLockList();
         if (mInstallPackageName != null && !mInstallPackageName.equals("")) {

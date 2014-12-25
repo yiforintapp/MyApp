@@ -94,12 +94,15 @@ public class PagedGridView extends LinearLayout {
 
 			gridView.setOnTouchListener(mTouchListener);
 			mGridViewList.add(gridView);
-			mPageDatas.add(pageData);
+			    mPageDatas.add(pageData);
 		}
 
 		mAdapter = new DataPagerAdapter();
 		mViewPager.setAdapter(mAdapter);
-		mIndicator.setViewPager(mViewPager);
+		if(mPageCount >1){
+		    mIndicator.setViewPager(mViewPager);
+		}
+		
 	}
 
 	public void notifyChange(List<AppInfo> list) {
