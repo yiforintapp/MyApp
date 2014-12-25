@@ -54,16 +54,14 @@
     <dimen name="folder_title_text_size">8dp</dimen>
     <dimen name="folder_title_height">28dp</dimen>
     <dimen name="folder_title_width">137dp</dimen>
-    
     <dimen name="folder_backup_text_size">14dp</dimen>
     <dimen name="recomment_tip">500dp</dimen>
-    
-    
-      <dimen name="splash_icon_margin_top">120dp</dimen>
-     <dimen name="splash_icon_height">200dp</dimen>
-     
-     <dimen name="about_icon_margin_top">28dp</dimen>
-     <dimen name="about_bottom_height">220dp</dimen>
+    <dimen name="success_lock_imageiv">75dp</dimen>
+    <dimen name="splash_icon_margin_top">120dp</dimen>
+    <dimen name="splash_icon_height">200dp</dimen>
+    <dimen name="about_icon_margin_top">28dp</dimen>
+    <dimen name="about_bottom_height">220dp</dimen>
     <dimen name="about_logo_width">144dp</dimen>
     <dimen name="about_logo_height">152dp</dimen>
+
 </resources>

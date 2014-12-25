@@ -10,4 +10,5 @@
     <dimen name="about_logo_height">132dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
     <dimen name="recomment_tip">500dp</dimen>
+    <dimen name="success_lock_imageiv">75dp</dimen>
 </resources>

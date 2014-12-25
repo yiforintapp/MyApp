@@ -1,13 +1,14 @@
 
 package com.leo.appmaster.applocker;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-
+import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -24,6 +25,7 @@ import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
@@ -31,16 +33,30 @@ import com.leo.appmaster.ui.PagedGridView;
 public class RecommentAppLockListActivity extends BaseActivity implements OnClickListener,
         OnItemClickListener, AppChangeListener {
     private List<AppInfo> mLockList;
-    private List<AppInfo> mRecommentList;
     private List<AppInfo> mUnLockList;
     private PagedGridView mAppPager;
-    private Button lockTV;
+    private TextView lockTV;
     private Object mLock = new Object();
     private ArrayList<AppInfo> resault;
     private String mPackageName;
     private String mInstallPackageName;
+    private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "recomment_activity";
     private final static String[] DEFAULT_LOCK_LIST = new String[] {
-            "com.android.mms", "com.tencent.mm", "com.tencent.mobileqq"
+            " com.whatsapp",
+            "com.android.mms",
+            "com.facebook.katana",
+            "com.android.gallery3d",
+            "com.sec.android.gallery3d",
+            "com.android.contacts",
+            "com.facebook.orca",
+            "com.google.android.youtube",
+            "com.android.providers.downloads.ui",
+            "com.sec.android.app.myfiles",
+            "com.android.email",
+            "com.viber.voip",
+            "com.google.android.talk",
+            "com.mxtech.videoplayer.ad",
+            "com.android.calendar"
     };
 
     @Override
@@ -48,7 +64,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recomment_lock_app_list);
         mLockList = new ArrayList<AppInfo>();
-        mRecommentList = new ArrayList<AppInfo>();
         mUnLockList = new ArrayList<AppInfo>();
         initUI();
         getIntentFrom();
@@ -61,7 +76,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         mCommonTitleBar.setTitle(R.string.app_lock);
         mCommonTitleBar.openBackView();
         mAppPager = (PagedGridView) findViewById(R.id.recomment_pager_unlock);
-        lockTV = (Button) findViewById(R.id.recomment_lock);
+        lockTV = (TextView) findViewById(R.id.recomment_lock);
         lockTV.setOnClickListener(this);
         mAppPager.setItemClickListener(this);
     }
@@ -83,6 +98,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         mLockList.clear();
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         animateItem(arg1);
@@ -101,7 +117,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             mLockList.remove(info);
             // to set view unlocked
             ((LockImageView) arg1.findViewById(R.id.iv_app_icon))
-                    .setLocked(false);
+                    .setDefaultRecommendApp(false);
         } else {
             for (AppInfo unLockAppInfo : mUnLockList) {
                 selectApp.isLocked = true;
@@ -115,12 +131,16 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             mLockList.add(info);
             // to set view lock
             ((LockImageView) arg1.findViewById(R.id.iv_app_icon))
-                    .setLocked(true);
+                    .setDefaultRecommendApp(true);
         }
         if (mLockList.size() <= 0) {
             lockTV.setEnabled(false);
+            lockTV.setBackground(getResources().getDrawable(R.drawable.unclick_button));
+            lockTV.setTransitionAlpha(0.3f);
         } else {
             lockTV.setEnabled(true);
+            lockTV.setBackground(getResources().getDrawable(R.drawable.default_lock_down));
+            lockTV.setTransitionAlpha(1.0f);
         }
     }
 
@@ -129,8 +149,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
     }
 
     private void loadData() {
-        mUnLockList.clear();
-        mLockList.clear();
         ArrayList<AppItemInfo> localAppList = AppLoadEngine.getInstance(this).getAllPkgInfo();
         List<String> defaultLockList = getDefaultLockList();
         if (mInstallPackageName != null && !mInstallPackageName.equals("")) {
@@ -145,13 +163,14 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
                 mUnLockList.add(localApp);
             }
         }
-        // Collections.sort(mLockList, new LockedAppComparator(mLockList));
+        Collections.sort(mLockList, new LockedAppComparator(mLockList));
+        Collections.sort(mUnLockList, new DefalutAppComparator());
         resault = new ArrayList<AppInfo>(mLockList);
         resault.addAll(mUnLockList);
 
         int rowCount = getResources().getInteger(R.integer.recomment_gridview_row_count);
         mAppPager.setDatas(resault, 4, rowCount);
-        mAppPager.setFlag(true);
+        mAppPager.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
     }
 
     private class LockedAppComparator implements Comparator<AppInfo> {
@@ -170,6 +189,32 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             } else {
                 return -1;
             }
+        }
+    }
+
+    public static class DefalutAppComparator implements Comparator<AppInfo> {
+        @Override
+        public int compare(AppInfo lhs, AppInfo rhs) {
+            if (lhs.topPos > -1 && rhs.topPos < 0) {
+                return -1;
+            } else if (lhs.topPos < 0 && rhs.topPos > -1) {
+                return 1;
+            } else if (lhs.topPos > -1 && rhs.topPos > -1) {
+                return lhs.topPos - rhs.topPos;
+            }
+
+            if (lhs.systemApp && !rhs.systemApp) {
+                return -1;
+            } else if (!lhs.systemApp && rhs.systemApp) {
+                return 1;
+            }
+
+            return Collator.getInstance().compare(trimString(lhs.label),
+                    trimString(rhs.label));
+        }
+
+        private String trimString(String s) {
+            return s.replaceAll("\u00A0", "").trim();
         }
     }
 

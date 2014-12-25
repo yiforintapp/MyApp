@@ -298,7 +298,9 @@
     
     <string name="no_backup_app_tip">您还没有备份应用</string>
     <string name="other_people_use_tip">其他人正在使用</string>
-    <string name="recomment_list_title">请选择您想加锁的应用</string>
-    <string name="recomment_lock">加锁</string>
     
+    <string name="recomment_list_title">请选择您想加锁的应用</string>
+    <string name="lock_success">加锁成功！</string>
+    <string name="lcok_success_tip">您选择的应用已加锁</string>
+    <string name="success_finish">完成</string>
 </resources>

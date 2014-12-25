@@ -37,7 +37,7 @@ public class PagedGridView extends LinearLayout {
 	private OnItemClickListener mClickListener;
 	private OnTouchListener mTouchListener;
 	private int mPageCount;
-	private boolean mFlag;
+	private String mFlag;
 
 	public PagedGridView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -51,7 +51,7 @@ public class PagedGridView extends LinearLayout {
 		mPageItemCount = mCellX * mCellY;
 		updateUI(data);
 	}
-	public void setFlag(boolean flag){
+	public void setFlag(String flag){
 	    mFlag=flag;
 	}
 
@@ -94,12 +94,15 @@ public class PagedGridView extends LinearLayout {
 
 			gridView.setOnTouchListener(mTouchListener);
 			mGridViewList.add(gridView);
-			mPageDatas.add(pageData);
+			    mPageDatas.add(pageData);
 		}
 
 		mAdapter = new DataPagerAdapter();
 		mViewPager.setAdapter(mAdapter);
-		mIndicator.setViewPager(mViewPager);
+		if(mPageCount >1){
+		    mIndicator.setViewPager(mViewPager);
+		}
+		
 	}
 
 	public void notifyChange(List<AppInfo> list) {
@@ -206,22 +209,17 @@ public class PagedGridView extends LinearLayout {
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.app_item, null);
 			}
-			if(mFlag){		    
+			if("recomment_activity".equals(mFlag)){		    
 			    LockImageView imageView = (LockImageView) convertView
 	                    .findViewById(R.id.iv_app_icon);
 	            TextView textView = (TextView) convertView
 	                    .findViewById(R.id.tv_app_name);
 	            AppInfo info = mList.get(position);
-
-	            if (AppLoadEngine.getInstance(getContext()).getRecommendLockList()
-	                    .contains(info.packageName)) {
-	                imageView.setRecommend(false);
-	            }
-	            imageView.setLocked(info.isLocked);
+	            imageView.setDefaultRecommendApp(info.isLocked);
 	            imageView.setImageDrawable(info.icon);
 	            textView.setText(info.label);
 	            convertView.setTag(info);
-			}else{	
+			}else if("applocklist_activity".equals(mFlag)){	
 			LockImageView imageView = (LockImageView) convertView
 					.findViewById(R.id.iv_app_icon);
 			TextView textView = (TextView) convertView
