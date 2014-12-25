@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.sdk.push.ui;
 
+import java.text.DateFormat.Field;
+
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -11,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
+import android.widget.RemoteViews;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.UserActManager;
@@ -165,8 +168,15 @@ public class PushUIHelper {
         PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, requestCode,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        int iconRes = R.drawable.ic_launcher_notification;
+        if (isNewYearAct) {
+//            iconRes = R.drawable.new_year_icon_32x32;
+            iconRes = R.drawable.new_year_icon_48x48_03;
+            title = mContext.getString(R.string.newyear_status_title);
+            content = mContext.getString(R.string.newyear_status_body);
+        }
         Notification pushNotification = new Notification(
-                R.drawable.ic_launcher_notification, content,
+                iconRes, content,
                 System.currentTimeMillis());
 
         Intent dIntent = new Intent(ACTION_IGNORE_PUSH);
@@ -180,6 +190,21 @@ public class PushUIHelper {
         pushNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONLY_ALERT_ONCE;
         nm.notify(PUSH_NOTIFICATION_ID, pushNotification);
+    }
+    
+    private int getIconId() {
+        int idIcond = 0;
+        Class<?> clazz;
+        try {
+            clazz = Class.forName("com.android.internal.R$id");
+            java.lang.reflect.Field field = clazz.getField("icon");
+            field.setAccessible(true);
+            idIcond = field.getInt(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return idIcond;
     }
 
     private boolean isActivityOnTop(Context context, String name) {
