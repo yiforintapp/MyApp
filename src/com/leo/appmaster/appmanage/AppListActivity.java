@@ -568,7 +568,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 								bif.appDownloadUrl);
 					}
 					SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-							"app_cli_pn", "$" + bif.packageName);
+							"app_cli_pn", bif.packageName);
 
 					if (bif.containType == BusinessItemInfo.CONTAIN_APPLIST) {
 						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
