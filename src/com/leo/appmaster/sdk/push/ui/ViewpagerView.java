@@ -91,9 +91,9 @@ public class ViewpagerView extends LinearLayout {
 		}
 	}
 	
-	public String getMsgContent(){
-		if(position +1 < msgList.size()){
-			return msgList.get(position);
+	public String getMsgContent(int currentPosition){
+		if(currentPosition +1 < msgList.size()){
+			return msgList.get(currentPosition);
 		}else{
 			return editText.getText().toString();
 		}

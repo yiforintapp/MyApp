@@ -51,6 +51,7 @@
     <string name="wish_msg9">May God spread prosperity and joy in your life on this New Year!</string>
     <string name="wish_msg10">Embrace simplicity and sincerity and you shall have a wonderful New Year ahead.</string>
     <string name="wish_custom">Write your own greetings…</string>
+    <string name="invalid_wish_msg">Your wish message is empty</string>
     <string name="custom_msg_hint">自定义祝福语(最多输入50个字符)</string>
     <string name="default_wishes">点击选择祝福语</string>
     <string name="wish_sms_sent">Greetings sent successfully!</string>

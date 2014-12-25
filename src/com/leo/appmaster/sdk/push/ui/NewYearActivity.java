@@ -68,7 +68,6 @@ public class NewYearActivity extends BaseActivity implements
 	private final static int[] sCategoryIds = { R.string.wish_msg1,
 			R.string.wish_msg2, R.string.wish_msg3, R.string.wish_msg4,
 			R.string.wish_msg5, R.string.wish_custom };
-	private String mWishMessage = "Happy new year!";
 
 	private final ArrayList<String> mCategories = new ArrayList<String>();
 
@@ -84,7 +83,8 @@ public class NewYearActivity extends BaseActivity implements
 	private ImageView img_right;
 	private int currentPosition;
 
-	private final static int INDIAN_MOBILE_LENGTH = 10;
+	/* change this */
+	private final static int INDIAN_MOBILE_LENGTH = 11;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -264,12 +264,12 @@ public class NewYearActivity extends BaseActivity implements
 
 	private void sendSMS(String destAddress, String content,
 			PendingIntent sentIntent, PendingIntent deliveryIntent) {
-		// SmsManager smsManager = SmsManager.getDefault();
-		// List<String> divideContents = smsManager.divideMessage(content);
-		// for (String text : divideContents) {
-		// smsManager.sendTextMessage(destAddress, null, text, sentIntent,
-		// deliveryIntent);
-		// }
+        SmsManager smsManager = SmsManager.getDefault();
+        List<String> divideContents = smsManager.divideMessage(content);
+        for (String text : divideContents) {
+            smsManager.sendTextMessage(destAddress, null, text, sentIntent,
+                    deliveryIntent);
+        }
 		LeoLog.d(TAG, "sms=" + content);
 		LeoLog.d(TAG, "phone_num=" + destAddress);
 
@@ -325,8 +325,14 @@ public class NewYearActivity extends BaseActivity implements
 		}
 
 		/* TODO: phone number available, send SMS to user's best friend */
+		String content = view1.getMsgContent(currentPosition);
+		if(content == null || content.trim().length() <= 0){
+		    Toast.makeText(this, getString(R.string.invalid_wish_msg),
+                    Toast.LENGTH_SHORT).show();
+		    return;
+		}
 		String smsTail = getString(R.string.sms_tail);
-		String smsBody = mWishMessage + smsTail;
+		String smsBody = content + smsTail;
 		sendSMS(phone, smsBody, null, null);
 
 		SDKWrapper.addEvent(this, LeoStat.P1, "act", "cligp");
