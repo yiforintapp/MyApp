@@ -29,4 +29,5 @@
     <color name="blue">#1068F3</color>
      <color name="lockerclean_background">#50000000</color>
      <color name="pressed_view_color">#2b7cef</color>
+     <color name="default_lock">#8cbdfe</color>
 </resources>
