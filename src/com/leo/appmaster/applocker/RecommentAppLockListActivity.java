@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -99,6 +98,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         mLockList.clear();
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         animateItem(arg1);
@@ -135,8 +135,12 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         }
         if (mLockList.size() <= 0) {
             lockTV.setEnabled(false);
+            lockTV.setBackground(getResources().getDrawable(R.drawable.unclick_button));
+            lockTV.setTransitionAlpha(0.3f);
         } else {
             lockTV.setEnabled(true);
+            lockTV.setBackground(getResources().getDrawable(R.drawable.default_lock_down));
+            lockTV.setTransitionAlpha(1.0f);
         }
     }
 

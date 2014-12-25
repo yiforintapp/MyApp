@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.applocker;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,6 +17,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -81,16 +83,16 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
             SDKWrapper.addEvent(this, LeoStat.P1, "first_lock", app.packageName);
         }
     }
-    Collections.sort(mLockList, new LockedAppComparator(mLockList));
+    Collections.sort(mLockList, new LockedAppComparator(lockList));
         resault = new ArrayList<AppInfo>(mLockList);
         int rowCount = getResources().getInteger(R.integer.recomment_gridview_row_count);
         mAppPager.setDatas(resault, 3, rowCount);
         mAppPager.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
     }
     private class LockedAppComparator implements Comparator<AppInfo> {
-        List<AppInfo> sortBase;
+        List<String> sortBase;
 
-        public LockedAppComparator(List<AppInfo> sortBase) {
+        public LockedAppComparator(List<String> sortBase) {
             super();
             this.sortBase = sortBase;
         }
@@ -105,7 +107,6 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
             }
         }
     }
-
     @Override
     public void onClick(View arg0) {
         switch (arg0.getId()) {
@@ -152,6 +153,12 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     }
     @Override
     public void onBackPressed() {
+        Intent intent=new Intent(this,HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        try {
+            this.startActivity(intent);
+        } catch (Exception e) {
+        }
         super.onBackPressed();
     }
 }
