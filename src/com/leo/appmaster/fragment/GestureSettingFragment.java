@@ -150,9 +150,6 @@ public class GestureSettingFragment extends BaseFragment implements
 				// now we can start lock service
 				intent = new Intent(mActivity, LockService.class);
 				mActivity.startService(intent);
-				/**
-				 * V1.5
-				 */
 				List<String> list=AppMasterPreference.getInstance(mActivity).getRecommentTipList();
 				if(list.size()>0){				  
 				AppMasterPreference.getInstance(mActivity).setLockedAppList(list);
@@ -259,9 +256,6 @@ public class GestureSettingFragment extends BaseFragment implements
 		if (mGotoPasswdProtect) {
             if (!TextUtils.isEmpty(mActivityName)) {
                 intent = new Intent();
-                /**
-                 * V1.5
-                 */
                 ComponentName componentName =null;
                 if(AppLockListActivity.class.getName().equals(mActivityName)){
                  componentName = new ComponentName(
@@ -287,9 +281,6 @@ public class GestureSettingFragment extends BaseFragment implements
 		    SDKWrapper.addEvent(mActivity, LeoStat.P1, "first", "setpwdp_cancel");
             if (!TextUtils.isEmpty(mActivityName)) {
                 intent = new Intent();
-                /**
-                 * V1.5
-                 */
                 ComponentName componentName =null;
                 if(AppLockListActivity.class.getName().equals(mActivityName)){
                      componentName = new ComponentName(

@@ -44,7 +44,7 @@
     <dimen name="home_hide_issues_padding_bottom">14dp</dimen>
     <dimen name="circle_count_text_size">74dp</dimen>
     <dimen name="circle_tip_text_size">14dp</dimen>
-     <dimen name="hide_issues_text_size">35dp</dimen>
+    <dimen name="hide_issues_text_size">35dp</dimen>
     <dimen name="circle_vertical_padding">14dp</dimen>
     <dimen name="hide_empty_icon_padding">6dp</dimen>
     <dimen name="circle_lock_icon_small_size">20dp</dimen>
@@ -56,16 +56,14 @@
     <dimen name="folder_title_text_size">16dp</dimen>
     <dimen name="folder_title_height">80px</dimen>
     <dimen name="folder_title_width">137dp</dimen>
-    
     <dimen name="folder_backup_text_size">12dp</dimen>
     <dimen name="recomment_tip">500dp</dimen>
-    
-      <dimen name="splash_icon_margin_top">100dp</dimen>
-     <dimen name="splash_icon_height">160dp</dimen>
-     
-     <dimen name="about_icon_margin_top">20dp</dimen>
-     <dimen name="about_bottom_height">200dp</dimen>
-     <dimen name="about_logo_width">112dp</dimen>
+    <dimen name="success_lock_imageiv">75dp</dimen>
+    <dimen name="splash_icon_margin_top">100dp</dimen>
+    <dimen name="splash_icon_height">160dp</dimen>
+    <dimen name="about_icon_margin_top">20dp</dimen>
+    <dimen name="about_bottom_height">200dp</dimen>
+    <dimen name="about_logo_width">112dp</dimen>
     <dimen name="about_logo_height">120dp</dimen>
 
 </resources>

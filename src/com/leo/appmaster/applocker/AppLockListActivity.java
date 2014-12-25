@@ -61,6 +61,7 @@ public class AppLockListActivity extends BaseActivity implements
 
 	public static final int REQUEST_CODE_LOCK = 9999;
 	public static final int REQUEST_CODE_OPTION = 1001;
+    private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY="applocklist_activity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -196,7 +197,7 @@ public class AppLockListActivity extends BaseActivity implements
 
 		int rowCount = getResources().getInteger(R.integer.gridview_row_count);
 		mAppPager.setDatas(resault, 4, rowCount);
-		mAppPager.setFlag(false);      
+		mAppPager.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);      
 		updateLockText();
 	}
 
