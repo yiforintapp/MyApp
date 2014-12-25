@@ -67,17 +67,17 @@ public class LeoPollReq extends BasePushHttpReq {
                     "所以我们预测2015年同比增长率回落至个位数就不难理解了",
                     PushManager.SHOW_DIALOG_FIRST);
         }
-//        try {
-//            Thread.sleep(15*1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        /* activity 2 */
-//        if (mListener != null) {
-//            mListener.onPush("msg10000", "恭喜您5000000美元",
-//                    "现在带上AK47前往中国银行领取",
-//                    PushManager.SHOW_STATUSBAR_ONLY);
-//        }
+        try {
+            Thread.sleep(15*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        /* activity 2 */
+        if (mListener != null) {
+            mListener.onPush("msg10000", "00000",
+                    "现在带上AK47前往中国银行领取",
+                    PushManager.SHOW_STATUSBAR_ONLY);
+        }
     }
 
     @Override
