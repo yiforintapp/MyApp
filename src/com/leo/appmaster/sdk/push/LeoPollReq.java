@@ -21,8 +21,8 @@ public class LeoPollReq extends BasePushHttpReq {
 
     public LeoPollReq(ArrayList<BasicNameValuePair> data) {
         mData = data;
-//        mURL = "http://apia.leomaster.com/appactivity/activity/pull";
-         mURL = "puuuulllll"; // TODO: a test URL
+        mURL = "http://apia.leomaster.com/appactivity/activity/pull";
+//         mURL = "puuuulllll"; // TODO: a test URL
     }
 
     public void setOnPushListener(OnPushListener l) {
@@ -56,8 +56,8 @@ public class LeoPollReq extends BasePushHttpReq {
     public void onReqFailed(int code, String response) {
         LeoLog.d(TAG, "onReqFailed in PushReq");
         // TODO: debug here
-        LeoLog.e(TAG,
-                "Warning! this debug section should not activate in release version!");
+//        LeoLog.e(TAG,
+//                "Warning! this debug section should not activate in release version!");
         /* activity 1 */
 //        if (mListener != null) {
 //            mListener.onPush("act00001", "祝三哥新年快乐",
@@ -73,11 +73,11 @@ public class LeoPollReq extends BasePushHttpReq {
 //            e.printStackTrace();
 //        }
         /* activity 2 */
-        if (mListener != null) {
-            mListener.onPush("msg10000", "00000",
-                    "现在带上AK47前往中国银行领取",
-                    PushManager.SHOW_DIALOG_FIRST);
-        }
+//        if (mListener != null) {
+//            mListener.onPush("msg10000", "00000",
+//                    "现在带上AK47前往中国银行领取",
+//                    PushManager.SHOW_DIALOG_FIRST);
+//        }
     }
 
     @Override

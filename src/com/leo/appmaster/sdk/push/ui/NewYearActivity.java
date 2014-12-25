@@ -7,24 +7,16 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.telephony.SmsManager;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.TextWatcher;
-import android.text.method.ScrollingMovementMethod;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,23 +24,15 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.PopupWindow.OnDismissListener;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.LeoPopMenu;
-import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
@@ -60,16 +44,6 @@ public class NewYearActivity extends BaseActivity implements
 	private boolean mFromStatusBar;
 	private String mAdID;
 	private EditText mPhoneNumber = null;
-
-	/* popup window stuff */
-	private LeoPopMenu mLeoPopMenu;
-	private ImageView mCategoryImg;
-	private TextView mCategory;
-	private final static int[] sCategoryIds = { R.string.wish_msg1,
-			R.string.wish_msg2, R.string.wish_msg3, R.string.wish_msg4,
-			R.string.wish_msg5, R.string.wish_custom };
-
-	private final ArrayList<String> mCategories = new ArrayList<String>();
 
 	private Handler mHandler;
 
