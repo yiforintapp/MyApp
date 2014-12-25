@@ -451,12 +451,13 @@ public class AppListActivity extends BaseFragmentActivity implements
 		} else {
 			mCurrentPage = 0;
 		}
-		mViewPager.setAdapter(new DataPagerAdapter(viewList));
-		mPageIndicator.setViewPager(mViewPager);
-		mViewPager.setCurrentItem(mCurrentPage);
-		mPageIndicator.setOnPageChangeListener(this);
-		mPagerContain.setVisibility(View.VISIBLE);
-
+        if (mViewPager != null) {
+            mViewPager.setAdapter(new DataPagerAdapter(viewList));
+            mPageIndicator.setViewPager(mViewPager);
+            mViewPager.setCurrentItem(mCurrentPage);
+            mPageIndicator.setOnPageChangeListener(this);
+            mPagerContain.setVisibility(View.VISIBLE);
+        }
 	}
 
 	/**
@@ -767,47 +768,47 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	private void fillFolder() {
+         if(mFolderLayer != null) {
+             // fill restore folder
+             Collections.sort(mRestoreFolderData, new BackupItemComparator());
+             mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
+                     mRestoreFolderData, null);
 
-		// fill restore folder
-		Collections.sort(mRestoreFolderData, new BackupItemComparator());
-		mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
-				mRestoreFolderData, null);
+             // fill flow folder
+             int contentMaxCount = mPageItemCount;
+             List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_FLOW_SORT);
+             int flowBusinessCount = flowDataReccommendData.size();
+             contentMaxCount = flowBusinessCount > 0 ? contentMaxCount - 4
+                     : contentMaxCount;
+             mFolderLayer
+                     .updateFolderData(
+                             FolderItemInfo.FOLDER_FLOW_SORT,
+                             mFlowFolderData.subList(
+                                     0,
+                                     mFlowFolderData.size() < contentMaxCount ? mFlowFolderData
+                                             .size() : contentMaxCount),
+                             flowDataReccommendData.subList(0,
+                                     flowBusinessCount <= 4 ? flowBusinessCount : 4));
 
-		// fill flow folder
-		int contentMaxCount = mPageItemCount;
-		List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_FLOW_SORT);
-		int flowBusinessCount = flowDataReccommendData.size();
-		contentMaxCount = flowBusinessCount > 0 ? contentMaxCount - 4
-				: contentMaxCount;
-		mFolderLayer
-				.updateFolderData(
-						FolderItemInfo.FOLDER_FLOW_SORT,
-						mFlowFolderData.subList(
-								0,
-								mFlowFolderData.size() < contentMaxCount ? mFlowFolderData
-										.size() : contentMaxCount),
-						flowDataReccommendData.subList(0,
-								flowBusinessCount <= 4 ? flowBusinessCount : 4));
-
-		// fill capacity folder
-		contentMaxCount = mPageItemCount;
-		List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
-		int capacityBusinessCount = capacityReccommendData.size();
-		contentMaxCount = capacityBusinessCount > 0 ? contentMaxCount - 4
-				: contentMaxCount;
-		mFolderLayer
-				.updateFolderData(
-						FolderItemInfo.FOLDER_CAPACITY_SORT,
-						mCapacityFolderData.subList(
-								0,
-								mCapacityFolderData.size() <= contentMaxCount ? mCapacityFolderData
-										.size() : contentMaxCount),
-						capacityReccommendData
-								.subList(
-										0,
-										capacityBusinessCount <= 4 ? capacityBusinessCount
-												: 4));
-
+             // fill capacity folder
+             contentMaxCount = mPageItemCount;
+             List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
+             int capacityBusinessCount = capacityReccommendData.size();
+             contentMaxCount = capacityBusinessCount > 0 ? contentMaxCount - 4
+                     : contentMaxCount;
+             mFolderLayer
+                     .updateFolderData(
+                             FolderItemInfo.FOLDER_CAPACITY_SORT,
+                             mCapacityFolderData.subList(
+                                     0,
+                                     mCapacityFolderData.size() <= contentMaxCount ? mCapacityFolderData
+                                             .size() : contentMaxCount),
+                             capacityReccommendData
+                                     .subList(
+                                             0,
+                                             capacityBusinessCount <= 4 ? capacityBusinessCount
+                                                     : 4));
+         }
 	}
 
 	private void checkInstalledFormBusinessApp() {
@@ -945,7 +946,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 				if (success) {
 					Toast.makeText(AppListActivity.this,
 							R.string.delete_successfully, 1).show();
-					if (mSlicingLayer.isSlicinged()) {
+					if (mSlicingLayer != null && mSlicingLayer.isSlicinged()) {
 						mSlicingLayer.closeSlicing();
 					}
 					updateRestoreData();
