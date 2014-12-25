@@ -26,6 +26,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -77,8 +78,22 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
     private void initUI() {
         CommonTitleBar mCommonTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mCommonTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        View back=mCommonTitleBar.findViewById(R.id.layout_title_back);
+        back.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View arg0) {
+                Intent intent=new Intent(RecommentAppLockListActivity.this,HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                try {
+                    RecommentAppLockListActivity.this.startActivity(intent);
+                } catch (Exception e) {
+                }
+                
+            }
+        });
         mCommonTitleBar.setTitle(R.string.app_lock);
-        mCommonTitleBar.openBackView();
+//        mCommonTitleBar.openBackView();
         mAppPager = (PagedGridView) findViewById(R.id.recomment_pager_unlock);
         lockTV = (TextView) findViewById(R.id.recomment_lock);
         lockTV.setOnClickListener(this);
@@ -290,6 +305,16 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         Intent intent = this.getIntent();
         mPackageName = intent.getStringExtra(LockScreenActivity.EXTRA_TO_ACTIVITY);
         mInstallPackageName = intent.getStringExtra("install_lockApp");
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(this,HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        try {
+            this.startActivity(intent);
+        } catch (Exception e) {
+        }
+        super.onBackPressed();
     }
 
 }

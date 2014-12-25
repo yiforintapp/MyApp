@@ -76,7 +76,6 @@ public class ViewpagerView extends LinearLayout {
 		if (myView != null) {
 			addView(myView);
 		}
-
 	}
 
 	private void handleWishMsgLimit(int length) {
@@ -89,6 +88,14 @@ public class ViewpagerView extends LinearLayout {
 		} else {
 			textView1.setVisibility(View.VISIBLE);
 			tv_tishi_hint.setVisibility(View.GONE);
+		}
+	}
+	
+	public String getMsgContent(){
+		if(position +1 < msgList.size()){
+			return msgList.get(position);
+		}else{
+			return editText.getText().toString();
 		}
 	}
 

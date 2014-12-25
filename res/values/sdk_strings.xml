@@ -35,7 +35,7 @@
     <string name="invalid_number">Please enter the correct phone number</string>
     <string name="goto_gp">Rating</string>
     <!-- push - added in Version 1.5 -->
-    <string name="send_sms">Send Wish</string>
+    <string name="send_sms">Send</string>
     <string name="sms_sent">SMS sent</string>
     <string name="sms_sent_done">SMS sent done</string>
     <string name="sms_sent_failed">SMS sent failed</string>

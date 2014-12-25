@@ -54,7 +54,7 @@
 
             <LinearLayout
                 android:id="@+id/msg_content"
-                android:layout_width="300dp"
+                android:layout_width="wrap_content"
                 android:layout_height="162dp"
                 android:layout_below="@id/et_phone"
                 android:layout_centerHorizontal="true"
@@ -73,8 +73,10 @@
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewpager"
-                    android:layout_width="265dp"
-                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_width="273dp"
+                    android:layout_height="162dp"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center" />
 
@@ -83,7 +85,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="3dp"
                     android:src="@drawable/newyear_right" />
                 
             </LinearLayout>
