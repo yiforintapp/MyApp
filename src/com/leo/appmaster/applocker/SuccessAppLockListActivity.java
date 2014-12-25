@@ -153,7 +153,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     }
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(this,HomeActivity.class);
+        Intent intent=new Intent(this,AppLockListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         try {
             this.startActivity(intent);
