@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@drawable/app_list_bg" >
+    android:background="@drawable/splash_backgroud" >
 
     <LinearLayout
         android:layout_width="wrap_content"
