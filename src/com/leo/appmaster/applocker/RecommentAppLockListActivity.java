@@ -89,7 +89,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
                     RecommentAppLockListActivity.this.startActivity(intent);
                 } catch (Exception e) {
                 }
-                
+                RecommentAppLockListActivity.this.finish();
             }
         });
         mCommonTitleBar.setTitle(R.string.app_lock);
