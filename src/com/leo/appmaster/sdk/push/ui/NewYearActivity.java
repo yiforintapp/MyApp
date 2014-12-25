@@ -124,6 +124,14 @@ public class NewYearActivity extends BaseActivity implements
 	private void initUI(String title, String content) {
 		setContentView(R.layout.activity_new_year);
 		
+		/* add cancel area */
+		LayoutInflater inflater = getLayoutInflater();
+		LinearLayout cancelLayout = (LinearLayout) inflater.inflate(R.layout.newyear_cancel_layout, null);
+        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        addContentView(cancelLayout, lp);
+        ImageView cancelImg = (ImageView) findViewById(R.id.img_cancel);
+        cancelImg.setOnClickListener(this);
+		
 		mPhoneNumber = (EditText) findViewById(R.id.et_phone);
 		mPhoneNumber.setRawInputType(InputType.TYPE_CLASS_PHONE);
 		mPhoneNumber
@@ -206,7 +214,7 @@ public class NewYearActivity extends BaseActivity implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.dlg_left_btn:
+		case R.id.img_cancel:
 			/* user ignore this activity */
 			SDKWrapper.addEvent(this, LeoStat.P1, "act", "cancel");
 			PushUIHelper.getInstance(this).sendACK(mAdID, false,

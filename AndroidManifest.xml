@@ -200,7 +200,8 @@
         <activity
             android:name="com.leo.appmaster.sdk.push.ui.NewYearActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
 
         <!-- add for the app update of leosdk -->
 
