@@ -581,10 +581,6 @@ public class AppLoadEngine extends BroadcastReceiver {
                                     mContext.startActivity(intent);
 								}
 							} else if (which == 1) {
-							    List<String> lockList = new ArrayList<String>(
-                                        pre.getLockedAppList());
-                                lockList.add(packageName);
-                                pre.setLockedAppList(lockList);
 								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 //									intent = new Intent(mContext,
 //											LockSettingActivity.class);
