@@ -24,6 +24,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -111,6 +112,13 @@ public class AppLockListActivity extends BaseActivity implements
 		if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
 			mMaskLayer.setVisibility(View.GONE);
 		} else {
+		    Intent intent=new Intent(AppLockListActivity.this,HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            try {
+                AppLockListActivity.this.startActivity(intent);
+            } catch (Exception e) {
+            }
+            AppLockListActivity.this.finish();
 			super.onBackPressed();
 		}
 	}
@@ -138,7 +146,21 @@ public class AppLockListActivity extends BaseActivity implements
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
-		mTtileBar.openBackView();
+//		mTtileBar.openBackView();
+		 View back=mTtileBar.findViewById(R.id.layout_title_back);
+	        back.setOnClickListener(new OnClickListener() {
+	            
+	            @Override
+	            public void onClick(View arg0) {
+	                Intent intent=new Intent(AppLockListActivity.this,HomeActivity.class);
+	                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	                try {
+	                    AppLockListActivity.this.startActivity(intent);
+	                } catch (Exception e) {
+	                }
+	                AppLockListActivity.this.finish();
+	            }
+	        });
 
 		mySharedPreferences = getSharedPreferences("LockerThemeHome",
 				AppLockListActivity.this.MODE_WORLD_WRITEABLE);

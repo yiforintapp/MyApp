@@ -566,10 +566,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 									.getInstance(mContext);
 							Intent intent = null;
 							if (which == 0) {
-//								List<String> lockList = new ArrayList<String>(
-//										pre.getLockedAppList());
-//								lockList.add(packageName);
-//								pre.setLockedAppList(lockList);
+
 								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 //									intent = new Intent(mContext,
 //											LockSettingActivity.class);
@@ -579,18 +576,23 @@ public class AppLoadEngine extends BroadcastReceiver {
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra("install_lockApp", packageName);
                                     mContext.startActivity(intent);
+								}else{
+	                              List<String> lockList = new ArrayList<String>(
+                                  pre.getLockedAppList());
+                          lockList.add(packageName);
+                          pre.setLockedAppList(lockList);
 								}
 							} else if (which == 1) {
 								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-//									intent = new Intent(mContext,
-//											LockSettingActivity.class);
-//									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//									mContext.startActivity(intent);
 								    intent = new Intent(mContext,RecommentAppLockListActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra("install_lockApp", packageName);
                                     mContext.startActivity(intent);
 								} else {
+								    List<String> lockList = new ArrayList<String>(
+			                                  pre.getLockedAppList());
+			                          lockList.add(packageName);
+			                          pre.setLockedAppList(lockList);
 									intent = new Intent(mContext,
 											LockScreenActivity.class);
 									intent.putExtra(
