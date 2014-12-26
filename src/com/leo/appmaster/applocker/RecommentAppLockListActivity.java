@@ -50,10 +50,13 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
     private final static String[] DEFAULT_LOCK_LIST = new String[] {
             " com.whatsapp",
             "com.android.mms",
+            "com.sonyericsson.conversations",
             "com.facebook.katana",
             "com.android.gallery3d",
             "com.sec.android.gallery3d",
             "com.android.contacts",
+            "com.google.android.contacts",
+            "com.sonyericsson.android.socialphonebook",
             "com.facebook.orca",
             "com.google.android.youtube",
             "com.android.providers.downloads.ui",
@@ -85,7 +88,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             @Override
             public void onClick(View arg0) {
                 Intent intent = new Intent(RecommentAppLockListActivity.this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 try {
                     RecommentAppLockListActivity.this.startActivity(intent);
                 } catch (Exception e) {
@@ -316,7 +319,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         try {
             this.startActivity(intent);
         } catch (Exception e) {
