@@ -25,12 +25,12 @@
     <EditText
         android:id="@+id/ed_msg"
         android:layout_width="wrap_content"
-        android:layout_height="46dp"
+        android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="39dp"
         android:layout_marginRight="38dp"
         android:layout_marginTop="45dp"
-        hint="@string/wish_custom"
+        android:hint="@string/wish_custom"
         android:background="@null"
         android:ems="20"
         android:textColor="#be4a38"
@@ -58,8 +58,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="115dp"
         android:text="~~~~~~~~~~~"
-        android:textSize="14dp"
-        android:textColor="#55000000" 
+        android:textSize="12dp"
+        android:textColor="#dddddd" 
         android:visibility="gone"
         />
 

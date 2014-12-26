@@ -53,6 +53,7 @@ public class ViewpagerView extends LinearLayout {
 			textView2.setVisibility(View.GONE);
 			editText.setVisibility(View.VISIBLE);
 			editText.setHint(ctx.getString(R.string.wish_custom));
+			handleWishMsgLimit(0);
 		}
 
 		editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(
@@ -79,17 +80,12 @@ public class ViewpagerView extends LinearLayout {
 	}
 
 	private void handleWishMsgLimit(int length) {
-		if (CUSTOM_WISH_CHAR_LIMITED - length < 10) {
-			String hint = ctx.getString(R.string.wish_char_hint,
-					CUSTOM_WISH_CHAR_LIMITED - length);
-			textView1.setVisibility(View.GONE);
-			tv_tishi_hint.setText(hint);
-			tv_tishi_hint.setVisibility(View.VISIBLE);
-		} else {
-			textView1.setVisibility(View.VISIBLE);
-			tv_tishi_hint.setVisibility(View.GONE);
-		}
-	}
+        String hint = ctx.getString(R.string.wish_char_hint,
+                CUSTOM_WISH_CHAR_LIMITED - length);
+        textView1.setVisibility(View.GONE);
+        tv_tishi_hint.setText(hint);
+        tv_tishi_hint.setVisibility(View.VISIBLE);
+    }
 	
 	public String getMsgContent(int currentPosition){
 		if(currentPosition +1 < msgList.size()){
