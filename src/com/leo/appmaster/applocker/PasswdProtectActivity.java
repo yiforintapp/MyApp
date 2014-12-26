@@ -1,22 +1,24 @@
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.ui.CommonTitleBar;
-
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.internal.content.NativeLibraryHelper.Handle;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.ui.CommonTitleBar;
 
 public class PasswdProtectActivity extends BaseActivity implements
 		OnClickListener {
@@ -121,7 +123,10 @@ public class PasswdProtectActivity extends BaseActivity implements
 		}
 
 	}
-
+	private void hideIME() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mAnwser.getWindowToken(), 0);
+    }
 	@Override
 	public void onClick(View v) {
 		String qusetion = mQuestion.getText().toString();
@@ -129,6 +134,7 @@ public class PasswdProtectActivity extends BaseActivity implements
 		String passwdHint = AppMasterPreference.getInstance(this)
 				.getPasswdTip();
 		if (v == mSave) {
+		    hideIME();
 			boolean noQuestion = qusetion == null || qusetion.trim().equals("");
 			boolean noAnswer = answer == null || answer.equals("");
 			if (noQuestion && noAnswer) {
@@ -160,7 +166,14 @@ public class PasswdProtectActivity extends BaseActivity implements
 					answer, passwdHint);
 			Toast.makeText(this, R.string.pp_success, Toast.LENGTH_SHORT)
 					.show();
-			finish();
+			Handler handler=new Handler();
+			handler.postDelayed(new Runnable() {
+                
+                @Override
+                public void run() {
+                    finish();               
+                }
+            }, 500);
 		} else if (v == mAnwser) {
 			if (mAnwser.isFocused()) {
 				mHandler.postDelayed(new Runnable() {
@@ -169,7 +182,7 @@ public class PasswdProtectActivity extends BaseActivity implements
 					public void run() {
 						mScrollView.fullScroll(View.FOCUS_DOWN);
 					}
-				}, 100);
+				}, 500);
 			}
 		}
 	}

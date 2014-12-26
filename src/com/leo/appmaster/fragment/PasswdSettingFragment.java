@@ -360,9 +360,6 @@ public class PasswdSettingFragment extends BaseFragment implements
 		if (mGotoPasswdProtect) {
             if (!TextUtils.isEmpty(mActivityName)) {
                 intent = new Intent();
-                /**
-                 * V1.5
-                 */
                 ComponentName componentName =null;
                 if(AppLockListActivity.class.getName().equals(mActivityName)){
                  componentName = new ComponentName(
@@ -389,9 +386,6 @@ public class PasswdSettingFragment extends BaseFragment implements
 		    SDKWrapper.addEvent(mActivity, LeoStat.P1, "first", "setpwdp_cancel");
             if (!TextUtils.isEmpty(mActivityName)) {
                 intent = new Intent();
-                /**
-                 * V1.5
-                 */
                 ComponentName componentName =null;
                 if(AppLockListActivity.class.getName().equals(mActivityName)){
                      componentName = new ComponentName(
