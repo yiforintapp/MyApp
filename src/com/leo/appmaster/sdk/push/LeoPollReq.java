@@ -22,7 +22,7 @@ public class LeoPollReq extends BasePushHttpReq {
     public LeoPollReq(ArrayList<BasicNameValuePair> data) {
         mData = data;
         mURL = "http://apia.leomaster.com/appactivity/activity/pull";
-         mURL = "puuuulllll"; // TODO: a test URL
+//         mURL = "puuuulllll"; // TODO: a test URL
     }
 
     public void setOnPushListener(OnPushListener l) {
