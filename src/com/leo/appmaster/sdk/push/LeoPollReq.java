@@ -21,8 +21,8 @@ public class LeoPollReq extends BasePushHttpReq {
 
     public LeoPollReq(ArrayList<BasicNameValuePair> data) {
         mData = data;
-//        mURL = "http://apia.leomaster.com/appactivity/activity/pull";
-         mURL = "puuuulllll"; // TODO: a test URL
+        mURL = "http://apia.leomaster.com/appactivity/activity/pull";
+//         mURL = "puuuulllll"; // TODO: a test URL
     }
 
     public void setOnPushListener(OnPushListener l) {
@@ -73,12 +73,12 @@ public class LeoPollReq extends BasePushHttpReq {
 //            e.printStackTrace();
 //        }
         /* activity 2 */
-        if (mListener != null) {
-            mListener.onPush("msg10000", "00000",
-                    "现在带上AK47前往中国银行领取",
-                    PushManager.SHOW_DIALOG_FIRST);
-        }
-    }
+//        if (mListener != null) {
+//            mListener.onPush("msg10000", "00000",
+//                    "现在带上AK47前往中国银行领取",
+//                    PushManager.SHOW_STATUSBAR_ONLY);
+//        }
+//    }
 
     @Override
     public ArrayList<BasicNameValuePair> getKVData() {
