@@ -132,7 +132,7 @@ public class LockService extends Service {
             if (Build.VERSION.SDK_INT > 19) { // Android L and above
                 List<RunningAppProcessInfo> list = mActivityManager.getRunningAppProcesses();
                 for (RunningAppProcessInfo pi : list) {
-                    if (pi.importance <= RunningAppProcessInfo.IMPORTANCE_VISIBLE  // Foreground or Visible
+                    if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND  || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)  // Foreground or Visible
                             && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter provider and service
                             && (0x4 & pi.flags) > 0) { // Must have activities
                         String pkgList[] = pi.pkgList;
