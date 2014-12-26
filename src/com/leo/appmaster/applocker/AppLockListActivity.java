@@ -295,7 +295,8 @@ public class AppLockListActivity extends BaseActivity implements
 			synchronized (mLock) {
 				List<String> list = new ArrayList<String>();
 				for (AppInfo info : AppLockListActivity.this.mLockedList) {
-					list.add(info.packageName);
+				    String packageName=info.packageName;
+					    list.add(info.packageName);
 				}
 				List<String> recommendList = AppLoadEngine.getInstance(
 						getApplicationContext()).getRecommendLockList();
