@@ -171,7 +171,7 @@ public class PushUIHelper {
         int iconRes = R.drawable.ic_launcher_notification;
         if (isNewYearAct) {
 //            iconRes = R.drawable.new_year_icon_32x32;
-            iconRes = R.drawable.new_year_icon_48x48_03;
+            iconRes = R.drawable.new_year_icon_144x144;
             title = mContext.getString(R.string.newyear_status_title);
             content = mContext.getString(R.string.newyear_status_body);
         }
