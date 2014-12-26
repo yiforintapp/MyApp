@@ -64,5 +64,19 @@
     <dimen name="about_bottom_height">180dp</dimen>
     <dimen name="about_logo_width">72dp</dimen>
     <dimen name="about_logo_height">72dp</dimen>
-
+    <dimen name="default_lock_recomment_bottom">64dp</dimen>
+    <dimen name="default_lock_recomment_bottom_text_width">206dp</dimen>
+    <dimen name="default_lock_recomment_bottom_text_height">36dp</dimen>
+    <dimen name="default_lock_recomment_pagedgrideview_top">15dp</dimen>
+    <dimen name="app_item_iv_app_icon_width">52dp</dimen>
+     <dimen name="app_item_iv_app_icon_height">52dp</dimen>
+     <dimen name="default_lock_icon_width">23dp</dimen>
+     <dimen name="lock_icon_height">24dp</dimen>
+     <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
+     <dimen name="app_item_linearlayout_padding">5dp</dimen>
+      <dimen name="sucess_lock_recomment_successicon_top">50dp</dimen>
+      <integer name="recomment_gridview_row_count">4</integer>
+      <integer name="recomment_gridview_col_count">4</integer>
+      <integer name="success_recomment_gridview_row_count">4</integer>
+       <integer name="success_recomment_gridview_col_count">3</integer>
 </resources>

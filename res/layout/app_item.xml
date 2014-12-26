@@ -3,13 +3,12 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="5dp" >
-
+    android:padding="@dimen/app_item_linearlayout_padding" >
     <com.leo.appmaster.ui.LockImageView
         android:id="@+id/iv_app_icon"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:padding="4dp" />
+        android:layout_width="@dimen/app_item_iv_app_icon_width"
+        android:layout_height="@dimen/app_item_iv_app_icon_height"
+        android:padding="@dimen/app_item_iv_app_icon_padding" />
 
     <TextView
         android:id="@+id/tv_app_name"
