@@ -9,15 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/success_lockRT"
-        android:gravity="center_horizontal"
         android:background="@drawable/successful_bg"
+        android:gravity="center_horizontal"
         android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/successIV"
             android:layout_width="@dimen/success_lock_imageiv"
             android:layout_height="@dimen/success_lock_imageiv"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="@dimen/sucess_lock_recomment_successicon_top"
             android:src="@drawable/successful_top_icon" />
 
         <TextView
@@ -43,27 +43,27 @@
             android:id="@+id/recomment_pager_unlock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="@dimen/sucess_lock_recomment_pagedgrideview_top"
             android:paddingLeft="2dp"
             android:paddingRight="2dp" />
     </LinearLayout>
 
     <RelativeLayout
-         android:id="@id/success_lockRT"
+        android:id="@id/success_lockRT"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="@dimen/default_lock_recomment_bottom"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottom"
         android:gravity="center" >
 
         <TextView
-            android:id="@+id/recomment_lock"
-            android:layout_width="206dp"
-            android:layout_height="36dp"
+            android:id="@+id/success_recomment_lock"
+            android:layout_width="@dimen/default_lock_recomment_bottom_text_width"
+            android:layout_height="@dimen/default_lock_recomment_bottom_text_height"
             android:layout_marginBottom="0dp"
-            android:background="@drawable/default_lock_down"
             android:gravity="center"
             android:text="@string/success_finish"
+            android:background="@color/default_lock_down"
             android:textColor="@color/white" />
     </RelativeLayout>
 

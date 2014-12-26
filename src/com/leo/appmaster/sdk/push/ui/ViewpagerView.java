@@ -23,7 +23,7 @@ public class ViewpagerView extends LinearLayout {
 	private TextView tv_tishi_hint;
 	private EditText editText;
 	private List<String> msgList;
-	private final static int CUSTOM_WISH_CHAR_LIMITED = 79;
+	private final static int CUSTOM_WISH_CHAR_LIMITED = 78;
 
 	public ViewpagerView(Context context) {
 		super(context);

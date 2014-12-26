@@ -52,7 +52,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
 //        mCommonTitleBar.setTitle(R.string.app_lock);
 //        mCommonTitleBar.openBackView();
         mAppPager = (PagedGridView) findViewById(R.id.recomment_pager_unlock);
-        lockTV = (TextView) findViewById(R.id.recomment_lock);
+        lockTV = (TextView) findViewById(R.id.success_recomment_lock);
         lockTV.setOnClickListener(this);
     }
 
@@ -85,8 +85,9 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     }
     Collections.sort(mLockList, new LockedAppComparator(lockList));
         resault = new ArrayList<AppInfo>(mLockList);
-        int rowCount = getResources().getInteger(R.integer.recomment_gridview_row_count);
-        mAppPager.setDatas(resault, 3, rowCount);
+        int rowCount = getResources().getInteger(R.integer.success_recomment_gridview_row_count);
+        int colCount = getResources().getInteger(R.integer.success_recomment_gridview_col_count);
+        mAppPager.setDatas(resault, colCount, rowCount);
         mAppPager.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
     }
     private class LockedAppComparator implements Comparator<AppInfo> {
@@ -110,7 +111,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     @Override
     public void onClick(View arg0) {
         switch (arg0.getId()) {
-            case R.id.recomment_lock:
+            case R.id.success_recomment_lock:
                 Intent intent = new Intent(SuccessAppLockListActivity.this,
                         AppLockListActivity.class);
                 try {
@@ -154,7 +155,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     @Override
     public void onBackPressed() {
         Intent intent=new Intent(this,AppLockListActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
             this.startActivity(intent);
         } catch (Exception e) {

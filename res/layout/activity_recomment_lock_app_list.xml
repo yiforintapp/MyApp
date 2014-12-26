@@ -22,7 +22,7 @@
 	    android:id="@+id/recommentList_title"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_marginTop="15dp"
+	    android:layout_marginTop="@dimen/default_lock_recomment_title_top"
 	    android:textSize="16dp"
 	    android:text="@string/recomment_list_title"  
 	    android:textColor="@color/white"
@@ -33,25 +33,25 @@
         android:id="@+id/recomment_pager_unlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/default_lock_recomment_pagedgrideview_top"
         android:paddingLeft="2dp"
         android:paddingRight="2dp" />
     </LinearLayout>
     <RelativeLayout
         android:id="@id/success_lockRT"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="@dimen/default_lock_recomment_bottom"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:background="@drawable/bottom" >
          <TextView 
         android:id="@+id/recomment_lock"
-        android:layout_width="206dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/default_lock_recomment_bottom_text_width"
+        android:layout_height="@dimen/default_lock_recomment_bottom_text_height"
         android:text="@string/lock"
         android:textSize="18dp"
         android:textColor="@color/white"
-        android:background="@drawable/default_lock_down"
+        android:background="@color/default_lock_down"
         android:gravity="center"
 	    android:layout_centerHorizontal="true"	   
 	      />

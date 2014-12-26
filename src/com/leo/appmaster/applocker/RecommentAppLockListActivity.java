@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -49,10 +50,13 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
     private final static String[] DEFAULT_LOCK_LIST = new String[] {
             " com.whatsapp",
             "com.android.mms",
+            "com.sonyericsson.conversations",
             "com.facebook.katana",
             "com.android.gallery3d",
             "com.sec.android.gallery3d",
             "com.android.contacts",
+            "com.google.android.contacts",
+            "com.sonyericsson.android.socialphonebook",
             "com.facebook.orca",
             "com.google.android.youtube",
             "com.android.providers.downloads.ui",
@@ -61,7 +65,8 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             "com.viber.voip",
             "com.google.android.talk",
             "com.mxtech.videoplayer.ad",
-            "com.android.calendar"
+            "com.android.calendar",
+            "com.google.android.calendar"
     };
 
     @Override
@@ -78,12 +83,12 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
     private void initUI() {
         CommonTitleBar mCommonTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mCommonTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        View back=mCommonTitleBar.findViewById(R.id.layout_title_back);
+        View back = mCommonTitleBar.findViewById(R.id.layout_title_back);
         back.setOnClickListener(new OnClickListener() {
-            
+
             @Override
             public void onClick(View arg0) {
-                Intent intent=new Intent(RecommentAppLockListActivity.this,HomeActivity.class);
+                Intent intent = new Intent(RecommentAppLockListActivity.this, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 try {
                     RecommentAppLockListActivity.this.startActivity(intent);
@@ -93,7 +98,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             }
         });
         mCommonTitleBar.setTitle(R.string.app_lock);
-//        mCommonTitleBar.openBackView();
+        // mCommonTitleBar.openBackView();
         mAppPager = (PagedGridView) findViewById(R.id.recomment_pager_unlock);
         lockTV = (TextView) findViewById(R.id.recomment_lock);
         lockTV.setOnClickListener(this);
@@ -152,14 +157,17 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             ((LockImageView) arg1.findViewById(R.id.iv_app_icon))
                     .setDefaultRecommendApp(true);
         }
+
         if (mLockList.size() <= 0) {
-            lockTV.setEnabled(false);
-            lockTV.setBackground(getResources().getDrawable(R.drawable.unclick_button));
-            lockTV.setTextColor(getResources().getColor(R.color.default_lock));
+                lockTV.setEnabled(false);
+                int image = R.drawable.unclick_button;
+                lockTV.setBackgroundDrawable(getResources().getDrawable(image));
+                lockTV.setTextColor(getResources().getColor(R.color.default_lock));
         } else {
-            lockTV.setEnabled(true);
-            lockTV.setBackground(getResources().getDrawable(R.drawable.default_lock_down));
-            lockTV.setTextColor(getResources().getColor(R.color.white));
+                lockTV.setEnabled(true);
+                int image = R.color.default_lock_down;
+                lockTV.setBackgroundDrawable(getResources().getDrawable(image));
+                lockTV.setTextColor(getResources().getColor(R.color.white));
         }
     }
 
@@ -188,7 +196,9 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         resault.addAll(mUnLockList);
 
         int rowCount = getResources().getInteger(R.integer.recomment_gridview_row_count);
-        mAppPager.setDatas(resault, 4, rowCount);
+        int colCount = getResources().getInteger(R.integer.recomment_gridview_col_count);
+        
+        mAppPager.setDatas(resault, colCount, rowCount);
         mAppPager.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
     }
 
@@ -306,9 +316,10 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         mPackageName = intent.getStringExtra(LockScreenActivity.EXTRA_TO_ACTIVITY);
         mInstallPackageName = intent.getStringExtra("install_lockApp");
     }
+
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(this,HomeActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         try {
             this.startActivity(intent);
