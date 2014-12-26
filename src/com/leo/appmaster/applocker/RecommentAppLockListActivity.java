@@ -65,7 +65,8 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             "com.viber.voip",
             "com.google.android.talk",
             "com.mxtech.videoplayer.ad",
-            "com.android.calendar"
+            "com.android.calendar",
+            "com.google.android.calendar"
     };
 
     @Override
