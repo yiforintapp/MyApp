@@ -34,13 +34,4 @@
     <string name="india_only">仅限印度地区</string>
     <string name="invalid_number">请输入正确的手机号码</string>
     <string name="goto_gp">前往google play</string>
-    <!-- push - added in Version 1.5 -->
-    <string name="send_sms">发送祝福</string>
-    <string name="sms_sent">已经发送</string>
-    <string name="sms_sent_done">发送成功</string>
-    <string name="sms_sent_failed">发送失败</string>
-    <string name="friend_phone_number">朋友手机号码</string>
-    <string name="custom_msg_hint">自定义祝福语(最多输入50个字符)</string>
-    <string name="default_wishes">点击选择祝福语</string>
-    <string name="wish_char_hint">还能输入%1$d个字符</string>
 </resources>
