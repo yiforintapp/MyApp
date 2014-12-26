@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,8 +102,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		 * optimize cleanMem 
 		 */
 		cleanMem();
-		
-		Log.e("XXXXX", "onCreate");
 	}
 
 	@Override
@@ -219,7 +216,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			mAppBaseInfoLayoutbg.recycle();
 			mAppBaseInfoLayoutbg = null;
 		}
-		Log.e("XXXXX", "onDestroy");
 	}
 
 	@Override
@@ -230,9 +226,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				toTheme = false;
 				return;
 			}
-			Log.e("XXXXX", "finish on stop");
 			finish();
 		}
+	}
+	
+	@Override
+	public void finish() {
+	    if(!isFinishing()) {
+	        super.finish();
+	    }
 	}
 
 	@Override

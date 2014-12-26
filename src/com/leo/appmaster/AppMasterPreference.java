@@ -328,7 +328,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		for (String string : applicationList) {
 			combined = combined + string + ";";
 		}
-		
+
 		if(applicationList == null || applicationList.isEmpty()) {
 			Intent serviceIntent = new Intent(AppMasterApplication.getInstance(), LockService.class);
 			serviceIntent.putExtra("lock_service", false);
