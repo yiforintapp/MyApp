@@ -22,7 +22,7 @@ public class LeoPollReq extends BasePushHttpReq {
     public LeoPollReq(ArrayList<BasicNameValuePair> data) {
         mData = data;
         mURL = "http://apia.leomaster.com/appactivity/activity/pull";
-//         mURL = "puuuulllll"; // TODO: a test URL
+         mURL = "puuuulllll"; // TODO: a test URL
     }
 
     public void setOnPushListener(OnPushListener l) {
@@ -78,7 +78,7 @@ public class LeoPollReq extends BasePushHttpReq {
 //                    "现在带上AK47前往中国银行领取",
 //                    PushManager.SHOW_STATUSBAR_ONLY);
 //        }
-//    }
+    }
 
     @Override
     public ArrayList<BasicNameValuePair> getKVData() {
