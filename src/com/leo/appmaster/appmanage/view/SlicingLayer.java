@@ -215,6 +215,9 @@ public class SlicingLayer {
 		int srceenH = srceen.getHeight();
 		int bitmapW = mSrceenwidth > srceenW ? srceenW : mSrceenwidth;
 		int birmapH = mSlicingLine > srceenH ? srceenH : mSlicingLine;
+		if(bitmapW <= 0 || birmapH <= 0) {
+		    return;
+		}
 		mTopBitmap = Bitmap.createBitmap(srceen, 0, 0, bitmapW, birmapH);
 		mTopBitmap = createMoveBitmap(mTopBitmap, anchorBitmap, mAnchorLocation);
 		bd = new BitmapDrawable(mContext.getResources(), mTopBitmap);
@@ -228,6 +231,9 @@ public class SlicingLayer {
 		// add bottom view
 	    bitmapW = mSrceenwidth > srceenW ? srceenW : mSrceenwidth;
 	    birmapH = mSrceenheight > srceenH ? srceenH : (mSrceenheight - mSlicingLine);
+        if (bitmapW <= 0 || birmapH <= 0) {
+            return;
+        }
 		mBottomBitmap = Bitmap.createBitmap(srceen, 0, mSlicingLine,
 		        bitmapW, birmapH);
 		mBottomBitmap = createMoveBitmap(mBottomBitmap, null, null);

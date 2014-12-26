@@ -40,9 +40,6 @@ public class LockHandler extends BroadcastReceiver {
 
 	public void setLockPolicy(ILockPolicy policy) {
 		mLockPolicy = policy;
-		if (mLockPolicy instanceof TimeoutRelockPolicy) {
-
-		}
 	}
 
 	public ILockPolicy getLockPoliy() {
@@ -83,7 +80,7 @@ public class LockHandler extends BroadcastReceiver {
 					.getLockedAppList();
 			if (list.contains(pkg)) {
 				Intent intent = new Intent(mContext, LockScreenActivity.class);
-				if (!mLockPolicy.onHandleLock(pkg)) {
+				if (mLockPolicy != null && !mLockPolicy.onHandleLock(pkg)) {
 					int lockType = AppMasterPreference.getInstance(mContext)
 							.getLockType();
 					if (lockType == AppMasterPreference.LOCK_TYPE_NONE)
