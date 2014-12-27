@@ -58,7 +58,7 @@ public class NewYearActivity extends BaseActivity implements
 	private int currentPosition;
 
 	/* change this */
-	private final static int INDIAN_MOBILE_LENGTH = 11;
+	private final static int INDIAN_MOBILE_LENGTH = 10;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
