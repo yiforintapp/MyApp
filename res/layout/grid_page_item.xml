@@ -11,5 +11,4 @@
     android:listSelector="@drawable/selector_app_item"
     android:verticalSpacing="@dimen/gridview_vertical_spacing"  
     android:numColumns="4">
-
 </GridView>
