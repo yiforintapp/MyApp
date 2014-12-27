@@ -103,7 +103,7 @@ public class LockReceiver extends BroadcastReceiver {
 				ctx.getResources(), R.drawable.ic_launcher);
 		notification.tickerText = content;
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
-		notification.setLatestEventInfo(ctx, "App Master", content,
+		notification.setLatestEventInfo(ctx, "Privacy Lock", content,
 				pendingIntent);
 		nm.notify(0, notification);
 	}
