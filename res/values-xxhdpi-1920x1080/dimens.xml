@@ -22,9 +22,11 @@
      <dimen name="lock_icon_height">24dp</dimen>
      <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
      <dimen name="app_item_linearlayout_padding">5dp</dimen>
-      <dimen name="sucess_lock_recomment_successicon_top">30dp</dimen>
+      <dimen name="sucess_lock_recomment_successicon_top">50dp</dimen>
       <integer name="recomment_gridview_row_count">4</integer>
       <integer name="recomment_gridview_col_count">4</integer>
       <integer name="success_recomment_gridview_row_count">4</integer>
        <integer name="success_recomment_gridview_col_count">3</integer>
+       <dimen name="grid_page_item_layout_marginLeft">4dp</dimen>
+        <dimen name="grid_page_item_layout_marginRight">4dp</dimen>
 </resources>
