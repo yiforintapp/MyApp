@@ -67,7 +67,12 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             "com.google.android.talk",
             "com.mxtech.videoplayer.ad",
             "com.android.calendar",
-            "com.google.android.calendar"
+            "com.google.android.calendar",
+            "com.tencent.mm",
+            "com.tencent.mm",
+            "com.tencent.mobileqq",
+            "com.tencent.qq",
+            "jp.naver.line.android"
     };
 
     @Override
@@ -307,9 +312,9 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
 
     @Override
     public void onBackPressed() {
-            RecommentAppLockListActivity.this.finish();
-            super.onBackPressed();
-//        }
+        RecommentAppLockListActivity.this.finish();
+        super.onBackPressed();
+        // }
     }
 
 }
