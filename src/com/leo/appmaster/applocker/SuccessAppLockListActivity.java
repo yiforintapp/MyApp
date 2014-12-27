@@ -35,6 +35,8 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY="recomment_activity";
+    private static final String CURRENT_ACTIVITY="current_activity_name";
+    private static final String CURRENT_ACTIVITY_NAME="SuccessAppLockListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
             case R.id.success_recomment_lock:
                 Intent intent = new Intent(SuccessAppLockListActivity.this,
                         AppLockListActivity.class);
+                intent.putExtra(CURRENT_ACTIVITY, CURRENT_ACTIVITY_NAME);
                 try {
                     this.startActivity(intent);
                 } catch (Exception e) {

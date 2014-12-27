@@ -53,6 +53,8 @@ public class AppLockListActivity extends BaseActivity implements
 	private String mThemeSetting;
 	private SharedPreferences mySharedPreferences;
 	private ImageView mSettingIV;
+	private String mFromActivity;
+	private String mFromMore;
 
 	public static final int DEFAULT_SORT = 0;
 	public static final int NAME_SORT = 1;
@@ -63,6 +65,8 @@ public class AppLockListActivity extends BaseActivity implements
 	public static final int REQUEST_CODE_LOCK = 9999;
 	public static final int REQUEST_CODE_OPTION = 1001;
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY="applocklist_activity";
+    private static final String CURRENT_ACTIVITY="current_activity_name";
+    private static final String CURRENT_ACTIVITY_NAME="SuccessAppLockListActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -112,14 +116,9 @@ public class AppLockListActivity extends BaseActivity implements
 		if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
 			mMaskLayer.setVisibility(View.GONE);
 		} else {
-		    Intent intent=new Intent(AppLockListActivity.this,HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            try {
-                AppLockListActivity.this.startActivity(intent);
-            } catch (Exception e) {
-            }
-            AppLockListActivity.this.finish();
-			super.onBackPressed();
+		        super.onBackPressed();
+		        AppLockListActivity.this.finish();
+		
 		}
 	}
 
@@ -146,22 +145,7 @@ public class AppLockListActivity extends BaseActivity implements
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
-//		mTtileBar.openBackView();
-		 View back=mTtileBar.findViewById(R.id.layout_title_back);
-	        back.setOnClickListener(new OnClickListener() {
-	            
-	            @Override
-	            public void onClick(View arg0) {
-	                Intent intent=new Intent(AppLockListActivity.this,HomeActivity.class);
-	                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	                try {
-	                    AppLockListActivity.this.startActivity(intent);
-	                } catch (Exception e) {
-	                }
-	                AppLockListActivity.this.finish();
-	            }
-	        });
-
+		     mTtileBar.openBackView();
 		mySharedPreferences = getSharedPreferences("LockerThemeHome",
 				AppLockListActivity.this.MODE_WORLD_WRITEABLE);
 		mThemeSetting = mySharedPreferences.getString("themeLockList", "0");
@@ -525,6 +509,11 @@ public class AppLockListActivity extends BaseActivity implements
 		} else if (REQUEST_CODE_OPTION == requestCode) {
 			mShouldLockOnRestart = false;
 		}
+	}
+	private void getFromActivity(){
+	    Intent intent=this.getIntent();
+	   mFromActivity =  intent.getStringExtra(CURRENT_ACTIVITY);
+	   mFromMore=intent.getStringExtra("mFromMore");
 	}
 
 }
