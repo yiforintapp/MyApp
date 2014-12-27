@@ -3,10 +3,10 @@ package com.leo.appmaster.applocker.service;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.AppTask;
-//import android.app.ActivityManager.AppTask;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -21,11 +21,14 @@ import android.os.IBinder;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
+//import android.app.ActivityManager.AppTask;
 
 @SuppressLint("NewApi")
 public class LockService extends Service {
 
 	public static final String EXTRA_STARTUP_FROM = "start_from";
+	
+	private static final String SYSTEMUI_PKG = "com.android.systemui";
 
 	private boolean mServiceStarted;
 
@@ -138,6 +141,9 @@ public class LockService extends Service {
                         String pkgList[] = pi.pkgList;
                         if(pkgList != null && pkgList.length > 0) {
                             pkgName = pkgList[0];
+                            if(SYSTEMUI_PKG.equals(pkgName)) {
+                                continue;
+                            }
                             activityName = pkgList[0];
                             if(pkgName.equals(getApplication().getPackageName())) {
                                 activityName = "LockScreenActivity";

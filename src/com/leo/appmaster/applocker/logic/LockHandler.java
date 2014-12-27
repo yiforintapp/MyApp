@@ -7,8 +7,6 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.preference.Preference;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
@@ -23,6 +21,9 @@ public class LockHandler extends BroadcastReceiver {
 	
     private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
     private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
+    
+    private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
+    private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
 
 	private Context mContext;
 	private ActivityManager mAm;
@@ -78,7 +79,12 @@ public class LockHandler extends BroadcastReceiver {
 			}
 			List<String> list = AppMasterPreference.getInstance(mContext)
 					.getLockedAppList();
-			if (list.contains(pkg)) {
+			boolean lock = list.contains(pkg);
+			// Google launcher is special
+			if(!lock && pkg.equals(GOOGLE_LAUNCHER_PKG21)) {
+			    lock = list.contains(GOOGLE_LAUNCHER_PKG);
+			}
+			if (lock) {
 				Intent intent = new Intent(mContext, LockScreenActivity.class);
 				if (mLockPolicy != null && !mLockPolicy.onHandleLock(pkg)) {
 					int lockType = AppMasterPreference.getInstance(mContext)
@@ -100,6 +106,7 @@ public class LockHandler extends BroadcastReceiver {
 					intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 							LockFragment.FROM_OTHER);
 					mContext.startActivity(intent);
+
 				}
 			}
 		} else {
