@@ -580,13 +580,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 								}
 							} else if (which == 1) {
 								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-								   Intent  intentHome = new Intent(mContext,
-                                            HomeActivity.class);
-								   intentHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 								    intent = new Intent(mContext,RecommentAppLockListActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra("install_lockApp", packageName);
-                                    mContext.startActivity(intentHome);
                                     mContext.startActivity(intent);
 								} else {
 								    List<String> lockList = new ArrayList<String>(

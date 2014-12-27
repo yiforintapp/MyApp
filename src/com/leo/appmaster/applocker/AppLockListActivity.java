@@ -53,8 +53,6 @@ public class AppLockListActivity extends BaseActivity implements
 	private String mThemeSetting;
 	private SharedPreferences mySharedPreferences;
 	private ImageView mSettingIV;
-	private String mFromActivity;
-	private String mFromMore;
 
 	public static final int DEFAULT_SORT = 0;
 	public static final int NAME_SORT = 1;
@@ -65,8 +63,6 @@ public class AppLockListActivity extends BaseActivity implements
 	public static final int REQUEST_CODE_LOCK = 9999;
 	public static final int REQUEST_CODE_OPTION = 1001;
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY="applocklist_activity";
-    private static final String CURRENT_ACTIVITY="current_activity_name";
-    private static final String CURRENT_ACTIVITY_NAME="SuccessAppLockListActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -509,11 +505,6 @@ public class AppLockListActivity extends BaseActivity implements
 		} else if (REQUEST_CODE_OPTION == requestCode) {
 			mShouldLockOnRestart = false;
 		}
-	}
-	private void getFromActivity(){
-	    Intent intent=this.getIntent();
-	   mFromActivity =  intent.getStringExtra(CURRENT_ACTIVITY);
-	   mFromMore=intent.getStringExtra("mFromMore");
 	}
 
 }
