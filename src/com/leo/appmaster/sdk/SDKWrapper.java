@@ -52,7 +52,8 @@ public class SDKWrapper {
      * @param eventDescription detail of this event
      */
     public static void addEvent(Context ctx, int level, String id, String description) {
-        LeoLog.d(TAG, "addEvent: id=" + id + ";   desc=" + description);
+        // AM-727
+//        LeoLog.d(TAG, "addEvent: id=" + id + ";   desc=" + description);
         // leo
         LeoStat.addEvent(level, id, description);
         // baidu
