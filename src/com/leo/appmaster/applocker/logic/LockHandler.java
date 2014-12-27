@@ -20,6 +20,9 @@ public class LockHandler extends BroadcastReceiver {
 
 	public static final String ACTION_APP_UNLOCKED = "com.leo.applocker.appunlocked";
 	public static final String EXTRA_LOCKED_APP_PKG = "locked_app_pkg";
+	
+    private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
+    private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
 
 	private Context mContext;
 	private ActivityManager mAm;
@@ -37,9 +40,6 @@ public class LockHandler extends BroadcastReceiver {
 
 	public void setLockPolicy(ILockPolicy policy) {
 		mLockPolicy = policy;
-		if (mLockPolicy instanceof TimeoutRelockPolicy) {
-
-		}
 	}
 
 	public ILockPolicy getLockPoliy() {
@@ -72,11 +72,15 @@ public class LockHandler extends BroadcastReceiver {
 			}
 			mLastRunningPkg = pkg;
 			mLastRuningActivity = activity;
+		     // For android 5.0, download package changed
+			if(pkg.equals(DOWNLAOD_PKG_21)) {
+			    pkg = DOWNLAOD_PKG;
+			}
 			List<String> list = AppMasterPreference.getInstance(mContext)
 					.getLockedAppList();
 			if (list.contains(pkg)) {
 				Intent intent = new Intent(mContext, LockScreenActivity.class);
-				if (!mLockPolicy.onHandleLock(pkg)) {
+				if (mLockPolicy != null && !mLockPolicy.onHandleLock(pkg)) {
 					int lockType = AppMasterPreference.getInstance(mContext)
 							.getLockType();
 					if (lockType == AppMasterPreference.LOCK_TYPE_NONE)

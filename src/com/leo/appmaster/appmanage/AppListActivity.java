@@ -814,17 +814,18 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private void checkInstalledFormBusinessApp() {
 		Vector<BusinessItemInfo> businessDatas = AppBusinessManager
 				.getInstance(this).getBusinessData();
-
-		for (BusinessItemInfo businessItemInfo : businessDatas) {
-			boolean installed = false;
-			for (AppItemInfo info : mAppDetails) {
-				if (businessItemInfo.packageName.equals(info.packageName)) {
-					installed = true;
-					break;
-				}
-			}
-			businessItemInfo.installed = installed;
-		}
+        if(businessDatas != null) {
+            for (BusinessItemInfo businessItemInfo : businessDatas) {
+                boolean installed = false;
+                for (AppItemInfo info : mAppDetails) {
+                    if (businessItemInfo.packageName.equals(info.packageName)) {
+                        installed = true;
+                        break;
+                    }
+                }
+                businessItemInfo.installed = installed;
+            }
+        }
 
 	}
 

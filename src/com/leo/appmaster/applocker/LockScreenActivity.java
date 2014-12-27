@@ -229,6 +229,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			finish();
 		}
 	}
+	
+	@Override
+	public void finish() {
+	    if(!isFinishing()) {
+	        super.finish();
+	    }
+	}
 
 	@Override
 	protected void onRestart() {
