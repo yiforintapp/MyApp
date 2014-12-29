@@ -53,6 +53,7 @@ public class SplashActivity extends BaseActivity {
 			switch (msg.what) {
 			case MSG_LAUNCH_HOME_ACTIVITY:
 				Intent intent = new Intent(sa, HomeActivity.class);
+        		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				intent.putExtra(HomeActivity.KEY_PLAY_ANIM, true);
 				sa.startActivity(intent);
 				sa.finish();
