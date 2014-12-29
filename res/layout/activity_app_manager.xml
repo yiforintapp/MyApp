@@ -15,54 +15,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <FrameLayout
+        <LinearLayout
+            android:id="@+id/layout_pager_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/layout_title_bar" >
+            android:layout_below="@id/layout_title_bar"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="5dp" >
 
-            <RelativeLayout
-                android:id="@+id/rl_loading"
+            <com.leo.appmaster.ui.LeoAppViewPager
+                android:id="@+id/pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center" >
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-                <ProgressBar
-                    style="@style/theme_loading"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_pager_container"
+            <com.leo.appmaster.ui.CirclePageIndicator
+                android:id="@+id/indicator"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:paddingTop="5dp" >
-
-                <com.leo.appmaster.ui.LeoAppViewPager
-                    android:id="@+id/pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <com.leo.appmaster.ui.CirclePageIndicator
-                    android:id="@+id/indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dip" />
-            </LinearLayout>
-        </FrameLayout>
+                android:layout_height="wrap_content"
+                android:padding="10dip" />
+        </LinearLayout>
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/rl_loading"
+        style="@style/theme_loading"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true" />
 
     <com.leo.appmaster.appmanage.view.FolderView
         android:id="@+id/folderView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -20,7 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class FolderLayer {
 
 	public static String TAG = "FolderLayer";
-	private static int ANIMALTION_TIME = 500;
+	private static int ANIMALTION_TIME = 400;
 
 	private FolderView mFolderView;
 	private View mBrotherView;
@@ -75,7 +76,7 @@ public class FolderLayer {
 	private void startOpenAnimation(View anchorView, final int type) {
 		final AnimationSet as1 = new AnimationSet(true);
 		as1.setDuration(ANIMALTION_TIME);
-		as1.setInterpolator(new AccelerateDecelerateInterpolator());
+		as1.setInterpolator(new AccelerateInterpolator());
 		AlphaAnimation aa1 = new AlphaAnimation(0f, 1f);
 		as1.addAnimation(aa1);
 		mAnchorLocation = new int[2];
@@ -109,7 +110,7 @@ public class FolderLayer {
 		as1.addAnimation(sa1);
 
 		AnimationSet as2 = new AnimationSet(true);
-		as2.setDuration(ANIMALTION_TIME);
+		as2.setDuration(ANIMALTION_TIME + 100);
 		as2.setInterpolator(new AccelerateDecelerateInterpolator());
 		as2.setFillEnabled(true);
 		as2.setFillAfter(true);
@@ -145,7 +146,7 @@ public class FolderLayer {
 		mIsOpened = false;
 		AnimationSet as1 = new AnimationSet(true);
 		as1.setDuration(ANIMALTION_TIME);
-		as1.setInterpolator(new AccelerateDecelerateInterpolator());
+		as1.setInterpolator(new AccelerateInterpolator());
 		AlphaAnimation aa1 = new AlphaAnimation(1f, 0f);
 		as1.addAnimation(aa1);
 		ScaleAnimation sa = new ScaleAnimation(1f, 0f, 1f, 0f,
@@ -171,7 +172,7 @@ public class FolderLayer {
 		});
 
 		AnimationSet as2 = new AnimationSet(true);
-		as2.setDuration(ANIMALTION_TIME);
+		as2.setDuration(ANIMALTION_TIME + 100);
 		as2.setInterpolator(new AccelerateDecelerateInterpolator());
 		AlphaAnimation aa2 = new AlphaAnimation(0f, 1f);
 		as2.addAnimation(aa2);

@@ -13,6 +13,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -65,7 +66,7 @@ import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
 import com.leoers.leoanalytics.LeoStat;
 
-public class AppListActivity extends BaseFragmentActivity implements
+@SuppressLint("Override") public class AppListActivity extends BaseFragmentActivity implements
 		AppChangeListener, OnClickListener, AppBackupDataListener,
 		OnPageChangeListener {
 
@@ -157,27 +158,29 @@ public class AppListActivity extends BaseFragmentActivity implements
 			});
 
 			SDKWrapper.addEvent(this, LeoStat.P1, "ub_newapp", "statusbar");
-        } else if (AppBusinessManager.getInstance(this).hasBusinessData(BusinessItemInfo.CONTAIN_APPLIST)) {
-            SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
-        }
+		} else if (AppBusinessManager.getInstance(this).hasBusinessData(
+				BusinessItemInfo.CONTAIN_APPLIST)) {
+			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
+		}
 	}
-	
+
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-	    try {
-	        super.onRestoreInstanceState(savedInstanceState);
-	    } catch (Exception e) {
-	        
-	    }
+		try {
+			super.onRestoreInstanceState(savedInstanceState);
+		} catch (Exception e) {
+
+		}
 	}
-	
+
 	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-	    try {
-	        super.onRestoreInstanceState(savedInstanceState, persistentState);
-	    } catch (Exception e) {
-	        
-	    }
+	public void onRestoreInstanceState(Bundle savedInstanceState,
+			PersistableBundle persistentState) {
+		try {
+			super.onRestoreInstanceState(savedInstanceState, persistentState);
+		} catch (Exception e) {
+
+		}
 	}
 
 	public void openSlicingLayer(View view, int from) {
@@ -187,6 +190,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		if (mSlicingLayer.isAnimating() || mSlicingLayer.isSlicinged())
 			return;
 		mSclingBgView = mContainer;
+//		mSclingBgView = mAllAppList;
 
 		if (!(view.getTag() instanceof AppItemInfo))
 			return;
@@ -221,7 +225,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 			appinfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(
 					appinfo.packageName);
 
-			
 			int day = Math
 					.abs((int) ((System.currentTimeMillis() - appinfo.installTime) / (1000 * 60 * 60 * 24)));
 
@@ -417,8 +420,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mAllItems.addAll(mAppDetails);
 
 		// data load finished
-		if(mLoadingView != null) {
-		      mLoadingView.setVisibility(View.INVISIBLE);
+		if (mLoadingView != null) {
+			mLoadingView.setVisibility(View.INVISIBLE);
 		}
 		int pageCount = (int) Math.ceil(((double) mAllItems.size())
 				/ mPageItemCount);
@@ -451,13 +454,13 @@ public class AppListActivity extends BaseFragmentActivity implements
 		} else {
 			mCurrentPage = 0;
 		}
-        if (mViewPager != null) {
-            mViewPager.setAdapter(new DataPagerAdapter(viewList));
-            mPageIndicator.setViewPager(mViewPager);
-            mViewPager.setCurrentItem(mCurrentPage);
-            mPageIndicator.setOnPageChangeListener(this);
-            mPagerContain.setVisibility(View.VISIBLE);
-        }
+		if (mViewPager != null) {
+			mViewPager.setAdapter(new DataPagerAdapter(viewList));
+			mPageIndicator.setViewPager(mViewPager);
+			mViewPager.setCurrentItem(mCurrentPage);
+			mPageIndicator.setOnPageChangeListener(this);
+			mPagerContain.setVisibility(View.VISIBLE);
+		}
 	}
 
 	/**
@@ -739,7 +742,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public void handleItemClick(View view, int from) {
-		if ((mSlicingLayer != null && mSlicingLayer.isAnimating()) || (mFolderLayer != null && mFolderLayer.isAnimating()))
+		if ((mSlicingLayer != null && mSlicingLayer.isAnimating())
+				|| (mFolderLayer != null && mFolderLayer.isAnimating()))
 			return;
 		mLastSelectedInfo = (BaseInfo) view.getTag();
 		animateItem(view, from);
@@ -768,64 +772,65 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	private void fillFolder() {
-         if(mFolderLayer != null) {
-             // fill restore folder
-             Collections.sort(mRestoreFolderData, new BackupItemComparator());
-             mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
-                     mRestoreFolderData, null);
+		if (mFolderLayer != null) {
+			// fill restore folder
+			Collections.sort(mRestoreFolderData, new BackupItemComparator());
+			mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
+					mRestoreFolderData, null);
 
-             // fill flow folder
-             int contentMaxCount = mPageItemCount;
-             List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_FLOW_SORT);
-             int flowBusinessCount = flowDataReccommendData.size();
-             contentMaxCount = flowBusinessCount > 0 ? contentMaxCount - 4
-                     : contentMaxCount;
-             mFolderLayer
-                     .updateFolderData(
-                             FolderItemInfo.FOLDER_FLOW_SORT,
-                             mFlowFolderData.subList(
-                                     0,
-                                     mFlowFolderData.size() < contentMaxCount ? mFlowFolderData
-                                             .size() : contentMaxCount),
-                             flowDataReccommendData.subList(0,
-                                     flowBusinessCount <= 4 ? flowBusinessCount : 4));
+			// fill flow folder
+			int contentMaxCount = mPageItemCount;
+			List<BusinessItemInfo> flowDataReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_FLOW_SORT);
+			int flowBusinessCount = flowDataReccommendData.size();
+			contentMaxCount = flowBusinessCount > 0 ? contentMaxCount - 4
+					: contentMaxCount;
+			mFolderLayer
+					.updateFolderData(
+							FolderItemInfo.FOLDER_FLOW_SORT,
+							mFlowFolderData.subList(
+									0,
+									mFlowFolderData.size() < contentMaxCount ? mFlowFolderData
+											.size() : contentMaxCount),
+							flowDataReccommendData.subList(0,
+									flowBusinessCount <= 4 ? flowBusinessCount
+											: 4));
 
-             // fill capacity folder
-             contentMaxCount = mPageItemCount;
-             List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
-             int capacityBusinessCount = capacityReccommendData.size();
-             contentMaxCount = capacityBusinessCount > 0 ? contentMaxCount - 4
-                     : contentMaxCount;
-             mFolderLayer
-                     .updateFolderData(
-                             FolderItemInfo.FOLDER_CAPACITY_SORT,
-                             mCapacityFolderData.subList(
-                                     0,
-                                     mCapacityFolderData.size() <= contentMaxCount ? mCapacityFolderData
-                                             .size() : contentMaxCount),
-                             capacityReccommendData
-                                     .subList(
-                                             0,
-                                             capacityBusinessCount <= 4 ? capacityBusinessCount
-                                                     : 4));
-         }
+			// fill capacity folder
+			contentMaxCount = mPageItemCount;
+			List<BusinessItemInfo> capacityReccommendData = getRecommendData(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
+			int capacityBusinessCount = capacityReccommendData.size();
+			contentMaxCount = capacityBusinessCount > 0 ? contentMaxCount - 4
+					: contentMaxCount;
+			mFolderLayer
+					.updateFolderData(
+							FolderItemInfo.FOLDER_CAPACITY_SORT,
+							mCapacityFolderData.subList(
+									0,
+									mCapacityFolderData.size() <= contentMaxCount ? mCapacityFolderData
+											.size() : contentMaxCount),
+							capacityReccommendData
+									.subList(
+											0,
+											capacityBusinessCount <= 4 ? capacityBusinessCount
+													: 4));
+		}
 	}
 
 	private void checkInstalledFormBusinessApp() {
 		Vector<BusinessItemInfo> businessDatas = AppBusinessManager
 				.getInstance(this).getBusinessData();
-        if(businessDatas != null) {
-            for (BusinessItemInfo businessItemInfo : businessDatas) {
-                boolean installed = false;
-                for (AppItemInfo info : mAppDetails) {
-                    if (businessItemInfo.packageName.equals(info.packageName)) {
-                        installed = true;
-                        break;
-                    }
-                }
-                businessItemInfo.installed = installed;
-            }
-        }
+		if (businessDatas != null) {
+			for (BusinessItemInfo businessItemInfo : businessDatas) {
+				boolean installed = false;
+				for (AppItemInfo info : mAppDetails) {
+					if (businessItemInfo.packageName.equals(info.packageName)) {
+						installed = true;
+						break;
+					}
+				}
+				businessItemInfo.installed = installed;
+			}
+		}
 
 	}
 
@@ -846,15 +851,15 @@ public class AppListActivity extends BaseFragmentActivity implements
 				}
 			}
 		}
-//		if (containerId == BusinessItemInfo.CONTAIN_APPLIST) {
-//			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
-//		} else if (containerId == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-//			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "flow");
-//		} else if (containerId == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
-//			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "capacity");
-//		} else if (containerId == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
-//			SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "new");
-//		}
+		// if (containerId == BusinessItemInfo.CONTAIN_APPLIST) {
+		// SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
+		// } else if (containerId == BusinessItemInfo.CONTAIN_FLOW_SORT) {
+		// SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "flow");
+		// } else if (containerId == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
+		// SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "capacity");
+		// } else if (containerId == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
+		// SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "new");
+		// }
 
 		return list;
 	}
@@ -969,9 +974,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mRestoreFolderData = new Vector<AppItemInfo>(temp.subList(0,
 				temp.size()));
 		Collections.sort(mRestoreFolderData, new BackupItemComparator());
-		if(mFolderLayer != null) {
-		      mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
-		                mRestoreFolderData, null);
+		if (mFolderLayer != null) {
+			mFolderLayer.updateFolderData(FolderItemInfo.FOLDER_BACKUP_RESTORE,
+					mRestoreFolderData, null);
 		}
 		// update folder icon
 		for (FolderItemInfo restore : mFolderItems) {
@@ -979,15 +984,15 @@ public class AppListActivity extends BaseFragmentActivity implements
 				restore.icon = Utilities.getFolderScalePicture(this,
 						mRestoreFolderData,
 						FolderItemInfo.FOLDER_BACKUP_RESTORE);
-				if(mViewPager != null) {
-	                View v = mViewPager.getChildAt(0);
-	                if (v instanceof GridView) {
-	                    GridView grid = (GridView) mViewPager.getChildAt(0);
-	                    ListAdapter adapter = grid.getAdapter();
-	                    if (adapter instanceof DataAdapter) {
-	                        grid.setAdapter(adapter);
-	                    }
-	                }
+				if (mViewPager != null) {
+					View v = mViewPager.getChildAt(0);
+					if (v instanceof GridView) {
+						GridView grid = (GridView) mViewPager.getChildAt(0);
+						ListAdapter adapter = grid.getAdapter();
+						if (adapter instanceof DataAdapter) {
+							grid.setAdapter(adapter);
+						}
+					}
 				}
 				break;
 			}

@@ -112,6 +112,7 @@
         <activity
             android:name="com.leo.appmaster.applocker.AppLockListActivity"
             android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
             android:theme="@style/activity_theme" >
         </activity>
         <activity
