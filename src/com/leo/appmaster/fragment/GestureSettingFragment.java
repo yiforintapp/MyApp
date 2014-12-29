@@ -150,9 +150,12 @@ public class GestureSettingFragment extends BaseFragment implements
 				// now we can start lock service
 				intent = new Intent(mActivity, LockService.class);
 				mActivity.startService(intent);
+				String password=AppMasterPreference.getInstance(mActivity).getPassword();
+				if(password == null || password.equals("")){
 				List<String> list=AppMasterPreference.getInstance(mActivity).getRecommentTipList();
 				if(list.size()>0){				  
 				AppMasterPreference.getInstance(mActivity).setLockedAppList(list);
+				}
 				}
 				if(AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE){
                     SDKWrapper.addEvent(GestureSettingFragment.this.mActivity, LeoStat.P1, "first", "usehand");

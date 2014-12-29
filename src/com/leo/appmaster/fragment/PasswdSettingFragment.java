@@ -216,12 +216,12 @@ public class PasswdSettingFragment extends BaseFragment implements
 						Intent intent = null;
 						intent = new Intent(mActivity, LockService.class);
 						mActivity.startService(intent);
-						/**
-		                 * V1.5
-		                 */
+						String gesture=AppMasterPreference.getInstance(mActivity).getGesture();
+		                if(gesture == null || gesture.equals("")){
 		                List<String> list=AppMasterPreference.getInstance(mActivity).getRecommentTipList();
 		                if(list.size()>0){                
 		                AppMasterPreference.getInstance(mActivity).setLockedAppList(list);
+		                }
 		                }
 						if(AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE){
 						    SDKWrapper.addEvent(PasswdSettingFragment.this.mActivity, LeoStat.P1, "first", "usepwd");
