@@ -275,7 +275,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 				new Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response, boolean noModify) {
-						LeoLog.e("loadBusinessRecomApp", "response = "
+						LeoLog.d("loadBusinessRecomApp", "response = "
 								+ response);
 						List<BusinessItemInfo> list = BusinessJsonParser
 								.parserJsonObject(
