@@ -151,7 +151,8 @@ public class GestureSettingFragment extends BaseFragment implements
 				intent = new Intent(mActivity, LockService.class);
 				mActivity.startService(intent);
 				String password=AppMasterPreference.getInstance(mActivity).getPassword();
-				if(password == null || password.equals("")){
+				String gesture=AppMasterPreference.getInstance(mActivity).getGesture();
+				 if((gesture == null || gesture.equals("")) && (password == null || password.equals(""))){
 				List<String> list=AppMasterPreference.getInstance(mActivity).getRecommentTipList();
 				if(list.size()>0){				  
 				AppMasterPreference.getInstance(mActivity).setLockedAppList(list);

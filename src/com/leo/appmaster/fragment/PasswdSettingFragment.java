@@ -217,7 +217,8 @@ public class PasswdSettingFragment extends BaseFragment implements
 						intent = new Intent(mActivity, LockService.class);
 						mActivity.startService(intent);
 						String gesture=AppMasterPreference.getInstance(mActivity).getGesture();
-		                if(gesture == null || gesture.equals("")){
+						String password=AppMasterPreference.getInstance(mActivity).getPassword();
+		                if((gesture == null || gesture.equals("") )&& (password == null || password.equals(""))){
 		                List<String> list=AppMasterPreference.getInstance(mActivity).getRecommentTipList();
 		                if(list.size()>0){                
 		                AppMasterPreference.getInstance(mActivity).setLockedAppList(list);
