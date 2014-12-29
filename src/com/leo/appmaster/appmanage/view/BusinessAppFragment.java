@@ -126,7 +126,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		commonOption = new DisplayImageOptions.Builder()
 				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
 				.showImageOnLoading(R.drawable.recommend_loading_icon)
-				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
+				.showImageOnFail(R.drawable.recommend_loading_icon).cacheInMemory(true)
 				.cacheOnDisk(true).displayer(new BitmapDisplayer() {
 					@Override
 					public void display(Bitmap bitmap, ImageAware imageAware,
