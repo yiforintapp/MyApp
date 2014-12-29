@@ -77,6 +77,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle("");
         mTtileBar.openBackView();
+        mTtileBar.setBackViewListener(this);
         initImageLoader();
         initAnimationRotate();
         mBottomButtonBar = (LinearLayout) findViewById(R.id.bottom_button_bar);
@@ -285,6 +286,9 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                     mBottomButtonBar.setVisibility(View.VISIBLE);
                 }
                 break;
+            case R.id.layout_title_back:
+                onBackPressed();
+                break;
             default:
                 break;
         }
@@ -324,6 +328,8 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                     if (mListPos == mPicturesList.size()) {
                         mListPos = 0;
                     }
+                    mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mPicturesList
+                            .get(mListPos)));
                     mPagerAdapter.notifyDataSetChanged();
                     mPager.setCurrentItem(mListPos);
                 }
@@ -345,6 +351,8 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             if (mListPos == mPicturesList.size()) {
                 mListPos = 0;
             }
+            mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mPicturesList
+                    .get(mListPos)));
             mPagerAdapter.notifyDataSetChanged();
             mPager.setCurrentItem(mListPos);
         }
