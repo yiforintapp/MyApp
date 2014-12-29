@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.sdk.push.ui;
 
-import java.text.DateFormat.Field;
-
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -13,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
-import android.widget.RemoteViews;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.UserActManager;
@@ -29,14 +26,10 @@ public class PushUIHelper {
     private static String ACTION_CHECK_PUSH = "";
     private static String ACTION_IGNORE_PUSH = "";
 
-    /* discuss this with server developer */
-    private final static String NEW_YEAR_TITLE = "00000";
-
     public final static String EXTRA_TITLE = "leoappmaster.push.title";
     public final static String EXTRA_CONTENT = "leoappmaster.push.content";
     public final static String EXTRA_WHERE = "leoappmaster.push.fromwhere";
     public final static String EXTRA_AD_ID = "leoappmaster.push.adid";
-    public final static String EXTRA_NEWYEAR_FLAG = "leoappmaster.push.act.newyear.flag";
 
     private Context mContext = null;
     private NotificationManager nm = null;
@@ -96,12 +89,8 @@ public class PushUIHelper {
         LeoLog.d(TAG, "title=" + title + "; content=" + content);
         mTitle = title;
         mContent = content;
-        boolean isNewYear = false;
         String activityName = NormalPushActivity.class.getName();
-        if (title.equals(NEW_YEAR_TITLE)) {
-            isNewYear = true;
-            activityName = NewYearActivity.class.getName();
-        }
+
         if (showType == PushManager.SHOW_DIALOG_FIRST && isActivityOnTop(mContext, activityName)) {
             LeoLog.d(TAG, "push activity already on top, re-layout");
             if (nm != null) {
@@ -120,22 +109,18 @@ public class PushUIHelper {
             if (mListener != null) {
                 mListener.onNewAct(false, adID, title, content);
             }
-            showPushActivity(isNewYear, adID, title, content, false);
+            showPushActivity(adID, title, content, false);
         } else {
             LeoLog.d(TAG, "notify user with status bar");
             mStatusBar = true;
-            sendPushNotification(isNewYear, adID, title, content);
+            sendPushNotification(adID, title, content);
         }
     }
 
-    private void showPushActivity(boolean isNewYearAct, String id, String title, String content, boolean isFromStatusBar) {
+    private void showPushActivity(String id, String title, String content, boolean isFromStatusBar) {
         // Intent i = new Intent(mContext, NormalPushActivity.class);
         Intent i = null;
-        if (isNewYearAct) {
-            i = new Intent(mContext, NewYearActivity.class);
-        } else {
-            i = new Intent(mContext, NormalPushActivity.class);
-        }
+        i = new Intent(mContext, NormalPushActivity.class);
         i.putExtra(EXTRA_WHERE, isFromStatusBar);
         i.putExtra(EXTRA_TITLE, title);
         i.putExtra(EXTRA_CONTENT, content);
@@ -160,20 +145,15 @@ public class PushUIHelper {
     }
 
     @SuppressWarnings("deprecation")
-    private void sendPushNotification(boolean isNewYearAct, String id, String title, String content) {
+    private void sendPushNotification(String id, String title, String content) {
         Intent intent = new Intent(ACTION_CHECK_PUSH);
         intent.putExtra(EXTRA_AD_ID, id);
-        intent.putExtra(EXTRA_NEWYEAR_FLAG, isNewYearAct);
         int requestCode = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
         PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, requestCode,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         int iconRes = R.drawable.ic_launcher_notification;
-        if (isNewYearAct) {
-            iconRes = R.drawable.newyear_notification_icon;
-            title = mContext.getString(R.string.newyear_status_title);
-            content = mContext.getString(R.string.newyear_status_body);
-        }
+
         Notification pushNotification = new Notification(
                 iconRes, content,
                 System.currentTimeMillis());
@@ -189,21 +169,6 @@ public class PushUIHelper {
         pushNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONLY_ALERT_ONCE;
         nm.notify(PUSH_NOTIFICATION_ID, pushNotification);
-    }
-    
-    private int getIconId() {
-        int idIcond = 0;
-        Class<?> clazz;
-        try {
-            clazz = Class.forName("com.android.internal.R$id");
-            java.lang.reflect.Field field = clazz.getField("icon");
-            field.setAccessible(true);
-            idIcond = field.getInt(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return idIcond;
     }
 
     private boolean isActivityOnTop(Context context, String name) {
@@ -233,17 +198,16 @@ public class PushUIHelper {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             String adID = intent.getStringExtra(EXTRA_AD_ID);
-            boolean flag = intent.getBooleanExtra(EXTRA_NEWYEAR_FLAG, false);
             LeoLog.d(TAG, "adID=" + adID + "mTitle=" + mTitle + "; mContent= " + mContent);
             if (adID == null) {
                 adID = "unknown-id";
             }
             if (action.equals(ACTION_CHECK_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
-                if (mListener != null && !flag) {
+                if (mListener != null) {
                     mListener.onNewAct(true, adID, mTitle, mContent);
                 }
-                showPushActivity(flag, adID, mTitle, mContent, true);
+                showPushActivity(adID, mTitle, mContent, true);
             } else if (action.equals(ACTION_IGNORE_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
                 sendACK(adID, "N", "Q", "");

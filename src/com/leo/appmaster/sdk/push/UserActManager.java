@@ -87,8 +87,8 @@ public class UserActManager {
 
     private void doFetch() {
         LeoLog.d(TAG, "doFetch called");
-//        if (true) { // TODO: use for debug
-         if (isSimAvailable()) {
+        // if (true) { // TODO: use for debug
+        if (hasGoogleAccount()) {
             LeoLog.d(TAG, "let's do fetch");
             ArrayList<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
             pairs.add(new BasicNameValuePair("msg_id", "un-used"));
