@@ -172,18 +172,26 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         ArrayList<AppItemInfo> localAppList = AppLoadEngine.getInstance(this).getAllPkgInfo();
         List<String> defaultLockList = getDefaultLockList();
         if (mInstallPackageName != null && !mInstallPackageName.equals("")) {
-            defaultLockList.add(0, mInstallPackageName);
+        defaultLockList.add(0, mInstallPackageName);
         }
+        AppInfo installPackage=null;
         for (AppItemInfo localApp : localAppList) {
             if (defaultLockList.contains(localApp.packageName)) {
                 localApp.isLocked = true;
+                if(localApp.packageName.equals(mInstallPackageName)){
+                    installPackage=localApp;
+                }else{
                 mLockList.add(localApp);
+                }
             } else {
                 localApp.isLocked = false;
                 mUnLockList.add(localApp);
             }
         }
-        Collections.sort(mLockList, new LockedAppComparator(mLockList));
+        Collections.sort(mLockList, new LockedAppComparator(mLockList));    
+        if(installPackage!=null){
+        mLockList.add(0, installPackage);      
+        }
         Collections.sort(mUnLockList, new DefalutAppComparator());
         resault = new ArrayList<AppInfo>(mLockList);
         resault.addAll(mUnLockList);
