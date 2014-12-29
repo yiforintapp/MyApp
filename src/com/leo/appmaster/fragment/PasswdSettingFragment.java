@@ -1,10 +1,13 @@
 package com.leo.appmaster.fragment;
 
+import java.util.List;
+
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -12,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -20,6 +24,7 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
+import com.leo.appmaster.applocker.SuccessAppLockListActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView.DisplayMode;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -47,6 +52,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 	protected String mActivityName;
 
 	private Animation mShake;
+	private static final String TO_ACTIVITY_PACKAGE_NAME="to_activity_package_name";
 
 	@Override
 	protected int layoutResourceId() {
@@ -210,7 +216,13 @@ public class PasswdSettingFragment extends BaseFragment implements
 						Intent intent = null;
 						intent = new Intent(mActivity, LockService.class);
 						mActivity.startService(intent);
-						
+						/**
+		                 * V1.5
+		                 */
+		                List<String> list=AppMasterPreference.getInstance(mActivity).getRecommentTipList();
+		                if(list.size()>0){                
+		                AppMasterPreference.getInstance(mActivity).setLockedAppList(list);
+		                }
 						if(AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE){
 						    SDKWrapper.addEvent(PasswdSettingFragment.this.mActivity, LeoStat.P1, "first", "usepwd");
 						}
@@ -348,9 +360,16 @@ public class PasswdSettingFragment extends BaseFragment implements
 		if (mGotoPasswdProtect) {
             if (!TextUtils.isEmpty(mActivityName)) {
                 intent = new Intent();
-                ComponentName componentName = new ComponentName(
+                ComponentName componentName =null;
+                if(AppLockListActivity.class.getName().equals(mActivityName)){
+                 componentName = new ComponentName(
                         AppMasterApplication.getInstance().getPackageName(),
-                        mActivityName);
+                        SuccessAppLockListActivity.class.getName());
+                }else{
+                  componentName = new ComponentName(
+                  AppMasterApplication.getInstance().getPackageName(),
+                  mActivityName);
+                }
                 intent.setComponent(componentName);
             } else {
                 intent = new Intent(mActivity, AppLockListActivity.class);
@@ -367,9 +386,18 @@ public class PasswdSettingFragment extends BaseFragment implements
 		    SDKWrapper.addEvent(mActivity, LeoStat.P1, "first", "setpwdp_cancel");
             if (!TextUtils.isEmpty(mActivityName)) {
                 intent = new Intent();
-                ComponentName componentName = new ComponentName(
-                        AppMasterApplication.getInstance().getPackageName(),
-                        mActivityName);
+                ComponentName componentName =null;
+                if(AppLockListActivity.class.getName().equals(mActivityName)){
+                     componentName = new ComponentName(
+                            AppMasterApplication.getInstance().getPackageName(),
+                            SuccessAppLockListActivity.class.getName());
+                    intent.putExtra(TO_ACTIVITY_PACKAGE_NAME, mActivityName);
+                }else{
+                   componentName = new ComponentName(
+                  AppMasterApplication.getInstance().getPackageName(),
+                  mActivityName);
+                }
+              
                 intent.setComponent(componentName);
             } else {
                 intent = new Intent(mActivity, AppLockListActivity.class);

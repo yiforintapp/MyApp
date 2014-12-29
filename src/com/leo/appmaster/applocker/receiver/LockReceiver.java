@@ -8,6 +8,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.utils.LeoLog;
@@ -102,7 +103,7 @@ public class LockReceiver extends BroadcastReceiver {
 				ctx.getResources(), R.drawable.ic_launcher);
 		notification.tickerText = content;
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
-		notification.setLatestEventInfo(ctx, "App Master", content,
+		notification.setLatestEventInfo(ctx, "Privacy Lock", content,
 				pendingIntent);
 		nm.notify(0, notification);
 	}

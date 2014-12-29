@@ -24,6 +24,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -61,6 +62,7 @@ public class AppLockListActivity extends BaseActivity implements
 
 	public static final int REQUEST_CODE_LOCK = 9999;
 	public static final int REQUEST_CODE_OPTION = 1001;
+    private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY="applocklist_activity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +112,9 @@ public class AppLockListActivity extends BaseActivity implements
 		if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
 			mMaskLayer.setVisibility(View.GONE);
 		} else {
-			super.onBackPressed();
+		        super.onBackPressed();
+		        AppLockListActivity.this.finish();
+		
 		}
 	}
 
@@ -137,8 +141,7 @@ public class AppLockListActivity extends BaseActivity implements
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTtileBar.setTitle(R.string.app_lock);
-		mTtileBar.openBackView();
-
+		     mTtileBar.openBackView();
 		mySharedPreferences = getSharedPreferences("LockerThemeHome",
 				AppLockListActivity.this.MODE_WORLD_WRITEABLE);
 		mThemeSetting = mySharedPreferences.getString("themeLockList", "0");
@@ -154,7 +157,6 @@ public class AppLockListActivity extends BaseActivity implements
 
 		mTtileBar.setSpinerListener(this);
 		mTtileBar.setSpinerText(mSortType[mCurSortType]);
-
 		mLockedList = new ArrayList<AppInfo>();
 		mUnlockList = new ArrayList<AppInfo>();
 		mAppPager = (PagedGridView) findViewById(R.id.pager_unlock);
@@ -197,7 +199,7 @@ public class AppLockListActivity extends BaseActivity implements
 
 		int rowCount = getResources().getInteger(R.integer.gridview_row_count);
 		mAppPager.setDatas(resault, 4, rowCount);
-
+		mAppPager.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);      
 		updateLockText();
 	}
 
@@ -273,7 +275,8 @@ public class AppLockListActivity extends BaseActivity implements
 			synchronized (mLock) {
 				List<String> list = new ArrayList<String>();
 				for (AppInfo info : AppLockListActivity.this.mLockedList) {
-					list.add(info.packageName);
+				    String packageName=info.packageName;
+					    list.add(info.packageName);
 				}
 				List<String> recommendList = AppLoadEngine.getInstance(
 						getApplicationContext()).getRecommendLockList();

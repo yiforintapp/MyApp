@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.sdk.push;
+package com.leo.appmaster.sdk.push.ui;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -28,9 +28,9 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
-public class PushActivity extends BaseActivity implements View.OnClickListener, PushUIHelper.NewActListener{
+public class NormalPushActivity extends BaseActivity implements View.OnClickListener, PushUIHelper.NewActListener{
 
-    private final static String TAG = PushActivity.class.getSimpleName();
+    private final static String TAG = NormalPushActivity.class.getSimpleName();
 
     private boolean mFromStatusBar;
     private String mAdID;

@@ -7,8 +7,6 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.preference.Preference;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.LockScreenActivity;
@@ -20,11 +18,17 @@ public class LockHandler extends BroadcastReceiver {
 
 	public static final String ACTION_APP_UNLOCKED = "com.leo.applocker.appunlocked";
 	public static final String EXTRA_LOCKED_APP_PKG = "locked_app_pkg";
+	
+    private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
+    private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
+    
+    private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
+    private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
 
 	private Context mContext;
 	private ActivityManager mAm;
-	private String mLastRunningPkg;
-	private String mLastRuningActivity;
+	private String mLastRunningPkg = "";
+	private String mLastRuningActivity = "";
 
 	private ILockPolicy mLockPolicy;
 
@@ -37,9 +41,6 @@ public class LockHandler extends BroadcastReceiver {
 
 	public void setLockPolicy(ILockPolicy policy) {
 		mLockPolicy = policy;
-		if (mLockPolicy instanceof TimeoutRelockPolicy) {
-
-		}
 	}
 
 	public ILockPolicy getLockPoliy() {
@@ -72,11 +73,20 @@ public class LockHandler extends BroadcastReceiver {
 			}
 			mLastRunningPkg = pkg;
 			mLastRuningActivity = activity;
+		     // For android 5.0, download package changed
+			if(pkg.equals(DOWNLAOD_PKG_21)) {
+			    pkg = DOWNLAOD_PKG;
+			}
 			List<String> list = AppMasterPreference.getInstance(mContext)
 					.getLockedAppList();
-			if (list.contains(pkg)) {
+			boolean lock = list.contains(pkg);
+			// Google launcher is special
+			if(!lock && pkg.equals(GOOGLE_LAUNCHER_PKG21)) {
+			    lock = list.contains(GOOGLE_LAUNCHER_PKG);
+			}
+			if (lock) {
 				Intent intent = new Intent(mContext, LockScreenActivity.class);
-				if (!mLockPolicy.onHandleLock(pkg)) {
+				if (mLockPolicy != null && !mLockPolicy.onHandleLock(pkg)) {
 					int lockType = AppMasterPreference.getInstance(mContext)
 							.getLockType();
 					if (lockType == AppMasterPreference.LOCK_TYPE_NONE)
@@ -96,6 +106,7 @@ public class LockHandler extends BroadcastReceiver {
 					intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 							LockFragment.FROM_OTHER);
 					mContext.startActivity(intent);
+
 				}
 			}
 		} else {

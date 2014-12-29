@@ -106,7 +106,7 @@ public class UIHelper implements IUIHelper {
         CharSequence message = downloadTip;
         downloadRv = new RemoteViews(mContext.getPackageName(),
                 R.layout.sdk_notification_download);
-        downloadRv.setTextViewText(R.id.tv_title, downloadTip);
+        downloadRv.setTextViewText(R.id.tv_content, downloadTip);
         Intent intent = new Intent(ACTION_DOWNLOADING);
         PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, 0,
                 intent, 0);

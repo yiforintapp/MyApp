@@ -8,7 +8,7 @@ import android.util.Log;
 import com.baidu.mobstat.StatService;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.R;
-import com.leo.appmaster.sdk.push.PushUIHelper;
+import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.push.PushManager;
@@ -52,7 +52,8 @@ public class SDKWrapper {
      * @param eventDescription detail of this event
      */
     public static void addEvent(Context ctx, int level, String id, String description) {
-        LeoLog.d(TAG, "addEvent: id=" + id + ";   desc=" + description);
+        // AM-727
+//        LeoLog.d(TAG, "addEvent: id=" + id + ";   desc=" + description);
         // leo
         LeoStat.addEvent(level, id, description);
         // baidu
@@ -75,7 +76,6 @@ public class SDKWrapper {
         LeoStat.setDebugLevel(Log.VERBOSE);
         LeoStat.initUpdateEngine(UIHelper.getInstance(ctx),
                 true);
-        LeoStat.initPushEngine(PushUIHelper.getInstance(ctx));
     }
 
     // private static void iniBaidu(Context ctx) {

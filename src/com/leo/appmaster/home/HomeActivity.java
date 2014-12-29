@@ -36,6 +36,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -421,56 +422,54 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						if (position == 0) {
+					    if(position == 0){
+					        if (AppUtil.appInstalled(getApplicationContext(),
+                                    "com.android.vending")) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                Uri uri = Uri
+                                        .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                                intent.setData(uri);
+                                ComponentName cn = new ComponentName(
+                                        "com.android.vending",
+                                        "com.google.android.finsky.activities.MainActivity");
+                                intent.setComponent(cn);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                mHandler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent2 = new Intent(
+                                                HomeActivity.this,
+                                                GooglePlayGuideActivity.class);
+                                        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent2);
+                                    }
+                                }, 200);
+                            } else {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                Uri uri = Uri
+                                        .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                                intent.setData(uri);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+					    }else if (position == 1) {
 							Intent intent = new Intent(HomeActivity.this,
 									FeedbackActivity.class);
 							startActivity(intent);
-						} else if (position == 1) {
+						} else if (position == 2) {
 							Intent intent = new Intent(HomeActivity.this,
 									AppWallActivity.class);
 							startActivity(intent);
-						} else if (position == 2) {
+						} else if (position == 3) {
 							SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
 									"setting", "check_update");
 							LeoStat.checkUpdate();
-						} else if (position == 3) {
+						} else if (position == 4) {
 							Intent intent = new Intent(HomeActivity.this,
 									AboutActivity.class);
 							startActivity(intent);
-						} else if (position == 4) {
-
-							if (AppUtil.appInstalled(getApplicationContext(),
-									"com.android.vending")) {
-								Intent intent = new Intent(Intent.ACTION_VIEW);
-								Uri uri = Uri
-										.parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-								intent.setData(uri);
-								ComponentName cn = new ComponentName(
-										"com.android.vending",
-										"com.google.android.finsky.activities.MainActivity");
-								intent.setComponent(cn);
-								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-								startActivity(intent);
-								mHandler.postDelayed(new Runnable() {
-									@Override
-									public void run() {
-										Intent intent2 = new Intent(
-												HomeActivity.this,
-												GooglePlayGuideActivity.class);
-										intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-										startActivity(intent2);
-									}
-								}, 200);
-							} else {
-								Intent intent = new Intent(Intent.ACTION_VIEW);
-								Uri uri = Uri
-										.parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-								intent.setData(uri);
-								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-								startActivity(intent);
-							}
-
-						}
+						} 
 						mLeoPopMenu.dismissSnapshotList();
 					}
 				});
@@ -545,6 +544,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	private List<String> getPopMenuItems() {
 		List<String> listItems = new ArrayList<String>();
 		Resources resources = AppMasterApplication.getInstance().getResources();
+		listItems.add(resources.getString(R.string.grade));
 		listItems.add(resources.getString(R.string.feedback));
 		listItems.add(resources.getString(R.string.app_wall));
 		if (LeoStat.isUpdateAvailable()) {
@@ -553,7 +553,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			listItems.add(resources.getString(R.string.app_setting_update));
 		}
 		listItems.add(resources.getString(R.string.app_setting_about));
-		listItems.add(resources.getString(R.string.grade));
+		
 		return listItems;
 	}
 
@@ -580,7 +580,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	}
 
 	private void startLockSetting() {
-		Intent intent = new Intent(this, LockSettingActivity.class);
+	    
+		Intent intent = new Intent(this, RecommentAppLockListActivity.class);
 		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
 				AppLockListActivity.class.getName());
 		startActivity(intent);

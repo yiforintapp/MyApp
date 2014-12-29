@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,13 @@ import com.leo.appmaster.R;
 
 public class LeoPopMenu {
     
+    public final static int DIRECTION_DOWN = 1;
+    
     public static class LayoutStyles {
         public int width;
         public int height;
         public int animation;
+        public int direction;
     }
 
 	private PopupWindow mLeoPopMenu;
@@ -68,6 +72,7 @@ public class LeoPopMenu {
 		    mStyles.width = styles.width;
             mStyles.height = styles.height;
             mStyles.animation = styles.animation;
+            mStyles.direction = styles.direction;
 		}
 		
 		View convertView = buildTabListLayout();
@@ -83,7 +88,11 @@ public class LeoPopMenu {
 		
 		mLeoPopMenu.setAnimationStyle(mStyles.animation);
 //		mLeoPopMenu.showAsDropDown(anchorView, 0, 0);
-		mLeoPopMenu.showAsDropDown(anchorView, -50, 0);
+        if (mStyles != null && mStyles.direction == DIRECTION_DOWN) {
+            mLeoPopMenu.showAtLocation(anchorView, Gravity.NO_GRAVITY, 0, 0);
+        } else {
+            mLeoPopMenu.showAsDropDown(anchorView, 50, 0);
+        }
 	}
 
 	public void setAnimation(int animaStyle) {

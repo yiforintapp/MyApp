@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="20"
+    android:versionCode="21"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -44,6 +44,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.WRITE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
     <!--  LEO push: end -->
 
 
@@ -109,6 +112,7 @@
         <activity
             android:name="com.leo.appmaster.applocker.AppLockListActivity"
             android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
             android:theme="@style/activity_theme" >
         </activity>
         <activity
@@ -181,6 +185,7 @@
         <activity
             android:name="com.leo.appmaster.home.ProtocolActivity"
             android:theme="@style/activity_theme" />
+        
         <!-- add for the app update of leosdk -->
         <activity
             android:name="com.leo.appmaster.sdk.update.UpdateActivity"
@@ -189,10 +194,16 @@
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.sdk.push.PushActivity"
+            android:name="com.leo.appmaster.sdk.push.ui.NormalPushActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame" />
+        <activity
+            android:name="com.leo.appmaster.sdk.push.ui.NewYearActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
         <!-- add for the app update of leosdk -->
 
         <activity
@@ -229,6 +240,16 @@
             android:name="com.leo.appmaster.videohide.VideoViewPager"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" />
+        <activity
+            android:name="com.leo.appmaster.applocker.RecommentAppLockListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.SuccessAppLockListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
 
         <service
             android:name="com.leo.appmaster.applocker.service.LockService"

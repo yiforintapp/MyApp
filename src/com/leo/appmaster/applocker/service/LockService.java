@@ -3,10 +3,10 @@ package com.leo.appmaster.applocker.service;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.AppTask;
-//import android.app.ActivityManager.AppTask;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -21,11 +21,14 @@ import android.os.IBinder;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
+//import android.app.ActivityManager.AppTask;
 
 @SuppressLint("NewApi")
 public class LockService extends Service {
 
 	public static final String EXTRA_STARTUP_FROM = "start_from";
+	
+	private static final String SYSTEMUI_PKG = "com.android.systemui";
 
 	private boolean mServiceStarted;
 
@@ -106,7 +109,8 @@ public class LockService extends Service {
 		stopDetectTsk();
 		mTimer = new Timer();
 		mDetectTask = new DetectTask();
-		mTimer.schedule(mDetectTask, 0, 100);
+		// AM-663
+		mTimer.schedule(mDetectTask, 100, 100);
 	}
 
 	@Override
@@ -131,24 +135,32 @@ public class LockService extends Service {
             if (Build.VERSION.SDK_INT > 19) { // Android L and above
                 List<RunningAppProcessInfo> list = mActivityManager.getRunningAppProcesses();
                 for (RunningAppProcessInfo pi : list) {
-                    if (pi.importance <= RunningAppProcessInfo.IMPORTANCE_VISIBLE  // Foreground or Visible
+                    if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND  || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)  // Foreground or Visible
                             && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter provider and service
                             && (0x4 & pi.flags) > 0) { // Must have activities
                         String pkgList[] = pi.pkgList;
                         if(pkgList != null && pkgList.length > 0) {
                             pkgName = pkgList[0];
+                            if(SYSTEMUI_PKG.equals(pkgName)) {
+                                continue;
+                            }
                             activityName = pkgList[0];
                             if(pkgName.equals(getApplication().getPackageName())) {
-                                List<AppTask> tasks = mActivityManager.getAppTasks();
-                                if(tasks != null && tasks.size() > 0) {
-                                    RecentTaskInfo rti =  tasks.get(0).getTaskInfo();
-                                    if(rti != null) {
-                                        Intent intent = rti.baseIntent;
-                                        ComponentName cn = intent.getComponent();
-                                        if(cn != null) {
-                                            activityName = cn.getShortClassName();
+                                activityName = "LockScreenActivity";
+                                try {
+                                    List<AppTask> tasks = mActivityManager.getAppTasks();
+                                    if(tasks != null && tasks.size() > 0) {
+                                        RecentTaskInfo rti =  tasks.get(0).getTaskInfo();
+                                        if(rti != null) {
+                                            Intent intent = rti.baseIntent;
+                                            ComponentName cn = intent.getComponent();
+                                            if(cn != null) {
+                                                activityName = cn.getShortClassName();
+                                            }
                                         }
                                     }
+                                } catch (Exception e) {
+                                    
                                 }
                             } else {
                                 activityName = pi.processName;

@@ -823,137 +823,143 @@ public class LockPatternView extends ViewGroup {
 		// Handle all recent motion events so we don't skip any cells even when
 		// the device
 		// is busy...
-		final int historySize = event.getHistorySize();
-		for (int i = 0; i < historySize + 1; i++) {
-			final float x = i < historySize ? event.getHistoricalX(i) : event
-					.getX();
-			final float y = i < historySize ? event.getHistoricalY(i) : event
-					.getY();
-			final int patternSizePreHitDetect = mPattern.size();
-			Cell hitCell = detectAndAddHit(x, y);
-			final int patternSize = mPattern.size();
-			if (hitCell != null && patternSize == 1) {
-				mPatternInProgress = true;
-				notifyPatternStarted();
-			}
-			// note current x and y for rubber banding of in progress patterns
-			final float dx = Math.abs(x - mInProgressX);
-			final float dy = Math.abs(y - mInProgressY);
-			if (dx + dy > mSquareWidth * 0.04f) {
-				float oldX = mInProgressX;
-				float oldY = mInProgressY;
+	    // AM-678
+	    try {
+	        final int historySize = event.getHistorySize();
+	        for (int i = 0; i < historySize + 1; i++) {
+	            final float x = i < historySize ? event.getHistoricalX(i) : event
+	                    .getX();
+	            final float y = i < historySize ? event.getHistoricalY(i) : event
+	                    .getY();
+	            final int patternSizePreHitDetect = mPattern.size();
+	            Cell hitCell = detectAndAddHit(x, y);
+	            final int patternSize = mPattern.size();
+	            if (hitCell != null && patternSize == 1) {
+	                mPatternInProgress = true;
+	                notifyPatternStarted();
+	            }
+	            // note current x and y for rubber banding of in progress patterns
+	            final float dx = Math.abs(x - mInProgressX);
+	            final float dy = Math.abs(y - mInProgressY);
+	            if (dx + dy > mSquareWidth * 0.04f) {
+	                float oldX = mInProgressX;
+	                float oldY = mInProgressY;
 
-				mInProgressX = x;
-				mInProgressY = y;
+	                mInProgressX = x;
+	                mInProgressY = y;
 
-				if (mPatternInProgress && patternSize > 0) {
-					final Cell[] pattern = mPattern.toArray(new Cell[0]);
-					final float radius = mSquareWidth * mDiameterFactor * 0.5f;
+	                if (mPatternInProgress && patternSize > 0) {
+	                    final Cell[] pattern = mPattern.toArray(new Cell[0]);
+	                    final float radius = mSquareWidth * mDiameterFactor * 0.5f;
 
-					final Cell lastCell = pattern[patternSize - 1];
+	                    final Cell lastCell = pattern[patternSize - 1];
 
-					float startX = getCenterXForColumn(lastCell.column);
-					float startY = getCenterYForRow(lastCell.row);
+	                    float startX = getCenterXForColumn(lastCell.column);
+	                    float startY = getCenterYForRow(lastCell.row);
 
-					float left;
-					float top;
-					float right;
-					float bottom;
+	                    float left;
+	                    float top;
+	                    float right;
+	                    float bottom;
 
-					final Rect invalidateRect = mInvalidate;
+	                    final Rect invalidateRect = mInvalidate;
 
-					if (startX < x) {
-						left = startX;
-						right = x;
-					} else {
-						left = x;
-						right = startX;
-					}
+	                    if (startX < x) {
+	                        left = startX;
+	                        right = x;
+	                    } else {
+	                        left = x;
+	                        right = startX;
+	                    }
 
-					if (startY < y) {
-						top = startY;
-						bottom = y;
-					} else {
-						top = y;
-						bottom = startY;
-					}
+	                    if (startY < y) {
+	                        top = startY;
+	                        bottom = y;
+	                    } else {
+	                        top = y;
+	                        bottom = startY;
+	                    }
 
-					// Invalidate between the pattern's last cell and the
-					// current location
-					invalidateRect.set((int) (left - radius * 2),
-							(int) (top -  radius * 2), (int) (right +  radius * 2),
-							(int) (bottom +  radius * 2));
+	                    // Invalidate between the pattern's last cell and the
+	                    // current location
+	                    invalidateRect.set((int) (left - radius * 2),
+	                            (int) (top -  radius * 2), (int) (right +  radius * 2),
+	                            (int) (bottom +  radius * 2));
 
-					if (startX < oldX) {
-						left = startX;
-						right = oldX;
-					} else {
-						left = oldX;
-						right = startX;
-					}
+	                    if (startX < oldX) {
+	                        left = startX;
+	                        right = oldX;
+	                    } else {
+	                        left = oldX;
+	                        right = startX;
+	                    }
 
-					if (startY < oldY) {
-						top = startY;
-						bottom = oldY;
-					} else {
-						top = oldY;
-						bottom = startY;
-					}
+	                    if (startY < oldY) {
+	                        top = startY;
+	                        bottom = oldY;
+	                    } else {
+	                        top = oldY;
+	                        bottom = startY;
+	                    }
 
-					// Invalidate between the pattern's last cell and the
-					// previous location
-					invalidateRect.union((int) (left -  radius * 2),
-							(int) (top -  radius * 2), (int) (right +  radius * 2),
-							(int) (bottom +  radius * 2));
+	                    // Invalidate between the pattern's last cell and the
+	                    // previous location
+	                    invalidateRect.union((int) (left -  radius * 2),
+	                            (int) (top -  radius * 2), (int) (right +  radius * 2),
+	                            (int) (bottom +  radius * 2));
 
-					// Invalidate between the pattern's new cell and the
-					// pattern's previous cell
-					if (hitCell != null) {
-						startX = getCenterXForColumn(hitCell.column);
-						startY = getCenterYForRow(hitCell.row);
+	                    // Invalidate between the pattern's new cell and the
+	                    // pattern's previous cell
+	                    if (hitCell != null) {
+	                        startX = getCenterXForColumn(hitCell.column);
+	                        startY = getCenterYForRow(hitCell.row);
 
-						if (patternSize >= 2) {
-							// (re-using hitcell for old cell)
-							hitCell = pattern[patternSize - 1
-									- (patternSize - patternSizePreHitDetect)];
-							oldX = getCenterXForColumn(hitCell.column);
-							oldY = getCenterYForRow(hitCell.row);
+	                        if (patternSize >= 2) {
+	                            // (re-using hitcell for old cell)
+	                            hitCell = pattern[patternSize - 1
+	                                    - (patternSize - patternSizePreHitDetect)];
+	                            oldX = getCenterXForColumn(hitCell.column);
+	                            oldY = getCenterYForRow(hitCell.row);
 
-							if (startX < oldX) {
-								left = startX;
-								right = oldX;
-							} else {
-								left = oldX;
-								right = startX;
-							}
+	                            if (startX < oldX) {
+	                                left = startX;
+	                                right = oldX;
+	                            } else {
+	                                left = oldX;
+	                                right = startX;
+	                            }
 
-							if (startY < oldY) {
-								top = startY;
-								bottom = oldY;
-							} else {
-								top = oldY;
-								bottom = startY;
-							}
-						} else {
-							left = right = startX;
-							top = bottom = startY;
-						}
+	                            if (startY < oldY) {
+	                                top = startY;
+	                                bottom = oldY;
+	                            } else {
+	                                top = oldY;
+	                                bottom = startY;
+	                            }
+	                        } else {
+	                            left = right = startX;
+	                            top = bottom = startY;
+	                        }
 
-						final float widthOffset = mSquareWidth / 2f;
-						final float heightOffset = mSquareHeight / 2f;
+	                        final float widthOffset = mSquareWidth / 2f;
+	                        final float heightOffset = mSquareHeight / 2f;
 
-						invalidateRect.set((int) (left - widthOffset),
-								(int) (top - heightOffset),
-								(int) (right + widthOffset),
-								(int) (bottom + heightOffset));
-					}
+	                        invalidateRect.set((int) (left - widthOffset),
+	                                (int) (top - heightOffset),
+	                                (int) (right + widthOffset),
+	                                (int) (bottom + heightOffset));
+	                    }
 
-					invalidate(invalidateRect);
-				} else {
-					invalidate();
-				}
-			}
-		}
+	                    invalidate(invalidateRect);
+	                } else {
+	                    invalidate();
+	                }
+	            }
+	        }
+	    } catch (Exception e) {
+	        
+	    }
+		
 	}
 
 	private void sendAccessEvent() {
@@ -1324,17 +1330,21 @@ public class LockPatternView extends ViewGroup {
 	@Override
 	protected void onRestoreInstanceState(Parcelable state) {
 	    // AM-432, add protect
-	    if(state instanceof SavedState) {
-	        final SavedState ss = (SavedState) state;
-	        super.onRestoreInstanceState(ss.getSuperState());
-	        setPattern(DisplayMode.Correct,
-	                LockPatternUtils.stringToPattern(ss.getSerializedPattern()));
-	        mPatternDisplayMode = DisplayMode.values()[ss.getDisplayMode()];
-	        mInputEnabled = ss.isInputEnabled();
-	        mInStealthMode = ss.isInStealthMode();
-	        mEnableHapticFeedback = ss.isTactileFeedbackEnabled();
-	    } else {
-	        super.onRestoreInstanceState(state);
+	    try {
+	        if(state instanceof SavedState) {
+	            final SavedState ss = (SavedState) state;
+	            super.onRestoreInstanceState(ss.getSuperState());
+	            setPattern(DisplayMode.Correct,
+	                    LockPatternUtils.stringToPattern(ss.getSerializedPattern()));
+	            mPatternDisplayMode = DisplayMode.values()[ss.getDisplayMode()];
+	            mInputEnabled = ss.isInputEnabled();
+	            mInStealthMode = ss.isInStealthMode();
+	            mEnableHapticFeedback = ss.isTactileFeedbackEnabled();
+	        } else {
+	            super.onRestoreInstanceState(state);
+	        }
+	    } catch (Exception e) {
+	        
 	    }
 	}
 

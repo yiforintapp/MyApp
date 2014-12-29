@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/newyear_act_bg" >
+
+            <ImageView
+                android:id="@+id/iv_act_header"
+                android:layout_width="258dp"
+                android:layout_height="158dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="58dp"
+                android:src="@drawable/newyear_act_header" />
+
+            <TextView
+                android:id="@+id/tv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_act_header"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/newyear_act_info"
+                android:textColor="#7fffffff"
+                android:textSize="12dp" />
+
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="247dp"
+                android:layout_height="46dp"
+                android:layout_below="@id/tv_info"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/phone_number_textbox_bg_selector"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/friend_phone_number"
+                android:singleLine="true"
+                android:textColor="#ffffffff"
+                android:textColorHint="#4cffffff"
+                android:textSize="14dp" >
+
+                <requestFocus />
+            </EditText>
+
+            <LinearLayout
+                android:id="@+id/msg_content"
+                android:layout_width="wrap_content"
+                android:layout_height="162dp"
+                android:layout_below="@id/et_phone"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/img_bt_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/newyear_left" />
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewpager"
+                    android:layout_width="273dp"
+                    android:layout_height="162dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp" />
+
+                <ImageView
+                    android:id="@+id/img_bt_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/newyear_right" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_send_sms"
+                android:layout_width="248dp"
+                android:layout_height="33dp"
+                android:layout_below="@id/msg_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/send_sms_button_selecter"
+                android:text="@string/send_sms"
+                android:textColor="#be4a38"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tv_sms_fee_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_send_sms"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/sms_fee_hint"
+                android:textColor="#ae4939"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@id/tv_sms_fee_hint" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

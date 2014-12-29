@@ -88,7 +88,7 @@ public class SlicingLayer {
 	private AnimationListenerAdapter mOpenAnimationListener = new AnimationListenerAdapter() {
 		@Override
 		public void onAnimationStart(Animation animation) {
-			mBackgroundView.setVisibility(View.INVISIBLE);
+			mBackgroundView.setVisibility(View.GONE);
 			mIsAnimating = true;
 		}
 
@@ -112,6 +112,7 @@ public class SlicingLayer {
 		public void onAnimationEnd(Animation animation) {
 			mIsAnimating = false;
 			mBackgroundView.setVisibility(View.VISIBLE);
+			container.setVisibility(View.GONE);
 			mBackgroundView.setDrawingCacheEnabled(false);
 			mAnchorView.setDrawingCacheEnabled(false);
 			AlphaAnimation aa = new AlphaAnimation(1f, 0f);
@@ -189,8 +190,8 @@ public class SlicingLayer {
 		LeoLog.d("fill ui", " start time = " + startTime);
 		fillUI();
 		LeoLog.d("fill ui", " end time = " + System.currentTimeMillis());
-		LeoLog.d("fill ui",
-				" spend = " + (System.currentTimeMillis() - startTime));
+		LeoLog.d("fill ui", " spend = "
+				+ (System.currentTimeMillis() - startTime));
 		startSlicingAnimation();
 	}
 
@@ -211,8 +212,14 @@ public class SlicingLayer {
 		Bitmap srceen = getScreenBg();
 		mAnchorView.setDrawingCacheEnabled(true);
 		Bitmap anchorBitmap = mAnchorView.getDrawingCache(true);
-		mTopBitmap = Bitmap.createBitmap(srceen, 0, 0, mSrceenwidth,
-				mSlicingLine);
+		int srceenW = srceen.getWidth();
+		int srceenH = srceen.getHeight();
+		int bitmapW = mSrceenwidth > srceenW ? srceenW : mSrceenwidth;
+		int birmapH = mSlicingLine > srceenH ? srceenH : mSlicingLine;
+		if (bitmapW <= 0 || birmapH <= 0) {
+			return;
+		}
+		mTopBitmap = Bitmap.createBitmap(srceen, 0, 0, bitmapW, birmapH);
 		mTopBitmap = createMoveBitmap(mTopBitmap, anchorBitmap, mAnchorLocation);
 		bd = new BitmapDrawable(mContext.getResources(), mTopBitmap);
 		mTopView = mInflater.inflate(R.layout.folder_move_frame, null);
@@ -223,8 +230,14 @@ public class SlicingLayer {
 		container.addView(mTopView, ft);
 
 		// add bottom view
-		mBottomBitmap = Bitmap.createBitmap(srceen, 0, mSlicingLine,
-				mSrceenwidth, mSrceenheight - mSlicingLine);
+		bitmapW = mSrceenwidth > srceenW ? srceenW : mSrceenwidth;
+		birmapH = mSrceenheight > srceenH ? srceenH
+				: (mSrceenheight - mSlicingLine);
+		if (bitmapW <= 0 || birmapH <= 0) {
+			return;
+		}
+		mBottomBitmap = Bitmap.createBitmap(srceen, 0, mSlicingLine, bitmapW,
+				birmapH);
 		mBottomBitmap = createMoveBitmap(mBottomBitmap, null, null);
 		int bottomHeight = mSrceenheight - mSlicingLine;
 		bd = new BitmapDrawable(mContext.getResources(), mBottomBitmap);
@@ -243,17 +256,15 @@ public class SlicingLayer {
 		mBackgroundView.setDrawingCacheEnabled(true);
 		Bitmap srceen = mBackgroundView.getDrawingCache(true);
 		Canvas canvas = new Canvas(srceen);
-		Options o = new Options();
 		Bitmap bg = BitmapFactory.decodeResource(mContext.getResources(),
 				R.drawable.folder_move_bg);
 		Paint paint = new Paint();
-//		paint.setAntiAlias(true);
 		canvas.drawBitmap(bg, 0, 0, paint);
 		return srceen;
 	}
 
 	private void startSlicingAnimation() {
-
+		container.setVisibility(View.VISIBLE);
 		if (mTopViewStop) {
 			// move content view
 			ScaleAnimation sa2 = new ScaleAnimation(1f, 1f, 0f, 1f, 0, 0);
@@ -314,7 +325,7 @@ public class SlicingLayer {
 	private Bitmap createMoveBitmap(Bitmap source, Bitmap anchor, int[] location) {
 		Canvas canvas = new Canvas(source);
 		Paint paint = new Paint();
-//		paint.setAntiAlias(true);
+		// paint.setAntiAlias(true);
 		// canvas.drawARGB(200, 255, 255, 255);
 		if (anchor != null) {
 			canvas.drawBitmap(anchor, location[0], location[1], paint);

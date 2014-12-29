@@ -3,7 +3,6 @@ package com.leo.appmaster.appmanage.view;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.json.JSONObject;
 
@@ -14,24 +13,22 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
-import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity;
-import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.appmanage.business.BusinessJsonParser;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.http.HttpRequestAgent;
@@ -40,6 +37,7 @@ import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.ImageScaleType;
@@ -229,8 +227,8 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 				mLayoutEmptyTip.setVisibility(View.INVISIBLE);
 			}
 			
-			
 			SDKWrapper.addEvent(mActivity, LeoStat.P1, "app_rec", "new");
+			
 		} else {
 			mRecommendGrid.setVisibility(View.INVISIBLE);
 			mErrorView.setVisibility(View.VISIBLE);
@@ -259,7 +257,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			return;
 		mRecommendDatas.clear();
 		mInitLoading = true;
-		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1,
+		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1, 8, 
 				new Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response, boolean noModify) {
@@ -283,8 +281,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 								+ error.getMessage());
 						mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
 						mInitLoading = false;
-						SDKWrapper.addEvent(BusinessAppFragment.this.mActivity,
-								LeoStat.P1, "load_failed", "new_apps");
+						 LoadFailUtils.sendLoadFail(BusinessAppFragment.this.mActivity, "new_apps");
 					}
 				});
 	}
@@ -302,7 +299,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		}
 		
 		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(
-				mCurrentPage + 1, new Listener<JSONObject>() {
+				mCurrentPage + 1, 8, new Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response, boolean noModify) {
 						mCurrentPage++;
@@ -319,8 +316,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
-						SDKWrapper.addEvent(BusinessAppFragment.this.mActivity,
-								LeoStat.P1, "load_failed", "new_apps");
+						 LoadFailUtils.sendLoadFail(BusinessAppFragment.this.mActivity, "new_apps");
 					}
 				});
 	}

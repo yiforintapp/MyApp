@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background" >
+
+    <LinearLayout
+        android:id="@+id/success_lockLT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/success_lockRT"
+        android:background="@drawable/successful_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/successIV"
+            android:layout_width="@dimen/success_lock_imageiv"
+            android:layout_height="@dimen/success_lock_imageiv"
+            android:layout_marginTop="@dimen/sucess_lock_recomment_successicon_top"
+            android:src="@drawable/successful_top_icon" />
+
+        <TextView
+            android:id="@+id/recommentList_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/lock_success"
+            android:textColor="@color/white"
+            android:textSize="19dp" />
+
+        <TextView
+            android:id="@+id/recommentList_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/lcok_success_tip"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+
+        <com.leo.appmaster.ui.PagedGridView
+            android:id="@+id/recomment_pager_unlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/sucess_lock_recomment_pagedgrideview_top"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@id/success_lockRT"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_lock_recomment_bottom"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/success_recomment_lock"
+            android:layout_width="@dimen/default_lock_recomment_bottom_text_width"
+            android:layout_height="@dimen/default_lock_recomment_bottom_text_height"
+            android:layout_marginBottom="0dp"
+            android:gravity="center"
+            android:text="@string/success_finish"
+            android:background="@color/default_lock_down"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</RelativeLayout>

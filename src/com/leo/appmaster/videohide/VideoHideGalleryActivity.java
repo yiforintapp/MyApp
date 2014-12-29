@@ -264,7 +264,9 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             }
         } catch (Exception e) {
         }finally{
-            cursor.close();
+            if(cursor != null) {
+                cursor.close();
+            }
         }
        
         return videoBeans;
@@ -342,31 +344,36 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mShouldLockOnRestart = false;
-        if (data != null) {
-            ArrayList<String> resultPath = (ArrayList<String>) data.getExtras().get("path");
-            if (resultPath != null) {
-                if (resultPath.size() > 0) {
-                    for (int i = 0; i < hideVideos.size(); i++) {
-                        VideoBean bin = hideVideos.get(i);
-                        ArrayList<VideoItemBean> remove = new ArrayList<VideoItemBean>();
-                        for (VideoItemBean itemBean : bin.getBitList()) {
-                            String path = itemBean.getPath();
-                            if (resultPath.contains(path)) {
-                                remove.add(itemBean);
+        if (data != null && hideVideos != null) {
+            Bundle bundle = data.getExtras();
+            if(bundle != null) {
+                ArrayList<String> resultPath = (ArrayList<String>) bundle.get("path");
+                if (resultPath != null) {
+                    if (resultPath.size() > 0) {
+                        for (int i = 0; i < hideVideos.size(); i++) {
+                            VideoBean bin = hideVideos.get(i);
+                            ArrayList<VideoItemBean> remove = new ArrayList<VideoItemBean>();
+                            for (VideoItemBean itemBean : bin.getBitList()) {
+                                String path = itemBean.getPath();
+                                if (resultPath.contains(path)) {
+                                    remove.add(itemBean);
+                                }
+                            }
+                            bin.getBitList().removeAll(remove);
+
+                            try {
+                                if (bin.getBitList().size() <= 0) {
+                                    hideVideos.remove(bin);
+                                }
+                            } catch (Exception e) {
                             }
                         }
-                        bin.getBitList().removeAll(remove);
 
-                        try {
-                            if (bin.getBitList().size() <= 0) {
-                                hideVideos.remove(bin);
-                            }
-                        } catch (Exception e) {
+                        Collections.sort(hideVideos, folderamparator);
+                        if(adapter != null) {
+                            adapter.notifyDataSetChanged();
                         }
                     }
-
-                    Collections.sort(hideVideos, folderamparator);
-                    adapter.notifyDataSetChanged();
                 }
             }
         }

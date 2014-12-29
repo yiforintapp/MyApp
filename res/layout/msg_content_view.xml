@@ -1,0 +1,66 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="265dp"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/newyear_act_poster" />
+
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="45dp"
+        android:text="msgmsgmsg"
+        android:textColor="#be4a38"
+        android:textSize="14dp" />
+
+    <EditText
+        android:id="@+id/ed_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="39dp"
+        android:layout_marginRight="38dp"
+        android:layout_marginTop="45dp"
+        android:hint="@string/wish_custom"
+        android:background="@null"
+        android:ems="20"
+        android:textColor="#be4a38"
+        android:textColorHint="#55000000"
+        android:textSize="14dp"
+        android:visibility="gone" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/tv_msg_tishi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="115dp"
+        android:text="1/10"
+        android:textSize="14dp"
+        android:textColor="#be4a38" />
+
+    <TextView
+        android:id="@+id/tv_tishi_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="115dp"
+        android:text="~~~~~~~~~~~"
+        android:textSize="12dp"
+        android:textColor="#dddddd" 
+        android:visibility="gone"
+        />
+
+</FrameLayout>

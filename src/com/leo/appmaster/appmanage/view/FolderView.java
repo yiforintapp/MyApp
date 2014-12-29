@@ -3,15 +3,6 @@ package com.leo.appmaster.appmanage.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.appmanage.AppListActivity;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BusinessItemInfo;
-import com.leo.appmaster.model.FolderItemInfo;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leoers.leoanalytics.LeoStat;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -20,22 +11,31 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.AppListActivity;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BusinessItemInfo;
+import com.leo.appmaster.model.FolderItemInfo;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.LeoAppViewPager;
+import com.leoers.leoanalytics.LeoStat;
 
 public class FolderView extends RelativeLayout implements OnClickListener,
-		OnItemSelectedListener, OnPageChangeListener {
+		OnItemSelectedListener, LeoAppViewPager.OnPageChangeListener {
 
 	public static class ItemHolder {
 		public String itmeTitle;
@@ -50,7 +50,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	private LayoutInflater mInlater;
 	private View mBackView;
 	private FolderTitleGallery mTitleCoverFlowView;
-	private ViewPager mViewPager;
+	private LeoAppViewPager mViewPager;
 	private ArrayList<String> mItemTitles;
 	private TitleAdapter mTitleAdapter;
 	private int mCurPosition;
@@ -128,7 +128,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		mFragmentList.add(businessFragment);
 		mPagerAdapter = new FolderPagerAdapter(fm);
 
-		mViewPager = (ViewPager) findViewById(R.id.folder_pager);
+		mViewPager = (LeoAppViewPager) findViewById(R.id.folder_pager);
 		mViewPager.setOffscreenPageLimit(3);
 		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setOnPageChangeListener(this);
@@ -274,14 +274,22 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 	@Override
 	public void onPageSelected(int arg0) {
+	    mViewPager.interceptVerticalEvent(true);
 		if (arg0 == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
 			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_restore", "glide");
 		} else if (arg0 == FolderItemInfo.FOLDER_FLOW_SORT) {
 			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_liuliang", "glide");
+            if (AppBusinessManager.getInstance(mContext).hasBusinessData(BusinessItemInfo.CONTAIN_FLOW_SORT)) {
+                SDKWrapper.addEvent(mContext, LeoStat.P1, "app_rec", "flow");
+            }
 		} else if (arg0 == FolderItemInfo.FOLDER_CAPACITY_SORT) {
 			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_space", "glide");
+            if (AppBusinessManager.getInstance(mContext).hasBusinessData(BusinessItemInfo.CONTAIN_CAPACITY_SORT)) {
+                SDKWrapper.addEvent(mContext, LeoStat.P1, "app_rec", "capacity");
+            }
 		} else if (arg0 == FolderItemInfo.FOLDER_BUSINESS_APP) {
 			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_newapp", "glide");
+			mViewPager.interceptVerticalEvent(false);
 		}
 
 		if (arg0 == 3) {

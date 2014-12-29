@@ -79,9 +79,11 @@ public class FileOperationUtil {
     }
 
     public static String getDirPathFromFilepath(String filepath) {
-        int pos = filepath.lastIndexOf('/');
-        if (pos != -1) {
-            return filepath.substring(0, pos);
+        if(filepath != null) {
+            int pos = filepath.lastIndexOf('/');
+            if (pos != -1) {
+                return filepath.substring(0, pos);
+            }
         }
         return "";
     }

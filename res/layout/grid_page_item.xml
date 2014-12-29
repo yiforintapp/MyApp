@@ -6,10 +6,9 @@
     android:layout_height="wrap_content"
     android:horizontalSpacing="3dp"
     android:paddingTop="5dp" 
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
+    android:layout_marginLeft="@dimen/grid_page_item_layout_marginLeft"
+    android:layout_marginRight="@dimen/grid_page_item_layout_marginRight"
     android:listSelector="@drawable/selector_app_item"
     android:verticalSpacing="@dimen/gridview_vertical_spacing"  
     android:numColumns="4">
-
 </GridView>

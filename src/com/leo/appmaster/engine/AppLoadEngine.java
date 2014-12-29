@@ -39,6 +39,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.fragment.LockFragment;
@@ -565,24 +566,29 @@ public class AppLoadEngine extends BroadcastReceiver {
 									.getInstance(mContext);
 							Intent intent = null;
 							if (which == 0) {
-								List<String> lockList = new ArrayList<String>(
-										pre.getLockedAppList());
-								lockList.add(packageName);
-								pre.setLockedAppList(lockList);
 
 								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-									intent = new Intent(mContext,
-											LockSettingActivity.class);
-									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-									mContext.startActivity(intent);
+								    intent = new Intent(mContext, RecommentAppLockListActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("install_lockApp", packageName);
+                                    mContext.startActivity(intent);
+								}else{
+	                              List<String> lockList = new ArrayList<String>(
+                                  pre.getLockedAppList());
+                          lockList.add(packageName);
+                          pre.setLockedAppList(lockList);
 								}
 							} else if (which == 1) {
 								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-									intent = new Intent(mContext,
-											LockSettingActivity.class);
-									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-									mContext.startActivity(intent);
+								    intent = new Intent(mContext,RecommentAppLockListActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("install_lockApp", packageName);
+                                    mContext.startActivity(intent);
 								} else {
+								    List<String> lockList = new ArrayList<String>(
+			                                  pre.getLockedAppList());
+			                          lockList.add(packageName);
+			                          pre.setLockedAppList(lockList);
 									intent = new Intent(mContext,
 											LockScreenActivity.class);
 									intent.putExtra(
@@ -603,7 +609,6 @@ public class AppLoadEngine extends BroadcastReceiver {
 									intent.putExtra(
 											LockScreenActivity.EXTRA_UNLOCK_FROM,
 											LockFragment.FROM_SELF_HOME);
-
 									mContext.startActivity(intent);
 								}
 								SDKWrapper.addEvent(mContext, LeoStat.P1,
@@ -613,6 +618,11 @@ public class AppLoadEngine extends BroadcastReceiver {
 
 							}
 						}
+
+                        private void startActivity(Intent intentHome) {
+                            // TODO Auto-generated method stub
+                            
+                        }
 					});
 					dialog.getWindow().setType(
 							WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
