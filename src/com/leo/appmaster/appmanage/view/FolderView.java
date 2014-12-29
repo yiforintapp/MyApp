@@ -315,7 +315,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 							.get(3);
 					ba.loadInitBusinessData();
 				}
-			}, 800);
+			}, 1200);
 
 		}
 

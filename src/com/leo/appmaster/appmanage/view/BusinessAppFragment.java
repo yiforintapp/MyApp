@@ -1,11 +1,13 @@
 package com.leo.appmaster.appmanage.view;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -40,7 +42,10 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.BitmapDisplayer;
+import com.leo.imageloader.core.ImageAware;
 import com.leo.imageloader.core.ImageScaleType;
+import com.leo.imageloader.core.LoadedFrom;
 import com.leoers.leoanalytics.LeoStat;
 
 public class BusinessAppFragment extends BaseFolderFragment implements
@@ -65,6 +70,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	private boolean mInitLoading;
 	private boolean mInitDataLoadFinish;
 	private boolean mHaveInitData;
+	private ImageLoader mImageLoader;
 
 	private static class EventHandler extends Handler {
 		WeakReference<BusinessAppFragment> fragmemtHolder;
@@ -120,9 +126,17 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 		commonOption = new DisplayImageOptions.Builder()
 				.imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
 				.showImageOnLoading(R.drawable.recommend_loading_icon)
-				.showImageOnFail(R.drawable.recommend_loading_icon)
-				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
-				.build();
+				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
+				.cacheOnDisk(true).displayer(new BitmapDisplayer() {
+					@Override
+					public void display(Bitmap bitmap, ImageAware imageAware,
+							LoadedFrom loadedFrom) {
+						imageAware.setImageBitmap(bitmap);
+						mRecommendAdapter.notifyDataSetChanged();
+					}
+				}).build();
+
+		mImageLoader = ImageLoader.getInstance();
 
 		mHandler = new EventHandler(this);
 		mInflater = LayoutInflater.from(mActivity);
@@ -226,9 +240,9 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 				mHaveInitData = true;
 				mLayoutEmptyTip.setVisibility(View.INVISIBLE);
 			}
-			
+
 			SDKWrapper.addEvent(mActivity, LeoStat.P1, "app_rec", "new");
-			
+
 		} else {
 			mRecommendGrid.setVisibility(View.INVISIBLE);
 			mErrorView.setVisibility(View.VISIBLE);
@@ -257,7 +271,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			return;
 		mRecommendDatas.clear();
 		mInitLoading = true;
-		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1, 8, 
+		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1, 8,
 				new Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response, boolean noModify) {
@@ -281,23 +295,24 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 								+ error.getMessage());
 						mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
 						mInitLoading = false;
-						 LoadFailUtils.sendLoadFail(BusinessAppFragment.this.mActivity, "new_apps");
+						LoadFailUtils.sendLoadFail(
+								BusinessAppFragment.this.mActivity, "new_apps");
 					}
 				});
 	}
 
 	private void loadMoreBusiness() {
-		
-		if(mInitLoading){
+
+		if (mInitLoading) {
 			mRecommendGrid.onRefreshComplete();
 			return;
 		}
-		
-		if(mInitDataLoadFinish && !mHaveInitData) {
+
+		if (mInitDataLoadFinish && !mHaveInitData) {
 			loadInitBusinessData();
 			return;
 		}
-		
+
 		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(
 				mCurrentPage + 1, 8, new Listener<JSONObject>() {
 					@Override
@@ -316,7 +331,8 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
-						 LoadFailUtils.sendLoadFail(BusinessAppFragment.this.mActivity, "new_apps");
+						LoadFailUtils.sendLoadFail(
+								BusinessAppFragment.this.mActivity, "new_apps");
 					}
 				});
 	}
@@ -391,8 +407,9 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			TextView textView = (TextView) convertView
 					.findViewById(R.id.tv_app_name);
 			BusinessItemInfo info = mRecommendDatas.get(position);
-			ImageLoader.getInstance().displayImage(info.iconUrl, imageView,
-					commonOption);
+			File bimtap = mImageLoader.getDiskCache().get(info.iconUrl);
+
+			mImageLoader.displayImage(info.iconUrl, imageView, commonOption);
 			textView.setText(info.label);
 			convertView.setTag(info);
 			return convertView;

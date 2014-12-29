@@ -159,7 +159,7 @@ public class AppMasterApplication extends Application implements
 				.threadPoolSize(Constants.MAX_THREAD_POOL_SIZE)
 				.threadPriority(Thread.NORM_PRIORITY - 2)
 				.memoryCacheSizePercentage(12)
-				.diskCacheSize(Constants.MAX_DISK_CACHE_SIZE) // 50 Mb
+				.diskCacheSize(Constants.MAX_DISK_CACHE_SIZE) // 100 Mb
 				.denyCacheImageMultipleSizesInMemory().build();
 		ImageLoader.getInstance().init(config);
 	}
