@@ -64,9 +64,11 @@ import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.imageloader.ImageLoader;
 import com.leoers.leoanalytics.LeoStat;
 
-@SuppressLint("Override") public class AppListActivity extends BaseFragmentActivity implements
+@SuppressLint("Override")
+public class AppListActivity extends BaseFragmentActivity implements
 		AppChangeListener, OnClickListener, AppBackupDataListener,
 		OnPageChangeListener {
 
@@ -190,7 +192,7 @@ import com.leoers.leoanalytics.LeoStat;
 		if (mSlicingLayer.isAnimating() || mSlicingLayer.isSlicinged())
 			return;
 		mSclingBgView = mContainer;
-//		mSclingBgView = mAllAppList;
+		// mSclingBgView = mAllAppList;
 
 		if (!(view.getTag() instanceof AppItemInfo))
 			return;
@@ -350,6 +352,9 @@ import com.leoers.leoanalytics.LeoStat;
 			mProgressDialog = null;
 		}
 
+		// optimize imagelaoder,here we remove cache app icon in memory
+		ImageLoader.getInstance().clearMemoryCache();
+		
 	}
 
 	private void initUI() {
