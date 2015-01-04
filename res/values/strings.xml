@@ -291,8 +291,4 @@
     <string name="lock_success">Lock successfully!</string>
     <string name="lcok_success_tip">Selected Apps were successfully locked.</string>
     <string name="success_finish">Finish</string>
-    
-    <string name="app_lock_theme">App Lock Theme</string>
-    
-    <string name="file_trans">文件传输</string>
 </resources>

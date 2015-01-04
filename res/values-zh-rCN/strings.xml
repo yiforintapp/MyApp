@@ -303,7 +303,4 @@
     <string name="lock_success">加锁成功！</string>
     <string name="lcok_success_tip">您选择的应用已加锁</string>
     <string name="success_finish">完成</string>
-    
-    <string name="app_lock_theme">应用锁主题</string>
-    <string name="file_trans">文件传输</string>
 </resources>

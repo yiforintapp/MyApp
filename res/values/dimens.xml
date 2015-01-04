@@ -45,8 +45,7 @@
     <dimen name="indicator_internal_padding">4dp</dimen>
     <dimen name="header_footer_left_right_padding">24dp</dimen>
     <dimen name="header_footer_top_bottom_padding">12dp</dimen>
-    <dimen name="home_bottom_height">280dp</dimen>
-    <dimen name="home_bottom_item_height">92dp</dimen>
+    <dimen name="home_bottom_height">220dp</dimen>
     <dimen name="home_hide_issues_height">64dp</dimen>
     <dimen name="home_hide_issues_padding_bottom">20dp</dimen>
     <dimen name="circle_count_text_size">74dp</dimen>
