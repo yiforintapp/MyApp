@@ -400,6 +400,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 		List<AppItemInfo> list = AppLoadEngine.getInstance(this)
 				.getAllPkgInfo();
 		for (AppItemInfo appItemInfo : list) {
+			if (appItemInfo.packageName.equals(this.getPackageName()))
+				continue;
+
 			if (!appItemInfo.systemApp)
 				mAppDetails.add(appItemInfo);
 		}

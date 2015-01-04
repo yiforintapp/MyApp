@@ -175,8 +175,8 @@ public class AppLockListActivity extends BaseActivity implements
 		List<String> lockList = AppMasterPreference.getInstance(this)
 				.getLockedAppList();
 		for (AppItemInfo appDetailInfo : list) {
-			if (appDetailInfo.packageName.equals(this.getPackageName()))
-				continue;
+//			if (appDetailInfo.packageName.equals(this.getPackageName()))
+//				continue;
 			if (lockList.contains(appDetailInfo.packageName)) {
 				appDetailInfo.isLocked = true;
 				mLockedList.add(appDetailInfo);
