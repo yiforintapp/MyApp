@@ -97,14 +97,14 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		fillTitle();
 
 		// add four fragment
+		BaseFolderFragment businessFragment = new BusinessAppFragment();
+		businessFragment.setType(BaseFolderFragment.FOLER_TYPE_RECOMMEND);
 		BaseFolderFragment backupFragment = new CommonFolderFragment();
 		backupFragment.setType(BaseFolderFragment.FOLER_TYPE_BACKUP);
 		BaseFolderFragment flowFragment = new CommonFolderFragment();
 		flowFragment.setType(BaseFolderFragment.FOLER_TYPE_FLOW);
 		BaseFolderFragment capacityFragment = new CommonFolderFragment();
 		capacityFragment.setType(BaseFolderFragment.FOLER_TYPE_CAPACITY);
-		BaseFolderFragment businessFragment = new BusinessAppFragment();
-		businessFragment.setType(BaseFolderFragment.FOLER_TYPE_RECOMMEND);
 
 		FragmentManager fm = ((FragmentActivity) mContext)
 				.getSupportFragmentManager();
@@ -122,10 +122,11 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 		}
 
+		mFragmentList.add(businessFragment);
 		mFragmentList.add(backupFragment);
 		mFragmentList.add(flowFragment);
 		mFragmentList.add(capacityFragment);
-		mFragmentList.add(businessFragment);
+		
 		mPagerAdapter = new FolderPagerAdapter(fm);
 
 		mViewPager = (LeoAppViewPager) findViewById(R.id.folder_pager);
@@ -146,6 +147,16 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		ItemHolder item;
 		ImageView iv;
 
+		item = new ItemHolder();
+		item.itmeTitle = mContext.getString(R.string.folder_recommend);
+		iv = new ImageView(mContext);
+		iv.setLayoutParams(new LeoHomeGallery.LayoutParams(
+				LeoHomeGallery.LayoutParams.MATCH_PARENT,
+				LeoHomeGallery.LayoutParams.MATCH_PARENT));
+		iv.setImageResource(R.drawable.ic_launcher);
+		item.pagerView = iv;
+		holder.add(item);
+		
 		item = new ItemHolder();
 		item.itmeTitle = mContext.getString(R.string.folder_backup_restore);
 		iv = new ImageView(mContext);
@@ -176,15 +187,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		item.pagerView = iv;
 		holder.add(item);
 
-		item = new ItemHolder();
-		item.itmeTitle = mContext.getString(R.string.folder_recommend);
-		iv = new ImageView(mContext);
-		iv.setLayoutParams(new LeoHomeGallery.LayoutParams(
-				LeoHomeGallery.LayoutParams.MATCH_PARENT,
-				LeoHomeGallery.LayoutParams.MATCH_PARENT));
-		iv.setImageResource(R.drawable.ic_launcher);
-		item.pagerView = iv;
-		holder.add(item);
+		
 		if (holder != null) {
 			mItemTitles.clear();
 			for (ItemHolder itemHolder : holder) {
@@ -292,7 +295,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 			mViewPager.interceptVerticalEvent(false);
 		}
 
-		if (arg0 == 3) {
+		if (arg0 == 0) {
 			AppMasterPreference pref = AppMasterPreference
 					.getInstance(mContext);
 			String online = pref.getOnlineBusinessSerialNumber();
@@ -312,7 +315,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 				@Override
 				public void run() {
 					BusinessAppFragment ba = (BusinessAppFragment) mFragmentList
-							.get(3);
+							.get(0);
 					ba.loadInitBusinessData();
 				}
 			}, 1200);

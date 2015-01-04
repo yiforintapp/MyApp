@@ -150,7 +150,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
      */
     private List<PhotoAibum> getHidePhotoAlbum(Context context) {
         List<PhotoAibum> aibumList = new ArrayList<PhotoAibum>();
-        Uri uri = Files.getContentUri( "external");
+        Uri uri = Files.getContentUri("external");
         String selection = MediaColumns.DATA + " LIKE '%.leotmp'";
         
         Cursor cursor = getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null, MediaColumns.DATE_ADDED + " desc");

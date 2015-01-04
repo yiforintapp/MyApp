@@ -354,7 +354,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 		// optimize imagelaoder,here we remove cache app icon in memory
 		ImageLoader.getInstance().clearMemoryCache();
-		
+
 	}
 
 	private void initUI() {
@@ -485,6 +485,14 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	private void loadFolderItems() {
 		FolderItemInfo folder = null;
+		// add business app folder
+		folder = new FolderItemInfo();
+		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
+		folder.folderType = FolderItemInfo.FOLDER_BUSINESS_APP;
+		folder.icon = Utilities.getFolderScalePicture(this, null,
+				FolderItemInfo.FOLDER_BUSINESS_APP);
+		folder.label = getString(R.string.folder_recommend);
+		mFolderItems.add(folder);
 		// add restore folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
@@ -508,14 +516,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 		folder.icon = Utilities.getFolderScalePicture(this,
 				mCapacityFolderData, FolderItemInfo.FOLDER_CAPACITY_SORT);
 		folder.label = getString(R.string.folder_sort_capacity);
-		mFolderItems.add(folder);
-		// add business app folder
-		folder = new FolderItemInfo();
-		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
-		folder.folderType = FolderItemInfo.FOLDER_BUSINESS_APP;
-		folder.icon = Utilities.getFolderScalePicture(this, null,
-				FolderItemInfo.FOLDER_BUSINESS_APP);
-		folder.label = getString(R.string.folder_recommend);
 		mFolderItems.add(folder);
 	}
 
