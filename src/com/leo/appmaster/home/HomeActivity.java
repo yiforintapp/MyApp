@@ -2,7 +2,6 @@ package com.leo.appmaster.home;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -31,7 +30,6 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.appmanage.AppListActivity;
-import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
 import com.leo.appmaster.feedback.FeedbackActivity;
@@ -39,7 +37,6 @@ import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
-import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.sdk.MainViewActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -61,6 +58,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener {
 	private View mVideoHide;
 	private View mLockTheme;
 	private View mFileTransfer;
+	
+	private View mOptionImage;
 
 	private CommonTitleBar mTtileBar;
 
@@ -196,6 +195,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener {
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 
+		mOptionImage = mTtileBar.findViewById(R.id.image1);
+		mOptionImage.setVisibility(View.INVISIBLE);
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
 		mTtileBar.setOptionImageVisibility(View.VISIBLE);
