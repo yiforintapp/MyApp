@@ -12,23 +12,16 @@ import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Paint.FontMetrics;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
-import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -41,13 +34,11 @@ import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
-import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.sdk.MainViewActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -60,8 +51,7 @@ import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.imageloader.utils.HideFileUtils;
 import com.leoers.leoanalytics.LeoStat;
 
-public class HomeActivity extends MainViewActivity implements OnClickListener,
-		OnTouchListener {
+public class HomeActivity extends MainViewActivity implements OnClickListener {
 
 	private final static String KEY_ROOT_CHECK = "root_check";
 	public final static String KEY_PLAY_ANIM = "play_anim";
@@ -69,36 +59,23 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	private View mAppLock;
 	private View mAppBackup;
 	private View mVideoHide;
-
-	private View mPressedEffect1;
-	private View mPressedEffect2;
+	private View mLockTheme;
+	private View mFileTransfer;
 
 	private CommonTitleBar mTtileBar;
 
 	private LeoPopMenu mLeoPopMenu;
-	private ImageView spiner;
-	private String themeHome;
-	private SharedPreferences mySharedPreferences;
-	private boolean mNewTheme;
 
-	private TextView mHidePic;
-	private TextView mHideVideo;
-	private TextView mHidePicText;
-	private TextView mHideVideoText;
 	private CircleAnimView mAnimView;
 
 	private Handler mHandler = new Handler();
 
 	private boolean mIsUpdating = false;
-	
-	private int mLastHiddenPicCount = -1;
-	private int mLastHiddenVideoCount = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		spiner = (ImageView) findViewById(R.id.image1);
 		initUI();
 		Intent intent = getIntent();
 		if (intent.getBooleanExtra(KEY_PLAY_ANIM, false)) {
@@ -111,7 +88,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		FeedbackHelper.getInstance().tryCommit();
 		installShortcut();
 
-		// Root chack
+		// Root check
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 		if (sp.getBoolean(KEY_ROOT_CHECK, true)) {
@@ -201,14 +178,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	}
 
 	private void initUI() {
-		mHidePic = (TextView) findViewById(R.id.hide_pic_icon);
-		mHidePic.setOnClickListener(this);
-		mHideVideo = (TextView) findViewById(R.id.hide_video_icon);
-		mHideVideo.setOnClickListener(this);
-		mHidePicText = (TextView) findViewById(R.id.hide_pic_text);
-		mHidePicText.setOnClickListener(this);
-		mHideVideoText = (TextView) findViewById(R.id.hide_video_text);
-		mHideVideoText.setOnClickListener(this);
 
 		mAnimView = (CircleAnimView) findViewById(R.id.lock_circle_view);
 		mAnimView.setOnClickListener(this);
@@ -216,19 +185,16 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mAppLock = findViewById(R.id.tv_app_lock);
 		mAppBackup = findViewById(R.id.tv_app_backup);
 		mVideoHide = findViewById(R.id.tv_video_hide);
+		mLockTheme = findViewById(R.id.tv_app_lock_theme);
+		mFileTransfer = findViewById(R.id.tv_file_trans);
 		mPictureHide.setOnClickListener(this);
 		mAppLock.setOnClickListener(this);
-		mVideoHide.setOnTouchListener(this);
-		mAppLock.setOnTouchListener(this);
 		mAppBackup.setOnClickListener(this);
 		mVideoHide.setOnClickListener(this);
-
-		mPressedEffect1 = findViewById(R.id.pressed_effect1);
-		mPressedEffect2 = findViewById(R.id.pressed_effect2);
+		mLockTheme.setOnClickListener(this);
+		mFileTransfer.setOnClickListener(this);
 
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		mySharedPreferences = getSharedPreferences("LockerThemeHome",
-				HomeActivity.this.MODE_WORLD_WRITEABLE);
 
 		mTtileBar.setTitle(R.string.app_name);
 		mTtileBar.setBackArrowVisibility(View.GONE);
@@ -239,31 +205,21 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mTtileBar.setSpinerVibility(View.VISIBLE);
 		mTtileBar.setSpinerListener(this);
 		mTtileBar.showLogo();
-		spiner = (ImageView) findViewById(R.id.image1);
-		spiner.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				Intent intent = new Intent(HomeActivity.this, LockerTheme.class);
-				startActivityForResult(intent, 0);
-				SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
-						"theme_enter", "home");
-			}
-		});
 	}
 
 	@Override
 	protected void onResume() {
-		AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		// AppMasterPreference pref = AppMasterPreference.getInstance(this);
 
-		mNewTheme = !pref.getLocalThemeSerialNumber().equals(
-				pref.getOnlineThemeSerialNumber());
-		if (mNewTheme) {
-			spiner.setImageDrawable(this.getResources().getDrawable(
-					R.drawable.themetip_spiner_press));
-		} else {
-			spiner.setImageDrawable(this.getResources().getDrawable(
-					R.drawable.theme_spiner_press));
-		}
+		// mNewTheme = !pref.getLocalThemeSerialNumber().equals(
+		// pref.getOnlineThemeSerialNumber());
+		// if (mNewTheme) {
+		// spiner.setImageDrawable(this.getResources().getDrawable(
+		// R.drawable.themetip_spiner_press));
+		// } else {
+		// spiner.setImageDrawable(this.getResources().getDrawable(
+		// R.drawable.theme_spiner_press));
+		// }
 
 		updateSettingIcon();
 
@@ -294,8 +250,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 					mHandler.post(new Runnable() {
 						@Override
 						public void run() {
-							updateHidePicCount(picSize);
-							updateHideVideoCount(videoSize);
+							// updateHidePicCount(picSize);
+							// updateHideVideoCount(videoSize);
 							mIsUpdating = false;
 						}
 					});
@@ -304,79 +260,81 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		}
 	}
 
-	private void updateHidePicCount(int count) {
-		if (mHidePic != null && mHidePicText != null) {
-		    if(mLastHiddenPicCount != count) {
-		        mLastHiddenPicCount = count;
-		        if (count > 0) {
-	                FontMetrics fm = mHidePic.getPaint().getFontMetrics();
-	                int textH = (int) Math.ceil(fm.descent - fm.ascent) * 2 / 3;
-	                Drawable iconPic = getResources().getDrawable(
-	                        R.drawable.home_photo_icon);
-	                int width = (int) (iconPic.getIntrinsicWidth() * (((float) textH) / iconPic
-	                        .getIntrinsicHeight()));
+	// private void updateHidePicCount(int count) {
+	// if (mHidePic != null && mHidePicText != null) {
+	// if(mLastHiddenPicCount != count) {
+	// mLastHiddenPicCount = count;
+	// if (count > 0) {
+	// FontMetrics fm = mHidePic.getPaint().getFontMetrics();
+	// int textH = (int) Math.ceil(fm.descent - fm.ascent) * 2 / 3;
+	// Drawable iconPic = getResources().getDrawable(
+	// R.drawable.home_photo_icon);
+	// int width = (int) (iconPic.getIntrinsicWidth() * (((float) textH) /
+	// iconPic
+	// .getIntrinsicHeight()));
+	//
+	// iconPic.setBounds(0, 0, width, textH);
+	// mHidePic.setText(String.valueOf(count));
+	// mHidePic.setCompoundDrawables(null, null, iconPic, null);
+	// mHidePicText.setText(R.string.hide_pic_text);
+	// } else {
+	// Drawable iconPic = getResources().getDrawable(
+	// R.drawable.home_photo_empty_icon);
+	// int padding = getResources().getDimensionPixelSize(
+	// R.dimen.hide_empty_icon_padding);
+	// int width = iconPic.getIntrinsicWidth();
+	// int height = iconPic.getIntrinsicHeight();
+	// int viewH = mHidePic.getHeight() - 2 * padding;
+	// if (viewH > 0 && height > viewH) {
+	// width = (int) (width * (((float) viewH) / height));
+	// height = viewH;
+	// }
+	// iconPic.setBounds(0, 0, width, height);
+	// mHidePic.setText("");
+	// mHidePic.setCompoundDrawables(null, null, iconPic, null);
+	// mHidePicText.setText(R.string.hide_pic_empty_text);
+	// }
+	// }
+	//
+	// }
+	// }
 
-	                iconPic.setBounds(0, 0, width, textH);
-	                mHidePic.setText(String.valueOf(count));
-	                mHidePic.setCompoundDrawables(null, null, iconPic, null);
-	                mHidePicText.setText(R.string.hide_pic_text);
-	            } else {
-	                Drawable iconPic = getResources().getDrawable(
-	                        R.drawable.home_photo_empty_icon);
-	                int padding = getResources().getDimensionPixelSize(
-	                        R.dimen.hide_empty_icon_padding);
-	                int width = iconPic.getIntrinsicWidth();
-	                int height = iconPic.getIntrinsicHeight();
-	                int viewH = mHidePic.getHeight() - 2 * padding;
-	                if (viewH > 0 && height > viewH) {
-	                    width = (int) (width * (((float) viewH) / height));
-	                    height = viewH;
-	                }
-	                iconPic.setBounds(0, 0, width, height);
-	                mHidePic.setText("");
-	                mHidePic.setCompoundDrawables(null, null, iconPic, null);
-	                mHidePicText.setText(R.string.hide_pic_empty_text);
-	            }
-		    }
-			
-		}
-	}
-
-	private void updateHideVideoCount(int count) {
-		if (mHideVideo != null && mHideVideoText != null) {
-            if(mLastHiddenVideoCount != count) {
-                mLastHiddenVideoCount = count;
-                if (count > 0) {
-                    FontMetrics fm = mHideVideo.getPaint().getFontMetrics();
-                    int textH = (int) Math.ceil(fm.descent - fm.ascent) * 2 / 3;
-                    Drawable iconVideo = getResources().getDrawable(
-                            R.drawable.home_video_icon);
-                    int width = (int) (iconVideo.getIntrinsicWidth() * (((float) textH) / iconVideo
-                            .getIntrinsicHeight()));
-                    iconVideo.setBounds(0, 0, width, textH);
-                    mHideVideo.setText(String.valueOf(count));
-                    mHideVideo.setCompoundDrawables(null, null, iconVideo, null);
-                    mHideVideoText.setText(R.string.hide_video_text);
-                } else {
-                    Drawable iconVideo = getResources().getDrawable(
-                            R.drawable.home_video_empty_icon);
-                    int padding = getResources().getDimensionPixelSize(
-                            R.dimen.hide_empty_icon_padding);
-                    int width = iconVideo.getIntrinsicWidth();
-                    int height = iconVideo.getIntrinsicHeight();
-                    int viewH = mHideVideo.getHeight() - 2 * padding;
-                    if (viewH > 0 && height > viewH) {
-                        width = (int) (width * (((float) viewH) / height));
-                        height = viewH;
-                    }
-                    iconVideo.setBounds(0, 0, width, height);
-                    mHideVideo.setText("");
-                    mHideVideo.setCompoundDrawables(null, null, iconVideo, null);
-                    mHideVideoText.setText(R.string.hide_video_empty_text);
-                }
-            }		
-		}
-	}
+	// private void updateHideVideoCount(int count) {
+	// if (mHideVideo != null && mHideVideoText != null) {
+	// if(mLastHiddenVideoCount != count) {
+	// mLastHiddenVideoCount = count;
+	// if (count > 0) {
+	// FontMetrics fm = mHideVideo.getPaint().getFontMetrics();
+	// int textH = (int) Math.ceil(fm.descent - fm.ascent) * 2 / 3;
+	// Drawable iconVideo = getResources().getDrawable(
+	// R.drawable.home_video_icon);
+	// int width = (int) (iconVideo.getIntrinsicWidth() * (((float) textH) /
+	// iconVideo
+	// .getIntrinsicHeight()));
+	// iconVideo.setBounds(0, 0, width, textH);
+	// mHideVideo.setText(String.valueOf(count));
+	// mHideVideo.setCompoundDrawables(null, null, iconVideo, null);
+	// mHideVideoText.setText(R.string.hide_video_text);
+	// } else {
+	// Drawable iconVideo = getResources().getDrawable(
+	// R.drawable.home_video_empty_icon);
+	// int padding = getResources().getDimensionPixelSize(
+	// R.dimen.hide_empty_icon_padding);
+	// int width = iconVideo.getIntrinsicWidth();
+	// int height = iconVideo.getIntrinsicHeight();
+	// int viewH = mHideVideo.getHeight() - 2 * padding;
+	// if (viewH > 0 && height > viewH) {
+	// width = (int) (width * (((float) viewH) / height));
+	// height = viewH;
+	// }
+	// iconVideo.setBounds(0, 0, width, height);
+	// mHideVideo.setText("");
+	// mHideVideo.setCompoundDrawables(null, null, iconVideo, null);
+	// mHideVideoText.setText(R.string.hide_video_empty_text);
+	// }
+	// }
+	// }
+	// }
 
 	@Override
 	public void onOptionsMenuClosed(Menu menu) {
@@ -392,23 +350,29 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		case R.id.top_layout:
 			break;
 		case R.id.tv_picture_hide:
-		    gotoHidePic();
-	        break;
+			gotoHidePic();
+			break;
 		case R.id.tv_app_lock:
-		    gotoAppLock();
+			gotoAppLock();
 			break;
 		case R.id.tv_app_backup:
 			SDKWrapper.addEvent(this, LeoStat.P1, "home", "backup");
 
-			Vector<BusinessItemInfo> list = AppBusinessManager
-					.getInstance(this).getBusinessData();
+			// Vector<BusinessItemInfo> list = AppBusinessManager
+			// .getInstance(this).getBusinessData();
 
 			// intent = new Intent(this, AppBackupRestoreActivity.class);
 			intent = new Intent(this, AppListActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.tv_video_hide:
-		    gotoHideVideo();
+			gotoHideVideo();
+			break;
+		case R.id.tv_app_lock_theme:
+			gotoLockTheme();
+			break;
+		case R.id.tv_file_trans:
+			gotoFileTransfer();
 			break;
 		case R.id.tv_option_image:
 			// track: home - show setting popup window
@@ -422,38 +386,38 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-					    if(position == 0){
-					        if (AppUtil.appInstalled(getApplicationContext(),
-                                    "com.android.vending")) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                Uri uri = Uri
-                                        .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-                                intent.setData(uri);
-                                ComponentName cn = new ComponentName(
-                                        "com.android.vending",
-                                        "com.google.android.finsky.activities.MainActivity");
-                                intent.setComponent(cn);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                mHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Intent intent2 = new Intent(
-                                                HomeActivity.this,
-                                                GooglePlayGuideActivity.class);
-                                        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent2);
-                                    }
-                                }, 200);
-                            } else {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                Uri uri = Uri
-                                        .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-					    }else if (position == 1) {
+						if (position == 0) {
+							if (AppUtil.appInstalled(getApplicationContext(),
+									"com.android.vending")) {
+								Intent intent = new Intent(Intent.ACTION_VIEW);
+								Uri uri = Uri
+										.parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+								intent.setData(uri);
+								ComponentName cn = new ComponentName(
+										"com.android.vending",
+										"com.google.android.finsky.activities.MainActivity");
+								intent.setComponent(cn);
+								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								startActivity(intent);
+								mHandler.postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										Intent intent2 = new Intent(
+												HomeActivity.this,
+												GooglePlayGuideActivity.class);
+										intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										startActivity(intent2);
+									}
+								}, 200);
+							} else {
+								Intent intent = new Intent(Intent.ACTION_VIEW);
+								Uri uri = Uri
+										.parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+								intent.setData(uri);
+								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								startActivity(intent);
+							}
+						} else if (position == 1) {
 							Intent intent = new Intent(HomeActivity.this,
 									FeedbackActivity.class);
 							startActivity(intent);
@@ -469,7 +433,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 							Intent intent = new Intent(HomeActivity.this,
 									AboutActivity.class);
 							startActivity(intent);
-						} 
+						}
 						mLeoPopMenu.dismissSnapshotList();
 					}
 				});
@@ -486,52 +450,54 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 					});
 
 			break;
-			
-		case R.id.hide_pic_icon:
-		case R.id.hide_pic_text:
-		    gotoHidePic();
-		    break;
-		case R.id.hide_video_icon:
-		case R.id.hide_video_text:
-		    gotoHideVideo();
-		    break;
+
 		case R.id.lock_circle_view:
-		    gotoAppLock();
-		    break;
+			gotoAppLock();
+			break;
 		default:
 			break;
 		}
 	}
-	
-	private void gotoHidePic() {
-        // track: home - enter hide picture activity
-        SDKWrapper.addEvent(this, LeoStat.P1, "home", "hidpic");
-        if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            enterHidePicture();
-        } else {
-            startPictureLockSetting();
-        }
-	}
-	
-    private void gotoHideVideo() {
-        // track: home - enter system boost activity
-        SDKWrapper.addEvent(this, LeoStat.P1, "home", "hidvideo");
-        if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            enterHideVideo();
-        } else {
-            startVideoLockSetting();
-        }
-    }
 
-    private void gotoAppLock() {
-     // track: home - enter lock application activity
-        SDKWrapper.addEvent(this, LeoStat.P1, "home", "lock");
-        if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            enterLockPage();
-        } else {
-            startLockSetting();
-        }
-    }
+	private void gotoFileTransfer() {
+	}
+
+	private void gotoLockTheme() {
+		Intent intent = new Intent(this, LockerTheme.class);
+		startActivity(intent);
+		SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "theme_enter",
+				"home");
+	}
+
+	private void gotoHidePic() {
+		// track: home - enter hide picture activity
+		SDKWrapper.addEvent(this, LeoStat.P1, "home", "hidpic");
+		if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+			enterHidePicture();
+		} else {
+			startPictureLockSetting();
+		}
+	}
+
+	private void gotoHideVideo() {
+		// track: home - enter system boost activity
+		SDKWrapper.addEvent(this, LeoStat.P1, "home", "hidvideo");
+		if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+			enterHideVideo();
+		} else {
+			startVideoLockSetting();
+		}
+	}
+
+	private void gotoAppLock() {
+		// track: home - enter lock application activity
+		SDKWrapper.addEvent(this, LeoStat.P1, "home", "lock");
+		if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+			enterLockPage();
+		} else {
+			startLockSetting();
+		}
+	}
 
 	private void updateSettingIcon() {
 		if (LeoStat.isUpdateAvailable()) {
@@ -553,7 +519,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			listItems.add(resources.getString(R.string.app_setting_update));
 		}
 		listItems.add(resources.getString(R.string.app_setting_about));
-		
+
 		return listItems;
 	}
 
@@ -580,7 +546,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	}
 
 	private void startLockSetting() {
-	    
+
 		Intent intent = new Intent(this, RecommentAppLockListActivity.class);
 		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
 				AppLockListActivity.class.getName());
@@ -641,32 +607,4 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		startActivity(intent);
 	}
 
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			if (v.getId() == R.id.tv_app_lock) {
-				mPressedEffect1.setBackgroundResource(R.drawable.home_sel);
-				mAppLock.setBackgroundResource(R.drawable.home_sel);
-			} else if (v.getId() == R.id.tv_video_hide) {
-				mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
-				mVideoHide.setBackgroundResource(R.drawable.home_sel);
-			}
-			break;
-		case MotionEvent.ACTION_UP:
-		case MotionEvent.ACTION_CANCEL:
-		case MotionEvent.ACTION_OUTSIDE:
-			if (v.getId() == R.id.tv_app_lock) {
-				mPressedEffect1.setBackgroundColor(Color.WHITE);
-				mAppLock.setBackgroundColor(Color.WHITE);
-			} else if (v.getId() == R.id.tv_video_hide) {
-				mPressedEffect2.setBackgroundColor(Color.WHITE);
-				mVideoHide.setBackgroundColor(Color.WHITE);
-			}
-			break;
-		default:
-			break;
-		}
-		return false;
-	}
 }

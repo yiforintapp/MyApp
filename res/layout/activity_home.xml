@@ -33,7 +33,6 @@
             android:layout_weight="1"
             android:background="@color/white" />
     </LinearLayout>
-    
 
     <RelativeLayout
         android:id="@+id/top_layout"
@@ -43,98 +42,17 @@
         android:layout_below="@id/layout_title_bar"
         android:layout_centerHorizontal="true"
         android:background="@color/app_background" >
-        
-        <LinearLayout
-            android:id="@+id/hide_issues_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/home_hide_issues_height"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal" 
-            android:layout_marginBottom="@dimen/home_hide_issues_padding_bottom">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/hide_pic_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="3"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/hide_issues_text_size"
-                    android:singleLine="true"
-                    android:ellipsize="middle" 
-                    android:textStyle="bold"
-                    android:gravity="bottom"
-                    android:drawablePadding="8dp" />
-
-                <TextView
-                    android:id="@+id/hide_pic_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="2"
-                    android:gravity="top" 
-                    android:text="@string/hide_pic_empty_text"
-                    android:textColor="@color/white"
-                    android:textSize="14dp"
-                    android:singleLine="true"
-                    android:ellipsize="middle" />
-            </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/hide_video_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="3"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/hide_issues_text_size"
-                    android:singleLine="true"
-                    android:ellipsize="middle" 
-                    android:textStyle="bold"
-                    android:gravity="bottom"
-                    android:drawablePadding="8dp" />
-
-                <TextView
-                    android:id="@+id/hide_video_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="2"
-                    android:gravity="top" 
-                    android:text="@string/hide_video_empty_text"
-                    android:textColor="@color/white"
-                    android:textSize="14dp"
-                    android:singleLine="true"
-                    android:ellipsize="middle" />
-            </LinearLayout>
-        </LinearLayout>]
-        
-        
         <com.leo.appmaster.home.CircleAnimView
             android:id="@+id/lock_circle_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/hide_issues_layout" />
-</RelativeLayout>
+            android:layout_height="match_parent" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/bottom"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/home_bottom_height"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@color/white"
@@ -142,15 +60,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
+            android:layout_height="@dimen/home_bottom_item_height" >
 
             <LinearLayout
                 android:id="@+id/ tv_app_lock"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/white"
+                android:background="@drawable/home_button_selecter"
                 android:gravity="center"
                 android:orientation="vertical" >
 
@@ -174,11 +91,11 @@
                 android:background="#FFF5F5F5" />
 
             <LinearLayout
-                android:id="@+id/ tv_video_hide"
+                android:id="@+id/tv_app_lock_theme"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/white"
+                android:background="@drawable/home_button_selecter"
                 android:gravity="center"
                 android:orientation="vertical" >
 
@@ -191,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/app_video_hide"
+                    android:text="@string/app_lock_theme"
                     android:textColor="@color/text_color_blue"
                     android:textSize="14dp" />
             </LinearLayout>
@@ -204,8 +121,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
+            android:layout_height="@dimen/home_bottom_item_height" >
 
             <LinearLayout
                 android:id="@+id/ tv_picture_hide"
@@ -236,6 +152,39 @@
                 android:background="#FFF5F5F5" />
 
             <LinearLayout
+                android:id="@+id/ tv_video_hide"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/home_button_selecter"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:src="@drawable/home_hidden_video_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/app_video_hide"
+                    android:textColor="@color/text_color_blue"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#FFF5F5F5" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_bottom_item_height" >
+
+            <LinearLayout
                 android:id="@+id/ tv_app_backup"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -255,6 +204,35 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/app_backup_uninstall"
+                    android:textColor="@color/text_color_blue"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#FFF5F5F5" />
+
+            <LinearLayout
+                android:id="@+id/tv_file_trans"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/home_button_selecter"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/file_trans_icon"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:src="@drawable/home_backup_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/file_trans"
                     android:textColor="@color/text_color_blue"
                     android:textSize="14dp" />
             </LinearLayout>
