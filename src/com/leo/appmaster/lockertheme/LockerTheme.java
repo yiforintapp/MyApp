@@ -89,7 +89,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	private boolean mNeedLock = false;
 	private int number = 0;
 	private String mFrom;
-	private String mGuideFlag;
+	private boolean mGuideFlag;
 	// private int mCurrentShowPage = 0;
 	// private int mNextLoadPage = 0;
 
@@ -596,14 +596,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 					SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
 							"theme_apply", lastSelectedItem.packageName);
 					dialog.cancel();
-					/**
-					 * LockerTheme first use Guide
-					 */
-					SharedPreferences mLockerGuideShared = getSharedPreferences(
-							"LockerThemeGuide",
-							LockerTheme.this.MODE_WORLD_WRITEABLE);
-					mGuideFlag = mLockerGuideShared.getString("guideFlag", "0");
-					if (mGuideFlag.equals("0")) {
+//					SharedPreferences mLockerGuideShared = getSharedPreferences(
+//							"LockerThemeGuide",
+//							LockerTheme.this.MODE_WORLD_WRITEABLE);
+					mGuideFlag = AppMasterPreference.getInstance(LockerTheme.this).getUseThemeGuide();
+					if (!mGuideFlag) {
 						setLockerGuideShare();
 					}
 				} else if (which == 1) {
@@ -701,12 +698,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			startActivity(intent);
 		} catch (Exception e) {
 		}
-		SharedPreferences mLockerGuideShared = getSharedPreferences(
-				"LockerThemeGuide", LockerTheme.this.MODE_WORLD_WRITEABLE);
-		Editor editor = mLockerGuideShared.edit();
-		editor.putString("guideFlag", "1");
-		mGuideFlag = "1";
-		editor.commit();
+		AppMasterPreference.getInstance(this).setUseThemeGuide(true);
+//		SharedPreferences mLockerGuideShared = getSharedPreferences(
+//				"LockerThemeGuide", LockerTheme.this.MODE_WORLD_WRITEABLE);
+//		Editor editor = mLockerGuideShared.edit();
+//		editor.putString("guideFlag", "1");
+//		mGuideFlag = "1";
+//		editor.commit();
 	}
 
 	private void doReload() {

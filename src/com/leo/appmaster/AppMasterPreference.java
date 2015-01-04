@@ -43,7 +43,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_HIDE_THEME_PKGS = "hide_theme_packages";
 	public static final String PREF_HAVE_EVER_LOAD_APPS = "have_ever_load_apps";
 	public static final String PREF_SETTING_LOCKER_CLEAN = "setting_locker_clean";
-
+	public static final String PREF_THEME_LOCK_GUIDE="theme_locker_guide";
+	public static final String PREF_USE_LOCK_THEME_GUIDE="use_lock_theme_guid";
 	// online theme
 	public static final String PREF_ONLINE_THEME_SERIAL = "online_theme_serialnumber";
 	public static final String PREF_LOCAL_THEME_SERIAL = "local_theme_serialnumber";
@@ -60,6 +61,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_LAST_VERSION_INSTALL_TIME = "last_version_install_tiem";
 	public static final String PREF_LOCK_REMIND = "lock_remind";
 	public static final String PREF_RECOMMENT_TIP_LIST="recomment_tip_list";
+	
 
 	private List<String> mLockedAppList;
 	private List<String> mRecommendList;
@@ -68,6 +70,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	private String mGesture;
 	private String mLockPolicy;
 	private List<String> mRecommentAppList;
+	private boolean mLockerScreenThemeGuide=false;
 
 	public static final int LOCK_TYPE_NONE = -1;
 	public static final int LOCK_TYPE_PASSWD = 0;
@@ -87,6 +90,21 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		return mInstance == null ? (mInstance = new AppMasterPreference(context))
 				: mInstance;
 	}
+	public boolean getUseThemeGuide(){
+	    return mPref.getBoolean(PREF_USE_LOCK_THEME_GUIDE, false);
+	}
+	public void setUseThemeGuide(boolean flag){
+	    mPref.edit().putBoolean(PREF_USE_LOCK_THEME_GUIDE,flag).commit();
+	}
+    public boolean getLockerScreenThemeGuid() {
+
+        return mPref.getBoolean(PREF_THEME_LOCK_GUIDE, false);
+
+    }
+
+    public void setLockerScreenThemeGuide(boolean flag) {
+        mPref.edit().putBoolean(PREF_THEME_LOCK_GUIDE, flag).commit();
+    }
 	public List<String> getRecommentTipList(){
 	    return mRecommentAppList;
 	}

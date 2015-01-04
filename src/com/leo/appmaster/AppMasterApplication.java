@@ -63,7 +63,7 @@ public class AppMasterApplication extends Application implements
 
 	public static SharedPreferences sharedPreferences;
 	public static String usedThemePackage;
-	public static String number;
+//	public static String number;
 
 	public static int SDK_VERSION;
 	public static float density;
@@ -92,7 +92,7 @@ public class AppMasterApplication extends Application implements
 				Context.MODE_WORLD_WRITEABLE);
 		usedThemePackage = sharedPreferences.getString("packageName",
 				Constants.DEFAULT_THEME);
-		number = sharedPreferences.getString("firstNumber", "0");
+//		number = sharedPreferences.getString("firstNumber", "0");
 		// Register intent receivers
 
 		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
@@ -496,12 +496,12 @@ public class AppMasterApplication extends Application implements
 		usedThemePackage = lockerTheme;
 	}
 
-	public static void setSharedPreferencesNumber(String lockerThemeNumber) {
-		Editor editor = sharedPreferences.edit();
-		editor.putString("firstNumber", lockerThemeNumber);
-		editor.commit();
-		number = lockerThemeNumber;
-	}
+//	public static void setSharedPreferencesNumber(String lockerThemeNumber) {
+//		Editor editor = sharedPreferences.edit();
+//		editor.putString("firstNumber", lockerThemeNumber);
+//		editor.commit();
+//		number = lockerThemeNumber;
+//	}
 
 	public static String getSelectedTheme() {
 		return usedThemePackage;

@@ -80,7 +80,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	private EditText mEtQuestion, mEtAnwser;
 	private String mLockTitle;
 	private ImageView spiner;
-	private String number;
+//	private String number;
 
 	private boolean toTheme;
 	private boolean mNewTheme;
@@ -110,7 +110,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				.getLocalThemeSerialNumber();
 		String onlineSerial = AppMasterPreference.getInstance(this)
 				.getOnlineThemeSerialNumber();
-
+		boolean lockThemeGuid=AppMasterPreference.getInstance(this).getLockerScreenThemeGuid();
 		if (!locSerial.equals(onlineSerial)) {
 			mNewTheme = true;
 		} else {
@@ -126,7 +126,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		}
 		if (mFromType == LockFragment.FROM_OTHER
 				|| mFromType == LockFragment.FROM_SCREEN_ON) {
-			if (number.equals("0")) {
+			if (!lockThemeGuid) {
 				mLockerGuide.setVisibility(View.VISIBLE);
 				themeGuide(mLockerGuide, mAnim);
 			} else {
@@ -248,7 +248,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		 */
 		mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
 		mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
-		number = AppMasterApplication.number;
+//		number = AppMasterApplication.number;
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			mTtileBar.setOptionImage(R.drawable.setting_selector);
@@ -257,16 +257,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		}
 		spiner = (ImageView) findViewById(R.id.image1);
 		LeoLog.d("LockScreenActivity", "spiner = " + spiner);
-		// AM-463, add protect
-		if (spiner != null) {
-			if ("0".equals(number)) {
-				spiner.setImageDrawable(this.getResources().getDrawable(
-						R.drawable.themetip_spiner_press));
-			} else {
-				spiner.setImageDrawable(this.getResources().getDrawable(
-						R.drawable.theme_spiner_press));
-			}
-		}
+//		// AM-463, add protect
+//		if (spiner != null) {
+//			if ("0".equals(number)) {
+//				spiner.setImageDrawable(this.getResources().getDrawable(
+//						R.drawable.themetip_spiner_press));
+//			} else {
+//				spiner.setImageDrawable(this.getResources().getDrawable(
+//						R.drawable.theme_spiner_press));
+//			}
+//		}
 
 		if (ImageHideMainActivity.class.getName().equals(mToActivity) || VideoHideMainActivity.class.getName().equals(mToActivity)) { // AM-423
 			mTtileBar.setSpinerVibility(View.INVISIBLE);
@@ -442,7 +442,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		case R.id.image1:
                 Intent intent = new Intent(LockScreenActivity.this,
                         LockerTheme.class);
-                //AM-512, for android L and above, make a special here 
                 if (Build.VERSION.SDK_INT > 19 && (mFromType == LockFragment.FROM_OTHER
                         || mFromType == LockFragment.FROM_SCREEN_ON)) {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -453,8 +452,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         "theme_enter", "unlock");
                 toTheme = true;
                 startActivityForResult(intent, 0);
-                AppMasterApplication.setSharedPreferencesNumber("1");
-                number = "1";
+//                AppMasterApplication.setSharedPreferencesNumber("1");
+//                number = "1";
+                AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(true);
                 break;
 		default:
 			break;
