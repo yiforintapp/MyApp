@@ -64,8 +64,8 @@ public class LockHandler extends BroadcastReceiver {
 
 		if (!pkg.equals(mLastRunningPkg)) {
 			String myPackage = mContext.getPackageName();
-			if (pkg.equals(myPackage)
-					|| (mLastRunningPkg.equals(myPackage) && mLastRuningActivity
+			if (/*pkg.equals(myPackage)
+					|| */(mLastRunningPkg.equals(myPackage) && mLastRuningActivity
 							.contains("LockScreenActivity"))) {
 				mLastRunningPkg = pkg;
 				mLastRuningActivity = activity;
