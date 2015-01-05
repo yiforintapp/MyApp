@@ -66,8 +66,8 @@ public class WaitActivity extends BaseActivity {
 						e.printStackTrace();
 					}
 				}
-//				returnBack();
-				finish();
+				returnBack();
+//				finish();
 			}
 		}).start();
 		ValueAnimator va = ValueAnimator.ofFloat(0f, 360f);
