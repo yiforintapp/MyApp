@@ -156,7 +156,7 @@ public class DiskBasedCache implements Cache {
                 CacheHeader entry = CacheHeader.readHeader(fis);
                 entry.size = file.length();
                 putEntry(entry.key, entry);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 if (file != null) {
                    file.delete();
                 }
@@ -319,6 +319,9 @@ public class DiskBasedCache implements Cache {
      * Reads the contents of an InputStream into a byte[].
      * */
     private static byte[] streamToBytes(InputStream in, int length) throws IOException {
+        if(length < 0) {
+            length = 0;
+        }
         byte[] bytes = new byte[length];
         int count;
         int pos = 0;

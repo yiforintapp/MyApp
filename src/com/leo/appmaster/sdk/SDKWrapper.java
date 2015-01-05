@@ -40,8 +40,13 @@ public class SDKWrapper {
         } catch (NotFoundException e) {
             LeoLog.e(TAG, "failed to get ICON");
         }
-        PushManager.getInstance(ctx).startPush(ctx.getString(R.string.channel_code));
-    }
+        
+        try {
+            PushManager.getInstance(ctx).startPush(ctx.getString(R.string.channel_code));
+        } catch (NotFoundException e) {
+            PushManager.getInstance(ctx).startPush("0000a");
+        }
+   }
 
     /**
      * add an event that we will push to log service

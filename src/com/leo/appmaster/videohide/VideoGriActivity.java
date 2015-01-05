@@ -584,17 +584,22 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (REQUEST_CODE == requestCode) {
-            ArrayList<String> resultPath = (ArrayList<String>) data.getExtras().get("path");
-            if (resultPath.size() > 0) {
-                for (int i = 0; i < mVideoItems.size(); i++) {
-                    String path = mVideoItems.get(i).getPath();
-                    if (resultPath.contains(path)) {
-                        mVideoItems.remove(i);
+            Bundle bundle = data.getExtras();
+            if(bundle != null) {
+                ArrayList<String> resultPath = (ArrayList<String>) bundle.get("path");
+                if (resultPath != null && resultPath.size() > 0) {
+                    for (int i = 0; i < mVideoItems.size(); i++) {
+                        String path = mVideoItems.get(i).getPath();
+                        if (resultPath.contains(path)) {
+                            mVideoItems.remove(i);
+                        }
+                    }
+                    mAllPath.clear();
+                    getVideoPath();
+                    if(mHideVideoAdapter != null) {
+                        mHideVideoAdapter.notifyDataSetChanged();
                     }
                 }
-                mAllPath.clear();
-                getVideoPath();
-                mHideVideoAdapter.notifyDataSetChanged();
             }
         }
         mShouldLockOnRestart = false;
