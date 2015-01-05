@@ -15,6 +15,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
@@ -354,7 +355,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 		// optimize imagelaoder,here we remove cache app icon in memory
 		ImageLoader.getInstance().clearMemoryCache();
-
 	}
 
 	private void initUI() {
@@ -576,6 +576,11 @@ public class AppListActivity extends BaseFragmentActivity implements
 						AppUtil.downloadFromBrowser(AppListActivity.this,
 								bif.appDownloadUrl);
 					}
+
+					//add track
+					AppLoadEngine.getInstance(getApplicationContext())
+							.getBusinessTracker().track(bif.packageName);
+
 					SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
 							"app_cli_pn", bif.packageName);
 
