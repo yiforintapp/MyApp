@@ -291,20 +291,21 @@
     <string name="lcok_success_tip">Selected Apps were successfully locked.</string>
     <string name="success_finish">Finish</string>
     <!-- AM-667 -->
-    <string name="help_setting_tip_title">帮助小贴士</string>
-    <string name="lock_help_password_setting_content_gesture">在应用锁中点击右上角设置【UI】图标，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用手势密码）</string>
-    <string name="lock_help_password_setting_content_password">在应用锁中点击右上角设置【UI】图标，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用数字密码）</string>
-    <string name="lock_help_lock_setting_content">进入锁定设置，您可以选择锁定的时间，您也可以选择输入一次密码后所有的应用都不用再次输入密码，直到密码锁定生效为止。</string>
-    <string name="lock_help_lock_theme_content">我们现在有很多应用锁主题，赶快去试试一些更好看的主题吧！</string>
+    <string name="help_setting_tip_title">Help</string>
+    <string name="lock_help_password_setting_content_gesture">Hit the Settings icon on top right of the screen under "App Lock", tap "Change password" to reset. (Also see upper right corner to switch pattern lock.)</string>
+    <string name="lock_help_password_setting_content_password">Hit the Settings icon on top right of the screen under "App Lock", tap "Change password" to reset. (Also see upper right corner to switch password lock.)</string>
+    <string name="lock_help_lock_setting_content">Go to \'Auto-lock time setting\' to change lock frequency.</string>
+    <string name="lock_help_lock_theme_content">Bunch of hot themes just arrived, put it on to customize your lock screen!</string>
 
     <string-array name="lock_help_setting_title">
-        <item> 如何更改密码？</item>
-        <item>觉得应用锁定太频繁？</item>
-        <item> 更改应用锁主题?</item>
+        <item> Change my password?</item>
+        <item>Lock too fast?</item>
+        <item>Change a lock theme</item>
     </string-array>
 
-    <string name="lock_help_password_setting_button">设置</string>
-    <string name="lock_help_lock_setting_button">锁定设置</string>
-    <string name="lock_help_lock_theme_setting_button">更换主题</string>
+    <string name="lock_help_password_setting_button">Settings</string>
+    <string name="lock_help_lock_setting_button">Auto-lock time setting</string>
+    <string name="lock_help_lock_theme_setting_button">Change a theme</string>
+    <string name="help_setting_guide">How to change my password?</string>
 
 </resources>

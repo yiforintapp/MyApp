@@ -302,21 +302,20 @@
     <string name="success_finish">完成</string>
     <!-- AM-667 -->
     <string name="help_setting_tip_title">帮助小贴士</string>
-    <string name="lock_help_password_setting_content_gesture">在应用锁中点击右上角设置【UI】图标，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用手势密码）</string>
-    <string name="lock_help_password_setting_content_password">在应用锁中点击右上角设置【UI】图标，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用数字密码）</string>
-    <string name="lock_help_lock_setting_content">进入锁定设置，您可以选择锁定的时间，您也可以选择输入一次密码后所有的应用都不用再次输入密码，直到密码锁定生效为止。 </string>
+    <string name="lock_help_password_setting_content_gesture">在应用锁中点击右上角设置 [UI] 图标，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用手势密码）</string>
+    <string name="lock_help_password_setting_content_password">在应用锁中点击右上角设置 [UI] 图标，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用数字密码）</string>
+    <string name="lock_help_lock_setting_content">进入锁定设置，您可以选择锁定的时间。</string>
     <string name="lock_help_lock_theme_content">我们现在有很多应用锁主题，赶快去试试一些更好看的主题吧！</string>
 
     <string-array name="lock_help_setting_title">
         <item> 如何更改密码？</item>
         <item>觉得应用锁定太频繁？</item>
-        <item> 更改应用锁主题?</item>
+        <item> 更改应用锁主题</item>
     </string-array>
 
     <string name="lock_help_password_setting_button">设置</string>
     <string name="lock_help_lock_setting_button">锁定设置</string>
     <string name="lock_help_lock_theme_setting_button">更换主题</string>
-    <string name="lock_setting_unlock_all">解锁全部应用</string>
-    <string name="lock_setting_unlock_all_summary">输入一次密码后解锁全部应用</string>
+    <string name="help_setting_guide">如何更改我的密码吗?</string>
 
 </resources>

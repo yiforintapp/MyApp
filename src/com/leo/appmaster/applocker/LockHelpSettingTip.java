@@ -5,13 +5,20 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.EdgeEffectCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -77,14 +84,16 @@ public class LockHelpSettingTip extends Activity {
         getHelpPager();
         mAdapter.notifyDataSetChanged();
         if (mCurrentFlag != CURRENT_FLAG_CODE) {
-//            if (!mHelpPager.get(0).getTitle().equals(mHelpSettingPager.get(0))) {
-//                mViewPager.setCurrentItem(mCurrentFlag - 1);
-//            } else {
-                mViewPager.setCurrentItem(mCurrentFlag);
-//            }
+            // if
+            // (!mHelpPager.get(0).getTitle().equals(mHelpSettingPager.get(0)))
+            // {
+            // mViewPager.setCurrentItem(mCurrentFlag - 1);
+            // } else {
+            mViewPager.setCurrentItem(mCurrentFlag);
+            // }
             mCurrentFlag = CURRENT_FLAG_CODE;
-        }else{
-//            mViewPager.setCurrentItem(0);
+        } else {
+            // mViewPager.setCurrentItem(0);
         }
         super.onResume();
 
@@ -116,32 +125,50 @@ public class LockHelpSettingTip extends Activity {
         mViewPager = (LeoPictureViewPager) findViewById(R.id.help_setting);
     }
 
+    @SuppressLint("NewApi")
     private void getHelpPager() {
         String[] lockHelpSettingTitle = getResources().getStringArray(
                 R.array.lock_help_setting_title);
         mHelpSettingPager = Arrays.asList(lockHelpSettingTitle);
         int mType = AppMasterPreference.getInstance(this).getLockType();
-//        boolean flag = AppMasterPreference.getInstance(this).getIsHelpSettingChangeSucess();
+        // boolean flag =
+        // AppMasterPreference.getInstance(this).getIsHelpSettingChangeSucess();
         for (String string : mHelpSettingPager) {
-            String content = null;
+            SpannableString content = null;
             String button = null;
 
             if (string.equals(mHelpSettingPager.get(0))) {
                 if (mType == AppMasterPreference.LOCK_TYPE_GESTURE) {
-                    content = getString(R.string.lock_help_password_setting_content_password);
+                    Drawable drawable = this.getResources().getDrawable(
+                            R.drawable.press_settings_icon);
+                    drawable.setBounds(0, -5, 60, 55);
+                    ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
+                    SpannableString spannableString = new SpannableString(
+                            getString(R.string.lock_help_password_setting_content_password));
+                    spannableString.setSpan(imageSpan, 13,
+                            17, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    content = spannableString;
                 } else if (mType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-                    content = getString(R.string.lock_help_password_setting_content_gesture);
+                    Drawable drawable = this.getResources().getDrawable(
+                            R.drawable.press_settings_icon);
+                    drawable.setBounds(0, -5, 60, 55);
+                    ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
+                    SpannableString spannableString = new SpannableString(
+                            getString(R.string.lock_help_password_setting_content_password));
+                    spannableString.setSpan(imageSpan, 13,
+                            17, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    content = spannableString;
                 }
                 button = getString(R.string.lock_help_password_setting_button);
                 LockHelpItemPager pager = new LockHelpItemPager(string, content, button);
                 mHelpPager.add(pager);
             } else if (string.equals(mHelpSettingPager.get(1))) {
-                content = getString(R.string.lock_help_lock_setting_content);
+                content = new SpannableString(getString(R.string.lock_help_lock_setting_content));
                 button = getString(R.string.lock_help_lock_setting_button);
                 LockHelpItemPager pager = new LockHelpItemPager(string, content, button);
                 mHelpPager.add(pager);
             } else if (string.equals(mHelpSettingPager.get(2))) {
-                content = getString(R.string.lock_help_lock_theme_content);
+                content = new SpannableString(getString(R.string.lock_help_lock_theme_content));
                 button = getString(R.string.lock_help_lock_theme_setting_button);
                 LockHelpItemPager pager = new LockHelpItemPager(string, content, button);
                 mHelpPager.add(pager);
@@ -184,7 +211,7 @@ public class LockHelpSettingTip extends Activity {
         public Object instantiateItem(ViewGroup container, int position) {
             final LockHelpItemPager lockHelpPager = mHelpPager.get(position);
             String title = lockHelpPager.getTitle();
-            String content = lockHelpPager.getContent();
+            SpannableString content = lockHelpPager.getContent();
             String button = lockHelpPager.getButton();
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             View view = layoutInflater.inflate(R.layout.activity_lock_help_item_viewpager, null);

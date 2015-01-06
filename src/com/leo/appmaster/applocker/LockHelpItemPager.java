@@ -1,10 +1,12 @@
 package com.leo.appmaster.applocker;
 
+import android.text.SpannableString;
+
 public class LockHelpItemPager {
     private String title;
-    private String content;
+    private SpannableString content;
     private String button;
-    public LockHelpItemPager(String title, String content,String button) {
+    public LockHelpItemPager(String title, SpannableString content,String button) {
         super();
         this.title = title;
         this.content = content;
@@ -16,10 +18,10 @@ public class LockHelpItemPager {
     public void setTitle(String title) {
         this.title = title;
     }
-    public String getContent() {
+    public SpannableString getContent() {
         return content;
     }
-    public void setContent(String content) {
+    public void setContent(SpannableString content) {
         this.content = content;
     }
     public String getButton() {
