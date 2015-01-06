@@ -141,6 +141,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		TextView downloadCount;
 		TextView appSize;
 		TextView appDesc;
+		View downloadLayout;
+		View googleIcon;
 		TextView download;
 	}
 
@@ -156,9 +158,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 		initUI();
 		// AM-771
 		try {
-		      fillAppListData();
+			fillAppListData();
 		} catch (Exception e) {
-		    
+
 		}
 	}
 
@@ -211,8 +213,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mSclingBgView = mContainer;
 		// mSclingBgView = mAllAppList;
 
-//		if (!(view.getTag() instanceof AppItemInfo))
-//			return;
+		// if (!(view.getTag() instanceof AppItemInfo))
+		// return;
 		BaseInfo baseInfo = (BaseInfo) view.getTag();
 
 		if (baseInfo instanceof BusinessItemInfo) {
@@ -223,15 +225,40 @@ public class AppListActivity extends BaseFragmentActivity implements
 						R.layout.business_app_content_view, null);
 
 				mBusinessScilingHolder = new BusinessAppContentViewHolder();
-				mBusinessScilingHolder.rating = (RatingBar) mBusinessContentView.findViewById(R.id.ratingBar1);
-				mBusinessScilingHolder.downloadCount = (TextView) mBusinessContentView.findViewById(R.id.app_download_hot);
-				mBusinessScilingHolder.appSize = (TextView) mBusinessContentView.findViewById(R.id.app_size);
-				mBusinessScilingHolder.appDesc = (TextView) mBusinessContentView.findViewById(R.id.app_desc);
-				mBusinessScilingHolder.download = (TextView) mBusinessContentView.findViewById(R.id.download);
-				mBusinessScilingHolder.download.setOnClickListener(this);
+				mBusinessScilingHolder.rating = (RatingBar) mBusinessContentView
+						.findViewById(R.id.ratingBar1);
+				mBusinessScilingHolder.downloadCount = (TextView) mBusinessContentView
+						.findViewById(R.id.app_download_hot);
+				mBusinessScilingHolder.appSize = (TextView) mBusinessContentView
+						.findViewById(R.id.app_size);
+				mBusinessScilingHolder.appDesc = (TextView) mBusinessContentView
+						.findViewById(R.id.app_desc);
+				mBusinessScilingHolder.googleIcon = mBusinessContentView
+						.findViewById(R.id.google_icon);
+				mBusinessScilingHolder.download = (TextView) mBusinessContentView
+						.findViewById(R.id.tv_download);
+				mBusinessScilingHolder.downloadLayout = mBusinessContentView
+						.findViewById(R.id.layout_download);
+				mBusinessScilingHolder.downloadLayout.setOnClickListener(this);
 			}
 
 			BusinessItemInfo businessInfo = (BusinessItemInfo) baseInfo;
+			mBusinessScilingHolder.rating.setRating(businessInfo.rating);
+			mBusinessScilingHolder.downloadCount
+					.setText(businessInfo.appDownloadCount);
+			mBusinessScilingHolder.appSize.setText(TextFormater
+					.dataSizeFormat(businessInfo.appSize));
+			if (businessInfo.gpPriority == 1
+					&& AppUtil.appInstalled(this, Constants.GP_PACKAGE)) {
+				mBusinessScilingHolder.googleIcon.setVisibility(View.VISIBLE);
+				mBusinessScilingHolder.download
+						.setText(R.string.app_google_download);
+			} else {
+				mBusinessScilingHolder.googleIcon.setVisibility(View.GONE);
+				mBusinessScilingHolder.download.setText(R.string.app_download);
+			}
+			mBusinessScilingHolder.appDesc.setText(businessInfo.desc);
+
 			int contentheight = getResources().getDimensionPixelSize(
 					R.dimen.backup_scling_content_height);
 			mSlicingLayer.startSlicing(view, mSclingBgView,
@@ -566,7 +593,8 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mFolderItems.add(folder);
 	}
 
-	private void animateItem(final View view, final int from, final boolean event) {
+	private void animateItem(final View view, final int from,
+			final boolean event) {
 		AnimatorSet as = new AnimatorSet();
 		as.setDuration(150);
 		ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f,
@@ -589,59 +617,28 @@ public class AppListActivity extends BaseFragmentActivity implements
 						fillFolder();
 						mFolderLayer.openFolderView(folderInfo.folderType,
 								view, mAllAppList);
-						if(event) {
-		                      SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-		                                "ub_listpress", "folder"
-		                                        + (folderInfo.folderType + 1));
-		                        if (folderInfo.folderType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
-		                            SDKWrapper.addEvent(AppListActivity.this,
-		                                    LeoStat.P1, "ub_restore", "list");
-		                        } else if (folderInfo.folderType == FolderItemInfo.FOLDER_FLOW_SORT) {
-		                            SDKWrapper.addEvent(AppListActivity.this,
-		                                    LeoStat.P1, "ub_liuliang", "list");
-		                        } else if (folderInfo.folderType == FolderItemInfo.FOLDER_CAPACITY_SORT) {
-		                            SDKWrapper.addEvent(AppListActivity.this,
-		                                    LeoStat.P1, "ub_space", "list");
-		                        } else if (folderInfo.folderType == FolderItemInfo.FOLDER_BUSINESS_APP) {
-		                            SDKWrapper.addEvent(AppListActivity.this,
-		                                    LeoStat.P1, "ub_newapp", "list");
-		                        }
+						if (event) {
+							SDKWrapper.addEvent(AppListActivity.this,
+									LeoStat.P1, "ub_listpress", "folder"
+											+ (folderInfo.folderType + 1));
+							if (folderInfo.folderType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
+								SDKWrapper.addEvent(AppListActivity.this,
+										LeoStat.P1, "ub_restore", "list");
+							} else if (folderInfo.folderType == FolderItemInfo.FOLDER_FLOW_SORT) {
+								SDKWrapper.addEvent(AppListActivity.this,
+										LeoStat.P1, "ub_liuliang", "list");
+							} else if (folderInfo.folderType == FolderItemInfo.FOLDER_CAPACITY_SORT) {
+								SDKWrapper.addEvent(AppListActivity.this,
+										LeoStat.P1, "ub_space", "list");
+							} else if (folderInfo.folderType == FolderItemInfo.FOLDER_BUSINESS_APP) {
+								SDKWrapper.addEvent(AppListActivity.this,
+										LeoStat.P1, "ub_newapp", "list");
+							}
 						}
 					}
 					break;
 				case BaseInfo.ITEM_TYPE_BUSINESS_APP:
 					openSlicingLayer(view, from);
-//					BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
-//					if (bif.gpPriority == 1) {
-//						if (AppUtil.appInstalled(AppListActivity.this,
-//								Constants.GP_PACKAGE)) {
-//							AppUtil.downloadFromGp(AppListActivity.this,
-//									bif.packageName);
-//						} else {
-//							AppUtil.downloadFromBrowser(AppListActivity.this,
-//									bif.appDownloadUrl);
-//						}
-//					} else {
-//						AppUtil.downloadFromBrowser(AppListActivity.this,
-//								bif.appDownloadUrl);
-//					}
-//					SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-//							"app_cli_pn", bif.packageName);
-//
-//					if (bif.containType == BusinessItemInfo.CONTAIN_APPLIST) {
-//						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-//								"app_cli_ps", "home");
-//					} else if (bif.containType == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-//						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-//								"app_cli_ps", "flow");
-//					} else if (bif.containType == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
-//						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-//								"app_cli_ps", "capacity");
-//					} else if (bif.containType == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
-//						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-//								"app_cli_ps", "new");
-//					}
-
 					break;
 
 				default:
@@ -790,15 +787,49 @@ public class AppListActivity extends BaseFragmentActivity implements
 			}
 			break;
 
+		case R.id.layout_download:
+
+			BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
+			if (bif.gpPriority == 1) {
+				if (AppUtil.appInstalled(AppListActivity.this,
+						Constants.GP_PACKAGE)) {
+					AppUtil.downloadFromGp(AppListActivity.this,
+							bif.packageName);
+				} else {
+					AppUtil.downloadFromBrowser(AppListActivity.this,
+							bif.appDownloadUrl);
+				}
+			} else {
+				AppUtil.downloadFromBrowser(AppListActivity.this,
+						bif.appDownloadUrl);
+			}
+			SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1, "app_cli_pn",
+					bif.packageName);
+
+			if (bif.containType == BusinessItemInfo.CONTAIN_APPLIST) {
+				SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+						"app_cli_ps", "home");
+			} else if (bif.containType == BusinessItemInfo.CONTAIN_FLOW_SORT) {
+				SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+						"app_cli_ps", "flow");
+			} else if (bif.containType == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
+				SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+						"app_cli_ps", "capacity");
+			} else if (bif.containType == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
+				SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+						"app_cli_ps", "new");
+			}
+			break;
+
 		default:
 			break;
 		}
 	}
 
 	public void handleItemClick(View view, int from, boolean event) {
-	    if(view == null) {
-	        return;
-	    }
+		if (view == null) {
+			return;
+		}
 		if ((mSlicingLayer != null && mSlicingLayer.isAnimating())
 				|| (mFolderLayer != null && mFolderLayer.isAnimating())) {
 			return;
@@ -937,12 +968,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-                try {
-                    fillAppListData();
-                    fillFolder();
-                } catch (Exception e) {
+				try {
+					fillAppListData();
+					fillFolder();
+				} catch (Exception e) {
 
-                }
+				}
 			}
 		});
 
@@ -989,11 +1020,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 				if (success) {
 					Toast.makeText(AppListActivity.this,
 							R.string.backup_finish, 0).show();
-					if(mCommenScilingHolder != null && mCommenScilingHolder.backup != null) {
-		                   mCommenScilingHolder.backup.setText(R.string.backuped);
-		                    mCommenScilingHolder.backup.setEnabled(false);
-		                    mCommenScilingHolder.backup
-		                            .setBackgroundResource(R.drawable.dlg_left_button_selector);
+					if (mCommenScilingHolder != null
+							&& mCommenScilingHolder.backup != null) {
+						mCommenScilingHolder.backup.setText(R.string.backuped);
+						mCommenScilingHolder.backup.setEnabled(false);
+						mCommenScilingHolder.backup
+								.setBackgroundResource(R.drawable.dlg_left_button_selector);
 					}
 					updateRestoreData();
 				} else {

@@ -207,6 +207,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 						.show();
 			} else {
 				addMoreOnlineTheme(list);
+				addMoreOnlineTheme(list);
 			}
 		} else {
 			Toast.makeText(mActivity, R.string.network_error_msg, 0).show();

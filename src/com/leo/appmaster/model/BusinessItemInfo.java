@@ -47,6 +47,21 @@ public class BusinessItemInfo extends BaseInfo {
 	 * app package size
 	 */
 	public long appSize;
+	
+	/**
+	 * app rating
+	 */
+	public float rating = 2.5f;
+	
+	/**
+	 * app downlaod count
+	 */
+	public String appDownloadCount;
+	
+	/**
+	 * app describtion
+	 */
+	public String desc;
 
 	/**
 	 * the download priority
