@@ -372,6 +372,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			this.startService(intent);
 			intent = new Intent();
 			intent.setClassName(this, mToActivity);
+            if ((LockSettingActivity.class.getName()).equals(mToActivity)) {
+                intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);                   
+            }
 			startActivity(intent);
 		}
 

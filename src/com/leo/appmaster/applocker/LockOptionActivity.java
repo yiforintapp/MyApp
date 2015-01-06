@@ -55,6 +55,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     private SharedPreferences mySharedPreferences;
     private boolean mNewTheme;
+    private int mHelpSettingCurrent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +65,17 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         initIntent();
         initUI();
         setupPreference();
+        createResultToHelpSetting();
     }
 
     private void initIntent() {
         Intent intent = getIntent();
         mComeFrom = intent.getIntExtra(TAG_COME_FROM, 0);
+       int current=intent.getIntExtra("help_setting_current", 10001) ;
+        if(current!= 10001){
+        mHelpSettingCurrent=current;
     }
+        }
 
     private void setupPreference() {
         mLockerTheme = findPreference(AppMasterPreference.PREF_LOCKER_THEME);
@@ -261,7 +267,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     @Override
     public void onBackPressed() {
-        setResult(11);
+//        setResult(11);
         super.onBackPressed();
     }
 
@@ -351,5 +357,9 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         scaleIconListDlg.setCustomTitle(title);
         scaleIconListDlg.show();
     }
-
+    private void createResultToHelpSetting(){
+        Intent intent=new Intent();
+        intent.putExtra("help_setting_current", mHelpSettingCurrent);
+        this.setResult(RESULT_OK, intent);
+    }
 }

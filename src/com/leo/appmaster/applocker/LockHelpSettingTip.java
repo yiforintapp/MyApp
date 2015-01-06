@@ -32,8 +32,10 @@ public class LockHelpSettingTip extends Activity {
     private List<LockHelpItemPager> mHelpPager;
     private LockHelpPagerAdapter mAdapter;
     private EdgeEffectCompat leftEdge;
-
     private EdgeEffectCompat rightEdge;
+    private int mCurrentFlag;
+    private List<String> mHelpSettingPager;
+    public static final int CURRENT_FLAG_CODE = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,14 @@ public class LockHelpSettingTip extends Activity {
         getHelpPager();
         mAdapter = new LockHelpPagerAdapter(this);
         mViewPager.setAdapter(mAdapter);
+        if (mCurrentFlag != CURRENT_FLAG_CODE) {
+            if (!mHelpPager.get(0).getTitle().equals(mHelpSettingPager.get(0))) {
+                mViewPager.setCurrentItem(mCurrentFlag - 1);
+            } else {
+                mViewPager.setCurrentItem(mCurrentFlag);
+            }
+            mCurrentFlag = CURRENT_FLAG_CODE;
+        }
         super.onResume();
 
     }
@@ -89,6 +99,14 @@ public class LockHelpSettingTip extends Activity {
         super.onStop();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data!=null){
+        mCurrentFlag = data.getExtras().getInt("help_setting_current");
+        }
+    }
+
     private void initUI() {
         mTitle = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTitle.setTitle(R.string.help_setting_tip_title);
@@ -99,14 +117,14 @@ public class LockHelpSettingTip extends Activity {
     private void getHelpPager() {
         String[] lockHelpSettingTitle = getResources().getStringArray(
                 R.array.lock_help_setting_title);
-        List<String> helpSettingPager = Arrays.asList(lockHelpSettingTitle);
+        mHelpSettingPager = Arrays.asList(lockHelpSettingTitle);
         int mType = AppMasterPreference.getInstance(this).getLockType();
         boolean flag = AppMasterPreference.getInstance(this).getIsHelpSettingChangeSucess();
-        for (String string : helpSettingPager) {
+        for (String string : mHelpSettingPager) {
             String content = null;
             String button = null;
 
-            if (string.equals(helpSettingPager.get(0)) && !flag) {
+            if (string.equals(mHelpSettingPager.get(0)) && !flag) {
                 if (mType == AppMasterPreference.LOCK_TYPE_GESTURE) {
                     content = getString(R.string.lock_help_password_setting_content_password);
                 } else if (mType == AppMasterPreference.LOCK_TYPE_PASSWD) {
@@ -115,12 +133,12 @@ public class LockHelpSettingTip extends Activity {
                 button = getString(R.string.lock_help_password_setting_button);
                 LockHelpItemPager pager = new LockHelpItemPager(string, content, button);
                 mHelpPager.add(pager);
-            } else if (string.equals(helpSettingPager.get(1))) {
+            } else if (string.equals(mHelpSettingPager.get(1))) {
                 content = getString(R.string.lock_help_lock_setting_content);
                 button = getString(R.string.lock_help_lock_setting_button);
                 LockHelpItemPager pager = new LockHelpItemPager(string, content, button);
                 mHelpPager.add(pager);
-            } else if (string.equals(helpSettingPager.get(2))) {
+            } else if (string.equals(mHelpSettingPager.get(2))) {
                 content = getString(R.string.lock_help_lock_theme_content);
                 button = getString(R.string.lock_help_lock_theme_setting_button);
                 LockHelpItemPager pager = new LockHelpItemPager(string, content, button);
@@ -178,30 +196,24 @@ public class LockHelpSettingTip extends Activity {
                 public void onClick(View arg0) {
                     String buttonText = lockHelpPager.getButton();
                     if (buttonText.equals(getString(R.string.lock_help_password_setting_button))) {
-                        Intent intent = new Intent(LockHelpSettingTip.this,
-                                LockSettingActivity.class);
-//                        intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        try {
-//                            context.startActivity(intent);
-//                        } catch (Exception e) {
-//                        }   
                         enterLockPage();
                     } else if (buttonText.equals(getString(R.string.lock_help_lock_setting_button))) {
                         Intent intent = new Intent(LockHelpSettingTip.this,
                                 LockOptionActivity.class);
+                        intent.putExtra("help_setting_current", 1);
                         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         try {
-                            context.startActivity(intent);
+                            startActivityForResult(intent, 1);
                         } catch (Exception e) {
                         }
                     } else if (buttonText
                             .equals(getString(R.string.lock_help_lock_theme_setting_button))) {
                         Intent intent = new Intent(LockHelpSettingTip.this, LockerTheme.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.putExtra("to_online_theme", true);
+                        intent.putExtra("help_setting_current", 2);
                         try {
-                            context.startActivity(intent);
+                            startActivityForResult(intent, 1);
                         } catch (Exception e) {
                         }
                     }
@@ -247,4 +259,5 @@ public class LockHelpSettingTip extends Activity {
         startActivity(intent);
 
     }
+
 }

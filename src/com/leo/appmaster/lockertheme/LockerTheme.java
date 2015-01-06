@@ -100,6 +100,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 
 	private EventHandler mHandler;
 	private String mFromTheme;
+	private int mHelpSettingCurrent;
 	
 
 	private static class EventHandler extends Handler {
@@ -166,6 +167,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		intentFilter.addDataScheme("package");
 		mLockerThemeReceive = new LockerThemeReceive();
 		registerReceiver(mLockerThemeReceive, intentFilter);
+		createResultToHelpSetting();
 	}
 
 	private void handleIntent() {
@@ -207,6 +209,14 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 		}
 
 		localThemeList.getRefreshableView().setSelection(number);
+		boolean fromHelpSettingFalg=intent.getBooleanExtra("to_online_theme", false);
+		if(fromHelpSettingFalg){
+		    mViewPager.setCurrentItem(1);
+		}
+		 int current=intent.getIntExtra("help_setting_current", 10001) ;
+	        if(current!= 10001){
+	        mHelpSettingCurrent=current;
+	    }
 	}
 
 	private void loadData() {
@@ -865,4 +875,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 			}
 		}
 	}
+	private void createResultToHelpSetting(){
+        Intent intent=new Intent();
+        intent.putExtra("help_setting_current", mHelpSettingCurrent);
+        this.setResult(RESULT_OK, intent);
+    }
 }
