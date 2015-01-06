@@ -43,8 +43,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_HIDE_THEME_PKGS = "hide_theme_packages";
 	public static final String PREF_HAVE_EVER_LOAD_APPS = "have_ever_load_apps";
 	public static final String PREF_SETTING_LOCKER_CLEAN = "setting_locker_clean";
-	public static final String PREF_THEME_LOCK_GUIDE="theme_locker_guide";
-	public static final String PREF_USE_LOCK_THEME_GUIDE="use_lock_theme_guid";
+	public static final String PREF_THEME_LOCK_GUIDE = "theme_locker_guide";
+	public static final String PREF_USE_LOCK_THEME_GUIDE = "use_lock_theme_guid";
 	// online theme
 	public static final String PREF_ONLINE_THEME_SERIAL = "online_theme_serialnumber";
 	public static final String PREF_LOCAL_THEME_SERIAL = "local_theme_serialnumber";
@@ -60,8 +60,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_LAST_VERSION = "last_version";
 	public static final String PREF_LAST_VERSION_INSTALL_TIME = "last_version_install_tiem";
 	public static final String PREF_LOCK_REMIND = "lock_remind";
-	public static final String PREF_RECOMMENT_TIP_LIST="recomment_tip_list";
-	
+	public static final String PREF_RECOMMENT_TIP_LIST = "recomment_tip_list";
+
+	// home page
+	public static final String PREF_HOME_BUSINESS_NEW_TIP_CLICK = "home_business_tip_click";
 
 	private List<String> mLockedAppList;
 	private List<String> mRecommendList;
@@ -70,7 +72,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	private String mGesture;
 	private String mLockPolicy;
 	private List<String> mRecommentAppList;
-	private boolean mLockerScreenThemeGuide=false;
+	private boolean mLockerScreenThemeGuide = false;
 
 	public static final int LOCK_TYPE_NONE = -1;
 	public static final int LOCK_TYPE_PASSWD = 0;
@@ -90,42 +92,57 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		return mInstance == null ? (mInstance = new AppMasterPreference(context))
 				: mInstance;
 	}
-	public boolean getUseThemeGuide(){
-	    return mPref.getBoolean(PREF_USE_LOCK_THEME_GUIDE, false);
-	}
-	public void setUseThemeGuide(boolean flag){
-	    mPref.edit().putBoolean(PREF_USE_LOCK_THEME_GUIDE,flag).commit();
-	}
-    public boolean getLockerScreenThemeGuid() {
 
-        return mPref.getBoolean(PREF_THEME_LOCK_GUIDE, false);
-
-    }
-
-    public void setLockerScreenThemeGuide(boolean flag) {
-        mPref.edit().putBoolean(PREF_THEME_LOCK_GUIDE, flag).commit();
-    }
-	public List<String> getRecommentTipList(){
-	    return mRecommentAppList;
+	public boolean getUseThemeGuide() {
+		return mPref.getBoolean(PREF_USE_LOCK_THEME_GUIDE, false);
 	}
-	public void setRecommentTipList(List<String> appList){
-	    mRecommentAppList=appList;
-	    String combined = "";
-        for (String string : appList) {
-            combined = combined + string + ";";
-        }
-        if(appList == null || appList.isEmpty()) {
-            Intent serviceIntent = new Intent(AppMasterApplication.getInstance(), LockService.class);
-            serviceIntent.putExtra("lock_service", false);
-            AppMasterApplication.getInstance().startService(serviceIntent);
-        } else {
-            Intent serviceIntent = new Intent(AppMasterApplication.getInstance(), LockService.class);
-            serviceIntent.putExtra("lock_service", true);
-            AppMasterApplication.getInstance().startService(serviceIntent);
-        }
-    mPref.edit().putString(PREF_RECOMMENT_TIP_LIST, combined).commit();
+
+	public void setUseThemeGuide(boolean flag) {
+		mPref.edit().putBoolean(PREF_USE_LOCK_THEME_GUIDE, flag).commit();
 	}
-        
+
+	public boolean getLockerScreenThemeGuid() {
+		return mPref.getBoolean(PREF_THEME_LOCK_GUIDE, false);
+	}
+
+	public void setLockerScreenThemeGuide(boolean flag) {
+		mPref.edit().putBoolean(PREF_THEME_LOCK_GUIDE, flag).commit();
+	}
+	
+	
+	public boolean getHomeBusinessTipClick() {
+		return mPref.getBoolean(PREF_HOME_BUSINESS_NEW_TIP_CLICK, false);
+	}
+
+	public void setHomeBusinessTipClick(boolean flag) {
+		mPref.edit().putBoolean(PREF_HOME_BUSINESS_NEW_TIP_CLICK, flag).commit();
+	}
+	
+
+	public List<String> getRecommentTipList() {
+		return mRecommentAppList;
+	}
+
+	public void setRecommentTipList(List<String> appList) {
+		mRecommentAppList = appList;
+		String combined = "";
+		for (String string : appList) {
+			combined = combined + string + ";";
+		}
+		if (appList == null || appList.isEmpty()) {
+			Intent serviceIntent = new Intent(
+					AppMasterApplication.getInstance(), LockService.class);
+			serviceIntent.putExtra("lock_service", false);
+			AppMasterApplication.getInstance().startService(serviceIntent);
+		} else {
+			Intent serviceIntent = new Intent(
+					AppMasterApplication.getInstance(), LockService.class);
+			serviceIntent.putExtra("lock_service", true);
+			AppMasterApplication.getInstance().startService(serviceIntent);
+		}
+		mPref.edit().putString(PREF_RECOMMENT_TIP_LIST, combined).commit();
+	}
+
 	public void setHaveEverAppLoaded(boolean loaded) {
 		mPref.edit().putBoolean(PREF_HAVE_EVER_LOAD_APPS, loaded).commit();
 	}
@@ -133,7 +150,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public boolean haveEverAppLoaded() {
 		return mPref.getBoolean(PREF_HAVE_EVER_LOAD_APPS, false);
 	}
-	
+
 	public String getOnlineThemeSerialNumber() {
 		return mPref.getString(PREF_ONLINE_THEME_SERIAL, "");
 	}
@@ -347,16 +364,18 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 			combined = combined + string + ";";
 		}
 
-		if(applicationList == null || applicationList.isEmpty()) {
-			Intent serviceIntent = new Intent(AppMasterApplication.getInstance(), LockService.class);
+		if (applicationList == null || applicationList.isEmpty()) {
+			Intent serviceIntent = new Intent(
+					AppMasterApplication.getInstance(), LockService.class);
 			serviceIntent.putExtra("lock_service", false);
 			AppMasterApplication.getInstance().startService(serviceIntent);
 		} else {
-			Intent serviceIntent = new Intent(AppMasterApplication.getInstance(), LockService.class);
+			Intent serviceIntent = new Intent(
+					AppMasterApplication.getInstance(), LockService.class);
 			serviceIntent.putExtra("lock_service", true);
 			AppMasterApplication.getInstance().startService(serviceIntent);
 		}
-		
+
 		mPref.edit().putString(PREF_APPLICATION_LIST, combined).commit();
 	}
 
@@ -384,7 +403,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		mRecommendList = Arrays.asList(mPref.getString(
 				PREF_RECOMMEND_LOCK_LIST, "").split(";"));
 		mRecommentAppList = Arrays.asList(mPref.getString(
-		        PREF_RECOMMENT_TIP_LIST, "").split(";"));
+				PREF_RECOMMENT_TIP_LIST, "").split(";"));
 		String themeList = mPref.getString(PREF_HIDE_THEME_PKGS, "");
 		if (themeList.equals("")) {
 			mHideThemeList = new ArrayList<String>(0);

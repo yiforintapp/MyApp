@@ -245,7 +245,7 @@
                 android:orientation="vertical" >
 
                 <ImageView
-                    android:id="@+id/setting_icon"
+                    android:id="@+id/backup_icon"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:src="@drawable/home_backup_icon" />

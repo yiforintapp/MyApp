@@ -55,7 +55,7 @@ public class AppMasterApplication extends Application implements
 
 	private static AppMasterApplication mInstance;
 	private static List<Activity> mActivityList;
-	
+
 	/* Separate user phone feed activity from Leo Analytics SDK to App */
 	private UserActManager mActManager;
 
@@ -63,7 +63,7 @@ public class AppMasterApplication extends Application implements
 
 	public static SharedPreferences sharedPreferences;
 	public static String usedThemePackage;
-//	public static String number;
+	// public static String number;
 
 	public static int SDK_VERSION;
 	public static float density;
@@ -85,14 +85,14 @@ public class AppMasterApplication extends Application implements
 		mInstance = this;
 		mHandler = new Handler();
 		mAppsEngine = AppLoadEngine.getInstance(this);
-		
+
 		mBackupManager = new AppBackupRestoreManager(this);
 		initImageLoader(getApplicationContext());
 		sharedPreferences = getSharedPreferences("lockerTheme",
 				Context.MODE_WORLD_WRITEABLE);
 		usedThemePackage = sharedPreferences.getString("packageName",
 				Constants.DEFAULT_THEME);
-//		number = sharedPreferences.getString("firstNumber", "0");
+		// number = sharedPreferences.getString("firstNumber", "0");
 		// Register intent receivers
 
 		IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
@@ -125,10 +125,10 @@ public class AppMasterApplication extends Application implements
 			}
 		}, 10000);
 		restartApplocker(PhoneInfo.getAndroidVersion());
-		
+
 		/* init user activity manager here */
-		mActManager = UserActManager.getInstance(getApplicationContext(), 
-		        PushUIHelper.getInstance(getApplicationContext()));
+		mActManager = UserActManager.getInstance(getApplicationContext(),
+				PushUIHelper.getInstance(getApplicationContext()));
 	}
 
 	private void startInitTask(final Context ctx) {
@@ -305,6 +305,9 @@ public class AppMasterApplication extends Application implements
 										if (hasNewBusinessData) {
 											showNewBusinessTip(mainTitle,
 													content);
+											AppMasterPreference pref = AppMasterPreference
+													.getInstance(AppMasterApplication.this);
+											pref.setHomeBusinessTipClick(false);
 										}
 										pref.setLastCheckBusinessTime(System
 												.currentTimeMillis());
@@ -496,12 +499,12 @@ public class AppMasterApplication extends Application implements
 		usedThemePackage = lockerTheme;
 	}
 
-//	public static void setSharedPreferencesNumber(String lockerThemeNumber) {
-//		Editor editor = sharedPreferences.edit();
-//		editor.putString("firstNumber", lockerThemeNumber);
-//		editor.commit();
-//		number = lockerThemeNumber;
-//	}
+	// public static void setSharedPreferencesNumber(String lockerThemeNumber) {
+	// Editor editor = sharedPreferences.edit();
+	// editor.putString("firstNumber", lockerThemeNumber);
+	// editor.commit();
+	// number = lockerThemeNumber;
+	// }
 
 	public static String getSelectedTheme() {
 		return usedThemePackage;

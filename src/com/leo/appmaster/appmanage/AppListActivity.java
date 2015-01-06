@@ -172,7 +172,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mContainer.post(new Runnable() {
 				@Override
 				public void run() {
-					handleItemClick(mPager1.getChildAt(3),
+					handleItemClick(mPager1.getChildAt(0),
 							SlicingLayer.SLICING_FROM_APPLIST, false);
 					mOpenedBusinessFolder = true;
 				}
