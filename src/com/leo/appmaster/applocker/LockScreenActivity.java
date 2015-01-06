@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -250,6 +251,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
 //		number = AppMasterApplication.number;
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+		/*
+		 *AM-667 
+		 */
+		if (mFromType == LockFragment.FROM_OTHER
+                || mFromType == LockFragment.FROM_SCREEN_ON) {
+		mTtileBar.setHelpSettingImage(R.drawable.selector_help_icon);
+		mTtileBar.setHelpSettingVisiblity(View.VISIBLE);
+		mTtileBar.setHelpSettingListener(this);
+		}
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			mTtileBar.setOptionImage(R.drawable.setting_selector);
 			mTtileBar.setOptionImageVisibility(View.VISIBLE);
@@ -257,7 +267,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		}
 		spiner = (ImageView) findViewById(R.id.image1);
 		LeoLog.d("LockScreenActivity", "spiner = " + spiner);
-//		// AM-463, add protect
 //		if (spiner != null) {
 //			if ("0".equals(number)) {
 //				spiner.setImageDrawable(this.getResources().getDrawable(
@@ -456,10 +465,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //                number = "1";
                 AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(true);
                 break;
-		default:
+		case R.id.setting_help_tip:
+		    Intent helpSettingIntent=new Intent(LockScreenActivity.this, LockHelpSettingTip.class);
+                try {
+                    LockScreenActivity.this.startActivity(helpSettingIntent);
+                } catch (Exception e) {
+                }
+            default:
 			break;
 		}
-
+		
 	}
 
 	private void onBack() {

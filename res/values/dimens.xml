@@ -94,5 +94,7 @@
 
     <dimen name="grid_page_item_layout_marginLeft">8dp</dimen>
     <dimen name="grid_page_item_layout_marginRight">8dp</dimen>
-
+    <dimen name="help_icon_width">18dp</dimen>
+    <dimen name="help_icon_height">24dp</dimen>
+	<dimen name="help_setting_margintop">18dp</dimen>
 </resources>

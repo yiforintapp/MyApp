@@ -103,5 +103,14 @@
             android:layout_margin="3dp"
             android:src="@drawable/common_down" />
     </LinearLayout>
+    <ImageView
+        android:id="@+id/setting_help_tip"
+        android:layout_width="@dimen/help_icon_width"
+        android:layout_height="@dimen/help_icon_height"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        android:layout_marginRight="14dp"
+        android:layout_toLeftOf="@id/layout_right"/>
+    
 
 </RelativeLayout>

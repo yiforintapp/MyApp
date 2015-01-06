@@ -166,6 +166,7 @@ public class GestureSettingFragment extends BaseFragment implements
 						mTempGesture2);
 				if (((LockSettingActivity) mActivity).isResetPasswd()) {
 					showResetSuc();
+					   AppMasterPreference.getInstance(mActivity).setIsHelpSettingChangeSucess(true);
 					return;
 				}
 

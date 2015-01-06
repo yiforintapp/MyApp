@@ -30,4 +30,7 @@
      <color name="lockerclean_background">#50000000</color>
      <color name="pressed_view_color">#2b7cef</color>
      <color name="default_lock">#8cbdfe</color>
+     <color name="help_setting_tip">#f8f8f8</color>
+     <color name="help_setting_title">#007fff</color>
+     <color name="help_setting_content">#888888</color>
 </resources>
