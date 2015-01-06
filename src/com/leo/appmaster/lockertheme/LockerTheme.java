@@ -798,7 +798,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 	                                            break;
 	                                        }
                                         }
-	                                    mHideThemes.remove(remove);
+	                                    // AM-760
+	                                    try {
+	                                        mHideThemes.remove(remove);
+	                                    } catch (Exception e) {                                        
+	                                    }
 	                                    loadMoreOnlineTheme();    
 	                                    
 	                                    break;
@@ -828,7 +832,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
 								}
 							}
 							if (remove != null) {
-								mOnlineThemes.remove(remove);
+							    // AM-760
+                                try {
+                                    mOnlineThemes.remove(remove);
+                                } catch (Exception e) {                                        
+                                }
 								mOnlineThemeAdapter.notifyDataSetChanged();								
 								if (mOnlineThemes.isEmpty()) {
 									mLayoutEmptyTip.setVisibility(View.VISIBLE);

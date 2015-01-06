@@ -142,7 +142,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mBackupManager.registerBackupListener(this);
 		AppLoadEngine.getInstance(this).registerAppChangeListener(this);
 		initUI();
-		fillAppListData();
+		// AM-771
+		try {
+		      fillAppListData();
+		} catch (Exception e) {
+		    
+		}
 	}
 
 	@Override
@@ -747,9 +752,13 @@ public class AppListActivity extends BaseFragmentActivity implements
 	}
 
 	public void handleItemClick(View view, int from) {
+	    if(view == null) {
+	        return;
+	    }
 		if ((mSlicingLayer != null && mSlicingLayer.isAnimating())
-				|| (mFolderLayer != null && mFolderLayer.isAnimating()))
+				|| (mFolderLayer != null && mFolderLayer.isAnimating())) {
 			return;
+		}
 		mLastSelectedInfo = (BaseInfo) view.getTag();
 		animateItem(view, from);
 	}
@@ -884,8 +893,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				fillAppListData();
-				fillFolder();
+                try {
+                    fillAppListData();
+                    fillFolder();
+                } catch (Exception e) {
+
+                }
 			}
 		});
 
@@ -932,10 +945,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 				if (success) {
 					Toast.makeText(AppListActivity.this,
 							R.string.backup_finish, 0).show();
-					mCommenScilingHolder.backup.setText(R.string.backuped);
-					mCommenScilingHolder.backup.setEnabled(false);
-					mCommenScilingHolder.backup
-							.setBackgroundResource(R.drawable.dlg_left_button_selector);
+					if(mCommenScilingHolder != null && mCommenScilingHolder.backup != null) {
+		                   mCommenScilingHolder.backup.setText(R.string.backuped);
+		                    mCommenScilingHolder.backup.setEnabled(false);
+		                    mCommenScilingHolder.backup
+		                            .setBackgroundResource(R.drawable.dlg_left_button_selector);
+					}
 					updateRestoreData();
 				} else {
 					Toast.makeText(AppListActivity.this, message,

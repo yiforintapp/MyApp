@@ -112,7 +112,9 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        hideVideos.clear();
+        if(hideVideos != null) {
+            hideVideos.clear();
+        }
     }
 
     @Override
