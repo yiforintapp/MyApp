@@ -228,17 +228,18 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
                 @Override
                 public void onClick(View arg0) {
-                    boolean isVideoFlag = isVideo(VIDEO_PLUS_PACKAGE_NAME);
-                    // if (isVideoFlag) {
-                    String path = mAllPath.get(mPosition);
-                    // ComponentName componentName = new
-                    // ComponentName(VIDEO_PLUS_PACKAGE_NAME,
-                    // VIDEO_PLAYER_ACTIVITY);
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse("file://" + path), "video/*");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    // intent.setComponent(componentName);
                     try {
+                        boolean isVideoFlag = isVideo(VIDEO_PLUS_PACKAGE_NAME);
+                        // if (isVideoFlag) {
+                        String path = mAllPath.get(mPosition);
+                        // ComponentName componentName = new
+                        // ComponentName(VIDEO_PLUS_PACKAGE_NAME,
+                        // VIDEO_PLAYER_ACTIVITY);
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse("file://" + path), "video/*");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        // intent.setComponent(componentName);
+
                         // startActivityForResult(intent, 1001);
                         startActivity(intent);
                     } catch (Exception e) {

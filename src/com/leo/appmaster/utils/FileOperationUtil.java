@@ -47,33 +47,37 @@ public class FileOperationUtil {
     };
 
     public static String getNameFromFilepath(String filepath) {
-        String filename;
-        int pos = filepath.lastIndexOf('/');
-        if (pos != -1) {
-            filename = filepath.substring(pos + 1);
-            return filename;
+        if(filepath != null) {
+            String filename;
+            int pos = filepath.lastIndexOf('/');
+            if (pos != -1) {
+                filename = filepath.substring(pos + 1);
+                return filename;
+            }
         }
         return "";
     }
 
     public static String getNoExtNameFromHideFilepath(String filepath) {
-        String filename;
-        int pos = filepath.lastIndexOf('/');
-        if (pos > -1) {
-            filename = filepath.substring(pos + 1);
-            if (filename.startsWith(".")) {
-                filename = filename.substring(1);
-                int index = filename.indexOf(".");
-                if (index > 0) {
-                    filename = filename.substring(0, index);
+        if(filepath != null) {
+            String filename;
+            int pos = filepath.lastIndexOf('/');
+            if (pos > -1) {
+                filename = filepath.substring(pos + 1);
+                if (filename.startsWith(".")) {
+                    filename = filename.substring(1);
+                    int index = filename.indexOf(".");
+                    if (index > 0) {
+                        filename = filename.substring(0, index);
+                    }
+                } else {
+                    int index = filename.indexOf(".");
+                    if (index > 0) {
+                        filename = filename.substring(0, index);
+                    }
                 }
-            } else {
-                int index = filename.indexOf(".");
-                if (index > 0) {
-                    filename = filename.substring(0, index);
-                }
+                return filename;
             }
-            return filename;
         }
         return "";
     }
@@ -100,13 +104,15 @@ public class FileOperationUtil {
     }
 
     public static String getDirNameFromFilepath(String path) {
-        String dirName;
-        int pos = path.lastIndexOf('/');
-        if (pos != -1) {
-            dirName = path.substring(0, pos);
-            pos = dirName.lastIndexOf('/');
-            dirName = dirName.substring(pos + 1);
-            return dirName;
+        if(path != null) {
+            String dirName;
+            int pos = path.lastIndexOf('/');
+            if (pos != -1) {
+                dirName = path.substring(0, pos);
+                pos = dirName.lastIndexOf('/');
+                dirName = dirName.substring(pos + 1);
+                return dirName;
+            }
         }
         return "";
     }
@@ -186,7 +192,13 @@ public class FileOperationUtil {
         v.put(MediaColumns.DATA, imagePath);
         ContentResolver c = context.getContentResolver();
         Uri uri = Files.getContentUri("external");
-        return c.insert(uri, v);
+        Uri result = null;
+        try {
+            result = c.insert(uri, v);
+        } catch (Exception e) {
+            
+        }
+        return result;
     }
 
     public static void deleteImageMediaEntry(String imagePath, Context context) {
