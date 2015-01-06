@@ -154,7 +154,7 @@ public class LockHelpSettingTip extends Activity {
                     drawable.setBounds(0, -5, 60, 55);
                     ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
                     SpannableString spannableString = new SpannableString(
-                            getString(R.string.lock_help_password_setting_content_password));
+                            getString(R.string.lock_help_password_setting_content_gesture));
                     spannableString.setSpan(imageSpan, 13,
                             17, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     content = spannableString;
