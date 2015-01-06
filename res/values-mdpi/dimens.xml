@@ -31,8 +31,8 @@
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
     <dimen name="hide_picture_checkbox_left">107dp</dimen>
     <dimen name="hide_picture_checkbox_top">107dp</dimen>
-    <dimen name="digital_item_width">65dp</dimen>
-    <dimen name="digital_item_height">65dp</dimen>
+    <dimen name="digital_item_width">52dp</dimen>
+    <dimen name="digital_item_height">52dp</dimen>
     <dimen name="digital_item_marginTop">8dp</dimen>
     <dimen name="digital_item_marginBottom">8dp</dimen>
     <dimen name="lockPatternView_height">330dp</dimen>
@@ -80,5 +80,6 @@
     <dimen name="help_icon_width">18dp</dimen>
     <dimen name="help_icon_height">24dp</dimen>
     <dimen name="help_setting_margintop">18dp</dimen>
+    <dimen name="fragment_lock_password_passwd_input_tip_margintop">10dp</dimen>
 
 </resources>

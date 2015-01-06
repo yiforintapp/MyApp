@@ -50,7 +50,6 @@ public class LockHelpSettingTip extends Activity {
         mViewPager.setOffscreenPageLimit(3);
         setScroll();
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
-
             @Override
             public void onPageSelected(int position) {
 
@@ -78,12 +77,14 @@ public class LockHelpSettingTip extends Activity {
         getHelpPager();
         mAdapter.notifyDataSetChanged();
         if (mCurrentFlag != CURRENT_FLAG_CODE) {
-            if (!mHelpPager.get(0).getTitle().equals(mHelpSettingPager.get(0))) {
-                mViewPager.setCurrentItem(mCurrentFlag - 1);
-            } else {
+//            if (!mHelpPager.get(0).getTitle().equals(mHelpSettingPager.get(0))) {
+//                mViewPager.setCurrentItem(mCurrentFlag - 1);
+//            } else {
                 mViewPager.setCurrentItem(mCurrentFlag);
-            }
+//            }
             mCurrentFlag = CURRENT_FLAG_CODE;
+        }else{
+//            mViewPager.setCurrentItem(0);
         }
         super.onResume();
 
@@ -120,12 +121,12 @@ public class LockHelpSettingTip extends Activity {
                 R.array.lock_help_setting_title);
         mHelpSettingPager = Arrays.asList(lockHelpSettingTitle);
         int mType = AppMasterPreference.getInstance(this).getLockType();
-        boolean flag = AppMasterPreference.getInstance(this).getIsHelpSettingChangeSucess();
+//        boolean flag = AppMasterPreference.getInstance(this).getIsHelpSettingChangeSucess();
         for (String string : mHelpSettingPager) {
             String content = null;
             String button = null;
 
-            if (string.equals(mHelpSettingPager.get(0)) && !flag) {
+            if (string.equals(mHelpSettingPager.get(0))) {
                 if (mType == AppMasterPreference.LOCK_TYPE_GESTURE) {
                     content = getString(R.string.lock_help_password_setting_content_password);
                 } else if (mType == AppMasterPreference.LOCK_TYPE_PASSWD) {
@@ -147,7 +148,6 @@ public class LockHelpSettingTip extends Activity {
             }
 
         }
-
     }
 
     @SuppressWarnings("unused")
@@ -165,7 +165,6 @@ public class LockHelpSettingTip extends Activity {
 
         @Override
         public int getCount() {
-
             return mHelpPager.size();
         }
 
@@ -205,7 +204,7 @@ public class LockHelpSettingTip extends Activity {
                         enterLockPage();
                     } else if (buttonText.equals(getString(R.string.lock_help_lock_setting_button))) {
                         Intent intent = new Intent(LockHelpSettingTip.this,
-                                LockOptionActivity.class);
+                                LockTimeSetting.class);
                         intent.putExtra("help_setting_current", 1);
                         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         try {

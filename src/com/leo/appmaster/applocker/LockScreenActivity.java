@@ -464,11 +464,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         "theme_enter", "unlock");
                 toTheme = true;
                 startActivityForResult(intent, 0);
-//                AppMasterApplication.setSharedPreferencesNumber("1");
-//                number = "1";
-                AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(true);
+//                AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(true);
                 break;
 		case R.id.setting_help_tip:
+		    AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(true);
 		    Intent helpSettingIntent=new Intent(LockScreenActivity.this, LockHelpSettingTip.class);
                 try {
                     LockScreenActivity.this.startActivity(helpSettingIntent);

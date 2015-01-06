@@ -316,5 +316,7 @@
     <string name="lock_help_password_setting_button">设置</string>
     <string name="lock_help_lock_setting_button">锁定设置</string>
     <string name="lock_help_lock_theme_setting_button">更换主题</string>
+    <string name="lock_setting_unlock_all">解锁全部应用</string>
+    <string name="lock_setting_unlock_all_summary">输入一次密码后解锁全部应用</string>
 
 </resources>

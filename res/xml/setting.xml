@@ -15,7 +15,7 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="set_auto_lock"
-        android:layout="@layout/pref_list_item_mid"
+        android:layout="@layout/pref_list_item_top"
         android:title="@string/auto_lock"
         android:widgetLayout="@layout/pref_widget_checkbox" />
     <CheckBoxPreference
@@ -32,9 +32,9 @@
         android:widgetLayout="@layout/pref_widget_checkbox" />
 
     <Preference
-        android:key="relock_time"
+        android:key="lock_setting"
         android:layout="@layout/pref_list_item_mid"
-        android:title="@string/change_lock_time"
+        android:title="@string/lock_help_lock_setting_button"
         android:widgetLayout="@layout/pref_widget_more" />
     <Preference
         android:key="change_passwd"
@@ -53,5 +53,17 @@
         android:title="@string/passwd_notify"
         android:widgetLayout="@layout/pref_widget_more" >
     </Preference>
+    <Preference
+        android:key="relock_time"
+        android:layout="@layout/pref_list_item_bot"
+        android:title="@string/change_lock_time"
+        android:widgetLayout="@layout/pref_widget_more" />
+<!--       <CheckBoxPreference 
+            android:defaultValue="false"
+        android:key="lock_setting_unlock_all"
+        android:layout="@layout/pref_list_item_bot"
+        android:title="@string/lock_setting_unlock_all"
+      android:widgetLayout="@layout/pref_widget_checkbox" 
+        /> -->
 
 </PreferenceScreen>

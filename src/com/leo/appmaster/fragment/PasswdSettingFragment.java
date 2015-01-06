@@ -233,7 +233,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 
 						if (((LockSettingActivity) mActivity).isResetPasswd()) {
 							showResetSuc();
-							AppMasterPreference.getInstance(mActivity).setIsHelpSettingChangeSucess(true);
+//							AppMasterPreference.getInstance(mActivity).setIsHelpSettingChangeSucess(true);
 							return;
 						}
 

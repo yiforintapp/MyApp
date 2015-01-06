@@ -97,4 +97,5 @@
     <dimen name="help_icon_width">18dp</dimen>
     <dimen name="help_icon_height">24dp</dimen>
 	<dimen name="help_setting_margintop">18dp</dimen>
+	<dimen name="fragment_lock_password_passwd_input_tip_margintop">10dp</dimen>
 </resources>

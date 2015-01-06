@@ -45,6 +45,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_SETTING_LOCKER_CLEAN = "setting_locker_clean";
 	public static final String PREF_THEME_LOCK_GUIDE="theme_locker_guide";
 	public static final String PREF_USE_LOCK_THEME_GUIDE="use_lock_theme_guid";
+	public static final String PREF_UNLOCK_ALL_APP="lock_setting_unlock_all";
 	public static final String PREF_LOCK_SETTING = "lock_setting";
 	public static final String PREF_LOCK_SETTING_CHANGE_PASSWORD="lock_setting_chanage_password";
 
@@ -292,6 +293,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public void setRelockTimeout(String timeout) {
 		mPref.edit().putString(PREF_RELOCK_TIME, timeout + "").commit();
 	}
+	public void setUnlockAllApp(boolean flag){
+	    mPref.edit().putBoolean(PREF_UNLOCK_ALL_APP, flag).commit();
+	}
+	public boolean isUnlockAll(){
+	    return mPref.getBoolean(PREF_UNLOCK_ALL_APP, false);
+	}
 	public String getPassword() {
 		return mPassword;
 	}
@@ -418,6 +425,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		} else if (PREF_LOCK_POLICY.equals(key)) {
 			mLockPolicy = mPref.getString(PREF_LOCK_POLICY, null);
 		} else if (PREF_RELOCK_TIME.equals(key)) {
+			// String s = mPref.getString(PREF_RELOCK_TIME, "-1");
 			int re = getRelockTimeout();
 		}
 	}
@@ -478,11 +486,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public long getInstallTime() {
 		return mPref.getLong(PREF_LAST_ALARM_SET_TIME, 0l);
 	}
-	public void setIsHelpSettingChangeSucess(boolean flag){
-	    mPref.edit().putBoolean(PREF_LOCK_SETTING_CHANGE_PASSWORD, flag).commit();
-	}
-	public boolean getIsHelpSettingChangeSucess(){
-	    return mPref.getBoolean(PREF_LOCK_SETTING_CHANGE_PASSWORD, false);
-	}
+//	public void setIsHelpSettingChangeSucess(boolean flag){
+//	    mPref.edit().putBoolean(PREF_LOCK_SETTING_CHANGE_PASSWORD, flag).commit();
+//	}
+//	public boolean getIsHelpSettingChangeSucess(){
+//	    return mPref.getBoolean(PREF_LOCK_SETTING_CHANGE_PASSWORD, false);
+//	}
 
 }

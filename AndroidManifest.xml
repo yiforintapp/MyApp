@@ -247,6 +247,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.LockTimeSetting"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
+        </activity>
         <service
             android:name="com.leo.appmaster.applocker.service.LockService"
             android:exported="true" >

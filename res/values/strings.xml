@@ -286,12 +286,11 @@
     <string name="new_app_tip_title">New Apps!</string>
     <string name="no_backup_app_tip">No backed up App</string>
     <string name="other_people_use_tip">Other people use</string>
-
     <string name="recomment_list_title">Select Apps you want to lock</string>
     <string name="lock_success">Lock successfully!</string>
     <string name="lcok_success_tip">Selected Apps were successfully locked.</string>
     <string name="success_finish">Finish</string>
-     <!-- AM-667 -->
+    <!-- AM-667 -->
     <string name="help_setting_tip_title">帮助小贴士</string>
     <string name="lock_help_password_setting_content_gesture">在应用锁中点击右上角设置【UI】图标，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用手势密码）</string>
     <string name="lock_help_password_setting_content_password">在应用锁中点击右上角设置【UI】图标，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用数字密码）</string>
@@ -307,4 +306,5 @@
     <string name="lock_help_password_setting_button">设置</string>
     <string name="lock_help_lock_setting_button">锁定设置</string>
     <string name="lock_help_lock_theme_setting_button">更换主题</string>
+
 </resources>

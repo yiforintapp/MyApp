@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tv_passwd_hint"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/fragment_lock_password_passwd_input_tip_margintop"
         android:gravity="center"
         android:text="@string/passwd_hint"
         android:textColor="#ffffff"
