@@ -249,6 +249,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		 */
 		mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
 		mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
+		TextView lockGuideTv=(TextView) mLockerGuide.findViewById(R.id.lock_guide_tv);
+		lockGuideTv.setText(getString(R.string.help_setting_guide));
 //		number = AppMasterApplication.number;
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		/*

@@ -27,9 +27,9 @@
         android:visibility="gone"
         android:gravity="center" >
         <TextView
+            android:id="@+id/lock_guide_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/locker_guide"
             android:textColor="#FFFFFF" />
     </RelativeLayout>
 
