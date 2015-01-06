@@ -154,7 +154,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 				@Override
 				public void run() {
 					handleItemClick(mPager1.getChildAt(3),
-							SlicingLayer.SLICING_FROM_APPLIST);
+							SlicingLayer.SLICING_FROM_APPLIST, false);
 					mOpenedBusinessFolder = true;
 				}
 			});
@@ -363,7 +363,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int arg2,
 					long arg3) {
-				handleItemClick(view, SlicingLayer.SLICING_FROM_APPLIST);
+				handleItemClick(view, SlicingLayer.SLICING_FROM_APPLIST, true);
 			}
 		};
 
@@ -522,7 +522,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mFolderItems.add(folder);
 	}
 
-	private void animateItem(final View view, final int from) {
+	private void animateItem(final View view, final int from, final boolean event) {
 		AnimatorSet as = new AnimatorSet();
 		as.setDuration(150);
 		ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f,
@@ -545,23 +545,24 @@ public class AppListActivity extends BaseFragmentActivity implements
 						fillFolder();
 						mFolderLayer.openFolderView(folderInfo.folderType,
 								view, mAllAppList);
-						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-								"ub_listpress", "folder"
-										+ (folderInfo.folderType + 1));
-						if (folderInfo.folderType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
-							SDKWrapper.addEvent(AppListActivity.this,
-									LeoStat.P1, "ub_restore", "list");
-						} else if (folderInfo.folderType == FolderItemInfo.FOLDER_FLOW_SORT) {
-							SDKWrapper.addEvent(AppListActivity.this,
-									LeoStat.P1, "ub_liuliang", "list");
-						} else if (folderInfo.folderType == FolderItemInfo.FOLDER_CAPACITY_SORT) {
-							SDKWrapper.addEvent(AppListActivity.this,
-									LeoStat.P1, "ub_space", "list");
-						} else if (folderInfo.folderType == FolderItemInfo.FOLDER_BUSINESS_APP) {
-							SDKWrapper.addEvent(AppListActivity.this,
-									LeoStat.P1, "ub_newapp", "list");
+						if(event) {
+		                      SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+		                                "ub_listpress", "folder"
+		                                        + (folderInfo.folderType + 1));
+		                        if (folderInfo.folderType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
+		                            SDKWrapper.addEvent(AppListActivity.this,
+		                                    LeoStat.P1, "ub_restore", "list");
+		                        } else if (folderInfo.folderType == FolderItemInfo.FOLDER_FLOW_SORT) {
+		                            SDKWrapper.addEvent(AppListActivity.this,
+		                                    LeoStat.P1, "ub_liuliang", "list");
+		                        } else if (folderInfo.folderType == FolderItemInfo.FOLDER_CAPACITY_SORT) {
+		                            SDKWrapper.addEvent(AppListActivity.this,
+		                                    LeoStat.P1, "ub_space", "list");
+		                        } else if (folderInfo.folderType == FolderItemInfo.FOLDER_BUSINESS_APP) {
+		                            SDKWrapper.addEvent(AppListActivity.this,
+		                                    LeoStat.P1, "ub_newapp", "list");
+		                        }
 						}
-
 					}
 					break;
 				case BaseInfo.ITEM_TYPE_BUSINESS_APP:
@@ -749,12 +750,12 @@ public class AppListActivity extends BaseFragmentActivity implements
 		}
 	}
 
-	public void handleItemClick(View view, int from) {
+	public void handleItemClick(View view, int from, boolean event) {
 		if ((mSlicingLayer != null && mSlicingLayer.isAnimating())
 				|| (mFolderLayer != null && mFolderLayer.isAnimating()))
 			return;
 		mLastSelectedInfo = (BaseInfo) view.getTag();
-		animateItem(view, from);
+		animateItem(view, from, event);
 	}
 
 	private void getFolderData() {
