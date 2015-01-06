@@ -31,6 +31,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
@@ -83,8 +85,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 	private View mSclingBgView;
 	private View mCommenScilingContentView;
 	private View mBackupSclingContentView;
+	private View mBusinessContentView;
 	private CommonSclingContentViewHolder mCommenScilingHolder;
 	private BackupContentViewHolder mBackupScilingHolder;
+	private BusinessAppContentViewHolder mBusinessScilingHolder;
 	private LayoutInflater mInflater;
 	private ViewGroup mPager1;
 
@@ -112,7 +116,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 	// private View mBusinessFolderView;
 
-	private static class CommonSclingContentViewHolder {
+	private class CommonSclingContentViewHolder {
 		TextView installTime;
 		TextView capacity;
 		TextView cache;
@@ -123,13 +127,21 @@ public class AppListActivity extends BaseFragmentActivity implements
 		TextView uninstall;
 	}
 
-	private static class BackupContentViewHolder {
+	private class BackupContentViewHolder {
 		TextView size;
 		TextView version;
 		TextView backupTime;
 		TextView path;
 		TextView restore;
 		TextView delete;
+	}
+
+	private class BusinessAppContentViewHolder {
+		RatingBar rating;
+		TextView downloadCount;
+		TextView appSize;
+		TextView appDesc;
+		TextView download;
 	}
 
 	@Override
@@ -194,129 +206,156 @@ public class AppListActivity extends BaseFragmentActivity implements
 		mSclingBgView = mContainer;
 		// mSclingBgView = mAllAppList;
 
-		if (!(view.getTag() instanceof AppItemInfo))
-			return;
-		AppItemInfo appinfo = (AppItemInfo) view.getTag();
-		if (from != BaseFolderFragment.FOLER_TYPE_BACKUP) {
-			if (mCommenScilingContentView == null) {
-				mCommenScilingContentView = getLayoutInflater().inflate(
-						R.layout.comon_scling_content_view, null);
+//		if (!(view.getTag() instanceof AppItemInfo))
+//			return;
+		BaseInfo baseInfo = (BaseInfo) view.getTag();
 
-				mCommenScilingHolder = new CommonSclingContentViewHolder();
-				mCommenScilingHolder.installTime = (TextView) mCommenScilingContentView
-						.findViewById(R.id.install_time);
-				mCommenScilingHolder.capacity = (TextView) mCommenScilingContentView
-						.findViewById(R.id.capacity);
-				mCommenScilingHolder.cache = (TextView) mCommenScilingContentView
-						.findViewById(R.id.cache);
-				mCommenScilingHolder.flow = (TextView) mCommenScilingContentView
-						.findViewById(R.id.flow);
-				mCommenScilingHolder.power = (TextView) mCommenScilingContentView
-						.findViewById(R.id.power);
-				mCommenScilingHolder.memory = (TextView) mCommenScilingContentView
-						.findViewById(R.id.memory);
+		if (baseInfo instanceof BusinessItemInfo) {
+			// TODO
 
-				mCommenScilingHolder.backup = (TextView) mCommenScilingContentView
-						.findViewById(R.id.backup);
-				mCommenScilingHolder.uninstall = (TextView) mCommenScilingContentView
-						.findViewById(R.id.uninstall);
+			if (mBusinessContentView == null) {
+				mBusinessContentView = getLayoutInflater().inflate(
+						R.layout.business_app_content_view, null);
 
-				mCommenScilingHolder.backup.setOnClickListener(this);
-				mCommenScilingHolder.uninstall.setOnClickListener(this);
-			}
-			appinfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(
-					appinfo.packageName);
-
-			int day = Math
-					.abs((int) ((System.currentTimeMillis() - appinfo.installTime) / (1000 * 60 * 60 * 24)));
-
-			if (day > 10000) {
-				day /= 50;
-			} else if (day > 1000) {
-				day /= 2;
-			}
-			mCommenScilingHolder.installTime.setText(getString(
-					R.string.install_time, day));
-
-			mCommenScilingHolder.capacity.setText(TextFormater
-					.dataSizeFormat(appinfo.cacheInfo.total));
-
-			mCommenScilingHolder.cache.setText(TextFormater
-					.dataSizeFormat(appinfo.cacheInfo.cacheSize));
-			mCommenScilingHolder.flow.setText(TextFormater
-					.dataSizeFormat(appinfo.trafficInfo.total));
-			mCommenScilingHolder.power.setText(appinfo.powerComsuPercent * 100
-					+ "%");
-			mCommenScilingHolder.memory.setText(TextFormater
-					.dataSizeFormat(ProcessUtils.getAppUsedMem(this,
-							appinfo.packageName)));
-
-			if (appinfo.isBackuped) {
-				mCommenScilingHolder.backup.setText(R.string.backuped);
-				mCommenScilingHolder.backup.setEnabled(false);
-				mCommenScilingHolder.backup
-						.setBackgroundResource(R.drawable.dlg_left_button_selector);
-			} else {
-				mCommenScilingHolder.backup.setText(R.string.backup);
-				mCommenScilingHolder.backup.setEnabled(true);
-				mCommenScilingHolder.backup
-						.setBackgroundResource(R.drawable.folder_left_button_selector);
+				mBusinessScilingHolder = new BusinessAppContentViewHolder();
+				mBusinessScilingHolder.rating = (RatingBar) mBusinessContentView.findViewById(R.id.ratingBar1);
+				mBusinessScilingHolder.downloadCount = (TextView) mBusinessContentView.findViewById(R.id.app_download_hot);
+				mBusinessScilingHolder.appSize = (TextView) mBusinessContentView.findViewById(R.id.app_size);
+				mBusinessScilingHolder.appDesc = (TextView) mBusinessContentView.findViewById(R.id.app_desc);
+				mBusinessScilingHolder.download = (TextView) mBusinessContentView.findViewById(R.id.download);
+				mBusinessScilingHolder.download.setOnClickListener(this);
 			}
 
-			if (appinfo.systemApp) {
-				mCommenScilingHolder.uninstall.setEnabled(false);
-				mCommenScilingHolder.uninstall
-						.setBackgroundResource(R.drawable.folder_right_button_selector);
-			} else {
-				mCommenScilingHolder.uninstall.setEnabled(true);
-				mCommenScilingHolder.uninstall
-						.setBackgroundResource(R.drawable.folder_right_button_selector);
-			}
-
-			int contentheight = getResources().getDimensionPixelSize(
-					R.dimen.common_scling_content_height);
-
-			mSlicingLayer.startSlicing(view, mSclingBgView,
-					mCommenScilingContentView, contentheight);
-		} else {
-			if (mBackupSclingContentView == null) {
-				mBackupSclingContentView = getLayoutInflater().inflate(
-						R.layout.backup_scling_content_view, null);
-
-				mBackupScilingHolder = new BackupContentViewHolder();
-				mBackupScilingHolder.size = (TextView) mBackupSclingContentView
-						.findViewById(R.id.app_size);
-				mBackupScilingHolder.version = (TextView) mBackupSclingContentView
-						.findViewById(R.id.app_version);
-				mBackupScilingHolder.backupTime = (TextView) mBackupSclingContentView
-						.findViewById(R.id.backup_time);
-				mBackupScilingHolder.path = (TextView) mBackupSclingContentView
-						.findViewById(R.id.path);
-
-				mBackupScilingHolder.restore = (TextView) mBackupSclingContentView
-						.findViewById(R.id.restore);
-				mBackupScilingHolder.delete = (TextView) mBackupSclingContentView
-						.findViewById(R.id.delete);
-
-				mBackupScilingHolder.restore.setOnClickListener(this);
-				mBackupScilingHolder.delete.setOnClickListener(this);
-			}
-
-			mBackupScilingHolder.size.setText(mBackupManager
-					.getApkSize(appinfo));
-			mBackupScilingHolder.version.setText(appinfo.versionName);
-			SimpleDateFormat formatter = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss");
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTimeInMillis(appinfo.backupTime);
-			mBackupScilingHolder.backupTime.setText(formatter.format(calendar
-					.getTime()));
-			mBackupScilingHolder.path.setText(mBackupManager.getDisplayPath());
-
+			BusinessItemInfo businessInfo = (BusinessItemInfo) baseInfo;
 			int contentheight = getResources().getDimensionPixelSize(
 					R.dimen.backup_scling_content_height);
 			mSlicingLayer.startSlicing(view, mSclingBgView,
-					mBackupSclingContentView, contentheight);
+					mBusinessContentView, contentheight);
+
+		} else {
+			AppItemInfo appinfo = (AppItemInfo) baseInfo;
+			if (from != BaseFolderFragment.FOLER_TYPE_BACKUP) {
+				if (mCommenScilingContentView == null) {
+					mCommenScilingContentView = getLayoutInflater().inflate(
+							R.layout.comon_scling_content_view, null);
+
+					mCommenScilingHolder = new CommonSclingContentViewHolder();
+					mCommenScilingHolder.installTime = (TextView) mCommenScilingContentView
+							.findViewById(R.id.install_time);
+					mCommenScilingHolder.capacity = (TextView) mCommenScilingContentView
+							.findViewById(R.id.capacity);
+					mCommenScilingHolder.cache = (TextView) mCommenScilingContentView
+							.findViewById(R.id.cache);
+					mCommenScilingHolder.flow = (TextView) mCommenScilingContentView
+							.findViewById(R.id.flow);
+					mCommenScilingHolder.power = (TextView) mCommenScilingContentView
+							.findViewById(R.id.power);
+					mCommenScilingHolder.memory = (TextView) mCommenScilingContentView
+							.findViewById(R.id.memory);
+
+					mCommenScilingHolder.backup = (TextView) mCommenScilingContentView
+							.findViewById(R.id.backup);
+					mCommenScilingHolder.uninstall = (TextView) mCommenScilingContentView
+							.findViewById(R.id.uninstall);
+
+					mCommenScilingHolder.backup.setOnClickListener(this);
+					mCommenScilingHolder.uninstall.setOnClickListener(this);
+				}
+				appinfo = AppLoadEngine.getInstance(this).loadAppDetailInfo(
+						appinfo.packageName);
+
+				int day = Math
+						.abs((int) ((System.currentTimeMillis() - appinfo.installTime) / (1000 * 60 * 60 * 24)));
+
+				if (day > 10000) {
+					day /= 50;
+				} else if (day > 1000) {
+					day /= 2;
+				}
+				mCommenScilingHolder.installTime.setText(getString(
+						R.string.install_time, day));
+
+				mCommenScilingHolder.capacity.setText(TextFormater
+						.dataSizeFormat(appinfo.cacheInfo.total));
+
+				mCommenScilingHolder.cache.setText(TextFormater
+						.dataSizeFormat(appinfo.cacheInfo.cacheSize));
+				mCommenScilingHolder.flow.setText(TextFormater
+						.dataSizeFormat(appinfo.trafficInfo.total));
+				mCommenScilingHolder.power.setText(appinfo.powerComsuPercent
+						* 100 + "%");
+				mCommenScilingHolder.memory.setText(TextFormater
+						.dataSizeFormat(ProcessUtils.getAppUsedMem(this,
+								appinfo.packageName)));
+
+				if (appinfo.isBackuped) {
+					mCommenScilingHolder.backup.setText(R.string.backuped);
+					mCommenScilingHolder.backup.setEnabled(false);
+					mCommenScilingHolder.backup
+							.setBackgroundResource(R.drawable.dlg_left_button_selector);
+				} else {
+					mCommenScilingHolder.backup.setText(R.string.backup);
+					mCommenScilingHolder.backup.setEnabled(true);
+					mCommenScilingHolder.backup
+							.setBackgroundResource(R.drawable.folder_left_button_selector);
+				}
+
+				if (appinfo.systemApp) {
+					mCommenScilingHolder.uninstall.setEnabled(false);
+					mCommenScilingHolder.uninstall
+							.setBackgroundResource(R.drawable.folder_right_button_selector);
+				} else {
+					mCommenScilingHolder.uninstall.setEnabled(true);
+					mCommenScilingHolder.uninstall
+							.setBackgroundResource(R.drawable.folder_right_button_selector);
+				}
+
+				int contentheight = getResources().getDimensionPixelSize(
+						R.dimen.common_scling_content_height);
+
+				mSlicingLayer.startSlicing(view, mSclingBgView,
+						mCommenScilingContentView, contentheight);
+			} else {
+				if (mBackupSclingContentView == null) {
+					mBackupSclingContentView = getLayoutInflater().inflate(
+							R.layout.backup_scling_content_view, null);
+
+					mBackupScilingHolder = new BackupContentViewHolder();
+					mBackupScilingHolder.size = (TextView) mBackupSclingContentView
+							.findViewById(R.id.app_size);
+					mBackupScilingHolder.version = (TextView) mBackupSclingContentView
+							.findViewById(R.id.app_version);
+					mBackupScilingHolder.backupTime = (TextView) mBackupSclingContentView
+							.findViewById(R.id.backup_time);
+					mBackupScilingHolder.path = (TextView) mBackupSclingContentView
+							.findViewById(R.id.path);
+
+					mBackupScilingHolder.restore = (TextView) mBackupSclingContentView
+							.findViewById(R.id.restore);
+					mBackupScilingHolder.delete = (TextView) mBackupSclingContentView
+							.findViewById(R.id.delete);
+
+					mBackupScilingHolder.restore.setOnClickListener(this);
+					mBackupScilingHolder.delete.setOnClickListener(this);
+				}
+
+				mBackupScilingHolder.size.setText(mBackupManager
+						.getApkSize(appinfo));
+				mBackupScilingHolder.version.setText(appinfo.versionName);
+				SimpleDateFormat formatter = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm:ss");
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(appinfo.backupTime);
+				mBackupScilingHolder.backupTime.setText(formatter
+						.format(calendar.getTime()));
+				mBackupScilingHolder.path.setText(mBackupManager
+						.getDisplayPath());
+
+				int contentheight = getResources().getDimensionPixelSize(
+						R.dimen.backup_scling_content_height);
+				mSlicingLayer.startSlicing(view, mSclingBgView,
+						mBackupSclingContentView, contentheight);
+			}
 		}
 		LeoLog.d("end slicing", " end time = " + System.currentTimeMillis());
 		LeoLog.d("end slicing", " spend = "
@@ -565,36 +604,37 @@ public class AppListActivity extends BaseFragmentActivity implements
 					}
 					break;
 				case BaseInfo.ITEM_TYPE_BUSINESS_APP:
-					BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
-					if (bif.gpPriority == 1) {
-						if (AppUtil.appInstalled(AppListActivity.this,
-								Constants.GP_PACKAGE)) {
-							AppUtil.downloadFromGp(AppListActivity.this,
-									bif.packageName);
-						} else {
-							AppUtil.downloadFromBrowser(AppListActivity.this,
-									bif.appDownloadUrl);
-						}
-					} else {
-						AppUtil.downloadFromBrowser(AppListActivity.this,
-								bif.appDownloadUrl);
-					}
-					SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-							"app_cli_pn", bif.packageName);
-
-					if (bif.containType == BusinessItemInfo.CONTAIN_APPLIST) {
-						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-								"app_cli_ps", "home");
-					} else if (bif.containType == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-								"app_cli_ps", "flow");
-					} else if (bif.containType == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
-						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-								"app_cli_ps", "capacity");
-					} else if (bif.containType == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
-						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
-								"app_cli_ps", "new");
-					}
+					openSlicingLayer(view, from);
+//					BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
+//					if (bif.gpPriority == 1) {
+//						if (AppUtil.appInstalled(AppListActivity.this,
+//								Constants.GP_PACKAGE)) {
+//							AppUtil.downloadFromGp(AppListActivity.this,
+//									bif.packageName);
+//						} else {
+//							AppUtil.downloadFromBrowser(AppListActivity.this,
+//									bif.appDownloadUrl);
+//						}
+//					} else {
+//						AppUtil.downloadFromBrowser(AppListActivity.this,
+//								bif.appDownloadUrl);
+//					}
+//					SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+//							"app_cli_pn", bif.packageName);
+//
+//					if (bif.containType == BusinessItemInfo.CONTAIN_APPLIST) {
+//						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+//								"app_cli_ps", "home");
+//					} else if (bif.containType == BusinessItemInfo.CONTAIN_FLOW_SORT) {
+//						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+//								"app_cli_ps", "flow");
+//					} else if (bif.containType == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
+//						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+//								"app_cli_ps", "capacity");
+//					} else if (bif.containType == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
+//						SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+//								"app_cli_ps", "new");
+//					}
 
 					break;
 
