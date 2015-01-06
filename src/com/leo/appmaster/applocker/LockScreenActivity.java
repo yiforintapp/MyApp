@@ -475,6 +475,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     LockScreenActivity.this.startActivity(helpSettingIntent);
                 } catch (Exception e) {
                 }
+                /*SDK Event Mark*/
+                SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,"help", "help");
+                break;
             default:
 			break;
 		}

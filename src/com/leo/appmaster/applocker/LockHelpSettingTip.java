@@ -29,9 +29,11 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
+import com.leoers.leoanalytics.LeoStat;
 
 public class LockHelpSettingTip extends Activity {
     private CommonTitleBar mTitle;
@@ -228,8 +230,12 @@ public class LockHelpSettingTip extends Activity {
                 public void onClick(View arg0) {
                     String buttonText = lockHelpPager.getButton();
                     if (buttonText.equals(getString(R.string.lock_help_password_setting_button))) {
+                        /*SDK Event Mark*/
+                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1,"help_press", "password");
                         enterLockPage();
                     } else if (buttonText.equals(getString(R.string.lock_help_lock_setting_button))) {
+                        /*SDK Event Mark*/
+                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1,"help_press", "setting");
                         Intent intent = new Intent(LockHelpSettingTip.this,
                                 LockTimeSetting.class);
                         intent.putExtra("help_setting_current", 1);
@@ -240,6 +246,8 @@ public class LockHelpSettingTip extends Activity {
                         }
                     } else if (buttonText
                             .equals(getString(R.string.lock_help_lock_theme_setting_button))) {
+                        /*SDK Event Mark*/
+                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1,"help_press", "theme");
                         Intent intent = new Intent(LockHelpSettingTip.this, LockerTheme.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.putExtra("to_online_theme", true);
