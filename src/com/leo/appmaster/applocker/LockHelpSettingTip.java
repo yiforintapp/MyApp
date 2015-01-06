@@ -43,6 +43,8 @@ public class LockHelpSettingTip extends Activity {
         setContentView(R.layout.activity_lock_help_setting_tip);
         mHelpPager = new ArrayList<LockHelpItemPager>();
         initUI();
+        mAdapter = new LockHelpPagerAdapter(this);
+        mViewPager.setAdapter(mAdapter);
         mViewPager.setPageMargin(getResources().getDimensionPixelSize(
                 R.dimen.help_setting_page_margin));
         mViewPager.setOffscreenPageLimit(3);
@@ -74,8 +76,7 @@ public class LockHelpSettingTip extends Activity {
     @Override
     protected void onResume() {
         getHelpPager();
-        mAdapter = new LockHelpPagerAdapter(this);
-        mViewPager.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
         if (mCurrentFlag != CURRENT_FLAG_CODE) {
             if (!mHelpPager.get(0).getTitle().equals(mHelpSettingPager.get(0))) {
                 mViewPager.setCurrentItem(mCurrentFlag - 1);
@@ -102,8 +103,8 @@ public class LockHelpSettingTip extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data!=null){
-        mCurrentFlag = data.getExtras().getInt("help_setting_current");
+        if (data != null) {
+            mCurrentFlag = data.getExtras().getInt("help_setting_current");
         }
     }
 
@@ -155,6 +156,11 @@ public class LockHelpSettingTip extends Activity {
 
         public LockHelpPagerAdapter(Context context) {
             this.context = context;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
 
         @Override
