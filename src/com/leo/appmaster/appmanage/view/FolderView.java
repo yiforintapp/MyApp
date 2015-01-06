@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.RemotableViewMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -56,6 +57,8 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	private int mCurPosition;
 
 	private int mFolderTitleHeight, mFolderTitleWidth;
+	
+	private boolean mFirstShow = true;
 
 	public FolderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -69,6 +72,13 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 				.getDimensionPixelSize(R.dimen.folder_title_height);
 		mFolderTitleWidth = res
 				.getDimensionPixelSize(R.dimen.folder_title_width);
+	}
+	
+	@Override
+	@RemotableViewMethod
+	public void setVisibility(int visibility) {
+	    super.setVisibility(visibility);
+	    mFirstShow = true;
 	}
 
 	@Override
@@ -279,19 +289,27 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	public void onPageSelected(int arg0) {
 	    mViewPager.interceptVerticalEvent(true);
 		if (arg0 == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
-			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_restore", "glide");
+		    if(!mFirstShow) {
+		          SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_restore", "glide");
+		    }
 		} else if (arg0 == FolderItemInfo.FOLDER_FLOW_SORT) {
-			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_liuliang", "glide");
+            if (!mFirstShow) {
+                SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_liuliang", "glide");
+            }
             if (AppBusinessManager.getInstance(mContext).hasBusinessData(BusinessItemInfo.CONTAIN_FLOW_SORT)) {
                 SDKWrapper.addEvent(mContext, LeoStat.P1, "app_rec", "flow");
             }
 		} else if (arg0 == FolderItemInfo.FOLDER_CAPACITY_SORT) {
-			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_space", "glide");
+            if (!mFirstShow) {
+                SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_space", "glide");
+            }
             if (AppBusinessManager.getInstance(mContext).hasBusinessData(BusinessItemInfo.CONTAIN_CAPACITY_SORT)) {
                 SDKWrapper.addEvent(mContext, LeoStat.P1, "app_rec", "capacity");
             }
 		} else if (arg0 == FolderItemInfo.FOLDER_BUSINESS_APP) {
-			SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_newapp", "glide");
+            if (!mFirstShow) {
+                SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_newapp", "glide");
+            }
 			mViewPager.interceptVerticalEvent(false);
 		}
 
@@ -331,6 +349,8 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		} else {
 			mTitleCoverFlowView.onKeyDown(KeyEvent.KEYCODE_DPAD_LEFT, null);
 		}
+		
+		mFirstShow = false;
 	}
 
 	@Override

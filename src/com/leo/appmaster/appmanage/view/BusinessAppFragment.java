@@ -351,7 +351,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		((AppListActivity) mActivity).handleItemClick(view, mType);
+		((AppListActivity) mActivity).handleItemClick(view, mType, true);
 	}
 
 	@Override

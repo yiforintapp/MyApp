@@ -621,10 +621,16 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     }
     
     private void dismissProgressDialog() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+        // AM-737
+        try {
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+                mProgressDialog = null;
+            }
+        } catch (Exception e) {
+            
         }
+
     }
     
     private void showAlarmDialog() {
