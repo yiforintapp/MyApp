@@ -41,6 +41,10 @@ public class BusinessJsonParser {
 							bean.gpUrl = temp.getString("gp_url");
 							bean.appDownloadUrl = temp
 									.getString("download_url");
+							bean.desc = temp.getString("description");
+							bean.appDownloadCount = temp.getString("download_number");
+							bean.rating = Float.parseFloat(temp.getString("review_score"));
+							LeoLog.e("xxxx", "review_score = " + temp.getString("review_score") + "    rating = " + bean.rating);
 							list.add(bean);
 						} catch (JSONException e) {
 							LeoLog.e("parserJsonObject", e.getMessage());

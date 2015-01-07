@@ -64,6 +64,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
 	// home page
 	public static final String PREF_HOME_BUSINESS_NEW_TIP_CLICK = "home_business_tip_click";
+	public static final String PREF_HOME_LOCKED = "home_locked";
 
 	private List<String> mLockedAppList;
 	private List<String> mRecommendList;
@@ -114,8 +115,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		return mPref.getBoolean(PREF_HOME_BUSINESS_NEW_TIP_CLICK, false);
 	}
 
-	public void setHomeBusinessTipClick(boolean flag) {
+	public void setHomeLocked(boolean flag) {
 		mPref.edit().putBoolean(PREF_HOME_BUSINESS_NEW_TIP_CLICK, flag).commit();
+	}
+	
+	public boolean getHomeLocked() {
+		return mPref.getBoolean(PREF_HOME_LOCKED, false);
+	}
+
+	public void setHomeBusinessTipClick(boolean flag) {
+		mPref.edit().putBoolean(PREF_HOME_LOCKED, flag).commit();
 	}
 	
 

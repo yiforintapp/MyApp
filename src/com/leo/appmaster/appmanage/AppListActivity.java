@@ -145,7 +145,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 		ImageView googleIcon;
 		View googleDownloadLayout;
 		TextView highDownload;
-		TextView googleDownload;
 	}
 
 	@Override
@@ -221,7 +220,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 
 		if (baseInfo instanceof BusinessItemInfo) {
 			// TODO
-
 			if (mBusinessContentView == null) {
 				mBusinessContentView = getLayoutInflater().inflate(
 						R.layout.business_app_content_view, null);
@@ -239,11 +237,9 @@ public class AppListActivity extends BaseFragmentActivity implements
 						.findViewById(R.id.google_icon);
 				mBusinessScilingHolder.highDownload = (TextView) mBusinessContentView
 						.findViewById(R.id.tv_high_speed_download);
-				mBusinessScilingHolder.googleDownload = (TextView) mBusinessContentView
-						.findViewById(R.id.tv_google_download);
 				mBusinessScilingHolder.googleDownloadLayout = mBusinessContentView
 						.findViewById(R.id.google_download);
-				
+
 				mBusinessScilingHolder.downloadLayout = mBusinessContentView
 						.findViewById(R.id.layout_download);
 				mBusinessScilingHolder.downloadLayout.setOnClickListener(this);
@@ -254,15 +250,20 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mBusinessScilingHolder.downloadCount
 					.setText(businessInfo.appDownloadCount);
 			mBusinessScilingHolder.appSize.setText(TextFormater
-					.dataSizeFormat(businessInfo.appSize));
+					.getSizeFromKB(businessInfo.appSize));
 			if (businessInfo.gpPriority == 1
-					/*&& AppUtil.appInstalled(this, Constants.GP_PACKAGE)*/) {
-				mBusinessScilingHolder.googleIcon.setImageResource(R.drawable.google_icon_selector);
-				mBusinessScilingHolder.googleDownloadLayout.setVisibility(View.VISIBLE);
-				mBusinessScilingHolder.highDownload.setVisibility(View.INVISIBLE);
+					&& AppUtil.appInstalled(this, Constants.GP_PACKAGE)) {
+				mBusinessScilingHolder.googleIcon
+						.setImageResource(R.drawable.google_icon_selector);
+				mBusinessScilingHolder.googleDownloadLayout
+						.setVisibility(View.VISIBLE);
+				mBusinessScilingHolder.highDownload
+						.setVisibility(View.INVISIBLE);
 			} else {
-				mBusinessScilingHolder.googleIcon.setImageResource(R.drawable.highspeed_download_icon_selector);
-				mBusinessScilingHolder.googleDownloadLayout.setVisibility(View.INVISIBLE);
+				mBusinessScilingHolder.googleIcon
+						.setImageResource(R.drawable.highspeed_download_icon_selector);
+				mBusinessScilingHolder.googleDownloadLayout
+						.setVisibility(View.INVISIBLE);
 				mBusinessScilingHolder.highDownload.setVisibility(View.VISIBLE);
 			}
 			mBusinessScilingHolder.appDesc.setText(businessInfo.desc);

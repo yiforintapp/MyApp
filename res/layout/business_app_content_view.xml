@@ -36,12 +36,10 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
             android:gravity="center"
-            android:isIndicator="true"
             android:numStars="5"
             android:paddingTop="5dp"
             android:progressDrawable="@drawable/ratingbar"
-            android:rating="2.5"
-            android:stepSize="1.1" />
+            android:rating="2.5"  />
     </RelativeLayout>
 
     <View
@@ -167,8 +165,11 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
+            android:layout_toRightOf="@id/textView5"
             android:ellipsize="end"
+            android:gravity="right"
             android:maxLines="2"
+            android:layout_marginLeft="5dp"
             android:text="app describtion"
             android:textColor="@color/white"
             android:textSize="@dimen/folder_backup_text_size" />
@@ -188,10 +189,10 @@
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         android:layout_marginTop="13dp"
-        android:padding="1dp"
         android:background="@drawable/folder_left_button_selector"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:padding="1dp" >
 
         <ImageView
             android:id="@+id/google_icon"
@@ -209,9 +210,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:visibility="visible" 
                 android:layout_marginLeft="10dp"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="visible" >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -225,9 +226,9 @@
                     android:id="@+id/tv_google_download"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginTop="1dp"
                     android:layout_marginBottom="2dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
                     android:text="@string/app_google_download"
                     android:textColor="#064f6d"
                     android:textSize="14sp" />
