@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -96,6 +97,24 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         lockTV = (TextView) findViewById(R.id.recomment_lock);
         lockTV.setOnClickListener(this);
         mAppPager.setItemClickListener(this);
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (Exception e) {
+            
+        }
+    }
+    
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState, persistentState);
+        } catch (Exception e) {
+            
+        }
     }
 
     @Override

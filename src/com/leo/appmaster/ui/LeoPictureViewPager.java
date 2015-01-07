@@ -923,7 +923,12 @@ public class LeoPictureViewPager extends ViewGroup {
     }
 
     void populate() {
-        populate(mCurItem);
+        // AM-816
+        try {
+            populate(mCurItem);
+        } catch (Exception e) {
+            
+        }
     }
 
     void populate(int newCurrentItem) {

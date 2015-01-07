@@ -129,11 +129,10 @@ public class ImageGalleryActivity extends BaseActivity{
     
     @Override
     protected void onPause() {
-       if (mGridView.getCount() > 0) {
+       if (mGridView != null && mGridView.getCount() > 0) {
            mScrollPos = mGridView.getFirstVisiblePosition();
            mTopChildOffset = mGridView.getChildAt(0).getTop();
        }
-
         super.onPause();
     }
 

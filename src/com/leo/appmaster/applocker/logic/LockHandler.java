@@ -80,11 +80,15 @@ public class LockHandler extends BroadcastReceiver {
 			}
 			List<String> list = AppMasterPreference.getInstance(mContext)
 					.getLockedAppList();
-			boolean lock = list.contains(pkg);
-			// Google launcher is special
-			if (!lock && pkg.equals(GOOGLE_LAUNCHER_PKG21)) {
-				lock = list.contains(GOOGLE_LAUNCHER_PKG);
-			}
+			boolean lock = false;
+			// AM-810
+            if (list != null) {
+                lock = list.contains(pkg);
+                // Google launcher is special
+                if (!lock && pkg.equals(GOOGLE_LAUNCHER_PKG21)) {
+                    lock = list.contains(GOOGLE_LAUNCHER_PKG);
+                }
+            }
 			if (lock) {
 				Intent intent = new Intent(mContext, LockScreenActivity.class);
 				if (mLockPolicy != null && !mLockPolicy.onHandleLock(pkg)) {
@@ -107,7 +111,6 @@ public class LockHandler extends BroadcastReceiver {
 					intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 							LockFragment.FROM_OTHER);
 					mContext.startActivity(intent);
-
 				}
 			}
 		} else {

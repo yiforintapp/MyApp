@@ -203,38 +203,41 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            VideoItemBean video = videos.get(position);
-            final String path = video.getPath();
-            if (mActivityMode == Constants.CANCLE_HIDE_MODE && !mIsEditmode) {
-                viewHolder.selectImage.setVisibility(View.GONE);
-            } else {
-                viewHolder.selectImage.setVisibility(View.VISIBLE);
-                if (mClickList.contains(mVideoItems.get(position))) {
-                    viewHolder.selectImage.setImageResource(R.drawable.pic_choose_active);
+            // AM-806
+            if(position < videos.size()) {
+                VideoItemBean video = videos.get(position);
+                final String path = video.getPath();
+                if (mActivityMode == Constants.CANCLE_HIDE_MODE && !mIsEditmode) {
+                    viewHolder.selectImage.setVisibility(View.GONE);
                 } else {
-                    viewHolder.selectImage.setImageResource(R.drawable.pic_choose_normal);
+                    viewHolder.selectImage.setVisibility(View.VISIBLE);
+                    if (mClickList.contains(mVideoItems.get(position))) {
+                        viewHolder.selectImage.setImageResource(R.drawable.pic_choose_active);
+                    } else {
+                        viewHolder.selectImage.setImageResource(R.drawable.pic_choose_normal);
+                    }
                 }
-            }
-            String name = FileOperationUtil.getNoExtNameFromHideFilepath(path);
-            viewHolder.text.setText(name);
-            final ImageView imageView = viewHolder.imageView;
-            imageView.setTag(path);
-            viewHolder.imageView.setBackgroundDrawable(context.getResources()
-                    .getDrawable(R.drawable.video_loading));
-            Drawable drawableCache = asyncLoadImage.loadImage(imageView, path,
-                    new ImageCallback() {
-                        @SuppressWarnings("deprecation")
-                        @Override
-                        public void imageLoader(Drawable drawable) {
-                            if (imageView != null
-                                    && imageView.getTag().equals(path) && drawable != null) {
-                                imageView.setBackgroundDrawable(drawable);
+                String name = FileOperationUtil.getNoExtNameFromHideFilepath(path);
+                viewHolder.text.setText(name);
+                final ImageView imageView = viewHolder.imageView;
+                imageView.setTag(path);
+                viewHolder.imageView.setBackgroundDrawable(context.getResources()
+                        .getDrawable(R.drawable.video_loading));
+                Drawable drawableCache = asyncLoadImage.loadImage(imageView, path,
+                        new ImageCallback() {
+                            @SuppressWarnings("deprecation")
+                            @Override
+                            public void imageLoader(Drawable drawable) {
+                                if (imageView != null
+                                        && imageView.getTag().equals(path) && drawable != null) {
+                                    imageView.setBackgroundDrawable(drawable);
+                                }
                             }
-                        }
-                    });
-            if (drawableCache != null) {
-                viewHolder.imageView.setBackgroundDrawable(drawableCache);
-            }
+                        });
+                if (drawableCache != null) {
+                    viewHolder.imageView.setBackgroundDrawable(drawableCache);
+                }
+            }       
             return convertView;
         }
 
