@@ -142,8 +142,10 @@ public class AppListActivity extends BaseFragmentActivity implements
 		TextView appSize;
 		TextView appDesc;
 		View downloadLayout;
-		View googleIcon;
-		TextView download;
+		ImageView googleIcon;
+		View googleDownloadLayout;
+		TextView highDownload;
+		TextView googleDownload;
 	}
 
 	@Override
@@ -233,10 +235,15 @@ public class AppListActivity extends BaseFragmentActivity implements
 						.findViewById(R.id.app_size);
 				mBusinessScilingHolder.appDesc = (TextView) mBusinessContentView
 						.findViewById(R.id.app_desc);
-				mBusinessScilingHolder.googleIcon = mBusinessContentView
+				mBusinessScilingHolder.googleIcon = (ImageView) mBusinessContentView
 						.findViewById(R.id.google_icon);
-				mBusinessScilingHolder.download = (TextView) mBusinessContentView
-						.findViewById(R.id.tv_download);
+				mBusinessScilingHolder.highDownload = (TextView) mBusinessContentView
+						.findViewById(R.id.tv_high_speed_download);
+				mBusinessScilingHolder.googleDownload = (TextView) mBusinessContentView
+						.findViewById(R.id.tv_google_download);
+				mBusinessScilingHolder.googleDownloadLayout = mBusinessContentView
+						.findViewById(R.id.google_download);
+				
 				mBusinessScilingHolder.downloadLayout = mBusinessContentView
 						.findViewById(R.id.layout_download);
 				mBusinessScilingHolder.downloadLayout.setOnClickListener(this);
@@ -249,13 +256,14 @@ public class AppListActivity extends BaseFragmentActivity implements
 			mBusinessScilingHolder.appSize.setText(TextFormater
 					.dataSizeFormat(businessInfo.appSize));
 			if (businessInfo.gpPriority == 1
-					&& AppUtil.appInstalled(this, Constants.GP_PACKAGE)) {
-				mBusinessScilingHolder.googleIcon.setVisibility(View.VISIBLE);
-				mBusinessScilingHolder.download
-						.setText(R.string.app_google_download);
+					/*&& AppUtil.appInstalled(this, Constants.GP_PACKAGE)*/) {
+				mBusinessScilingHolder.googleIcon.setImageResource(R.drawable.google_icon_selector);
+				mBusinessScilingHolder.googleDownloadLayout.setVisibility(View.VISIBLE);
+				mBusinessScilingHolder.highDownload.setVisibility(View.INVISIBLE);
 			} else {
-				mBusinessScilingHolder.googleIcon.setVisibility(View.GONE);
-				mBusinessScilingHolder.download.setText(R.string.app_download);
+				mBusinessScilingHolder.googleIcon.setImageResource(R.drawable.highspeed_download_icon_selector);
+				mBusinessScilingHolder.googleDownloadLayout.setVisibility(View.INVISIBLE);
+				mBusinessScilingHolder.highDownload.setVisibility(View.VISIBLE);
 			}
 			mBusinessScilingHolder.appDesc.setText(businessInfo.desc);
 
@@ -567,14 +575,6 @@ public class AppListActivity extends BaseFragmentActivity implements
 				FolderItemInfo.FOLDER_BUSINESS_APP);
 		folder.label = getString(R.string.folder_recommend);
 		mFolderItems.add(folder);
-		// add restore folder
-		folder = new FolderItemInfo();
-		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
-		folder.folderType = FolderItemInfo.FOLDER_BACKUP_RESTORE;
-		folder.icon = Utilities.getFolderScalePicture(this, mRestoreFolderData,
-				FolderItemInfo.FOLDER_BACKUP_RESTORE);
-		folder.label = getString(R.string.folder_backup_restore);
-		mFolderItems.add(folder);
 		// add flow sort folder
 		folder = new FolderItemInfo();
 		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
@@ -590,6 +590,14 @@ public class AppListActivity extends BaseFragmentActivity implements
 		folder.icon = Utilities.getFolderScalePicture(this,
 				mCapacityFolderData, FolderItemInfo.FOLDER_CAPACITY_SORT);
 		folder.label = getString(R.string.folder_sort_capacity);
+		mFolderItems.add(folder);
+		// add restore folder
+		folder = new FolderItemInfo();
+		folder.type = BaseInfo.ITEM_TYPE_FOLDER;
+		folder.folderType = FolderItemInfo.FOLDER_BACKUP_RESTORE;
+		folder.icon = Utilities.getFolderScalePicture(this, mRestoreFolderData,
+				FolderItemInfo.FOLDER_BACKUP_RESTORE);
+		folder.label = getString(R.string.folder_backup_restore);
 		mFolderItems.add(folder);
 	}
 

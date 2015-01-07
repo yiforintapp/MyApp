@@ -295,7 +295,7 @@
     <string name="app_desc">简介： </string>
     <string name="app_download_count">下载量： </string>
     <string name="business_rating">评分： </string>
-    <string name="app_download">直接下载 </string>
-    <string name="app_google_download">前往Google Play下载 </string>
+    <string name="app_download">高速下载 </string>
+    <string name="app_google_download">免费下载 </string>
 
 </resources>

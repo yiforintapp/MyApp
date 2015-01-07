@@ -18,12 +18,12 @@ public class LockHandler extends BroadcastReceiver {
 
 	public static final String ACTION_APP_UNLOCKED = "com.leo.applocker.appunlocked";
 	public static final String EXTRA_LOCKED_APP_PKG = "locked_app_pkg";
-	
-    private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
-    private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
-    
-    private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
-    private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
+
+	private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
+	private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
+
+	private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
+	private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
 
 	private Context mContext;
 	private ActivityManager mAm;
@@ -60,12 +60,12 @@ public class LockHandler extends BroadcastReceiver {
 		if (pkg == null || activity == null)
 			return;
 
-		LeoLog.d("handleAppLaunch", pkg + "/" + activity);
+		LeoLog.e("handleAppLaunch", pkg + "/" + activity);
 
 		if (!pkg.equals(mLastRunningPkg)) {
 			String myPackage = mContext.getPackageName();
-			if (/*pkg.equals(myPackage)
-					|| */  activity.equals("LockScreenActivity")
+			if ((pkg.equals(myPackage) && activity
+					.contains("LockScreenActivity"))
 					|| (mLastRunningPkg.equals(myPackage) && mLastRuningActivity
 							.contains("LockScreenActivity"))) {
 				mLastRunningPkg = pkg;
@@ -74,16 +74,16 @@ public class LockHandler extends BroadcastReceiver {
 			}
 			mLastRunningPkg = pkg;
 			mLastRuningActivity = activity;
-		     // For android 5.0, download package changed
-			if(pkg.equals(DOWNLAOD_PKG_21)) {
-			    pkg = DOWNLAOD_PKG;
+			// For android 5.0, download package changed
+			if (pkg.equals(DOWNLAOD_PKG_21)) {
+				pkg = DOWNLAOD_PKG;
 			}
 			List<String> list = AppMasterPreference.getInstance(mContext)
 					.getLockedAppList();
 			boolean lock = list.contains(pkg);
 			// Google launcher is special
-			if(!lock && pkg.equals(GOOGLE_LAUNCHER_PKG21)) {
-			    lock = list.contains(GOOGLE_LAUNCHER_PKG);
+			if (!lock && pkg.equals(GOOGLE_LAUNCHER_PKG21)) {
+				lock = list.contains(GOOGLE_LAUNCHER_PKG);
 			}
 			if (lock) {
 				Intent intent = new Intent(mContext, LockScreenActivity.class);

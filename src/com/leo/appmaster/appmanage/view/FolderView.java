@@ -133,9 +133,9 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		}
 
 		mFragmentList.add(businessFragment);
-		mFragmentList.add(backupFragment);
 		mFragmentList.add(flowFragment);
 		mFragmentList.add(capacityFragment);
+		mFragmentList.add(backupFragment);
 		
 		mPagerAdapter = new FolderPagerAdapter(fm);
 
@@ -166,16 +166,6 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		iv.setImageResource(R.drawable.ic_launcher);
 		item.pagerView = iv;
 		holder.add(item);
-		
-		item = new ItemHolder();
-		item.itmeTitle = mContext.getString(R.string.folder_backup_restore);
-		iv = new ImageView(mContext);
-		iv.setLayoutParams(new LeoHomeGallery.LayoutParams(
-				LeoHomeGallery.LayoutParams.MATCH_PARENT,
-				LeoHomeGallery.LayoutParams.MATCH_PARENT));
-		iv.setImageResource(R.drawable.ic_launcher);
-		item.pagerView = iv;
-		holder.add(item);
 
 		item = new ItemHolder();
 		item.itmeTitle = mContext.getString(R.string.folder_sort_flow);
@@ -196,7 +186,16 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		iv.setImageResource(R.drawable.ic_launcher);
 		item.pagerView = iv;
 		holder.add(item);
-
+		
+		item = new ItemHolder();
+		item.itmeTitle = mContext.getString(R.string.folder_backup_restore);
+		iv = new ImageView(mContext);
+		iv.setLayoutParams(new LeoHomeGallery.LayoutParams(
+				LeoHomeGallery.LayoutParams.MATCH_PARENT,
+				LeoHomeGallery.LayoutParams.MATCH_PARENT));
+		iv.setImageResource(R.drawable.ic_launcher);
+		item.pagerView = iv;
+		holder.add(item);
 		
 		if (holder != null) {
 			mItemTitles.clear();
