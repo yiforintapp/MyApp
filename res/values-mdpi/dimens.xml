@@ -19,7 +19,7 @@
     <dimen name="memory_flow_text2_marginTop">5dp</dimen>
     <dimen name="splash_width">206dp</dimen>
     <dimen name="splash_height">220dp</dimen>
-    <dimen name="lock_pattern_button_width">62dp</dimen>
+    <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
     <dimen name="hide_album_frame_width">167dp</dimen>
     <dimen name="hide_album_image_frame_width">128dp</dimen>
@@ -31,8 +31,8 @@
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
     <dimen name="hide_picture_checkbox_left">107dp</dimen>
     <dimen name="hide_picture_checkbox_top">107dp</dimen>
-    <dimen name="digital_item_width">52dp</dimen>
-    <dimen name="digital_item_height">52dp</dimen>
+    <dimen name="digital_item_width">65dp</dimen>
+    <dimen name="digital_item_height">65dp</dimen>
     <dimen name="digital_item_marginTop">8dp</dimen>
     <dimen name="digital_item_marginBottom">8dp</dimen>
     <dimen name="lockPatternView_height">330dp</dimen>
@@ -81,5 +81,31 @@
     <dimen name="help_icon_height">24dp</dimen>
     <dimen name="help_setting_margintop">18dp</dimen>
     <dimen name="fragment_lock_password_passwd_input_tip_margintop">10dp</dimen>
+    <dimen name="fragment_lock_password_appicon_width">48dp</dimen>
+    <dimen name="fragment_lock_password_appicon_height">48dp</dimen>
+    <dimen name="fragment_lock_password_passwd_input_tip_textsize">16sp</dimen>
+    <dimen name="fragment_lock_password_layout_passwd_height">20dp</dimen>
+    <dimen name="fragment_lock_password_tv_passwd_width">20dp</dimen>
+    <dimen name="fragment_lock_password_tv_passwd_marginleft">40dp</dimen>
+    <dimen name="fragment_lock_password_tv_passwd_marginright">40dp</dimen>
+    <dimen name="fragment_lock_password_setting_layout_passwd_height">40dp</dimen>
+    <dimen name="fragment_lock_password__setting_tv_passwd_width">50dp</dimen>
+    <dimen name="fragment_lock_password_setting_passwd_input_tip_textsize">26sp</dimen>
+    <dimen name="fragment_lock_password_setting_tv_passwd_function_tip_textsize">14sp</dimen>
+    <dimen name="fragment_lock_gesture_setting_gesture_lockview_width">330dp</dimen>
+    <dimen name="fragment_lock_gesture_setting_gesture_lockview_height">330dp</dimen>
+    <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">10dp</dimen>
+    <dimen name="fragment_lock_gesture_gesture_lockview_marginbottom">40dp</dimen>
+    <dimen name="activity_wait_textView1_marginbottom">165dp</dimen>
+    <dimen name="list_item_locktheme_tick_sel_width">64px</dimen>
+    <dimen name="list_item_locktheme_tick_sel_height">64px</dimen>
+    <dimen name="fragment_lock_password_setting_tv_bottom">10dp</dimen>
+    <dimen name="fragment_lock_password_setting_layout_passwd">10dp</dimen>
+    <dimen name="fragment_lock_password_key_board">20dp</dimen>
+
+    <integer name="help_setting_press_settings_icon_left">0</integer>
+    <integer name="help_setting_press_settings_icon_top">50</integer>
+    <integer name="help_setting_press_settings_icon_right">50</integer>
+    <integer name="help_setting_press_settings_icon_bottom">0</integer>
 
 </resources>

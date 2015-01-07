@@ -3,29 +3,29 @@
     android:id="@+id/fragment_lock_passwd_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
+
     <RelativeLayout
         android:id="@+id/iv_app_icon_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:layout_above="@+id/tv_passwd_input_tip" >
+        android:layout_above="@+id/tv_passwd_input_tip"
+        android:layout_marginBottom="6dp" >
 
         <ImageView
             android:id="@+id/iv_app_icon_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
             android:layout_centerInParent="true"
+            android:scaleType="fitCenter"
             android:src="@color/transparent"
             android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_app_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:scaleType="fitCenter"
+            android:layout_width="@dimen/fragment_lock_password_appicon_width"
+            android:layout_height="@dimen/fragment_lock_password_appicon_height"
             android:layout_centerInParent="true"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_launcher"
             android:visibility="invisible" />
 
@@ -33,8 +33,8 @@
             android:id="@+id/iv_app_icon_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="center"
             android:layout_centerInParent="true"
+            android:scaleType="center"
             android:src="@color/transparent"
             android:visibility="invisible" />
     </RelativeLayout>
@@ -48,7 +48,7 @@
         android:gravity="center"
         android:text="@string/passwd_hint"
         android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textSize="@dimen/fragment_lock_password_passwd_input_tip_textsize" />
 
     <TextView
         android:id="@+id/tv_passwd_hint"
@@ -68,7 +68,7 @@
     <LinearLayout
         android:id="@+id/layout_passwd"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="@dimen/fragment_lock_password_layout_passwd_height"
         android:layout_above="@+id/key_board"
         android:layout_marginBottom="@dimen/layout_passwd_marginBottom"
         android:layout_marginTop="@dimen/layout_passwd_marginTop"
@@ -76,7 +76,7 @@
 
         <ImageView
             android:id="@+id/tv_passwd_1"
-            android:layout_width="20dp"
+            android:layout_width="@dimen/fragment_lock_password_tv_passwd_width"
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
             android:background="@drawable/password_displayed_normal"
@@ -84,15 +84,15 @@
 
         <ImageView
             android:id="@+id/tv_passwd_2"
-            android:layout_width="20dp"
+            android:layout_width="@dimen/fragment_lock_password_tv_passwd_width"
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
             android:background="@drawable/password_displayed_normal"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <ImageView
             android:id="@+id/tv_passwd_3"
-            android:layout_width="20dp"
+            android:layout_width="@dimen/fragment_lock_password_tv_passwd_width"
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
             android:background="@drawable/password_displayed_normal"
@@ -100,7 +100,7 @@
 
         <ImageView
             android:id="@+id/tv_passwd_4"
-            android:layout_width="20dp"
+            android:layout_width="@dimen/fragment_lock_password_tv_passwd_width"
             android:layout_height="match_parent"
             android:background="@drawable/password_displayed_normal"
             android:gravity="center" />
@@ -111,16 +111,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/fragment_lock_password_key_board"
         android:gravity="center"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
+            android:layout_marginTop="@dimen/digital_item_marginTop"
+            android:layout_weight="1"
             android:gravity="center" >
 
             <FrameLayout
@@ -131,37 +131,36 @@
                     android:id="@+id/tv_1_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-
                     android:gravity="center"
                     android:src="@drawable/digital_bg_normal" />
+
                 <ImageView
                     android:id="@+id/tv_1_top"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
                     android:clickable="true"
                     android:src="@drawable/digital_1_normal" />
-                
             </FrameLayout>
 
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp" >
+                android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_marginleft"
+                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_marginright" >
 
                 <ImageView
                     android:id="@+id/tv_2_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:src="@drawable/digital_bg_normal" />
+
                 <ImageView
                     android:id="@+id/tv_2_top"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_2_normal" />
-                
             </FrameLayout>
 
             <FrameLayout
@@ -172,9 +171,9 @@
                     android:id="@+id/tv_3_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:src="@drawable/digital_bg_normal" />
 
                 <ImageView
                     android:id="@+id/tv_3_top"
@@ -187,12 +186,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
+            android:layout_marginTop="@dimen/digital_item_marginTop"
+            android:layout_weight="1"
             android:gravity="center" >
 
-             <FrameLayout
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -203,7 +202,7 @@
                     android:clickable="true"
                     android:gravity="center"
                     android:src="@drawable/digital_bg_normal" />
-                
+
                 <ImageView
                     android:id="@+id/tv_4_top"
                     android:layout_width="@dimen/digital_item_width"
@@ -214,17 +213,17 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp" >
+                android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_marginleft"
+                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_marginright" >
 
                 <ImageView
                     android:id="@+id/tv_5_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
-                    android:gravity="center" />
-                
+                    android:gravity="center"
+                    android:src="@drawable/digital_bg_normal" />
+
                 <ImageView
                     android:id="@+id/tv_5_top"
                     android:layout_width="@dimen/digital_item_width"
@@ -240,9 +239,10 @@
                     android:id="@+id/tv_6_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:src="@drawable/digital_bg_normal" />
+
                 <ImageView
                     android:id="@+id/tv_6_top"
                     android:layout_width="@dimen/digital_item_width"
@@ -254,14 +254,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
+            android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_weight="1"
             android:gravity="center" >
 
-             <FrameLayout
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
+
                 <ImageView
                     android:id="@+id/tv_7_bottom"
                     android:layout_width="@dimen/digital_item_width"
@@ -280,15 +281,17 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp" >
+                android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_marginleft"
+                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_marginright" >
+
                 <ImageView
                     android:id="@+id/tv_8_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:src="@drawable/digital_bg_normal" />
+
                 <ImageView
                     android:id="@+id/tv_8_top"
                     android:layout_width="@dimen/digital_item_width"
@@ -304,10 +307,10 @@
                     android:id="@+id/tv_9_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
-                    android:gravity="center" />
-                
+                    android:gravity="center"
+                    android:src="@drawable/digital_bg_normal" />
+
                 <ImageView
                     android:id="@+id/tv_9_top"
                     android:layout_width="@dimen/digital_item_width"
@@ -319,9 +322,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
+            android:layout_marginTop="@dimen/digital_item_marginTop"
+            android:layout_weight="1"
             android:gravity="center" >
 
             <View
@@ -343,18 +346,17 @@
                     android:id="@+id/tv_0_bottom"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
-                    android:src="@drawable/digital_bg_normal"
                     android:clickable="true"
-                    android:gravity="center" />
-                
+                    android:gravity="center"
+                    android:src="@drawable/digital_bg_normal" />
+
                 <ImageView
                     android:id="@+id/tv_0_top"
                     android:layout_width="@dimen/digital_item_width"
                     android:layout_height="@dimen/digital_item_height"
                     android:src="@drawable/digital_0_normal" />
-                
             </FrameLayout>
-            
+
             <FrameLayout
                 android:layout_width="@dimen/digital_item_width"
                 android:layout_height="@dimen/digital_item_height" >
@@ -374,7 +376,6 @@
                     android:scaleType="centerInside"
                     android:src="@drawable/delete_button_selecter" />
             </FrameLayout>
-
         </LinearLayout>
     </LinearLayout>
 

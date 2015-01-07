@@ -48,8 +48,8 @@
 
         <ImageView
             android:id="@+id/visibilityIV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/list_item_locktheme_tick_sel_width"
+            android:layout_height="@dimen/list_item_locktheme_tick_sel_height"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="4dp"

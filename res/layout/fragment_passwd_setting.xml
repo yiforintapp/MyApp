@@ -15,7 +15,7 @@
         android:gravity="center"
         android:text="@string/first_set_passwd_hint"
         android:textColor="#ffffff"
-        android:textSize="26sp" />
+        android:textSize="@dimen/fragment_lock_password_setting_passwd_input_tip_textsize" />
 
     <TextView
         android:id="@+id/tv_passwd_function_tip"
@@ -26,21 +26,21 @@
         android:layout_marginTop="8dp"
         android:text="@string/digital_passwd_function_hint"
         android:textColor="#ffffff"
-        android:textSize="14sp" />
+        android:textSize="@dimen/fragment_lock_password_setting_tv_passwd_function_tip_textsize" />
 
     <LinearLayout
         android:id="@+id/layout_passwd"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/fragment_lock_password_setting_layout_passwd_height"
         android:layout_below="@id/tv_passwd_function_tip"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="3dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/fragment_lock_password_setting_layout_passwd"
         android:gravity="center" >
 
         <TextView
             android:id="@+id/tv_passwd_1"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/fragment_lock_password__setting_tv_passwd_width"
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
             android:background="@drawable/pw_dline"
@@ -50,7 +50,7 @@
 
         <TextView
             android:id="@+id/tv_passwd_2"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/fragment_lock_password__setting_tv_passwd_width"
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
             android:background="@drawable/pw_dline"
@@ -60,7 +60,7 @@
 
         <TextView
             android:id="@+id/tv_passwd_3"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/fragment_lock_password__setting_tv_passwd_width"
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
             android:background="@drawable/pw_dline"
@@ -70,7 +70,7 @@
 
         <TextView
             android:id="@+id/tv_passwd_4"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/fragment_lock_password__setting_tv_passwd_width"
             android:layout_height="match_parent"
             android:background="@drawable/pw_dline"
             android:gravity="center"
@@ -84,7 +84,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/layout_passwd"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="@dimen/fragment_lock_password_setting_tv_bottom"
         android:gravity="center"
         android:orientation="vertical" >
 
@@ -109,8 +109,8 @@
                 android:id="@+id/tv_2"
                 android:layout_width="@dimen/digital_item_width"
                 android:layout_height="@dimen/digital_item_height"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                 android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_marginleft"
+                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_marginright"
                 android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
@@ -151,8 +151,8 @@
                 android:id="@+id/tv_5"
                 android:layout_width="@dimen/digital_item_width"
                 android:layout_height="@dimen/digital_item_height"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                 android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_marginleft"
+                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_marginright"
                 android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"
@@ -193,8 +193,8 @@
                 android:id="@+id/tv_8"
                 android:layout_width="@dimen/digital_item_width"
                 android:layout_height="@dimen/digital_item_height"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                 android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_marginleft"
+                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_marginright"
                 android:background="@drawable/selector_passwd_input"
                 android:clickable="true"
                 android:gravity="center"

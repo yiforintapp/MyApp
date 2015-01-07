@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 
 import android.annotation.SuppressLint;
@@ -54,7 +55,7 @@ public class LockHelpSettingTip extends Activity {
         initUI();
         mAdapter = new LockHelpPagerAdapter(this);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setPageMargin(getResources().getDimensionPixelSize(
+        mViewPager.setPageMargin(this.getResources().getDimensionPixelSize(
                 R.dimen.help_setting_page_margin));
         mViewPager.setOffscreenPageLimit(3);
         setScroll();
@@ -138,28 +139,38 @@ public class LockHelpSettingTip extends Activity {
         for (String string : mHelpSettingPager) {
             SpannableString content = null;
             String button = null;
-
+            String area = Locale.getDefault().getLanguage();
             if (string.equals(mHelpSettingPager.get(0))) {
                 if (mType == AppMasterPreference.LOCK_TYPE_GESTURE) {
-                    Drawable drawable = this.getResources().getDrawable(
-                            R.drawable.press_settings_icon);
-                    drawable.setBounds(0, -5, 60, 55);
-                    ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
-                    SpannableString spannableString = new SpannableString(
-                            getString(R.string.lock_help_password_setting_content_password));
-                    spannableString.setSpan(imageSpan, 13,
-                            17, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    content = spannableString;
+                    if (area.equalsIgnoreCase("zh")) {
+                        Drawable drawable = this.getResources().getDrawable(
+                                R.drawable.press_settings_icon);
+                        drawable.setBounds(0, -5, 55, 50);
+                        ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
+                        SpannableString spannableString = new SpannableString(
+                                getString(R.string.lock_help_password_setting_content_password));
+                        spannableString.setSpan(imageSpan, 13,
+                                17, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        content = spannableString;
+                    } else {
+                        content = new SpannableString(
+                                getString(R.string.lock_help_password_setting_content_password));
+                    }
                 } else if (mType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-                    Drawable drawable = this.getResources().getDrawable(
-                            R.drawable.press_settings_icon);
-                    drawable.setBounds(0, -5, 60, 55);
-                    ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
-                    SpannableString spannableString = new SpannableString(
-                            getString(R.string.lock_help_password_setting_content_gesture));
-                    spannableString.setSpan(imageSpan, 13,
-                            17, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    content = spannableString;
+                    if (area.equalsIgnoreCase("zh")) {
+                        Drawable drawable = this.getResources().getDrawable(
+                                R.drawable.press_settings_icon);
+                        drawable.setBounds(0, -5, 45, 40);
+                        ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
+                        SpannableString spannableString = new SpannableString(
+                                getString(R.string.lock_help_password_setting_content_gesture));
+                        spannableString.setSpan(imageSpan, 13,
+                                17, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        content = spannableString;
+                    } else {
+                        content = new SpannableString(
+                                getString(R.string.lock_help_password_setting_content_password));
+                    }
                 }
                 button = getString(R.string.lock_help_password_setting_button);
                 LockHelpItemPager pager = new LockHelpItemPager(string, content, button);
@@ -230,12 +241,14 @@ public class LockHelpSettingTip extends Activity {
                 public void onClick(View arg0) {
                     String buttonText = lockHelpPager.getButton();
                     if (buttonText.equals(getString(R.string.lock_help_password_setting_button))) {
-                        /*SDK Event Mark*/
-                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1,"help_press", "password");
+                        /* SDK Event Mark */
+                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1, "help_press",
+                                "password");
                         enterLockPage();
                     } else if (buttonText.equals(getString(R.string.lock_help_lock_setting_button))) {
-                        /*SDK Event Mark*/
-                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1,"help_press", "setting");
+                        /* SDK Event Mark */
+                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1, "help_press",
+                                "setting");
                         Intent intent = new Intent(LockHelpSettingTip.this,
                                 LockTimeSetting.class);
                         intent.putExtra("help_setting_current", 1);
@@ -246,8 +259,9 @@ public class LockHelpSettingTip extends Activity {
                         }
                     } else if (buttonText
                             .equals(getString(R.string.lock_help_lock_theme_setting_button))) {
-                        /*SDK Event Mark*/
-                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1,"help_press", "theme");
+                        /* SDK Event Mark */
+                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1, "help_press",
+                                "theme");
                         Intent intent = new Intent(LockHelpSettingTip.this, LockerTheme.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.putExtra("to_online_theme", true);

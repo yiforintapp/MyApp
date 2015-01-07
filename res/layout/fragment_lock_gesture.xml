@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/iv_app_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/fragment_lock_password_appicon_width"
+            android:layout_height="@dimen/fragment_lock_password_appicon_height"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_launcher"
             android:visibility="invisible" />
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/lockPatternView_height"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="@dimen/fragment_lock_gesture_gesture_lockview_marginbottom"
         android:layout_centerHorizontal="true"
         android:padding="10dip" />
 
