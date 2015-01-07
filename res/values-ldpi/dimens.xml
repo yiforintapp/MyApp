@@ -47,7 +47,7 @@
     <dimen name="circle_text_vertical_padding">5dp</dimen>
     <dimen name="gridview_vertical_spacing">14dip</dimen>
 
-    <integer name="gridview_row_count">4</integer>
+    <integer name="gridview_row_count">3</integer>
     <integer name="applist_cell_count">12</integer>
 
     <dimen name="folder_title_margintop">25dp</dimen>
