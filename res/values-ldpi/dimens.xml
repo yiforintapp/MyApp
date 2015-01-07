@@ -76,7 +76,7 @@
     <dimen name="app_item_linearlayout_padding">5dp</dimen>
     <dimen name="sucess_lock_recomment_successicon_top">50dp</dimen>
 
-    <integer name="recomment_gridview_row_count">4</integer>
+    <integer name="recomment_gridview_row_count">2</integer>
     <integer name="recomment_gridview_col_count">4</integer>
     <integer name="success_recomment_gridview_row_count">4</integer>
     <integer name="success_recomment_gridview_col_count">3</integer>
