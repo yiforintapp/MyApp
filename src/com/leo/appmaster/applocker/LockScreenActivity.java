@@ -471,6 +471,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		case R.id.setting_help_tip:
 		    AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(true);
 		    Intent helpSettingIntent=new Intent(LockScreenActivity.this, LockHelpSettingTip.class);
+//		    helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);\
+//		    helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//		    helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET|Intent.FLAG_ACTIVITY_MULTIPLE_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
                     LockScreenActivity.this.startActivity(helpSettingIntent);
                 } catch (Exception e) {

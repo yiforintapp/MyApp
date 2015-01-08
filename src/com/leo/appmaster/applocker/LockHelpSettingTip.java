@@ -20,6 +20,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -127,6 +129,15 @@ public class LockHelpSettingTip extends Activity {
         mTitle.openBackView();
         mViewPager = (LeoPictureViewPager) findViewById(R.id.help_setting);
     }
+    
+    @Override
+    protected void onNewIntent(Intent intent) {
+        
+//        intent=new Intent(this, SplashActivity.class);
+//        startActivity(intent);
+//        Log.d("xxxxxxx", "************onNewIntent");
+        super.onNewIntent(intent);
+    }
 
     @SuppressLint("NewApi")
     private void getHelpPager() {
@@ -214,12 +225,14 @@ public class LockHelpSettingTip extends Activity {
             return arg0 == arg1;
         }
 
+        
+        
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             View view = (View) object;
             container.removeView(view);
         }
-
+        
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             final LockHelpItemPager lockHelpPager = mHelpPager.get(position);

@@ -316,6 +316,6 @@
     <string name="lock_help_password_setting_button">设置</string>
     <string name="lock_help_lock_setting_button">锁定设置</string>
     <string name="lock_help_lock_theme_setting_button">更换主题</string>
-    <string name="help_setting_guide">如何更改我的密码?</string>
+    <string name="help_setting_guide">帮助小贴士</string>
 
 </resources>

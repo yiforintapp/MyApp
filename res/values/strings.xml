@@ -291,7 +291,7 @@
     <string name="lcok_success_tip">Selected Apps were successfully locked.</string>
     <string name="success_finish">Finish</string>
     <!-- AM-667 -->
-    <string name="help_setting_tip_title">Help</string>
+    <string name="help_setting_tip_title">Tips</string>
     <string name="lock_help_password_setting_content_gesture">Hit the Settings icon on top right of the screen under "App Lock", tap "Change password" to reset. (Also see upper right corner to switch pattern lock.)</string>
     <string name="lock_help_password_setting_content_password">Hit the Settings icon on top right of the screen under "App Lock", tap "Change password" to reset. (Also see upper right corner to switch password lock.)</string>
     <string name="lock_help_lock_setting_content">Go to \'Auto-lock time setting\' to change lock frequency.</string>
@@ -306,6 +306,6 @@
     <string name="lock_help_password_setting_button">Settings</string>
     <string name="lock_help_lock_setting_button">Auto-lock time setting</string>
     <string name="lock_help_lock_theme_setting_button">Change a theme</string>
-    <string name="help_setting_guide">How to change my password?</string>
+    <string name="help_setting_guide">Need some help?</string>
 
 </resources>
