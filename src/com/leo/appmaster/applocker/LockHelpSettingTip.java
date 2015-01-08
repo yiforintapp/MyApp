@@ -132,6 +132,7 @@ public class LockHelpSettingTip extends Activity {
     
     @Override
     protected void onNewIntent(Intent intent) {
+//        Log.e("xxxxxxxxxxxxxxxxxxxxx","**********onNewIntent");
         super.onNewIntent(intent);
     }
 

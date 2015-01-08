@@ -473,7 +473,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(true);
                 Intent helpSettingIntent = new Intent(LockScreenActivity.this,
                         LockHelpSettingTip.class);
-                // helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);\
+                 helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                 helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NO_HISTORY);
                 // helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 // helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET|Intent.FLAG_ACTIVITY_MULTIPLE_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {

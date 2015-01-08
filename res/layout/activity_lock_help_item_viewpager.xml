@@ -6,8 +6,8 @@
     android:gravity="center_horizontal" >
 
     <RelativeLayout
-        android:layout_width="308dp"
-        android:layout_height="233dp"
+        android:layout_width="@dimen/lock_help_item_pager_card_width"
+        android:layout_height="@dimen/lock_help_item_pager_card_height"
         android:background="@drawable/card_bg"
         android:orientation="vertical" >
 
@@ -15,7 +15,7 @@
             android:id="@+id/lock_help_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="@dimen/lock_help_item_pager_lock_help_title_margintop"
             android:textSize="16dp"
             android:layout_marginLeft="18dp"
             android:textColor="@color/help_setting_title"/>
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/lock_help_title"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/lock_help_item_pager_lock_help_content_margintop"
             android:layout_marginLeft="20dp"
             android:textColor="@color/help_setting_content"
             android:textSize="12dp"
@@ -36,16 +36,16 @@
 
         <RelativeLayout
             android:id="@id/success_lockRT"
-            android:layout_width="308dp"
-            android:layout_height="56dp"
+            android:layout_width="@dimen/lock_help_item_pager_bottom_width"
+            android:layout_height="@dimen/lock_help_item_pager_bottom_height"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bottom"
             android:gravity="center" >
 
             <TextView
                 android:id="@+id/lock_help_bt"
-                android:layout_width="232dp"
-                android:layout_height="33dp"
+                android:layout_width="@dimen/lock_help_item_pager_button_width"
+                android:layout_height="@dimen/lock_help_item_pager_button_height"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/mycheck_button_selecter"

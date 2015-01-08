@@ -115,4 +115,13 @@
     <integer name="help_setting_press_settings_icon_right">50</integer>
     <integer name="help_setting_press_settings_icon_bottom">45</integer>
 
+    <dimen name="lock_help_item_pager_card_width">308dp</dimen>
+    <dimen name="lock_help_item_pager_card_height">233dp</dimen>
+    <dimen name="lock_help_item_pager_button_width">232dp</dimen>
+    <dimen name="lock_help_item_pager_button_height">33dp</dimen>
+    <dimen name="lock_help_item_pager_bottom_width">308dp</dimen>
+    <dimen name="lock_help_item_pager_bottom_height">56dp</dimen>
+    <dimen name="lock_help_item_pager_lock_help_title_margintop">18dp</dimen>
+    <dimen name="lock_help_item_pager_lock_help_content_margintop">20dp</dimen>
+
 </resources>

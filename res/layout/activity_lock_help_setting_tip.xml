@@ -17,7 +17,7 @@
 
     <com.leo.appmaster.ui.LeoPictureViewPager
         android:id="@+id/help_setting"
-        android:layout_width="308dp"
+        android:layout_width="@dimen/lock_help_item_pager_card_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_title_bar"
         android:layout_marginTop="@dimen/help_setting_margintop"
