@@ -278,7 +278,7 @@ public class AppBusinessManager {
 							};
 							Timer timer = new Timer();
 							timer.schedule(recheckTask, DELAY_2_HOUR);
-							LoadFailUtils.sendLoadFail(mContext, "home_apps");
+//							LoadFailUtils.sendLoadFail(mContext, "home_apps");
 						}
 					});
 		}
@@ -341,11 +341,11 @@ public class AppBusinessManager {
 						Timer timer = new Timer();
 						timer.schedule(recheckTask, DELAY_2_HOUR);
 
-						if (type == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-						    LoadFailUtils.sendLoadFail(mContext, "flow_apps");
-						} else {
-						    LoadFailUtils.sendLoadFail(mContext, "space_apps");
-						}
+//						if (type == BusinessItemInfo.CONTAIN_FLOW_SORT) {
+//						    LoadFailUtils.sendLoadFail(mContext, "flow_apps");
+//						} else {
+//						    LoadFailUtils.sendLoadFail(mContext, "space_apps");
+//						}
 					}
 				});
 	}
