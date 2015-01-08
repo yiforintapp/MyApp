@@ -302,9 +302,10 @@
     <string name="success_finish">完成</string>
     <string name="app_lock_theme">应用锁主题</string>
     <string name="file_trans">文件传输</string>
-    <string name="business_rating">评分： </string>
-    <string name="app_desc">简介： </string>
-    <string name="app_download_count">下载量： </string>
-    <string name="app_download">高速下载 </string>
-    <string name="app_google_download">免费下载 </string>
+    <string name="business_rating">评分：</string>
+    <string name="app_desc">简介：</string>
+    <string name="app_download_count">下载量：</string>
+    <string name="business_size">大小： </string>
+    <string name="app_download">高速下载</string>
+    <string name="app_google_download">免费下载</string>
 </resources>

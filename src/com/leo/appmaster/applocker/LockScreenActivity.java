@@ -80,7 +80,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	private EditText mEtQuestion, mEtAnwser;
 	private String mLockTitle;
 	private ImageView spiner;
-//	private String number;
+	// private String number;
 
 	private boolean toTheme;
 	private boolean mNewTheme;
@@ -99,7 +99,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		handleIntent();
 		initUI();
 		/**
-		 * optimize cleanMem 
+		 * optimize cleanMem
 		 */
 		cleanMem();
 	}
@@ -110,7 +110,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				.getLocalThemeSerialNumber();
 		String onlineSerial = AppMasterPreference.getInstance(this)
 				.getOnlineThemeSerialNumber();
-		boolean lockThemeGuid=AppMasterPreference.getInstance(this).getLockerScreenThemeGuid();
+		boolean lockThemeGuid = AppMasterPreference.getInstance(this)
+				.getLockerScreenThemeGuid();
 		if (!locSerial.equals(onlineSerial)) {
 			mNewTheme = true;
 		} else {
@@ -133,22 +134,27 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				mLockerGuide.setVisibility(View.GONE);
 			}
 		}
-		
-        if (mFromType == LockFragment.FROM_OTHER
-                || mFromType == LockFragment.FROM_SCREEN_ON) {
-            /* tell PushUIHelper than do not show dialog when lockscreen is shown */
-            PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(true);
-        }
+
+		if (mFromType == LockFragment.FROM_OTHER
+				|| mFromType == LockFragment.FROM_SCREEN_ON) {
+			/*
+			 * tell PushUIHelper than do not show dialog when lockscreen is
+			 * shown
+			 */
+			PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(
+					true);
+		}
 		super.onResume();
 	}
 
 	@Override
-    protected void onPause() {
-	    PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(false);
-        super.onPause();
-    }
+	protected void onPause() {
+		PushUIHelper.getInstance(getApplicationContext())
+				.setIsLockScreen(false);
+		super.onPause();
+	}
 
-    @Override
+	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 	}
@@ -222,6 +228,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	protected void onStop() {
 		super.onStop();
 		if (mFromType == LockFragment.FROM_OTHER) {
+			if(getPackageName().equals(mToPackage))
+				return;
 			if (!AppMasterPreference.getInstance(this).isAutoLock() || toTheme) {
 				toTheme = false;
 				return;
@@ -229,12 +237,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			finish();
 		}
 	}
-	
+
 	@Override
 	public void finish() {
-	    if(!isFinishing()) {
-	        super.finish();
-	    }
+		if (!isFinishing()) {
+			super.finish();
+		}
 	}
 
 	@Override
@@ -248,7 +256,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		 */
 		mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
 		mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
-//		number = AppMasterApplication.number;
+		// number = AppMasterApplication.number;
 		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			mTtileBar.setOptionImage(R.drawable.setting_selector);
@@ -257,18 +265,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		}
 		spiner = (ImageView) findViewById(R.id.image1);
 		LeoLog.d("LockScreenActivity", "spiner = " + spiner);
-//		// AM-463, add protect
-//		if (spiner != null) {
-//			if ("0".equals(number)) {
-//				spiner.setImageDrawable(this.getResources().getDrawable(
-//						R.drawable.themetip_spiner_press));
-//			} else {
-//				spiner.setImageDrawable(this.getResources().getDrawable(
-//						R.drawable.theme_spiner_press));
-//			}
-//		}
+		// // AM-463, add protect
+		// if (spiner != null) {
+		// if ("0".equals(number)) {
+		// spiner.setImageDrawable(this.getResources().getDrawable(
+		// R.drawable.themetip_spiner_press));
+		// } else {
+		// spiner.setImageDrawable(this.getResources().getDrawable(
+		// R.drawable.theme_spiner_press));
+		// }
+		// }
 
-		if (ImageHideMainActivity.class.getName().equals(mToActivity) || VideoHideMainActivity.class.getName().equals(mToActivity)) { // AM-423
+		if (ImageHideMainActivity.class.getName().equals(mToActivity)
+				|| VideoHideMainActivity.class.getName().equals(mToActivity)) { // AM-423
 			mTtileBar.setSpinerVibility(View.INVISIBLE);
 			LeoLog.d("LockScreenActivity", "ImageHideMainActivity");
 		} else {
@@ -297,6 +306,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	}
 
 	public void onUnlockSucceed() {
+		if (getPackageName().equals(mToPackage)) {
+			setResult(101);
+			finish();
+			return;
+		}
 		if (mFromType == LockFragment.FROM_SELF) {
 			Intent intent = null;
 			intent = new Intent(this, LockService.class);
@@ -304,6 +318,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			setResult(11);
 		} else if (mFromType == LockFragment.FROM_OTHER
 				|| mFromType == LockFragment.FROM_SCREEN_ON) {
+
 			// input right gesture, just finish self
 			Intent intent = new Intent(LockHandler.ACTION_APP_UNLOCKED);
 			intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mToPackage);
@@ -393,24 +408,24 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onBackPressed() {
-	    if(mFromType == LockFragment.FROM_SELF_HOME) {
-            super.onBackPressed();
-        } else {
-            Intent intent = new Intent();
-            if (mFromType == LockFragment.FROM_OTHER
-                    || mFromType == LockFragment.FROM_SCREEN_ON) {
+		if (mFromType == LockFragment.FROM_SELF_HOME) {
+			super.onBackPressed();
+		} else {
+			Intent intent = new Intent();
+			if (mFromType == LockFragment.FROM_OTHER
+					|| mFromType == LockFragment.FROM_SCREEN_ON) {
 
-                intent.setAction(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-            } else {
+				intent.setAction(Intent.ACTION_MAIN);
+				intent.addCategory(Intent.CATEGORY_HOME);
+			} else {
 
-                intent.setClassName(getApplicationContext(),
-                        HomeActivity.class.getName());
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            }
-            startActivity(intent);
-            finish();
-        }
+				intent.setClassName(getApplicationContext(),
+						HomeActivity.class.getName());
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			}
+			startActivity(intent);
+			finish();
+		}
 	}
 
 	@Override
@@ -440,22 +455,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			onBack();
 			break;
 		case R.id.image1:
-                Intent intent = new Intent(LockScreenActivity.this,
-                        LockerTheme.class);
-                if (Build.VERSION.SDK_INT > 19 && (mFromType == LockFragment.FROM_OTHER
-                        || mFromType == LockFragment.FROM_SCREEN_ON)) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    finish();
-                }
-                SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,
-                        "theme_enter", "unlock");
-                toTheme = true;
-                startActivityForResult(intent, 0);
-//                AppMasterApplication.setSharedPreferencesNumber("1");
-//                number = "1";
-                AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(true);
-                break;
+			Intent intent = new Intent(LockScreenActivity.this,
+					LockerTheme.class);
+			if (Build.VERSION.SDK_INT > 19
+					&& (mFromType == LockFragment.FROM_OTHER || mFromType == LockFragment.FROM_SCREEN_ON)) {
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				finish();
+			}
+			SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,
+					"theme_enter", "unlock");
+			toTheme = true;
+			startActivityForResult(intent, 0);
+			// AppMasterApplication.setSharedPreferencesNumber("1");
+			// number = "1";
+			AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(
+					true);
+			break;
 		default:
 			break;
 		}
@@ -463,24 +479,24 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	}
 
 	private void onBack() {
-	    if(mFromType == LockFragment.FROM_SELF_HOME) {
-	        super.onBackPressed();
-	    } else {
-	        Intent intent = new Intent();
-	        if (mFromType == LockFragment.FROM_OTHER
-	                || mFromType == LockFragment.FROM_SCREEN_ON) {
+		if (mFromType == LockFragment.FROM_SELF_HOME) {
+			super.onBackPressed();
+		} else {
+			Intent intent = new Intent();
+			if (mFromType == LockFragment.FROM_OTHER
+					|| mFromType == LockFragment.FROM_SCREEN_ON) {
 
-	            intent.setAction(Intent.ACTION_MAIN);
-	            intent.addCategory(Intent.CATEGORY_HOME);
-	        } else {
+				intent.setAction(Intent.ACTION_MAIN);
+				intent.addCategory(Intent.CATEGORY_HOME);
+			} else {
 
-	            intent.setClassName(getApplicationContext(),
-	                    HomeActivity.class.getName());
-	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	        }
-	        startActivity(intent);
-	        finish();
-	    }
+				intent.setClassName(getApplicationContext(),
+						HomeActivity.class.getName());
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			}
+			startActivity(intent);
+			finish();
+		}
 	}
 
 	private List<String> getPopMenuItems() {
@@ -571,9 +587,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			String packageName = applicationInfo.packageName;
 			pkgs.add(packageName);
 		}
-        if (mToPackage != null) {
-            pkgs.add(mToPackage);
-        }
+		if (mToPackage != null) {
+			pkgs.add(mToPackage);
+		}
 		return pkgs;
 	}
 }

@@ -60,7 +60,7 @@ public class LockHandler extends BroadcastReceiver {
 		if (pkg == null || activity == null)
 			return;
 
-		LeoLog.e("handleAppLaunch", pkg + "/" + activity);
+		LeoLog.d("handleAppLaunch", pkg + "/" + activity);
 
 		if (!pkg.equals(mLastRunningPkg)) {
 			String myPackage = mContext.getPackageName();

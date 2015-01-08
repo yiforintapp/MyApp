@@ -105,7 +105,11 @@ public class AppBusinessManager {
 								Constants.APPLIST_BUSINESS_URI, null, null,
 								null, Constants.ID);
 						BusinessItemInfo info;
-						int lebalIndex, pkgIndex, iconStatusIndex, iconUrlIndex, iconIndex, downloadUrlIndex, appSizeIndex, gpPriorityIndex, gpUrlIndex, containerId;
+						
+						int lebalIndex, pkgIndex, iconStatusIndex, iconUrlIndex, iconIndex;
+						int downloadUrlIndex, appSizeIndex, gpPriorityIndex, gpUrlIndex, containerId;
+						int ratingIndex, descIndex, downloadCountIndex;
+						
 						lebalIndex = c.getColumnIndex("lebal");
 						pkgIndex = c.getColumnIndex("package_name");
 						iconUrlIndex = c.getColumnIndex("icon_url");
@@ -116,6 +120,10 @@ public class AppBusinessManager {
 						gpUrlIndex = c.getColumnIndex("gp_url");
 						appSizeIndex = c.getColumnIndex("app_size");
 						iconStatusIndex = c.getColumnIndex("icon_status");
+						ratingIndex = c.getColumnIndex("rating");
+						downloadCountIndex = c.getColumnIndex("download_count");
+						descIndex = c.getColumnIndex("desc");
+						
 						mBusinessList.clear();
 						if (c != null && c.moveToFirst()) {
 							do {
@@ -128,6 +136,9 @@ public class AppBusinessManager {
 								info.containType = c.getInt(containerId);
 								info.gpPriority = c.getInt(gpPriorityIndex);
 								info.gpUrl = c.getString(gpUrlIndex);
+								info.appDownloadCount = c.getString(downloadCountIndex);
+								info.rating = Float.parseFloat(c.getString(ratingIndex));
+								info.desc = c.getString(descIndex);
 								info.appSize = c.getInt(appSizeIndex);
 								info.iconLoaded = c.getInt(iconStatusIndex) == 1 ? true
 										: false;
@@ -375,6 +386,9 @@ public class AppBusinessManager {
 					value.put("container_id", containerType);
 					value.put("gp_priority", businessItemInfo.gpPriority);
 					value.put("gp_url", businessItemInfo.gpUrl);
+					value.put("rating", businessItemInfo.rating);
+					value.put("download_count", businessItemInfo.appDownloadCount);
+					value.put("desc", businessItemInfo.desc);
 					values[i] = value;
 					mBusinessList.add(businessItemInfo);
 				}

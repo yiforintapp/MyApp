@@ -291,11 +291,11 @@
     <string name="lcok_success_tip">Selected Apps were successfully locked.</string>
     <string name="success_finish">Finish</string>
     <string name="app_lock_theme">App Lock Theme</string>
-    <string name="file_trans">文件传输</string>
-    <string name="app_desc">简介： </string>
-    <string name="app_download_count">下载量： </string>
-    <string name="business_rating">评分： </string>
-    <string name="app_download">高速下载 </string>
-    <string name="app_google_download">免费下载 </string>
+    <string name="app_desc">Info:</string>
+    <string name="app_download_count">Downloads:</string>
+    <string name="business_rating">Ratings: </string>
+    <string name="business_size">Size: </string>
+    <string name="app_download">Fast Download</string>
+    <string name="app_google_download">Free Download</string>
 
 </resources>

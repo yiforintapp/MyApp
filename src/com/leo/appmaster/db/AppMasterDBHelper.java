@@ -11,7 +11,7 @@ import com.leo.appmaster.Constants;
 public class AppMasterDBHelper extends SQLiteOpenHelper {
 
 	private static final String DB_NAME = "appmaster.db";
-	private static final int DB_VERSION = 2;
+	private static final int DB_VERSION = 3;
 
 	private static final String CREATE_DOWNLOAD_TABLE = "CREATE TABLE IF NOT EXISTS "
 			+ Constants.TABLE_DOWNLOAD
@@ -55,13 +55,13 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
 				+ "_id INTEGER PRIMARY KEY," + "lebal TEXT,"
 				+ "package_name TEXT," + "icon_url TEXT,"
 				+ "download_url TEXT," + "icon BLOB," + "container_id INTEGER,"
+				+ "rating TEXT," + "download_count TEXT," + "desc TEXT,"
 				+ "gp_priority INTEGER," + "gp_url TEXT," + "app_size INTEGER,"
 				+ "icon_status INTEGER" + ");");
 
 		db.execSQL(CREATE_DOWNLOAD_TABLE);
 	}
 
-	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		if (newVersion == 2) {
@@ -70,10 +70,20 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
 					+ "package_name TEXT," + "icon_url TEXT,"
 					+ "download_url TEXT," + "icon BLOB,"
 					+ "container_id INTEGER," + "gp_priority INTEGER,"
-					+ "gp_url TEXT," + "app_size INTEGER," + "icon_status INTEGER"
-					+ ");");
+					+ "gp_url TEXT," + "app_size INTEGER,"
+					+ "icon_status INTEGER" + ");");
 
 			db.execSQL(CREATE_DOWNLOAD_TABLE);
+		} else if (newVersion == 3) {
+			db.execSQL("DROP TABLE IF EXISTS " + "applist_business");
+			db.execSQL("CREATE TABLE IF NOT EXISTS applist_business ("
+					+ "_id INTEGER PRIMARY KEY," + "lebal TEXT,"
+					+ "package_name TEXT," + "icon_url TEXT,"
+					+ "download_url TEXT," + "icon BLOB,"
+					+ "container_id INTEGER," + "rating TEXT,"
+					+ "download_count TEXT," + "desc TEXT,"
+					+ "gp_priority INTEGER," + "gp_url TEXT,"
+					+ "app_size INTEGER," + "icon_status INTEGER" + ");");
 		}
 	}
 

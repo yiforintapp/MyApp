@@ -450,6 +450,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                     for (PhotoItem item : mClickList) {
                         if (!mIsBackgoundRunning) break;
                         newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
+                        LeoLog.e("xxxx", item.getPath());
                         if (newFileName.startsWith(".")) {
                             newFileName = newFileName+".leotmp";
                         } else {

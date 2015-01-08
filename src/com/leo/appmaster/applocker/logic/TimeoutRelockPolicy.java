@@ -28,6 +28,8 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 	@Override
 	public boolean onHandleLock(String pkg) {
 		long curTime = System.currentTimeMillis();
+		if (mContext.getPackageName().equals(pkg))
+			return true;
 		if (mLockapp.containsKey(pkg)) {
 			long lastLockTime = mLockapp.get(pkg).lastUnlockTime;
 

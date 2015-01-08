@@ -115,18 +115,21 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 		return mPref.getBoolean(PREF_HOME_BUSINESS_NEW_TIP_CLICK, false);
 	}
 
-	public void setHomeLocked(boolean flag) {
-		mPref.edit().putBoolean(PREF_HOME_BUSINESS_NEW_TIP_CLICK, flag).commit();
-	}
+//	public void setHomeLocked(boolean flag) {
+//		mPref.edit().putBoolean(PREF_HOME_BUSINESS_NEW_TIP_CLICK, flag).commit();
+//	}
 	
 	public boolean getHomeLocked() {
-		return mPref.getBoolean(PREF_HOME_LOCKED, false);
+		if(mLockedAppList.contains(AppMasterApplication.getInstance().getPackageName())){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void setHomeBusinessTipClick(boolean flag) {
 		mPref.edit().putBoolean(PREF_HOME_LOCKED, flag).commit();
 	}
-	
 
 	public List<String> getRecommentTipList() {
 		return mRecommentAppList;
