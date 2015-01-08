@@ -132,10 +132,6 @@ public class LockHelpSettingTip extends Activity {
     
     @Override
     protected void onNewIntent(Intent intent) {
-        
-//        intent=new Intent(this, SplashActivity.class);
-//        startActivity(intent);
-//        Log.d("xxxxxxx", "************onNewIntent");
         super.onNewIntent(intent);
     }
 
