@@ -160,7 +160,7 @@ public class LockHelpSettingTip extends Activity {
                     if (area.equalsIgnoreCase("zh")) {
                         Drawable drawable = this.getResources().getDrawable(
                                 R.drawable.press_settings_icon);
-                        drawable.setBounds(0, -5, 45, 40);
+                        drawable.setBounds(0, -5, 55, 50);
                         ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
                         SpannableString spannableString = new SpannableString(
                                 getString(R.string.lock_help_password_setting_content_gesture));
