@@ -115,7 +115,7 @@
     <integer name="help_setting_press_settings_icon_right">50</integer>
     <integer name="help_setting_press_settings_icon_bottom">0</integer>
     <dimen name="help_setting_page_margin">5dp</dimen>
-    <dimen name="lock_help_item_pager_card_width">277dp</dimen>
+    <dimen name="lock_help_item_pager_card_width">270dp</dimen>
      <dimen name="lock_help_item_pager_card_height">209dp</dimen>
      <dimen name="lock_help_item_pager_button_width">208dp</dimen>
      <dimen name="lock_help_item_pager_button_height">30dp</dimen>
