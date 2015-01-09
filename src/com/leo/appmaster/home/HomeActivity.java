@@ -247,6 +247,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		mTtileBar.setSpinerListener(this);
 		mTtileBar.showLogo();
 		spiner = (ImageView) findViewById(R.id.image1);
+		spiner.setVisibility(View.VISIBLE);
 		spiner.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
