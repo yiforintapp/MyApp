@@ -483,19 +483,23 @@ public class AppBackupRestoreManager implements AppChangeListener {
 			}
 
 		}
-
-		Collections.sort(mBackupList, new Comparator<AppItemInfo>() {
-			@Override
-			public int compare(AppItemInfo lhs, AppItemInfo rhs) {
-				if (lhs.isBackuped && !rhs.isBackuped) {
-					return 1;
-				}
-				if (!lhs.isBackuped && rhs.isBackuped) {
-					return -1;
-				}
-				return 0;
-			}
-		});
+		// AM-872
+        try {
+            Collections.sort(mBackupList, new Comparator<AppItemInfo>() {
+                @Override
+                public int compare(AppItemInfo lhs, AppItemInfo rhs) {
+                    if (lhs.isBackuped && !rhs.isBackuped) {
+                        return 1;
+                    }
+                    if (!lhs.isBackuped && rhs.isBackuped) {
+                        return -1;
+                    }
+                    return 0;
+                }
+            });
+        } catch (Exception e) {
+            
+        }
 		mDataReady = true;
 		return mBackupList;
 	}
