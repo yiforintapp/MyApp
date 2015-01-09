@@ -97,7 +97,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
 	private int mLastHiddenPicCount = -1;
 	private int mLastHiddenVideoCount = -1;
-	private boolean mNeedLock = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +156,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 					if (count >= 50 && !haveTip) {
 						Intent intent = new Intent(HomeActivity.this,
 								GradeTipActivity.class);
-						mNeedLock= false;
 						HomeActivity.this.startActivity(intent);
 					}
 				}
@@ -253,7 +251,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent(HomeActivity.this, LockerTheme.class);
-				mNeedLock= false;
 				startActivityForResult(intent, 0);
 				SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
 						"theme_enter", "home");
@@ -264,7 +261,23 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 	@Override
 	protected void onResume() {
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
-
+		if (pref.getHomeLocked() && pref.getLaunchOtherApp()) {
+			int lockType = AppMasterPreference.getInstance(this).getLockType();
+			Intent intent = new Intent(this, LockScreenActivity.class);
+			if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+				intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+						LockFragment.LOCK_TYPE_PASSWD);
+			} else if (lockType == AppMasterPreference.LOCK_TYPE_GESTURE) {
+				intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+						LockFragment.LOCK_TYPE_GESTURE);
+			}
+			intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, getPackageName());
+			intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+					LockFragment.FROM_OTHER);
+			intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			pref.setLaunchOtherApp(false);
+			startActivity(intent);
+		}
 		mNewTheme = !pref.getLocalThemeSerialNumber().equals(
 				pref.getOnlineThemeSerialNumber());
 		if (mNewTheme) {
@@ -278,38 +291,15 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		updateSettingIcon();
 		judgeShowGradeTip();
 		updateBackupIcon();
-		super.onResume();
-
 		SDKWrapper.addEvent(this, LeoStat.P1, "home", "enter");
-
 		updatePrivacyData();
-
-		if (pref.getHomeLocked() && mNeedLock) {
-			int lockType = AppMasterPreference.getInstance(this).getLockType();
-			Intent intent = new Intent(this, LockScreenActivity.class);
-			if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-				intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-						LockFragment.LOCK_TYPE_PASSWD);
-			} else if (lockType == AppMasterPreference.LOCK_TYPE_GESTURE) {
-				intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-						LockFragment.LOCK_TYPE_GESTURE);
-			}
-			intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, getPackageName());
-			intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-					LockFragment.FROM_OTHER);
-			mNeedLock = false;
-			startActivity(intent);
-		} else {
-			mNeedLock = true;
-		}
+		
+		super.onResume();
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 10000) {
-//			mNeedLock = false;
-		}
 	}
 
 	private void updateBackupIcon() {
@@ -457,7 +447,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			pref.setHomeBusinessTipClick(true);
 			// intent = new Intent(this, AppBackupRestoreActivity.class);
 			intent = new Intent(this, AppListActivity.class);
-			mNeedLock= false;
 			startActivity(intent);
 			break;
 		case R.id.tv_video_hide:
@@ -509,22 +498,18 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 						} else if (position == 1) {
 							Intent intent = new Intent(HomeActivity.this,
 									FeedbackActivity.class);
-							mNeedLock= false;
 							startActivity(intent);
 						} else if (position == 2) {
 							Intent intent = new Intent(HomeActivity.this,
 									AppWallActivity.class);
-							mNeedLock= false;
 							startActivity(intent);
 						} else if (position == 3) {
-							mNeedLock= false;
 							SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
 									"setting", "check_update");
 							LeoStat.checkUpdate();
 						} else if (position == 4) {
 							Intent intent = new Intent(HomeActivity.this,
 									AboutActivity.class);
-							mNeedLock= false;
 							startActivity(intent);
 						}
 						mLeoPopMenu.dismissSnapshotList();
@@ -632,7 +617,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_GESTURE);
 		}
-		mNeedLock= false;
 		startActivity(intent);
 
 	}
@@ -641,7 +625,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		Intent intent = new Intent(this, RecommentAppLockListActivity.class);
 		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
 				AppLockListActivity.class.getName());
-		mNeedLock= false;
 		startActivity(intent);
 	}
 
@@ -662,7 +645,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_GESTURE);
 		}
-		mNeedLock = false;
 		startActivity(intent);
 	}
 
@@ -670,7 +652,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		Intent intent = new Intent(this, LockSettingActivity.class);
 		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
 				VideoHideMainActivity.class.getName());
-		mNeedLock= false;
 		startActivity(intent);
 	}
 
@@ -691,7 +672,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
 					LockFragment.LOCK_TYPE_GESTURE);
 		}
-		mNeedLock= false;
 		startActivity(intent);
 	}
 
@@ -699,7 +679,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 		Intent intent = new Intent(this, LockSettingActivity.class);
 		intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
 				ImageHideMainActivity.class.getName());
-		mNeedLock= false;
 		startActivity(intent);
 	}
 

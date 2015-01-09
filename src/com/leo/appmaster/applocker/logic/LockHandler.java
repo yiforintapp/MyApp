@@ -61,9 +61,12 @@ public class LockHandler extends BroadcastReceiver {
 			return;
 
 		LeoLog.d("handleAppLaunch", pkg + "/" + activity);
+		String myPackage = mContext.getPackageName();
+		if (!myPackage.equals(pkg)) {
+			AppMasterPreference.getInstance(mContext).setLaunchOtherApp(true);
+		}
 
 		if (!pkg.equals(mLastRunningPkg)) {
-			String myPackage = mContext.getPackageName();
 			if ((pkg.equals(myPackage) && activity
 					.contains("LockScreenActivity"))
 					|| (mLastRunningPkg.equals(myPackage) && mLastRuningActivity
@@ -82,13 +85,13 @@ public class LockHandler extends BroadcastReceiver {
 					.getLockedAppList();
 			boolean lock = false;
 			// AM-810
-            if (list != null) {
-                lock = list.contains(pkg);
-                // Google launcher is special
-                if (!lock && pkg.equals(GOOGLE_LAUNCHER_PKG21)) {
-                    lock = list.contains(GOOGLE_LAUNCHER_PKG);
-                }
-            }
+			if (list != null) {
+				lock = list.contains(pkg);
+				// Google launcher is special
+				if (!lock && pkg.equals(GOOGLE_LAUNCHER_PKG21)) {
+					lock = list.contains(GOOGLE_LAUNCHER_PKG);
+				}
+			}
 			if (lock) {
 				Intent intent = new Intent(mContext, LockScreenActivity.class);
 				if (mLockPolicy != null && !mLockPolicy.onHandleLock(pkg)) {
@@ -105,7 +108,7 @@ public class LockHandler extends BroadcastReceiver {
 					}
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-					intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//					intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 					intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 					intent.putExtra(EXTRA_LOCKED_APP_PKG, pkg);
 					intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
@@ -124,6 +127,7 @@ public class LockHandler extends BroadcastReceiver {
 			String pkg = intent.getStringExtra(EXTRA_LOCKED_APP_PKG);
 			mLockPolicy.onUnlocked(pkg);
 		} else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
+			AppMasterPreference.getInstance(mContext).setLaunchOtherApp(true);
 			if (mLockPolicy instanceof TimeoutRelockPolicy) {
 				if (AppMasterPreference.getInstance(context).isAutoLock()) {
 					((TimeoutRelockPolicy) mLockPolicy).clearLockApp();
@@ -147,6 +151,7 @@ public class LockHandler extends BroadcastReceiver {
 		if (!pref.isAutoLock()) {
 			return;
 		}
+		
 		List<String> list = pref.getLockedAppList();
 		if (list.contains(mLastRunningPkg)) {
 			LeoLog.d("mLastRunningPkg = " + mLastRunningPkg, "is in lock list");

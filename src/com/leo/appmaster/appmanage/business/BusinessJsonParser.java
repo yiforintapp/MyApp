@@ -54,7 +54,7 @@ public class BusinessJsonParser {
 			} catch (JSONException e) {
 				LeoLog.e("parserJsonObject", e.getMessage());
 				e.printStackTrace();
-			}
+			}  
 		}
 		return list;
 	}

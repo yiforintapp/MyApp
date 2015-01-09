@@ -45,6 +45,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public static final String PREF_SETTING_LOCKER_CLEAN = "setting_locker_clean";
 	public static final String PREF_THEME_LOCK_GUIDE = "theme_locker_guide";
 	public static final String PREF_USE_LOCK_THEME_GUIDE = "use_lock_theme_guid";
+	public static final String PREF_LAUNCH_OTHER_APP = "launch_other_app";
+	
 	// online theme
 	public static final String PREF_ONLINE_THEME_SERIAL = "online_theme_serialnumber";
 	public static final String PREF_LOCAL_THEME_SERIAL = "local_theme_serialnumber";
@@ -101,6 +103,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	public void setUseThemeGuide(boolean flag) {
 		mPref.edit().putBoolean(PREF_USE_LOCK_THEME_GUIDE, flag).commit();
 	}
+	
+	public boolean getLaunchOtherApp() {
+		return mPref.getBoolean(PREF_LAUNCH_OTHER_APP, false);
+	}
+
+	public void setLaunchOtherApp(boolean flag) {
+		mPref.edit().putBoolean(PREF_LAUNCH_OTHER_APP, flag).commit();
+	}
+	
+	
 
 	public boolean getLockerScreenThemeGuid() {
 		return mPref.getBoolean(PREF_THEME_LOCK_GUIDE, false);

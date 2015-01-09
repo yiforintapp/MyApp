@@ -288,7 +288,6 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 	@Override
 	public void onPageSelected(int arg0) {
-		LeoLog.e("xxxx", "onPageSelected: " + arg0);
 	    mViewPager.interceptVerticalEvent(true);
 		if (arg0 == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
 		    if(!mFirstShow) {

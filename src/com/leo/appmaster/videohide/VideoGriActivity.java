@@ -461,7 +461,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                         } else {
                             newFileName = "." + newFileName + ".leotmv";
                         }
-                        if (FileOperationUtil.RenameFile(item.getPath(), newFileName)) {
+                        if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
                             FileOperationUtil.saveFileMediaEntry(FileOperationUtil.makePath(
                                     FileOperationUtil.getDirPathFromFilepath(item.getPath()),
                                     newFileName), context);
@@ -479,7 +479,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             break;
                         newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
                         newFileName = newFileName.substring(1, newFileName.indexOf(".leotmv"));
-                        if (FileOperationUtil.RenameFile(item.getPath(), newFileName)) {
+                        if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
                             FileOperationUtil.saveImageMediaEntry(FileOperationUtil.makePath(
                                     FileOperationUtil.getDirPathFromFilepath(item.getPath()),
                                     newFileName), context);

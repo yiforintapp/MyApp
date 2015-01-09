@@ -228,8 +228,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	protected void onStop() {
 		super.onStop();
 		if (mFromType == LockFragment.FROM_OTHER) {
-			if(getPackageName().equals(mToPackage))
-				return;
 			if (!AppMasterPreference.getInstance(this).isAutoLock() || toTheme) {
 				toTheme = false;
 				return;
@@ -306,11 +304,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	}
 
 	public void onUnlockSucceed() {
-		if (getPackageName().equals(mToPackage)) {
-			setResult(101);
-			finish();
-			return;
-		}
 		if (mFromType == LockFragment.FROM_SELF) {
 			Intent intent = null;
 			intent = new Intent(this, LockService.class);
@@ -383,6 +376,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 		AppMasterPreference pref = AppMasterPreference.getInstance(this);
 		pref.setUnlockCount(pref.getUnlockCount() + 1);
+		// when unlock successfully, we should set launcher other app flag false
+		pref.setLaunchOtherApp(false);
 		finish();
 	}
 

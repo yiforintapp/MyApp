@@ -35,6 +35,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
+            android:isIndicator="true"
             android:gravity="center"
             android:numStars="5"
             android:paddingTop="5dp"

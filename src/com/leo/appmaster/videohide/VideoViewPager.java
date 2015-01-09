@@ -335,7 +335,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private void deleteVideo() {
         boolean flag = false;
         String filePath = mAllPath.get(mPosition);
-        if (!FileOperationUtil.DeleteFile(filePath)) {
+        if (!FileOperationUtil.deleteFile(filePath)) {
             return;
         }
         mResultPath.add(filePath);
@@ -398,7 +398,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 String path = mAllPath.get(mPosition);
                 newFileName = FileOperationUtil.getNameFromFilepath(path);
                 newFileName = newFileName.substring(1, newFileName.indexOf(".leotmv"));
-                if (!FileOperationUtil.RenameFile(path, newFileName)) {
+                if (!FileOperationUtil.renameFile(path, newFileName)) {
                     return isSuccess = false;
                 } else {
                     mResultPath.add(path);
