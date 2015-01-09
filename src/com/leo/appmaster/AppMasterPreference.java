@@ -128,7 +128,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	}
 
 	public void setHomeBusinessTipClick(boolean flag) {
-		mPref.edit().putBoolean(PREF_HOME_LOCKED, flag).commit();
+		mPref.edit().putBoolean(PREF_HOME_BUSINESS_NEW_TIP_CLICK, flag).commit();
 	}
 
 	public List<String> getRecommentTipList() {

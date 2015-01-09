@@ -33,6 +33,7 @@ import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.model.FolderItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LeoAppViewPager;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
 public class FolderView extends RelativeLayout implements OnClickListener,
@@ -142,6 +143,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		mViewPager = (LeoAppViewPager) findViewById(R.id.folder_pager);
 		mViewPager.setOffscreenPageLimit(3);
 		mViewPager.setAdapter(mPagerAdapter);
+		mViewPager.setCurrentItem(1);
 		mViewPager.setOnPageChangeListener(this);
 
 		mViewPager.setOnClickListener(new OnClickListener() {
@@ -286,6 +288,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 	@Override
 	public void onPageSelected(int arg0) {
+		LeoLog.e("xxxx", "onPageSelected: " + arg0);
 	    mViewPager.interceptVerticalEvent(true);
 		if (arg0 == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
 		    if(!mFirstShow) {
@@ -312,6 +315,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 			mViewPager.interceptVerticalEvent(false);
 		}
 
+		
 		if (arg0 == 0) {
 			AppMasterPreference pref = AppMasterPreference
 					.getInstance(mContext);
@@ -319,6 +323,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 			String local = pref.getLocalBusinessSerialNumber();
 			if (online != null && !online.equals(local)) {
 				pref.setLocalBusinessSerialNumber(online);
+				pref.setHomeBusinessTipClick(true);
 				((AppListActivity) mContext).mHandler.postDelayed(
 						new Runnable() {
 							@Override
