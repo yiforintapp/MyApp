@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -108,9 +109,12 @@ public class AppWallActivity extends BaseActivity implements
         AppWallBean app = (AppWallBean) arg0.getItemAtPosition(arg2);
         /* SDK Event Mark */
         String packageName=app.getAppPackageName();
-        if(packageName!=null){
+//        if(packageName!=null){
         SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec",packageName);
-        }
+//        Log.e("xxxxxxxxxxxxx", "***************"+packageName);
+//        }else{
+//            Log.e("xxxxxxxxxxxxx", "***************NULL");
+//        }
         List<AppWallUrlBean> urls = app.getDownload();
         AppWallUrlBean appUrl = null;
         List<String[]> sort = new ArrayList<String[]>();
