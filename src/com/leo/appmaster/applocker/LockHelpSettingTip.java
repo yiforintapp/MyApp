@@ -253,14 +253,15 @@ public class LockHelpSettingTip extends Activity {
                         /* SDK Event Mark */
                         SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1, "help_press",
                                 "setting");
-                        Intent intent = new Intent(LockHelpSettingTip.this,
-                                LockTimeSetting.class);
-                        intent.putExtra("help_setting_current", 1);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        try {
-                            startActivityForResult(intent, 1);
-                        } catch (Exception e) {
-                        }
+                        enterLockSettingPage();
+//                        Intent intent = new Intent(LockHelpSettingTip.this,
+//                                LockTimeSetting.class);
+//                        intent.putExtra("help_setting_current", 1);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                        try {
+//                            startActivityForResult(intent, 1);
+//                        } catch (Exception e) {
+//                        }
                     } else if (buttonText
                             .equals(getString(R.string.lock_help_lock_theme_setting_button))) {
                         /* SDK Event Mark */
@@ -314,6 +315,26 @@ public class LockHelpSettingTip extends Activity {
                     LockFragment.LOCK_TYPE_GESTURE);
         }
         intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY, LockSettingActivity.class.getName());
+        startActivity(intent);
+
+    }
+    private void enterLockSettingPage() {
+        Intent intent = null;
+        int lockType = AppMasterPreference.getInstance(this).getLockType();
+        intent = new Intent(this, LockScreenActivity.class);
+        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+                LockFragment.FROM_SELF_HOME);
+        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+                AppLockListActivity.class.getName());
+        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_PASSWD);
+        } else {
+            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+                    LockFragment.LOCK_TYPE_GESTURE);
+        }
+        intent.putExtra("help_setting_current", 1);
+        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY, LockTimeSetting.class.getName());
         startActivity(intent);
 
     }
