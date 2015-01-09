@@ -137,6 +137,8 @@ public class LockHelpSettingTip extends Activity {
         String[] lockHelpSettingTitle = getResources().getStringArray(
                 R.array.lock_help_setting_title);
         mHelpSettingPager = Arrays.asList(lockHelpSettingTitle);
+       int right= getResources().getInteger(R.integer.help_setting_icon_right);
+       int bottom= getResources().getInteger(R.integer.help_setting_icon_bottom);
         int mType = AppMasterPreference.getInstance(this).getLockType();
         // boolean flag =
         // AppMasterPreference.getInstance(this).getIsHelpSettingChangeSucess();
@@ -149,7 +151,7 @@ public class LockHelpSettingTip extends Activity {
                     if (area.equalsIgnoreCase("zh")) {
                         Drawable drawable = this.getResources().getDrawable(
                                 R.drawable.press_settings_icon);
-                        drawable.setBounds(0, -5, 55, 50);
+                        drawable.setBounds(0, -5, right, bottom);
                         ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
                         SpannableString spannableString = new SpannableString(
                                 getString(R.string.lock_help_password_setting_content_password));
@@ -164,7 +166,7 @@ public class LockHelpSettingTip extends Activity {
                     if (area.equalsIgnoreCase("zh")) {
                         Drawable drawable = this.getResources().getDrawable(
                                 R.drawable.press_settings_icon);
-                        drawable.setBounds(0, -5, 55, 50);
+                        drawable.setBounds(0, -5, right, bottom);
                         ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
                         SpannableString spannableString = new SpannableString(
                                 getString(R.string.lock_help_password_setting_content_gesture));
