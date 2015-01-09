@@ -107,14 +107,6 @@ public class AppWallActivity extends BaseActivity implements
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         AppWallBean app = (AppWallBean) arg0.getItemAtPosition(arg2);
-        /* SDK Event Mark */
-        String packageName=app.getAppPackageName();
-//        if(packageName!=null){
-        SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec",packageName);
-//        Log.e("xxxxxxxxxxxxx", "***************"+packageName);
-//        }else{
-//            Log.e("xxxxxxxxxxxxx", "***************NULL");
-//        }
         List<AppWallUrlBean> urls = app.getDownload();
         AppWallUrlBean appUrl = null;
         List<String[]> sort = new ArrayList<String[]>();
@@ -155,6 +147,11 @@ public class AppWallActivity extends BaseActivity implements
             }
         } else {
             LeoLog.d("", "*************Not URL！");
+        }
+        /* SDK Event Mark */
+        String packageName = all.get(arg2).getDownload().get(0).getUrl();
+        if (packageName != null) {
+            SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", packageName);
         }
     }
 
