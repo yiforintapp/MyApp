@@ -96,10 +96,13 @@ public class FileOperationUtil {
 	}
 
 	public static String makePath(String path1, String path2) {
-		if (path1.endsWith(File.separator))
-			return path1 + path2;
-
-		return path1 + File.separator + path2;
+		if (path1 != null && path2 != null) {
+			if (path1.endsWith(File.separator)) {
+				return path1 + path2;
+			}
+			return path1 + File.separator + path2;
+		}
+		return "";
 	}
 
 	public static String getSdDirectory() {
@@ -149,6 +152,15 @@ public class FileOperationUtil {
 			LeoLog.e("RenameFile", "Fail to rename file," + e.toString());
 		}
 		return false;
+	}
+
+	public static void deleteFileMediaEntry(String imagePath, Context context) {
+		if (imagePath != null) {
+			String params[] = new String[] { imagePath };
+			Uri uri = Files.getContentUri("external");
+			context.getContentResolver().delete(uri,
+					MediaColumns.DATA + " LIKE ?", params);
+		}
 	}
 
 	/**
@@ -323,13 +335,6 @@ public class FileOperationUtil {
 		return false;
 	}
 
-	public static void deleteFileMediaEntry(String imagePath, Context context) {
-		String params[] = new String[] { imagePath };
-		Uri uri = Files.getContentUri("external");
-		context.getContentResolver().delete(uri, MediaColumns.DATA + " LIKE ?",
-				params);
-	}
-
 	public static Uri saveFileMediaEntry(String imagePath, Context context) {
 		ContentValues v = new ContentValues();
 		File f = new File(imagePath);
@@ -394,31 +399,41 @@ public class FileOperationUtil {
 				context.getContentResolver(),
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, STORE_IMAGES,
 				null, MediaColumns.DATE_MODIFIED + " desc");
-		Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
-		PhotoAibum pa = null;
-		while (cursor.moveToNext()) {
-			String path = cursor.getString(1);
-			String dir_id = cursor.getString(3);
-			String dir = cursor.getString(4);
-			if (!countMap.containsKey(dir_id)) {
-				pa = new PhotoAibum();
-				pa.setName(dir);
-				pa.setCount("1");
-				pa.setDirPath(FileOperationUtil.getDirPathFromFilepath(path));
-				pa.getBitList().add(new PhotoItem(path));
-				countMap.put(dir_id, pa);
-			} else {
-				pa = countMap.get(dir_id);
-				pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-				pa.getBitList().add(new PhotoItem(path));
+		if (cursor != null) {
+			Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
+			PhotoAibum pa = null;
+			try {
+				while (cursor.moveToNext()) {
+					String path = cursor.getString(1);
+					String dir_id = cursor.getString(3);
+					String dir = cursor.getString(4);
+					if (!countMap.containsKey(dir_id)) {
+						pa = new PhotoAibum();
+						pa.setName(dir);
+						pa.setCount("1");
+						pa.setDirPath(FileOperationUtil
+								.getDirPathFromFilepath(path));
+						pa.getBitList().add(new PhotoItem(path));
+						countMap.put(dir_id, pa);
+					} else {
+						pa = countMap.get(dir_id);
+						pa.setCount(String.valueOf(Integer.parseInt(pa
+								.getCount()) + 1));
+						pa.getBitList().add(new PhotoItem(path));
+					}
+				}
+			} catch (Exception e) {
+
+			} finally {
+				cursor.close();
 			}
+			Iterable<String> it = countMap.keySet();
+			for (String key : it) {
+				aibumList.add(countMap.get(key));
+			}
+			Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
 		}
-		cursor.close();
-		Iterable<String> it = countMap.keySet();
-		for (String key : it) {
-			aibumList.add(countMap.get(key));
-		}
-		Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
+
 		return aibumList;
 	}
 
