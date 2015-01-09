@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,19 +17,17 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.EdgeEffectCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -47,6 +44,7 @@ public class LockHelpSettingTip extends Activity {
     private EdgeEffectCompat rightEdge;
     private int mCurrentFlag;
     private List<String> mHelpSettingPager;
+    private RelativeLayout mViewPagerContainer;
     public static final int CURRENT_FLAG_CODE = 10000;
 
     @Override
@@ -59,12 +57,12 @@ public class LockHelpSettingTip extends Activity {
         mViewPager.setAdapter(mAdapter);
         mViewPager.setPageMargin(this.getResources().getDimensionPixelSize(
                 R.dimen.help_setting_page_margin));
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(2);
         setScroll();
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-
+                    
             }
 
             @Override
@@ -74,6 +72,9 @@ public class LockHelpSettingTip extends Activity {
                     rightEdge.finish();
                     leftEdge.setSize(0, 0);
                     rightEdge.setSize(0, 0);
+                }
+                if(mViewPagerContainer!=null){
+                    mViewPagerContainer.invalidate();
                 }
             }
 
@@ -128,12 +129,7 @@ public class LockHelpSettingTip extends Activity {
         mTitle.setTitle(R.string.help_setting_tip_title);
         mTitle.openBackView();
         mViewPager = (LeoPictureViewPager) findViewById(R.id.help_setting);
-    }
-    
-    @Override
-    protected void onNewIntent(Intent intent) {
-//        Log.e("xxxxxxxxxxxxxxxxxxxxx","**********onNewIntent");
-        super.onNewIntent(intent);
+        mViewPagerContainer = (RelativeLayout) findViewById(R.id.activity_lock_layout);
     }
 
     @SuppressLint("NewApi")
@@ -222,14 +218,12 @@ public class LockHelpSettingTip extends Activity {
             return arg0 == arg1;
         }
 
-        
-        
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             View view = (View) object;
             container.removeView(view);
         }
-        
+
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             final LockHelpItemPager lockHelpPager = mHelpPager.get(position);
