@@ -10,11 +10,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NotificationUtil;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.push.IPushUIHelper;
 import com.leoers.leoanalytics.push.PushManager;
@@ -155,7 +157,6 @@ private NewActListener mListener;
         Notification pushNotification = new Notification(
                 R.drawable.ic_launcher_notification, content,
                 System.currentTimeMillis());
-
         Intent dIntent = new Intent(ACTION_IGNORE_PUSH);
         dIntent.putExtra(EXTRA_AD_ID, id);
         PendingIntent delIntent = PendingIntent.getBroadcast(mContext, 1,
@@ -163,6 +164,7 @@ private NewActListener mListener;
 
         pushNotification.setLatestEventInfo(mContext, title, content,
                 contentIntent);
+        NotificationUtil.setBigIcon(pushNotification, R.drawable.ic_launcher_notification_big);
         pushNotification.deleteIntent = delIntent;
         pushNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONLY_ALERT_ONCE;

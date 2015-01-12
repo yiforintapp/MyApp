@@ -12,6 +12,7 @@ import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.service.LockService;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NotificationUtil;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -97,14 +98,13 @@ public class LockReceiver extends BroadcastReceiver {
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
-		Notification notification = new Notification(R.drawable.ic_launcher,
+		Notification notification = new Notification(R.drawable.ic_launcher_notification,
 				content, System.currentTimeMillis());
-		notification.largeIcon = BitmapFactory.decodeResource(
-				ctx.getResources(), R.drawable.ic_launcher);
 		notification.tickerText = content;
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
 		notification.setLatestEventInfo(ctx, "Privacy Lock", content,
 				pendingIntent);
+	    NotificationUtil.setBigIcon(notification, R.drawable.ic_launcher_notification_big);
 		nm.notify(0, notification);
 	}
 }
