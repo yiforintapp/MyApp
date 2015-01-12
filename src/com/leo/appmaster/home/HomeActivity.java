@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -504,6 +505,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 						} else if (position == 2) {
 						    /*SDK Event Mark*/
 	                        SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,"home_app_rec", "all");
+//	                        Log.e("xxxxxxxxxxxx", "*******all");
 							Intent intent = new Intent(HomeActivity.this,
 									AppWallActivity.class);
 							startActivity(intent);

@@ -940,10 +940,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {      
-
                     loadLocalTheme();
+                    loadInitOnlineTheme();
                     mLocalThemeAdapter.notifyDataSetChanged();
+                    mOnlineThemeAdapter.notifyDataSetChanged();
+                    if(mProgressDialog!=null){
                     mProgressDialog.dismiss();
+                    }
                     mProgressDialog=null;
                     if (mFromTheme != null && !mFromTheme.equals("")) {
                         tryHideThemeApk(mFromTheme);
