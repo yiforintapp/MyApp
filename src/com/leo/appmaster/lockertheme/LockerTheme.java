@@ -170,7 +170,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
         initUI();
         handleIntent();
         if(mNeedLoadTheme && mHideThemes.isEmpty()){
-            showProgressDialog(getString(R.string.tips),getString(R.string.pull_to_refresh_refreshing_label),true,true);
+            showProgressDialog(getString(R.string.tips),getString(R.string.pull_to_refresh_refreshing_label)+"...",true,true);
         }
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
