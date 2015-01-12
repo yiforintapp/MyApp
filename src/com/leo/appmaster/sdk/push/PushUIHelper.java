@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 import com.leoers.leoanalytics.push.IPushUIHelper;
@@ -166,6 +167,7 @@ private NewActListener mListener;
         pushNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONLY_ALERT_ONCE;
         nm.notify(PUSH_NOTIFICATION_ID, pushNotification);
+        SDKWrapper.addEvent(mContext, LeoStat.P1, "act", id + ":notbar");
     }
 
     private boolean isActivityOnTop(Context context) {
@@ -201,12 +203,14 @@ private NewActListener mListener;
             }
             if (action.equals(ACTION_CHECK_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
+                SDKWrapper.addEvent(mContext, LeoStat.P1, "act", adID + ":notbar_click");
                 if (mListener != null) {
                     mListener.onNewAct(true, adID, mTitle, mContent);
-                                           }
+                }
                 showPushActivity(adID, mTitle, mContent, true);
             } else if (action.equals(ACTION_IGNORE_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
+                SDKWrapper.addEvent(mContext, LeoStat.P1, "act", adID + ":notbar_cancel");
                 sendACK(adID, "N", "Q", "");
             }
         }
