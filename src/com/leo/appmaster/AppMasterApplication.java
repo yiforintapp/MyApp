@@ -235,8 +235,7 @@ public class AppMasterApplication extends Application implements
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		notif.icon = R.drawable.ic_launcher;
 		notif.tickerText = this.getString(R.string.find_new_theme);
-		notif.flags = Notification.FLAG_ONGOING_EVENT
-				| Notification.FLAG_AUTO_CANCEL;
+		notif.flags = Notification.FLAG_AUTO_CANCEL;
 		notif.setLatestEventInfo(this, this.getString(R.string.find_new_theme),
 				this.getString(R.string.find_new_theme_content), contentIntent);
 		notif.when = System.currentTimeMillis();
@@ -256,8 +255,7 @@ public class AppMasterApplication extends Application implements
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		notif.icon = R.drawable.ic_launcher;
 		notif.tickerText = mainTitle;
-		notif.flags = Notification.FLAG_ONGOING_EVENT
-				| Notification.FLAG_AUTO_CANCEL;
+		notif.flags = Notification.FLAG_AUTO_CANCEL;
 		notif.setLatestEventInfo(this, mainTitle, content, contentIntent);
 		notif.when = System.currentTimeMillis();
 		NotificationManager nm = (NotificationManager) this

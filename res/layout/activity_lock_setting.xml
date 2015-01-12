@@ -22,14 +22,14 @@
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:layout_below="@id/layout_title_bar"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="50dp"
         android:background="@drawable/lock_tutorails_button"
         android:visibility="gone"
         android:gravity="center" >
         <TextView
+            android:id="@+id/lock_guide_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/locker_guide"
             android:textColor="#FFFFFF" />
     </RelativeLayout>
 

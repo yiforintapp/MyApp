@@ -39,8 +39,8 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     private CommonTitleBar mTtileBar;
     private SharedPreferences mSp;
-    private Preference mTheme, mLockTime, mResetPasswd, mChangeProtectQuestion,
-            mChangePasswdTip;
+    private Preference mTheme, mLockSetting, mResetPasswd, mChangeProtectQuestion,
+            mChangePasswdTip,mChangeLockTime;
 
     private CheckBoxPreference mForbidUninstall, mAutoLock, mLockerClean;
     private Preference mLockerTheme;
@@ -71,13 +71,15 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         mComeFrom = intent.getIntExtra(TAG_COME_FROM, 0);
     }
 
+    @SuppressWarnings("deprecation")
     private void setupPreference() {
+        mChangeLockTime =  (Preference) findPreference(AppMasterPreference.PREF_RELOCK_TIME);
         mLockerTheme = findPreference(AppMasterPreference.PREF_LOCKER_THEME);
         mForbidUninstall = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL);
         mAutoLock = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_AUTO_LOCK);
         mLockerClean = (CheckBoxPreference) findPreference("app_lock_clean");
         mSetProtect = findPreference(AppMasterPreference.PREF_SET_PROTECT);
-        mLockTime = (Preference) findPreference(AppMasterPreference.PREF_RELOCK_TIME);
+        mLockSetting = (Preference) findPreference(AppMasterPreference.PREF_LOCK_SETTING);
         mResetPasswd = (Preference) findPreference("change_passwd");
         mChangeProtectQuestion = (Preference) findPreference("set_passwd_protect");
         mTheme = findPreference("set_locker_theme");
@@ -91,11 +93,12 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                     .fromHtml(getString(R.string.lockerThemePoit));
             mLockerTheme.setTitle(buttonText);
         }
-
+        getPreferenceScreen().removePreference(mChangeLockTime);
+        getPreferenceScreen().removePreference(mAutoLock);
         if (mComeFrom == FROM_IMAGEHIDE) {
             getPreferenceScreen().removePreference(mLockerTheme);
             getPreferenceScreen().removePreference(mAutoLock);
-            getPreferenceScreen().removePreference(mLockTime);
+            getPreferenceScreen().removePreference(mLockSetting);
             getPreferenceScreen().removePreference(mLockerClean);
             getPreferenceScreen().removePreference(
                     findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP));
@@ -104,7 +107,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         mForbidUninstall.setOnPreferenceChangeListener(this);
         if (mComeFrom == FROM_APPLOCK) {
             mAutoLock.setOnPreferenceChangeListener(this);
-            mLockTime.setOnPreferenceClickListener(this);
+            mLockSetting.setOnPreferenceClickListener(this);
             mLockerClean.setOnPreferenceChangeListener(this);
         }
         mTheme.setOnPreferenceClickListener(this);
@@ -269,9 +272,12 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     public boolean onPreferenceClick(Preference preference) {
         String key = preference.getKey();
 
-        if (AppMasterPreference.PREF_RELOCK_TIME.equals(key)) {
-            onCreateChoiceDialog(AppMasterPreference.getInstance(this)
-                    .getRelockTimeout());
+        if (AppMasterPreference.PREF_LOCK_SETTING.equals(key)) {
+            Intent intent=new Intent(LockOptionActivity.this,LockTimeSetting.class);
+            try {
+                LockOptionActivity.this.startActivityForResult(intent, 0);
+            } catch (Exception e) {
+            }
         } else if ("change_passwd".equals(key)) {
             Intent intent = new Intent(this, LockSettingActivity.class);
             intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
@@ -297,59 +303,6 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                     "theme_enter", "setting");
         }
         return false;
-    }
-
-    private void onCreateChoiceDialog(int id) {
-        final String[] valueString = getResources().getStringArray(
-                R.array.lock_time_items);
-        int index = 0;
-        for (index = 0; index < valueString.length; index++) {
-            if (valueString[index].equals(String.valueOf(id / 1000))) {
-                break;
-            }
-        }
-        if (index >= valueString.length) {
-            index = 0;
-        }
-
-        AlertDialog scaleIconListDlg = new AlertDialog.Builder(this)
-                .setTitle(R.string.change_lock_time)
-                .setSingleChoiceItems(R.array.lock_time_entrys, index,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-                                AppMasterPreference.getInstance(
-                                        LockOptionActivity.this)
-                                        .setRelockTimeout(
-                                                valueString[whichButton]);
-                                SDKWrapper.addEvent(LockOptionActivity.this,
-                                        LeoStat.P1, "lock_setting",
-                                        valueString[whichButton]);
-                                dialog.dismiss();
-                            }
-                        })
-                .setNegativeButton(R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-                                /* User clicked No so do some stuff */
-                            }
-                        }).create();
-        // int divierId =
-        // scaleIconListDlg.getContext().getResources().getIdentifier("android:id/titleDivider",
-        // "id", "android");
-        // View divider = scaleIconListDlg.findViewById(divierId);
-        // divider.setBackgroundColor(getResources().getColor(R.color.transparent));
-        TextView title = new TextView(this);
-        title.setText(getString(R.string.change_lock_time));
-        title.setTextColor(Color.WHITE);
-        title.setTextSize(20);
-        title.setPadding(DipPixelUtil.dip2px(this, 20),
-                DipPixelUtil.dip2px(this, 10), 0, DipPixelUtil.dip2px(this, 10));
-        title.setBackgroundColor(getResources().getColor(
-                R.color.dialog_title_area_bg));
-        scaleIconListDlg.setCustomTitle(title);
-        scaleIconListDlg.show();
     }
 
 }

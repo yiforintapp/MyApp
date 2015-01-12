@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -142,8 +143,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
              * tell PushUIHelper than do not show dialog when lockscreen is
              * shown
              */
-            PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(
-                    true);
+            PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(true);
         }
         super.onResume();
     }
@@ -255,8 +255,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
          */
         mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
         mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
+        spiner = (ImageView) findViewById(R.id.image1);
+        LeoLog.d("LockScreenActivity", "spiner = " + spiner);
+        // // AM-463, add protect
+        TextView lockGuideTv = (TextView) mLockerGuide.findViewById(R.id.lock_guide_tv);
+        lockGuideTv.setText(getString(R.string.help_setting_guide));
         // number = AppMasterApplication.number;
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        /*
+         * AM-667
+         */
+        if (mFromType == LockFragment.FROM_OTHER
+                || mFromType == LockFragment.FROM_SCREEN_ON) {
+            mTtileBar.setHelpSettingImage(R.drawable.selector_help_icon);
+            mTtileBar.setHelpSettingVisiblity(View.VISIBLE);
+            mTtileBar.setHelpSettingListener(this);
+        }
         if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
             mTtileBar.setOptionImage(R.drawable.setting_selector);
             mTtileBar.setOptionImageVisibility(View.VISIBLE);
@@ -264,7 +278,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         spiner = (ImageView) findViewById(R.id.image1);
         LeoLog.d("LockScreenActivity", "spiner = " + spiner);
-        // // AM-463, add protect
         // if (spiner != null) {
         // if ("0".equals(number)) {
         // spiner.setImageDrawable(this.getResources().getDrawable(
@@ -312,26 +325,27 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             setResult(11);
         } else if (mFromType == LockFragment.FROM_OTHER
                 || mFromType == LockFragment.FROM_SCREEN_ON) {
-
             // input right gesture, just finish self
             Intent intent = new Intent(LockHandler.ACTION_APP_UNLOCKED);
             intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mToPackage);
             sendBroadcast(intent);
-            /*
-             * mImage.setVisibility(View.VISIBLE); mAnim = new
-             * TranslateAnimation(0, 0, 0, -1500);
-             * mAnim.setInterpolator(LockScreenActivity.this,
-             * android.R.anim.accelerate_interpolator); mAnim.setDuration(500);
-             * mAnim.setAnimationListener(new AnimationListener() {
-             * @Override public void onAnimationStart(Animation arg0) { }
-             * @Override public void onAnimationRepeat(Animation arg0) { }
-             * @Override public void onAnimationEnd(Animation arg0) {
-             * mImage.setVisibility(View.GONE); finish(); } });
-             * mImage.startAnimation(mAnim);
-             */
-            /**
-             * cleanMemToast
-             */
+            if (AppMasterPreference.getInstance(LockScreenActivity.this)
+                    .isLockerClean()) {
+                Toast mToast = new Toast(this);
+                LayoutInflater mLayoutInflater = LayoutInflater
+                        .from(LockScreenActivity.this);
+                mLockClean = mLayoutInflater.inflate(
+                        R.layout.activity_lockclean_toast, null);
+                mText = (TextView) mLockClean.findViewById(R.id.textToast);
+                String textResource = getResources().getString(
+                        R.string.locker_clean);
+                String cleanRate = String.format(textResource, mCleanRate);
+                mText.setText(cleanRate);
+                mToast.setGravity(Gravity.BOTTOM, 0, 66);
+                mToast.setDuration(1000);
+                mToast.setView(mLockClean);
+                mToast.show();
+            }
 
             if (AppMasterPreference.getInstance(LockScreenActivity.this)
                     .isLockerClean()) {
@@ -353,7 +367,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             AppMasterPreference pref = AppMasterPreference.getInstance(this);
             pref.setUnlockCount(pref.getUnlockCount() + 1);
-
             spiner.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -369,13 +382,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             this.startService(intent);
             intent = new Intent();
             intent.setClassName(this, mToActivity);
+            if ((LockSettingActivity.class.getName()).equals(mToActivity)) {
+                intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
+            }
             startActivity(intent);
         }
-
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         pref.setUnlockCount(pref.getUnlockCount() + 1);
-        // when unlock successfully, we should set launcher other app flag false
-        pref.setLaunchOtherApp(false);
         finish();
     }
 
@@ -460,10 +473,20 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         "theme_enter", "unlock");
                 toTheme = true;
                 startActivityForResult(intent, 0);
-                // AppMasterApplication.setSharedPreferencesNumber("1");
-                // number = "1";
                 AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(
                         true);
+                break;
+            case R.id.setting_help_tip:
+                AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(true);
+                Intent helpSettingIntent = new Intent(LockScreenActivity.this,
+                        LockHelpSettingTip.class);
+                helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    LockScreenActivity.this.startActivity(helpSettingIntent);
+                } catch (Exception e) {
+                }
+                /* SDK Event Mark */
+                SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1, "help", "help");
                 break;
             default:
                 break;

@@ -34,6 +34,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.LockHelpSettingTip;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
@@ -501,6 +502,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 									FeedbackActivity.class);
 							startActivity(intent);
 						} else if (position == 2) {
+						    /*SDK Event Mark*/
+	                        SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,"home_app_rec", "all");
 							Intent intent = new Intent(HomeActivity.this,
 									AppWallActivity.class);
 							startActivity(intent);

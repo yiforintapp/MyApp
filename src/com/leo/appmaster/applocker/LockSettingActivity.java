@@ -27,9 +27,9 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 	private int mLockType = LOCK_TYPE_PASSWD;
 	private TextView mTvSwitch;
 	private CommonTitleBar mTitleBar;
-	FragmentManager mFm;
-	PasswdSettingFragment mPasswd;
-	GestureSettingFragment mGesture;
+	private  FragmentManager mFm;
+	private PasswdSettingFragment mPasswd;
+	private GestureSettingFragment mGesture;
 
 	private boolean mResetFlag;
 
@@ -119,7 +119,6 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 		mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
 		mTitleBar.openBackView();
 		mTitleBar.setOptionListener(this);
-
 		mTvSwitch = (TextView) findViewById(R.id.tv_option_text);
 		mTitleBar.setOptionListener(this);
 		mTitleBar.setOptionTextVisibility(View.VISIBLE);
@@ -156,5 +155,4 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 	public boolean isResetPasswd() {
 		return mResetFlag;
 	}
-
 }

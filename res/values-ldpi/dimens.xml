@@ -15,24 +15,24 @@
     <dimen name="memory_flow_text2_marginTop">5dp</dimen>
     <dimen name="splash_width">206dp</dimen>
     <dimen name="splash_height">220dp</dimen>
-    <dimen name="lock_pattern_button_width">70dp</dimen>
-    <dimen name="gesture_setting_margintop">30dp</dimen>
+    <dimen name="lock_pattern_button_width">50dp</dimen>
+    <dimen name="gesture_setting_margintop">5dp</dimen>
     <dimen name="hide_album_frame_width">167dp</dimen>
-    <dimen name="hide_album_image_frame_width">128dp</dimen>
+    <dimen name="hide_album_image_frame_width">115dp</dimen>
     <dimen name="hide_album_image_frame_left">18dp</dimen>
-    <dimen name="hide_album_image_frame_top">18dp</dimen>
+    <dimen name="hide_album_image_frame_top">25dp</dimen>
     <dimen name="hide_picture_frame_width">167dp</dimen>
-    <dimen name="hide_pictrue_imge_frame_width">142dp</dimen>
-    <dimen name="hide_picture_iamge_frame_left">10dp</dimen>
-    <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
+    <dimen name="hide_pictrue_imge_frame_width">126dp</dimen>
+    <dimen name="hide_picture_image_frame_left">13dp</dimen>
+    <dimen name="hide_pictrue_image_frame_top">14dp</dimen>
     <dimen name="hide_picture_checkbox_left">107dp</dimen>
     <dimen name="hide_picture_checkbox_top">107dp</dimen>
-    <dimen name="digital_item_width">65dp</dimen>
-    <dimen name="digital_item_height">65dp</dimen>
+    <dimen name="digital_item_width">45dp</dimen>
+    <dimen name="digital_item_height">45dp</dimen>
     <dimen name="digital_item_marginTop">8dp</dimen>
     <dimen name="digital_item_marginBottom">8dp</dimen>
-    <dimen name="lockPatternView_height">330dp</dimen>
-    <dimen name="layout_passwd_marginTop">20dp</dimen>
+    <dimen name="lockPatternView_height">250dp</dimen>
+    <dimen name="layout_passwd_marginTop">6dp</dimen>
     <dimen name="layout_passwd_marginBottom">10dp</dimen>
     <dimen name="home_bottom_height">164dp</dimen>
     <dimen name="home_hide_issues_height">46dp</dimen>
@@ -47,7 +47,7 @@
     <dimen name="circle_text_vertical_padding">5dp</dimen>
     <dimen name="gridview_vertical_spacing">14dip</dimen>
 
-    <integer name="gridview_row_count">4</integer>
+    <integer name="gridview_row_count">3</integer>
     <integer name="applist_cell_count">12</integer>
 
     <dimen name="folder_title_margintop">25dp</dimen>
@@ -69,16 +69,62 @@
     <dimen name="default_lock_recomment_bottom_text_height">36dp</dimen>
     <dimen name="default_lock_recomment_pagedgrideview_top">15dp</dimen>
     <dimen name="app_item_iv_app_icon_width">52dp</dimen>
-     <dimen name="app_item_iv_app_icon_height">52dp</dimen>
-     <dimen name="default_lock_icon_width">23dp</dimen>
-     <dimen name="lock_icon_height">24dp</dimen>
-     <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
-     <dimen name="app_item_linearlayout_padding">5dp</dimen>
-      <dimen name="sucess_lock_recomment_successicon_top">50dp</dimen>
-      <integer name="recomment_gridview_row_count">4</integer>
-      <integer name="recomment_gridview_col_count">4</integer>
-      <integer name="success_recomment_gridview_row_count">4</integer>
-       <integer name="success_recomment_gridview_col_count">3</integer>
-        <dimen name="grid_page_item_layout_marginLeft">8dp</dimen>
-        <dimen name="grid_page_item_layout_marginRight">8dp</dimen>
+    <dimen name="app_item_iv_app_icon_height">52dp</dimen>
+    <dimen name="default_lock_icon_width">23dp</dimen>
+    <dimen name="lock_icon_height">24dp</dimen>
+    <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
+    <dimen name="app_item_linearlayout_padding">5dp</dimen>
+    <dimen name="sucess_lock_recomment_successicon_top">50dp</dimen>
+
+    <integer name="recomment_gridview_row_count">2</integer>
+    <integer name="recomment_gridview_col_count">4</integer>
+    <integer name="success_recomment_gridview_row_count">1</integer>
+    <integer name="success_recomment_gridview_col_count">4</integer>
+
+    <dimen name="grid_page_item_layout_marginLeft">8dp</dimen>
+    <dimen name="help_setting_page_margin">8dp</dimen>
+    <dimen name="grid_page_item_layout_marginRight">8dp</dimen>
+    <dimen name="help_icon_width">18dp</dimen>
+    <dimen name="help_icon_height">24dp</dimen>
+    <dimen name="help_setting_margintop">18dp</dimen>
+    <dimen name="fragment_lock_password_passwd_input_tip_margintop">10dp</dimen>
+    <dimen name="fragment_lock_password_appicon_width">40dp</dimen>
+    <dimen name="fragment_lock_password_appicon_height">40dp</dimen>
+    <dimen name="fragment_lock_password_passwd_input_tip_textsize">10dp</dimen>
+    <dimen name="fragment_lock_password_layout_passwd_height">20dp</dimen>
+    <dimen name="fragment_lock_password_tv_passwd_width">20dp</dimen>
+    <dimen name="fragment_lock_password_tv_passwd_marginleft">40dp</dimen>
+    <dimen name="fragment_lock_password_tv_passwd_marginright">40dp</dimen>
+    <dimen name="fragment_lock_password_setting_layout_passwd_height">30dp</dimen>
+    <dimen name="fragment_lock_password__setting_tv_passwd_width">30dp</dimen>
+    <dimen name="fragment_lock_password_setting_passwd_input_tip_textsize">20dp</dimen>
+    <dimen name="fragment_lock_password_setting_tv_passwd_function_tip_textsize">12dp</dimen>
+    <dimen name="fragment_lock_gesture_setting_gesture_lockview_width">250dp</dimen>
+    <dimen name="fragment_lock_gesture_setting_gesture_lockview_height">250dp</dimen>
+    <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">2dp</dimen>
+    <dimen name="fragment_lock_gesture_gesture_lockview_marginbottom">5dp</dimen>
+    <dimen name="activity_wait_textView1_marginbottom">80dp</dimen>
+    <dimen name="list_item_locktheme_tick_sel_width">32px</dimen>
+    <dimen name="list_item_locktheme_tick_sel_height">32px</dimen>
+    <dimen name="fragment_lock_password_setting_tv_bottom">30dp</dimen>
+    <dimen name="fragment_lock_password_setting_layout_passwd">5dp</dimen>
+    <dimen name="fragment_lock_password_key_board">10dp</dimen>
+
+    <integer name="help_setting_press_settings_icon_left">0</integer>
+    <integer name="help_setting_press_settings_icon_top">50</integer>
+    <integer name="help_setting_press_settings_icon_right">50</integer>
+    <integer name="help_setting_press_settings_icon_bottom">45</integer>
+
+    <dimen name="lock_help_item_pager_card_width">308dp</dimen>
+    <dimen name="lock_help_item_pager_card_height">233dp</dimen>
+    <dimen name="lock_help_item_pager_button_width">232dp</dimen>
+    <dimen name="lock_help_item_pager_button_height">33dp</dimen>
+    <dimen name="lock_help_item_pager_bottom_width">308dp</dimen>
+    <dimen name="lock_help_item_pager_bottom_height">56dp</dimen>
+    <dimen name="lock_help_item_pager_lock_help_title_margintop">18dp</dimen>
+    <dimen name="lock_help_item_pager_lock_help_content_margintop">20dp</dimen>
+
+    <integer name="help_setting_icon_right">55</integer>
+    <integer name="help_setting_icon_bottom">50</integer>
+
 </resources>
