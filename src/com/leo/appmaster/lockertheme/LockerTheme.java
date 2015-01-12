@@ -626,10 +626,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
                         SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
                                 "theme_apply", lastSelectedItem.packageName);
                         dialog.cancel();
-                        // SharedPreferences mLockerGuideShared =
-                        // getSharedPreferences(
-                        // "LockerThemeGuide",
-                        // LockerTheme.this.MODE_WORLD_WRITEABLE);
                         mGuideFlag = AppMasterPreference.getInstance(LockerTheme.this)
                                 .getUseThemeGuide();
                         if (!mGuideFlag) {
@@ -642,6 +638,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
                         lastSelectedItem.label = (String) LockerTheme.this
                                 .getResources().getText(R.string.localtheme);
                         mLocalThemeAdapter.notifyDataSetChanged();
+                        dialog.cancel();
                     }
                 } else if (which == 1) {
                     dialog.cancel();
@@ -941,9 +938,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
                 @Override
                 public void run() {      
                     loadLocalTheme();
-                    loadInitOnlineTheme();
                     mLocalThemeAdapter.notifyDataSetChanged();
-                    mOnlineThemeAdapter.notifyDataSetChanged();
                     if(mProgressDialog!=null){
                     mProgressDialog.dismiss();
                     }
