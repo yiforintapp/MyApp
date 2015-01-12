@@ -84,7 +84,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private ImageView spiner;
     // private String number;
 
-    private boolean toTheme;
+    private boolean shouldLock;
     private boolean mNewTheme;
     private RelativeLayout mLockerGuide;
     private Animation mAnim;
@@ -229,8 +229,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onStop() {
         super.onStop();
         if (mFromType == LockFragment.FROM_OTHER) {
-            if (!AppMasterPreference.getInstance(this).isAutoLock() || toTheme) {
-                toTheme = false;
+            if (!AppMasterPreference.getInstance(this).isAutoLock() || shouldLock) {
+                shouldLock = false;
                 return;
             }
             finish();
@@ -471,7 +471,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
                 SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,
                         "theme_enter", "unlock");
-                toTheme = true;
+                shouldLock = true;
                 startActivityForResult(intent, 0);
                 AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(
                         true);
@@ -480,6 +480,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 AppMasterPreference.getInstance(this).setLockerScreenThemeGuide(true);
                 Intent helpSettingIntent = new Intent(LockScreenActivity.this,
                         LockHelpSettingTip.class);
+                shouldLock = true;
                 helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
                     LockScreenActivity.this.startActivity(helpSettingIntent);
