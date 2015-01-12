@@ -150,8 +150,15 @@ public class AppWallActivity extends BaseActivity implements
         }
         /* SDK Event Mark */
         String packageName = all.get(arg2).getDownload().get(0).getUrl();
-        if (packageName != null) {
+        if (packageName != null && !packageName.equals("")) {
             SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", packageName);
+        } else {
+            String urlPageName = all.get(arg2).getDownload().get(1).getUrl();
+            if (urlPageName != null && !urlPageName.equals("")) {
+                String urlName = toUrlgetPackageName(urlPageName);
+                SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", urlName);
+//                LeoLog.e("xxxxxxxxxxxxxxxxxx", "*************2...." + name);
+            }
         }
     }
 
@@ -375,6 +382,10 @@ public class AppWallActivity extends BaseActivity implements
             e.printStackTrace();
         }
         return all;
+    }
+
+    public String toUrlgetPackageName(String url) {
+        return url.substring(url.lastIndexOf("?id=") + 4);
     }
 
 }

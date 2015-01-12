@@ -58,6 +58,9 @@ import com.leo.appmaster.utils.TextFormater;
 import com.leoers.leoanalytics.LeoStat;
 
 public class AppLoadEngine extends BroadcastReceiver {
+    public interface ThemeChanageListener{
+        public void loadTheme();
+    }
 	/**
 	 * Resister this listener to receive application changed events
 	 */
@@ -114,6 +117,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 	private CountDownLatch mLatch;
 	private boolean mInit;
 	private boolean mAppsLoaded = false;
+	private ThemeChanageListener mThemeListener;
 
 	private ArrayList<AppChangeListener> mListeners;
 
@@ -167,7 +171,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 			mRecommendLocklist = list;
 		}
 	}
-
+	public void setThemeChanageListener(ThemeChanageListener themeListener){
+	    this.mThemeListener=themeListener;
+	}
 	public List<String> getRecommendLockList() {
 		return mRecommendLocklist;
 	}
@@ -292,6 +298,9 @@ public class AppLoadEngine extends BroadcastReceiver {
 					}
 				}
 				pre.setHideThemeList(themeList);
+				if(mThemeListener!=null){
+			        mThemeListener.loadTheme();
+				}
 				mAppsLoaded = true;
 			}
 		}

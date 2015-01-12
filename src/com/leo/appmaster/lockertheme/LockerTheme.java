@@ -10,9 +10,11 @@ import org.json.JSONObject;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,6 +25,7 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,6 +51,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.appmanage.view.BusinessAppFragment;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.engine.AppLoadEngine.ThemeChanageListener;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
@@ -56,6 +61,8 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
+import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -63,7 +70,7 @@ import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.imageloader.ImageLoader;
 import com.leoers.leoanalytics.LeoStat;
 
-public class LockerTheme extends BaseActivity implements OnClickListener,
+public class LockerTheme extends BaseActivity implements OnClickListener,ThemeChanageListener,
         OnPageChangeListener, OnRefreshListener2<ListView> {
 
     private View mTabContainer;
@@ -102,6 +109,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
     private EventHandler mHandler;
     private String mFromTheme;
     private int mHelpSettingCurrent;
+    private LEOCircleProgressDialog mProgressDialog;
+    private boolean mNeedLoadTheme;
 
     private static class EventHandler extends Handler {
         WeakReference<LockerTheme> lockerTheme;
@@ -160,7 +169,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
         loadData();
         initUI();
         handleIntent();
-
+        if(mNeedLoadTheme && mHideThemes.isEmpty()){
+            showProgressDialog(getString(R.string.tips),getString(R.string.pull_to_refresh_refreshing_label),true,true);
+        }
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
         intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
@@ -168,6 +179,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
         mLockerThemeReceive = new LockerThemeReceive();
         registerReceiver(mLockerThemeReceive, intentFilter);
         createResultToHelpSetting();
+        AppLoadEngine.getInstance(this).setThemeChanageListener(this);
     }
 
     private void handleIntent() {
@@ -175,6 +187,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
         Intent intent = this.getIntent();
         mFromTheme = intent.getStringExtra("theme_package");
         mNeedLock = intent.getBooleanExtra("need_lock", false);
+        mNeedLoadTheme=intent.getBooleanExtra("is_need_loading", false);
         mFrom = intent.getStringExtra("from");
         if (mFromTheme != null && !mFromTheme.equals("")) {
             tryHideThemeApk(mFromTheme);
@@ -565,6 +578,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mLockerThemeReceive);
+        AppLoadEngine.getInstance(this).setThemeChanageListener(null);
     }
 
     @Override
@@ -588,7 +602,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
         dialog.setText(packageName);
         dialog.setVisibleUninstal(visible);
         dialog.show();
-      final String themeName=packageName;
+        final String themeName = packageName;
         dialog.setOnClickListener(new OnDiaogClickListener() {
             @Override
             public void onClick(int which) {
@@ -600,7 +614,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
                     for (ThemeItemInfo themeItemInfo : mLocalThemes) {
                         packageNames.add(themeItemInfo.themeName);
                     }
-                    boolean flag=packageNames.contains(themeName);
+                    boolean flag = packageNames.contains(themeName);
                     if (flag) {
                         AppMasterApplication
                                 .setSharedPreferencesValue(lastSelectedItem.packageName);
@@ -623,11 +637,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
                         }
                     } else {
                         AppMasterApplication
-                        .setSharedPreferencesValue(lastSelectedItem.packageName);
+                                .setSharedPreferencesValue(lastSelectedItem.packageName);
                         mLocalThemes.get(0).curUsedTheme = true;
-                lastSelectedItem.label = (String) LockerTheme.this
-                        .getResources().getText(R.string.localtheme);
-                mLocalThemeAdapter.notifyDataSetChanged();
+                        lastSelectedItem.label = (String) LockerTheme.this
+                                .getResources().getText(R.string.localtheme);
+                        mLocalThemeAdapter.notifyDataSetChanged();
                     }
                 } else if (which == 1) {
                     dialog.cancel();
@@ -905,4 +919,48 @@ public class LockerTheme extends BaseActivity implements OnClickListener,
         intent.putExtra("help_setting_current", mHelpSettingCurrent);
         this.setResult(RESULT_OK, intent);
     }
+
+    private void showProgressDialog(String title, String message,
+            boolean indeterminate, boolean cancelable) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new LEOCircleProgressDialog(this);
+        }
+        mProgressDialog.setCancelable(cancelable);
+        mProgressDialog.setButtonVisiable(cancelable);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setIndeterminate(indeterminate);
+        mProgressDialog.setTitle(title);
+        mProgressDialog.setMessage(message);
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void loadTheme() {
+        if (mLocalThemeAdapter != null) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {      
+
+                    loadLocalTheme();
+                    mLocalThemeAdapter.notifyDataSetChanged();
+                    mProgressDialog.dismiss();
+                    mProgressDialog=null;
+                    if (mFromTheme != null && !mFromTheme.equals("")) {
+                        tryHideThemeApk(mFromTheme);
+                        for (int i = 0; i < mLocalThemes.size(); i++) {
+                            if (mLocalThemes.get(i).packageName.equals(mFromTheme)) {
+                                number = i;
+                                showAlarmDialog(mLocalThemes.get(i).themeName, View.VISIBLE);
+                                lastSelectedItem = mLocalThemes.get(i);
+                            }
+                        }
+                    } else {
+                        number = 0;
+                    }
+                    localThemeList.getRefreshableView().setSelection(number);
+                }
+            });
+        }
+    }
+
 }
