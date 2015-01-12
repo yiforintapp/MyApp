@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.sdk.push.ui;
+package com.leo.appmaster.sdk.push;
 
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -13,11 +13,12 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.sdk.push.UserActManager;
 import com.leo.appmaster.utils.LeoLog;
+import com.leoers.leoanalytics.LeoStat;
+import com.leoers.leoanalytics.push.IPushUIHelper;
 import com.leoers.leoanalytics.push.PushManager;
 
-public class PushUIHelper {
+public class PushUIHelper implements IPushUIHelper {
 
     private final static String TAG = "PushUIHelper";
     private final static int PUSH_NOTIFICATION_ID = 2001;
@@ -34,13 +35,13 @@ public class PushUIHelper {
     private Context mContext = null;
     private NotificationManager nm = null;
     private static PushUIHelper sPushUIHelper = null;
-    private UserActManager mManager = null;
+    private PushManager mManager = null;
     private String mTitle = null;
     private String mContent = null;
     /* had status bar shown? */
     private boolean mStatusBar = false;
     private boolean mIsLockScreen = false;
-    private NewActListener mListener;
+private NewActListener mListener;
 
     public static PushUIHelper getInstance(Context ctx) {
         if (sPushUIHelper == null) {
@@ -63,13 +64,14 @@ public class PushUIHelper {
         filter.addAction(ACTION_IGNORE_PUSH);
         mContext.registerReceiver(mReceiver, filter);
     }
-
-    public synchronized void setIsLockScreen(boolean flag) {
+    
+    public synchronized void setIsLockScreen(boolean flag){
         mIsLockScreen = flag;
     }
 
     /* all methods which need manager MUST call after this */
-    public void setManager(UserActManager manager) {
+    @Override
+    public void setManager(PushManager manager) {
         mManager = manager;
     }
 
@@ -85,30 +87,29 @@ public class PushUIHelper {
         mListener = null;
     }
 
+    @Override
     public void onPush(String adID, String title, String content, int showType) {
         LeoLog.d(TAG, "title=" + title + "; content=" + content);
         mTitle = title;
         mContent = content;
-        String activityName = NormalPushActivity.class.getName();
-
-        if (showType == PushManager.SHOW_DIALOG_FIRST && isActivityOnTop(mContext, activityName)) {
-            LeoLog.d(TAG, "push activity already on top, re-layout");
-            if (nm != null) {
+        if (showType == PushManager.SHOW_DIALOG_FIRST && isActivityOnTop(mContext)) {
+            LeoLog.d(TAG, "push activity already on top, do nothing");
+            if(nm != null){
                 nm.cancel(PUSH_NOTIFICATION_ID);
             }
             if (mListener != null) {
                 mListener.onNewAct(false, adID, title, content);
-            }
+                                }
         } else if (showType == PushManager.SHOW_DIALOG_FIRST && isAppOnTop(mContext)
                 && !mIsLockScreen) {
             LeoLog.d(TAG, "notify user with dialog");
-            if (nm != null) {
+            if(nm != null){
                 nm.cancel(PUSH_NOTIFICATION_ID);
             }
             mStatusBar = false;
             if (mListener != null) {
                 mListener.onNewAct(false, adID, title, content);
-            }
+                                }
             showPushActivity(adID, title, content, false);
         } else {
             LeoLog.d(TAG, "notify user with status bar");
@@ -118,9 +119,7 @@ public class PushUIHelper {
     }
 
     private void showPushActivity(String id, String title, String content, boolean isFromStatusBar) {
-        // Intent i = new Intent(mContext, NormalPushActivity.class);
-        Intent i = null;
-        i = new Intent(mContext, NormalPushActivity.class);
+        Intent i = new Intent(mContext, PushActivity.class);
         i.putExtra(EXTRA_WHERE, isFromStatusBar);
         i.putExtra(EXTRA_TITLE, title);
         i.putExtra(EXTRA_CONTENT, content);
@@ -152,10 +151,8 @@ public class PushUIHelper {
         PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, requestCode,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        int iconRes = R.drawable.ic_launcher_notification;
-
         Notification pushNotification = new Notification(
-                iconRes, content,
+                R.drawable.ic_launcher_notification, content,
                 System.currentTimeMillis());
 
         Intent dIntent = new Intent(ACTION_IGNORE_PUSH);
@@ -171,11 +168,11 @@ public class PushUIHelper {
         nm.notify(PUSH_NOTIFICATION_ID, pushNotification);
     }
 
-    private boolean isActivityOnTop(Context context, String name) {
+    private boolean isActivityOnTop(Context context) {
         ActivityManager am = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        if (cn.getClassName().equals(name)) {
+        if (cn.getClassName().equals(PushActivity.class.getName())) {
             return true;
         }
         return false;
@@ -199,14 +196,14 @@ public class PushUIHelper {
             String action = intent.getAction();
             String adID = intent.getStringExtra(EXTRA_AD_ID);
             LeoLog.d(TAG, "adID=" + adID + "mTitle=" + mTitle + "; mContent= " + mContent);
-            if (adID == null) {
+            if(adID == null){
                 adID = "unknown-id";
             }
             if (action.equals(ACTION_CHECK_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
                 if (mListener != null) {
                     mListener.onNewAct(true, adID, mTitle, mContent);
-                }
+                                           }
                 showPushActivity(adID, mTitle, mContent, true);
             } else if (action.equals(ACTION_IGNORE_PUSH)) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
