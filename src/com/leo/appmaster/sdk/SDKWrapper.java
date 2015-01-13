@@ -35,7 +35,7 @@ public class SDKWrapper {
         /* TODO: change this from Log.DEBUG to Log.ERROR when release */
         PushManager.getInstance(ctx).setDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
         try {
-            int resId = ctx.getResources().getIdentifier("ic_launcher", "drawable", ctx.getPackageName());
+            int resId = ctx.getResources().getIdentifier("ic_launcher_notification_big", "drawable", ctx.getPackageName());
             PushManager.getInstance(ctx).setIcon(resId);
         } catch (NotFoundException e) {
             LeoLog.e(TAG, "failed to get ICON");

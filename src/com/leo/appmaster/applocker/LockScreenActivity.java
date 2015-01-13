@@ -6,8 +6,10 @@ import java.util.List;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -22,7 +24,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +67,7 @@ import com.leoers.leoanalytics.LeoStat;
 public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener {
 
+    public static final String THEME_CHANGE = "lock_theme_change";
     public static String EXTRA_UNLOCK_FROM = "extra_unlock_from";
     public static String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
     public static String EXTRA_TO_ACTIVITY = "extra_to_activity";
@@ -94,6 +96,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     // private ImageView mImage;
     private ActivityManager mAm;
 
+    private ThemeReceiver mThemeChangeReceiver;
+    public boolean mRestartForThemeChanged;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +109,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
          * optimize cleanMem
          */
         cleanMem();
+
+        if (mFromType == LockFragment.FROM_OTHER || mFromType == LockFragment.FROM_SCREEN_ON) {
+            mThemeChangeReceiver = new ThemeReceiver();
+            IntentFilter filter = new IntentFilter(THEME_CHANGE);
+            registerReceiver(mThemeChangeReceiver, filter);
+        }
     }
 
     @Override
@@ -223,6 +234,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mAppBaseInfoLayoutbg.recycle();
             mAppBaseInfoLayoutbg = null;
         }
+
+        if (mThemeChangeReceiver != null) {
+            unregisterReceiver(mThemeChangeReceiver);
+        }
     }
 
     @Override
@@ -247,6 +262,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onRestart() {
         super.onRestart();
+        if (mRestartForThemeChanged) {
+            Intent intent = getIntent();
+            finish();
+            mRestartForThemeChanged = false;
+            startActivity(intent);
+        }
     }
 
     private void initUI() {
@@ -609,4 +630,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         return pkgs;
     }
+
+    class ThemeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context arg0, Intent intent) {
+            String action = intent.getAction();
+            if (THEME_CHANGE.equals(action)) {
+                mRestartForThemeChanged = true;
+            }
+        }
+
+    }
+
 }

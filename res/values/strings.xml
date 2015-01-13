@@ -315,5 +315,6 @@
     <string name="lock_setting_button">Auto-lock time setting</string>
     <string name="lock_help_lock_theme_setting_button">Change a theme</string>
     <string name="help_setting_guide">Need some help?</string>
+    <string name="app_no_image_hide">Please click on the Add button to add the picture you want to hide</string>
 
 </resources>
