@@ -618,6 +618,10 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
                     if (flag) {
                         AppMasterApplication
                                 .setSharedPreferencesValue(lastSelectedItem.packageName);
+                        //notify lock theme change
+                        Intent intent = new Intent(LockScreenActivity.THEME_CHANGE);
+                        LockerTheme.this.sendBroadcast(intent);
+                        
                         lastSelectedItem.curUsedTheme = true;
                         lastSelectedItem.label = (String) LockerTheme.this
                                 .getResources().getText(R.string.localtheme);
