@@ -115,6 +115,11 @@ public class LockHelpSettingTip extends Activity {
         mHelpPager.clear();
         super.onStop();
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHelpPager.clear();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -134,6 +139,7 @@ public class LockHelpSettingTip extends Activity {
 
     @SuppressLint("NewApi")
     private void getHelpPager() {
+        mHelpPager.clear();
         String[] lockHelpSettingTitle = getResources().getStringArray(
                 R.array.lock_help_setting_title);
         mHelpSettingPager = Arrays.asList(lockHelpSettingTitle);

@@ -191,11 +191,10 @@
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.sdk.push.ui.NormalPushActivity"
+            android:name="com.leo.appmaster.sdk.push.PushActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame" />
-
         <!-- add for the app update of leosdk -->
 
         <activity
@@ -296,6 +295,10 @@
         <meta-data
             android:name="BaiduMobAd_CHANNEL"
             android:value="@string/channel_code" />
+        <!-- default upload interval is 1 hour -->
+        <meta-data
+            android:name="BaiduMobAd_SEND_STRATEGY"
+            android:value="SET_TIME_INTERVAL" />
         <!-- 是否开启错误日志统计，默认为false -->
         <meta-data
             android:name="BaiduMobAd_EXCEPTION_LOG"

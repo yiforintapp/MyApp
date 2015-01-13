@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.widget.RemoteViews;
 
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Set;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.PhoneInfoStateManager;
 import com.leo.appmaster.utils.StorageUtil;
 
@@ -227,7 +229,7 @@ public class DownloadNotifManager {
         NotificationItem ni = mProgressNotifMap.get(aId);
         if (ni != null) {
 
-            int iconResource = R.drawable.ic_launcher;
+            int iconResource = R.drawable.ic_launcher_notification;
             Notification notif = new Notification();
 
             ni.mIntent.putExtra(Constants.EXTRA_PROGRESS, progress);
@@ -244,16 +246,18 @@ public class DownloadNotifManager {
             notif.flags = Notification.FLAG_ONGOING_EVENT
                     | Notification.FLAG_AUTO_CANCEL;
 
-            RemoteViews downloadRv = new RemoteViews(mContext.getPackageName(),
-                    R.layout.sdk_notification_download);
-            downloadRv.setTextViewText(R.id.tv_title, notif.tickerText);
-            downloadRv.setTextViewText(
-                    R.id.tv_content,
+//            RemoteViews downloadRv = new RemoteViews(mContext.getPackageName(),
+//                    R.layout.sdk_notification_download);
+//            downloadRv.setTextViewText(R.id.tv_title, notif.tickerText);
+//            downloadRv.setTextViewText(
+//                    R.id.tv_content,
+//                    mContext.getString(R.string.downloading_notification,
+//                            appName, progress) + "%");
+//            downloadRv.setProgressBar(R.id.pb_download, 100, progress, false);
+            notif.setLatestEventInfo(mContext, notif.tickerText,
                     mContext.getString(R.string.downloading_notification,
-                            appName, progress) + "%");
-            downloadRv.setProgressBar(R.id.pb_download, 100, progress, false);
-
-            notif.contentView = downloadRv;
+                            appName, progress) + "%", contentIntent);
+            NotificationUtil.setBigIcon(notif, R.drawable.ic_launcher_notification_big);
             notif.when = System.currentTimeMillis();
             NotificationManager nm = (NotificationManager) mContext
                     .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -331,7 +335,7 @@ public class DownloadNotifManager {
                 cancelCompleteNotif(aId);
                 return;
             }
-            int iconResource = R.drawable.ic_launcher;
+            int iconResource = R.drawable.ic_launcher_notification;
             Notification notification = new Notification(iconResource, ticker,
                     System.currentTimeMillis());
             notification.flags = Notification.FLAG_AUTO_CANCEL;
@@ -342,6 +346,7 @@ public class DownloadNotifManager {
             }
             notification.setLatestEventInfo(mContext, ni.mTitle, text,
                     pendingIntent);
+            NotificationUtil.setBigIcon(notification, R.drawable.ic_launcher_notification_big);
 
             NotificationManager nm = (NotificationManager) mContext
                     .getSystemService(Context.NOTIFICATION_SERVICE);

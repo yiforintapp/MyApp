@@ -23,11 +23,11 @@ public class AppMasterConfig {
 	// public static final int TIME_12_HOUR = 2 * 60 * 1000;
 	/*-----    Debug configurations  end  ------ */
 	
-	
-
 	/*-----     Release configurations   ------*/
-	public static final boolean LOGGABLE = false;
-	public static final int SDK_LOG_LEVER = Log.ERROR;
+	public static final boolean LOGGABLE = true;
+
+/* change this to Log.ERROR when release */
+	public static final int SDK_LOG_LEVEL = Log.DEBUG;
 	/*
 	 * RECOMMEND URL
 	 */

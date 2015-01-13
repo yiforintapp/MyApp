@@ -10,12 +10,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NotificationUtil;
 import com.leoers.leoanalytics.update.IUIHelper;
 import com.leoers.leoanalytics.update.UpdateManager;
 
@@ -30,7 +32,7 @@ public class UIHelper implements IUIHelper {
 
     private NotificationManager nm = null;
     // private RemoteViews updateRv = null;
-    private RemoteViews downloadRv = null;
+//    private RemoteViews downloadRv = null;
     private Notification updateNotification = null;
     private Notification downloadNotification = null;
 
@@ -104,9 +106,9 @@ public class UIHelper implements IUIHelper {
         String downloadTip = mContext.getString(R.string.downloading, appName);
         CharSequence from = appName;
         CharSequence message = downloadTip;
-        downloadRv = new RemoteViews(mContext.getPackageName(),
-                R.layout.sdk_notification_download);
-        downloadRv.setTextViewText(R.id.tv_content, downloadTip);
+//        downloadRv = new RemoteViews(mContext.getPackageName(),
+//                R.layout.sdk_notification_download);
+//        downloadRv.setTextViewText(R.id.tv_content, downloadTip);
         Intent intent = new Intent(ACTION_DOWNLOADING);
         PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, 0,
                 intent, 0);
@@ -126,6 +128,8 @@ public class UIHelper implements IUIHelper {
                 System.currentTimeMillis());
         downloadNotification.setLatestEventInfo(mContext, from, message,
                 contentIntent);
+        NotificationUtil.setBigIcon(downloadNotification, R.drawable.ic_launcher_notification_big);
+
         downloadNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONGOING_EVENT;
     }
@@ -133,13 +137,18 @@ public class UIHelper implements IUIHelper {
     public void sendDownloadNotification(int progress) {
         LeoLog.d(TAG, "sendDownloadNotification called ");
         String appName = mContext.getString(R.string.app_name);
-        downloadRv.setProgressBar(R.id.pb_download, 100, progress, false);
-        downloadRv.setTextViewText(
-                R.id.tv_content,
-                mContext.getString(R.string.downloading_notification, appName,
-                        progress) + "%");
+//        downloadRv.setProgressBar(R.id.pb_download, 100, progress, false);
+//        downloadRv.setTextViewText(
+//                R.id.tv_content,
+//                mContext.getString(R.string.downloading_notification, appName,
+//                        progress) + "%");
         // downloadRv.setTextViewText(R.id.tv_progress, progress + "%");
-        downloadNotification.contentView = downloadRv;
+//        downloadNotification.contentView = downloadRv;
+        String title = mContext.getString(R.string.downloading, appName);
+        String content = progress +  "%";
+        downloadNotification.setLatestEventInfo(mContext, title, content,  downloadNotification.contentIntent);
+        NotificationUtil.setBigIcon(downloadNotification, R.drawable.ic_launcher_notification_big);
+
         nm.notify(DOWNLOAD_NOTIFICATION_ID, downloadNotification);
     }
 
@@ -178,6 +187,8 @@ public class UIHelper implements IUIHelper {
                 mManager.getVersion());
         updateNotification.setLatestEventInfo(mContext, updateTip, contentText,
                 contentIntent);
+        NotificationUtil.setBigIcon(updateNotification, R.drawable.ic_launcher_notification_big);
+
         updateNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONGOING_EVENT;
         nm.notify(UPDATE_NOTIFICATION_ID, updateNotification);
@@ -204,6 +215,8 @@ public class UIHelper implements IUIHelper {
                 mManager.getVersion());
         updateNotification.setLatestEventInfo(mContext, appName, failedTip,
                 contentIntent);
+        NotificationUtil.setBigIcon(updateNotification, R.drawable.ic_launcher_notification_big);
+
         updateNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONGOING_EVENT;
         nm.cancel(DOWNLOAD_NOTIFICATION_ID);

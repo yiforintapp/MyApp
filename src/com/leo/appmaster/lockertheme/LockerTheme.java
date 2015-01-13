@@ -170,7 +170,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
         initUI();
         handleIntent();
         if(mNeedLoadTheme && mHideThemes.isEmpty()){
-            showProgressDialog(getString(R.string.tips),getString(R.string.pull_to_refresh_refreshing_label),true,true);
+            showProgressDialog(getString(R.string.tips),getString(R.string.pull_to_refresh_refreshing_label)+"...",true,true);
         }
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
@@ -630,10 +630,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
                         SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
                                 "theme_apply", lastSelectedItem.packageName);
                         dialog.cancel();
-                        // SharedPreferences mLockerGuideShared =
-                        // getSharedPreferences(
-                        // "LockerThemeGuide",
-                        // LockerTheme.this.MODE_WORLD_WRITEABLE);
                         mGuideFlag = AppMasterPreference.getInstance(LockerTheme.this)
                                 .getUseThemeGuide();
                         if (!mGuideFlag) {
@@ -646,6 +642,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
                         lastSelectedItem.label = (String) LockerTheme.this
                                 .getResources().getText(R.string.localtheme);
                         mLocalThemeAdapter.notifyDataSetChanged();
+                        dialog.cancel();
                     }
                 } else if (which == 1) {
                     dialog.cancel();
@@ -944,10 +941,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {      
-
                     loadLocalTheme();
                     mLocalThemeAdapter.notifyDataSetChanged();
+                    if(mProgressDialog!=null){
                     mProgressDialog.dismiss();
+                    }
                     mProgressDialog=null;
                     if (mFromTheme != null && !mFromTheme.equals("")) {
                         tryHideThemeApk(mFromTheme);

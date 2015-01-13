@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.sdk.push.ui;
+package com.leo.appmaster.sdk.push;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -28,9 +28,9 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
-public class NormalPushActivity extends BaseActivity implements View.OnClickListener, PushUIHelper.NewActListener{
+public class PushActivity extends BaseActivity implements View.OnClickListener, PushUIHelper.NewActListener{
 
-    private final static String TAG = NormalPushActivity.class.getSimpleName();
+    private final static String TAG = PushActivity.class.getSimpleName();
 
     private boolean mFromStatusBar;
     private String mAdID;
@@ -57,14 +57,15 @@ public class NormalPushActivity extends BaseActivity implements View.OnClickList
     }
 
     private void handleIntent(Intent i) {
-        SDKWrapper.addEvent(this, LeoStat.P1, "act", "popup");
         mFromStatusBar = i.getBooleanExtra(PushUIHelper.EXTRA_WHERE, false);
         mAdID = i.getStringExtra(PushUIHelper.EXTRA_AD_ID);
         if (mAdID == null) {
             mAdID = "unknown";
         }
         if (mFromStatusBar) {
-            SDKWrapper.addEvent(this, LeoStat.P1, "act", "notbar");
+            SDKWrapper.addEvent(this, LeoStat.P1, "act", mAdID + ":popup:y");
+        }else{
+            SDKWrapper.addEvent(this, LeoStat.P1, "act", mAdID + ":popup:n");
         }
         String title = i.getStringExtra(PushUIHelper.EXTRA_TITLE);
         String content = i.getStringExtra(PushUIHelper.EXTRA_CONTENT);
@@ -106,7 +107,7 @@ public class NormalPushActivity extends BaseActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.dlg_left_btn:
                 /* user ignore this activity */
-                SDKWrapper.addEvent(this, LeoStat.P1, "act", "cancel");
+                SDKWrapper.addEvent(this, LeoStat.P1, "act", mAdID + ":cancel");
                 PushUIHelper.getInstance(this).sendACK(mAdID, false, mFromStatusBar, "");
                 finish();
                 break;
@@ -121,7 +122,7 @@ public class NormalPushActivity extends BaseActivity implements View.OnClickList
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             PushUIHelper.getInstance(this).sendACK(mAdID, false, mFromStatusBar, "");
-            SDKWrapper.addEvent(this, LeoStat.P1, "act", "cancel");
+            SDKWrapper.addEvent(this, LeoStat.P1, "act", mAdID + ":cancel");
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -172,7 +173,7 @@ public class NormalPushActivity extends BaseActivity implements View.OnClickList
             intent.setData(content_url);
             startActivity(intent);
         }
-        SDKWrapper.addEvent(this, LeoStat.P1, "act", "cligp");
+        SDKWrapper.addEvent(this, LeoStat.P1, "act", mAdID + ":cligp");
         PushUIHelper.getInstance(this).sendACK(mAdID, true, mFromStatusBar, phone);
         finish();
     }
@@ -195,9 +196,10 @@ public class NormalPushActivity extends BaseActivity implements View.OnClickList
     private void reLayout(boolean fromStatusbar, String adID, String title, String content) {
         mFromStatusBar = fromStatusbar;
         mAdID = adID;
-        SDKWrapper.addEvent(this, LeoStat.P1, "act", "popup");
         if (mFromStatusBar) {
-            SDKWrapper.addEvent(this, LeoStat.P1, "act", "notbar");
+            SDKWrapper.addEvent(this, LeoStat.P1, "act", mAdID + ":popup:y");
+        }else{
+            SDKWrapper.addEvent(this, LeoStat.P1, "act", mAdID + ":popup:n");
         }
         initUI(title, content);
     }

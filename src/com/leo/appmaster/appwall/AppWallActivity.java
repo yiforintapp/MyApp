@@ -152,12 +152,13 @@ public class AppWallActivity extends BaseActivity implements
         String packageName = all.get(arg2).getDownload().get(0).getUrl();
         if (packageName != null && !packageName.equals("")) {
             SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", packageName);
+//            LeoLog.e("xxxxxxxxxxxxxxxxxx", "*************1...." + packageName);
         } else {
             String urlPageName = all.get(arg2).getDownload().get(1).getUrl();
             if (urlPageName != null && !urlPageName.equals("")) {
                 String urlName = toUrlgetPackageName(urlPageName);
                 SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", urlName);
-//                LeoLog.e("xxxxxxxxxxxxxxxxxx", "*************2...." + name);
+//                LeoLog.e("xxxxxxxxxxxxxxxxxx", "*************2...." + urlName);
             }
         }
     }

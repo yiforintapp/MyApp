@@ -22,6 +22,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 
@@ -35,11 +36,10 @@ import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.sdk.push.UserActManager;
-import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.cache.Md5FileNameGenerator;
@@ -55,9 +55,6 @@ public class AppMasterApplication extends Application implements
 
 	private static AppMasterApplication mInstance;
 	private static List<Activity> mActivityList;
-
-	/* Separate user phone feed activity from Leo Analytics SDK to App */
-	private UserActManager mActManager;
 
 	public Handler mHandler;
 
@@ -125,10 +122,6 @@ public class AppMasterApplication extends Application implements
 			}
 		}, 10000);
 		restartApplocker(PhoneInfo.getAndroidVersion());
-
-		/* init user activity manager here */
-		mActManager = UserActManager.getInstance(getApplicationContext(),
-				PushUIHelper.getInstance(getApplicationContext()));
 	}
 
 	private void startInitTask(final Context ctx) {
@@ -233,11 +226,12 @@ public class AppMasterApplication extends Application implements
 		intent.putExtra("from", "new_theme_tip");
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		notif.icon = R.drawable.ic_launcher;
+		notif.icon = R.drawable.ic_launcher_notification;
 		notif.tickerText = this.getString(R.string.find_new_theme);
 		notif.flags = Notification.FLAG_AUTO_CANCEL;
 		notif.setLatestEventInfo(this, this.getString(R.string.find_new_theme),
 				this.getString(R.string.find_new_theme_content), contentIntent);
+	    NotificationUtil.setBigIcon(notif, R.drawable.ic_launcher_notification_big);
 		notif.when = System.currentTimeMillis();
 		NotificationManager nm = (NotificationManager) this
 				.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -253,10 +247,11 @@ public class AppMasterApplication extends Application implements
 				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		notif.icon = R.drawable.ic_launcher;
+		notif.icon = R.drawable.ic_launcher_notification;
 		notif.tickerText = mainTitle;
 		notif.flags = Notification.FLAG_AUTO_CANCEL;
 		notif.setLatestEventInfo(this, mainTitle, content, contentIntent);
+	    NotificationUtil.setBigIcon(notif, R.drawable.ic_launcher_notification_big);
 		notif.when = System.currentTimeMillis();
 		NotificationManager nm = (NotificationManager) this
 				.getSystemService(Context.NOTIFICATION_SERVICE);

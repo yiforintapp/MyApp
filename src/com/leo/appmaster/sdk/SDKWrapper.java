@@ -8,7 +8,7 @@ import android.util.Log;
 import com.baidu.mobstat.StatService;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.R;
-import com.leo.appmaster.sdk.push.ui.PushUIHelper;
+import com.leo.appmaster.sdk.push.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.push.PushManager;
@@ -33,9 +33,9 @@ public class SDKWrapper {
 
     private static void iniPushSDK(Context ctx) {
         /* TODO: change this from Log.DEBUG to Log.ERROR when release */
-        PushManager.getInstance(ctx).setDebugLevel(AppMasterConfig.SDK_LOG_LEVER);
+        PushManager.getInstance(ctx).setDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
         try {
-            int resId = ctx.getResources().getIdentifier("ic_launcher", "drawable", ctx.getPackageName());
+            int resId = ctx.getResources().getIdentifier("ic_launcher_notification_big", "drawable", ctx.getPackageName());
             PushManager.getInstance(ctx).setIcon(resId);
         } catch (NotFoundException e) {
             LeoLog.e(TAG, "failed to get ICON");
@@ -78,9 +78,10 @@ public class SDKWrapper {
             LeoStat.init(ctx, "0000a", "appmaster");
         }
         // TODO: change log level to ERROR when release
-        LeoStat.setDebugLevel(Log.ERROR);
+        LeoStat.setDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
         LeoStat.initUpdateEngine(UIHelper.getInstance(ctx),
                 true);
+        LeoStat.initPushEngine(PushUIHelper.getInstance(ctx));
     }
 
     // private static void iniBaidu(Context ctx) {
