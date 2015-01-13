@@ -25,6 +25,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.R;
+
 public class PhoneInfoStateManager {
 
 	private final static String TAG = PhoneInfoStateManager.class
@@ -107,6 +110,14 @@ public class PhoneInfoStateManager {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	//is pl google play pkg
+	public static boolean isGooglePlayPkg() {
+	    String channelCode = AppMasterApplication.getInstance().getString(R.string.channel_code);
+	    if("0001a".equals(channelCode))
+	        return true;
+	    return false;
 	}
 
 	/**
