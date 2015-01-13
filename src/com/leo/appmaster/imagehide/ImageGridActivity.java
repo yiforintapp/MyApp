@@ -478,11 +478,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
 							break;
 						newFileName = FileOperationUtil
 								.getNameFromFilepath(item.getPath());
-						if (newFileName.startsWith(".")) {
-							newFileName = newFileName + ".leotmp";
-						} else {
-							newFileName = "." + newFileName + ".leotmp";
-						}
+						newFileName = newFileName + ".leotmp";
+//						if (newFileName.startsWith(".")) {
+//							newFileName = newFileName + ".leotmp";
+//						} else {
+//							newFileName = "." + newFileName + ".leotmp";
+//						}
 
 						String newPath = FileOperationUtil.hideImageFile(context,
 								item.getPath(), newFileName);

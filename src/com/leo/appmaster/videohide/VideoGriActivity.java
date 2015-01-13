@@ -456,11 +456,12 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             break;
                         mUnhidePath.add(item.getPath());
                         newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
-                        if (newFileName.startsWith(".")) {
-                            newFileName = newFileName + ".leotmv";
-                        } else {
-                            newFileName = "." + newFileName + ".leotmv";
-                        }
+                        newFileName = newFileName + ".leotmv";
+//                        if (newFileName.startsWith(".")) {
+//                            newFileName = newFileName + ".leotmv";
+//                        } else {
+//                            newFileName = "." + newFileName + ".leotmv";
+//                        }
                         if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
                             FileOperationUtil.saveFileMediaEntry(FileOperationUtil.makePath(
                                     FileOperationUtil.getDirPathFromFilepath(item.getPath()),

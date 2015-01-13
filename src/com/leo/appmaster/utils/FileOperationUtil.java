@@ -237,7 +237,6 @@ public class FileOperationUtil {
 			newHided = true;
 			newPath = filePath.replace(".leotmp", "").replace(
 					SDCARD_DIR_NAME + File.separator, "");
-			getNameFromFilepath(newPath).startsWith(".");
 
 		} else {
 			newHided = false;
@@ -299,6 +298,9 @@ public class FileOperationUtil {
 		if (!dirPathFromFilepath.startsWith(sdcarPath)) {
 			return null;
 		} else {
+		    dirPathFromFilepath = dirPathFromFilepath.replaceAll(SDCARD_DIR_NAME + File.separator,
+                    "");
+		    
 			String target = sdcarPath + File.separator + SDCARD_DIR_NAME
 					+ dirPathFromFilepath.replace(sdcarPath, "");
 
