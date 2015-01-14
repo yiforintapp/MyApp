@@ -116,14 +116,14 @@ public class HideFileUtils {
                                     }
                                 }
                                 boolean ret = file.renameTo(new File(newPath));
-//                                if (ret) {
-//                                    FileOperationUtil.saveFileMediaEntry(newPath,
-//                                            context);
-//                                    FileOperationUtil.deleteImageMediaEntry(
-//                                            path, context);
-//                                } else {
-//                                    LeoLog.e("replaceOldHideImages", "file not exists: " + path);
-//                                }
+                                if (ret) {
+                                    FileOperationUtil.saveFileMediaEntry(newPath,
+                                            context);
+                                    FileOperationUtil.deleteImageMediaEntry(
+                                            path, context);
+                                } else {
+                                    LeoLog.e("replaceOldHideImages", "file not exists: " + path);
+                                }
                             } else {
                                 continue;
                             }

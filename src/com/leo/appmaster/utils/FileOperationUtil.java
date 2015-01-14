@@ -349,7 +349,7 @@ public class FileOperationUtil {
         return false;
     }
 
-    public static Uri saveFileMediaEntry(String imagePath, Context context) {
+    public  static Uri saveFileMediaEntry(String imagePath, Context context) {
         ContentValues v = new ContentValues();
         File f = new File(imagePath);
         v.put(MediaColumns.TITLE, f.getName());
@@ -373,8 +373,12 @@ public class FileOperationUtil {
         String params[] = new String[] {
             imagePath
         };
-        context.getContentResolver().delete(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        Uri uri = Files.getContentUri("external");
+//        context.getContentResolver().delete(
+//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                MediaStore.Images.Media.DATA + " LIKE ?", params);
+        
+        context.getContentResolver().delete(uri,
                 MediaStore.Images.Media.DATA + " LIKE ?", params);
     }
 
