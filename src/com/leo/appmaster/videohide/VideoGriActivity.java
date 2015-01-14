@@ -457,11 +457,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                         mUnhidePath.add(item.getPath());
                         newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
                         newFileName = newFileName + ".leotmv";
-//                        if (newFileName.startsWith(".")) {
-//                            newFileName = newFileName + ".leotmv";
-//                        } else {
-//                            newFileName = "." + newFileName + ".leotmv";
-//                        }
                         if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
                             FileOperationUtil.saveFileMediaEntry(FileOperationUtil.makePath(
                                     FileOperationUtil.getDirPathFromFilepath(item.getPath()),

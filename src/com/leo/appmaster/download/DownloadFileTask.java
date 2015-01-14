@@ -384,34 +384,34 @@ public class DownloadFileTask implements Runnable {
 		LeoLog.i(TAG, "onFinish " + result + ", " + mDest);
 		LeoLog.i(TAG, "onFinish " + mUrl);
 
-		if (!bSilent) {
-			Message msg = new Message();
-			msg.what = Constants.MESSAGE_DOWNLOAD_FAILED;
-
-			if (result == Constants.RESULT_FAILED_SDCARD_INSUFFICIENT) {
-				msg.obj = mContext
-						.getString(R.string.toast_download_fail_storage);
-				((AppMasterApplication) mContext.getApplicationContext()).mHandler
-						.sendMessage(msg);
-			} else if (result == Constants.RESULT_FAILED_SDCARD) {
-				msg.obj = mContext
-						.getString(R.string.download_sdcard_status_error);
-				((AppMasterApplication) mContext.getApplicationContext()).mHandler
-						.sendMessage(msg);
-			} else if (result == Constants.RESULT_FAILED) {
-				if (PhoneInfoStateManager.isNetworkConnectivity(mContext)) {
-					msg.obj = mContext
-							.getString(R.string.download_failed_toast);
-					((AppMasterApplication) mContext.getApplicationContext()).mHandler
-							.sendMessage(msg);
-				}
-			} else if (result == Constants.RESULT_FAILED_NO_NETWORK) {
-				msg.obj = mContext
-						.getString(R.string.download_network_invalid_toast);
-				((AppMasterApplication) mContext.getApplicationContext()).mHandler
-						.sendMessage(msg);
-			}
-		}
+//		if (!bSilent) {
+//			Message msg = new Message();
+//			msg.what = Constants.MESSAGE_DOWNLOAD_FAILED;
+//
+//			if (result == Constants.RESULT_FAILED_SDCARD_INSUFFICIENT) {
+//				msg.obj = mContext
+//						.getString(R.string.toast_download_fail_storage);
+//				((AppMasterApplication) mContext.getApplicationContext()).mHandler
+//						.sendMessage(msg);
+//			} else if (result == Constants.RESULT_FAILED_SDCARD) {
+//				msg.obj = mContext
+//						.getString(R.string.download_sdcard_status_error);
+//				((AppMasterApplication) mContext.getApplicationContext()).mHandler
+//						.sendMessage(msg);
+//			} else if (result == Constants.RESULT_FAILED) {
+//				if (PhoneInfoStateManager.isNetworkConnectivity(mContext)) {
+//					msg.obj = mContext
+//							.getString(R.string.download_failed_toast);
+//					((AppMasterApplication) mContext.getApplicationContext()).mHandler
+//							.sendMessage(msg);
+//				}
+//			} else if (result == Constants.RESULT_FAILED_NO_NETWORK) {
+//				msg.obj = mContext
+//						.getString(R.string.download_network_invalid_toast);
+//				((AppMasterApplication) mContext.getApplicationContext()).mHandler
+//						.sendMessage(msg);
+//			}
+//		}
 	}
 
 	public interface Callback {

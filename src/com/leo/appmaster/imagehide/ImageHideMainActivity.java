@@ -44,7 +44,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ImageHideMainActivity extends BaseActivity implements OnClickListener {
-    
+
     private List<PhotoAibum> mAlbumList = null;
     private GridView mGridView;
     private DisplayImageOptions mOptions;
@@ -52,56 +52,55 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     private CommonTitleBar mTtileBar;
     private Button mAddButton;
     private RelativeLayout mNoHidePictureHint;
-    
+
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
-    
-    String[] STORE_HIDEIMAGES = new String[] {               
-            MediaStore.Files.FileColumns.DISPLAY_NAME, 
-            MediaStore.Files.FileColumns.DATA, 
-            MediaStore.Files.FileColumns._ID, // 
+
+    String[] STORE_HIDEIMAGES = new String[] {
+            MediaStore.Files.FileColumns.DISPLAY_NAME,
+            MediaStore.Files.FileColumns.DATA,
+            MediaStore.Files.FileColumns._ID, //
     };
-    
+
     private boolean mShouldLockOnRestart = true;
-    
 
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         initImageLoder();
         setContentView(R.layout.activity_image_hide);
-        mTtileBar = (CommonTitleBar)findViewById(R.id.layout_title_bar);
+        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.app_image_hide);
         mTtileBar.openBackView();
         mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
-//        mTtileBar.setOptionText(getString(R.string.setting));
-//        mTtileBar.setOptionTextVisibility(View.VISIBLE);
+        // mTtileBar.setOptionText(getString(R.string.setting));
+        // mTtileBar.setOptionTextVisibility(View.VISIBLE);
         mTtileBar.setOptionListener(this);
-        mGridView = (GridView)findViewById(R.id.Image_hide_folder);
+        mGridView = (GridView) findViewById(R.id.Image_hide_folder);
         mGridView.setAdapter(mHideAlbumAdapt);
         mAddButton = (Button) findViewById(R.id.add_hide_image);
         mAddButton.setOnClickListener(this);
-        mNoHidePictureHint = (RelativeLayout)findViewById(R.id.no_hide);
+        mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
     }
 
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()
-        .showImageOnLoading(R.drawable.photo_bg_loding)
-        .showImageForEmptyUri(R.drawable.photo_bg_loding)
-        .showImageOnFail(R.drawable.photo_bg_loding)
-        .cacheInMemory(true)
-        .cacheOnDisk(true)
-        .considerExifParams(true)
-        .bitmapConfig(Bitmap.Config.RGB_565)
-        .build();
-        
+                .showImageOnLoading(R.drawable.photo_bg_loding)
+                .showImageForEmptyUri(R.drawable.photo_bg_loding)
+                .showImageOnFail(R.drawable.photo_bg_loding)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+
         mImageLoader = ImageLoader.getInstance();
     }
-    
+
     @Override
     protected void onDestroy() {
         // TODO Auto-generated method stub
@@ -114,7 +113,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         task.execute();
         super.onResume();
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -142,7 +141,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
             default:
                 break;
         }
-        
+
     }
 
     /*
@@ -151,10 +150,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     private List<PhotoAibum> getHidePhotoAlbum(Context context) {
         List<PhotoAibum> aibumList = new ArrayList<PhotoAibum>();
         Uri uri = Files.getContentUri("external");
-        String selection = MediaColumns.DATA + " LIKE '%.leotmp'";
-        
-        Cursor cursor = getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null, MediaColumns.DATE_ADDED + " desc");
-        if(cursor != null) {
+        String selection = MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaColumns.DATA
+                + " LIKE '%.leotmi'";
+
+        Cursor cursor = getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
+                MediaColumns.DATE_ADDED + " desc");
+        if (cursor != null) {
             try {
                 Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
                 PhotoAibum pa = null;
@@ -180,16 +181,16 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                     aibumList.add(countMap.get(key));
                 }
                 Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
-            } catch(Exception e) {
-                
+            } catch (Exception e) {
+
             } finally {
                 cursor.close();
             }
         }
 
         return aibumList;
-    }    
-    
+    }
+
     class HideAlbumAdapt extends BaseAdapter {
         Context context;
         List<PhotoAibum> list = new ArrayList<PhotoAibum>();
@@ -202,7 +203,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
             list.clear();
             this.list.addAll(alist);
         }
-        
+
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
@@ -239,7 +240,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             path = list.get(position).getBitList().get(0).getPath();
-            viewHolder.txt.setText(list.get(position).getName()+"(" + list.get(position).getCount() + ")");
+            viewHolder.txt.setText(list.get(position).getName() + "("
+                    + list.get(position).getCount() + ")");
             mImageLoader.displayImage("file://" + path, viewHolder.img, mOptions);
             return convertView;
         }
@@ -249,25 +251,26 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         private ImageView img;
         private TextView txt;
     }
-    
-    private class LoaderHideImageFolderTask extends AsyncTask<Void,Integer,Integer>{  
-        private Context context;  
-        LoaderHideImageFolderTask(Context context) {  
-            this.context = context;  
-        }  
 
-        @Override  
-        protected void onPreExecute() {  
+    private class LoaderHideImageFolderTask extends AsyncTask<Void, Integer, Integer> {
+        private Context context;
 
-        }  
+        LoaderHideImageFolderTask(Context context) {
+            this.context = context;
+        }
 
-        @Override  
-        protected Integer doInBackground(Void... params) {  
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
             mAlbumList = getHidePhotoAlbum(context);
-            return 0;  
-        }  
-  
-        @Override  
+            return 0;
+        }
+
+        @Override
         protected void onPostExecute(Integer integer) {
             if (mAlbumList != null) {
                 if (mAlbumList.size() > 0) {
@@ -279,25 +282,26 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                 }
                 mHideAlbumAdapt.setDataList(mAlbumList);
                 mHideAlbumAdapt.notifyDataSetChanged();
-                
+
                 mGridView.setOnItemClickListener(new OnItemClickListener() {
 
                     @Override
                     public void onItemClick(AdapterView<?> arg0, View arg1,
-                            int position, long arg3) {                        
-                        Intent intent = new Intent(ImageHideMainActivity.this, ImageGridActivity.class);
+                            int position, long arg3) {
+                        Intent intent = new Intent(ImageHideMainActivity.this,
+                                ImageGridActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("data", mAlbumList.get(position)); 
-                        intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);  
+                        bundle.putSerializable("data", mAlbumList.get(position));
+                        intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
                         intent.putExtras(bundle);
                         startActivityForResult(intent, REQUEST_CODE_OPTION);
-                    } 
+                    }
                 });
             }
-        }  
- 
+        }
+
     }
-    
+
     @Override
     public void onActivityCreate() {
         // showLockPage();
@@ -325,8 +329,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         }
         intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
                 LockFragment.FROM_SELF);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivityForResult(intent, REQUEST_CODE_LOCK);
     }
 
@@ -338,5 +342,5 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
             mShouldLockOnRestart = false;
         }
     }
-    
+
 }

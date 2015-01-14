@@ -216,7 +216,6 @@
     <string name="moonightTheme">夜晚</string>
     <string name="orangeTheme">切水果</string>
     <string name="ParadoxTheme">空间矛盾</string>
-    <string name="apply_dialog">是否将解锁界面更换为该主题？</string>
     <string name="locker_apply">应用</string>
     <string name="locker_uninstall">卸载</string>
     <string name="locker_cancel">取消</string>
@@ -264,6 +263,7 @@
     <string name="folder_sort_flow">最耗流量</string>
     <string name="folder_sort_capacity">最占空间</string>
     <string name="folder_recommend">新品速递</string>
+    <!--  
     <string name="toast_download_fail_network">"没有可用网络，主题下载失败，请重试。"</string>
     <string name="toast_download_fail_storage">"下载失败，SD卡空间不足!"</string>
     <string name="toast_exit_when_storagemode">"当前正在使用大存储模式，主题部分功能可能无法使用。"</string>
@@ -276,6 +276,8 @@
     <string name="downloaded_success">下载成功，点击应用</string>
     <string name="download_failure_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载失败</string>
     <string name="downloaded_failure">下载失败</string>
+    
+    -->
     <string name="backup">备份</string>
     <string name="restore">恢复</string>
     <string name="backuped">已备份</string>
@@ -301,7 +303,6 @@
     <string name="lcok_success_tip">您选择的应用已加锁</string>
     <string name="success_finish">完成</string>
     <string name="app_lock_theme">应用锁主题</string>
-    <string name="file_trans">文件传输</string>
     <string name="business_rating">评分：</string>
     <string name="app_desc">简介：</string>
     <string name="app_download_count">下载量：</string>

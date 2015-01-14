@@ -186,11 +186,10 @@ public class FileOperationUtil {
 		} else {
 			return null;
 		}
-
+		
 		File file = new File(filePath);
 		String newPath = FileOperationUtil.makePath(paths[position],
 				FileOperationUtil.getDirPathFromFilepath(filePath), newName);
-
 		try {
 			if (file.isFile()) {
 				String newFileDir = newPath.substring(0,
@@ -226,21 +225,25 @@ public class FileOperationUtil {
 
 	public static synchronized String unhideImageFile(Context ctx,
 			String filePath) {
-		if (filePath == null || !filePath.endsWith(".leotmp")) {
+		if (filePath == null || (!filePath.endsWith(".leotmi") && !filePath.endsWith(".leotmp"))) {
 			LeoLog.e("RenameFile", "Rename: null parameter");
 			return null;
 		}
-
+		
+		if(filePath.endsWith(".leotmp")) {
+		    filePath.replace(".leotmp", ".leotmi");
+		}
+		
 		String newPath = null;
 		boolean newHided = false;
 		if (filePath.contains(SDCARD_DIR_NAME)) {
 			newHided = true;
-			newPath = filePath.replace(".leotmp", "").replace(
+			newPath = filePath.replace(".leotmi", "").replace(
 					SDCARD_DIR_NAME + File.separator, "");
 
 		} else {
 			newHided = false;
-			newPath = filePath.replace(".leotmp", "");
+			newPath = filePath.replace(".leotmi", "");
 		}
 		String fileName = getNameFromFilepath(newPath);
 		String fileDir = newPath.replace(fileName, "");
@@ -276,6 +279,7 @@ public class FileOperationUtil {
 					return null;
 				}
 			}
+			
 			boolean ret = file.renameTo(new File(newPath));
 			LeoLog.e("unhideImageFile", ret + " : rename file " + filePath
 					+ " to " + newPath);

@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.v4.view.PagerAdapter;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -284,7 +285,14 @@ public class AppListActivity extends BaseFragmentActivity implements
                     R.dimen.backup_scling_content_height);
             mSlicingLayer.startSlicing(view, mSclingBgView,
                     mBusinessContentView, contentheight);
-
+//            
+//            int line = mBusinessScilingHolder.appDesc.getLineCount();
+//            if(line == 1) {
+//                mBusinessScilingHolder.appDesc.setGravity(Gravity.RIGHT);
+//            } else if(line == 2) {
+//                mBusinessScilingHolder.appDesc.setGravity(Gravity.LEFT);
+//            }
+            
         } else {
             AppItemInfo appinfo = (AppItemInfo) baseInfo;
             if (from != BaseFolderFragment.FOLER_TYPE_BACKUP) {

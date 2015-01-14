@@ -321,20 +321,20 @@ public class DownloadNotifManager {
         NotificationItem ni = notifMap.get(aId);
         if (ni != null) {
             String ticker = "", text = "";
-            if (aResult == Constants.RESULT_FAILED) {
-                text = mContext.getString(R.string.downloaded_failure);
-                ticker = ni.mTitle
-                        + mContext.getResources().getString(
-                                R.string.downloaded_failure, "");
-            } else if (aResult == Constants.RESULT_SUCCESS) {
-                text = mContext.getString(R.string.downloaded_success);
-                ticker = ni.mTitle
-                        + mContext.getResources().getString(
-                                R.string.downloaded_success, "");
-                mContext.startActivity(ni.mIntent);
-                cancelCompleteNotif(aId);
-                return;
-            }
+//            if (aResult == Constants.RESULT_FAILED) {
+//                text = mContext.getString(R.string.downloaded_failure);
+//                ticker = ni.mTitle
+//                        + mContext.getResources().getString(
+//                                R.string.downloaded_failure, "");
+//            } else if (aResult == Constants.RESULT_SUCCESS) {
+//                text = mContext.getString(R.string.downloaded_success);
+//                ticker = ni.mTitle
+//                        + mContext.getResources().getString(
+//                                R.string.downloaded_success, "");
+//                mContext.startActivity(ni.mIntent);
+//                cancelCompleteNotif(aId);
+//                return;
+//            }
             int iconResource = R.drawable.ic_launcher_notification;
             Notification notification = new Notification(iconResource, ticker,
                     System.currentTimeMillis());

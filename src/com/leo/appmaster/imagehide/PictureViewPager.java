@@ -322,10 +322,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 		@Override
 		protected Boolean doInBackground(Boolean... params) {
 			String filepath = mPicturesList.get(mListPos);
-//			 String newFileName = FileOperationUtil
-//			 .getNameFromFilepath(filepath);
-			// newFileName = newFileName.substring(1,
-			// newFileName.indexOf(".leotmp"));
 			String newPaht = FileOperationUtil.unhideImageFile(
 					PictureViewPager.this, filepath);
 			if (newPaht == null)
