@@ -185,10 +185,9 @@
 
     <LinearLayout
         android:id="@+id/layout_download"
-        android:layout_width="match_parent"
+        android:layout_width="232dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="45dp"
-        android:layout_marginRight="45dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="13dp"
         android:background="@drawable/folder_left_button_selector"
         android:gravity="center"
