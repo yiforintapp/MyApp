@@ -168,9 +168,9 @@
             android:layout_marginRight="16dp"
             android:layout_toRightOf="@id/textView5"
             android:ellipsize="end"
-            android:gravity="right"
+            android:gravity="left"
             android:maxLines="2"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="8dp"
             android:text="app describtion"
             android:textColor="@color/white"
             android:textSize="@dimen/folder_backup_text_size" />
