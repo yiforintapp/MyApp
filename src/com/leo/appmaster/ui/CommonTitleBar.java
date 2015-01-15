@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -22,7 +23,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     private ImageView mTvOptionImage;
     private ImageView mTvLogo;
     private ImageView mHelpSetting;
-
+    private RelativeLayout mHelpSettingParent;
     private View mLayoutBackView, mLayoutSpiner;
 
     public CommonTitleBar(Context context) {
@@ -49,7 +50,8 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mTvOptionImage = (ImageView) findViewById(R.id.tv_option_image);
         mLayoutSpiner = findViewById(R.id.layout_right);
         mTvLogo = (ImageView) findViewById(R.id.iv_logo);
-        mHelpSetting = (ImageView) findViewById(R.id.setting_help_tip);
+        mHelpSetting = (ImageView) findViewById(R.id.setting_help_iv);
+        mHelpSettingParent=(RelativeLayout) findViewById(R.id.setting_help_tip);
         super.onFinishInflate();
     }
 
@@ -121,7 +123,10 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mHelpSetting.setVisibility(visibility);
     }
     public void setHelpSettingListener(OnClickListener listener){
-        mHelpSetting.setOnClickListener(listener);
+        mHelpSettingParent.setOnClickListener(listener);
+    }
+    public void setHelpSettingParentListener(OnClickListener listener){
+        mHelpSettingParent.setOnClickListener(listener);
     }
     public void showLogo() {
         mTvLogo.setVisibility(View.VISIBLE);

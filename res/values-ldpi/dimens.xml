@@ -127,4 +127,14 @@
     <integer name="help_setting_icon_right">30</integer>
     <integer name="help_setting_icon_bottom">25</integer>
 
+    <dimen name="help_icon_width_parent">25dp</dimen>
+    <dimen name="locker_theme_guide_width">257dp</dimen>
+    <dimen name="locker_theme_guide_height">378dp</dimen>
+    <dimen name="locker_theme_guide_tv_save_width">200dp</dimen>
+    <dimen name="locker_theme_guide_tv_save_height">47dp</dimen>
+    <dimen name="locker_theme_guide_guideImageIV_marginTop">1dp</dimen>
+    <dimen name="locker_theme_guide_guideTitleTV_marginTop">18dp</dimen>
+    <dimen name="locker_theme_guide_guideTitleTV_textsize">12dp</dimen>
+    <dimen name="locker_theme_guide_tv_save_textsize">18sp</dimen>
+
 </resources>

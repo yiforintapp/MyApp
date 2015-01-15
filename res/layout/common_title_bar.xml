@@ -22,17 +22,17 @@
                 android:layout_height="35dp"
                 android:clickable="false"
                 android:src="@drawable/common_left_selector" />
-            
-           <ImageView
+
+            <ImageView
                 android:id="@+id/iv_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:paddingBottom="4dp"
                 android:paddingLeft="16dp"
                 android:paddingTop="6dp"
-                android:paddingBottom ="4dp"
                 android:scaleType="centerInside"
-                android:visibility="gone"
-                android:src="@drawable/logo" />
+                android:src="@drawable/logo"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -103,14 +103,21 @@
             android:layout_margin="3dp"
             android:src="@drawable/common_down" />
     </LinearLayout>
-    <ImageView
+
+    <RelativeLayout
         android:id="@+id/setting_help_tip"
-        android:layout_width="@dimen/help_icon_width"
-        android:layout_height="@dimen/help_icon_height"
+        android:layout_width="@dimen/help_icon_width_parent"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:visibility="invisible"
         android:layout_marginRight="14dp"
-        android:layout_toLeftOf="@id/layout_right"/>
-    
+        android:gravity="center"
+        android:layout_toLeftOf="@id/layout_right" >
+
+        <ImageView
+            android:id="@+id/setting_help_iv"
+            android:layout_width="@dimen/help_icon_width"
+            android:layout_height="@dimen/help_icon_height"
+            android:visibility="invisible" />
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -34,10 +34,10 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
         mTtileBar.openBackView();
         mShowProtocol = (Button) findViewById(R.id.check_update_button);
         mShowProtocol.setOnClickListener(this);
-        
+
         View joinBeta = findViewById(R.id.join_beta);
         joinBeta.setOnClickListener(this);
-        
+
         View likeUs = findViewById(R.id.like_us);
         likeUs.setOnClickListener(this);
 
@@ -85,6 +85,18 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                     try {
                         startActivity(intent);
                     } catch (Exception e) {
+                        intent = new Intent(Intent.ACTION_VIEW, uri);
+                        ComponentName componentName = new ComponentName(
+                                "com.google.android.apps.plus",
+                                "com.google.android.apps.plus.phone.UrlGatewayActivity");
+                        intent.setComponent(componentName);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        try {
+                            startActivity(intent);
+                        } catch (Exception e1) {
+                            intent = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(intent);
+                        }
                     }
                 } else {
                     Uri uri = Uri
@@ -118,7 +130,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                     startActivity(intent);
                 }
                 SDKWrapper.addEvent(this, LeoStat.P1, "about", "privacy");
-                break;              
+                break;
             default:
                 break;
         }

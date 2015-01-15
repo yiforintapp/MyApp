@@ -299,8 +299,8 @@
     <string name="app_google_download">Free Download</string>
     <!-- AM-667 -->
     <string name="help_setting_tip_title">Tips</string>
-    <string name="lock_help_password_setting_content_gesture">Hit the Settings icon on top right of the screen under "App Lock", tap "Change password" to reset. (Also see upper right corner to switch pattern lock.)</string>
-    <string name="lock_help_password_setting_content_password">Hit the Settings icon on top right of the screen under "App Lock", tap "Change password" to reset. (Also see upper right corner to switch password lock.)</string>
+    <string name="lock_help_password_setting_content_gesture"> Hit "Settings" below, type your current password to go to the reset page and enter a new one. (Also see upper right corner to switch pattern lock mode.)</string>
+    <string name="lock_help_password_setting_content_password">Hit "Settings" below, type your current password to go to the reset page and enter a new one. (Also see upper right corner to switch passcode lock mode.)</string>
     <string name="lock_help_lock_setting_content">Go to \'Lock settings\' to change lock frequency.</string>
     <string name="lock_help_lock_theme_content">Bunch of hot themes just arrived, put it on to customize your lock screen!</string>
 

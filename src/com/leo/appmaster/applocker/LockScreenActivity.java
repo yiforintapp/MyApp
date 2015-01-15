@@ -98,6 +98,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private ThemeReceiver mThemeChangeReceiver;
     public boolean mRestartForThemeChanged;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -291,6 +292,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mTtileBar.setHelpSettingImage(R.drawable.selector_help_icon);
             mTtileBar.setHelpSettingVisiblity(View.VISIBLE);
             mTtileBar.setHelpSettingListener(this);
+//            mTtileBar.setHelpSettingParentListener(this);
         }
         if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
             mTtileBar.setOptionImage(R.drawable.setting_selector);

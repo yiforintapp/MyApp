@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="317dp"
-    android:layout_height="428dp" >
+    android:layout_width="@dimen/locker_theme_guide_width"
+    android:layout_height="@dimen/locker_theme_guide_height" >
 
     <LinearLayout
         android:id="@+id/lockerThemeGuideLT"
@@ -15,16 +15,16 @@
             android:id="@+id/guideTitleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="41dp"
+            android:layout_marginTop="@dimen/locker_theme_guide_guideTitleTV_marginTop"
             android:text="@string/locker_theme_guide"
             android:textColor="@color/white"
-            android:textSize="16dp" />
+            android:textSize="@dimen/locker_theme_guide_guideTitleTV_textsize" />
 
         <ImageView
             android:id="@+id/guideImageIV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="41dp"
+            android:layout_marginTop="@dimen/locker_theme_guide_guideImageIV_marginTop"
             android:src="@drawable/online_theme_tutorails_image" />
     </LinearLayout>
 
@@ -38,15 +38,15 @@
 
         <TextView
             android:id="@+id/tv_save"
-            android:layout_width="300dp"
-            android:layout_height="47dp"
+            android:layout_width="@dimen/locker_theme_guide_tv_save_width"
+            android:layout_height="@dimen/locker_theme_guide_tv_save_height"
             android:layout_centerHorizontal="true"
             android:background="@drawable/guide_button_selecter"
             android:clickable="true"
             android:gravity="center"
             android:text="@string/makesure"
             android:textColor="#ffffff"
-            android:textSize="22sp" />
+            android:textSize="@dimen/locker_theme_guide_tv_save_textsize" />
     </RelativeLayout>
 
 </RelativeLayout>

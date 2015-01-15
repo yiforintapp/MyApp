@@ -114,4 +114,14 @@
     <integer name="help_setting_icon_right">55</integer>
     <integer name="help_setting_icon_bottom">50</integer>
 
+    <dimen name="help_icon_width_parent">25dp</dimen>
+    <dimen name="locker_theme_guide_width">317dp</dimen>
+    <dimen name="locker_theme_guide_height">428dp</dimen>
+    <dimen name="locker_theme_guide_tv_save_width">300dp</dimen>
+    <dimen name="locker_theme_guide_tv_save_height">47dp</dimen>
+    <dimen name="locker_theme_guide_guideImageIV_marginTop">41dp</dimen>
+    <dimen name="locker_theme_guide_guideTitleTV_marginTop">41dp</dimen>
+    <dimen name="locker_theme_guide_guideTitleTV_textsize">16dp</dimen>
+    <dimen name="locker_theme_guide_tv_save_textsize">22sp</dimen>
+
 </resources>
