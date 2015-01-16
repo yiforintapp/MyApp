@@ -33,7 +33,7 @@
     <string name="phone_number">Phone number</string>
     <string name="india_only">India Only</string>
     <string name="invalid_number">Please enter the correct phone number</string>
-    <string name="goto_gp">Rating</string>
+    <string name="goto_gp">5-Star</string>
     <!-- push - added in Version 1.5 -->
     <string name="send_sms">Send</string>
     <string name="friend_phone_number">Your friend’s number: +91</string>
