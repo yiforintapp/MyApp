@@ -16,6 +16,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
@@ -220,7 +221,7 @@ public class AppListActivity extends BaseFragmentActivity implements
         // if (!(view.getTag() instanceof AppItemInfo))
         // return;
         BaseInfo baseInfo = (BaseInfo) view.getTag();
-
+        
         if (baseInfo instanceof BusinessItemInfo) {
             // TODO
             if (mBusinessContentView == null) {
@@ -423,9 +424,10 @@ public class AppListActivity extends BaseFragmentActivity implements
                 + (System.currentTimeMillis() - startTime));
     }
 
+
     @Override
     public void onBackPressed() {
-
+        
         if (mSlicingLayer.isSlicinged()) {
             mSlicingLayer.closeSlicing();
             return;
@@ -683,6 +685,7 @@ public class AppListActivity extends BaseFragmentActivity implements
     private class DataPagerAdapter extends PagerAdapter {
         List<View> pagerList;
 
+
         public DataPagerAdapter(ArrayList<View> viewList) {
             pagerList = viewList;
         }
@@ -815,9 +818,7 @@ public class AppListActivity extends BaseFragmentActivity implements
                     this.startActivity(intent);
                 }
                 break;
-
             case R.id.layout_download:
-
                 BusinessItemInfo bif = (BusinessItemInfo) mLastSelectedInfo;
                 if (PhoneInfoStateManager.isGooglePlayPkg()) {
                     if (AppUtil.appInstalled(AppListActivity.this,
@@ -843,6 +844,9 @@ public class AppListActivity extends BaseFragmentActivity implements
                                 bif.appDownloadUrl);
                     }
                 }
+              //add track
+              AppLoadEngine.getInstance(getApplicationContext())
+                      .getBusinessTracker().track(bif.packageName);
 
                 SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1, "app_cli_pn",
                         bif.packageName);

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
@@ -40,6 +41,7 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.appmanage.BusinessAppInstallTracker;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.fragment.LockFragment;
@@ -118,6 +120,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 	private boolean mInit;
 	private boolean mAppsLoaded = false;
 	private ThemeChanageListener mThemeListener;
+	private BusinessAppInstallTracker mTracker;
 
 	private ArrayList<AppChangeListener> mListeners;
 
@@ -170,6 +173,8 @@ public class AppLoadEngine extends BroadcastReceiver {
 		} else {
 			mRecommendLocklist = list;
 		}
+
+		mTracker = new BusinessAppInstallTracker();
 	}
 	public void setThemeChanageListener(ThemeChanageListener themeListener){
 	    this.mThemeListener=themeListener;
@@ -437,6 +442,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 		}
 	}
 
+	public BusinessAppInstallTracker getBusinessTracker() {
+		return mTracker;
+	}
+
 	/**
 	 * Call from the handler for ACTION_PACKAGE_ADDED, ACTION_PACKAGE_REMOVED
 	 * and ACTION_PACKAGE_CHANGED.
@@ -471,7 +480,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 				if (!replacing) {
 					op = AppChangeListener.TYPE_ADD;
 					showLockTip(packageName);
-
+					mTracker.onAppInstalled(packageName);
 					if (isThemeApk(packageName)) {
 
 						AppMasterPreference pre = AppMasterPreference
@@ -582,27 +591,31 @@ public class AppLoadEngine extends BroadcastReceiver {
 							if (which == 0) {
 
 								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-								    intent = new Intent(mContext, RecommentAppLockListActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("install_lockApp", packageName);
-                                    mContext.startActivity(intent);
-								}else{
-	                              List<String> lockList = new ArrayList<String>(
-                                  pre.getLockedAppList());
-                          lockList.add(packageName);
-                          pre.setLockedAppList(lockList);
+									intent = new Intent(mContext,
+											RecommentAppLockListActivity.class);
+									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									intent.putExtra("install_lockApp",
+											packageName);
+									mContext.startActivity(intent);
+								} else {
+									List<String> lockList = new ArrayList<String>(
+											pre.getLockedAppList());
+									lockList.add(packageName);
+									pre.setLockedAppList(lockList);
 								}
 							} else if (which == 1) {
 								if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-								    intent = new Intent(mContext,RecommentAppLockListActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("install_lockApp", packageName);
-                                    mContext.startActivity(intent);
+									intent = new Intent(mContext,
+											RecommentAppLockListActivity.class);
+									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									intent.putExtra("install_lockApp",
+											packageName);
+									mContext.startActivity(intent);
 								} else {
-								    List<String> lockList = new ArrayList<String>(
-			                                  pre.getLockedAppList());
-			                          lockList.add(packageName);
-			                          pre.setLockedAppList(lockList);
+									List<String> lockList = new ArrayList<String>(
+											pre.getLockedAppList());
+									lockList.add(packageName);
+									pre.setLockedAppList(lockList);
 									intent = new Intent(mContext,
 											LockScreenActivity.class);
 									intent.putExtra(
@@ -633,10 +646,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 							}
 						}
 
-                        private void startActivity(Intent intentHome) {
-                            // TODO Auto-generated method stub
-                            
-                        }
+						private void startActivity(Intent intentHome) {
+							// TODO Auto-generated method stub
+
+						}
 					});
 					dialog.getWindow().setType(
 							WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
