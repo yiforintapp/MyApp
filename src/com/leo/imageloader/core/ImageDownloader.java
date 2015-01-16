@@ -40,6 +40,7 @@ public interface ImageDownloader {
 	 * @throws UnsupportedOperationException if image URI has unsupported scheme(protocol)
 	 */
 	InputStream getStream(String imageUri, Object extra) throws IOException;
+//	InputStream getStream(String imageUri, Object extra) throws IOException;
 
 	/** Represents supported schemes(protocols) of URI. Provides convenient methods for work with schemes and URIs. */
 	public enum Scheme {

@@ -21,6 +21,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockOptionActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.SuccessAppLockListActivity;
@@ -167,6 +168,9 @@ public class GestureSettingFragment extends BaseFragment implements
 				if (((LockSettingActivity) mActivity).isResetPasswd()) {
 					showResetSuc();
 //					   AppMasterPreference.getInstance(mActivity).setIsHelpSettingChangeSucess(true);
+					//notify lock theme change
+                    Intent intent2 = new Intent(LockScreenActivity.THEME_CHANGE);
+                    GestureSettingFragment.this.mActivity.sendBroadcast(intent2);
 					return;
 				}
 

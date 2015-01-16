@@ -22,11 +22,13 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockOptionActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.SuccessAppLockListActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView.DisplayMode;
 import com.leo.appmaster.applocker.service.LockService;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
@@ -234,6 +236,9 @@ public class PasswdSettingFragment extends BaseFragment implements
 						if (((LockSettingActivity) mActivity).isResetPasswd()) {
 							showResetSuc();
 //							AppMasterPreference.getInstance(mActivity).setIsHelpSettingChangeSucess(true);
+	                        //notify lock theme change
+	                        Intent intent2 = new Intent(LockScreenActivity.THEME_CHANGE);
+	                        PasswdSettingFragment.this.mActivity.sendBroadcast(intent2);
 							return;
 						}
 
