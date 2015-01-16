@@ -96,6 +96,16 @@ public class BaseImageDecoder implements ImageDecoder {
 	protected InputStream getImageStream(ImageDecodingInfo decodingInfo) throws IOException {
 		return decodingInfo.getDownloader().getStream(decodingInfo.getImageUri(), decodingInfo.getExtraForDownloader());
 	}
+	/**
+	 * getVideoStream
+	 * @param decodingInfo
+	 * @return
+	 * @author lilongfei
+	 */
+//	protected InputStream getVideoStream(ImageDecodingInfo decodingInfo){
+////	    return  decodingInfo.getDownloader().
+//	    
+//	}
 
 	protected ImageFileInfo defineImageSizeAndRotation(InputStream imageStream, ImageDecodingInfo decodingInfo)
 			throws IOException {

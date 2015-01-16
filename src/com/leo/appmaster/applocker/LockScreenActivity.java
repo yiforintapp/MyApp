@@ -174,10 +174,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private void handleIntent() {
         Intent intent = getIntent();
-        int type = intent.getIntExtra(EXTRA_UKLOCK_TYPE,
-                LockFragment.LOCK_TYPE_PASSWD);
+//        int type = intent.getIntExtra(EXTRA_UKLOCK_TYPE,
+//                LockFragment.LOCK_TYPE_PASSWD);
         mFromType = intent.getIntExtra(EXTRA_UNLOCK_FROM,
                 LockFragment.FROM_SELF);
+        int type = AppMasterPreference.getInstance(this).getLockType();
+        
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
             mFragment = new PasswdLockFragment();
         } else {
