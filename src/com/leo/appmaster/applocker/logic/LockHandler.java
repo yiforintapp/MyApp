@@ -108,7 +108,7 @@ public class LockHandler extends BroadcastReceiver {
 					}
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-//					intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 					intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 					intent.putExtra(EXTRA_LOCKED_APP_PKG, pkg);
 					intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
@@ -170,6 +170,7 @@ public class LockHandler extends BroadcastReceiver {
 				}
 				intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent2.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+				intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				intent2.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 				intent2.putExtra(EXTRA_LOCKED_APP_PKG, mLastRunningPkg);
 				intent2.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,

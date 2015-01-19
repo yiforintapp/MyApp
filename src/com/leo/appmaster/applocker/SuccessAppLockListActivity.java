@@ -147,8 +147,9 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         }
         intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
                 LockFragment.FROM_SELF);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(intent, REQUEST_CODE_LOCK);
     }
     @Override
