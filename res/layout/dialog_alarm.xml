@@ -76,7 +76,7 @@
         <TextView
             android:id="@+id/dlg_left_btn"
             style="@style/dlg_left_button_txt"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/cancel" />
@@ -90,7 +90,7 @@
         <TextView
             android:id="@+id/dlg_right_btn"
             style="@style/dlg_right_button_txt"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/makesure" />

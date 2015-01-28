@@ -263,7 +263,7 @@
     <string name="folder_sort_flow">最耗流量</string>
     <string name="folder_sort_capacity">最占空间</string>
     <string name="folder_recommend">新品速递</string>
-    <!--  
+    <!--
     <string name="toast_download_fail_network">"没有可用网络，主题下载失败，请重试。"</string>
     <string name="toast_download_fail_storage">"下载失败，SD卡空间不足!"</string>
     <string name="toast_exit_when_storagemode">"当前正在使用大存储模式，主题部分功能可能无法使用。"</string>
@@ -276,7 +276,6 @@
     <string name="downloaded_success">下载成功，点击应用</string>
     <string name="download_failure_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载失败</string>
     <string name="downloaded_failure">下载失败</string>
-    
     -->
     <string name="backup">备份</string>
     <string name="restore">恢复</string>
@@ -327,5 +326,13 @@
     <string name="lock_setting_button">锁定设置</string>
     <string name="lock_help_lock_theme_setting_button">更换主题</string>
     <string name="help_setting_guide">帮助小贴士</string>
+    <!-- AM-1.7 -->
+    <string name="no_image_hide_dialog_title">请删除原图片</string>
+    <string name="no_image_hide_dialog_content">图片导入隐私卫士成功，因系统权限限制，请您删除原图片，您可以在隐私卫士中查看隐藏图片</string>
+    <string name="no_image_hide_dialog_button">知道了</string>
+    <string name="image_hide_memery_insuficient_dialog_title">容量不足</string>
+    <string name="image_hide_memery_insuficient_dialog_content">SD卡容量不足，无法隐藏图片，请释放空间</string>
+    <string name="image_unhide_memery_insuficient_dialog_content">SD卡容量不足，无法恢复图片，请释放空间</string>
+    <string name="image_hide_memery_insuficient_dialog_button">我知道了</string>
 
 </resources>

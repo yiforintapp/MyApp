@@ -3,24 +3,10 @@ package com.leo.appmaster.imagehide;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockOptionActivity;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.imageloader.DisplayImageOptions;
-import com.leo.imageloader.ImageLoader;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -32,16 +18,29 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockOptionActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.db.AppMasterDBHelper;
+import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
 
 public class ImageHideMainActivity extends BaseActivity implements OnClickListener {
 
@@ -52,6 +51,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     private CommonTitleBar mTtileBar;
     private Button mAddButton;
     private RelativeLayout mNoHidePictureHint;
+    private  List<String> mHideImageInDb;
 
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
 
@@ -72,6 +72,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         super.onCreate(savedInstanceState);
         initImageLoder();
         setContentView(R.layout.activity_image_hide);
+        mHideImageInDb=new ArrayList<String>();
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.app_image_hide);
         mTtileBar.openBackView();
@@ -155,11 +156,14 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
         Cursor cursor = getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
                 MediaColumns.DATE_ADDED + " desc");
+        
         if (cursor != null) {
             try {
                 Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
                 PhotoAibum pa = null;
                 while (cursor.moveToNext()) {
+                   
+                    
                     String path = cursor.getString(1);
                     String dirName = FileOperationUtil.getDirNameFromFilepath(path);
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
@@ -168,13 +172,17 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                         pa.setName(dirName);
                         pa.setCount("1");
                         pa.setDirPath(dirPath);
+                        if(!mHideImageInDb.contains(path)){
                         pa.getBitList().add(new PhotoItem(path));
                         countMap.put(dirPath, pa);
+                        }
                     } else {
                         pa = countMap.get(dirPath);
                         pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                        if(!mHideImageInDb.contains(path)){
                         pa.getBitList().add(new PhotoItem(path));
-                    }
+                        }
+                        }
                 }
                 Iterable<String> it = countMap.keySet();
                 for (String key : it) {
@@ -190,7 +198,15 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
         return aibumList;
     }
-
+private void getHideImageInDb(){
+    Cursor cur=new AppMasterDBHelper(this).query("hide_image_leo", new String[]{"image_path"}, null, null, null, null, null);
+    if(cur!=null){
+        while(cur.moveToNext()){
+            String path=cur.getString(cur.getColumnIndex("image_path"));
+            mHideImageInDb.add(path);
+        }
+    }
+}
     class HideAlbumAdapt extends BaseAdapter {
         Context context;
         List<PhotoAibum> list = new ArrayList<PhotoAibum>();
@@ -266,6 +282,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
         @Override
         protected Integer doInBackground(Void... params) {
+            getHideImageInDb();
             mAlbumList = getHidePhotoAlbum(context);
             return 0;
         }

@@ -2,6 +2,10 @@
 package com.leo.appmaster.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -11,21 +15,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.imagehide.PhotoAibum;
-import com.leo.appmaster.imagehide.PhotoItem;
-
+import android.app.AlertDialog.Builder;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.StatFs;
 import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.MediaColumns;
+
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.db.AppMasterDBHelper;
+import com.leo.appmaster.imagehide.PhotoAibum;
+import com.leo.appmaster.imagehide.PhotoItem;
 
 public class FileOperationUtil {
 
@@ -158,7 +166,7 @@ public class FileOperationUtil {
     public static void deleteFileMediaEntry(String imagePath, Context context) {
         if (imagePath != null) {
             String params[] = new String[] {
-                imagePath
+                    imagePath
             };
             Uri uri = Files.getContentUri("external");
             context.getContentResolver().delete(uri,
@@ -175,6 +183,10 @@ public class FileOperationUtil {
      */
     public static synchronized String hideImageFile(Context ctx,
             String filePath, String newName) {
+
+        String str = FileOperationUtil.getDirPathFromFilepath(filePath);
+        String fileName = FileOperationUtil.getNameFromFilepath(filePath);
+
         if (filePath == null || newName == null) {
             LeoLog.e("RenameFile", "Rename: null parameter");
             return null;
@@ -195,6 +207,7 @@ public class FileOperationUtil {
         if (position == -1) {
             newPath = filePath + ".leotmi";
         } else {
+            String p = paths[position];
             newPath = FileOperationUtil.makePath(paths[position],
                     FileOperationUtil.getDirPathFromFilepath(filePath), newName);
         }
@@ -219,10 +232,26 @@ public class FileOperationUtil {
                         newPath = newPath.replace(SDCARD_DIR_NAME + File.separator, "");
                     }
                 }
+                // if (Build.VERSION.SDK_INT < 19
+                // ||
+                // FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(paths[0]))
+                // {
                 boolean ret = file.renameTo(new File(newPath));
                 LeoLog.d("RenameFile", ret + " : rename file " + filePath
                         + " to " + newPath);
-                return ret ? newPath : null;
+                // return ret ? newPath : null;
+                if (!ret) {
+
+                    // } else if (Build.VERSION.SDK_INT >= 19
+                    // &&
+                    // !FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(paths[0]))
+                    // {
+                    int returnValue = hideImageFileCopy(ctx, filePath, newName);
+                    return String.valueOf(returnValue);
+                } else {
+                    return newPath;
+                }
+
             } else {
                 return null;
             }
@@ -242,60 +271,68 @@ public class FileOperationUtil {
         if (filePath.endsWith(".leotmp")) {
             filePath.replace(".leotmp", ".leotmi");
         }
-
-        String newPath = null;
-        boolean newHided = false;
-        if (filePath.contains(SDCARD_DIR_NAME)) {
-            newHided = true;
-            newPath = filePath.replace(".leotmi", "").replace(
-                    SDCARD_DIR_NAME + File.separator, "");
-
-        } else {
-            newHided = false;
-            newPath = filePath.replace(".leotmi", "");
-        }
-        String fileName = getNameFromFilepath(newPath);
-        String fileDir = newPath.replace(fileName, "");
-        if (fileName.startsWith(".")) {
-            fileName = fileName.substring(1);
-            newPath = fileDir + fileName;
-        }
-
-        File file = new File(filePath);
-        if (file.isFile()) {
-            String newFileDir = null;
-            if (newHided) {
-                newFileDir = newPath.substring(0,
-                        newPath.lastIndexOf(File.separator)).replace(
+        if (Build.VERSION.SDK_INT < 19
+                || FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(
+                        getSdCardPaths(ctx)[0])) {
+            String newPath = null;
+            boolean newHided = false;
+            if (filePath.contains(SDCARD_DIR_NAME)) {
+                newHided = true;
+                newPath = filePath.replace(".leotmi", "").replace(
                         SDCARD_DIR_NAME + File.separator, "");
+
             } else {
-                newFileDir = newPath.substring(0,
-                        newPath.lastIndexOf(File.separator));
+                newHided = false;
+                newPath = filePath.replace(".leotmi", "");
+            }
+            String fileName = getNameFromFilepath(newPath);
+            String fileDir = newPath.replace(fileName, "");
+            if (fileName.startsWith(".")) {
+                fileName = fileName.substring(1);
+                newPath = fileDir + fileName;
             }
 
-            File temp = new File(newFileDir);
-            if (temp.exists()) {
-                LeoLog.d("unhideImageFile", temp + "    exists");
-            } else {
-                LeoLog.d("unhideImageFile", temp + "  not   exists");
-                boolean mkRet = temp.mkdirs();
-                if (mkRet) {
-                    LeoLog.d("unhideImageFile", "make dir " + temp
-                            + "  successfully");
+            File file = new File(filePath);
+            if (file.isFile()) {
+                String newFileDir = null;
+                if (newHided) {
+                    newFileDir = newPath.substring(0,
+                            newPath.lastIndexOf(File.separator)).replace(
+                            SDCARD_DIR_NAME + File.separator, "");
                 } else {
-                    LeoLog.d("unhideImageFile", "make dir " + temp
-                            + "  unsuccessfully");
-                    return null;
+                    newFileDir = newPath.substring(0,
+                            newPath.lastIndexOf(File.separator));
                 }
-            }
 
-            boolean ret = file.renameTo(new File(newPath));
-            LeoLog.e("unhideImageFile", ret + " : rename file " + filePath
-                    + " to " + newPath);
-            return ret ? newPath : null;
-        } else {
-            return null;
+                File temp = new File(newFileDir);
+                if (temp.exists()) {
+                    LeoLog.d("unhideImageFile", temp + "    exists");
+                } else {
+                    LeoLog.d("unhideImageFile", temp + "  not   exists");
+                    boolean mkRet = temp.mkdirs();
+                    if (mkRet) {
+                        LeoLog.d("unhideImageFile", "make dir " + temp
+                                + "  successfully");
+                    } else {
+                        LeoLog.d("unhideImageFile", "make dir " + temp
+                                + "  unsuccessfully");
+                        return null;
+                    }
+                }
+                boolean ret = file.renameTo(new File(newPath));
+                LeoLog.e("unhideImageFile", ret + " : rename file " + filePath
+                        + " to " + newPath);
+                return ret ? newPath : null;
+            } else {
+                return null;
+            }
+        } else if (Build.VERSION.SDK_INT >= 19
+                && !FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(
+                        getSdCardPaths(ctx)[0])) {
+            int returnValue = unHideImageFileCopy(ctx, filePath);
+            return String.valueOf(returnValue);
         }
+        return null;
     }
 
     /**
@@ -349,7 +386,7 @@ public class FileOperationUtil {
         return false;
     }
 
-    public  static Uri saveFileMediaEntry(String imagePath, Context context) {
+    public static Uri saveFileMediaEntry(String imagePath, Context context) {
         ContentValues v = new ContentValues();
         File f = new File(imagePath);
         v.put(MediaColumns.TITLE, f.getName());
@@ -371,20 +408,20 @@ public class FileOperationUtil {
 
     public static void deleteImageMediaEntry(String imagePath, Context context) {
         String params[] = new String[] {
-            imagePath
+                imagePath
         };
         Uri uri = Files.getContentUri("external");
-//        context.getContentResolver().delete(
-//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                MediaStore.Images.Media.DATA + " LIKE ?", params);
-        
+        // context.getContentResolver().delete(
+        // MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        // MediaStore.Images.Media.DATA + " LIKE ?", params);
+
         context.getContentResolver().delete(uri,
                 MediaStore.Images.Media.DATA + " LIKE ?", params);
     }
 
     public static void deleteVideoMediaEntry(String videoPath, Context context) {
         String params[] = new String[] {
-            videoPath
+                videoPath
         };
         Uri uri = Files.getContentUri("external");
         String selection = Constants.VIDEO_FORMAT;
@@ -523,4 +560,190 @@ public class FileOperationUtil {
 
     }
 
+    /**
+     * FileCopy HideImage
+     * 
+     * @param fromFile
+     * @param toFile
+     * @return
+     */
+    @SuppressWarnings("deprecation")
+    public static int hideImageFileCopy(Context ctx, String fromFile, String newName)
+    {
+        String str = FileOperationUtil.getDirPathFromFilepath(fromFile);
+        String dirName = str.substring(str.lastIndexOf("/") + 1, str.length());
+        String fileName = FileOperationUtil.getNameFromFilepath(fromFile);
+        File file = new File(fromFile);
+        String[] paths = getSdCardPaths(ctx);
+        int position = 0;
+        if (fromFile.startsWith(paths[0])) {
+            position = 1;
+        } else if (fromFile.startsWith(paths[1])) {
+            position = 0;
+        } else {
+            position = -1;
+        }
+        String newPath;
+        File path = new File(fromFile);
+        if (position == -1) {
+            newPath = fromFile + ".leotmi";
+        } else {
+            // TODO
+            newPath = FileOperationUtil.makePath(paths[position],
+                    FileOperationUtil.getDirPathFromFilepath(fromFile), fileName);
+            // newPath = paths[position] + File.separator + SDCARD_DIR_NAME +
+            // File.separator
+            // + dirName
+            // + File.separator + fileName;
+            newPath = paths[position] + File.separator + SDCARD_DIR_NAME + File.separator
+                    + FileOperationUtil.getDirPathFromFilepath(fromFile).replace(paths[1], "")
+                    + File.separator + fileName;
+
+        }
+        if (file.isFile()) {
+            String newFileDir = newPath.substring(0,
+                    newPath.lastIndexOf(File.separator));
+            File temp = new File(newFileDir);
+            LeoLog.d("RenameFile", "fileDir = " + newFileDir);
+            if (temp.exists()) {
+                LeoLog.d("RenameFile", temp + "    exists");
+            } else {
+                LeoLog.d("RenameFile", temp + "  not   exists");
+                boolean mkRet = temp.mkdirs();
+                if (mkRet) {
+                    LeoLog.e("RenameFile", "make dir " + temp
+                            + "  successfully");
+                } else {
+                    LeoLog.d("RenameFile", "make dir " + temp
+                            + "  unsuccessfully");
+                }
+            }
+        }
+        try {
+            InputStream fosfrom = new FileInputStream(fromFile);
+            OutputStream fosto = new FileOutputStream(newPath);
+            byte bt[] = new byte[1024 * 8];
+            int c;
+            while ((c = fosfrom.read(bt)) > 0) {
+                fosto.write(bt, 0, c);
+            }
+            fosfrom.close();
+            fosto.close();
+            FileOperationUtil.saveFileMediaEntry(newPath, ctx);
+            try {
+                File imageFile = new File(newPath);
+                String rename = newPath + ".leotmi";
+                boolean ret = imageFile.renameTo(new File(rename));
+                FileOperationUtil.saveFileMediaEntry(rename, ctx);
+                FileOperationUtil.deleteFileMediaEntry(newPath, ctx);
+                // 复制隐藏成功
+                return 0;
+            } catch (Exception e) {
+                // 隐藏失败
+                return -2;
+            }
+        } catch (Exception ex) {
+            // 复制失败
+            return -1;
+        }
+        // } else {
+        // // 内存不足
+        // return 1;
+        // }
+    }
+
+    /**
+     * FileCopy unHideImageFileCopy
+     * 
+     * @param fromFile
+     * @param toFile
+     * @return
+     */
+    public static int unHideImageFileCopy(Context ctx, String fromFile)
+    {
+        String str = FileOperationUtil.getDirPathFromFilepath(fromFile);
+        String dirName = str.substring(str.lastIndexOf("/") + 1, str.length());
+        String fileName = FileOperationUtil.getNameFromFilepath(fromFile);
+
+        File file = new File(fromFile);
+        long fileSize = 0;
+        if (file.isFile()) {
+            fileSize = file.length();
+        }
+        String[] paths = getSdCardPaths(ctx);
+        int position = 0;
+        if (fromFile.startsWith(paths[0])) {
+            position = 1;
+        } else if (fromFile.startsWith(paths[1])) {
+            position = 0;
+        } else {
+            position = -1;
+        }
+        String newPath = null;
+        File path = new File(fromFile);
+        if (position == -1) {
+            String pathOther = fromFile.replace(".leotmi", "");
+            FileOperationUtil.saveFileMediaEntry(pathOther, ctx);
+            FileOperationUtil.deleteFileMediaEntry(fromFile, ctx);
+        } else {
+            newPath = paths[position] + File.separator
+                    + FileOperationUtil.getDirPathFromFilepath(fromFile).replace(paths[1], "")
+                    + File.separator + fileName;
+            // newPath=FileOperationUtil.makePath(paths[position],
+            // FileOperationUtil.getDirPathFromFilepath(fromFile), fileName);
+        }
+        if (file.isFile()) {
+            String newFileDir = newPath.substring(0,
+                    newPath.lastIndexOf(File.separator));
+            File temp = new File(newFileDir);
+            LeoLog.d("RenameFile", "fileDir = " + newFileDir);
+            if (temp.exists()) {
+                LeoLog.d("RenameFile", temp + "    exists");
+            } else {
+                LeoLog.d("RenameFile", temp + "  not   exists");
+                boolean mkRet = temp.mkdirs();
+                if (mkRet) {
+                    LeoLog.e("RenameFile", "make dir " + temp
+                            + "  successfully");
+                } else {
+                    LeoLog.d("RenameFile", "make dir " + temp
+                            + "  unsuccessfully");
+                }
+            }
+        }
+        try {
+            InputStream fosfrom = new FileInputStream(fromFile);
+            OutputStream fosto = new FileOutputStream(newPath);
+            byte bt[] = new byte[1024 * 8];
+            int c;
+            while ((c = fosfrom.read(bt)) > 0) {
+                fosto.write(bt, 0, c);
+            }
+            fosfrom.close();
+            fosto.close();
+            FileOperationUtil.saveFileMediaEntry(newPath, ctx);
+            try {
+                File imageFile = new File(newPath);
+                String rename = newPath.replace(".leotmi", "");
+                boolean ret = imageFile.renameTo(new File(rename));
+                FileOperationUtil.saveFileMediaEntry(rename, ctx);
+                FileOperationUtil.deleteFileMediaEntry(newPath, ctx);
+                AppMasterDBHelper db = new AppMasterDBHelper(ctx);
+                ContentValues values = new ContentValues();
+                values.put("image_path", fromFile);
+                long flagId = db.insert("hide_image_leo", null, values);
+                if (flagId == -1) {
+                    return -2;
+                }
+                // 复制取消隐藏成功
+                return 0;
+            } catch (Exception e) {
+                // 取消隐藏失败
+                return -2;
+            }
+        } catch (Exception ex) {
+            // 复制失败
+            return -1;
+        }
+    }
 }

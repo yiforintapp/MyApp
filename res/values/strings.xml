@@ -317,4 +317,13 @@
     <string name="help_setting_guide">Need some help?</string>
     <string name="app_no_image_hide">"Click 'Add' to select images"</string>
 
+    <!-- AM-1.7 -->
+    <string name="no_image_hide_dialog_title">请删除原图片</string>
+    <string name="no_image_hide_dialog_content">图片导入隐私卫士成功，因系统权限限制，请您删除原图片，您可以在隐私卫士中查看隐藏图片</string>
+    <string name="no_image_hide_dialog_button">知道了</string>
+    <string name="image_hide_memery_insuficient_dialog_title">容量不足</string>
+    <string name="image_hide_memery_insuficient_dialog_content">SD卡容量不足，无法隐藏图片，请释放空间</string>
+    <string name="image_unhide_memery_insuficient_dialog_content">SD卡容量不足，无法恢复图片，请释放空间</string>
+    <string name="image_hide_memery_insuficient_dialog_button">我知道了</string>
+
 </resources>

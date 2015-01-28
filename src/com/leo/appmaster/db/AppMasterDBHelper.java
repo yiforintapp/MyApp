@@ -47,6 +47,8 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+	    db.execSQL("CREATE TABLE IF NOT EXISTS hide_image_leo ("
+                + "_id INTEGER PRIMARY KEY," + "image_path TEXT"+");");
 		db.execSQL("CREATE TABLE IF NOT EXISTS feedback ("
 				+ "_id INTEGER PRIMARY KEY," + "email TEXT," + "content TEXT,"
 				+ "category TEXT," + "submit_date TEXT" + ");");

@@ -135,5 +135,7 @@
     <dimen name="locker_theme_guide_guideTitleTV_marginTop">41dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_textsize">16dp</dimen>
     <dimen name="locker_theme_guide_tv_save_textsize">22sp</dimen>
+    <dimen name="memery_dialog_button_width">100dp</dimen>
+    <dimen name="memery_dialog_button_height">50dp</dimen>
 
 </resources>

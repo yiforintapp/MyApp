@@ -3,6 +3,7 @@ package com.leo.imageloader.utils;
 
 import java.io.File;
 
+import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -40,11 +41,13 @@ public class HideFileUtils {
             selection = MediaColumns.DATA + " LIKE '%.leotmp'";
             cursor = context.getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
                     MediaColumns.DATE_ADDED + " desc");
+            Cursor cur=new AppMasterDBHelper(context).query("hide_image_leo", new String[]{"image_path"}, null, null, null, null, null);
+            int unhideDbCount=cur.getCount();
             int oldHideCount = cursor.getCount();
             if (oldHideCount > 0) {
                 replaceOldHideImages(context);
             }
-            return newHideCount + oldHideCount;
+            return newHideCount + oldHideCount-unhideDbCount;
         } catch (Exception e) {
 
         } finally {
