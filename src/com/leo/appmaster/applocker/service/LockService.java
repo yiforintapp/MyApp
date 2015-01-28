@@ -137,7 +137,7 @@ public class LockService extends Service {
                 for (RunningAppProcessInfo pi : list) {
                     if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND  || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)  // Foreground or Visible
                             && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter provider and service
-                            && (0x4 & pi.flags) > 0) { // Must have activities
+                            && (0x4 & pi.flags) > 0 &&  pi.processState == ActivityManager.PROCESS_STATE_TOP) { // Must have activities and one activity is on the top
                         String pkgList[] = pi.pkgList;
                         if(pkgList != null && pkgList.length > 0) {
                             pkgName = pkgList[0];
