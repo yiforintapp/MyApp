@@ -47,6 +47,16 @@ public class FileOperationUtil {
             // dir name
     };
 
+    public static boolean getSdSize(long fileSize, Context ctx, String sdPath) {
+        StatFs sf = new StatFs(sdPath);
+        @SuppressWarnings("deprecation")
+        long blockSize = sf.getBlockSize();
+        @SuppressWarnings("deprecation")
+        long nAvailableblock = sf.getAvailableBlocks();
+        long availableblock = (blockSize * nAvailableblock) / (1024 * 1024);
+        return fileSize / (1024 * 1024) + 10 > availableblock ? false : true;
+    }
+
     public static Comparator<PhotoAibum> mFolderCamparator = new Comparator<PhotoAibum>() {
 
         public final int compare(PhotoAibum a, PhotoAibum b) {
@@ -271,68 +281,66 @@ public class FileOperationUtil {
         if (filePath.endsWith(".leotmp")) {
             filePath.replace(".leotmp", ".leotmi");
         }
-        if (Build.VERSION.SDK_INT < 19
-                || FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(
-                        getSdCardPaths(ctx)[0])) {
-            String newPath = null;
-            boolean newHided = false;
-            if (filePath.contains(SDCARD_DIR_NAME)) {
-                newHided = true;
-                newPath = filePath.replace(".leotmi", "").replace(
-                        SDCARD_DIR_NAME + File.separator, "");
+        // if (Build.VERSION.SDK_INT < 19
+        // || FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(
+        // getSdCardPaths(ctx)[0])) {
+        String newPath = null;
+        boolean newHided = false;
+        if (filePath.contains(SDCARD_DIR_NAME)) {
+            newHided = true;
+            newPath = filePath.replace(".leotmi", "").replace(
+                    SDCARD_DIR_NAME + File.separator, "");
 
-            } else {
-                newHided = false;
-                newPath = filePath.replace(".leotmi", "");
-            }
-            String fileName = getNameFromFilepath(newPath);
-            String fileDir = newPath.replace(fileName, "");
-            if (fileName.startsWith(".")) {
-                fileName = fileName.substring(1);
-                newPath = fileDir + fileName;
-            }
-
-            File file = new File(filePath);
-            if (file.isFile()) {
-                String newFileDir = null;
-                if (newHided) {
-                    newFileDir = newPath.substring(0,
-                            newPath.lastIndexOf(File.separator)).replace(
-                            SDCARD_DIR_NAME + File.separator, "");
-                } else {
-                    newFileDir = newPath.substring(0,
-                            newPath.lastIndexOf(File.separator));
-                }
-
-                File temp = new File(newFileDir);
-                if (temp.exists()) {
-                    LeoLog.d("unhideImageFile", temp + "    exists");
-                } else {
-                    LeoLog.d("unhideImageFile", temp + "  not   exists");
-                    boolean mkRet = temp.mkdirs();
-                    if (mkRet) {
-                        LeoLog.d("unhideImageFile", "make dir " + temp
-                                + "  successfully");
-                    } else {
-                        LeoLog.d("unhideImageFile", "make dir " + temp
-                                + "  unsuccessfully");
-                        return null;
-                    }
-                }
-                boolean ret = file.renameTo(new File(newPath));
-                LeoLog.e("unhideImageFile", ret + " : rename file " + filePath
-                        + " to " + newPath);
-                return ret ? newPath : null;
-            } else {
-                return null;
-            }
-        } else if (Build.VERSION.SDK_INT >= 19
-                && !FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(
-                        getSdCardPaths(ctx)[0])) {
-            int returnValue = unHideImageFileCopy(ctx, filePath);
-            return String.valueOf(returnValue);
+        } else {
+            newHided = false;
+            newPath = filePath.replace(".leotmi", "");
         }
-        return null;
+        String fileName = getNameFromFilepath(newPath);
+        String fileDir = newPath.replace(fileName, "");
+        if (fileName.startsWith(".")) {
+            fileName = fileName.substring(1);
+            newPath = fileDir + fileName;
+        }
+
+        File file = new File(filePath);
+        if (file.isFile()) {
+            String newFileDir = null;
+            if (newHided) {
+                newFileDir = newPath.substring(0,
+                        newPath.lastIndexOf(File.separator)).replace(
+                        SDCARD_DIR_NAME + File.separator, "");
+            } else {
+                newFileDir = newPath.substring(0,
+                        newPath.lastIndexOf(File.separator));
+            }
+
+            File temp = new File(newFileDir);
+            if (temp.exists()) {
+                LeoLog.d("unhideImageFile", temp + "    exists");
+            } else {
+                LeoLog.d("unhideImageFile", temp + "  not   exists");
+                boolean mkRet = temp.mkdirs();
+                if (mkRet) {
+                    LeoLog.d("unhideImageFile", "make dir " + temp
+                            + "  successfully");
+                } else {
+                    LeoLog.d("unhideImageFile", "make dir " + temp
+                            + "  unsuccessfully");
+                    return null;
+                }
+            }
+            boolean ret = file.renameTo(new File(newPath));
+            LeoLog.e("unhideImageFile", ret + " : rename file " + filePath
+                    + " to " + newPath);
+            if (!ret) {
+                int returnValue = unHideImageFileCopy(ctx, filePath);
+                return String.valueOf(returnValue);
+            } else {
+                return newPath;
+            }
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -588,14 +596,7 @@ public class FileOperationUtil {
         if (position == -1) {
             newPath = fromFile + ".leotmi";
         } else {
-            // TODO
-            newPath = FileOperationUtil.makePath(paths[position],
-                    FileOperationUtil.getDirPathFromFilepath(fromFile), fileName);
-            // newPath = paths[position] + File.separator + SDCARD_DIR_NAME +
-            // File.separator
-            // + dirName
-            // + File.separator + fileName;
-            newPath = paths[position] + File.separator + SDCARD_DIR_NAME + File.separator
+            newPath = paths[position] + File.separator + SDCARD_DIR_NAME
                     + FileOperationUtil.getDirPathFromFilepath(fromFile).replace(paths[1], "")
                     + File.separator + fileName;
 
@@ -686,7 +687,7 @@ public class FileOperationUtil {
             FileOperationUtil.saveFileMediaEntry(pathOther, ctx);
             FileOperationUtil.deleteFileMediaEntry(fromFile, ctx);
         } else {
-            newPath = paths[position] + File.separator
+            newPath = paths[position]
                     + FileOperationUtil.getDirPathFromFilepath(fromFile).replace(paths[1], "")
                     + File.separator + fileName;
             // newPath=FileOperationUtil.makePath(paths[position],
