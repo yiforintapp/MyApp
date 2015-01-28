@@ -62,14 +62,15 @@ public class LockHandler extends BroadcastReceiver {
 
 		LeoLog.d("handleAppLaunch", pkg + "/" + activity);
 		String myPackage = mContext.getPackageName();
+		AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
 		if (!myPackage.equals(pkg)) {
-			AppMasterPreference.getInstance(mContext).setLaunchOtherApp(true);
+			amp.setLaunchOtherApp(true);
 		}
-
+       boolean unlocked = amp.getUnlocked();
 		if (!pkg.equals(mLastRunningPkg)) {
 			if ((pkg.equals(myPackage) && activity
 					.contains("LockScreenActivity"))
-					|| (mLastRunningPkg.equals(myPackage) && mLastRuningActivity
+					|| (unlocked && mLastRunningPkg.equals(myPackage) && mLastRuningActivity
 							.contains("LockScreenActivity"))) {
 				mLastRunningPkg = pkg;
 				mLastRuningActivity = activity;
@@ -114,6 +115,7 @@ public class LockHandler extends BroadcastReceiver {
 					intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 							LockFragment.FROM_OTHER);
 					mContext.startActivity(intent);
+					amp.setUnlocked(false);
 				}
 			}
 		} else {

@@ -86,6 +86,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final int LOCK_TYPE_PASSWD = 0;
     public static final int LOCK_TYPE_GESTURE = 1;
     private int mLockType = LOCK_TYPE_NONE;
+    
+    private boolean mLaunchOtherApp = false;
+    private boolean mUnlocked = false;
 
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
@@ -110,11 +113,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getLaunchOtherApp() {
-        return mPref.getBoolean(PREF_LAUNCH_OTHER_APP, false);
+        return mLaunchOtherApp;
     }
 
     public void setLaunchOtherApp(boolean flag) {
-        mPref.edit().putBoolean(PREF_LAUNCH_OTHER_APP, flag).commit();
+        mLaunchOtherApp = flag;
+    }
+    
+    public boolean getUnlocked() {
+        return mUnlocked;
+    }
+
+    public void setUnlocked(boolean flag) {
+        mUnlocked = flag;
     }
 
     public boolean getLockerScreenThemeGuid() {

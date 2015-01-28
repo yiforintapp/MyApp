@@ -376,6 +376,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             AppMasterPreference pref = AppMasterPreference.getInstance(this);
             pref.setUnlockCount(pref.getUnlockCount() + 1);
             pref.setLaunchOtherApp(false);
+            pref.setUnlocked(true);
             spiner.postDelayed(new Runnable() {
                 @Override
                 public void run() {
