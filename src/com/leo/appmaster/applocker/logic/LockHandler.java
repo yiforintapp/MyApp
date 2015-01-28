@@ -115,7 +115,6 @@ public class LockHandler extends BroadcastReceiver {
 					intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 							LockFragment.FROM_OTHER);
 					mContext.startActivity(intent);
-					amp.setUnlocked(false);
 				}
 			}
 		} else {

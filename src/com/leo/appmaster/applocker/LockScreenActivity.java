@@ -156,6 +156,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
              * shown
              */
             PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(true);
+            AppMasterPreference.getInstance(this).setUnlocked(false);
         }
         super.onResume();
     }

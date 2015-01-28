@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.service.LockService;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
+
+import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.service.LockService;
 
 public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
