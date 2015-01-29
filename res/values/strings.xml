@@ -237,7 +237,7 @@
     <string name="theme_tag_new">New</string>
     <string name="theme_tag_hot">Hot</string>
     <string name="about_group">Join Beta</string>
-    <string name="about_praise">"Like" us</string>
+    <string name="about_praise">Facebook</string>
     <string name="locker_guide">Click to change a theme</string>
     <string name="locker_theme_guide">Themes will be applied to lock screen!</string>
     <string name="locker_clean">Boosted successfully up to %1$s</string>

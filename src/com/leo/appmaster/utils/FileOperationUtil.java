@@ -47,7 +47,7 @@ public class FileOperationUtil {
             // dir name
     };
 
-    public static boolean getSdSize(long fileSize, Context ctx, String sdPath) {
+    public static boolean isMemeryEnough(long fileSize, Context ctx, String sdPath) {
         StatFs sf = new StatFs(sdPath);
         @SuppressWarnings("deprecation")
         long blockSize = sf.getBlockSize();
@@ -192,7 +192,7 @@ public class FileOperationUtil {
      * @return
      */
     public static synchronized String hideImageFile(Context ctx,
-            String filePath, String newName) {
+            String filePath, String newName, long fileSize) {
 
         String str = FileOperationUtil.getDirPathFromFilepath(filePath);
         String fileName = FileOperationUtil.getNameFromFilepath(filePath);
@@ -242,21 +242,16 @@ public class FileOperationUtil {
                         newPath = newPath.replace(SDCARD_DIR_NAME + File.separator, "");
                     }
                 }
-                // if (Build.VERSION.SDK_INT < 19
-                // ||
-                // FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(paths[0]))
-                // {
                 boolean ret = file.renameTo(new File(newPath));
                 LeoLog.d("RenameFile", ret + " : rename file " + filePath
                         + " to " + newPath);
                 // return ret ? newPath : null;
                 if (!ret) {
-
-                    // } else if (Build.VERSION.SDK_INT >= 19
-                    // &&
-                    // !FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(paths[0]))
-                    // {
-                    int returnValue = hideImageFileCopy(ctx, filePath, newName);
+                    boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0]);
+                    int returnValue = 4;
+                    if (memeryFlag) {
+                        returnValue = hideImageFileCopy(ctx, filePath, newName);
+                    }
                     return String.valueOf(returnValue);
                 } else {
                     return newPath;
@@ -272,12 +267,12 @@ public class FileOperationUtil {
     }
 
     public static synchronized String unhideImageFile(Context ctx,
-            String filePath) {
+            String filePath, long fileSize) {
         if (filePath == null || (!filePath.endsWith(".leotmi") && !filePath.endsWith(".leotmp"))) {
             LeoLog.e("RenameFile", "Rename: null parameter");
             return null;
         }
-
+        String[] paths = getSdCardPaths(ctx);
         if (filePath.endsWith(".leotmp")) {
             filePath.replace(".leotmp", ".leotmi");
         }
@@ -333,7 +328,11 @@ public class FileOperationUtil {
             LeoLog.e("unhideImageFile", ret + " : rename file " + filePath
                     + " to " + newPath);
             if (!ret) {
-                int returnValue = unHideImageFileCopy(ctx, filePath);
+                boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0]);
+                int returnValue = 4;
+                if (memeryFlag) {
+                    returnValue = unHideImageFileCopy(ctx, filePath);
+                }
                 return String.valueOf(returnValue);
             } else {
                 return newPath;

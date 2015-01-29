@@ -97,6 +97,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
 
     private boolean mShouldLockOnRestart = true;
     private String[] mPaths;
+    private long mTotalSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -425,7 +426,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                         newFileName = newFileName + ".leotmi";
                         String path = item.getPath();
                         String newPath = FileOperationUtil.hideImageFile(context,
-                                path, newFileName);
+                                path, newFileName, mTotalSize);
                         if (newPath != null) {
                             if ("-2".equals(newPath)) {
                                 isSuccess = -2;
@@ -440,6 +441,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                 isSuccess = -1;
                                 Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
                                         "Copy image fail!");
+                            } else if ("4".equals(newPath)) {
+                                isSuccess = 4;
+                                break;
                             } else {
                                 isSuccess = 3;
                                 FileOperationUtil.saveFileMediaEntry(newPath, context);
@@ -459,7 +463,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
 
                         String filepath = item.getPath();
                         String newPaht = FileOperationUtil.unhideImageFile(
-                                ImageGridActivity.this, filepath);
+                                ImageGridActivity.this, filepath, mTotalSize);
                         if (newPaht == null) {
                             isSuccess = 2;
                         } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
@@ -472,6 +476,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             mAllListPath.remove(item.getPath());
                         } else if ("4".equals(newPaht)) {
                             isSuccess = 4;
+                            break;
                         } else {
                             isSuccess = 3;
                             FileOperationUtil.saveImageMediaEntry(newPaht, context);
@@ -500,6 +505,28 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
             } else if (isSuccess == 2) {
                 Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Hide  image fail!");
+            } else if (isSuccess == 4) {
+                if (mActicityMode == SELECT_HIDE_MODE) {
+                    String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
+                    String content = getString(R.string.image_hide_memery_insuficient_dialog_content);
+                    String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
+                    float width = getResources().getDimension(
+                            R.dimen.memery_dialog_button_width);
+                    float height = getResources().getDimension(
+                            R.dimen.memery_dialog_button_height);
+                    showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
+                            width, height);
+                } else if (mActicityMode == CANCEL_HIDE_MODE) {
+                    String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
+                    String content = getString(R.string.image_unhide_memery_insuficient_dialog_content);
+                    String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
+                    float width = getResources().getDimension(
+                            R.dimen.memery_dialog_button_width);
+                    float height = getResources().getDimension(
+                            R.dimen.memery_dialog_button_height);
+                    showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
+                            width, height);
+                }
             }
             dismissProgressDialog();
             if (mPicturesList.size() > 0) {
@@ -643,63 +670,74 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             public void onClick(int which) {
                 if (which == 1) {
                     if (mClickList.size() > 0) {
-                        boolean flag = true;
-                        if (!mPhotoAibum.getDirPath().startsWith(mPaths[0])) {
-                            long totalSize = 0;
-                            for (PhotoItem click : mClickList) {
-                                totalSize += click.getSize();
-                            }
-                            flag = FileOperationUtil.getSdSize(totalSize, ImageGridActivity.this,
-                                    mPaths[0]);
+                        // boolean flag = true;
+                        // if (!mPhotoAibum.getDirPath().startsWith(mPaths[0]))
+                        // {
+                        for (PhotoItem click : mClickList) {
+                            mTotalSize += click.getSize();
                         }
-                        if (flag) {
-                            if (mActicityMode == SELECT_HIDE_MODE) {
+                        // //TODO
+                        // flag = FileOperationUtil.getSdSize(totalSize,
+                        // ImageGridActivity.this,
+                        // mPaths[0]);
+                        // }
+                        // if (flag) {
+                        if (mActicityMode == SELECT_HIDE_MODE) {
 
-                                showProgressDialog(getString(R.string.tips),
-                                        getString(R.string.app_hide_image) + "...",
-                                        true, true);
-                                BackgoundTask task = new BackgoundTask(
-                                        ImageGridActivity.this);
-                                task.execute(true);
-                                SDKWrapper.addEvent(ImageGridActivity.this,
-                                        LeoStat.P1, "hide_pic", "used");
+                            showProgressDialog(getString(R.string.tips),
+                                    getString(R.string.app_hide_image) + "...",
+                                    true, true);
+                            BackgoundTask task = new BackgoundTask(
+                                    ImageGridActivity.this);
+                            task.execute(true);
+                            SDKWrapper.addEvent(ImageGridActivity.this,
+                                    LeoStat.P1, "hide_pic", "used");
 
-                            } else if (mActicityMode == CANCEL_HIDE_MODE) {
-                                showProgressDialog(getString(R.string.tips),
-                                        getString(R.string.app_cancel_hide_image)
-                                                + "...", true, true);
-                                BackgoundTask task = new BackgoundTask(
-                                        ImageGridActivity.this);
-                                task.execute(false);
-                            }
-                        } else {
-                            if (mActicityMode == SELECT_HIDE_MODE) {
-                                String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
-                                String content = getString(R.string.image_hide_memery_insuficient_dialog_content);
-                                String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
-                                float width = getResources().getDimension(
-                                        R.dimen.memery_dialog_button_width);
-                                float height = getResources().getDimension(
-                                        R.dimen.memery_dialog_button_height);
-                                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
-                                        width, height);
-                            } else if (mActicityMode == CANCEL_HIDE_MODE) {
-                                String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
-                                String content = getString(R.string.image_unhide_memery_insuficient_dialog_content);
-                                String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
-                                float width = getResources().getDimension(
-                                        R.dimen.memery_dialog_button_width);
-                                float height = getResources().getDimension(
-                                        R.dimen.memery_dialog_button_height);
-                                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
-                                        width, height);
-                            }
+                        } else if (mActicityMode == CANCEL_HIDE_MODE) {
+                            showProgressDialog(getString(R.string.tips),
+                                    getString(R.string.app_cancel_hide_image)
+                                            + "...", true, true);
+                            BackgoundTask task = new BackgoundTask(
+                                    ImageGridActivity.this);
+                            task.execute(false);
                         }
-
                     }
-                }
+                    // else {
+                    // if (mActicityMode == SELECT_HIDE_MODE) {
+                    // String title =
+                    // getString(R.string.image_hide_memery_insuficient_dialog_title);
+                    // String content =
+                    // getString(R.string.image_hide_memery_insuficient_dialog_content);
+                    // String rightBtn =
+                    // getString(R.string.image_hide_memery_insuficient_dialog_button);
+                    // float width = getResources().getDimension(
+                    // R.dimen.memery_dialog_button_width);
+                    // float height = getResources().getDimension(
+                    // R.dimen.memery_dialog_button_height);
+                    // showMemeryAlarmDialog(title, content, null, rightBtn,
+                    // false, true,
+                    // width, height);
+                    // } else if (mActicityMode == CANCEL_HIDE_MODE) {
+                    // String title =
+                    // getString(R.string.image_hide_memery_insuficient_dialog_title);
+                    // String content =
+                    // getString(R.string.image_unhide_memery_insuficient_dialog_content);
+                    // String rightBtn =
+                    // getString(R.string.image_hide_memery_insuficient_dialog_button);
+                    // float width = getResources().getDimension(
+                    // R.dimen.memery_dialog_button_width);
+                    // float height = getResources().getDimension(
+                    // R.dimen.memery_dialog_button_height);
+                    // showMemeryAlarmDialog(title, content, null, rightBtn,
+                    // false, true,
+                    // width, height);
+                    // }
+                    // }
 
+                }
             }
+
+            // }
         });
         mDialog.setCanceledOnTouchOutside(false);
         if (mActicityMode == SELECT_HIDE_MODE) {
@@ -804,7 +842,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             @Override
             public void onClick(int which) {
                 if (which == 1) {
-
+                    mSelectAll.setText(R.string.app_select_all);
                 }
 
             }
