@@ -396,6 +396,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         mTtileBar.setOptionText(getString(R.string.app_hide_image_edit));
         updateRightButton();
     }
+
     private class BackgoundTask extends AsyncTask<Boolean, Integer, Integer> {
         private Context context;
         private Toast mHideFailToast = null;
@@ -492,9 +493,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 String title = getString(R.string.no_image_hide_dialog_title);
                 String content = getString(R.string.no_image_hide_dialog_content);
                 String rightBtn = getString(R.string.no_image_hide_dialog_button);
-                float width=getResources().getDimension(R.dimen.memery_dialog_button_width);
-                float height=getResources().getDimension(R.dimen.memery_dialog_button_height);
-                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,width,height);
+                float width = getResources().getDimension(R.dimen.memery_dialog_button_width);
+                float height = getResources().getDimension(R.dimen.memery_dialog_button_height);
+                showMemeryAlarmDialog(title, content, null, rightBtn, false, true, width, height);
             } else if (isSuccess == -1 || isSuccess == -2) {
                 Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
             } else if (isSuccess == 2) {
@@ -648,7 +649,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             for (PhotoItem click : mClickList) {
                                 totalSize += click.getSize();
                             }
-                            flag =FileOperationUtil.getSdSize(totalSize,ImageGridActivity.this,mPaths[0]);
+                            flag = FileOperationUtil.getSdSize(totalSize, ImageGridActivity.this,
+                                    mPaths[0]);
                         }
                         if (flag) {
                             if (mActicityMode == SELECT_HIDE_MODE) {
@@ -675,16 +677,22 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                 String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
                                 String content = getString(R.string.image_hide_memery_insuficient_dialog_content);
                                 String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
-                                float width=getResources().getDimension(R.dimen.memery_dialog_button_width);
-                                float height=getResources().getDimension(R.dimen.memery_dialog_button_height);
-                                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,width,height);
+                                float width = getResources().getDimension(
+                                        R.dimen.memery_dialog_button_width);
+                                float height = getResources().getDimension(
+                                        R.dimen.memery_dialog_button_height);
+                                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
+                                        width, height);
                             } else if (mActicityMode == CANCEL_HIDE_MODE) {
                                 String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
                                 String content = getString(R.string.image_unhide_memery_insuficient_dialog_content);
                                 String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
-                                float width=getResources().getDimension(R.dimen.memery_dialog_button_width);
-                                float height=getResources().getDimension(R.dimen.memery_dialog_button_height);
-                                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,width,height);
+                                float width = getResources().getDimension(
+                                        R.dimen.memery_dialog_button_width);
+                                float height = getResources().getDimension(
+                                        R.dimen.memery_dialog_button_height);
+                                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
+                                        width, height);
                             }
                         }
 
@@ -788,7 +796,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     }
 
     private void showMemeryAlarmDialog(String title, String content, String leftBtn,
-            String rightBtn, boolean isLeft, boolean isRight,float width,float height) {
+            String rightBtn, boolean isLeft, boolean isRight, float width, float height) {
         if (memeryDialog == null) {
             memeryDialog = new LEOAlarmDialog(this);
         }
