@@ -620,8 +620,10 @@ public class FileOperationUtil {
             }
         }
         try {
+            File copyFile=new File(newPath);
+            if(copyFile.isFile() && !copyFile.exists()){
             InputStream fosfrom = new FileInputStream(fromFile);
-            OutputStream fosto = new FileOutputStream(newPath);
+            OutputStream fosto = new FileOutputStream(newPath,true);
             byte bt[] = new byte[1024 * 8];
             int c;
             while ((c = fosfrom.read(bt)) > 0) {
@@ -629,6 +631,11 @@ public class FileOperationUtil {
             }
             fosfrom.close();
             fosto.close();
+            }else{
+                if(copyFile.isFile() && copyFile.exists()){
+                    
+                }
+            }
             FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
                 File imageFile = new File(newPath);

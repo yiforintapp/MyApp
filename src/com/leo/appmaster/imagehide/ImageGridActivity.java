@@ -533,7 +533,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 animateReorder();
                 updateRightButton();
             } else {
-                finish();
+                if (isSuccess != 4) {
+                    finish();
+                }
             }
         }
     }
@@ -843,6 +845,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             public void onClick(int which) {
                 if (which == 1) {
                     mSelectAll.setText(R.string.app_select_all);
+                    if (mPicturesList.size() <= 0) {
+                        finish();
+                    }
                 }
 
             }
