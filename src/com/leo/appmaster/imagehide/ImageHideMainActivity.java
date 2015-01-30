@@ -51,7 +51,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     private CommonTitleBar mTtileBar;
     private Button mAddButton;
     private RelativeLayout mNoHidePictureHint;
-    private  List<String> mHideImageInDb;
+    private List<String> mHideImageInDb;
 
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
 
@@ -72,7 +72,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         super.onCreate(savedInstanceState);
         initImageLoder();
         setContentView(R.layout.activity_image_hide);
-        mHideImageInDb=new ArrayList<String>();
+        mHideImageInDb = new ArrayList<String>();
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.app_image_hide);
         mTtileBar.openBackView();
@@ -156,14 +156,13 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
         Cursor cursor = getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
                 MediaColumns.DATE_ADDED + " desc");
-        
+
         if (cursor != null) {
             try {
                 Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
                 PhotoAibum pa = null;
                 while (cursor.moveToNext()) {
-                   
-                    
+
                     String path = cursor.getString(1);
                     String dirName = FileOperationUtil.getDirNameFromFilepath(path);
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
@@ -172,17 +171,22 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                         pa.setName(dirName);
                         pa.setCount("1");
                         pa.setDirPath(dirPath);
-                        if(!mHideImageInDb.contains(path)){
-                        pa.getBitList().add(new PhotoItem(path));
-                        countMap.put(dirPath, pa);
+                        if (!mHideImageInDb.isEmpty()) {
+                            if (!mHideImageInDb.contains(path)) {
+                                pa.getBitList().add(new PhotoItem(path));
+                                countMap.put(dirPath, pa);
+                            }
+                        } else {
+                            pa.getBitList().add(new PhotoItem(path));
+                            countMap.put(dirPath, pa);
                         }
                     } else {
                         pa = countMap.get(dirPath);
                         pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                        if(!mHideImageInDb.contains(path)){
-                        pa.getBitList().add(new PhotoItem(path));
+                        if (!mHideImageInDb.contains(path)) {
+                            pa.getBitList().add(new PhotoItem(path));
                         }
-                        }
+                    }
                 }
                 Iterable<String> it = countMap.keySet();
                 for (String key : it) {
@@ -198,15 +202,19 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
         return aibumList;
     }
-private void getHideImageInDb(){
-    Cursor cur=new AppMasterDBHelper(this).query("hide_image_leo", new String[]{"image_path"}, null, null, null, null, null);
-    if(cur!=null){
-        while(cur.moveToNext()){
-            String path=cur.getString(cur.getColumnIndex("image_path"));
-            mHideImageInDb.add(path);
+
+    private void getHideImageInDb() {
+        Cursor cur = new AppMasterDBHelper(this).query("hide_image_leo", new String[] {
+            "image_path"
+        }, null, null, null, null, null);
+        if (cur != null) {
+            while (cur.moveToNext()) {
+                String path = cur.getString(cur.getColumnIndex("image_path"));
+                mHideImageInDb.add(path);
+            }
         }
     }
-}
+
     class HideAlbumAdapt extends BaseAdapter {
         Context context;
         List<PhotoAibum> list = new ArrayList<PhotoAibum>();

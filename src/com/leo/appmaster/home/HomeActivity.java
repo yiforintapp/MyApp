@@ -191,6 +191,21 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 			sendBroadcast(shortcut);
 			prefernece.edit().putBoolean("shortcut", true).commit();
 		}
+		/**
+		 * 应用墙快捷方式
+		 */
+//		Intent appWallShortIntent=new Intent();
+//		appWallShortIntent.setAction(Intent.ACTION_MAIN);
+//		appWallShortIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+//		appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+//		Intent appWallShortcut=new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+//		appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, "游戏");
+//		appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
+//		ShortcutIconResource appwallIconRes=Intent.ShortcutIconResource.fromContext(this, R.drawable.star_icon);
+//		appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
+//		appWallShortcut.putExtra("duplicate", false);
+//		appWallShortcut.putCharSequenceArrayListExtra("from_appwall_shortcut", value)
+		
 	}
 
 	@Override
