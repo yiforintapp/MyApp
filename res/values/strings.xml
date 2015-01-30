@@ -297,7 +297,6 @@
     <string name="business_size">Size: </string>
     <string name="app_download">Fast Download</string>
     <string name="app_google_download">Free Download</string>
-    <!-- AM-667 -->
     <string name="help_setting_tip_title">Tips</string>
     <string name="lock_help_password_setting_content_gesture"> Hit "Settings" below, type your current password to go to the reset page and enter a new one. (Also see upper right corner to switch pattern lock mode.)</string>
     <string name="lock_help_password_setting_content_password">Hit "Settings" below, type your current password to go to the reset page and enter a new one. (Also see upper right corner to switch passcode lock mode.)</string>
