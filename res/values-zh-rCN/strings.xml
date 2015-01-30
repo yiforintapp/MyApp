@@ -326,7 +326,6 @@
     <string name="lock_setting_button">锁定设置</string>
     <string name="lock_help_lock_theme_setting_button">更换主题</string>
     <string name="help_setting_guide">帮助小贴士</string>
-    <!-- AM-1.7 -->
     <string name="no_image_hide_dialog_title">请删除原图片</string>
     <string name="no_image_hide_dialog_content">图片导入隐私卫士成功，因系统权限限制，请您删除原图片，您可以在隐私卫士中查看隐藏图片</string>
     <string name="no_image_hide_dialog_button">知道了</string>
