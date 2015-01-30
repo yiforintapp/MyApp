@@ -446,8 +446,10 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                 break;
                             } else {
                                 isSuccess = 3;
-                                FileOperationUtil.saveFileMediaEntry(newPath, context);
-                                FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
+                                FileOperationUtil.saveFileMediaEntry(newPath,
+                                        context);
+                                FileOperationUtil.deleteImageMediaEntry(
+                                        item.getPath(), context);
                                 mPicturesList.remove(item);
                                 mAllListPath.remove(item.getPath());
                             }
