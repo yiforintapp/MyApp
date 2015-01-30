@@ -533,7 +533,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 animateReorder();
                 updateRightButton();
             } else {
-                if (isSuccess != 4) {
+                if (isSuccess != 0) {
                     finish();
                 }
             }
