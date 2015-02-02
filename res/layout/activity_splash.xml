@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:background="@drawable/app_list_bg" >
+    android:background="@drawable/app_splash_bg"
+    android:gravity="center_horizontal" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -17,14 +17,16 @@
             android:layout_width="180dp"
             android:layout_height="@dimen/splash_icon_height"
             android:scaleType="fitCenter"
-            android:src="@drawable/splash_icon" />
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="@dimen/splash_width"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/splash_name" />
+            android:src="@drawable/splash_icon"
+            android:visibility="gone" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="@dimen/splash_name_width"
+        android:layout_height="@dimen/splash_name_height"
+        android:layout_marginBottom="@dimen/splash_name_margin_bottom"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/splash_name" />
 
 </RelativeLayout>

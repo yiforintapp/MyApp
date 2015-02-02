@@ -255,7 +255,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme" >
         </activity>
-
+<activity
+    android:name="com.leo.appmaster.privacycontact.PrivacyContactActivity"
+    ></activity>
         <service
             android:name="com.leo.appmaster.applocker.service.LockService"
             android:exported="true" >

@@ -138,5 +138,8 @@
     <dimen name="locker_theme_guide_tv_save_textsize">18sp</dimen>
     <dimen name="memery_dialog_button_width">100dp</dimen>
     <dimen name="memery_dialog_button_height">35dp</dimen>
+    <dimen name="splash_name_margin_bottom">35dp</dimen>
+    <dimen name="splash_name_width">166dp</dimen>
+    <dimen name="splash_name_height">38dp</dimen>
 
 </resources>
