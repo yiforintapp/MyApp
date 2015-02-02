@@ -729,13 +729,6 @@ public class FileOperationUtil {
                 boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(rename, ctx);
                 FileOperationUtil.deleteFileMediaEntry(newPath, ctx);
-                AppMasterDBHelper db = new AppMasterDBHelper(ctx);
-                ContentValues values = new ContentValues();
-                values.put("image_path", fromFile);
-                long flagId = db.insert("hide_image_leo", null, values);
-                if (flagId == -1) {
-                    return -2;
-                }
                 // 复制取消隐藏成功
                 return 0;
             } catch (Exception e) {

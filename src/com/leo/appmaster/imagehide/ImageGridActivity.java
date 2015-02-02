@@ -16,6 +16,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +50,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -283,7 +285,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     protected void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-//        mPaths = FileOperationUtil.getSdCardPaths(ImageGridActivity.this);
+        // mPaths = FileOperationUtil.getSdCardPaths(ImageGridActivity.this);
     }
 
     @Override
@@ -474,6 +476,13 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                     "Copy Hide  image fail!");
                         } else if ("0".equals(newPaht)) {
                             isSuccess = 3;
+                            AppMasterDBHelper db = new AppMasterDBHelper(context);
+                            ContentValues values = new ContentValues();
+                            values.put("image_path", filepath);
+                            long flagId = db.insert("hide_image_leo", null, values);
+                            if (flagId == -1) {
+                                return -2;
+                            }
                             mPicturesList.remove(item);
                             mAllListPath.remove(item.getPath());
                         } else if ("4".equals(newPaht)) {
