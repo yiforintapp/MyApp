@@ -635,8 +635,8 @@ public class FileOperationUtil {
                 File imageFile = new File(newPath);
                 String rename = newPath + ".leotmi";
                 boolean ret = imageFile.renameTo(new File(rename));
-                FileOperationUtil.saveFileMediaEntry(newPath, ctx);
-                FileOperationUtil.deleteImageMediaEntry(fromFile, ctx);
+                FileOperationUtil.saveFileMediaEntry(rename, ctx);
+                FileOperationUtil.deleteImageMediaEntry(newPath, ctx);
                 // 复制隐藏成功
                 return 0;
             } catch (Exception e) {
