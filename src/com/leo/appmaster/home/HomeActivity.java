@@ -170,6 +170,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
         SharedPreferences prefernece = PreferenceManager
                 .getDefaultSharedPreferences(this);
         boolean installed = prefernece.getBoolean("shortcut", false);
+        boolean appwallFlag = prefernece.getBoolean("shortcut_appwall", false);
         if (!installed) {
             Intent shortcutIntent = new Intent(this, SplashActivity.class);
             shortcutIntent.setAction(Intent.ACTION_MAIN);
@@ -178,7 +179,6 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                     | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             // shortcutIntent.setClassName("com.leo.appmaster",
             // "com.leo.appmaster.home.SplashActivity");
-
             Intent shortcut = new Intent(
                     "com.android.launcher.action.INSTALL_SHORTCUT");
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
@@ -192,27 +192,27 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
             shortcut.putExtra("duplicate", false);
             shortcut.putExtra("from_shortcut", true);
             sendBroadcast(shortcut);
-            prefernece.edit().putBoolean("shortcut", true).commit();
+            prefernece.edit().putBoolean("shortcut_appwall", true).commit();
         }
         /**
          * 应用墙快捷方式
          */
-        Intent appWallShortIntent = new Intent();
-        appWallShortIntent.setAction(Intent.ACTION_MAIN);
-        appWallShortIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-        appWallShortIntent.setClassName("com.leo.appmaster",
-                "com.leo.appmaster.appwall.AppWallActivity");
-        Intent appWallShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-        appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, "游戏");
-        ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(this,
-                R.drawable.star_icon);
-        appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
-        appWallShortcut.putExtra("duplicate", false);
-        appWallShortcut.putExtra("from_appwall_shortcut", true);
-        appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
-        sendBroadcast(appWallShortcut);
+        if (!appwallFlag) {
+            Intent appWallShortIntent = new Intent(this, AppWallActivity.class);
+            appWallShortIntent.putExtra("from_appwall_shortcut", true);
+            appWallShortIntent.setAction(Intent.ACTION_MAIN);
+            appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent appWallShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+            appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.appwall_name));
+            ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(this,
+                    R.drawable.game);
+            appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
+            appWallShortcut.putExtra("duplicate", false);
+            appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
+            sendBroadcast(appWallShortcut);
+            prefernece.edit().putBoolean("shortcut", true).commit();
+        }
 
     }
 

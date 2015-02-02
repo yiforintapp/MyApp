@@ -3,6 +3,7 @@ package com.leo.appmaster.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.home.HomeActivity;
 
 public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
@@ -51,7 +53,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mLayoutSpiner = findViewById(R.id.layout_right);
         mTvLogo = (ImageView) findViewById(R.id.iv_logo);
         mHelpSetting = (ImageView) findViewById(R.id.setting_help_iv);
-        mHelpSettingParent=(RelativeLayout) findViewById(R.id.setting_help_tip);
+        mHelpSettingParent = (RelativeLayout) findViewById(R.id.setting_help_tip);
         super.onFinishInflate();
     }
 
@@ -108,6 +110,22 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mLayoutBackView.setOnClickListener(this);
     }
 
+    public void toHomeView(final Context context) {
+        mLayoutBackView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(context, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                try {
+                    context.startActivity(intent);
+                    ((Activity) getContext()).finish();
+                } catch (Exception e) {
+                }
+
+            }
+        });
+    }
+
     public void setBackViewListener(OnClickListener listener) {
         mLayoutBackView.setOnClickListener(listener);
     }
@@ -119,15 +137,19 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     public void setHelpSettingImage(int resId) {
         mHelpSetting.setImageResource(resId);
     }
-    public void setHelpSettingVisiblity(int visibility){
+
+    public void setHelpSettingVisiblity(int visibility) {
         mHelpSetting.setVisibility(visibility);
     }
-    public void setHelpSettingListener(OnClickListener listener){
+
+    public void setHelpSettingListener(OnClickListener listener) {
         mHelpSettingParent.setOnClickListener(listener);
     }
-    public void setHelpSettingParentListener(OnClickListener listener){
+
+    public void setHelpSettingParentListener(OnClickListener listener) {
         mHelpSettingParent.setOnClickListener(listener);
     }
+
     public void showLogo() {
         mTvLogo.setVisibility(View.VISIBLE);
     }

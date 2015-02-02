@@ -332,5 +332,6 @@
     <string name="image_hide_memery_insuficient_dialog_content">SD卡容量不足，无法隐藏图片，请释放空间</string>
     <string name="image_unhide_memery_insuficient_dialog_content">SD卡容量不足，无法恢复图片，请释放空间</string>
     <string name="image_hide_memery_insuficient_dialog_button">我知道了</string>
+    <string name="appwall_name">游戏中心</string>
 
 </resources>

@@ -322,5 +322,6 @@
     <string name="image_hide_memery_insuficient_dialog_content">SD card storage is full! Delete some files to free space before “Hide”.</string>
     <string name="image_unhide_memery_insuficient_dialog_content">SD card storage is full! Delete some files to free space before RESTORE.</string>
     <string name="image_hide_memery_insuficient_dialog_button">OK</string>
+    <string name="appwall_name">Game Center</string>
 
 </resources>
