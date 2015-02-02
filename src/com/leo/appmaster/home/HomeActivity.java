@@ -617,7 +617,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
         Resources resources = AppMasterApplication.getInstance().getResources();
         listItems.add(resources.getString(R.string.grade));
         listItems.add(resources.getString(R.string.feedback));
-        listItems.add(resources.getString(R.string.app_wall));
+        listItems.add(resources.getString(R.string.appwall_name));
         if (LeoStat.isUpdateAvailable()) {
             listItems.add(resources.getString(R.string.app_setting_has_update));
         } else {
