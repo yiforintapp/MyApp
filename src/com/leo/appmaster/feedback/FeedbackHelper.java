@@ -24,6 +24,7 @@ import android.util.Log;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.db.AppMasterDBHelper;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leoers.leoanalytics.LeoStat;
 
 /**
@@ -31,7 +32,7 @@ import com.leoers.leoanalytics.LeoStat;
  */
 public class FeedbackHelper {
 
-	private final static String FEEDBACK_URL = "http://api.leostat.com/appmaster/feedback";
+	private final static String FEEDBACK_URL = "http://" + SDKWrapper.getBestServerDomain() + "/appmaster/feedback";
 	// private final static String FEEDBACK_URL =
 	// "http://test.leostat.com/appmaster/feedback";
 	public final static String TABLE_NAME = "feedback";

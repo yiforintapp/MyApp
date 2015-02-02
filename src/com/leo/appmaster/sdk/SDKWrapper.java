@@ -30,6 +30,10 @@ public class SDKWrapper {
         // iniBaidu(ctx);
         iniPushSDK(ctx);
     }
+    
+    public static String getBestServerDomain(){
+        return LeoStat.getBestServerDomain();
+    }
 
     private static void iniPushSDK(Context ctx) {
         /* TODO: change this from Log.DEBUG to Log.ERROR when release */
