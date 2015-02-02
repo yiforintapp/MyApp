@@ -52,7 +52,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     private Button mAddButton;
     private RelativeLayout mNoHidePictureHint;
     private List<String> mHideImageInDb;
-
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
 
     String[] STORE_HIDEIMAGES = new String[] {
@@ -190,7 +189,14 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                 }
                 Iterable<String> it = countMap.keySet();
                 for (String key : it) {
-                    aibumList.add(countMap.get(key));
+                    int count = getUnhideImageDbCount(key);
+                    if (count > 0) {
+                        PhotoAibum aibum = countMap.get(key);
+                        aibum.setCount(String.valueOf(Integer.parseInt(aibum.getCount()) - count));
+                        aibumList.add(aibum);
+                    } else {
+                        aibumList.add(countMap.get(key));
+                    }
                 }
                 Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
             } catch (Exception e) {
@@ -205,7 +211,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
     private void getHideImageInDb() {
         Cursor cur = new AppMasterDBHelper(this).query("hide_image_leo", new String[] {
-            "image_path"
+                "image_path"
         }, null, null, null, null, null);
         if (cur != null) {
             while (cur.moveToNext()) {
@@ -274,6 +280,18 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     private static class ViewHolder {
         private ImageView img;
         private TextView txt;
+    }
+
+    /**
+     * getUnhideImageDbCount
+     */
+    private int getUnhideImageDbCount(String dirPath) {
+        Cursor cur = new AppMasterDBHelper(this).query("hide_image_leo", new String[] {
+                "image_path"
+        }, "image_dir = ?", new String[] {
+                dirPath
+        }, null, null, null);
+        return cur.getCount();
     }
 
     private class LoaderHideImageFolderTask extends AsyncTask<Void, Integer, Integer> {

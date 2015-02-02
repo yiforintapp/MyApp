@@ -62,7 +62,7 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
 
         db.execSQL(CREATE_DOWNLOAD_TABLE);
         db.execSQL("CREATE TABLE IF NOT EXISTS hide_image_leo ("
-                + "_id INTEGER PRIMARY KEY," + "image_path TEXT" + ");");
+                + "_id INTEGER PRIMARY KEY," + "image_dir TEXT," + "image_path TEXT" + ");");
     }
 
     @Override
@@ -89,7 +89,7 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
                     + "app_size INTEGER," + "icon_status INTEGER" + ");");
         } else if (newVersion == 4) {
             db.execSQL("CREATE TABLE IF NOT EXISTS hide_image_leo ("
-                    + "_id INTEGER PRIMARY KEY," + "image_path TEXT" + ");");
+                    + "_id INTEGER PRIMARY KEY," + "image_dir TEXT," + "image_path TEXT" + ");");
         }
     }
 

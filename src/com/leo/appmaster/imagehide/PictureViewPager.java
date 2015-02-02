@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,6 +28,7 @@ import android.widget.LinearLayout;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -336,6 +338,12 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                         "Copy Hide  image fail!");
             } else if ("0".equals(newPaht)) {
                 isSuccess = 3;
+                AppMasterDBHelper db = new AppMasterDBHelper(context);
+                ContentValues values = new ContentValues();
+                String dirPath=FileOperationUtil.getDirPathFromFilepath(filepath);
+                values.put("image_dir",dirPath);
+                values.put("image_path", filepath);
+                long flagId = db.insert("hide_image_leo", null, values);
                 mPicturesList.remove(mListPos);
             } else if ("4".equals(newPaht)) {
                 isSuccess = 4;

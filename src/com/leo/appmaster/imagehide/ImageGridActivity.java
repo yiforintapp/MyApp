@@ -480,9 +480,6 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             ContentValues values = new ContentValues();
                             values.put("image_path", filepath);
                             long flagId = db.insert("hide_image_leo", null, values);
-                            if (flagId == -1) {
-                                return -2;
-                            }
                             mPicturesList.remove(item);
                             mAllListPath.remove(item.getPath());
                         } else if ("4".equals(newPaht)) {
