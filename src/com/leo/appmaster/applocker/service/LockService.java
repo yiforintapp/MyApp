@@ -29,6 +29,7 @@ public class LockService extends Service {
 	public static final String EXTRA_STARTUP_FROM = "start_from";
 	
 	private static final String SYSTEMUI_PKG = "com.android.systemui";
+	private static final String ES_UNINSTALL_ACTIVITY = ".app.UninstallMonitorActivity";
 
 	private boolean mServiceStarted;
 
@@ -180,7 +181,10 @@ public class LockService extends Service {
                     activityName = topTaskInfo.topActivity.getShortClassName();
                 }
             }
-
+            // AM-940, filter com.estrongs.android.pop.app.UninstallMonitorActivity
+            if(ES_UNINSTALL_ACTIVITY.equals(activityName)) {
+                return;
+            }
             if (mLockHandler != null && pkgName != null && activityName != null) {
                 mLockHandler.handleAppLaunch(pkgName, activityName);
             }           
