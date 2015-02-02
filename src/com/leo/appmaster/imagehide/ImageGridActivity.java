@@ -283,7 +283,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     protected void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        mPaths = FileOperationUtil.getSdCardPaths(ImageGridActivity.this);
+//        mPaths = FileOperationUtil.getSdCardPaths(ImageGridActivity.this);
     }
 
     @Override

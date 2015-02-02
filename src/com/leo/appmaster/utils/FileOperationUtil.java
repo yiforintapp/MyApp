@@ -417,7 +417,7 @@ public class FileOperationUtil {
         String params[] = new String[] {
                 imagePath
         };
-        
+
         Uri uri = Files.getContentUri("external");
         // context.getContentResolver().delete(
         // MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -621,28 +621,22 @@ public class FileOperationUtil {
         }
         try {
             File copyFile = new File(newPath);
-            if (copyFile.isFile() && !copyFile.exists()) {
-                InputStream fosfrom = new FileInputStream(fromFile);
-                OutputStream fosto = new FileOutputStream(newPath, true);
-                byte bt[] = new byte[1024 * 8];
-                int c;
-                while ((c = fosfrom.read(bt)) > 0) {
-                    fosto.write(bt, 0, c);
-                }
-                fosfrom.close();
-                fosto.close();
-            } else {
-                if (copyFile.isFile() && copyFile.exists()) {
-
-                }
+            InputStream fosfrom = new FileInputStream(fromFile);
+            OutputStream fosto = new FileOutputStream(newPath, true);
+            byte bt[] = new byte[1024 * 8];
+            int c;
+            while ((c = fosfrom.read(bt)) > 0) {
+                fosto.write(bt, 0, c);
             }
+            fosfrom.close();
+            fosto.close();
             FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
                 File imageFile = new File(newPath);
                 String rename = newPath + ".leotmi";
                 boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(newPath, ctx);
-                FileOperationUtil.deleteImageMediaEntry(newPath, ctx);
+                FileOperationUtil.deleteImageMediaEntry(fromFile, ctx);
                 // 复制隐藏成功
                 return 0;
             } catch (Exception e) {
