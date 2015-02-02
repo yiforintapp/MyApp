@@ -29,6 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -64,21 +65,39 @@ public class AppWallActivity extends BaseActivity implements
     private AppWallDialog p;
     private List<AppWallBean> all;
     private List<AppWallBean> temp;
+    private boolean mAppwallShortcut;
 
     private void init() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.appwallTB);
         mTtileBar.setTitle(R.string.app_wall);
-        mTtileBar.openBackView();
         mTtileBar.setOptionTextVisibility(View.INVISIBLE);
         appwallLV = (ListView) findViewById(R.id.appwallLV);
         button = (Button) findViewById(R.id.restartBT);
         text = (TextView) findViewById(R.id.textView1);
+        if (mAppwallShortcut) {
+//            LayoutInflater inflater = LayoutInflater.from(this);
+//            View view = inflater.inflate(R.layout.common_title_bar, null);
+//            LinearLayout backArrow = (LinearLayout) view.findViewById(R.id.commit_title_back);
+//            backArrow.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View arg0) {
+//                    
+//                }
+//            });
+            mTtileBar.toHomeView(this);
+        } else {
+            mTtileBar.openBackView();
+        }
     }
 
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.activity_appwall_activity);
+        Intent intent = getIntent();
+        if (intent != null) {
+            mAppwallShortcut = intent.getBooleanExtra("from_appwall_shortcut", false);
+        }
         all = new ArrayList<AppWallBean>();
         p = new AppWallDialog(this);
         Window window = p.getWindow();
@@ -97,11 +116,28 @@ public class AppWallActivity extends BaseActivity implements
         MyAsyncTask task = new MyAsyncTask();
         task.execute(DATAPATH, AppwallHttpUtil.getLanguage(), getString(R.string.channel_code));
         // task.execute(DATAPATH, AppwallHttpUtil.getLanguage(), "002a");
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mAppwallShortcut) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            try {
+                startActivity(intent);
+                finish();
+            } catch (Exception e) {
+            }
+        } else {
+            // super.onBackPressed();
+            finish();
+        }
     }
 
     @Override
@@ -152,13 +188,15 @@ public class AppWallActivity extends BaseActivity implements
         String packageName = all.get(arg2).getDownload().get(0).getUrl();
         if (packageName != null && !packageName.equals("")) {
             SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", packageName);
-//            LeoLog.e("xxxxxxxxxxxxxxxxxx", "*************1...." + packageName);
+            // LeoLog.e("xxxxxxxxxxxxxxxxxx", "*************1...." +
+            // packageName);
         } else {
             String urlPageName = all.get(arg2).getDownload().get(1).getUrl();
             if (urlPageName != null && !urlPageName.equals("")) {
                 String urlName = toUrlgetPackageName(urlPageName);
                 SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", urlName);
-//                LeoLog.e("xxxxxxxxxxxxxxxxxx", "*************2...." + urlName);
+                // LeoLog.e("xxxxxxxxxxxxxxxxxx", "*************2...." +
+                // urlName);
             }
         }
     }

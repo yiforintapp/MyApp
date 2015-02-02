@@ -33,15 +33,16 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- 统计sdk end -->
-    
-    <!--  LEO push: begin -->
+
+
+    <!-- LEO push: begin -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <!--  LEO push: end -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- LEO push: end -->
 
 
     <!-- baidu mtj permissions -->
@@ -105,8 +106,8 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.AppLockListActivity"
-            android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
         <activity
@@ -129,8 +130,8 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.appmanage.AppListActivity"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
         <activity
@@ -174,12 +175,18 @@
         <activity
             android:name="com.leo.appmaster.appwall.AppWallActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" />
+            android:launchMode="singleInstance"
+            android:theme="@style/activity_theme" >
+         <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <!-- 用户协议 -->
         <activity
             android:name="com.leo.appmaster.home.ProtocolActivity"
             android:theme="@style/activity_theme" />
-        
+
         <!-- add for the app update of leosdk -->
         <activity
             android:name="com.leo.appmaster.sdk.update.UpdateActivity"
@@ -248,6 +255,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme" >
         </activity>
+
         <service
             android:name="com.leo.appmaster.applocker.service.LockService"
             android:exported="true" >
@@ -301,7 +309,8 @@
             android:name="BaiduMobAd_EXCEPTION_LOG"
             android:value="true" />
         <!-- for Baidu MTJ end -->
-        
+
+
         <!-- for LEO push sdk -->
         <service android:name="com.leo.push.PushService" />
     </application>
