@@ -69,7 +69,7 @@ public class AppWallActivity extends BaseActivity implements
 
     private void init() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.appwallTB);
-        mTtileBar.setTitle(R.string.app_wall);
+        mTtileBar.setTitle(R.string.appwall_name);
         mTtileBar.setOptionTextVisibility(View.INVISIBLE);
         appwallLV = (ListView) findViewById(R.id.appwallLV);
         button = (Button) findViewById(R.id.restartBT);
