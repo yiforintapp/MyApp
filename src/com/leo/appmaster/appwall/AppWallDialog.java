@@ -21,6 +21,7 @@ public class AppWallDialog extends LEOBaseDialog {
 		super(context, R.style.bt_dialog);
 		mContext = context.getApplicationContext();
 		initUI();
+		
 	}
 
 	public void setMessage(String hintString) {
@@ -47,7 +48,6 @@ public class AppWallDialog extends LEOBaseDialog {
 		View dlgView = LayoutInflater.from(mContext).inflate(
 				R.layout.dialog_appwall, null);
 		mProgressBar = (ProgressBar) dlgView.findViewById(R.id.dlg_pro);
-
 		setContentView(dlgView);
 	}
 

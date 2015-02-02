@@ -100,6 +100,7 @@ public class AppWallActivity extends BaseActivity implements
         }
         all = new ArrayList<AppWallBean>();
         p = new AppWallDialog(this);
+        p.setCanceledOnTouchOutside(false);
         Window window = p.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.alpha = 0.5f;
