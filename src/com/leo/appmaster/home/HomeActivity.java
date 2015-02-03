@@ -198,6 +198,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
         /**
          * 应用墙快捷方式
          */
+        
         if (!appwallFlag) {
             Intent appWallShortIntent = new Intent(this, AppWallActivity.class);
             appWallShortIntent.putExtra("from_appwall_shortcut", true);
