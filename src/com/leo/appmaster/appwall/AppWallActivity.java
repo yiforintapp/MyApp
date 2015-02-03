@@ -121,10 +121,10 @@ public class AppWallActivity extends BaseActivity implements
     @Override
     public void onBackPressed() {
         if (mAppwallShortcut) {
-            finish();
+            AppWallActivity.this.finish();
         } else {
             Intent intent = new Intent(this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             try {
                 startActivity(intent);
                 finish();
