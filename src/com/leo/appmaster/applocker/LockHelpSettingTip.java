@@ -29,13 +29,14 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leoers.leoanalytics.LeoStat;
 
-public class LockHelpSettingTip extends Activity {
+public class LockHelpSettingTip extends BaseActivity {
     private CommonTitleBar mTitle;
     private LeoPictureViewPager mViewPager;
     private List<LockHelpItemPager> mHelpPager;
