@@ -99,7 +99,7 @@ public class Constants {
 	/*
 	 * Server URL
 	 */
-	public static final String APP_LOCK_LIST_URL = "http://" + SDKWrapper.getBestServerDomain() + "/appmaster/applockerrecommend";
+	public static final String APP_LOCK_LIST_URL =  "/appmaster/applockerrecommend";
 
 	public static final String APP_LOCK_LIST_DEBUG2 = "http://192.168.1.142:8080/appmaster/appmaster/applockerrecommend";
 	public static final String GP_PACKAGE = "com.android.vending";// GP package
@@ -135,8 +135,8 @@ public class Constants {
 	/**
 	 * online theme url
 	 */
-	public static final String ONLINE_THEME_URL = "http://" + SDKWrapper.getBestServerDomain() + "/appmaster/themes";
-	public static final String CHECK_NEW_THEME = "http://" + SDKWrapper.getBestServerDomain() + "/appmaster/themesupdatecheck";
+	public static final String ONLINE_THEME_URL = "/appmaster/themes";
+	public static final String CHECK_NEW_THEME = "/appmaster/themesupdatecheck";
 
 	/**
 	 * for compat first version theme preview url

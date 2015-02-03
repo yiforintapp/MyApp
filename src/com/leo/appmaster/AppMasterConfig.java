@@ -15,8 +15,8 @@ public class AppMasterConfig {
 	 /*
 	 * RECOMMEND URL
 	 */
-	 public static final String APP_RECOMMEND_URL = "http://" + SDKWrapper.getBestServerDomain() + "/appmaster/apprecommend/list";
-	 public static final String CHECK_NEW_BUSINESS_APP = "http://" + SDKWrapper.getBestServerDomain() + "/appmaster/apprecommend/checkappupdate";
+	 public static final String APP_RECOMMEND_URL = "/appmaster/apprecommend/list";
+	 public static final String CHECK_NEW_BUSINESS_APP = "/appmaster/apprecommend/checkappupdate";
 	 public static final int TIME_2_HOUR = 2 * 60 * 60 * 1000;
 	 public static final int TIME_12_HOUR = 12 * 60 * 60 * 1000;
 	/*-----    Debug configurations  end  ------ */

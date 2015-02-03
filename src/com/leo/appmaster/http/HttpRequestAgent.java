@@ -16,6 +16,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 import com.android.volley.Request.Method;
 import com.android.volley.Response.Listener;
 import com.android.volley.Response.ErrorListener;
@@ -54,14 +55,14 @@ public class HttpRequestAgent {
 	public void getAppLockList(Listener<JSONObject> listener,
 			ErrorListener eListener) {
 		JsonObjectRequest request = new JsonObjectRequest(
-				Constants.APP_LOCK_LIST_URL, null, listener, eListener);
+				Utilities.getURL(Constants.APP_LOCK_LIST_URL), null, listener, eListener);
 		request.setShouldCache(true);
 		mRequestQueue.add(request);
 	}
 
 	public void loadOnlineTheme(List<String> loadedTheme,
 			Listener<JSONObject> listener, ErrorListener eListener) {
-		String url = Constants.ONLINE_THEME_URL;
+		String url = Utilities.getURL(Constants.ONLINE_THEME_URL);
 		String combined = "";
 		for (String string : loadedTheme) {
 			combined = combined + string + ";";
@@ -80,7 +81,7 @@ public class HttpRequestAgent {
 
 	public void checkNewTheme(Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = Constants.CHECK_NEW_THEME;
+		String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
 		List<String> hideThemes = AppMasterPreference.getInstance(mContext)
 				.getHideThemeList();
 		String combined = "";
@@ -99,7 +100,7 @@ public class HttpRequestAgent {
 
 	public void checkNewBusinessData(Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = AppMasterConfig.CHECK_NEW_BUSINESS_APP;
+		String url = Utilities.getURL(AppMasterConfig.CHECK_NEW_BUSINESS_APP);
 		String body = "update_flag="
 				+ AppMasterPreference.getInstance(mContext)
 						.getLocalBusinessSerialNumber() + "&market_id="
@@ -118,7 +119,7 @@ public class HttpRequestAgent {
 	 */
 	public void loadRecomApp(int type, Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = AppMasterConfig.APP_RECOMMEND_URL + "?re_position=" + type;
+		String url = Utilities.getURL(AppMasterConfig.APP_RECOMMEND_URL) + "?re_position=" + type;
 		String body = "&market_id=" + mContext.getString(R.string.channel_code)
 				+ "&language=" + AppwallHttpUtil.getLanguage();
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
@@ -135,7 +136,7 @@ public class HttpRequestAgent {
 	 */
 	public void loadBusinessRecomApp(int page, int number, Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = AppMasterConfig.APP_RECOMMEND_URL + "?re_position=4"
+		String url = Utilities.getURL(AppMasterConfig.APP_RECOMMEND_URL) + "?re_position=4"
 				+ "&pgcurrent=" + page;
 		String body = "&market_id=" + mContext.getString(R.string.channel_code)
 				+ "&language=" + AppwallHttpUtil.getLanguage() + "&pgsize="

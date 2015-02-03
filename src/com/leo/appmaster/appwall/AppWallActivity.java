@@ -46,6 +46,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.RoundedBitmapDisplayer;
@@ -59,8 +60,7 @@ public class AppWallActivity extends BaseActivity implements
     private Button button;
     private TextView text;
     private DisplayImageOptions options;
-    private static final String DATAPATH = "http://" + SDKWrapper.getBestServerDomain()
-            + "/appmaster/appwall";
+    private static final String DATAPATH = "/appmaster/appwall";
     public static final String GPPACKAGE = "com.android.vending";
     private static final String CHARSETLOCAL = "utf-8";
     private static final String CHARSETSERVICE = "utf-8";
@@ -108,7 +108,7 @@ public class AppWallActivity extends BaseActivity implements
                 .displayer(new RoundedBitmapDisplayer(20)).build();
         init();
         MyAsyncTask task = new MyAsyncTask();
-        task.execute(DATAPATH, AppwallHttpUtil.getLanguage(), getString(R.string.channel_code));
+        task.execute(Utilities.getURL(DATAPATH), AppwallHttpUtil.getLanguage(), getString(R.string.channel_code));
         // task.execute(DATAPATH, AppwallHttpUtil.getLanguage(), "002a");
 
     }
@@ -273,7 +273,7 @@ public class AppWallActivity extends BaseActivity implements
                         button.setVisibility(View.GONE);
                         text.setVisibility(View.GONE);
                         MyAsyncTask task = new MyAsyncTask();
-                        task.execute(DATAPATH, AppwallHttpUtil.getLanguage(),
+                        task.execute(Utilities.getURL(DATAPATH), AppwallHttpUtil.getLanguage(),
                                 getString(R.string.channel_code));
                         /*
                          * task.execute(DATAPATH, AppwallHttpUtil.getLanguage(),
