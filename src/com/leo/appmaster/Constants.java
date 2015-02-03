@@ -1,5 +1,7 @@
 package com.leo.appmaster;
 
+import com.leo.appmaster.sdk.SDKWrapper;
+
 import android.provider.MediaStore.MediaColumns;
 
 import android.net.Uri;
@@ -133,8 +135,8 @@ public class Constants {
 	/**
 	 * online theme url
 	 */
-	public static final String ONLINE_THEME_URL = "http://api.leostat.com/appmaster/themes";
-	public static final String CHECK_NEW_THEME = "http://api.leostat.com/appmaster/themesupdatecheck";
+	public static final String ONLINE_THEME_URL = "http://" + SDKWrapper.getBestServerDomain() + "/appmaster/themes";
+	public static final String CHECK_NEW_THEME = "http://" + SDKWrapper.getBestServerDomain() + "/appmaster/themesupdatecheck";
 
 	/**
 	 * for compat first version theme preview url
