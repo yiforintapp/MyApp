@@ -71,65 +71,10 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 SDKWrapper.addEvent(this, LeoStat.P1, "about", "join");
                 break;
             case R.id.join_beta:
-                if (AppUtil.appInstalled(getApplicationContext(),
-                        "com.google.android.apps.plus")) {
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = Uri
-                            .parse("https://plus.google.com/u/0/communities/112552044334117834440");
-                    intent.setData(uri);
-                    ComponentName cn = new ComponentName(
-                            "com.google.android.apps.plus",
-                            "com.google.android.libraries.social.gateway.GatewayActivity");
-                    intent.setComponent(cn);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        startActivity(intent);
-                    } catch (Exception e) {
-                        intent = new Intent(Intent.ACTION_VIEW, uri);
-                        ComponentName componentName = new ComponentName(
-                                "com.google.android.apps.plus",
-                                "com.google.android.apps.plus.phone.UrlGatewayActivity");
-                        intent.setComponent(componentName);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        try {
-                            startActivity(intent);
-                        } catch (Exception e1) {
-                            intent = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(intent);
-                        }
-                    }
-                } else {
-                    Uri uri = Uri
-                            .parse("https://plus.google.com/u/0/communities/112552044334117834440");
-                    intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                }
-                SDKWrapper.addEvent(this, LeoStat.P1, "about", "like");
+ 
                 break;
             case R.id.like_us:
-                if (AppUtil.appInstalled(getApplicationContext(),
-                        "com.facebook.katana")) {
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = Uri
-                            .parse("fb://page/1709302419294051");
-                    intent.setData(uri);
-                    ComponentName cn = new ComponentName("com.facebook.katana",
-                            "com.facebook.katana.IntentUriHandler");
-                    intent.setComponent(cn);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        startActivity(intent);
-                    } catch (Exception e) {
-                    }
-                } else {
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = Uri
-                            .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
-                    intent.setData(uri);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-                SDKWrapper.addEvent(this, LeoStat.P1, "about", "privacy");
+              
                 break;
             default:
                 break;

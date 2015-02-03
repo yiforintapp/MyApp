@@ -23,8 +23,8 @@
             android:layout_height="@dimen/about_logo_height"
             android:layout_below="@+id/about_title_bar"
             android:layout_centerHorizontal="true"
-            android:scaleType="fitCenter"
             android:layout_marginTop="@dimen/about_icon_margin_top"
+            android:scaleType="fitCenter"
             android:src="@drawable/splash_icon" />
 
         <TextView
@@ -42,8 +42,8 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_below="@+id/app_logo"
-            android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:src="@drawable/splash_name" />
 
         <TextView
@@ -56,24 +56,24 @@
             android:text="@string/about_copy"
             android:textColor="#FFABCEFF"
             android:textSize="10dp" />
-
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/about_bottom_height"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:background="@android:color/white"
         android:gravity="center"
-        android:orientation="vertical" >
-        
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:visibility="gone" >
 
             <Button
                 android:id="@+id/join_beta"
@@ -83,7 +83,8 @@
                 android:background="@drawable/mycheck_button_selecter"
                 android:text="@string/about_group"
                 android:textColor="@android:color/white"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -91,7 +92,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:visibility="gone" >
 
             <Button
                 android:id="@+id/like_us"
@@ -103,7 +105,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="18dp" />
         </LinearLayout>
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -121,8 +123,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="18dp" />
         </LinearLayout>
-        
-        
-        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

@@ -75,15 +75,6 @@ public class AppWallActivity extends BaseActivity implements
         button = (Button) findViewById(R.id.restartBT);
         text = (TextView) findViewById(R.id.textView1);
         if (mAppwallShortcut) {
-//            LayoutInflater inflater = LayoutInflater.from(this);
-//            View view = inflater.inflate(R.layout.common_title_bar, null);
-//            LinearLayout backArrow = (LinearLayout) view.findViewById(R.id.commit_title_back);
-//            backArrow.setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View arg0) {
-//                    
-//                }
-//            });
             mTtileBar.toHomeView(this);
         } else {
             mTtileBar.openBackView();
@@ -189,15 +180,11 @@ public class AppWallActivity extends BaseActivity implements
         String packageName = all.get(arg2).getDownload().get(0).getUrl();
         if (packageName != null && !packageName.equals("")) {
             SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", packageName);
-            // LeoLog.e("xxxxxxxxxxxxxxxxxx", "*************1...." +
-            // packageName);
         } else {
             String urlPageName = all.get(arg2).getDownload().get(1).getUrl();
             if (urlPageName != null && !urlPageName.equals("")) {
                 String urlName = toUrlgetPackageName(urlPageName);
                 SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", urlName);
-                // LeoLog.e("xxxxxxxxxxxxxxxxxx", "*************2...." +
-                // urlName);
             }
         }
     }
@@ -215,7 +202,6 @@ public class AppWallActivity extends BaseActivity implements
         context.startActivity(intent);
     }
 
-    // 创建线程异步加载
     private class MyAsyncTask extends AsyncTask<String, Void, String> {
         private boolean flag;
         InputStream is = null;

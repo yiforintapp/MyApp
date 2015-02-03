@@ -490,7 +490,74 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view,
                                 int position, long id) {
-                            if (position == 0) {
+
+                            if (position == 2) {
+                                /* 加入粉丝团 */
+                                Intent intentBeta = null;
+                                if (AppUtil.appInstalled(getApplicationContext(),
+                                        "com.google.android.apps.plus")) {
+                                    intentBeta = new Intent(Intent.ACTION_VIEW);
+                                    Uri uri = Uri
+                                            .parse("https://plus.google.com/u/0/communities/112552044334117834440");
+                                    intentBeta.setData(uri);
+                                    ComponentName cn = new ComponentName(
+                                            "com.google.android.apps.plus",
+                                            "com.google.android.libraries.social.gateway.GatewayActivity");
+                                    intentBeta.setComponent(cn);
+                                    intentBeta.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    try {
+                                        startActivity(intentBeta);
+                                    } catch (Exception e) {
+                                        intentBeta = new Intent(Intent.ACTION_VIEW, uri);
+                                        ComponentName componentName = new ComponentName(
+                                                "com.google.android.apps.plus",
+                                                "com.google.android.apps.plus.phone.UrlGatewayActivity");
+                                        intentBeta.setComponent(componentName);
+                                        intentBeta.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        try {
+                                            startActivity(intentBeta);
+                                        } catch (Exception e1) {
+                                            intentBeta = new Intent(Intent.ACTION_VIEW, uri);
+                                            startActivity(intentBeta);
+                                        }
+                                    }
+                                } else {
+                                    Uri uri = Uri
+                                            .parse("https://plus.google.com/u/0/communities/112552044334117834440");
+                                    intentBeta = new Intent(Intent.ACTION_VIEW, uri);
+                                    startActivity(intentBeta);
+                                }
+                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "about", "like");
+
+                            } else if (position == 1) {
+                                /* Facebook */
+                                Intent intentLikeUs = null;
+                                if (AppUtil.appInstalled(getApplicationContext(),
+                                        "com.facebook.katana")) {
+                                    intentLikeUs = new Intent(Intent.ACTION_VIEW);
+                                    Uri uri = Uri
+                                            .parse("fb://page/1709302419294051");
+                                    intentLikeUs.setData(uri);
+                                    ComponentName cn = new ComponentName("com.facebook.katana",
+                                            "com.facebook.katana.IntentUriHandler");
+                                    intentLikeUs.setComponent(cn);
+                                    intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    try {
+                                        startActivity(intentLikeUs);
+                                    } catch (Exception e) {
+                                    }
+                                } else {
+                                    intentLikeUs = new Intent(Intent.ACTION_VIEW);
+                                    Uri uri = Uri
+                                            .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
+                                    intentLikeUs.setData(uri);
+                                    intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intentLikeUs);
+                                }
+                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "about",
+                                        "privacy");
+                            } else if (position == 0) {
+                                /* google play */
                                 if (AppUtil.appInstalled(getApplicationContext(),
                                         "com.android.vending")) {
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -521,22 +588,26 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
                                 }
-                            } else if (position == 1) {
+                            } else if (position == 3) {
+                                /* 吐个槽 */
                                 Intent intent = new Intent(HomeActivity.this,
                                         FeedbackActivity.class);
                                 startActivity(intent);
-                            } else if (position == 2) {
+                            } else if (position == 6) {
                                 /* SDK Event Mark */
                                 SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home_app_rec",
                                         "all");
+                                /* 游戏中心 */
                                 Intent intent = new Intent(HomeActivity.this,
                                         AppWallActivity.class);
                                 startActivity(intent);
-                            } else if (position == 3) {
+                            } else if (position == 4) {
+                                /* 检查更新 */
                                 SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
                                         "setting", "check_update");
                                 LeoStat.checkUpdate();
-                            } else if (position == 4) {
+                            } else if (position == 5) {
+                                /* 关于 */
                                 Intent intent = new Intent(HomeActivity.this,
                                         AboutActivity.class);
                                 startActivity(intent);
@@ -615,16 +686,24 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
     private List<String> getPopMenuItems() {
         List<String> listItems = new ArrayList<String>();
         Resources resources = AppMasterApplication.getInstance().getResources();
+        /* 亲给个好评 */
         listItems.add(resources.getString(R.string.grade));
+        /* 点个赞 */
+        listItems.add(resources.getString(R.string.about_praise));
+        /* 加入粉丝团 */
+        listItems.add(resources.getString(R.string.about_group));
+        /* 吐个槽 */
         listItems.add(resources.getString(R.string.feedback));
-        listItems.add(resources.getString(R.string.appwall_name));
+        /* 检查升级 */
         if (LeoStat.isUpdateAvailable()) {
             listItems.add(resources.getString(R.string.app_setting_has_update));
         } else {
             listItems.add(resources.getString(R.string.app_setting_update));
         }
+        /* 关于 */
         listItems.add(resources.getString(R.string.app_setting_about));
-
+        /* 游戏中心 */
+        listItems.add(resources.getString(R.string.appwall_name));
         return listItems;
     }
 

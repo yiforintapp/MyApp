@@ -174,7 +174,7 @@
 
     <string name="recom_lock_tip">Reminder of most-used Apps</string>
     <string name="new_app_lock_tip">Reminder of new Apps</string>
-    <string name="feedback">Feedbacks</string>
+    <string name="feedback">Feedback</string>
     <string name="first_set_passwd_hint">Enter your password</string>
     <string name="gestur_passwd_function_hint">Pattern available in Lock&amp;hide</string>
     <string name="digital_passwd_function_hint">Password available in Lock&amp;Hide</string>
@@ -205,7 +205,7 @@
     <string name="lockerThemePoit">Theme<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="lockerTheme">Theme</string>
     <string name="defaultTheme">Default</string>
-    <string name="grade">Rate Us</string>
+    <string name="grade">5 Star?</string>
     <string name="grade_tip">Thank you for using Privacy Lock. Please leave your feedbacks here.</string>
     <string name="lock_more">Lock More</string>
     <string name="lock">Lock</string>
@@ -236,7 +236,7 @@
     <string name="find_new_theme_content">Click to view the new themes</string>
     <string name="theme_tag_new">New</string>
     <string name="theme_tag_hot">Hot</string>
-    <string name="about_group">Join Beta</string>
+    <string name="about_group">Fun Fans</string>
     <string name="about_praise">Facebook</string>
     <string name="locker_guide">Click to change a theme</string>
     <string name="locker_theme_guide">Themes will be applied to lock screen!</string>

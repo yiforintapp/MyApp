@@ -10,6 +10,7 @@
     <dimen name="memory_flow_text2_marginTop">5dp</dimen>
     <dimen name="about_logo_width">124dp</dimen>
     <dimen name="about_logo_height">132dp</dimen>
+    <dimen name="about_icon_margin_top">80dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
     <dimen name="recomment_tip">500dp</dimen>
     <dimen name="success_lock_imageiv">75dp</dimen>
@@ -22,6 +23,7 @@
     <dimen name="app_item_iv_app_icon_height">52dp</dimen>
     <dimen name="default_lock_icon_width">23dp</dimen>
     <dimen name="lock_icon_height">24dp</dimen>
+    <dimen name="about_bottom_height">170dp</dimen>
     <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
     <dimen name="app_item_linearlayout_padding">5dp</dimen>
     <dimen name="sucess_lock_recomment_successicon_top">50dp</dimen>
