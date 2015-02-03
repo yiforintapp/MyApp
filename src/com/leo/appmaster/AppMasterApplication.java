@@ -36,6 +36,8 @@ import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.push.UserActManager;
+import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.utils.LeoLog;
@@ -55,6 +57,9 @@ public class AppMasterApplication extends Application implements
 
 	private static AppMasterApplication mInstance;
 	private static List<Activity> mActivityList;
+	
+	/* Separate user phone feed activity from Leo Analytics SDK to App */
+	private UserActManager mActManager;
 
 	public Handler mHandler;
 
@@ -122,6 +127,10 @@ public class AppMasterApplication extends Application implements
 			}
 		}, 10000);
 		restartApplocker(PhoneInfo.getAndroidVersion());
+		
+		/* init user activity manager here */
+		mActManager = UserActManager.getInstance(getApplicationContext(), 
+		        PushUIHelper.getInstance(getApplicationContext()));
 	}
 
 	private void startInitTask(final Context ctx) {

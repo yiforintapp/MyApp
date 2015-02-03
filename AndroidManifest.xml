@@ -187,7 +187,7 @@
             android:name="com.leo.appmaster.home.ProtocolActivity"
             android:theme="@style/activity_theme" />
 
-        <!-- add for the app update of leosdk -->
+        <!-- add for the app update/push of leosdk -->
         <activity
             android:name="com.leo.appmaster.sdk.update.UpdateActivity"
             android:launchMode="singleTop"
@@ -195,11 +195,11 @@
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.sdk.push.PushActivity"
+            android:name="com.leo.appmaster.sdk.push.ui.NormalPushActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame" />
-        <!-- add for the app update of leosdk -->
+        <!-- add for the app update/push of leosdk -->
 
         <activity
             android:name="com.leo.appmaster.feedback.FeedbackActivity"
