@@ -167,7 +167,6 @@ public class AppWallActivity extends BaseActivity implements
             }
         } else if (number > 0 && number <= 1) {
             urlStr = sort.get(0)[1];
-
             try {
                 requestUrl(urlStr);
             } catch (Exception e) {
