@@ -142,5 +142,6 @@
     <dimen name="splash_name_margin_bottom">35dp</dimen>
     <dimen name="splash_name_width">166dp</dimen>
     <dimen name="splash_name_height">38dp</dimen>
+    <dimen name="popuwindow_menu_text_size">13dp</dimen>
 
 </resources>
