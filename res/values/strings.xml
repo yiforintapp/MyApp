@@ -133,7 +133,7 @@
     <string name="passwd_notify">Password Hint</string>
     <string name="no_lock_item_tip">No locked Apps</string>
     <string name="no_unlocked_item_tip">No unlocked Apps</string>
-    <string name="app_setting_has_update">&#160;&#160;&#160;Updates <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
+    <string name="app_setting_has_update">Updates <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">Maximum of 40 characters.</string>
     <string name="anwser_charsize_tip">Maximum of 40 characters.</string>
     <string name="query_delete">Are you sure you want to permanently delete backup file of%1$s</string>
