@@ -174,6 +174,6 @@ public class Constants {
 			+ " LIKE '%.ts'";
 	public static final String VIDEO_PLUS_GP_URL = "https://play.google.com/store/apps/details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01market://details?id= com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
 	public static final String VIDEO_PLUS_GP = "market://details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
-
+	public static final String HOME_TO_APP_WALL_FLAG="jump_appwall_flag";
 
 }

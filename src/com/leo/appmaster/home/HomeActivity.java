@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockHelpSettingTip;
@@ -600,6 +601,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                 /* 游戏中心 */
                                 Intent intent = new Intent(HomeActivity.this,
                                         AppWallActivity.class);
+                                intent.putExtra(Constants.HOME_TO_APP_WALL_FLAG, true);
                                 startActivity(intent);
                             } else if (position == 4) {
                                 /* 检查更新 */

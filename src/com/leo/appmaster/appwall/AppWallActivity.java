@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.HomeActivity;
@@ -58,14 +59,15 @@ public class AppWallActivity extends BaseActivity implements
     private Button button;
     private TextView text;
     private DisplayImageOptions options;
-    private static final String DATAPATH = "http://" + SDKWrapper.getBestServerDomain() + "/appmaster/appwall";
+    private static final String DATAPATH = "http://" + SDKWrapper.getBestServerDomain()
+            + "/appmaster/appwall";
     public static final String GPPACKAGE = "com.android.vending";
     private static final String CHARSETLOCAL = "utf-8";
     private static final String CHARSETSERVICE = "utf-8";
     private AppWallDialog p;
     private List<AppWallBean> all;
     private List<AppWallBean> temp;
-    private boolean mAppwallShortcut;
+    private boolean mAppwallShortcut=false;
 
     private void init() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.appwallTB);
@@ -75,9 +77,9 @@ public class AppWallActivity extends BaseActivity implements
         button = (Button) findViewById(R.id.restartBT);
         text = (TextView) findViewById(R.id.textView1);
         if (mAppwallShortcut) {
-            mTtileBar.toHomeView(this);
-        } else {
             mTtileBar.openBackView();
+        } else {
+            mTtileBar.toHomeView(this);
         }
     }
 
@@ -87,7 +89,7 @@ public class AppWallActivity extends BaseActivity implements
         setContentView(R.layout.activity_appwall_activity);
         Intent intent = getIntent();
         if (intent != null) {
-            mAppwallShortcut = intent.getBooleanExtra("from_appwall_shortcut", false);
+            mAppwallShortcut = intent.getBooleanExtra(Constants.HOME_TO_APP_WALL_FLAG, false);
         }
         all = new ArrayList<AppWallBean>();
         p = new AppWallDialog(this);
@@ -119,6 +121,8 @@ public class AppWallActivity extends BaseActivity implements
     @Override
     public void onBackPressed() {
         if (mAppwallShortcut) {
+            finish();
+        } else {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             try {
@@ -126,9 +130,6 @@ public class AppWallActivity extends BaseActivity implements
                 finish();
             } catch (Exception e) {
             }
-        } else {
-            // super.onBackPressed();
-            finish();
         }
     }
 
