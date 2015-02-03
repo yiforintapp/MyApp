@@ -271,7 +271,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 			return;
 		mRecommendDatas.clear();
 		mInitLoading = true;
-		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1, 8,
+		HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1, 20,
 				new Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response, boolean noModify) {
