@@ -405,6 +405,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     public void onUolockOutcount() {
+        
+        mAnim.cancel();
         shouldLock = true;
         Intent intent = new Intent(this, WaitActivity.class);
         intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mToPackage);

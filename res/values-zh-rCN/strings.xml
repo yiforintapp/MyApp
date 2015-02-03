@@ -132,8 +132,8 @@
     <string name="app_permission2">普通权限</string>
     <string name="app_permission3">重要权限</string>
     <string name="app_setting_update">检查升级</string>
-    <string name="feedback">吐个槽</string>
-    <string name="grade">亲给个好评吧</string>
+    <string name="feedback">用户反馈</string>
+    <string name="grade">谷歌市场评分</string>
     <string name="grade_tip">感谢您使用隐私卫士，为了让我们更加进步，请您为我们评分吧！</string>
     <string name="app_setting_about">关于</string>
     <string name="forbid_uninstall">禁止卸载</string>
@@ -234,7 +234,7 @@
     <string name="theme_tag_new">最 新</string>
     <string name="theme_tag_hot">最 热</string>
     <string name="about_group">加入粉丝团</string>
-    <string name="about_praise">点个赞</string>
+    <string name="about_praise">Facebook</string>
     <string name="locker_guide">点击更换解锁主题</string>
     <string name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
