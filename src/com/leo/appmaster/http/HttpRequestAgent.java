@@ -54,7 +54,7 @@ public class HttpRequestAgent {
 	public void getAppLockList(Listener<JSONObject> listener,
 			ErrorListener eListener) {
 		JsonObjectRequest request = new JsonObjectRequest(
-				Constants.APP_LOCK_LIST_DEBUG, null, listener, eListener);
+				Constants.APP_LOCK_LIST_URL, null, listener, eListener);
 		request.setShouldCache(true);
 		mRequestQueue.add(request);
 	}
