@@ -4,12 +4,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import com.leo.analytics.LeoAgent;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.FolderItemInfo;
+import com.leoers.leoanalytics.LeoStat;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -238,7 +238,7 @@ public final class Utilities {
 	}
 
 	public static String getURL(String suffix){
-	    return "http://" + LeoAgent.getBestServerDomain() + suffix;
+	    return "http://" + LeoStat.getBestServerDomain() + suffix;
 	}
 	
 }
