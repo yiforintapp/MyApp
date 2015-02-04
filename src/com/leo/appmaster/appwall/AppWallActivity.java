@@ -69,7 +69,8 @@ public class AppWallActivity extends BaseActivity implements
     private AppWallDialog p;
     private List<AppWallBean> all;
     private List<AppWallBean> temp;
-    private boolean mAppwallFromHome = false;
+    private String mAppwallFromHome;
+    private boolean mIsFromShortcut;
 
     private void init() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.appwallTB);
@@ -78,27 +79,6 @@ public class AppWallActivity extends BaseActivity implements
         appwallLV = (ListView) findViewById(R.id.appwallLV);
         button = (Button) findViewById(R.id.restartBT);
         text = (TextView) findViewById(R.id.textView1);
-        if (mAppwallFromHome) {
-            AppMasterPreference amp = AppMasterPreference.getInstance(AppWallActivity.this);
-            amp.setLaunchOtherApp(false);
-            mTtileBar.openBackView();
-
-        } else {
-            mTtileBar.setBackViewListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View arg0) {
-                    Intent intent = new Intent(AppWallActivity.this, HomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    try {
-                        AppWallActivity.this.startActivity(intent);
-                        AppWallActivity.this.finish();
-                    } catch (Exception e) {
-                    }
-
-                }
-            });
-        }
     }
 
     @Override
@@ -107,7 +87,8 @@ public class AppWallActivity extends BaseActivity implements
         setContentView(R.layout.activity_appwall_activity);
         Intent intent = getIntent();
         if (intent != null) {
-            mAppwallFromHome = intent.getBooleanExtra(Constants.HOME_TO_APP_WALL_FLAG, false);
+            mAppwallFromHome = intent.getStringExtra(Constants.HOME_TO_APP_WALL_FLAG);
+            mIsFromShortcut = intent.getBooleanExtra("from_appwall_shortcut", false);
         }
         all = new ArrayList<AppWallBean>();
         p = new AppWallDialog(this);
@@ -133,13 +114,29 @@ public class AppWallActivity extends BaseActivity implements
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        /* sdk mark */
+        if (mIsFromShortcut) {
+            SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", "launcher");
+            Log.e("xxxxxxxxxxxxx", "launcher");
+        } else if (Constants.HOME_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
+            SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", "home");
+            Log.e("xxxxxxxxxxxxx", "home");
+        } else if (Constants.PUSH_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
+            SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", "statusbar");
+            Log.e("xxxxxxxxxxxxx", "statusbar");
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
     }
 
     @Override
     public void onBackPressed() {
-        if (mAppwallFromHome) {
+        if (Constants.HOME_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
             AppMasterPreference pre = AppMasterPreference.getInstance(AppWallActivity.this);
             pre.setLaunchOtherApp(false);
             finish();
@@ -267,6 +264,7 @@ public class AppWallActivity extends BaseActivity implements
 
                 }
                 for (int i = 0; i < apps.size(); i++) {
+                    Log.e("xxxxxxxxxxxxxx", apps.get(i).getAppPackageName() + "\n");
                     flag = pkgName.contains(apps.get(i).getAppPackageName());
                     if (!flag) {
                         all.add(apps.get(i));
@@ -415,7 +413,6 @@ public class AppWallActivity extends BaseActivity implements
                     appPackageName = json.getString("app_package_name");
                     app.setAppPackageName(appPackageName);
                 } catch (Exception e) {
-                    e.printStackTrace();
                     appPackageName = "";
                     app.setAppPackageName(appPackageName);
                 }

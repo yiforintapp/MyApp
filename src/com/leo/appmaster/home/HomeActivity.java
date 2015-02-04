@@ -472,8 +472,8 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                 gotoAppLock();
                 break;
             case R.id.tv_app_backup:
-                SDKWrapper.addEvent(this, LeoStat.P1, "home", "backup");
-
+                /* sdk mark */
+                SDKWrapper.addEvent(this, LeoStat.P1, "home", "uninstall");
                 Vector<BusinessItemInfo> list = AppBusinessManager
                         .getInstance(this).getBusinessData();
                 AppMasterPreference pref = AppMasterPreference.getInstance(this);
@@ -500,6 +500,10 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
                             if (position == 2) {
                                 /* 加入粉丝团 */
+
+                                /* sdk mark */
+                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                        "google+");
                                 Intent intentBeta = null;
                                 if (AppUtil.appInstalled(getApplicationContext(),
                                         "com.google.android.apps.plus")) {
@@ -538,6 +542,10 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
                             } else if (position == 1) {
                                 /* Facebook */
+
+                                /* sdk mark */
+                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                        "Facebook");
                                 Intent intentLikeUs = null;
                                 if (AppUtil.appInstalled(getApplicationContext(),
                                         "com.facebook.katana")) {
@@ -565,6 +573,9 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                         "privacy");
                             } else if (position == 0) {
                                 /* google play */
+                                /* sdk mark */
+                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                        "googleplay");
                                 if (AppUtil.appInstalled(getApplicationContext(),
                                         "com.android.vending")) {
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -596,26 +607,36 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                     startActivity(intent);
                                 }
                             } else if (position == 3) {
-                                /* 吐个槽 */
+                                /* sdk mark */
+                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                        "feedback");
                                 Intent intent = new Intent(HomeActivity.this,
                                         FeedbackActivity.class);
                                 startActivity(intent);
                             } else if (position == 6) {
-                                /* SDK Event Mark */
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home_app_rec",
-                                        "all");
                                 /* 游戏中心 */
+
+                                /* sdk mark */
+                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                        "gamecenter");
                                 Intent intent = new Intent(HomeActivity.this,
                                         AppWallActivity.class);
-                                intent.putExtra(Constants.HOME_TO_APP_WALL_FLAG, true);
+                                intent.putExtra(Constants.HOME_TO_APP_WALL_FLAG,
+                                        Constants.HOME_TO_APP_WALL_FLAG_VALUE);
                                 startActivity(intent);
                             } else if (position == 4) {
                                 /* 检查更新 */
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
-                                        "setting", "check_update");
+
+                                /* sdk mark */
+                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                        "update");
                                 LeoStat.checkUpdate();
                             } else if (position == 5) {
                                 /* 关于 */
+
+                                /* sdk mark */
+                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                        "about");
                                 Intent intent = new Intent(HomeActivity.this,
                                         AboutActivity.class);
                                 startActivity(intent);

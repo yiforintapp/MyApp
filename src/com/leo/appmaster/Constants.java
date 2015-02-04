@@ -175,5 +175,7 @@ public class Constants {
 	public static final String VIDEO_PLUS_GP_URL = "https://play.google.com/store/apps/details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01market://details?id= com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
 	public static final String VIDEO_PLUS_GP = "market://details?id=com.leomaster.videomaster&referrer=utm_source%3Dad_amtuiguang_01";
 	public static final String HOME_TO_APP_WALL_FLAG="jump_appwall_flag";
+	public static final String HOME_TO_APP_WALL_FLAG_VALUE="from_home_to_appwall";
+	public static final String PUSH_TO_APP_WALL_FLAG_VALUE="push";
 
 }
