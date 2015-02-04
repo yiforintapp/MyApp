@@ -67,7 +67,7 @@ public class AppWallActivity extends BaseActivity implements
     private AppWallDialog p;
     private List<AppWallBean> all;
     private List<AppWallBean> temp;
-    private boolean mAppwallShortcut=false;
+    private boolean mAppwallFromHome=false;
 
     private void init() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.appwallTB);
@@ -76,7 +76,7 @@ public class AppWallActivity extends BaseActivity implements
         appwallLV = (ListView) findViewById(R.id.appwallLV);
         button = (Button) findViewById(R.id.restartBT);
         text = (TextView) findViewById(R.id.textView1);
-        if (mAppwallShortcut) {
+        if (mAppwallFromHome) {
             mTtileBar.openBackView();
         } else {
             mTtileBar.toHomeView(this);
@@ -89,7 +89,7 @@ public class AppWallActivity extends BaseActivity implements
         setContentView(R.layout.activity_appwall_activity);
         Intent intent = getIntent();
         if (intent != null) {
-            mAppwallShortcut = intent.getBooleanExtra(Constants.HOME_TO_APP_WALL_FLAG, false);
+            mAppwallFromHome = intent.getBooleanExtra(Constants.HOME_TO_APP_WALL_FLAG, false);
         }
         all = new ArrayList<AppWallBean>();
         p = new AppWallDialog(this);
@@ -120,8 +120,8 @@ public class AppWallActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        if (mAppwallShortcut) {
-            AppWallActivity.this.finish();
+        if (mAppwallFromHome) {
+            finish();
         } else {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
