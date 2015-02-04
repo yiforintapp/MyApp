@@ -110,22 +110,6 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mLayoutBackView.setOnClickListener(this);
     }
 
-    public void toHomeView(final Context context) {
-        mLayoutBackView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                Intent intent = new Intent(context, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                try {
-                    context.startActivity(intent);
-                    ((Activity) getContext()).finish();
-                } catch (Exception e) {
-                }
-
-            }
-        });
-    }
-
     public void setBackViewListener(OnClickListener listener) {
         mLayoutBackView.setOnClickListener(listener);
     }

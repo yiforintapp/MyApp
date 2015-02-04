@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -67,7 +69,7 @@ public class AppWallActivity extends BaseActivity implements
     private AppWallDialog p;
     private List<AppWallBean> all;
     private List<AppWallBean> temp;
-    private boolean mAppwallFromHome=false;
+    private boolean mAppwallFromHome = false;
 
     private void init() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.appwallTB);
@@ -77,9 +79,25 @@ public class AppWallActivity extends BaseActivity implements
         button = (Button) findViewById(R.id.restartBT);
         text = (TextView) findViewById(R.id.textView1);
         if (mAppwallFromHome) {
+            AppMasterPreference amp = AppMasterPreference.getInstance(AppWallActivity.this);
+            amp.setLaunchOtherApp(false);
             mTtileBar.openBackView();
+
         } else {
-            mTtileBar.toHomeView(this);
+            mTtileBar.setBackViewListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    Intent intent = new Intent(AppWallActivity.this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    try {
+                        AppWallActivity.this.startActivity(intent);
+                        AppWallActivity.this.finish();
+                    } catch (Exception e) {
+                    }
+
+                }
+            });
         }
     }
 
@@ -108,7 +126,8 @@ public class AppWallActivity extends BaseActivity implements
                 .displayer(new RoundedBitmapDisplayer(20)).build();
         init();
         MyAsyncTask task = new MyAsyncTask();
-        task.execute(Utilities.getURL(DATAPATH), AppwallHttpUtil.getLanguage(), getString(R.string.channel_code));
+        task.execute(Utilities.getURL(DATAPATH), AppwallHttpUtil.getLanguage(),
+                getString(R.string.channel_code));
         // task.execute(DATAPATH, AppwallHttpUtil.getLanguage(), "002a");
 
     }
@@ -121,10 +140,12 @@ public class AppWallActivity extends BaseActivity implements
     @Override
     public void onBackPressed() {
         if (mAppwallFromHome) {
+            AppMasterPreference pre = AppMasterPreference.getInstance(AppWallActivity.this);
+            pre.setLaunchOtherApp(false);
             finish();
         } else {
             Intent intent = new Intent(this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             try {
                 startActivity(intent);
                 finish();
