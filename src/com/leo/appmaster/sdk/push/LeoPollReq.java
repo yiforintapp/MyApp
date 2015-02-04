@@ -8,6 +8,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.push.PushManager;
 
@@ -21,7 +22,7 @@ public class LeoPollReq extends BasePushHttpReq {
 
     public LeoPollReq(ArrayList<BasicNameValuePair> data) {
         mData = data;
-        mURL = "http://apia.leomaster.com/appactivity/activity/pull";
+        mURL = "http://" + SDKWrapper.getBestServerDomain() + "/appactivity/activity/pull";
 //         mURL = "puuuulllll"; // TODO: a test URL
     }
 
