@@ -136,7 +136,6 @@ public class LockHelpSettingTip extends BaseActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        LeoLog.e("xxxx", "onNewIntent");
         super.onNewIntent(intent);
     }
 
