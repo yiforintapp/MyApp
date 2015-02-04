@@ -408,6 +408,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         shouldLock = true;
         Intent intent = new Intent(this, WaitActivity.class);
         intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mToPackage);
+        intent.putExtra(WaitActivity.KEY_JUST_FINISH, true);
         startActivity(intent);
     }
 

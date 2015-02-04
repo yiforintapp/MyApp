@@ -2,7 +2,6 @@ package com.leo.appmaster.applocker;
 
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.LinearInterpolator;
@@ -17,6 +16,8 @@ import com.leo.appmaster.ui.TimeView;
 
 public class WaitActivity extends BaseActivity {
 
+    public static final String KEY_JUST_FINISH = "just_finish";
+    
 	private TextView mTvTime;
 	private int mWaitTime = 11;
 	private UpdateTask mTask;
@@ -24,6 +25,7 @@ public class WaitActivity extends BaseActivity {
 
 	private String mPackage;
 	private boolean returned;
+	private boolean mJustFinish;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class WaitActivity extends BaseActivity {
 	private void handleIntent() {
 		Intent intent = getIntent();
 		mPackage = intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG);
+		mJustFinish = intent.getBooleanExtra(KEY_JUST_FINISH, false);
 	}
 
 	
@@ -88,25 +91,27 @@ public class WaitActivity extends BaseActivity {
 			return;
 		}
 		returned = true;
-		Intent intent = new Intent(this, LockScreenActivity.class);
-		int lockType = AppMasterPreference.getInstance(WaitActivity.this)
-				.getLockType();
-		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_PASSWD);
-		} else {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_GESTURE);
+		if(!mJustFinish) {
+		      Intent intent = new Intent(this, LockScreenActivity.class);
+		        int lockType = AppMasterPreference.getInstance(WaitActivity.this)
+		                .getLockType();
+		        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+		            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+		                    LockFragment.LOCK_TYPE_PASSWD);
+		        } else {
+		            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+		                    LockFragment.LOCK_TYPE_GESTURE);
+		        }
+		        if (mPackage == null || mPackage.equals("")) {
+		            intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+		                    LockFragment.FROM_SELF);
+		        } else {
+		            intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
+		            intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+		                    LockFragment.FROM_OTHER);
+		        }
+		        startActivity(intent);
 		}
-		if (mPackage == null || mPackage.equals("")) {
-			intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-					LockFragment.FROM_SELF);
-		} else {
-			intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
-			intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-					LockFragment.FROM_OTHER);
-		}
-		startActivity(intent);
 		finish();
 	}
 
