@@ -119,13 +119,10 @@ public class AppWallActivity extends BaseActivity implements
         /* sdk mark */
         if (mIsFromShortcut) {
             SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", "launcher");
-            Log.e("xxxxxxxxxxxxx", "launcher");
         } else if (Constants.HOME_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
             SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", "home");
-            Log.e("xxxxxxxxxxxxx", "home");
         } else if (Constants.PUSH_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
             SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", "statusbar");
-            Log.e("xxxxxxxxxxxxx", "statusbar");
         }
     }
 
