@@ -75,6 +75,19 @@ public class AppWallActivity extends BaseActivity implements
     private void init() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.appwallTB);
         mTtileBar.setTitle(R.string.appwall_name);
+        if (Constants.HOME_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
+            AppMasterPreference pre = AppMasterPreference.getInstance(AppWallActivity.this);
+            pre.setLaunchOtherApp(false);
+            mTtileBar.openBackView();
+        } else {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            try {
+                startActivity(intent);
+                finish();
+            } catch (Exception e) {
+            }
+        }
         mTtileBar.setOptionTextVisibility(View.INVISIBLE);
         appwallLV = (ListView) findViewById(R.id.appwallLV);
         button = (Button) findViewById(R.id.restartBT);
