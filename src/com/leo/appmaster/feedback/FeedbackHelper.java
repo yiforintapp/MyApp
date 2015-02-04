@@ -26,13 +26,14 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leoers.leoanalytics.LeoStat;
+import com.leo.appmaster.utils.Utilities;
 
 /**
  * Feedback helper to save and commit feedbacks
  */
 public class FeedbackHelper {
 
-	private final static String FEEDBACK_URL = "http://" + SDKWrapper.getBestServerDomain() + "/appmaster/feedback";
+	private final static String FEEDBACK_URL = "/appmaster/feedback";
 	// private final static String FEEDBACK_URL =
 	// "http://test.leostat.com/appmaster/feedback";
 	public final static String TABLE_NAME = "feedback";
@@ -71,7 +72,7 @@ public class FeedbackHelper {
 					final int categoryIndex = c
 							.getColumnIndexOrThrow(KEY_CATEGORY);
 					final int timeIndex = c.getColumnIndexOrThrow(KEY_TIME);
-					HttpPost httpRequest = new HttpPost(FEEDBACK_URL);
+					HttpPost httpRequest = new HttpPost(Utilities.getURL(FEEDBACK_URL));
 					do {
 						long id = c.getLong(idIndex);
 						List<NameValuePair> params = new ArrayList<NameValuePair>();
