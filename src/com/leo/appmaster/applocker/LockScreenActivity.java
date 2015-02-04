@@ -495,7 +495,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 Intent helpSettingIntent = new Intent(LockScreenActivity.this,
                         LockHelpSettingTip.class);
                 shouldLock = true;
-                helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
                     LockScreenActivity.this.startActivity(helpSettingIntent);
                 } catch (Exception e) {

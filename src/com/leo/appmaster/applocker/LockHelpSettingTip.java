@@ -34,6 +34,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
+import com.leo.appmaster.utils.LeoLog;
 import com.leoers.leoanalytics.LeoStat;
 
 public class LockHelpSettingTip extends BaseActivity {
@@ -129,6 +130,14 @@ public class LockHelpSettingTip extends BaseActivity {
         if (data != null) {
             mCurrentFlag = data.getExtras().getInt("help_setting_current");
         }
+    }
+    
+    
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        LeoLog.e("xxxx", "onNewIntent");
+        super.onNewIntent(intent);
     }
 
     private void initUI() {

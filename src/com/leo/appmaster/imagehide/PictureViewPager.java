@@ -37,7 +37,6 @@ import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -461,22 +460,24 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         }
     }
 
-    private void showLockPage() {
-        Intent intent = new Intent(this, LockScreenActivity.class);
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        startActivityForResult(intent, 1000);
-    }
+    
+	private void showLockPage() {
+		Intent intent = new Intent(this, LockScreenActivity.class);
+		int lockType = AppMasterPreference.getInstance(this).getLockType();
+		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_PASSWD);
+		} else {
+			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+					LockFragment.LOCK_TYPE_GESTURE);
+		}
+		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+				LockFragment.FROM_SELF);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		startActivityForResult(intent, 1000);
+	}
 
     @Override
     public void onActivityResault(int requestCode, int resultCode) {
