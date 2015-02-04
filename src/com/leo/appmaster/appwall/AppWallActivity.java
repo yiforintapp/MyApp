@@ -80,14 +80,22 @@ public class AppWallActivity extends BaseActivity implements
             pre.setLaunchOtherApp(false);
             mTtileBar.openBackView();
         } else {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            try {
-                startActivity(intent);
-                finish();
-            } catch (Exception e) {
-            }
+            mTtileBar.setBackViewListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    Intent intent = new Intent(AppWallActivity.this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    try {
+                        startActivity(intent);
+                        finish();
+                    } catch (Exception e) {
+                    }
+
+                }
+            });
         }
+
         mTtileBar.setOptionTextVisibility(View.INVISIBLE);
         appwallLV = (ListView) findViewById(R.id.appwallLV);
         button = (Button) findViewById(R.id.restartBT);
