@@ -210,7 +210,7 @@ public class AppWallActivity extends BaseActivity implements
                 e.printStackTrace();
             }
         } else {
-            LeoLog.d("", "*************Not URL！");
+            LeoLog.d("com.leo.appmaster.appwall.AppWallActivity", "Not URL！");
         }
         /* SDK Event Mark */
         String packageName = all.get(arg2).getDownload().get(0).getUrl();
@@ -282,7 +282,6 @@ public class AppWallActivity extends BaseActivity implements
 
                 }
                 for (int i = 0; i < apps.size(); i++) {
-                    Log.e("xxxxxxxxxxxxxx", apps.get(i).getAppPackageName() + "\n");
                     flag = pkgName.contains(apps.get(i).getAppPackageName());
                     if (!flag) {
                         all.add(apps.get(i));
