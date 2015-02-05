@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/splash_parentRL"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/app_splash_bg"
@@ -25,8 +26,17 @@
         android:id="@+id/imageView1"
         android:layout_width="@dimen/splash_name_width"
         android:layout_height="@dimen/splash_name_height"
-        android:layout_marginBottom="@dimen/splash_name_margin_bottom"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/splash_name_margin_bottom"
         android:src="@drawable/splash_name" />
+
+    <ImageView
+        android:id="@+id/splash_logo_button"
+        android:layout_width="@dimen/splash_logo_width"
+        android:layout_height="@dimen/splash_logo_height"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/splash_logo_margin_buttom"
+        android:src="@drawable/pl_splash_button"
+        android:visibility="gone" />
 
 </RelativeLayout>

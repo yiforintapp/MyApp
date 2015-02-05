@@ -148,5 +148,8 @@
     <dimen name="popuwindow_menu_text_size">15dp</dimen>
     <dimen name="dialog_alarm_parent_width">330dp</dimen>
     <dimen name="dialog_progress_dlg_title_width">330dp</dimen>
+    <dimen name="splash_logo_width">250dp</dimen>
+    <dimen name="splash_logo_height">75dp</dimen>
+    <dimen name="splash_logo_margin_buttom">44dp</dimen>
 
 </resources>

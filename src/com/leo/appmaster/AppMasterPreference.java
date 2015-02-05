@@ -72,7 +72,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // home page
     public static final String PREF_HOME_BUSINESS_NEW_TIP_CLICK = "home_business_tip_click";
     public static final String PREF_HOME_LOCKED = "home_locked";
-
+    public static final String PREF_FRIST_RUNNING_PL_SPLASH = "is_first_running_pl_splash";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -81,12 +81,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private String mLockPolicy;
     private List<String> mRecommentAppList;
     private boolean mLockerScreenThemeGuide = false;
-
     public static final int LOCK_TYPE_NONE = -1;
     public static final int LOCK_TYPE_PASSWD = 0;
     public static final int LOCK_TYPE_GESTURE = 1;
     private int mLockType = LOCK_TYPE_NONE;
-    
+
     private boolean mLaunchOtherApp = false;
     private boolean mUnlocked = false;
 
@@ -119,7 +118,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setLaunchOtherApp(boolean flag) {
         mLaunchOtherApp = flag;
     }
-    
+
     public boolean getUnlocked() {
         return mUnlocked;
     }
@@ -541,6 +540,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public long getInstallTime() {
         return mPref.getLong(PREF_LAST_ALARM_SET_TIME, 0l);
     }
+
     // public void setIsHelpSettingChangeSucess(boolean flag){
     // mPref.edit().putBoolean(PREF_LOCK_SETTING_CHANGE_PASSWORD,
     // flag).commit();
@@ -548,5 +548,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // public boolean getIsHelpSettingChangeSucess(){
     // return mPref.getBoolean(PREF_LOCK_SETTING_CHANGE_PASSWORD, false);
     // }
+    public boolean isFirstRuningPL() {
+        return mPref.getBoolean(PREF_FRIST_RUNNING_PL_SPLASH, false);
+    }
+
+    public void setFirstRuningPL(boolean flag) {
+        mPref.edit().putBoolean(PREF_FRIST_RUNNING_PL_SPLASH, flag).commit();
+    }
 
 }

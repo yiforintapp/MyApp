@@ -2,18 +2,21 @@
 package com.leo.appmaster.home;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -31,13 +34,39 @@ public class SplashActivity extends BaseActivity {
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
 
     private Handler mEventHandler;
+    private RelativeLayout mSplashRL;
+    private ImageView mSplashButton;
+    private ImageView mSplashLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        mSplashRL = (RelativeLayout) findViewById(R.id.splash_parentRL);
         mEventHandler = new EventHandler(this);
-        mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 1000);
+        final AppMasterPreference pref = AppMasterPreference
+                .getInstance(getApplicationContext());
+        boolean splashFlag = pref.isFirstRuningPL();
+        if (splashFlag) {
+            mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 1000);
+        } else {
+            mSplashButton = (ImageView) findViewById(R.id.splash_logo_button);
+            mSplashLogo = (ImageView) findViewById(R.id.imageView1);
+            mSplashButton.setVisibility(View.VISIBLE);
+            mSplashLogo.setVisibility(View.GONE);
+            mSplashRL.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(HomeActivity.KEY_PLAY_ANIM, true);
+                    SplashActivity.this.startActivity(intent);
+                    SplashActivity.this.finish();
+                    pref.setFirstRuningPL(true);
+                }
+            });
+        }
         startInitTask();
     }
 
