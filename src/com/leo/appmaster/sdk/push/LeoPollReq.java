@@ -22,7 +22,7 @@ public class LeoPollReq extends BasePushHttpReq {
 
     public LeoPollReq(ArrayList<BasicNameValuePair> data) {
         mData = data;
-        mURL = "http://" + SDKWrapper.getBestServerDomain() + "/appactivity/activity/pull";
+        mURL = "http://api.leomaster.com/appactivity/activity/pull";
 //         mURL = "puuuulllll"; // TODO: a test URL
     }
 

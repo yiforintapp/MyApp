@@ -13,7 +13,7 @@ public class LeoPollAckReq extends BasePushHttpReq {
 
     public LeoPollAckReq(ArrayList<BasicNameValuePair> data) {
         mData = data;
-        mURL = "http://" + SDKWrapper.getBestServerDomain() + "/appactivity/activity/pullack";
+        mURL = "http://api.leomaster.com/appactivity/activity/pullack";
     }
 
     public void onReqSuccessed(String response) {
