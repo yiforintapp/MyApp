@@ -431,6 +431,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                 path, newFileName, mTotalSize);
                         if (newPath != null) {
                             if ("-2".equals(newPath)) {
+                                // 隐藏失败
                                 isSuccess = -2;
                                 Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
                                         "Hide rename image fail!");
@@ -440,10 +441,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                 mAllListPath.remove(item.getPath());
 
                             } else if ("-1".equals(newPath)) {
+                                // 复制失败
                                 isSuccess = -1;
                                 Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
                                         "Copy image fail!");
                             } else if ("4".equals(newPath)) {
+                                // 内存不足
                                 isSuccess = 4;
                                 break;
                             } else {
@@ -475,7 +478,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
                                     "Copy Hide  image fail!");
                         } else if ("0".equals(newPaht)) {
-                            isSuccess = 3;
+                            isSuccess = 0;
                             AppMasterDBHelper db = new AppMasterDBHelper(context);
                             ContentValues values = new ContentValues();
                             values.put("image_path", filepath);
@@ -483,6 +486,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             mPicturesList.remove(item);
                             mAllListPath.remove(item.getPath());
                         } else if ("4".equals(newPaht)) {
+                            // 内存不足
                             isSuccess = 4;
                             break;
                         } else {
@@ -541,7 +545,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 animateReorder();
                 updateRightButton();
             } else {
-                if (isSuccess != 0) {
+                if (isSuccess == 0) {
+                } else {
                     finish();
                 }
             }
@@ -833,8 +838,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         }
         intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
                 LockFragment.FROM_SELF);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+        // | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(intent, 1000);
     }

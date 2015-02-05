@@ -647,10 +647,6 @@ public class FileOperationUtil {
             // 复制失败
             return -1;
         }
-        // } else {
-        // // 内存不足
-        // return 1;
-        // }
     }
 
     /**
