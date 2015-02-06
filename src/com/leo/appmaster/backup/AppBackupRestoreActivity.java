@@ -34,7 +34,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class AppBackupRestoreActivity extends BaseActivity implements
 		View.OnClickListener, OnItemClickListener, AppBackupDataListener {
@@ -265,7 +265,7 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 				mBackupManager.backupApps(items);
 				// track backup
 				for (AppItemInfo info : items) {
-					SDKWrapper.addEvent(this, LeoStat.P1, "backup", "backup: "
+					SDKWrapper.addEvent(this, SDKWrapper.P1, "backup", "backup: "
 							+ info.packageName);
 				}
 			} else {

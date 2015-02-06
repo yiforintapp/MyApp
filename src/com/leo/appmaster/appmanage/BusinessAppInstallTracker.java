@@ -8,7 +8,7 @@ import java.util.Set;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class BusinessAppInstallTracker {
 
@@ -30,7 +30,7 @@ public class BusinessAppInstallTracker {
 				// TODO
 				LeoLog.d("BusinessAppInstallTracker", "app_act: " + packageName);
 				SDKWrapper.addEvent(AppMasterApplication.getInstance(),
-						LeoStat.P1, "app_act", packageName);
+						SDKWrapper.P1, "app_act", packageName);
 			}
 			unTrack(packageName);
 		}

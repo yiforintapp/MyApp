@@ -57,7 +57,7 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class AppLoadEngine extends BroadcastReceiver {
     public interface ThemeChanageListener{
@@ -638,7 +638,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 											LockFragment.FROM_SELF_HOME);
 									mContext.startActivity(intent);
 								}
-								SDKWrapper.addEvent(mContext, LeoStat.P1,
+								SDKWrapper.addEvent(mContext, SDKWrapper.P1,
 										"lock_enter", "sug_lock_more");
 
 							} else if (which == 2) {

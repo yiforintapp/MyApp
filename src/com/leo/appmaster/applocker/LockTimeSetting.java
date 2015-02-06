@@ -9,7 +9,7 @@ import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
-import com.leoers.leoanalytics.LeoStat;
+
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -131,7 +131,7 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
                                         .setRelockTimeout(
                                                 valueString[whichButton]);
                                 SDKWrapper.addEvent(LockTimeSetting.this,
-                                        LeoStat.P1, "lock_setting",
+                                        SDKWrapper.P1, "lock_setting",
                                         valueString[whichButton]);
                                 dialog.dismiss();
                             }
@@ -176,7 +176,7 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
         if (AppMasterPreference.PREF_AUTO_LOCK.equals(key)) {
             mAutoLock.setChecked((Boolean) newValue);
             if (!((Boolean) newValue)) {
-                SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting",
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting",
                         "cancel_auto");
             }
         }

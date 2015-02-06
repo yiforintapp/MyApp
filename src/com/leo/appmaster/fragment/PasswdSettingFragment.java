@@ -34,7 +34,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class PasswdSettingFragment extends BaseFragment implements
 		OnDismissListener, OnDiaogClickListener, OnClickListener {
@@ -227,7 +227,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 		                }
 		                }
 						if(AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE){
-						    SDKWrapper.addEvent(PasswdSettingFragment.this.mActivity, LeoStat.P1, "first", "usepwd");
+						    SDKWrapper.addEvent(PasswdSettingFragment.this.mActivity, SDKWrapper.P1, "first", "usepwd");
 						}
 						
 						AppMasterPreference.getInstance(mActivity)
@@ -385,12 +385,12 @@ public class PasswdSettingFragment extends BaseFragment implements
 			mActivity.startActivity(intent);
 			intent = new Intent(mActivity, PasswdProtectActivity.class);
 			mActivity.startActivity(intent);
-			SDKWrapper.addEvent(mActivity, LeoStat.P1, "first", "setpwdp");
+			SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "first", "setpwdp");
 		} else if (((LockSettingActivity) mActivity).isResetPasswd()) {
 			// mActivity.finish();
 
 		} else {
-		    SDKWrapper.addEvent(mActivity, LeoStat.P1, "first", "setpwdp_cancel");
+		    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "first", "setpwdp_cancel");
             if (!TextUtils.isEmpty(mActivityName)) {
                 intent = new Intent();
                 ComponentName componentName =null;

@@ -10,8 +10,9 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class PushNetwork {
 
@@ -30,7 +31,7 @@ public class PushNetwork {
                             READ_TIMEOUT);
             HttpPost httppost = new HttpPost(req.getURL());
             /* transfer Device Info in header for every post request */
-            httppost.addHeader("device", LeoStat.getEncodedDeviceInfo());
+            httppost.addHeader("device", SDKWrapper.getEncodedDeviceInfo());
             httppost.setEntity(new UrlEncodedFormEntity(req.getKVData(), HTTP.UTF_8));
             LeoLog.d(TAG, "==[target URL=" + req.getURL() + "]===");
             HttpResponse response;

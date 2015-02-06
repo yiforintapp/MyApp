@@ -52,7 +52,7 @@ import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.RoundedBitmapDisplayer;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class AppWallActivity extends BaseActivity implements
         OnItemClickListener {
@@ -139,11 +139,11 @@ public class AppWallActivity extends BaseActivity implements
         super.onResume();
         /* sdk mark */
         if (mIsFromShortcut) {
-            SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", "launcher");
+            SDKWrapper.addEvent(AppWallActivity.this, SDKWrapper.P1, "home_app_rec", "launcher");
         } else if (Constants.HOME_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
-            SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", "home");
+            SDKWrapper.addEvent(AppWallActivity.this, SDKWrapper.P1, "home_app_rec", "home");
         } else if (Constants.PUSH_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
-            SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", "statusbar");
+            SDKWrapper.addEvent(AppWallActivity.this, SDKWrapper.P1, "home_app_rec", "statusbar");
         }
     }
 
@@ -215,12 +215,12 @@ public class AppWallActivity extends BaseActivity implements
         /* SDK Event Mark */
         String packageName = all.get(arg2).getDownload().get(0).getUrl();
         if (packageName != null && !packageName.equals("")) {
-            SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", packageName);
+            SDKWrapper.addEvent(AppWallActivity.this, SDKWrapper.P1, "home_app_rec", packageName);
         } else {
             String urlPageName = all.get(arg2).getDownload().get(1).getUrl();
             if (urlPageName != null && !urlPageName.equals("")) {
                 String urlName = toUrlgetPackageName(urlPageName);
-                SDKWrapper.addEvent(AppWallActivity.this, LeoStat.P1, "home_app_rec", urlName);
+                SDKWrapper.addEvent(AppWallActivity.this, SDKWrapper.P1, "home_app_rec", urlName);
             }
         }
     }

@@ -46,7 +46,7 @@ import com.leo.imageloader.core.BitmapDisplayer;
 import com.leo.imageloader.core.ImageAware;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.imageloader.core.LoadedFrom;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class BusinessAppFragment extends BaseFolderFragment implements
 		OnItemClickListener, OnClickListener, OnRefreshListener2<GridView> {
@@ -241,7 +241,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 				mLayoutEmptyTip.setVisibility(View.INVISIBLE);
 			}
 
-			SDKWrapper.addEvent(mActivity, LeoStat.P1, "app_rec", "new");
+			SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_rec", "new");
 
 		} else {
 			mRecommendGrid.setVisibility(View.INVISIBLE);

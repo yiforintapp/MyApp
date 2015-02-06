@@ -34,7 +34,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class AppLockListActivity extends BaseActivity implements
         AppChangeListener, OnItemClickListener, OnClickListener {
@@ -225,7 +225,7 @@ public class AppLockListActivity extends BaseActivity implements
             ((LockImageView) view.findViewById(R.id.iv_app_icon))
                     .setLocked(false);
 
-            SDKWrapper.addEvent(this, LeoStat.P1, "app", "unlock: "
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "unlock: "
                     + mLastSelectApp.packageName);
         } else {
             mLastSelectApp.isLocked = true;
@@ -242,7 +242,7 @@ public class AppLockListActivity extends BaseActivity implements
             ((LockImageView) view.findViewById(R.id.iv_app_icon))
                     .setLocked(true);
 
-            SDKWrapper.addEvent(this, LeoStat.P1, "app", " lock: "
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", " lock: "
                     + mLastSelectApp.packageName);
         }
         saveLockList();

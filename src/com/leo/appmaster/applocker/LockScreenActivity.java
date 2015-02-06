@@ -62,7 +62,7 @@ import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener {
@@ -204,7 +204,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         /* SDK: mark user what to unlock which app */
         if (mFromType == LockFragment.FROM_OTHER
                 || mFromType == LockFragment.FROM_SCREEN_ON) {
-            SDKWrapper.addEvent(this, LeoStat.P1, "access_locked_app",
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "access_locked_app",
                     mToPackage);
         }
 
@@ -483,7 +483,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                 }
-                SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1,
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                         "theme_enter", "unlock");
                 shouldLock = true;
                 startActivityForResult(intent, 0);
@@ -500,7 +500,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 } catch (Exception e) {
                 }
                 /* SDK Event Mark */
-                SDKWrapper.addEvent(LockScreenActivity.this, LeoStat.P1, "help", "help");
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help");
                 break;
             default:
                 break;

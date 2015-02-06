@@ -12,9 +12,12 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.push.PushManager;
 import com.leoers.leoanalytics.LeoStat;
 
+
 public class SDKWrapper {
 
     private final static String TAG = "SDKWrapper";
+    
+    public static int P1  = LeoStat.P1;
 
     /**
      * initial leo analytics and flurry SDK, this will changed in the future.
@@ -31,6 +34,22 @@ public class SDKWrapper {
     
     public static String getBestServerDomain(){
         return LeoStat.getBestServerDomain();
+    }
+    
+    public static void checkUpdate(){
+        LeoStat.checkUpdate();
+    }
+    
+    public static String getEncodedDeviceInfo(){
+        return LeoStat.getEncodedDeviceInfo();
+    }
+    
+    public static boolean isUpdateAvailable(){
+        return LeoStat.isUpdateAvailable();
+    }
+    
+    public static void checkForceUpdate(){
+        LeoStat.checkForceUpdate();
     }
 
     private static void iniPushSDK(Context ctx) {
