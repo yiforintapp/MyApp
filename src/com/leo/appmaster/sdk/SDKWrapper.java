@@ -5,19 +5,20 @@ import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 
 import com.baidu.mobstat.StatService;
+import com.leo.analytics.LeoAgent;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.push.PushManager;
-import com.leoers.leoanalytics.LeoStat;
 
 
 public class SDKWrapper {
 
     private final static String TAG = "SDKWrapper";
     
-    public static int P1  = LeoStat.P1;
+    // useless with LeoAnaSDK_v3
+    public static int P1  = 0;
 
     /**
      * initial leo analytics and flurry SDK, this will changed in the future.
@@ -33,23 +34,23 @@ public class SDKWrapper {
     }
     
     public static String getBestServerDomain(){
-        return LeoStat.getBestServerDomain();
+        return LeoAgent.getBestServerDomain();
     }
     
     public static void checkUpdate(){
-        LeoStat.checkUpdate();
+        LeoAgent.checkUpdate();
     }
     
     public static String getEncodedDeviceInfo(){
-        return LeoStat.getEncodedDeviceInfo();
+        return LeoAgent.getEncodedDeviceInfo();
     }
     
     public static boolean isUpdateAvailable(){
-        return LeoStat.isUpdateAvailable();
+        return LeoAgent.isUpdateAvailable();
     }
     
     public static void checkForceUpdate(){
-        LeoStat.checkForceUpdate();
+        LeoAgent.checkForceUpdate();
     }
 
     private static void iniPushSDK(Context ctx) {
@@ -81,26 +82,26 @@ public class SDKWrapper {
         // AM-727
 //        LeoLog.d(TAG, "addEvent: id=" + id + ";   desc=" + description);
         // leo
-        LeoStat.addEvent(level, id, description);
+        LeoAgent.addEvent(id, description);
         // baidu
         StatService.onEvent(ctx, id, description);
     }
 
     public static void endSession(Context ctx) {
-        LeoStat.endSession();
+        // LeoStat.endSession();
     }
 
     private static void iniLeoSdk(Context ctx) {
         try {
-            LeoStat.init(ctx, ctx.getString(R.string.channel_code),
+            LeoAgent.init(ctx, ctx.getString(R.string.channel_code),
                     "appmaster");
         } catch (NotFoundException e) {
             /* this happened rarely, but got a user feedback AM-593 */
-            LeoStat.init(ctx, "0000a", "appmaster");
+            LeoAgent.init(ctx, "0000a", "appmaster");
         }
         // TODO: change log level to ERROR when release
-        LeoStat.setDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
-        LeoStat.initUpdateEngine(UIHelper.getInstance(ctx),
+        LeoAgent.setDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
+        LeoAgent.initUpdateEngine(UIHelper.getInstance(ctx),
                 true);
     }
 

@@ -14,12 +14,12 @@ import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
+import com.leo.analytics.update.IUIHelper;
+import com.leo.analytics.update.UpdateManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
-import com.leoers.leoanalytics.update.IUIHelper;
-import com.leoers.leoanalytics.update.UpdateManager;
 
 public class UIHelper implements IUIHelper {
 

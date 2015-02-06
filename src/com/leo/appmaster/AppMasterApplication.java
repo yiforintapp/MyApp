@@ -47,8 +47,6 @@ import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.cache.Md5FileNameGenerator;
 import com.leo.imageloader.core.QueueProcessingType;
 
-import com.leoers.leoanalytics.RequestFinishedReporter;
-
 public class AppMasterApplication extends Application {
 
 	private AppLoadEngine mAppsEngine;

@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.UserActManager;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.push.PushManager;
 
 public class PushUIHelper {
 
@@ -91,7 +90,7 @@ public class PushUIHelper {
         mContent = content;
         String activityName = NormalPushActivity.class.getName();
 
-        if (showType == PushManager.SHOW_DIALOG_FIRST && isActivityOnTop(mContext, activityName)) {
+        if (showType == UserActManager.SHOW_DIALOG_FIRST && isActivityOnTop(mContext, activityName)) {
             LeoLog.d(TAG, "push activity already on top, re-layout");
             if (nm != null) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
@@ -99,7 +98,7 @@ public class PushUIHelper {
             if (mListener != null) {
                 mListener.onNewAct(false, adID, title, content);
             }
-        } else if (showType == PushManager.SHOW_DIALOG_FIRST && isAppOnTop(mContext)
+        } else if (showType == UserActManager.SHOW_DIALOG_FIRST && isAppOnTop(mContext)
                 && !mIsLockScreen) {
             LeoLog.d(TAG, "notify user with dialog");
             if (nm != null) {

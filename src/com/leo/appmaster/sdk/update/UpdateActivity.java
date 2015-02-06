@@ -20,6 +20,9 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.leo.analytics.LeoAgent;
+import com.leo.analytics.update.IUIHelper;
+import com.leo.analytics.update.UpdateManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.home.GooglePlayGuideActivity;
@@ -28,8 +31,6 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
-import com.leoers.leoanalytics.update.IUIHelper;
-import com.leoers.leoanalytics.update.UpdateManager;
 
 public class UpdateActivity extends BaseActivity implements OnStateChangeListener {
 
@@ -50,7 +51,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
 
     public UpdateActivity() {
         mProgressHandler = new ProgressHandler(this);
-        mManager = UpdateManager.getInstance(this);
+        mManager = LeoAgent.getUpdateManager();
         mUIHelper = UIHelper.getInstance(this);
         mUIHelper.setOnProgressListener(this);
     }
