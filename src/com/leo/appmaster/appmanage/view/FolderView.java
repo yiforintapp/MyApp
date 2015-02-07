@@ -34,7 +34,7 @@ import com.leo.appmaster.model.FolderItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class FolderView extends RelativeLayout implements OnClickListener,
 		OnItemSelectedListener, LeoAppViewPager.OnPageChangeListener {
@@ -291,25 +291,25 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	    mViewPager.interceptVerticalEvent(true);
 		if (arg0 == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
 		    if(!mFirstShow) {
-		          SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_restore", "glide");
+		          SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ub_restore", "glide");
 		    }
 		} else if (arg0 == FolderItemInfo.FOLDER_FLOW_SORT) {
             if (!mFirstShow) {
-                SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_liuliang", "glide");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ub_liuliang", "glide");
             }
             if (AppBusinessManager.getInstance(mContext).hasBusinessData(BusinessItemInfo.CONTAIN_FLOW_SORT)) {
-                SDKWrapper.addEvent(mContext, LeoStat.P1, "app_rec", "flow");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "app_rec", "flow");
             }
 		} else if (arg0 == FolderItemInfo.FOLDER_CAPACITY_SORT) {
             if (!mFirstShow) {
-                SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_space", "glide");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ub_space", "glide");
             }
             if (AppBusinessManager.getInstance(mContext).hasBusinessData(BusinessItemInfo.CONTAIN_CAPACITY_SORT)) {
-                SDKWrapper.addEvent(mContext, LeoStat.P1, "app_rec", "capacity");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "app_rec", "capacity");
             }
 		} else if (arg0 == FolderItemInfo.FOLDER_BUSINESS_APP) {
             if (!mFirstShow) {
-                SDKWrapper.addEvent(mContext, LeoStat.P1, "ub_newapp", "glide");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ub_newapp", "glide");
             }
 			mViewPager.interceptVerticalEvent(false);
 		}

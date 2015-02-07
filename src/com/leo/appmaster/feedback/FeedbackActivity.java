@@ -30,7 +30,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class FeedbackActivity extends BaseActivity implements OnClickListener {
 
@@ -148,7 +148,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
     protected void onResume() {
         super.onResume();
         checkCommitable();
-        SDKWrapper.addEvent(this, LeoStat.P1, "setting", "fb_enter");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "setting", "fb_enter");
     }
 
     @Override
@@ -196,7 +196,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
                         this.getResources().getText(R.string.feedback_error), Toast.LENGTH_SHORT)
                         .show();
             }
-            SDKWrapper.addEvent(this, LeoStat.P1, "setting", "fb_submit");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "setting", "fb_submit");
         }
     }
 

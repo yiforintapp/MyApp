@@ -32,7 +32,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -195,7 +195,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         // mLockerTheme.setTitle(R.string.lockerTheme);
         // }
         super.onResume();
-        SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "enter");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "enter");
     }
 
     private boolean haveProtect() {
@@ -242,13 +242,13 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                 }
             }
             if ((Boolean) newValue) {
-                SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting",
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting",
                         "banremove");
             }
         } else if (AppMasterPreference.PREF_AUTO_LOCK.equals(key)) {
             mAutoLock.setChecked((Boolean) newValue);
             if (!((Boolean) newValue)) {
-                SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting",
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting",
                         "cancel_auto");
             }
         } else if ("app_lock_clean".equals(key)) {
@@ -257,7 +257,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                     .setLockerClean((Boolean) newValue);
             /*SDK:use Unlock the acceleration*/
             if((Boolean) newValue){
-                SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "lockboost");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "lockboost");
             }
         }
         return false;
@@ -283,15 +283,15 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             Intent intent = new Intent(this, LockSettingActivity.class);
             intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
             startActivityForResult(intent, 0);
-            SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "changepwd");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "changepwd");
         } else if ("set_passwd_protect".equals(key)) {
             Intent intent = new Intent(this, PasswdProtectActivity.class);
             startActivityForResult(intent, 0);
-            SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "pwdp");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "pwdp");
         } else if ("set_passwd_tip".equals(key)) {
             Intent intent = new Intent(this, PasswdTipActivity.class);
             startActivityForResult(intent, 0);
-            SDKWrapper.addEvent(this, LeoStat.P1, "lock_setting", "pwdn");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "pwdn");
         } else if ("set_locker_theme".equals(key)) {
             Editor editor = mySharedPreferences.edit();
             editor.putBoolean("themeOption", true);
@@ -300,7 +300,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                     LockerTheme.class);
             intent.putExtra("need_lock", true);
             startActivityForResult(intent, 0);
-            SDKWrapper.addEvent(LockOptionActivity.this, LeoStat.P1,
+            SDKWrapper.addEvent(LockOptionActivity.this, SDKWrapper.P1,
                     "theme_enter", "setting");
         }
         return false;

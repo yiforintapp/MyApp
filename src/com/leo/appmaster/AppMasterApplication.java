@@ -46,11 +46,8 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.cache.Md5FileNameGenerator;
 import com.leo.imageloader.core.QueueProcessingType;
-import com.leoers.leoanalytics.LeoStat;
-import com.leoers.leoanalytics.RequestFinishedReporter;
 
-public class AppMasterApplication extends Application implements
-		RequestFinishedReporter {
+public class AppMasterApplication extends Application {
 
 	private AppLoadEngine mAppsEngine;
 	private AppBackupRestoreManager mBackupManager;
@@ -116,7 +113,7 @@ public class AppMasterApplication extends Application implements
 		registerReceiver(mAppsEngine, filter);
 
 		SDKWrapper.iniSDK(this);
-		LeoStat.registerRequestFailedReporter(this);
+//		LeoStat.registerRequestFailedReporter(this);
 
 		startInitTask(this);
 		mHandler.postDelayed(new Runnable() {
@@ -486,12 +483,6 @@ public class AppMasterApplication extends Application implements
 		for (Activity activity : mActivityList) {
 			activity.finish();
 		}
-	}
-
-	@Override
-	public void reportRequestFinished(String description) {
-		// SDKWrapper.addEvent(getInstance(), LeoStat.P1, "leosdk",
-		// description);
 	}
 
 	public static void setSharedPreferencesValue(String lockerTheme) {

@@ -30,7 +30,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LoadFailUtils;
-import com.leoers.leoanalytics.LeoStat;
+
 
 import android.content.ContentResolver;
 import android.content.ContentValues;

@@ -68,7 +68,7 @@ import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.imageloader.ImageLoader;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class LockerTheme extends BaseActivity implements OnClickListener,ThemeChanageListener,
         OnPageChangeListener, OnRefreshListener2<ListView> {
@@ -212,7 +212,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
         // form statusbar
         if (mFrom != null && mFrom.equals("new_theme_tip")) {
             /* SDK event mark */
-            SDKWrapper.addEvent(this, LeoStat.P1, "theme_enter", "statusbar");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "theme_enter", "statusbar");
             mViewPager.setCurrentItem(1);
         }
 
@@ -627,7 +627,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
                                 .getResources().getText(R.string.localtheme);
                         mLocalThemeAdapter.notifyDataSetChanged();
 
-                        SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
+                        SDKWrapper.addEvent(LockerTheme.this, SDKWrapper.P1,
                                 "theme_apply", lastSelectedItem.packageName);
                         dialog.cancel();
                         mGuideFlag = AppMasterPreference.getInstance(LockerTheme.this)
@@ -888,10 +888,10 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
             lastSelectedItem = (ThemeItemInfo) arg0.getItemAtPosition(arg2);
             /* SDK mark user click theme - begin */
             if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
-                SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
+                SDKWrapper.addEvent(LockerTheme.this, SDKWrapper.P1,
                         "theme_choice_online", lastSelectedItem.packageName);
             } else if (lastSelectedItem.themeType == Constants.THEME_TYPE_LOCAL) {
-                SDKWrapper.addEvent(LockerTheme.this, LeoStat.P1,
+                SDKWrapper.addEvent(LockerTheme.this, SDKWrapper.P1,
                         "theme_choice_local", lastSelectedItem.packageName);
             }
             /* SDK mark user click theme - end */

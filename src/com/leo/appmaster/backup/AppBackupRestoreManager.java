@@ -35,7 +35,7 @@ import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class AppBackupRestoreManager implements AppChangeListener {
 
@@ -273,7 +273,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 		} catch (NameNotFoundException e) {
 		}
 		context.startActivity(intent);
-		SDKWrapper.addEvent(context, LeoStat.P1, "backup", "recover: "
+		SDKWrapper.addEvent(context, SDKWrapper.P1, "backup", "recover: "
 				+ app.packageName);
 	}
 

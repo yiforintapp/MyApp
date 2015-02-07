@@ -24,7 +24,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.PagedGridView;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class SuccessAppLockListActivity extends BaseActivity implements OnClickListener {
     private List<AppInfo> mLockList;
@@ -82,7 +82,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
             app.isLocked=false;
             mLockList.add(app);
             /*SDK*/
-            SDKWrapper.addEvent(this, LeoStat.P1, "first_lock", app.packageName);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "first_lock", app.packageName);
         }
     }
     Collections.sort(mLockList, new LockedAppComparator(lockList));

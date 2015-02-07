@@ -1,7 +1,7 @@
 
 package com.leo.appmaster.sdk;
 
-import com.leoers.leoanalytics.LeoStat;
+
 
 /**
  * Author: stonelam@leoers.com Brief: activity for users to do setting ,etc. ,
@@ -13,7 +13,7 @@ public class MainViewActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LeoStat.checkForceUpdate();
+        SDKWrapper.checkForceUpdate();
     }
 
 }

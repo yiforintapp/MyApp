@@ -55,7 +55,7 @@ import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
-import com.leoers.leoanalytics.LeoStat;
+
 
 @SuppressLint("NewApi")
 public class VideoGriActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
@@ -389,7 +389,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             task.execute(true);
                             mHideVideoAdapter.notifyDataSetChanged();
                             /*SDK:use hide video */
-                            SDKWrapper.addEvent(VideoGriActivity.this, LeoStat.P1, "hide_Video", "used");
+                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_Video", "used");
                         } else if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                             showProgressDialog(getString(R.string.tips),
                                     getString(R.string.app_cancel_hide_image) + "...", true, true);

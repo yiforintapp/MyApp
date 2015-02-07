@@ -25,7 +25,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leoers.leoanalytics.LeoStat;
+
 import com.leo.appmaster.utils.Utilities;
 
 /**
@@ -87,7 +87,7 @@ public class FeedbackHelper {
 						httpRequest.setEntity(new UrlEncodedFormEntity(params,
 								HTTP.UTF_8));
 
-						String deviceInfo = LeoStat.getEncodedDeviceInfo();
+						String deviceInfo = SDKWrapper.getEncodedDeviceInfo();
 						httpRequest.addHeader("device", deviceInfo); // add
 																		// device
 																		// info

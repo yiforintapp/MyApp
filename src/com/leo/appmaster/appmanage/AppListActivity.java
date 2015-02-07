@@ -71,7 +71,7 @@ import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
-import com.leoers.leoanalytics.LeoStat;
+
 
 @SuppressLint("Override")
 public class AppListActivity extends BaseFragmentActivity implements
@@ -183,10 +183,10 @@ public class AppListActivity extends BaseFragmentActivity implements
                 }
             });
 
-            SDKWrapper.addEvent(this, LeoStat.P1, "ub_newapp", "statusbar");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "ub_newapp", "statusbar");
         } else if (AppBusinessManager.getInstance(this).hasBusinessData(
                 BusinessItemInfo.CONTAIN_APPLIST)) {
-            SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_rec", "home");
         }
     }
 
@@ -637,7 +637,7 @@ public class AppListActivity extends BaseFragmentActivity implements
             public void onAnimationEnd(Animator arg0) {
                 switch (mLastSelectedInfo.type) {
                     case BaseInfo.ITEM_TYPE_NORMAL_APP:
-                        SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+                        SDKWrapper.addEvent(AppListActivity.this, SDKWrapper.P1,
                                 "ub_listpress", "app");
                         openSlicingLayer(view, from);
                         break;
@@ -650,20 +650,20 @@ public class AppListActivity extends BaseFragmentActivity implements
                                     view, mAllAppList);
                             if (event) {
                                 SDKWrapper.addEvent(AppListActivity.this,
-                                        LeoStat.P1, "ub_listpress", "folder"
+                                        SDKWrapper.P1, "ub_listpress", "folder"
                                                 + (folderInfo.folderType + 1));
                                 if (folderInfo.folderType == FolderItemInfo.FOLDER_BACKUP_RESTORE) {
                                     SDKWrapper.addEvent(AppListActivity.this,
-                                            LeoStat.P1, "ub_restore", "list");
+                                            SDKWrapper.P1, "ub_restore", "list");
                                 } else if (folderInfo.folderType == FolderItemInfo.FOLDER_FLOW_SORT) {
                                     SDKWrapper.addEvent(AppListActivity.this,
-                                            LeoStat.P1, "ub_liuliang", "list");
+                                            SDKWrapper.P1, "ub_liuliang", "list");
                                 } else if (folderInfo.folderType == FolderItemInfo.FOLDER_CAPACITY_SORT) {
                                     SDKWrapper.addEvent(AppListActivity.this,
-                                            LeoStat.P1, "ub_space", "list");
+                                            SDKWrapper.P1, "ub_space", "list");
                                 } else if (folderInfo.folderType == FolderItemInfo.FOLDER_BUSINESS_APP) {
                                     SDKWrapper.addEvent(AppListActivity.this,
-                                            LeoStat.P1, "ub_newapp", "list");
+                                            SDKWrapper.P1, "ub_newapp", "list");
                                 }
                             }
                         }
@@ -783,7 +783,7 @@ public class AppListActivity extends BaseFragmentActivity implements
                     mBackupManager.backupApp(pending);
                 }
 
-                SDKWrapper.addEvent(this, LeoStat.P1, "ub_backup", "list");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "ub_backup", "list");
                 break;
             case R.id.restore:
                 if (mLastSelectedInfo instanceof AppItemInfo) {
@@ -806,7 +806,7 @@ public class AppListActivity extends BaseFragmentActivity implements
                     AppItemInfo pending = (AppItemInfo) mLastSelectedInfo;
                     AppUtil.uninstallApp(this, pending.packageName);
                 }
-                SDKWrapper.addEvent(this, LeoStat.P1, "ub_uninstall", "list");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "ub_uninstall", "list");
                 break;
             case R.id.layout_title_back:
                 if (!mSlicingLayer.isSlicinged() && !mFolderLayer.isFolderOpened()) {
@@ -848,20 +848,20 @@ public class AppListActivity extends BaseFragmentActivity implements
               AppLoadEngine.getInstance(getApplicationContext())
                       .getBusinessTracker().track(bif.packageName);
 
-                SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1, "app_cli_pn",
+                SDKWrapper.addEvent(AppListActivity.this, SDKWrapper.P1, "app_cli_pn",
                         bif.packageName);
 
                 if (bif.containType == BusinessItemInfo.CONTAIN_APPLIST) {
-                    SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+                    SDKWrapper.addEvent(AppListActivity.this, SDKWrapper.P1,
                             "app_cli_ps", "home");
                 } else if (bif.containType == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-                    SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+                    SDKWrapper.addEvent(AppListActivity.this, SDKWrapper.P1,
                             "app_cli_ps", "flow");
                 } else if (bif.containType == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
-                    SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+                    SDKWrapper.addEvent(AppListActivity.this, SDKWrapper.P1,
                             "app_cli_ps", "capacity");
                 } else if (bif.containType == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
-                    SDKWrapper.addEvent(AppListActivity.this, LeoStat.P1,
+                    SDKWrapper.addEvent(AppListActivity.this, SDKWrapper.P1,
                             "app_cli_ps", "new");
                 }
                 break;
@@ -987,13 +987,13 @@ public class AppListActivity extends BaseFragmentActivity implements
             }
         }
         // if (containerId == BusinessItemInfo.CONTAIN_APPLIST) {
-        // SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "home");
+        // SDKWrapper.addEvent(this, SDKWrapper.P1, "app_rec", "home");
         // } else if (containerId == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-        // SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "flow");
+        // SDKWrapper.addEvent(this, SDKWrapper.P1, "app_rec", "flow");
         // } else if (containerId == BusinessItemInfo.CONTAIN_CAPACITY_SORT) {
-        // SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "capacity");
+        // SDKWrapper.addEvent(this, SDKWrapper.P1, "app_rec", "capacity");
         // } else if (containerId == BusinessItemInfo.CONTAIN_BUSINESS_FOLDER) {
-        // SDKWrapper.addEvent(this, LeoStat.P1, "app_rec", "new");
+        // SDKWrapper.addEvent(this, SDKWrapper.P1, "app_rec", "new");
         // }
 
         return list;

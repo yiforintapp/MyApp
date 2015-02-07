@@ -17,7 +17,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.AppUtil;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class AboutActivity extends BaseActivity implements OnClickListener {
 
@@ -68,7 +68,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 intent = new Intent();
                 intent.setClass(AboutActivity.this, ProtocolActivity.class);
                 startActivity(intent);
-                SDKWrapper.addEvent(this, LeoStat.P1, "about", "join");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "about", "join");
                 break;
             case R.id.join_beta:
  

@@ -61,7 +61,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.imageloader.utils.HideFileUtils;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class HomeActivity extends MainViewActivity implements OnClickListener,
         OnTouchListener {
@@ -131,7 +131,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
         if (sp.getBoolean(KEY_ROOT_CHECK, true)) {
             boolean root = RootChecker.isRoot();
             if (root) {
-                SDKWrapper.addEvent(getApplicationContext(), LeoStat.P1,
+                SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1,
                         KEY_ROOT_CHECK, "root");
             }
             sp.edit().putBoolean(KEY_ROOT_CHECK, false).commit();
@@ -285,7 +285,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
             public void onClick(View arg0) {
                 Intent intent = new Intent(HomeActivity.this, LockerTheme.class);
                 startActivityForResult(intent, 0);
-                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1,
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
                         "theme_enter", "home");
             }
         });
@@ -324,7 +324,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
         updateSettingIcon();
         judgeShowGradeTip();
         updateBackupIcon();
-        SDKWrapper.addEvent(this, LeoStat.P1, "home", "enter");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         updatePrivacyData();
 
         super.onResume();
@@ -473,7 +473,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                 break;
             case R.id.tv_app_backup:
                 /* sdk mark */
-                SDKWrapper.addEvent(this, LeoStat.P1, "home", "uninstall");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "uninstall");
                 Vector<BusinessItemInfo> list = AppBusinessManager
                         .getInstance(this).getBusinessData();
                 AppMasterPreference pref = AppMasterPreference.getInstance(this);
@@ -487,7 +487,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                 break;
             case R.id.tv_option_image:
                 // track: home - show setting popup window
-                SDKWrapper.addEvent(this, LeoStat.P1, "home", "setting");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "setting");
                 if (mLeoPopMenu == null) {
                     mLeoPopMenu = new LeoPopMenu();
                     mLeoPopMenu.setPopMenuItems(getPopMenuItems());
@@ -502,7 +502,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                 /* 加入粉丝团 */
 
                                 /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                         "google+");
                                 Intent intentBeta = null;
                                 if (AppUtil.appInstalled(getApplicationContext(),
@@ -538,13 +538,13 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                     intentBeta = new Intent(Intent.ACTION_VIEW, uri);
                                     startActivity(intentBeta);
                                 }
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "about", "like");
+                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "about", "like");
 
                             } else if (position == 1) {
                                 /* Facebook */
 
                                 /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                         "Facebook");
                                 Intent intentLikeUs = null;
                                 if (AppUtil.appInstalled(getApplicationContext(),
@@ -569,12 +569,12 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                     intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intentLikeUs);
                                 }
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "about",
+                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "about",
                                         "privacy");
                             } else if (position == 0) {
                                 /* google play */
                                 /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                         "googleplay");
                                 if (AppUtil.appInstalled(getApplicationContext(),
                                         "com.android.vending")) {
@@ -608,7 +608,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                 }
                             } else if (position == 3) {
                                 /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                         "feedback");
                                 Intent intent = new Intent(HomeActivity.this,
                                         FeedbackActivity.class);
@@ -617,7 +617,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                 /* 游戏中心 */
 
                                 /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                         "gamecenter");
                                 Intent intent = new Intent(HomeActivity.this,
                                         AppWallActivity.class);
@@ -628,14 +628,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                 /* 检查更新 */
 
                                 /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                         "update");
-                                LeoStat.checkUpdate();
+                                SDKWrapper.checkUpdate();
                             } else if (position == 5) {
                                 /* 关于 */
 
                                 /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, LeoStat.P1, "home",
+                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                         "about");
                                 Intent intent = new Intent(HomeActivity.this,
                                         AboutActivity.class);
@@ -676,7 +676,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
     private void gotoHidePic() {
         // track: home - enter hide picture activity
-        SDKWrapper.addEvent(this, LeoStat.P1, "home", "hidpic");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "hidpic");
         if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
             enterHidePicture();
         } else {
@@ -686,7 +686,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
     private void gotoHideVideo() {
         // track: home - enter system boost activity
-        SDKWrapper.addEvent(this, LeoStat.P1, "home", "hidvideo");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "hidvideo");
         if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
             enterHideVideo();
         } else {
@@ -696,7 +696,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
 
     private void gotoAppLock() {
         // track: home - enter lock application activity
-        SDKWrapper.addEvent(this, LeoStat.P1, "home", "lock");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "lock");
         if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
             enterLockPage();
         } else {
@@ -705,7 +705,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
     }
 
     private void updateSettingIcon() {
-        if (LeoStat.isUpdateAvailable()) {
+        if (SDKWrapper.isUpdateAvailable()) {
             mTtileBar.setOptionImage(R.drawable.setting_updated_selector);
         } else {
             mTtileBar.setOptionImage(R.drawable.setting_selector);
@@ -724,7 +724,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
         /* 吐个槽 */
         listItems.add(resources.getString(R.string.feedback));
         /* 检查升级 */
-        if (LeoStat.isUpdateAvailable()) {
+        if (SDKWrapper.isUpdateAvailable()) {
             listItems.add(resources.getString(R.string.app_setting_has_update));
         } else {
             listItems.add(resources.getString(R.string.app_setting_update));

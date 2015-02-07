@@ -35,7 +35,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class LockHelpSettingTip extends BaseActivity {
     private CommonTitleBar mTitle;
@@ -268,12 +268,12 @@ public class LockHelpSettingTip extends BaseActivity {
                     String buttonText = lockHelpPager.getButton();
                     if (buttonText.equals(getString(R.string.lock_help_password_setting_button))) {
                         /* SDK Event Mark */
-                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1, "help_press",
+                        SDKWrapper.addEvent(LockHelpSettingTip.this, SDKWrapper.P1, "help_press",
                                 "password");
                         enterLockPage();
                     } else if (buttonText.equals(getString(R.string.lock_help_lock_setting_button))) {
                         /* SDK Event Mark */
-                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1, "help_press",
+                        SDKWrapper.addEvent(LockHelpSettingTip.this, SDKWrapper.P1, "help_press",
                                 "setting");
                         enterLockSettingPage();
                         // Intent intent = new Intent(LockHelpSettingTip.this,
@@ -287,7 +287,7 @@ public class LockHelpSettingTip extends BaseActivity {
                     } else if (buttonText
                             .equals(getString(R.string.lock_help_lock_theme_setting_button))) {
                         /* SDK Event Mark */
-                        SDKWrapper.addEvent(LockHelpSettingTip.this, LeoStat.P1, "help_press",
+                        SDKWrapper.addEvent(LockHelpSettingTip.this, SDKWrapper.P1, "help_press",
                                 "theme");
                         Intent intent = new Intent(LockHelpSettingTip.this, LockerTheme.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

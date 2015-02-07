@@ -63,7 +63,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.StorageUtil;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
-import com.leoers.leoanalytics.LeoStat;
+
 
 public class ImageGridActivity extends BaseActivity implements OnClickListener {
     private final String TAG = "ImageGridActivity";
@@ -706,7 +706,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                     ImageGridActivity.this);
                             task.execute(true);
                             SDKWrapper.addEvent(ImageGridActivity.this,
-                                    LeoStat.P1, "hide_pic", "used");
+                                    SDKWrapper.P1, "hide_pic", "used");
 
                         } else if (mActicityMode == CANCEL_HIDE_MODE) {
                             showProgressDialog(getString(R.string.tips),

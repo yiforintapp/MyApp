@@ -60,7 +60,6 @@ import com.leo.imageloader.core.BitmapDisplayer;
 import com.leo.imageloader.core.ImageAware;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.imageloader.core.LoadedFrom;
-import com.leoers.leoanalytics.LeoStat;
 
 public class BusinessAppFragment extends BaseFolderFragment implements
         OnItemClickListener, OnClickListener, OnRefreshListener2<GridView>, OnTouchListener {
@@ -256,7 +255,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
                 mLayoutEmptyTip.setVisibility(View.INVISIBLE);
             }
 
-            SDKWrapper.addEvent(mActivity, LeoStat.P1, "app_rec", "new");
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_rec", "new");
             boolean businessTipFlag = AppMasterPreference.getInstance(getActivity())
                     .getBusinessAppTip();
             if (!businessTipFlag) {
@@ -279,6 +278,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
             return false;
         ArrayList<AppItemInfo> appDetails = AppLoadEngine
                 .getInstance(mActivity).getAllPkgInfo();
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_rec", "new");
 
         for (AppItemInfo info : appDetails) {
             if (pkg.equals(info.packageName)) {

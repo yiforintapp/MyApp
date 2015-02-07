@@ -10,7 +10,6 @@ import org.json.JSONObject;
 
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-import com.leoers.leoanalytics.push.PushManager;
 
 public class LeoPollReq extends BasePushHttpReq {
 
@@ -43,7 +42,7 @@ public class LeoPollReq extends BasePushHttpReq {
             String title = getJSStrValue(jsonObj, "msg_title", "");
             String content = getJSStrValue(jsonObj, "msg_content", "");
             String id = getJSStrValue(jsonObj, "msg_id", "");
-            int showType = getJSIntValue(jsonObj, "msg_show_type", PushManager.SHOW_DIALOG_FIRST);
+            int showType = getJSIntValue(jsonObj, "msg_show_type", UserActManager.SHOW_DIALOG_FIRST);
             LeoLog.d(TAG, "id=" + id + "title=" + title + "; content=" + content);
             if (mListener != null) {
                 mListener.onPush(id, title, content, showType);
