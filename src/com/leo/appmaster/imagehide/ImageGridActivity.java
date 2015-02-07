@@ -64,7 +64,6 @@ import com.leo.appmaster.utils.StorageUtil;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 
-
 public class ImageGridActivity extends BaseActivity implements OnClickListener {
     private final String TAG = "ImageGridActivity";
 
@@ -397,6 +396,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         mImageAdapter.notifyDataSetChanged();
         mBottomBar.setVisibility(View.GONE);
         mTtileBar.setOptionText(getString(R.string.app_hide_image_edit));
+        mSelectAll.setText(R.string.app_select_all);
         updateRightButton();
     }
 
