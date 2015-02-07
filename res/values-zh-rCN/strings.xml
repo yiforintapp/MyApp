@@ -229,8 +229,8 @@
     <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
     <string name="no_more_theme">没有更多主题</string>
     <string name="no_more_onlinetheme">已下载所有主题，我们会尽快增加新主题</string>
-    <string name="find_new_theme">发现新主题</string>
-    <string name="find_new_theme_content">您的应用锁有新主题，点击查看</string>
+    <string name="find_new_theme">主人，有新主题</string>
+    <string name="find_new_theme_content">换个主题，换个心情！</string>
     <string name="theme_tag_new">最 新</string>
     <string name="theme_tag_hot">最 热</string>
     <string name="about_group">加入粉丝团</string>
@@ -293,8 +293,8 @@
     <string name="version">版本号： </string>
     <string name="install_time">%1$s天前</string>
     <string name="folder_new">新</string>
-    <string name="new_app_tip_content">有好玩的新应用，快看看吧</string>
-    <string name="new_app_tip_title">发现新应用</string>
+    <string name="new_app_tip_content">好玩应用新鲜出炉，看看！</string>
+    <string name="new_app_tip_title">新品速递</string>
     <string name="no_backup_app_tip">您还没有备份应用</string>
     <string name="other_people_use_tip">其他人正在使用</string>
     <string name="recomment_list_title">请选择您想加锁的应用</string>
@@ -333,5 +333,6 @@
     <string name="image_unhide_memery_insuficient_dialog_content">SD卡容量不足，无法恢复图片，请释放空间</string>
     <string name="image_hide_memery_insuficient_dialog_button">我知道了</string>
     <string name="appwall_name">游戏中心</string>
+    <string name="business_bottom_tip">上拉刷新</string>
 
 </resources>

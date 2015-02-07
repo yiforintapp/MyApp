@@ -232,8 +232,8 @@
     <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
     <string name="no_more_onlinetheme">All themes downloaded!</string>
-    <string name="find_new_theme">New Themes</string>
-    <string name="find_new_theme_content">Click to view the new themes</string>
+    <string name="find_new_theme">Change Your Skin!</string>
+    <string name="find_new_theme_content">Can\'t decide what to wear today?</string>
     <string name="theme_tag_new">New</string>
     <string name="theme_tag_hot">Hot</string>
     <string name="about_group">Fun Fans</string>
@@ -282,8 +282,8 @@
     <string name="version">Version: </string>
     <string name="install_time">%1$s day(s) ago</string>
     <string name="folder_new">NEW</string>
-    <string name="new_app_tip_content">Find hot apps here!</string>
-    <string name="new_app_tip_title">New Apps!</string>
+    <string name="new_app_tip_content">Guess what everyone\'s doing?</string>
+    <string name="new_app_tip_title">New arrival here!</string>
     <string name="no_backup_app_tip">No backed up App</string>
     <string name="other_people_use_tip">Other people use</string>
     <string name="recomment_list_title">Select Apps you want to lock</string>
@@ -323,5 +323,6 @@
     <string name="image_unhide_memery_insuficient_dialog_content">SD card storage is full! Delete some files to free space before RESTORE.</string>
     <string name="image_hide_memery_insuficient_dialog_button">OK</string>
     <string name="appwall_name">Game Center</string>
+    <string name="business_bottom_tip">Pull to get new apps</string>
 
 </resources>

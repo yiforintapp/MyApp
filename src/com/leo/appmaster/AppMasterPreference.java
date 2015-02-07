@@ -68,6 +68,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LAST_VERSION_INSTALL_TIME = "last_version_install_tiem";
     public static final String PREF_LOCK_REMIND = "lock_remind";
     public static final String PREF_RECOMMENT_TIP_LIST = "recomment_tip_list";
+    public static final String PREF_BUSINESS_APP_TIP_REFRENT = "business_app_tip_refrent";
 
     // home page
     public static final String PREF_HOME_BUSINESS_NEW_TIP_CLICK = "home_business_tip_click";
@@ -556,4 +557,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_FRIST_RUNNING_PL_SPLASH, flag).commit();
     }
 
+    public boolean getBusinessAppTip() {
+        return mPref.getBoolean(PREF_BUSINESS_APP_TIP_REFRENT, false);
+    }
+
+    public void setBusinessAppTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_BUSINESS_APP_TIP_REFRENT, flag).commit();
+    }
 }

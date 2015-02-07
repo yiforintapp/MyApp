@@ -99,5 +99,10 @@
     <dimen name="splash_logo_width">250dp</dimen>
     <dimen name="splash_logo_height">75dp</dimen>
     <dimen name="splash_logo_margin_buttom">44dp</dimen>
+    <dimen name="business_bottom_tip_height">36dp</dimen>
+    <dimen name="business_bottom_tip_delete_height">19dp</dimen>
+    <dimen name="business_bottom_tip_delete_width">18dp</dimen>
+    <dimen name="business_bottom_tip_delete_bottom">6dp</dimen>
+    <dimen name="business_bottom_tip_delete_right">13dp</dimen>
 
 </resources>
