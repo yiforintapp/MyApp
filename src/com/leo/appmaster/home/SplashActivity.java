@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.home;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -9,14 +10,17 @@ import org.json.JSONObject;
 
 import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.TextureView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -37,6 +41,7 @@ public class SplashActivity extends BaseActivity {
     private RelativeLayout mSplashRL;
     private ImageView mSplashButton;
     private ImageView mSplashLogo;
+    private TextView mSplashUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,8 @@ public class SplashActivity extends BaseActivity {
             mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 1000);
         } else {
             mSplashButton = (ImageView) findViewById(R.id.splash_logo_button);
+            mSplashUrl = (TextView) findViewById(R.id.splash_url);
+            mSplashUrl.setVisibility(View.VISIBLE);
             mSplashLogo = (ImageView) findViewById(R.id.imageView1);
             mSplashButton.setVisibility(View.VISIBLE);
             mSplashLogo.setVisibility(View.GONE);
@@ -64,6 +71,24 @@ public class SplashActivity extends BaseActivity {
                     SplashActivity.this.startActivity(intent);
                     SplashActivity.this.finish();
                     pref.setFirstRuningPL(true);
+                }
+            });
+            mSplashUrl.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    Uri uri = Uri
+                            .parse("https://www.facebook.com/1709302419294051/photos/a.1711244589099834.1073741828.1709302419294051/1780341288856830/?type=1&theater");
+                    Intent intentUri = new Intent(Intent.ACTION_VIEW, uri);
+                    Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    intent.putExtra(HomeActivity.KEY_PLAY_ANIM, true);
+                    try {
+                        SplashActivity.this.startActivity(intent);
+                        SplashActivity.this.finish();
+                        pref.setFirstRuningPL(true);
+                        SplashActivity.this.startActivity(intentUri);
+                    } catch (Exception e) {
+                    }
                 }
             });
         }

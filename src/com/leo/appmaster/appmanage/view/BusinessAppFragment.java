@@ -12,6 +12,7 @@ import android.app.usage.UsageEvents.Event;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,6 +44,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.appmanage.business.BusinessJsonParser;
@@ -62,7 +64,7 @@ import com.leo.imageloader.core.ImageScaleType;
 import com.leo.imageloader.core.LoadedFrom;
 
 public class BusinessAppFragment extends BaseFolderFragment implements
-        OnItemClickListener, OnClickListener, OnRefreshListener2<GridView>, OnTouchListener {
+        OnItemClickListener, OnClickListener, OnRefreshListener2<GridView> {
 
     private PullToRefreshGridView mRecommendGrid;
     private View mRecommendHolder, mErrorView, mLayoutEmptyTip;
@@ -78,6 +80,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
     private static final int MSG_LOAD_INIT_SUCCESSED = 1;
     private static final int MSG_LOAD_PAGE_DATA_FAILED = 3;
     private static final int MSG_LOAD_PAGE_DATA_SUCCESS = 4;
+//    public static boolean business_app_tip = false;
     private EventHandler mHandler;
     private DisplayImageOptions commonOption;
 
@@ -136,7 +139,11 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 
     @Override
     protected void onInitUI() {
-
+        // mButtomView = (RelativeLayout) findViewById(R.id.business_buttomIV);
+        // mButtomView.setVisibility(View.VISIBLE);
+        // mButtomView.getBackground().setAlpha(79);
+        // mBusinessDelet = (ImageView) findViewById(R.id.image1);
+        // mBusinessDelet.setOnClickListener(this);
         commonOption = new DisplayImageOptions.Builder()
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .showImageOnLoading(R.drawable.recommend_loading_icon)
@@ -256,14 +263,12 @@ public class BusinessAppFragment extends BaseFolderFragment implements
             }
 
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_rec", "new");
-            boolean businessTipFlag = AppMasterPreference.getInstance(getActivity())
-                    .getBusinessAppTip();
-            if (!businessTipFlag) {
+            if (!Constants.business_app_tip) {
                 mButtomView = (RelativeLayout) findViewById(R.id.business_buttomIV);
-                mButtomView.setVisibility(View.VISIBLE);
                 mButtomView.getBackground().setAlpha(79);
                 mBusinessDelet = (ImageView) findViewById(R.id.image1);
                 mBusinessDelet.setOnClickListener(this);
+                mButtomView.setVisibility(View.VISIBLE);
             }
         } else {
             mRecommendGrid.setVisibility(View.INVISIBLE);
@@ -290,8 +295,18 @@ public class BusinessAppFragment extends BaseFolderFragment implements
     }
 
     public void loadInitBusinessData() {
-        if ((mInitDataLoadFinish && mHaveInitData) || mInitLoading)
+        if ((mInitDataLoadFinish && mHaveInitData) || mInitLoading) {
+//            business_app_tip = false;
+            if (!Constants.business_app_tip) {
+                mButtomView = (RelativeLayout)
+                        findViewById(R.id.business_buttomIV);
+                mButtomView.setVisibility(View.VISIBLE);
+                mButtomView.getBackground().setAlpha(79);
+                mBusinessDelet = (ImageView) findViewById(R.id.image1);
+                mBusinessDelet.setOnClickListener(this);
+            }
             return;
+        }
         mRecommendDatas.clear();
         mInitLoading = true;
         HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1, 20,
@@ -322,6 +337,13 @@ public class BusinessAppFragment extends BaseFolderFragment implements
                                 BusinessAppFragment.this.mActivity, "new_apps");
                     }
                 });
+//        if (!Constants.business_app_tip) {
+//            mButtomView = (RelativeLayout) findViewById(R.id.business_buttomIV);
+//            mButtomView.getBackground().setAlpha(79);
+//            mBusinessDelet = (ImageView) findViewById(R.id.image1);
+//            mBusinessDelet.setOnClickListener(this);
+//            mButtomView.setVisibility(View.VISIBLE);
+//        }
     }
 
     private void loadMoreBusiness() {
@@ -386,8 +408,8 @@ public class BusinessAppFragment extends BaseFolderFragment implements
                 break;
             case R.id.image1:
                 mButtomView.setVisibility(View.GONE);
-                AppMasterPreference.getInstance(getActivity())
-                        .setBusinessAppTip(true);
+                // AppMasterPreference.getInstance(getActivity())
+                // .setBusinessAppTip(true);
                 break;
             default:
                 break;
@@ -396,15 +418,19 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 
     @Override
     public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
+
     }
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
-        if (!AppMasterPreference.getInstance(getActivity())
-                .getBusinessAppTip()) {
+        if (!Constants.business_app_tip) {
+            mButtomView = (RelativeLayout)
+                    findViewById(R.id.business_buttomIV);
+            mButtomView.getBackground().setAlpha(79);
+            mBusinessDelet = (ImageView) findViewById(R.id.image1);
+            mBusinessDelet.setOnClickListener(this);
             mButtomView.setVisibility(View.GONE);
-            AppMasterPreference.getInstance(getActivity())
-                    .setBusinessAppTip(true);
+            Constants.business_app_tip = true;
         }
         loadMoreBusiness();
     }
@@ -448,16 +474,5 @@ public class BusinessAppFragment extends BaseFolderFragment implements
             convertView.setTag(info);
             return convertView;
         }
-    }
-
-    @Override
-    public boolean onTouch(View arg0, MotionEvent even) {
-        // even.getY()
-        if (MotionEvent.ACTION_MOVE == even.getAction()) {
-            Toast.makeText(getActivity(), "来了", Toast.LENGTH_LONG).show();
-            mButtomView.setVisibility(View.GONE);
-        }
-
-        return false;
     }
 }
