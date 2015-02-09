@@ -6,7 +6,6 @@ package com.leo.appmaster.sdk;
  * Brief: Base activity to be tracked by application so that we can finish them when completely exit is required
  * */
 
-import com.baidu.mobstat.StatService;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.applocker.ILock;
 
@@ -32,12 +31,12 @@ public class BaseActivity extends Activity implements ILock {
     @Override
     protected void onResume() {
         super.onResume();
-        StatService.onResume(this);
+        SDKWrapper.onResume(this);
     }
 
     @Override
     protected void onPause() {
-        StatService.onPause(this);
+        SDKWrapper.onPause(this);
         super.onPause();
     }
 
