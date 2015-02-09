@@ -104,6 +104,16 @@ public class SDKWrapper {
         LeoAgent.initUpdateEngine(UIHelper.getInstance(ctx),
                 true);
     }
+    
+    public static void onResume(Context ctx){
+        StatService.onResume(ctx);
+        LeoAgent.onResume();
+    }
+    
+    public static void onPause(Context ctx){
+        StatService.onPause(ctx);
+        LeoAgent.onPause();
+    }
 
     // private static void iniBaidu(Context ctx) {
     // // TODO: use release Key when release

@@ -5,7 +5,6 @@ package com.leo.appmaster.sdk;
  * Brief: all FragmentActivity should extends this class for SDK event track
  * */
 
-import com.baidu.mobstat.StatService;
 import com.leo.appmaster.AppMasterApplication;
 
 import android.os.Bundle;
@@ -28,12 +27,12 @@ public class BaseFragmentActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		StatService.onResume(this);
+		SDKWrapper.onResume(this);
 	}
 
 	@Override
 	protected void onPause() {
-		StatService.onPause(this);
+	    SDKWrapper.onPause(this);
 		super.onPause();
 	}
 
