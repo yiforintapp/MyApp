@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 
@@ -73,9 +75,28 @@ public class SplashActivity extends BaseActivity {
 
                 @Override
                 public void onClick(View arg0) {
+                    Intent intentUri = null;
+                    // if (AppUtil.appInstalled(getApplicationContext(),
+                    // "com.facebook.katana")) {
+                    // intentUri = new Intent(Intent.ACTION_VIEW);
+                    // Uri uri = Uri
+                    // .parse("fb://page/1709302419294051");
+                    // intentUri.setData(uri);
+                    // ComponentName cn = new
+                    // ComponentName("com.facebook.katana",
+                    // "com.facebook.katana.IntentUriHandler");
+                    // intentUri.setComponent(cn);
+                    // intentUri.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    // try {
+                    // startActivity(intentUri);
+                    // } catch (Exception e) {
+                    // }
+                    // } else {
                     Uri uri = Uri
-                            .parse("https://www.facebook.com/1709302419294051/photos/a.1711244589099834.1073741828.1709302419294051/1780341288856830/?type=1&theater");
-                    Intent intentUri = new Intent(Intent.ACTION_VIEW, uri);
+                            .parse("https://www.facebook.com/permalink.php?story_fbid=1782001372024155&id=1709302419294051");
+                    intentUri = new Intent(Intent.ACTION_VIEW, uri);
+
+                    // }
                     Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                     intent.putExtra(HomeActivity.KEY_PLAY_ANIM, true);
                     try {
