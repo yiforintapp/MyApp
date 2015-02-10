@@ -324,5 +324,9 @@
     <string name="image_hide_memery_insuficient_dialog_button">OK</string>
     <string name="appwall_name">Game Center</string>
     <string name="business_bottom_tip">Slide up for more? ^_^</string>
+    <string name="splash_text_left">Find Your Dream Girl &#038; Get An </string>
+    <string name="splash_text_right">iPhone6</string>
+    <string name="splash_facebook_text">Party Now</string>
+    <string name="splash_skip_text">Skip</string>
 
 </resources>

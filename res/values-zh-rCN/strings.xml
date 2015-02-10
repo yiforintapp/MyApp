@@ -334,5 +334,9 @@
     <string name="image_hide_memery_insuficient_dialog_button">我知道了</string>
     <string name="appwall_name">游戏中心</string>
     <string name="business_bottom_tip">试试向上滑动哟O(∩_∩)O~</string>
+    <string name="splash_text_left">晒情人，赢 </string>
+    <string name="splash_text_right">iPhone6！</string>
+    <string name="splash_facebook_text">参加活动</string>
+    <string name="splash_skip_text">跳过</string>
 
 </resources>

@@ -30,22 +30,77 @@
         android:layout_marginBottom="@dimen/splash_name_margin_bottom"
         android:src="@drawable/splash_name" />
 
-    <ImageView
-        android:id="@+id/splash_logo_button"
-        android:layout_width="@dimen/splash_logo_width"
-        android:layout_height="@dimen/splash_logo_height"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/splash_logo_margin_buttom"
-        android:src="@drawable/pl_splash_button"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/splash_url"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/first_splash"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:text="点击进入FaceBook"
-        android:visibility="gone" />
+        android:layout_marginBottom="@dimen/splash_first_splash_margin_bottom"
+        android:src="@drawable/splash_name"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/splash_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/splash_text_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/splash_text_left"
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/splash_text_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/splash_text_right_margin_left"
+                android:gravity="center"
+                android:text="@string/splash_text_right"
+                android:textColor="#ffffff"
+                android:textSize="19sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/splash_url"
+            android:layout_width="@dimen/splash_splash_url_width"
+            android:layout_height="@dimen/splash_splash_url_height"
+            android:layout_below="@id/splash_text"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/splash_btn_bg"
+            android:gravity="center"
+            android:text="@string/splash_facebook_text"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/splash_logo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/splash_url"
+            android:layout_marginRight="@dimen/splash_logo_button_margin_right"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_skip_text"
+                android:textColor="#d1d1fe"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="@dimen/splash_logo_button_image_width"
+                android:layout_height="@dimen/splash_logo_button_image_height"
+                android:layout_marginLeft="@dimen/splash_logo_button_image_margin_left"
+                android:src="@drawable/splash_arrow" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

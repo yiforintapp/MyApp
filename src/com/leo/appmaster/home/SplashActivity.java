@@ -1,20 +1,17 @@
 
 package com.leo.appmaster.home;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.TextureView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -38,16 +35,15 @@ public class SplashActivity extends BaseActivity {
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
 
     private Handler mEventHandler;
-    private RelativeLayout mSplashRL;
-    private ImageView mSplashButton;
+    private LinearLayout mSplashButton;
     private ImageView mSplashLogo;
     private TextView mSplashUrl;
+    private RelativeLayout mFirsSplash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        mSplashRL = (RelativeLayout) findViewById(R.id.splash_parentRL);
         mEventHandler = new EventHandler(this);
         final AppMasterPreference pref = AppMasterPreference
                 .getInstance(getApplicationContext());
@@ -55,13 +51,13 @@ public class SplashActivity extends BaseActivity {
         if (splashFlag) {
             mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 1000);
         } else {
-            mSplashButton = (ImageView) findViewById(R.id.splash_logo_button);
+            mFirsSplash = (RelativeLayout) findViewById(R.id.first_splash);
+            mFirsSplash.setVisibility(View.VISIBLE);
+            mSplashButton = (LinearLayout) findViewById(R.id.splash_logo_button);
             mSplashUrl = (TextView) findViewById(R.id.splash_url);
-            mSplashUrl.setVisibility(View.VISIBLE);
             mSplashLogo = (ImageView) findViewById(R.id.imageView1);
-            mSplashButton.setVisibility(View.VISIBLE);
             mSplashLogo.setVisibility(View.GONE);
-            mSplashRL.setOnClickListener(new OnClickListener() {
+            mSplashButton.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View arg0) {
