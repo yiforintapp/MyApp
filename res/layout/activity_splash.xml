@@ -39,4 +39,13 @@
         android:src="@drawable/pl_splash_button"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/splash_url"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:text="点击进入FaceBook"
+        android:visibility="gone" />
+
 </RelativeLayout>

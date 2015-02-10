@@ -177,5 +177,6 @@ public class Constants {
 	public static final String HOME_TO_APP_WALL_FLAG="jump_appwall_flag";
 	public static final String HOME_TO_APP_WALL_FLAG_VALUE="from_home_to_appwall";
 	public static final String PUSH_TO_APP_WALL_FLAG_VALUE="push";
+	public static boolean business_app_tip = false;
 
 }
