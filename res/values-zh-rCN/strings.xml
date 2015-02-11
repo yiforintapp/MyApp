@@ -234,7 +234,7 @@
     <string name="theme_tag_new">最 新</string>
     <string name="theme_tag_hot">最 热</string>
     <string name="about_group">加入粉丝团</string>
-    <string name="about_praise">Facebook</string>
+    <string name="about_praise">Facebook(活动)</string>
     <string name="locker_guide">点击更换解锁主题</string>
     <string name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
