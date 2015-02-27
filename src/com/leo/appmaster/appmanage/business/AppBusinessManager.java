@@ -183,10 +183,8 @@ public class AppBusinessManager {
 			try {
 				return mLoadInitDataTask.get();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
 				return null;
 			} catch (ExecutionException e) {
-				e.printStackTrace();
 				return null;
 			}
 		}
@@ -194,11 +192,13 @@ public class AppBusinessManager {
 	
     public boolean hasBusinessData(int type) {
         Vector<BusinessItemInfo> businessDatas = getBusinessData();
-        for (BusinessItemInfo businessItemInfo : businessDatas) {
-            if (businessItemInfo.installed)
-                continue;
-            if (businessItemInfo.containType == type) {
-                return true;
+        if(businessDatas != null) {
+            for (BusinessItemInfo businessItemInfo : businessDatas) {
+                if (businessItemInfo.installed)
+                    continue;
+                if (businessItemInfo.containType == type) {
+                    return true;
+                }
             }
         }
         return false;

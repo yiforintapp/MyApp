@@ -177,9 +177,11 @@ public class AppListActivity extends BaseFragmentActivity implements
             mContainer.post(new Runnable() {
                 @Override
                 public void run() {
-                    handleItemClick(mPager1.getChildAt(0),
-                            SlicingLayer.SLICING_FROM_APPLIST, false);
-                    mOpenedBusinessFolder = true;
+                    if(mPager1 != null) {
+                        handleItemClick(mPager1.getChildAt(0),
+                                SlicingLayer.SLICING_FROM_APPLIST, false);
+                        mOpenedBusinessFolder = true;
+                    }
                 }
             });
 
@@ -642,7 +644,7 @@ public class AppListActivity extends BaseFragmentActivity implements
                         openSlicingLayer(view, from);
                         break;
                     case BaseInfo.ITEM_TYPE_FOLDER:
-                        if (!mFolderLayer.isFolderOpened()) {
+                        if (!mFolderLayer.isFolderOpened() && (mLastSelectedInfo instanceof FolderItemInfo)) {
 
                             FolderItemInfo folderInfo = (FolderItemInfo) mLastSelectedInfo;
                             fillFolder();

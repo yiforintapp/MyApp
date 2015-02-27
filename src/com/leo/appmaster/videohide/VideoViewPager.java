@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,6 +139,24 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     protected void onRestart() {
         super.onRestart();
 
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (Exception e) {
+            
+        }
+    }
+    
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState, persistentState);
+        } catch (Exception e) {
+            
+        }
     }
 
     @Override
