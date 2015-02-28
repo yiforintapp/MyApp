@@ -20,12 +20,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -37,7 +37,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.LockHelpSettingTip;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
@@ -56,7 +55,9 @@ import com.leo.appmaster.sdk.MainViewActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
+import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
@@ -645,10 +646,14 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                         }
                     });
                 }
+                LayoutStyles ls = new LayoutStyles();
+                ls.width = DipPixelUtil.dip2px(this, 150.0f);
+                ls.height = LayoutParams.WRAP_CONTENT;
+                ls.animation = R.style.RightEnterAnim;
                 mLeoPopMenu.setPopMenuItems(getPopMenuItems());
                 mLeoPopMenu.showPopMenu(this,
 
-                        mTtileBar.findViewById(R.id.tv_option_image), null,
+                        mTtileBar.findViewById(R.id.tv_option_image), ls,
                         new OnDismissListener() {
                             @Override
                             public void onDismiss() {

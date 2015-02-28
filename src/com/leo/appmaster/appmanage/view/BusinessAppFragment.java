@@ -8,24 +8,13 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import android.app.usage.UsageEvents.Event;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -43,7 +32,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity;
@@ -139,11 +127,9 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 
     @Override
     protected void onInitUI() {
-        // mButtomView = (RelativeLayout) findViewById(R.id.business_buttomIV);
-        // mButtomView.setVisibility(View.VISIBLE);
-        // mButtomView.getBackground().setAlpha(79);
-        // mBusinessDelet = (ImageView) findViewById(R.id.image1);
-        // mBusinessDelet.setOnClickListener(this);
+         mButtomView = (RelativeLayout) findViewById(R.id.business_buttomIV);
+         mBusinessDelet = (ImageView) findViewById(R.id.image1);
+         mBusinessDelet.setOnClickListener(this);
         commonOption = new DisplayImageOptions.Builder()
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .showImageOnLoading(R.drawable.recommend_loading_icon)
@@ -264,10 +250,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_rec", "new");
             if (!Constants.business_app_tip) {
-                mButtomView = (RelativeLayout) findViewById(R.id.business_buttomIV);
-                mButtomView.getBackground().setAlpha(79);
-                mBusinessDelet = (ImageView) findViewById(R.id.image1);
-                mBusinessDelet.setOnClickListener(this);
                 mButtomView.setVisibility(View.VISIBLE);
             }
         } else {
@@ -298,12 +280,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
         if ((mInitDataLoadFinish && mHaveInitData) || mInitLoading) {
 //            business_app_tip = false;
             if (!Constants.business_app_tip) {
-                mButtomView = (RelativeLayout)
-                        findViewById(R.id.business_buttomIV);
                 mButtomView.setVisibility(View.VISIBLE);
-                mButtomView.getBackground().setAlpha(79);
-                mBusinessDelet = (ImageView) findViewById(R.id.image1);
-                mBusinessDelet.setOnClickListener(this);
             }
             return;
         }
@@ -337,13 +314,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
                                 BusinessAppFragment.this.mActivity, "new_apps");
                     }
                 });
-//        if (!Constants.business_app_tip) {
-//            mButtomView = (RelativeLayout) findViewById(R.id.business_buttomIV);
-//            mButtomView.getBackground().setAlpha(79);
-//            mBusinessDelet = (ImageView) findViewById(R.id.image1);
-//            mBusinessDelet.setOnClickListener(this);
-//            mButtomView.setVisibility(View.VISIBLE);
-//        }
     }
 
     private void loadMoreBusiness() {
@@ -424,11 +394,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
         if (!Constants.business_app_tip) {
-            mButtomView = (RelativeLayout)
-                    findViewById(R.id.business_buttomIV);
-            mButtomView.getBackground().setAlpha(79);
-            mBusinessDelet = (ImageView) findViewById(R.id.image1);
-            mBusinessDelet.setOnClickListener(this);
             mButtomView.setVisibility(View.GONE);
             Constants.business_app_tip = true;
         }
