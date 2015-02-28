@@ -72,7 +72,6 @@ import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 
-
 @SuppressLint("Override")
 public class AppListActivity extends BaseFragmentActivity implements
         AppChangeListener, OnClickListener, AppBackupDataListener,
@@ -221,7 +220,7 @@ public class AppListActivity extends BaseFragmentActivity implements
         // if (!(view.getTag() instanceof AppItemInfo))
         // return;
         BaseInfo baseInfo = (BaseInfo) view.getTag();
-        
+
         if (baseInfo instanceof BusinessItemInfo) {
             // TODO
             if (mBusinessContentView == null) {
@@ -264,7 +263,7 @@ public class AppListActivity extends BaseFragmentActivity implements
                         .setVisibility(View.INVISIBLE);
             } else {
                 if (businessInfo.gpPriority == 1 && AppUtil.appInstalled(this,
-                                Constants.GP_PACKAGE)) {
+                        Constants.GP_PACKAGE)) {
                     mBusinessScilingHolder.googleIcon
                             .setImageResource(R.drawable.google_icon_selector);
                     mBusinessScilingHolder.googleDownloadLayout
@@ -286,14 +285,14 @@ public class AppListActivity extends BaseFragmentActivity implements
                     R.dimen.backup_scling_content_height);
             mSlicingLayer.startSlicing(view, mSclingBgView,
                     mBusinessContentView, contentheight);
-//            
-//            int line = mBusinessScilingHolder.appDesc.getLineCount();
-//            if(line == 1) {
-//                mBusinessScilingHolder.appDesc.setGravity(Gravity.RIGHT);
-//            } else if(line == 2) {
-//                mBusinessScilingHolder.appDesc.setGravity(Gravity.LEFT);
-//            }
-            
+            //
+            // int line = mBusinessScilingHolder.appDesc.getLineCount();
+            // if(line == 1) {
+            // mBusinessScilingHolder.appDesc.setGravity(Gravity.RIGHT);
+            // } else if(line == 2) {
+            // mBusinessScilingHolder.appDesc.setGravity(Gravity.LEFT);
+            // }
+
         } else {
             AppItemInfo appinfo = (AppItemInfo) baseInfo;
             if (from != BaseFolderFragment.FOLER_TYPE_BACKUP) {
@@ -424,10 +423,9 @@ public class AppListActivity extends BaseFragmentActivity implements
                 + (System.currentTimeMillis() - startTime));
     }
 
-
     @Override
     public void onBackPressed() {
-        
+
         if (mSlicingLayer.isSlicinged()) {
             mSlicingLayer.closeSlicing();
             return;
@@ -685,7 +683,6 @@ public class AppListActivity extends BaseFragmentActivity implements
     private class DataPagerAdapter extends PagerAdapter {
         List<View> pagerList;
 
-
         public DataPagerAdapter(ArrayList<View> viewList) {
             pagerList = viewList;
         }
@@ -823,8 +820,13 @@ public class AppListActivity extends BaseFragmentActivity implements
                 if (PhoneInfoStateManager.isGooglePlayPkg()) {
                     if (AppUtil.appInstalled(AppListActivity.this,
                             Constants.GP_PACKAGE)) {
-                        AppUtil.downloadFromGp(AppListActivity.this,
-                                bif.packageName);
+                        try {
+                            AppUtil.downloadFromGp(AppListActivity.this,
+                                    bif.packageName);
+                        } catch (Exception e) {
+                            AppUtil.downloadFromBrowser(AppListActivity.this,
+                                    bif.appDownloadUrl);
+                        }
                     } else {
                         AppUtil.downloadFromBrowser(AppListActivity.this,
                                 bif.appDownloadUrl);
@@ -833,8 +835,13 @@ public class AppListActivity extends BaseFragmentActivity implements
                     if (bif.gpPriority == 1) {
                         if (AppUtil.appInstalled(AppListActivity.this,
                                 Constants.GP_PACKAGE)) {
-                            AppUtil.downloadFromGp(AppListActivity.this,
-                                    bif.packageName);
+                            try {
+                                AppUtil.downloadFromGp(AppListActivity.this,
+                                        bif.packageName);
+                            } catch (Exception e) {
+                                AppUtil.downloadFromBrowser(AppListActivity.this,
+                                        bif.appDownloadUrl);
+                            }
                         } else {
                             AppUtil.downloadFromBrowser(AppListActivity.this,
                                     bif.appDownloadUrl);
@@ -844,9 +851,9 @@ public class AppListActivity extends BaseFragmentActivity implements
                                 bif.appDownloadUrl);
                     }
                 }
-              //add track
-              AppLoadEngine.getInstance(getApplicationContext())
-                      .getBusinessTracker().track(bif.packageName);
+                // add track
+                AppLoadEngine.getInstance(getApplicationContext())
+                        .getBusinessTracker().track(bif.packageName);
 
                 SDKWrapper.addEvent(AppListActivity.this, SDKWrapper.P1, "app_cli_pn",
                         bif.packageName);
