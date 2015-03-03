@@ -24,6 +24,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.os.UserManager;
 import android.util.DisplayMetrics;
 
 import com.android.volley.Response.ErrorListener;
@@ -74,7 +75,7 @@ public class AppMasterApplication extends Application {
 		System.loadLibrary("leo_service");
 	}
 
-	private native void restartApplocker(int sdk);
+	private native void restartApplocker(int sdk, String userSerial);
 
 	@Override
 	public void onCreate() {
@@ -123,12 +124,27 @@ public class AppMasterApplication extends Application {
 				checkNewAppBusiness();
 			}
 		}, 10000);
-		restartApplocker(PhoneInfo.getAndroidVersion());
+		restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
 		
 		/* init user activity manager here */
 		mActManager = UserActManager.getInstance(getApplicationContext(), 
 		        PushUIHelper.getInstance(getApplicationContext()));
 	}
+	
+    private String getUserSerial() {
+        String userSerial = null;
+        if (PhoneInfo.getAndroidVersion() >= 17) {
+            try {
+                UserManager userManager = (UserManager) getSystemService(Context.USER_SERVICE);
+                if (userManager != null) {
+                    userSerial = String.valueOf(userManager.getSerialNumberForUser(android.os.Process.myUserHandle()));
+                }
+            } catch (Exception e) {               
+            } catch (Error error) {
+            }
+        }
+        return userSerial;
+    }
 
 	private void startInitTask(final Context ctx) {
 		new Thread(new Runnable() {
