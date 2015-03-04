@@ -3,16 +3,19 @@ package com.leo.appmaster.feedback;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiConfiguration.Visibility;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -32,11 +35,13 @@ import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 
 
-public class FeedbackActivity extends BaseActivity implements OnClickListener {
+public class FeedbackActivity extends BaseActivity implements OnClickListener, OnFocusChangeListener {
 
     private View mBtnCommit;
     private EditText mEditContent;
     private EditText mEditEmail;
+    private ImageView mEmailImg;
+    private View mEmailLayout;
     private TextView mCategory;
     private ImageView mCategoryImg;
     private View mCategoryLayout;
@@ -51,16 +56,29 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
     };
 
     private final ArrayList<String> mCategories = new ArrayList<String>();
+    private final ArrayList<String> mEmails = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
 
+        initEmails();
+        
         initUi();
 
         // check if any data not submitted
         checkPendingData();
+    }
+
+    private void initEmails() {
+        AccountManager am = AccountManager.get(getApplicationContext());
+        Account[] accounts = am.getAccounts();
+        for(Account a : accounts) {
+            if(a.name != null && a.name.matches("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$")) {
+                mEmails.add(a.name);
+            }
+        }
     }
 
     private void initUi() {
@@ -68,7 +86,12 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
         titleBar.setTitle(R.string.feedback);
         titleBar.openBackView();
         mEditContent = (EditText) findViewById(R.id.feedback_content);
+        mEmailLayout = findViewById(R.id.feedback_email_layout);
         mEditEmail = (EditText) findViewById(R.id.feedback_email);
+        mEditEmail.setOnFocusChangeListener(this);
+        mEmailImg =  (ImageView) findViewById(R.id.feedback_email_arrow);
+        mEmailImg.setOnClickListener(this);
+        mEmailImg.setVisibility(mEmails.size() > 1 ? View.VISIBLE : View.GONE);
         mCategoryLayout = findViewById(R.id.feedback_category_layout);
         mCategoryLayout.setOnClickListener(this);
         mCategory = (TextView) findViewById(R.id.feedback_category_title);
@@ -102,7 +125,12 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
     private void checkPendingData() {
         SharedPreferences perference = PreferenceManager.getDefaultSharedPreferences(this);
         mEditContent.setText(perference.getString(FeedbackHelper.KEY_CONTENT, ""));
-        mEditEmail.setText(perference.getString(FeedbackHelper.KEY_EMAIL, ""));
+        String email = "";
+        if(mEmails.size() > 0) {
+            email = mEmails.get(0);
+        }
+        String currentEmail = perference.getString(FeedbackHelper.KEY_EMAIL, email);
+        mEditEmail.setText(currentEmail.isEmpty() ? email : currentEmail);
         String category = perference.getString(FeedbackHelper.KEY_CATEGORY, "");
         if (!category.isEmpty()) {
             mCategory.setText(category);
@@ -155,24 +183,22 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
     public void onClick(View v) {
         hideIME();
         if (v == mCategoryLayout) {
-            if (mLeoPopMenu == null) {
-                mLeoPopMenu = new LeoPopMenu();
-                mLeoPopMenu.setPopMenuItems(mCategories);
-                mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                            int position, long id) {
-                        mCategory.setText(mCategories.get(position));
-                        mCategory.setTag(1);
-                        mLeoPopMenu.dismissSnapshotList();
-                        checkCommitable();
-                    }
-                });
-            }
+            mLeoPopMenu = new LeoPopMenu();
             LayoutStyles styles = new LayoutStyles();
             styles.width = LayoutParams.MATCH_PARENT;
             styles.height = LayoutParams.WRAP_CONTENT;
             styles.animation = R.style.PopupListAnimUpDown;
+            mLeoPopMenu.setPopMenuItems(mCategories);
+            mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                        int position, long id) {
+                    mCategory.setText(mCategories.get(position));
+                    mCategory.setTag(1);
+                    mLeoPopMenu.dismissSnapshotList();
+                    checkCommitable();
+                }
+            });
             mLeoPopMenu.showPopMenu(this, mCategory, styles, new OnDismissListener() {
                 @Override
                 public void onDismiss() {
@@ -197,6 +223,29 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
                         .show();
             }
             SDKWrapper.addEvent(this, SDKWrapper.P1, "setting", "fb_submit");
+        } else if( v == mEmailImg) {
+            mLeoPopMenu = new LeoPopMenu();
+            LayoutStyles styles = new LayoutStyles();
+            styles.width = LayoutParams.MATCH_PARENT;
+            styles.height = LayoutParams.WRAP_CONTENT;
+            styles.animation = R.style.PopupListAnimUpDown;
+            mLeoPopMenu.setPopMenuItems(mEmails);
+            mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                        int position, long id) {
+                    mEditEmail.setText(mEmails.get(position));
+                    mLeoPopMenu.dismissSnapshotList();
+                    checkCommitable();
+                }
+            });
+            mLeoPopMenu.showPopMenu(this, mEditEmail, styles, new OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    mEmailImg.setImageResource(R.drawable.choose_normal);
+                }
+            });
+            mEmailImg.setImageResource(R.drawable.choose_active);
         }
     }
 
@@ -222,5 +271,12 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
         mMessageDialog.setTitle(title);
         mMessageDialog.setContent(message);
         mMessageDialog.show();
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(v == mEditEmail) {
+            mEmailLayout.setBackgroundResource(hasFocus ? R.drawable.text_bg_acitve : R.drawable.text_bg_normal);
+        }
     }
 }
