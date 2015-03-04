@@ -58,7 +58,6 @@ import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 
 @SuppressLint("NewApi")
 public class VideoGriActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
-    private Cursor mCursor;
     private GridView mHideVideo;
     private List<VideoItemBean> mVideoItems;
     private CommonTitleBar mCommonTtileBar;
@@ -248,6 +247,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     public void getVideoInfo(String dirPath) {
         Uri uri = Files.getContentUri("external");
         String selection = Constants.VIDEO_FORMAT;
+        Cursor mCursor = null;
         try {
             mCursor = getContentResolver().query(uri, null, selection, null,
                     MediaColumns.DATE_MODIFIED + " desc");
@@ -266,6 +266,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 video.setName(dirName);
                 countMap.add(video);
             }
+            mCursor.close();
         }
 
     }

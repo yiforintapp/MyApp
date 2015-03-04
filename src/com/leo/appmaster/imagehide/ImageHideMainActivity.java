@@ -218,6 +218,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                 String path = cur.getString(cur.getColumnIndex("image_path"));
                 mHideImageInDb.add(path);
             }
+            cur.close();
         }
     }
 
@@ -291,7 +292,9 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         }, "image_dir = ?", new String[] {
                 dirPath
         }, null, null, null);
-        return cur.getCount();
+        int count = cur.getCount();
+        cur.close();
+        return count;
     }
 
     private class LoaderHideImageFolderTask extends AsyncTask<Void, Integer, Integer> {

@@ -65,8 +65,13 @@ public class HideFileUtils {
         final Cursor cursor = context.getContentResolver().query(uri, STORE_HIDEIMAGES, selection,
                 null,
                 MediaColumns.DATE_ADDED + " desc");
-        if (cursor == null || cursor.getCount() == 0)
+        if (cursor == null) {
             return;
+        }
+        if(cursor.getCount() == 0) {
+            cursor.close();
+            return;
+        }
 
         final String[] paths = FileOperationUtil.getSdCardPaths(context);
 
@@ -135,6 +140,7 @@ public class HideFileUtils {
                         }
                     }
                 }
+                cursor.close();
             }
         }).start();
 
