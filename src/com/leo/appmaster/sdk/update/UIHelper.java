@@ -1,16 +1,24 @@
 
 package com.leo.appmaster.sdk.update;
 
+import java.util.List;
+
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ActivityManager.AppTask;
+import android.app.ActivityManager.RecentTaskInfo;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
@@ -18,6 +26,7 @@ import com.leo.analytics.update.IUIHelper;
 import com.leo.analytics.update.UpdateManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -43,6 +52,8 @@ public class UIHelper implements IUIHelper {
     public final static String ACTION_CANCEL_DOWNLOAD = "com.leo.appmaster.download.cancel";
     public final static String ACTION_DOWNLOAD_FAILED = "com.leo.appmaster.download.failed";
     public final static String ACTION_DOWNLOAD_FAILED_CANCEL = "com.leo.appmaster.download.failed.dismiss";
+    
+    private final static String PKG_SYSTEM_UI = "com.android.systemui";
 
     private final static int DOWNLOAD_NOTIFICATION_ID = 1001;
     private final static int UPDATE_NOTIFICATION_ID = 1002;
@@ -235,37 +246,58 @@ public class UIHelper implements IUIHelper {
             AppMasterApplication.getInstance().exitApplication();
         }
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
-                && !isRunningForeground(mContext)) {
+                && !isAppOnTop(mContext)) {
             sendUpdateNotification();
         } else {
             showUI(ui_type, param);
         }
     }
 
+    @SuppressLint("NewApi")
     private boolean isActivityOnTop(Context context) {
-        ActivityManager am = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
-        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        if (cn.getClassName().equals(UpdateActivity.class.getName())) {
-            return true;
+        if(!isAppOnTop(context)){
+            return false;
         }
-        return false;
+        /* now our Application on top, check activity */
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT ){
+            ActivityManager am = (ActivityManager) context
+                    .getSystemService(Context.ACTIVITY_SERVICE);
+            try {
+                List<AppTask> tasks = am.getAppTasks();
+                if (tasks != null && tasks.size() > 0) {
+                    RecentTaskInfo rti = tasks.get(0).getTaskInfo();
+                    if (rti != null) {
+                        Intent intent = rti.baseIntent;
+                        ComponentName cn = intent.getComponent();
+                        if (cn != null && cn.getClassName().equals(this.getClass().getName())) {
+                            return true;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }else{
+            ActivityManager am = (ActivityManager) context
+                    .getSystemService(Context.ACTIVITY_SERVICE);
+            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+            if (cn.getClassName().equals(UpdateActivity.class.getName())) {
+                return true;
+            }
+            return false;
+        }
     }
 
     private boolean isAppOnTop(Context context) {
-        ActivityManager am = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
-        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        String currentPackageName = cn.getPackageName();
-        if (!TextUtils.isEmpty(currentPackageName)
-                && currentPackageName.equals(context.getPackageName())) {
-            return true;
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT ){
+            return isAppOnTopAfterLolipop(context);
+        }else{
+            return isAppOnTopBeforeLolipop(context);
         }
-
-        return false;
     }
-
-    private boolean isRunningForeground(Context context) {
+    
+    private boolean isAppOnTopBeforeLolipop(Context context){
         ActivityManager am = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
@@ -274,8 +306,34 @@ public class UIHelper implements IUIHelper {
                 && currentPackageName.equals(context.getPackageName())) {
             return true;
         }
-
         return false;
+    
+    }
+    
+    private boolean isAppOnTopAfterLolipop(Context context){
+        // Android L and above
+        String pkgName = null;
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<RunningAppProcessInfo> list = am.getRunningAppProcesses();
+        for (RunningAppProcessInfo pi : list) {
+            if (pi.importance <= RunningAppProcessInfo.IMPORTANCE_VISIBLE  // Foreground or Visible
+                    && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter provider and service
+                    && (0x4 & pi.flags) > 0) { // Must have activities
+                String pkgList[] = pi.pkgList;
+                if(pkgList != null && pkgList.length > 0) {
+                    if(pkgList[0].equals(PKG_SYSTEM_UI)){
+                        continue;
+                    }
+                    pkgName = pkgList[0];
+                }
+            }
+        }
+    
+        if(pkgName == null || !pkgName.equals(mContext.getPackageName())){
+            return false;
+        }
+        
+        return true;
     }
 
     public int getProgress() {
@@ -335,6 +393,16 @@ public class UIHelper implements IUIHelper {
                 break;
         }
     }
+    
+    private void relaunchHome() {
+            LeoLog.d(TAG, "relaunchHome called");
+            Intent i = new Intent();
+            i.setClass(mContext, HomeActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            mContext.startActivity(i);
+    }
 
     private void relaunchActivity(int type, int param) {
         Intent i = new Intent();
@@ -356,8 +424,17 @@ public class UIHelper implements IUIHelper {
                 if (action.equals(ACTION_NEED_UPDATE)) {
                     nm.cancel(UPDATE_NOTIFICATION_ID);
                     LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
-                    relaunchActivity(IUIHelper.TYPE_UPDATE,
-                            mManager.getReleaseType());
+                    if (!isAppOnTop(mContext)) {
+                        relaunchHome();
+                    }
+                    new Handler().postDelayed(new Runnable() {
+                        
+                        @Override
+                        public void run() {
+                            relaunchActivity(IUIHelper.TYPE_UPDATE,
+                                    mManager.getReleaseType());
+                        }
+                    }, 200);
                 } else if (action.equals(ACTION_CANCEL_UPDATE)) {
                     mManager.onCancelUpdate();
                     if (listener != null) {
@@ -365,8 +442,18 @@ public class UIHelper implements IUIHelper {
                     }
                 } else if (action.equals(ACTION_DOWNLOADING)) {
                     LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
-                    relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
-                            mManager.getReleaseType());
+                    if (!isAppOnTop(mContext)) {
+                        relaunchHome();
+                    }
+                    new Handler().postDelayed(new Runnable() {
+                        
+                        @Override
+                        public void run() {
+                            relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
+                                    mManager.getReleaseType());
+                        }
+                    }, 200);
+                    
                 } else if (action.equals(ACTION_CANCEL_DOWNLOAD)) {
                     mManager.onCancelDownload();
                     if (listener != null) {
