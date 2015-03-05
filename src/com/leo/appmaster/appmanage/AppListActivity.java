@@ -1010,14 +1010,16 @@ public class AppListActivity extends BaseFragmentActivity implements
 
     @Override
     public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
-        for (AppItemInfo change : changes) {
-            for (AppItemInfo saved : mBackupManager.getRestoreList()) {
-                if (saved.packageName.equals(change.packageName)
-                        && saved.versionCode == change.versionCode) {
-                    change.isBackuped = true;
-                    break;
+        if(changes != null) {
+            for (AppItemInfo change : changes) {
+                for (AppItemInfo saved : mBackupManager.getRestoreList()) {
+                    if (saved.packageName.equals(change.packageName)
+                            && saved.versionCode == change.versionCode) {
+                        change.isBackuped = true;
+                        break;
+                    }
                 }
-            }
+        }
         }
 
         runOnUiThread(new Runnable() {

@@ -9,6 +9,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -72,6 +73,24 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     protected void onDestroy() {
         super.onDestroy();
         mLockList.clear();
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (Exception e) {
+            
+        }
+    }
+    
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState, persistentState);
+        } catch (Exception e) {
+            
+        }
     }
 
     private void loadData() {

@@ -262,7 +262,9 @@ public class AppWallActivity extends BaseActivity implements
         @Override
         protected void onPostExecute(String result) {
             boolean flag = false;
-            p.dismiss();
+            if(p != null && p.isShowing()) {
+                p.dismiss();
+            }
             if (result != null && !result.equals("")) {
                 List<AppWallBean> apps = getJson(result);
                 appwallLV.setVisibility(View.VISIBLE);
@@ -299,7 +301,9 @@ public class AppWallActivity extends BaseActivity implements
                 appwallLV.setAdapter(adapter);
                 appwallLV.setOnItemClickListener(AppWallActivity.this);
             } else {
-                p.dismiss();
+                if(p != null && p.isShowing()) {
+                    p.dismiss();
+                }
                 appwallLV.setVisibility(View.GONE);
                 button.setVisibility(View.VISIBLE);
                 text.setVisibility(View.VISIBLE);
@@ -322,7 +326,9 @@ public class AppWallActivity extends BaseActivity implements
 
         @Override
         protected void onPreExecute() {
-            p.show();
+            if(p != null) {
+                p.show();
+            }
             super.onPreExecute();
         }
     }
