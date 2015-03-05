@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +41,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.service.LockService;
@@ -381,9 +383,28 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             spiner.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    finish();
+                    boolean restart = false;
+                    // Start-----For some sony phones, the [toPackage] may not be started, judge it here.
+                    if(PhoneInfo.getAndroidVersion() < 20) {
+                        List<RunningTaskInfo> tasks = mAm.getRunningTasks(2);
+                        if(tasks != null && tasks.size() > 1) {
+                            RunningTaskInfo secondTaskInfo = tasks.get(1);
+                            if (secondTaskInfo.topActivity != null) {
+                                restart = !(secondTaskInfo.topActivity.getPackageName().equals(mToPackage));
+                            }
+                        }
+                    }
+                    if(restart) {
+                        Intent intent = getPackageManager().getLaunchIntentForPackage(mToPackage);
+                        if(intent != null) {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    }
+                    // End----For some sony phones, the [toPackage] may not be started, judge it here.
+                    finish();                  
                 }
-            }, 500);
+            }, 100);
 
             return;
         } else if (mFromType == LockFragment.FROM_SELF_HOME) {
