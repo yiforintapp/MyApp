@@ -21,6 +21,7 @@ import android.os.IBinder;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.logic.LockHandler;
 import com.leo.appmaster.applocker.logic.TimeoutRelockPolicy;
+import com.leo.appmaster.utils.Utilities;
 //import android.app.ActivityManager.AppTask;
 
 @SuppressLint("NewApi")
@@ -179,6 +180,27 @@ public class LockService extends Service {
                     }
                     pkgName = topTaskInfo.topActivity.getPackageName();
                     activityName = topTaskInfo.topActivity.getShortClassName();
+                    // For aliyun os (may be others), the component of topActivity is hidden, make a backup here.
+                    if(Utilities.isEmpty(pkgName)) {
+                        List<RunningAppProcessInfo> list = mActivityManager.getRunningAppProcesses();
+                        for (RunningAppProcessInfo pi : list) {
+                            if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND  || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)  // Foreground or Visible
+                                    && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter provider and service
+                                    && (0x4 & pi.flags) > 0) { // Must have activities and one activity is on the top
+                                String pkgList[] = pi.pkgList;
+                                if(pkgList != null && pkgList.length > 0) {
+                                    pkgName = pkgList[0];
+                                    if(SYSTEMUI_PKG.equals(pkgName)) {
+                                        continue;
+                                    }
+                                    if(Utilities.isEmpty(activityName)) {
+                                        activityName =pkgName;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }                   
                 }
             }
             // AM-940, filter com.estrongs.android.pop.app.UninstallMonitorActivity
