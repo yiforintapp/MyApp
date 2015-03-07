@@ -8,7 +8,6 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiConfiguration.Visibility;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -169,8 +168,12 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         }
         SharedPreferences perference = PreferenceManager.getDefaultSharedPreferences(this);
         String category = mCategory.getTag() == null ? "" : mCategory.getText().toString();
+        String email = mEditEmail.getText().toString();
+        if(!email.matches(EMAIL_EXPRESSION)) {
+            email = "";
+        }
         perference.edit().putString(FeedbackHelper.KEY_CONTENT, mEditContent.getText().toString())
-                .putString(FeedbackHelper.KEY_EMAIL, mEditEmail.getText().toString())
+                .putString(FeedbackHelper.KEY_EMAIL, email)
                 .putString(FeedbackHelper.KEY_CATEGORY, category).commit();
     };
 
