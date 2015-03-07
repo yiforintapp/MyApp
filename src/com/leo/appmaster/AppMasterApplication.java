@@ -24,6 +24,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.UserManager;
+import android.text.format.Time;
 import android.util.DisplayMetrics;
 
 import com.android.volley.Response.ErrorListener;
@@ -235,48 +236,70 @@ public class AppMasterApplication extends Application {
 	}
 
 	private void showNewThemeTip() {
-		// send new theme broadcast
-		Intent intent = new Intent(Constants.ACTION_NEW_THEME);
-		sendBroadcast(intent);
+	    if(shouldShowTip()) {
+	        // send new theme broadcast
+	        Intent intent = new Intent(Constants.ACTION_NEW_THEME);
+	        sendBroadcast(intent);
 
-		// show new theme status tip
-		Notification notif = new Notification();
-		intent = new Intent(this, LockerTheme.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		intent.putExtra("from", "new_theme_tip");
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		notif.icon = R.drawable.ic_launcher_notification;
-		notif.tickerText = this.getString(R.string.find_new_theme);
-		notif.flags = Notification.FLAG_AUTO_CANCEL;
-		notif.setLatestEventInfo(this, this.getString(R.string.find_new_theme),
-				this.getString(R.string.find_new_theme_content), contentIntent);
-	    NotificationUtil.setBigIcon(notif, R.drawable.ic_launcher_notification_big);
-		notif.when = System.currentTimeMillis();
-		NotificationManager nm = (NotificationManager) this
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.notify(0, notif);
+	        // show new theme status tip
+	        Notification notif = new Notification();
+	        intent = new Intent(this, LockerTheme.class);
+	        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+	                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+	        intent.putExtra("from", "new_theme_tip");
+	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+	                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	        notif.icon = R.drawable.ic_launcher_notification;
+	        notif.tickerText = this.getString(R.string.find_new_theme);
+	        notif.flags = Notification.FLAG_AUTO_CANCEL;
+	        notif.setLatestEventInfo(this, this.getString(R.string.find_new_theme),
+	                this.getString(R.string.find_new_theme_content), contentIntent);
+	        NotificationUtil.setBigIcon(notif, R.drawable.ic_launcher_notification_big);
+	        notif.when = System.currentTimeMillis();
+	        NotificationManager nm = (NotificationManager) this
+	                .getSystemService(Context.NOTIFICATION_SERVICE);
+	        nm.notify(0, notif);
+	    }
 	}
 
 	private void showNewBusinessTip(String mainTitle, String content) {
-		Intent intent = null;
-		Notification notif = new Notification();
-		intent = new Intent(this, AppListActivity.class);
-		intent.putExtra("from_statubar", true);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		notif.icon = R.drawable.ic_launcher_notification;
-		notif.tickerText = mainTitle;
-		notif.flags = Notification.FLAG_AUTO_CANCEL;
-		notif.setLatestEventInfo(this, mainTitle, content, contentIntent);
-	    NotificationUtil.setBigIcon(notif, R.drawable.ic_launcher_notification_big);
-		notif.when = System.currentTimeMillis();
-		NotificationManager nm = (NotificationManager) this
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.notify(1, notif);
+	    if(shouldShowTip()) {
+	        Intent intent = null;
+	        Notification notif = new Notification();
+	        intent = new Intent(this, AppListActivity.class);
+	        intent.putExtra("from_statubar", true);
+	        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+	                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+	                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	        notif.icon = R.drawable.ic_launcher_notification;
+	        notif.tickerText = mainTitle;
+	        notif.flags = Notification.FLAG_AUTO_CANCEL;
+	        notif.setLatestEventInfo(this, mainTitle, content, contentIntent);
+	        NotificationUtil.setBigIcon(notif, R.drawable.ic_launcher_notification_big);
+	        notif.when = System.currentTimeMillis();
+	        NotificationManager nm = (NotificationManager) this
+	                .getSystemService(Context.NOTIFICATION_SERVICE);
+	        nm.notify(1, notif);
+	    }
+	}
+	
+	private boolean shouldShowTip() {
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        long lastTime = pref.getLastShowTime();
+        long nowTime = System.currentTimeMillis();
+        if(lastTime > 0) {
+            Time time = new Time();
+            time.set(lastTime);
+            int lastYear = time.year;
+            int lastDay = time.yearDay;
+            time.set(nowTime);
+            if(lastYear == time.year && lastDay == time.yearDay) {
+                return false;
+            }
+        }
+        pref.setLastShowTime(nowTime);
+	    return true;
 	}
 
 	protected void checkNewAppBusiness() {

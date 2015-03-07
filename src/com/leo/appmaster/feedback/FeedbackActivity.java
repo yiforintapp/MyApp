@@ -168,13 +168,15 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         }
         SharedPreferences perference = PreferenceManager.getDefaultSharedPreferences(this);
         String category = mCategory.getTag() == null ? "" : mCategory.getText().toString();
-        String email = mEditEmail.getText().toString();
-        if(!email.matches(EMAIL_EXPRESSION)) {
-            email = "";
+        String email = mEditEmail.getText().toString().trim();
+        if(email.matches(EMAIL_EXPRESSION)) {
+            perference.edit().putString(FeedbackHelper.KEY_CONTENT, mEditContent.getText().toString())
+            .putString(FeedbackHelper.KEY_EMAIL, email)
+            .putString(FeedbackHelper.KEY_CATEGORY, category).commit();
+        } else {
+            perference.edit().putString(FeedbackHelper.KEY_CONTENT, mEditContent.getText().toString())
+            .putString(FeedbackHelper.KEY_CATEGORY, category).commit();
         }
-        perference.edit().putString(FeedbackHelper.KEY_CONTENT, mEditContent.getText().toString())
-                .putString(FeedbackHelper.KEY_EMAIL, email)
-                .putString(FeedbackHelper.KEY_CATEGORY, category).commit();
     };
 
     @Override
@@ -266,7 +268,6 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
                 @Override
                 public void onDismiss(DialogInterface dialog) {
                     mEditContent.setText("");
-                    mEditEmail.setText("");
                     mCategory.setText(R.string.feedback_category_tip);
                     mCategory.setTag(null);
                     finish();

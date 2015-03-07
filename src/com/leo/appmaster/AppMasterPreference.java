@@ -69,6 +69,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LOCK_REMIND = "lock_remind";
     public static final String PREF_RECOMMENT_TIP_LIST = "recomment_tip_list";
     public static final String PREF_BUSINESS_APP_TIP_REFRENT = "business_app_tip_refrent";
+    public static final String PREF_SHOW_TIP_KEY = "last_show_tip_time";
 
     // home page
     public static final String PREF_HOME_BUSINESS_NEW_TIP_CLICK = "home_business_tip_click";
@@ -110,6 +111,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setUseThemeGuide(boolean flag) {
         mPref.edit().putBoolean(PREF_USE_LOCK_THEME_GUIDE, flag).commit();
+    }
+    
+    public long getLastShowTime() {
+        return mPref.getLong(PREF_SHOW_TIP_KEY, 0);
+    }
+
+    public void setLastShowTime(long lastShowTime) {
+        mPref.edit().putLong(PREF_SHOW_TIP_KEY, lastShowTime).commit();
     }
 
     public boolean getLaunchOtherApp() {
