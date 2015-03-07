@@ -37,6 +37,8 @@ import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 
 public class FeedbackActivity extends BaseActivity implements OnClickListener, OnFocusChangeListener {
 
+    private static final String EMAIL_EXPRESSION = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+    
     private View mBtnCommit;
     private EditText mEditContent;
     private EditText mEditEmail;
@@ -75,7 +77,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         AccountManager am = AccountManager.get(getApplicationContext());
         Account[] accounts = am.getAccounts();
         for(Account a : accounts) {
-            if(a.name != null && a.name.matches("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$")) {
+            if(a.name != null && a.name.matches(EMAIL_EXPRESSION) && !mEmails.contains(a.name)) {
                 mEmails.add(a.name);
             }
         }
@@ -207,7 +209,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
             });
             mCategoryImg.setImageResource(R.drawable.choose_active);
         } else if (v == mBtnCommit) {
-            if (mEditEmail.getText().toString().trim().contains("@")) {
+            if (mEditEmail.getText().toString().trim().matches(EMAIL_EXPRESSION)) {
                 FeedbackHelper.getInstance().tryCommit(mCategory.getText().toString(),
                         mEditEmail.getText().toString().trim(),
                         mEditContent.getText().toString().trim());
