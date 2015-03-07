@@ -63,6 +63,7 @@
         android:theme="@style/activity_theme" >
         <activity
             android:name="com.leo.appmaster.home.SplashActivity"
+            android:taskAffinity="com.leo.appmaster.home"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -73,7 +74,7 @@
         <activity
             android:name="com.leo.appmaster.home.HomeActivity"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.home"
+            android:taskAffinity="com.leo.appmaster.home"
              android:launchMode="singleTop"
             android:theme="@style/activity_theme" >
         </activity>
@@ -194,6 +195,7 @@
         <activity
             android:name="com.leo.appmaster.sdk.update.UpdateActivity"
             android:launchMode="singleTop"
+            android:taskAffinity="com.leo.appmaster.home"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
