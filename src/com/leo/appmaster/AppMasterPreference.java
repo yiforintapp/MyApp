@@ -93,6 +93,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
+    
+    private long mLastShowTime = -1;
 
     private AppMasterPreference(Context context) {
         mPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -114,10 +116,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
     
     public long getLastShowTime() {
-        return mPref.getLong(PREF_SHOW_TIP_KEY, 0);
+        if(mLastShowTime < 0) {
+            mLastShowTime = mPref.getLong(PREF_SHOW_TIP_KEY, 0);
+        }
+        return mLastShowTime;
     }
 
     public void setLastShowTime(long lastShowTime) {
+        mLastShowTime = lastShowTime;
         mPref.edit().putLong(PREF_SHOW_TIP_KEY, lastShowTime).commit();
     }
 
