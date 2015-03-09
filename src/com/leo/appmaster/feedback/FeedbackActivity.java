@@ -58,6 +58,8 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
 
     private final ArrayList<String> mCategories = new ArrayList<String>();
     private final ArrayList<String> mEmails = new ArrayList<String>();
+    
+    private int mCategoryPos = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,9 +134,13 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         }
         String currentEmail = perference.getString(FeedbackHelper.KEY_EMAIL, email);
         mEditEmail.setText(currentEmail.isEmpty() ? email : currentEmail);
-        String category = perference.getString(FeedbackHelper.KEY_CATEGORY, "");
-        if (!category.isEmpty()) {
-            mCategory.setText(category);
+        try {
+            mCategoryPos = perference.getInt(FeedbackHelper.KEY_CATEGORY, -1);
+        } catch(Exception e) {
+           
+        }
+        if (mCategoryPos >= 0 && mCategoryPos < mCategories.size()) {
+            mCategory.setText(mCategories.get(mCategoryPos));
             mCategory.setTag(1);
         }
     }
@@ -167,15 +173,14 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
             mMessageDialog = null;
         }
         SharedPreferences perference = PreferenceManager.getDefaultSharedPreferences(this);
-        String category = mCategory.getTag() == null ? "" : mCategory.getText().toString();
         String email = mEditEmail.getText().toString().trim();
         if(email.matches(EMAIL_EXPRESSION)) {
             perference.edit().putString(FeedbackHelper.KEY_CONTENT, mEditContent.getText().toString())
             .putString(FeedbackHelper.KEY_EMAIL, email)
-            .putString(FeedbackHelper.KEY_CATEGORY, category).commit();
+            .putInt(FeedbackHelper.KEY_CATEGORY, mCategoryPos).commit();
         } else {
             perference.edit().putString(FeedbackHelper.KEY_CONTENT, mEditContent.getText().toString())
-            .putString(FeedbackHelper.KEY_CATEGORY, category).commit();
+            .putInt(FeedbackHelper.KEY_CATEGORY, mCategoryPos).commit();
         }
     };
 
@@ -201,6 +206,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
                 public void onItemClick(AdapterView<?> parent, View view,
                         int position, long id) {
                     mCategory.setText(mCategories.get(position));
+                    mCategoryPos = position;
                     mCategory.setTag(1);
                     mLeoPopMenu.dismissSnapshotList();
                     checkCommitable();
@@ -267,6 +273,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
             mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
+                    mCategoryPos = -1;
                     mEditContent.setText("");
                     mCategory.setText(R.string.feedback_category_tip);
                     mCategory.setTag(null);
