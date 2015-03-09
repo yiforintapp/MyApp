@@ -43,6 +43,7 @@ import com.leo.appmaster.sdk.push.UserActManager;
 import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.cache.Md5FileNameGenerator;
@@ -235,11 +236,19 @@ public class AppMasterApplication extends Application {
 		return mBackupManager;
 	}
 
-	private void showNewThemeTip() {
+	private void showNewThemeTip(String title, String content) {
 	    if(shouldShowTip()) {
 	        // send new theme broadcast
 	        Intent intent = new Intent(Constants.ACTION_NEW_THEME);
 	        sendBroadcast(intent);
+	        
+	        if(Utilities.isEmpty(title)) {
+	            title = getString(R.string.find_new_theme);
+	        }
+	        
+	         if(Utilities.isEmpty(content)) {
+	             content =  getString(R.string.find_new_theme_content);
+	         }
 
 	        // show new theme status tip
 	        Notification notif = new Notification();
@@ -252,8 +261,7 @@ public class AppMasterApplication extends Application {
 	        notif.icon = R.drawable.ic_launcher_notification;
 	        notif.tickerText = this.getString(R.string.find_new_theme);
 	        notif.flags = Notification.FLAG_AUTO_CANCEL;
-	        notif.setLatestEventInfo(this, this.getString(R.string.find_new_theme),
-	                this.getString(R.string.find_new_theme_content), contentIntent);
+	        notif.setLatestEventInfo(this, title, content , contentIntent);
 	        NotificationUtil.setBigIcon(notif, R.drawable.ic_launcher_notification_big);
 	        notif.when = System.currentTimeMillis();
 	        NotificationManager nm = (NotificationManager) this
@@ -262,8 +270,16 @@ public class AppMasterApplication extends Application {
 	    }
 	}
 
-	private void showNewBusinessTip(String mainTitle, String content) {
-	    if(shouldShowTip()) {
+	private void showNewBusinessTip(String title, String content) {
+	    if(shouldShowTip()) {	        
+	           if(Utilities.isEmpty(title)) {
+	                title = getString(R.string.new_app_tip_title);
+	            }
+	            
+	             if(Utilities.isEmpty(content)) {
+	                 content =  getString(R.string.new_app_tip_content);
+	             }
+	        
 	        Intent intent = null;
 	        Notification notif = new Notification();
 	        intent = new Intent(this, AppListActivity.class);
@@ -273,9 +289,9 @@ public class AppMasterApplication extends Application {
 	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 	                intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	        notif.icon = R.drawable.ic_launcher_notification;
-	        notif.tickerText = mainTitle;
+	        notif.tickerText = title;
 	        notif.flags = Notification.FLAG_AUTO_CANCEL;
-	        notif.setLatestEventInfo(this, mainTitle, content, contentIntent);
+	        notif.setLatestEventInfo(this, title, content, contentIntent);
 	        NotificationUtil.setBigIcon(notif, R.drawable.ic_launcher_notification_big);
 	        notif.when = System.currentTimeMillis();
 	        NotificationManager nm = (NotificationManager) this
@@ -308,7 +324,7 @@ public class AppMasterApplication extends Application {
 
 		long lastCheckTime = pref.getLastCheckBusinessTime();
 		if (lastCheckTime == 0
-				|| (curTime - lastCheckTime) > AppMasterConfig.TIME_12_HOUR
+				|| (curTime - lastCheckTime) > pref.getBusinessCurrentStrategy()
 		/* 2 * 60 * 1000 */) {
 			HttpRequestAgent.getInstance(this).checkNewBusinessData(
 					new Listener<JSONObject>() {
@@ -319,20 +335,29 @@ public class AppMasterApplication extends Application {
 							if (response != null) {
 								try {
 									JSONObject jsonObject = response.getJSONObject("data");
+	                                JSONObject strategyObject = response.getJSONObject("strategy");
+	                                JSONObject noticeObject = response.getJSONObject("notice");     
+	                                
+	                                   long successStrategy  = pref.getBusinessSuccessStrategy();
+	                                    long failStrategy = pref.getBusinessFailStrategy();
+	                                    if(strategyObject != null) {
+	                                         successStrategy = strategyObject.getInt("s") * 60 * 60 * 1000;
+	                                         if(successStrategy < AppMasterConfig.MIN_PULL_TIME) {
+	                                             successStrategy =  AppMasterConfig.MIN_PULL_TIME;
+	                                         }
+	                                         failStrategy = strategyObject.getInt("f") * 60 * 60 * 1000;
+	                                         if(failStrategy < AppMasterConfig.MIN_PULL_TIME) {
+	                                             failStrategy =  AppMasterConfig.MIN_PULL_TIME;
+                                             }
+	                                    }
+	                                    pref.setBusinessStrategy(successStrategy, successStrategy, failStrategy);
+	                                    
 									if (jsonObject != null) {
 										boolean hasNewBusinessData = jsonObject
 												.getBoolean("need_update");
 										String serialNumber = jsonObject
 												.getString("update_flag");
 
-										// String mainTitle = jsonObject
-										// .getString("main_title");
-										// String content = jsonObject
-										// .getString("content");
-										String mainTitle = AppMasterApplication.this
-												.getString(R.string.new_app_tip_title);
-										String content = AppMasterApplication.this
-												.getString(R.string.new_app_tip_content);
 
 										if (!hasNewBusinessData) {
 											pref.setLocalBusinessSerialNumber(serialNumber);
@@ -340,8 +365,13 @@ public class AppMasterApplication extends Application {
 										pref.setOnlineBusinessSerialNumber(serialNumber);
 
 										if (hasNewBusinessData) {
-											showNewBusinessTip(mainTitle,
-													content);
+	                                          String title = null;
+	                                            String content = null;
+	                                            if(noticeObject != null) {
+	                                                title = noticeObject.getString("title");
+	                                                content = noticeObject.getString("content");
+	                                            }
+											showNewBusinessTip(title,  content);
 											AppMasterPreference pref = AppMasterPreference
 													.getInstance(AppMasterApplication.this);
 											pref.setHomeBusinessTipClick(false);
@@ -357,12 +387,7 @@ public class AppMasterApplication extends Application {
 										}
 									};
 									Timer timer = new Timer();
-									timer.schedule(recheckTask,
-											AppMasterConfig.TIME_12_HOUR/*
-																		 * 2 *
-																		 * 60 *
-																		 * 1000
-																		 */);
+									timer.schedule(recheckTask, pref.getBusinessCurrentStrategy());
 
 								} catch (JSONException e) {
 									e.printStackTrace();
@@ -376,6 +401,7 @@ public class AppMasterApplication extends Application {
 
 						@Override
 						public void onErrorResponse(VolleyError error) {
+						    pref.setThemeStrategy(pref.getBusinessFailStrategy(), pref.getBusinessSuccessStrategy(), pref.getBusinessFailStrategy());
 							TimerTask recheckTask = new TimerTask() {
 								@Override
 								public void run() {
@@ -383,9 +409,7 @@ public class AppMasterApplication extends Application {
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask,
-									AppMasterConfig.TIME_2_HOUR
-							/* 2 * 60 * 1000 */);
+							timer.schedule(recheckTask, pref.getBusinessCurrentStrategy());
 						}
 					});
 		} else {
@@ -396,7 +420,7 @@ public class AppMasterApplication extends Application {
 				}
 			};
 			Timer timer = new Timer();
-			long delay = AppMasterConfig.TIME_12_HOUR
+			long delay = pref.getBusinessCurrentStrategy()
 					- (curTime - lastCheckTime);
 			timer.schedule(recheckTask, delay);
 		}
@@ -409,7 +433,7 @@ public class AppMasterApplication extends Application {
 
 		long lastCheckTime = pref.getLastCheckThemeTime();
 		if (lastCheckTime == 0
-				|| (curTime - pref.getLastCheckThemeTime()) > AppMasterConfig.TIME_12_HOUR) {
+				|| (curTime - lastCheckTime) > pref.getThemeCurrentStrategy()) {
 			HttpRequestAgent.getInstance(this).checkNewTheme(
 					new Listener<JSONObject>() {
 
@@ -418,11 +442,28 @@ public class AppMasterApplication extends Application {
 								boolean noMidify) {
 							if (response != null) {
 								try {
-									JSONObject jsonObject = response.getJSONObject("data");
-									if (jsonObject != null) {
-										boolean hasNewTheme = jsonObject
+									JSONObject dataObject = response.getJSONObject("data");
+									JSONObject strategyObject = response.getJSONObject("strategy");
+									JSONObject noticeObject = response.getJSONObject("notice");			
+									
+									long successStrategy  = pref.getThemeSuccessStrategy();
+									long failStrategy = pref.getThemeFailStrategy();
+                                    if(strategyObject != null) {
+                                         successStrategy = strategyObject.getInt("s") * 60 * 60 * 1000;
+                                         if(successStrategy < AppMasterConfig.MIN_PULL_TIME) {
+                                             successStrategy =  AppMasterConfig.MIN_PULL_TIME;
+                                         }
+                                         failStrategy = strategyObject.getInt("f") * 60 * 60 * 1000;
+                                         if(failStrategy < AppMasterConfig.MIN_PULL_TIME) {
+                                             failStrategy =  AppMasterConfig.MIN_PULL_TIME;
+                                         }
+                                    }
+                                    pref.setThemeStrategy(successStrategy, successStrategy, failStrategy);
+                                    
+									if (dataObject != null) {
+										boolean hasNewTheme = dataObject
 												.getBoolean("need_update");
-										String serialNumber = jsonObject
+										String serialNumber = dataObject
 												.getString("update_flag");
 
 										if (!hasNewTheme) {
@@ -431,12 +472,18 @@ public class AppMasterApplication extends Application {
 										pref.setOnlineThemeSerialNumber(serialNumber);
 
 										if (hasNewTheme) {
-											showNewThemeTip();
+										    String title = null;
+										    String content = null;
+										    if(noticeObject != null) {
+										        title = noticeObject.getString("title");
+										        content = noticeObject.getString("content");
+										    }
+											showNewThemeTip(title, content);
 										}
 										pref.setLastCheckThemeTime(System
 												.currentTimeMillis());
 									}
-
+									
 									TimerTask recheckTask = new TimerTask() {
 										@Override
 										public void run() {
@@ -445,7 +492,7 @@ public class AppMasterApplication extends Application {
 									};
 									Timer timer = new Timer();
 									timer.schedule(recheckTask,
-											AppMasterConfig.TIME_12_HOUR);
+									        pref.getThemeCurrentStrategy());
 
 								} catch (JSONException e) {
 									e.printStackTrace();
@@ -459,6 +506,7 @@ public class AppMasterApplication extends Application {
 						@Override
 						public void onErrorResponse(VolleyError error) {
 							LeoLog.e("checkNewTheme", error.getMessage());
+                            pref.setThemeStrategy(pref.getThemeFailStrategy(), pref.getThemeSuccessStrategy(), pref.getThemeFailStrategy());
 							TimerTask recheckTask = new TimerTask() {
 								@Override
 								public void run() {
@@ -466,8 +514,7 @@ public class AppMasterApplication extends Application {
 								}
 							};
 							Timer timer = new Timer();
-							timer.schedule(recheckTask,
-									AppMasterConfig.TIME_2_HOUR);
+							timer.schedule(recheckTask, pref.getThemeCurrentStrategy());
 						}
 					});
 		} else {
@@ -478,7 +525,7 @@ public class AppMasterApplication extends Application {
 				}
 			};
 			Timer timer = new Timer();
-			long delay = AppMasterConfig.TIME_12_HOUR
+			long delay = pref.getThemeCurrentStrategy()
 					- (curTime - lastCheckTime);
 			timer.schedule(recheckTask, delay);
 		}

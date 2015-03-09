@@ -8,6 +8,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
@@ -70,6 +71,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_RECOMMENT_TIP_LIST = "recomment_tip_list";
     public static final String PREF_BUSINESS_APP_TIP_REFRENT = "business_app_tip_refrent";
     public static final String PREF_SHOW_TIP_KEY = "last_show_tip_time";
+    public static final String PREF_THEME_SUCCESS_STRATEGY = "theme_success_strategy";
+    public static final String PREF_THEME_FAIL_STRATEGY = "theme_fail_strategy";
+    public static final String PREF_CURRENT_THEME_STRATEGY = "theme_current_strategy";
+    public static final String PREF_BUSINESS_SUCCESS_STRATEGY = "business_success_strategy";
+    public static final String PREF_BUSINESS_FAIL_STRATEGY = "business_fail_strategy";
+    public static final String PREF_CURRENT_BUSINESS_STRATEGY = "business_current_strategy";
 
     // home page
     public static final String PREF_HOME_BUSINESS_NEW_TIP_CLICK = "home_business_tip_click";
@@ -95,6 +102,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private static AppMasterPreference mInstance;
     
     private long mLastShowTime = -1;
+    
+    private long mThemeSuccessStrategy = -1;
+    private long mThemeFailStrategy = -1;
+    private long mCurrentThemeStrategy = -1;
+    
+    private long mBusinessSuccessStrategy = -1;
+    private long mBusinessFailStrategy = -1;
+    private long mCurrentBusinessStrategy = -1;
 
     private AppMasterPreference(Context context) {
         mPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -113,6 +128,107 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setUseThemeGuide(boolean flag) {
         mPref.edit().putBoolean(PREF_USE_LOCK_THEME_GUIDE, flag).commit();
+    }
+    
+    public long getBusinessSuccessStrategy() {
+        if(mBusinessSuccessStrategy < 0) {
+            mBusinessSuccessStrategy = mPref.getLong(PREF_BUSINESS_SUCCESS_STRATEGY, AppMasterConfig.TIME_12_HOUR);
+        }
+        return mBusinessSuccessStrategy;
+    }
+    
+    public long getBusinessFailStrategy() {
+        if(mBusinessFailStrategy < 0) {
+            mBusinessFailStrategy = mPref.getLong(PREF_BUSINESS_FAIL_STRATEGY, AppMasterConfig.TIME_2_HOUR);
+        }
+        return mBusinessFailStrategy;
+    }
+    
+    public long getBusinessCurrentStrategy() {
+        if(mCurrentBusinessStrategy < 0) {
+            mCurrentBusinessStrategy = mPref.getLong(PREF_CURRENT_BUSINESS_STRATEGY, AppMasterConfig.TIME_2_HOUR);
+        }
+        return mCurrentBusinessStrategy;
+    }
+
+    public void setBusinessStrategy(long currentStrategy, long successStrategy, long failStrategy) {
+        Editor editor = null;
+        if(mCurrentBusinessStrategy != currentStrategy) {
+            mCurrentBusinessStrategy = currentStrategy;
+            editor = mPref.edit().putLong(PREF_CURRENT_BUSINESS_STRATEGY, currentStrategy);
+        }
+        if(mBusinessSuccessStrategy != successStrategy) {
+            mBusinessSuccessStrategy = successStrategy;
+            if(editor == null) {
+                editor = mPref.edit().putLong(PREF_BUSINESS_SUCCESS_STRATEGY, successStrategy);
+            } else {
+                editor.putLong(PREF_BUSINESS_SUCCESS_STRATEGY, successStrategy);
+            }            
+        }
+        if(mBusinessFailStrategy != failStrategy) {
+            mBusinessFailStrategy = failStrategy;
+            if(editor == null) {
+                editor = mPref.edit().putLong(PREF_BUSINESS_FAIL_STRATEGY, failStrategy);
+            } else {
+                editor.putLong(PREF_BUSINESS_FAIL_STRATEGY, failStrategy);
+            }                       
+        }
+        if(editor != null) {
+            editor.commit();
+        }
+    }
+    
+    public long getThemeSuccessStrategy() {
+        if(mThemeSuccessStrategy < 0) {
+            mThemeSuccessStrategy = mPref.getLong(PREF_THEME_SUCCESS_STRATEGY, AppMasterConfig.TIME_12_HOUR);
+        }
+        return mThemeSuccessStrategy;
+    }
+    
+    public long getThemeFailStrategy() {
+        if(mThemeFailStrategy < 0) {
+            mThemeFailStrategy = mPref.getLong(PREF_THEME_FAIL_STRATEGY, AppMasterConfig.TIME_2_HOUR);
+        }
+        return mThemeFailStrategy;
+    }
+    
+    public long getThemeCurrentStrategy() {
+        if(mCurrentThemeStrategy < 0) {
+            mCurrentThemeStrategy = mPref.getLong(PREF_CURRENT_THEME_STRATEGY, AppMasterConfig.TIME_2_HOUR);
+        }
+        return mCurrentThemeStrategy;
+    }
+
+    public void setThemeStrategy(long currentStrategy, long successStrategy, long failStrategy) {
+        Editor editor = null;
+        if(mCurrentThemeStrategy != currentStrategy) {
+            mCurrentThemeStrategy = currentStrategy;
+            editor = mPref.edit().putLong(PREF_CURRENT_THEME_STRATEGY, currentStrategy);
+        }
+        if(mThemeSuccessStrategy != successStrategy) {
+            mThemeSuccessStrategy = successStrategy;
+            if(editor == null) {
+                editor = mPref.edit().putLong(PREF_THEME_SUCCESS_STRATEGY, successStrategy);
+            } else {
+                editor.putLong(PREF_THEME_SUCCESS_STRATEGY, successStrategy);
+            }            
+        }
+        if(mThemeFailStrategy != failStrategy) {
+            mThemeFailStrategy = failStrategy;
+            if(editor == null) {
+                editor = mPref.edit().putLong(PREF_THEME_FAIL_STRATEGY, failStrategy);
+            } else {
+                editor.putLong(PREF_THEME_FAIL_STRATEGY, failStrategy);
+            }                       
+        }
+        if(editor != null) {
+            editor.commit();
+        }
+        
+        if(mCurrentThemeStrategy != currentStrategy) {
+            mCurrentThemeStrategy = currentStrategy;
+            mPref.edit().putLong(PREF_CURRENT_THEME_STRATEGY, currentStrategy).commit();
+        }
     }
     
     public long getLastShowTime() {

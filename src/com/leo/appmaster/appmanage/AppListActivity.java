@@ -1012,11 +1012,13 @@ public class AppListActivity extends BaseFragmentActivity implements
     public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
         if(changes != null) {
             for (AppItemInfo change : changes) {
-                for (AppItemInfo saved : mBackupManager.getRestoreList()) {
-                    if (saved.packageName.equals(change.packageName)
-                            && saved.versionCode == change.versionCode) {
-                        change.isBackuped = true;
-                        break;
+                if(change != null) {
+                    for (AppItemInfo saved : mBackupManager.getRestoreList()) {
+                        if (saved.packageName != null && saved.packageName.equals(change.packageName)
+                                && saved.versionCode == change.versionCode) {
+                            change.isBackuped = true;
+                            break;
+                        }
                     }
                 }
         }
