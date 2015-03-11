@@ -259,7 +259,7 @@ public class UIHelper implements IUIHelper {
             return false;
         }
         /* now our Application on top, check activity */
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT ){
+        if(Build.VERSION.SDK_INT > 19 ){
             ActivityManager am = (ActivityManager) context
                     .getSystemService(Context.ACTIVITY_SERVICE);
             try {
@@ -290,7 +290,7 @@ public class UIHelper implements IUIHelper {
     }
 
     private boolean isAppOnTop(Context context) {
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT ){
+        if(Build.VERSION.SDK_INT > 19 ){
             return isAppOnTopAfterLolipop(context);
         }else{
             return isAppOnTopBeforeLolipop(context);
