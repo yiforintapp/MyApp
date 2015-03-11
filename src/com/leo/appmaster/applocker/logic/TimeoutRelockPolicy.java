@@ -38,13 +38,14 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 					+ getRelockTime());
 			if ((curTime - lastLockTime) < getRelockTime())
 				return true;
-		} else {
-			UnlockTimeHolder holder = new UnlockTimeHolder();
-			holder.lastUnlockTime = curTime;
-			holder.secondUnlockTime = 0;
-			holder.firstUnlockTime = 0;
-			mLockapp.put(pkg, holder);
-		}
+		} 
+//		else {
+//			UnlockTimeHolder holder = new UnlockTimeHolder();
+//			holder.lastUnlockTime = curTime;
+//			holder.secondUnlockTime = 0;
+//			holder.firstUnlockTime = 0;
+//			mLockapp.put(pkg, holder);
+//		}
 		return false;
 	}
 
