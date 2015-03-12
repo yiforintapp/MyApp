@@ -341,11 +341,11 @@ public class AppMasterApplication extends Application {
 	                                   long successStrategy  = pref.getBusinessSuccessStrategy();
 	                                    long failStrategy = pref.getBusinessFailStrategy();
 	                                    if(strategyObject != null) {
-	                                         successStrategy = strategyObject.getInt("s") * 60 * 60 * 1000;
+	                                         successStrategy = strategyObject.getLong("s");
 	                                         if(successStrategy < AppMasterConfig.MIN_PULL_TIME) {
 	                                             successStrategy =  AppMasterConfig.MIN_PULL_TIME;
 	                                         }
-	                                         failStrategy = strategyObject.getInt("f") * 60 * 60 * 1000;
+	                                         failStrategy = strategyObject.getLong("f");
 	                                         if(failStrategy < AppMasterConfig.MIN_PULL_TIME) {
 	                                             failStrategy =  AppMasterConfig.MIN_PULL_TIME;
                                              }
@@ -449,11 +449,11 @@ public class AppMasterApplication extends Application {
 									long successStrategy  = pref.getThemeSuccessStrategy();
 									long failStrategy = pref.getThemeFailStrategy();
                                     if(strategyObject != null) {
-                                         successStrategy = strategyObject.getInt("s") * 60 * 60 * 1000;
+                                         successStrategy = strategyObject.getLong("s");
                                          if(successStrategy < AppMasterConfig.MIN_PULL_TIME) {
                                              successStrategy =  AppMasterConfig.MIN_PULL_TIME;
                                          }
-                                         failStrategy = strategyObject.getInt("f") * 60 * 60 * 1000;
+                                         failStrategy = strategyObject.getLong("f");
                                          if(failStrategy < AppMasterConfig.MIN_PULL_TIME) {
                                              failStrategy =  AppMasterConfig.MIN_PULL_TIME;
                                          }
