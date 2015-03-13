@@ -290,7 +290,7 @@ public class AppWallActivity extends BaseActivity implements
                     }
                 }
                 for (int i = 0; i < all.size(); i++) {
-                    if (i < 10) {
+                    if (i < 20) {
                         temp.add(all.get(i));
                     } else {
                         break;
