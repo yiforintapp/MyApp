@@ -259,7 +259,7 @@ public class AppMasterApplication extends Application {
 	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 	                intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	        notif.icon = R.drawable.ic_launcher_notification;
-	        notif.tickerText = this.getString(R.string.find_new_theme);
+	        notif.tickerText = title;
 	        notif.flags = Notification.FLAG_AUTO_CANCEL;
 	        notif.setLatestEventInfo(this, title, content , contentIntent);
 	        NotificationUtil.setBigIcon(notif, R.drawable.ic_launcher_notification_big);
