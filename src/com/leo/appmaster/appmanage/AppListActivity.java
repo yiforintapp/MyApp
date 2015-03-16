@@ -439,6 +439,7 @@ public class AppListActivity extends BaseFragmentActivity implements
         }
         if (mFromStatusbar) {
             Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(intent);
         }
         super.onBackPressed();
@@ -814,6 +815,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
                 if (mFromStatusbar) {
                     Intent intent = new Intent(this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     this.startActivity(intent);
                 }
                 break;

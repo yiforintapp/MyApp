@@ -591,7 +591,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
         if ((mFromTheme != null && !mFromTheme.equals(""))
                 || (mFrom != null && mFrom.equals("new_theme_tip"))) {
             Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
         super.onBackPressed();
@@ -769,7 +769,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
                 if ((mFromTheme != null && !mFromTheme.equals(""))
                         || (mFrom != null && mFrom.equals("new_theme_tip"))) {
                     Intent intent = new Intent(this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
                 finish();
