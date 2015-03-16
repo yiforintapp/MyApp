@@ -64,9 +64,9 @@ public class SDKWrapper {
         }
         
         try {
-            PushManager.getInstance(ctx).startPush(ctx.getString(R.string.channel_code));
+            PushManager.getInstance(ctx).startPush(ctx.getString(R.string.channel_code),R.layout.custom_big_notification, R.id.img_big, R.id.tv_msg);
         } catch (NotFoundException e) {
-            PushManager.getInstance(ctx).startPush("0000a");
+            PushManager.getInstance(ctx).startPush("0000a", R.layout.custom_big_notification, R.id.img_big, R.id.tv_msg);
         }
    }
 
