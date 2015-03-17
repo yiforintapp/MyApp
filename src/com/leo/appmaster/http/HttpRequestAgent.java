@@ -78,7 +78,7 @@ public class HttpRequestAgent {
 
 	public void checkNewTheme(Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = "http://192.168.1.201:8800/appmaster/themesupdatecheck";//Utilities.getURL(Constants.CHECK_NEW_THEME);
+		String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
 //		List<String> hideThemes = AppMasterPreference.getInstance(mContext)
 //				.getHideThemeList();
 //		String combined = "";
@@ -100,8 +100,8 @@ public class HttpRequestAgent {
 
 	public void checkNewBusinessData(Listener<JSONObject> listener,
 			ErrorListener eListener) {
-//		String url = Utilities.getURL(AppMasterConfig.CHECK_NEW_BUSINESS_APP);
-		String url = "http://192.168.1.201:8800/appmaster/apprecommend/checkappupdate";
+		String url = Utilities.getURL(AppMasterConfig.CHECK_NEW_BUSINESS_APP);
+//		String url = "http://192.168.1.201:8800/appmaster/apprecommend/checkappupdate";
         String body = "update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalThemeSerialNumber() + "&market_id="
