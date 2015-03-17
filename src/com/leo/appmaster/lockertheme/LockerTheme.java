@@ -10,12 +10,8 @@ import org.json.JSONObject;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -25,12 +21,11 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -50,19 +45,17 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.appmanage.view.BusinessAppFragment;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.ThemeChanageListener;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.lockertheme.LockerThemeChanageDialog.OnDiaogClickListener;
+import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
-import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -898,8 +891,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener,ThemeCh
             if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
                 if (AppUtil
                         .appInstalled(LockerTheme.this, Constants.GP_PACKAGE)) {
-                    AppwallHttpUtil.requestGp(LockerTheme.this,
-                            lastSelectedItem.packageName);
+                    try {
+                        AppwallHttpUtil.requestGp(LockerTheme.this,
+                                lastSelectedItem.packageName);
+                    } catch (Exception e) {
+                        AppwallHttpUtil.requestUrl(LockerTheme.this,
+                                lastSelectedItem.downloadUrl);
+                    }
                 } else {
                     AppwallHttpUtil.requestUrl(LockerTheme.this,
                             lastSelectedItem.downloadUrl);

@@ -577,6 +577,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                 /* sdk mark */
                                 SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                         "googleplay");
+                                boolean showGP = false;
                                 if (AppUtil.appInstalled(getApplicationContext(),
                                         "com.android.vending")) {
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -588,18 +589,24 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                                             "com.google.android.finsky.activities.MainActivity");
                                     intent.setComponent(cn);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
-                                    mHandler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Intent intent2 = new Intent(
-                                                    HomeActivity.this,
-                                                    GooglePlayGuideActivity.class);
-                                            intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            startActivity(intent2);
-                                        }
-                                    }, 200);
-                                } else {
+                                    try {
+                                        startActivity(intent);
+                                        mHandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent intent2 = new Intent(
+                                                        HomeActivity.this,
+                                                        GooglePlayGuideActivity.class);
+                                                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(intent2);
+                                            }
+                                        }, 200);
+                                        showGP = true;
+                                    } catch (Exception e) {
+                                        
+                                    }
+                                } 
+                                if(!showGP) {
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
                                     Uri uri = Uri
                                             .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");

@@ -207,7 +207,6 @@ public class AppWallActivity extends BaseActivity implements
             try {
                 requestUrl(urlStr);
             } catch (Exception e) {
-                e.printStackTrace();
             }
         } else {
             LeoLog.d("com.leo.appmaster.appwall.AppWallActivity", "Not URL！");

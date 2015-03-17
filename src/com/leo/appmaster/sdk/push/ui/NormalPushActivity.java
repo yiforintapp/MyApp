@@ -156,6 +156,7 @@ public class NormalPushActivity extends BaseActivity implements View.OnClickList
             Toast.makeText(this, getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
             return;
         }
+        boolean showGP = false;
         if (hasGPInstalled()) {
             /* go to GP client */
             Intent i = new Intent(Intent.ACTION_VIEW,
@@ -163,8 +164,13 @@ public class NormalPushActivity extends BaseActivity implements View.OnClickList
                             + getPackageName()));
             i.setPackage(GP_MARKET_PACKAGE_NAME);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
-        } else {
+            try {
+                startActivity(i);
+                showGP = true;
+            }catch(Exception e) {             
+            }
+        } 
+        if(!showGP) {
             /* go to GP website */
             Intent intent = new Intent();
             intent.setAction("android.intent.action.VIEW");
