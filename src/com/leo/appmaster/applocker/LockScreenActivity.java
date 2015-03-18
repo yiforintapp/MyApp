@@ -385,7 +385,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 public void run() {
                     boolean restart = false;
                     // Start-----For some sony phones, the [toPackage] may not be started, judge it here.
-                    if(PhoneInfo.getAndroidVersion() < 20) {
+                    if(!getPackageName().equals(mToPackage) && PhoneInfo.getAndroidVersion() < 20) {
                         List<RunningTaskInfo> tasks = mAm.getRunningTasks(2);
                         if(tasks != null && tasks.size() > 1) {
                             RunningTaskInfo secondTaskInfo = tasks.get(1);

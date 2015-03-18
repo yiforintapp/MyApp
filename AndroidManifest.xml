@@ -98,6 +98,7 @@
         <activity
             android:name="com.leo.appmaster.applocker.LockScreenActivity"
             android:exported="true"
+            android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:taskAffinity="com.leo.screen"
             android:theme="@android:style/Theme.Light.NoTitleBar" >

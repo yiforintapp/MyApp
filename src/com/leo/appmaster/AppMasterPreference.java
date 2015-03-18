@@ -89,7 +89,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private String mGesture;
     private String mLockPolicy;
     private List<String> mRecommentAppList;
-    private boolean mLockerScreenThemeGuide = false;
     public static final int LOCK_TYPE_NONE = -1;
     public static final int LOCK_TYPE_PASSWD = 0;
     public static final int LOCK_TYPE_GESTURE = 1;

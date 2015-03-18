@@ -67,15 +67,15 @@ public class LockHandler extends BroadcastReceiver {
 			amp.setLaunchOtherApp(true);
 		}
        boolean unlocked = amp.getUnlocked();
-		if (!pkg.equals(mLastRunningPkg)) {
-			if ((pkg.equals(myPackage) && activity
-					.contains("LockScreenActivity"))
-					|| (unlocked && mLastRunningPkg.equals(myPackage) && mLastRuningActivity
-							.contains("LockScreenActivity"))) {
-				mLastRunningPkg = pkg;
-				mLastRuningActivity = activity;
-				return;
-			}
+		if (!unlocked || !pkg.equals(mLastRunningPkg)) {
+		    if ((!unlocked && pkg.equals(myPackage) && activity
+                    .contains("LockScreenActivity"))
+                    || (unlocked && mLastRunningPkg.equals(myPackage) && mLastRuningActivity
+                            .contains("LockScreenActivity"))) {
+                mLastRunningPkg = pkg;
+                mLastRuningActivity = activity;
+                return;
+            }
 			mLastRunningPkg = pkg;
 			mLastRuningActivity = activity;
 			// For android 5.0, download package changed
@@ -108,12 +108,12 @@ public class LockHandler extends BroadcastReceiver {
 								LockFragment.LOCK_TYPE_GESTURE);
 					}
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 					intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 					intent.putExtra(EXTRA_LOCKED_APP_PKG, pkg);
 					intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
 							LockFragment.FROM_OTHER);
+					amp.setUnlocked(false);
 					mContext.startActivity(intent);
 				}
 			}
@@ -170,7 +170,6 @@ public class LockHandler extends BroadcastReceiver {
 							LockFragment.LOCK_TYPE_GESTURE);
 				}
 				intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent2.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 				intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				intent2.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 				intent2.putExtra(EXTRA_LOCKED_APP_PKG, mLastRunningPkg);
