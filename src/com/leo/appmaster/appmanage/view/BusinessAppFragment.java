@@ -50,6 +50,7 @@ import com.leo.imageloader.core.BitmapDisplayer;
 import com.leo.imageloader.core.ImageAware;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.imageloader.core.LoadedFrom;
+import com.leo.imageloader.core.SimpleBitmapDisplayer;
 
 public class BusinessAppFragment extends BaseFolderFragment implements
         OnItemClickListener, OnClickListener, OnRefreshListener2<GridView> {
@@ -134,14 +135,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .showImageOnLoading(R.drawable.recommend_loading_icon)
                 .showImageOnFail(R.drawable.recommend_loading_icon).cacheInMemory(true)
-                .cacheOnDisk(true).displayer(new BitmapDisplayer() {
-                    @Override
-                    public void display(Bitmap bitmap, ImageAware imageAware,
-                            LoadedFrom loadedFrom) {
-                        imageAware.setImageBitmap(bitmap);
-                        mRecommendAdapter.notifyDataSetChanged();
-                    }
-                }).build();
+                .cacheOnDisk(true).displayer(new SimpleBitmapDisplayer()).build();
 
         mImageLoader = ImageLoader.getInstance();
 
