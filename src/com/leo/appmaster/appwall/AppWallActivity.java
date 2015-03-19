@@ -444,7 +444,7 @@ public class AppWallActivity extends BaseActivity implements
                 app.setDownload(urls);
                 all.add(app);
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return all;
