@@ -104,7 +104,7 @@ public class HttpRequestAgent {
 //		String url = "http://192.168.1.201:8800/appmaster/apprecommend/checkappupdate";
         String body = "update_flag="
                 + AppMasterPreference.getInstance(mContext)
-                        .getLocalThemeSerialNumber() + "&market_id="
+                        .getLocalBusinessSerialNumber() + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&language="
                 + AppwallHttpUtil.getLanguage() + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
