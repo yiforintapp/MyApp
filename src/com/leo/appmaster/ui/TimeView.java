@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -55,5 +56,15 @@ public class TimeView extends View {
 	public void updateDegree(float d) {
 		mCurDegree = d;
 		postInvalidate();
+
 	}
+	
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {
+            
+        }
+    }
 }

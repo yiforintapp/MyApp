@@ -26,16 +26,13 @@ import com.leo.analytics.update.UpdateManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.home.GooglePlayGuideActivity;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
-
 public class UpdateActivity extends BaseActivity implements OnStateChangeListener {
 
     private final static String TAG = UpdateActivity.class.getSimpleName();
-    private Intent mIntent = null;
     private int mUIType = IUIHelper.TYPE_CHECKING;
     private int mParam = 0;
     private UpdateManager mManager = null;
@@ -59,12 +56,10 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mIntent = getIntent();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        mIntent = intent;
         super.onNewIntent(intent);
     }
 
@@ -164,10 +159,6 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
-        tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        ImageView iv = (ImageView) findViewById(R.id.dlg_left_icon);
-        iv.setVisibility(View.INVISIBLE);
         TextView tvYes = (TextView) findViewById(R.id.dlg_bottom_btn);
         tvYes.setText(getString(R.string.do_update));
         tvYes.setOnClickListener(new View.OnClickListener() {
@@ -269,14 +260,10 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
 
     private void showNoUpdate() {
         setContentView(R.layout.dialog_message);
-        ImageView iv = (ImageView) findViewById(R.id.dlg_left_icon);
-        iv.setVisibility(View.INVISIBLE);
         TextView title = (TextView) findViewById(R.id.dlg_title);
         title.setText(getString(R.string.tips_title));
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.update_no_need));
-        tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         TextView tv = (TextView) findViewById(R.id.dlg_bottom_btn);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override

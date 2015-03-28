@@ -6,9 +6,9 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.imageloader.DisplayImageOptions;
-import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.ImageScaleType;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import android.content.Context;
 import android.view.LayoutInflater;

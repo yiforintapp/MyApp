@@ -1,10 +1,12 @@
 package com.leo.appmaster.applocker;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +22,6 @@ public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 	CommonTitleBar mTitleBar;
 	EditText mEtTip;
 	TextView mTvMakesure;
-	private boolean mShouldLockOnRestart = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,39 +46,18 @@ public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		if (mShouldLockOnRestart ) {
-			showLockPage();
-		} else {
-			mShouldLockOnRestart  = true;
-		}
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		LeoLog.d("LockOptionActivity", "onActivityResault: requestCode = "
-				+ requestCode + "    resultCode = " + resultCode);
-		mShouldLockOnRestart = false;
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void showLockPage() {
-		Intent intent = new Intent(this, LockScreenActivity.class);
-		int lockType = AppMasterPreference.getInstance(this).getLockType();
-		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_PASSWD);
-		} else {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_GESTURE);
-		}
-		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-				LockFragment.FROM_SELF);
-//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		startActivityForResult(intent, 1000);
-	}
-
+    private void hideIME() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEtTip.getWindowToken(), 0);
+    }
+	
 	@Override
 	public void onClick(View v) {
 		if (v == mTvMakesure) {
@@ -87,7 +67,15 @@ public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 			String a = ap.getPpAnwser();
 			AppMasterPreference.getInstance(this).savePasswdProtect(q, a, tip);
 			Toast.makeText(this, R.string.set_success, 0).show();
-			finish();
+			
+			hideIME();
+			mEtTip.postDelayed(new Runnable() {
+                
+                @Override
+                public void run() {
+                    finish();                    
+                }
+            }, 300);
 		}
 	}
 

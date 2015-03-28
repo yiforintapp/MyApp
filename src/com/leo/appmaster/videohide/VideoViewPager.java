@@ -9,8 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.PersistableBundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +16,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
@@ -40,7 +34,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private CommonTitleBar mTtileBar;
     private Button mUnhideVideo;
     private Button mCancelVideo;
-    private LinearLayout mBottomButtonBar;
     private String mPath;
     private ArrayList<String> mAllPath;
     private LeoPictureViewPager viewPager;
@@ -48,11 +41,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private LEOAlarmDialog mDialog;
     private static final int DIALOG_CANCLE_VIDEO = 0;
     private static final int DIALOG_DELECTE_VIDEO = 1;
-    private static final String VIDEO_PLUS_PACKAGE_NAME = "com.leo.xplayer";
-    private static final String VIDEO_PLAYER_ACTIVITY = "com.leo.xplayer.VodPlayActivity";
     private VideoPagerAdapter mPagerAdapter;
     private ArrayList<String> mResultPath;
-    private boolean mShouldLockOnRestart = true;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
     public static final int JUMP_GP = 0;
@@ -68,7 +58,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar_video);
         mTtileBar.setTitle("");
         mTtileBar.openBackView();
-        mBottomButtonBar = (LinearLayout) findViewById(R.id.bottom_button_bar);
         mUnhideVideo = (Button) findViewById(R.id.unhide_video);
         mCancelVideo = (Button) findViewById(R.id.delete_video);
         mCancelVideo.setOnClickListener(this);
@@ -138,24 +127,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         super.onRestart();
 
     }
-    
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        try {
-            super.onRestoreInstanceState(savedInstanceState);
-        } catch (Exception e) {
-            
-        }
-    }
-    
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        try {
-            super.onRestoreInstanceState(savedInstanceState, persistentState);
-        } catch (Exception e) {
-            
-        }
-    }
 
     @Override
     public void onClick(View arg0) {
@@ -192,10 +163,10 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
      * ViewPagerAdapter PagerAdapter
      */
     private class VideoPagerAdapter extends PagerAdapter {
-        private Context context;
+
 
         public VideoPagerAdapter(Context context) {
-            this.context = context;
+            
         }
 
         @Override
@@ -246,7 +217,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 @Override
                 public void onClick(View arg0) {
                     try {
-                        boolean isVideoFlag = isVideo(VIDEO_PLUS_PACKAGE_NAME);
                         // if (isVideoFlag) {
                         String path = mAllPath.get(mPosition);
                         // ComponentName componentName = new
@@ -274,6 +244,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             return view;
         }
     }
+
     /**
      * showAlarmDialog
      * 
@@ -395,7 +366,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
      */
     private class BackgoundTask extends AsyncTask<Boolean, Integer, Boolean> {
         private Context context;
-        private Toast mHideFailToast = null;
 
         BackgoundTask(Context context) {
             this.context = context;
@@ -456,48 +426,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 viewPager.setCurrentItem(mPosition, true);
             } else {
             }
+            // video change, recompute privacy level
+            PrivacyHelper.getInstance(VideoViewPager.this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_VIDEO);
         }
     }
 
-    @Override
-    public void onActivityRestart() {
-        super.onActivityRestart();
-        if (mShouldLockOnRestart) {
-            Handler handler=new Handler();
-            handler.post(new Runnable() {
-                
-                @Override
-                public void run() {
-                    showLockPage();
-                    
-                }
-            });
-          
-        } else {
-            mShouldLockOnRestart = true;
-        }
-    }
-
-    @Override
-    public void onActivityResault(int requestCode, int resultCode) {
-            mShouldLockOnRestart = false;
-    }
-
-    private void showLockPage() {
-        Intent intent = new Intent(this, LockScreenActivity.class);
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivityForResult(intent, 1000);
-    }
 }

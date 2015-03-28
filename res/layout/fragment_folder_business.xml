@@ -80,39 +80,12 @@
                 android:layout_height="33dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/dlg_single_button_selector"
+                android:background="@drawable/dlg_right_button_selector"
                 android:gravity="center"
                 android:text="@string/retry"
                 android:textColor="#ffffff"
                 android:textSize="18sp" />
         </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/business_buttomIV"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:background="#4cffffff" 
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:textSize="14dp"
-                android:layout_centerInParent="true"
-                android:textColor="#064f6d"
-                android:text="@string/business_bottom_tip"/>
-            <ImageView 
-                  android:id="@+id/image1"
-                android:layout_width="@dimen/business_bottom_tip_delete_width"
-                android:layout_height="@dimen/business_bottom_tip_delete_height" 
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/business_bottom_tip_delete_right"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/business_bottom_tip_delete_bottom"
-                android:src="@drawable/business_delete"
-                />
-        </RelativeLayout>
     </FrameLayout>
 
     <ProgressBar

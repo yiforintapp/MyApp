@@ -6,6 +6,7 @@ import com.leo.appmaster.utils.ProcessUtils;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,5 +78,14 @@ public class AppInfoBaseLayout extends LinearLayout implements OnClickListener {
 			break;
 		}
 	}
+	
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {
+            
+        }
+    }
 
 }

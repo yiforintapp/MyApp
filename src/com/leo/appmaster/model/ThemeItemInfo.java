@@ -45,6 +45,8 @@ public class ThemeItemInfo {
 	 * hot , new, and so on...
 	 */
 	public int tag = Constants.THEME_TAG_NONE;
+	
+	public long installTime = Long.MAX_VALUE;
 
 	@Override
 	public String toString() {

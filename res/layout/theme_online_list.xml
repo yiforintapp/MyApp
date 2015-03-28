@@ -23,7 +23,7 @@
             android:id="@+id/layout_empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="120dp"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="invisible" >
@@ -71,11 +71,11 @@
                 android:layout_height="33dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/dlg_single_button_selector"
+                android:background="@drawable/dlg_right_button_selector"
                 android:gravity="center"
                 android:text="@string/retry"
                 android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:textSize="18dp" />
         </LinearLayout>
     </FrameLayout>
 

@@ -17,7 +17,7 @@ public class LEOProgressDialog extends LEOBaseDialog {
 	private TextView mTitle;
 	private TextView mProHint;
 	private ProgressBar mProgressBar;
-	private TextView mState;
+	private TextView mProgressText;
 	private View bottomLayout;
 
 	public LEOProgressDialog(Context context) {
@@ -49,16 +49,16 @@ public class LEOProgressDialog extends LEOBaseDialog {
 	
 	public void setIndeterminate(boolean indeterminate) {
 	    mProgressBar.setIndeterminate(indeterminate);
-	    mState.setVisibility(indeterminate ? View.GONE : View.VISIBLE);
+	    mProgressText.setVisibility(indeterminate ? View.GONE : View.VISIBLE);
 	}
 	
 	public void setStateTextVisiable(boolean visiable) {
-	    mState.setVisibility(visiable ? View.VISIBLE : View.GONE);
+	    mProgressText.setVisibility(visiable ? View.VISIBLE : View.GONE);
 	}
 
 	public void setProgress(int currentValue) {
 	    mCurrent = currentValue;
-        mState.setText(mCurrent + " / " + mMax);
+        mProgressText.setText("(" + mCurrent  + "/" + mMax +  ")");
         mProgressBar.setProgress(mCurrent);
 	}
 
@@ -67,12 +67,11 @@ public class LEOProgressDialog extends LEOBaseDialog {
 
 		mProHint = (TextView) dlgView.findViewById(R.id.dlg_pro_hint);
 		mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
-		mState = (TextView) dlgView.findViewById(R.id.dlg_pro_state);
+		mProgressText = (TextView) dlgView.findViewById(R.id.dlg_pro_progress_text);
 		mProgressBar = (ProgressBar) dlgView.findViewById(R.id.dlg_pro);
-		bottomLayout = dlgView.findViewById(R.id.dlg_bottom_layout);
+		bottomLayout = dlgView.findViewById(R.id.progress_dlg_bottom_btn);
 		
-		View cancel = dlgView.findViewById(R.id.dlg_bottom_btn);
-		cancel.setOnClickListener(new View.OnClickListener() {           
+		bottomLayout.setOnClickListener(new View.OnClickListener() {           
             @Override
             public void onClick(View v) {
                cancel();

@@ -7,11 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.graphics.Bitmap;
-
 public class VideoBean implements Serializable {
     private String name;
-     private int count;
     private String dirPath;
     private Date mLastModifyDate;
     private List<VideoItemBean> bitList = new ArrayList<VideoItemBean>();
@@ -22,7 +19,6 @@ public class VideoBean implements Serializable {
 			Date mLastModifyDate, List<VideoItemBean> bitList, String path) {
 		super();
 		this.name = name;
-		this.count = count;
 		this.dirPath = dirPath;
 		this.mLastModifyDate = mLastModifyDate;
 		this.bitList = bitList;
@@ -59,9 +55,6 @@ public class VideoBean implements Serializable {
     }
     public int getCount() {
         return bitList.size();
-    }
-    public void setCount(int count) {
-        this.count = count;
     }
 	public String getPath() {
 		return path;

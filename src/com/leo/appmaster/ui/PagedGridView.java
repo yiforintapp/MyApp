@@ -9,6 +9,7 @@ import com.leo.appmaster.model.AppInfo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
@@ -26,7 +27,7 @@ public class PagedGridView extends LinearLayout {
 
 	private int mCellX, mCellY;
 	private LeoAppViewPager mViewPager;
-	private CirclePageIndicator mIndicator;
+	private LeoApplistCirclePageIndicator mIndicator;
 	private LayoutInflater mInflater;
 
 	private PagerAdapter mAdapter;
@@ -144,7 +145,7 @@ public class PagedGridView extends LinearLayout {
 		mInflater.inflate(R.layout.paged_gridview, this, true);
 		mViewPager = (LeoAppViewPager) findViewById(R.id.pager);
 		// mViewPager.setPageTransformer(true, new DepthPageTransformer());
-		mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
+		mIndicator = (LeoApplistCirclePageIndicator) findViewById(R.id.indicator);
 		super.onFinishInflate();
 	}
 
@@ -219,7 +220,7 @@ public class PagedGridView extends LinearLayout {
 	            imageView.setImageDrawable(info.icon);
 	            textView.setText(info.label);
 	            convertView.setTag(info);
-			}else if("applocklist_activity".equals(mFlag)){	
+			}else /*if("applocklist_activity".equals(mFlag))*/{	
 			LockImageView imageView = (LockImageView) convertView
 					.findViewById(R.id.iv_app_icon);
 			TextView textView = (TextView) convertView
@@ -274,4 +275,15 @@ public class PagedGridView extends LinearLayout {
 		}
 
 	}
+	
+	
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {
+            
+        }
+    }
+	
 }

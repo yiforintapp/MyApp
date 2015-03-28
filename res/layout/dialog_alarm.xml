@@ -1,99 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="330dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:layout_marginLeft="14dp"
+    android:layout_marginRight="14dp"
+    android:background="@drawable/dialog_bg"
     android:orientation="vertical"
-    android:paddingLeft="13dp"
-    android:paddingRight="13dp" >
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp" >
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
-        android:layout_width="330dp"
+        android:layout_width="@dimen/dlg_horizental_margin"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:maxHeight="274dp"
-        android:minHeight="95dp"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/dlg_title"
             style="@style/dlg_title_txt"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
+            android:gravity="center_horizontal"
             android:text="@string/tips"
             android:visibility="visible" />
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/dlg_content"
+            style="@style/dlg_content_txt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:minHeight="60dp"
-            android:paddingBottom="14dp"
-            android:paddingLeft="17dp"
-            android:paddingRight="17dp"
-            android:paddingTop="14dp" >
+            android:fadeScrollbars="false"
+            android:gravity="center"
+            android:maxLines="4"
+            android:scrollbars="vertical"
+            android:text="content" />
 
-            <ImageView
-                android:id="@+id/dlg_left_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@drawable/dlg_icon_fail"
-                android:visibility="gone" />
-			
-			    <TextView
-			        android:id="@+id/dlg_content"
-			        style="@style/dlg_content_txt"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_centerVertical="true"
-			        android:layout_marginLeft="10dp"
-			        android:layout_toRightOf="@id/dlg_left_icon"
-			        android:maxLines="4"
-                    android:scrollbars="vertical"
-                    android:fadeScrollbars="false"
-			        android:text="content" />
+        <LinearLayout
+            android:id="@+id/dlg_2btn_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="24dp" >
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/dlg_left_btn"
+                style="@style/dlg_left_button_txt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/cancel" />
+
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="42dp"
+                android:background="@color/transparent" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/dlg_right_btn"
+                style="@style/dlg_right_button_txt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/makesure" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/dlg_2btn_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dlg_title_layout"
-        android:background="@color/item_backup_grey"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingLeft="17dp"
-        android:paddingRight="17dp"
-        android:paddingTop="10dp"
-        android:weightSum="2" >
-
-        <TextView
-            android:id="@+id/dlg_left_btn"
-            style="@style/dlg_left_button_txt"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/cancel" />
-
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="wrap_content"
-            android:src="@android:color/transparent" >
-        </ImageView>
-
-        <TextView
-            android:id="@+id/dlg_right_btn"
-            style="@style/dlg_right_button_txt"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/makesure" />
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

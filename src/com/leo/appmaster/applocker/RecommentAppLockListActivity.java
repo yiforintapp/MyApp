@@ -5,45 +5,45 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
+import com.leo.appmaster.utils.LeoLog;
 
 public class RecommentAppLockListActivity extends BaseActivity implements OnClickListener,
         OnItemClickListener, AppChangeListener {
+
+    public static final String RECOMMEND_FROM_LOCK = "new_app_install_lock";
+    public static final String RECOMMEND_FROM_LOCK_MORE = "new_app_install_lock_more";
+
     private List<AppInfo> mLockList;
     private List<AppInfo> mUnLockList;
     private PagedGridView mAppPager;
     private TextView lockTV;
-    private Object mLock = new Object();
     private ArrayList<AppInfo> resault;
     private String mPackageName;
     private String mInstallPackageName;
@@ -76,6 +76,8 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             "jp.naver.line.android"
     };
 
+    private String mFrom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +86,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         mUnLockList = new ArrayList<AppInfo>();
         getIntentFrom();
         initUI();
-        getIntentFrom();
         loadData();
     }
 
@@ -98,24 +99,22 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         lockTV.setOnClickListener(this);
         mAppPager.setItemClickListener(this);
     }
-    
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
             super.onRestoreInstanceState(savedInstanceState);
         } catch (Exception e) {
-            
+
         }
     }
-    
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        try {
-            super.onRestoreInstanceState(savedInstanceState, persistentState);
-        } catch (Exception e) {
-            
-        }
-    }
+
+    /*
+     * @Override public void onRestoreInstanceState(Bundle savedInstanceState,
+     * PersistableBundle persistentState) { try {
+     * super.onRestoreInstanceState(savedInstanceState, persistentState); }
+     * catch (Exception e) { } }
+     */
 
     @Override
     protected void onResume() {
@@ -172,44 +171,66 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
 
         if (mLockList.size() <= 0) {
             lockTV.setEnabled(false);
-            int image = R.drawable.unclick_button;
-            lockTV.setBackgroundDrawable(getResources().getDrawable(image));
-            lockTV.setTextColor(getResources().getColor(R.color.default_lock));
+            // int image = R.drawable.unclick_button;
+            // lockTV.setBackgroundDrawable(getResources().getDrawable(image));
+            // lockTV.setTextColor(getResources().getColor(R.color.default_lock));
         } else {
             lockTV.setEnabled(true);
-            int image = R.color.default_lock_down;
-            lockTV.setBackgroundDrawable(getResources().getDrawable(image));
-            lockTV.setTextColor(getResources().getColor(R.color.white));
+            // int image = R.color.default_lock_down;
+            // lockTV.setBackgroundDrawable(getResources().getDrawable(image));
+            // lockTV.setTextColor(getResources().getColor(R.color.white));
         }
     }
 
     private void saveLockList() {
-        new Thread(new PushLockedListTask()).start();
+        AppMasterPreference pref = AppMasterPreference
+                .getInstance(RecommentAppLockListActivity.this);
+        List<String> list = new ArrayList<String>();
+        for (AppInfo info : mLockList) {
+            list.add(info.packageName);
+        }
+        pref.setRecommentTipList(list);
+
+        // add pkgs to vistor mode
+        LockManager lm = LockManager.getInstatnce();
+        if (lm.getCurLockMode().defaultFlag == 1) {
+            lm.addPkg2Mode(list, lm.getCurLockMode());
+        } else {
+            List<LockMode> modeList = lm.getLockMode();
+            for (LockMode lockMode : modeList) {
+                if (lockMode.defaultFlag == 1) {
+                    lm.addPkg2Mode(list, lockMode);
+                    break;
+                }
+            }
+        }
     }
 
     private void loadData() {
         ArrayList<AppItemInfo> localAppList = AppLoadEngine.getInstance(this).getAllPkgInfo();
         List<String> defaultLockList = getDefaultLockList();
         if (mInstallPackageName != null && !mInstallPackageName.equals("")) {
-        defaultLockList.add(0, mInstallPackageName);
+            defaultLockList.add(0, mInstallPackageName);
         }
-        AppInfo installPackage=null;
+        AppInfo installPackage = null;
         for (AppItemInfo localApp : localAppList) {
+            if (localApp.packageName.equals(this.getPackageName()))
+                continue;
             if (defaultLockList.contains(localApp.packageName)) {
                 localApp.isLocked = true;
-                if(localApp.packageName.equals(mInstallPackageName)){
-                    installPackage=localApp;
-                }else{
-                mLockList.add(localApp);
+                if (localApp.packageName.equals(mInstallPackageName)) {
+                    installPackage = localApp;
+                } else {
+                    mLockList.add(localApp);
                 }
             } else {
                 localApp.isLocked = false;
                 mUnLockList.add(localApp);
             }
         }
-        Collections.sort(mLockList, new LockedAppComparator(mLockList));    
-        if(installPackage!=null){
-        mLockList.add(0, installPackage);      
+        Collections.sort(mLockList, new LockedAppComparator(mLockList));
+        if (installPackage != null) {
+            mLockList.add(0, installPackage);
         }
         Collections.sort(mUnLockList, new DefalutAppComparator());
         resault = new ArrayList<AppInfo>(mLockList);
@@ -218,7 +239,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         int rowCount = getResources().getInteger(R.integer.recomment_gridview_row_count);
         int colCount = getResources().getInteger(R.integer.recomment_gridview_col_count);
 
-        mAppPager.setDatas(resault, colCount, rowCount);
+        mAppPager.setDatas(resault, colCount, rowCount - 1);
         mAppPager.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
     }
 
@@ -280,34 +301,19 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         switch (arg0.getId()) {
             case R.id.recomment_lock:
                 saveLockList();
-                Intent intent = new Intent(this, LockSettingActivity.class);
-                if (mPackageName != null && !mPackageName.equals("")) {
-                    intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                            mPackageName);
+                Intent intent = new Intent(this, SuccessAppLockListActivity.class);
+                if (TextUtils.equals(mFrom, RECOMMEND_FROM_LOCK)) {
+                    intent.putExtra("target", getIntent().getIntExtra("target", 1));
+                } else if (TextUtils.equals(mFrom, RECOMMEND_FROM_LOCK_MORE)) {
+                    intent.putExtra("target", getIntent().getIntExtra("target", 2));
                 } else {
-                    intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                            AppLockListActivity.class.getName());
+                    intent.putExtra("target", getIntent().getIntExtra("target", 0));
                 }
                 startActivity(intent);
                 this.finish();
                 break;
         }
 
-    }
-
-    private class PushLockedListTask implements Runnable {
-        @Override
-        public void run() {
-            synchronized (mLock) {
-                AppMasterPreference pref = AppMasterPreference
-                        .getInstance(RecommentAppLockListActivity.this);
-                List<String> list = new ArrayList<String>();
-                for (AppInfo info : RecommentAppLockListActivity.this.mLockList) {
-                    list.add(info.packageName);
-                }
-                pref.setRecommentTipList(list);
-            }
-        }
     }
 
     @Override
@@ -333,7 +339,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
 
     private void getIntentFrom() {
         Intent intent = this.getIntent();
-        mPackageName = intent.getStringExtra(LockScreenActivity.EXTRA_TO_ACTIVITY);
+        mFrom = intent.getStringExtra("from");
         mInstallPackageName = intent.getStringExtra("install_lockApp");
     }
 
@@ -341,7 +347,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
     public void onBackPressed() {
         RecommentAppLockListActivity.this.finish();
         super.onBackPressed();
-        // }
     }
 
 }

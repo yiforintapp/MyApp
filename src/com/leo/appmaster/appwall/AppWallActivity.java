@@ -16,6 +16,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,6 +67,7 @@ public class AppWallActivity extends BaseActivity implements
     public static final String GPPACKAGE = "com.android.vending";
     private static final String CHARSETLOCAL = "utf-8";
     private static final String CHARSETSERVICE = "utf-8";
+    private static final String Tag = "AppWallActivity";
     private AppWallDialog p;
     private List<AppWallBean> all;
     private List<AppWallBean> temp;
@@ -99,7 +101,7 @@ public class AppWallActivity extends BaseActivity implements
         mTtileBar.setOptionTextVisibility(View.INVISIBLE);
         appwallLV = (ListView) findViewById(R.id.appwallLV);
         button = (Button) findViewById(R.id.restartBT);
-        text = (TextView) findViewById(R.id.textView1);
+        text = (TextView) findViewById(R.id.mode_name_tv);
     }
 
     @Override
@@ -207,6 +209,7 @@ public class AppWallActivity extends BaseActivity implements
             try {
                 requestUrl(urlStr);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         } else {
             LeoLog.d("com.leo.appmaster.appwall.AppWallActivity", "Not URL！");
@@ -261,9 +264,7 @@ public class AppWallActivity extends BaseActivity implements
         @Override
         protected void onPostExecute(String result) {
             boolean flag = false;
-            if(p != null && p.isShowing()) {
-                p.dismiss();
-            }
+            p.dismiss();
             if (result != null && !result.equals("")) {
                 List<AppWallBean> apps = getJson(result);
                 appwallLV.setVisibility(View.VISIBLE);
@@ -289,7 +290,7 @@ public class AppWallActivity extends BaseActivity implements
                     }
                 }
                 for (int i = 0; i < all.size(); i++) {
-                    if (i < 20) {
+                    if (i < 10) {
                         temp.add(all.get(i));
                     } else {
                         break;
@@ -300,9 +301,7 @@ public class AppWallActivity extends BaseActivity implements
                 appwallLV.setAdapter(adapter);
                 appwallLV.setOnItemClickListener(AppWallActivity.this);
             } else {
-                if(p != null && p.isShowing()) {
-                    p.dismiss();
-                }
+                p.dismiss();
                 appwallLV.setVisibility(View.GONE);
                 button.setVisibility(View.VISIBLE);
                 text.setVisibility(View.VISIBLE);
@@ -325,9 +324,7 @@ public class AppWallActivity extends BaseActivity implements
 
         @Override
         protected void onPreExecute() {
-            if(p != null) {
-                p.show();
-            }
+            p.show();
             super.onPreExecute();
         }
     }
@@ -444,7 +441,7 @@ public class AppWallActivity extends BaseActivity implements
                 app.setDownload(urls);
                 all.add(app);
             }
-        } catch (Exception e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return all;

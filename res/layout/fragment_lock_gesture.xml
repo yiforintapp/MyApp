@@ -7,8 +7,8 @@
         android:id="@+id/iv_app_icon_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:layout_above="@+id/tv_gesture_tip" >
+        android:layout_above="@+id/tv_gesture_tip"
+        android:layout_marginBottom="6dp" >
 
         <ImageView
             android:id="@+id/iv_app_icon_bottom"
@@ -34,15 +34,15 @@
             android:src="@color/transparent"
             android:visibility="invisible" />
     </RelativeLayout>
-    
+
     <TextView
         android:id="@+id/tv_gesture_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/gesture_lockview" 
+        android:layout_above="@+id/gesture_lockview"
+        android:layout_marginTop="10dp"
         android:enabled="false"
         android:gravity="center"
-        android:layout_marginTop="10dp"
         android:text="@string/please_input_gesture"
         android:textColor="#aaffffff"
         android:textSize="18sp" />
@@ -52,8 +52,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/lockPatternView_height"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/fragment_lock_gesture_gesture_lockview_marginbottom"
         android:layout_centerHorizontal="true"
-        android:padding="10dip" />
+        android:layout_marginBottom="@dimen/fragment_lock_gesture_gesture_lockview_marginbottom"
+        android:padding="10dip"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" />
 
 </RelativeLayout>

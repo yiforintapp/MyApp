@@ -5,19 +5,14 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.EdgeEffectCompat;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,17 +22,16 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
 import com.leo.appmaster.lockertheme.LockerTheme;
-import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leo.appmaster.utils.LeoLog;
 
-
-public class LockHelpSettingTip extends BaseActivity {
+public class LockHelpSettingTip extends Activity {
     private CommonTitleBar mTitle;
     private LeoPictureViewPager mViewPager;
     private List<LockHelpItemPager> mHelpPager;
@@ -130,13 +124,6 @@ public class LockHelpSettingTip extends BaseActivity {
         if (data != null) {
             mCurrentFlag = data.getExtras().getInt("help_setting_current");
         }
-    }
-    
-    
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
     }
 
     private void initUI() {
@@ -270,7 +257,7 @@ public class LockHelpSettingTip extends BaseActivity {
                         /* SDK Event Mark */
                         SDKWrapper.addEvent(LockHelpSettingTip.this, SDKWrapper.P1, "help_press",
                                 "password");
-                        enterLockPage();
+                        changePasswd();
                     } else if (buttonText.equals(getString(R.string.lock_help_lock_setting_button))) {
                         /* SDK Event Mark */
                         SDKWrapper.addEvent(LockHelpSettingTip.this, SDKWrapper.P1, "help_press",
@@ -321,44 +308,52 @@ public class LockHelpSettingTip extends BaseActivity {
         }
     }
 
-    private void enterLockPage() {
-        Intent intent = null;
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        intent = new Intent(this, LockScreenActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF_HOME);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                AppLockListActivity.class.getName());
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY, LockSettingActivity.class.getName());
-        startActivity(intent);
+    private void changePasswd() {
+        LeoLog.d("Track Lock Screen", "apply lockscreen form LockHelpSetting: enterLockPage");
+        LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_PURE,
+                LockSettingActivity.class.getName(), false, new OnUnlockedListener() {
+                    @Override
+                    public void onUnlocked() {
+                        Intent intent = null;
+                        AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(false);
+                        intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);
+                        intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
+                        startActivity(intent);
+                    }
 
+                    @Override
+                    public void onUnlockCanceled() {
+                    }
+
+                    @Override
+                    public void onUnlockOutcount() {
+                    }
+
+                });
     }
 
     private void enterLockSettingPage() {
-        Intent intent = null;
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        intent = new Intent(this, LockScreenActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF_HOME);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                AppLockListActivity.class.getName());
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        intent.putExtra("help_setting_current", 1);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY, LockTimeSetting.class.getName());
-        startActivity(intent);
+        LeoLog.d("Track Lock Screen", "apply lockscreen form LockHelpSetting: enterLockSettingPage");
+        LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_PURE,
+                null, false, new OnUnlockedListener() {
+
+                    @Override
+                    public void onUnlocked() {
+                        AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(false);
+                        Intent intent = new Intent(LockHelpSettingTip.this, LockTimeSetting.class);
+                        intent.putExtra("help_setting_current", 1);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onUnlockCanceled() {
+                    }
+
+                    @Override
+                    public void onUnlockOutcount() {
+                    }
+
+                });
 
     }
 

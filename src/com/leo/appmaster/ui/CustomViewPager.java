@@ -1,6 +1,7 @@
 package com.leo.appmaster.ui;
 
 import android.content.Context;  
+import android.os.Parcelable;
 import android.support.v4.view.ViewPager;  
 import android.util.AttributeSet;  
 import android.view.MotionEvent;  
@@ -61,4 +62,13 @@ public class CustomViewPager extends ViewPager {
         }  
   
     }  
+    
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {
+            
+        }
+    }
 }  

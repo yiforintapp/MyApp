@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_bg"
+    android:gravity="center" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/mode_list_container"
+        android:background="@color/gray" />
+
+    <LinearLayout
+        android:id="@+id/mode_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_below="@+id/dlg_title"
+        android:layout_centerHorizontal="true" >
+
+        <ListView
+            android:id="@+id/mode_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/gray"
+            android:dividerHeight="1dp"
+            android:overScrollMode="never"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:scrollbars="none" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/dlg_bottom_layout"
+        android:background="@color/gray" />
+
+    <LinearLayout
+        android:id="@+id/dlg_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mode_list_container"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp" >
+
+        <TextView
+            android:id="@+id/dlg_bottom_btn"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="@drawable/dlg_left_button_selector"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="#0084ff" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dlg_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="24dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:text="@string/select_mode"
+        android:textColor="#202020"
+        android:textSize="20dp"
+        android:visibility="visible" />
+
+</RelativeLayout>

@@ -1,80 +1,92 @@
 <com.leo.appmaster.backup.AppRestoreItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="76dp" >
+    android:layout_height="wrap_content" >
 
-    <ImageView
-        android:id="@+id/app_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="left|center_vertical"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:scaleType="centerInside" />
-
-    <TextView
-        android:id="@+id/app_title"
+    <RelativeLayout
+        android:id="@+id/restore_all_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="42dp"
-        android:layout_marginLeft="82dp"
-        android:layout_marginRight="150dp"
-        android:layout_marginTop="14dp"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="14dp" />
+        android:layout_height="@dimen/app_manager_four_icon_total_height" >
 
-    <TextView
-        android:id="@+id/app_version"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="28dp"
-        android:layout_marginLeft="82dp"
-        android:layout_marginRight="150dp"
-        android:layout_marginTop="34dp"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="10dp" />
+        <ImageView
+            android:id="@+id/restore_icon"
+            android:layout_width="@dimen/app_manager_lv_item_icon_width_height"
+            android:layout_height="@dimen/app_manager_lv_item_icon_width_height"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/app_manager_lv_item_icon_margin_left"
+            android:gravity="center"
+            android:scaleType="centerInside" />
 
-    <TextView
-        android:id="@+id/app_size"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="14dp"
-        android:layout_marginLeft="82dp"
-        android:layout_marginRight="150dp"
-        android:layout_marginTop="48dp"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="10dp" />
+        <LinearLayout
+            android:id="@+id/content_name_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/app_manager_lv_item_icon_margin_left"
+            android:layout_toRightOf="@id/restore_icon"
+            android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/button_install"
-        android:layout_width="54dp"
-        android:layout_height="27dp"
-        android:layout_gravity="right|center_vertical"
-        android:layout_marginRight="94dp"
-        android:background="@drawable/install_delete_selector"
-        android:gravity="center"
-        android:text="@string/button_install"
-        android:textColor="@color/white"
-        android:textSize="12dp" 
-        android:singleLine="true"/>
+            <TextView
+                android:id="@+id/restore_app_title"
+                android:layout_width="@dimen/app_manager_restore_one_text_height"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/flow_item_total"
+                android:textSize="14dp" />
 
-    <TextView
-        android:id="@+id/button_delete"
-        android:layout_width="54dp"
-        android:layout_height="27dp"
-        android:layout_gravity="right|center_vertical"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/install_delete_selector"
-        android:gravity="center"
-        android:text="@string/button_delete"
-        android:textColor="@color/white" 
-        android:textSize="12dp"
-        android:singleLine="true"/>
+            <TextView
+                android:id="@+id/restore_app_version"
+                android:layout_width="@dimen/app_manager_restore_two_text_height"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/app_manager_backup_item_two_text_margin_top"
+                android:singleLine="true"
+                android:textColor="@color/flow_item_small"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/app_manager_headview_grey_button_text_height"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/app_manager_padding"
+            android:clickable="true"
+            android:focusable="true" >
+
+            <RelativeLayout
+                android:id="@+id/button_delete"
+                android:layout_width="@dimen/app_manager_restore_two_button_height"
+                android:layout_height="@dimen/app_manager_headview_grey_button_text_height"
+                android:background="@drawable/manager_b_delete_button_selecter" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/app_delete_v2"
+                    android:textColor="@drawable/manager_b_delete_text_selecter"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/button_install"
+                android:layout_width="@dimen/app_manager_restore_two_button_height"
+                android:layout_height="@dimen/app_manager_headview_grey_button_text_height"
+                android:layout_marginLeft="@dimen/app_manager_padding"
+                android:layout_toRightOf="@id/button_delete"
+                android:background="@drawable/manager_b_restore_button_selecter"
+                android:clickable="true"
+                android:focusable="true" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/app_restore_v2"
+                    android:textColor="@drawable/manager_backup_text_selecter"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
 
 </com.leo.appmaster.backup.AppRestoreItemView>

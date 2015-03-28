@@ -3,6 +3,7 @@ package com.leo.appmaster.backup;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.text.Selection.PositionIterator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +23,18 @@ public class AppRestoreAdapter extends BaseAdapter {
 		mRestoreList = new ArrayList<AppItemInfo>();
 	}
 
-	public void updateData() {
+    public void updateData() {
+        
 		mRestoreList.clear();
 		ArrayList<AppItemInfo> apps = mBackupManager.getRestoreList();
-		for (AppItemInfo app : apps) {
-			mRestoreList.add(app);
+		if(apps != null){
+		      for (AppItemInfo app : apps) {
+		            mRestoreList.add(app);
+		        }
 		}
 		notifyDataSetChanged();
 	}
-
+    
 	@Override
 	public int getCount() {
 		return mRestoreList.size();
@@ -58,20 +62,12 @@ public class AppRestoreAdapter extends BaseAdapter {
 		}
 		AppItemInfo app = mRestoreList.get(arg0);
 		Context context = itemView.getContext();
-		if (arg0 % 2 == 0) {
-			itemView.setBackgroundColor(context.getResources().getColor(
-					R.color.white));
-
-		} else {
-			itemView.setBackgroundColor(context.getResources().getColor(
-					R.color.item_backup_grey));
-		}
 		itemView.setIcon(app.icon);
 		itemView.setTitle(app.label);
 		itemView.setVersion(String.format(
 				context.getResources().getString(R.string.app_version),
 				app.versionName));
-		itemView.setSize(mBackupManager.getApkSize(app));
+//		itemView.setSize(mBackupManager.getApkSize(app));
 		itemView.setTag(app);
 		return itemView;
 	}

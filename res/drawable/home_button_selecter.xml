@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="false"
-        android:drawable="@android:color/transparent"/>
-    <item android:state_pressed="true"
-        android:drawable="@drawable/home_sel"/>
+
+    <item android:drawable="@android:color/transparent" android:state_pressed="false"/>
+    <item android:drawable="@drawable/home_sel" android:state_pressed="true"/>
+
 </selector>

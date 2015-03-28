@@ -43,7 +43,7 @@ public class UserActManager {
     private static UserActManager sInstance;
 
     private UserActManager(Context ctx, PushUIHelper helper) {
-        mContext = ctx;
+        mContext = ctx.getApplicationContext();
         mUIHelper = helper;
         if (mUIHelper != null) {
             mUIHelper.setManager(this);

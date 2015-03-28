@@ -1,8 +1,12 @@
 package com.leo.appmaster.utils;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Locale;
+
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -16,14 +20,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.Locale;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
@@ -147,7 +143,6 @@ public class PhoneInfoStateManager {
 	}
 
 	public String getTotalMemory(Context aContext) {
-		String resul = "";
 		ActivityManager am = (ActivityManager) aContext
 				.getSystemService(Context.ACTIVITY_SERVICE);
 		ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
@@ -216,36 +211,36 @@ public class PhoneInfoStateManager {
 	}
 
 	public String getIpAddresses(Context aContext) {
-		ConnectivityManager cm = (ConnectivityManager) aContext
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+//		ConnectivityManager cm = (ConnectivityManager) aContext
+//				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		// LinkProperties prop = cm.getActiveLinkProperties();
 		// return formatIpAddresses(prop);
 		return null;
 	}
 
-	private static String getContentFromIni(Context aContext, int aResId) {
-		InputStream iniFile = null;
-		iniFile = aContext.getResources().openRawResource(aResId);
-		BufferedReader bufferedReader = null;
-		try {
-			bufferedReader = new BufferedReader(new InputStreamReader(iniFile,
-					"gb2312"));
-		} catch (UnsupportedEncodingException e) {
-			LeoLog.w(TAG, e.getStackTrace().toString());
-		}
-
-		String content = "";
-		String tmp = null;
-		try {
-			while ((tmp = bufferedReader.readLine()) != null) {
-				content += tmp;
-				LeoLog.d(TAG, tmp);
-			}
-			bufferedReader.close();
-			iniFile.close();
-		} catch (IOException e) {
-			LeoLog.w(TAG, e.getStackTrace().toString());
-		}
-		return content;
-	}
+//	private static String getContentFromIni(Context aContext, int aResId) {
+//		InputStream iniFile = null;
+//		iniFile = aContext.getResources().openRawResource(aResId);
+//		BufferedReader bufferedReader = null;
+//		try {
+//			bufferedReader = new BufferedReader(new InputStreamReader(iniFile,
+//					"gb2312"));
+//		} catch (UnsupportedEncodingException e) {
+//			LeoLog.w(TAG, e.getStackTrace().toString());
+//		}
+//
+//		String content = "";
+//		String tmp = null;
+//		try {
+//			while ((tmp = bufferedReader.readLine()) != null) {
+//				content += tmp;
+//				LeoLog.d(TAG, tmp);
+//			}
+//			bufferedReader.close();
+//			iniFile.close();
+//		} catch (IOException e) {
+//			LeoLog.w(TAG, e.getStackTrace().toString());
+//		}
+//		return content;
+//	}
 }

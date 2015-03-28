@@ -4,9 +4,9 @@ package com.leo.appmaster.fragment;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,11 +17,11 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
@@ -49,10 +49,10 @@ public class GestureLockFragment extends LockFragment implements
     protected void onInitUI() {
         mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
         mLockPatternView.setOnPatternListener(this);
-        mLockPatternView.setLockFrom(mFrom);
+        mLockPatternView.setLockMode(mLockMode);
         mGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
         mIconLayout = (RelativeLayout) findViewById(R.id.iv_app_icon_layout);
-        if (mPackageName != null) {
+        if (mLockMode == LockManager.LOCK_MODE_FULL && mPackageName != null) {
             mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
             mAppIcon.setImageDrawable(AppUtil.getDrawable(
                     mActivity.getPackageManager(), mPackageName));
@@ -62,9 +62,7 @@ public class GestureLockFragment extends LockFragment implements
                 mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
                 mAppIconTop.setVisibility(View.VISIBLE);
                 mAppIconBottom.setVisibility(View.VISIBLE);
-
                 changeActivityBgAndIconByTheme();
-
             }
         }
 
@@ -148,25 +146,19 @@ public class GestureLockFragment extends LockFragment implements
                 ((LockScreenActivity) mActivity).onUolockOutcount();
                 mGestureTip.setText(R.string.please_input_gesture);
                 mInputCount = 0;
-                mLockPatternView.clearPattern();
             } else {
                 mGestureTip.setText(String.format(
                         mActivity.getString(R.string.input_error_tip),
                         mInputCount + "", (mMaxInput - mInputCount) + ""));
-                mLockPatternView.clearPattern();
-                shakeIcon();
             }
+            mLockPatternView.clearPattern();
+            shakeIcon();
         }
-    }
-
-    @Override
-    public void onNewIntent(Intent intent) {
-
     }
 
     private boolean needChangeTheme() {
         return ThemeUtils.checkThemeNeed(getActivity())
-                && (mFrom == LockFragment.FROM_OTHER || mFrom == LockFragment.FROM_SCREEN_ON);
+                && (mLockMode == LockManager.LOCK_MODE_FULL);
     }
 
     private void shakeIcon() {
@@ -175,5 +167,23 @@ public class GestureLockFragment extends LockFragment implements
                     R.anim.left_right_shake);
         }
         mIconLayout.startAnimation(mShake);
+    }
+
+    @Override
+    public void onLockPackageChanged(String lockedPackage) {
+        if (!TextUtils.equals(lockedPackage, mPackageName)) {
+            mPackageName = lockedPackage;
+            mInputCount = 0;
+            mGestureTip.setText(R.string.please_input_gesture);
+            if (mAppIcon == null) {
+                mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
+            }
+            mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                    mActivity.getPackageManager(), mPackageName));
+        }
+
+        mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                mActivity.getPackageManager(), mPackageName));
+        mAppIcon.setVisibility(View.VISIBLE);
     }
 }

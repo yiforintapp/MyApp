@@ -10,28 +10,23 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
-import android.provider.MediaStore.Video;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -42,19 +37,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
+
 
 @SuppressLint("NewApi")
 public class VideoGriActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
@@ -75,11 +69,13 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private List<Integer> mClickPosList;
     private ArrayList<String> mAllPath;
     private static final int REQUEST_CODE = 0;
-    private boolean mShouldLockOnRestart = true;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
     public List<VideoItemBean> mUnhide;
     private ArrayList<String> mUnhidePath;
+    
+    private AsyncLoadImage asyncLoadImage;
+
 
     private void init() {
         mSelectAll = (Button) findViewById(R.id.select_all);
@@ -94,10 +90,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mVideoItems = video.getBitList();
         getVideoPath();
         if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
-            String optionName = getString(R.string.app_hide_image_edit);
-            mCommonTtileBar.setOptionTextVisibility(View.VISIBLE);
+            mCommonTtileBar.setOptionImageVisibility(View.VISIBLE);
             mCommonTtileBar.setOptionListener(this);
-            mCommonTtileBar.setOptionText(optionName);
+            mCommonTtileBar.setOptionImage(R.drawable.edit_mode_name);
             mBottomBar.setVisibility(View.GONE);
         } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
 
@@ -118,6 +113,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mAllPath = new ArrayList<String>();
         mUnhide = new ArrayList<VideoItemBean>();
         mUnhidePath = new ArrayList<String>();
+        asyncLoadImage = new AsyncLoadImage();
         init();
         mHideVideo.setOnItemClickListener(this);
         mSelectAll.setOnClickListener(this);
@@ -155,13 +151,11 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         Context context;
         List<VideoItemBean> videos;
         LayoutInflater layoutInflater;
-        AsyncLoadImage asyncLoadImage;
 
         public HideVideoAdapter(Context context, List<VideoItemBean> videos) {
             this.context = context;
             this.videos = videos;
             this.layoutInflater = LayoutInflater.from(context);
-            this.asyncLoadImage = new AsyncLoadImage();
         }
 
         @Override
@@ -251,22 +245,25 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         try {
             mCursor = getContentResolver().query(uri, null, selection, null,
                     MediaColumns.DATE_MODIFIED + " desc");
-        } catch (Exception e) {
-        }
 
-        if (mCursor != null) {
-            List<VideoItemBean> countMap = new ArrayList<VideoItemBean>();
-            while (mCursor.moveToNext()) {
-                VideoItemBean video = new VideoItemBean();
-                String path = mCursor.getString(mCursor
-                        .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
-                String dirName = FileOperationUtil.getDirNameFromFilepath(path);
-                FileOperationUtil.getDirPathFromFilepath(path);
-                video.setPath(path);
-                video.setName(dirName);
-                countMap.add(video);
+            if (mCursor != null) {
+                List<VideoItemBean> countMap = new ArrayList<VideoItemBean>();
+                while (mCursor.moveToNext()) {
+                    VideoItemBean video = new VideoItemBean();
+                    String path = mCursor.getString(mCursor
+                            .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+                    String dirName = FileOperationUtil.getDirNameFromFilepath(path);
+                    FileOperationUtil.getDirPathFromFilepath(path);
+                    video.setPath(path);
+                    video.setName(dirName);
+                    countMap.add(video);
+                }
             }
-            mCursor.close();
+        } catch (Exception e) {
+        } finally {
+            if(mCursor != null) {
+                mCursor.close();
+            }
         }
 
     }
@@ -323,7 +320,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             case R.id.hide_image:
                 showAlarmDialog();
                 break;
-            case R.id.tv_option_text:
+            case R.id.tv_option_image:
                 if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                     mIsEditmode = !mIsEditmode;
                     if (!mIsEditmode) {
@@ -331,7 +328,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                     } else {
                         mBottomBar.setVisibility(View.VISIBLE);
                         mHideButton.setText(getString(R.string.app_cancel_hide_image));
-                        mCommonTtileBar.setOptionText(getString(R.string.cancel));
+                        mCommonTtileBar.setOptionImage(R.drawable.mode_done);
                     }
                     mHideVideoAdapter.notifyDataSetChanged();
                 }
@@ -347,9 +344,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mClickList.clear();
         mHideVideoAdapter.notifyDataSetChanged();
         mBottomBar.setVisibility(View.GONE);
-        mCommonTtileBar.setOptionText(getString(R.string.app_hide_image_edit));
+        mCommonTtileBar.setOptionImage(R.drawable.edit_mode_name);
         mSelectImage.setVisibility(View.GONE);
-        mSelectAll.setText(R.string.app_select_all);
         updateRightButton();
     }
 
@@ -426,6 +422,17 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mVideoItems.clear();
         mClickPosList.clear();
         mAllPath.clear();
+        if(asyncLoadImage != null) {
+            asyncLoadImage.cancel();
+        }
+    }
+    
+    @Override
+    public void finish() {
+        super.finish();
+        if(asyncLoadImage != null) {
+            asyncLoadImage.cancel();
+        }
     }
 
     /**
@@ -502,9 +509,14 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             if (mVideoItems.size() > 0) {
                 animateReorder();
                 updateRightButton();
+                if(mHideVideoAdapter != null) {
+                    mHideVideoAdapter.notifyDataSetChanged();
+                }
             } else {
                 finish();
             }
+            // video change, recompute privacy level
+            PrivacyHelper.getInstance(VideoGriActivity.this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_VIDEO);
         }
     }
 
@@ -517,7 +529,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 public void onCancel(DialogInterface dialog) {
                     mIsBackgoundRunning = false;
                     mSelectAll.setText(R.string.app_select_all);
-                    mHideVideoAdapter.notifyDataSetChanged();
                 }
             });
         }
@@ -584,7 +595,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE == requestCode && mVideoItems != null && data != null) {
+        if (REQUEST_CODE == requestCode && mVideoItems != null) {
             Bundle bundle = data.getExtras();
             if (bundle != null) {
                 ArrayList<String> resultPath = (ArrayList<String>) bundle.get("path");
@@ -603,35 +614,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 }
             }
         }
-        mShouldLockOnRestart = false;
-    }
-
-    @Override
-    public void onActivityRestart() {
-        super.onActivityRestart();
-        if (mShouldLockOnRestart) {
-            showLockPage();
-        } else {
-            mShouldLockOnRestart = true;
-        }
-    }
-
-    private void showLockPage() {
-        Intent intent = new Intent(this, LockScreenActivity.class);
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF);
-        // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-        // | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivityForResult(intent, 1000);
     }
 
     private void getResultValue() {

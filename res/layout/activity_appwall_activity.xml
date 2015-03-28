@@ -36,7 +36,7 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/mode_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -44,8 +44,8 @@
 
         <Button
             android:id="@+id/restartBT"
-                       style="@style/dlg_single_button_txt"
-            android:layout_below="@id/textView1"
+                       style="@style/dlg_single_button_txt_ok"
+            android:layout_below="@id/mode_name_tv"
             android:layout_marginTop="20dp"
             android:visibility="gone"
             android:textColor="@android:color/white"

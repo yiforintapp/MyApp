@@ -41,6 +41,8 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.appmanage.view.BaseFolderFragment;
 import com.leo.appmaster.appmanage.view.FolderLayer;
@@ -50,7 +52,10 @@ import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -63,14 +68,14 @@ import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.LeoAppViewPager.OnPageChangeListener;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.ui.LeoGridBaseAdapter;
-import com.leo.appmaster.ui.PageIndicator;
+import com.leo.appmaster.ui.LeoAppViewPagerPageIndicator;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.PhoneInfoStateManager;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
-import com.leo.imageloader.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 @SuppressLint("Override")
 public class AppListActivity extends BaseFragmentActivity implements
@@ -80,7 +85,7 @@ public class AppListActivity extends BaseFragmentActivity implements
     private View mContainer;
     private View mLoadingView;
     private CommonTitleBar mTtileBar;
-    private PageIndicator mPageIndicator;
+    private LeoAppViewPagerPageIndicator mPageIndicator;
     private LeoAppViewPager mViewPager;
     private View mPagerContain, mAllAppList;
     private SlicingLayer mSlicingLayer;
@@ -164,8 +169,12 @@ public class AppListActivity extends BaseFragmentActivity implements
         try {
             fillAppListData();
         } catch (Exception e) {
-
         }
+
+        if (mFromStatusbar) {
+            LeoEventBus.getDefaultBus().register(this, 2);
+        }
+
     }
 
     @Override
@@ -176,11 +185,9 @@ public class AppListActivity extends BaseFragmentActivity implements
             mContainer.post(new Runnable() {
                 @Override
                 public void run() {
-                    if(mPager1 != null) {
-                        handleItemClick(mPager1.getChildAt(0),
-                                SlicingLayer.SLICING_FROM_APPLIST, false);
-                        mOpenedBusinessFolder = true;
-                    }
+                    handleItemClick(mPager1.getChildAt(0),
+                            SlicingLayer.SLICING_FROM_APPLIST, false);
+                    mOpenedBusinessFolder = true;
                 }
             });
 
@@ -438,9 +445,8 @@ public class AppListActivity extends BaseFragmentActivity implements
             return;
         }
         if (mFromStatusbar) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            this.startActivity(intent);
+            returnHomeActivity();
+            return;
         }
         super.onBackPressed();
     }
@@ -458,6 +464,9 @@ public class AppListActivity extends BaseFragmentActivity implements
         // optimize imagelaoder,here we remove cache app icon in memory
         ImageLoader.getInstance().clearMemoryCache();
 
+        if (mFromStatusbar) {
+            LeoEventBus.getDefaultBus().unregister(this);
+        }
     }
 
     private void initUI() {
@@ -483,7 +492,7 @@ public class AppListActivity extends BaseFragmentActivity implements
 
         mAllAppList = findViewById(R.id.applist);
         mPagerContain = findViewById(R.id.layout_pager_container);
-        mPageIndicator = (PageIndicator) findViewById(R.id.indicator);
+        mPageIndicator = (LeoAppViewPagerPageIndicator) findViewById(R.id.indicator);
         mViewPager = (LeoAppViewPager) findViewById(R.id.pager);
     }
 
@@ -643,7 +652,7 @@ public class AppListActivity extends BaseFragmentActivity implements
                         openSlicingLayer(view, from);
                         break;
                     case BaseInfo.ITEM_TYPE_FOLDER:
-                        if (!mFolderLayer.isFolderOpened() && (mLastSelectedInfo instanceof FolderItemInfo)) {
+                        if (!mFolderLayer.isFolderOpened()) {
 
                             FolderItemInfo folderInfo = (FolderItemInfo) mLastSelectedInfo;
                             fillFolder();
@@ -814,9 +823,7 @@ public class AppListActivity extends BaseFragmentActivity implements
                 }
 
                 if (mFromStatusbar) {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    this.startActivity(intent);
+                    returnHomeActivity();
                 }
                 break;
             case R.id.layout_download:
@@ -880,6 +887,27 @@ public class AppListActivity extends BaseFragmentActivity implements
             default:
                 break;
         }
+    }
+
+    public void onEvent(AppUnlockEvent event) {
+        if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            AppMasterApplication.getInstance().startActivity(intent);
+        } else if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_CANCELED) {
+        } else if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_OUTCOUNT) {
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+        }
+        this.finish();
+    }
+
+    private void returnHomeActivity() {
+        LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                getPackageName(), false, null);
     }
 
     public void handleItemClick(View view, int from, boolean event) {
@@ -1012,18 +1040,14 @@ public class AppListActivity extends BaseFragmentActivity implements
 
     @Override
     public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
-        if(changes != null) {
-            for (AppItemInfo change : changes) {
-                if(change != null) {
-                    for (AppItemInfo saved : mBackupManager.getRestoreList()) {
-                        if (saved.packageName != null && saved.packageName.equals(change.packageName)
-                                && saved.versionCode == change.versionCode) {
-                            change.isBackuped = true;
-                            break;
-                        }
-                    }
+        for (AppItemInfo change : changes) {
+            for (AppItemInfo saved : mBackupManager.getRestoreList()) {
+                if (saved.packageName.equals(change.packageName)
+                        && saved.versionCode == change.versionCode) {
+                    change.isBackuped = true;
+                    break;
                 }
-        }
+            }
         }
 
         runOnUiThread(new Runnable() {

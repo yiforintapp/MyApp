@@ -3,18 +3,16 @@ package com.leo.imageloader.utils;
 
 import java.io.File;
 
-import com.leo.appmaster.db.AppMasterDBHelper;
-import com.leo.appmaster.imagehide.PhotoAibum;
-import com.leo.appmaster.imagehide.PhotoItem;
-import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
+
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 
 public class HideFileUtils {
 
@@ -41,7 +39,7 @@ public class HideFileUtils {
             selection = MediaColumns.DATA + " LIKE '%.leotmp'";
             cursor = context.getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
                     MediaColumns.DATE_ADDED + " desc");
-            Cursor cur=new AppMasterDBHelper(context).query("hide_image_leo", new String[]{"image_path"}, null, null, null, null, null);
+            Cursor cur = context.getContentResolver().query(Constants.IMAGE_HIDE_URI, new String[]{"image_path"}, null, null, null);
             int unhideDbCount=cur.getCount();
             int oldHideCount = cursor.getCount();
             if (oldHideCount > 0) {
@@ -68,11 +66,12 @@ public class HideFileUtils {
         if (cursor == null) {
             return;
         }
+
         if(cursor.getCount() == 0) {
             cursor.close();
             return;
         }
-
+        
         final String[] paths = FileOperationUtil.getSdCardPaths(context);
 
         new Thread(new Runnable() {

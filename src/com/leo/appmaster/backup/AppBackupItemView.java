@@ -2,12 +2,16 @@
 package com.leo.appmaster.backup;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 
 public class AppBackupItemView extends FrameLayout {
@@ -20,6 +24,7 @@ public class AppBackupItemView extends FrameLayout {
     private TextView mAppTitle;
     private TextView mAppVersion;
     private TextView mAppSize;
+    private TextView tv_app_check;
     private ImageView mChecked;
 
     public AppBackupItemView(Context context) {
@@ -39,19 +44,19 @@ public class AppBackupItemView extends FrameLayout {
         super.onFinishInflate();
         mAppIcon = (ImageView) findViewById(R.id.app_icon);
         mAppTitle = (TextView) findViewById(R.id.app_title);
-        mAppVersion = (TextView) findViewById(R.id.app_version);
         mAppSize = (TextView) findViewById(R.id.app_size);
         mChecked = (ImageView) findViewById(R.id.app_check);
+        tv_app_check = (TextView) findViewById(R.id.tv_app_check);
     }
 
     public void setTitle(CharSequence title) {
         mAppTitle.setText(title);
     }
-    
+
     public void setVersion(CharSequence version) {
         mAppVersion.setText(version);
     }
-    
+
     public void setSize(CharSequence size) {
         mAppSize.setText(size);
     }
@@ -64,16 +69,32 @@ public class AppBackupItemView extends FrameLayout {
         switch (state) {
             case STATE_SELECTED:
                 setEnabled(true);
-                mChecked.setImageResource(R.drawable.tick_sel);
+                tv_app_check.setVisibility(View.GONE);
+                mChecked.setImageResource(R.drawable.app_select);
+                mChecked.setVisibility(View.VISIBLE);
                 break;
             case STATE_BACKUPED:
                 setEnabled(false);
-                mChecked.setImageResource(R.drawable.backedup_icon);
+                Resources resources = AppMasterApplication.getInstance().getResources();
+                tv_app_check.setVisibility(View.VISIBLE);
+                tv_app_check.setText(resources.getString(R.string.back_backed));
+                mChecked.setVisibility(View.GONE);
                 break;
             default:
                 setEnabled(true);
-                mChecked.setImageResource(R.drawable.tick_normal);
+                tv_app_check.setVisibility(View.GONE);
+                mChecked.setImageResource(R.drawable.app_unselect);
+                mChecked.setVisibility(View.VISIBLE);
                 break;
+        }
+    }
+    
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {
+            
         }
     }
 

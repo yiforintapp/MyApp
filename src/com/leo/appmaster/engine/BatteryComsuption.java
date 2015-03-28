@@ -12,7 +12,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryStats.Uid;
 
-class BatteryComsuption implements Comparable<BatteryComsuption> {
+public class BatteryComsuption implements Comparable<BatteryComsuption> {
 
 	private final Context mContext;
 	private final HashMap<String, UidToDetail> mUidCache = new HashMap<String, UidToDetail>();

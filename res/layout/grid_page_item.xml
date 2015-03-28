@@ -4,11 +4,13 @@
     android:id="@+id/gv_app_contain"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:horizontalSpacing="3dp"
-    android:paddingTop="5dp" 
     android:layout_marginLeft="@dimen/grid_page_item_layout_marginLeft"
     android:layout_marginRight="@dimen/grid_page_item_layout_marginRight"
+    android:horizontalSpacing="3dp"
     android:listSelector="@drawable/selector_app_item"
-    android:verticalSpacing="@dimen/gridview_vertical_spacing"  
-    android:numColumns="4">
+    android:numColumns="4"
+    android:paddingTop="5dp"
+    android:scrollbars="none"
+    android:verticalSpacing="@dimen/gridview_vertical_spacing" >
+
 </GridView>

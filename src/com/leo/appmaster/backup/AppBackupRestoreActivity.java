@@ -35,7 +35,6 @@ import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 
-
 public class AppBackupRestoreActivity extends BaseActivity implements
 		View.OnClickListener, OnItemClickListener, AppBackupDataListener {
 
@@ -246,10 +245,6 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		}
 	}
 
-	public AppBackupRestoreManager getBackupManager() {
-		return mBackupManager;
-	}
-
 	@Override
 	public void onClick(View v) {
 		if (v == mViewBackup) {
@@ -304,11 +299,6 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		}
 	}
 
-	public void tryDeleteApp(AppItemInfo app) {
-		mPendingDelApp = app;
-		showAlarmDialog(getString(R.string.delete),
-				String.format(getString(R.string.query_delete), app.label));
-	}
 
 	@Override
 	public void onDataReady() {
@@ -425,26 +415,26 @@ public class AppBackupRestoreActivity extends BaseActivity implements
 		mProgressDialog.show();
 	}
 
-	private void showAlarmDialog(String title, String content) {
-		if (mAlarmDialog == null) {
-			mAlarmDialog = new LEOAlarmDialog(this);
-			mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {
-				@Override
-				public void onClick(int which) {
-					if (which == 1 && mPendingDelApp != null) {
-						showProgressDialog(getString(R.string.delete), String
-								.format(getString(R.string.deleting_app),
-										mPendingDelApp.label), 0, true, false);
-						mBackupManager.deleteApp(mPendingDelApp);
-					}
-					mPendingDelApp = null;
-				}
-			});
-		}
-		mAlarmDialog.setTitle(title);
-		mAlarmDialog.setContent(content);
-		mAlarmDialog.show();
-	}
+//	private void showAlarmDialog(String title, String content) {
+//		if (mAlarmDialog == null) {
+//			mAlarmDialog = new LEOAlarmDialog(this);
+//			mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {
+//				@Override
+//				public void onClick(int which) {
+//					if (which == 1 && mPendingDelApp != null) {
+//						showProgressDialog(getString(R.string.delete), String
+//								.format(getString(R.string.deleting_app),
+//										mPendingDelApp.label), 0, true, false);
+//						mBackupManager.deleteApp(mPendingDelApp);
+//					}
+//					mPendingDelApp = null;
+//				}
+//			});
+//		}
+//		mAlarmDialog.setTitle(title);
+//		mAlarmDialog.setContent(content);
+//		mAlarmDialog.show();
+//	}
 
 	private void showMessageDialog(String title, String message) {
 		if (mMessageDialog == null) {

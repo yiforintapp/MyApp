@@ -16,7 +16,7 @@
         <clip>
             <shape>
                 <gradient
-                    android:centerColor="@color/app_background"
+                    android:centerColor="@color/dialog_pro_progress"
                     android:centerX="0"
                     android:centerY="0"
                     android:endColor="@color/dialog_pro_end"

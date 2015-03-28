@@ -2,8 +2,6 @@ package com.leo.appmaster.videohide;
 
 import java.io.Serializable;
 
-import android.graphics.Bitmap;
-
 public class VideoItemBean implements Serializable {
 	private boolean select;
 	private String path;

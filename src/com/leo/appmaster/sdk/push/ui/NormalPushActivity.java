@@ -167,7 +167,8 @@ public class NormalPushActivity extends BaseActivity implements View.OnClickList
             try {
                 startActivity(i);
                 showGP = true;
-            }catch(Exception e) {             
+            }catch (Exception e) {
+                
             }
         } 
         if(!showGP) {

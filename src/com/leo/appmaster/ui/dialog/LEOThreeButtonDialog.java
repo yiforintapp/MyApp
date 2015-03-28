@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -18,7 +17,6 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 
 	private TextView mTitle;
 	private TextView mContent;
-	private ImageView mLeftIcon;
 	private TextView mLeftBtn;
 	private TextView mRightBtn;
 	private TextView mMidBtn;
@@ -43,6 +41,10 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 	public Object getUserData() {
 		return mUserData;
 	}
+	
+	public void setTitleVisiable(boolean visiable) {
+	    mTitle.setVisibility(visiable ? View.VISIBLE : View.GONE);
+	}
 
 	public void setTitle(String titleStr) {
 		if (titleStr != null) {
@@ -52,6 +54,11 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 		}
 	}
 
+	   
+    public void setContentVisiable(boolean visiable) {
+        mContent.setVisibility(visiable ? View.VISIBLE : View.GONE);
+    }
+	
 	public void setContent(String titleStr) {
 		if (titleStr != null) {
 			mContent.setText(titleStr);
@@ -74,20 +81,18 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 		}
 	}
 
-	public void setIcon(Drawable drawable) {
-		if (drawable != null) {
-			mLeftIcon.setVisibility(View.VISIBLE);
-			mLeftIcon.setImageDrawable(drawable);
-		} else {
-			mLeftIcon.setVisibility(View.GONE);
-		}
-	}
 
 	public void setLeftBtnStr(String lStr) {
 		if (lStr != null) {
 			mLeftBtn.setText(lStr);
 		}
 	}
+	
+	   public void setMiddleBtnStr(String lStr) {
+	        if (lStr != null) {
+	            mMidBtn.setText(lStr);
+	        }
+	    }
 
 	public void setRightBtnStr(String rStr) {
 		if (rStr != null) {
@@ -108,6 +113,11 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 	public void setRightBtnTextColor(int color) {
 		mRightBtn.setTextColor(color);
 	}
+
+    public void setRightBtnVisiable(int visiable) {
+        mRightBtn.setVisibility(visiable);
+    }
+
 
 	public void setLeftBtnListener(DialogInterface.OnClickListener lListener) {
 		mLeftBtn.setTag(lListener);
@@ -155,7 +165,6 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 		mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
 		mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
 
-		mLeftIcon = (ImageView) dlgView.findViewById(R.id.dlg_left_icon);
 		mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
 		mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
 		mMidBtn = (TextView) dlgView.findViewById(R.id.dlg_mid_btn);

@@ -3,8 +3,8 @@ package com.leo.appmaster.home;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.ComponentName;
@@ -13,139 +13,392 @@ import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Paint.FontMetrics;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
-import android.view.Menu;
-import android.view.MotionEvent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.DrawerLayout;
+import android.text.Html;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.PopupWindow.OnDismissListener;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.applocker.RecommentAppLockListActivity;
-import com.leo.appmaster.applocker.logic.LockHandler;
-import com.leo.appmaster.appmanage.AppListActivity;
-import com.leo.appmaster.appmanage.business.AppBusinessManager;
+import com.leo.appmaster.applocker.PasswdProtectActivity;
+import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
-import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.imagehide.ImageHideMainActivity;
-import com.leo.appmaster.lockertheme.LockerTheme;
-import com.leo.appmaster.model.BusinessItemInfo;
-import com.leo.appmaster.sdk.MainViewActivity;
+import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.fragment.HomeAppManagerFragment;
+import com.leo.appmaster.fragment.HomeLockFragment;
+import com.leo.appmaster.fragment.HomePravicyFragment;
+import com.leo.appmaster.fragment.Selectable;
+import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.DrawerArrowDrawable;
+import com.leo.appmaster.ui.IconPagerAdapter;
+import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.ui.LeoPopMenu;
-import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.RootChecker;
-import com.leo.appmaster.videohide.VideoHideMainActivity;
-import com.leo.imageloader.utils.HideFileUtils;
 
-
-public class HomeActivity extends MainViewActivity implements OnClickListener,
-        OnTouchListener {
+public class HomeActivity extends FragmentActivity implements OnClickListener, OnItemClickListener,
+        OnPageChangeListener, OnShaderColorChangedLisetner {
 
     private final static String KEY_ROOT_CHECK = "root_check";
-    public final static String KEY_PLAY_ANIM = "play_anim";
-    private View mPictureHide;
-    private View mAppLock;
-    private View mAppBackup;
-    private View mVideoHide;
-    private ImageView mBackup;
-    private View mLockTheme;
-    private View mFileTransfer;
 
-    private View mOptionImage;
-
-    private View mPressedEffect1;
-    private View mPressedEffect2;
-
-    private CommonTitleBar mTtileBar;
-
+    private ViewStub mViewStub;
+    private MultiModeView mMultiModeView;
+    private DrawerLayout mDrawerLayout;
+    private ImageView mLeftMenu;
+    private ListView mMenuList;
+    private HomeTitleBar mTtileBar;
+    private LeoPagerTab mPagerTab;
+    private ViewPager mViewPager;
+    private View mBgStatusbar, mFgStatusbar;
+    private HomeShadeView mShadeView;
     private LeoPopMenu mLeoPopMenu;
-    private ImageView spiner;
-    private String themeHome;
-    private SharedPreferences mySharedPreferences;
-    private boolean mNewTheme;
 
-    private TextView mHidePic;
-    private TextView mHideVideo;
-    private TextView mHidePicText;
-    private TextView mHideVideoText;
-    private CircleAnimView mAnimView;
-
+    private float mDrawerOffset;
     private Handler mHandler = new Handler();
-
-    private boolean mIsUpdating = false;
-
-    private int mLastHiddenPicCount = -1;
-    private int mLastHiddenVideoCount = -1;
+    private DrawerArrowDrawable mDrawerArrowDrawable;
+    private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        spiner = (ImageView) findViewById(R.id.image1);
         initUI();
-        Intent intent = getIntent();
-        if (intent.getBooleanExtra(KEY_PLAY_ANIM, false)) {
-            mAnimView.invalidateDraw(false);
-            prepareToAnim();
-        } else {
-            mAnimView.invalidateDraw(true);
-        }
-        // commit feedbacks if any
+        tryTransStatusbar();
+        // installShortcut();
         FeedbackHelper.getInstance().tryCommit();
-        installShortcut();
-        SharedPreferences gameCenterPreferences = getSharedPreferences("game_center",
-                this.MODE_PRIVATE);
-        boolean appwallFlag = gameCenterPreferences.getBoolean("shortcut_appwall", false);
-        if (!appwallFlag) {
-            createAppwallShortcut();
-            gameCenterPreferences.edit().putBoolean("shortcut_appwall", true).commit();
-        }
-        // Root chack
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext());
-        if (sp.getBoolean(KEY_ROOT_CHECK, true)) {
-            boolean root = RootChecker.isRoot();
-            if (root) {
-                SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1,
-                        KEY_ROOT_CHECK, "root");
+        shortcutAndRoot();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
+    }
+
+    private void initUI() {
+        mViewStub = (ViewStub) findViewById(R.id.viewstub);
+        mPagerTab = (LeoPagerTab) findViewById(R.id.tab_indicator);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        initFragment();
+        mViewPager.setAdapter(new HomePagerAdapter(getSupportFragmentManager()));
+        mViewPager.setOffscreenPageLimit(2);
+        mPagerTab.setViewPager(mViewPager);
+        mPagerTab.setOnPageChangeListener(this);
+        mPagerTab.setCurrentItem(0);
+
+        mDrawerArrowDrawable = new DrawerArrowDrawable(getResources());
+        mDrawerArrowDrawable.setStrokeColor(getResources()
+                .getColor(R.color.white));
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                mDrawerOffset = slideOffset;
+                mDrawerArrowDrawable.setParameter(mDrawerOffset);
             }
-            sp.edit().putBoolean(KEY_ROOT_CHECK, false).commit();
+        });
+
+        mMenuList = (ListView) findViewById(R.id.menu_list);
+        mMenuList.setAdapter(new MenuAdapter(this, getMenuItems()));
+        mMenuList.setOnItemClickListener(this);
+
+        mTtileBar = (HomeTitleBar) findViewById(R.id.layout_title_bar);
+        mLeftMenu = (ImageView) findViewById(R.id.iv_menu);
+        mLeftMenu.setOnClickListener(this);
+        mLeftMenu.setImageDrawable(mDrawerArrowDrawable);
+        mTtileBar.setOptionClickListener(this);
+
+        mBgStatusbar = findViewById(R.id.bg_statusbar);
+        mFgStatusbar = findViewById(R.id.fg_statusbar);
+        mShadeView = (HomeShadeView) findViewById(R.id.shadeview);
+        mShadeView.setPosition(0);
+        mShadeView.setColorChangedListener(this);
+    }
+
+    public void showModePages(boolean show/* , int[] center */) {
+        if (mMultiModeView == null) {
+            mMultiModeView = (MultiModeView) mViewStub.inflate();
+        }
+
+        if (show) {
+            mMultiModeView.show();
+        } else {
+            mMultiModeView.hide();
         }
     }
 
-    private void prepareToAnim() {
-        mHandler.postDelayed(new Runnable() {
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            int oldTab = savedInstanceState.getInt("current_tap");
+            mViewPager.setCurrentItem(oldTab);
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    public int getShaderColor() {
+        return mShadeView.getCurColor();
+    }
+
+    private void initFragment() {
+        HomeFragmentHoler holder = new HomeFragmentHoler();
+        holder.title = this.getString(R.string.lock_tab);
+        HomeLockFragment lockFragment = new HomeLockFragment();
+        holder.fragment = lockFragment;
+        holder.iconId = R.drawable.lock_active_icon;
+        mFragmentHolders[0] = holder;
+
+        holder = new HomeFragmentHoler();
+        holder.title = this.getString(R.string.pravicy_protect);
+        HomePravicyFragment pravicyFragment = new HomePravicyFragment();
+        holder.fragment = pravicyFragment;
+        holder.iconId = R.drawable.protction_active_icon;
+        mFragmentHolders[1] = holder;
+
+        holder = new HomeFragmentHoler();
+        holder.title = this.getString(R.string.app_manager);
+        HomeAppManagerFragment appManagerFragment = new HomeAppManagerFragment();
+        holder.fragment = appManagerFragment;
+        holder.iconId = R.drawable.my_apps_active_icon;
+        mFragmentHolders[2] = holder;
+        
+        // AM-614, remove cached fragments
+        FragmentManager fm = getSupportFragmentManager();
+        try {
+            FragmentTransaction ft = fm.beginTransaction();
+            List<Fragment> list = fm.getFragments();
+            if (list != null) {
+                for (Fragment f : fm.getFragments()) {
+                    ft.remove(f);
+                }
+            }
+            ft.commit();
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        judgeShowGradeTip();
+        // compute privacy level here to avoid unknown change, such as file
+        // deleted outside of your phone.
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        if (amp.getFromOther()) {
+            PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
+            amp.setFromOther(false);
+        }
+
+        if (mViewPager != null) {
+            int current = mViewPager.getCurrentItem();
+            if (current < mFragmentHolders.length) {
+                HomeFragmentHoler hfh = mFragmentHolders[current];
+                if (hfh != null && hfh.fragment instanceof Selectable) {
+                    ((Selectable) (hfh.fragment)).onSelected();
+                }
+            }
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("current_tap", mViewPager.getCurrentItem());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(mMenuList)) {
+            mDrawerLayout.closeDrawer(mMenuList);
+            return;
+        }
+
+        if (mMultiModeView != null && mMultiModeView.getVisibility() == View.VISIBLE) {
+            showModePages(false/* , new int[]{1,1} */);
+            return;
+        }
+
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_menu:
+                if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+                    mDrawerLayout.closeDrawer(Gravity.START);
+                } else {
+                    mDrawerLayout.openDrawer(Gravity.START);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "menu");
+                }
+                break;
+            case R.id.iv_option_image:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "password");
+                if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+                    mDrawerLayout.closeDrawer(Gravity.START);
+                }
+                if (mLeoPopMenu == null) {
+                    mLeoPopMenu = new LeoPopMenu();
+                }
+                mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
+                mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                            int position, long id) {
+                        if (position == 0) {
+                            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
+                                    "changepwd");
+                            Intent intent = new Intent(HomeActivity.this, LockSettingActivity.class);
+                            intent.putExtra("reset_passwd", true);
+                            startActivity(intent);
+                        } else if (position == 1) {
+                            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "mibao");
+                            Intent intent = new Intent(HomeActivity.this,
+                                    PasswdProtectActivity.class);
+                            startActivity(intent);
+                        } else if (position == 2) {
+                            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
+                                    "passwdtip");
+                            Intent intent = new Intent(HomeActivity.this, PasswdTipActivity.class);
+                            startActivity(intent);
+                        }
+                        mLeoPopMenu.dismissSnapshotList();
+                    }
+                });
+                mLeoPopMenu.setPopMenuItems(getRightMenuItems());
+                mLeoPopMenu.showPopMenu(this,
+                        mTtileBar.findViewById(R.id.iv_option_image), null, null);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private List<String> getRightMenuItems() {
+        List<String> listItems = new ArrayList<String>();
+        listItems.add(getString(R.string.reset_passwd));
+        listItems.add(getString(R.string.set_protect_or_not));
+        listItems.add(getString(R.string.passwd_notify));
+        return listItems;
+    }
+
+    private List<MenuItem> getMenuItems() {
+        List<MenuItem> listItems = new ArrayList<MenuItem>();
+        Resources resources = AppMasterApplication.getInstance().getResources();
+        /* 亲给个好评 */
+        listItems.add(new MenuItem(resources.getString(R.string.grade),
+                R.drawable.menu_star_icon_menu));
+        /* 点个赞 */
+        listItems
+                .add(new MenuItem(resources.getString(R.string.about_praise),
+                        R.drawable.menu_hot_icon));
+        /* 加入粉丝团 */
+        listItems.add(new MenuItem(resources.getString(R.string.about_group),
+                R.drawable.menu_join_icon));
+        /* 吐个槽 */
+        listItems.add(new MenuItem(resources.getString(R.string.feedback),
+                R.drawable.menu_feedbacks_icon));
+        /* 检查升级 */
+        if (SDKWrapper.isUpdateAvailable()) {
+            listItems.add(new MenuItem(resources.getString(R.string.app_setting_has_update),
+                    R.drawable.menu_updates_icon));
+        } else {
+            listItems.add(new MenuItem(resources.getString(R.string.app_setting_update),
+                    R.drawable.menu_updates_icon));
+        }
+        /* 关于 */
+        listItems.add(new MenuItem(resources.getString(R.string.app_setting_about),
+                R.drawable.menu_about_icon));
+        return listItems;
+    }
+
+    private void shortcutAndRoot() {
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
-                mAnimView.palyAnim();
+                SharedPreferences prefernece = PreferenceManager
+                        .getDefaultSharedPreferences(HomeActivity.this);
+                boolean installed = prefernece.getBoolean("shortcut", false);
+                if (!installed) {
+                    Intent shortcutIntent = new Intent(HomeActivity.this, SplashActivity.class);
+                    shortcutIntent.setAction(Intent.ACTION_MAIN);
+                    shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+
+                    Intent shortcut = new Intent(
+                            "com.android.launcher.action.INSTALL_SHORTCUT");
+                    shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                            getString(R.string.app_name));
+                    shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+                    ShortcutIconResource iconRes = Intent.ShortcutIconResource
+                            .fromContext(HomeActivity.this, R.drawable.ic_launcher);
+                    shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+                    shortcut.putExtra("duplicate", false);
+                    shortcut.putExtra("from_shortcut", true);
+                    sendBroadcast(shortcut);
+                    prefernece.edit().putBoolean("shortcut", true).commit();
+                }
+                boolean appwallFlag = prefernece.getBoolean("shortcut_appwall", true);
+                if (appwallFlag) {
+                    Intent appWallShortIntent = new Intent(HomeActivity.this, AppWallActivity.class);
+                    appWallShortIntent.putExtra("from_appwall_shortcut", true);
+                    appWallShortIntent.setAction(Intent.ACTION_MAIN);
+                    appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                    appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Intent appWallShortcut = new Intent(
+                            "com.android.launcher.action.UNINSTALL_SHORTCUT");
+                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                            getString(R.string.appwall_name));
+                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
+                    appWallShortcut.putExtra("duplicate", true);
+                    sendBroadcast(appWallShortcut);
+                    prefernece.edit().putBoolean("shortcut_appwall", false);
+                }
+                if (prefernece.getBoolean(KEY_ROOT_CHECK, true)) {
+                    boolean root = RootChecker.isRoot();
+                    if (root) {
+                        SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1,
+                                KEY_ROOT_CHECK, "root");
+                    }
+                    prefernece.edit().putBoolean(KEY_ROOT_CHECK, false).commit();
+                }
             }
-        }, 500);
+
+        });
     }
 
     private void judgeShowGradeTip() {
@@ -155,6 +408,7 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
                 ActivityManager mActivityManager = (ActivityManager) HomeActivity.this
                         .getSystemService(Context.ACTIVITY_SERVICE);
 
+                @SuppressWarnings("deprecation")
                 RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(
                         1).get(0);
 
@@ -174,689 +428,297 @@ public class HomeActivity extends MainViewActivity implements OnClickListener,
         }, 5000);
     }
 
-    private void installShortcut() {
-        SharedPreferences prefernece = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        boolean installed = prefernece.getBoolean("shortcut", false);
-        if (!installed) {
-            Intent shortcutIntent = new Intent(this, SplashActivity.class);
-            shortcutIntent.setAction(Intent.ACTION_MAIN);
-            shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-            // shortcutIntent.setClassName("com.leo.appmaster",
-            // "com.leo.appmaster.home.SplashActivity");
-            Intent shortcut = new Intent(
-                    "com.android.launcher.action.INSTALL_SHORTCUT");
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                    getString(R.string.app_name));
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            ShortcutIconResource iconRes = Intent.ShortcutIconResource
-                    .fromContext(this, R.drawable.ic_launcher);
-            // shortcutIntent.setClassName("com.leo.appmaster",
-            // "com.leo.appmaster.home.SplashActivity");
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
-            shortcut.putExtra("duplicate", false);
-            shortcut.putExtra("from_shortcut", true);
-            sendBroadcast(shortcut);
-            prefernece.edit().putBoolean("shortcut", true).commit();
-        }
-
-    }
-
-    /**
-     * 应用墙快捷方式
-     */
-    private void createAppwallShortcut() {
-        Intent appWallShortIntent = new Intent(this, AppWallActivity.class);
-        appWallShortIntent.putExtra("from_appwall_shortcut", true);
-        appWallShortIntent.setAction(Intent.ACTION_MAIN);
-        appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
-        appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Intent appWallShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-        appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.appwall_name));
-        ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(this,
-                R.drawable.game);
-        appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
-        appWallShortcut.putExtra("duplicate", false);
-        appWallShortcut.putExtra("from_shortcut", true);
-        appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
-        sendBroadcast(appWallShortcut);
-    }
-
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (mAnimView != null) {
-            mAnimView.cancelAnim();
-        }
-    }
+    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+        Intent intent = null;
+        if (position == 2) {
+            /* 加入粉丝团 */
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    private void initUI() {
-        mHidePic = (TextView) findViewById(R.id.hide_pic_icon);
-        mHidePic.setOnClickListener(this);
-        mHideVideo = (TextView) findViewById(R.id.hide_video_icon);
-        mHideVideo.setOnClickListener(this);
-        mHidePicText = (TextView) findViewById(R.id.hide_pic_text);
-        mHidePicText.setOnClickListener(this);
-        mHideVideoText = (TextView) findViewById(R.id.hide_video_text);
-        mHideVideoText.setOnClickListener(this);
-        mBackup = (ImageView) findViewById(R.id.backup_icon);
-
-        mAnimView = (CircleAnimView) findViewById(R.id.lock_circle_view);
-        mAnimView.setOnClickListener(this);
-        mPictureHide = findViewById(R.id.tv_picture_hide);
-        mAppLock = findViewById(R.id.tv_app_lock);
-        mAppBackup = findViewById(R.id.tv_app_backup);
-        mVideoHide = findViewById(R.id.tv_video_hide);
-        mPictureHide.setOnClickListener(this);
-        mAppLock.setOnClickListener(this);
-        mVideoHide.setOnTouchListener(this);
-        mAppLock.setOnTouchListener(this);
-        mAppBackup.setOnClickListener(this);
-        mVideoHide.setOnClickListener(this);
-
-        mPressedEffect1 = findViewById(R.id.pressed_effect1);
-        mPressedEffect2 = findViewById(R.id.pressed_effect2);
-
-        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mySharedPreferences = getSharedPreferences("LockerThemeHome",
-                HomeActivity.this.MODE_WORLD_WRITEABLE);
-
-        mOptionImage = mTtileBar.findViewById(R.id.image1);
-        mOptionImage.setVisibility(View.INVISIBLE);
-        mTtileBar.setTitle(R.string.app_name);
-        mTtileBar.setBackArrowVisibility(View.GONE);
-        mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        mTtileBar.setOptionText("");
-        mTtileBar.setOptionImage(R.drawable.setting_btn);
-        mTtileBar.setOptionListener(this);
-        mTtileBar.setSpinerVibility(View.VISIBLE);
-        mTtileBar.setSpinerListener(this);
-        mTtileBar.showLogo();
-        spiner = (ImageView) findViewById(R.id.image1);
-        spiner.setVisibility(View.VISIBLE);
-        spiner.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                Intent intent = new Intent(HomeActivity.this, LockerTheme.class);
-                startActivityForResult(intent, 0);
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
-                        "theme_enter", "home");
+            /* sdk mark */
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                    "google+");
+            Intent intentBeta = null;
+            if (AppUtil.appInstalled(getApplicationContext(),
+                    "com.google.android.apps.plus")) {
+                intentBeta = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri
+                        .parse("https://plus.google.com/u/0/communities/112552044334117834440");
+                intentBeta.setData(uri);
+                ComponentName cn = new ComponentName(
+                        "com.google.android.apps.plus",
+                        "com.google.android.libraries.social.gateway.GatewayActivity");
+                intentBeta.setComponent(cn);
+                intentBeta.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    startActivity(intentBeta);
+                } catch (Exception e) {
+                    intentBeta = new Intent(Intent.ACTION_VIEW, uri);
+                    ComponentName componentName = new ComponentName(
+                            "com.google.android.apps.plus",
+                            "com.google.android.apps.plus.phone.UrlGatewayActivity");
+                    intentBeta.setComponent(componentName);
+                    intentBeta.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(intentBeta);
+                    } catch (Exception e1) {
+                        intentBeta = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intentBeta);
+                    }
+                }
+            } else {
+                Uri uri = Uri
+                        .parse("https://plus.google.com/u/0/communities/112552044334117834440");
+                intentBeta = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intentBeta);
             }
-        });
-    }
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "about", "like");
 
-    @Override
-    protected void onResume() {
-        AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        if (pref.getHomeLocked() && pref.getLaunchOtherApp()) {
-            int lockType = AppMasterPreference.getInstance(this).getLockType();
-            Intent intent = new Intent(this, LockScreenActivity.class);
-            if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-                intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                        LockFragment.LOCK_TYPE_PASSWD);
-            } else if (lockType == AppMasterPreference.LOCK_TYPE_GESTURE) {
-                intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                        LockFragment.LOCK_TYPE_GESTURE);
+        } else if (position == 1) {
+            /* Facebook */
+
+            /* sdk mark */
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                    "Facebook");
+            Intent intentLikeUs = null;
+            if (AppUtil.appInstalled(getApplicationContext(),
+                    "com.facebook.katana")) {
+                intentLikeUs = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri
+                        .parse("fb://page/1709302419294051");
+                intentLikeUs.setData(uri);
+                ComponentName cn = new ComponentName("com.facebook.katana",
+                        "com.facebook.katana.IntentUriHandler");
+                intentLikeUs.setComponent(cn);
+                intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    startActivity(intentLikeUs);
+                } catch (Exception e) {
+                }
+            } else {
+                intentLikeUs = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri
+                        .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
+                intentLikeUs.setData(uri);
+                intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentLikeUs);
             }
-            intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, getPackageName());
-            intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                    LockFragment.FROM_OTHER);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            pref.setLaunchOtherApp(false);
+        } else if (position == 0) {
+            /* google play */
+            /* sdk mark */
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                    "googleplay");
+            if (AppUtil.appInstalled(getApplicationContext(),
+                    "com.android.vending")) {
+                intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri
+                        .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                intent.setData(uri);
+                ComponentName cn = new ComponentName(
+                        "com.android.vending",
+                        "com.google.android.finsky.activities.MainActivity");
+                intent.setComponent(cn);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    startActivity(intent);
+                    // mHandler.postDelayed(new Runnable() {
+                    // @Override
+                    // public void run() {
+                    // String lastActivity =
+                    // LockManager.getInstatnce().getLastActivity();
+                    // if (lastActivity != null
+                    // && lastActivity
+                    // .equals("com.google.android.finsky.activities.MainActivity"))
+                    // {
+                    // // Intent intent2 = new Intent(
+                    // // HomeActivity.this,
+                    // // GooglePlayGuideActivity.class);
+                    // // startActivity(intent2);
+                    // }
+                    // }
+                    // }, 1000);
+                } catch (Exception e) {
+
+                }
+            } else {
+                intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri
+                        .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                intent.setData(uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        } else if (position == 3) {
+            /* sdk mark */
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
+                    "feedback");
+            intent = new Intent(HomeActivity.this,
+                    FeedbackActivity.class);
+            startActivity(intent);
+        } else if (position == 6) {
+            /* 游戏中心 */
+
+            /* sdk mark */
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                    "gamecenter");
+            intent = new Intent(HomeActivity.this,
+                    AppWallActivity.class);
+            intent.putExtra(Constants.HOME_TO_APP_WALL_FLAG,
+                    Constants.HOME_TO_APP_WALL_FLAG_VALUE);
+            startActivity(intent);
+        } else if (position == 4) {
+            /* 检查更新 */
+
+            /* sdk mark */
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                    "update");
+            SDKWrapper.checkUpdate();
+        } else if (position == 5) {
+            /* 关于 */
+
+            /* sdk mark */
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                    "about");
+            intent = new Intent(HomeActivity.this,
+                    AboutActivity.class);
             startActivity(intent);
         }
-        mNewTheme = !pref.getLocalThemeSerialNumber().equals(
-                pref.getOnlineThemeSerialNumber());
-        if (mNewTheme) {
-            spiner.setImageDrawable(this.getResources().getDrawable(
-                    R.drawable.themetip_spiner_press));
+    }
+
+    private void tryTransStatusbar() {
+        if (VERSION.SDK_INT >= 19) {
+            // change status bar
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // change nav bar
+            // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         } else {
-            spiner.setImageDrawable(this.getResources().getDrawable(
-                    R.drawable.theme_spiner_press));
-        }
-
-        updateSettingIcon();
-        judgeShowGradeTip();
-        updateBackupIcon();
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
-        updatePrivacyData();
-
-        super.onResume();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void updateBackupIcon() {
-        AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        boolean click = pref.getHomeBusinessTipClick();
-        String online = pref.getOnlineBusinessSerialNumber();
-        String local = pref.getLocalBusinessSerialNumber();
-        if (online != null && !online.equals(local) && !click) {
-            mBackup.setImageResource(R.drawable.home_backup_icon_new);
-        } else {
-            mBackup.setImageResource(R.drawable.home_backup_icon);
+            mBgStatusbar.setVisibility(View.GONE);
+            mFgStatusbar.setVisibility(View.GONE);
         }
     }
 
-    private void updatePrivacyData() {
-        if (!mIsUpdating) {
-            mIsUpdating = true;
-            AppMasterPreference pref = AppMasterPreference
-                    .getInstance(HomeActivity.this);
-            List<String> list = pref.getLockedAppList();
-            if (mAnimView != null) {
-                mAnimView.setLockedCount(list == null ? 0 : list.size());
-            }
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    final int picSize = HideFileUtils
-                            .getHidePhotoCount(getApplicationContext());
-                    final int videoSize = HideFileUtils
-                            .getVideoInfo(getApplicationContext());
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            updateHidePicCount(picSize);
-                            updateHideVideoCount(videoSize);
-                            mIsUpdating = false;
-                        }
-                    });
-                }
-            }).start();
+    class HomeFragmentHoler {
+        String title;
+        int iconId;
+        BaseFragment fragment;
+    }
+
+    class HomePagerAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
+        public HomePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentHolders[position].fragment;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentHolders[position].title;
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentHolders.length;
+        }
+
+        @Override
+        public int getIconResId(int index) {
+            return mFragmentHolders[index].iconId;
+        }
+
+        @Override
+        public boolean getRedTip(int index) {
+            return false;
         }
     }
 
-    private void updateHidePicCount(int count) {
-        if (mHidePic != null && mHidePicText != null) {
-            if (mLastHiddenPicCount != count) {
-                mLastHiddenPicCount = count;
-                if (count > 0) {
-                    FontMetrics fm = mHidePic.getPaint().getFontMetrics();
-                    int textH = (int) Math.ceil(fm.descent - fm.ascent) * 2 / 3;
-                    Drawable iconPic = getResources().getDrawable(
-                            R.drawable.home_photo_icon);
-                    int width = (int) (iconPic.getIntrinsicWidth() * (((float) textH) / iconPic
-                            .getIntrinsicHeight()));
+    class MenuAdapter extends BaseAdapter {
 
-                    iconPic.setBounds(0, 0, width, textH);
-                    mHidePic.setText(String.valueOf(count));
-                    mHidePic.setCompoundDrawables(null, null, iconPic, null);
-                    mHidePicText.setText(R.string.hide_pic_text);
-                } else {
-                    Drawable iconPic = getResources().getDrawable(
-                            R.drawable.home_photo_empty_icon);
-                    int padding = getResources().getDimensionPixelSize(
-                            R.dimen.hide_empty_icon_padding);
-                    int width = iconPic.getIntrinsicWidth();
-                    int height = iconPic.getIntrinsicHeight();
-                    int viewH = mHidePic.getHeight() - 2 * padding;
-                    if (viewH > 0 && height > viewH) {
-                        width = (int) (width * (((float) viewH) / height));
-                        height = viewH;
-                    }
-                    iconPic.setBounds(0, 0, width, height);
-                    mHidePic.setText("");
-                    mHidePic.setCompoundDrawables(null, null, iconPic, null);
-                    mHidePicText.setText(R.string.hide_pic_empty_text);
-                }
-            }
+        List<MenuItem> items;
+        LayoutInflater inflater;
 
+        public MenuAdapter(Context ctx, List<MenuItem> items) {
+            super();
+            this.items = items;
+            inflater = LayoutInflater.from(ctx);
         }
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        @Override
+        public Object getItem(int arg0) {
+            return items.get(arg0);
+        }
+
+        @Override
+        public long getItemId(int arg0) {
+            return arg0;
+        }
+
+        /**
+         * need not ViewHolder here
+         */
+        @SuppressLint("ViewHolder")
+        @Override
+        public View getView(int arg0, View arg1, ViewGroup arg2) {
+            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2,
+                    false);
+            TextView tv = (TextView) layout.findViewById(R.id.menu_item_tv);
+            /* some item not HTML styled text, such as "check update" item */
+            tv.setText(Html.fromHtml(items.get(arg0).itemName));
+            tv.setCompoundDrawablesWithIntrinsicBounds(
+                    getResources().getDrawable(items.get(arg0).iconId), null, null,
+                    null);
+            return layout;
+        }
+
     }
 
-    private void updateHideVideoCount(int count) {
-        if (mHideVideo != null && mHideVideoText != null) {
-            if (mLastHiddenVideoCount != count) {
-                mLastHiddenVideoCount = count;
-                if (count > 0) {
-                    FontMetrics fm = mHideVideo.getPaint().getFontMetrics();
-                    int textH = (int) Math.ceil(fm.descent - fm.ascent) * 2 / 3;
-                    Drawable iconVideo = getResources().getDrawable(
-                            R.drawable.home_video_icon);
-                    int width = (int) (iconVideo.getIntrinsicWidth() * (((float) textH) / iconVideo
-                            .getIntrinsicHeight()));
-                    iconVideo.setBounds(0, 0, width, textH);
-                    mHideVideo.setText(String.valueOf(count));
-                    mHideVideo
-                            .setCompoundDrawables(null, null, iconVideo, null);
-                    mHideVideoText.setText(R.string.hide_video_text);
-                } else {
-                    Drawable iconVideo = getResources().getDrawable(
-                            R.drawable.home_video_empty_icon);
-                    int padding = getResources().getDimensionPixelSize(
-                            R.dimen.hide_empty_icon_padding);
-                    int width = iconVideo.getIntrinsicWidth();
-                    int height = iconVideo.getIntrinsicHeight();
-                    int viewH = mHideVideo.getHeight() - 2 * padding;
-                    if (viewH > 0 && height > viewH) {
-                        width = (int) (width * (((float) viewH) / height));
-                        height = viewH;
-                    }
-                    iconVideo.setBounds(0, 0, width, height);
-                    mHideVideo.setText("");
-                    mHideVideo
-                            .setCompoundDrawables(null, null, iconVideo, null);
-                    mHideVideoText.setText(R.string.hide_video_empty_text);
-                }
-            }
+    class MenuItem {
+        String itemName;
+        int iconId;
+
+        public MenuItem(String itemName, int iconId) {
+            super();
+            this.itemName = itemName;
+            this.iconId = iconId;
         }
     }
 
     @Override
-    public void onOptionsMenuClosed(Menu menu) {
-        // TODO Auto-generated method stub
-        super.onOptionsMenuClosed(menu);
-        LeoLog.d("homepage", "onOptionsMenuClosed");
+    public void onPageScrollStateChanged(int arg0) {
+        if (arg0 == 1 && mFragmentHolders[arg0].fragment instanceof Selectable) {
+            ((Selectable) mFragmentHolders[mViewPager.getCurrentItem()].fragment).onScrolling();
+        } else {
+            ((Selectable) mFragmentHolders[mViewPager.getCurrentItem()].fragment).onSelected();
+        }
     }
 
     @Override
-    public void onClick(View v) {
-        Intent intent = null;
-        switch (v.getId()) {
-            case R.id.top_layout:
-                break;
-            case R.id.tv_picture_hide:
-                gotoHidePic();
-                break;
-            case R.id.tv_app_lock:
-                gotoAppLock();
-                break;
-            case R.id.tv_app_backup:
-                /* sdk mark */
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "uninstall");
-                Vector<BusinessItemInfo> list = AppBusinessManager
-                        .getInstance(this).getBusinessData();
-                AppMasterPreference pref = AppMasterPreference.getInstance(this);
-                pref.setHomeBusinessTipClick(true);
-                // intent = new Intent(this, AppBackupRestoreActivity.class);
-                intent = new Intent(this, AppListActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.tv_video_hide:
-                gotoHideVideo();
-                break;
-            case R.id.tv_option_image:
-                // track: home - show setting popup window
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "setting");
-                if (mLeoPopMenu == null) {
-                    mLeoPopMenu = new LeoPopMenu();
-                    mLeoPopMenu.setPopMenuItems(getPopMenuItems());
-                    mLeoPopMenu.setItemSpaned(true);
-                    mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
-                    mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view,
-                                int position, long id) {
-
-                            if (position == 2) {
-                                /* 加入粉丝团 */
-
-                                /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                        "google+");
-                                Intent intentBeta = null;
-                                if (AppUtil.appInstalled(getApplicationContext(),
-                                        "com.google.android.apps.plus")) {
-                                    intentBeta = new Intent(Intent.ACTION_VIEW);
-                                    Uri uri = Uri
-                                            .parse("https://plus.google.com/u/0/communities/112552044334117834440");
-                                    intentBeta.setData(uri);
-                                    ComponentName cn = new ComponentName(
-                                            "com.google.android.apps.plus",
-                                            "com.google.android.libraries.social.gateway.GatewayActivity");
-                                    intentBeta.setComponent(cn);
-                                    intentBeta.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    try {
-                                        startActivity(intentBeta);
-                                    } catch (Exception e) {
-                                        intentBeta = new Intent(Intent.ACTION_VIEW, uri);
-                                        ComponentName componentName = new ComponentName(
-                                                "com.google.android.apps.plus",
-                                                "com.google.android.apps.plus.phone.UrlGatewayActivity");
-                                        intentBeta.setComponent(componentName);
-                                        intentBeta.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        try {
-                                            startActivity(intentBeta);
-                                        } catch (Exception e1) {
-                                            intentBeta = new Intent(Intent.ACTION_VIEW, uri);
-                                            startActivity(intentBeta);
-                                        }
-                                    }
-                                } else {
-                                    Uri uri = Uri
-                                            .parse("https://plus.google.com/u/0/communities/112552044334117834440");
-                                    intentBeta = new Intent(Intent.ACTION_VIEW, uri);
-                                    startActivity(intentBeta);
-                                }
-                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "about", "like");
-
-                            } else if (position == 1) {
-                                /* Facebook */
-
-                                /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                        "Facebook");
-                                Intent intentLikeUs = null;
-                                if (AppUtil.appInstalled(getApplicationContext(),
-                                        "com.facebook.katana")) {
-                                    intentLikeUs = new Intent(Intent.ACTION_VIEW);
-                                    Uri uri = Uri
-                                            .parse("fb://page/1709302419294051");
-                                    intentLikeUs.setData(uri);
-                                    ComponentName cn = new ComponentName("com.facebook.katana",
-                                            "com.facebook.katana.IntentUriHandler");
-                                    intentLikeUs.setComponent(cn);
-                                    intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    try {
-                                        startActivity(intentLikeUs);
-                                    } catch (Exception e) {
-                                    }
-                                } else {
-                                    intentLikeUs = new Intent(Intent.ACTION_VIEW);
-                                    Uri uri = Uri
-                                            .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
-                                    intentLikeUs.setData(uri);
-                                    intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intentLikeUs);
-                                }
-                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "about",
-                                        "privacy");
-                            } else if (position == 0) {
-                                /* google play */
-                                /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                        "googleplay");
-                                boolean showGP = false;
-                                if (AppUtil.appInstalled(getApplicationContext(),
-                                        "com.android.vending")) {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    Uri uri = Uri
-                                            .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-                                    intent.setData(uri);
-                                    ComponentName cn = new ComponentName(
-                                            "com.android.vending",
-                                            "com.google.android.finsky.activities.MainActivity");
-                                    intent.setComponent(cn);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    try {
-                                        startActivity(intent);
-                                        mHandler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Intent intent2 = new Intent(
-                                                        HomeActivity.this,
-                                                        GooglePlayGuideActivity.class);
-                                                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                startActivity(intent2);
-                                            }
-                                        }, 200);
-                                        showGP = true;
-                                    } catch (Exception e) {
-                                        
-                                    }
-                                } 
-                                if(!showGP) {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    Uri uri = Uri
-                                            .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-                                    intent.setData(uri);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
-                                }
-                            } else if (position == 3) {
-                                /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                        "feedback");
-                                Intent intent = new Intent(HomeActivity.this,
-                                        FeedbackActivity.class);
-                                startActivity(intent);
-                            } else if (position == 6) {
-                                /* 游戏中心 */
-
-                                /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                        "gamecenter");
-                                Intent intent = new Intent(HomeActivity.this,
-                                        AppWallActivity.class);
-                                intent.putExtra(Constants.HOME_TO_APP_WALL_FLAG,
-                                        Constants.HOME_TO_APP_WALL_FLAG_VALUE);
-                                startActivity(intent);
-                            } else if (position == 4) {
-                                /* 检查更新 */
-
-                                /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                        "update");
-                                SDKWrapper.checkUpdate();
-                            } else if (position == 5) {
-                                /* 关于 */
-
-                                /* sdk mark */
-                                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                        "about");
-                                Intent intent = new Intent(HomeActivity.this,
-                                        AboutActivity.class);
-                                startActivity(intent);
-                            }
-                            mLeoPopMenu.dismissSnapshotList();
-                        }
-                    });
-                }
-                LayoutStyles ls = new LayoutStyles();
-                ls.width = DipPixelUtil.dip2px(this, 150.0f);
-                ls.height = LayoutParams.WRAP_CONTENT;
-                ls.animation = R.style.RightEnterAnim;
-                mLeoPopMenu.setPopMenuItems(getPopMenuItems());
-                mLeoPopMenu.showPopMenu(this,
-
-                        mTtileBar.findViewById(R.id.tv_option_image), ls,
-                        new OnDismissListener() {
-                            @Override
-                            public void onDismiss() {
-                                updateSettingIcon();
-                            }
-                        });
-
-                break;
-
-            case R.id.hide_pic_icon:
-            case R.id.hide_pic_text:
-                gotoHidePic();
-                break;
-            case R.id.hide_video_icon:
-            case R.id.hide_video_text:
-                gotoHideVideo();
-                break;
-            case R.id.lock_circle_view:
-                gotoAppLock();
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void gotoHidePic() {
-        // track: home - enter hide picture activity
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "hidpic");
-        if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            enterHidePicture();
-        } else {
-            startPictureLockSetting();
-        }
-    }
-
-    private void gotoHideVideo() {
-        // track: home - enter system boost activity
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "hidvideo");
-        if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            enterHideVideo();
-        } else {
-            startVideoLockSetting();
-        }
-    }
-
-    private void gotoAppLock() {
-        // track: home - enter lock application activity
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "lock");
-        if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            enterLockPage();
-        } else {
-            startLockSetting();
-        }
-    }
-
-    private void updateSettingIcon() {
-        if (SDKWrapper.isUpdateAvailable()) {
-            mTtileBar.setOptionImage(R.drawable.setting_updated_selector);
-        } else {
-            mTtileBar.setOptionImage(R.drawable.setting_selector);
-        }
-    }
-
-    private List<String> getPopMenuItems() {
-        List<String> listItems = new ArrayList<String>();
-        Resources resources = AppMasterApplication.getInstance().getResources();
-        /* 亲给个好评 */
-        listItems.add(resources.getString(R.string.grade));
-        /* 点个赞 */
-        listItems.add(resources.getString(R.string.about_praise));
-        /* 加入粉丝团 */
-        listItems.add(resources.getString(R.string.about_group));
-        /* 吐个槽 */
-        listItems.add(resources.getString(R.string.feedback));
-        /* 检查升级 */
-        if (SDKWrapper.isUpdateAvailable()) {
-            listItems.add(resources.getString(R.string.app_setting_has_update));
-        } else {
-            listItems.add(resources.getString(R.string.app_setting_update));
-        }
-        /* 关于 */
-        listItems.add(resources.getString(R.string.app_setting_about));
-        /* 游戏中心 */
-        listItems.add(resources.getString(R.string.appwall_name));
-        return listItems;
-    }
-
-    private void enterLockPage() {
-        Intent intent = null;
-        // intent = new Intent(this, AppLockListActivity.class);
-        // startActivity(intent);
-
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        intent = new Intent(this, LockScreenActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF_HOME);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                AppLockListActivity.class.getName());
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        startActivity(intent);
-
-    }
-
-    private void startLockSetting() {
-        Intent intent = new Intent(this, RecommentAppLockListActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                AppLockListActivity.class.getName());
-        startActivity(intent);
-    }
-
-    private void enterHidePicture() {
-        Intent intent = null;
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        intent = new Intent(this, LockScreenActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_LOCK_TITLE,
-                getString(R.string.app_image_hide));
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF_HOME);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                ImageHideMainActivity.class.getName());
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        startActivity(intent);
-    }
-
-    private void startVideoLockSetting() {
-        Intent intent = new Intent(this, LockSettingActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                VideoHideMainActivity.class.getName());
-        startActivity(intent);
-    }
-
-    private void enterHideVideo() {
-        Intent intent = null;
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        intent = new Intent(this, LockScreenActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_LOCK_TITLE,
-                getString(R.string.app_video_hide));
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF_HOME);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                VideoHideMainActivity.class.getName());
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        startActivity(intent);
-    }
-
-    private void startPictureLockSetting() {
-        Intent intent = new Intent(this, LockSettingActivity.class);
-        intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-                ImageHideMainActivity.class.getName());
-        startActivity(intent);
+    public void onPageScrolled(int arg0, float arg1, int arg2) {
+        mShadeView.setPosition(arg0 + arg1);
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if (v.getId() == R.id.tv_app_lock) {
-                    mPressedEffect1.setBackgroundResource(R.drawable.home_sel);
-                    mAppLock.setBackgroundResource(R.drawable.home_sel);
-                } else if (v.getId() == R.id.tv_video_hide) {
-                    mPressedEffect2.setBackgroundResource(R.drawable.home_sel);
-                    mVideoHide.setBackgroundResource(R.drawable.home_sel);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_OUTSIDE:
-                if (v.getId() == R.id.tv_app_lock) {
-                    mPressedEffect1.setBackgroundColor(Color.WHITE);
-                    mAppLock.setBackgroundColor(Color.WHITE);
-                } else if (v.getId() == R.id.tv_video_hide) {
-                    mPressedEffect2.setBackgroundColor(Color.WHITE);
-                    mVideoHide.setBackgroundColor(Color.WHITE);
-                }
-                break;
-            default:
-                break;
+    public void onPageSelected(int arg0) {
+        if (mFragmentHolders[arg0].fragment instanceof Selectable) {
+            ((Selectable) mFragmentHolders[arg0].fragment).onSelected();
         }
-        return false;
     }
+
+    @Override
+    public void onShaderColorChanged(int color) {
+        if (mBgStatusbar.getVisibility() == View.VISIBLE) {
+            mBgStatusbar.setBackgroundColor(color);
+        }
+        if (mFragmentHolders[1] != null && mFragmentHolders[1].fragment != null) {
+            mFragmentHolders[1].fragment.onBackgroundChanged(color);
+        }
+
+    }
+
 }

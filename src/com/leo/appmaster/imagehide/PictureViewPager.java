@@ -5,12 +5,11 @@ import java.io.File;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -25,11 +24,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.db.AppMasterDBHelper;
-import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
@@ -37,22 +34,22 @@ import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.imageloader.DisplayImageOptions;
-import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FadeInBitmapDisplayer;
-import com.leo.imageloader.core.FailReason;
-import com.leo.imageloader.core.ImageLoadingListener;
-import com.leo.imageloader.core.ImageScaleType;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class PictureViewPager extends BaseActivity implements OnClickListener {
     private CommonTitleBar mTtileBar;
 
+    private View mContainer;
     private LinearLayout mBottomButtonBar;
     private Button mUnhidePicture;
     private Button mCancelPicture;
 
     private DisplayImageOptions mOptions;
-    private ImageLoader mImageLoader;
     private int mListPos = 0;
 
     private Intent mIntent;
@@ -61,7 +58,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     private VPagerAdapter mPagerAdapter;
     private LEOAlarmDialog mDialog, memeryDialog;
 
-    private boolean mDontLock = false;
     private boolean mIsFullScreen = false;
 
     private Animation mAnimationRotate;
@@ -69,13 +65,12 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     private final int UNHIDE_DIALOG_TYPE = 0;
     private final int DELETE_DIALOG_TYPE = 1;
 
-    private boolean mShouldLockOnRestart = true;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_picture);
+        mContainer = findViewById(R.id.container);
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle("");
         mTtileBar.openBackView();
@@ -134,28 +129,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
     @Override
     protected void onRestart() {
-        // TODO Auto-generated method stub
         super.onRestart();
-        // if (mDontLock) {
-        // mDontLock = false;
-        // return;
-        // }
-        //
-        // Intent intent = new Intent(this, LockScreenActivity.class);
-        // int lockType = AppLockerPreference.getInstance(this).getLockType();
-        // if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
-        // intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-        // LockFragment.LOCK_TYPE_PASSWD);
-        // } else {
-        // intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-        // LockFragment.LOCK_TYPE_GESTURE);
-        // }
-        // intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-        // LockFragment.FROM_SELF);
-        // intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
-        // PictureViewPager.class.getName());
-        // startActivity(intent);
-        // finish();
     }
 
     @Override
@@ -175,8 +149,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .displayer(new FadeInBitmapDisplayer(30)).build();
-
-        mImageLoader = ImageLoader.getInstance();
     }
 
     class VPagerAdapter extends PagerAdapter {
@@ -209,14 +181,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                         }
 
                         @Override
-                        public void onLoadingFailed(String imageUri, View view,
-                                FailReason failReason) {
-
-                            loadingImage.clearAnimation();
-                            loadingImage.setVisibility(View.GONE);
-                        }
-
-                        @Override
                         public void onLoadingComplete(String imageUri,
                                 View view, Bitmap loadedImage) {
 
@@ -230,6 +194,12 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                             loadingImage.clearAnimation();
                             loadingImage.setVisibility(View.GONE);
                         }
+
+                        @Override
+                        public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+                            loadingImage.clearAnimation();
+                            loadingImage.setVisibility(View.GONE);
+                        }
                     });
 
             zoomImageView.setOnClickListener(new OnClickListener() {
@@ -240,9 +210,11 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                     if (mIsFullScreen) {
                         mTtileBar.setVisibility(View.GONE);
                         mBottomButtonBar.setVisibility(View.GONE);
+                        mContainer.setBackgroundColor(getResources().getColor(R.color.gallery_bg));
                     } else {
                         mTtileBar.setVisibility(View.VISIBLE);
                         mBottomButtonBar.setVisibility(View.VISIBLE);
+                        mContainer.setBackgroundColor(Color.WHITE);
                     }
 
                 }
@@ -275,10 +247,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         mAnimationRotate.setInterpolator(lir);
     }
 
-    private static class ViewHolder {
-        ImageView img;
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -297,9 +265,11 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 if (mIsFullScreen) {
                     mTtileBar.setVisibility(View.GONE);
                     mBottomButtonBar.setVisibility(View.GONE);
+                    mContainer.setBackgroundColor(getResources().getColor(R.color.gallery_bg));
                 } else {
                     mTtileBar.setVisibility(View.VISIBLE);
                     mBottomButtonBar.setVisibility(View.VISIBLE);
+                    mContainer.setBackgroundColor(Color.WHITE);
                 }
                 break;
             case R.id.layout_title_back:
@@ -337,12 +307,11 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                         "Copy Hide  image fail!");
             } else if ("0".equals(newPaht)) {
                 isSuccess = 3;
-                AppMasterDBHelper db = new AppMasterDBHelper(context);
                 ContentValues values = new ContentValues();
-                String dirPath=FileOperationUtil.getDirPathFromFilepath(filepath);
-                values.put("image_dir",dirPath);
+                String dirPath = FileOperationUtil.getDirPathFromFilepath(filepath);
+                values.put("image_dir", dirPath);
                 values.put("image_path", filepath);
-                long flagId = db.insert("hide_image_leo", null, values);
+                getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
                 mPicturesList.remove(mListPos);
             } else if ("4".equals(newPaht)) {
                 isSuccess = 4;
@@ -387,6 +356,9 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 mPagerAdapter.notifyDataSetChanged();
                 mPager.setCurrentItem(mListPos);
             }
+            
+            // image change, recompute privacy level
+            PrivacyHelper.getInstance(PictureViewPager.this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_PIC);
         }
     }
 
@@ -413,15 +385,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         }
     }
 
-    private void sharePhoto(String photoUri, final Activity activity) {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        File file = new File(photoUri);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-        shareIntent.setType("image/jpeg");
-        activity.startActivity(Intent.createChooser(shareIntent,
-                getString(R.string.app_share_hide_image)));
-    }
-
     private void showAlarmDialog(String title, String content,
             final int dialogType) {
         if (mDialog == null) {
@@ -444,44 +407,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         mDialog.setTitle(title);
         mDialog.setContent(content);
         mDialog.show();
-    }
-
-    @Override
-    public void onActivityCreate() {
-        // showLockPage();
-    }
-
-    @Override
-    public void onActivityRestart() {
-        if (mShouldLockOnRestart) {
-            showLockPage();
-        } else {
-            mShouldLockOnRestart = true;
-        }
-    }
-
-    
-	private void showLockPage() {
-		Intent intent = new Intent(this, LockScreenActivity.class);
-		int lockType = AppMasterPreference.getInstance(this).getLockType();
-		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_PASSWD);
-		} else {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_GESTURE);
-		}
-		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-				LockFragment.FROM_SELF);
-//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		startActivityForResult(intent, 1000);
-	}
-
-    @Override
-    public void onActivityResault(int requestCode, int resultCode) {
-        mShouldLockOnRestart = false;
     }
 
     private void showMemeryAlarmDialog(String title, String content, String leftBtn,

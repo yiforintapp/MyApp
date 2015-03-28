@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Paint.FontMetrics;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -122,5 +123,13 @@ public class TasksCompletedView extends View {
 		// invalidate();
 		postInvalidate();
 	}
+	
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {          
+        }
+    }
 
 }

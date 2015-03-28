@@ -15,7 +15,7 @@ public class LEOMessageDialog extends LEOBaseDialog {
     public static final String TAG = "XLOneButtonDialog";
 
     private Context mContext;
-    private ImageView mLeftIcon;
+//    private ImageView mLeftIcon;
     private TextView mTitle;
     private TextView mContent;
     private TextView mBottomBtn;
@@ -62,12 +62,12 @@ public class LEOMessageDialog extends LEOBaseDialog {
         }
     }
 
-    public void setIcon(Drawable drawable) {
-        if (drawable != null) {
-            mLeftIcon.setVisibility(View.VISIBLE);
-            mLeftIcon.setImageDrawable(drawable);
-        }
-    }
+//    public void setIcon(Drawable drawable) {
+//        if (drawable != null) {
+////            mLeftIcon.setVisibility(View.VISIBLE);
+////            mLeftIcon.setImageDrawable(drawable);
+//        }
+//    }
 
     public void setContentGravity(int gravity) {
         mContent.setGravity(gravity);
@@ -76,8 +76,8 @@ public class LEOMessageDialog extends LEOBaseDialog {
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(R.layout.dialog_message, null);
 
-        mLeftIcon = (ImageView) dlgView.findViewById(R.id.dlg_left_icon);
-        mLeftIcon.setVisibility(View.GONE);
+//        mLeftIcon = (ImageView) dlgView.findViewById(R.id.dlg_left_icon);
+//        mLeftIcon.setVisibility(View.GONE);
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
 
@@ -87,6 +87,7 @@ public class LEOMessageDialog extends LEOBaseDialog {
             setBottomBtnListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dlg, int arg1) {
+                    
                     dlg.dismiss();
                 }
             });

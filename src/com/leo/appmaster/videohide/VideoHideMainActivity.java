@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
-import android.telecom.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,12 +32,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockOptionActivity;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -54,14 +49,15 @@ public class VideoHideMainActivity extends BaseActivity implements
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
     private HideVideoAdapter adapter;
-    private boolean mShouldLockOnRestart = true;
+    private AsyncLoadImage asyncLoadImage;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_hide);
+        setContentView(R.layout.activity_video_hide_main);
+        asyncLoadImage = new AsyncLoadImage();
         initUI();
     }
 
@@ -81,16 +77,23 @@ public class VideoHideMainActivity extends BaseActivity implements
                 mNohideVideo.setText(getString(R.string.app_no_video_hide));
             }
         }
-
+    }
+    
+    @Override
+    public void finish() {
+        super.finish();
+        if(asyncLoadImage != null) {
+            asyncLoadImage.cancel();
+        }
     }
 
     private void initUI() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.app_video_hide);
         mTtileBar.openBackView();
-        mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
-        mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        mTtileBar.setOptionListener(this);
+//        mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
+//        mTtileBar.setOptionImageVisibility(View.VISIBLE);
+//        mTtileBar.setOptionListener(this);
         mAddButton = (Button) findViewById(R.id.add_hide_image);
         mAddButton.setOnClickListener(this);
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
@@ -101,9 +104,11 @@ public class VideoHideMainActivity extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
-        
         super.onDestroy();
         hideVideos.clear();
+        if(asyncLoadImage != null) {
+            asyncLoadImage.cancel();
+        }
     }
 
     @Override
@@ -114,11 +119,11 @@ public class VideoHideMainActivity extends BaseActivity implements
                         VideoHideGalleryActivity.class);
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
-            case R.id.tv_option_image:
-                intent = new Intent(this, LockOptionActivity.class);
-                intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_IMAGEHIDE);
-                startActivityForResult(intent, REQUEST_CODE_OPTION);
-                break;
+//            case R.id.tv_option_image:
+//                intent = new Intent(this, LockOptionActivity.class);
+//                intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_IMAGEHIDE);
+//                startActivityForResult(intent, REQUEST_CODE_OPTION);
+//                break;
             default:
                 break;
         }
@@ -128,7 +133,6 @@ public class VideoHideMainActivity extends BaseActivity implements
      * HideVideoAdapter
      */
     class HideVideoAdapter extends BaseAdapter {
-        AsyncLoadImage asyncLoadImage;
         Context context;
         List<VideoBean> videos;
         LayoutInflater layoutInflater;
@@ -137,7 +141,6 @@ public class VideoHideMainActivity extends BaseActivity implements
             this.context = context;
             this.videos = videos;
             layoutInflater = LayoutInflater.from(context);
-            asyncLoadImage = new AsyncLoadImage();
         }
 
         @Override
@@ -212,7 +215,7 @@ public class VideoHideMainActivity extends BaseActivity implements
         List<VideoBean> videoBeans = new ArrayList<VideoBean>();
         Uri uri = Files.getContentUri("external");
         String selection = MediaColumns.DATA + " LIKE '%.leotmv'";
-        Cursor cursor=null;
+        Cursor cursor = null;
         try {
             cursor = getContentResolver().query(uri, null, selection, null,
                     MediaColumns.DATE_ADDED + " desc");
@@ -227,26 +230,24 @@ public class VideoHideMainActivity extends BaseActivity implements
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
                     video.setDirPath(dirPath);
                     video.setName(dirName);
-                    File videoFile=new File(path);
-                    boolean videoExists=videoFile.exists();
-                    if(videoExists){
-                    VideoBean vb = null;
-                    if (!countMap.containsKey(dirPath)) {
-                        vb = new VideoBean();
-                        vb.setName(dirName);
-                        vb.setCount(1);
-                        vb.setDirPath(dirPath);
-                        vb.getBitList().add(new VideoItemBean(path));
-                        vb.setPath(path);
-                        countMap.put(dirPath, vb);
-                    } else {
-                        vb = countMap.get(dirPath);
-                        vb.setCount(vb.getCount() + 1);
-                        vb.getBitList().add(new VideoItemBean(path));
+                    File videoFile = new File(path);
+                    boolean videoExists = videoFile.exists();
+                    if (videoExists) {
+                        VideoBean vb = null;
+                        if (!countMap.containsKey(dirPath)) {
+                            vb = new VideoBean();
+                            vb.setName(dirName);
+                            vb.setDirPath(dirPath);
+                            vb.getBitList().add(new VideoItemBean(path));
+                            vb.setPath(path);
+                            countMap.put(dirPath, vb);
+                        } else {
+                            vb = countMap.get(dirPath);
+                            vb.getBitList().add(new VideoItemBean(path));
+                        }
                     }
                 }
-                }
-      
+
                 Iterable<String> it = countMap.keySet();
                 for (String key : it) {
                     videoBeans.add(countMap.get(key));
@@ -254,12 +255,12 @@ public class VideoHideMainActivity extends BaseActivity implements
                 Collections.sort(videoBeans, mFolderCamparator);
             }
         } catch (Exception e) {
-        }finally{
-            if(cursor != null) {
+        } finally {
+            if (cursor != null) {
                 cursor.close();
             }
         }
-     
+
         return videoBeans;
     }
 
@@ -292,39 +293,6 @@ public class VideoHideMainActivity extends BaseActivity implements
             startActivityForResult(intent, REQUEST_CODE_OPTION);
         } catch (Exception e) {
         }
-
-    }
-
-    @Override
-    public void onActivityRestart() {
-        if (mShouldLockOnRestart) {
-            showLockPage();
-        } else {
-            mShouldLockOnRestart = true;
-        }
-    }
-
-    private void showLockPage() {
-        Intent intent = new Intent(this, LockScreenActivity.class);
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivityForResult(intent, REQUEST_CODE_LOCK);
-    }
-
-    @Override
-    public void onActivityResault(int requestCode, int resultCode) {
-            mShouldLockOnRestart = false;
     }
 
 }

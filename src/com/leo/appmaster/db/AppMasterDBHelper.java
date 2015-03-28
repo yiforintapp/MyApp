@@ -1,9 +1,7 @@
 
 package com.leo.appmaster.db;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -12,7 +10,7 @@ import com.leo.appmaster.Constants;
 public class AppMasterDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "appmaster.db";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 5;
 
     private static final String CREATE_DOWNLOAD_TABLE = "CREATE TABLE IF NOT EXISTS "
             + Constants.TABLE_DOWNLOAD
@@ -41,6 +39,118 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
             + " TEXT, "
             + Constants.COLUMN_DOWNLOAD_WIFIONLY
             + " INTEGER NOT NULL DEFAULT -1" + ");";
+    private static final String CREATE_MESSAGE_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + Constants.TABLE_MESSAGE
+            + " ( "
+            + Constants.COLUMN_MESSAGE_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + Constants.COLUMN_MESSAGE_PHONE_NUMBER
+            + " TEXT,"
+            + Constants.COLUMN_MESSAGE_CONTACT_NAME
+            + " TEXT,"
+            + Constants.COLUMN_MESSAGE_BODY
+            + " TEXT,"
+            + Constants.COLUMN_MESSAGE_DATE
+            + " TEXT,"
+            + Constants.COLUMN_MESSAGE_THREAD_ID
+            + " INTEGER,"
+            + Constants.COLUMN_MESSAGE_PROTCOL
+            + " TEXT,"
+            + Constants.COLUMN_MESSAGE_IS_READ
+            + " INTEGER,"
+            + Constants.COLUMN_MESSAGE_TYPE
+            + " INTEGER " + ");";
+    private static final String CREATE_CONTACT_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + Constants.TABLE_CONTACT
+            + " ( "
+            + Constants.COLUMN_CONTACT_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + Constants.COLUMN_CONTACT_NAME
+            + " TEXT,"
+            + Constants.COLUMN_PHONE_NUMBER
+            + " TEXT,"
+            + Constants.COLUMN_PHONE_ANSWER_TYPE
+            + " INTEGER,"
+            + Constants.COLUMN_ICON
+            + " BLOB"
+            + ");";
+    private static final String CREATE_CALL_LOG_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + Constants.TABLE_CALLLOG
+            + " ( "
+            + Constants.COLUMN_CALL_LOG_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + Constants.COLUMN_CALL_LOG_PHONE_NUMBER
+            + " TEXT,"
+            + Constants.COLUMN_CALL_LOG_CONTACT_NAME
+            + " TEXT,"
+            + Constants.COLUMN_CALL_LOG_DATE
+            + " TEXT,"
+            + Constants.COLUMN_CALL_LOG_TYPE
+            + " INTEGER,"
+            + Constants.COLUMN_CALL_LOG_DURATION
+            + " INTEGER,"
+            + Constants.COLUMN_CALL_LOG_IS_READ
+            + " INTEGER"
+            + ");";
+
+    private static final String CREATE_LOCK_MODE = "CREATE TABLE IF NOT EXISTS "
+            + Constants.TABLE_LOCK_MODE
+            + " ( "
+            + Constants.COLUMN_LOCK_MODE_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + Constants.COLUMN_LOCK_MODE_NAME
+            + " TEXT,"
+            + Constants.COLUMN_LOCKED_LIST
+            + " TEXT,"
+            + Constants.COLUMN_MODE_ICON
+            + " BLOB,"
+            + Constants.COLUMN_DEFAULT_MODE_FLAG
+            + " INTEGER,"
+            + Constants.COLUMN_CURRENT_USED
+            + " INTEGER,"
+            + Constants.COLUMN_OPENED
+            + " INTEGER"
+            + ");";
+
+    private static final String CREATE_TIME_LOCK = "CREATE TABLE IF NOT EXISTS "
+            + Constants.TABLE_TIME_LOCK
+            + " ( "
+            + Constants.COLUMN_TIME_LOCK_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + Constants.COLUMN_TIME_LOCK_NAME
+            + " TEXT,"
+            + Constants.COLUMN_LOCK_MODE
+            + " INTEGER,"
+            + Constants.COLUMN_LOCK_MODE_NAME
+            + " TEXT,"
+            + Constants.COLUMN_LOCK_TIME
+            + " TEXT,"
+            + Constants.COLUMN_REPREAT_MODE
+            + " INTEGER,"
+            + Constants.COLUMN_TIME_LOCK_USING
+            + " INTEGER"
+            + ");";
+
+    private static final String CREATE_LOCATION_LOCK = "CREATE TABLE IF NOT EXISTS "
+            + Constants.TABLE_LOCATION_LOCK
+            + " ( "
+            + Constants.COLUMN_LOCATION_LOCK_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + Constants.COLUMN_LOCATION_LOCK_NAME
+            + " TEXT,"
+            + Constants.COLUMN_WIFF_NAME
+            + " TEXT,"
+            + Constants.COLUMN_ENTRANCE_MODE
+            + " INTEGER,"
+            + Constants.COLUMN_ENTRANCE_MODE_NAME
+            + " TEXT,"
+            + Constants.COLUMN_QUITE_MODE
+            + " INTEGER,"
+            + Constants.COLUMN_QUITE_MODE_NAME
+            + " TEXT,"
+            + Constants.COLUMN_LOCATION_LOCK_USING
+            + " INTEGER"
+            + ");";
 
     public AppMasterDBHelper(Context ctx) {
         super(ctx, DB_NAME, null, DB_VERSION);
@@ -61,8 +171,33 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
                 + "icon_status INTEGER" + ");");
 
         db.execSQL(CREATE_DOWNLOAD_TABLE);
-        db.execSQL("CREATE TABLE IF NOT EXISTS hide_image_leo ("
+
+        // day flow db
+        db.execSQL("CREATE TABLE IF NOT EXISTS countflow ("
+                + "_id INTEGER PRIMARY KEY," + "daytime varchar," + "daymemory float,"
+                + "monthmemory float," + "year integer,"
+                + "month integer," + "day integer" + ");");
+        // app flow db
+        db.execSQL("CREATE TABLE IF NOT EXISTS countappflow ("
+                + "_id INTEGER PRIMARY KEY," + "daytime varchar," + "year integer,"
+                + "month integer," + "uid integer," + "monthsend float," + "monthrev float,"
+                + "monthall float"
+                + ");");
+        db.execSQL(CREATE_DOWNLOAD_TABLE);
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + Constants.TABLE_IMAGE_HIDE + " ("
                 + "_id INTEGER PRIMARY KEY," + "image_dir TEXT," + "image_path TEXT" + ");");
+        /*
+         * PrivacyContact
+         */
+        db.execSQL(CREATE_CONTACT_TABLE);
+        db.execSQL(CREATE_CALL_LOG_TABLE);
+        db.execSQL(CREATE_MESSAGE_TABLE);
+        /*
+         * Lock Mode
+         */
+        db.execSQL(CREATE_LOCK_MODE);
+        db.execSQL(CREATE_TIME_LOCK);
+        db.execSQL(CREATE_LOCATION_LOCK);
     }
 
     @Override
@@ -87,48 +222,37 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
                     + "download_count TEXT," + "desc TEXT,"
                     + "gp_priority INTEGER," + "gp_url TEXT,"
                     + "app_size INTEGER," + "icon_status INTEGER" + ");");
+
         } else if (newVersion == 4) {
-            db.execSQL("CREATE TABLE IF NOT EXISTS hide_image_leo ("
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + Constants.TABLE_IMAGE_HIDE + " ("
                     + "_id INTEGER PRIMARY KEY," + "image_dir TEXT," + "image_path TEXT" + ");");
+
+        } else if (newVersion == 5) {
+            // flow db
+            db.execSQL("CREATE TABLE IF NOT EXISTS countflow ("
+                    + "_id INTEGER PRIMARY KEY," + "daytime varchar," + "daymemory float,"
+                    + "monthmemory float," + "year integer,"
+                    + "month integer," + "day integer" + ");");
+            // app flow db
+            db.execSQL("CREATE TABLE IF NOT EXISTS countappflow ("
+                    + "_id INTEGER PRIMARY KEY," + "daytime varchar," + "year integer,"
+                    + "month integer," + "uid integer," + "monthsend float," + "monthrev float,"
+                    + "monthall float"
+                    + ");");
+            /*
+             * PrivacyContact
+             */
+            db.execSQL(CREATE_CONTACT_TABLE);
+            db.execSQL(CREATE_CALL_LOG_TABLE);
+            db.execSQL(CREATE_MESSAGE_TABLE);
+
+            /*
+             * Lock Mode
+             */
+            db.execSQL(CREATE_LOCK_MODE);
+            db.execSQL(CREATE_TIME_LOCK);
+            db.execSQL(CREATE_LOCATION_LOCK);
         }
-    }
-
-    public long insert(String table, String nullColumnHack, ContentValues values) {
-        SQLiteDatabase db = getWritableDatabase();
-        long id = -1;
-        db.beginTransaction();
-        try {
-            id = db.insert(table, nullColumnHack, values);
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-        } finally {
-            db.endTransaction();
-        }
-        return id;
-    }
-
-    public int delete(String table, String whereClause, String[] whereArgs) {
-        SQLiteDatabase db = getWritableDatabase();
-        int result = -1;
-        try {
-            db.beginTransaction();
-            result = db.delete(table, whereClause, whereArgs);
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-        } finally {
-            db.endTransaction();
-        }
-
-        return result;
-    }
-
-    public Cursor query(String table, String[] columns, String selection,
-            String[] selectionArgs, String groupBy, String having,
-            String orderBy) {
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor c = db.query(table, columns, selection, selectionArgs, groupBy,
-                having, orderBy);
-        return c;
     }
 
 }

@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.imagehide;
 
 import java.util.ArrayList;
@@ -20,22 +21,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.videohide.VideoHideDialog;
-import com.leo.imageloader.DisplayImageOptions;
-import com.leo.imageloader.ImageLoader;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author linxiongzhou
- *
  */
-public class ImageGalleryActivity extends BaseActivity{
+public class ImageGalleryActivity extends BaseActivity {
 
     private List<PhotoAibum> mAlbumList = null;
     private GridView mGridView;
@@ -44,14 +41,9 @@ public class ImageGalleryActivity extends BaseActivity{
     private CommonTitleBar mTtileBar;
     private RelativeLayout mNoPictureHint;
     private AlbumAdapt mAlbumAdapt = new AlbumAdapt(this);
-    private boolean mDontLock = false;
-    
-    private int mScrollPos = 0;
-    private int mTopChildOffset = 0;
-    
-    private boolean mShouldLockOnRestart = true;
+
     private VideoHideDialog mImageDialog;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -59,98 +51,85 @@ public class ImageGalleryActivity extends BaseActivity{
         initImageLoder();
         setContentView(R.layout.activity_image_gallery);
         mImageDialog = new VideoHideDialog(this);
-        Window window=mImageDialog.getWindow();
-        WindowManager.LayoutParams layoutParams = window.getAttributes();   
-        layoutParams.alpha = 0.5f;   
-        layoutParams.dimAmount = 0.0f;  
-        window.setAttributes(layoutParams);   
-        mTtileBar = (CommonTitleBar)findViewById(R.id.layout_title_bar);
+        Window window = mImageDialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.alpha = 0.5f;
+        layoutParams.dimAmount = 0.0f;
+        window.setAttributes(layoutParams);
+        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.app_image_gallery);
         mTtileBar.openBackView();
         mGridView = (GridView) findViewById(R.id.image_gallery_folder);
         mGridView.setAdapter(mAlbumAdapt);
-//        mGridView.setOnScrollListener(new OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-//                        mScrollX = mGridView.getScrollX();
-//                        mScrollY = mGridView.getScrollY();
-//                }
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-//                // TODO Auto-generated method stub
-//                
-//            }
-//        });
+        // mGridView.setOnScrollListener(new OnScrollListener() {
+        // @Override
+        // public void onScrollStateChanged(AbsListView view, int scrollState) {
+        // if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+        // mScrollX = mGridView.getScrollX();
+        // mScrollY = mGridView.getScrollY();
+        // }
+        // }
+        //
+        // @Override
+        // public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3)
+        // {
+        // // TODO Auto-generated method stub
+        //
+        // }
+        // });
         mNoPictureHint = (RelativeLayout) findViewById(R.id.no_picture);
     }
 
     @Override
     protected void onDestroy() {
-
         super.onDestroy();
+        if(mImageLoader != null) {
+            mImageLoader.stop();
+        }
+    }
+    
+    @Override
+    public void finish() {
+        super.finish();
+        if(mImageLoader != null) {
+            mImageLoader.stop();
+        }
     }
 
     @Override
     protected void onRestart() {
-        // TODO Auto-generated method stub
         super.onRestart();
-        
-//        if (mDontLock) {
-//            mDontLock = false;
-//            return;
-//        }
-//        
-//        Intent intent = new Intent(this, LockScreenActivity.class);
-//        int lockType = AppLockerPreference.getInstance(this).getLockType();
-//        if (lockType == AppLockerPreference.LOCK_TYPE_PASSWD) {
-//            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-//                    LockFragment.LOCK_TYPE_PASSWD);
-//        } else {
-//            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-//                    LockFragment.LOCK_TYPE_GESTURE);
-//        }
-//        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-//                LockFragment.FROM_SELF);
-//        intent.putExtra(LockScreenActivity.EXTRA_FROM_ACTIVITY,
-//                ImageGalleryActivity.class.getName());
-//        startActivity(intent);
-//        finish();
+
     }
-    
+
     @Override
     protected void onResume() {
         LoaderImageFolderTask task = new LoaderImageFolderTask(this);
         task.execute();
         super.onResume();
     }
-    
+
     @Override
     protected void onPause() {
-       if (mGridView != null && mGridView.getCount() > 0) {
-           mScrollPos = mGridView.getFirstVisiblePosition();
-           mTopChildOffset = mGridView.getChildAt(0).getTop();
-       }
+        if (mGridView != null && mGridView.getCount() > 0) {
+        }
         super.onPause();
     }
 
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()
-        .showImageOnLoading(R.drawable.photo_bg_loding)
-        .showImageForEmptyUri(R.drawable.photo_bg_loding)
-        .showImageOnFail(R.drawable.photo_bg_loding)
-        .cacheInMemory(true)
-        .cacheOnDisk(true)
-        .considerExifParams(true)
-        .bitmapConfig(Bitmap.Config.RGB_565)
-        .build();
-        
+                .showImageOnLoading(R.drawable.photo_bg_loding)
+                .showImageForEmptyUri(R.drawable.photo_bg_loding)
+                .showImageOnFail(R.drawable.photo_bg_loding)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+
         mImageLoader = ImageLoader.getInstance();
     }
-    
-    
+
     class AlbumAdapt extends BaseAdapter {
         Context context;
         List<PhotoAibum> list = new ArrayList<PhotoAibum>();
@@ -163,7 +142,7 @@ public class ImageGalleryActivity extends BaseActivity{
             list.clear();
             this.list.addAll(alist);
         }
-        
+
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
@@ -200,7 +179,8 @@ public class ImageGalleryActivity extends BaseActivity{
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             path = list.get(position).getBitList().get(0).getPath();
-            viewHolder.txt.setText(list.get(position).getName()+"(" + list.get(position).getCount() + ")");
+            viewHolder.txt.setText(list.get(position).getName() + "("
+                    + list.get(position).getCount() + ")");
             mImageLoader.displayImage("file://" + path, viewHolder.img, mOptions);
             return convertView;
         }
@@ -210,25 +190,26 @@ public class ImageGalleryActivity extends BaseActivity{
         private ImageView img;
         private TextView txt;
     }
-    
-    private class LoaderImageFolderTask extends AsyncTask<Void,Integer,Integer>{  
-        private Context context;  
-        LoaderImageFolderTask(Context context) {  
-            this.context = context;  
-        }  
 
-        @Override  
-        protected void onPreExecute() {  
-             mImageDialog.show();
-        }  
+    private class LoaderImageFolderTask extends AsyncTask<Void, Integer, Integer> {
+        private Context context;
 
-        @Override  
-        protected Integer doInBackground(Void... params) {  
+        LoaderImageFolderTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mImageDialog.show();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
             mAlbumList = FileOperationUtil.getPhotoAlbum(context);
-            return 0;  
-        }  
-  
-        @Override  
+            return 0;
+        }
+
+        @Override
         protected void onPostExecute(Integer integer) {
             mImageDialog.dismiss();
             if (mAlbumList != null) {
@@ -242,18 +223,19 @@ public class ImageGalleryActivity extends BaseActivity{
                         @Override
                         public void onItemClick(AdapterView<?> arg0, View arg1,
                                 int position, long arg3) {
-                            // TODO Auto-generated method stub
-                            mDontLock = true;
-                            Intent intent = new Intent(ImageGalleryActivity.this, ImageGridActivity.class);
-                            Bundle bundle = new Bundle();
-                            PhotoAibum photoAibum = mAlbumList.get(position);
-                            if (photoAibum.getBitList().size() < 1000) {
-                                bundle.putSerializable("data", mAlbumList.get(position)); 
+                            if(position < mAlbumList.size()) {
+                                Intent intent = new Intent(ImageGalleryActivity.this,
+                                        ImageGridActivity.class);
+                                Bundle bundle = new Bundle();
+                                PhotoAibum photoAibum = mAlbumList.get(position);
+                                if (photoAibum.getBitList().size() < 1000) {
+                                    bundle.putSerializable("data", mAlbumList.get(position));
+                                }
+                                intent.putExtra("pos", position);
+                                intent.putExtra("mode", ImageGridActivity.SELECT_HIDE_MODE);
+                                intent.putExtras(bundle);
+                                startActivityForResult(intent, 1001);
                             }
-                            intent.putExtra("pos", position);  
-                            intent.putExtra("mode", ImageGridActivity.SELECT_HIDE_MODE);  
-                            intent.putExtras(bundle);
-                            startActivityForResult(intent, 1001);
                         }
                     });
                 } else {
@@ -262,45 +244,7 @@ public class ImageGalleryActivity extends BaseActivity{
                 }
 
             }
-        }  
- 
-    }  
-    
-    @Override
-    public void onActivityCreate() {
-        // showLockPage();
-    }
-
-    @Override
-    public void onActivityRestart() {
-        if (mShouldLockOnRestart) {
-            showLockPage();
-        } else {
-            mShouldLockOnRestart = true;
         }
     }
 
-    private void showLockPage() {
-        Intent intent = new Intent(this, LockScreenActivity.class);
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivityForResult(intent, 1000);
-    }
-
-    @Override
-    public void onActivityResault(int requestCode, int resultCode) {
-            mShouldLockOnRestart = false;
-    }
-    
 }

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/dlg_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/dlg_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/dlag_title"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center"
+                android:text="@string/privacy_contact_popumenus_add_new_privacy_contact"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:id="@+id/call_log_item_top_bottom_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dlag_title"
+                android:background="@drawable/test_list_divider" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <LinearLayout
+                android:id="@+id/dlg_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/contactIV"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/dlg_add_sms"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/manager_backup_list_selecter"
+                    android:gravity="center"
+                    android:text="@string/privacy_contact_popumenus_from_message"
+                    android:textColor="#4285f4"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:id="@+id/call_log_item_top_bottom_line1"
+                    android:layout_width="@dimen/dlg_horizental_margin"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/test_list_divider" />
+
+                <TextView
+                    android:id="@+id/dlg_add_call"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/manager_backup_list_selecter"
+                    android:gravity="center"
+                    android:text="@string/privacy_contact_popumenus_from_call_log"
+                    android:textColor="#4285f4"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:layout_width="@dimen/dlg_horizental_margin"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dlag_title"
+                    android:background="@drawable/test_list_divider" />
+
+                <TextView
+                    android:id="@+id/dlg_add_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/manager_backup_list_selecter"
+                    android:gravity="center"
+                    android:text="@string/privacy_contact_popumenus_from_contact"
+                    android:textColor="#4285f4"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:layout_width="@dimen/dlg_horizental_margin"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dlag_title"
+                    android:background="@drawable/test_list_divider" />
+
+                <TextView
+                    android:id="@+id/dlg_add_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/manager_backup_list_selecter"
+                    android:gravity="center"
+                    android:text="@string/privacy_contact_popumenus_input_phone_number"
+                    android:textColor="#4285f4"
+                    android:textSize="18dp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

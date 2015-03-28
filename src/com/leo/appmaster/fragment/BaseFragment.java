@@ -109,5 +109,9 @@ public abstract class BaseFragment extends Fragment {
 	public boolean onMenuPressed() {
 		return false;
 	}
+	
+	public void onBackgroundChanged(int color) {
+	    
+	}
 
 }

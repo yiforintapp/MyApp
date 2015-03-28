@@ -1,22 +1,13 @@
 package com.leo.appmaster.appmanage.view;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -24,6 +15,10 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
+import com.leo.appmaster.utils.LeoLog;
 
 public class SlicingLayer {
 
@@ -255,11 +250,11 @@ public class SlicingLayer {
 	private Bitmap getScreenBg() {
 		mBackgroundView.setDrawingCacheEnabled(true);
 		Bitmap srceen = mBackgroundView.getDrawingCache(true);
-		Canvas canvas = new Canvas(srceen);
-		Bitmap bg = BitmapFactory.decodeResource(mContext.getResources(),
-				R.drawable.folder_move_bg);
-		Paint paint = new Paint();
-		canvas.drawBitmap(bg, 0, 0, paint);
+//		Canvas canvas = new Canvas(srceen);
+//		Bitmap bg = BitmapFactory.decodeResource(mContext.getResources(),
+//				R.drawable.folder_move_bg);
+//		Paint paint = new Paint();
+//		canvas.drawBitmap(bg, 0, 0, paint);
 		return srceen;
 	}
 

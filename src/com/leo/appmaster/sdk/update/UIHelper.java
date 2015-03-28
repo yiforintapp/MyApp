@@ -5,22 +5,20 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ActivityManager.AppTask;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.widget.RemoteViews;
 
 import com.leo.analytics.update.IUIHelper;
 import com.leo.analytics.update.UpdateManager;
@@ -30,7 +28,7 @@ import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
-public class UIHelper implements IUIHelper {
+public class UIHelper implements com.leo.analytics.update.IUIHelper {
 
     private final static String TAG = UIHelper.class.getSimpleName();
 
@@ -64,7 +62,7 @@ public class UIHelper implements IUIHelper {
     private int mProgress = 0;
 
     private UIHelper(Context ctx) {
-        mContext = ctx;
+        mContext = ctx.getApplicationContext();
         /* new version found */
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_NEED_UPDATE);
@@ -424,17 +422,8 @@ public class UIHelper implements IUIHelper {
                 if (action.equals(ACTION_NEED_UPDATE)) {
                     nm.cancel(UPDATE_NOTIFICATION_ID);
                     LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
-                    if (!isAppOnTop(mContext)) {
-                        relaunchHome();
-                    }
-                    new Handler().postDelayed(new Runnable() {
-                        
-                        @Override
-                        public void run() {
-                            relaunchActivity(IUIHelper.TYPE_UPDATE,
-                                    mManager.getReleaseType());
-                        }
-                    }, 200);
+                    relaunchActivity(IUIHelper.TYPE_UPDATE,
+                            mManager.getReleaseType());
                 } else if (action.equals(ACTION_CANCEL_UPDATE)) {
                     mManager.onCancelUpdate();
                     if (listener != null) {
@@ -442,18 +431,8 @@ public class UIHelper implements IUIHelper {
                     }
                 } else if (action.equals(ACTION_DOWNLOADING)) {
                     LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
-                    if (!isAppOnTop(mContext)) {
-                        relaunchHome();
-                    }
-                    new Handler().postDelayed(new Runnable() {
-                        
-                        @Override
-                        public void run() {
-                            relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
-                                    mManager.getReleaseType());
-                        }
-                    }, 200);
-                    
+                    relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
+                            mManager.getReleaseType());
                 } else if (action.equals(ACTION_CANCEL_DOWNLOAD)) {
                     mManager.onCancelDownload();
                     if (listener != null) {

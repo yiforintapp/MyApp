@@ -9,7 +9,6 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
-
 public class BusinessAppInstallTracker {
 
 	private HashMap<String, Long> mInstallMap;

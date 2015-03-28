@@ -52,8 +52,8 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
     private LEOMessageDialog mMessageDialog;
 
     private final static int[] sCategoryIds = {
-            R.string.category_lock, R.string.category_backup_uninstall, R.string.category_hide_image,
-            R.string.category_hide_video, R.string.category_other, R.string.category_suggest
+        R.string.category_lock, R.string.pravicy_protect,
+        R.string.app_manager, R.string.category_other
     };
 
     private final ArrayList<String> mCategories = new ArrayList<String>();

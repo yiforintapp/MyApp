@@ -1,38 +1,26 @@
 
 package com.leo.appmaster.applocker;
 
-import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
-import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
-
 
 public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -40,16 +28,16 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     private CommonTitleBar mTtileBar;
     private SharedPreferences mSp;
     private Preference mTheme, mLockSetting, mResetPasswd, mChangeProtectQuestion,
-            mChangePasswdTip,mChangeLockTime;
+            mChangePasswdTip, mChangeLockTime;
 
     private CheckBoxPreference mForbidUninstall, mAutoLock, mLockerClean;
     private Preference mLockerTheme;
     private Preference mSetProtect;
-    private boolean mShouldLockOnRestart = true;
 
     public static final String TAG_COME_FROM = "come_from";
     public static final int FROM_APPLOCK = 0;
     public static final int FROM_IMAGEHIDE = 1;
+    public static final int FROM_HOME = 2;
 
     private int mComeFrom = FROM_APPLOCK;
 
@@ -73,7 +61,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     @SuppressWarnings("deprecation")
     private void setupPreference() {
-        mChangeLockTime =  (Preference) findPreference(AppMasterPreference.PREF_RELOCK_TIME);
+        mChangeLockTime = (Preference) findPreference(AppMasterPreference.PREF_RELOCK_TIME);
         mLockerTheme = findPreference(AppMasterPreference.PREF_LOCKER_THEME);
         mForbidUninstall = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL);
         mAutoLock = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_AUTO_LOCK);
@@ -103,6 +91,23 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             getPreferenceScreen().removePreference(
                     findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP));
         }
+
+        if (mComeFrom == FROM_IMAGEHIDE) {
+            getPreferenceScreen().removePreference(mLockerTheme);
+            getPreferenceScreen().removePreference(mAutoLock);
+            getPreferenceScreen().removePreference(mLockSetting);
+            getPreferenceScreen().removePreference(mLockerClean);
+            getPreferenceScreen().removePreference(
+                    findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP));
+        }
+
+        if (mComeFrom == FROM_HOME) {
+            getPreferenceScreen().removePreference(mLockerTheme);
+            getPreferenceScreen().removePreference(mResetPasswd);
+            getPreferenceScreen().removePreference(mChangeProtectQuestion);
+            getPreferenceScreen().removePreference(mChangePasswdTip);
+        }
+
         mResetPasswd.setOnPreferenceClickListener(this);
         mForbidUninstall.setOnPreferenceChangeListener(this);
         if (mComeFrom == FROM_APPLOCK) {
@@ -110,9 +115,11 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mLockSetting.setOnPreferenceClickListener(this);
             mLockerClean.setOnPreferenceChangeListener(this);
         }
+        mLockerClean.setOnPreferenceChangeListener(this);
         mTheme.setOnPreferenceClickListener(this);
         mChangeProtectQuestion.setOnPreferenceClickListener(this);
         mChangePasswdTip.setOnPreferenceClickListener(this);
+        mLockSetting.setOnPreferenceClickListener(this);
     }
 
     private boolean isAdminActive() {
@@ -125,41 +132,13 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         }
     }
 
-    private void showLockPage() {
-        LeoLog.d("LockOptionActivity", "showLockPage");
-        Intent intent = new Intent(this, LockScreenActivity.class);
-        int lockType = AppMasterPreference.getInstance(this).getLockType();
-        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_PASSWD);
-        } else {
-            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-                    LockFragment.LOCK_TYPE_GESTURE);
-        }
-        intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-                LockFragment.FROM_SELF);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivityForResult(intent, 1000);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LeoLog.d("LockOptionActivity", "onActivityResault: requestCode = "
-                + requestCode + "    resultCode = " + resultCode);
-        mShouldLockOnRestart = false;
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (mShouldLockOnRestart) {
-            showLockPage();
-        } else {
-            mShouldLockOnRestart = true;
-        }
     }
 
     @Override
@@ -176,16 +155,16 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                     + getString(R.string.not_set) + ")");
         }
 
-		AppMasterPreference pref = AppMasterPreference.getInstance(this);
-		mNewTheme = !pref.getLocalThemeSerialNumber().equals(
-				pref.getOnlineThemeSerialNumber());
-		if (mNewTheme) {
-			Spanned buttonText = Html
-					.fromHtml(getString(R.string.lockerThemePoit));
-			mLockerTheme.setTitle(buttonText);
-		} else {
-			mLockerTheme.setTitle(R.string.lockerTheme);
-		}
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        mNewTheme = !pref.getLocalThemeSerialNumber().equals(
+                pref.getOnlineThemeSerialNumber());
+        if (mNewTheme) {
+            Spanned buttonText = Html
+                    .fromHtml(getString(R.string.lockerThemePoit));
+            mLockerTheme.setTitle(buttonText);
+        } else {
+            mLockerTheme.setTitle(R.string.lockerTheme);
+        }
 
         // if (!mySharedPreferences.getBoolean("themeOption", false)) {
         // Spanned buttonText =
@@ -218,7 +197,6 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         String key = preference.getKey();
 
         if (AppMasterPreference.PREF_FORBIND_UNINSTALL.equals(key)) {
-            mShouldLockOnRestart = true;
             Intent intent = null;
             ComponentName component = new ComponentName(this,
                     DeviceReceiver.class);
@@ -255,8 +233,8 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mLockerClean.setChecked((Boolean) newValue);
             AppMasterPreference.getInstance(LockOptionActivity.this)
                     .setLockerClean((Boolean) newValue);
-            /*SDK:use Unlock the acceleration*/
-            if((Boolean) newValue){
+            /* SDK:use Unlock the acceleration */
+            if ((Boolean) newValue) {
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "lockboost");
             }
         }
@@ -274,7 +252,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         String key = preference.getKey();
 
         if (AppMasterPreference.PREF_LOCK_SETTING.equals(key)) {
-            Intent intent=new Intent(LockOptionActivity.this,LockTimeSetting.class);
+            Intent intent = new Intent(LockOptionActivity.this, LockTimeSetting.class);
             try {
                 LockOptionActivity.this.startActivityForResult(intent, 0);
             } catch (Exception e) {
@@ -298,7 +276,6 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             editor.commit();
             Intent intent = new Intent(LockOptionActivity.this,
                     LockerTheme.class);
-            intent.putExtra("need_lock", true);
             startActivityForResult(intent, 0);
             SDKWrapper.addEvent(LockOptionActivity.this, SDKWrapper.P1,
                     "theme_enter", "setting");

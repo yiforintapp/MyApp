@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/initial_bg_image" />
+                android:src="@drawable/image_default" />
 
             <TextView
                 android:id="@+id/nohideTV"
@@ -68,7 +68,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/check_update_button"
             android:text="@string/app_add_hide_image"
-            android:textColor="@color/white" />
+            android:textColor="@drawable/manager_backup_text_selecter" />
     </RelativeLayout>
 
 </LinearLayout>

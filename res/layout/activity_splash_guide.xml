@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:leoindicator="http://schemas.android.com/apk/res/com.leo.appmaster"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:gravity="center_horizontal" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/splash_icon_margin_top"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/image_view_splash_center"
+            android:layout_width="180dp"
+            android:layout_height="@dimen/splash_icon_height"
+            android:scaleType="fitCenter"
+            android:src="@drawable/splash_icon" />
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/splash_width"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/splash_name" />
+    </LinearLayout>
+</RelativeLayout>
+
+<FrameLayout
+    android:id="@+id/layout_guide"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" >
+
+    <com.leo.appmaster.home.GuideItemView
+        android:id="@+id/guide_bg_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/guide_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.leo.appmaster.ui.CirclePageIndicator
+        android:id="@+id/splash_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/guide_page_indicator_margin_buttom"
+        leoindicator:radiu="4dp"
+        leoindicator:fillColor="@color/white"
+        leoindicator:pageColor="@color/guide_indicator_fill_color"
+        leoindicator:strokeColor="#00000000" />
+</FrameLayout>
+
+</FrameLayout>

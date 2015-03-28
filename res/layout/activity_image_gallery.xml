@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/initial_bg_image" />
+                android:src="@drawable/image_default" />
 
             <TextView
                 android:paddingTop="10dp"

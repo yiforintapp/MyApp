@@ -1,7 +1,9 @@
+
 package com.leo.appmaster.applocker;
 
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.LinearInterpolator;
@@ -9,127 +11,137 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.logic.LockHandler;
+import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.TimeView;
+import com.leo.appmaster.utils.LeoLog;
 
 public class WaitActivity extends BaseActivity {
 
-    public static final String KEY_JUST_FINISH = "just_finish";
-    
-	private TextView mTvTime;
-	private int mWaitTime = 11;
-	private UpdateTask mTask;
-	private TimeView mTimeView;
+    private TextView mTvTime;
+    private int mWaitTime = 10;
+    private int mInitTime = 0;
+    private UpdateTask mTask;
+    private TimeView mTimeView;
 
-	private String mPackage;
-	private boolean returned;
-	private boolean mJustFinish;
+    private String mPackage;
+    private float mInitDegree;
+    private boolean returned;
+    private ValueAnimator va;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_wait);
-		handleIntent();
-		initUI();
-		startWaitTime();
-		mTask = new UpdateTask();
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_wait);
+        handleIntent();
+        initUI();
+        mTimeView.updateDegree(mInitDegree);
+        mWaitTime = 10 - mInitTime;
+        mTvTime.setText("00:" + mWaitTime);
+        LeoLog.e("xxxx", "mInitTime = " + mInitTime + "         mInitDegree =  " + mInitDegree
+                + "       mWaitTime = " + mWaitTime);
+        mTask = new UpdateTask();
+        startWaitTime();
+    }
 
-	private void handleIntent() {
-		Intent intent = getIntent();
-		mPackage = intent.getStringExtra(LockHandler.EXTRA_LOCKED_APP_PKG);
-		mJustFinish = intent.getBooleanExtra(KEY_JUST_FINISH, false);
-	}
+    private void handleIntent() {
+        Intent intent = getIntent();
+        mPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
+        mInitTime = intent.getIntExtra("outcount_time", 0);
+        mInitDegree = (mInitTime / 10f) * 360f;
+    }
 
-	
-	@Override
-	protected void onStop() {
-		returned = true;
-		super.onStop();
-	}
+    @Override
+    protected void onStop() {
+         returned = true;
+        super.onStop();
+    }
 
-	private void startWaitTime() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					if (returned) {
-						return;
-					}
-					mTvTime.post(mTask);
-					mWaitTime--;
-					if (mWaitTime == 0) {
-						break;
-					}
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				returnBack();
-//				finish();
-			}
-		}).start();
-		ValueAnimator va = ValueAnimator.ofFloat(0f, 360f);
-		va.addUpdateListener(new AnimatorUpdateListener() {
-			@Override
-			public void onAnimationUpdate(ValueAnimator v) {
-				float d = (Float) v.getAnimatedValue();
-				mTimeView.updateDegree(d);
-			}
-		});
-		va.setDuration(10000);
-		va.setInterpolator(new LinearInterpolator());
-		va.start();
-	}
+    private void startWaitTime() {
+        va = ValueAnimator.ofFloat(mInitDegree, 360f);
+        va.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator v) {
+                float d = (Float) v.getAnimatedValue();
+                mTimeView.updateDegree(d);
+                if (returned)
+                    va.cancel();
+            }
+        });
+        va.setDuration(mWaitTime * 1000);
+        va.setInterpolator(new LinearInterpolator());
+        va.start();
 
-	private void returnBack() {
-		if (returned) {
-			return;
-		}
-		returned = true;
-		if(!mJustFinish) {
-		      Intent intent = new Intent(this, LockScreenActivity.class);
-		        int lockType = AppMasterPreference.getInstance(WaitActivity.this)
-		                .getLockType();
-		        if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-		            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-		                    LockFragment.LOCK_TYPE_PASSWD);
-		        } else {
-		            intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-		                    LockFragment.LOCK_TYPE_GESTURE);
-		        }
-		        if (mPackage == null || mPackage.equals("")) {
-		            intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-		                    LockFragment.FROM_SELF);
-		        } else {
-		            intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
-		            intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-		                    LockFragment.FROM_OTHER);
-		        }
-		        startActivity(intent);
-		}
-		finish();
-	}
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (returned) {
+                        return;
+                    }
+                    mTvTime.post(mTask);
+                    if (mWaitTime == 0) {
+                        break;
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    mWaitTime--;
+                }
+                // returnBack();
+                returned = true;
+                finish();
+            }
+        }).start();
+    }
 
-	private void initUI() {
-		mTvTime = (TextView) findViewById(R.id.tv_wait_time);
-		mTimeView = (TimeView) findViewById(R.id.time_view);
-	}
+    // private void returnBack() {
+    // if (returned) {
+    // return;
+    // }
+    // returned = true;
+    // Intent intent = new Intent(this, LockScreenActivity.class);
+    // int lockType = AppMasterPreference.getInstance(WaitActivity.this)
+    // .getLockType();
+    // if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
+    // intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+    // LockFragment.LOCK_TYPE_PASSWD);
+    // } else {
+    // intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
+    // LockFragment.LOCK_TYPE_GESTURE);
+    // }
+    // if (mPackage == null || mPackage.equals("")) {
+    // intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+    // LockFragment.FROM_SELF);
+    // } else {
+    // intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, mPackage);
+    // intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
+    // LockFragment.FROM_OTHER);
+    // }
+    // startActivity(intent);
+    // finish();
+    // }
 
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-//		returnBack();
-	}
+    private void initUI() {
+        mTvTime = (TextView) findViewById(R.id.tv_wait_time);
+        mTimeView = (TimeView) findViewById(R.id.time_view);
+    }
 
-	private class UpdateTask implements Runnable {
-		@Override
-		public void run() {
-			mTvTime.setText("00:" + mWaitTime);
-		}
-	}
+    @Override
+    public void onBackPressed() {
+//        va.cancel();
+//        va = null;
+//        returned = true;
+//        super.onBackPressed();
+    }
+
+    private class UpdateTask implements Runnable {
+        @Override
+        public void run() {
+            mTvTime.setText("00:" + mWaitTime);
+        }
+    }
 }

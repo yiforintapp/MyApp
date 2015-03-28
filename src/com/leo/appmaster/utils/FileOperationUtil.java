@@ -15,13 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.app.AlertDialog.Builder;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 import android.os.storage.StorageManager;
@@ -30,8 +28,6 @@ import android.provider.MediaStore.Files;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.MediaColumns;
 
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
 
@@ -39,23 +35,13 @@ public class FileOperationUtil {
 
     public static final String SDCARD_DIR_NAME = "PravicyLock";
 
-    static final String[] STORE_IMAGES = {
+    public static final String[] STORE_IMAGES = {
             MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATA,
             MediaStore.Images.Media._ID, //
             MediaStore.Images.Media.BUCKET_ID, // dir id
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME
             // dir name
     };
-
-    public static boolean isMemeryEnough(long fileSize, Context ctx, String sdPath) {
-        StatFs sf = new StatFs(sdPath);
-        @SuppressWarnings("deprecation")
-        long blockSize = sf.getBlockSize();
-        @SuppressWarnings("deprecation")
-        long nAvailableblock = sf.getAvailableBlocks();
-        long availableblock = (blockSize * nAvailableblock) / (1024 * 1024);
-        return fileSize / (1024 * 1024) + 10 > availableblock ? false : true;
-    }
 
     public static Comparator<PhotoAibum> mFolderCamparator = new Comparator<PhotoAibum>() {
 
@@ -182,6 +168,16 @@ public class FileOperationUtil {
             context.getContentResolver().delete(uri,
                     MediaColumns.DATA + " LIKE ?", params);
         }
+    }
+
+    public static boolean isMemeryEnough(long fileSize, Context ctx, String sdPath) {
+        StatFs sf = new StatFs(sdPath);
+        @SuppressWarnings("deprecation")
+        long blockSize = sf.getBlockSize();
+        @SuppressWarnings("deprecation")
+        long nAvailableblock = sf.getAvailableBlocks();
+        long availableblock = (blockSize * nAvailableblock) / (1024 * 1024);
+        return fileSize / (1024 * 1024) + 10 > availableblock ? false : true;
     }
 
     /**
@@ -417,11 +413,11 @@ public class FileOperationUtil {
         String params[] = new String[] {
                 imagePath
         };
-
         Uri uri = Files.getContentUri("external");
         // context.getContentResolver().delete(
         // MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
         // MediaStore.Images.Media.DATA + " LIKE ?", params);
+
         context.getContentResolver().delete(uri,
                 MediaStore.Images.Media.DATA + " LIKE ?", params);
     }
@@ -431,7 +427,6 @@ public class FileOperationUtil {
                 videoPath
         };
         Uri uri = Files.getContentUri("external");
-        String selection = Constants.VIDEO_FORMAT;
         context.getContentResolver().delete(uri,
                 MediaStore.Files.FileColumns.DATA + " LIKE ?", params);
     }
@@ -647,6 +642,10 @@ public class FileOperationUtil {
             // 复制失败
             return -1;
         }
+        // } else {
+        // // 内存不足
+        // return 1;
+        // }
     }
 
     /**
@@ -658,15 +657,9 @@ public class FileOperationUtil {
      */
     public static int unHideImageFileCopy(Context ctx, String fromFile)
     {
-        String str = FileOperationUtil.getDirPathFromFilepath(fromFile);
-        String dirName = str.substring(str.lastIndexOf("/") + 1, str.length());
         String fileName = FileOperationUtil.getNameFromFilepath(fromFile);
 
         File file = new File(fromFile);
-        long fileSize = 0;
-        if (file.isFile()) {
-            fileSize = file.length();
-        }
         String[] paths = getSdCardPaths(ctx);
         int position = 0;
         if (fromFile.startsWith(paths[0])) {
@@ -677,7 +670,6 @@ public class FileOperationUtil {
             position = -1;
         }
         String newPath = null;
-        File path = new File(fromFile);
         if (position == -1) {
             String pathOther = fromFile.replace(".leotmi", "");
             FileOperationUtil.saveFileMediaEntry(pathOther, ctx);
@@ -720,9 +712,7 @@ public class FileOperationUtil {
             fosto.close();
             FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
-                File imageFile = new File(newPath);
                 String rename = newPath.replace(".leotmi", "");
-                boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(rename, ctx);
                 FileOperationUtil.deleteFileMediaEntry(newPath, ctx);
                 // 复制取消隐藏成功

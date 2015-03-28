@@ -14,7 +14,7 @@
     </com.leo.appmaster.ui.CommonTitleBar>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/mode_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -28,7 +28,7 @@
         android:id="@+id/et_passwd_tip"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/mode_name_tv"
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
         android:layout_marginTop="22dp"
@@ -52,7 +52,7 @@
         android:background="@drawable/mycheck_button_selecter"
         android:gravity="center"
         android:text="@string/makesure"
-        android:textColor="#ffffff"
+        android:textColor="@drawable/manager_backup_text_selecter"
         android:textSize="22sp" />
 
 </RelativeLayout>

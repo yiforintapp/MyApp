@@ -34,7 +34,7 @@
             android:paddingTop="2dp" >
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -79,7 +79,7 @@
             android:src="@drawable/empty_icon" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/mode_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

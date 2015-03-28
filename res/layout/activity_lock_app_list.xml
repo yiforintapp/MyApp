@@ -2,15 +2,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/app_list_bg"
+    android:background="#f3f3f3"
     android:gravity="center" >
 
-    <com.leo.appmaster.ui.CommonTitleBar
+    <RelativeLayout
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_alignParentTop="true"
-        android:background="@color/app_background" />
+        android:background="@color/app_background" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:padding="16dp"
+            android:src="@drawable/back_btn_menu" />
+
+        <TextView
+            android:id="@+id/mode_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_back"
+            android:text="lock mode"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+        <ImageView
+            android:id="@+id/iv_edit_mode_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/mode_name_tv"
+            android:padding="4dp"
+            android:src="@drawable/common_down" />
+
+        <ImageView
+            android:id="@+id/iv_sort_select"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="16dp"
+            android:src="@drawable/setting_selector" />
+    </RelativeLayout>
 
     <com.leo.appmaster.ui.PagedGridView
         android:id="@+id/pager_unlock"
@@ -29,7 +67,7 @@
         android:visibility="gone" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/iv_mask_back"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/lock_guide" />
@@ -38,15 +76,15 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView1"
-            android:layout_below="@+id/textView1"
+            android:layout_alignLeft="@+id/mode_mask_name_tv"
+            android:layout_below="@+id/mode_mask_name_tv"
             android:layout_marginTop="26dp"
             android:text="@string/start_guide"
             android:textColor="#ffffff"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/mode_mask_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -56,7 +94,6 @@
             android:text="@string/lock_guide"
             android:textColor="#ffffff"
             android:textSize="14sp" />
-
     </RelativeLayout>
 
 </RelativeLayout>

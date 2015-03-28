@@ -97,7 +97,7 @@ public class AppUtil {
 		return totalTraffic - getMobileTraffic();
 	}
 
-	public static Drawable getDrawable(PackageManager pm, String pkg) {
+    public static Drawable getDrawable(PackageManager pm, String pkg) {
 		Drawable d = null;
 		try {
 			d = pm.getApplicationIcon(pkg);

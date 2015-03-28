@@ -1,196 +1,257 @@
+
 package com.leo.appmaster.applocker;
+
+import java.util.Arrays;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.PopupWindow.OnDismissListener;
 
 import com.android.internal.content.NativeLibraryHelper.Handle;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.fragment.LockFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.LeoPopMenu;
+import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
 
 public class PasswdProtectActivity extends BaseActivity implements
-		OnClickListener {
+        OnClickListener {
 
-	private CommonTitleBar mTtileBar;
+    private CommonTitleBar mTtileBar;
 
-	private EditText mQuestion, mAnwser;
-	private TextView mSave;
-	private ScrollView mScrollView;
-	private Handler mHandler = new Handler();
+    private View mSpinnerQuestions;
+    private EditText mQuestion, mAnwser;
+    private TextView mSave;
+    private ScrollView mScrollView;
+    private LeoPopMenu mLeoPopMenu;
+    private Handler mHandler = new Handler();
 
-	private boolean mShouldLockOnRestart = true;
+    private List<String> mCategories;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_passwd_protect);
-		initUI();
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_passwd_protect);
+        initUI();
+    }
 
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		if (mShouldLockOnRestart ) {
-			showLockPage();
-		} else {
-			mShouldLockOnRestart = true;
-		}
-	}
-	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		mShouldLockOnRestart = false;
-		super.onActivityResult(requestCode, resultCode, data);
-	}
-	
-	private void showLockPage() {
-		Intent intent = new Intent(this, LockScreenActivity.class);
-		int lockType = AppMasterPreference.getInstance(this).getLockType();
-		if (lockType == AppMasterPreference.LOCK_TYPE_PASSWD) {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_PASSWD);
-		} else {
-			intent.putExtra(LockScreenActivity.EXTRA_UKLOCK_TYPE,
-					LockFragment.LOCK_TYPE_GESTURE);
-		}
-		intent.putExtra(LockScreenActivity.EXTRA_UNLOCK_FROM,
-				LockFragment.FROM_SELF);
-//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//				| Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		startActivityForResult(intent, 1000);
-	}
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
 
-	private void initUI() {
-		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		mTtileBar.setTitle(R.string.passwd_protect);
-		mTtileBar.openBackView();
-		mQuestion = (EditText) findViewById(R.id.et_question);
-		mQuestion.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View view, boolean isFucus) {
-				if (isFucus) {
-					mHandler.postDelayed(new Runnable() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
-						@Override
-						public void run() {
-							mScrollView.fullScroll(View.FOCUS_UP);
-						}
-					}, 100);
-				}
-			}
-		});
-		mAnwser = (EditText) findViewById(R.id.et_anwser);
-		mAnwser.setOnClickListener(this);
-		mAnwser.setOnFocusChangeListener(new OnFocusChangeListener() {
+    private void initUI() {
+        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        mTtileBar.setTitle(R.string.passwd_protect);
+        // mTtileBar.openBackView();
+        mTtileBar.setBackViewListener(new OnClickListener() {
 
-			@Override
-			public void onFocusChange(View view, boolean isFucus) {
-				if (isFucus) {
-					mHandler.postDelayed(new Runnable() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getApplicationContext()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm.isActive()) {
+                    imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    mTtileBar.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            onBackPressed();
+                        }
+                    }, 300);
+                } else {
+                    onBackPressed();
+                }
 
-						@Override
-						public void run() {
-							mScrollView.fullScroll(View.FOCUS_DOWN);
-						}
-					}, 100);
-				}
-			}
-		});
-		mSave = (TextView) findViewById(R.id.tv_save);
-		mSave.setOnClickListener(this);
+            }
+        });
 
-		mScrollView = (ScrollView) findViewById(R.id.scroll);
-		String question = AppMasterPreference.getInstance(this).getPpQuestion();
-		if (question != null) {
-			mQuestion.setText(question);
-			mQuestion.selectAll();
-		}
-		String answer = AppMasterPreference.getInstance(this).getPpAnwser();
-		if (question != null) {
-			mAnwser.setText(answer);
-		}
+        String[] entrys = getResources().getStringArray(
+                R.array.default_psw_protect_entrys);
+        mCategories = Arrays.asList(entrys);
+        mSpinnerQuestions = findViewById(R.id.tv_spinner);
+        mSpinnerQuestions.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLeoPopMenu == null) {
+                    mLeoPopMenu = new LeoPopMenu();
+                    mLeoPopMenu.setPopMenuItems(mCategories);
+                    mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view,
+                                int position, long id) {
+                            mQuestion.setText(mCategories.get(position));
+                            mQuestion.selectAll();
+                            mLeoPopMenu.dismissSnapshotList();
+                        }
+                    });
+                }
+                LayoutStyles styles = new LayoutStyles();
+                styles.width = LayoutParams.MATCH_PARENT;
+                styles.height = LayoutParams.WRAP_CONTENT;
+                styles.animation = R.style.PopupListAnimUpDown;
+                mLeoPopMenu
+                        .showPopMenu(PasswdProtectActivity.this, mSpinnerQuestions, styles, null);
+            }
+        });
+        mQuestion = (EditText) findViewById(R.id.et_question);
+        mQuestion.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean isFucus) {
+                if (isFucus) {
+                    mHandler.postDelayed(new Runnable() {
 
-	}
-	private void hideIME() {
+                        @Override
+                        public void run() {
+                            mScrollView.fullScroll(View.FOCUS_UP);
+                        }
+                    }, 100);
+                }
+            }
+        });
+        mAnwser = (EditText) findViewById(R.id.et_anwser);
+        mAnwser.setOnClickListener(this);
+        mAnwser.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View view, boolean isFucus) {
+                if (isFucus) {
+                    mHandler.postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            mScrollView.fullScroll(View.FOCUS_DOWN);
+                        }
+                    }, 100);
+                }
+            }
+        });
+        mSave = (TextView) findViewById(R.id.tv_save);
+        mSave.setOnClickListener(this);
+
+        mScrollView = (ScrollView) findViewById(R.id.scroll);
+        String question = AppMasterPreference.getInstance(this).getPpQuestion();
+        if (!TextUtils.isEmpty(question)) {
+            mQuestion.setText(question);
+            mQuestion.selectAll();
+        } else {
+            mQuestion.setText(mCategories.get(0));
+            mQuestion.selectAll();
+        }
+        String answer = AppMasterPreference.getInstance(this).getPpAnwser();
+        if (question != null) {
+            mAnwser.setText(answer);
+        }
+
+    }
+
+    private void hideIME() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mAnwser.getWindowToken(), 0);
     }
-	@Override
-	public void onClick(View v) {
-		String qusetion = mQuestion.getText().toString();
-		String answer = mAnwser.getText().toString();
-		String passwdHint = AppMasterPreference.getInstance(this)
-				.getPasswdTip();
-		if (v == mSave) {
-		    hideIME();
-			boolean noQuestion = qusetion == null || qusetion.trim().equals("");
-			boolean noAnswer = answer == null || answer.equals("");
-			if (noQuestion && noAnswer) {
-				qusetion = answer = "";
-			} else if (noQuestion && !noAnswer) {
-				Toast.makeText(this, R.string.qusetion_cant_null,
-						Toast.LENGTH_SHORT).show();
-				return;
-			} else if (!noQuestion && noAnswer) {
-				Toast.makeText(this, R.string.aneser_cant_null,
-						Toast.LENGTH_SHORT).show();
-				return;
-			} else {
-				if (qusetion.length() > 40) {
-					Toast.makeText(this, R.string.question_charsize_tip,
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
-				if (answer.length() > 40) {
-					Toast.makeText(this, R.string.anwser_charsize_tip,
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
-			}
-			if (qusetion == null || qusetion.trim().equals("")) {
-				qusetion = answer = "";
-			}
-			AppMasterPreference.getInstance(this).savePasswdProtect(qusetion,
-					answer, passwdHint);
-			Toast.makeText(this, R.string.pp_success, Toast.LENGTH_SHORT)
-					.show();
-			Handler handler=new Handler();
-			handler.postDelayed(new Runnable() {
-                
+
+    @Override
+    public void onClick(View v) {
+        String qusetion = mQuestion.getText().toString();
+        String answer = mAnwser.getText().toString();
+        String passwdHint = AppMasterPreference.getInstance(this)
+                .getPasswdTip();
+        if (v == mSave) {
+            hideIME();
+            boolean noQuestion = qusetion == null || qusetion.trim().equals("");
+            boolean noAnswer = answer == null || answer.equals("");
+            if (noQuestion && noAnswer) {
+                qusetion = answer = "";
+            } else if (noQuestion && !noAnswer) {
+                Toast.makeText(this, R.string.qusetion_cant_null,
+                        Toast.LENGTH_SHORT).show();
+                return;
+            } else if (!noQuestion && noAnswer) {
+                Toast.makeText(this, R.string.aneser_cant_null,
+                        Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                if (qusetion.length() > 40) {
+                    Toast.makeText(this, R.string.question_charsize_tip,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (answer.length() > 40) {
+                    Toast.makeText(this, R.string.anwser_charsize_tip,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            if (qusetion == null || qusetion.trim().equals("")) {
+                qusetion = answer = "";
+            }
+            AppMasterPreference.getInstance(this).savePasswdProtect(qusetion,
+                    answer, passwdHint);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "first", "setpwdp_submit");
+            Toast.makeText(this, R.string.pp_success, Toast.LENGTH_SHORT)
+                    .show();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
                 @Override
                 public void run() {
-                    finish();               
+                    onBackPressed();
                 }
             }, 500);
-		} else if (v == mAnwser) {
-			if (mAnwser.isFocused()) {
-				mHandler.postDelayed(new Runnable() {
+        } else if (v == mAnwser) {
+            if (mAnwser.isFocused()) {
+                mHandler.postDelayed(new Runnable() {
 
-					@Override
-					public void run() {
-						mScrollView.fullScroll(View.FOCUS_DOWN);
-					}
-				}, 500);
-			}
-		}
-	}
+                    @Override
+                    public void run() {
+                        mScrollView.fullScroll(View.FOCUS_DOWN);
+                    }
+                }, 500);
+            }
+        }
+    }
 
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-	}
+    @Override
+    public void onBackPressed() {
+        boolean toHome = getIntent().getBooleanExtra("to_home", false);
+        boolean toLockList = getIntent().getBooleanExtra("to_lock_list", false);
+        if (toHome) {
+            LockManager.getInstatnce().timeFilter(getPackageName(), 500);
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (toLockList) {
+            Intent intent = new Intent(this,
+                    AppLockListActivity.class);
+            this.startActivity(intent);
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 }

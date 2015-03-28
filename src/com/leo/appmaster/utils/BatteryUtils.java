@@ -16,8 +16,12 @@
 
 package com.leo.appmaster.utils;
 
+import com.leo.appmaster.R;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.os.BatteryManager;
 
 /**
  * Contains utility functions for formatting elapsed time and consumed bytes
@@ -54,19 +58,19 @@ public class BatteryUtils {
 			minutes = seconds / SECONDS_PER_MINUTE;
 			seconds -= minutes * SECONDS_PER_MINUTE;
 		}
-		// if (days > 0) {
-		// sb.append(context.getString(R.string.battery_history_days, days,
-		// hours, minutes, seconds));
-		// } else if (hours > 0) {
-		// sb.append(context.getString(R.string.battery_history_hours, hours,
-		// minutes, seconds));
-		// } else if (minutes > 0) {
-		// sb.append(context.getString(R.string.battery_history_minutes,
-		// minutes, seconds));
-		// } else {
-		// sb.append(context.getString(R.string.battery_history_seconds,
-		// seconds));
-		// }
+		 if (days > 0) {
+		 sb.append(context.getString(R.string.battery_history_days, days,
+		 hours, minutes, seconds));
+		 } else if (hours > 0) {
+		 sb.append(context.getString(R.string.battery_history_hours, hours,
+		 minutes, seconds));
+		 } else if (minutes > 0) {
+		 sb.append(context.getString(R.string.battery_history_minutes,
+		 minutes, seconds));
+		 } else {
+		 sb.append(context.getString(R.string.battery_history_seconds,
+		 seconds));
+		 }
 		return sb.toString();
 	}
 
@@ -96,35 +100,35 @@ public class BatteryUtils {
 		return String.valueOf(level * 100 / scale) + "%";
 	}
 
-	// public static String getBatteryStatus(Resources res,
-	// Intent batteryChangedIntent) {
-	// final Intent intent = batteryChangedIntent;
-	//
-	// int plugType = intent.getIntExtra("plugged", 0);
-	// int status = intent.getIntExtra("status",
-	// BatteryManager.BATTERY_STATUS_UNKNOWN);
-	// String statusString;
-	// if (status == BatteryManager.BATTERY_STATUS_CHARGING) {
-	// statusString = res.getString(R.string.battery_info_status_charging);
-	// if (plugType > 0) {
-	// statusString = statusString
-	// + " "
-	// + res.getString((plugType == BatteryManager.BATTERY_PLUGGED_AC) ?
-	// R.string.battery_info_status_charging_ac
-	// : R.string.battery_info_status_charging_usb);
-	// }
-	// } else if (status == BatteryManager.BATTERY_STATUS_DISCHARGING) {
-	// statusString = res
-	// .getString(R.string.battery_info_status_discharging);
-	// } else if (status == BatteryManager.BATTERY_STATUS_NOT_CHARGING) {
-	// statusString = res
-	// .getString(R.string.battery_info_status_not_charging);
-	// } else if (status == BatteryManager.BATTERY_STATUS_FULL) {
-	// statusString = res.getString(R.string.battery_info_status_full);
-	// } else {
-	// statusString = res.getString(R.string.battery_info_status_unknown);
-	// }
-	//
-	// return statusString;
-	// }
+	 public static String getBatteryStatus(Resources res,
+	 Intent batteryChangedIntent) {
+	 final Intent intent = batteryChangedIntent;
+	
+	 int plugType = intent.getIntExtra("plugged", 0);
+	 int status = intent.getIntExtra("status",
+	 BatteryManager.BATTERY_STATUS_UNKNOWN);
+	 String statusString;
+	 if (status == BatteryManager.BATTERY_STATUS_CHARGING) {
+	 statusString = res.getString(R.string.battery_info_status_charging);
+	 if (plugType > 0) {
+	 statusString = statusString
+	 + " "
+	 + res.getString((plugType == BatteryManager.BATTERY_PLUGGED_AC) ?
+	 R.string.battery_info_status_charging_ac
+	 : R.string.battery_info_status_charging_usb);
+	 }
+	 } else if (status == BatteryManager.BATTERY_STATUS_DISCHARGING) {
+	 statusString = res
+	 .getString(R.string.battery_info_status_discharging);
+	 } else if (status == BatteryManager.BATTERY_STATUS_NOT_CHARGING) {
+	 statusString = res
+	 .getString(R.string.battery_info_status_not_charging);
+	 } else if (status == BatteryManager.BATTERY_STATUS_FULL) {
+	 statusString = res.getString(R.string.battery_info_status_full);
+	 } else {
+	 statusString = res.getString(R.string.battery_info_status_unknown);
+	 }
+	
+	 return statusString;
+	 }
 }

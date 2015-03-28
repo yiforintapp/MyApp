@@ -7,38 +7,27 @@ import java.util.TimerTask;
 import java.util.Vector;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.android.volley.VolleyError;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.toolbox.ImageLoader;
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.appmanage.view.BusinessAppFragment;
-import com.leo.appmaster.http.HttpRequestAgent;
-import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.model.BusinessItemInfo;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.BitmapUtils;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.LoadFailUtils;
-
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.model.BusinessItemInfo;
+import com.leo.appmaster.utils.BitmapUtils;
+import com.leo.appmaster.utils.LeoLog;
 
 /**
  * app list business manager
@@ -71,9 +60,6 @@ public class AppBusinessManager {
 	private Vector<BusinessItemInfo> mBusinessList;
 	private FutureTask<Vector<BusinessItemInfo>> mLoadInitDataTask;
 	private boolean mInitDataLoaded = false;
-
-	private final ExecutorService mExecutorService = Executors
-			.newSingleThreadExecutor();
 
 	private static AppBusinessManager mInstance;
 
@@ -158,7 +144,7 @@ public class AppBusinessManager {
 						return mBusinessList;
 					}
 				});
-		mExecutorService.execute(mLoadInitDataTask);
+		AppMasterApplication.getInstance().postInAppThreadPool(mLoadInitDataTask);
 	}
 
 	public static synchronized AppBusinessManager getInstance(Context ctx) {
@@ -183,8 +169,10 @@ public class AppBusinessManager {
 			try {
 				return mLoadInitDataTask.get();
 			} catch (InterruptedException e) {
+				e.printStackTrace();
 				return null;
 			} catch (ExecutionException e) {
+				e.printStackTrace();
 				return null;
 			}
 		}
@@ -192,13 +180,11 @@ public class AppBusinessManager {
 	
     public boolean hasBusinessData(int type) {
         Vector<BusinessItemInfo> businessDatas = getBusinessData();
-        if(businessDatas != null) {
-            for (BusinessItemInfo businessItemInfo : businessDatas) {
-                if (businessItemInfo.installed)
-                    continue;
-                if (businessItemInfo.containType == type) {
-                    return true;
-                }
+        for (BusinessItemInfo businessItemInfo : businessDatas) {
+            if (businessItemInfo.installed)
+                continue;
+            if (businessItemInfo.containType == type) {
+                return true;
             }
         }
         return false;
@@ -364,7 +350,7 @@ public class AppBusinessManager {
 
 	protected void syncApplistData(final int containerType,
 			final List<BusinessItemInfo> list) {
-		mExecutorService.execute(new Runnable() {
+	    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 			@Override
 			public void run() {
 				final ContentResolver resolver = mContext.getContentResolver();

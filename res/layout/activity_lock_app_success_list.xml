@@ -2,13 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background" >
+    android:background="@color/white" >
+
+    <com.leo.appmaster.ui.CommonTitleBar
+        android:id="@+id/layout_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/app_background" />
 
     <LinearLayout
         android:id="@+id/success_lockLT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/success_lockRT"
+        android:layout_below="@id/layout_title_bar"
         android:background="@drawable/successful_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
@@ -17,7 +25,7 @@
             android:id="@+id/successIV"
             android:layout_width="@dimen/success_lock_imageiv"
             android:layout_height="@dimen/success_lock_imageiv"
-            android:layout_marginTop="@dimen/sucess_lock_recomment_successicon_top"
+            android:layout_marginTop="10dp"
             android:src="@drawable/successful_top_icon" />
 
         <TextView
@@ -25,9 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="@string/lock_success"
-            android:textColor="@color/white"
+            android:textColor="#646464"
             android:textSize="19dp" />
 
         <TextView
@@ -36,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="@string/lcok_success_tip"
-            android:textColor="@color/white"
+            android:textColor="#888888"
             android:textSize="12dp" />
 
         <com.leo.appmaster.ui.PagedGridView
@@ -53,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_lock_recomment_bottom"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bottom"
+        android:background="@drawable/toolbar_bg"
         android:gravity="center" >
 
         <TextView
@@ -61,10 +69,10 @@
             android:layout_width="@dimen/default_lock_recomment_bottom_text_width"
             android:layout_height="@dimen/default_lock_recomment_bottom_text_height"
             android:layout_marginBottom="0dp"
+            android:background="@drawable/mycheck_button_selecter"
             android:gravity="center"
             android:text="@string/success_finish"
-            android:background="@color/default_lock_down"
-            android:textColor="@color/white" />
+            android:textColor="@drawable/manager_backup_text_selecter" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.SweepGradient;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -75,4 +76,14 @@ public class CricleView extends View {
 
 		super.onDraw(canvas);
 	}
+	
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {
+            
+        }
+    }
+
 }

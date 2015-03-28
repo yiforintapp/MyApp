@@ -1,51 +1,43 @@
+
 package com.leo.appmaster.fragment;
 
-import com.leo.appmaster.applocker.logic.LockHandler;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 
 import android.content.Intent;
 
 public abstract class LockFragment extends BaseFragment {
 
-	protected final int mMaxInput = 5;
+    protected final int mMaxInput = 5;
 
-	public static final int FROM_SELF = 0;
-	public static final int FROM_SELF_HOME = 3;
-	public static final int FROM_OTHER = 1;
-	public static final int FROM_SCREEN_ON = 4;
-	public static final int FROM_RESTART = 2;
-	protected int mFrom = FROM_SELF;
+    // public static final int FROM_SELF = 0;
+    // public static final int FROM_SELF_HOME = 3;
+    // public static final int FROM_OTHER = 1;
+    // public static final int FROM_SCREEN_ON = 4;
+    // public static final int FROM_RESTART = 2;
+    protected int mLockMode = LockManager.LOCK_MODE_FULL;
 
-	public static final int LOCK_TYPE_PASSWD = 0;
-	public static final int LOCK_TYPE_GESTURE = 1;
-	protected int mLockType = LOCK_TYPE_PASSWD;
+    public static final int LOCK_TYPE_PASSWD = 0;
+    public static final int LOCK_TYPE_GESTURE = 1;
+    protected int mLockType = LOCK_TYPE_PASSWD;
 
-	protected int mInputCount = 0;
+    protected int mInputCount = 0;
 
-	protected String mPackageName;
-	protected String mActivityName;
+    protected String mPackageName;
 
-	public void setPackage(String pkg) {
-		mPackageName = pkg;
-	}
+    public void setPackage(String pkg) {
+        mPackageName = pkg;
+    }
 
-	public void setActivity(String activity) {
-		mActivityName = activity;
-	}
+    public void setLockType(int type) {
+        mLockType = type;
+    }
 
-	public void setLockType(int type) {
-		mLockType = type;
-	}
+    public void setLockMode(int mode) {
+        mLockMode = mode;
+    }
 
-	public void setFrom(int from) {
-		mFrom = from;
-	}
-
-	protected void unlockSucceed(String pkg) {
-		Intent intent = new Intent(LockHandler.ACTION_APP_UNLOCKED);
-		intent.putExtra(LockHandler.EXTRA_LOCKED_APP_PKG, pkg);
-		mActivity.sendBroadcast(intent);
-	}
-
-	public abstract void onNewIntent(Intent intent);
+    public abstract void onLockPackageChanged(String mLockedPackage);
 
 }

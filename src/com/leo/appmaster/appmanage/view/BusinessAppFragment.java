@@ -19,9 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +30,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.appmanage.business.BusinessJsonParser;
@@ -44,13 +41,12 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LoadFailUtils;
-import com.leo.imageloader.DisplayImageOptions;
-import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.BitmapDisplayer;
-import com.leo.imageloader.core.ImageAware;
-import com.leo.imageloader.core.ImageScaleType;
-import com.leo.imageloader.core.LoadedFrom;
-import com.leo.imageloader.core.SimpleBitmapDisplayer;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.assist.LoadedFrom;
+import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 
 public class BusinessAppFragment extends BaseFolderFragment implements
         OnItemClickListener, OnClickListener, OnRefreshListener2<GridView> {
@@ -62,14 +58,12 @@ public class BusinessAppFragment extends BaseFolderFragment implements
     public LayoutInflater mInflater;
     private RecommendAdapter mRecommendAdapter;
     private ProgressBar mProgressBar;
-    private RelativeLayout mButtomView;
-    private ImageView mBusinessDelet;
+
     private int mCurrentPage = 1;
     private static final int MSG_LOAD_INIT_FAILED = 0;
     private static final int MSG_LOAD_INIT_SUCCESSED = 1;
     private static final int MSG_LOAD_PAGE_DATA_FAILED = 3;
     private static final int MSG_LOAD_PAGE_DATA_SUCCESS = 4;
-//    public static boolean business_app_tip = false;
     private EventHandler mHandler;
     private DisplayImageOptions commonOption;
 
@@ -128,14 +122,18 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 
     @Override
     protected void onInitUI() {
-         mButtomView = (RelativeLayout) findViewById(R.id.business_buttomIV);
-         mBusinessDelet = (ImageView) findViewById(R.id.image1);
-         mBusinessDelet.setOnClickListener(this);
+
         commonOption = new DisplayImageOptions.Builder()
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .showImageOnLoading(R.drawable.recommend_loading_icon)
                 .showImageOnFail(R.drawable.recommend_loading_icon).cacheInMemory(true)
-                .cacheOnDisk(true).displayer(new SimpleBitmapDisplayer()).build();
+                .cacheOnDisk(true).displayer(new BitmapDisplayer() {
+                    @Override
+                    public void display(Bitmap arg0, ImageAware arg1, LoadedFrom arg2) {
+                        arg1.setImageBitmap(arg0);
+                        mRecommendAdapter.notifyDataSetChanged();
+                    }
+                }).build();
 
         mImageLoader = ImageLoader.getInstance();
 
@@ -243,9 +241,7 @@ public class BusinessAppFragment extends BaseFolderFragment implements
             }
 
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_rec", "new");
-            if (!Constants.business_app_tip) {
-                mButtomView.setVisibility(View.VISIBLE);
-            }
+
         } else {
             mRecommendGrid.setVisibility(View.INVISIBLE);
             mErrorView.setVisibility(View.VISIBLE);
@@ -259,7 +255,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
             return false;
         ArrayList<AppItemInfo> appDetails = AppLoadEngine
                 .getInstance(mActivity).getAllPkgInfo();
-        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_rec", "new");
 
         for (AppItemInfo info : appDetails) {
             if (pkg.equals(info.packageName)) {
@@ -271,16 +266,11 @@ public class BusinessAppFragment extends BaseFolderFragment implements
     }
 
     public void loadInitBusinessData() {
-        if ((mInitDataLoadFinish && mHaveInitData) || mInitLoading) {
-//            business_app_tip = false;
-            if (!Constants.business_app_tip) {
-                mButtomView.setVisibility(View.VISIBLE);
-            }
+        if ((mInitDataLoadFinish && mHaveInitData) || mInitLoading)
             return;
-        }
         mRecommendDatas.clear();
         mInitLoading = true;
-        HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1, 20,
+        HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1, 8,
                 new Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response, boolean noModify) {
@@ -370,11 +360,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
             case R.id.tv_reload:
                 doReload();
                 break;
-            case R.id.image1:
-                mButtomView.setVisibility(View.GONE);
-                // AppMasterPreference.getInstance(getActivity())
-                // .setBusinessAppTip(true);
-                break;
             default:
                 break;
         }
@@ -382,15 +367,10 @@ public class BusinessAppFragment extends BaseFolderFragment implements
 
     @Override
     public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
-
     }
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
-        if (!Constants.business_app_tip) {
-            mButtomView.setVisibility(View.GONE);
-            Constants.business_app_tip = true;
-        }
         loadMoreBusiness();
     }
 

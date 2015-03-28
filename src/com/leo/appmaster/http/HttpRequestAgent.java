@@ -32,7 +32,8 @@ import com.leo.appmaster.utils.Utilities;
  */
 public class HttpRequestAgent {
 
-	private Context mContext;
+	private static final String Tag = "HttpRequestAgent";
+    private Context mContext;
 	private RequestQueue mRequestQueue;
 	private static HttpRequestAgent mInstance;
 
@@ -78,13 +79,13 @@ public class HttpRequestAgent {
 
 	public void checkNewTheme(Listener<JSONObject> listener,
 			ErrorListener eListener) {
-		String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
-//		List<String> hideThemes = AppMasterPreference.getInstance(mContext)
-//				.getHideThemeList();
-//		String combined = "";
-//		for (String string : hideThemes) {
-//			combined = combined + string + ";";
-//		}
+        String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
+        // List<String> hideThemes = AppMasterPreference.getInstance(mContext)
+        // .getHideThemeList();
+        // String combined = "";
+        // for (String string : hideThemes) {
+        // combined = combined + string + ";";
+        // }
         String body = "update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalThemeSerialNumber() + "&market_id="
@@ -101,10 +102,10 @@ public class HttpRequestAgent {
 	public void checkNewBusinessData(Listener<JSONObject> listener,
 			ErrorListener eListener) {
 		String url = Utilities.getURL(AppMasterConfig.CHECK_NEW_BUSINESS_APP);
-//		String url = "http://192.168.1.201:8800/appmaster/apprecommend/checkappupdate";
+		//     String url = "http://192.168.1.201:8800/appmaster/apprecommend/checkappupdate";
         String body = "update_flag="
                 + AppMasterPreference.getInstance(mContext)
-                        .getLocalBusinessSerialNumber() + "&market_id="
+                        .getLocalThemeSerialNumber() + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&language="
                 + AppwallHttpUtil.getLanguage() + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
@@ -142,9 +143,13 @@ public class HttpRequestAgent {
 			ErrorListener eListener) {
 		String url = Utilities.getURL(AppMasterConfig.APP_RECOMMEND_URL) + "?re_position=4"
 				+ "&pgcurrent=" + page;
+//		String url = "http://192.168.1.201:8080/leo/appmaster/apprecommend/list?re_position=4&pgcurrent="+page;
 		String body = "&market_id=" + mContext.getString(R.string.channel_code)
 				+ "&language=" + AppwallHttpUtil.getLanguage() + "&pgsize="
 				+ number;
+//		String body = "&market_id=" + mContext.getString(R.string.channel_code);
+		
+		
 		JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
 				body, listener, eListener);
 		request.setShouldCache(false);
@@ -164,4 +169,5 @@ public class HttpRequestAgent {
 		request.setShouldCache(false);
 		mRequestQueue.add(request);
 	}
+	
 }

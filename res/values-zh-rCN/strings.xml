@@ -6,7 +6,9 @@
     <string name="used_memory">使用内存</string>
     <string name="used_flow">使用流量</string>
     <string name="app_detail">应用详情</string>
-    <string name="app_lock">应用锁</string>
+    <string name="app_lock">"应用锁"</string>
+    <string name="app_add_lock">"应用加锁"</string>
+    <string name="lock_tab">"应用锁   "</string>
     <string name="app_backup">应用备份</string>
     <string name="app_restore">应用恢复</string>
     <string name="button_backup">备份</string>
@@ -25,7 +27,7 @@
     <string name="makesure">确认</string>
     <string name="cancel">取消</string>
     <string name="delete">删除</string>
-    <string name="passwd_set_passwd_tip">首次使用请设置四位密码</string>
+    <string name="passwd_set_passwd_tip">首次使用请设置密码</string>
     <string name="passwd_set_gesture_tip">请至少连接4个点</string>
     <string name="passwd_hint">请输入四位数密码</string>
     <string name="tip_no_the_same_pswd">输入密码不一致，请重新输入</string>
@@ -81,11 +83,11 @@
     <string name="reset_gesture_passwd">重设手势密码</string>
     <string name="reset_digital_passwd">重设数字密码</string>
     <string name="gesture_hint">请连接至少4个点</string>
-    <string name="first_set_passwd_hint">首次使用请设置密码</string>
+    <string name="first_set_passwd_hint">请设置密码保护隐私安全</string>
     <string name="make_passwd">确认密码</string>
     <string name="input_again">请再次输入</string>
-    <string name="gestur_passwd_function_hint">手势密码将用在应用锁和图片视频隐藏功能中</string>
-    <string name="digital_passwd_function_hint">数字密码将用在应用锁和图片视频隐藏功能中</string>
+    <string name="gestur_passwd_function_hint">请连接至少4个点</string>
+    <string name="digital_passwd_function_hint">请输入4位密码</string>
     <string name="gesture_start_hint">画完后松开手指</string>
     <string name="lock_right_now">立即锁定</string>
     <string name="lock_15_sec">15秒</string>
@@ -94,7 +96,7 @@
     <string name="lock_3_min">3分钟</string>
     <string name="lock_5_min">5分钟</string>
     <string name="app_version">版本: %1$s</string>
-    <string name="backuping">正在备份: ( %1$s )</string>
+    <string name="backuping">正在备份: %1$s</string>
     <string name="no_application_selected">没有选择任何应用</string>
     <string name="backup_finish">备份成功</string>
     <string name="delete_fail">删除失败！</string>
@@ -102,11 +104,12 @@
     <string name="installed_app_size">已安装应用: %1$d</string>
     <string name="apk_size">大小: %1$s</string>
     <string name="storage_size">剩余存储空间: %1$s</string>
+    <string name="use_storage_size">已用空间: %1$s</string>
     <string name="unavailable">不可用</string>
     <string name="bakup_fail_cancel">备份已取消</string>
     <string name="bakup_fail_full">存储空间不足</string>
     <string name="bakup_fail_unavailable">存储卡不可用</string>
-    <string name="no_app_backuped">没有应用备份数据</string>
+    <string name="no_app_backuped">您还没有备份应用</string>
 
     <string-array name="lock_time_entrys">
         <item>@string/lock_right_now</item>
@@ -136,7 +139,7 @@
     <string name="grade">谷歌市场评分</string>
     <string name="grade_tip">感谢您使用隐私卫士，为了让我们更加进步，请您为我们评分吧！</string>
     <string name="app_setting_about">关于</string>
-    <string name="forbid_uninstall">禁止卸载</string>
+    <string name="forbid_uninstall">防止卸载</string>
     <string name="auto_lock">锁屏后自动锁定</string>
     <string name="change_lock_time">更改锁定时间</string>
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
@@ -199,7 +202,7 @@
     <string name="app_wall_click">点击重试</string>
     <!-- 隐私策略 -->
     <string name="protocolBar">隐私保护协议</string>
-    <string name="lock_more">加锁更多</string>
+    <string name="lock_more">更多</string>
     <string name="lock">加锁</string>
     <string name="det_change_lock_time">发现您的应用被频繁锁定，是否更改锁定时间？</string>
 
@@ -229,12 +232,12 @@
     <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
     <string name="no_more_theme">没有更多主题</string>
     <string name="no_more_onlinetheme">已下载所有主题，我们会尽快增加新主题</string>
-    <string name="find_new_theme">主人，有新主题</string>
-    <string name="find_new_theme_content">换个主题，换个心情！</string>
+    <string name="find_new_theme">发现新主题</string>
+    <string name="find_new_theme_content">您的应用锁有新主题，点击查看</string>
     <string name="theme_tag_new">最 新</string>
     <string name="theme_tag_hot">最 热</string>
     <string name="about_group">加入粉丝团</string>
-    <string name="about_praise">Facebook(活动)</string>
+    <string name="about_praise">Facebook</string>
     <string name="locker_guide">点击更换解锁主题</string>
     <string name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
@@ -282,6 +285,7 @@
     <string name="backuped">已备份</string>
     <string name="delete_successfully">删除成功！</string>
     <string name="no_more_business_app">没有新应用了，过段时间再来看看吧 </string>
+    <string name="no_business_app">没有新应用了，过段时间再来看看吧 </string>
     <string name="space_consumption">空间占用： </string>
     <string name="cache_size">缓存大小： </string>
     <string name="power_consumption">电量消耗： </string>
@@ -293,11 +297,11 @@
     <string name="version">版本号： </string>
     <string name="install_time">%1$s天前</string>
     <string name="folder_new">新</string>
-    <string name="new_app_tip_content">好玩应用新鲜出炉，看看！</string>
-    <string name="new_app_tip_title">新品速递</string>
+    <string name="new_app_tip_content">有好玩的新应用，快看看吧</string>
+    <string name="new_app_tip_title">发现新应用</string>
     <string name="no_backup_app_tip">您还没有备份应用</string>
     <string name="other_people_use_tip">其他人正在使用</string>
-    <string name="recomment_list_title">请选择您想加锁的应用</string>
+    <string name="recomment_list_title">欢迎首次使用访客模式，请选择您想加锁的应用</string>
     <string name="lock_success">加锁成功！</string>
     <string name="lcok_success_tip">您选择的应用已加锁</string>
     <string name="success_finish">完成</string>
@@ -308,6 +312,7 @@
     <string name="business_size">大小： </string>
     <string name="app_download">高速下载</string>
     <string name="app_google_download">免费下载</string>
+    <!-- AM-667 -->
     <string name="help_setting_tip_title">帮助小贴士</string>
     <string name="lock_help_password_setting_content_gesture">点击设置，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用手势密码）</string>
     <string name="lock_help_password_setting_content_password">点击设置，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用数字密码）</string>
@@ -325,6 +330,66 @@
     <string name="lock_setting_button">锁定设置</string>
     <string name="lock_help_lock_theme_setting_button">更换主题</string>
     <string name="help_setting_guide">帮助小贴士</string>
+
+    <!-- V2.0 -->
+    <string name="pravicy_protect">"隐私防护"</string>
+    <string name="privacy_level">隐私等级</string>
+    <string name="privacy_contacts">隐私联系人</string>
+    <string name="privacy_sms">隐私短信</string>
+    <string name="privacy_call">隐私通话</string>
+    <!-- privacy_contact_v2.0 start -->
+    <string name="privacy_contact_message">短信</string>
+    <string name="privacy_contact_calllog">通话记录</string>
+    <string name="privacy_contact_contact">联系人</string>
+    <string name="privacy_contact_popumenus_add_new_privacy_contact">添加新隐私联系人</string>
+    <string name="privacy_contact_popumenus_from_message">从短信记录添加</string>
+    <string name="privacy_contact_popumenus_from_call_log">从通话记录添加</string>
+    <string name="privacy_contact_popumenus_from_contact">从联系人添加</string>
+    <string name="privacy_contact_popumenus_input_phone_number">手工输入号码</string>
+    <string name="privacy_message_dialog_title">是否导入记录?</string>
+    <string name="privacy_message_dialog_content">是否导入这些号码的短信和通话记录，导入成功后将删除系统中的记录</string>
+    <string name="privacy_message_progress_dialog_title">导入记录中</string>
+    <string name="privacy_message_progress_dialog_content">正在导入记录</string>
+    <string name="privacy_contact_activity_input_edit_name">名称</string>
+    <string name="privacy_contact_activity_input_edit_number">电话号码<Data><![CDATA[<b><font color="#ff0000">＊</font></b>]]></Data></string>
+    <string name="privacy_contact_activity_input_checkbox_normal">正常接听</string>
+    <string name="privacy_contact_activity_input_checkbox_hangup">立即挂断</string>
+    <string name="privacy_contact_notification_title_big">系统消息</string>
+    <string name="privacy_contact_notification_title_small">您有新的系统消息</string>
+    <string name="privacy_add_contact_toast">该号码已存在</string>
+    <string name="privacy_contact_edittext_hint">点击输入内容</string>
+    <string name="privacy_contact_add_log_dialog_title">是否导入记录？</string>
+    <string name="privacy_contact_add_log_dialog_dialog_content">是否导入这些号码的短信和通话记录？导入成功后将删除系统中的记录</string>
+    <string name="privacy_contact_progress_dialog_title">导入记录中</string>
+    <string name="privacy_contact_progress_dialog_content">正在导入记录</string>
+    <string name="privacy_contact_callog_out">呼出</string>
+    <string name="privacy_contact_callog_in">呼入</string>
+    <string name="privacy_contact_callog_no">未接</string>
+    <string name="input_toast_no_number_tip">请输入电话号码</string>
+    <string name="privacy_contact_checkbox_dlg_title">移出联系人？</string>
+    <string name="privacy_contact_checkbox_dlg_content">确定将联系人移出隐私空间？</string>
+    <string name="privacy_contact_checkbox_dlg_checktext">恢复联系人的信息和通话记录</string>
+    <string name="privacy_contact_edit_contact">编辑隐私联系人</string>
+    <string name="privacy_contact_edit_content">是否保存所做修改？</string>
+    <string name="privacy_contact_edit_left_btn">是</string>
+    <string name="privacy_contact_edit_right_btn">否</string>
+    <string name="privacy_message_delete_message">确定将短信删除?</string>
+    <string name="privacy_message_resotre_message">确定将短信记录恢复到系统?</string>
+    <string name="privacy_call_delete_call_log">是否删除通话记录?</string>
+    <string name="privacy_contact_default_text">添加隐私联系人</string>
+    <string name="privacy_call_log_default_text">加密你和TA的通话</string>
+    <string name="privacy_message_default_text">加密你和TA的短信</string>
+    <string name="privacy_add_contact_default_text">您没有可显示的联系人</string>
+    <string name="privacy_add_message_default_text">短信列表为空</string>
+    <string name="privacy_add_call_log_default_text">通话记录为空</string>
+    <string name="privacy_contact_text">私密通讯拒绝窥视</string>
+    <string name="privacy_contact_dialog_texts">发短信</string>
+    <string name="privacy_caontact_dialog_call">打电话</string>
+    <string name="privacy_contact_toast_no_choose">请选择电话号码</string>
+    <string name="privacy_message_item_send_message_fail">短信发送失败！</string>
+    <string name="privacy_message_not_privacy_tip">由于Android4.4以上的系统限制，隐私短信功能可能无法正常使用</string>
+    <!-- privacy_contact_v2.0 end -->
+    <!-- ImageHide -->
     <string name="no_image_hide_dialog_title">请删除原图片</string>
     <string name="no_image_hide_dialog_content">图片导入隐私卫士成功，因系统权限限制，请您删除原图片，您可以在隐私卫士中查看隐藏图片</string>
     <string name="no_image_hide_dialog_button">知道了</string>
@@ -333,10 +398,207 @@
     <string name="image_unhide_memery_insuficient_dialog_content">SD卡容量不足，无法恢复图片，请释放空间</string>
     <string name="image_hide_memery_insuficient_dialog_button">我知道了</string>
     <string name="appwall_name">游戏中心</string>
-    <string name="business_bottom_tip">试试向上滑动哟O(∩_∩)O~</string>
-    <string name="splash_text_left">晒情人，赢 </string>
-    <string name="splash_text_right">iPhone6！</string>
-    <string name="splash_facebook_text">参加活动</string>
-    <string name="splash_skip_text">跳过</string>
+    <string name="unlock_theme">解锁主题</string>
+    <string name="lock_setting">应用锁设置</string>
+
+    <!-- Lock Mode -->
+    <string name="lock_mode">情景模式</string>
+    <string name="vistor_mode">访客模式</string>
+    <string name="unlock_all_mode">无锁模式</string>
+    <string name="office_mode">办公室模式</string>
+    <string name="family_mode">家庭模式</string>
+    <string name="unlock_all_mode_tip">解锁全部模式下不能加锁应用，请选择其他模式</string>
+    <string name="add_new_mode">添加新情景模式</string>
+    <string name="lock_mode_all">所有模式</string>
+    <string name="new_mode">新模式</string>
+    <string name="lock_mode_location">位置锁</string>
+    <string name="hot_on_facebook">Facebook(活动)</string>
+    <string name="lock_mode_time">时间锁</string>
+    <string name="add">添加</string>
+    <string name="please_input_mode_name">请输入情景模式名称</string>
+    <string name="mode_name">情景模式名称</string>
+    <string name="cont_edit_visitor_name">无法更改访客模式名称</string>
+    <string name="aready_lock">已加锁</string>
+    <string name="choose_mode">选择情景模式</string>
+    <string name="create_mode_shortcut_title">创建快捷方式</string>
+    <string name="create_mode_shortcut_tip">添加%1$s到桌面快捷方式</string>
+    <string name="create_mode_shortcut_content">创建快捷方式，即可在桌面快速启用这个模式，点击确认建立快捷方式</string>
+    <string name="mode_change">已启用<xliff:g id="mode">%1$s</xliff:g></string>
+    <string name="lock_change">已启用<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
+
+    <!-- Privacy Protection -->
+    <string name="privacy_level_1">危险</string>
+    <string name="privacy_level_2">警惕</string>
+    <string name="privacy_level_3">普通</string>
+    <string name="privacy_level_4">良好</string>
+    <string name="privacy_level_5">完美</string>
+    <string name="privacy_title_applcok">应用加锁</string>
+    <string name="privacy_title_hide_pic">隐藏图片</string>
+    <string name="privacy_title_hide_video">隐藏视频</string>
+    <string name="privacy_title_privacy_contact">隐私联系人</string>
+    <string name="privacy_suggest_title">隐私防护建议</string>
+    <string name="privacy_no_app_lock">您还没有加锁应用</string>
+    <string name="privacy_no_pic_hide">您还没有隐藏图片</string>
+    <string name="privacy_no_video_hide">您还没有隐藏视频</string>
+    <string name="privacy_no_privacy_contact">您还没有添加隐私联系人</string>
+    <string name="privacy_no_app_lock_des">您可能有很多应用不希望被别人打开，隐私卫士建议您加锁这些应用，保护您的隐私</string>
+    <string name="privacy_no_pic_hide_des">如果您有一些私密照片不希望被其他人发现，我们建议您使用隐藏图片功能</string>
+    <string name="privacy_no_video_hide_des">有些视频是不适合被分享或对他人播放的，为了避免一些尴尬，建议您隐藏它们</string>
+    <string name="privacy_no_privacy_contact_des">添加隐私联系人可以保护您和TA的通话记录，短信通讯记录不被他人发现，隐私卫士强烈建议您使用该功能</string>
+    <string name="privacy_more_app_lock">建议您加锁更多应用</string>
+    <string name="privacy_more_pic_hide">建议您隐藏更多图片</string>
+    <string name="privacy_more_video_hide">建议您隐藏更多视频</string>
+    <string name="privacy_more_privacy_contact">建议您添加更多隐私联系人</string>
+    <string name="privacy_more_app_lock_des">恭喜您开始使用应用锁，但有更多的应用需要被加锁，建议您加锁更多的应用</string>
+    <string name="privacy_more_pic_hide_des">您可以用隐藏图片来隐藏一些私密照片，例如您的信用卡照片，ID照片</string>
+    <string name="privacy_more_video_hide_des">有些视频是不适合被分享或对他人播放的，为了避免一些尴尬，建议您隐藏它们</string>
+    <string name="privacy_more_privacy_contact_des">添加隐私联系人可以保护您和TA的通话记录，短信通讯记录不被他人发现，隐私卫士强烈建议您添加他们</string>
+    <string name="privacy_suggest_perfect_toast">隐私防护已达到最佳状态！</string>
+
+    <!-- elec manager -->
+    <string name="battery_history_days"><xliff:g id="DAYS">%1$d</xliff:g> 天 <xliff:g id="HOURS">%2$d</xliff:g> 小时 <xliff:g id="MINUTES">%3$d</xliff:g> 分 <xliff:g id="SECONDS">%4$d</xliff:g> 秒</string>
+    <string name="battery_history_hours"><xliff:g id="HOURS">%1$d</xliff:g> 小时 <xliff:g id="MINUTES">%2$d</xliff:g> 分 <xliff:g id="SECONDS">%3$d</xliff:g> 秒</string>
+    <string name="battery_history_minutes"><xliff:g id="MINUTES">%1$d</xliff:g> 分 <xliff:g id="SECONDS">%2$d</xliff:g> 秒</string>
+    <string name="battery_history_seconds"><xliff:g id="SECONDS">%1$d</xliff:g> 秒</string>
+    <string name="battery_info_status_charging_ac">（交流电）</string>
+    <string name="battery_info_status_charging_usb">(USB)</string>
+    <string name="battery_info_status_discharging">正在耗电</string>
+    <string name="battery_info_status_not_charging">未在充电</string>
+    <string name="battery_info_status_full">电量充足</string>
+    <string name="battery_info_status_unknown">未知</string>
+    <string name="battery_info_status_charging">正在充电</string>
+    <string name="power_usage_level_and_status"><xliff:g id="LEVEL">%1$s</xliff:g> - <xliff:g id="STATUS">%2$s</xliff:g></string>
+    <string name="power_screen">显示屏</string>
+    <string name="power_wifi">Wi-Fi</string>
+    <string name="power_bluetooth">蓝牙</string>
+    <string name="power_cell">手机信号</string>
+    <string name="power_phone">语音通话</string>
+    <string name="power_idle">手机待机</string>
+    <string name="process_kernel_label">Android OS</string>
+    <string name="process_mediaserver_label">媒体服务器</string>
+    <string name="battery_cannot_do">此功能不能关闭</string>
+    
+    
+    <!-- Backup and Restore -->
+    <string name="app_backup_back">备份与恢复</string>
+    <string name="app_backup_v2">备份</string>
+    <string name="app_restore_v2">恢复</string>
+    <string name="app_delete_v2">删除</string>
+    <string name="app_game">游戏</string>
+    <string name="app_application">应用</string>
+    <string name="app_hot_app">精品</string>
+    <string name="back_backed">已备份</string>
+    <string name="the_best_status_toast">已是最佳状态，请稍后再试</string>
+    
+    <!-- My Apps -->
+    <string name="myapp_details">应用信息</string>
+    <string name="app_manager">"应用管理"</string>
+    <string name="first_backup">备份</string>
+    <string name="first_usage">流量</string>
+    <string name="first_battery">电量</string>
+    <string name="first_hotapp">精品</string>
+    <string name="first_installed_app">已安装：</string>
+    <string name="first_appdata_app">应用及数据占用：</string>
+    <string name="first_backups_app">已备份应用：</string>
+    <string name="first_dataflow_app">本月流量消耗：</string>
+    <string name="first_user_app">用户应用：</string>
+    <string name="first_used_space">占用空间：</string>
+    <string name="first_list_uninstall">卸载</string>
+
+    <!-- Data Usage / Battery -->
+    <string name="home_appmanager_donghua_tv">内存占用</string>
+    <string name="traffic_progress_bar">本月已用</string>
+    <string name="traff_first_page_small_set_month_used">本月已使用(MB)</string>
+    <string name="traff_first_page_small_set_low">您可以输入您的套餐流量和本月已使用的流量</string>
+    <string name="traff_first_page_small_set">设置流量套餐</string>
+    <string name="no_used_traffic">暂无流量排行数据，请稍后查看</string>
+    <string name="traffic_used_lot_stop_network">关闭网络</string>
+    <string name="traffic_used_lot_cancel">继续使用</string>
+    <string name="traffic_used_lot_text">您的本月流量已超%1$s%%，请注意使用，避免流量超出给你带来的额外消费</string>
+    <string name="traffic_used_finish_text">您的本月流量已经用尽，建议关闭网络连接</string>
+    <string name="traffic_used_lot">流量报警</string>
+    <string name="flow_settting_fist">超额提醒</string>
+    <string name="flow_settting_name">流量设置</string>
+    <string name="flow_settting_second">月剩余流量预警</string>
+    <string name="flow_settting_sure_bg">完成设置</string>
+    <string name="flow_settting_dialog">月已用流量</string>
+    <string name="flow_settting_dialog_remain">当每月已用流量达到设定值时，启动提醒</string>
+    <string name="flow_settting_thrid">每月结算日</string>
+    <string name="flow_settting_thrid_first_tv">月结日</string>
+    <string name="flow_settting_thrid_second_tv">流量套餐(MB)</string>
+        <string name="flow_settting_thrid_month_used_data">本月已使用(MB)</string>
+    <string name="app_elec_aca">电量</string>
+    <string name="app_elec_stop">停止</string>
+    <string name="app_elec_zhuyi">注意！</string>
+    <string name="app_flow_elec">流量消耗</string>
+    <string name="app_flow">流量</string>
+    <string name="app_elec">统计排行</string>
+    <string name="today_triffic">今日流量</string>
+    <string name="month_remainder_triffic">本月剩余</string>
+    <string name="month_triffic">本月已用</string>
+    <string name="flow_charts_this_month">本月流量折线图</string>
+    <string name="home_app_manager_apps_delete">应用卸载</string>
+    <string name="home_app_manager_mem_clean">为您清理了%1$s内存</string>
+        <string name="home_app_manager_mem_clean_one">为您清理了1MB内存</string>
+    
+    <!-- What's Hot -->
+    <string name="hot_app_free">免费</string>
+
+    <string-array name="default_psw_protect_entrys">
+        <item>我母亲的姓名是？</item>
+        <item>我父亲的姓名是？</item>
+        <item>我最喜欢的老师名字？</item>
+        <item>我的身份证后六位？</item>
+    </string-array>
+
+    <string name="mode_save_hint">保存情景模式</string>
+    <string name="time_lock_save_hint">保存时间锁</string>
+    <string name="location_lock_save_hint">保存位置锁</string>
+    <string name="mode_save_ask">是否保存%1$s？</string>
+    <string name="repeat">重复</string>
+    <string name="no_repeat">不重复</string>
+
+    <string-array name="days_of_week">
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+        <item>周日</item>
+    </string-array>
+
+    <string name="select_mode">选择情景模式</string>
+    <string name="choose_ssid">请选择wifi热点</string>
+    <string name="choose_enter_mode">进入时操作</string>
+    <string name="choose_quit_mode">离开时操作</string>
+
+    <!-- guide page begin -->
+    <string name="guide_page1_title">情景模式</string>
+    <string name="guide_page1_content">基于场景智能切换应用加锁方案</string>
+    <string name="guide_page2_title">隐私防护等级</string>
+    <string name="guide_page2_content">全球首创隐私等级，手机隐私状况全知晓</string>
+    <string name="guide_page3_title">隐私联系人</string>
+    <string name="guide_page3_content">保护我和TA的通讯隐私</string>
+    <string name="guide_page4_title">应用消耗监控</string>
+    <string name="guide_page4_content">轻松查看流量/电量消耗</string>
+    <string name="guide_button_text">立即体验</string>
+    <!-- guide page end -->
+
+    <string name="lock_mode_name_cant_empty">情景模式名称不能为空</string>
+    <string name="lock_mode_delete_tip_title">删除情景模式</string>
+    <string name="lock_mode_delete_tip_both">您所选择的模式被应用在时间锁/位置锁中，删除该情景模式将会删除对应的锁定设置</string>
+    <string name="lock_mode_delete_tip_time">您所选择的模式被应用在时间锁中，删除该情景模式将会删除对应的锁定设置</string>
+    <string name="lock_mode_delete_tip_location">您所选择的模式被应用在位置锁中，删除该情景模式将会删除对应的锁定设置</string>
+    <string name="please_input_name">请输入名称</string>
+    <string name="please_selset_wifi">请选择wifi热点</string>
+    <string name="cur_mode_delete_tip">%1$s正在使用，删除后会使用访客模式, 确定删除该模式？</string>
+     <string name="mode_delete_tip">是否删除情景模式？</string>
+    
+    
+    <string name="add_mode">添加情景模式</string>
+    <string name="add_new_time_lock">添加时间锁</string>
+    <string name="add_new_location_lock">添加位置锁</string>
+    <string name="save_successful">保存成功</string>
 
 </resources>

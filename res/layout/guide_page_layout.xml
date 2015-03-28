@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/guide_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/guide_page_image_height"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerInside"
+        android:layout_marginTop="@dimen/guide_page_image_margin_top" />
+
+    <TextView
+        android:id="@+id/guide_tv_content"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:layout_marginBottom="@dimen/guide_content_margin_buttom"
+        android:textColor="@color/white"
+        android:textSize="@dimen/guide_page_content_font_size" />
+    
+    <TextView
+        android:id="@+id/guide_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/guide_tv_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/guide_title_margin_buttom"
+        android:textColor="@color/white"
+        android:textSize="@dimen/guide_page_title_font_size" />
+
+    <Button
+        android:id="@+id/button_guide"
+        android:layout_width="@dimen/guide_go_button_width"
+        android:layout_height="@dimen/guide_go_button_height"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingRight="6dp"
+        android:layout_marginBottom="@dimen/guide_go_button_margin_buttom"
+        android:background="@drawable/letgo_bg"
+        android:text="@string/guide_button_text"
+        android:textColor="@color/guide_page4_background_color"
+        android:textSize="@dimen/guide_go_button_text_size"
+        android:visibility="invisible" />
+
+</RelativeLayout>

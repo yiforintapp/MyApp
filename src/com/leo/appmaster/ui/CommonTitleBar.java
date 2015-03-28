@@ -3,7 +3,7 @@ package com.leo.appmaster.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +14,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.home.HomeActivity;
 
 public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
     private ImageView mIvBackArrow;
     private TextView mTvTitle;
-    private TextView mTvLayoutRight;
+    private TextView mTvSpinner;
+    private ImageView mImgSpinner;
     private TextView mTvOptionText;
     private ImageView mTvOptionImage;
     private ImageView mTvLogo;
@@ -47,7 +47,8 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mLayoutBackView = findViewById(R.id.layout_title_back);
         mIvBackArrow = (ImageView) findViewById(R.id.iv_back_arrow);
         mTvTitle = (TextView) findViewById(R.id.tv_title);
-        mTvLayoutRight = (TextView) findViewById(R.id.tv_layout_right);
+        mTvSpinner = (TextView) findViewById(R.id.tv_layout_right);
+        mImgSpinner = (ImageView) findViewById(R.id.img_layout_right);
         mTvOptionText = (TextView) findViewById(R.id.tv_option_text);
         mTvOptionImage = (ImageView) findViewById(R.id.tv_option_image);
         mLayoutSpiner = findViewById(R.id.layout_right);
@@ -66,11 +67,15 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     }
 
     public void setSpinerText(String text) {
-        mTvLayoutRight.setText(text);
+        mTvSpinner.setText(text);
     }
 
     public void setSpinerText(int resid) {
-        mTvLayoutRight.setText(resid);
+        mTvSpinner.setText(resid);
+    }
+
+    public void setSpinerImage(int resid) {
+        mImgSpinner.setImageResource(resid);
     }
 
     public void setSpinerListener(OnClickListener listener) {
@@ -145,4 +150,14 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         }
 
     }
+    
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {
+            
+        }
+    }
+    
 }

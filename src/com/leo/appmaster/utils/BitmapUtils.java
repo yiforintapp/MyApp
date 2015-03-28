@@ -25,13 +25,11 @@ public class BitmapUtils {
 		if (source == null)
 			return null;
 		Bitmap mGaryBitmap = source.copy(source.getConfig(), true);
-		int red, green, blue, alpha, agr;
+		int red, green, blue, alpha;
 		int pixel;
 		for (int i = 0; i < mGaryBitmap.getWidth(); i++) {
 			for (int j = 0; j < mGaryBitmap.getHeight(); j++) {
 				pixel = mGaryBitmap.getPixel(i, j);
-				agr = (Color.red(pixel) + Color.green(pixel) + Color
-						.blue(pixel)) / 3;
 
 				alpha = (int) (Color.alpha(pixel));
 				red = (int) (Color.red(pixel) * 0.35);

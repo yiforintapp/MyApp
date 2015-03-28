@@ -8,11 +8,12 @@
 
     <TextView
         android:id="@+id/menu_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
+        android:gravity="center"
         android:singleLine="true"
         android:textColor="@color/setting_menu_text_color"
-        android:textSize="@dimen/popuwindow_menu_text_size" />
+        android:textSize="15dp" />
 
 </LinearLayout>

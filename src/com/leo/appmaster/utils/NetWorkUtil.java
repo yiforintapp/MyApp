@@ -7,12 +7,13 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 
 /**
  * A tool class to access network state
  */
 public class NetWorkUtil {
-    
+
     /**
      * Check whether the network is available or not
      */
@@ -45,6 +46,19 @@ public class NetWorkUtil {
             return true;
         }
         return false;
+    }
+
+    public static String getCurWifiName(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetInfo != null
+                && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            return wifiManager.getConnectionInfo().getSSID().replace("\"", "");
+        } else {
+            return "";
+        }
     }
 
     /**

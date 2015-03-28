@@ -36,23 +36,23 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
 	private void openShowGoogleGuide() {
 	    boolean showGP = false;
 		if (AppUtil.appInstalled(getApplicationContext(), "com.android.vending")) {
-		    try {
-		          Intent intent = new Intent(Intent.ACTION_VIEW);
-		            Uri uri = Uri
-		                    .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-		            intent.setData(uri);
-		            ComponentName cn = new ComponentName("com.android.vending",
-		                    "com.google.android.finsky.activities.MainActivity");
-		            intent.setComponent(cn);
-		            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		            startActivity(intent);
-		            Intent intent2 = new Intent(this, GooglePlayGuideActivity.class);
-		            intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		            startActivity(intent2);
-		            showGP = true;
-		    } catch (Exception e) {
-		        
-		    }
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri
+                        .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                intent.setData(uri);
+                ComponentName cn = new ComponentName("com.android.vending",
+                        "com.google.android.finsky.activities.MainActivity");
+                intent.setComponent(cn);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                Intent intent2 = new Intent(this, GooglePlayGuideActivity.class);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent2);
+                showGP = true;
+            } catch (Exception e) {
+
+            }
 		} 
 		if(!showGP) {
 			Intent intent = new Intent(Intent.ACTION_VIEW);

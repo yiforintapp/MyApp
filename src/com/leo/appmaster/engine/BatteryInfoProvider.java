@@ -9,21 +9,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
-import android.hardware.SensorManager;
 import android.os.BatteryStats;
-import android.os.BatteryStats.Uid;
 import android.os.Parcel;
-import android.os.Process;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.telephony.SignalStrength;
 import android.util.Log;
-import android.util.SparseArray;
 
 import com.android.internal.app.IBatteryStats;
 import com.android.internal.os.BatteryStatsImpl;
@@ -63,7 +58,7 @@ public class BatteryInfoProvider {
 
 	public BatteryInfoProvider(Context context) {
 		testType = 1;
-		mContext = context;
+		mContext = context.getApplicationContext();
 		mBatteryInfo = IBatteryStats.Stub.asInterface(ServiceManager
 				.getService("batteryinfo"));
 		mPowerProfile = new PowerProfile(context);

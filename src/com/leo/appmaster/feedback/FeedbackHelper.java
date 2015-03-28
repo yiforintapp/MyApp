@@ -2,8 +2,6 @@ package com.leo.appmaster.feedback;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -19,13 +17,10 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
-
 import com.leo.appmaster.utils.Utilities;
 
 /**
@@ -46,9 +41,6 @@ public class FeedbackHelper {
 
 	private int mCommitIndex = -1;
 
-	private final ExecutorService mExecutorService = Executors
-			.newSingleThreadExecutor();
-
 	private static FeedbackHelper sInstance;
 
 	private Runnable mCommitTask = new Runnable() {
@@ -56,10 +48,6 @@ public class FeedbackHelper {
 		public void run() {
 			mCommitIndex++;
 			boolean success = true;
-			// AppMasterDBHelper dbHelper = AppMasterDBHelper.getInstance();
-			// Cursor c = dbHelper.query(TABLE_NAME, null, null, null, null,
-			// null,
-			// null);
 			Cursor c = AppMasterApplication.getInstance().getContentResolver()
 					.query(Constants.FEEDBACK_URI, null, null, null, null);
 
@@ -132,7 +120,7 @@ public class FeedbackHelper {
 				mCommitIndex = -1;
 //				dbHelper.close();
 			} else if (mCommitIndex < MAX_COMMIT_COUNT) { // fail, retry
-				mExecutorService.execute(mCommitTask);
+			    AppMasterApplication.getInstance().postInAppThreadPool(mCommitTask);
 			} else {
 //				dbHelper.close();
 			}
@@ -156,7 +144,7 @@ public class FeedbackHelper {
 	public void tryCommit() {
 		if (mCommitIndex < 0) {
 			mCommitIndex = 0;
-			mExecutorService.execute(mCommitTask);
+			AppMasterApplication.getInstance().postInAppThreadPool(mCommitTask);
 		}
 	}
 
@@ -170,7 +158,7 @@ public class FeedbackHelper {
 	public void tryCommit(final String category, final String email,
 			final String content) {
 		mCommitIndex = MAX_COMMIT_COUNT;
-		mExecutorService.execute(new Runnable() {
+		AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 			@Override
 			public void run() {
 				boolean success = false;
@@ -185,8 +173,6 @@ public class FeedbackHelper {
 							.getContentResolver()
 							.insert(Constants.FEEDBACK_URI, values);
 					long id = ContentUris.parseId(uri);
-					// long id = AppMasterDBHelper.getInstance().insert(
-					// TABLE_NAME, Constants.ID, values);
 					if (id > -1) {
 						mCommitIndex = -1;
 						success = true;

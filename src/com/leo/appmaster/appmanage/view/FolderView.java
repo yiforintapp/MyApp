@@ -32,9 +32,9 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.model.FolderItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.FancyCoverFlow;
+import com.leo.appmaster.ui.FancyCoverFlowAdapter;
 import com.leo.appmaster.ui.LeoAppViewPager;
-import com.leo.appmaster.utils.LeoLog;
-
 
 public class FolderView extends RelativeLayout implements OnClickListener,
 		OnItemSelectedListener, LeoAppViewPager.OnPageChangeListener {
@@ -51,7 +51,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 	private List<BaseFolderFragment> mFragmentList;
 	private LayoutInflater mInlater;
 	private View mBackView;
-	private FolderTitleGallery mTitleCoverFlowView;
+	private FancyCoverFlow mTitleCoverFlowView;
 	private LeoAppViewPager mViewPager;
 	private ArrayList<String> mItemTitles;
 	private TitleAdapter mTitleAdapter;
@@ -94,7 +94,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 
 		mBackView = findViewById(R.id.iv_back_arrow);
 		mBackView.setOnClickListener(this);
-		mTitleCoverFlowView = (FolderTitleGallery) findViewById(R.id.title_cover_flow);
+		mTitleCoverFlowView = (FancyCoverFlow) findViewById(R.id.title_cover_flow);
 		mTitleCoverFlowView.setAdapter(mTitleAdapter);
 		// mTitleCoverFlowView.setUnselectedAlpha(0.1f);
 		mTitleCoverFlowView.setUnselectedSaturation(1.0f);
@@ -102,7 +102,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		mTitleCoverFlowView.setMaxRotation(0);
 		mTitleCoverFlowView.setScaleDownGravity(0.75f);
 		mTitleCoverFlowView
-				.setActionDistance(FolderTitleGallery.ACTION_DISTANCE_AUTO);
+				.setActionDistance(FancyCoverFlow.ACTION_DISTANCE_AUTO);
 		mTitleCoverFlowView.setOnItemSelectedListener(this);
 
 		fillTitle();
@@ -239,7 +239,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 		}
 	}
 
-	private class TitleAdapter extends FolderTitleGalleryAdapter {
+	private class TitleAdapter extends FancyCoverFlowAdapter {
 		@Override
 		public int getCount() {
 			return mItemTitles.size();
@@ -261,7 +261,7 @@ public class FolderView extends RelativeLayout implements OnClickListener,
 			if (reusableView == null) {
 				reusableView = new TextView(getContext());
 				reusableView
-						.setLayoutParams(new FolderTitleGallery.LayoutParams(
+						.setLayoutParams(new FancyCoverFlow.LayoutParams(
 								mFolderTitleWidth, mFolderTitleHeight));
 			}
 			TextView textView = (TextView) reusableView;

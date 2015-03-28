@@ -36,8 +36,6 @@ public class PushUIHelper {
     private UserActManager mManager = null;
     private String mTitle = null;
     private String mContent = null;
-    /* had status bar shown? */
-    private boolean mStatusBar = false;
     private boolean mIsLockScreen = false;
     private NewActListener mListener;
 
@@ -49,7 +47,7 @@ public class PushUIHelper {
     }
 
     private PushUIHelper(Context ctx) {
-        mContext = ctx;
+        mContext = ctx.getApplicationContext();
         nm = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         ACTION_CHECK_PUSH = ctx.getPackageName() + ACTION_CHECK_SUFFIX;
         ACTION_IGNORE_PUSH = ctx.getPackageName() + ACTION_IGNORE_SUFFIX;
@@ -104,14 +102,12 @@ public class PushUIHelper {
             if (nm != null) {
                 nm.cancel(PUSH_NOTIFICATION_ID);
             }
-            mStatusBar = false;
             if (mListener != null) {
                 mListener.onNewAct(false, adID, title, content);
             }
             showPushActivity(adID, title, content, false);
         } else {
             LeoLog.d(TAG, "notify user with status bar");
-            mStatusBar = true;
             sendPushNotification(adID, title, content);
         }
     }

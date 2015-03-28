@@ -7,9 +7,9 @@ import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -21,7 +21,6 @@ public class LEOAlarmDialog extends LEOBaseDialog {
 
     private TextView mTitle;
     private TextView mContent;
-    private ImageView mLeftIcon;
     private TextView mLeftBtn;
     private TextView mRightBtn;
     private Object mUserData;
@@ -76,15 +75,6 @@ public class LEOAlarmDialog extends LEOBaseDialog {
         }
     }
 
-    public void setIcon(Drawable drawable) {
-        if (drawable != null) {
-            mLeftIcon.setVisibility(View.VISIBLE);
-            mLeftIcon.setImageDrawable(drawable);
-        } else {
-            mLeftIcon.setVisibility(View.GONE);
-        }
-    }
-
     public void setLeftBtnStr(String lStr) {
         if (lStr != null) {
             mLeftBtn.setText(lStr);
@@ -124,26 +114,6 @@ public class LEOAlarmDialog extends LEOBaseDialog {
         });
     }
 
-    public void setLeftBtnVisibility(boolean flag) {
-        if (!flag) {
-            mLeftBtn.setVisibility(View.GONE);
-        }
-    }
-
-    public void setRightBtnVisibility(boolean flag) {
-        if (!flag) {
-            mRightBtn.setVisibility(View.GONE);
-        }
-    }
-
-    public void setRightBtnParam(float width, float height) {
-        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mRightBtn
-                .getLayoutParams();
-        linearParams.height = (int) height;
-        linearParams.width = (int) width;
-        mRightBtn.setLayoutParams(linearParams);
-    }
-
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
         mRightBtn.setTag(rListener);
         mRightBtn.setOnClickListener(new View.OnClickListener() {
@@ -164,9 +134,9 @@ public class LEOAlarmDialog extends LEOBaseDialog {
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
 
-        mLeftIcon = (ImageView) dlgView.findViewById(R.id.dlg_left_icon);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
+
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
             @Override
@@ -191,4 +161,17 @@ public class LEOAlarmDialog extends LEOBaseDialog {
         mListener = listener;
     }
 
+    public void setLeftBtnVisibility(boolean flag) {
+        if (!flag) {
+            mLeftBtn.setVisibility(View.GONE);
+        }
+    }
+
+    public void setRightBtnParam(float width, float height) {
+        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mRightBtn
+                .getLayoutParams();
+        linearParams.height = (int) height;
+        linearParams.width = (int) width;
+        mRightBtn.setLayoutParams(linearParams);
+    }
 }

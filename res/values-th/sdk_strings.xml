@@ -1,0 +1,37 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- auto check update -->
+    <string name="update_title">อัพเดท</string>
+    <string name="do_update">อัพเดททันที</string>
+    <string name="ignore_update">ต่อมา</string>
+    <string name="cancel_download">ยกเลิก</string>
+    <string name="hide_download_window">ปิด</string>
+    <string name="downloading"><xliff:g id="app_name">%1$s</xliff:g>ดาวน์โหลดอยู่</string>
+    <string name="downloading_notification"><xliff:g id="app_name">%1$s</xliff:g>ดาวน์โหลดอยู่&#160;&#160;&#160;&#160;<xliff:g id="percentage">%2$d</xliff:g></string>
+    <string name="downloaded_size"><xliff:g id="done">%1$1.2f</xliff:g>MB/<xliff:g id="total">%2$1.2f</xliff:g>MB</string>
+    <string name="update_datail_msg"><xliff:g id="app_name">%1$s</xliff:g>รุ่นใหม่ที่ใช้ได้\nรุ่นใหม่:&#160;<xliff:g id="version">%2$s</xliff:g>&#160;&#160;ขนาด:&#160;<xliff:g id="size">%3$2.2f</xliff:g>MB\nคุณสมบัติ:\n<xliff:g id="features">%4$s</xliff:g></string>
+    <!-- user check update -->
+    <string name="tips_title">ประกาศ</string>
+    <string name="download_error">ดาวน์โหลดล้มเหลว กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของคุณและลองอีกครั้ง</string>
+    <string name="network_error_msg">เชื่อมต่อล้มเหลว กรุณาตรวจสอบการตั้งค่าเครือข่ายของคุณ</string>
+    <string name="check_update">เช็คการปรับปรุง</string>
+    <string name="checking_update_msg">เช็คการปรับปรุงใหม่  &#8230;</string>
+    <string name="check_failed">เช็คม่ได้</string>
+    <string name="network_busy_msg">เครือข่ายไม่ว่าง โปรดลองอีกครั้งในภายหลัง</string>
+    <string name="retry">เอาอีกครั้ง</string>
+    <string name="commit">แน่ใจ</string>
+    <string name="update_no_need">คุณมีรุ่นล่าสุดที่ติดตั้ง</string>
+    <string name="find_update">รุ่นใหม่ที่ใช้ได้</string>
+    <string name="new_version">รุ่นใหม่</string>
+    <string name="features">คุณสมบัติ</string>
+    <string name="size">ขนาด</string>
+    <!-- notification -->
+    <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g>อัพเดท</string>
+    <string name="version_found">รุ่นใหม่ที่ใช้ได้<xliff:g id="new_version">%1$s</xliff:g>อัพเดททันที</string>
+    <string name="click_to_update">อัพเดททันที</string>
+    <!-- push -->
+    <string name="phone_number">หมายเลขโทรศัพท์มือถือ</string>
+    <string name="india_only">จำกัดอินเดีย</string>
+    <string name="invalid_number">กรุณาใส่หมายเลขโทรศัพท์มือถือที่ถูกต้อง</string>
+    <string name="goto_gp">5-Star</string>
+</resources>

@@ -80,7 +80,7 @@ public class DownloadFileTask implements Runnable {
 		old_file_size = oldSize;
 		this.id = id;
 
-		mContext = context;
+		mContext = context.getApplicationContext();
 		mTemp = StorageUtil.getDownloadTempDir() + File.separator
 				+ Utilities.md5(mUrl);
 		mTempFile = new File(mTemp);

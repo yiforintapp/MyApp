@@ -9,6 +9,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Shader;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -68,6 +69,12 @@ public class BatteryChartsView extends View{
         canvas.drawLine(poit2X, poit1Y, poit2X, DipPixelUtil.dip2px(mContext, 20), paint);
     }
 
-    
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {          
+        }
+    }
     
 }

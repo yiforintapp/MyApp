@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/locker_theme_guide_guideTitleTV_marginTop"
             android:text="@string/locker_theme_guide"
+            android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/locker_theme_guide_guideTitleTV_textsize" />
 

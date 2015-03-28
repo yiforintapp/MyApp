@@ -27,29 +27,27 @@
     <LinearLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="66dp" 
+        android:layout_height="80dp" 
         android:orientation="horizontal" 
         android:paddingTop="10dp"
-        android:paddingLeft="55dp"
-        android:paddingRight="55dp"
+        android:paddingBottom="12dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
         android:background="@drawable/bottom_button">
         <Button 
             android:id="@+id/select_all"
-            android:layout_width="1dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableTop="@drawable/select_all_selector"
             android:textColor="@drawable/selector_button_text"
             android:text="@string/app_select_all"
             android:background="@android:color/transparent"/>
-        
-        <View
-            android:layout_width="5dp"
-            android:layout_height="match_parent" />
+
        <Button 
             android:id="@+id/hide_image"
-            android:layout_width="1dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableTop="@drawable/hide_picture_selector"
             android:textColor="@drawable/selector_button_text"

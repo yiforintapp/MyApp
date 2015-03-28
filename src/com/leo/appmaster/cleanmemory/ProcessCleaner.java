@@ -3,9 +3,6 @@ package com.leo.appmaster.cleanmemory;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.utils.ProcessUtils;
-
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
@@ -13,6 +10,8 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+
+import com.leo.appmaster.utils.ProcessUtils;
 
 public class ProcessCleaner {
 
@@ -29,7 +28,8 @@ public class ProcessCleaner {
 	private long mCurUsedMem;
 
 	private static int CLEAN_INTERVAL = 30 * 1000;
-
+//	private static int CLEAN_INTERVAL = 1000;
+	
 	public static synchronized ProcessCleaner getInstance(Context ctx) {
 		if (mInstance == null) {
 			mInstance = new ProcessCleaner(

@@ -1,0 +1,453 @@
+
+package com.leo.appmaster.applocker;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.Intent.ShortcutIconResource;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LocationLock;
+import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.model.TimeLock;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.LockModeEvent;
+import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.utils.LeoLog;
+
+public class LockModeFragment extends BaseFragment implements OnClickListener, OnItemClickListener,
+        OnItemLongClickListener, Editable {
+
+    private ListView mModeListView;
+    private View mListHeader;
+    private List<LockMode> mModeList;
+    private ModeAdapter mModeAdapter;
+
+    private boolean mEditing;
+
+    private LEOAlarmDialog mMakeSureChange;
+
+    @Override
+    protected int layoutResourceId() {
+        return R.layout.fragment_lock_mode;
+    }
+
+    @Override
+    protected void onInitUI() {
+        mModeListView = (ListView) findViewById(R.id.mode_list);
+        mModeListView.setOnItemClickListener(this);
+        mModeListView.setOnItemLongClickListener(this);
+        mListHeader = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_item_header,
+                mModeListView, false);
+        TextView tv = (TextView) mListHeader.findViewById(R.id.tv_add_more);
+        tv.setText(R.string.add_mode);
+        mModeListView.addHeaderView(mListHeader);
+
+        loadModes();
+        LeoEventBus.getDefaultBus().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    private void loadModes() {
+        mModeList = LockManager.getInstatnce().getLockMode();
+        mModeAdapter = new ModeAdapter(mActivity);
+        mModeListView.setAdapter(mModeAdapter);
+
+    }
+
+    public void onEventMainThread(LockModeEvent event) {
+        loadModes();
+        mModeAdapter.notifyDataSetChanged();
+    }
+
+    private void showSelectDeleteDialog(final ImageView iv, final LockMode mode, final int resault) {
+        if (mMakeSureChange == null) {
+            mMakeSureChange = new LEOAlarmDialog(mActivity);
+        }
+        mMakeSureChange.setTitle(getString(R.string.lock_mode_delete_tip_title));
+
+        if (resault == 0) {
+            mMakeSureChange.setContent(getString(R.string.lock_mode_delete_tip_time));
+        } else if (resault == 1) {
+            mMakeSureChange.setContent(getString(R.string.lock_mode_delete_tip_location));
+        } else if (resault == 2) {
+            mMakeSureChange.setContent(getString(R.string.lock_mode_delete_tip_both));
+        }
+
+        mMakeSureChange.setOnClickListener(new OnDiaogClickListener() {
+            @Override
+            public void onClick(int which) {
+                if (which == 0) {
+
+                } else if (which == 1) {
+                    mode.selected = !mode.selected;
+                    if (mode.selected) {
+                        iv.setImageResource(R.drawable.select);
+                    } else {
+                        iv.setImageResource(R.drawable.unselect);
+                    }
+                }
+            }
+        });
+        mMakeSureChange.show();
+    }
+
+    private void showDeleteDialog(final List<LockMode> deleteList) {
+        if (mMakeSureChange == null) {
+            mMakeSureChange = new LEOAlarmDialog(mActivity);
+        }
+        mMakeSureChange.setTitle(getString(R.string.lock_mode_delete_tip_title));
+        mMakeSureChange.setContent(getString(R.string.mode_delete_tip));
+
+        mMakeSureChange.setOnClickListener(new OnDiaogClickListener() {
+            @Override
+            public void onClick(int which) {
+                if (which == 0) {
+
+                } else if (which == 1) {
+                    LockManager lm = LockManager.getInstatnce();
+                    for (LockMode lockMode : deleteList) {
+                        lm.removeLockMode(lockMode);
+                    }
+                    mModeAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+        mMakeSureChange.show();
+    }
+
+    private void showCurModeDeleteDialog(final LockMode mode, final List<LockMode> deleteList) {
+        if (mMakeSureChange == null) {
+            mMakeSureChange = new LEOAlarmDialog(mActivity);
+        }
+        mMakeSureChange.setTitle(getString(R.string.lock_mode_delete_tip_title));
+        mMakeSureChange.setContent(getString(R.string.cur_mode_delete_tip, mode.modeName));
+
+        mMakeSureChange.setOnClickListener(new OnDiaogClickListener() {
+            @Override
+            public void onClick(int which) {
+                LockManager lm = LockManager.getInstatnce();
+                if (which == 0) {
+                    deleteList.remove(mode);
+                    mode.selected = !mode.selected;
+                } else if (which == 1) {
+
+                }
+                for (LockMode lockMode : deleteList) {
+                    lm.removeLockMode(lockMode);
+                }
+                mModeAdapter.notifyDataSetChanged();
+            }
+        });
+        mMakeSureChange.show();
+    }
+
+    private void showShortcut(final LockMode mode) {
+        if (mMakeSureChange == null) {
+            mMakeSureChange = new LEOAlarmDialog(mActivity);
+        }
+        mMakeSureChange.setTitle(getString(R.string.create_mode_shortcut_title));
+        mMakeSureChange.setContent(getString(R.string.create_mode_shortcut_content));
+        mMakeSureChange.setOnClickListener(new OnDiaogClickListener() {
+            @Override
+            public void onClick(int which) {
+                if (which == 0) {
+                } else if (which == 1) {
+                    Toast.makeText(mActivity,
+                            mActivity.getString(R.string.create_mode_shortcut_tip, mode.modeName),
+                            Toast.LENGTH_SHORT).show();
+                    installShortcut(mode);
+                }
+            }
+        });
+        mMakeSureChange.show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        LeoEventBus.getDefaultBus().unregister(this);
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onClick(View view) {
+        LockMode mode = null;
+        switch (view.getId()) {
+            case R.id.img_mode_link:
+                mode = (LockMode) view.getTag();
+                showShortcut(mode);
+                break;
+            case R.id.iv_sort_select:
+                mode = (LockMode) view.getTag();
+                ImageView iv = (ImageView) view;
+                if (mEditing) {
+                    int checkResault = checkModeUsing(mode);
+                    if (!mode.selected && checkResault != -1) {
+                        showSelectDeleteDialog(iv, mode, checkResault);
+                    } else {
+                        mode.selected = !mode.selected;
+                        if (mode.selected) {
+                            iv.setImageResource(R.drawable.select);
+                        } else {
+                            iv.setImageResource(R.drawable.unselect);
+                        }
+                    }
+
+                } else {
+                    LockManager.getInstatnce().setCurrentLockMode(mode);
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "modeschage", "modes");
+                    Toast.makeText(mActivity,
+                            mActivity.getString(R.string.mode_change, mode.modeName),
+                            Toast.LENGTH_SHORT).show();
+                    mModeAdapter.notifyDataSetChanged();
+                }
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+    private int checkModeUsing(LockMode lockMode) {
+        int resault = -1;
+        LockManager lm = LockManager.getInstatnce();
+        List<TimeLock> timeList = lm.getTimeLock();
+        List<LocationLock> locationList = lm.getLocationLock();
+        for (TimeLock timeLock : timeList) {
+            if (timeLock.lockModeId == lockMode.modeId) {
+                resault = 0;
+                break;
+            }
+        }
+
+        for (LocationLock locationLock : locationList) {
+            if (locationLock.entranceModeId == lockMode.modeId
+                    || locationLock.quitModeId == lockMode.modeId) {
+                if (resault == 0) {
+                    resault = 2;
+                } else {
+                    resault = 1;
+                }
+                break;
+            }
+        }
+        return resault;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        if (position == 0) {
+            addLockMode();
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "modesadd", "modes");
+        } else {
+            LockMode lockMode = mModeList.get(position - 1);
+            if (lockMode.defaultFlag == 1) {
+                if (!lockMode.haveEverOpened) {
+                    Intent intent = new Intent(mActivity, RecommentAppLockListActivity.class);
+                    intent.putExtra("target", 0);
+                    startActivity(intent);
+                    lockMode.haveEverOpened = true;
+                    LockManager.getInstatnce().updateMode(lockMode);
+                    return;
+                }
+            }
+            editLockMode(lockMode, false);
+        }
+    }
+
+    private void addLockMode() {
+        Intent intent = new Intent(mActivity, LockModeEditActivity.class);
+        intent.putExtra("mode_name", getString(R.string.new_mode));
+        intent.putExtra("new_mode", true);
+        startActivity(intent);
+    }
+
+    private void installShortcut(LockMode lockMode) {
+        Intent shortcutIntent = new Intent(mActivity, LockScreenActivity.class);
+        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        shortcutIntent.putExtra("quick_lock_mode", true);
+        shortcutIntent.putExtra("lock_mode_id", lockMode.modeId);
+        shortcutIntent.putExtra("lock_mode_name", lockMode.modeName);
+        // shortcutIntent.setAction(Intent.ACTION_MAIN);
+        // shortcutIntent.addCategory(Intent.CATEGORY_DEFAULT);
+
+        Intent shortcut = new Intent(
+                "com.android.launcher.action.INSTALL_SHORTCUT");
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, lockMode.modeName);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        /*
+         * 0: unlock all; 1: visitor mode; 2: office mode; 3: family mode; -1:
+         * other
+         */
+        ShortcutIconResource iconRes = null;
+        if (lockMode.defaultFlag == 0) {
+            iconRes = Intent.ShortcutIconResource
+                    .fromContext(mActivity, R.drawable.lock_mode_unlock);
+        } else if (lockMode.defaultFlag == 1) {
+            iconRes = Intent.ShortcutIconResource
+                    .fromContext(mActivity, R.drawable.lock_mode_visitor);
+        } else if (lockMode.defaultFlag == 2) {
+            iconRes = Intent.ShortcutIconResource
+                    .fromContext(mActivity, R.drawable.lock_mode_office);
+        } else if (lockMode.defaultFlag == 3) {
+            iconRes = Intent.ShortcutIconResource
+                    .fromContext(mActivity, R.drawable.lock_mode_family);
+        } else {
+            iconRes = Intent.ShortcutIconResource
+                    .fromContext(mActivity, R.drawable.lock_mode_default);
+        }
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+        shortcut.putExtra("duplicate", false);
+        shortcut.putExtra("from_shortcut", true);
+        mActivity.sendBroadcast(shortcut);
+
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "shortcuts", lockMode.modeName);
+    }
+
+    private void editLockMode(LockMode lockMode, boolean addNewMode) {
+        Intent intent = new Intent(mActivity, LockModeEditActivity.class);
+        if (addNewMode) {
+            intent.putExtra("mode_name", mActivity.getString(R.string.new_mode));
+            intent.putExtra("mode_id", -1);
+        } else {
+            intent.putExtra("mode_name", lockMode.modeName);
+            intent.putExtra("mode_id", lockMode.modeId);
+        }
+        intent.putExtra("new_mode", addNewMode);
+        startActivity(intent);
+    }
+
+    class ModeAdapter extends BaseAdapter {
+
+        LayoutInflater mInflater;
+
+        public ModeAdapter(Context ctx) {
+            mInflater = LayoutInflater.from(ctx);
+        }
+
+        @Override
+        public int getCount() {
+            return mModeList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mModeList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ModeHolder holder;
+            if (convertView == null) {
+                holder = new ModeHolder();
+                convertView = mInflater.inflate(R.layout.item_lock_mode, parent, false);
+                holder.modeName = (TextView) convertView.findViewById(R.id.tv_lock_mode_name);
+                holder.modeLink = (ImageView) convertView.findViewById(R.id.img_mode_link);
+                holder.modeSelect = (ImageView) convertView.findViewById(R.id.iv_sort_select);
+                convertView.setTag(holder);
+            } else {
+                holder = (ModeHolder) convertView.getTag();
+            }
+            holder.lockMode = mModeList.get(position);
+            holder.modeName.setText(holder.lockMode.modeName);
+
+            if (mEditing) {
+                holder.modeLink.setVisibility(View.INVISIBLE);
+                if (holder.lockMode.defaultFlag != -1) {
+                    holder.modeSelect.setVisibility(View.INVISIBLE);
+                } else {
+                    holder.modeSelect.setVisibility(View.VISIBLE);
+                    if (holder.lockMode.selected) {
+                        holder.modeSelect.setImageResource(R.drawable.select);
+                    } else {
+                        holder.modeSelect.setImageResource(R.drawable.unselect);
+                    }
+                }
+            } else {
+                holder.modeLink.setVisibility(View.VISIBLE);
+                holder.modeSelect.setVisibility(View.VISIBLE);
+                if (holder.lockMode.isCurrentUsed) {
+                    holder.modeSelect.setImageResource(R.drawable.radio_buttons);
+                } else {
+                    holder.modeSelect.setImageResource(R.drawable.unradio_buttons);
+                }
+            }
+
+            holder.modeSelect.setOnClickListener(LockModeFragment.this);
+            holder.modeLink.setOnClickListener(LockModeFragment.this);
+
+            holder.modeLink.setTag(holder.lockMode);
+            holder.modeSelect.setTag(holder.lockMode);
+            return convertView;
+        }
+    }
+
+    class ModeHolder {
+        TextView modeName;
+        ImageView modeLink;
+        ImageView modeSelect;
+
+        LockMode lockMode;
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        ((LockModeActivity) mActivity).onEditMode(0);
+        mModeListView.setOnItemClickListener(null);
+        mEditing = true;
+        mModeAdapter.notifyDataSetChanged();
+        return false;
+    }
+
+    @Override
+    public void onFinishEditMode() {
+        mEditing = false;
+        mModeListView.setOnItemClickListener(this);
+        mModeAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onChangeItem() {
+        List<LockMode> deleteList = new ArrayList<LockMode>();
+        for (LockMode lock : mModeList) {
+            if (lock.selected) {
+                deleteList.add(lock);
+            }
+        }
+        LockManager lm = LockManager.getInstatnce();
+        if (deleteList.contains(lm.getCurLockMode())) {
+            showCurModeDeleteDialog(lm.getCurLockMode(), deleteList);
+        } else {
+            showDeleteDialog(deleteList);
+        }
+    }
+}

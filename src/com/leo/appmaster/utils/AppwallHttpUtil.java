@@ -5,19 +5,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -29,13 +26,13 @@ import org.apache.http.params.HttpConnectionParams;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.Tag;
 
 import com.leo.appmaster.Constants;
 
 public class AppwallHttpUtil {
 	public static InputStream requestByPost(String path,
 			Map<String, String> param, String charset) {
-		boolean flag = false;
 		InputStream is = null;
 
 		BasicHttpParams httpParams;
@@ -56,7 +53,7 @@ public class AppwallHttpUtil {
 			HttpEntity entity = new UrlEncodedFormEntity(parameters, charset);
 			request.setEntity(entity);
 			HttpResponse response = client.execute(request);
-
+//            LeoLog.d("httpurl", "request is : "+request+"---Code is " + response.getStatusLine().getStatusCode());
 			// 获取结果码
 			if (response.getStatusLine().getStatusCode() == 200) {
 				// 获取输入流

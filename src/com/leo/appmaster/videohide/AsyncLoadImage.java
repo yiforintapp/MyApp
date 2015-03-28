@@ -19,6 +19,10 @@ public class AsyncLoadImage {
     private Map<String, SoftReference<Drawable>> cacheMap = new HashMap<String, SoftReference<Drawable>>();
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
     private Handler handler = new Handler();
+    
+    public void cancel() {
+        executorService.shutdownNow();
+    }
 
     public Drawable loadImage(final View imageView, final String path,
             final ImageCallback callback) {

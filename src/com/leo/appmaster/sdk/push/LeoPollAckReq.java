@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 import org.apache.http.message.BasicNameValuePair;
 
-import com.leo.appmaster.sdk.SDKWrapper;
-
 public class LeoPollAckReq extends BasePushHttpReq {
 
     private ArrayList<BasicNameValuePair> mData;

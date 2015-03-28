@@ -1290,21 +1290,24 @@ public class LeoPictureViewPager extends ViewGroup {
             // AM-507
             try {
                 super.onRestoreInstanceState(state);
-            } catch (Exception e) {               
+            } catch (Exception e) {
             }
             return;
         }
+        try {
 
-        SavedState ss = (SavedState)state;
-        super.onRestoreInstanceState(ss.getSuperState());
+            SavedState ss = (SavedState) state;
+            super.onRestoreInstanceState(ss.getSuperState());
 
-        if (mAdapter != null) {
-            mAdapter.restoreState(ss.adapterState, ss.loader);
-            setCurrentItemInternal(ss.position, false, true);
-        } else {
-            mRestoredCurItem = ss.position;
-            mRestoredAdapterState = ss.adapterState;
-            mRestoredClassLoader = ss.loader;
+            if (mAdapter != null) {
+                mAdapter.restoreState(ss.adapterState, ss.loader);
+                setCurrentItemInternal(ss.position, false, true);
+            } else {
+                mRestoredCurItem = ss.position;
+                mRestoredAdapterState = ss.adapterState;
+                mRestoredClassLoader = ss.loader;
+            }
+        } catch (Exception e) {
         }
     }
 

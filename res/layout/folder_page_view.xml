@@ -9,13 +9,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/folder_title_margintop" >
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginTop="@dimen/folder_title_margintop" >
 
-            <com.leo.appmaster.appmanage.view.FolderTitleGallery
+            <com.leo.appmaster.ui.FancyCoverFlow
                 android:id="@+id/title_cover_flow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

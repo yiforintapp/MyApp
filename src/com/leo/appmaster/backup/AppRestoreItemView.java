@@ -3,6 +3,7 @@ package com.leo.appmaster.backup;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.home.BackUpActivity;
 import com.leo.appmaster.model.AppItemInfo;
 
 public class AppRestoreItemView extends FrameLayout implements OnClickListener {
@@ -37,20 +39,20 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mIcon = (ImageView) findViewById(R.id.app_icon);
+        mIcon = (ImageView) findViewById(R.id.restore_icon);
         mInstall =  findViewById(R.id.button_install);
         mInstall.setOnClickListener(this);
         mDelete =  findViewById(R.id.button_delete);
         mDelete.setOnClickListener(this);
-        mTitle = (TextView) findViewById(R.id.app_title);
-        mVersion = (TextView) findViewById(R.id.app_version);
+        mTitle = (TextView) findViewById(R.id.restore_app_title);
+        mVersion = (TextView) findViewById(R.id.restore_app_version);
         mAppSize = (TextView) findViewById(R.id.app_size);
     }
 
     @Override
     public void onClick(View v) {
         Context context = getContext();
-        AppBackupRestoreActivity activity = (AppBackupRestoreActivity)context;
+        BackUpActivity activity = (BackUpActivity)context;
         AppBackupRestoreManager backupManager = activity.getBackupManager();
         Object tag = getTag();
         if(tag instanceof AppItemInfo) {
@@ -77,6 +79,15 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
     
     public void setIcon(Drawable icon) {
         mIcon.setImageDrawable(icon);
+    }
+    
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {
+            
+        }
     }
 
 }
