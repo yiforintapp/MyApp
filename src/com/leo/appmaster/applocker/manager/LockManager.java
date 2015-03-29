@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
@@ -77,6 +76,8 @@ public class LockManager {
 
     public int mLastNetType = NETWORK_MOBILE;
     public String mLastWifi = "";
+    
+    private boolean mFromScreenOn = false;
 
     public static interface OnUnlockedListener {
         /**
@@ -1256,8 +1257,16 @@ public class LockManager {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
             AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
-            boolean lockSelf = mContext.getPackageName().equals(lockedPkg);
-            amp.setDoubleCheck(!lockSelf);
+            
+            if(mFromScreenOn) {
+                amp.setDoubleCheck(false);
+                amp.setUnlocked(false);
+                mFromScreenOn = false;
+            } else {                
+                boolean lockSelf = mContext.getPackageName().equals(lockedPkg);
+                amp.setDoubleCheck(!lockSelf);
+                amp.setUnlocked(false);
+            }
             mContext.startActivity(intent);
             return true;
         }
@@ -1298,6 +1307,7 @@ public class LockManager {
             LeoLog.d("Track Lock Screen",
                     "apply lockscreen form screen on => " + lastRunningPkg
                             + "/" + lastRunningActivity);
+            mFromScreenOn = true;
             boolean lock = applyLock(LOCK_MODE_FULL, lastRunningPkg, false,
                     new OnUnlockedListener() {
                         @Override
@@ -1321,6 +1331,7 @@ public class LockManager {
                         }
                     });
             if (lock) {
+                pref.setDoubleCheck(false);
                 pref.setUnlocked(false);
             }
         }
@@ -1420,7 +1431,6 @@ public class LockManager {
                     mOutcountPkgMap.remove(this);
                     mOutcountPkgMap.remove(pkg);
                     future.cancel(true);
-                    LeoLog.e("xxxx", "OutcountTrackTask : " + time);
                 } else {
                     mOutcountPkgMap.put(pkg, time - 1);
                 }

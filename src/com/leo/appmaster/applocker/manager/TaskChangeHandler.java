@@ -53,12 +53,13 @@ public class TaskChangeHandler {
     public String getLastRunningActivity() {
         return mLastRuningActivity;
     }
+    
 
     public void handleAppLaunch(String pkg, String activity) {
         if (pkg == null || activity == null)
             return;
 
-         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+//         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
         String myPackage = mContext.getPackageName();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
