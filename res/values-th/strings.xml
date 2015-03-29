@@ -547,6 +547,7 @@
     </string-array>
 
     <string name="select_mode">โหมดเลือกฉาก</string>
+    <string name="select_wifi_mode">เลือก WiFi</string>
     <string name="choose_ssid">กรุณาเลือกฮอตสปอต WiFi</string>
     <string name="choose_enter_mode">เปิดใช้งาน</string>
     <string name="choose_quit_mode">ปิดใช้งาน</string>
@@ -575,5 +576,6 @@
     <string name="home_app_manager_apps_delete">โปรแกรมถอนการติดตั้ง</string>
     <string name="save_successful">ความสำเร็จ</string>
     <string name="mode_delete_tip">คุณต้องการลบโปรไฟล์</string>
+    <string name="position_lock_no_wifi">ไม่มี WiFi รายการ</string>
 
 </resources>

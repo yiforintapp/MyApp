@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -20,7 +19,6 @@ import android.view.View;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class LockModeView extends View {

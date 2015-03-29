@@ -61,7 +61,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private ImageView mSelectImage;
     private Button mHideButton;
     private HideVideoAdapter mHideVideoAdapter;
-    private List<VideoItemBean> mClickList;
+    private ArrayList<VideoItemBean> mClickList;
     private Button mSelectAll;
     private LEOAlarmDialog mDialog;
     private boolean mIsBackgoundRunning = false;
@@ -442,7 +442,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
      */
     private class BackgoundTask extends AsyncTask<Boolean, Integer, Boolean> {
         private Context context;
-        private Toast mHideFailToast = null;
 
         BackgoundTask(Context context) {
             this.context = context;
@@ -458,9 +457,10 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             String newFileName;
             Boolean isSuccess = true;
             boolean isHide = params[0];
-            if (mClickList != null && mClickList.size() > 0) {
+            ArrayList<VideoItemBean> list = (ArrayList<VideoItemBean>)mClickList.clone();
+            if (list != null && list.size() > 0) {
                 if (isHide) {
-                    for (VideoItemBean item : mClickList) {
+                    for (VideoItemBean item : list) {
                         if (!mIsBackgoundRunning)
                             break;
                         mUnhidePath.add(item.getPath());
@@ -479,7 +479,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
 
                     }
                 } else {
-                    for (VideoItemBean item : mClickList) {
+                    for (VideoItemBean item : list) {
                         if (!mIsBackgoundRunning)
                             break;
                         newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
@@ -573,9 +573,12 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             public void onAnimationEnd(Animator animation) {
                 mHideVideoAdapter.notifyDataSetChanged();
                 for (Integer view : viewList) {
-                    mHideVideo.getChildAt(view).setAlpha(1);
-                    mHideVideo.getChildAt(view).setScaleX(1);
-                    mHideVideo.getChildAt(view).setScaleY(1);
+                    View child = mHideVideo.getChildAt(view);
+                    if(child != null) {
+                        child.setAlpha(1);
+                        child.setScaleX(1);
+                        child.setScaleY(1);
+                    }
                 }
                 mClickPosList.clear();
             }

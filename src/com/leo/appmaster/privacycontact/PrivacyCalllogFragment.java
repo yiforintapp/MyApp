@@ -291,6 +291,11 @@ public class PrivacyCalllogFragment extends BaseFragment {
                             PrivacyContactManager.getInstance(mContext)
                                     .setLastCall(privacyConatact);
                             Uri uri = Uri.parse("tel:" + calllog.getCallLogNumber());
+                            // 跳到拨号界面
+                            // Intent intent = new Intent(Intent.ACTION_DIAL,
+                            // uri);
+                            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            // 直接拨打电话
                             Intent intent = new Intent(Intent.ACTION_CALL, uri);
                             try {
                                 startActivity(intent);

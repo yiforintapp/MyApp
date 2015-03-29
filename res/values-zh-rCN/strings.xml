@@ -56,7 +56,6 @@
     <string name="lock_screen_auto_lock">锁屏后自动锁定</string>
     <string name="tips">提示</string>
     <string name="compeletely">完成</string>
-
     <!-- acceralate -->
     <string name="clean_memory">一键加速</string>
     <string name="clean_result">清理内存</string>
@@ -312,7 +311,6 @@
     <string name="business_size">大小： </string>
     <string name="app_download">高速下载</string>
     <string name="app_google_download">免费下载</string>
-    <!-- AM-667 -->
     <string name="help_setting_tip_title">帮助小贴士</string>
     <string name="lock_help_password_setting_content_gesture">点击设置，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用手势密码）</string>
     <string name="lock_help_password_setting_content_password">点击设置，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用数字密码）</string>
@@ -425,7 +423,7 @@
     <string name="create_mode_shortcut_content">创建快捷方式，即可在桌面快速启用这个模式，点击确认建立快捷方式</string>
     <string name="mode_change">已启用<xliff:g id="mode">%1$s</xliff:g></string>
     <string name="lock_change">已启用<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
-
+    <string name="position_lock_no_wifi">没有wifi列表</string>
     <!-- Privacy Protection -->
     <string name="privacy_level_1">危险</string>
     <string name="privacy_level_2">警惕</string>
@@ -477,8 +475,7 @@
     <string name="process_kernel_label">Android OS</string>
     <string name="process_mediaserver_label">媒体服务器</string>
     <string name="battery_cannot_do">此功能不能关闭</string>
-    
-    
+
     <!-- Backup and Restore -->
     <string name="app_backup_back">备份与恢复</string>
     <string name="app_backup_v2">备份</string>
@@ -489,7 +486,7 @@
     <string name="app_hot_app">精品</string>
     <string name="back_backed">已备份</string>
     <string name="the_best_status_toast">已是最佳状态，请稍后再试</string>
-    
+
     <!-- My Apps -->
     <string name="myapp_details">应用信息</string>
     <string name="app_manager">"应用管理"</string>
@@ -526,7 +523,7 @@
     <string name="flow_settting_thrid">每月结算日</string>
     <string name="flow_settting_thrid_first_tv">月结日</string>
     <string name="flow_settting_thrid_second_tv">流量套餐(MB)</string>
-        <string name="flow_settting_thrid_month_used_data">本月已使用(MB)</string>
+    <string name="flow_settting_thrid_month_used_data">本月已使用(MB)</string>
     <string name="app_elec_aca">电量</string>
     <string name="app_elec_stop">停止</string>
     <string name="app_elec_zhuyi">注意！</string>
@@ -539,8 +536,8 @@
     <string name="flow_charts_this_month">本月流量折线图</string>
     <string name="home_app_manager_apps_delete">应用卸载</string>
     <string name="home_app_manager_mem_clean">为您清理了%1$s内存</string>
-        <string name="home_app_manager_mem_clean_one">为您清理了1MB内存</string>
-    
+    <string name="home_app_manager_mem_clean_one">为您清理了1MB内存</string>
+
     <!-- What's Hot -->
     <string name="hot_app_free">免费</string>
 
@@ -569,6 +566,7 @@
     </string-array>
 
     <string name="select_mode">选择情景模式</string>
+     <string name="select_wifi_mode">选择wifi</string>
     <string name="choose_ssid">请选择wifi热点</string>
     <string name="choose_enter_mode">进入时操作</string>
     <string name="choose_quit_mode">离开时操作</string>
@@ -593,9 +591,7 @@
     <string name="please_input_name">请输入名称</string>
     <string name="please_selset_wifi">请选择wifi热点</string>
     <string name="cur_mode_delete_tip">%1$s正在使用，删除后会使用访客模式, 确定删除该模式？</string>
-     <string name="mode_delete_tip">是否删除情景模式？</string>
-    
-    
+    <string name="mode_delete_tip">是否删除情景模式？</string>
     <string name="add_mode">添加情景模式</string>
     <string name="add_new_time_lock">添加时间锁</string>
     <string name="add_new_location_lock">添加位置锁</string>

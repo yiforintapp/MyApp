@@ -30,7 +30,7 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="passwd_set_passwd_tip">Enter your password</string>
-    <string name="passwd_hint">Enter Password</string>
+    <string name="passwd_hint">Enter Passcode</string>
     <string name="tip_no_the_same_pswd">Wrong passcode, please try again.</string>
     <string name="input_error_tip">You have used %1$s login attempt(s), %2$s remaining.</string>
     <string name="use_gesture">Pattern Lock</string>
@@ -129,7 +129,7 @@
     <string name="app_permission3">Important Privacy Control</string>
     <string name="app_setting_update">Check for updates</string>
     <string name="app_setting_about">About</string>
-    <string name="forbid_uninstall">Uninstall Protection</string>
+    <string name="forbid_uninstall">Uninstall prevention</string>
     <string name="auto_lock">Lock after screen-off</string>
     <string name="change_lock_time">Auto-lock Time Settings</string>
     <string name="passwd_protect">Security Question</string>
@@ -437,7 +437,7 @@
     <string name="create_mode_shortcut_content">Create a shortcut to get quick access to mode options.</string>
     <string name="mode_change"><xliff:g id="mode">%1$s</xliff:g> was enabled</string>
     <string name="lock_change"><xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g> was enabled</string>
-
+    <string name="position_lock_no_wifi">No WiFi list</string>
     <!-- Privacy Protection -->
     <string name="privacy_level_1">Dangerous</string>
     <string name="privacy_level_2">Severe</string>
@@ -560,6 +560,7 @@
     </string-array>
 
     <string name="select_mode">Selection mode</string>
+    <string name="select_wifi_mode">Select WiFi</string>
     <string name="choose_ssid">Please select a WIFI hot spot location</string>
     <string name="choose_enter_mode">Enable when I\'m near this WiFi</string>
     <string name="choose_quit_mode">Enable when I\'m away from this WiFi</string>

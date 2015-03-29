@@ -13,10 +13,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -37,12 +37,10 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
-import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
-import com.leo.appmaster.ui.dialog.LeoSingleLinesInputDialog;
 import com.leo.appmaster.utils.WifiAdmin;
 
 public class LocationLockEditActivity extends BaseActivity implements
@@ -54,7 +52,7 @@ public class LocationLockEditActivity extends BaseActivity implements
     private LEOBaseDialog mModeListDialog;
     private ListView mModeList;
     private EditText mEtTimeLockName;
-    private TextView mTvSsid, mTvEnterMode, mTvQuitMode;
+    private TextView mTvSsid, mTvEnterMode, mTvQuitMode, mNoWifiTv;
     private View mIvBack, mIvSave;
     private View mLyaoutWifi, mLayoutEnterMode, mLayoutQuitMode;
 
@@ -240,6 +238,7 @@ public class LocationLockEditActivity extends BaseActivity implements
             mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
             mModeList = (ListView) mModeListDialog.findViewById(R.id.mode_list);
+            mNoWifiTv = (TextView) mModeListDialog.findViewById(R.id.no_wifi);
             View cancel = mModeListDialog.findViewById(R.id.dlg_bottom_btn);
             cancel.setOnClickListener(new OnClickListener() {
                 @Override
@@ -279,6 +278,10 @@ public class LocationLockEditActivity extends BaseActivity implements
             }
         });
 
+        if (mNoWifiTv != null) {
+            mNoWifiTv.setVisibility(View.GONE);
+        }
+
         ListAdapter adapter = new ModeListAdapter(this, which);
         mModeList.setAdapter(adapter);
 
@@ -290,7 +293,9 @@ public class LocationLockEditActivity extends BaseActivity implements
             mModeListDialog = new LEOBaseDialog(this);
             mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
-            mModeList = (ListView) mModeListDialog.findViewById(R.id.mode_list);
+            View container = mModeListDialog.findViewById(R.id.mode_list_container);
+            mModeList = (ListView) container.findViewById(R.id.mode_list);
+            mNoWifiTv = (TextView) container.findViewById(R.id.no_wifi);
             View cancel = mModeListDialog.findViewById(R.id.dlg_bottom_btn);
             cancel.setOnClickListener(new OnClickListener() {
                 @Override
@@ -321,9 +326,19 @@ public class LocationLockEditActivity extends BaseActivity implements
                 }
             }
         }
-        ListAdapter adapter = new WifiListAdapter(this, wifiList);
-        mModeList.setAdapter(adapter);
-
+        if (wifiList != null && wifiList.size() > 0) {
+            if (mNoWifiTv != null) {
+                mNoWifiTv.setVisibility(View.GONE);
+            }
+            ListAdapter adapter = new WifiListAdapter(this, wifiList);
+            mModeList.setAdapter(adapter);
+        } else {
+            if (mNoWifiTv != null) {
+                mNoWifiTv.setVisibility(View.VISIBLE);
+            }
+            ListAdapter adapter = new WifiListAdapter(this, wifiList);
+            mModeList.setAdapter(adapter);
+        }
         mModeListDialog.show();
     }
 
