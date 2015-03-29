@@ -42,7 +42,6 @@ public class EleActivity extends FragmentActivity {
     private ActivityManager am;
     private static final String SCHEME = "package";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,15 +104,15 @@ public class EleActivity extends FragmentActivity {
             this.list = list;
 
             for (int i = list.size() - 1; i >= 0; i--) {
-                
+
                 String packageName = list.get(i).getDefaultPackageName();
-                if(null != packageName){
-                    if(packageName.equals(EleActivity.this.getPackageName())){
+                if (null != packageName) {
+                    if (packageName.equals(EleActivity.this.getPackageName())) {
                         list.remove(i);
                         continue;
                     }
                 }
-                
+
                 final BatteryComsuption sipper = list.get(i);
                 String name = sipper.getName();
                 if (name == null) {
@@ -210,8 +209,13 @@ public class EleActivity extends FragmentActivity {
             holder.appIcon.setImageDrawable(sipper.getIcon());
 
             double percentOfTotal = sipper.getPercentOfTotal();
-            holder.txtProgress.setText(format(percentOfTotal));
-            holder.progress.setProgress((int) percentOfTotal);
+            if (percentOfTotal <= 1) {
+                holder.txtProgress.setText(format(1));
+                holder.progress.setProgress((int) 1);
+            } else {
+                holder.txtProgress.setText(format(percentOfTotal));
+                holder.progress.setProgress((int) percentOfTotal);
+            }
 
             holder.stopView.setTag("" + position);
             holder.stopView.setOnClickListener(this);
@@ -225,7 +229,7 @@ public class EleActivity extends FragmentActivity {
             BatteryComsuption abc = mList.get(index);
             String packageName = abc.getDefaultPackageName();
             LeoLog.d("Eleactivity", "OnClick咯！！");
-            showInstalledAppDetails( packageName);
+            showInstalledAppDetails(packageName);
 
         }
     }
@@ -241,7 +245,6 @@ public class EleActivity extends FragmentActivity {
     private String format(double size) {
         return String.format("%1$.2f%%", size);
     }
-
 
     protected void showInstalledAppDetails(String packageName) {
         try {
@@ -259,7 +262,7 @@ public class EleActivity extends FragmentActivity {
             // check that the Battery app exists on this device
             if (resolveInfo != null) {
                 startActivity(powerUsageIntent);
-            }else {
+            } else {
                 Toast.makeText(this, R.string.battery_cannot_do, 0).show();
             }
         }
