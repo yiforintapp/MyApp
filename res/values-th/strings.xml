@@ -551,7 +551,9 @@
     <string name="choose_ssid">กรุณาเลือกฮอตสปอต WiFi</string>
     <string name="choose_enter_mode">เปิดใช้งาน</string>
     <string name="choose_quit_mode">ปิดใช้งาน</string>
-
+    <string name="home_app_manager_mem_clean">ให้คุณทำความสะอาดหน่วยความจำ%1$s</string>
+    <string name="home_app_manager_mem_clean_one">ให้คุณทำความสะอาดหน่วยความจำ 1MB</string>
+    <string name="the_best_status_toast">เป็นสถานะที่เหมาะสมโปรดลองใหม่อีกครั้ง</string>
     <!-- guide page begin -->
     <string name="guide_page1_title">การเลือกโหมด</string>
     <string name="guide_page1_content">ล็อคโดยอัตโนมัติ / ปลดล็อคโดยเวลาที่ต้องการและสถานที่ตั้ง</string>
