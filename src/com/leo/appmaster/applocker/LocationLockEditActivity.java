@@ -247,6 +247,7 @@ public class LocationLockEditActivity extends BaseActivity implements
                 }
             });
         }
+        mNoWifiTv.setVisibility(View.GONE);
         TextView mTitle = (TextView) mModeListDialog.findViewById(R.id.dlg_title);
         mTitle.setText(getResources().getString(R.string.select_mode));
         mModeList.setOnItemClickListener(new OnItemClickListener() {
