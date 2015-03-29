@@ -20,11 +20,11 @@ public class AsyncLoadImage {
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
     private Handler handler = new Handler();
     
-    public void cancel() {
+    public synchronized void cancel() {
         executorService.shutdownNow();
     }
 
-    public Drawable loadImage(final View imageView, final String path,
+    public synchronized Drawable loadImage(final View imageView, final String path,
             final ImageCallback callback) {
         if (cacheMap.containsKey(path)) {
             SoftReference<Drawable> softReference = cacheMap.get(path);
