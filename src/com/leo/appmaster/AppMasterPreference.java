@@ -81,6 +81,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // "day_clean";
     public static final String PREF_APP_MANAGER_FLOW_MONTH_USED_TRAFFIC = "used_traffic";
     public static final String PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC = "make_itself_month_traffic";
+    public static final String PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE = "make_itself_today_base_traffic";
+    
     public static final String PREF_APP_MANAGER_FLOW_MONTH_ALL = "mouth_gprs_all";
     public static final String PREF_APP_MANAGER_FLOW_MONTH_BASE = "mouth_gprs_base";
     // public static final String PREF_APP_MANAGER_FLOW_FIRST_IN = "firstin";
@@ -734,6 +736,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public long getMonthGprsAll() {
         return mPref.getLong(PREF_APP_MANAGER_FLOW_MONTH_ALL, 0);
     }
+    
+    public void setItSelfTodayBase(long value) {
+        mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE, value).commit();
+    }
+
+    public long getItSelfTodayBase() {
+        return mPref.getLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE, 0);
+    }
 
     public void setMonthGprsBase(long value) {
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MONTH_BASE, value).commit();
@@ -865,13 +875,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_APP_MANAGER_FLOW_MONTH_USED_TRAFFIC, 0);
     }
     
-    public void setItselfMonthTraffic(int value) {
-        mPref.edit().putInt(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC,
+    public void setItselfMonthTraffic(long value) {
+        mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC,
                 value).commit();
     }
 
     public long getItselfMonthTraffic() {
-        return mPref.getInt(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC, 0);
+        return mPref.getLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC, 0);
     }
     
     // public void setTodayGprs(float value) {

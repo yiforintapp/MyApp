@@ -166,7 +166,7 @@ public class Traffic {
                             }
 
                         } else {
-                            if(nowDay == MonthOfDay){
+                            if (nowDay == MonthOfDay) {
                                 ReSetMonthTraffic();
                             } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
@@ -177,14 +177,14 @@ public class Traffic {
                         Log.d(Tag, "renewDay <= MonthOfDay");
                         // 月结日 重置月流量计算
                         if (nowMonth > lastSaveMonth) {
-                            if(lastSaveDay < renewDay || nowDay > renewDay || nowDay == MonthOfDay){
+                            if (lastSaveDay < renewDay || nowDay > renewDay || nowDay == MonthOfDay) {
                                 ReSetMonthTraffic();
-                            }else {
+                            } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
                                         .getMonthGprsBase()));
                             }
-                        }else{
-                            if(nowDay >= renewDay && lastSaveDay < renewDay){
+                        } else {
+                            if (nowDay >= renewDay && lastSaveDay < renewDay) {
                                 ReSetMonthTraffic();
                             } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
@@ -195,12 +195,12 @@ public class Traffic {
                     s_preferences.setGprsSend(0);
                     s_preferences.setGprsRev(0);
                     gprs[2] = 0;
+                    // s_preferences.setItSelfTodayBase(0);
                 } else if (nowYear > lastSaveYear) {
                     Log.d(Tag, "换年咯,重置everything ! ");
-                    s_preferences.setMonthGprsBase(0);
-                    s_preferences.setMonthGprsAll(0);
                     s_preferences.setGprsSend(0);
                     s_preferences.setGprsRev(0);
+                    ReSetMonthTraffic();
                     gprs[2] = 0;
                 }
             } else {
@@ -217,6 +217,20 @@ public class Traffic {
             mCursor.close();
         }
 
+        long ItSelfBase = s_preferences.getItSelfTodayBase();
+        // 如果设置了已用流量，那么会一直叠加，除非换月清零。
+        if (s_preferences.getItselfMonthTraffic() > 0) {
+            // 设置今日已用base
+            if (ItSelfBase < 1 || ItSelfBase > gprs[2]) {
+                s_preferences.setItSelfTodayBase((long) gprs[2]);
+            }
+
+            s_preferences
+                    .setItselfMonthTraffic((long) (gprs[2] - ItSelfBase + s_preferences
+                            .getItselfMonthTraffic()));
+            s_preferences.setItSelfTodayBase((long) gprs[2]);
+        }
+
         return gprs;
     }
 
@@ -229,6 +243,12 @@ public class Traffic {
         s_preferences.setItselfMonthTraffic(0);
         s_preferences.setMonthGprsBase(0);
         s_preferences.setMonthGprsAll(0);
+
+        if (s_preferences.getItselfMonthTraffic() > 0) {
+            s_preferences
+                    .setItselfMonthTraffic(0);
+        }
+
     }
 
     // 获取系统时间。返回数组
