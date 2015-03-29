@@ -29,6 +29,7 @@ public class TaskChangeHandler {
     private ActivityManager mAm;
     private String mLastRunningPkg = "";
     private String mLastRuningActivity = "";
+    
 
     public TaskChangeHandler(Context mContext) {
         this.mContext = mContext.getApplicationContext();
@@ -45,6 +46,7 @@ public class TaskChangeHandler {
         }
         return pkg;
     }
+    
 
     public String getLastRunningPackage() {
         return mLastRunningPkg;
@@ -58,12 +60,12 @@ public class TaskChangeHandler {
     public void handleAppLaunch(String pkg, String activity) {
         if (pkg == null || activity == null)
             return;
-
 //         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
         String myPackage = mContext.getPackageName();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
-        boolean doubleCheck = amp.getDoubleCheck();
+        String checkPkg = amp.getDoubleCheck();
+        boolean doubleCheck = checkPkg != null && checkPkg.equals(pkg);
         if (((doubleCheck && !unlocked) || !pkg.equals(mLastRunningPkg))
                 && !TextUtils.isEmpty(mLastRunningPkg)) {
             boolean isCurrentSelf = pkg.equals(myPackage);

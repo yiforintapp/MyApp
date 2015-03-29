@@ -141,7 +141,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
             LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                     getPackageName(), true, null);          
-            amp.setDoubleCheck(false);
+            amp.setDoubleCheck(null);
         } else {
             Intent intent = new Intent(this, LockSettingActivity.class);
             startActivity(intent);
