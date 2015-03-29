@@ -13,10 +13,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -37,12 +37,10 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
-import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
-import com.leo.appmaster.ui.dialog.LeoSingleLinesInputDialog;
 import com.leo.appmaster.utils.WifiAdmin;
 
 public class LocationLockEditActivity extends BaseActivity implements
