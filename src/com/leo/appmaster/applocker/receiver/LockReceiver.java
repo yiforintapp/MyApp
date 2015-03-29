@@ -4,23 +4,15 @@ package com.leo.appmaster.applocker.receiver;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.utils.NotificationUtil;
-
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.TaskDetectService;
 
 public class LockReceiver extends BroadcastReceiver {
 
@@ -82,37 +74,37 @@ public class LockReceiver extends BroadcastReceiver {
     }
 
     private void showNotification(Context ctx) {
-        NotificationManager nm = (NotificationManager) ctx
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        String content = ctx.getString(R.string.lock_remind);
-        Intent intent;
-        AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
-        if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-            intent = new Intent(ctx, LockSettingActivity.class);
-            intent.putExtra(LockScreenActivity.EXTRA_LOCK_MODE,
-                    LockManager.LOCK_MODE_FULL);
-//            intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-//                    AppLockListActivity.class.getName());
-        } else {
-            intent = new Intent(ctx, LockScreenActivity.class);
-//            intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
-//                    AppLockListActivity.class.getName());
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            intent.putExtra(LockScreenActivity.EXTRA_LOCK_MODE,
-                    LockManager.LOCK_MODE_FULL);
-        }
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = new Notification(R.drawable.ic_launcher_notification,
-                content, System.currentTimeMillis());
-        notification.tickerText = content;
-        notification.flags = Notification.FLAG_AUTO_CANCEL;
-        notification.setLatestEventInfo(ctx, "Privacy Guard", content,
-                pendingIntent);
-        NotificationUtil.setBigIcon(notification, R.drawable.ic_launcher_notification_big);
-        nm.notify(0, notification);
+//        NotificationManager nm = (NotificationManager) ctx
+//                .getSystemService(Context.NOTIFICATION_SERVICE);
+//        String content = ctx.getString(R.string.lock_remind);
+//        Intent intent;
+//        AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
+//        if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+//            intent = new Intent(ctx, LockSettingActivity.class);
+//            intent.putExtra(LockScreenActivity.EXTRA_LOCK_MODE,
+//                    LockManager.LOCK_MODE_FULL);
+////            intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+////                    AppLockListActivity.class.getName());
+//        } else {
+//            intent = new Intent(ctx, LockScreenActivity.class);
+////            intent.putExtra(LockScreenActivity.EXTRA_TO_ACTIVITY,
+////                    AppLockListActivity.class.getName());
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//                    | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+//            intent.putExtra(LockScreenActivity.EXTRA_LOCK_MODE,
+//                    LockManager.LOCK_MODE_FULL);
+//        }
+//
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0, intent,
+//                PendingIntent.FLAG_UPDATE_CURRENT);
+//        Notification notification = new Notification(R.drawable.ic_launcher_notification,
+//                content, System.currentTimeMillis());
+//        notification.tickerText = content;
+//        notification.flags = Notification.FLAG_AUTO_CANCEL;
+//        notification.setLatestEventInfo(ctx, "Privacy Guard", content,
+//                pendingIntent);
+//        NotificationUtil.setBigIcon(notification, R.drawable.ic_launcher_notification_big);
+//        nm.notify(0, notification);
     }
 }

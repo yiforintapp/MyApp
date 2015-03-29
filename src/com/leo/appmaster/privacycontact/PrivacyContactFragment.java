@@ -423,7 +423,9 @@ public class PrivacyContactFragment extends BaseFragment {
             }
         });
         mPCDialog.setCanceledOnTouchOutside(true);
-        mPCDialog.getWindow().setLayout((int)getResources().getDimension(R.dimen.privacy_contact_edit_dialog_width),(int)getResources().getDimension(R.dimen.privacy_contact_edit_dialog_height));
+        mPCDialog.getWindow().setLayout(
+                (int) getResources().getDimension(R.dimen.privacy_contact_edit_dialog_width),
+                (int) getResources().getDimension(R.dimen.privacy_contact_edit_dialog_height));
         mPCDialog.show();
     }
 
@@ -471,8 +473,10 @@ public class PrivacyContactFragment extends BaseFragment {
                             mRestorCallLogsFlag = true;
                             mRestorMessagesFlag = true;
                             // 删除拦截短信，通话记录
-                            mRestorCount = mRestorMessages.size() + mRestorCallLogs.size();
-                            if (mIsChecked && mRestorCount > 0) {
+                            // mRestorCount = mRestorMessages.size() +
+                            // mRestorCallLogs.size();
+
+                            if (mIsChecked && mRestorMessages.size() > 0) {
                                 for (MessageBean messageBean : mRestorMessages) {
                                     String number = messageBean.getPhoneNumber();
                                     // 恢复短信
@@ -636,50 +640,10 @@ public class PrivacyContactFragment extends BaseFragment {
                 } else if (PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG.equals(flag)) {
                     // 执行删除操作
                     if (model == 1) {
-
-                        int flagNumber = PrivacyContactUtils.deleteContactFromMySelf(
-                                Constants.COLUMN_PHONE_NUMBER + " = ? ",
-                                contact.getContactNumber(),
-                                mContext);
-                        if (flagNumber > 0) {
-                            mContacts.remove(contact);
-                            PrivacyContactManager.getInstance(mActivity).removeContact(contact);
-                            PrivacyHelper.getInstance(mActivity).computePrivacyLevel(
-                                    PrivacyHelper.VARABLE_PRIVACY_CONTACT);
-                            LeoEventBus
-                                    .getDefaultBus()
-                                    .post(
-                                            new PrivacyDeletEditEventBus(
-                                                    PrivacyContactUtils.CONTACT_EDIT_MODEL_DELETE_CONTACT_UPDATE));
-                            // 查询该号码是否有隐私短信，通话记录
-                            String number = PrivacyContactUtils.formatePhoneNumber(contact
-                                    .getContactNumber());
-                            try {
-                                if (mIsChecked) {
-                                    int deleteMessage = PrivacyContactUtils
-                                            .deleteMessageFromMySelf(
-                                                    mContext.getContentResolver(),
-                                                    Constants.PRIVACY_MESSAGE_URI,
-                                                    Constants.COLUMN_MESSAGE_PHONE_NUMBER
-                                                            + " LIKE ?",
-                                                    new String[] {
-                                                        "%" + number
-                                                    });
-                                    int deleteCallLog = PrivacyContactUtils
-                                            .deleteMessageFromMySelf(
-                                                    mContext.getContentResolver(),
-                                                    Constants.PRIVACY_CALL_LOG_URI,
-                                                    Constants.COLUMN_CALL_LOG_PHONE_NUMBER
-                                                            + " LIKE ?",
-                                                    new String[] {
-                                                        "%" + number
-                                                    });
-                                }
-                            } catch (Exception e) {
-
-                            }
-                        }
+                        PrivacyContactEditDetailTask task = new PrivacyContactEditDetailTask();
+                        task.execute(contact);
                     }
+
                 }
             }
         });
@@ -744,4 +708,115 @@ public class PrivacyContactFragment extends BaseFragment {
 
     }
 
+    // 详情删除联系人
+    private class PrivacyContactEditDetailTask extends AsyncTask<ContactBean, Boolean, Boolean> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(ContactBean... arg0) {
+            ContactBean contact = arg0[0];
+            int flagNumber = PrivacyContactUtils.deleteContactFromMySelf(
+                    Constants.COLUMN_PHONE_NUMBER + " = ? ",
+                    contact.getContactNumber(),
+                    mContext);
+            if (flagNumber > 0) {
+                mContacts.remove(contact);
+                PrivacyContactManager.getInstance(mActivity).removeContact(contact);
+                PrivacyHelper.getInstance(mActivity).computePrivacyLevel(
+                        PrivacyHelper.VARABLE_PRIVACY_CONTACT);
+                // LeoEventBus
+                // .getDefaultBus()
+                // .post(
+                // new PrivacyDeletEditEventBus(
+                // PrivacyContactUtils.CONTACT_EDIT_MODEL_DELETE_CONTACT_UPDATE));
+                // 查询该号码是否有隐私短信，通话记录
+                String number = PrivacyContactUtils.formatePhoneNumber(contact
+                        .getContactNumber());
+                try {
+                    if (mIsChecked) {
+                        // 恢复短信
+                        List<MessageBean> messages = null;
+                        String formateNumber = PrivacyContactUtils
+                                .formatePhoneNumber(contact.getContactNumber());
+                        if (contact != null) {
+                            messages = PrivacyContactUtils.queryMySelfMessageTable(
+                                    mContext.getContentResolver(),
+                                    "contact_phone_number LIKE ? ", new String[] {
+                                        "%" + formateNumber
+                                    });
+                        }
+                        if (messages != null) {
+                            for (MessageBean messageBean : messages) {
+                                ContentValues values = new ContentValues();
+                                values.put("address", messageBean.getPhoneNumber());
+                                values.put("body", messageBean.getMessageBody());
+                                Long date = Date.parse(messageBean.getMessageTime());
+                                values.put("date", date);
+                                values.put("read", 1);
+                                values.put("type", messageBean.getMessageType());
+                                try {
+                                    PrivacyContactUtils.insertMessageToSystemSMS(
+                                            values,
+                                            mContext);
+                                } catch (Exception e) {
+                                    Log.e("PrivacyContactFragment Operation",
+                                            "PrivacyContactFragment restore message fail!");
+                                }
+                            }
+                        }
+                        // 删除短信
+                        int deleteMessage = PrivacyContactUtils
+                                .deleteMessageFromMySelf(
+                                        mContext.getContentResolver(),
+                                        Constants.PRIVACY_MESSAGE_URI,
+                                        Constants.COLUMN_MESSAGE_PHONE_NUMBER
+                                                + " LIKE ?",
+                                        new String[] {
+                                            "%" + number
+                                        });
+                        int deleteCallLog = PrivacyContactUtils
+                                .deleteMessageFromMySelf(
+                                        mContext.getContentResolver(),
+                                        Constants.PRIVACY_CALL_LOG_URI,
+                                        Constants.COLUMN_CALL_LOG_PHONE_NUMBER
+                                                + " LIKE ?",
+                                        new String[] {
+                                            "%" + number
+                                        });
+                        if (deleteCallLog > 0) {
+                            LeoEventBus
+                                    .getDefaultBus()
+                                    .post(new PrivacyDeletEditEventBus(
+                                            PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_CALL_LOG_LIST));
+                        }
+                        if (deleteMessage > 0) {
+                            LeoEventBus
+                                    .getDefaultBus()
+                                    .post(new PrivacyDeletEditEventBus(
+                                            PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_MESSAGE_LIST));
+                        }
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            mAddCallLogDialog.setChecked(true);
+            if (mContacts == null || mContacts.size() == 0) {
+                mDefaultText.setVisibility(View.VISIBLE);
+            } else {
+                mDefaultText.setVisibility(View.GONE);
+            }
+            mAdapter.notifyDataSetChanged();
+            super.onPostExecute(result);
+        }
+
+    }
 }
