@@ -214,6 +214,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         app_hot_tip_icon = (ImageView) findViewById(R.id.app_hot_tip_icon);
         if (sp_homeAppManager.getHomeFragmentRedTip()) {
             app_hot_tip_icon.setVisibility(View.VISIBLE);
+        }else {
+            app_hot_tip_icon.setVisibility(View.GONE);
         }
         list_delete = (ListView) findViewById(R.id.list_backup_home_fragment);
         LayoutInflater mFactory = LayoutInflater.from(mActivity);

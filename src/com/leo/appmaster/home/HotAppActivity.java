@@ -79,6 +79,7 @@ public class HotAppActivity extends FragmentActivity {
     public void dimissRedTip(){
         iv_red_tip.setVisibility(View.GONE);
         sp_hot_app.setHotAppActivityRedTip(false);
+        sp_hot_app.setHomeFragmentRedTip(false);
     }
     
     @Override

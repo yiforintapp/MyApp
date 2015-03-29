@@ -24,6 +24,7 @@ import com.leo.appmaster.ui.RoundProgressBar;
 import com.leo.appmaster.ui.dialog.MonthDaySetting;
 import com.leo.appmaster.ui.dialog.MonthDaySetting.OnTrafficDialogClickListener;
 import com.leo.appmaster.utils.AppwallHttpUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class ManagerFlowFragment extends BaseFragment implements OnClickListener{
@@ -132,7 +133,7 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
                 progress = 0;
 
                 long TaoCanTraffic = preferences.getTotalTraffic() * 1024 * 1024;
-                long MonthUsedItSelf = preferences.getItselfMonthTraffic() * 1024 * 1024;
+                long MonthUsedItSelf = preferences.getItselfMonthTraffic();
                 long MonthUsedRecord = preferences.getMonthGprsAll();
 
                 int bili = 0;
@@ -140,7 +141,11 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
                 if (TaoCanTraffic < 1) {
                     bili = 0;
                 } else {
-                    bili = (int) ((MonthUsedRecord+MonthUsedItSelf) * 100 / TaoCanTraffic);
+                    if(MonthUsedItSelf > 0){
+                        bili = (int) (MonthUsedItSelf * 100 / TaoCanTraffic);
+                    }else {
+                        bili = (int) (MonthUsedRecord * 100 / TaoCanTraffic);
+                    }
                 }
                 while (progress <= bili) {
                     progress += 1;
@@ -267,11 +272,20 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         //今日流量
         String today_flow_String = ManagerFlowUtils.refreshTraffic_home_app(today_flow);
         tv_normal_ll.setText(today_flow_String);
+        
         //本月流量
         long mThisMonthTraffic = preferences.getMonthGprsAll();
-        long mThisMonthItselfTraffi = preferences.getItselfMonthTraffic() * 1024 * 1024 ;
-        long mTotalUsedData = mThisMonthTraffic + mThisMonthItselfTraffi;
-        tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mTotalUsedData));
+        long mThisMonthItselfTraffi = preferences.getItselfMonthTraffic() ;
+//        long mTotalUsedData = mThisMonthTraffic + mThisMonthItselfTraffi;
+        
+        LeoLog.d("testfuckflow", "mThisMonthTraffic:" + mThisMonthTraffic);
+        LeoLog.d("testfuckflow", "mThisMonthItselfTraffi:" + mThisMonthItselfTraffi);
+        if(mThisMonthItselfTraffi > 0){
+            tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mThisMonthItselfTraffi));
+        }else {
+            tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mThisMonthTraffic));
+        }
+
         
         //剩余流量
         long mTaoCanMB = preferences.getTotalTraffic();
@@ -279,8 +293,14 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         if (mTaoCanMB < 1) {
             tv_remainder_ll.setText("---");
         } else {
-            tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mTaoCanB
-                    - mTotalUsedData));
+            if(mThisMonthItselfTraffi > 0){
+                tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mTaoCanB
+                        -  mThisMonthItselfTraffi));
+            }else {
+                tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mTaoCanB
+                        - mThisMonthTraffic));
+            }
+
         }
     }
 
