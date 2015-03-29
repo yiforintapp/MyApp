@@ -280,7 +280,8 @@ public class TimeLockEditActivity extends BaseActivity implements
                 }
             });
         }
-
+        TextView mTitle = (TextView) mModeListDialog.findViewById(R.id.dlg_title);
+        mTitle.setText(getResources().getString(R.string.select_mode));
         ListAdapter adapter = new ModeListAdapter(this);
         mModeList.setAdapter(adapter);
 
@@ -358,7 +359,8 @@ public class TimeLockEditActivity extends BaseActivity implements
                 }
             }
             lm.updateTimeLock(mEditTimeLock);
-            Toast.makeText(TimeLockEditActivity.this, R.string.save_successful, Toast.LENGTH_SHORT).show();
+            Toast.makeText(TimeLockEditActivity.this, R.string.save_successful, Toast.LENGTH_SHORT)
+                    .show();
         }
 
         LeoEventBus.getDefaultBus().post(
