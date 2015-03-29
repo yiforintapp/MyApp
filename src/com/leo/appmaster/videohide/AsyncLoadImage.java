@@ -33,44 +33,45 @@ public class AsyncLoadImage {
                 return drawable;
             }
         }
+       if(!executorService.isShutdown()) {
+           executorService.submit(new Runnable() {
 
-        executorService.submit(new Runnable() {
+               @Override
+               public void run() {
 
-            @Override
-            public void run() {
+                   Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(path,
+                           Video.Thumbnails.FULL_SCREEN_KIND);
+                 if(bitmap != null){
+                   final Drawable drawable = new BitmapDrawable(bitmap);
+                   if (drawable != null) {
+                       cacheMap.put(path, new SoftReference<Drawable>(drawable));
+                       handler.post(new Runnable() {
 
-                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(path,
-                        Video.Thumbnails.FULL_SCREEN_KIND);
-              if(bitmap != null){
-                final Drawable drawable = new BitmapDrawable(bitmap);
-                if (drawable != null) {
-                    cacheMap.put(path, new SoftReference<Drawable>(drawable));
-                    handler.post(new Runnable() {
+                           @Override
+                           public void run() {
+                               callback.imageLoader(drawable);
 
-                        @Override
-                        public void run() {
-                            callback.imageLoader(drawable);
+                           }
+                       });
+                   }
+                 }else{
+                     final Drawable drawable = null;
+                     if (drawable == null) {
+                         cacheMap.put(path, new SoftReference<Drawable>(drawable));
+                         handler.post(new Runnable() {
 
-                        }
-                    });
-                }
-              }else{
-                  final Drawable drawable = null;
-                  if (drawable == null) {
-                      cacheMap.put(path, new SoftReference<Drawable>(drawable));
-                      handler.post(new Runnable() {
+                             @Override
+                             public void run() {
+                                 callback.imageLoader(drawable);
 
-                          @Override
-                          public void run() {
-                              callback.imageLoader(drawable);
+                             }
+                         });
+                     }
+                 }
+               }
+           });
 
-                          }
-                      });
-                  }
-              }
-            }
-        });
-
+       }
         return null;
     }
 
