@@ -808,7 +808,7 @@ public class PrivacyContactFragment extends BaseFragment {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            mIsChecked = true;
+            mAddCallLogDialog.setChecked(true);
             if (mContacts == null || mContacts.size() == 0) {
                 mDefaultText.setVisibility(View.VISIBLE);
             } else {
