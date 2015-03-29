@@ -126,7 +126,7 @@ public class AppMasterApplication extends Application {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!AppMasterPreference.getInstance(AppMasterApplication.this).getFirstUse()) {
+                if (!AppMasterPreference.getInstance(AppMasterApplication.this).getFirstUse()) {
                     checkNew();
                 }
             }
@@ -225,7 +225,7 @@ public class AppMasterApplication extends Application {
                 mBackupManager.getBackupList();
                 judgeLockService();
                 judgeLockAlert();
-//                judgeStatictiUnlockCount();
+                // judgeStatictiUnlockCount();
                 initImageLoader();
             }
         });
@@ -304,9 +304,9 @@ public class AppMasterApplication extends Application {
     public AppBackupRestoreManager getBuckupManager() {
         return mBackupManager;
     }
-    
+
     public void checkNew() {
-//        checkNewTheme();
+        checkNewTheme();
         checkNewAppBusiness();
     }
 
@@ -352,6 +352,11 @@ public class AppMasterApplication extends Application {
             if (Utilities.isEmpty(content)) {
                 content = getString(R.string.new_app_tip_content);
             }
+
+            // show red tip
+            AppMasterPreference sp_red_ti = AppMasterPreference.getInstance(this);
+            sp_red_ti.setHomeFragmentRedTip(true);
+            sp_red_ti.setHotAppActivityRedTip(true);
 
             // show business status tip
             Intent intent = null;

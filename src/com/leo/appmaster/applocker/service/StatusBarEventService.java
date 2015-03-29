@@ -44,11 +44,7 @@ public class StatusBarEventService extends IntentService {
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else if (eventType == EVENT_BUSINESS_APP) {
-            //show red tip
-            AppMasterPreference sp_red_ti = AppMasterPreference.getInstance(StatusBarEventService.this);
-            sp_red_ti.setHomeFragmentRedTip(true);
-            sp_red_ti.setHotAppActivityRedTip(true);
-            
+
             LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
             targetIntent = new Intent(this, HotAppActivity.class);
 //            targetIntent.putExtra("from_statubar", true);
