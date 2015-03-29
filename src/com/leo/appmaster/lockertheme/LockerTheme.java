@@ -689,9 +689,16 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     public void onBackPressed() {
         if (mFromTheme != null && !mFromTheme.equals("")) {
             LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            Intent intent = null;
+            if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else {
+                intent = new Intent(this, LockSettingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
             super.onBackPressed();
         } else if (TextUtils.equals(mFrom, "new_theme_tip")) {
             if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
