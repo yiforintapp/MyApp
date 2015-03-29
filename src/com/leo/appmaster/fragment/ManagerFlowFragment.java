@@ -155,6 +155,7 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
                     }
 
                     if(progress > 100){
+                        progress = 100;
                         break;
                     }
                     
@@ -278,8 +279,8 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         long mThisMonthItselfTraffi = preferences.getItselfMonthTraffic() ;
 //        long mTotalUsedData = mThisMonthTraffic + mThisMonthItselfTraffi;
         
-        LeoLog.d("testfuckflow", "mThisMonthTraffic:" + mThisMonthTraffic);
-        LeoLog.d("testfuckflow", "mThisMonthItselfTraffi:" + mThisMonthItselfTraffi);
+//        LeoLog.d("testfuckflow", "mThisMonthTraffic:" + mThisMonthTraffic);
+//        LeoLog.d("testfuckflow", "mThisMonthItselfTraffi:" + mThisMonthItselfTraffi);
         if(mThisMonthItselfTraffi > 0){
             tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mThisMonthItselfTraffi));
         }else {

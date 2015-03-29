@@ -155,6 +155,12 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         @Override
         protected void onPostExecute(Object result) {
             super.onPostExecute(result);
+            
+            if (!isClean && !isShowIng) {
+                isShowIng = true;
+                showdonghua();
+            }
+            
             pb_loading.setVisibility(View.GONE);
             list_delete.setVisibility(View.VISIBLE);
             // if(!isShowIng){
