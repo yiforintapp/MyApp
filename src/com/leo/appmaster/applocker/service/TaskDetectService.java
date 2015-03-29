@@ -173,9 +173,15 @@ public class TaskDetectService extends Service {
         boolean isSwtich = sp_traffic.getFlowSetting();
         boolean haveNotice = sp_traffic.getAlotNotice();
         long MonthUsed = sp_traffic.getMonthGprsAll();
-        long MonthItSelfTraffic = sp_traffic.getItselfMonthTraffic() * 1024 * 1024;
-        long ToTalUsedTraffi = MonthUsed + MonthItSelfTraffic;
-        int bili = (int) (ToTalUsedTraffi * 100 / totalTraffic);
+        long MonthItSelfTraffic = sp_traffic.getItselfMonthTraffic();
+//        long ToTalUsedTraffi = MonthUsed + MonthItSelfTraffic;
+//        int bili = (int) (ToTalUsedTraffi * 100 / totalTraffic);
+        int bili = 0 ;
+        if(MonthItSelfTraffic > 0){
+            bili =  (int) (MonthItSelfTraffic * 100 / totalTraffic);
+        }else {
+            bili =  (int) (MonthUsed * 100 / totalTraffic);
+        }
         
         int TrafficSeekBar = sp_traffic.getFlowSettingBar();
 
@@ -191,13 +197,22 @@ public class TaskDetectService extends Service {
 
         boolean mFinishNotice = sp_traffic.getFinishNotice();
         if (isSwtich && !mFinishNotice) {
-            if (totalTraffic < ToTalUsedTraffi) {
-//                LeoLog.d("testnetwork", "服务---流量已用完！！！");
-                // 流量用光了
-                Intent longcut = new Intent();
-                longcut.setAction("com.leo.appmaster.traffic.finish");
-                sendBroadcast(longcut);
-                sp_traffic.setFinishNotice(true);
+            if(MonthItSelfTraffic > 0){
+                if (totalTraffic < MonthItSelfTraffic) {
+                  // 流量用光了
+                  Intent longcut = new Intent();
+                  longcut.setAction("com.leo.appmaster.traffic.finish");
+                  sendBroadcast(longcut);
+                  sp_traffic.setFinishNotice(true);
+              }
+            }else {
+                if (totalTraffic < MonthUsed) {
+                  // 流量用光了
+                  Intent longcut = new Intent();
+                  longcut.setAction("com.leo.appmaster.traffic.finish");
+                  sendBroadcast(longcut);
+                  sp_traffic.setFinishNotice(true);
+              }
             }
         }
     }

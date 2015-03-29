@@ -247,7 +247,8 @@ public class LocationLockEditActivity extends BaseActivity implements
                 }
             });
         }
-
+        TextView mTitle = (TextView) mModeListDialog.findViewById(R.id.dlg_title);
+        mTitle.setText(getResources().getString(R.string.select_mode));
         mModeList.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -304,6 +305,8 @@ public class LocationLockEditActivity extends BaseActivity implements
                 }
             });
         }
+        TextView mTitle = (TextView) mModeListDialog.findViewById(R.id.dlg_title);
+        mTitle.setText(getResources().getString(R.string.select_wifi_mode));
         mModeList.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
