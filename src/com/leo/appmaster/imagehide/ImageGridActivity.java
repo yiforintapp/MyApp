@@ -383,6 +383,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             if (mClickList != null && mClickList.size() > 0) {
                 Iterator<PhotoItem> iterator = mClickList.iterator();
                 PhotoItem item;
+                ArrayList<PhotoItem> deleteList = new ArrayList<PhotoItem>();
                 if (isHide) {
                     while (iterator.hasNext()) {
                         item = iterator.next();
@@ -401,9 +402,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                         "Hide rename image fail!");
                             } else if ("0".equals(newPath)) {
                                 isSuccess = 0;
-                                mPicturesList.remove(item);
-                                mAllListPath.remove(item.getPath());
-
+                                // mPicturesList.remove(item);
+                                // mAllListPath.remove(item.getPath());
+                                deleteList.add(item);
                             } else if ("-1".equals(newPath)) {
                                 isSuccess = -1;
                                 Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
@@ -417,14 +418,24 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                         context);
                                 FileOperationUtil.deleteImageMediaEntry(
                                         item.getPath(), context);
-                                mPicturesList.remove(item);
-                                mAllListPath.remove(item.getPath());
+                                // mPicturesList.remove(item);
+                                // mAllListPath.remove(item.getPath());
+
+                                deleteList.add(item);
                             }
                         } else {
                             isSuccess = 2;
                         }
 
                     }
+                    if (deleteList.size() > 0) {
+                        mPicturesList.removeAll(deleteList);
+                        for (PhotoItem photoItem : deleteList) {
+                            mAllListPath.remove(photoItem.getPath());
+                        }
+
+                    }
+
                 } else {
                     while (iterator.hasNext()) {
                         item = iterator.next();
@@ -445,8 +456,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             ContentValues values = new ContentValues();
                             values.put("image_path", filepath);
                             getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
-                            mPicturesList.remove(item);
-                            mAllListPath.remove(item.getPath());
+                            // mPicturesList.remove(item);
+                            // mAllListPath.remove(item.getPath());
+                            deleteList.add(item);
                         } else if ("4".equals(newPaht)) {
                             isSuccess = 4;
                             break;
@@ -454,8 +466,16 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             isSuccess = 3;
                             FileOperationUtil.saveImageMediaEntry(newPaht, context);
                             FileOperationUtil.deleteFileMediaEntry(filepath, context);
-                            mPicturesList.remove(item);
-                            mAllListPath.remove(item.getPath());
+                            // mPicturesList.remove(item);
+                            // mAllListPath.remove(item.getPath());
+                            deleteList.add(item);
+                        }
+
+                    }
+                    if (deleteList.size() > 0) {
+                        mPicturesList.removeAll(deleteList);
+                        for (PhotoItem photoItem : deleteList) {
+                            mAllListPath.remove(photoItem.getPath());
                         }
 
                     }
