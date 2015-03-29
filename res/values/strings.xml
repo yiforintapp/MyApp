@@ -245,7 +245,7 @@
     <string name="locker_theme_guide">This theme will be applied to your lock screen!</string>
     <string name="locker_clean">Boosted successfully up to %1$s</string>
     <string name="setting_locker_clean">Unlock to boost</string>
-    <string name="app_no_video_hide">Press "Add" to select videos</string>
+    <string name="app_no_video_hide">Press \"Add\" to select videos</string>
     <string name="app_no_video_gallery_hide">No video available</string>
     <string name="app_video_hide">Hide Video</string>
     <string name="app_video_gallery">Video gallery</string>
@@ -254,7 +254,7 @@
     <string name="app_unhide_video_dialog_content">Unhide selected videos?</string>
     <string name="app_hide_video_dialog_content">Hide selected videos?</string>
     <string name="hide_video_dialog_title">Play</string>
-    <string name="hide_video_dialog_content">Video+ is required to play "Private" videos, continue to install?</string>
+    <string name="hide_video_dialog_content">Video+ is required to play \"Private\" videos, continue to install?</string>
     <string name="app_hide_video_fail">Video not selectable! Hide failed !</string>
     <string name="hide_pic_text">Images Hidden</string>
     <string name="hide_pic_empty_text">&#160;&#160;No Images Hidden</string>
@@ -303,8 +303,8 @@
     <string name="app_google_download">Free Download</string>
     <!-- AM-667 -->
     <string name="help_setting_tip_title">Tips</string>
-    <string name="lock_help_password_setting_content_gesture"> Hit the Settings icon at the bottom right of "Lock" page, tap "Change password" to reset. (Same page to switch to pattern lock.)</string>
-    <string name="lock_help_password_setting_content_password">Hit the Settings icon at the bottom right of "Lock" page, tap "Change password" to reset. (Same page to switch to passcode lock.)</string>
+    <string name="lock_help_password_setting_content_gesture"> Hit the Settings icon at the bottom right of \"Lock\" page, tap \"Change password\" to reset. (Same page to switch to pattern lock.)</string>
+    <string name="lock_help_password_setting_content_password">Hit the Settings icon at the bottom right of \"Lock\" page, tap \"Change password\" to reset. (Same page to switch to passcode lock.)</string>
     <string name="lock_help_lock_setting_content">Go to Auto-lock setting to change the idle time period required to lock the screen automatically.</string>
     <string name="lock_help_lock_theme_content">Bunch of hot themes just arrived, put it on to customize your lock screen!</string>
 
@@ -319,7 +319,7 @@
     <string name="lock_setting_button">Auto-lock time setting</string>
     <string name="lock_help_lock_theme_setting_button">Change a theme</string>
     <string name="help_setting_guide">Helpful tips</string>
-    <string name="app_no_image_hide">"Press "Add" to select images"</string>
+    <string name="app_no_image_hide">"Press \"Add\" to select images"</string>
 
     <!-- v2.0 -->
 
@@ -419,7 +419,7 @@
     <string name="vistor_mode">Guest Mode</string>
     <string name="office_mode">Office Mode</string>
     <string name="family_mode">Home Mode</string>
-    <string name="unlock_all_mode_tip">Unable to lock apps under "Unlock all" mode.</string>
+    <string name="unlock_all_mode_tip">Unable to lock apps under \"Unlock all\" mode.</string>
     <string name="add_new_mode">Add new mode</string>
     <string name="lock_mode_all">All Modes</string>
     <string name="hot_on_facebook">Hot on Facebook</string>
