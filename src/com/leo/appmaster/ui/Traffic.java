@@ -133,8 +133,6 @@ public class Traffic {
         int MonthOfDay = ManagerFlowUtils.getCurrentMonthDay();
         // 月结日
         int renewDay = s_preferences.getRenewDay();
-        // Log.d(Tag, "MonthOfDay : " + MonthOfDay + ",renewDay:"
-        // + renewDay);
 
         // 比较日期
         Cursor mCursor = mContext.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
@@ -143,7 +141,7 @@ public class Traffic {
                 }, null);
         if (mCursor != null) {
             if (!mCursor.moveToNext()) {
-                Log.d(Tag, "新一天or月到来");
+                Log.d("testfuckflow", "新一天or月到来");
                 ContentValues values = new ContentValues();
                 values.put("daytime", nowDayTime);
                 values.put("daymemory", 0);
@@ -151,14 +149,22 @@ public class Traffic {
                 values.put("month", nowMonth);
                 values.put("day", nowDay);
                 mContext.getContentResolver().insert(Constants.MONTH_TRAFFIC_URI, values);
-
+                
+                
+                Log.d("testfuckflow", "renewDay : " + renewDay);
+                Log.d("testfuckflow", "MonthOfDay : " + MonthOfDay);
+                Log.d("testfuckflow", "nowDay : " + nowDay);
+                Log.d("testfuckflow", "lastSaveDay : " + lastSaveDay);
+                
                 // 同年换月换日操作
                 if (nowYear == lastSaveYear) {
                     // 分析，月结日坑，如果月结日在31号，但2月只有28天的情况。
                     // 月结日大于这个月天数
                     if (renewDay > MonthOfDay) {
+                        Log.d("testfuckflow", "renewDay > MonthOfDay");
                         if (nowMonth > lastSaveMonth) {
                             if (lastSaveDay < renewDay || nowDay > renewDay || nowDay == MonthOfDay) {
+                                 LeoLog.d("testfuckflow", "1");
                                 ReSetMonthTraffic();
                             } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
@@ -168,17 +174,19 @@ public class Traffic {
                         } else {
                             if (nowDay == MonthOfDay) {
                                 ReSetMonthTraffic();
+                                LeoLog.d("testfuckflow", "2");
                             } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
                                         .getMonthGprsBase()));
                             }
                         }
                     } else {
-                        Log.d(Tag, "renewDay <= MonthOfDay");
+                        Log.d("testfuckflow", "renewDay <= MonthOfDay");
                         // 月结日 重置月流量计算
                         if (nowMonth > lastSaveMonth) {
-                            if (lastSaveDay < renewDay || nowDay > renewDay || nowDay == MonthOfDay) {
+                            if (lastSaveDay < renewDay || nowDay >= renewDay || nowDay == MonthOfDay) {
                                 ReSetMonthTraffic();
+                                LeoLog.d("testfuckflow", "3");
                             } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
                                         .getMonthGprsBase()));
@@ -186,6 +194,7 @@ public class Traffic {
                         } else {
                             if (nowDay >= renewDay && lastSaveDay < renewDay) {
                                 ReSetMonthTraffic();
+                                LeoLog.d("testfuckflow", "4");
                             } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
                                         .getMonthGprsBase()));
@@ -197,6 +206,7 @@ public class Traffic {
                     gprs[2] = 0;
                     // s_preferences.setItSelfTodayBase(0);
                 } else if (nowYear > lastSaveYear) {
+                    LeoLog.d("testfuckflow", "5");
                     Log.d(Tag, "换年咯,重置everything ! ");
                     s_preferences.setGprsSend(0);
                     s_preferences.setGprsRev(0);
@@ -220,9 +230,11 @@ public class Traffic {
         long ItSelfBase = s_preferences.getItSelfTodayBase();
         // 如果设置了已用流量，那么会一直叠加，除非换月清零。
         if (s_preferences.getItselfMonthTraffic() > 0) {
+            
             // 设置今日已用base
             if (ItSelfBase < 1 || ItSelfBase > gprs[2]) {
                 s_preferences.setItSelfTodayBase((long) gprs[2]);
+                ItSelfBase = s_preferences.getItSelfTodayBase();
             }
 
             s_preferences

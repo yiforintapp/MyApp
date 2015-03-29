@@ -65,6 +65,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         /* get Path */
         getIntentPath();
         viewPager = (LeoPictureViewPager) findViewById(R.id.picture_view_pager);
+        viewPager.setOffscreenPageLimit(2);
         mPagerAdapter = new VideoPagerAdapter(this);
         viewPager.setAdapter(mPagerAdapter);
         viewPager.setOnPageChangeListener(new OnPageChangeListener() {
@@ -350,8 +351,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                             .get(mPosition)));
                 }
             }
-            viewPager.setCurrentItem(mPosition, true);
-            mPagerAdapter.notifyDataSetChanged();
+            mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
+            viewPager.setAdapter(mPagerAdapter);
         }
     }
 
@@ -415,8 +416,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                                 .get(mPosition)));
                     }
                 }
-                viewPager.setCurrentItem(mPosition, true);
-                mPagerAdapter.notifyDataSetChanged();
+                mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
+                viewPager.setAdapter(mPagerAdapter);
 
             } else {
             }
