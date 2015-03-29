@@ -14,9 +14,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -336,13 +335,13 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         int size = mManager.getSize();
         float fsize = (float) size / 1024 / 1024;
         setContentView(R.layout.dialog_alarm);
-        TextView tvId = (TextView) findViewById(R.id.dlg_title);
+        TextView tvId = (TextView)findViewById(R.id.dlg_title);
         tvId.setText(getString(R.string.update_title));
-        TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
+        TextView tvMsg = (TextView)findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
-        tvMsg.setLayoutParams(new RelativeLayout.LayoutParams(
+        tvMsg.setLayoutParams(new LinearLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         TextView tvYes = (TextView) findViewById(R.id.dlg_right_btn);
         tvYes.setText(getString(R.string.do_update));
@@ -508,7 +507,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         String channelStr = "unknown";
         if (channel == IUIHelper.APP_MARKET) {
             channelStr = "GP";
-            Handler handler=new Handler();
+            Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

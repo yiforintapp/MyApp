@@ -263,6 +263,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     }
 
+    
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -438,11 +440,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        if (mLockMode == LockManager.LOCK_MODE_FULL) {
+//        if (mLockMode == LockManager.LOCK_MODE_FULL) {
             intent.setAction(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             startActivity(intent);
-        }
+//        } else {
+//            
+//        }
 
         /**
          * notify LockManager
