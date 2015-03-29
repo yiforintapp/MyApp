@@ -4,8 +4,8 @@ package com.leo.appmaster.applocker.service;
 import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
@@ -26,7 +26,6 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 //import android.app.ActivityManager.AppTask;
@@ -47,11 +46,11 @@ public class TaskDetectService extends Service {
             0, 0, 0
     };
 
-    private Future<?> mflowDatectFuture;;
+    private ScheduledFuture<?> mflowDatectFuture;;
     private TimerTask flowDetecTask;
 
     private ScheduledExecutorService mScheduledExecutor;
-    private Future<?> mDetectFuture;
+    private ScheduledFuture<?> mDetectFuture;
     private TimerTask mDetectTask;
     // private Timer mTimer;
 
@@ -77,8 +76,7 @@ public class TaskDetectService extends Service {
         mScheduledExecutor = Executors.newScheduledThreadPool(2);
         
         flowDetecTask = new FlowTask();
-        mflowDatectFuture = mScheduledExecutor.submit(flowDetecTask);
-        mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000, TimeUnit.MILLISECONDS);
+        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000, TimeUnit.MILLISECONDS);
         super.onCreate();
     }
 
@@ -115,7 +113,7 @@ public class TaskDetectService extends Service {
 
     private void stopDetectTask() {
         if (mDetectFuture != null) {
-            mDetectFuture.cancel(true);
+            mDetectFuture.cancel(false);
             mDetectFuture = null;
             mDetectTask = null;
         }
@@ -123,7 +121,7 @@ public class TaskDetectService extends Service {
     
     private void stopFlowTask() {
         if (mflowDatectFuture != null) {
-            mflowDatectFuture.cancel(true);
+            mflowDatectFuture.cancel(false);
             mflowDatectFuture = null;
             flowDetecTask = null;
         }
@@ -134,8 +132,7 @@ public class TaskDetectService extends Service {
         // for android 5.0, set period to 200, AM-1255
         int period = Build.VERSION.SDK_INT > 19 ? 200 : 100;
         mDetectTask = new DetectTask();
-        mDetectFuture = mScheduledExecutor.submit(mDetectTask);
-        mScheduledExecutor.scheduleWithFixedDelay(mDetectTask, 0, period, TimeUnit.MILLISECONDS);
+        mDetectFuture = mScheduledExecutor.scheduleWithFixedDelay(mDetectTask, 0, period, TimeUnit.MILLISECONDS);
     }
 
     @Override
