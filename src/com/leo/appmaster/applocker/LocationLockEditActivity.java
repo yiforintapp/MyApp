@@ -277,8 +277,8 @@ public class LocationLockEditActivity extends BaseActivity implements
                 }
             }
         });
-        
-        if(mNoWifiTv != null) {
+
+        if (mNoWifiTv != null) {
             mNoWifiTv.setVisibility(View.GONE);
         }
 
@@ -293,7 +293,7 @@ public class LocationLockEditActivity extends BaseActivity implements
             mModeListDialog = new LEOBaseDialog(this);
             mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
-            View container = findViewById(R.id.mode_list_container);
+            View container = mModeListDialog.findViewById(R.id.mode_list_container);
             mModeList = (ListView) container.findViewById(R.id.mode_list);
             mNoWifiTv = (TextView) container.findViewById(R.id.no_wifi);
             View cancel = mModeListDialog.findViewById(R.id.dlg_bottom_btn);
@@ -315,7 +315,6 @@ public class LocationLockEditActivity extends BaseActivity implements
                 mEdited = true;
             }
         });
-        
 
         List<String> wifiList = new ArrayList<String>();
         WifiAdmin wa = new WifiAdmin(this);
@@ -328,13 +327,13 @@ public class LocationLockEditActivity extends BaseActivity implements
             }
         }
         if (wifiList != null && wifiList.size() > 0) {
-            if(mNoWifiTv != null) {
+            if (mNoWifiTv != null) {
                 mNoWifiTv.setVisibility(View.GONE);
             }
             ListAdapter adapter = new WifiListAdapter(this, wifiList);
             mModeList.setAdapter(adapter);
         } else {
-            if(mNoWifiTv != null) {
+            if (mNoWifiTv != null) {
                 mNoWifiTv.setVisibility(View.VISIBLE);
             }
             ListAdapter adapter = new WifiListAdapter(this, wifiList);
