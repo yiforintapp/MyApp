@@ -236,7 +236,7 @@
     <dimen name="app_manager_headview_two_text_margin_top">5dp</dimen> <!-- 3 -->
     <dimen name="app_manager_lineview_margin_bottom">8dp</dimen> <!-- 4 -->
     <dimen name="app_manager_hotapp_rep_tip_width_height">13dp</dimen> <!-- 11 -->
-    <dimen name="app_manager_hotapp_rep_tip_margin">3dp</dimen> <!-- 2 -->
+    <dimen name="app_manager_hotapp_rep_tip_margin">7dp</dimen> <!-- 2 -->
     <dimen name="hot_app_tab_red_tip_margin_left">120dp</dimen> <!-- 110 -->
 
 

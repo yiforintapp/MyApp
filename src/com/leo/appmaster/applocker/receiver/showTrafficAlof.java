@@ -56,14 +56,16 @@ public class showTrafficAlof extends BroadcastReceiver {
                 
                 if (haveNotice && isSwtich) {
                     if (mFinishNotice) {
-                        if (secondIn - firstIn > 60000) {
-                            LeoLog.d("ServiceTraffic", "广播！用完+满1小时！");
+                        if (secondIn - firstIn > 1200000) {
+                            LeoLog.d("ServiceTraffic", "广播！用完+满2小时！");
+                            LeoLog.d("testfucktime", "secondIn : " + secondIn + "---firstIn : " + firstIn);
                             showAlarmDialog(("com.leo.appmaster.traffic.finish"));
                             sp_broadcast.setFirstTime(secondIn);
                         }
                     } else {
-                        if (secondIn - firstIn > 60000) {
-                            LeoLog.d("ServiceTraffic", "广播！超额+满1小时！");
+                        if (secondIn - firstIn > 1200000) {
+                            LeoLog.d("testfucktime", "secondIn : " + secondIn + "---firstIn : " + firstIn);
+                            LeoLog.d("ServiceTraffic", "广播！超额+满2小时！");
                             showAlarmDialog("com.leo.appmaster.traffic.alot");
                             sp_broadcast.setFirstTime(secondIn);
                         }
