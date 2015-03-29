@@ -129,7 +129,7 @@
     <string name="app_permission3">Important Privacy Control</string>
     <string name="app_setting_update">Check for updates</string>
     <string name="app_setting_about">About</string>
-    <string name="forbid_uninstall">Uninstall Protection</string>
+    <string name="forbid_uninstall">Uninstall prevention</string>
     <string name="auto_lock">Lock after screen-off</string>
     <string name="change_lock_time">Auto-lock Time Settings</string>
     <string name="passwd_protect">Security Question</string>
