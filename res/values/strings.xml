@@ -30,7 +30,7 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="passwd_set_passwd_tip">Enter your password</string>
-    <string name="passwd_hint">Enter Password</string>
+    <string name="passwd_hint">Enter Passcode</string>
     <string name="tip_no_the_same_pswd">Wrong passcode, please try again.</string>
     <string name="input_error_tip">You have used %1$s login attempt(s), %2$s remaining.</string>
     <string name="use_gesture">Pattern Lock</string>
