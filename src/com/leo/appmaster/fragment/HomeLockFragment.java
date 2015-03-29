@@ -69,6 +69,14 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     public void onDestroyView() {
         super.onDestroyView();
     }
+    
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(mLockModeCircle != null) {
+            mLockModeCircle.stopAnimation();
+        }
+    }
 
     @Override
     public void onDestroy() {

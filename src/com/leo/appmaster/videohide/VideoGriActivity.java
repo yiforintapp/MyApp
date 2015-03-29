@@ -573,9 +573,12 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             public void onAnimationEnd(Animator animation) {
                 mHideVideoAdapter.notifyDataSetChanged();
                 for (Integer view : viewList) {
-                    mHideVideo.getChildAt(view).setAlpha(1);
-                    mHideVideo.getChildAt(view).setScaleX(1);
-                    mHideVideo.getChildAt(view).setScaleY(1);
+                    View child = mHideVideo.getChildAt(view);
+                    if(child != null) {
+                        child.setAlpha(1);
+                        child.setScaleX(1);
+                        child.setScaleY(1);
+                    }
                 }
                 mClickPosList.clear();
             }

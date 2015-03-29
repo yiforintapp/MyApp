@@ -42,6 +42,7 @@ public class PrivacyLevelView extends View {
     private int mDrawPadding;
     
     private Rect mIconDrawBount = new Rect();
+    private Rect mLastIconDrawBount = new Rect();
     private Rect mSepratorBound = new Rect();
     
     private Point mSmallTextPoint = new Point();
@@ -117,22 +118,26 @@ public class PrivacyLevelView extends View {
         mIconDrawBount.top = centerY - drawH / 2;
         mIconDrawBount.bottom =  mIconDrawBount.top + drawH;
         
-        int maxTextWidth = (int)(drawW * SMALL_TEXT_WIDTH_PERCENT);
-        int textSize = computeTextSize(mLevelText, mSmallTextSize, maxTextWidth, mPaint);
-        mRealSmallTextSize = (int)mPaint.getTextSize();
-        mPaint.getFontMetrics(mFontMetrics);
-        int offset =  (int) Math.ceil(mFontMetrics.descent - mFontMetrics.ascent) + 1;
-        mSmallTextPoint.set(mIconDrawBount.left + (drawW - textSize) / 2, mIconDrawBount.top + ((int)(drawH * SMALL_TEXT_POS_PERCENT)) + offset);
-        
-        int sepratorW = (int)(drawW * SEPRATOR_WIDTH_PERCENT);       
-        mSepratorBound.left = centerX - sepratorW / 2;
-        mSepratorBound.right = mSepratorBound.left + sepratorW;
-        mSepratorPadding = (int)(mSepratorPadding * scale);
-        if(mSepratorPadding < 5) {
-            mSepratorPadding = 5;
+        if(!mLastIconDrawBount.equals(mIconDrawBount)) {
+            int maxTextWidth = (int)(drawW * SMALL_TEXT_WIDTH_PERCENT);
+            int textSize = computeTextSize(mLevelText, mSmallTextSize, maxTextWidth, mPaint);
+            mRealSmallTextSize = (int)mPaint.getTextSize();
+            mPaint.getFontMetrics(mFontMetrics);
+            int offset =  (int) Math.ceil(mFontMetrics.descent - mFontMetrics.ascent) + 1;
+            mSmallTextPoint.set(mIconDrawBount.left + (drawW - textSize) / 2, mIconDrawBount.top + ((int)(drawH * SMALL_TEXT_POS_PERCENT)) + offset);
+            
+            int sepratorW = (int)(drawW * SEPRATOR_WIDTH_PERCENT);       
+            mSepratorBound.left = centerX - sepratorW / 2;
+            mSepratorBound.right = mSepratorBound.left + sepratorW;
+            mSepratorPadding = (int)(mSepratorPadding * scale);
+            if(mSepratorPadding < 5) {
+                mSepratorPadding = 5;
+            }
+            mSepratorBound.top = mSmallTextPoint.y + mSepratorPadding;
+            mSepratorBound.bottom =  mSepratorBound.top + mSeprator.getIntrinsicHeight();
+            
+            mLastIconDrawBount.set(mIconDrawBount);
         }
-        mSepratorBound.top = mSmallTextPoint.y + mSepratorPadding;
-        mSepratorBound.bottom =  mSepratorBound.top + mSeprator.getIntrinsicHeight();
     }
 
     @Override
