@@ -21,7 +21,7 @@ public class AsyncLoadImage {
     private Handler handler = new Handler();
     
     public synchronized void cancel() {
-        executorService.shutdownNow();
+        executorService.shutdown();
     }
 
     public synchronized Drawable loadImage(final View imageView, final String path,
