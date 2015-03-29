@@ -289,13 +289,13 @@ public class CircleImageView extends ImageView {
 
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
-    
+
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         try {
             super.onRestoreInstanceState(state);
         } catch (Exception e) {
-            
+
         }
     }
 
