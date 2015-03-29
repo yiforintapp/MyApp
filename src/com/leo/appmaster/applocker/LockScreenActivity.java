@@ -17,7 +17,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -264,6 +263,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     }
 
+    
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -394,8 +395,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             } else if (mLockMode == LockManager.LOCK_MODE_PURE) {
             }
             pref.setUnlocked(true);
+            pref.setDoubleCheck(null);
         }
-
+       LockManager.getInstatnce().timeFilter(mLockedPackage, 1000);
         mTtileBar.postDelayed(new Runnable() {
 
             @Override
@@ -412,7 +414,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoEventBus.getDefaultBus().post(
                 new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_OUTCOUNT));
 
-        AppMasterPreference.getInstance(this).setDoubleCheck(false);
+        AppMasterPreference.getInstance(this).setDoubleCheck(null);
 
         Intent intent = new Intent(this, WaitActivity.class);
         intent.putExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG, mLockedPackage);
@@ -438,11 +440,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        if (mLockMode == LockManager.LOCK_MODE_FULL) {
+//        if (mLockMode == LockManager.LOCK_MODE_FULL) {
             intent.setAction(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             startActivity(intent);
-        }
+//        } else {
+//            
+//        }
 
         /**
          * notify LockManager
@@ -486,7 +490,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         "theme_enter", "unlock");
                 AppMasterPreference amp = AppMasterPreference.getInstance(this);
                 amp.setUnlocked(true);
-                amp.setDoubleCheck(false);
+                amp.setDoubleCheck(null);
                 startActivityForResult(intent, 0);
                 amp.setLockerScreenThemeGuide(true);
                 break;
@@ -494,7 +498,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 AppMasterPreference ampp = AppMasterPreference.getInstance(this);
                 ampp.setLockerScreenThemeGuide(true);
                 ampp.setUnlocked(true);
-                ampp.setDoubleCheck(false);
+                ampp.setDoubleCheck(null);
                 Intent helpSettingIntent = new Intent(LockScreenActivity.this,
                         LockHelpSettingTip.class);
                 helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -529,7 +533,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (anwser.equals(mEtAnwser.getText().toString())) {
                 AppMasterPreference ampp = AppMasterPreference.getInstance(this);
                 ampp.setUnlocked(true);
-                ampp.setDoubleCheck(false);
+                ampp.setDoubleCheck(null);
                 // goto reset passwd
                 Intent intent = new Intent(this, LockSettingActivity.class);
                 intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);

@@ -315,7 +315,7 @@ public class LockHelpSettingTip extends Activity {
                     @Override
                     public void onUnlocked() {
                         Intent intent = null;
-                        AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(false);
+                        AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(null);
                         intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);
                         intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
                         startActivity(intent);
@@ -339,7 +339,7 @@ public class LockHelpSettingTip extends Activity {
 
                     @Override
                     public void onUnlocked() {
-                        AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(false);
+                        AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(null);
                         Intent intent = new Intent(LockHelpSettingTip.this, LockTimeSetting.class);
                         intent.putExtra("help_setting_current", 1);
                         startActivity(intent);

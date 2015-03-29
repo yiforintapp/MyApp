@@ -380,86 +380,110 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             String newFileName;
             int isSuccess = 3;
             boolean isHide = params[0];
-            if (mClickList != null && mClickList.size() > 0) {
-                Iterator<PhotoItem> iterator = mClickList.iterator();
-                PhotoItem item;
-                if (isHide) {
-                    while (iterator.hasNext()) {
-                        item = iterator.next();
-                        if (!mIsBackgoundRunning)
-                            break;
-                        newFileName = FileOperationUtil
-                                .getNameFromFilepath(item.getPath());
-                        newFileName = newFileName + ".leotmi";
-                        String path = item.getPath();
-                        String newPath = FileOperationUtil.hideImageFile(context,
-                                path, newFileName, mTotalSize);
-                        if (newPath != null) {
-                            if ("-2".equals(newPath)) {
-                                isSuccess = -2;
-                                Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
-                                        "Hide rename image fail!");
-                            } else if ("0".equals(newPath)) {
-                                isSuccess = 0;
-                                mPicturesList.remove(item);
-                                mAllListPath.remove(item.getPath());
+            try {
+                if (mClickList != null && mClickList.size() > 0) {
+                    Iterator<PhotoItem> iterator = mClickList.iterator();
+                    PhotoItem item;
+                    ArrayList<PhotoItem> deleteList = new ArrayList<PhotoItem>();
+                    if (isHide) {
+                        while (iterator.hasNext()) {
+                            item = iterator.next();
+                            if (!mIsBackgoundRunning)
+                                break;
+                            newFileName = FileOperationUtil
+                                    .getNameFromFilepath(item.getPath());
+                            newFileName = newFileName + ".leotmi";
+                            String path = item.getPath();
+                            String newPath = FileOperationUtil.hideImageFile(context,
+                                    path, newFileName, mTotalSize);
+                            if (newPath != null) {
+                                if ("-2".equals(newPath)) {
+                                    isSuccess = -2;
+                                    Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
+                                            "Hide rename image fail!");
+                                } else if ("0".equals(newPath)) {
+                                    isSuccess = 0;
+                                    // mPicturesList.remove(item);
+                                    // mAllListPath.remove(item.getPath());
+                                    deleteList.add(item);
+                                } else if ("-1".equals(newPath)) {
+                                    isSuccess = -1;
+                                    Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
+                                            "Copy image fail!");
+                                } else if ("4".equals(newPath)) {
+                                    isSuccess = 4;
+                                    break;
+                                } else {
+                                    isSuccess = 3;
+                                    FileOperationUtil.saveFileMediaEntry(newPath,
+                                            context);
+                                    FileOperationUtil.deleteImageMediaEntry(
+                                            item.getPath(), context);
+                                    // mPicturesList.remove(item);
+                                    // mAllListPath.remove(item.getPath());
 
-                            } else if ("-1".equals(newPath)) {
-                                isSuccess = -1;
+                                    deleteList.add(item);
+                                }
+                            } else {
+                                isSuccess = 2;
+                            }
+
+                        }
+                        if (deleteList.size() > 0) {
+                            mPicturesList.removeAll(deleteList);
+                            for (PhotoItem photoItem : deleteList) {
+                                mAllListPath.remove(photoItem.getPath());
+                            }
+
+                        }
+
+                    } else {
+                        while (iterator.hasNext()) {
+                            item = iterator.next();
+                            if (!mIsBackgoundRunning)
+                                break;
+
+                            String filepath = item.getPath();
+                            String newPaht = FileOperationUtil.unhideImageFile(
+                                    ImageGridActivity.this, filepath, mTotalSize);
+                            if (newPaht == null) {
+                                isSuccess = 2;
+                            } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
+                                isSuccess = 2;
                                 Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
-                                        "Copy image fail!");
-                            } else if ("4".equals(newPath)) {
+                                        "Copy Hide  image fail!");
+                            } else if ("0".equals(newPaht)) {
+                                isSuccess = 3;
+                                ContentValues values = new ContentValues();
+                                values.put("image_path", filepath);
+                                getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
+                                // mPicturesList.remove(item);
+                                // mAllListPath.remove(item.getPath());
+                                deleteList.add(item);
+                            } else if ("4".equals(newPaht)) {
                                 isSuccess = 4;
                                 break;
                             } else {
                                 isSuccess = 3;
-                                FileOperationUtil.saveFileMediaEntry(newPath,
-                                        context);
-                                FileOperationUtil.deleteImageMediaEntry(
-                                        item.getPath(), context);
-                                mPicturesList.remove(item);
-                                mAllListPath.remove(item.getPath());
+                                FileOperationUtil.saveImageMediaEntry(newPaht, context);
+                                FileOperationUtil.deleteFileMediaEntry(filepath, context);
+                                // mPicturesList.remove(item);
+                                // mAllListPath.remove(item.getPath());
+                                deleteList.add(item);
                             }
-                        } else {
-                            isSuccess = 2;
+
                         }
+                        if (deleteList.size() > 0) {
+                            mPicturesList.removeAll(deleteList);
+                            for (PhotoItem photoItem : deleteList) {
+                                mAllListPath.remove(photoItem.getPath());
+                            }
 
-                    }
-                } else {
-                    while (iterator.hasNext()) {
-                        item = iterator.next();
-                        if (!mIsBackgoundRunning)
-                            break;
-
-                        String filepath = item.getPath();
-                        String newPaht = FileOperationUtil.unhideImageFile(
-                                ImageGridActivity.this, filepath, mTotalSize);
-                        if (newPaht == null) {
-                            isSuccess = 2;
-                        } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
-                            isSuccess = 2;
-                            Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
-                                    "Copy Hide  image fail!");
-                        } else if ("0".equals(newPaht)) {
-                            isSuccess = 3;
-                            ContentValues values = new ContentValues();
-                            values.put("image_path", filepath);
-                            getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
-                            mPicturesList.remove(item);
-                            mAllListPath.remove(item.getPath());
-                        } else if ("4".equals(newPaht)) {
-                            isSuccess = 4;
-                            break;
-                        } else {
-                            isSuccess = 3;
-                            FileOperationUtil.saveImageMediaEntry(newPaht, context);
-                            FileOperationUtil.deleteFileMediaEntry(filepath, context);
-                            mPicturesList.remove(item);
-                            mAllListPath.remove(item.getPath());
                         }
-
                     }
                 }
+            } catch (Exception e) {
+                // TODO: handle exception
             }
             return isSuccess;
         }
