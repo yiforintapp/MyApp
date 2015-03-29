@@ -77,8 +77,6 @@ public class LockManager {
     public int mLastNetType = NETWORK_MOBILE;
     public String mLastWifi = "";
     
-    private boolean mFromScreenOn = false;
-
     public static interface OnUnlockedListener {
         /**
          * called when unlock successfully
@@ -1171,9 +1169,11 @@ public class LockManager {
 
     public void startLockService() {
         LeoLog.d(TAG, "startLockService");
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         if (mDetectService != null
-                && AppMasterPreference.getInstance(mContext).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                && amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
             mDetectService.startDetect();
+            amp.setDoubleCheck(null);
         } else {
             LeoLog.d(TAG, "mDetectService = null");
         }
@@ -1233,7 +1233,7 @@ public class LockManager {
             LeoLog.d(TAG, "filter package: " + lockedPkg);
             AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
             amp.setUnlocked(true);
-            amp.setDoubleCheck(false);
+            amp.setDoubleCheck(null);
             return false;
         }
 
@@ -1258,15 +1258,8 @@ public class LockManager {
             }
             AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
             
-            if(mFromScreenOn) {
-                amp.setDoubleCheck(false);
-                amp.setUnlocked(false);
-                mFromScreenOn = false;
-            } else {                
-                boolean lockSelf = mContext.getPackageName().equals(lockedPkg);
-                amp.setDoubleCheck(!lockSelf);
-                amp.setUnlocked(false);
-            }
+            boolean lockSelf = mContext.getPackageName().equals(lockedPkg);
+            amp.setDoubleCheck(lockSelf ? null : lockedPkg);
             mContext.startActivity(intent);
             return true;
         }
@@ -1307,7 +1300,6 @@ public class LockManager {
             LeoLog.d("Track Lock Screen",
                     "apply lockscreen form screen on => " + lastRunningPkg
                             + "/" + lastRunningActivity);
-            mFromScreenOn = true;
             boolean lock = applyLock(LOCK_MODE_FULL, lastRunningPkg, false,
                     new OnUnlockedListener() {
                         @Override
@@ -1331,7 +1323,7 @@ public class LockManager {
                         }
                     });
             if (lock) {
-                pref.setDoubleCheck(false);
+                pref.setDoubleCheck(null);
                 pref.setUnlocked(false);
             }
         }

@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.leo.appmaster.applocker.AppLockListActivity;
 
@@ -140,7 +139,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private int mLockType = LOCK_TYPE_NONE;
 
     private boolean mUnlocked = false;
-    private boolean mDoubleCheck = false;
+    private String mDoubleCheck = null;
     private boolean mFromOther = false;
 
     private long mLastShowTime = -1;
@@ -1027,12 +1026,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mUnlocked = flag;
     }
 
-    public boolean getDoubleCheck() {
+    public String getDoubleCheck() {
         return mDoubleCheck;
     }
 
-    public void setDoubleCheck(boolean flag) {
-        mDoubleCheck = flag;
+    public void setDoubleCheck(String pkg) {
+        mDoubleCheck = pkg;
     }
 
     public boolean getFromOther() {

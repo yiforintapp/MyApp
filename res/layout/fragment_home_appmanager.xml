@@ -113,7 +113,7 @@
                         android:layout_height="@dimen/app_manager_hotapp_rep_tip_width_height"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginRight="@dimen/app_manager_hotapp_rep_tip_margin"
+                        android:layout_marginRight="@dimen/app_manager_hotapp_rep_tip_margin_right"
                         android:layout_marginTop="@dimen/app_manager_hotapp_rep_tip_margin"
                         android:src="@drawable/red_tip"
                         android:visibility="gone" />
