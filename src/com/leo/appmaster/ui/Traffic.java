@@ -55,10 +55,10 @@ public class Traffic {
             }
         }
 
-        Log.d(Tag, "----頭炮！一開始檢測-----");
-        Log.d(Tag, "mBaseSend : " + mBaseSend / 1024 / 1024);
-        Log.d(Tag, "mGprsSend : " + mGprsSend / 1024 / 1024);
-        Log.d(Tag, "------------------------------------");
+        // Log.d(Tag, "----頭炮！一開始檢測-----");
+        // Log.d(Tag, "mBaseSend : " + mBaseSend / 1024 / 1024);
+        // Log.d(Tag, "mGprsSend : " + mGprsSend / 1024 / 1024);
+        // Log.d(Tag, "------------------------------------");
 
         int nowYear = getCurrentTime()[0];
         int nowMonth = getCurrentTime()[1];
@@ -66,6 +66,7 @@ public class Traffic {
         String nowDayTime = ManagerFlowUtils.getNowTime();
         int lastSaveYear = 0;
         int lastSaveMonth = 0;
+        int lastSaveDay = 0;
         String lastSaveDayTime = "";
 
         Cursor Testcursor = mContext.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
@@ -75,6 +76,7 @@ public class Traffic {
                 lastSaveDayTime = Testcursor.getString(1);
                 lastSaveYear = Testcursor.getInt(4);
                 lastSaveMonth = Testcursor.getInt(5);
+                lastSaveDay = Testcursor.getInt(6);
             }
             Testcursor.close();
         }
@@ -86,41 +88,37 @@ public class Traffic {
             gprs[0] = mGprsSend;
             gprs[1] = mGprsRev;
             gprs[2] = gprs[0] + gprs[1];
-            Log.d(Tag, "----没上传下载----存储-----");
-            Log.d(Tag, "Same day , return gprs[2] : " + gprs[2] / 1024 / 1024);
-            Log.d(Tag, "------------------------------------");
+            // Log.d(Tag, "----没上传下载----存储-----");
+            // Log.d(Tag, "Same day , return gprs[2] : " + gprs[2] / 1024 /
+            // 1024);
+            // Log.d(Tag, "------------------------------------");
             return gprs;
         }
 
         if (TrafficStats.getMobileTxBytes() >= mBaseSend
                 || TrafficStats.getMobileRxBytes() >= mBaseRev)
         {
-            Log.d(Tag, "--------正常状态接受-------！");
-            Log.d(Tag, "TrafficStats.getMobileTxBytes()  : " + (TrafficStats.getMobileTxBytes())
-                    / 1024 / 1024);
-            Log.d(Tag, "mBaseSend : " + (mBaseSend) / 1024 / 1024);
-            Log.d(Tag, "mGprsSend : " + (mGprsSend) / 1024 / 1024);
-            Log.d(Tag, "---------------------------------！");
+            // Log.d(Tag, "--------正常状态接受-------！");
+            // Log.d(Tag, "TrafficStats.getMobileTxBytes()  : " +
+            // (TrafficStats.getMobileTxBytes())
+            // / 1024 / 1024);
+            // Log.d(Tag, "mBaseSend : " + (mBaseSend) / 1024 / 1024);
+            // Log.d(Tag, "mGprsSend : " + (mGprsSend) / 1024 / 1024);
+            // Log.d(Tag, "---------------------------------！");
             s_preferences.setGprsSend(TrafficStats.getMobileTxBytes() - mBaseSend + mGprsSend);
             s_preferences.setGprsRev(TrafficStats.getMobileRxBytes() - mBaseRev + mGprsRev);
         }
         else {
-            // Log.d(Tag, "-------非正常状态！！-------");
-            // Log.d(Tag, "setGprsSend : " + (TrafficStats.getMobileTxBytes() +
-            // mGprsSend)/1024/1024);
-            // Log.d(Tag, "setGprsRev : " + (TrafficStats.getMobileRxBytes() +
-            // mGprsRev)/1024/1024);
-            // Log.d(Tag, "-------------------------------------");
             s_preferences.setGprsSend(TrafficStats.getMobileTxBytes() + mGprsSend);
             s_preferences.setGprsRev(TrafficStats.getMobileRxBytes() + mGprsRev);
         }
         mBaseSend = TrafficStats.getMobileTxBytes();
         mBaseRev = TrafficStats.getMobileRxBytes();
 
-        Log.d(Tag, "-------!!基值!!-------");
-        LeoLog.d(Tag, "mBaseSend : " + mBaseSend / 1024 / 1024);
-        LeoLog.d(Tag, "mBaseRev: " + mBaseRev / 1024 / 1024);
-        Log.d(Tag, "-------------------------");
+        // Log.d(Tag, "-------!!基值!!-------");
+        // LeoLog.d(Tag, "mBaseSend : " + mBaseSend / 1024 / 1024);
+        // LeoLog.d(Tag, "mBaseRev: " + mBaseRev / 1024 / 1024);
+        // Log.d(Tag, "-------------------------");
 
         s_preferences.setBaseSend(mBaseSend);
         s_preferences.setBaseRev(mBaseRev);
@@ -128,9 +126,9 @@ public class Traffic {
         gprs[0] = s_preferences.getGprsSend();
         gprs[1] = s_preferences.getGprsRev();
         gprs[2] = gprs[0] + gprs[1];
-        Log.d(Tag, "-------最终获取gprs[2]-------");
-        LeoLog.d(Tag, "gprs[2] : " + gprs[2] / 1024 / 1024);
-        Log.d(Tag, "--------------------------------------");
+        // Log.d(Tag, "-------最终获取gprs[2]-------");
+        // LeoLog.d(Tag, "gprs[2] : " + gprs[2] / 1024 / 1024);
+        // Log.d(Tag, "--------------------------------------");
         // 每个月的天数
         int MonthOfDay = ManagerFlowUtils.getCurrentMonthDay();
         // 月结日
@@ -159,47 +157,39 @@ public class Traffic {
                     // 分析，月结日坑，如果月结日在31号，但2月只有28天的情况。
                     // 月结日大于这个月天数
                     if (renewDay > MonthOfDay) {
-                        // Log.d(Tag, "renewDay > MonthOfDay");
-                        // if (nowMonth > lastSaveMonth && nowDay == MonthOfDay)
-                        // {
-                        if (nowDay == MonthOfDay) {
-                            Log.d(Tag, "月结日到了，重置月流量咯！！！！！！");
+                        if (nowMonth > lastSaveMonth) {
+                            if (lastSaveDay < renewDay || nowDay > renewDay || nowDay == MonthOfDay) {
+                                ReSetMonthTraffic();
+                            } else {
+                                s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
+                                        .getMonthGprsBase()));
+                            }
 
-                            // 换月，流量超额开关
-                            s_preferences.setAlotNotice(false);
-                            s_preferences.setFinishNotice(false);
-
-                            // 换月，已使用流量设置为0
-                            s_preferences.setItselfMonthTraffic(0);
-
-                            s_preferences.setMonthGprsBase(0);
-                            s_preferences.setMonthGprsAll(0);
                         } else {
-                            s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
-                                    .getMonthGprsBase()));
+                            if(nowDay == MonthOfDay){
+                                ReSetMonthTraffic();
+                            } else {
+                                s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
+                                        .getMonthGprsBase()));
+                            }
                         }
                     } else {
                         Log.d(Tag, "renewDay <= MonthOfDay");
                         // 月结日 重置月流量计算
-                        // if (nowMonth > lastSaveMonth
-                        // && nowDay >= s_preferences.getRenewDay()) {
-                        if (nowDay == renewDay) {
-                            Log.d(Tag, "月结日到了，重置月流量咯！！！！！！");
-
-                            // 换月，流量超额开关
-                            s_preferences.setAlotNotice(false);
-                            s_preferences.setFinishNotice(false);
-                            
-                            // 换月，已使用流量设置为0
-                            s_preferences.setItselfMonthTraffic(0);
-                            
-                            s_preferences.setMonthGprsBase(0);
-                            s_preferences.setMonthGprsAll(0);
-                        }
-                        // 过一日累加月流量
-                        else {
-                            s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
-                                    .getMonthGprsBase()));
+                        if (nowMonth > lastSaveMonth) {
+                            if(lastSaveDay < renewDay || nowDay > renewDay || nowDay == MonthOfDay){
+                                ReSetMonthTraffic();
+                            }else {
+                                s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
+                                        .getMonthGprsBase()));
+                            }
+                        }else{
+                            if(nowDay >= renewDay && lastSaveDay < renewDay){
+                                ReSetMonthTraffic();
+                            } else {
+                                s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
+                                        .getMonthGprsBase()));
+                            }
                         }
                     }
                     s_preferences.setGprsSend(0);
@@ -214,13 +204,6 @@ public class Traffic {
                     gprs[2] = 0;
                 }
             } else {
-                // Log.d(Tag, "-------每日更新！！-------");
-                // Log.d(Tag,
-                // "old day , update the s_preferences.getMonthGprsBase() is : "
-                // + s_preferences.getMonthGprsBase()/1024/1024);
-                // Log.d(Tag, "old day , update the gprs[2] is : " +
-                // gprs[2]/1024/1024);
-                // Log.d(Tag, "-------每日更新！！-------");
                 s_preferences
                         .setMonthGprsAll((long) (s_preferences.getMonthGprsBase() + gprs[2]));
                 ContentValues values = new ContentValues();
@@ -235,6 +218,17 @@ public class Traffic {
         }
 
         return gprs;
+    }
+
+    private void ReSetMonthTraffic() {
+        Log.d(Tag, "月结日到了，重置月流量咯！！！！！！");
+        // 换月，流量超额开关
+        s_preferences.setAlotNotice(false);
+        s_preferences.setFinishNotice(false);
+        // 换月，已使用流量设置为0
+        s_preferences.setItselfMonthTraffic(0);
+        s_preferences.setMonthGprsBase(0);
+        s_preferences.setMonthGprsAll(0);
     }
 
     // 获取系统时间。返回数组
