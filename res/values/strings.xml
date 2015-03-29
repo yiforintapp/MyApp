@@ -437,7 +437,7 @@
     <string name="create_mode_shortcut_content">Create a shortcut to get quick access to mode options.</string>
     <string name="mode_change"><xliff:g id="mode">%1$s</xliff:g> was enabled</string>
     <string name="lock_change"><xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g> was enabled</string>
-
+    <string name="position_lock_no_wifi">No WiFi list</string>
     <!-- Privacy Protection -->
     <string name="privacy_level_1">Dangerous</string>
     <string name="privacy_level_2">Severe</string>

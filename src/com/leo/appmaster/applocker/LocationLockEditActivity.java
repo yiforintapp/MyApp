@@ -54,7 +54,7 @@ public class LocationLockEditActivity extends BaseActivity implements
     private LEOBaseDialog mModeListDialog;
     private ListView mModeList;
     private EditText mEtTimeLockName;
-    private TextView mTvSsid, mTvEnterMode, mTvQuitMode;
+    private TextView mTvSsid, mTvEnterMode, mTvQuitMode, mNoWifiTv;
     private View mIvBack, mIvSave;
     private View mLyaoutWifi, mLayoutEnterMode, mLayoutQuitMode;
 
@@ -291,6 +291,7 @@ public class LocationLockEditActivity extends BaseActivity implements
             mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
             mModeList = (ListView) mModeListDialog.findViewById(R.id.mode_list);
+            mNoWifiTv = (TextView) mModeListDialog.findViewById(R.id.no_wifi);
             View cancel = mModeListDialog.findViewById(R.id.dlg_bottom_btn);
             cancel.setOnClickListener(new OnClickListener() {
                 @Override
@@ -321,9 +322,15 @@ public class LocationLockEditActivity extends BaseActivity implements
                 }
             }
         }
-        ListAdapter adapter = new WifiListAdapter(this, wifiList);
-        mModeList.setAdapter(adapter);
-
+        if (wifiList != null && wifiList.size() > 0) {
+            mNoWifiTv.setVisibility(View.GONE);
+            ListAdapter adapter = new WifiListAdapter(this, wifiList);
+            mModeList.setAdapter(adapter);
+        } else {
+            mNoWifiTv.setVisibility(View.VISIBLE);
+            ListAdapter adapter = new WifiListAdapter(this, wifiList);
+            mModeList.setAdapter(adapter);
+        }
         mModeListDialog.show();
     }
 

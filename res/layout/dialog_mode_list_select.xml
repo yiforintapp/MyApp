@@ -12,7 +12,7 @@
         android:layout_above="@+id/mode_list_container"
         android:background="@color/gray" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/mode_list_container"
         android:layout_width="match_parent"
         android:layout_height="240dp"
@@ -29,7 +29,15 @@
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:scrollbars="none" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/no_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/position_lock_no_wifi"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"

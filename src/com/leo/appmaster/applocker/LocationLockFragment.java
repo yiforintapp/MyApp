@@ -128,7 +128,6 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
             LocationLock locationLock = mLocationLockList.get(position - 1);
             editLocationLock(locationLock, false);
         }
-
     }
 
     private void addLocationTime() {
