@@ -587,7 +587,7 @@
     <string name="add_mode">New setting</string>
     <string name="add_new_time_lock">New setting</string>
     <string name="add_new_location_lock">New setting</string>
-    <string name="mode_delete_tip">"Are you sure to delete those mode's profile?"</string>
+    <string name="mode_delete_tip">"Are you sure to delete this mode's profile?"</string>
     <string name="save_successful">Save Succefully</string>
 
 </resources>
