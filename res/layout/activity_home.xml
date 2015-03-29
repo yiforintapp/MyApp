@@ -68,6 +68,7 @@
                 android:background="#f5f5f5"
                 android:divider="@drawable/line"
                 android:dividerHeight="1dp"
+                android:listSelector="@drawable/manager_backup_list_selecter"
                 android:scrollbars="none" >
             </ListView>
         </android.support.v4.widget.DrawerLayout>

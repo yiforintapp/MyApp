@@ -189,7 +189,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
             super.onNewIntent(intent);
 //        }
-        LeoLog.e("xxxx", mLockedPackage);
     }
 
     private void checkOutcount() {
@@ -200,7 +199,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             Intent intent2 = new Intent(this, WaitActivity.class);
             intent2.putExtra("outcount_time", outcountTime);
             startActivity(intent2);
-            LeoLog.e("xxxx", "checkOutcount hit: " + mLockedPackage + "   " + outcountTime);
         }
     }
 

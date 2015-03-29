@@ -47,7 +47,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ImageGridActivity extends BaseActivity implements OnClickListener {
-//    private final String TAG = "ImageGridActivity";
+    // private final String TAG = "ImageGridActivity";
 
     private CommonTitleBar mTtileBar;
     private PhotoAibum mPhotoAibum;
@@ -244,18 +244,18 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     protected void onDestroy() {
         // TODO Auto-generated method stub
         super.onDestroy();
-        if(mImageLoader != null) {
+        if (mImageLoader != null) {
             mImageLoader.stop();
         }
     }
-    
+
     @Override
-        public void finish() {
-            super.finish();
-            if(mImageLoader != null) {
-                mImageLoader.stop();
-            }
+    public void finish() {
+        super.finish();
+        if (mImageLoader != null) {
+            mImageLoader.stop();
         }
+    }
 
     public class ImageAdapter extends BaseAdapter {
         @Override
@@ -381,8 +381,11 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             int isSuccess = 3;
             boolean isHide = params[0];
             if (mClickList != null && mClickList.size() > 0) {
+                Iterator<PhotoItem> iterator = mClickList.iterator();
+                PhotoItem item;
                 if (isHide) {
-                    for (PhotoItem item : mClickList) {
+                    while (iterator.hasNext()) {
+                        item = iterator.next();
                         if (!mIsBackgoundRunning)
                             break;
                         newFileName = FileOperationUtil
@@ -423,7 +426,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
 
                     }
                 } else {
-                    for (PhotoItem item : mClickList) {
+                    while (iterator.hasNext()) {
+                        item = iterator.next();
                         if (!mIsBackgoundRunning)
                             break;
 
@@ -501,9 +505,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             if (mPicturesList.size() > 0) {
                 animateReorder();
                 updateRightButton();
-                if (mImageAdapter != null) {
-                    mImageAdapter.notifyDataSetChanged();
-                }
+                // if (mImageAdapter != null) {
+                // mImageAdapter.notifyDataSetChanged();
+                // }
             } else {
                 if (isSuccess == 0) {
                     if (mImageAdapter != null) {
@@ -513,9 +517,10 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                     finish();
                 }
             }
-            
+
             // image change, recompute privacy level
-            PrivacyHelper.getInstance(ImageGridActivity.this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_PIC);
+            PrivacyHelper.getInstance(ImageGridActivity.this).computePrivacyLevel(
+                    PrivacyHelper.VARABLE_HIDE_PIC);
         }
     }
 

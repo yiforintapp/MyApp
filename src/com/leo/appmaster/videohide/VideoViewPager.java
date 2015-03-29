@@ -65,6 +65,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         /* get Path */
         getIntentPath();
         viewPager = (LeoPictureViewPager) findViewById(R.id.picture_view_pager);
+        viewPager.setOffscreenPageLimit(2);
         mPagerAdapter = new VideoPagerAdapter(this);
         viewPager.setAdapter(mPagerAdapter);
         viewPager.setOnPageChangeListener(new OnPageChangeListener() {
@@ -164,9 +165,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
      */
     private class VideoPagerAdapter extends PagerAdapter {
 
-
         public VideoPagerAdapter(Context context) {
-            
+
         }
 
         @Override
@@ -274,48 +274,48 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         mDialog.show();
     }
 
-//    /**
-//     * showAlarmDialogPlayer , Download Video Plus
-//     */
-//    private void showAlarmDialogPlayer() {
-//        if (mDialog == null) {
-//            mDialog = new LEOAlarmDialog(this);
-//        }
-//        mDialog.setOnClickListener(new OnDiaogClickListener() {
-//            @Override
-//            public void onClick(int which) {
-//                if (which == 1) {
-//                    boolean isGpFlag = isVideo(Constants.GP_PACKAGE);
-//                    if (isGpFlag) {
-//                        if (true) {
-//                            Intent intent = new Intent(Intent.ACTION_VIEW);
-//                            Uri uri = Uri
-//                                    .parse(Constants.VIDEO_PLUS_GP);
-//                            intent.setData(uri);
-//                            ComponentName cn = new ComponentName(
-//                                    "com.android.vending",
-//                                    "com.google.android.finsky.activities.MainActivity");
-//                            intent.setComponent(cn);
-//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            startActivity(intent);
-//                        }
-//                    } else {
-//                        if (true) {
-//                            Uri uri = Uri
-//                                    .parse(Constants.VIDEO_PLUS_GP_URL);
-//                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//                            startActivity(intent);
-//                        }
-//                    }
-//                }
-//            }
-//        });
-//        mDialog.setTitle(getString(R.string.hide_video_dialog_title));
-//        mDialog.setContent(getString(R.string.hide_video_dialog_content));
-//        mDialog.setLeftBtnStr(getString(R.string.cancel));
-//        mDialog.setRightBtnStr(getString(R.string.button_install));
-//        mDialog.show();
-//    }
+    // /**
+    // * showAlarmDialogPlayer , Download Video Plus
+    // */
+    // private void showAlarmDialogPlayer() {
+    // if (mDialog == null) {
+    // mDialog = new LEOAlarmDialog(this);
+    // }
+    // mDialog.setOnClickListener(new OnDiaogClickListener() {
+    // @Override
+    // public void onClick(int which) {
+    // if (which == 1) {
+    // boolean isGpFlag = isVideo(Constants.GP_PACKAGE);
+    // if (isGpFlag) {
+    // if (true) {
+    // Intent intent = new Intent(Intent.ACTION_VIEW);
+    // Uri uri = Uri
+    // .parse(Constants.VIDEO_PLUS_GP);
+    // intent.setData(uri);
+    // ComponentName cn = new ComponentName(
+    // "com.android.vending",
+    // "com.google.android.finsky.activities.MainActivity");
+    // intent.setComponent(cn);
+    // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    // startActivity(intent);
+    // }
+    // } else {
+    // if (true) {
+    // Uri uri = Uri
+    // .parse(Constants.VIDEO_PLUS_GP_URL);
+    // Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+    // startActivity(intent);
+    // }
+    // }
+    // }
+    // }
+    // });
+    // mDialog.setTitle(getString(R.string.hide_video_dialog_title));
+    // mDialog.setContent(getString(R.string.hide_video_dialog_content));
+    // mDialog.setLeftBtnStr(getString(R.string.cancel));
+    // mDialog.setRightBtnStr(getString(R.string.button_install));
+    // mDialog.show();
+    // }
 
     /**
      * delete Video
@@ -351,11 +351,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                             .get(mPosition)));
                 }
             }
-            mPagerAdapter.notifyDataSetChanged();
-            mPagerAdapter = null;
             mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
             viewPager.setAdapter(mPagerAdapter);
-            viewPager.setCurrentItem(mPosition, true);
         }
     }
 
@@ -419,15 +416,14 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                                 .get(mPosition)));
                     }
                 }
-                mPagerAdapter.notifyDataSetChanged();
-                mPagerAdapter = null;
                 mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
                 viewPager.setAdapter(mPagerAdapter);
-                viewPager.setCurrentItem(mPosition, true);
+
             } else {
             }
             // video change, recompute privacy level
-            PrivacyHelper.getInstance(VideoViewPager.this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_VIDEO);
+            PrivacyHelper.getInstance(VideoViewPager.this).computePrivacyLevel(
+                    PrivacyHelper.VARABLE_HIDE_VIDEO);
         }
     }
 

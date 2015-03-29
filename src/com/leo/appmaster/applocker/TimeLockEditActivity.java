@@ -61,6 +61,7 @@ public class TimeLockEditActivity extends BaseActivity implements
     private TextView mTvName;
     private View mIvSave;
     private View mIvBack;
+    private TextView mNoWifiTv;
 
     private boolean mOpenRepeat = false;
     private boolean mShowModeList;
@@ -271,6 +272,7 @@ public class TimeLockEditActivity extends BaseActivity implements
             mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
             mModeList = (ListView) mModeListDialog.findViewById(R.id.mode_list);
+            mNoWifiTv = (TextView) mModeListDialog.findViewById(R.id.no_wifi);
             mModeList.setOnItemClickListener(this);
             View cancel = mModeListDialog.findViewById(R.id.dlg_bottom_btn);
             cancel.setOnClickListener(new OnClickListener() {
@@ -280,7 +282,9 @@ public class TimeLockEditActivity extends BaseActivity implements
                 }
             });
         }
-
+        mNoWifiTv.setVisibility(View.GONE);
+        TextView mTitle = (TextView) mModeListDialog.findViewById(R.id.dlg_title);
+        mTitle.setText(getResources().getString(R.string.select_mode));
         ListAdapter adapter = new ModeListAdapter(this);
         mModeList.setAdapter(adapter);
 
@@ -358,7 +362,8 @@ public class TimeLockEditActivity extends BaseActivity implements
                 }
             }
             lm.updateTimeLock(mEditTimeLock);
-            Toast.makeText(TimeLockEditActivity.this, R.string.save_successful, Toast.LENGTH_SHORT).show();
+            Toast.makeText(TimeLockEditActivity.this, R.string.save_successful, Toast.LENGTH_SHORT)
+                    .show();
         }
 
         LeoEventBus.getDefaultBus().post(
