@@ -501,9 +501,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             if (mPicturesList.size() > 0) {
                 animateReorder();
                 updateRightButton();
-                if (mImageAdapter != null) {
-                    mImageAdapter.notifyDataSetChanged();
-                }
+//                if (mImageAdapter != null) {
+//                    mImageAdapter.notifyDataSetChanged();
+//                }
             } else {
                 if (isSuccess == 0) {
                     if (mImageAdapter != null) {
