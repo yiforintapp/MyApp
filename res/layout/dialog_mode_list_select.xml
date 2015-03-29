@@ -72,7 +72,7 @@
         android:layout_margin="24dp"
         android:ellipsize="end"
         android:gravity="center"
-        android:text="@string/select_mode"
+        android:text="@string/select_wifi_mode"
         android:textColor="#202020"
         android:textSize="20dp"
         android:visibility="visible" />

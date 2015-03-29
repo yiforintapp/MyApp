@@ -47,70 +47,91 @@ public class MonthDaySetting extends LEOBaseDialog {
         first_ed = (EditText) dlgView.findViewById(R.id.first_ed);
         second_ed = (EditText) dlgView.findViewById(R.id.second_ed);
         sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
-        
-        int monthUsedData = (int) (sp_notice_flow.getMonthGprsAll()/1024*1024);
-        first_ed.setText(sp_notice_flow.getItselfMonthTraffic()+"");
-        second_ed.setText(sp_notice_flow.getTotalTraffic()+"");
+
+//        int monthUsedData = (int) (sp_notice_flow.getMonthGprsAll() / 1024 * 1024);
+        first_ed.setText(sp_notice_flow.getItselfMonthTraffic()/1024/1024 + "");
+        second_ed.setText(sp_notice_flow.getTotalTraffic() + "");
         Editable etext1 = first_ed.getText();
         Selection.setSelection(etext1, etext1.length());
         Editable etext2 = second_ed.getText();
         Selection.setSelection(etext2, etext2.length());
-        
-        
+
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int arg1) {
                 if (mListener != null) {
-                    
+
                     String firstEdittext = first_ed.getText().toString();
-                    if(firstEdittext.equals("") || firstEdittext.isEmpty()){
+                    if (firstEdittext.equals("") || firstEdittext.isEmpty()) {
                         firstEdittext = "0";
                     }
-                    
+
                     String edittextString = second_ed.getText().toString();
-                    if(edittextString.equals("") || edittextString.isEmpty()){
+                    if (edittextString.equals("") || edittextString.isEmpty()) {
                         edittextString = "0";
                     }
-                    
+
                     int edittext_one = Integer.parseInt(firstEdittext);
-                    if(firstEdittext.isEmpty() || edittext_one == 0){
+                    if (firstEdittext.isEmpty() || edittext_one == 0) {
                         itselfmonthuse = 0;
-                    }else {
+                    } else {
                         itselfmonthuse = edittext_one;
                     }
-                    sp_notice_flow.setItselfMonthTraffic(itselfmonthuse);
-                    
-                    
+                    sp_notice_flow.setItselfMonthTraffic(itselfmonthuse * 1024 * 1024);
+
                     int edittext = Integer.parseInt(edittextString);
                     boolean isSwtich = sp_notice_flow.getFlowSetting();
-                    if(edittextString.isEmpty() || edittext == 0){
+                    if (edittextString.isEmpty() || edittext == 0) {
                         monthtraffic = 0;
                         sp_notice_flow.setFlowSetting(false);
-                    }else {
+                    } else {
                         monthtraffic = edittext;
-                        if(monthtraffic > 0 && !isSwtich){
-                            //打开超额提醒
+                        if (monthtraffic > 0 && !isSwtich) {
+                            // 打开超额提醒
                             sp_notice_flow.setFlowSetting(true);
                         }
                     }
                     sp_notice_flow.setTotalTraffic(monthtraffic);
-                    
-                    float settingMonthTraffi = monthtraffic*1024*1024;
+
+                    float settingMonthTraffi = monthtraffic * 1024 * 1024;
+                    float mItselfSetTraffic = itselfmonthuse/1024/1024;
                     int settingBar = sp_notice_flow.getFlowSettingBar();
-                    float monthUsedTraffic = sp_notice_flow.getMonthGprsAll() + itselfmonthuse;
-                    float bili =  monthUsedTraffic*100 / settingMonthTraffi;
-                    
-                    
-                    if(settingMonthTraffi < monthUsedTraffic){
-                        if(sp_notice_flow.getFinishNotice()){
-                            sp_notice_flow.setFinishNotice(false);
+                    float monthUsedTraffic = sp_notice_flow.getMonthGprsAll();
+                    float bili = 0;
+                    // float bili = monthUsedTraffic*100 / settingMonthTraffi;
+
+                    if (mItselfSetTraffic > 0) {
+                        if (settingMonthTraffi > 0) {
+                            bili = mItselfSetTraffic * 100 / settingMonthTraffi;
+                        }else {
+                            bili =  0;
                         }
-                    }else if(bili > settingBar){
-                        if(sp_notice_flow.getAlotNotice()){
-                            sp_notice_flow.setAlotNotice(false);
+                        if (settingMonthTraffi < mItselfSetTraffic) {
+                            if (sp_notice_flow.getFinishNotice()) {
+                                sp_notice_flow.setFinishNotice(false);
+                            }
+                        } else if (bili > settingBar) {
+                            if (sp_notice_flow.getAlotNotice()) {
+                                sp_notice_flow.setAlotNotice(false);
+                            }
+                        }
+                    } else {
+                        if (settingMonthTraffi > 0) {
+                            bili = monthUsedTraffic * 100 / settingMonthTraffi;
+                        }else {
+                            bili =  0;
+                        }
+                        if (settingMonthTraffi < monthUsedTraffic) {
+                            if (sp_notice_flow.getFinishNotice()) {
+                                sp_notice_flow.setFinishNotice(false);
+                            }
+                        } else if (bili > settingBar) {
+                            if (sp_notice_flow.getAlotNotice()) {
+                                sp_notice_flow.setAlotNotice(false);
+                            }
                         }
                     }
-                    
+
                     mListener.onClick();
                 }
                 dialog.dismiss();
@@ -122,11 +143,10 @@ public class MonthDaySetting extends LEOBaseDialog {
         setCanceledOnTouchOutside(true);
     }
 
-
     public void setOnClickListener(OnTrafficDialogClickListener listener) {
         mListener = listener;
     }
-    
+
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
         sure_button.setTag(rListener);
         sure_button.setOnClickListener(new View.OnClickListener() {

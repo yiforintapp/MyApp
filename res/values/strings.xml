@@ -560,6 +560,7 @@
     </string-array>
 
     <string name="select_mode">Selection mode</string>
+    <string name="select_wifi_mode">Select WiFi</string>
     <string name="choose_ssid">Please select a WIFI hot spot location</string>
     <string name="choose_enter_mode">Enable when I\'m near this WiFi</string>
     <string name="choose_quit_mode">Enable when I\'m away from this WiFi</string>

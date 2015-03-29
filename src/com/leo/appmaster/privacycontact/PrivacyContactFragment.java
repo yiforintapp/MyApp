@@ -470,58 +470,61 @@ public class PrivacyContactFragment extends BaseFragment {
                             || "".equals(isOtherLogs)) {
                         if ((mRestorMessages != null && mRestorMessages.size() != 0)
                                 || (mRestorCallLogs != null && mRestorCallLogs.size() != 0)) {
-                            mRestorCallLogsFlag = true;
-                            mRestorMessagesFlag = true;
                             // 删除拦截短信，通话记录
                             // mRestorCount = mRestorMessages.size() +
                             // mRestorCallLogs.size();
-
-                            if (mIsChecked && mRestorMessages.size() > 0) {
-                                for (MessageBean messageBean : mRestorMessages) {
-                                    String number = messageBean.getPhoneNumber();
-                                    // 恢复短信
-                                    ContentValues values = new ContentValues();
-                                    values.put("address", messageBean.getPhoneNumber());
-                                    values.put("body", messageBean.getMessageBody());
-                                    Long date = Date.parse(messageBean.getMessageTime());
-                                    values.put("date", date);
-                                    values.put("read", 1);
-                                    values.put("type", messageBean.getMessageType());
-                                    try {
-                                        PrivacyContactUtils.insertMessageToSystemSMS(values,
-                                                mContext);
-                                    } catch (Exception e) {
-                                        Log.e("PrivacyContactFragment Operation",
-                                                "PrivacyContactFragment restore message fail!");
+                            if (mIsChecked) {
+                                if (mRestorMessages.size() > 0 && mRestorMessages != null) {
+                                    mRestorMessagesFlag = true;
+                                    for (MessageBean messageBean : mRestorMessages) {
+                                        String number = messageBean.getPhoneNumber();
+                                        // 恢复短信
+                                        ContentValues values = new ContentValues();
+                                        values.put("address", messageBean.getPhoneNumber());
+                                        values.put("body", messageBean.getMessageBody());
+                                        Long date = Date.parse(messageBean.getMessageTime());
+                                        values.put("date", date);
+                                        values.put("read", 1);
+                                        values.put("type", messageBean.getMessageType());
+                                        try {
+                                            PrivacyContactUtils.insertMessageToSystemSMS(values,
+                                                    mContext);
+                                        } catch (Exception e) {
+                                            Log.e("PrivacyContactFragment Operation",
+                                                    "PrivacyContactFragment restore message fail!");
+                                        }
+                                        // 删除短信記錄
+                                        try {
+                                            PrivacyContactUtils
+                                                    .deleteMessageFromMySelf(
+                                                            mContext.getContentResolver(),
+                                                            Constants.PRIVACY_MESSAGE_URI,
+                                                            Constants.COLUMN_MESSAGE_PHONE_NUMBER
+                                                                    + " LIKE ?",
+                                                            new String[] {
+                                                                "%" + number
+                                                            });
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                    // 删除短信記錄
-                                    try {
+                                }
+                                if (mRestorCallLogs != null && mRestorCallLogs.size() > 0) {
+                                    mRestorCallLogsFlag = true;
+                                    for (ContactCallLog calllogBean : mRestorCallLogs) {
+                                        String number =
+                                                calllogBean.getCallLogNumber();
+                                        // 删除通话记录
                                         PrivacyContactUtils
                                                 .deleteMessageFromMySelf(
                                                         mContext.getContentResolver(),
-                                                        Constants.PRIVACY_MESSAGE_URI,
-                                                        Constants.COLUMN_MESSAGE_PHONE_NUMBER
+                                                        Constants.PRIVACY_CALL_LOG_URI,
+                                                        Constants.COLUMN_CALL_LOG_PHONE_NUMBER
                                                                 + " LIKE ?",
                                                         new String[] {
                                                             "%" + number
                                                         });
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
                                     }
-                                }
-                                for (ContactCallLog calllogBean : mRestorCallLogs) {
-                                    String number =
-                                            calllogBean.getCallLogNumber();
-                                    // 删除通话记录
-                                    PrivacyContactUtils
-                                            .deleteMessageFromMySelf(
-                                                    mContext.getContentResolver(),
-                                                    Constants.PRIVACY_CALL_LOG_URI,
-                                                    Constants.COLUMN_CALL_LOG_PHONE_NUMBER
-                                                            + " LIKE ?",
-                                                    new String[] {
-                                                        "%" + number
-                                                    });
                                 }
                                 // // 恢复通话记录
                                 // ContentValues values = new ContentValues();
@@ -554,6 +557,20 @@ public class PrivacyContactFragment extends BaseFragment {
             PrivacyHelper.getInstance(mContext)
                     .computePrivacyLevel(
                             PrivacyHelper.VARABLE_PRIVACY_CONTACT);
+            if (mRestorCallLogsFlag) {
+                mRestorCallLogsFlag = false;
+                LeoEventBus
+                        .getDefaultBus()
+                        .post(new PrivacyDeletEditEventBus(
+                                PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_CALL_LOG_LIST));
+            }
+            if (mRestorMessagesFlag) {
+                mRestorMessagesFlag = false;
+                LeoEventBus
+                        .getDefaultBus()
+                        .post(new PrivacyDeletEditEventBus(
+                                PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_MESSAGE_LIST));
+            }
             return isOtherLogs;
         }
 
@@ -572,21 +589,6 @@ public class PrivacyContactFragment extends BaseFragment {
                 mDefaultText.setVisibility(View.GONE);
             }
             mAdapter.notifyDataSetChanged();
-            if (mRestorCallLogsFlag) {
-                mRestorCallLogsFlag = false;
-                LeoEventBus
-                        .getDefaultBus()
-                        .post(new PrivacyDeletEditEventBus(
-                                PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_CALL_LOG_LIST));
-            }
-            if (mRestorMessagesFlag) {
-                mRestorMessagesFlag = false;
-
-                LeoEventBus
-                        .getDefaultBus()
-                        .post(new PrivacyDeletEditEventBus(
-                                PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_MESSAGE_LIST));
-            }
             super.onPostExecute(result);
         }
     }

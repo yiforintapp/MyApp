@@ -311,7 +311,6 @@
     <string name="business_size">大小： </string>
     <string name="app_download">高速下载</string>
     <string name="app_google_download">免费下载</string>
-    <!-- AM-667 -->
     <string name="help_setting_tip_title">帮助小贴士</string>
     <string name="lock_help_password_setting_content_gesture">点击设置，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用手势密码）</string>
     <string name="lock_help_password_setting_content_password">点击设置，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用数字密码）</string>
@@ -567,6 +566,7 @@
     </string-array>
 
     <string name="select_mode">选择情景模式</string>
+     <string name="select_wifi_mode">选择wifi</string>
     <string name="choose_ssid">请选择wifi热点</string>
     <string name="choose_enter_mode">进入时操作</string>
     <string name="choose_quit_mode">离开时操作</string>
