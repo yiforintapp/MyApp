@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.TrafficsInfo;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
@@ -37,6 +38,7 @@ public class ManagerFlowListFragment extends BaseFragment {
     @Override
     protected void onInitUI() {
         init();
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "datapage", "usagelist");
         flowAsyncTask = new FlowListAsyncTask();
         flowAsyncTask.execute("");
     }

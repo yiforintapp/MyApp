@@ -249,8 +249,11 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.iv_application_download:
+                    
+                    
                     int index = Integer.parseInt(v.getTag().toString());
                     BusinessItemInfo bif = mRecommendDatas.get(index);
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "app_" + bif.packageName);
                     if (PhoneInfoStateManager.isGooglePlayPkg()) {
                         if (AppUtil.appInstalled(mActivity,
                                 Constants.GP_PACKAGE)) {

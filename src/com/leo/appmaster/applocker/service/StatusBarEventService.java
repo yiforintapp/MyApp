@@ -6,6 +6,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.home.HotAppActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.app.IntentService;
@@ -44,7 +45,7 @@ public class StatusBarEventService extends IntentService {
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else if (eventType == EVENT_BUSINESS_APP) {
-
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "hots", "statusbar_app");
             LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
             targetIntent = new Intent(this, HotAppActivity.class);
 //            targetIntent.putExtra("from_statubar", true);

@@ -114,6 +114,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     }
 
     private void onLoadGameAppFinish(boolean isGetData, List<AppWallBean> list) {
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "statusbar_game");
         boolean flag = false;
         if (isGetData) {
 //            list.clear();
@@ -372,13 +373,13 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                     /* SDK Event Mark */
                     String packageName = all.get(index).getDownload().get(0).getUrl();
                     if (packageName != null && !packageName.equals("")) {
-                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home_app_rec", packageName);
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "game_" + packageName);
                     } else {
-                        String urlPageName = all.get(index).getDownload().get(1).getUrl();
-                        if (urlPageName != null && !urlPageName.equals("")) {
-                            String urlName = toUrlgetPackageName(urlPageName);
-                            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home_app_rec", urlName);
-                        }
+//                        String urlPageName = all.get(index).getDownload().get(1).getUrl();
+//                        if (urlPageName != null && !urlPageName.equals("")) {
+//                            String urlName = toUrlgetPackageName(urlPageName);
+//                            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home_app_rec", urlName);
+//                        }
                     }
                     break;
             }
