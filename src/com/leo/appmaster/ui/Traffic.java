@@ -45,7 +45,7 @@ public class Traffic {
         long mGprsSend = s_preferences.getGprsSend();
         long mGprsRev = s_preferences.getGprsRev();
 
-        //5.0系统连接，断开wifi问题解决
+        // 5.0系统连接，断开wifi问题解决
         if (mVersion > 19) {
             if (network_state.equals(STATE_WIFI) || network_state.equals(STATE_NO_NETWORK)) {
                 gprs[0] = mGprsSend;
@@ -169,6 +169,9 @@ public class Traffic {
                             s_preferences.setAlotNotice(false);
                             s_preferences.setFinishNotice(false);
 
+                            // 换月，已使用流量设置为0
+                            s_preferences.setItselfMonthTraffic(0);
+
                             s_preferences.setMonthGprsBase(0);
                             s_preferences.setMonthGprsAll(0);
                         } else {
@@ -186,7 +189,10 @@ public class Traffic {
                             // 换月，流量超额开关
                             s_preferences.setAlotNotice(false);
                             s_preferences.setFinishNotice(false);
-
+                            
+                            // 换月，已使用流量设置为0
+                            s_preferences.setItselfMonthTraffic(0);
+                            
                             s_preferences.setMonthGprsBase(0);
                             s_preferences.setMonthGprsAll(0);
                         }
