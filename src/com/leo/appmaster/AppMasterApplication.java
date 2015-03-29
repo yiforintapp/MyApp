@@ -306,7 +306,7 @@ public class AppMasterApplication extends Application {
     }
 
     public void checkNew() {
-//        checkNewTheme();
+        checkNewTheme();
         checkNewAppBusiness();
     }
 
