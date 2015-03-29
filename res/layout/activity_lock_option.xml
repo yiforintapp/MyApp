@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff" >
+    android:background="#f3f3f3" >
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_title_bar"
@@ -16,11 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_title_bar"
-        android:divider="@null"
+        android:layout_margin="16dp"
+        android:background="#ffffff"
+        android:divider="#f0f0f0"
+        android:dividerHeight="1dp"
         android:listSelector="@null"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="5dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="none" />
 

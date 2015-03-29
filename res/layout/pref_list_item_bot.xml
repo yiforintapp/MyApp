@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="@dimen/setting_item_height"
-    android:background="@drawable/selector_list_item_bot"
+    android:background="@drawable/manager_backup_list_selecter"
     android:gravity="center_vertical" >
 
     <RelativeLayout
