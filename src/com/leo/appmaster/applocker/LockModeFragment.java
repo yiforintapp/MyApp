@@ -443,11 +443,14 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                 deleteList.add(lock);
             }
         }
-        LockManager lm = LockManager.getInstatnce();
-        if (deleteList.contains(lm.getCurLockMode())) {
-            showCurModeDeleteDialog(lm.getCurLockMode(), deleteList);
-        } else {
-            showDeleteDialog(deleteList);
+
+        if (deleteList.size() > 0) {
+            LockManager lm = LockManager.getInstatnce();
+            if (deleteList.contains(lm.getCurLockMode())) {
+                showCurModeDeleteDialog(lm.getCurLockMode(), deleteList);
+            } else {
+                showDeleteDialog(deleteList);
+            }
         }
     }
 }
