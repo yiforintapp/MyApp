@@ -415,11 +415,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                                 .get(mPosition)));
                     }
                 }
-                mPagerAdapter.notifyDataSetChanged();
-                mPagerAdapter = null;
-                mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
-                viewPager.setAdapter(mPagerAdapter);
                 viewPager.setCurrentItem(mPosition, true);
+                mPagerAdapter.notifyDataSetChanged();
+
             } else {
             }
             // video change, recompute privacy level
