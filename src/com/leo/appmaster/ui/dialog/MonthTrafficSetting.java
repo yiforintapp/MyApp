@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 public class MonthTrafficSetting extends LEOBaseDialog {
@@ -35,6 +36,7 @@ public class MonthTrafficSetting extends LEOBaseDialog {
     }
 
     private void initUI() {
+        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "freechange");
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_flow_setting, null);
         Resources resources = AppMasterApplication.getInstance().getResources();

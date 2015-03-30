@@ -382,7 +382,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             boolean isHide = params[0];
             try {
                 if (mClickList != null && mClickList.size() > 0) {
-                    Iterator<PhotoItem> iterator = mClickList.iterator();
+                    ArrayList<PhotoItem> list = (ArrayList<PhotoItem>)mClickList.clone();
+                    Iterator<PhotoItem> iterator = list.iterator();
                     PhotoItem item;
                     ArrayList<PhotoItem> deleteList = new ArrayList<PhotoItem>();
                     if (isHide) {

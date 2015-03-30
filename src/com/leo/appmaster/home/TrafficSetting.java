@@ -14,6 +14,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.DayTrafficSetEvent;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.DayTrafficSetting;
 import com.leo.appmaster.ui.dialog.DayTrafficSetting.OnDayDiaogClickListener;
@@ -43,6 +44,7 @@ public class TrafficSetting extends Activity implements OnClickListener {
 
     private void initUI() {
         LeoEventBus.getDefaultBus().register(this);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "datapage", "setting");
         init();
         judgeSwtich();
     }
@@ -100,6 +102,7 @@ public class TrafficSetting extends Activity implements OnClickListener {
                 iv_show_off.setVisibility(View.VISIBLE);
 //                Toast.makeText(this, "你关闭了流量超额提醒", 0).show();
                 sp_notice_flow.setFlowSetting(false);
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "datapage", "closealert");
                 break;
             case R.id.iv_show_off:
                 iv_show_off.setVisibility(View.GONE);
@@ -121,7 +124,6 @@ public class TrafficSetting extends Activity implements OnClickListener {
 //            thrid_tv_setting.setText(sp_notice_flow.getRenewDay());
             String renewDay = sp_notice_flow.getRenewDay()+"";
             thrid_tv_setting.setText(renewDay);
-            LeoLog.d("eventbustest", "收到eventbus!");
         } 
     }
     
@@ -149,6 +151,7 @@ public class TrafficSetting extends Activity implements OnClickListener {
                         }
                     }
                 }
+                
                 
                 LeoLog.d("testDialog", "progress is : " + progress);
                 if(progress == 0){

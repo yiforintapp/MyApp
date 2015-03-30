@@ -13,6 +13,7 @@ import com.leo.appmaster.fragment.ApplicaionAppFragment;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.GameAppFragment2;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
 
@@ -52,6 +53,7 @@ public class HotAppActivity extends FragmentActivity {
     }
 
     private void initUI() {
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "hots", "home");
         sp_hot_app = AppMasterPreference.getInstance(this);
         mTtileBar = (CommonTitleBar) findViewById(R.id.hotapp_title_bar);
         mTtileBar.setTitle(R.string.app_hot_app);

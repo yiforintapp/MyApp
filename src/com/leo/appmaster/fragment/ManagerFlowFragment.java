@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LineView;
 import com.leo.appmaster.ui.LineView.BackUpCallBack;
 import com.leo.appmaster.ui.RoundProgressBar;

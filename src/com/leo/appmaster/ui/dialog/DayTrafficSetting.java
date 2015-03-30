@@ -28,6 +28,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.DayTrafficSetEvent;
 import com.leo.appmaster.model.DayTrafficInfo;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.DayTrafficSetting.OnDayDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.AppwallHttpUtil;
@@ -76,6 +77,8 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
     }
 
     private void initUI() {
+        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "cycle");
+        
         language = AppwallHttpUtil.getLanguage();
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_day_setting, null);

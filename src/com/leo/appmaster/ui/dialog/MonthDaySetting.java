@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -75,6 +76,7 @@ public class MonthDaySetting extends LEOBaseDialog {
                     if (firstEdittext.isEmpty() || edittext_one == 0) {
                         itselfmonthuse = 0;
                     } else {
+                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "changedata");
                         itselfmonthuse = edittext_one;
                     }
                     sp_notice_flow.setItselfMonthTraffic(itselfmonthuse * 1024 * 1024);
@@ -85,6 +87,7 @@ public class MonthDaySetting extends LEOBaseDialog {
                         monthtraffic = 0;
                         sp_notice_flow.setFlowSetting(false);
                     } else {
+                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "plansetting");
                         monthtraffic = edittext;
                         if (monthtraffic > 0 && !isSwtich) {
                             // 打开超额提醒

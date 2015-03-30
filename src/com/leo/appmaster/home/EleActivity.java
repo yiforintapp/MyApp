@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -248,6 +249,7 @@ public class EleActivity extends FragmentActivity {
 
     protected void showInstalledAppDetails(String packageName) {
         try {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "batterystop");
             Intent intent = new Intent();
             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             Uri uri = Uri.fromParts(SCHEME, packageName, null);
