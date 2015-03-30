@@ -32,7 +32,6 @@ import com.leo.appmaster.utils.LeoLog;
 public class UpdateActivity extends BaseActivity implements OnStateChangeListener {
 
     private final static String TAG = UpdateActivity.class.getSimpleName();
-    private static boolean sForceUpdate = false;
     private int mUIType = IUIHelper.TYPE_CHECKING;
     private int mParam = 0;
     private UpdateManager mManager = null;
@@ -45,6 +44,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
 
     private final static int MSG_UPDATE_PROGRESS = 1;
     private final static int MSG_NOTIFY_LAYOUT = 2;
+    
+    private boolean mForce = false;
 
     public UpdateActivity() {
         mProgressHandler = new ProgressHandler(this);
@@ -61,6 +62,14 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+    }
+    
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mForce) {
+            mManager.onCancelUpdate();
+        }
     }
 
     @Override
@@ -85,7 +94,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                     showNeedUpdate();
                 } else if (param == UpdateManager.FORCE_UPDATE) {
                     showForceUpdate();
-                    sForceUpdate = true;
+                    mForce = true;
                 }/* normal or force update */
                 break;
             case IUIHelper.TYPE_CHECK_NO_UPDATE:

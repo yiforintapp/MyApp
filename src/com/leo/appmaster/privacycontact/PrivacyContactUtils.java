@@ -28,6 +28,7 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
