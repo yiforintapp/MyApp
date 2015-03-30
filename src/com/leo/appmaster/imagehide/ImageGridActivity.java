@@ -574,9 +574,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             public void onAnimationEnd(Animator animation) {
                 mImageAdapter.notifyDataSetChanged();
                 for (Integer view : viewList) {
-                    mGridView.getChildAt(view).setAlpha(1);
-                    mGridView.getChildAt(view).setScaleX(1);
-                    mGridView.getChildAt(view).setScaleY(1);
+                    View child = mGridView.getChildAt(view);
+                    if(child != null) {
+                        child.setAlpha(1);
+                        child.setScaleX(1);
+                        child.setScaleY(1);
+                    }
                 }
                 mClickPosList.clear();
             }
