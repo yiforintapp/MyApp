@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.privacy;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,11 +15,12 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
-public class PrivacySuggestActivity extends Activity implements OnClickListener {
+public class PrivacySuggestActivity extends BaseActivity implements OnClickListener {
 
     private TextView mAppLockSuggest;
     private TextView mAppLockDes;

@@ -32,6 +32,7 @@ import com.leo.appmaster.utils.LeoLog;
 public class UpdateActivity extends BaseActivity implements OnStateChangeListener {
 
     private final static String TAG = UpdateActivity.class.getSimpleName();
+    private static boolean sForceUpdate = false;
     private int mUIType = IUIHelper.TYPE_CHECKING;
     private int mParam = 0;
     private UpdateManager mManager = null;
@@ -84,6 +85,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                     showNeedUpdate();
                 } else if (param == UpdateManager.FORCE_UPDATE) {
                     showForceUpdate();
+                    sForceUpdate = true;
                 }/* normal or force update */
                 break;
             case IUIHelper.TYPE_CHECK_NO_UPDATE:

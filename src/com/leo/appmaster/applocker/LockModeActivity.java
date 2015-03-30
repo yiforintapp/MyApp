@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
@@ -14,10 +13,11 @@ import android.view.View.OnClickListener;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
 
-public class LockModeActivity extends FragmentActivity implements OnClickListener {
+public class LockModeActivity extends BaseFragmentActivity implements OnClickListener {
     private LeoPagerTab mPagerTab;
     private EditableViewPager mViewPager;
     public ModeFragmentHoler[] mFragmentHolders;
