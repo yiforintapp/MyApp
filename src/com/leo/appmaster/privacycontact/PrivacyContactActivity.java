@@ -399,6 +399,13 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     protected void onResume() {
         super.onResume();
     }
+    
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (Exception e) {
+        }
+    }
 
     @Override
     public void onBackPressed() {

@@ -73,6 +73,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_HOME_LOCKED = "home_locked";
     public static final String PREF_FIRST_USE_APP = "first_use_privacy_guard";
 
+    
+    public static final String PREF_APP_MANAGER_FRAGMENT_FIRST_IN = "fragment_first_in";
     // flow calulate
     // public static final String PREF_APP_MANAGER_FLOW_TODAY_GPRS = "today_ll";
     public static final String PREF_APP_MANAGER_FLOW_TOTAL_TRAFFIC = "totalflow";
@@ -979,7 +981,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setFirstTime(long time) {
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_BROADCAST_FIRST_IN, time).commit();
     }
+    
+    public long getFragmentFirstIn() {
+        return mPref.getLong(PREF_APP_MANAGER_FRAGMENT_FIRST_IN, 0);
+    }
 
+    public void setFragmentFirstIn(long time) {
+        mPref.edit().putLong(PREF_APP_MANAGER_FRAGMENT_FIRST_IN, time).commit();
+    }
+    
+    
     public void setLockerClean(boolean lockerClean) {
         mPref.edit().putBoolean(PREF_SETTING_LOCKER_CLEAN, lockerClean)
                 .commit();

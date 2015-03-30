@@ -66,6 +66,13 @@ public class EleActivity extends BaseFragmentActivity {
         am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         getBatteryStats();
     }
+    
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (Exception e) {
+        }
+    }
 
     private void getBatteryStats() {
         new Thread() {

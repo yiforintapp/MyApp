@@ -28,7 +28,6 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -130,62 +129,71 @@ public class PrivacyContactUtils {
         List<MessageBean> messages = new ArrayList<MessageBean>();
         Map<String, MessageBean> messageList = new HashMap<String,
                 MessageBean>();
-        Cursor cur = cr.query(SMS_INBOXS, null, selection, selectionArgs,
-                "_id desc");
-        if (cur != null) {
-            while (cur.moveToNext()) {
-                MessageBean mb = new MessageBean();
-                String number = cur.getString(cur.getColumnIndex("address"));
-                Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
-                        context, number);
-                if (icon != null) {
-                    mb.setContactIcon(icon);
-                } else {
-                    mb.setContactIcon(((BitmapDrawable) context.getResources().getDrawable(
-                            R.drawable.default_user_avatar)).getBitmap());
-                }
-                String threadId = cur.getString(cur.getColumnIndex("thread_id"));
-                /**
-                 * getContactNameFromNumber
-                 */
-                String name =
-                        PrivacyContactUtils.getContactNameFromNumber(cr, number);
-                String body = cur.getString(cur.getColumnIndex("body"));
-                int type = cur.getInt(cur.getColumnIndex("type"));
-                int isRead = cur.getInt(cur.getColumnIndex("read"));
-                Date date = new
-                        Date(cur.getLong(cur.getColumnIndex("date")));
-                SimpleDateFormat sfd = new
-                        SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                String time = sfd.format(date);
-                mb.setMessageBody(body);
-                mb.setMessageName(name);
-                mb.setPhoneNumber(number);
-                mb.setMessageType(type);
-                mb.setMessageIsRead(1);
-                mb.setMessageThreadId(threadId);
-                mb.setMessageTime(time);
-                if (number != null) {
-                    if (!isItemFlag) {
-                        // isItemFlag:true--详细列表，false--列表
-                        if (threadId != null && !threadId.equals("")) {
-                            if (!messageList.containsKey(threadId)) {
-                                messageList.put(threadId, mb);
-                            }
-                        }
+        Cursor cur = null;
+        try {
+            cur = cr.query(SMS_INBOXS, null, selection, selectionArgs,
+                    "_id desc");
+            if (cur != null) {
+                while (cur.moveToNext()) {
+                    MessageBean mb = new MessageBean();
+                    String number = cur.getString(cur.getColumnIndex("address"));
+                    Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
+                            context, number);
+                    if (icon != null) {
+                        mb.setContactIcon(icon);
                     } else {
+                        mb.setContactIcon(((BitmapDrawable) context.getResources().getDrawable(
+                                R.drawable.default_user_avatar)).getBitmap());
+                    }
+                    String threadId = cur.getString(cur.getColumnIndex("thread_id"));
+                    /**
+                     * getContactNameFromNumber
+                     */
+                    String name =
+                            PrivacyContactUtils.getContactNameFromNumber(cr, number);
+                    String body = cur.getString(cur.getColumnIndex("body"));
+                    int type = cur.getInt(cur.getColumnIndex("type"));
+                    int isRead = cur.getInt(cur.getColumnIndex("read"));
+                    Date date = new
+                            Date(cur.getLong(cur.getColumnIndex("date")));
+                    SimpleDateFormat sfd = new
+                            SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    String time = sfd.format(date);
+                    mb.setMessageBody(body);
+                    mb.setMessageName(name);
+                    mb.setPhoneNumber(number);
+                    mb.setMessageType(type);
+                    mb.setMessageIsRead(1);
+                    mb.setMessageThreadId(threadId);
+                    mb.setMessageTime(time);
+                    if (number != null) {
+                        if (!isItemFlag) {
+                            // isItemFlag:true--详细列表，false--列表
+                            if (threadId != null && !threadId.equals("")) {
+                                if (!messageList.containsKey(threadId)) {
+                                    messageList.put(threadId, mb);
+                                }
+                            }
+                        } else {
+                            messages.add(mb);
+                        }
+                    }
+                }
+                if (!isItemFlag) {
+                    Iterable<MessageBean> it = messageList.values();
+                    for (MessageBean mb : it) {
                         messages.add(mb);
                     }
                 }
             }
-            if (!isItemFlag) {
-                Iterable<MessageBean> it = messageList.values();
-                for (MessageBean mb : it) {
-                    messages.add(mb);
-                }
+        } catch (Exception e) {
+
+        } finally {
+            if (cur != null) {
+                cur.close();
             }
-            cur.close();
         }
+
         return messages;
     }
 
@@ -201,46 +209,56 @@ public class PrivacyContactUtils {
                 + Phone.HAS_PHONE_NUMBER + "=1 and "
                 + Phone.DISPLAY_NAME + " IS NOT NULL";
         List<ContactBean> contacts = new ArrayList<ContactBean>();
-        Cursor phoneCursor = cr.query(contactUri,
-                null, selection, null, null);
-        if (phoneCursor != null) {
-            while (phoneCursor.moveToNext()) {
-                // get phonenumber
-                String phoneNumber = phoneCursor
-                        .getString(phoneCursor.getColumnIndex(Phone.NUMBER));
-                // IF IS NULL CONTINUE
-                if (TextUtils.isEmpty(phoneNumber)) {
-                    continue;
-                }
-                // get name
-                String contactName = phoneCursor.getString(phoneCursor
-                        .getColumnIndex(Phone.DISPLAY_NAME));
-                Long contactid =
-                        phoneCursor.getLong(phoneCursor.getColumnIndex(Phone.CONTACT_ID));
-                Long photoid =
-                        phoneCursor.getLong(phoneCursor.getColumnIndex("photo_id"));
-                Bitmap contactPhoto = null;
-                if (photoid > 0) {
-                    Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
-                            contactid);
-                    InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr,
-                            uri);
-                    contactPhoto = BitmapFactory.decodeStream(input);
-                }
-                ContactBean cb = new ContactBean();
-                cb.setContactName(contactName);
-                cb.setContactNumber(phoneNumber);
-                cb.setContactIcon(contactPhoto);
-                cb.setSortLetter(phoneCursor.getString(phoneCursor
-                        .getColumnIndex(Phone.SORT_KEY_PRIMARY)));
-                if (phoneNumber != null) {
-                    contacts.add(cb);
+        Cursor phoneCursor = null;
+        try {
+            phoneCursor = cr.query(contactUri,
+                    null, selection, null, null);
+            if (phoneCursor != null) {
+                while (phoneCursor.moveToNext()) {
+                    // get phonenumber
+                    String phoneNumber = phoneCursor
+                            .getString(phoneCursor.getColumnIndex(Phone.NUMBER));
+                    // IF IS NULL CONTINUE
+                    if (TextUtils.isEmpty(phoneNumber)) {
+                        continue;
+                    }
+                    // get name
+                    String contactName = phoneCursor.getString(phoneCursor
+                            .getColumnIndex(Phone.DISPLAY_NAME));
+                    Long contactid =
+                            phoneCursor.getLong(phoneCursor.getColumnIndex(Phone.CONTACT_ID));
+                    Long photoid =
+                            phoneCursor.getLong(phoneCursor.getColumnIndex("photo_id"));
+                    Bitmap contactPhoto = null;
+                    if (photoid > 0) {
+                        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
+                                contactid);
+                        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
+                                cr,
+                                uri);
+                        contactPhoto = BitmapFactory.decodeStream(input);
+                    }
+                    ContactBean cb = new ContactBean();
+                    cb.setContactName(contactName);
+                    cb.setContactNumber(phoneNumber);
+                    cb.setContactIcon(contactPhoto);
+                    cb.setSortLetter(phoneCursor.getString(phoneCursor
+                            .getColumnIndex(Phone.SORT_KEY_PRIMARY)));
+                    if (phoneNumber != null) {
+                        contacts.add(cb);
+                    } else {
+                        contacts = null;
+                    }
                 }
             }
-            phoneCursor.close();
-        } else {
-            contacts = null;
+        } catch (Exception e) {
+
+        } finally {
+            if (phoneCursor != null) {
+                phoneCursor.close();
+            }
         }
+
         return contacts;
     }
 
@@ -254,46 +272,51 @@ public class PrivacyContactUtils {
             String[] selectionArgs) {
         List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
         Map<String, ContactCallLog> calllog = new HashMap<String, ContactCallLog>();
-        Cursor cursor = cr.query(CALL_LOG_URI, null, selection, selectionArgs,
-                CallLog.Calls.DEFAULT_SORT_ORDER);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                ContactCallLog callLog = new ContactCallLog();
-                int count = cursor.getCount();
-                String number = cursor.getString(cursor.getColumnIndex("number"));
-                Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
-                        context, number);
-                if (icon != null) {
-                    callLog.setContactIcon(icon);
-                } else {
-                    callLog.setContactIcon(((BitmapDrawable) context.getResources().getDrawable(
-                            R.drawable.default_user_avatar)).getBitmap());
-                }
-                String name = cursor.getString(cursor.getColumnIndex("name"));
-                Date date = new Date(Long.parseLong(cursor.getString(cursor
-                        .getColumnIndex(CallLog.Calls.DATE))));
-                SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                String time = sfd.format(date);
-                int type = (cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)));
-                callLog.setCallLogCount(count);
-                // callLog.setCallLogDuraction();
-                callLog.setCallLogName(name);
-                callLog.setCallLogNumber(number);
-                callLog.setClallLogDate(time);
-                callLog.setClallLogType(type);
-                if (number != null) {
-                    if (callLog != null) {
-                        if (!calllog.containsKey(number)) {
-                            calllog.put(number, callLog);
+        try {
+            Cursor cursor = cr.query(CALL_LOG_URI, null, selection, selectionArgs,
+                    CallLog.Calls.DEFAULT_SORT_ORDER);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    ContactCallLog callLog = new ContactCallLog();
+                    int count = cursor.getCount();
+                    String number = cursor.getString(cursor.getColumnIndex("number"));
+                    Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
+                            context, number);
+                    if (icon != null) {
+                        callLog.setContactIcon(icon);
+                    } else {
+                        callLog.setContactIcon(((BitmapDrawable) context.getResources()
+                                .getDrawable(
+                                        R.drawable.default_user_avatar)).getBitmap());
+                    }
+                    String name = cursor.getString(cursor.getColumnIndex("name"));
+                    Date date = new Date(Long.parseLong(cursor.getString(cursor
+                            .getColumnIndex(CallLog.Calls.DATE))));
+                    SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    String time = sfd.format(date);
+                    int type = (cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)));
+                    callLog.setCallLogCount(count);
+                    // callLog.setCallLogDuraction();
+                    callLog.setCallLogName(name);
+                    callLog.setCallLogNumber(number);
+                    callLog.setClallLogDate(time);
+                    callLog.setClallLogType(type);
+                    if (number != null) {
+                        if (callLog != null) {
+                            if (!calllog.containsKey(number)) {
+                                calllog.put(number, callLog);
+                            }
                         }
                     }
                 }
+                Iterable<ContactCallLog> it = calllog.values();
+                for (ContactCallLog contactCallLog : it) {
+                    calllogs.add(contactCallLog);
+                }
+                cursor.close();
             }
-            Iterable<ContactCallLog> it = calllog.values();
-            for (ContactCallLog contactCallLog : it) {
-                calllogs.add(contactCallLog);
-            }
-            cursor.close();
+        } catch (Exception e) {
+
         }
 
         return calllogs;
@@ -308,24 +331,32 @@ public class PrivacyContactUtils {
     private List<ContactBean> getSIMContacts(ContentResolver cr, String selection,
             String[] selectionArgs) {
         List<ContactBean> mSIMSContact = new ArrayList<ContactBean>();
-        Cursor phoneCursor = cr.query(CONTACT_INBOXS, null, selection, selectionArgs,
-                null);
-        if (phoneCursor != null) {
-            while (phoneCursor.moveToNext()) {
-                ContactBean cb = new ContactBean();
-                String phoneNumber = phoneCursor
-                        .getString(phoneCursor.getColumnIndex(Phone.NUMBER));
-                if (TextUtils.isEmpty(phoneNumber))
-                    continue;
-                String contactName = phoneCursor
-                        .getString(phoneCursor.getColumnIndex(Phone.DISPLAY_NAME));
-                cb.setContactName(contactName);
-                cb.setContactNumber(phoneNumber);
-                mSIMSContact.add(cb);
+        Cursor phoneCursor = null;
+        try {
+            phoneCursor = cr.query(CONTACT_INBOXS, null, selection, selectionArgs,
+                    null);
+            if (phoneCursor != null) {
+                while (phoneCursor.moveToNext()) {
+                    ContactBean cb = new ContactBean();
+                    String phoneNumber = phoneCursor
+                            .getString(phoneCursor.getColumnIndex(Phone.NUMBER));
+                    if (TextUtils.isEmpty(phoneNumber))
+                        continue;
+                    String contactName = phoneCursor
+                            .getString(phoneCursor.getColumnIndex(Phone.DISPLAY_NAME));
+                    cb.setContactName(contactName);
+                    cb.setContactNumber(phoneNumber);
+                    mSIMSContact.add(cb);
+                }
+            } else {
+                mSIMSContact = null;
             }
-            phoneCursor.close();
-        } else {
-            mSIMSContact = null;
+        } catch (Exception e) {
+
+        } finally {
+            if (phoneCursor != null) {
+                phoneCursor.close();
+            }
         }
         return mSIMSContact;
     }
@@ -463,18 +494,26 @@ public class PrivacyContactUtils {
 
         String phoneName = null;
         if (id != null && contentResolver != null) {
-            Cursor cursor = contentResolver.query(Phone.CONTENT_URI, new String[] {
-                    Phone.DISPLAY_NAME
-            }, Phone.CONTACT_ID + " = ?  ", new String[] {
-                    id
-            }, null);
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    phoneName = cursor.getString(cursor.getColumnIndex("display_name"));
-                } else {
-                    phoneName = "未知号码";
+            Cursor cursor = null;
+            try {
+
+                cursor = contentResolver.query(Phone.CONTENT_URI, new String[] {
+                        Phone.DISPLAY_NAME
+                }, Phone.CONTACT_ID + " = ?  ", new String[] {
+                        id
+                }, null);
+                if (cursor != null) {
+                    if (cursor.moveToFirst()) {
+                        phoneName = cursor.getString(cursor.getColumnIndex("display_name"));
+                    } else {
+                        phoneName = "未知号码";
+                    }
                 }
-                cursor.close();
+            } catch (Exception e) {
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
             }
         }
         return phoneName;
@@ -482,23 +521,35 @@ public class PrivacyContactUtils {
 
     // insert message to system
     public static void insertMessageToSystemSMS(ContentValues values, Context context) {
-        Uri uri = context.getContentResolver().insert(SYS_SMS, values);
+        try {
+            context.getContentResolver().insert(SYS_SMS, values);
+        } catch (Exception e) {
+
+        }
     }
 
     // delete message from system
     public static void deleteMessageFromSystemSMS(String selection, String[] selectionArgs,
             Context context) {
-        context.getContentResolver().delete(SMS_INBOXS, selection, selectionArgs);
+        try {
+            context.getContentResolver().delete(SMS_INBOXS, selection, selectionArgs);
+        } catch (Exception e) {
+
+        }
     }
 
     // delete call_log from system
     public static int deleteCallLogFromSystem(String selection, String selectionArgs,
             Context context) {
         int flag = 0;
-        String string = formatePhoneNumber(selectionArgs);
-        flag = context.getContentResolver().delete(CALL_LOG_URI, selection, new String[] {
-                "%" + string
-        });
+        try {
+            String string = formatePhoneNumber(selectionArgs);
+            flag = context.getContentResolver().delete(CALL_LOG_URI, selection, new String[] {
+                    "%" + string
+            });
+        } catch (Exception e) {
+
+        }
         return flag;
     }
 
@@ -610,27 +661,41 @@ public class PrivacyContactUtils {
     // delete contact from myself
     public static int deleteContactFromMySelf(String selection, String selectionArgs,
             Context context) {
-        int number = context.getContentResolver().delete(Constants.PRIVACY_CONTACT_URI, selection,
-                new String[] {
-                    selectionArgs
-                });
+        int number = -1;
+        try {
+            number = context.getContentResolver().delete(Constants.PRIVACY_CONTACT_URI, selection,
+                    new String[] {
+                        selectionArgs
+                    });
+        } catch (Exception e) {
+
+        }
         return number;
     }
 
     // delete call_log from myself
     public static int deleteCallLogFromMySelf(String selection, String selectionArgs,
             Context context) {
-        int number = context.getContentResolver().delete(Constants.PRIVACY_CALL_LOG_URI, selection,
-                new String[] {
-                    selectionArgs
-                });
+        int number = -1;
+        try {
+            number = context.getContentResolver().delete(Constants.PRIVACY_CALL_LOG_URI, selection,
+                    new String[] {
+                        selectionArgs
+                    });
+        } catch (Exception e) {
+
+        }
+
         return number;
     }
 
     // inset call_log_table
     public static void insertCallLogToSystem(ContentResolver cr, ContentValues values)
     {
-        cr.insert(CALL_LOG_URI, values);
+        try {
+            cr.insert(CALL_LOG_URI, values);
+        } catch (Exception e) {
+        }
 
     }
 
@@ -689,23 +754,31 @@ public class PrivacyContactUtils {
     public static Bitmap getContactIcon(Context context, String number) {
         Bitmap contactIcon = null;
         String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-        Cursor cur = context.getContentResolver().query(Constants.PRIVACY_CONTACT_URI, null,
-                "contact_phone_number LIKE ? ",
-                new String[] {
-                    "%" + formateNumber
-                }, null);
-        if (cur != null) {
-            while (cur.moveToNext()) {
-                byte[] icon = cur.getBlob(cur.getColumnIndex(Constants.COLUMN_ICON));
-                if (icon != null) {
-                    contactIcon = PrivacyContactUtils.getBmp(icon);
-                } else {
-                    BitmapDrawable drawable = (BitmapDrawable) context.getResources().getDrawable(
-                            R.drawable.default_user_avatar);
-                    contactIcon = drawable.getBitmap();
+        Cursor cur = null;
+        try {
+            cur = context.getContentResolver().query(Constants.PRIVACY_CONTACT_URI, null,
+                    "contact_phone_number LIKE ? ",
+                    new String[] {
+                        "%" + formateNumber
+                    }, null);
+            if (cur != null) {
+                while (cur.moveToNext()) {
+                    byte[] icon = cur.getBlob(cur.getColumnIndex(Constants.COLUMN_ICON));
+                    if (icon != null) {
+                        contactIcon = PrivacyContactUtils.getBmp(icon);
+                    } else {
+                        BitmapDrawable drawable = (BitmapDrawable) context.getResources()
+                                .getDrawable(
+                                        R.drawable.default_user_avatar);
+                        contactIcon = drawable.getBitmap();
+                    }
                 }
             }
-            cur.close();
+        } catch (Exception e) {
+        } finally {
+            if (cur != null) {
+                cur.close();
+            }
         }
         return contactIcon;
     }
@@ -753,10 +826,15 @@ public class PrivacyContactUtils {
                 MessageBean message = new MessageBean();
                 String id = String.valueOf(cur.getInt(cur.getColumnIndex("_id")));
                 // 通过_id查询thread表中对应的会话
-                Cursor cr = context.getContentResolver().query(Uri.parse("content://sms/"),
-                        new String[] {
-                            " * from threads--"
-                        }, null, null, null);
+                Cursor cr = null;
+                try {
+                    cr = context.getContentResolver().query(PrivacyContactUtils.SMS_INBOXS,
+                            new String[] {
+                                " * from threads--"
+                            }, null, null, null);
+                } catch (Exception e) {
+
+                }
                 String number = cur.getString(cur.getColumnIndex("address"));
                 /**
                  * getContactNameFromNumber
@@ -946,46 +1024,59 @@ public class PrivacyContactUtils {
             Context context) {
 
         List<ContactBean> contacts = new ArrayList<ContactBean>();
-        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-        Cursor phoneCursor = context.getContentResolver().query(uri, null, null, null,
-                " sort_key COLLATE LOCALIZED asc limit  " + pageSize + " offset " + currentOffset);
-        if (phoneCursor != null) {
-            while (phoneCursor.moveToNext()) {
-                // get phonenumber
-                String phoneNumber = phoneCursor
-                        .getString(phoneCursor.getColumnIndex(Phone.NUMBER));
-                // IF IS NULL CONTINUE
-                if (TextUtils.isEmpty(phoneNumber)) {
-                    continue;
+        Cursor phoneCursor = null;
+        try {
+            Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+            phoneCursor = context.getContentResolver().query(
+                    uri,
+                    null,
+                    null,
+                    null,
+                    " sort_key COLLATE LOCALIZED asc limit  " + pageSize + " offset "
+                            + currentOffset);
+            if (phoneCursor != null) {
+                while (phoneCursor.moveToNext()) {
+                    // get phonenumber
+                    String phoneNumber = phoneCursor
+                            .getString(phoneCursor.getColumnIndex(Phone.NUMBER));
+                    // IF IS NULL CONTINUE
+                    if (TextUtils.isEmpty(phoneNumber)) {
+                        continue;
+                    }
+                    // get name
+                    String contactName = phoneCursor.getString(phoneCursor
+                            .getColumnIndex(Phone.DISPLAY_NAME));
+                    Long contactid =
+                            phoneCursor.getLong(phoneCursor.getColumnIndex(Phone.CONTACT_ID));
+                    Long photoid =
+                            phoneCursor.getLong(phoneCursor.getColumnIndex("photo_id"));
+                    Bitmap contactPhoto = null;
+                    if (photoid > 0) {
+                        Uri uriContact = ContentUris.withAppendedId(
+                                ContactsContract.Contacts.CONTENT_URI,
+                                contactid);
+                        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
+                                context.getContentResolver(),
+                                uriContact);
+                        contactPhoto = BitmapFactory.decodeStream(input);
+                    }
+                    ContactBean cb = new ContactBean();
+                    cb.setContactName(contactName);
+                    cb.setContactNumber(phoneNumber);
+                    cb.setContactIcon(contactPhoto);
+                    if (phoneNumber != null) {
+                        contacts.add(cb);
+                    }
                 }
-                // get name
-                String contactName = phoneCursor.getString(phoneCursor
-                        .getColumnIndex(Phone.DISPLAY_NAME));
-                Long contactid =
-                        phoneCursor.getLong(phoneCursor.getColumnIndex(Phone.CONTACT_ID));
-                Long photoid =
-                        phoneCursor.getLong(phoneCursor.getColumnIndex("photo_id"));
-                Bitmap contactPhoto = null;
-                if (photoid > 0) {
-                    Uri uriContact = ContentUris.withAppendedId(
-                            ContactsContract.Contacts.CONTENT_URI,
-                            contactid);
-                    InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
-                            context.getContentResolver(),
-                            uriContact);
-                    contactPhoto = BitmapFactory.decodeStream(input);
-                }
-                ContactBean cb = new ContactBean();
-                cb.setContactName(contactName);
-                cb.setContactNumber(phoneNumber);
-                cb.setContactIcon(contactPhoto);
-                if (phoneNumber != null) {
-                    contacts.add(cb);
-                }
-            }
-            phoneCursor.close();
 
+            }
+        } catch (Exception e) {
+        } finally {
+            if (phoneCursor != null) {
+                phoneCursor.close();
+            }
         }
+
         return contacts;
     }
 }

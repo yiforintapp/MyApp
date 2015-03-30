@@ -13,8 +13,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.CallLog;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -22,7 +20,6 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 @SuppressLint("NewApi")
 public class PrivacyMessageContentObserver extends ContentObserver {
     private Context mContext;
-    public static final Uri CALL_LOG_URI = android.provider.CallLog.Calls.CONTENT_URI;
     public static String CALL_LOG_MODEL = "call_log_model";
     public static String MESSAGE_MODEL = "message_model";
     public static final String spaceString = "\u00A0";
@@ -54,42 +51,44 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
             ContactBean call = PrivacyContactManager.getInstance(mContext).getLastCall();
             if (call != null) {
-                String formatNumber = PrivacyContactUtils.formatePhoneNumber(call
-                        .getContactNumber());
-                Cursor cursor = cr.query(CALL_LOG_URI, null,
-                        "number LIKE  ? ", new String[] {
-                            "%" + formatNumber
-                        }, null, null);
-                if (cursor != null) {
-                    while (cursor.moveToNext()) {
-                        String number = cursor.getString(cursor.getColumnIndex("number"));
-                        String name = cursor.getString(cursor.getColumnIndex("name"));
-                        cursor.getString(cursor.getColumnIndex("duration"));
-                        Date date = new Date(Long.parseLong(cursor.getString(cursor
-                                .getColumnIndex(CallLog.Calls.DATE))));
-                        SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                        String time = sfd.format(date);
-                        int type = (cursor
-                                .getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)));
-                        ContentValues values = new ContentValues();
-                        values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER, number);
-                        if (!"".equals(name) && name != null) {
-                            values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, name);
-                        } else {
-                            if (call.getContactName() != null
-                                    && !"".equals(call.getContactName())) {
-                                values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME,
-                                        call.getContactName());
+                Cursor cursor = null;
+                try {
+                    String formatNumber = PrivacyContactUtils.formatePhoneNumber(call
+                            .getContactNumber());
+                    cursor = cr.query(PrivacyContactUtils.CALL_LOG_URI, null,
+                            "number LIKE  ? ", new String[] {
+                                "%" + formatNumber
+                            }, null, null);
+                    if (cursor != null) {
+                        while (cursor.moveToNext()) {
+                            String number = cursor.getString(cursor.getColumnIndex("number"));
+                            String name = cursor.getString(cursor.getColumnIndex("name"));
+                            cursor.getString(cursor.getColumnIndex("duration"));
+                            Date date = new Date(Long.parseLong(cursor.getString(cursor
+                                    .getColumnIndex(CallLog.Calls.DATE))));
+                            SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                            String time = sfd.format(date);
+                            int type = (cursor
+                                    .getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)));
+                            ContentValues values = new ContentValues();
+                            values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER, number);
+                            if (!"".equals(name) && name != null) {
+                                values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, name);
                             } else {
-                                values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, number);
+                                if (call.getContactName() != null
+                                        && !"".equals(call.getContactName())) {
+                                    values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME,
+                                            call.getContactName());
+                                } else {
+                                    values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, number);
+                                }
                             }
-                        }
-                        values.put(Constants.COLUMN_CALL_LOG_DATE, time);
-                        values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
-                        values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
-                        try {
+                            values.put(Constants.COLUMN_CALL_LOG_DATE, time);
+                            values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
+                            values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+
                             // 保存记录
-                            Uri uri = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
+                            cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
                             // 通知更新通话记录
                             LeoEventBus
                                     .getDefaultBus()
@@ -102,12 +101,16 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?",
                                     number,
                                     mContext);
-                        } catch (Exception e) {
+
                         }
                     }
-                    cursor.close();
-                }
 
+                } catch (Exception e) {
+                } finally {
+                    if(cursor != null) {
+                        cursor.close();
+                    }
+                }
             }
         }
     }
