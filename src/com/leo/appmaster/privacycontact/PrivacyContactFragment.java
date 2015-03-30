@@ -383,6 +383,8 @@ public class PrivacyContactFragment extends BaseFragment {
 
             @Override
             public void onClick(View arg0) {
+                /* SDK */
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "call", "contact");
                 mPCDialog.cancel();
                 // 查询该号码是否为隐私联系人
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(contact
@@ -395,8 +397,6 @@ public class PrivacyContactFragment extends BaseFragment {
                 Intent intent = new Intent(Intent.ACTION_CALL, uri);
                 try {
                     startActivity(intent);
-                    /* SDK */
-                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "call", "contact");
                     // 添加到隐私通话中
                     // ContentValues values = new ContentValues();
                     // values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER,

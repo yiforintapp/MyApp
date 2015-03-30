@@ -60,6 +60,9 @@ public class PrivacyContactInputActivity extends Activity {
 
             @Override
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+                /* sdk */
+                SDKWrapper.addEvent(PrivacyContactInputActivity.this, SDKWrapper.P1,
+                        "contactsadd", "answer");
                 mPhoneState = 1;
                 mRadioNormal.setSelected(true);
                 mRadioHangup.setSelected(false);
@@ -277,8 +280,9 @@ public class PrivacyContactInputActivity extends Activity {
                     QueryLogAsyncTask task = new QueryLogAsyncTask();
                     task.execute(true);
                 } else if (which == 0) {
-                    /*SDK*/
-                    SDKWrapper.addEvent(PrivacyContactInputActivity.this, SDKWrapper.P1, "contactsadd", "unimport");
+                    /* SDK */
+                    SDKWrapper.addEvent(PrivacyContactInputActivity.this, SDKWrapper.P1,
+                            "contactsadd", "unimport");
                     if (mAddCallLogDialog != null) {
                         mAddCallLogDialog.cancel();
                     }
