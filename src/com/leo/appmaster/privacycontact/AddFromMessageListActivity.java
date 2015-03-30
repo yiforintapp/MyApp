@@ -518,8 +518,8 @@ public class AddFromMessageListActivity extends Activity implements OnItemClickL
                                 AddFromMessageListActivity.this.getContentResolver(), null,
                                 null,
                                 false);
-                // Collections.sort(mMessageList,
-                // PrivacyContactUtils.mMessageCamparator);
+                Collections.sort(mMessageList,
+                        PrivacyContactUtils.mMessageCamparator);
             }
             return null;
         }
