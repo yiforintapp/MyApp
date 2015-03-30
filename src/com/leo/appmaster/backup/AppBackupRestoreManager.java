@@ -233,8 +233,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
                         doneNum++;
                         failType = tryBackupApp(app, false);
                         if (failType == FAIL_TYPE_NONE) {
-                          SDKWrapper.addEvent(mContext , SDKWrapper.P1, "backup", "backup_" + app.packageName);
                             successNum++;
+//                            LeoLog.d("testfuckbackup", app.packageName);
+                            SDKWrapper.addEvent(mContext , SDKWrapper.P1, "backup", "backup_" + app.packageName);
                         } else if (failType == FAIL_TYPE_SDCARD_UNAVAILABLE
                                 || failType == FAIL_TYPE_FULL) {
                             success = false;
@@ -301,6 +302,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
         } catch (NameNotFoundException e) {
         }
         context.startActivity(intent);
+//        LeoLog.d("testfuckrestore", app.packageName);
         SDKWrapper.addEvent(context, SDKWrapper.P1, "backup", "recover_" + app.packageName);
     }
 
