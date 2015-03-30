@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.home.BackUpActivity;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.sdk.SDKWrapper;
 
 public class AppRestoreItemView extends FrameLayout implements OnClickListener {
 
@@ -59,6 +60,7 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
             AppItemInfo app = (AppItemInfo) tag;
             if(v == mInstall) {
                 backupManager.restoreApp(context, app);
+
             } else if (v == mDelete) {
                 activity.tryDeleteApp(app);
             }

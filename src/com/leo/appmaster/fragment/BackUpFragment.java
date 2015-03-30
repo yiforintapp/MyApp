@@ -27,6 +27,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.home.BackUpActivity;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
@@ -230,6 +231,8 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
                             .format(mActivity.getString(R.string.backuped_count),
                                     successNum, message));
 
+//                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "backup", "backup_");
+                    
                     // backup finish and success , now send eventBus to
                     // homeAppManagerFrament to refreash UI
                     LeoEventBus.getDefaultBus().post(

@@ -38,7 +38,6 @@ public class ManagerFlowListFragment extends BaseFragment {
     @Override
     protected void onInitUI() {
         init();
-        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "datapage", "usagelist");
         flowAsyncTask = new FlowListAsyncTask();
         flowAsyncTask.execute("");
     }
