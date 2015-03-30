@@ -1,15 +1,15 @@
 
 package com.leo.appmaster.lockertheme;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.BaseActivity;
 
-public class LockerThemeGuideActivity extends Activity {
+public class LockerThemeGuideActivity extends BaseActivity {
     private TextView mMakeSure;
 
     @Override

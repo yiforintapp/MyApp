@@ -1,19 +1,17 @@
 
 package com.leo.appmaster.home;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.DayTrafficSetEvent;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.DayTrafficSetting;
@@ -22,7 +20,7 @@ import com.leo.appmaster.ui.dialog.MonthTrafficSetting;
 import com.leo.appmaster.ui.dialog.MonthTrafficSetting.OnDiaogClickListener;
 import com.leo.appmaster.utils.LeoLog;
 
-public class TrafficSetting extends Activity implements OnClickListener {
+public class TrafficSetting extends BaseActivity implements OnClickListener {
     
     public static final String DAY_TRAFFIC_SETTING = "day_traffic_setting";
     

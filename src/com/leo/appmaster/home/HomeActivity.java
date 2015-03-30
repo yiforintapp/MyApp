@@ -17,10 +17,8 @@ import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
@@ -61,6 +59,7 @@ import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.IconPagerAdapter;
@@ -69,7 +68,7 @@ import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.RootChecker;
 
-public class HomeActivity extends FragmentActivity implements OnClickListener, OnItemClickListener,
+public class HomeActivity extends BaseFragmentActivity implements OnClickListener, OnItemClickListener,
         OnPageChangeListener, OnShaderColorChangedLisetner {
 
     private final static String KEY_ROOT_CHECK = "root_check";
@@ -211,6 +210,9 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, O
 
     @Override
     protected void onResume() {
+        /* check if there is force update when showing HomeActivity */
+        SDKWrapper.checkForceUpdate();
+        
         judgeShowGradeTip();
         // compute privacy level here to avoid unknown change, such as file
         // deleted outside of your phone.

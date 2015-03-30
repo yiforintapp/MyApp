@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -28,10 +27,11 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 
-public class PrivacyCallLogListActivity extends Activity implements OnClickListener {
+public class PrivacyCallLogListActivity extends BaseActivity implements OnClickListener {
     private ListView mContactCallLog;
     private static final String CONTACT_CALL_LOG = "contact_call_log";
     private static final String UPDATE_CALL_LOG_FRAGMENT = "update_call_log_fragment";

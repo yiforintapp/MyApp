@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.graphics.Bitmap;
@@ -18,7 +17,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,13 +35,14 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 
-public class AddFromMessageListActivity extends Activity implements OnItemClickListener {
+public class AddFromMessageListActivity extends BaseActivity implements OnItemClickListener {
     private ListView mListMessage;
     private MyMessageAdapter mAdapter;
     private List<MessageBean> mMessageList;
@@ -518,8 +517,8 @@ public class AddFromMessageListActivity extends Activity implements OnItemClickL
                                 AddFromMessageListActivity.this.getContentResolver(), null,
                                 null,
                                 false);
-                // Collections.sort(mMessageList,
-                // PrivacyContactUtils.mMessageCamparator);
+                Collections.sort(mMessageList,
+                        PrivacyContactUtils.mMessageCamparator);
             }
             return null;
         }

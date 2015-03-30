@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
@@ -21,11 +20,12 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.ManagerElecFragment;
 import com.leo.appmaster.fragment.ManagerFlowFragment;
 import com.leo.appmaster.fragment.ManagerFlowListFragment;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
 
-public class FlowActivity extends FragmentActivity implements OnClickListener, OnPageChangeListener {
+public class FlowActivity extends BaseFragmentActivity implements OnClickListener, OnPageChangeListener {
     public static final String MESSAGE_MONTH_TRAFFI_SMALL_SETTING = "month_traffic_small_setting";
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;

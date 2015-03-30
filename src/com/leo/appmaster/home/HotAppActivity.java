@@ -3,6 +3,18 @@ package com.leo.appmaster.home;
 
 import java.util.List;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -12,25 +24,12 @@ import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
 import com.leo.appmaster.fragment.ApplicaionAppFragment;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.GameAppFragment2;
-import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-
-public class HotAppActivity extends FragmentActivity {
+public class HotAppActivity extends BaseFragmentActivity {
     private static final String MOVE_TO_NEW_APP = "move_to_new_app";
     private static final String MOVE_TO_GAME_FRAGMENT = "move_to_game_gragment";
     private LeoPagerTab mPagerTab;
