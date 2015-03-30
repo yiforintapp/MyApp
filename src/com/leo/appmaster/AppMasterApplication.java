@@ -90,7 +90,6 @@ public class AppMasterApplication extends Application {
     public static int densityDpi;
     public static String densityString;
     public static int MAX_OUTER_BLUR_RADIUS;
-    public static final Uri CALL_LOG_URI = android.provider.CallLog.Calls.CONTENT_URI;
 
     private ExecutorService mExecutorService;
 
@@ -162,7 +161,7 @@ public class AppMasterApplication extends Application {
                 mMessageObserver);
         mCallLogObserver = new PrivacyMessageContentObserver(this, mHandler,
                 PrivacyMessageContentObserver.CALL_LOG_MODEL);
-        getContentResolver().registerContentObserver(CALL_LOG_URI, true, mCallLogObserver);
+        getContentResolver().registerContentObserver(PrivacyContactUtils.CALL_LOG_URI, true, mCallLogObserver);
         openEndCall();
         mPrivacyReceiver = new MessagePrivacyReceiver(mITelephony, mAudioManager);
         IntentFilter filter = new IntentFilter();
