@@ -155,13 +155,11 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
         @Override
         public int getCount() {
-            // TODO Auto-generated method stub
             return mPicturesList.size();
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            // // TODO Auto-generated method stub
             View view = getLayoutInflater().inflate(R.layout.item_pager_img,
                     null);
             PhotoView zoomImageView = (PhotoView) view

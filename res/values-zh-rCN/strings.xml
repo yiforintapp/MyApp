@@ -97,7 +97,7 @@
     <string name="app_version">版本: %1$s</string>
     <string name="backuping">正在备份: %1$s</string>
     <string name="no_application_selected">没有选择任何应用</string>
-    <string name="backup_finish">备份成功</string>
+    <string name="backup_finish">备份成功！</string>
     <string name="delete_fail">删除失败！</string>
     <string name="deleting_app">正在删除: %1$s</string>
     <string name="installed_app_size">已安装应用: %1$d</string>
@@ -503,7 +503,7 @@
     <string name="first_list_uninstall">卸载</string>
 
     <!-- Data Usage / Battery -->
-    <string name="home_appmanager_donghua_tv">内存占用</string>
+    <string name="home_appmanager_donghua_tv">内存</string>
     <string name="traffic_progress_bar">本月已用</string>
     <string name="traff_first_page_small_set_month_used">本月已使用(MB)</string>
     <string name="traff_first_page_small_set_low">您可以输入您的套餐流量和本月已使用的流量</string>
@@ -522,7 +522,7 @@
     <string name="flow_settting_dialog_remain">当每月已用流量达到设定值时，启动提醒</string>
     <string name="flow_settting_thrid">每月结算日</string>
     <string name="flow_settting_thrid_first_tv">月结日</string>
-    <string name="flow_settting_thrid_second_tv">流量套餐(MB)</string>
+    <string name="flow_settting_thrid_second_tv">每月套餐(MB)</string>
     <string name="flow_settting_thrid_month_used_data">本月已使用(MB)</string>
     <string name="app_elec_aca">电量</string>
     <string name="app_elec_stop">停止</string>
@@ -533,7 +533,7 @@
     <string name="today_triffic">今日流量</string>
     <string name="month_remainder_triffic">本月剩余</string>
     <string name="month_triffic">本月已用</string>
-    <string name="flow_charts_this_month">本月流量折线图</string>
+    <string name="flow_charts_this_month">日流量使用情况</string>
     <string name="home_app_manager_apps_delete">应用卸载</string>
     <string name="home_app_manager_mem_clean">为您清理了%1$s内存</string>
     <string name="home_app_manager_mem_clean_one">为您清理了1MB内存</string>

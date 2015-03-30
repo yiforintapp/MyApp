@@ -292,23 +292,27 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             } else {
                 holder = (ViewHolder) view.getTag();
             }
-            String path = mPicturesList.get(position).getPath();
-            if (mActicityMode == CANCEL_HIDE_MODE && !mIsEditmode) {
-                holder.clickView.setVisibility(View.GONE);
-            } else {
-                holder.clickView.setVisibility(View.VISIBLE);
-                if (mClickList.contains(mPicturesList.get(position))) {
-                    holder.clickView
-                            .setImageResource(R.drawable.pic_choose_active);
+            
+            if(position < mPicturesList.size()) {               
+               PhotoItem item = mPicturesList.get(position);
+               String path = item.getPath();
+                if (mActicityMode == CANCEL_HIDE_MODE && !mIsEditmode) {
+                    holder.clickView.setVisibility(View.GONE);
                 } else {
-                    holder.clickView
-                            .setImageResource(R.drawable.pic_choose_normal);
+                    holder.clickView.setVisibility(View.VISIBLE);
+                    if (mClickList.contains(item)) {
+                        holder.clickView
+                                .setImageResource(R.drawable.pic_choose_active);
+                    } else {
+                        holder.clickView
+                                .setImageResource(R.drawable.pic_choose_normal);
+                    }
                 }
+                holder.pictureName.setText(FileOperationUtil
+                        .getNoExtNameFromHideFilepath(path));
+                mImageLoader.displayImage("file://" + path, holder.imageView,
+                        mOptions);
             }
-            holder.pictureName.setText(FileOperationUtil
-                    .getNoExtNameFromHideFilepath(path));
-            mImageLoader.displayImage("file://" + path, holder.imageView,
-                    mOptions);
             return view;
         }
 
@@ -574,9 +578,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             public void onAnimationEnd(Animator animation) {
                 mImageAdapter.notifyDataSetChanged();
                 for (Integer view : viewList) {
-                    mGridView.getChildAt(view).setAlpha(1);
-                    mGridView.getChildAt(view).setScaleX(1);
-                    mGridView.getChildAt(view).setScaleY(1);
+                    View child = mGridView.getChildAt(view);
+                    if(child != null) {
+                        child.setAlpha(1);
+                        child.setScaleX(1);
+                        child.setScaleY(1);
+                    }
                 }
                 mClickPosList.clear();
             }

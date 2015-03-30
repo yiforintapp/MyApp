@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -20,9 +19,10 @@ import android.widget.EditText;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
-public class PrivacyMessageSendActivity extends Activity implements OnClickListener {
+public class PrivacyMessageSendActivity extends BaseActivity implements OnClickListener {
     private CommonTitleBar mComTitle;
     private static final String CONTACT_CALL_LOG = "contact_call_log";
     private static final String SENT_SMS_ACTION = "SENT_SMS_ACTION";

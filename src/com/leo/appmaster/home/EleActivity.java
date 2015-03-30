@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,11 +27,12 @@ import android.widget.Toast;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.LeoLog;
 
-public class EleActivity extends FragmentActivity {
+public class EleActivity extends BaseFragmentActivity {
     private CommonTitleBar mTtileBar;
     private ListView listview_ele;
     private customAdapter adapter;

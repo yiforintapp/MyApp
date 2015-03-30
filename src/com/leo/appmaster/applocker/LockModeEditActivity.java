@@ -158,8 +158,9 @@ public class LockModeEditActivity extends BaseActivity implements
         if (mMakeSureChange == null) {
             mMakeSureChange = new LEOAlarmDialog(this);
             mMakeSureChange.setTitle(getString(R.string.mode_save_hint));
-            mMakeSureChange.setContent(getString(R.string.mode_save_ask, getString(R.string.lock_mode)));
-            
+            mMakeSureChange.setContent(getString(R.string.mode_save_ask,
+                    getString(R.string.lock_mode)));
+
             mMakeSureChange.setOnClickListener(new OnDiaogClickListener() {
                 @Override
                 public void onClick(int which) {
@@ -169,7 +170,8 @@ public class LockModeEditActivity extends BaseActivity implements
                     } else if (which == 1) {
                         // to save
                         saveMode();
-                        Toast.makeText(LockModeEditActivity.this, R.string.save_successful, 0).show();
+                        Toast.makeText(LockModeEditActivity.this, R.string.save_successful, 0)
+                                .show();
                     }
                 }
             });
@@ -378,24 +380,33 @@ public class LockModeEditActivity extends BaseActivity implements
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (which == 1) {
-                        LockManager lm = LockManager.getInstatnce();
-                        mEditMode.modeName = mModeName;
-                        List<String> changedList = new ArrayList<String>();
-                        for (AppInfo appInfo : mLockedList) {
-                            changedList.add(new String(appInfo.packageName));
-                        }
-                        mEditMode.lockList = changedList;
-                        if (mNewMode) {
-                            mEditMode.modeIcon = BitmapFactory.decodeResource(getResources(),
-                                    R.drawable.lock_mode_default);
-                            lm.addLockMode(mEditMode);
+                        mModeName = mModeNameDiglog.getEditText().getText().toString();
+                        if (TextUtils.isEmpty(mModeName)) {
+                            shakeView(mModeNameDiglog.getEditText());
+                            Toast.makeText(LockModeEditActivity.this,
+                                    R.string.lock_mode_name_cant_empty, 0)
+                                    .show();
                         } else {
-                            lm.updateMode(mEditMode);
+                            LockManager lm = LockManager.getInstatnce();
+                            mEditMode.modeName = mModeName;
+                            List<String> changedList = new ArrayList<String>();
+                            for (AppInfo appInfo : mLockedList) {
+                                changedList.add(new String(appInfo.packageName));
+                            }
+                            mEditMode.lockList = changedList;
+                            if (mNewMode) {
+                                mEditMode.modeIcon = BitmapFactory.decodeResource(getResources(),
+                                        R.drawable.lock_mode_default);
+                                lm.addLockMode(mEditMode);
+                            } else {
+                                lm.updateMode(mEditMode);
+                            }
+                            Toast.makeText(LockModeEditActivity.this, R.string.save_successful, 0)
+                                    .show();
+                            LeoEventBus.getDefaultBus().post(
+                                    new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed"));
+                            finish();
                         }
-                        Toast.makeText(LockModeEditActivity.this, R.string.save_successful, 0).show();
-                        LeoEventBus.getDefaultBus().post(
-                                new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed"));
-                        finish();
                     }
                 }
             });

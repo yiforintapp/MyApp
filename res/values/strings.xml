@@ -468,7 +468,7 @@
     <string name="privacy_suggest_perfect_toast">You\'ve achieved the highest Privacy Level!</string>
 
     <!-- Backup and Restore -->
-    <string name="app_backup_back">Uninstall&#038;Backup</string>
+    <string name="app_backup_back">Backup&#038;Restore</string>
     <string name="app_backup_v2">Backup</string>
     <string name="app_restore_v2">Restore</string>
     <string name="app_delete_v2">Delete</string>
@@ -497,7 +497,7 @@
      Data Usage / Battery
      and used data(Month).
     -->
-    <string name="home_appmanager_donghua_tv">used memory</string>
+    <string name="home_appmanager_donghua_tv">Memory</string>
     <string name="traffic_progress_bar">used this month</string>
     <string name="traff_first_page_small_set_month_used">Used data(MB)</string>
     <string name="traff_first_page_small_set_low">Type your data plan and used data(Month)</string>
@@ -507,7 +507,7 @@
     <string name="traffic_used_lot_cancel">OK</string>
     <string name="traffic_used_lot">Data usage alert</string>
     <string name="traffic_used_lot_text">You\'ve used %1$s%% of your monthly allowance.</string>
-    <string name="traffic_used_finish_text">Mobile data usage limit reached! Additional usage may incur carrier charges.</string>
+    <string name="traffic_used_finish_text">Mobile data usage limit reached! Additional usage may incur carrier charges</string>
     <string name="flow_settting_fist">Excess usage alert</string>
     <string name="flow_settting_name">Data plan settings</string>
     <string name="flow_settting_second">Free data less than</string>
@@ -516,7 +516,7 @@
     <string name="flow_settting_dialog_remain">Alert on when data usage achieve monthly allowance</string>
     <string name="flow_settting_thrid">Usage cycle reset date</string>
     <string name="flow_settting_thrid_first_tv">Monthly billing date</string>
-    <string name="flow_settting_thrid_second_tv">Monthly traffic(MB)</string>
+    <string name="flow_settting_thrid_second_tv">Data plan(MB)</string>
     <string name="flow_settting_thrid_month_used_data">Used data(MB)</string>
     <string name="app_elec_aca">Battery</string>
     <string name="app_elec_stop">Stop</string>
@@ -527,8 +527,8 @@
     <string name="today_triffic">Today</string>
     <string name="month_remainder_triffic">Free this month</string>
     <string name="month_triffic">This month</string>
-    <string name="flow_charts_this_month">Flow charts this month</string>
-    <string name="home_app_manager_apps_delete">Apps uninstall</string>
+    <string name="flow_charts_this_month">Daily Usage</string>
+    <string name="home_app_manager_apps_delete">Apps Uninstall</string>
     <string name="home_app_manager_mem_clean">Clearing memory %1$s</string>
     <string name="home_app_manager_mem_clean_one">Clearing memory 1MB</string>
 
