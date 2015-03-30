@@ -356,6 +356,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_rec", "new");
 
         } else {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "load_failed", "hot");
             mErrorView.setVisibility(View.VISIBLE);
             mLayoutEmptyTip.setVisibility(View.INVISIBLE);
         }

@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -20,10 +21,11 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.ManagerElecFragment;
 import com.leo.appmaster.fragment.ManagerFlowFragment;
 import com.leo.appmaster.fragment.ManagerFlowListFragment;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
 
-public class FlowActivity extends FragmentActivity implements OnClickListener {
+public class FlowActivity extends FragmentActivity implements OnClickListener, OnPageChangeListener {
     public static final String MESSAGE_MONTH_TRAFFI_SMALL_SETTING = "month_traffic_small_setting";
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
@@ -53,6 +55,7 @@ public class FlowActivity extends FragmentActivity implements OnClickListener {
         
         mPagerTab = (LeoPagerTab) findViewById(R.id.traffic_app_tab_indicator);
         mViewPager = (ViewPager) findViewById(R.id.traffic_app_viewpager);
+        mViewPager.setOnPageChangeListener(this);
         initFragment();
 
         mViewPager.setAdapter(new ManagerFlowAdapter(getSupportFragmentManager()));
@@ -138,6 +141,23 @@ public class FlowActivity extends FragmentActivity implements OnClickListener {
               Intent intent = new Intent(this, TrafficSetting.class);
               startActivity(intent);
                 break;
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int arg0) {
+        
+    }
+
+    @Override
+    public void onPageScrolled(int arg0, float arg1, int arg2) {
+        
+    }
+
+    @Override
+    public void onPageSelected(int arg0) {
+        if(arg0 == 1){
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "datapage", "usagelist");
         }
     }
 

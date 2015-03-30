@@ -62,6 +62,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
     private static final String sUnitKB = "KB";
     private static final String sUnitMB = "MB";
     private static final String sUnitGB = "GB";
+    private Context mContext;
 
     private static final DecimalFormat sFormat = new DecimalFormat("#.0");
 
@@ -115,6 +116,8 @@ public class AppBackupRestoreManager implements AppChangeListener {
         mDeleteList = new ArrayList<AppItemInfo>();
         AppLoadEngine.getInstance(context).registerAppChangeListener(this);
 
+        this.mContext = context;
+        
         mSDReceiver = new SDCardReceiver();
         IntentFilter intentFilter = new IntentFilter(
                 Intent.ACTION_MEDIA_MOUNTED);
@@ -230,6 +233,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
                         doneNum++;
                         failType = tryBackupApp(app, false);
                         if (failType == FAIL_TYPE_NONE) {
+                          SDKWrapper.addEvent(mContext , SDKWrapper.P1, "backup", "backup_" + app.packageName);
                             successNum++;
                         } else if (failType == FAIL_TYPE_SDCARD_UNAVAILABLE
                                 || failType == FAIL_TYPE_FULL) {
@@ -297,7 +301,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
         } catch (NameNotFoundException e) {
         }
         context.startActivity(intent);
-        SDKWrapper.addEvent(context, SDKWrapper.P1, "backup", app.packageName);
+        SDKWrapper.addEvent(context, SDKWrapper.P1, "backup", "recover_" + app.packageName);
     }
 
     public void checkDataUpdate() {

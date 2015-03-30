@@ -36,7 +36,6 @@ public class MonthTrafficSetting extends LEOBaseDialog {
     }
 
     private void initUI() {
-        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "freechange");
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_flow_setting, null);
         Resources resources = AppMasterApplication.getInstance().getResources();
@@ -78,6 +77,7 @@ public class MonthTrafficSetting extends LEOBaseDialog {
             public void onClick(DialogInterface dialog, int arg1) {
                 if (mListener != null) {
                     mListener.onClick(progressInt);
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "freechange");
                 }
                 dialog.dismiss();
             }

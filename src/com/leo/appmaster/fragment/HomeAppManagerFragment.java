@@ -359,6 +359,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 startActivity(nIntent);
                 break;
             case R.id.iv_donghua:
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "boost");
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "newboost");
                 if (!isCleanning) {
                     cleanMem();
