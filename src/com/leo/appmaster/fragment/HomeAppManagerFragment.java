@@ -61,6 +61,9 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public static final int DONGHUA_SHOW_BEGIN = 1;
     public static boolean isClean = false;
     public static boolean isShowIng = false;
+    private boolean curFastThanset = false;
+    
+    // private boolean isReNewFragment = false;
 
     private AppMasterPreference sp_homeAppManager;
     public long firstShowTime;
@@ -156,18 +159,18 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         protected void onPostExecute(Object result) {
             super.onPostExecute(result);
             
-            if (!isClean && !isShowIng) {
+            pb_loading.setVisibility(View.GONE);
+            list_delete.setVisibility(View.VISIBLE);
+            fillData();
+            setListView();
+            
+            if(curFastThanset){
+              LeoLog.d("testfuckdelete", "onPostExecute ，show动画咯");
                 isShowIng = true;
+                curFastThanset = false;
                 showdonghua();
             }
             
-            pb_loading.setVisibility(View.GONE);
-            list_delete.setVisibility(View.VISIBLE);
-            // if(!isShowIng){
-            // showdonghua();
-            // }
-            fillData();
-            setListView();
         }
     }
 
@@ -220,7 +223,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         app_hot_tip_icon = (ImageView) findViewById(R.id.app_hot_tip_icon);
         if (sp_homeAppManager.getHomeFragmentRedTip()) {
             app_hot_tip_icon.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             app_hot_tip_icon.setVisibility(View.GONE);
         }
         list_delete = (ListView) findViewById(R.id.list_backup_home_fragment);
@@ -589,11 +592,14 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     @Override
     public void onSelected() {
-        LeoLog.d("HomeAppManagerFragment", "回来走不走这");
+        
+        // LeoLog.d("HomeAppManagerFragment", "回来走不走这");
         if (!isClean && !isShowIng) {
             isShowIng = true;
             showdonghua();
         }
+        
+        curFastThanset = true;
     }
 
     @Override
