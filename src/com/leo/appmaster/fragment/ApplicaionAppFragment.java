@@ -409,7 +409,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
                         mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
                         mInitLoading = false;
                         LoadFailUtils.sendLoadFail(
-                                ApplicaionAppFragment.this.mActivity, "new_apps");
+                                ApplicaionAppFragment.this.mActivity, "hot");
                     }
                 });
     }
@@ -482,7 +482,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
                     public void onErrorResponse(VolleyError error) {
                         mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
                         LoadFailUtils.sendLoadFail(
-                                ApplicaionAppFragment.this.mActivity, "new_apps");
+                                ApplicaionAppFragment.this.mActivity, "hot");
                     }
                 });
     }

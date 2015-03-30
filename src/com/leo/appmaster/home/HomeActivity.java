@@ -549,7 +549,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, O
             }
         } else if (position == 3) {
             /* sdk mark */
-            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
                     "feedback");
             intent = new Intent(HomeActivity.this,
                     FeedbackActivity.class);

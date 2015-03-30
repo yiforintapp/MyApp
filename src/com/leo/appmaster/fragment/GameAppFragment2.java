@@ -214,7 +214,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
         } else {
             mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
             LoadFailUtils.sendLoadFail(
-                    GameAppFragment2.this.mActivity, "new_apps");
+                    GameAppFragment2.this.mActivity, "games");
         }
 
     }

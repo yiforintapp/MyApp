@@ -165,45 +165,44 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.mode_holder) {
             LockMode mode = (LockMode) v.getTag();
-            if (v == mSelected)
-                return;
+            if (v != mSelected) {
+                int position = mViews.indexOf(v.getParent());
+                int curPosition = mViewPager.getCurrentItem();
 
-            int position = mViews.indexOf(v.getParent());
-            int curPosition = mViewPager.getCurrentItem();
+                if (position == curPosition) {
+                    LockMode lastSelectedMode = (LockMode) mSelected.getTag();
+                    TextView modeIcon = (TextView) mSelected.findViewById(R.id.tv_lock_mode_icon);
+                    ImageView selectedImg = (ImageView) mSelected.findViewById(R.id.img_selected);
+                    selectedImg.setVisibility(View.GONE);
+                    modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
+                            lastSelectedMode.modeIcon)));
 
-            if (position == curPosition) {
-                LockMode lastSelectedMode = (LockMode) mSelected.getTag();
-                TextView modeIcon = (TextView) mSelected.findViewById(R.id.tv_lock_mode_icon);
-                ImageView selectedImg = (ImageView) mSelected.findViewById(R.id.img_selected);
-                selectedImg.setVisibility(View.GONE);
-                modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
-                        lastSelectedMode.modeIcon)));
+                    modeIcon = (TextView) v.findViewById(R.id.tv_lock_mode_icon);
+                    selectedImg = (ImageView) v.findViewById(R.id.img_selected);
+                    selectedImg.setVisibility(View.VISIBLE);
+                    modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(), BitmapUtils
+                            .createGaryBitmap(mode.modeIcon))));
 
-                modeIcon = (TextView) v.findViewById(R.id.tv_lock_mode_icon);
-                selectedImg = (ImageView) v.findViewById(R.id.img_selected);
-                selectedImg.setVisibility(View.VISIBLE);
-                modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(), BitmapUtils
-                        .createGaryBitmap(mode.modeIcon))));
+                    mSelected = v;
 
-                mSelected = v;
-
-//                if (mode.defaultFlag == 1 && !mode.haveEverOpened) {
-//                    mode.haveEverOpened = true;
-//                    mLockManager.setCurrentLockMode(mode);
-//                    startRcommendLock();
-//                } else {
+                    // if (mode.defaultFlag == 1 && !mode.haveEverOpened) {
+                    // mode.haveEverOpened = true;
+                    // mLockManager.setCurrentLockMode(mode);
+                    // startRcommendLock();
+                    // } else {
                     mLockManager.setCurrentLockMode(mode);
-//                }
+                    // }
                     SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "modeschage", "home");
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        LeoEventBus.getDefaultBus()
-                                .post(
-                                        new LockModeEvent(EventId.EVENT_MODE_CHANGE,
-                                                "multi mode page selectd"));
-                    }
-                }).start();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LeoEventBus.getDefaultBus()
+                                    .post(
+                                            new LockModeEvent(EventId.EVENT_MODE_CHANGE,
+                                                    "multi mode page selectd"));
+                        }
+                    }).start();
+                }
             }
             postDelayed(new Runnable() {
 
@@ -258,14 +257,14 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             return view;
         }
     }
-    
+
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         try {
             super.onRestoreInstanceState(state);
         } catch (Exception e) {
-            
+
         }
     }
-    
+
 }
