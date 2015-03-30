@@ -292,23 +292,27 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             } else {
                 holder = (ViewHolder) view.getTag();
             }
-            String path = mPicturesList.get(position).getPath();
-            if (mActicityMode == CANCEL_HIDE_MODE && !mIsEditmode) {
-                holder.clickView.setVisibility(View.GONE);
-            } else {
-                holder.clickView.setVisibility(View.VISIBLE);
-                if (mClickList.contains(mPicturesList.get(position))) {
-                    holder.clickView
-                            .setImageResource(R.drawable.pic_choose_active);
+            
+            if(position < mPicturesList.size()) {               
+               PhotoItem item = mPicturesList.get(position);
+               String path = item.getPath();
+                if (mActicityMode == CANCEL_HIDE_MODE && !mIsEditmode) {
+                    holder.clickView.setVisibility(View.GONE);
                 } else {
-                    holder.clickView
-                            .setImageResource(R.drawable.pic_choose_normal);
+                    holder.clickView.setVisibility(View.VISIBLE);
+                    if (mClickList.contains(item)) {
+                        holder.clickView
+                                .setImageResource(R.drawable.pic_choose_active);
+                    } else {
+                        holder.clickView
+                                .setImageResource(R.drawable.pic_choose_normal);
+                    }
                 }
+                holder.pictureName.setText(FileOperationUtil
+                        .getNoExtNameFromHideFilepath(path));
+                mImageLoader.displayImage("file://" + path, holder.imageView,
+                        mOptions);
             }
-            holder.pictureName.setText(FileOperationUtil
-                    .getNoExtNameFromHideFilepath(path));
-            mImageLoader.displayImage("file://" + path, holder.imageView,
-                    mOptions);
             return view;
         }
 

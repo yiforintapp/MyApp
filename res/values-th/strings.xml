@@ -516,7 +516,7 @@
     <string name="today_triffic">วันนี้</string>
     <string name="month_remainder_triffic">เดือนนี้ไม่ใช้</string>
     <string name="month_triffic">ข้อมูลที่ใช้</string>
-    <string name="flow_charts_this_month">เดือนนี้ไหลแผนภูมิเส้น</string>
+    <string name="flow_charts_this_month">การใช้งานในชีวิตประจำวัน</string>
     <string name="set_flow_packages">ที่เกี่ยวข้องกับการตั้งค่า</string>
 
     <!-- What's Hot -->
