@@ -107,25 +107,25 @@ public class PrivacySuggestActivity extends Activity implements OnClickListener 
                 } else {
                     intent = new Intent(this, AppLockListActivity.class);
                     startActivity(intent);
-                    SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "applock");
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "proposals", "applock");
                 }
                 break;
             case R.id.privacy_suggest_hide_pic:
                 intent = new Intent(this, ImageHideMainActivity.class);
                 startActivity(intent);
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "hideimage");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "proposals", "hideimage");
                 break;
             case R.id.privacy_suggest_hide_video:
                 intent = new Intent(this, VideoHideMainActivity.class);
                 startActivity(intent);
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "hidevideo");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "proposals", "hidevideo");
                 break;
             case R.id.privacy_suggest_privacy_contact:
                 intent = new Intent(this, PrivacyContactActivity.class);
                 intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
                         PrivacyContactUtils.TO_PRIVACY_CONTACT_FLAG);
                 startActivity(intent);
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "contacts");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "proposals", "contacts");
                 break;
             default:
                 break;
