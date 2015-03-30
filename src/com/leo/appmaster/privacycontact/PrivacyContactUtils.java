@@ -231,6 +231,8 @@ public class PrivacyContactUtils {
                 cb.setContactName(contactName);
                 cb.setContactNumber(phoneNumber);
                 cb.setContactIcon(contactPhoto);
+                cb.setSortLetter(phoneCursor.getString(phoneCursor
+                        .getColumnIndex(Phone.SORT_KEY_PRIMARY)));
                 if (phoneNumber != null) {
                     contacts.add(cb);
                 }

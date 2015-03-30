@@ -4,6 +4,7 @@ package com.leo.appmaster.privacycontact;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -14,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -571,7 +573,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 List<ContactBean> contacts = mPhoneContact =
                         PrivacyContactUtils.getSysContact(AddFromContactListActivity.this,
                                 getContentResolver(), null, null);
-
                 mPhoneContact = getSortLetter(contacts);
                 if (mPhoneContact != null) {
                     Collections.sort(mPhoneContact, mPinyinComparator);
@@ -608,13 +609,18 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         List<ContactBean> contactList = new ArrayList<ContactBean>();
         if (contacts != null && contacts.size() > 0) {
             for (ContactBean contactBean : contacts) {
-                // 汉字转换成拼音
-                String pinyin = LeoCharacterParser.getInstance().getSelling(
-                        contactBean.getContactName());
-                String sortString = pinyin.trim().substring(0, 1).toUpperCase();
+                // // 汉字转换成拼音
+                // String pinyin = LeoCharacterParser.getInstance().getSelling(
+                // contactBean.getContactName());
+                // Character key = pinyin.substring(0,
+                // 1).toUpperCase(Locale.US).charAt(0);
+                Character key = contactBean.getSortLetter().substring(0, 1).toUpperCase(Locale.US)
+                        .charAt(0);
                 // 正则表达式，判断首字母是否是英文字母
-                if (sortString.matches("[A-Z]")) {
-                    contactBean.setSortLetter(sortString);
+                if (key == null) {
+                    contactBean.setSortLetter("#");
+                }
+                if ('A' <= key && key <= 'Z') {
                 } else {
                     contactBean.setSortLetter("#");
                 }

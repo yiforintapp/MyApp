@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -102,8 +103,9 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         } else {
             mTtileBar.setTitle(R.string.privacy_contacts);
             mPrivacyContactPagerTab.setCurrentItem(2);
+            updateTitle();
         }
-        if (!mIsEditModel) {
+        if (!mIsEditModel && pagerPosition == 2) {
             updateTitle();
         }
 
@@ -113,6 +115,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             public void onPageSelected(int position) {
                 pagerPosition = position;
                 if (position == 0) {
+                    mTtileBar.setOptionImageVisibility(View.INVISIBLE);
                     if (mMessageTip) {
                         mMessageTip = false;
                         AppMasterPreference.getInstance(PrivacyContactActivity.this)
@@ -122,6 +125,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                     }
                 }
                 if (position == 1) {
+                    mTtileBar.setOptionImageVisibility(View.INVISIBLE);
                     if (mCallLogTip) {
                         mCallLogTip = false;
                         AppMasterPreference.getInstance(PrivacyContactActivity.this)
@@ -129,6 +133,9 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                         mFragmentHolders[1].redTip = false;
                         mPrivacyContactPagerTab.notifyDataSetChanged();
                     }
+                }
+                if (position == 2) {
+                    updateTitle();
                 }
             }
 
@@ -143,7 +150,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
             }
         });
-
     }
 
     /**
@@ -163,6 +169,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 }
             });
             // 短信删除
+            mTtileBar.setOptionImageVisibility(View.VISIBLE);
             mTtileBar.setOptionImage(R.drawable.sms_delete);
             // 删除
             mTtileBar.setOptionListener(new OnClickListener() {
@@ -213,6 +220,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 }
             });
             // 通话记录编辑模式
+            mTtileBar.setOptionImageVisibility(View.VISIBLE);
             mTtileBar.setOptionImage(R.drawable.sms_delete);
             mTtileBar.setOptionListener(new OnClickListener() {
 
@@ -256,7 +264,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 }
             });
             mTtileBar.setBackViewListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View arg0) {
                     chanageEditModel();
@@ -303,6 +310,9 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     // 去除编辑模式
     private void chanageEditModel() {
         mPrivacyContactPagerTab.setVisibility(View.VISIBLE);
+        if (pagerPosition != 2) {
+            mTtileBar.setOptionImageVisibility(View.INVISIBLE);
+        }
         mPrivacyContactViewPager.setOnTouchListener(new OnTouchListener() {
 
             @Override
@@ -315,10 +325,12 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         updateTitle();
     }
 
-    // 更新PopMenu
+    // 显示添加按钮
     private void updateTitle() {
         mTtileBar.findViewById(R.id.message_restore).setVisibility(View.GONE);
-        mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        if (pagerPosition == 2) {
+            mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        }
         mTtileBar.setOptionImage(R.drawable.add_contacts_btn);
         mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
                 R.drawable.privacy_title_bt_selecter);
@@ -332,7 +344,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     }
 
     private void initFragment() {
-
         /**
          * Message
          */
@@ -367,7 +378,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         appManagerFragment.setContent(holder.title);
         holder.fragment = appManagerFragment;
         mFragmentHolders[2] = holder;
-        
+
         // AM-614, remove cached fragments
         FragmentManager fm = getSupportFragmentManager();
         try {
@@ -382,7 +393,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         } catch (Exception e) {
 
         }
-
     }
 
     @Override
@@ -516,8 +526,9 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         mAddPrivacyContact.setInputListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                /*SDK*/
-                SDKWrapper.addEvent(PrivacyContactActivity.this, SDKWrapper.P1, "contactsadd", "handadd");
+                /* SDK */
+                SDKWrapper.addEvent(PrivacyContactActivity.this, SDKWrapper.P1, "contactsadd",
+                        "handadd");
                 Intent intent = new Intent(PrivacyContactActivity.this,
                         PrivacyContactInputActivity.class);
                 try {
