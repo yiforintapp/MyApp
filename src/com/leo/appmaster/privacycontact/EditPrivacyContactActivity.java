@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -61,8 +62,10 @@ public class EditPrivacyContactActivity extends Activity {
         mNameEt.setText(mCurrentName);
         mNumberEt.setText(mCurrentNumber);
         if (mAnswerType == 0) {
+            mPhoneState = 0;
             mRadioHangup.setSelected(true);
         } else if (mAnswerType == 1) {
+            mPhoneState = 1;
             mRadioNormal.setSelected(true);
         }
         mRadioNormal.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -206,7 +209,7 @@ public class EditPrivacyContactActivity extends Activity {
                         SDKWrapper.addEvent(EditPrivacyContactActivity.this, SDKWrapper.P1,
                                 "privacyedit", "editname");
                     }
-                    if (mCurrentNumber != null && mCurrentNumber.equals(mPhoneNumber)) {
+                    if (mCurrentNumber != null && !mCurrentNumber.equals(mPhoneNumber)) {
                         SDKWrapper.addEvent(EditPrivacyContactActivity.this, SDKWrapper.P1,
                                 "privacyedit", "editnumber");
                     }

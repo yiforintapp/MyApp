@@ -119,8 +119,6 @@ public class PrivacyContactInputActivity extends Activity {
                                 PrivacyHelper.getInstance(getApplicationContext())
                                         .computePrivacyLevel(
                                                 PrivacyHelper.VARABLE_PRIVACY_CONTACT);
-                                SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1,
-                                        "contactsadd", "handadd");
                             }
                             // 查询是否存在短信和通话记录
                             if (mAddMessages == null) {
@@ -279,6 +277,8 @@ public class PrivacyContactInputActivity extends Activity {
                     QueryLogAsyncTask task = new QueryLogAsyncTask();
                     task.execute(true);
                 } else if (which == 0) {
+                    /*SDK*/
+                    SDKWrapper.addEvent(PrivacyContactInputActivity.this, SDKWrapper.P1, "contactsadd", "unimport");
                     if (mAddCallLogDialog != null) {
                         mAddCallLogDialog.cancel();
                     }
