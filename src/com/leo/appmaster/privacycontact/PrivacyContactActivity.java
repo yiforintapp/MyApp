@@ -517,6 +517,8 @@ public class PrivacyContactActivity extends FragmentActivity implements OnClickL
         mAddPrivacyContact.setInputListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                /*SDK*/
+                SDKWrapper.addEvent(PrivacyContactActivity.this, SDKWrapper.P1, "contactsadd", "handadd");
                 Intent intent = new Intent(PrivacyContactActivity.this,
                         PrivacyContactInputActivity.class);
                 try {
