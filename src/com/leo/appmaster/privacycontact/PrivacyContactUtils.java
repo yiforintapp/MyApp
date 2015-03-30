@@ -212,7 +212,7 @@ public class PrivacyContactUtils {
         Cursor phoneCursor = null;
         try {
             phoneCursor = cr.query(contactUri,
-                    null, selection, null, null);
+                    null, selection, null, Phone.SORT_KEY_PRIMARY);
             if (phoneCursor != null) {
                 while (phoneCursor.moveToNext()) {
                     // get phonenumber
@@ -242,8 +242,8 @@ public class PrivacyContactUtils {
                     cb.setContactName(contactName);
                     cb.setContactNumber(phoneNumber);
                     cb.setContactIcon(contactPhoto);
-                    cb.setSortLetter(phoneCursor.getString(phoneCursor
-                            .getColumnIndex(Phone.SORT_KEY_PRIMARY)));
+//                    cb.setSortLetter(phoneCursor.getString(phoneCursor
+//                            .getColumnIndex(Phone.SORT_KEY_PRIMARY)));
                     if (phoneNumber != null) {
                         contacts.add(cb);
                     } else {
