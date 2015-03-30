@@ -238,7 +238,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
         @Override
         public int getCount() {
             return mViews.size();
-        }
+        }          
 
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {

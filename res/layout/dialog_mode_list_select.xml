@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@color/gray"
+             android:listSelector="@drawable/manager_backup_list_selecter"
             android:dividerHeight="1dp"
             android:overScrollMode="never"
             android:paddingLeft="24dp"
