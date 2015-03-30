@@ -242,8 +242,14 @@ public class PrivacyContactUtils {
                     cb.setContactName(contactName);
                     cb.setContactNumber(phoneNumber);
                     cb.setContactIcon(contactPhoto);
-//                    cb.setSortLetter(phoneCursor.getString(phoneCursor
-//                            .getColumnIndex(Phone.SORT_KEY_PRIMARY)));
+                    String sortLetter = phoneCursor.getString(phoneCursor
+                            .getColumnIndex(Phone.SORT_KEY_PRIMARY));
+                    if(sortLetter == null) {
+                        sortLetter = "#";
+                    } else {
+                        cb.setSortLetter(sortLetter.toUpperCase());
+                    }
+                   
                     if (phoneNumber != null) {
                         contacts.add(cb);
                     } else {
