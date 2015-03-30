@@ -210,6 +210,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void onResume() {
+        /* check if there is force update when showing HomeActivity */
+        SDKWrapper.checkForceUpdate();
+        
         judgeShowGradeTip();
         // compute privacy level here to avoid unknown change, such as file
         // deleted outside of your phone.
