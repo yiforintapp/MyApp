@@ -42,7 +42,7 @@
         android:layout_alignTop="@+id/tv_select"
         android:layout_marginTop="5dp"
         android:ellipsize="end"
-        android:maxWidth="140dp"
+        android:maxWidth="@dimen/time_lock_name_max_width"
         android:singleLine="true"
         android:text="@string/vistor_mode"
         android:textColor="#414141"
