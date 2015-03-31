@@ -40,7 +40,6 @@ public class PrivacyContactUtils {
     public static final Uri CONTACT_INBOXS = Uri.parse("content://icc/adn");
     public static final Uri contactUri = Phone.CONTENT_URI;
     public static final Uri CALL_LOG_URI = android.provider.CallLog.Calls.CONTENT_URI;
-    public static final Uri CALL_LOG = Calls.CONTENT_URI;
     public static final String ADD_CONTACT_MODEL = "add_contact_model";
     public static final String ADD_CALL_LOG_AND_MESSAGE_MODEL = "add_call_log_and_message_model";
     public static final String ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT = "add_conact_from_contact_no_repeat_event";
@@ -288,7 +287,7 @@ public class PrivacyContactUtils {
         List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
         Map<String, ContactCallLog> calllog = new HashMap<String, ContactCallLog>();
         try {
-            Cursor cursor = cr.query(CALL_LOG, null, selection, selectionArgs,
+            Cursor cursor = cr.query(CALL_LOG_URI, null, selection, selectionArgs,
                     CallLog.Calls.DEFAULT_SORT_ORDER);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
@@ -834,9 +833,8 @@ public class PrivacyContactUtils {
                 SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         // 查询canonical_address表
         Cursor cur = context.getContentResolver().query(
-                Uri.parse("content://mms-sms/canonical-addresses"), null, null, null, "_id desc");
+                Uri.parse("content://mms-sms/canonical-addresses"), null, null, null, null);
         if (cur != null && cur.getCount() > 0) {
-            cur.moveToFirst();
             while (cur.moveToNext()) {
                 MessageBean message = new MessageBean();
                 String id = String.valueOf(cur.getInt(cur.getColumnIndex("_id")));
@@ -851,31 +849,13 @@ public class PrivacyContactUtils {
 
                 }
                 String number = cur.getString(cur.getColumnIndex("address"));
+                message.setPhoneNumber(number);
                 /**
                  * getContactNameFromNumber
                  */
-
                 String name =
                         PrivacyContactUtils.getContactNameFromNumber(context.getContentResolver(),
                                 number);
-                if (cr != null && cr.getCount() > 0) {
-                    while (cr.moveToNext()) {
-                        long date = cr.getLong(DATE);
-                        String snippet = cr.getString(SNIPPET);
-                        String recipIDs = cr.getString(RECIPIENT_IDS);
-                        if (recipIDs != null && recipIDs.equals(id)) {
-                            message.setMessageBody(snippet);
-                            message.setMessageTime(sfd.format(date));
-                            break;
-                        }
-                        long messageId = cr.getLong(ID);
-                        long msgCount = cr.getLong(MESSAGE_COUNT);
-                        long snippetCS = cr.getLong(SNIPPET_CS);
-                        long read = cr.getLong(READ);
-                        long type = cr.getLong(TYPE);
-                        long hasAttach = cr.getLong(HAS_ATTACHMENT);
-                    }
-                }
                 message.setMessageName(name);
                 if (name == null || "".equals(name)) {
                     message.setMessageName(number);
@@ -889,8 +869,28 @@ public class PrivacyContactUtils {
                     message.setContactIcon(((BitmapDrawable) context.getResources().getDrawable(
                             R.drawable.default_user_avatar)).getBitmap());
                 }
-                message.setPhoneNumber(number);
-                messageList.add(message);
+
+                if (cr != null && cr.getCount() > 0) {
+                    while (cr.moveToNext()) {
+                        long date = cr.getLong(DATE);
+                        String snippet = cr.getString(SNIPPET);
+                        String recipIDs = cr.getString(RECIPIENT_IDS);
+                        if (recipIDs != null && recipIDs.equals(id)) {
+                            message.setMessageBody(snippet);
+                            message.setMessageTime(sfd.format(date));
+                            if (date > 0) {
+                                messageList.add(message);
+                            }
+                            break;
+                        }
+                        // long messageId = cr.getLong(ID);
+                        // long msgCount = cr.getLong(MESSAGE_COUNT);
+                        // long snippetCS = cr.getLong(SNIPPET_CS);
+                        // long read = cr.getLong(READ);
+                        // long type = cr.getLong(TYPE);
+                        // long hasAttach = cr.getLong(HAS_ATTACHMENT);
+                    }
+                }
                 cr.close();
             }
         }
