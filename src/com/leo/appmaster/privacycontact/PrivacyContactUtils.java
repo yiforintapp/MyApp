@@ -28,6 +28,7 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -212,7 +213,7 @@ public class PrivacyContactUtils {
         Cursor phoneCursor = null;
         try {
             phoneCursor = cr.query(contactUri,
-                    null, selection, null, null);
+                    null, selection, null, Phone.SORT_KEY_PRIMARY);
             if (phoneCursor != null) {
                 while (phoneCursor.moveToNext()) {
                     // get phonenumber
@@ -242,8 +243,14 @@ public class PrivacyContactUtils {
                     cb.setContactName(contactName);
                     cb.setContactNumber(phoneNumber);
                     cb.setContactIcon(contactPhoto);
-                    cb.setSortLetter(phoneCursor.getString(phoneCursor
-                            .getColumnIndex(Phone.SORT_KEY_PRIMARY)));
+                    String sortLetter = phoneCursor.getString(phoneCursor
+                            .getColumnIndex(Phone.SORT_KEY_PRIMARY));
+                    if(sortLetter == null) {
+                        sortLetter = "#";
+                    } else {
+                        cb.setSortLetter(sortLetter.toUpperCase());
+                    }
+                   
                     if (phoneNumber != null) {
                         contacts.add(cb);
                     } else {
