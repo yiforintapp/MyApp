@@ -517,8 +517,10 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                 AddFromMessageListActivity.this.getContentResolver(), null,
                                 null,
                                 false);
-                Collections.sort(mMessageList,
-                        PrivacyContactUtils.mMessageCamparator);
+                if (mMessageList != null && mMessageList.size() > 0) {
+                    Collections.sort(mMessageList,
+                            PrivacyContactUtils.mMessageCamparator);
+                }
             }
             return null;
         }

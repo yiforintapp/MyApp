@@ -126,6 +126,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         AppMasterPreference.getInstance(this).setUnlocked(false);
         super.onResume();
     }
+    
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (Exception e) {
+        }
+    }
 
     private boolean checkNewTheme() {
         String locSerial = AppMasterPreference.getInstance(this)

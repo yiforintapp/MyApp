@@ -2,7 +2,6 @@
 package com.leo.appmaster.privacycontact;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -47,7 +46,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
     private ContactAdapter mContactAdapter;
     private List<ContactBean> mPhoneContact;
     private ContactSideBar mContactSideBar;
-    private PinyinComparator mPinyinComparator;
+//    private PinyinComparator mPinyinComparator;
     private CommonTitleBar mTtileBar;
     private List<ContactBean> mAddPrivacyContact;
     private Handler mHandler;
@@ -124,7 +123,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         mDialog = (TextView) findViewById(R.id.contact_dialog);
         mContactSideBar.setTextView(mDialog);
         mListContact.setOnItemClickListener(this);
-        mPinyinComparator = new PinyinComparator();
         mContactSideBar.setOnTouchingLetterChangedListener(new OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String s) {
@@ -568,14 +566,9 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         protected Integer doInBackground(Boolean... arg0) {
             boolean flag = arg0[0];
             if (flag) {
-                List<ContactBean> contacts = mPhoneContact =
+               mPhoneContact =
                         PrivacyContactUtils.getSysContact(AddFromContactListActivity.this,
                                 getContentResolver(), null, null);
-
-                mPhoneContact = getSortLetter(contacts);
-                if (mPhoneContact != null) {
-                    Collections.sort(mPhoneContact, mPinyinComparator);
-                }
             }
             return null;
         }
@@ -604,25 +597,4 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                         PrivacyContactUtils.CONTACT_EDIT_MODEL_DELETE_CONTACT_UPDATE));
     }
 
-    public List<ContactBean> getSortLetter(List<ContactBean> contacts) {
-        List<ContactBean> contactList = new ArrayList<ContactBean>();
-        if (contacts != null && contacts.size() > 0) {
-            for (ContactBean contactBean : contacts) {
-                // 汉字转换成拼音
-                String pinyin = LeoCharacterParser.getInstance().getSelling(
-                        contactBean.getContactName());
-                String sortString = pinyin.trim().substring(0, 1).toUpperCase();
-                // 正则表达式，判断首字母是否是英文字母
-                if (sortString.matches("[A-Z]")) {
-                    contactBean.setSortLetter(sortString);
-                } else {
-                    contactBean.setSortLetter("#");
-                }
-                contactList.add(contactBean);
-            }
-            return contactList;
-        } else {
-            return null;
-        }
-    }
 }
