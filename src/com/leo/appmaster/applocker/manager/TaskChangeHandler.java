@@ -63,6 +63,13 @@ public class TaskChangeHandler {
     public void handleAppLaunch(String pkg, String activity) {
         if (pkg == null || activity == null)
             return;
+        if(mIsFirstDetect) {
+            LeoLog.d("Track Lock Screen", "is first lock,so we ignor this time");
+            mLastRunningPkg = pkg;
+            mLastRuningActivity = activity;
+            mIsFirstDetect = false;
+            return;
+        }
 //         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
         String myPackage = mContext.getPackageName();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
@@ -113,18 +120,11 @@ public class TaskChangeHandler {
                 }
             }
             if (lock) {
-                
-                if(mIsFirstDetect) {
-                    LeoLog.d("Track Lock Screen", "is first lock,so we ignor this time");
-                    mIsFirstDetect = false;
-                } else {
-                    LeoLog.d("Track Lock Screen", "apply lockscreen form TaskChangeHandler");
-                    if (LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL, pkg, false,
-                            null)) {
-                        amp.setUnlocked(false);
-                    }
+                LeoLog.d("Track Lock Screen", "apply lockscreen form TaskChangeHandler");
+                if (LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL, pkg, false,
+                        null)) {
+                    amp.setUnlocked(false);
                 }
-
             }
         } else {
             mLastRuningActivity = activity;
