@@ -24,6 +24,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
+import android.provider.CallLog.Calls;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
@@ -39,6 +40,7 @@ public class PrivacyContactUtils {
     public static final Uri CONTACT_INBOXS = Uri.parse("content://icc/adn");
     public static final Uri contactUri = Phone.CONTENT_URI;
     public static final Uri CALL_LOG_URI = android.provider.CallLog.Calls.CONTENT_URI;
+    public static final Uri CALL_LOG = Calls.CONTENT_URI;
     public static final String ADD_CONTACT_MODEL = "add_contact_model";
     public static final String ADD_CALL_LOG_AND_MESSAGE_MODEL = "add_call_log_and_message_model";
     public static final String ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT = "add_conact_from_contact_no_repeat_event";
@@ -245,12 +247,18 @@ public class PrivacyContactUtils {
                     cb.setContactIcon(contactPhoto);
                     String sortLetter = phoneCursor.getString(phoneCursor
                             .getColumnIndex(Phone.SORT_KEY_PRIMARY));
-                    if(sortLetter == null) {
+                    if (sortLetter == null) {
                         sortLetter = "#";
+                        cb.setSortLetter(sortLetter);
                     } else {
-                        cb.setSortLetter(sortLetter.toUpperCase());
+                        if (sortLetter.trim().substring(0, 1).toUpperCase().matches("[A-Z]")) {
+                            cb.setSortLetter(sortLetter.toUpperCase());
+                        } else {
+                            sortLetter = "#";
+                            cb.setSortLetter(sortLetter);
+                        }
                     }
-                   
+
                     if (phoneNumber != null) {
                         contacts.add(cb);
                     } else {
@@ -280,7 +288,7 @@ public class PrivacyContactUtils {
         List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
         Map<String, ContactCallLog> calllog = new HashMap<String, ContactCallLog>();
         try {
-            Cursor cursor = cr.query(CALL_LOG_URI, null, selection, selectionArgs,
+            Cursor cursor = cr.query(CALL_LOG, null, selection, selectionArgs,
                     CallLog.Calls.DEFAULT_SORT_ORDER);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
