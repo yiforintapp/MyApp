@@ -41,6 +41,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/tv_select"
         android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:maxWidth="140dp"
         android:text="@string/vistor_mode"
         android:textColor="#414141"
         android:textSize="18dp" />
