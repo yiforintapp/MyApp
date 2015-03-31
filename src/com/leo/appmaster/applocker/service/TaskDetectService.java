@@ -23,6 +23,7 @@ import android.os.IBinder;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
@@ -74,12 +75,11 @@ public class TaskDetectService extends Service {
         mLockHandler = new TaskChangeHandler(getApplicationContext());
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
         mScheduledExecutor = Executors.newScheduledThreadPool(2);
-        
         flowDetecTask = new FlowTask();
-        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000, TimeUnit.MILLISECONDS);
+        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000,
+                TimeUnit.MILLISECONDS);
         super.onCreate();
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -108,8 +108,6 @@ public class TaskDetectService extends Service {
         stopDetectTask();
         mServiceStarted = false;
     }
-    
-    
 
     private void stopDetectTask() {
         if (mDetectFuture != null) {
@@ -118,7 +116,7 @@ public class TaskDetectService extends Service {
             mDetectTask = null;
         }
     }
-    
+
     private void stopFlowTask() {
         if (mflowDatectFuture != null) {
             mflowDatectFuture.cancel(false);
@@ -132,7 +130,8 @@ public class TaskDetectService extends Service {
         // for android 5.0, set period to 200, AM-1255
         int period = Build.VERSION.SDK_INT > 19 ? 200 : 100;
         mDetectTask = new DetectTask();
-        mDetectFuture = mScheduledExecutor.scheduleWithFixedDelay(mDetectTask, 0, period, TimeUnit.MILLISECONDS);
+        mDetectFuture = mScheduledExecutor.scheduleWithFixedDelay(mDetectTask, 0, period,
+                TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -146,14 +145,13 @@ public class TaskDetectService extends Service {
     private class FlowTask extends TimerTask {
         @Override
         public void run() {
-            
+
             int mVersion = PhoneInfo.getAndroidVersion();
             String network_state = whatState();
-            
-            Traffic traffic = Traffic.getInstance(getApplicationContext());
-            tra[0] = traffic.getAllgprs(mVersion,network_state)[2];
-            new TrafficInfoPackage(getApplicationContext()).getRunningProcess();
 
+            Traffic traffic = Traffic.getInstance(getApplicationContext());
+            tra[0] = traffic.getAllgprs(mVersion, network_state)[2];
+            new TrafficInfoPackage(getApplicationContext()).getRunningProcess();
 
             if (network_state.equals(STATE_NORMAL)) {
                 long TotalTraffic = sp_traffic.getTotalTraffic() * 1024 * 1024;
@@ -171,20 +169,20 @@ public class TaskDetectService extends Service {
         boolean haveNotice = sp_traffic.getAlotNotice();
         long MonthUsed = sp_traffic.getMonthGprsAll();
         long MonthItSelfTraffic = sp_traffic.getItselfMonthTraffic();
-//        long ToTalUsedTraffi = MonthUsed + MonthItSelfTraffic;
-//        int bili = (int) (ToTalUsedTraffi * 100 / totalTraffic);
-        int bili = 0 ;
-        if(MonthItSelfTraffic > 0){
-            bili =  (int) (MonthItSelfTraffic * 100 / totalTraffic);
-        }else {
-            bili =  (int) (MonthUsed * 100 / totalTraffic);
+        // long ToTalUsedTraffi = MonthUsed + MonthItSelfTraffic;
+        // int bili = (int) (ToTalUsedTraffi * 100 / totalTraffic);
+        int bili = 0;
+        if (MonthItSelfTraffic > 0) {
+            bili = (int) (MonthItSelfTraffic * 100 / totalTraffic);
+        } else {
+            bili = (int) (MonthUsed * 100 / totalTraffic);
         }
-        
+
         int TrafficSeekBar = sp_traffic.getFlowSettingBar();
 
         if (isSwtich && !haveNotice) {
             if (bili > TrafficSeekBar) {
-//                LeoLog.d("testnetwork", "服务---超过设定流量！");
+                // LeoLog.d("testnetwork", "服务---超过设定流量！");
                 Intent shortcut = new Intent();
                 shortcut.setAction("com.leo.appmaster.traffic.alot");
                 sendBroadcast(shortcut);
@@ -194,22 +192,22 @@ public class TaskDetectService extends Service {
 
         boolean mFinishNotice = sp_traffic.getFinishNotice();
         if (isSwtich && !mFinishNotice) {
-            if(MonthItSelfTraffic > 0){
+            if (MonthItSelfTraffic > 0) {
                 if (totalTraffic < MonthItSelfTraffic) {
-                  // 流量用光了
-                  Intent longcut = new Intent();
-                  longcut.setAction("com.leo.appmaster.traffic.finish");
-                  sendBroadcast(longcut);
-                  sp_traffic.setFinishNotice(true);
-              }
-            }else {
+                    // 流量用光了
+                    Intent longcut = new Intent();
+                    longcut.setAction("com.leo.appmaster.traffic.finish");
+                    sendBroadcast(longcut);
+                    sp_traffic.setFinishNotice(true);
+                }
+            } else {
                 if (totalTraffic < MonthUsed) {
-                  // 流量用光了
-                  Intent longcut = new Intent();
-                  longcut.setAction("com.leo.appmaster.traffic.finish");
-                  sendBroadcast(longcut);
-                  sp_traffic.setFinishNotice(true);
-              }
+                    // 流量用光了
+                    Intent longcut = new Intent();
+                    longcut.setAction("com.leo.appmaster.traffic.finish");
+                    sendBroadcast(longcut);
+                    sp_traffic.setFinishNotice(true);
+                }
             }
         }
     }
@@ -253,24 +251,19 @@ public class TaskDetectService extends Service {
             if (Build.VERSION.SDK_INT > 19) { // Android L and above
                 List<RunningAppProcessInfo> list = mActivityManager.getRunningAppProcesses();
                 for (RunningAppProcessInfo pi : list) {
-                    if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE) // Foreground
-                                                                                                                                                    // or
-                                                                                                                                                    // Visible
-                            && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter
-                                                                                               // provider
-                                                                                               // and
-                                                                                               // service
+                    if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
+                            /*
+                             * Foreground or Visible
+                             */
+                            && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
+                            /*
+                             * Filter provider and service
+                             */
                             && (0x4 & pi.flags) > 0
-                            && pi.processState == ActivityManager.PROCESS_STATE_TOP) { // Must
-                                                                                       // have
-                                                                                       // activities
-                                                                                       // and
-                                                                                       // one
-                                                                                       // activity
-                                                                                       // is
-                                                                                       // on
-                                                                                       // the
-                                                                                       // top
+                            && pi.processState == ActivityManager.PROCESS_STATE_TOP) {
+                        /*
+                         * Must have activities and one activity is on the top
+                         */
                         String pkgList[] = pi.pkgList;
                         if (pkgList != null && pkgList.length > 0) {
                             pkgName = pkgList[0];
@@ -315,17 +308,19 @@ public class TaskDetectService extends Service {
                         List<RunningAppProcessInfo> list = mActivityManager
                                 .getRunningAppProcesses();
                         for (RunningAppProcessInfo pi : list) {
-                            if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE) // Foreground
-                                                                                                                                                            // or
-                                                                                                                                                            // Visible
-                                    && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter
-                                                                                                       // provider
-                                                                                                       // and
-                                                                                                       // service
-                                    && (0x4 & pi.flags) > 0) { // Must have
-                                                               // activities and
-                                                               // one activity
-                                                               // is on the top
+                            if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
+                                    /*
+                                     * Foreground or Visible
+                                     */
+                                    && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
+                                    /*
+                                     * Filter provider and service
+                                     */
+                                    && (0x4 & pi.flags) > 0) {
+                                /*
+                                 * Must have activities and one activity is on
+                                 * the top
+                                 */
                                 String pkgList[] = pi.pkgList;
                                 if (pkgList != null && pkgList.length > 0) {
                                     pkgName = pkgList[0];
@@ -348,10 +343,10 @@ public class TaskDetectService extends Service {
             if (ES_UNINSTALL_ACTIVITY.equals(activityName)) {
                 return;
             }
+
             if (mLockHandler != null && pkgName != null && activityName != null) {
                 mLockHandler.handleAppLaunch(pkgName, activityName);
             }
         }
     }
-
 }
