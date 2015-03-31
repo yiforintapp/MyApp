@@ -300,6 +300,7 @@
     <!-- guide pages end -->
 
     <dimen name="mode_name_max_width">220dp</dimen>
+    <dimen name="time_lock_name_max_width">200dp</dimen>
     <dimen name="day_view_width">55dp</dimen>
     <dimen name="lock_mode">55dp</dimen>
 

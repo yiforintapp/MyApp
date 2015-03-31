@@ -120,7 +120,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-
+        if (sp_homeAppManager.getHomeFragmentRedTip()) {
+            app_hot_tip_icon.setVisibility(View.VISIBLE);
+        } else {
+            app_hot_tip_icon.setVisibility(View.GONE);
+        }
     }
 
     @Override
