@@ -123,6 +123,25 @@ public class ManagerFlowUtils {
         }
         return str;
     }
+    
+    public static String refreshTraffic_home_app_KB(float lg) {
+        String str = "0KB";
+        int a = 0, b = 1024, c = 1048576;
+
+        if (lg < 1) {
+            str = "0KB";
+        }
+        else if (lg >= 1 && lg < 1024) {
+            int d = (int) lg;
+            str = d + "KB";
+        }
+        else {
+            double e = (double) lg / 1024;
+            java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
+            str = df.format(e) + "MB";
+        }
+        return str;
+    }
 
     public static float BToKb(float B) {
         float KB = 0;

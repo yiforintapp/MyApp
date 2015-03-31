@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.telecom.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.HorizontalScrollView;
@@ -133,19 +134,24 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
 
                 progress = 0;
 
-                long TaoCanTraffic = preferences.getTotalTraffic() * 1024 * 1024;
+                long TaoCanTraffic = preferences.getTotalTraffic();
+                long TaoCanTrafficKb = preferences.getTotalTraffic() * 1024;
                 long MonthUsedItSelf = preferences.getItselfMonthTraffic();
-                long MonthUsedRecord = preferences.getMonthGprsAll();
-
+                long MonthUsedRecord = preferences.getMonthGprsAll() / 1024;
+                
                 int bili = 0;
-
+                LeoLog.d("testfuckflow", "TaoCanTraffic : " + TaoCanTraffic);
+                LeoLog.d("testfuckflow", "MonthUsedItSelf : " + MonthUsedItSelf);
+                
                 if (TaoCanTraffic < 1) {
                     bili = 0;
                 } else {
                     if(MonthUsedItSelf > 0){
-                        bili = (int) (MonthUsedItSelf * 100 / TaoCanTraffic);
+                        bili = (int) (MonthUsedItSelf * 100 / TaoCanTrafficKb);
+                        LeoLog.d("testfuckflow", "MonthUsedItSelf > 0 : " + bili);
                     }else {
-                        bili = (int) (MonthUsedRecord * 100 / TaoCanTraffic);
+                        bili = (int) (MonthUsedRecord * 100 / TaoCanTrafficKb);
+                        LeoLog.d("testfuckflow", "else : " + bili);
                     }
                 }
                 while (progress <= bili) {
@@ -278,12 +284,8 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         //本月流量
         long mThisMonthTraffic = preferences.getMonthGprsAll();
         long mThisMonthItselfTraffi = preferences.getItselfMonthTraffic() ;
-//        long mTotalUsedData = mThisMonthTraffic + mThisMonthItselfTraffi;
-        
-//        LeoLog.d("testfuckflow", "mThisMonthTraffic:" + mThisMonthTraffic);
-//        LeoLog.d("testfuckflow", "mThisMonthItselfTraffi:" + mThisMonthItselfTraffi);
         if(mThisMonthItselfTraffi > 0){
-            tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mThisMonthItselfTraffi));
+            tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app_KB(mThisMonthItselfTraffi));
         }else {
             tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mThisMonthTraffic));
         }
@@ -291,18 +293,18 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         
         //剩余流量
         long mTaoCanMB = preferences.getTotalTraffic();
-        long mTaoCanB = mTaoCanMB * 1024 * 1024;
+//        long mTaoCanB = mTaoCanMB * 1024 * 1024;
+        long mTaoCanKB = mTaoCanMB * 1024;
         if (mTaoCanMB < 1) {
             tv_remainder_ll.setText("---");
         } else {
             if(mThisMonthItselfTraffi > 0){
-                tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mTaoCanB
+                tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app_KB(mTaoCanKB
                         -  mThisMonthItselfTraffi));
             }else {
-                tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mTaoCanB
-                        - mThisMonthTraffic));
+                tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app_KB(mTaoCanKB
+                        - (mThisMonthTraffic / 1024)));
             }
-
         }
     }
 

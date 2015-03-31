@@ -27,6 +27,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 //import android.app.ActivityManager.AppTask;
@@ -156,7 +157,7 @@ public class TaskDetectService extends Service {
             new TrafficInfoPackage(getApplicationContext()).getRunningProcess();
 
             if (network_state.equals(STATE_NORMAL)) {
-                long TotalTraffic = sp_traffic.getTotalTraffic() * 1024 * 1024;
+                long TotalTraffic = sp_traffic.getTotalTraffic() * 1024;
                 // 设置了流量套餐才去检测
                 if (TotalTraffic > 0) {
                     // 流量预警
@@ -169,15 +170,17 @@ public class TaskDetectService extends Service {
     public void TrafficNote(long totalTraffic) {
         boolean isSwtich = sp_traffic.getFlowSetting();
         boolean haveNotice = sp_traffic.getAlotNotice();
-        long MonthUsed = sp_traffic.getMonthGprsAll();
+        long MonthUsed = sp_traffic.getMonthGprsAll() / 1024;
         long MonthItSelfTraffic = sp_traffic.getItselfMonthTraffic();
         // long ToTalUsedTraffi = MonthUsed + MonthItSelfTraffic;
         // int bili = (int) (ToTalUsedTraffi * 100 / totalTraffic);
         int bili = 0;
         if (MonthItSelfTraffic > 0) {
             bili = (int) (MonthItSelfTraffic * 100 / totalTraffic);
+            LeoLog.d("TrafficService", "bili is : " + bili);
         } else {
             bili = (int) (MonthUsed * 100 / totalTraffic);
+            LeoLog.d("TrafficService", "else bili is : " + bili);
         }
 
         int TrafficSeekBar = sp_traffic.getFlowSettingBar();
