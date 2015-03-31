@@ -50,7 +50,8 @@ public class MonthDaySetting extends LEOBaseDialog {
         sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
 
 //        int monthUsedData = (int) (sp_notice_flow.getMonthGprsAll() / 1024 * 1024);
-        first_ed.setText(sp_notice_flow.getItselfMonthTraffic()/1024/1024 + "");
+//        first_ed.setText(sp_notice_flow.getItselfMonthTraffic()/1024/1024 + "");
+        first_ed.setText(sp_notice_flow.getItselfMonthTraffic()/1024 + "");
         second_ed.setText(sp_notice_flow.getTotalTraffic() + "");
         Editable etext1 = first_ed.getText();
         Selection.setSelection(etext1, etext1.length());
@@ -79,8 +80,8 @@ public class MonthDaySetting extends LEOBaseDialog {
                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "changedata");
                         itselfmonthuse = edittext_one;
                     }
-                    sp_notice_flow.setItselfMonthTraffic(itselfmonthuse * 1024 * 1024);
-
+                    sp_notice_flow.setItselfMonthTraffic(itselfmonthuse * 1024);
+                    
                     int edittext = Integer.parseInt(edittextString);
                     boolean isSwtich = sp_notice_flow.getFlowSetting();
                     if (edittextString.isEmpty() || edittext == 0) {
@@ -96,20 +97,20 @@ public class MonthDaySetting extends LEOBaseDialog {
                     }
                     sp_notice_flow.setTotalTraffic(monthtraffic);
 
-                    float settingMonthTraffi = monthtraffic * 1024 * 1024;
-                    float mItselfSetTraffic = itselfmonthuse/1024/1024;
+                    float settingMonthTraffi = monthtraffic;
+                    float settingMonthTraffiKb = monthtraffic * 1024;
+                    float mItselfSetTrafficKb = itselfmonthuse * 1024;
                     int settingBar = sp_notice_flow.getFlowSettingBar();
-                    float monthUsedTraffic = sp_notice_flow.getMonthGprsAll();
+                    float monthUsedTraffic = sp_notice_flow.getMonthGprsAll() / 1024;
                     float bili = 0;
-                    // float bili = monthUsedTraffic*100 / settingMonthTraffi;
-
-                    if (mItselfSetTraffic > 0) {
+                    if (mItselfSetTrafficKb > 0) {
                         if (settingMonthTraffi > 0) {
-                            bili = mItselfSetTraffic * 100 / settingMonthTraffi;
+                            bili = mItselfSetTrafficKb * 100 / settingMonthTraffiKb;
                         }else {
                             bili =  0;
                         }
-                        if (settingMonthTraffi < mItselfSetTraffic) {
+                        LeoLog.d("MonthDaySetting", "bili is : " + bili);
+                        if (settingMonthTraffiKb < mItselfSetTrafficKb) {
                             if (sp_notice_flow.getFinishNotice()) {
                                 sp_notice_flow.setFinishNotice(false);
                             }
@@ -120,10 +121,11 @@ public class MonthDaySetting extends LEOBaseDialog {
                         }
                     } else {
                         if (settingMonthTraffi > 0) {
-                            bili = monthUsedTraffic * 100 / settingMonthTraffi;
+                            bili = monthUsedTraffic * 100 / settingMonthTraffiKb;
                         }else {
                             bili =  0;
                         }
+                        LeoLog.d("MonthDaySetting", "else bili is : " + bili);
                         if (settingMonthTraffi < monthUsedTraffic) {
                             if (sp_notice_flow.getFinishNotice()) {
                                 sp_notice_flow.setFinishNotice(false);
