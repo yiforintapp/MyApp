@@ -30,12 +30,15 @@ public class TaskChangeHandler {
     private String mLastRunningPkg = "";
     private String mLastRuningActivity = "";
     
+    private boolean mIsFirstDetect;
+    
 
     public TaskChangeHandler(Context mContext) {
         this.mContext = mContext.getApplicationContext();
         mAm = (ActivityManager) mContext
                 .getSystemService(Context.ACTIVITY_SERVICE);
         mLastRunningPkg = getRunningPkg();
+        mIsFirstDetect = true;
     }
 
     private String getRunningPkg() {
@@ -60,6 +63,13 @@ public class TaskChangeHandler {
     public void handleAppLaunch(String pkg, String activity) {
         if (pkg == null || activity == null)
             return;
+        if(mIsFirstDetect) {
+            LeoLog.d("Track Lock Screen", "is first lock,so we ignor this time");
+            mLastRunningPkg = pkg;
+            mLastRuningActivity = activity;
+            mIsFirstDetect = false;
+            return;
+        }
 //         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
         String myPackage = mContext.getPackageName();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
