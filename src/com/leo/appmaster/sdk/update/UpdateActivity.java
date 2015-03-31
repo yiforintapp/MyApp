@@ -67,7 +67,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     @Override
     protected void onStop() {
         super.onStop();
-        if(mForce) {
+        if(mForce && mUIType == IUIHelper.TYPE_CHECK_NEED_UPDATE && mParam == UpdateManager.FORCE_UPDATE) {
             mManager.onCancelUpdate();
         }
     }
