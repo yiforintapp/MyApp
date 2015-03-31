@@ -53,6 +53,7 @@ public class TaskDetectService extends Service {
     private ScheduledExecutorService mScheduledExecutor;
     private ScheduledFuture<?> mDetectFuture;
     private TimerTask mDetectTask;
+    private boolean mIsFirstDetect;;
     // private Timer mTimer;
 
     private TaskChangeHandler mLockHandler;
@@ -74,6 +75,7 @@ public class TaskDetectService extends Service {
     public void onCreate() {
         mLockHandler = new TaskChangeHandler(getApplicationContext());
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
+        mIsFirstDetect = true;
         mScheduledExecutor = Executors.newScheduledThreadPool(2);
         flowDetecTask = new FlowTask();
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000,
