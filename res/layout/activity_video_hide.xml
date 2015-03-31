@@ -27,8 +27,8 @@
             android:orientation="vertical" >
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/privacy_default_image_width"
+                android:layout_height="@dimen/privacy_default_image_height"
                 android:layout_gravity="center"
                 android:src="@drawable/video_default" />
 
@@ -36,8 +36,10 @@
                 android:id="@+id/nohideTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/privacy_default_text_margin_top"
                 android:gravity="center"
-                android:paddingTop="10dp" />
+                android:textColor="#d3d3d4"
+                android:textSize="18sp" />
         </LinearLayout>
     </RelativeLayout>
 

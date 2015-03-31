@@ -650,15 +650,15 @@ public class AppMasterApplication extends Application {
     }
 
     // for force update strategy to exit application completely
-    public void addActivity(Activity activity) {
+    public synchronized void addActivity(Activity activity) {
         mActivityList.add(activity);
     }
 
-    public void removeActivity(Activity activity) {
+    public synchronized void removeActivity(Activity activity) {
         mActivityList.remove(activity);
     }
 
-    public void exitApplication() {
+    public synchronized void exitApplication() {
         for (Activity activity : mActivityList) {
             activity.finish();
         }
