@@ -10,6 +10,9 @@ import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Service;
@@ -23,8 +26,10 @@ import android.os.IBinder;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
+import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.LeoLog;
@@ -43,6 +48,8 @@ public class TaskDetectService extends Service {
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
 
+    private static final int NOTIFY_ID = 1210920312;
+
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -54,8 +61,6 @@ public class TaskDetectService extends Service {
     private ScheduledExecutorService mScheduledExecutor;
     private ScheduledFuture<?> mDetectFuture;
     private TimerTask mDetectTask;
-    private boolean mIsFirstDetect;;
-    // private Timer mTimer;
 
     private TaskChangeHandler mLockHandler;
     private TaskDetectBinder mBinder = new TaskDetectBinder();
@@ -76,11 +81,30 @@ public class TaskDetectService extends Service {
     public void onCreate() {
         mLockHandler = new TaskChangeHandler(getApplicationContext());
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
-        mIsFirstDetect = true;
         mScheduledExecutor = Executors.newScheduledThreadPool(2);
         flowDetecTask = new FlowTask();
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000,
                 TimeUnit.MILLISECONDS);
+
+        Notification notification = new Notification(R.drawable.ic_launcher,
+                "leo applocker", System.currentTimeMillis());
+
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        notification.setLatestEventInfo(this, "leo applocker",
+                "leo applocker is servicing", contentIntent);
+
+        notification.flags = Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
+
+        // NotificationManager mNM = (NotificationManager)
+        // getApplicationContext().getSystemService(
+        // Context.NOTIFICATION_SERVICE);
+        // mNM.notify(NOTIFY_ID, notification);
+        startForeground(NOTIFY_ID, notification);
+
         super.onCreate();
     }
 
