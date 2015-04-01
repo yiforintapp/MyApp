@@ -86,24 +86,26 @@ public class TaskDetectService extends Service {
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000,
                 TimeUnit.MILLISECONDS);
 
-        Notification notification = new Notification(R.drawable.ic_launcher,
-                "leo applocker", System.currentTimeMillis());
-
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        notification.setLatestEventInfo(this, "leo applocker",
-                "leo applocker is servicing", contentIntent);
-
-        notification.flags = Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
+        // Notification notification = new Notification(R.drawable.ic_launcher,
+        // "leo applocker", System.currentTimeMillis());
+        //
+        // Intent intent = new Intent(this, HomeActivity.class);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //
+        // PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+        // intent, 0);
+        //
+        // notification.setLatestEventInfo(this, "leo applocker",
+        // "leo applocker is servicing", contentIntent);
+        //
+        // notification.flags = Notification.FLAG_FOREGROUND_SERVICE |
+        // Notification.FLAG_NO_CLEAR;
 
         // NotificationManager mNM = (NotificationManager)
         // getApplicationContext().getSystemService(
         // Context.NOTIFICATION_SERVICE);
         // mNM.notify(NOTIFY_ID, notification);
-        startForeground(NOTIFY_ID, notification);
+        // startForeground(NOTIFY_ID, notification);
 
         super.onCreate();
     }
