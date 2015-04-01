@@ -43,8 +43,10 @@
 
             <SeekBar
                 android:id="@+id/mSeekBar"
+                style="@style/Widget.SeekBar.Normal"
                 android:layout_width="@dimen/app_manager_hotactivity_list_item_text_des_width"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
                 android:layout_centerVertical="true"
                 android:max="100" />
 
@@ -53,8 +55,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="3dp"
-                android:layout_toRightOf="@id/mSeekBar"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/TrafficSetting_persent_margin_right"
                 android:text="50%"
                 android:textColor="@color/flow_item_small"
                 android:textSize="12dp" />

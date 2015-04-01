@@ -580,7 +580,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
             String[] selectionArgs, Context context) {
         ContentValues values = new ContentValues();
         values.put("call_log_is_read", read);
-        int flag = context.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI,
+        context.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI,
                 values, selection,
                 selectionArgs);
     }

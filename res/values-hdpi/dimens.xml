@@ -265,6 +265,8 @@
     <dimen name="app_manager_home_logo_width_height">83dp</dimen> <!-- 83dp -->
     <dimen name="app_manager_flowactivity_small_icon_width_height">54dp</dimen> <!-- 54dp -->
 
+    <dimen name="TrafficSetting_persent_margin_right">20dp</dimen> <!-- 18dp -->
+
     <dimen name="kongbaiye_width_height">135dp</dimen> <!-- 135dp -->
     <dimen name="kongbaiye_text_size">15sp</dimen> <!-- 15sp -->
 
