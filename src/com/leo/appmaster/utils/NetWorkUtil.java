@@ -7,6 +7,7 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 /**
@@ -49,16 +50,23 @@ public class NetWorkUtil {
     }
 
     public static String getCurWifiName(Context context) {
+        String ssid = "";
         ConnectivityManager connectivityManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
         if (activeNetInfo != null
                 && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
             WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            return wifiManager.getConnectionInfo().getSSID().replace("\"", "");
-        } else {
-            return "";
-        }
+            WifiInfo wi =  wifiManager.getConnectionInfo();
+            if(wi != null) {
+                ssid = wi.getSSID();
+                if(ssid != null) {
+                    ssid = ssid.replace("\"", "");
+                }
+            }
+        } 
+        
+        return ssid;
     }
 
     /**

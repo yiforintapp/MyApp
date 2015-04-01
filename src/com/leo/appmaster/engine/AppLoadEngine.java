@@ -546,8 +546,14 @@ public class AppLoadEngine extends BroadcastReceiver {
 
                         AppMasterPreference pre = AppMasterPreference
                                 .getInstance(mContext);
-                        List<String> themeList = new ArrayList<String>(
-                                pre.getHideThemeList());
+                        List<String> list = pre.getHideThemeList();
+                        List<String> themeList = null;
+                        if(list == null) {
+                            themeList = new ArrayList<String>();
+                        } else {
+                           themeList = new ArrayList<String>(list);
+                        }
+
                         if (!themeList.contains(packageName)) {
                             themeList.add(0, packageName);
                         }

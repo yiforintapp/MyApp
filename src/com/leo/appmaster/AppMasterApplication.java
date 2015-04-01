@@ -21,6 +21,7 @@ import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -28,7 +29,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.UserManager;
 import android.telephony.TelephonyManager;
@@ -155,13 +155,16 @@ public class AppMasterApplication extends Application {
      * 短信拦截, 电话拦截
      */
     private void registerReceiveMessageCallIntercept() {
-        mMessageObserver = new PrivacyMessageContentObserver(this, mHandler,
-                PrivacyMessageContentObserver.MESSAGE_MODEL);
-        getContentResolver().registerContentObserver(PrivacyContactUtils.SMS_INBOXS, true,
-                mMessageObserver);
-        mCallLogObserver = new PrivacyMessageContentObserver(this, mHandler,
-                PrivacyMessageContentObserver.CALL_LOG_MODEL);
-        getContentResolver().registerContentObserver(PrivacyContactUtils.CALL_LOG_URI, true, mCallLogObserver);
+        ContentResolver cr = getContentResolver();
+        if(cr != null) {
+            mMessageObserver = new PrivacyMessageContentObserver(this, mHandler,
+                    PrivacyMessageContentObserver.MESSAGE_MODEL);
+            cr.registerContentObserver(PrivacyContactUtils.SMS_INBOXS, true,
+                    mMessageObserver);
+            mCallLogObserver = new PrivacyMessageContentObserver(this, mHandler,
+                    PrivacyMessageContentObserver.CALL_LOG_MODEL);
+            cr.registerContentObserver(PrivacyContactUtils.CALL_LOG_URI, true, mCallLogObserver);
+        }
         openEndCall();
         mPrivacyReceiver = new MessagePrivacyReceiver(mITelephony, mAudioManager);
         IntentFilter filter = new IntentFilter();
@@ -625,8 +628,11 @@ public class AppMasterApplication extends Application {
         LockManager.getInstatnce().unInit();
         SDKWrapper.endSession(this);
         unregisterReceiver(mPrivacyReceiver);
-        getContentResolver().unregisterContentObserver(mCallLogObserver);
-        getContentResolver().unregisterContentObserver(mMessageObserver);
+        ContentResolver cr = getContentResolver();
+        if(cr != null) {
+            cr.unregisterContentObserver(mCallLogObserver);
+            cr.unregisterContentObserver(mMessageObserver);
+        }
     }
 
     public static AppMasterApplication getInstance() {

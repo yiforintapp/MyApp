@@ -214,12 +214,14 @@ public class RestoreFragment extends BaseFragment implements AppBackupDataListen
     }
 
     public void updateDataFromAdapter() {
-        mRestoreAdapter.updateData();
+        if(mRestoreAdapter != null) {
+            mRestoreAdapter.updateData();
 
-        if (mRestoreAdapter.isEmpty()) {
-            list_empty.setVisibility(View.VISIBLE);
-        } else {
-            list_empty.setVisibility(View.GONE);
+            if (mRestoreAdapter.isEmpty()) {
+                list_empty.setVisibility(View.VISIBLE);
+            } else {
+                list_empty.setVisibility(View.GONE);
+            }
         }
     }
 }
