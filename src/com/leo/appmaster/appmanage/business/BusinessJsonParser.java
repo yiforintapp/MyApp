@@ -60,7 +60,7 @@ public class BusinessJsonParser {
                 }else if(code == 1){
                     list = null;
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 LeoLog.e("parserJsonObject", e.getMessage());
                 e.printStackTrace();
             }
