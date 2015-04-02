@@ -95,9 +95,9 @@ public class EleActivity extends BaseFragmentActivity {
                     pb_loading_ele.setVisibility(View.GONE);
                     listview_ele.setVisibility(View.VISIBLE);
                     
-                    for(BatteryComsuption bif : mList){
+//                    for(BatteryComsuption bif : mList){
 //                        LeoLog.d("testfuckele", bif.getDefaultPackageName());
-                    }
+//                    }
                     
                     adapter.setData(mList);
                     break;
