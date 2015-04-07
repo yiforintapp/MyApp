@@ -68,7 +68,8 @@ import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.RootChecker;
 
-public class HomeActivity extends BaseFragmentActivity implements OnClickListener, OnItemClickListener,
+public class HomeActivity extends BaseFragmentActivity implements OnClickListener,
+        OnItemClickListener,
         OnPageChangeListener, OnShaderColorChangedLisetner {
 
     private final static String KEY_ROOT_CHECK = "root_check";
@@ -190,7 +191,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         holder.fragment = appManagerFragment;
         holder.iconId = R.drawable.my_apps_active_icon;
         mFragmentHolders[2] = holder;
-        
+
         // AM-614, remove cached fragments
         FragmentManager fm = getSupportFragmentManager();
         try {
@@ -212,7 +213,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     protected void onResume() {
         /* check if there is force update when showing HomeActivity */
         SDKWrapper.checkForceUpdate();
-        
+
         judgeShowGradeTip();
         // compute privacy level here to avoid unknown change, such as file
         // deleted outside of your phone.
@@ -253,6 +254,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
 
         super.onBackPressed();
+
+        // ===== AMAM-1336 ========
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
     }
 
     @Override

@@ -141,7 +141,7 @@ public class Traffic {
                 }, null);
         if (mCursor != null) {
             if (!mCursor.moveToNext()) {
-                Log.d("testfuckflow", "新一天or月到来");
+//                Log.d("testfuckflow", "新一天or月到来");
                 ContentValues values = new ContentValues();
                 values.put("daytime", nowDayTime);
                 values.put("daymemory", 0);
@@ -150,20 +150,20 @@ public class Traffic {
                 values.put("day", nowDay);
                 mContext.getContentResolver().insert(Constants.MONTH_TRAFFIC_URI, values);
 
-                Log.d("testfuckflow", "renewDay : " + renewDay);
-                Log.d("testfuckflow", "MonthOfDay : " + MonthOfDay);
-                Log.d("testfuckflow", "nowDay : " + nowDay);
-                Log.d("testfuckflow", "lastSaveDay : " + lastSaveDay);
+//                Log.d("testfuckflow", "renewDay : " + renewDay);
+//                Log.d("testfuckflow", "MonthOfDay : " + MonthOfDay);
+//                Log.d("testfuckflow", "nowDay : " + nowDay);
+//                Log.d("testfuckflow", "lastSaveDay : " + lastSaveDay);
 
                 // 同年换月换日操作
                 if (nowYear == lastSaveYear) {
                     // 分析，月结日坑，如果月结日在31号，但2月只有28天的情况。
                     // 月结日大于这个月天数
                     if (renewDay > MonthOfDay) {
-                        Log.d("testfuckflow", "renewDay > MonthOfDay");
+//                        Log.d("testfuckflow", "renewDay > MonthOfDay");
                         if (nowMonth > lastSaveMonth) {
                             if (lastSaveDay < renewDay || nowDay > renewDay || nowDay == MonthOfDay) {
-                                LeoLog.d("testfuckflow", "1");
+//                                LeoLog.d("testfuckflow", "1");
                                 ReSetMonthTraffic();
                             } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
@@ -173,20 +173,20 @@ public class Traffic {
                         } else {
                             if (nowDay == MonthOfDay) {
                                 ReSetMonthTraffic();
-                                LeoLog.d("testfuckflow", "2");
+//                                LeoLog.d("testfuckflow", "2");
                             } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
                                         .getMonthGprsBase()));
                             }
                         }
                     } else {
-                        Log.d("testfuckflow", "renewDay <= MonthOfDay");
+//                        Log.d("testfuckflow", "renewDay <= MonthOfDay");
                         // 月结日 重置月流量计算
                         if (nowMonth > lastSaveMonth) {
                             if (lastSaveDay < renewDay || nowDay >= renewDay
                                     || nowDay == MonthOfDay) {
                                 ReSetMonthTraffic();
-                                LeoLog.d("testfuckflow", "3");
+//                                LeoLog.d("testfuckflow", "3");
                             } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
                                         .getMonthGprsBase()));
@@ -194,7 +194,7 @@ public class Traffic {
                         } else {
                             if (nowDay >= renewDay && lastSaveDay < renewDay) {
                                 ReSetMonthTraffic();
-                                LeoLog.d("testfuckflow", "4");
+//                                LeoLog.d("testfuckflow", "4");
                             } else {
                                 s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
                                         .getMonthGprsBase()));
@@ -206,8 +206,8 @@ public class Traffic {
                     gprs[2] = 0;
                     // s_preferences.setItSelfTodayBase(0);
                 } else if (nowYear > lastSaveYear) {
-                    LeoLog.d("testfuckflow", "5");
-                    Log.d(Tag, "换年咯,重置everything ! ");
+//                    LeoLog.d("testfuckflow", "5");
+//                    Log.d(Tag, "换年咯,重置everything ! ");
                     s_preferences.setGprsSend(0);
                     s_preferences.setGprsRev(0);
                     ReSetMonthTraffic();
@@ -252,7 +252,7 @@ public class Traffic {
     }
 
     private void ReSetMonthTraffic() {
-        Log.d(Tag, "月结日到了，重置月流量咯！！！！！！");
+//        Log.d(Tag, "月结日到了，重置月流量咯！！！！！！");
         // 换月，流量超额开关
         s_preferences.setAlotNotice(false);
         s_preferences.setFinishNotice(false);

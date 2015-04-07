@@ -98,7 +98,7 @@ public class PrivacySuggestActivity extends BaseActivity implements OnClickListe
             case R.id.privacy_suggest_applock:
                 LockManager lm = LockManager.getInstatnce();
                 LockMode curMode = LockManager.getInstatnce().getCurLockMode();
-                if (curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
+                if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
                     intent = new Intent(this, RecommentAppLockListActivity.class);
                     intent.putExtra("target", 0);
                     startActivity(intent);

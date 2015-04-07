@@ -598,7 +598,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE == requestCode && mVideoItems != null) {
+        if (REQUEST_CODE == requestCode && mVideoItems != null && data != null) {
             Bundle bundle = data.getExtras();
             if (bundle != null) {
                 ArrayList<String> resultPath = (ArrayList<String>) bundle.get("path");

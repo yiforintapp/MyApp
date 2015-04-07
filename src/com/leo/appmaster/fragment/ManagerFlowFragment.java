@@ -140,18 +140,18 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
                 long MonthUsedRecord = preferences.getMonthGprsAll() / 1024;
                 
                 int bili = 0;
-                LeoLog.d("testfuckflow", "TaoCanTraffic : " + TaoCanTraffic);
-                LeoLog.d("testfuckflow", "MonthUsedItSelf : " + MonthUsedItSelf);
+//                LeoLog.d("testfuckflow", "TaoCanTraffic : " + TaoCanTraffic);
+//                LeoLog.d("testfuckflow", "MonthUsedItSelf : " + MonthUsedItSelf);
                 
                 if (TaoCanTraffic < 1) {
                     bili = 0;
                 } else {
                     if(MonthUsedItSelf > 0){
                         bili = (int) (MonthUsedItSelf * 100 / TaoCanTrafficKb);
-                        LeoLog.d("testfuckflow", "MonthUsedItSelf > 0 : " + bili);
+//                        LeoLog.d("testfuckflow", "MonthUsedItSelf > 0 : " + bili);
                     }else {
                         bili = (int) (MonthUsedRecord * 100 / TaoCanTrafficKb);
-                        LeoLog.d("testfuckflow", "else : " + bili);
+//                        LeoLog.d("testfuckflow", "else : " + bili);
                     }
                 }
                 while (progress <= bili) {

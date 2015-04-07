@@ -60,7 +60,8 @@ public class LeoGlobalBroadcast {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            for (BroadcastListener lis : sListenerList) {
+            BroadcastListener[] listeners = sListenerList.toArray(new BroadcastListener[0]);
+            for (BroadcastListener lis : listeners) {
                 lis.setIntent(intent);
                 lis.onEvent(action);
             }

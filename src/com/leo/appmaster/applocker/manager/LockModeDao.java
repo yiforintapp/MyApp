@@ -35,9 +35,8 @@ public class LockModeDao {
     // ====== LockMode DOA ============
     public List<LockMode> querryLockModeList() {
         Cursor cursor = mResolver.query(Constants.LOCK_MODE_URI, null, null, null, null);
-        List<LockMode> modeList = null;
+        List<LockMode> modeList = new LinkedList<LockMode>();
         if (cursor != null) {
-            modeList = new LinkedList<LockMode>();
             LockMode mode;
             if (cursor.moveToFirst()) {
                 do {
@@ -128,9 +127,8 @@ public class LockModeDao {
     // ====== TimeLock DOA ============
     public List<TimeLock> querryTimeLockList() {
         Cursor cursor = mResolver.query(Constants.TIME_LOCK_URI, null, null, null, null);
-        List<TimeLock> timeLockList = null;
+        List<TimeLock> timeLockList = new LinkedList<TimeLock>();
         if (cursor != null) {
-            timeLockList = new LinkedList<TimeLock>();
             TimeLock timeLock;
             if (cursor.moveToFirst()) {
                 do {
@@ -194,9 +192,8 @@ public class LockModeDao {
     // ====== LocationLock DOA ============
     public List<LocationLock> querryLocationLockList() {
         Cursor cursor = mResolver.query(Constants.LOCATION_LOCK_URI, null, null, null, null);
-        List<LocationLock> locationLockList = null;
+        List<LocationLock> locationLockList = new LinkedList<LocationLock>();
         if (cursor != null) {
-            locationLockList = new LinkedList<LocationLock>();
             LocationLock locationLock;
             if (cursor.moveToFirst()) {
                 do {

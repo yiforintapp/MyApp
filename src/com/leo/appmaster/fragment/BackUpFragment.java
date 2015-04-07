@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -27,12 +26,10 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.home.BackUpActivity;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
-import com.leo.appmaster.utils.LeoLog;
 
 public class BackUpFragment extends BaseFragment implements AppBackupDataListener, OnClickListener,
         OnItemClickListener {
@@ -430,30 +427,32 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
     }
 
     public void updateDataFromApdater() {
-        mBackupAdapter.updateData();
+        if(mBackupAdapter != null) {
+            
+            mBackupAdapter.updateData();
 
-        if (mBackupAdapter.getisAllCheck()) {
-            iv_check_backup.setTag(true);
-        } else {
-            iv_check_backup.setTag(false);
-        }
-        // iv_check_backup.setEnabled(mBackupAdapter.hasBackupApp());
-        if (mBackupAdapter.hasBackupApp()) {
             if (mBackupAdapter.getisAllCheck()) {
-                iv_check_backup
-                        .setBackgroundResource(R.drawable.app_select);
+                iv_check_backup.setTag(true);
             } else {
-                iv_check_backup
-                        .setBackgroundResource(R.drawable.app_unselect);
+                iv_check_backup.setTag(false);
             }
-            iv_check_backup.setEnabled(true);
-        } else {
+            // iv_check_backup.setEnabled(mBackupAdapter.hasBackupApp());
+            if (mBackupAdapter.hasBackupApp()) {
+                if (mBackupAdapter.getisAllCheck()) {
+                    iv_check_backup
+                            .setBackgroundResource(R.drawable.app_select);
+                } else {
+                    iv_check_backup
+                            .setBackgroundResource(R.drawable.app_unselect);
+                }
+                iv_check_backup.setEnabled(true);
+            } else {
 
-            iv_check_backup
-                    .setBackgroundResource(R.drawable.app_all_backuped);
+                iv_check_backup
+                        .setBackgroundResource(R.drawable.app_all_backuped);
 
-            iv_check_backup.setEnabled(false);
+                iv_check_backup.setEnabled(false);
+            }
         }
-
     }
 }

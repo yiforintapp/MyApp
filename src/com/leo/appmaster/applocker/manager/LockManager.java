@@ -517,7 +517,7 @@ public class LockManager {
 
     public void addPkg2Mode(List<String> pkgs, final LockMode mode) {
 
-        if (pkgs != null && mode.defaultFlag != 0) {
+        if (pkgs != null && mode != null && mode.defaultFlag != 0) {
             for (String pkg : pkgs) {
                 if (!TextUtils.isEmpty(pkg) && !mode.lockList.contains(pkg)) {
                     mode.lockList.add(0, pkg);

@@ -49,6 +49,7 @@ import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.appmanage.BusinessAppInstallTracker;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
@@ -536,8 +537,8 @@ public class AppLoadEngine extends BroadcastReceiver {
             } else if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
                 if (!replacing) {
                     op = AppChangeListener.TYPE_ADD;
-
-                    if (LockManager.getInstatnce().getCurLockMode().defaultFlag != 0) {
+                    LockMode lm = LockManager.getInstatnce().getCurLockMode();
+                    if (lm != null && lm.defaultFlag != 0) {
                         showLockTip(packageName);
                     }
 
@@ -546,8 +547,14 @@ public class AppLoadEngine extends BroadcastReceiver {
 
                         AppMasterPreference pre = AppMasterPreference
                                 .getInstance(mContext);
-                        List<String> themeList = new ArrayList<String>(
-                                pre.getHideThemeList());
+                        List<String> list = pre.getHideThemeList();
+                        List<String> themeList = null;
+                        if(list == null) {
+                            themeList = new ArrayList<String>();
+                        } else {
+                           themeList = new ArrayList<String>(list);
+                        }
+
                         if (!themeList.contains(packageName)) {
                             themeList.add(0, packageName);
                         }
@@ -729,10 +736,10 @@ public class AppLoadEngine extends BroadcastReceiver {
                                                 @Override
                                                 public void onUnlocked() {
                                                     Intent intent2;
-                                                    LockManager lm = LockManager.getInstatnce();
-                                                    if (lm.getCurLockMode().defaultFlag == 1
-                                                            && !lm.getCurLockMode().haveEverOpened) {
-                                                        lm.timeFilter(mContext.getPackageName(),
+                                                    LockMode lm = LockManager.getInstatnce().getCurLockMode();
+                                                    if (lm != null && lm.defaultFlag == 1
+                                                            && !lm.haveEverOpened) {
+                                                        LockManager.getInstatnce().timeFilter(mContext.getPackageName(),
                                                                 500);
                                                         intent2 = new Intent(mContext,
                                                                 RecommentAppLockListActivity.class);
@@ -746,13 +753,13 @@ public class AppLoadEngine extends BroadcastReceiver {
                                                         LockManager.getInstatnce()
                                                                 .addFilterLockPackage(packageName,
                                                                         false);
-                                                        lm.getCurLockMode().haveEverOpened = true;
-                                                        lm.updateMode(lm.getCurLockMode());
+                                                        lm.haveEverOpened = true;
+                                                        LockManager.getInstatnce().updateMode(lm);
                                                     } else {
                                                         LinkedList<String> list = new LinkedList<String>();
                                                         list.add(packageName);
-                                                        lm.addPkg2Mode(list, lm.getCurLockMode());
-                                                        lm.timeFilter(mContext.getPackageName(),
+                                                        LockManager.getInstatnce().addPkg2Mode(list, lm);
+                                                        LockManager.getInstatnce().timeFilter(mContext.getPackageName(),
                                                                 500);
                                                         intent2 = new Intent(mContext,
                                                                 AppLockListActivity.class);

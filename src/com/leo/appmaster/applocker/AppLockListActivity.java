@@ -31,10 +31,8 @@ import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
@@ -135,7 +133,10 @@ public class AppLockListActivity extends BaseActivity implements
         mIvBack.setOnClickListener(this);
         mTvModeName.setOnClickListener(this);
         mIvSortSelected.setOnClickListener(this);
-        mTvModeName.setText(LockManager.getInstatnce().getCurLockMode().modeName);
+        LockMode lm = LockManager.getInstatnce().getCurLockMode();
+        if(lm != null) {
+            mTvModeName.setText(lm.modeName);
+        }
 
         mLockedList = new ArrayList<AppInfo>();
         mUnlockList = new ArrayList<AppInfo>();
@@ -359,7 +360,10 @@ public class AppLockListActivity extends BaseActivity implements
                             }
 
                             loadData();
-                            mTvModeName.setText(lm.getCurLockMode().modeName);
+                            LockMode lockMode = lm.getCurLockMode();
+                            if(lockMode != null) {
+                                mTvModeName.setText(lockMode.modeName);
+                            }
                             mLeoPopMenu.dismissSnapshotList();
                         }
                     }
@@ -399,9 +403,11 @@ public class AppLockListActivity extends BaseActivity implements
         List<String> listItems = new ArrayList<String>();
         List<LockMode> lockModes = LockManager.getInstatnce().getLockMode();
         LockMode curMode = LockManager.getInstatnce().getCurLockMode();
-        for (LockMode lockMode : lockModes) {
-            if (!TextUtils.equals(lockMode.modeName, curMode.modeName)) {
-                listItems.add(lockMode.modeName);
+        if(curMode != null) {
+            for (LockMode lockMode : lockModes) {
+                if (!TextUtils.equals(lockMode.modeName, curMode.modeName)) {
+                    listItems.add(lockMode.modeName);
+                }
             }
         }
 
