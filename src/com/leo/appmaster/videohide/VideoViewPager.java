@@ -354,6 +354,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
             viewPager.setAdapter(mPagerAdapter);
         }
+        
+        PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_VIDEO);
     }
 
     /**
