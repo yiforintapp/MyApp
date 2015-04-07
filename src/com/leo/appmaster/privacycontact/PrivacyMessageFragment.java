@@ -513,10 +513,13 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                     "PrivacyContactFragment restore message fail!");
                         }
                         try {
+                            String formateNumber = PrivacyContactUtils.formatePhoneNumber(messages
+                                    .getPhoneNumber());
                             int flag = PrivacyContactUtils.deleteMessageFromMySelf(cr,
                                     Constants.PRIVACY_MESSAGE_URI,
-                                    Constants.COLUMN_MESSAGE_PHONE_NUMBER + " = ? ", new String[] {
-                                        messages.getPhoneNumber()
+                                    Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ? ",
+                                    new String[] {
+                                        "%" + formateNumber
                                     });
                         } catch (Exception e) {
                         }
