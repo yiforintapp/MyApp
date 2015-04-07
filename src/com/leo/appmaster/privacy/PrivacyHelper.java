@@ -49,6 +49,8 @@ public class PrivacyHelper {
     private Context mContext;
 
     private boolean mIsComputing = false;
+    
+    private boolean mFirstCompute = true;
 
     private Level mPrivacyLevel = Level.LEVEL_ONE;
 
@@ -160,8 +162,11 @@ public class PrivacyHelper {
             mPrivacyLevel = level;
             LeoEventBus.getDefaultBus().post(
                     new PrivacyLevelChangeEvent(EventId.EVENT_PRIVACY_LEVEL_COMPUTED));
-            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "prilevel", mPrivacyLevel.ordinal() + 1 + "");
+            if(!mFirstCompute) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "prilevel", mPrivacyLevel.ordinal() + 1 + "");
+            }
         }
+        mFirstCompute = false;
     }
     
     private void loadVariable(int variable) {
