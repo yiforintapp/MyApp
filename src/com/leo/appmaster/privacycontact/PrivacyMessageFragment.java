@@ -570,6 +570,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             LeoEventBus.getDefaultBus().post(
                     new PrivacyMessageEventBus(EventId.EVENT_PRIVACY_EDIT_MODEL,
                             PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL));
+            mAdapter.notifyDataSetChanged();
             super.onPostExecute(result);
         }
     }

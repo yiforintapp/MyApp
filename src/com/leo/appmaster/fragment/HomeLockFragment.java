@@ -121,7 +121,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "lock");
                 LockManager lm = LockManager.getInstatnce();
                 LockMode curMode = lm.getCurLockMode();
-                if (curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
+                if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
                     startRcommendLock(0);
                     curMode.haveEverOpened = true;
                     lm.updateMode(curMode);
@@ -131,7 +131,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                 break;
             case R.id.lock_theme:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "theme");
-                if (mLockThemeBtn.isShowingTip()) {
+                if (mLockThemeBtn != null && mLockThemeBtn.isShowingTip()) {
                     mLockThemeBtn.showTip(false);
                 }
                 enterLockTheme();
