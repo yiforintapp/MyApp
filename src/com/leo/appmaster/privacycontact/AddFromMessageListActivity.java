@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -17,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.CallLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -126,6 +128,17 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mListMessage.post(new Runnable() {
+
+            @Override
+            public void run() {
+                for (MessageBean message : mMessageList) {
+                    message.setCheck(false);
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -389,6 +402,10 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                     }
                 }
             } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {
+                // 更新SysMessage和SysCallLog数据
+                PrivacyContactManager pm = PrivacyContactManager
+                        .getInstance(AddFromMessageListActivity.this);
+                ArrayList<ContactCallLog> callLogs = pm.getSysCallLog();
                 // 导入短信和通话记录
                 if (mAddMessages != null) {
                     for (MessageBean message : mAddMessages) {
@@ -411,7 +428,12 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                 AddFromMessageListActivity.this, message.getPhoneNumber());
                         values.put(Constants.COLUMN_MESSAGE_THREAD_ID, thread);
                         values.put(Constants.COLUMN_MESSAGE_TYPE, type);
-                        Uri messageFlag = cr.insert(Constants.PRIVACY_MESSAGE_URI, values);
+                        Uri messageFlag = null;
+                        try {
+                            messageFlag = cr.insert(Constants.PRIVACY_MESSAGE_URI, values);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
                                 new String[] {
                                     number
@@ -422,6 +444,9 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                             messge.what = count;
                             mHandler.sendMessage(messge);
                         }
+                    }
+                    for (MessageBean messageBean : mAddPrivacyMessage) {
+                        pm.removeSysMessage(messageBean);
                     }
                 }
                 // 导入通话记录
@@ -437,7 +462,12 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                         values.put(Constants.COLUMN_CALL_LOG_DATE, date);
                         values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
                         values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
-                        Uri callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
+                        Uri callLogFlag = null;
+                        try {
+                            callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
                                 AddFromMessageListActivity.this);
                         if (callLogFlag != null) {
@@ -447,7 +477,23 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                             mHandler.sendMessage(messge);
                         }
                     }
+                    List<String> addNumbers = new ArrayList<String>();
+                    for (MessageBean messageBean : mAddPrivacyMessage) {
+                        addNumbers.add(messageBean.getPhoneNumber());
+                    }
+                    Iterator it = callLogs.iterator();
+                    while (it.hasNext()) {
+                        ContactCallLog calllog = (ContactCallLog) it.next();
+                        String formateNumber = PrivacyContactUtils.formatePhoneNumber(calllog
+                                .getCallLogNumber());
+                        for (String string : addNumbers) {
+                            if (string.contains(formateNumber)) {
+                                pm.removeSysCallLog(calllog);
+                            }
+                        }
+                    }
                 }
+
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
                     LeoEventBus.getDefaultBus().post(
                             new PrivacyDeletEditEventBus(
@@ -510,13 +556,15 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         protected Integer doInBackground(Boolean... arg0) {
             boolean flag = arg0[0];
             if (flag) {
-//                mMessageList = PrivacyContactUtils
-//                        .queryMessageList(AddFromMessageListActivity.this);
-                mMessageList =
-                        PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this,
-                                AddFromMessageListActivity.this.getContentResolver(), null,
-                                null,
-                                false);
+                // mMessageList = PrivacyContactUtils
+                // .queryMessageList(AddFromMessageListActivity.this);
+                mMessageList = PrivacyContactManager.getInstance(AddFromMessageListActivity.this)
+                        .getSysMessage();
+                // mMessageList =
+                // PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this,
+                // AddFromMessageListActivity.this.getContentResolver(), null,
+                // null,
+                // false);
                 if (mMessageList != null && mMessageList.size() > 0) {
                     Collections.sort(mMessageList,
                             PrivacyContactUtils.mMessageCamparator);

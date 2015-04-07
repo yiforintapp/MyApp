@@ -393,8 +393,6 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
                                         mActivity,
                                         response,
                                         BusinessItemInfo.CONTAIN_BUSINESS_FOLDER);
-                        LeoLog.d("loadBusinessRecomApp", "List Size Is : "
-                                + list.size());
                         Message msg = mHandler.obtainMessage(
                                 MSG_LOAD_INIT_SUCCESSED, list);
                         mHandler.sendMessage(msg);

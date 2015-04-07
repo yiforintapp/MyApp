@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -174,7 +177,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
             task.execute("");
             mIsUpdate = false;
             mIsShow = true;
-            Log.d("PrivacyCallLogFrag", "Notification intercept!");
+            // Log.d("PrivacyCallLogFrag", "Notification intercept!");
         } else if (PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP
                 .equals(event.editModel)) {
             if (mIsUpdate) {
@@ -292,11 +295,12 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                     .setLastCall(privacyConatact);
                             Uri uri = Uri.parse("tel:" + calllog.getCallLogNumber());
                             // 跳到拨号界面
-                            // Intent intent = new Intent(Intent.ACTION_DIAL,
-                            // uri);
-                            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            Intent intent = new Intent(Intent.ACTION_DIAL,
+                                    uri);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             // 直接拨打电话
-                            Intent intent = new Intent(Intent.ACTION_CALL, uri);
+                            // Intent intent = new Intent(Intent.ACTION_CALL,
+                            // uri);
                             try {
                                 startActivity(intent);
                                 // // 添加到隐私通话中
@@ -395,7 +399,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
      * @return
      */
     private void getCallLog() {
-        Map<String, ContactCallLog> callLogList = new HashMap<String, ContactCallLog>();
+        Map<String, ContactCallLog> callLogList = new ConcurrentHashMap<String, ContactCallLog>();
         Cursor cursor = mContext.getContentResolver()
                 .query(Constants.PRIVACY_CALL_LOG_URI, null, null, null, "call_log_date desc");
         if (cursor != null) {
@@ -421,15 +425,48 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     callLog.setContactIcon(((BitmapDrawable) mContext.getResources().getDrawable(
                             R.drawable.default_user_avatar)).getBitmap());
                 }
-                if (!callLogList.containsKey(number)) {
+                if (callLogList != null && callLogList.size() > 0) {
+                    Iterator<Entry<String, ContactCallLog>> iterator =
+                            callLogList.entrySet()
+                                    .iterator();
+                    String formateNumber =
+                            PrivacyContactUtils.formatePhoneNumber(number);
+                    while (iterator.hasNext()) {
+                        Entry<String, ContactCallLog> entry = iterator.next();
+                        String contactCallLog = entry.getKey();
+                        if (!contactCallLog.contains(formateNumber)) {
+                            // if (!callLogList.containsKey(number)) {
+                            if (!mIsRead) {
+                                callLog.setCallLogCount(threadIdMessage(number));
+                            } else {
+                                // 正常接听模式红点处理
+                                callLog.setCallLogCount(-1);
+                                if (callLog.getIsRead() == 0) {
+                                    String readNumberFlag = PrivacyContactUtils
+                                            .formatePhoneNumber(callLog
+                                                    .getCallLogNumber());
+                                    PrivacyCalllogFragment.updateMessageMyselfIsRead(1,
+                                            "call_log_phone_number LIKE ? ",
+                                            new String[] {
+                                                "%" + readNumberFlag
+                                            }, mContext);
+                                    callLog.setIsRead(1);
+                                }
+                            }
+                            callLogList.put(number, callLog);
+                            // }
+                        }
+                    }
+                } else {
                     if (!mIsRead) {
                         callLog.setCallLogCount(threadIdMessage(number));
                     } else {
                         // 正常接听模式红点处理
                         callLog.setCallLogCount(-1);
                         if (callLog.getIsRead() == 0) {
-                            String readNumberFlag = PrivacyContactUtils.formatePhoneNumber(callLog
-                                    .getCallLogNumber());
+                            String readNumberFlag = PrivacyContactUtils
+                                    .formatePhoneNumber(callLog
+                                            .getCallLogNumber());
                             PrivacyCalllogFragment.updateMessageMyselfIsRead(1,
                                     "call_log_phone_number LIKE ? ",
                                     new String[] {
@@ -441,8 +478,8 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     callLogList.put(number, callLog);
                 }
             }
-            Iterable<ContactCallLog> it = callLogList.values();
-            for (ContactCallLog contactCallLog : it) {
+            Iterable<ContactCallLog> iterable = callLogList.values();
+            for (ContactCallLog contactCallLog : iterable) {
                 mContactCallLogs.add(contactCallLog);
             }
             Collections.sort(mContactCallLogs, PrivacyContactUtils.mCallLogCamparator);

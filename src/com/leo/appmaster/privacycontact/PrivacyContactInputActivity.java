@@ -307,12 +307,25 @@ public class PrivacyContactInputActivity extends BaseActivity {
             int count = 0;
             ContentResolver cr = getContentResolver();
             if (flag) {
+                // 更新SysMessage和SysCallLog数据
+                PrivacyContactManager pm = PrivacyContactManager
+                        .getInstance(PrivacyContactInputActivity.this);
+                ArrayList<ContactCallLog> callLogs = pm.getSysCallLog();
+                ArrayList<MessageBean> messages = pm.getSysMessage();
+                String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
+
                 // 导入短信和通话记录
                 if (mAddMessages != null && mAddMessages.size() != 0) {
                     for (MessageBean message : mAddMessages) {
                         String contactNumber = message.getPhoneNumber();
                         String number = PrivacyContactUtils.deleteOtherNumber(contactNumber);
-                        String name = message.getMessageName();
+                        // String name = message.getMessageName();
+                        String name = null;
+                        if (mPhoneName != null && !"".equals(mPhoneName)) {
+                            name = mPhoneName;
+                        } else {
+                            name = mPhoneNumber;
+                        }
                         String body = message.getMessageBody();
                         String time = message.getMessageTime();
                         String threadId = message.getMessageThreadId();
@@ -341,12 +354,25 @@ public class PrivacyContactInputActivity extends BaseActivity {
                             mHandler.sendMessage(messge);
                         }
                     }
+                    for (MessageBean messageBean : messages) {
+                        if (messageBean.getPhoneNumber().contains(formateNumber)) {
+                            pm.removeSysMessage(messageBean);
+                        }
+
+                    }
+
                 }
                 // 导入通话记录
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
                     for (ContactCallLog calllog : mAddCallLogs) {
                         String number = calllog.getCallLogNumber();
-                        String name = calllog.getCallLogName();
+                        // String name = calllog.getCallLogName();
+                        String name = null;
+                        if (mPhoneName != null && !"".equals(mPhoneName)) {
+                            name = mPhoneName;
+                        } else {
+                            name = mPhoneNumber;
+                        }
                         String date = calllog.getClallLogDate();
                         int type = calllog.getClallLogType();
                         ContentValues values = new ContentValues();
@@ -363,6 +389,11 @@ public class PrivacyContactInputActivity extends BaseActivity {
                             count = count + 1;
                             messge.what = count;
                             mHandler.sendMessage(messge);
+                        }
+                    }
+                    for (ContactCallLog callLog : callLogs) {
+                        if (callLog.getCallLogNumber().contains(formateNumber)) {
+                            pm.removeSysCallLog(callLog);
                         }
                     }
                 }

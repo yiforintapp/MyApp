@@ -292,10 +292,10 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             } else {
                 holder = (ViewHolder) view.getTag();
             }
-            
-            if(position < mPicturesList.size()) {               
-               PhotoItem item = mPicturesList.get(position);
-               String path = item.getPath();
+
+            if (position < mPicturesList.size()) {
+                PhotoItem item = mPicturesList.get(position);
+                String path = item.getPath();
                 if (mActicityMode == CANCEL_HIDE_MODE && !mIsEditmode) {
                     holder.clickView.setVisibility(View.GONE);
                 } else {
@@ -386,7 +386,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             boolean isHide = params[0];
             try {
                 if (mClickList != null && mClickList.size() > 0) {
-                    ArrayList<PhotoItem> list = (ArrayList<PhotoItem>)mClickList.clone();
+                    ArrayList<PhotoItem> list = (ArrayList<PhotoItem>) mClickList.clone();
                     Iterator<PhotoItem> iterator = list.iterator();
                     PhotoItem item;
                     ArrayList<PhotoItem> deleteList = new ArrayList<PhotoItem>();
@@ -441,7 +441,6 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             }
 
                         }
-
                     } else {
                         while (iterator.hasNext()) {
                             item = iterator.next();
@@ -579,7 +578,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 mImageAdapter.notifyDataSetChanged();
                 for (Integer view : viewList) {
                     View child = mGridView.getChildAt(view);
-                    if(child != null) {
+                    if (child != null) {
                         child.setAlpha(1);
                         child.setScaleX(1);
                         child.setScaleY(1);

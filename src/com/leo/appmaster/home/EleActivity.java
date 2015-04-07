@@ -94,6 +94,11 @@ public class EleActivity extends BaseFragmentActivity {
                         return;
                     pb_loading_ele.setVisibility(View.GONE);
                     listview_ele.setVisibility(View.VISIBLE);
+                    
+//                    for(BatteryComsuption bif : mList){
+//                        LeoLog.d("testfuckele", bif.getDefaultPackageName());
+//                    }
+                    
                     adapter.setData(mList);
                     break;
             }
@@ -261,11 +266,11 @@ public class EleActivity extends BaseFragmentActivity {
             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             Uri uri = Uri.fromParts(SCHEME, packageName, null);
             intent.setData(uri);
-            LeoLog.d("Eleactivity", "TRY里面，准备STARTACTIVITY");
+//            LeoLog.d("Eleactivity", "TRY里面，准备STARTACTIVITY");
             startActivity(intent);
-            LeoLog.d("Eleactivity", "发射！！");
+//            LeoLog.d("Eleactivity", "发射！！");
         } catch (Exception e) {
-            LeoLog.d("Eleactivity", "报错咯！！");
+//            LeoLog.d("Eleactivity", "报错咯！！");
             Intent powerUsageIntent = new Intent(Intent.ACTION_POWER_USAGE_SUMMARY);
             ResolveInfo resolveInfo = getPackageManager().resolveActivity(powerUsageIntent, 0);
             // check that the Battery app exists on this device
