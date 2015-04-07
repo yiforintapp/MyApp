@@ -583,7 +583,9 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
 
         @Override
         protected Boolean doInBackground(String... arg0) {
-            mMessageList.clear();
+            if (mMessageList != null && mMessageList.size() > 0) {
+                mMessageList.clear();
+            }
             getMessages(QUERY_SQL_TABLE_MESSAGE_LIST_MODEL, null, null);
             return null;
         }

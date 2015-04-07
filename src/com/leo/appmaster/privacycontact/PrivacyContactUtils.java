@@ -36,6 +36,7 @@ import com.leo.appmaster.R;
 
 public class PrivacyContactUtils {
     public static final Uri SMS_INBOXS = Uri.parse("content://sms/");
+    // public static final Uri SMS_INBOXS = Uri.parse("content://sms/inbox");
     public static final Uri SYS_SMS = Uri.parse("content://sms/inbox");
     public static final Uri CONTACT_INBOXS = Uri.parse("content://icc/adn");
     public static final Uri contactUri = Phone.CONTENT_URI;

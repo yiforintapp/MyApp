@@ -31,6 +31,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.UserManager;
+import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
@@ -75,6 +76,7 @@ public class AppMasterApplication extends Application {
 
     private PrivacyMessageContentObserver mMessageObserver;
     private PrivacyMessageContentObserver mCallLogObserver;
+    private PrivacyMessageContentObserver mContactObserver;
     private MessagePrivacyReceiver mPrivacyReceiver;
 
     private static AppMasterApplication mInstance;
@@ -161,7 +163,13 @@ public class AppMasterApplication extends Application {
                 mMessageObserver);
         mCallLogObserver = new PrivacyMessageContentObserver(this, mHandler,
                 PrivacyMessageContentObserver.CALL_LOG_MODEL);
-        getContentResolver().registerContentObserver(PrivacyContactUtils.CALL_LOG_URI, true, mCallLogObserver);
+        getContentResolver().registerContentObserver(PrivacyContactUtils.CALL_LOG_URI, true,
+                mCallLogObserver);
+        mContactObserver = new PrivacyMessageContentObserver(this, mHandler,
+                PrivacyMessageContentObserver.CONTACT_MODEL);
+        getContentResolver().registerContentObserver(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, true,
+                mContactObserver);
         openEndCall();
         mPrivacyReceiver = new MessagePrivacyReceiver(mITelephony, mAudioManager);
         IntentFilter filter = new IntentFilter();

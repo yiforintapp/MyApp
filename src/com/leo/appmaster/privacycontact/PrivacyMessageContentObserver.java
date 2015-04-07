@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.CallLog;
+import android.util.Log;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -22,6 +23,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     private Context mContext;
     public static String CALL_LOG_MODEL = "call_log_model";
     public static String MESSAGE_MODEL = "message_model";
+    public static String CONTACT_MODEL = "contact_model";
     public static final String spaceString = "\u00A0";
     private String mFlag;
 
@@ -47,6 +49,8 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                     + mb.getMessageBody() + "\"", null);
                 } catch (Exception e) {
                 }
+            } else {
+                PrivacyContactManager.getInstance(mContext).updateSysMessage();
             }
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
             ContactBean call = PrivacyContactManager.getInstance(mContext).getLastCall();
@@ -86,7 +90,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             values.put(Constants.COLUMN_CALL_LOG_DATE, time);
                             values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
                             values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
-
                             // 保存记录
                             cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
                             // 通知更新通话记录
@@ -101,18 +104,20 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?",
                                     number,
                                     mContext);
-
                         }
                     }
 
                 } catch (Exception e) {
                 } finally {
-                    if(cursor != null) {
+                    if (cursor != null) {
                         cursor.close();
                     }
                 }
+            } else {
+                PrivacyContactManager.getInstance(mContext).updateSysCallLog();
             }
+        } else if (CONTACT_MODEL.equals(mFlag)) {
+            PrivacyContactManager.getInstance(mContext).updateSysContact();
         }
     }
-
 }

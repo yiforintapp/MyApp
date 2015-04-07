@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +47,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
     private ContactAdapter mContactAdapter;
     private List<ContactBean> mPhoneContact;
     private ContactSideBar mContactSideBar;
-//    private PinyinComparator mPinyinComparator;
+    // private PinyinComparator mPinyinComparator;
     private CommonTitleBar mTtileBar;
     private List<ContactBean> mAddPrivacyContact;
     private Handler mHandler;
@@ -71,6 +72,21 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         mTtileBar.setOptionImage(R.drawable.mode_done);
         mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
                 R.drawable.privacy_title_bt_selecter);
+        mTtileBar.setTitle(getResources()
+                .getString(R.string.privacy_contact_popumenus_from_contact));
+        mPhoneContact = new ArrayList<ContactBean>();
+        mAddPrivacyContact = new ArrayList<ContactBean>();
+        mListContact = (ListView) findViewById(R.id.add_contactLV);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
+        /**
+         * 初始化sidebar
+         */
+        mContactSideBar = (ContactSideBar) findViewById(R.id.contact_sidrbar);
+        mDialog = (TextView) findViewById(R.id.contact_dialog);
+        mContactSideBar.setTextView(mDialog);
+        mContactAdapter = new ContactAdapter();
+        mListContact.setAdapter(mContactAdapter);
+        mListContact.setOnItemClickListener(this);
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -110,19 +126,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 }
             }
         });
-        mTtileBar.setTitle(getResources()
-                .getString(R.string.privacy_contact_popumenus_from_contact));
-        mPhoneContact = new ArrayList<ContactBean>();
-        mAddPrivacyContact = new ArrayList<ContactBean>();
-        mListContact = (ListView) findViewById(R.id.add_contactLV);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
-        /**
-         * 初始化sidebar
-         */
-        mContactSideBar = (ContactSideBar) findViewById(R.id.contact_sidrbar);
-        mDialog = (TextView) findViewById(R.id.contact_dialog);
-        mContactSideBar.setTextView(mDialog);
-        mListContact.setOnItemClickListener(this);
         mContactSideBar.setOnTouchingLetterChangedListener(new OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String s) {
@@ -134,6 +137,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         });
         AddContactAsyncTask addContacctTask = new AddContactAsyncTask();
         addContacctTask.execute(true);
+
     }
 
     @Override
@@ -146,20 +150,32 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
+        mHandler = null;
+        mAddPrivacyContact.clear();
+        mListContact.post(new Runnable() {
+            @Override
+            public void run() {
+                for (ContactBean contact : mPhoneContact) {
+                    if (contact.isCheck()) {
+                        contact.setCheck(false);
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ContactBean callLog = mPhoneContact.get(position);
+        ContactBean contact = mPhoneContact.get(position);
         ImageView image = (ImageView) view.findViewById(R.id.contact_item_check_typeIV);
-        if (!callLog.isCheck()) {
-            mAddPrivacyContact.add(callLog);
+        if (!contact.isCheck()) {
+            mAddPrivacyContact.add(contact);
             image.setImageDrawable(getResources().getDrawable(R.drawable.select));
-            callLog.setCheck(true);
+            contact.setCheck(true);
         } else {
-            mAddPrivacyContact.remove(callLog);
+            mAddPrivacyContact.remove(contact);
             image.setImageDrawable(getResources().getDrawable(R.drawable.unselect));
-            callLog.setCheck(false);
+            contact.setCheck(false);
         }
 
     }
@@ -167,23 +183,21 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
     @SuppressLint("CutPasteId")
     private class ContactAdapter extends BaseAdapter implements SectionIndexer {
         LayoutInflater relativelayout;
-        List<ContactBean> contacts;
 
-        public ContactAdapter(List<ContactBean> contactBeans) {
+        public ContactAdapter() {
             relativelayout = LayoutInflater.from(AddFromContactListActivity.this);
-            this.contacts = contactBeans;
         }
 
         @Override
         public int getCount() {
 
-            return (contacts != null) ? contacts.size() : 0;
+            return (mPhoneContact != null) ? mPhoneContact.size() : 0;
         }
 
         @Override
         public Object getItem(int position) {
 
-            return contacts.get(position);
+            return mPhoneContact.get(position);
         }
 
         @Override
@@ -216,7 +230,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
-            ContactBean mb = contacts.get(position);
+            ContactBean mb = mPhoneContact.get(position);
             // mContactIcon.setVisibility(View.VISIBLE);
             // 通过position获取分类的首字母
             // int section = getSectionForPosition(position);
@@ -256,7 +270,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         @Override
         public int getPositionForSection(int sectionIndex) {
             for (int i = 0; i < getCount(); i++) {
-                String sortStr = contacts.get(i).getSortLetter();
+                String sortStr = mPhoneContact.get(i).getSortLetter();
                 char firstChar = sortStr.toUpperCase().charAt(0);
                 if (firstChar == sectionIndex) {
                     return i;
@@ -270,7 +284,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
          */
         @Override
         public int getSectionForPosition(int position) {
-            return contacts.get(position).getSortLetter().charAt(0);
+            return mPhoneContact.get(position).getSortLetter().charAt(0);
         }
     }
 
@@ -390,6 +404,16 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                     }
                 }
             } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {
+                // 更新SysMessage和SysCallLog数据
+                PrivacyContactManager pm = PrivacyContactManager
+                        .getInstance(AddFromContactListActivity.this);
+                ArrayList<ContactCallLog> callLogs = pm.getSysCallLog();
+                ArrayList<MessageBean> messages = pm.getSysMessage();
+                List<String> addNumber = new ArrayList<String>();
+                for (ContactBean contact : mAddPrivacyContact) {
+                    addNumber.add(contact.getContactNumber());
+                }
+
                 // 导入短信和通话记录
                 if (mAddMessages != null && mAddMessages.size() != 0) {
                     for (MessageBean message : mAddMessages) {
@@ -425,6 +449,15 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             mHandler.sendMessage(messge);
                         }
                     }
+                    for (MessageBean messageBean : messages) {
+                        String formateNumber = PrivacyContactUtils.formatePhoneNumber(messageBean
+                                .getPhoneNumber());
+                        for (String string : addNumber) {
+                            if (string.contains(formateNumber)) {
+                                pm.removeSysMessage(messageBean);
+                            }
+                        }
+                    }
                 }
                 // 导入通话记录
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
@@ -449,12 +482,22 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             mHandler.sendMessage(messge);
                         }
                     }
+                    for (ContactCallLog callLog : callLogs) {
+                        String formateNumber = PrivacyContactUtils.formatePhoneNumber(callLog
+                                .getCallLogNumber());
+                        for (String string : addNumber) {
+                            if (string.contains(formateNumber)) {
+                                pm.removeSysCallLog(callLog);
+                            }
+                        }
+
+                    }
+
                 }
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
                     LeoEventBus.getDefaultBus().post(
                             new PrivacyDeletEditEventBus(
                                     PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
-
                 }
                 if (mAddMessages != null && mAddMessages.size() != 0) {
 
@@ -483,8 +526,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
             if (mProgressDialog != null) {
                 mProgressDialog.cancel();
             }
-            mHandler = null;
-            mAddPrivacyContact.clear();
             super.onPostExecute(result);
         }
     }
@@ -566,9 +607,12 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         protected Integer doInBackground(Boolean... arg0) {
             boolean flag = arg0[0];
             if (flag) {
-               mPhoneContact =
-                        PrivacyContactUtils.getSysContact(AddFromContactListActivity.this,
-                                getContentResolver(), null, null);
+                // mPhoneContact =
+                // PrivacyContactUtils.getSysContact(AddFromContactListActivity.this,
+                // getContentResolver(), null, null);
+                mPhoneContact = PrivacyContactManager.getInstance(AddFromContactListActivity.this)
+                        .getSysContacts();
+
             }
             return null;
         }
@@ -583,8 +627,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
 
             }
             mProgressBar.setVisibility(View.GONE);
-            mContactAdapter = new ContactAdapter(mPhoneContact);
-            mListContact.setAdapter(mContactAdapter);
+            mContactAdapter.notifyDataSetChanged();
             super.onPostExecute(result);
         }
     }

@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.ui.dialog;
 
 import android.content.Context;
@@ -7,7 +8,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-
 
 public class LEOCircleProgressDialog extends LEOBaseDialog {
     private Context mContext;
@@ -28,18 +28,17 @@ public class LEOCircleProgressDialog extends LEOBaseDialog {
             mProHint.setText(hintString);
         }
     }
-    
-       public void setTitle(String title) {
-            if (title != null) {
-                mTitle.setText(title);
-            }
-        }
 
-    
+    public void setTitle(String title) {
+        if (title != null) {
+            mTitle.setText(title);
+        }
+    }
+
     public void setButtonVisiable(boolean visiable) {
         bottomLayout.setVisibility(visiable ? View.VISIBLE : View.GONE);
     }
-    
+
     public void setIndeterminate(boolean indeterminate) {
         mProgressBar.setIndeterminate(indeterminate);
     }
@@ -51,12 +50,12 @@ public class LEOCircleProgressDialog extends LEOBaseDialog {
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mProgressBar = (ProgressBar) dlgView.findViewById(R.id.dlg_pro);
         bottomLayout = dlgView.findViewById(R.id.dlg_bottom_layout);
-        
+
         View cancel = dlgView.findViewById(R.id.dlg_bottom_btn);
-        cancel.setOnClickListener(new View.OnClickListener() {           
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               cancel();
+                cancel();
             }
         });
 
