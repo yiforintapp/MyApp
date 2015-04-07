@@ -263,8 +263,6 @@ public class AddFromCallLogListActivity extends BaseActivity {
                 for (ContactCallLog message : mAddPrivacyCallLog) {
                     String name = message.getCallLogName();
                     String contactNumber = message.getCallLogNumber();
-                    // String number =
-                    // PrivacyContactUtils.deleteOtherNumber(contactNumber);
                     // 隐私联系人去重
                     String tempNumber =
                             PrivacyContactUtils.formatePhoneNumber(contactNumber);

@@ -109,7 +109,6 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                 showRestoreMessageDialog(
                         getResources().getString(R.string.privacy_message_resotre_message),
                         PrivacyContactUtils.EDIT_MODEL_OPERATION_RESTORE);
-            } else {
             }
         } else if (PrivacyContactUtils.MESSAGE_EDIT_MODEL_OPERATION_DELETE
                 .equals(mEditModelOperaction)) {
@@ -423,8 +422,6 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                     if (mProgressDialog != null) {
                                         mProgressDialog.cancel();
                                     }
-                                    isShowDefaultImage();
-                                    mAdapter.notifyDataSetChanged();
                                 } else {
                                     mProgressDialog.setProgress(currentValue);
                                 }
@@ -446,8 +443,6 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                     if (mProgressDialog != null) {
                                         mProgressDialog.cancel();
                                     }
-                                    isShowDefaultImage();
-                                    mAdapter.notifyDataSetChanged();
                                 } else {
                                     mProgressDialog.setProgress(currentValue);
                                 }
@@ -565,13 +560,14 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
 
         @Override
         protected void onPostExecute(String result) {
+            super.onPostExecute(result);
             restoreParameter();
             mRestoreCount = 0;
             LeoEventBus.getDefaultBus().post(
                     new PrivacyMessageEventBus(EventId.EVENT_PRIVACY_EDIT_MODEL,
                             PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL));
+            isShowDefaultImage();
             mAdapter.notifyDataSetChanged();
-            super.onPostExecute(result);
         }
     }
 
