@@ -1,17 +1,14 @@
 
 package com.leo.appmaster.applocker.service;
 
-import com.leo.appmaster.AppMasterPreference;
+import android.app.IntentService;
+import android.content.Intent;
+
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.home.HotAppActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-
-import android.app.IntentService;
-import android.content.Intent;
-import android.os.Parcelable;
 
 /**
  * this service only use for statusbar notify event
@@ -36,6 +33,9 @@ public class StatusBarEventService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         LeoLog.d(TAG, "onHandleIntent");
+        if(intent == null) {
+            return;
+        }
         Intent targetIntent = null;
         int eventType = intent.getIntExtra(EXTRA_EVENT_TYPE, -1);
         if (eventType == EVENT_NEW_THEME) {
