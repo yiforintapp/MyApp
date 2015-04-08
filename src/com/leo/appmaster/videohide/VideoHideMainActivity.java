@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,6 +39,10 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.ImageLoaderConfiguration;
+import com.leo.imageloader.core.ImageScaleType;
 
 @SuppressLint("NewApi")
 public class VideoHideMainActivity extends BaseActivity implements
@@ -52,6 +57,8 @@ public class VideoHideMainActivity extends BaseActivity implements
     private AsyncLoadImage asyncLoadImage;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
+    private DisplayImageOptions mOptions;
+    private ImageLoader mImageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,7 @@ public class VideoHideMainActivity extends BaseActivity implements
         setContentView(R.layout.activity_video_hide_main);
         asyncLoadImage = new AsyncLoadImage();
         initUI();
+        initImageLoder();
     }
 
     @Override
@@ -78,22 +86,37 @@ public class VideoHideMainActivity extends BaseActivity implements
             }
         }
     }
-    
+
     @Override
     public void finish() {
         super.finish();
-        if(asyncLoadImage != null) {
+        if (asyncLoadImage != null) {
             asyncLoadImage.cancel();
         }
+    }
+
+    private void initImageLoder() {
+        mOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.video_loading)
+                .showImageForEmptyUri(R.drawable.video_loading)
+                .showImageOnFail(R.drawable.video_loading)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
+        mImageLoader = ImageLoader.getInstance();
+        mImageLoader.init(ImageLoaderConfiguration.createDefault(this));
     }
 
     private void initUI() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.app_video_hide);
         mTtileBar.openBackView();
-//        mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
-//        mTtileBar.setOptionImageVisibility(View.VISIBLE);
-//        mTtileBar.setOptionListener(this);
+        // mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
+        // mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        // mTtileBar.setOptionListener(this);
         mAddButton = (Button) findViewById(R.id.add_hide_image);
         mAddButton.setOnClickListener(this);
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
@@ -106,7 +129,7 @@ public class VideoHideMainActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         hideVideos.clear();
-        if(asyncLoadImage != null) {
+        if (asyncLoadImage != null) {
             asyncLoadImage.cancel();
         }
     }
@@ -119,11 +142,12 @@ public class VideoHideMainActivity extends BaseActivity implements
                         VideoHideGalleryActivity.class);
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
-//            case R.id.tv_option_image:
-//                intent = new Intent(this, LockOptionActivity.class);
-//                intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_IMAGEHIDE);
-//                startActivityForResult(intent, REQUEST_CODE_OPTION);
-//                break;
+            // case R.id.tv_option_image:
+            // intent = new Intent(this, LockOptionActivity.class);
+            // intent.putExtra(LockOptionActivity.TAG_COME_FROM,
+            // LockOptionActivity.FROM_IMAGEHIDE);
+            // startActivityForResult(intent, REQUEST_CODE_OPTION);
+            // break;
             default:
                 break;
         }
@@ -172,8 +196,7 @@ public class VideoHideMainActivity extends BaseActivity implements
                         R.layout.item_video_gridview_album, parent, false);
                 viewHolder = new ViewHolder();
                 viewHolder.imageView = (ImageView) convertView
-                        .findViewById(R.id.img_item_album);
-                ;
+                        .findViewById(R.id.video_item_album);
                 viewHolder.text = (TextView) convertView
                         .findViewById(R.id.txt_item_album);
                 convertView.setTag(viewHolder);
@@ -181,27 +204,31 @@ public class VideoHideMainActivity extends BaseActivity implements
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             VideoBean video = videos.get(position);
-            final String path = video.getPath();
-            final ImageView imageView = viewHolder.imageView;
-            imageView.setTag(path);
+            // final String path = video.getPath();
+            String path = video.getPath();
+            // final ImageView imageView = viewHolder.imageView;
+            // imageView.setTag(path);
             viewHolder.text.setText(video.getName() + "(" + video.getCount()
                     + ")");
             viewHolder.imageView.setBackgroundDrawable(context.getResources()
                     .getDrawable(R.drawable.video_loading));
-            Drawable drawableCache = asyncLoadImage.loadImage(imageView, path,
-                    new ImageCallback() {
-
-                        @Override
-                        public void imageLoader(Drawable drawable) {
-                            if (imageView != null
-                                    && imageView.getTag().equals(path) && drawable != null) {
-                                imageView.setBackgroundDrawable(drawable);
-                            }
-                        }
-                    });
-            if (drawableCache != null) {
-                viewHolder.imageView.setBackgroundDrawable(drawableCache);
-            }
+            // Drawable drawableCache = asyncLoadImage.loadImage(imageView,
+            // path,
+            // new ImageCallback() {
+            //
+            // @Override
+            // public void imageLoader(Drawable drawable) {
+            // if (imageView != null
+            // && imageView.getTag().equals(path) && drawable != null) {
+            // imageView.setBackgroundDrawable(drawable);
+            // }
+            // }
+            // });
+            // if (drawableCache != null) {
+            // viewHolder.imageView.setBackgroundDrawable(drawableCache);
+            // }
+            String filePath = "voidefile://" + path;
+            mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
             return convertView;
         }
 

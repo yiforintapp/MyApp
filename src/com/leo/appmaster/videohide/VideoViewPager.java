@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -29,6 +30,10 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.ImageLoaderConfiguration;
+import com.leo.imageloader.core.ImageScaleType;
 
 public class VideoViewPager extends BaseActivity implements OnClickListener {
     private CommonTitleBar mTtileBar;
@@ -47,6 +52,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     public static final int REQUEST_CODE_OPTION = 1001;
     public static final int JUMP_GP = 0;
     public static final int JUMP_URL = 1;
+    private DisplayImageOptions mOptions;
+    private ImageLoader mImageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         mTtileBar.openBackView();
         mUnhideVideo = (Button) findViewById(R.id.unhide_video);
         mCancelVideo = (Button) findViewById(R.id.delete_video);
+        initImageLoder();
         mCancelVideo.setOnClickListener(this);
         mUnhideVideo.setOnClickListener(this);
         /* get Path */
@@ -129,6 +137,21 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
     }
 
+    private void initImageLoder() {
+        mOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.video_loading)
+                .showImageForEmptyUri(R.drawable.video_loading)
+                .showImageOnFail(R.drawable.video_loading)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
+        mImageLoader = ImageLoader.getInstance();
+        mImageLoader.init(ImageLoaderConfiguration.createDefault(this));
+    }
+
     @Override
     public void onClick(View arg0) {
         switch (arg0.getId()) {
@@ -193,25 +216,28 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     null);
             ImageView imageView = (ImageView) view.findViewById(R.id.zoom_image_view);
             imageView.setTag(path);
-            final ImageView imageViewT = imageView;
-            final String pathT = path;
-            imageViewT.setTag(path);
+            ImageView imageViewT = imageView;
+            String pathT = path;
+            // imageViewT.setTag(path);
             imageView.setImageDrawable(VideoViewPager.this.getResources()
                     .getDrawable(R.drawable.video_loading));
-            AsyncLoadImage asyncLoadImage = new AsyncLoadImage();
-            Drawable drawableCache = asyncLoadImage.loadImage(imageView, pathT,
-                    new ImageCallback() {
-                        @Override
-                        public void imageLoader(Drawable drawable) {
-                            if (imageViewT != null && imageViewT.getTag().equals(pathT)
-                                    && drawable != null) {
-                                imageViewT.setImageDrawable(drawable);
-                            }
-                        }
-                    });
-            if (drawableCache != null) {
-                imageView.setImageDrawable(drawableCache);
-            }
+            // AsyncLoadImage asyncLoadImage = new AsyncLoadImage();
+            // Drawable drawableCache = asyncLoadImage.loadImage(imageView,
+            // pathT,
+            // new ImageCallback() {
+            // @Override
+            // public void imageLoader(Drawable drawable) {
+            // if (imageViewT != null && imageViewT.getTag().equals(pathT)
+            // && drawable != null) {
+            // imageViewT.setImageDrawable(drawable);
+            // }
+            // }
+            // });
+            // if (drawableCache != null) {
+            // imageView.setImageDrawable(drawableCache);
+            // }
+            String filePath = "voidefile://" + path;
+            mImageLoader.displayImage(filePath, imageView, mOptions);
             imageView.setOnClickListener(new OnClickListener() {
 
                 @Override

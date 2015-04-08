@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,6 +44,10 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.ImageLoaderConfiguration;
+import com.leo.imageloader.core.ImageScaleType;
 
 @SuppressLint("NewApi")
 public class VideoHideGalleryActivity extends BaseActivity implements
@@ -56,6 +62,8 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
     private VideoHideDialog dialog;
+    private DisplayImageOptions mOptions;
+    private ImageLoader mImageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +71,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         setContentView(R.layout.activity_video_hide);
         asyncLoadImage = new AsyncLoadImage();
         initUI();
+        initImageLoder();
         adapter = new HideVideoAdapter(VideoHideGalleryActivity.this);
         dialog = new VideoHideDialog(this);
         Window window = dialog.getWindow();
@@ -72,6 +81,21 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         window.setAttributes(lp);
         VideoHideGalleryTask videoTask = new VideoHideGalleryTask();
         videoTask.execute(true);
+    }
+
+    private void initImageLoder() {
+        mOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.video_loading)
+                .showImageForEmptyUri(R.drawable.video_loading)
+                .showImageOnFail(R.drawable.video_loading)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
+        mImageLoader = ImageLoader.getInstance();
+        mImageLoader.init(ImageLoaderConfiguration.createDefault(this));
     }
 
     @Override
@@ -108,15 +132,15 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         if (hideVideos != null) {
             hideVideos.clear();
         }
-        if(asyncLoadImage != null) {
+        if (asyncLoadImage != null) {
             asyncLoadImage.cancel();
         }
     }
-    
+
     @Override
     public void finish() {
         super.finish();
-        if(asyncLoadImage != null) {
+        if (asyncLoadImage != null) {
             asyncLoadImage.cancel();
         }
     }
@@ -175,9 +199,6 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             TextView text;
         }
 
-        /**
-         * TODO
-         */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
@@ -186,8 +207,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                         R.layout.item_video_gridview_album, parent, false);
                 viewHolder = new ViewHolder();
                 viewHolder.imageView = (ImageView) convertView
-                        .findViewById(R.id.img_item_album);
-                ;
+                        .findViewById(R.id.video_item_album);
                 viewHolder.text = (TextView) convertView
                         .findViewById(R.id.txt_item_album);
                 convertView.setTag(viewHolder);
@@ -195,26 +215,29 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             VideoBean video = hideVideos.get(position);
-            final String path = video.getBitList().get(0).getPath();
-            final ImageView imageView = viewHolder.imageView;
-            imageView.setTag(path);
+            String path = video.getBitList().get(0).getPath();
+            // final ImageView imageView = viewHolder.imageView;
+            // imageView.setTag(path);
             viewHolder.text.setText(video.getName() + "(" + video.getCount()
                     + ")");
             viewHolder.imageView.setBackgroundDrawable(context.getResources()
                     .getDrawable(R.drawable.video_loading));
-            Drawable drawableCache = asyncLoadImage.loadImage(imageView, path,
-                    new ImageCallback() {
-                        @Override
-                        public void imageLoader(Drawable drawable) {
-                            if (imageView != null
-                                    && imageView.getTag().equals(path) && drawable != null) {
-                                imageView.setBackgroundDrawable(drawable);
-                            }
-                        }
-                    });
-            if (drawableCache != null) {
-                viewHolder.imageView.setBackgroundDrawable(drawableCache);
-            }
+            // Drawable drawableCache = asyncLoadImage.loadImage(imageView,
+            // path,
+            // new ImageCallback() {
+            // @Override
+            // public void imageLoader(Drawable drawable) {
+            // if (imageView != null
+            // && imageView.getTag().equals(path) && drawable != null) {
+            // imageView.setBackgroundDrawable(drawable);
+            // }
+            // }
+            // });
+            // if (drawableCache != null) {
+            // viewHolder.imageView.setBackgroundDrawable(drawableCache);
+            // }
+            String filePath = "voidefile://" + path;
+            mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
             return convertView;
         }
 

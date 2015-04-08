@@ -98,15 +98,16 @@
     <dimen name="home_bottom_button_text_margin">12dp</dimen>
     <dimen name="dlg_horizental_margin">268dp</dimen>
     <dimen name="dlg_three_button_text_size">14dp</dimen>
-        <dimen name="home_lock_count_text_size">66dp</dimen>
+    <dimen name="home_lock_count_text_size">66dp</dimen>
     <dimen name="home_lock_mode_name_size">14dp</dimen>
     <dimen name="home_lock_tip_size">10dp</dimen>
     <dimen name="home_lock_text_padding">8dp</dimen>
 
     <integer name="contactsidebar_paint_textsize">40</integer>
+
     <dimen name="multi_mode_add_margin_bottom">40dp</dimen>
-    
-        <!-- guide pages begin -->
+
+    <!-- guide pages begin -->
     <dimen name="guide_page_image_margin_top">0dp</dimen>
     <dimen name="guide_page_image_height">362dp</dimen>
     <dimen name="guide_page_image_width">360dp</dimen>
@@ -120,5 +121,15 @@
     <dimen name="guide_go_button_width">138dp</dimen>
     <dimen name="guide_go_button_text_size">16dp</dimen>
     <!-- guide pages end -->
+    <dimen name="hide_album_frame_width">149dp</dimen>
+    <dimen name="hide_album_image_frame_width">115dp</dimen>
+    <dimen name="hide_album_image_frame_left">16dp</dimen>
+    <dimen name="hide_album_image_frame_top">16dp</dimen>
+    <dimen name="hide_picture_frame_width">149dp</dimen>
+    <dimen name="hide_pictrue_imge_frame_width">126dp</dimen>
+    <dimen name="hide_picture_image_frame_left">9dp</dimen>
+    <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
+    <dimen name="hide_picture_checkbox_left">95dp</dimen>
+    <dimen name="hide_picture_checkbox_top">95dp</dimen>
 
 </resources>
