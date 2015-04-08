@@ -381,6 +381,8 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             mPagerAdapter.notifyDataSetChanged();
             mPager.setCurrentItem(mListPos);
         }
+        
+        PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_PIC);
     }
 
     private void showAlarmDialog(String title, String content,
