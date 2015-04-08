@@ -52,7 +52,8 @@ public class PrivacyContactFragment extends BaseFragment {
     private PrivacyContactDeleteAlarmDialog mAddCallLogDialog;
     private boolean mIsEditModel = false;
     private List<ContactBean> mDeleteContact;
-    private int mDeleteCount, mRestorCount;;
+    private int mDeleteCount = 0;
+    private int mRestorCount = 0;
     private Handler mHandler;
     private LEOProgressDialog mProgressDialog;
     private boolean mIsChecked = true;
@@ -394,7 +395,10 @@ public class PrivacyContactFragment extends BaseFragment {
                 PrivacyContactManager.getInstance(mContext).setLastCall(
                         privacyConatact);
                 Uri uri = Uri.parse("tel:" + contact.getContactNumber());
-                Intent intent = new Intent(Intent.ACTION_CALL, uri);
+                // Intent intent = new Intent(Intent.ACTION_CALL, uri);
+                Intent intent = new Intent(Intent.ACTION_DIAL,
+                        uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
                     startActivity(intent);
                     // 添加到隐私通话中
@@ -471,13 +475,13 @@ public class PrivacyContactFragment extends BaseFragment {
                         if ((mRestorMessages != null && mRestorMessages.size() != 0)
                                 || (mRestorCallLogs != null && mRestorCallLogs.size() != 0)) {
                             // 删除拦截短信，通话记录
-                            // mRestorCount = mRestorMessages.size() +
-                            // mRestorCallLogs.size();
                             if (mIsChecked) {
                                 if (mRestorMessages.size() > 0 && mRestorMessages != null) {
                                     mRestorMessagesFlag = true;
                                     for (MessageBean messageBean : mRestorMessages) {
                                         String number = messageBean.getPhoneNumber();
+                                        String formateNumber = PrivacyContactUtils
+                                                .formatePhoneNumber(number);
                                         // 恢复短信
                                         ContentValues values = new ContentValues();
                                         values.put("address", messageBean.getPhoneNumber());
@@ -502,7 +506,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                                             Constants.COLUMN_MESSAGE_PHONE_NUMBER
                                                                     + " LIKE ?",
                                                             new String[] {
-                                                                "%" + number
+                                                                "%" + formateNumber
                                                             });
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -514,6 +518,8 @@ public class PrivacyContactFragment extends BaseFragment {
                                     for (ContactCallLog calllogBean : mRestorCallLogs) {
                                         String number =
                                                 calllogBean.getCallLogNumber();
+                                        String formateNumber = PrivacyContactUtils
+                                                .formatePhoneNumber(number);
                                         // 删除通话记录
                                         PrivacyContactUtils
                                                 .deleteMessageFromMySelf(
@@ -522,7 +528,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                                         Constants.COLUMN_CALL_LOG_PHONE_NUMBER
                                                                 + " LIKE ?",
                                                         new String[] {
-                                                            "%" + number
+                                                            "%" + formateNumber
                                                         });
                                     }
                                 }
@@ -557,6 +563,19 @@ public class PrivacyContactFragment extends BaseFragment {
             PrivacyHelper.getInstance(mContext)
                     .computePrivacyLevel(
                             PrivacyHelper.VARABLE_PRIVACY_CONTACT);
+            return isOtherLogs;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            mAddCallLogDialog.setChecked(true);
+            mIsEditModel = false;
+            mDeleteCount = 0;
+            mDeleteContact.clear();
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEventBus(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL));
             if (mRestorCallLogsFlag) {
                 mRestorCallLogsFlag = false;
                 LeoEventBus
@@ -571,25 +590,12 @@ public class PrivacyContactFragment extends BaseFragment {
                         .post(new PrivacyDeletEditEventBus(
                                 PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_MESSAGE_LIST));
             }
-            return isOtherLogs;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            mAddCallLogDialog.setChecked(true);
-            mIsEditModel = false;
-            mDeleteCount = 0;
-            mDeleteContact.clear();
-            LeoEventBus.getDefaultBus().post(
-                    new PrivacyMessageEventBus(EventId.EVENT_PRIVACY_EDIT_MODEL,
-                            PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL));
             if (mContacts == null || mContacts.size() == 0) {
                 mDefaultText.setVisibility(View.VISIBLE);
             } else {
                 mDefaultText.setVisibility(View.GONE);
             }
             mAdapter.notifyDataSetChanged();
-            super.onPostExecute(result);
         }
     }
 
@@ -617,7 +623,6 @@ public class PrivacyContactFragment extends BaseFragment {
                         @Override
                         public void handleMessage(Message msg) {
                             int currentValue = msg.what;
-
                             if (currentValue >= mDeleteCount) {
 
                                 if (mProgressDialog != null)

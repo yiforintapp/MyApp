@@ -17,6 +17,7 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacy.PrivacyHelper.Level;
 import com.leo.appmaster.privacy.PrivacyLevelView;
 import com.leo.appmaster.privacy.PrivacySuggestActivity;
+import com.leo.appmaster.privacycontact.LoadSysContactTask;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -38,6 +39,9 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         LeoEventBus.getDefaultBus().register(this);
+        LoadSysContactTask loadSysContactData = new LoadSysContactTask(mActivity);
+        // 加载联系人数据
+        loadSysContactData.execute("home_pravicy_load_contact_date");
     }
 
     @Override
@@ -56,7 +60,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         super.onStop();
         onScrolling();
     }
-    
+
     public void onEventMainThread(PrivacyLevelChangeEvent event) {
         onLevelChange(PrivacyHelper.getInstance(mActivity).getCurLevelColor().toIntColor());
     }
@@ -173,7 +177,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
 
     @Override
     public void onSelected() {
-        if(mPrivacyLevel != null) {
+        if (mPrivacyLevel != null) {
             mPrivacyLevel.palyAnim();
         }
     }

@@ -31,6 +31,7 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.UserManager;
+import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
@@ -75,6 +76,7 @@ public class AppMasterApplication extends Application {
 
     private PrivacyMessageContentObserver mMessageObserver;
     private PrivacyMessageContentObserver mCallLogObserver;
+    private PrivacyMessageContentObserver mContactObserver;
     private MessagePrivacyReceiver mPrivacyReceiver;
 
     private static AppMasterApplication mInstance;
@@ -156,7 +158,7 @@ public class AppMasterApplication extends Application {
      */
     private void registerReceiveMessageCallIntercept() {
         ContentResolver cr = getContentResolver();
-        if(cr != null) {
+        if (cr != null) {
             mMessageObserver = new PrivacyMessageContentObserver(this, mHandler,
                     PrivacyMessageContentObserver.MESSAGE_MODEL);
             cr.registerContentObserver(PrivacyContactUtils.SMS_INBOXS, true,
@@ -164,6 +166,11 @@ public class AppMasterApplication extends Application {
             mCallLogObserver = new PrivacyMessageContentObserver(this, mHandler,
                     PrivacyMessageContentObserver.CALL_LOG_MODEL);
             cr.registerContentObserver(PrivacyContactUtils.CALL_LOG_URI, true, mCallLogObserver);
+            mContactObserver = new PrivacyMessageContentObserver(this, mHandler,
+                    PrivacyMessageContentObserver.CONTACT_MODEL);
+            cr.registerContentObserver(
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI, true,
+                    mContactObserver);
         }
         openEndCall();
         mPrivacyReceiver = new MessagePrivacyReceiver(mITelephony, mAudioManager);
@@ -629,7 +636,7 @@ public class AppMasterApplication extends Application {
         SDKWrapper.endSession(this);
         unregisterReceiver(mPrivacyReceiver);
         ContentResolver cr = getContentResolver();
-        if(cr != null) {
+        if (cr != null) {
             cr.unregisterContentObserver(mCallLogObserver);
             cr.unregisterContentObserver(mMessageObserver);
         }

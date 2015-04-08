@@ -9,6 +9,7 @@ import com.leo.appmaster.ui.showTrafficTip;
 import com.leo.appmaster.ui.showTrafficTip.OnDiaogClickListener;
 import com.leo.appmaster.utils.LeoLog;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 
 import android.content.BroadcastReceiver;
@@ -41,8 +42,14 @@ public class showTrafficAlof extends BroadcastReceiver {
             State mobileState = null;
             ConnectivityManager cm = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
-            wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
-            mobileState = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
+            NetworkInfo ni =  cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            if(ni != null) {
+                wifiState = ni.getState();
+            }
+            ni =  cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if(ni != null) {
+                mobileState = ni.getState();
+            }
             if (wifiState != null && mobileState != null
                     && State.CONNECTED != wifiState
                     && State.CONNECTED == mobileState) {

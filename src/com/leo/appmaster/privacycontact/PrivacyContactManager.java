@@ -36,12 +36,21 @@ public class PrivacyContactManager {
     private MessageBean mMessage;
     private MessageBean mLastMessage;
     private ContactBean mLastCallContact;
-
+    private ArrayList<MessageBean> mSysMessageBean;
+    private ArrayList<ContactCallLog> mSysCallLogs;
+    private ArrayList<ContactBean> mSysContactBean;
     private boolean mContactLoaded = false;
+    private boolean mSysMessageLoaded = false;
+    private boolean mSysContactsLoaded = false;
+    private boolean mSysCallLogLoaded = false;
 
     private PrivacyContactManager(Context context) {
         this.mContext = context;
         mContacts = new ArrayList<ContactBean>();
+        mSysMessageBean = new ArrayList<MessageBean>();
+        mSysCallLogs = new ArrayList<ContactCallLog>();
+        mSysContactBean = new ArrayList<ContactBean>();
+
     }
 
     public static synchronized PrivacyContactManager getInstance(Context context) {
@@ -82,6 +91,7 @@ public class PrivacyContactManager {
     }
 
     public void updateContact() {
+        mContacts.clear();
         mContacts = (ArrayList<ContactBean>) PrivacyContactUtils.loadPrivateContacts(mContext);
     }
 
@@ -274,7 +284,82 @@ public class PrivacyContactManager {
         mLastMessage = message;
     }
 
-    public void onEventMainThread(PrivacyMessageEventBus event) {
+    // loadSysMessage
+    public synchronized void loadSysMessage() {
+        if (!mSysMessageLoaded) {
+            mSysMessageBean.clear();
+            mSysMessageBean = (ArrayList<MessageBean>) PrivacyContactUtils
+                    .queryMessageList(mContext);
+            mSysMessageLoaded = true;
+        }
+    }
+
+    public ArrayList<MessageBean> getSysMessage() {
+        loadSysMessage();
+        return (ArrayList<MessageBean>) mSysMessageBean.clone();
 
     }
+
+    public void removeSysMessage(MessageBean messageBean) {
+        loadSysMessage();
+        mSysMessageBean.remove(messageBean);
+    }
+
+    public void updateSysMessage() {
+        mSysMessageBean.clear();
+        mSysMessageBean = (ArrayList<MessageBean>) PrivacyContactUtils.queryMessageList(mContext);
+    }
+
+    // loadSysCallLog
+    public synchronized void loadSysCallLog() {
+        if (!mSysCallLogLoaded) {
+            mSysCallLogs.clear();
+            mSysCallLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext,
+                    mContext.getContentResolver(), null, null);
+            mSysCallLogLoaded = true;
+        }
+    }
+
+    public ArrayList<ContactCallLog> getSysCallLog() {
+        loadSysCallLog();
+        return (ArrayList<ContactCallLog>) mSysCallLogs.clone();
+    }
+
+    public void removeSysCallLog(ContactCallLog callLog) {
+        loadSysCallLog();
+        mSysCallLogs.remove(callLog);
+    }
+
+    public void updateSysCallLog() {
+        mSysCallLogs.clear();
+        mSysCallLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext,
+                mContext.getContentResolver(), null, null);
+    }
+
+    // loadSysContact
+    public synchronized void loadSysContacts() {
+        if (!mSysContactsLoaded) {
+            mSysContactBean.clear();
+            mSysContactBean = (ArrayList<ContactBean>) PrivacyContactUtils.getSysContact(mContext,
+                    mContext.getContentResolver(), null, null);
+            mSysContactsLoaded = true;
+        }
+    }
+
+    public ArrayList<ContactBean> getSysContacts() {
+        loadSysContacts();
+         return (ArrayList<ContactBean>) mSysContactBean.clone();
+    }
+
+    public void removeSysContact(ContactBean contact) {
+        loadSysContacts();
+        mSysContactBean.remove(contact);
+    }
+
+    public void updateSysContact() {
+        mSysContactBean.clear();
+        mSysContactBean = (ArrayList<ContactBean>) PrivacyContactUtils.getSysContact(mContext,
+                mContext.getContentResolver(), null, null);
+    }
+
 }

@@ -151,7 +151,10 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                 PrivacyContactManager.getInstance(PrivacyCallLogListActivity.this).setLastCall(
                         privacyConatact);
                 Uri uri = Uri.parse("tel:" + mCallLogNumber);
-                Intent intent = new Intent(Intent.ACTION_CALL, uri);
+                // Intent intent = new Intent(Intent.ACTION_CALL, uri);
+                Intent intent = new Intent(Intent.ACTION_DIAL,
+                        uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
                     startActivity(intent);
                     /* SDK */

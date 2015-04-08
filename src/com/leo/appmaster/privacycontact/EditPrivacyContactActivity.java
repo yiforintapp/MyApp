@@ -3,7 +3,9 @@ package com.leo.appmaster.privacycontact;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,6 +29,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.Utilities;
 
@@ -43,6 +46,7 @@ public class EditPrivacyContactActivity extends BaseActivity {
     private TextView mPhoneNumberShow;
     private LEOAlarmDialog mEditDialog;
     private int mAnswerType;
+    private LEOCircleProgressDialog mProgressDialg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,9 +178,42 @@ public class EditPrivacyContactActivity extends BaseActivity {
     // 更新修改数据
     private int updateMessageMyselfIsRead(ContentValues values, String selection,
             String[] selectionArgs) {
-        int updateUmber = this.getContentResolver().update(Constants.PRIVACY_CONTACT_URI,
-                values, selection,
-                selectionArgs);
+        int updateUmber = -1;
+        try {
+            updateUmber = this.getContentResolver().update(Constants.PRIVACY_CONTACT_URI,
+                    values, selection,
+                    selectionArgs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return updateUmber;
+    }
+
+    // 更新隐私短信联系人名称
+    private int updateMessageMyselfName(ContentValues values, String selection,
+            String[] selectionArgs) {
+        int updateUmber = -1;
+        try {
+            updateUmber = this.getContentResolver().update(Constants.PRIVACY_MESSAGE_URI,
+                    values, selection,
+                    selectionArgs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return updateUmber;
+    }
+
+    // 更新隐私通话联系人名称
+    private int updateCallLogMyselfName(ContentValues values, String selection,
+            String[] selectionArgs) {
+        int updateUmber = -1;
+        try {
+            updateUmber = this.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI,
+                    values, selection,
+                    selectionArgs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return updateUmber;
     }
 
@@ -188,40 +225,8 @@ public class EditPrivacyContactActivity extends BaseActivity {
             @Override
             public void onClick(int which) {
                 if (which == 1) {
-                    mPhoneName = mNameEt.getText().toString();
-                    mPhoneNumber = mNumberEt.getText().toString().trim();
-                    ContentValues values = new ContentValues();
-                    values.put(Constants.COLUMN_PHONE_NUMBER, mPhoneNumber);
-                    values.put(Constants.COLUMN_CONTACT_NAME, mPhoneName);
-                    values.put(Constants.COLUMN_PHONE_ANSWER_TYPE, mPhoneState);
-                    int result = updateMessageMyselfIsRead(values, "contact_phone_number = ? ",
-                            new String[] {
-                                mCurrentNumber
-                            });
-                    if (result > 0) {
-                        UpdateContactDateTask task = new UpdateContactDateTask();
-                        task.execute(true);
-
-                    }
-                    /* sdk */
-                    if (mPhoneName != null && !mCurrentName.equals(mPhoneName)) {
-                        SDKWrapper.addEvent(EditPrivacyContactActivity.this, SDKWrapper.P1,
-                                "privacyedit", "editname");
-                    }
-                    if (mCurrentNumber != null && !mCurrentNumber.equals(mPhoneNumber)) {
-                        SDKWrapper.addEvent(EditPrivacyContactActivity.this, SDKWrapper.P1,
-                                "privacyedit", "editnumber");
-                    }
-                    if (mPhoneState != mAnswerType) {
-                        if (mPhoneState == 0) {
-                            SDKWrapper.addEvent(EditPrivacyContactActivity.this, SDKWrapper.P1,
-                                    "privacyedit", "editdeline");
-                        } else if (mPhoneState == 1) {
-                            SDKWrapper.addEvent(EditPrivacyContactActivity.this, SDKWrapper.P1,
-                                    "privacyedit", "editanswer");
-                        }
-                    }
-                    EditPrivacyContactActivity.this.finish();
+                    UpdateContactNameTask task = new UpdateContactNameTask();
+                    task.execute(true);
                 } else if (which == 0) {
                     mEditDialog.cancel();
                     EditPrivacyContactActivity.this.finish();
@@ -259,5 +264,84 @@ public class EditPrivacyContactActivity extends BaseActivity {
                                     PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE));
             EditPrivacyContactActivity.this.finish();
         }
+    }
+
+    private class UpdateContactNameTask extends AsyncTask<Boolean, Integer, Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog();
+        }
+
+        @Override
+        protected Integer doInBackground(Boolean... arg0) {
+            mPhoneName = mNameEt.getText().toString();
+            mPhoneNumber = mNumberEt.getText().toString().trim();
+            ContentValues values = new ContentValues();
+            values.put(Constants.COLUMN_PHONE_NUMBER, mPhoneNumber);
+            values.put(Constants.COLUMN_CONTACT_NAME, mPhoneName);
+            values.put(Constants.COLUMN_PHONE_ANSWER_TYPE, mPhoneState);
+            int result = updateMessageMyselfIsRead(values, "contact_phone_number = ? ",
+                    new String[] {
+                        mCurrentNumber
+                    });
+            // ContentValues updateNameValues = new ContentValues();
+            // updateNameValues.put(Constants.COLUMN_CONTACT_NAME, mPhoneName);
+            // String formateNumber =
+            // PrivacyContactUtils.formatePhoneNumber(mCurrentNumber);
+            // int updateMessageName = updateMessageMyselfName(updateNameValues,
+            // "contact_phone_number LIEK ?",
+            // new String[] {
+            // "%" + formateNumber
+            // });
+            // int updateCallLogName = updateCallLogMyselfName(updateNameValues,
+            // "call_log_phone_number LIKE ? ",
+            // new String[] {
+            // "%" + formateNumber
+            // });
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            if (result > 0) {
+                UpdateContactDateTask task = new UpdateContactDateTask();
+                task.execute(true);
+            }
+            /* sdk */
+            if (mPhoneName != null && !mCurrentName.equals(mPhoneName)) {
+                SDKWrapper.addEvent(EditPrivacyContactActivity.this, SDKWrapper.P1,
+                        "privacyedit", "editname");
+            }
+            if (mCurrentNumber != null && !mCurrentNumber.equals(mPhoneNumber)) {
+                SDKWrapper.addEvent(EditPrivacyContactActivity.this, SDKWrapper.P1,
+                        "privacyedit", "editnumber");
+            }
+            if (mPhoneState != mAnswerType) {
+                if (mPhoneState == 0) {
+                    SDKWrapper.addEvent(EditPrivacyContactActivity.this, SDKWrapper.P1,
+                            "privacyedit", "editdeline");
+                } else if (mPhoneState == 1) {
+                    SDKWrapper.addEvent(EditPrivacyContactActivity.this, SDKWrapper.P1,
+                            "privacyedit", "editanswer");
+                }
+            }
+            EditPrivacyContactActivity.this.finish();
+            if (mProgressDialg != null) {
+                mProgressDialg.dismiss();
+            }
+        }
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialg == null) {
+            mProgressDialg = new LEOCircleProgressDialog(this);
+        }
+        mProgressDialg.setButtonVisiable(false);
+        mProgressDialg.setCanceledOnTouchOutside(false);
+        mProgressDialg.setIndeterminate(false);
+        mProgressDialg.show();
     }
 }
