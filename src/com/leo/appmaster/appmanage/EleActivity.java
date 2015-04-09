@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.home;
+package com.leo.appmaster.appmanage;
 
 import java.util.List;
 

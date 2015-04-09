@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.home;
+package com.leo.appmaster.appmanage;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.view.ManagerElecFragment;
+import com.leo.appmaster.appmanage.view.ManagerFlowFragment;
+import com.leo.appmaster.appmanage.view.ManagerFlowListFragment;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.fragment.ManagerElecFragment;
-import com.leo.appmaster.fragment.ManagerFlowFragment;
-import com.leo.appmaster.fragment.ManagerFlowListFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;

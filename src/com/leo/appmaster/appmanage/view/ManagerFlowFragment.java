@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.fragment;
+package com.leo.appmaster.appmanage.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.telecom.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.HorizontalScrollView;
@@ -19,14 +18,13 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.ui.LineView;
 import com.leo.appmaster.ui.LineView.BackUpCallBack;
 import com.leo.appmaster.ui.RoundProgressBar;
 import com.leo.appmaster.ui.dialog.MonthDaySetting;
 import com.leo.appmaster.ui.dialog.MonthDaySetting.OnTrafficDialogClickListener;
 import com.leo.appmaster.utils.AppwallHttpUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class ManagerFlowFragment extends BaseFragment implements OnClickListener{

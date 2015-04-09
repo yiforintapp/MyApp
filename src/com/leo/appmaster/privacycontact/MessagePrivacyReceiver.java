@@ -2,7 +2,6 @@
 package com.leo.appmaster.privacycontact;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -14,12 +13,10 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.CallLog;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
