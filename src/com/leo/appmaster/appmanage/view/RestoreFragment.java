@@ -1,29 +1,28 @@
 
-package com.leo.appmaster.fragment;
+package com.leo.appmaster.appmanage.view;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.backup.AppBackupAdapter;
-import com.leo.appmaster.backup.AppBackupRestoreActivity;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
-import com.leo.appmaster.backup.AppRestoreAdapter;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
+import com.leo.appmaster.backup.AppRestoreAdapter;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
-import com.leo.appmaster.home.BackUpActivity;
+import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 
 public class RestoreFragment extends BaseFragment implements AppBackupDataListener {
     public static final String MESSAGE_BACKUP_SUCCESS = "message_backup_success";

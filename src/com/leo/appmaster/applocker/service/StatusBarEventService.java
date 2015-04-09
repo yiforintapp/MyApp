@@ -1,17 +1,14 @@
 
 package com.leo.appmaster.applocker.service;
 
-import com.leo.appmaster.AppMasterPreference;
+import android.app.IntentService;
+import android.content.Intent;
+
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.appmanage.AppListActivity;
-import com.leo.appmaster.home.HotAppActivity;
+import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-
-import android.app.IntentService;
-import android.content.Intent;
-import android.os.Parcelable;
 
 /**
  * this service only use for statusbar notify event

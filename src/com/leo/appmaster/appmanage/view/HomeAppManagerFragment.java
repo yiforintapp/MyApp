@@ -1,13 +1,10 @@
 
-package com.leo.appmaster.fragment;
+package com.leo.appmaster.appmanage.view;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -23,7 +20,6 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.ScaleAnimation;
-import android.webkit.WebView.PrivateAccess;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -33,7 +29,10 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.receiver.showTrafficAlof;
+import com.leo.appmaster.appmanage.BackUpActivity;
+import com.leo.appmaster.appmanage.EleActivity;
+import com.leo.appmaster.appmanage.FlowActivity;
+import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.backup.AppDeleteAdapter;
@@ -41,10 +40,8 @@ import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
-import com.leo.appmaster.home.BackUpActivity;
-import com.leo.appmaster.home.EleActivity;
-import com.leo.appmaster.home.FlowActivity;
-import com.leo.appmaster.home.HotAppActivity;
+import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RoundProgressBar;

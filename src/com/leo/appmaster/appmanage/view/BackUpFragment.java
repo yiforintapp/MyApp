@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.fragment;
+package com.leo.appmaster.appmanage.view;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,13 +18,14 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.backup.AppBackupAdapter;
 import com.leo.appmaster.backup.AppBackupItemView;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
-import com.leo.appmaster.home.BackUpActivity;
+import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;

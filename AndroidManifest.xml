@@ -382,31 +382,31 @@
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.home.BackUpActivity"
+            android:name="com.leo.appmaster.appmanage.BackUpActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.home.FlowActivity"
+            android:name="com.leo.appmaster.appmanage.FlowActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.home.EleActivity"
+            android:name="com.leo.appmaster.appmanage.EleActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.home.TrafficSetting"
+            android:name="com.leo.appmaster.appmanage.TrafficSetting"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.home.HotAppActivity"
+            android:name="com.leo.appmaster.appmanage.HotAppActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"

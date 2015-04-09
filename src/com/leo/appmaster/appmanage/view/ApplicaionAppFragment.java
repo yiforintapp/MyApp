@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.fragment;
+package com.leo.appmaster.appmanage.view;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -32,9 +31,10 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.appmanage.business.BusinessJsonParser;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.home.HotAppActivity;
+import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
@@ -46,10 +46,7 @@ import com.leo.appmaster.utils.PhoneInfoStateManager;
 import com.leo.appmaster.utils.TextFormater;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.LoadedFrom;
-import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 
 public class ApplicaionAppFragment extends BaseFragment implements OnClickListener,
         OnRefreshListener<ListView> {

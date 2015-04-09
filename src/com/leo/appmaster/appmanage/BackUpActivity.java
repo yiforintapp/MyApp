@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.home;
+package com.leo.appmaster.appmanage;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.view.BackUpFragment;
+import com.leo.appmaster.appmanage.view.RestoreFragment;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
-import com.leo.appmaster.fragment.BackUpFragment;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.fragment.RestoreFragment;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;

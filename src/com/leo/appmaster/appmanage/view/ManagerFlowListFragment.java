@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.fragment;
+package com.leo.appmaster.appmanage.view;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.model.TrafficsInfo;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 

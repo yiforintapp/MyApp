@@ -1,9 +1,7 @@
-package com.leo.appmaster.fragment;
+package com.leo.appmaster.appmanage.view;
 
 import java.util.List;
 
-import android.app.ApplicationErrorReport.BatteryInfo;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -24,8 +21,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.engine.BatteryComsuption;
+import com.leo.appmaster.engine.BatteryInfoProvider;
+import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.utils.BatteryUtils;
 
 public class ManagerElecFragment extends BaseFragment {
