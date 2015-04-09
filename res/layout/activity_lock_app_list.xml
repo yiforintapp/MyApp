@@ -18,27 +18,34 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:background="@drawable/title_bar_option_selector"
             android:padding="16dp"
             android:src="@drawable/back_btn_menu" />
 
-        <TextView
-            android:id="@+id/mode_name_tv"
+        <LinearLayout
+            android:id="@+id/mode_select_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iv_back"
-            android:text="lock mode"
-            android:textColor="@color/white"
-            android:textSize="18dp" />
+            android:background="@drawable/title_bar_option_selector"
+            android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/iv_edit_mode_name"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/mode_name_tv"
-            android:padding="4dp"
-            android:src="@drawable/common_down" />
+            <TextView
+                android:id="@+id/mode_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="lock mode"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+            <ImageView
+                android:id="@+id/iv_edit_mode_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:src="@drawable/common_down" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_sort_select"
@@ -46,8 +53,9 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:background="@drawable/title_bar_option_selector"
             android:padding="16dp"
-            android:src="@drawable/setting_selector" />
+            android:src="@drawable/setting_btn" />
     </RelativeLayout>
 
     <com.leo.appmaster.ui.PagedGridView
