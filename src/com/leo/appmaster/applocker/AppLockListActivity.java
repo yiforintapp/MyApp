@@ -43,7 +43,7 @@ public class AppLockListActivity extends BaseActivity implements
     public LayoutInflater mInflater;
     private TextView mTvModeName;
     private ImageView mIvBack, mIvSortSelected;
-    private View mMaskLayer;
+    private View mLyoutModeName, mMaskLayer;
     private List<AppInfo> mLockedList;
     private List<AppInfo> mUnlockList;
     private PagedGridView mAppPager;
@@ -127,11 +127,12 @@ public class AppLockListActivity extends BaseActivity implements
         }
 
         mIvBack = (ImageView) findViewById(R.id.iv_back);
+        mLyoutModeName = findViewById(R.id.mode_select_layout);
         mTvModeName = (TextView) findViewById(R.id.mode_name_tv);
         mIvSortSelected = (ImageView) findViewById(R.id.iv_sort_select);
 
         mIvBack.setOnClickListener(this);
-        mTvModeName.setOnClickListener(this);
+        mLyoutModeName.setOnClickListener(this);
         mIvSortSelected.setOnClickListener(this);
         LockMode lm = LockManager.getInstatnce().getCurLockMode();
         if(lm != null) {
@@ -317,7 +318,7 @@ public class AppLockListActivity extends BaseActivity implements
                 mLeoPopMenu.showPopMenu(this,
                         mIvSortSelected, null, null);
                 break;
-            case R.id.mode_name_tv:
+            case R.id.mode_select_layout:
                 if (mLeoPopMenu == null) {
                     mLeoPopMenu = new LeoPopMenu();
                 }

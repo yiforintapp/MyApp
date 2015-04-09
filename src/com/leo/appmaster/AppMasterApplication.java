@@ -230,7 +230,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 mAppsEngine.preloadAllBaseInfo();
-                AppBusinessManager.getInstance(mInstance).init();
+//                AppBusinessManager.getInstance(mInstance).init();
                 mBackupManager.getBackupList();
                 judgeLockService();
                 judgeLockAlert();
