@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.privacycontact;
 
 import com.leo.appmaster.eventbus.event.BaseEvent;
