@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.home;
+package com.leo.appmaster.appmanage;
 
 import java.util.List;
 
@@ -21,9 +21,10 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
-import com.leo.appmaster.fragment.ApplicaionAppFragment;
+import com.leo.appmaster.appmanage.view.ApplicaionAppFragment;
+import com.leo.appmaster.appmanage.view.GameAppFragment2;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.fragment.GameAppFragment2;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;

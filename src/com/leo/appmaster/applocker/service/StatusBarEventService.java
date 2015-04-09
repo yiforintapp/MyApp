@@ -5,7 +5,7 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.home.HotAppActivity;
+import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;

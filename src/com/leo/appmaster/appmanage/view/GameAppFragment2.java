@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.fragment;
+package com.leo.appmaster.appmanage.view;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -35,6 +35,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.extra.AppWallBean;
 import com.leo.appmaster.model.extra.AppWallUrlBean;
