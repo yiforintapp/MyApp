@@ -16,7 +16,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.CallLog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +34,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -53,7 +54,6 @@ public class PrivacyContactFragment extends BaseFragment {
     private boolean mIsEditModel = false;
     private List<ContactBean> mDeleteContact;
     private int mDeleteCount = 0;
-    private int mRestorCount = 0;
     private Handler mHandler;
     private LEOProgressDialog mProgressDialog;
     private boolean mIsChecked = true;
@@ -113,7 +113,7 @@ public class PrivacyContactFragment extends BaseFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 LeoEventBus.getDefaultBus().post(
-                        new PrivacyMessageEventBus(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                        new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
                                 PrivacyContactUtils.FROM_CONTACT_EVENT));
                 mIsEditModel = true;
                 mAdapter.notifyDataSetChanged();
@@ -125,7 +125,7 @@ public class PrivacyContactFragment extends BaseFragment {
         task.execute("");
     }
 
-    public void onEventMainThread(PrivacyDeletEditEventBus event) {
+    public void onEventMainThread(PrivacyDeletEditEvent event) {
         if (PrivacyContactUtils.CANCEL_EDIT_MODEL.equals(event.editModel)) {
             restoreParameter();
             if (mContacts == null || mContacts.size() == 0) {
@@ -574,20 +574,20 @@ public class PrivacyContactFragment extends BaseFragment {
             mDeleteCount = 0;
             mDeleteContact.clear();
             LeoEventBus.getDefaultBus().post(
-                    new PrivacyMessageEventBus(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
                             PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL));
             if (mRestorCallLogsFlag) {
                 mRestorCallLogsFlag = false;
                 LeoEventBus
                         .getDefaultBus()
-                        .post(new PrivacyDeletEditEventBus(
+                        .post(new PrivacyDeletEditEvent(
                                 PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_CALL_LOG_LIST));
             }
             if (mRestorMessagesFlag) {
                 mRestorMessagesFlag = false;
                 LeoEventBus
                         .getDefaultBus()
-                        .post(new PrivacyDeletEditEventBus(
+                        .post(new PrivacyDeletEditEvent(
                                 PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_MESSAGE_LIST));
             }
             if (mContacts == null || mContacts.size() == 0) {
@@ -663,7 +663,7 @@ public class PrivacyContactFragment extends BaseFragment {
                 restoreParameter();
                 mAdapter.notifyDataSetChanged();
                 LeoEventBus.getDefaultBus().post(
-                        new PrivacyMessageEventBus(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                        new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
                                 PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL));
             }
         });
@@ -796,13 +796,13 @@ public class PrivacyContactFragment extends BaseFragment {
                         if (deleteCallLog > 0) {
                             LeoEventBus
                                     .getDefaultBus()
-                                    .post(new PrivacyDeletEditEventBus(
+                                    .post(new PrivacyDeletEditEvent(
                                             PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_CALL_LOG_LIST));
                         }
                         if (deleteMessage > 0) {
                             LeoEventBus
                                     .getDefaultBus()
-                                    .post(new PrivacyDeletEditEventBus(
+                                    .post(new PrivacyDeletEditEvent(
                                             PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_MESSAGE_LIST));
                         }
                     }

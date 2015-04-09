@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -163,16 +164,8 @@ public class EditPrivacyContactActivity extends BaseActivity {
     }
 
     private void checkEditTextAdd() {
-        // boolean commitState = true;
         mPhoneName = mNameEt.getText().toString();
         mPhoneNumber = mNumberEt.getText().toString().trim();
-        // if (mPhoneNumber.isEmpty()) {
-        // commitState = false;
-        // }
-        // mAddBt.setEnabled(commitState);
-        // mAddBt.setBackgroundResource(commitState ?
-        // R.drawable.check_update_button
-        // : R.drawable.update_btn_disable_bg);
     }
 
     // 更新修改数据
@@ -260,7 +253,7 @@ public class EditPrivacyContactActivity extends BaseActivity {
             LeoEventBus
                     .getDefaultBus()
                     .post(
-                            new PrivacyDeletEditEventBus(
+                            new PrivacyDeletEditEvent(
                                     PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE));
             EditPrivacyContactActivity.this.finish();
         }

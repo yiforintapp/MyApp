@@ -27,6 +27,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -88,7 +89,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
             @Override
             public void onClick(View arg0) {
                 LeoEventBus.getDefaultBus().post(
-                        new PrivacyDeletEditEventBus(
+                        new PrivacyDeletEditEvent(
                                 PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
                 PrivacyCallLogListActivity.this.finish();
             }
@@ -102,7 +103,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
         AppMasterPreference.getInstance(this).setCallLogItemRuning(false);
     }
 
-    public void onEventMainThread(PrivacyDeletEditEventBus event) {
+    public void onEventMainThread(PrivacyDeletEditEvent event) {
         if (UPDATE_CALL_LOG_FRAGMENT.equals(event.editModel)) {
             mContactCallLogs.clear();
             getCallLog(mCallLogNumber);

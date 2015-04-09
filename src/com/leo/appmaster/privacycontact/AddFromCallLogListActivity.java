@@ -34,6 +34,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -332,7 +334,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
                                     .getDefaultBus()
                                     .post(
                                             new
-                                            PrivacyMessageEventBus(
+                                            PrivacyMessageEvent(
                                                     EventId.EVENT_PRIVACY_EDIT_MODEL,
                                                     PrivacyContactUtils.ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT));
                             isOtherLogs = false;
@@ -348,7 +350,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
                         // 通知更新隐私联系人列表
                         LeoEventBus
                                 .getDefaultBus()
-                                .post(new PrivacyDeletEditEventBus(
+                                .post(new PrivacyDeletEditEvent(
                                         PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE));
                         PrivacyHelper.getInstance(getApplicationContext()).computePrivacyLevel(
                                 PrivacyHelper.VARABLE_PRIVACY_CONTACT);
@@ -440,13 +442,13 @@ public class AddFromCallLogListActivity extends BaseActivity {
                 }
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyDeletEditEventBus(
+                            new PrivacyDeletEditEvent(
                                     PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
                 }
                 if (mAddMessages != null && mAddMessages.size() != 0) {
 
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyDeletEditEventBus(
+                            new PrivacyDeletEditEvent(
                                     PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
                 }
                 isOtherLogs = false;
