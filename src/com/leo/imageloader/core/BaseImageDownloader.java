@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import com.leo.imageloader.DisplayImageOptions;
@@ -97,35 +98,11 @@ public class BaseImageDownloader implements ImageDownloader {
                 return getStreamFromAssets(imageUri, extra);
             case DRAWABLE:
                 return getStreamFromDrawable(imageUri, extra);
+            case VIDEOFILE:
+                return getStreamFromVideoThumbnailStream(imageUri);
             case UNKNOWN:
             default:
                 return getStreamFromOtherSource(imageUri, extra);
-        }
-    }
-    /**
-     * getVideoStream
-     * @param imageUri
-     * @param extra
-     * @return
-     * @throws IOException
-     * @author lilongfei
-     */
-    public InputStream getVideoStream(String videoUri, Object extra) throws IOException {
-        switch (Scheme.ofUri(videoUri)) {
-            case HTTP:
-            case HTTPS:
-                return getStreamFromNetwork(videoUri, extra);
-            case FILE:
-                return getStreamFromVideoThumbnailStream(videoUri);
-            case CONTENT:
-                return getStreamFromContent(videoUri, extra);
-            case ASSETS:
-                return getStreamFromAssets(videoUri, extra);
-            case DRAWABLE:
-                return getStreamFromDrawable(videoUri, extra);
-            case UNKNOWN:
-            default:
-                return getStreamFromOtherSource(videoUri, extra);
         }
     }
 
@@ -167,20 +144,44 @@ public class BaseImageDownloader implements ImageDownloader {
         return new ContentLengthInputStream(new BufferedInputStream(imageStream, BUFFER_SIZE),
                 conn.getContentLength());
     }
-/**
- * getStreamFromVideoThumbnailStream
- * @param videoUri
- * @return
- * @author lilongfei
- */
+
+    /**
+     * getStreamFromVideoThumbnailStream
+     * 
+     * @param videoUri
+     * @return
+     * @author lilongfei
+     */
     protected InputStream getStreamFromVideoThumbnailStream(String videoUri) {
-        InputStream videoSteam=null;
+        InputStream videoSteam = null;
+        String file = null;
+        if (videoUri != null) {
+            file = formateVideoFile(videoUri);
+        }
         try {
-            videoSteam = getVideoThumbnailStream(videoUri);
+            if (file != null) {
+                videoSteam = getVideoThumbnailStream(file);
+            }
         } catch (Exception e) {
         }
-        return new ContentLengthInputStream(new BufferedInputStream(videoSteam,BUFFER_SIZE),(int) new File(videoUri).length());
+        return new ContentLengthInputStream(new BufferedInputStream(videoSteam, BUFFER_SIZE),
+                (int) new File(file).length());
 
+    }
+
+    /**
+     * FormateVideoUri
+     * 
+     * @param uri
+     * @return
+     */
+    protected String formateVideoFile(String uri) {
+        String voideFile = null;
+        String temp = uri.substring(0, 12);
+        if ("voidefile://".equals(temp)) {
+            voideFile = uri.substring(12);
+        }
+        return voideFile;
     }
 
     /**
@@ -235,14 +236,15 @@ public class BaseImageDownloader implements ImageDownloader {
             return new ContentLengthInputStream(imageStream, (int) new File(filePath).length());
         }
     }
-/**
- * getVideoThumbnailStream
- * @param filePath
- * @return
- * @author lilongfei
- */
-    @TargetApi(Build.VERSION_CODES.FROYO)
-    private InputStream getVideoThumbnailStream(String filePath) {
+
+    /**
+     * getVideoThumbnailStream
+     * 
+     * @param filePath
+     * @return
+     * @author lilongfei
+     */
+    private InputStream getVideoThumbnailStream(String filePath) throws IOException {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
             Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(filePath,
                     MediaStore.Images.Thumbnails.FULL_SCREEN_KIND);

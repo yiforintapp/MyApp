@@ -735,33 +735,45 @@ public class PrivacyContactUtils {
     public static Comparator<ContactCallLog> mCallLogCamparator = new Comparator<ContactCallLog>() {
 
         public final int compare(ContactCallLog a, ContactCallLog b) {
-            if (new Date(a.getClallLogDate()).before(new Date(b.getClallLogDate())))
-                return 1;
-            if (new Date(a.getClallLogDate()).after(new Date(b.getClallLogDate())))
-                return -1;
-            return 0;
+            try {
+                if (new Date(a.getClallLogDate()).before(new Date(b.getClallLogDate())))
+                    return 1;
+                if (new Date(a.getClallLogDate()).after(new Date(b.getClallLogDate())))
+                    return -1;
+                return 0;
+            } catch (Exception e) {
+                return 0;
+            }
         }
     };
     // 短信时间排序
     public static Comparator<MessageBean> mMessageCamparator = new Comparator<MessageBean>() {
 
         public final int compare(MessageBean a, MessageBean b) {
-            if (new Date(a.getMessageTime()).before(new Date(b.getMessageTime())))
-                return 1;
-            if (new Date(a.getMessageTime()).after(new Date(b.getMessageTime())))
-                return -1;
-            return 0;
+            try {
+                if (new Date(a.getMessageTime()).before(new Date(b.getMessageTime())))
+                    return 1;
+                if (new Date(a.getMessageTime()).after(new Date(b.getMessageTime())))
+                    return -1;
+                return 0;
+            } catch(Exception e) {
+                return 0;
+            }
         }
     };
     // 短信时间升序排序
     public static Comparator<MessageBean> mMessageAscCamparator = new Comparator<MessageBean>() {
 
         public final int compare(MessageBean a, MessageBean b) {
-            if (new Date(a.getMessageTime()).before(new Date(b.getMessageTime())))
-                return -1;
-            if (new Date(a.getMessageTime()).after(new Date(b.getMessageTime())))
-                return 1;
-            return 0;
+            try {
+                if (new Date(a.getMessageTime()).before(new Date(b.getMessageTime())))
+                    return -1;
+                if (new Date(a.getMessageTime()).after(new Date(b.getMessageTime())))
+                    return 1;
+                return 0;
+            } catch (Exception e) {
+                return 0;
+            }
         }
     };
 

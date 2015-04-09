@@ -59,13 +59,13 @@ public class TipTextView extends TextView {
     public boolean isShowingTip() {
         return hasTip;
     }
-    
+
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         try {
             super.onRestoreInstanceState(state);
         } catch (Exception e) {
-            
+
         }
     }
 

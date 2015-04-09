@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,7 +50,10 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
-
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.ImageLoaderConfiguration;
+import com.leo.imageloader.core.ImageScaleType;
 
 @SuppressLint("NewApi")
 public class VideoGriActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
@@ -73,9 +78,10 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     public static final int REQUEST_CODE_OPTION = 1001;
     public List<VideoItemBean> mUnhide;
     private ArrayList<String> mUnhidePath;
-    
-    private AsyncLoadImage asyncLoadImage;
+    private DisplayImageOptions mOptions;
+    private ImageLoader mImageLoader;
 
+    private AsyncLoadImage asyncLoadImage;
 
     private void init() {
         mSelectAll = (Button) findViewById(R.id.select_all);
@@ -104,6 +110,21 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mCommonTtileBar.setTitle(video.getName());
     }
 
+    private void initImageLoder() {
+        mOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.video_loading)
+                .showImageForEmptyUri(R.drawable.video_loading)
+                .showImageOnFail(R.drawable.video_loading)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
+        mImageLoader = ImageLoader.getInstance();
+        mImageLoader.init(ImageLoaderConfiguration.createDefault(this));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +140,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mSelectAll.setOnClickListener(this);
         mHideButton.setOnClickListener(this);
         getResultValue();
+        initImageLoder();
     }
 
     @Override
@@ -195,10 +217,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            // AM-806
             if (position < videos.size()) {
                 VideoItemBean video = videos.get(position);
-                final String path = video.getPath();
+                String path = video.getPath();
                 if (mActivityMode == Constants.CANCLE_HIDE_MODE && !mIsEditmode) {
                     viewHolder.selectImage.setVisibility(View.GONE);
                 } else {
@@ -211,24 +232,27 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 }
                 String name = FileOperationUtil.getNoExtNameFromHideFilepath(path);
                 viewHolder.text.setText(name);
-                final ImageView imageView = viewHolder.imageView;
-                imageView.setTag(path);
+                // final ImageView imageView = viewHolder.imageView;
+                // imageView.setTag(path);
                 viewHolder.imageView.setBackgroundDrawable(context.getResources()
                         .getDrawable(R.drawable.video_loading));
-                Drawable drawableCache = asyncLoadImage.loadImage(imageView, path,
-                        new ImageCallback() {
-                            @SuppressWarnings("deprecation")
-                            @Override
-                            public void imageLoader(Drawable drawable) {
-                                if (imageView != null
-                                        && imageView.getTag().equals(path) && drawable != null) {
-                                    imageView.setBackgroundDrawable(drawable);
-                                }
-                            }
-                        });
-                if (drawableCache != null) {
-                    viewHolder.imageView.setBackgroundDrawable(drawableCache);
-                }
+                // Drawable drawableCache = asyncLoadImage.loadImage(imageView,
+                // path,
+                // new ImageCallback() {
+                // @SuppressWarnings("deprecation")
+                // @Override
+                // public void imageLoader(Drawable drawable) {
+                // if (imageView != null
+                // && imageView.getTag().equals(path) && drawable != null) {
+                // imageView.setBackgroundDrawable(drawable);
+                // }
+                // }
+                // });
+                // if (drawableCache != null) {
+                // viewHolder.imageView.setBackgroundDrawable(drawableCache);
+                // }
+                String filePath = "voidefile://" + path;
+                mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
             }
             return convertView;
         }
@@ -261,7 +285,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             }
         } catch (Exception e) {
         } finally {
-            if(mCursor != null) {
+            if (mCursor != null) {
                 mCursor.close();
             }
         }
@@ -422,15 +446,15 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mVideoItems.clear();
         mClickPosList.clear();
         mAllPath.clear();
-        if(asyncLoadImage != null) {
+        if (asyncLoadImage != null) {
             asyncLoadImage.cancel();
         }
     }
-    
+
     @Override
     public void finish() {
         super.finish();
-        if(asyncLoadImage != null) {
+        if (asyncLoadImage != null) {
             asyncLoadImage.cancel();
         }
     }
@@ -457,7 +481,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             String newFileName;
             Boolean isSuccess = true;
             boolean isHide = params[0];
-            ArrayList<VideoItemBean> list = (ArrayList<VideoItemBean>)mClickList.clone();
+            ArrayList<VideoItemBean> list = (ArrayList<VideoItemBean>) mClickList.clone();
             if (list != null && list.size() > 0) {
                 if (isHide) {
                     for (VideoItemBean item : list) {
@@ -509,14 +533,15 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             if (mVideoItems.size() > 0) {
                 animateReorder();
                 updateRightButton();
-                if(mHideVideoAdapter != null) {
+                if (mHideVideoAdapter != null) {
                     mHideVideoAdapter.notifyDataSetChanged();
                 }
             } else {
                 finish();
             }
             // video change, recompute privacy level
-            PrivacyHelper.getInstance(VideoGriActivity.this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_VIDEO);
+            PrivacyHelper.getInstance(VideoGriActivity.this).computePrivacyLevel(
+                    PrivacyHelper.VARABLE_HIDE_VIDEO);
         }
     }
 
@@ -574,7 +599,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 mHideVideoAdapter.notifyDataSetChanged();
                 for (Integer view : viewList) {
                     View child = mHideVideo.getChildAt(view);
-                    if(child != null) {
+                    if (child != null) {
                         child.setAlpha(1);
                         child.setScaleX(1);
                         child.setScaleY(1);

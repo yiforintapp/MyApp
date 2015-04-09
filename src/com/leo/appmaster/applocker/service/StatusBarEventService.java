@@ -33,6 +33,9 @@ public class StatusBarEventService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         LeoLog.d(TAG, "onHandleIntent");
+        if(intent == null) {
+            return;
+        }
         Intent targetIntent = null;
         int eventType = intent.getIntExtra(EXTRA_EVENT_TYPE, -1);
         if (eventType == EVENT_NEW_THEME) {
