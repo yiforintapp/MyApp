@@ -85,6 +85,7 @@ public class ImageGalleryActivity extends BaseActivity {
         super.onDestroy();
         if(mImageLoader != null) {
             mImageLoader.stop();
+            mImageLoader.clearMemoryCache();
         }
     }
     

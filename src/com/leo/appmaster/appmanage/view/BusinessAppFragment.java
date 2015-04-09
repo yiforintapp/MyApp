@@ -339,6 +339,9 @@ public class BusinessAppFragment extends BaseFolderFragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mImageLoader != null) {
+            mImageLoader.clearMemoryCache();
+        }
     }
 
     private void doReload() {

@@ -54,7 +54,6 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.RoundedBitmapDisplayer;
 
-
 public class AppWallActivity extends BaseActivity implements
         OnItemClickListener {
     private boolean flagGp = false;
@@ -152,6 +151,12 @@ public class AppWallActivity extends BaseActivity implements
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ImageLoader.getInstance().clearMemoryCache();
     }
 
     @Override

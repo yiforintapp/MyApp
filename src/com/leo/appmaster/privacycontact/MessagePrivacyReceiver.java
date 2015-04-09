@@ -147,7 +147,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                     values.put(Constants.COLUMN_CALL_LOG_TYPE,
                                             CallLog.Calls.INCOMING_TYPE);
                                     values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
-
                                     // 保存记录
                                     Uri uri = mContext.getContentResolver().insert(
                                             Constants.PRIVACY_CALL_LOG_URI, values);

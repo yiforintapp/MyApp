@@ -183,6 +183,14 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mImageLoader != null) {
+            mImageLoader.clearMemoryCache();
+        }
+    }
+
     private class RecommendAdapter extends BaseAdapter implements OnClickListener {
 
         public RecommendAdapter() {
@@ -246,8 +254,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.iv_application_download:
-                    
-                    
+
                     int index = Integer.parseInt(v.getTag().toString());
                     BusinessItemInfo bif = mRecommendDatas.get(index);
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "app_" + bif.packageName);
@@ -320,10 +327,10 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
     }
 
     public void onLoadInitAppFinish(boolean succeed, Object object) {
-        //成功加载，消除红点
+        // 成功加载，消除红点
         HotAppActivity hotapp_activity = (HotAppActivity) mActivity;
         hotapp_activity.dimissRedTip();
-        
+
         mRecommendHolder.setVisibility(View.VISIBLE);
         if (succeed) {
             mPullRefreshListView.setVisibility(View.VISIBLE);
@@ -339,7 +346,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
                     }
                 }
             }
-//            mRecommendDatas.clear();
+            // mRecommendDatas.clear();
             mRecommendAdapter.notifyDataSetChanged();
             if (mRecommendDatas.isEmpty()) {
                 mPullRefreshListView.setVisibility(View.GONE);
