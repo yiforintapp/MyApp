@@ -20,7 +20,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.TrafficsInfo;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class TrafficInfoPackage {

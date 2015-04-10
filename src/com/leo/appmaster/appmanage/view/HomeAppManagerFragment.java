@@ -59,7 +59,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public static boolean isClean = false;
     public static boolean isShowIng = false;
     private boolean curFastThanset = false;
-    
+
     // private boolean isReNewFragment = false;
 
     private AppMasterPreference sp_homeAppManager;
@@ -76,7 +76,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private AppDeleteAdapter mDeleteAdapter;
     private ImageView iv_donghua, app_hot_tip_icon;
     private TextView tv_installed_app, tv_ap_data, tv_backup_num,
-            tv_app_manager_installed, tv_app_manager_space, tv_from_big_donghua;
+            tv_from_big_donghua;
     // private int InstalledApps = 0;
     public static final String BACKUP_PATH = "appmaster/backup/";
     private ProcessCleaner mCleaner;
@@ -151,7 +151,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         @Override
         protected Object doInBackground(Object... params) {
             loadData();
-            // mDeleteManager.prepareDate_delete();
             onDataReady();
             return null;
         }
@@ -159,19 +158,18 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         @Override
         protected void onPostExecute(Object result) {
             super.onPostExecute(result);
-            
             pb_loading.setVisibility(View.GONE);
             list_delete.setVisibility(View.VISIBLE);
             fillData();
             setListView();
-            
-            if(curFastThanset){
-//              LeoLog.d("testfuckdelete", "onPostExecute ，show动画咯");
+
+            if (curFastThanset) {
+                // LeoLog.d("testfuckdelete", "onPostExecute ，show动画咯");
                 isShowIng = true;
                 curFastThanset = false;
                 showdonghua();
             }
-            
+
         }
     }
 
@@ -241,12 +239,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         tv_installed_app = (TextView) mHeadView.findViewById(R.id.tv_installed_app);
         tv_ap_data = (TextView) mHeadView.findViewById(R.id.tv_ap_data);
         tv_backup_num = (TextView) mHeadView.findViewById(R.id.tv_backup_num);
-        // tv_app_manager_installed = (TextView)
-        // mHeadView.findViewById(R.id.tv_app_manager_installed);
-        // tv_app_manager_space = (TextView)
-        // mHeadView.findViewById(R.id.tv_app_manager_space);
+        
         mCleaner = ProcessCleaner.getInstance(mActivity);
-
         mDeleteManager = AppMasterApplication.getInstance().getBuckupManager();
         mDeleteManager.registerBackupListener(this);
         mDeleteAdapter = new AppDeleteAdapter(mDeleteManager, HomeAppManagerFragment.this.mActivity);
@@ -257,12 +251,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         tv_installed_app.setText(installedAppsSpan);
         tv_ap_data.setText(allAppsSizeSpan);
         tv_backup_num.setText(backUpSpan);
-
-        // tv_app_manager_installed.setText(resources.getString(R.string.first_user_app)
-        // + forTextList.size());
-        // LeoLog.d("nowtest", "forTextList" + forTextList.size());
-        // tv_app_manager_space.setText(resources.getString(R.string.first_used_space)
-        // + deleteDataAllSize);
     }
 
     public void setListView() {
@@ -271,7 +259,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     private void loadData() {
-        // countAppNum();
         // bottom two TextView
         forTextList = DeleteDataList = (ArrayList<AppItemInfo>) mDeleteManager.getDeleteList()
                 .clone();
@@ -372,7 +359,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     private void cleanMem() {
-        // mAllowClean = mCleaner.allowClean();
         isCleanning = true;
         if (!isClean) {
             donghua_show_clean();
@@ -468,7 +454,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                             s = mActivity.getString(R.string.home_app_manager_mem_clean,
                                     TextFormater.dataSizeFormat(mCleanMem));
                         }
-
                         Toast.makeText(mActivity, s, 0).show();
                     }
                 });
@@ -482,7 +467,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         mCleaner.tryClean(mActivity);
         long curUsedMem = mCleaner.getUsedMem();
         mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-        // mAllowClean = false;
     }
 
     @Override
@@ -592,13 +576,12 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     @Override
     public void onSelected() {
-        
-        // LeoLog.d("HomeAppManagerFragment", "回来走不走这");
+
         if (!isClean && !isShowIng) {
             isShowIng = true;
             showdonghua();
         }
-        
+
         curFastThanset = true;
     }
 

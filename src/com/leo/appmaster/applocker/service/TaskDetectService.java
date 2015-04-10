@@ -80,10 +80,11 @@ public class TaskDetectService extends Service {
     @Override
     public void onCreate() {
         mLockHandler = new TaskChangeHandler(getApplicationContext());
+
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
         mScheduledExecutor = Executors.newScheduledThreadPool(2);
         flowDetecTask = new FlowTask();
-        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000,
+        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
 
         // Notification notification = new Notification(R.drawable.ic_launcher,
@@ -178,9 +179,11 @@ public class TaskDetectService extends Service {
             int mVersion = PhoneInfo.getAndroidVersion();
             String network_state = whatState();
 
-            Traffic traffic = Traffic.getInstance(getApplicationContext());
-            tra[0] = traffic.getAllgprs(mVersion, network_state)[2];
-            new TrafficInfoPackage(getApplicationContext()).getRunningProcess();
+            if (!network_state.equals(STATE_NO_NETWORK)) {
+                Traffic traffic = Traffic.getInstance(getApplicationContext());
+                tra[0] = traffic.getAllgprs(mVersion, network_state)[2];
+                new TrafficInfoPackage(getApplicationContext()).getRunningProcess();
+            }
 
             if (network_state.equals(STATE_NORMAL)) {
                 long TotalTraffic = sp_traffic.getTotalTraffic() * 1024;
@@ -203,17 +206,14 @@ public class TaskDetectService extends Service {
         int bili = 0;
         if (MonthItSelfTraffic > 0) {
             bili = (int) (MonthItSelfTraffic * 100 / totalTraffic);
-            LeoLog.d("TrafficService", "bili is : " + bili);
         } else {
             bili = (int) (MonthUsed * 100 / totalTraffic);
-            LeoLog.d("TrafficService", "else bili is : " + bili);
         }
 
         int TrafficSeekBar = sp_traffic.getFlowSettingBar();
 
         if (isSwtich && !haveNotice) {
             if (bili > TrafficSeekBar) {
-                // LeoLog.d("testnetwork", "服务---超过设定流量！");
                 Intent shortcut = new Intent();
                 shortcut.setAction("com.leo.appmaster.traffic.alot");
                 sendBroadcast(shortcut);

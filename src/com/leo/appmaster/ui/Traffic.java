@@ -243,8 +243,8 @@ public class Traffic {
             s_preferences
                     .setItselfMonthTraffic((long) (gprsKb - ItSelfBase + s_preferences
                             .getItselfMonthTraffic()));
-            LeoLog.d("testTraffic", "叠加是： " + (gprsKb - ItSelfBase) + s_preferences
-                    .getItselfMonthTraffic());
+//            LeoLog.d("testTraffic", "叠加是： " + (gprsKb - ItSelfBase) + s_preferences
+//                    .getItselfMonthTraffic());
             s_preferences.setItSelfTodayBase((long) gprs[2]);
         }
 

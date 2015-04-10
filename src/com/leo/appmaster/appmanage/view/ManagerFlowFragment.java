@@ -28,7 +28,6 @@ import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class ManagerFlowFragment extends BaseFragment implements OnClickListener{
-    private static final String Tag = "testAsyTaskFragment";
     private static final int CHANGE_TEXT = 0;
     private ProgressBar pb_loading;
     private int progress = 0;
@@ -181,9 +180,7 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
     }
 
     protected void initDate() {
-
         String language = AppwallHttpUtil.getLanguage();
-
         if (ManagerFlowUtils.getNowMonth() > 9) {
             month = "" + ManagerFlowUtils.getNowMonth();
         } else {
@@ -193,7 +190,6 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         today_ymd = ManagerFlowUtils.getNowTime();
         // 流量图的日期列
         for (int i = 0; i < days; i++) {
-
             if (language.equals("zh")) {
                 if (ManagerFlowUtils.getDayOfMonth() == i + 1) {
                     test.add("-   今日   -");
@@ -216,10 +212,8 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
                 }
 
             }
-            
-            
-            
         }
+        
         // 每天的流量点
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         Cursor cursor1 = mActivity.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
@@ -275,6 +269,7 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
             }
             mCursor.close();
         }
+        
         //今日流量
         String today_flow_String = ManagerFlowUtils.refreshTraffic_home_app(today_flow);
         tv_normal_ll.setText(today_flow_String);
@@ -287,11 +282,9 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         }else {
             tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mThisMonthTraffic));
         }
-
         
         //剩余流量
         long mTaoCanMB = preferences.getTotalTraffic();
-//        long mTaoCanB = mTaoCanMB * 1024 * 1024;
         long mTaoCanKB = mTaoCanMB * 1024;
         if (mTaoCanMB < 1) {
             tv_remainder_ll.setText("---");

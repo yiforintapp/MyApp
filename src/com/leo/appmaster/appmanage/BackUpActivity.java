@@ -33,7 +33,6 @@ public class BackUpActivity extends BaseFragmentActivity implements OnClickListe
     private AppManagerFragmentHoler[] mFragmentHolders = new AppManagerFragmentHoler[2];
     private RestoreFragment restoreFragment;
     private BackUpFragment backupFragment;
-//    private DeleteAppFragment deleteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
