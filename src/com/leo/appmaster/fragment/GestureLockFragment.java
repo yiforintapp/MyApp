@@ -143,7 +143,7 @@ public class GestureLockFragment extends LockFragment implements
             ((LockScreenActivity) mActivity).onUnlockSucceed();
         } else {
             if (mInputCount >= mMaxInput) {
-                ((LockScreenActivity) mActivity).onUolockOutcount();
+                ((LockScreenActivity) mActivity).onUnlockOutcount();
                 mGestureTip.setText(R.string.please_input_gesture);
                 mInputCount = 0;
             } else {

@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 
 @SuppressLint("NewApi")
 public class PrivacyMessageContentObserver extends ContentObserver {
@@ -95,7 +96,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(
-                                            new PrivacyDeletEditEventBus(
+                                            new PrivacyDeletEditEvent(
                                                     PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP));
                             /**
                              * 删除系统记录

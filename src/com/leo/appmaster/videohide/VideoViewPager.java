@@ -111,6 +111,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mImageLoader != null) {
+            mImageLoader.clearMemoryCache();
+        }
     }
 
     private void getResultValue() {
@@ -380,7 +383,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
             viewPager.setAdapter(mPagerAdapter);
         }
-        
+
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_VIDEO);
     }
 

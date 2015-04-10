@@ -61,7 +61,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     private GameHandler mHandler;
     private ListView lv_game_app;
     private GameAppAdapter2 mGameAdapter;
-    private View game_layout_load_error,app_game_empty_view;
+    private View game_layout_load_error, app_game_empty_view;
     private TextView button;
     // private TextView text;
     private boolean flagGp = false;
@@ -71,7 +71,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     private List<AppWallBean> temp;
     private PullToRefreshListView mPullRefreshListView;
     private static Context mContext;
-    
+
     private static class GameHandler extends Handler {
         WeakReference<GameAppFragment2> fragmemtHolder;
 
@@ -98,8 +98,8 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                 case MSG_LOAD_MORE_SUCCESSED:
                     if (fragmemtHolder.get() != null) {
                         fragmemtHolder.get().mPullRefreshListView.onRefreshComplete();
-                         Toast.makeText(mContext, R.string.no_more_business_app, 0)
-                         .show();
+                        Toast.makeText(mContext, R.string.no_more_business_app, 0)
+                                .show();
                     }
 
                     break;
@@ -114,19 +114,25 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
         return R.layout.fragment_game_app;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ImageLoader.getInstance().clearMemoryCache();
+    }
+
     private void onLoadGameAppFinish(boolean isGetData, List<AppWallBean> list) {
         SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "statusbar_game");
         boolean flag = false;
         if (isGetData) {
-//            list.clear();
-            if(list.isEmpty()){
+            // list.clear();
+            if (list.isEmpty()) {
                 mProgressBar.setVisibility(View.GONE);
                 mPullRefreshListView.setVisibility(View.GONE);
                 game_layout_load_error.setVisibility(View.GONE);
                 app_game_empty_view.setVisibility(View.VISIBLE);
-               return;
+                return;
             }
-            
+
             List<AppItemInfo> pkgInfos = AppLoadEngine.getInstance(
                     mActivity).getAllPkgInfo();
             List<String> pkgName = new ArrayList<String>();
@@ -190,14 +196,14 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     private void loadGameData() {
         InputStream is = null;
         String data = null;
-         String path = Utilities.getURL(DATAPATH);
+        String path = Utilities.getURL(DATAPATH);
         // String path = "http://api1.leomaster.com/appmaster/appwall";
-//        String path = "http://192.168.1.201:8080/leo/appmaster/appwall";
+        // String path = "http://192.168.1.201:8080/leo/appmaster/appwall";
 
         String language = AppwallHttpUtil.getLanguage();
         String code = getString(R.string.channel_code);
-         LeoLog.d("httpurl", "language_type IS : " + language + "code" +
-         code);
+        LeoLog.d("httpurl", "language_type IS : " + language + "code" +
+                code);
         Map<String, String> map = new HashMap<String, String>();
         map.put("language_type", language);
         map.put("market_id", code);
@@ -374,13 +380,16 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                     /* SDK Event Mark */
                     String packageName = all.get(index).getDownload().get(0).getUrl();
                     if (packageName != null && !packageName.equals("")) {
-                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "game_" + packageName);
+                        SDKWrapper
+                                .addEvent(mActivity, SDKWrapper.P1, "hots", "game_" + packageName);
                     } else {
-//                        String urlPageName = all.get(index).getDownload().get(1).getUrl();
-//                        if (urlPageName != null && !urlPageName.equals("")) {
-//                            String urlName = toUrlgetPackageName(urlPageName);
-//                            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home_app_rec", urlName);
-//                        }
+                        // String urlPageName =
+                        // all.get(index).getDownload().get(1).getUrl();
+                        // if (urlPageName != null && !urlPageName.equals("")) {
+                        // String urlName = toUrlgetPackageName(urlPageName);
+                        // SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                        // "home_app_rec", urlName);
+                        // }
                     }
                     break;
             }

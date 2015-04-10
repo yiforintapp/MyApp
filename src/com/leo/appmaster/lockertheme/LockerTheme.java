@@ -678,6 +678,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         // unregisterReceiver(mLockerThemeReceive);
         LeoGlobalBroadcast.unregisterBroadcastListener(mPackageChangedListener);
         AppLoadEngine.getInstance(this).setThemeChanageListener(null);
+        ImageLoader.getInstance().clearMemoryCache();
     }
 
     @Override

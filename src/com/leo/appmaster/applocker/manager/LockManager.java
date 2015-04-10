@@ -933,7 +933,7 @@ public class LockManager {
     private synchronized void loadLockMode() {
         if (AppMasterPreference.getInstance(mContext).isFirstUseLockMode()) {
             LeoLog.d("loadLockMode", "first Load ");
-            boolean resault = addDefaultData();
+            boolean resault = addDefaultMode();
             mLockModeLoaded = resault;
             AppMasterPreference.getInstance(mContext).setFirstUseLockMode(!resault);
         } else {
@@ -964,7 +964,7 @@ public class LockManager {
     }
 
     /* add default lock mode when we first load lock mode */
-    private boolean addDefaultData() {
+    private boolean addDefaultMode() {
         if (mLoadDefaultDataFuture != null && !mLoadDefaultDataFuture.isDone()) {
             try {
                 return mLoadDefaultDataFuture.get();

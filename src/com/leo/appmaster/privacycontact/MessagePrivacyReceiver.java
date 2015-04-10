@@ -30,6 +30,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -123,7 +124,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(
-                                            new PrivacyDeletEditEventBus(
+                                            new PrivacyDeletEditEvent(
                                                     PrivacyContactUtils.PRIVACY_INTERCEPT_CONTACT_EVENT));
                             try {
                                 // 挂断电话
@@ -146,7 +147,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                     values.put(Constants.COLUMN_CALL_LOG_TYPE,
                                             CallLog.Calls.INCOMING_TYPE);
                                     values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
-
                                     // 保存记录
                                     Uri uri = mContext.getContentResolver().insert(
                                             Constants.PRIVACY_CALL_LOG_URI, values);
@@ -155,7 +155,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                         LeoEventBus
                                                 .getDefaultBus()
                                                 .post(
-                                                        new PrivacyDeletEditEventBus(
+                                                        new PrivacyDeletEditEvent(
                                                                 PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP));
                                     }
                                 }
@@ -208,7 +208,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(
-                                            new PrivacyDeletEditEventBus(
+                                            new PrivacyDeletEditEvent(
                                                     PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
                             try {
                                 // ContentValues values = new ContentValues();

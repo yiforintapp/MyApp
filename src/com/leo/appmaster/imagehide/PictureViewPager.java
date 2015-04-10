@@ -133,6 +133,11 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
 
         Intent intent = new Intent();
@@ -354,9 +359,10 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 mPagerAdapter.notifyDataSetChanged();
                 mPager.setCurrentItem(mListPos);
             }
-            
+
             // image change, recompute privacy level
-            PrivacyHelper.getInstance(PictureViewPager.this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_PIC);
+            PrivacyHelper.getInstance(PictureViewPager.this).computePrivacyLevel(
+                    PrivacyHelper.VARABLE_HIDE_PIC);
         }
     }
 
@@ -381,7 +387,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             mPagerAdapter.notifyDataSetChanged();
             mPager.setCurrentItem(mListPos);
         }
-        
+
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_PIC);
     }
 

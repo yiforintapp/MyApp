@@ -41,6 +41,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -98,7 +100,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         task.execute("");
     }
 
-    public void onEventMainThread(PrivacyDeletEditEventBus event) {
+    public void onEventMainThread(PrivacyDeletEditEvent event) {
         mEditModelOperaction = event.editModel;
         if (PrivacyContactUtils.CANCEL_EDIT_MODEL.equals(event.editModel)) {
             restoreParameter();
@@ -165,7 +167,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     @Override
     public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         LeoEventBus.getDefaultBus().post(
-                new PrivacyMessageEventBus(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
                         PrivacyContactUtils.FROM_MESSAGE_EVENT));
         mIsEditModel = true;
         mAdapter.notifyDataSetChanged();
@@ -461,7 +463,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                     restoreParameter();
                     mAdapter.notifyDataSetChanged();
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyMessageEventBus(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
                                     PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL));
                 }
 
@@ -567,7 +569,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             restoreParameter();
             mRestoreCount = 0;
             LeoEventBus.getDefaultBus().post(
-                    new PrivacyMessageEventBus(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
                             PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL));
             isShowDefaultImage();
             mAdapter.notifyDataSetChanged();

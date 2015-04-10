@@ -246,7 +246,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         super.onDestroy();
         if (mImageLoader != null) {
             mImageLoader.stop();
+            mImageLoader.clearMemoryCache();
         }
+
     }
 
     @Override

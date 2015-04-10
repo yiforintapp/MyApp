@@ -48,8 +48,6 @@ public class TaskDetectService extends Service {
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
 
-    private static final int NOTIFY_ID = 1210920312;
-
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -86,28 +84,6 @@ public class TaskDetectService extends Service {
         flowDetecTask = new FlowTask();
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
-
-        // Notification notification = new Notification(R.drawable.ic_launcher,
-        // "leo applocker", System.currentTimeMillis());
-        //
-        // Intent intent = new Intent(this, HomeActivity.class);
-        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //
-        // PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-        // intent, 0);
-        //
-        // notification.setLatestEventInfo(this, "leo applocker",
-        // "leo applocker is servicing", contentIntent);
-        //
-        // notification.flags = Notification.FLAG_FOREGROUND_SERVICE |
-        // Notification.FLAG_NO_CLEAR;
-
-        // NotificationManager mNM = (NotificationManager)
-        // getApplicationContext().getSystemService(
-        // Context.NOTIFICATION_SERVICE);
-        // mNM.notify(NOTIFY_ID, notification);
-        // startForeground(NOTIFY_ID, notification);
-
         super.onCreate();
     }
 
