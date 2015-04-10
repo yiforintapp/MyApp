@@ -5,29 +5,14 @@
 
     <integer name="gridview_row_count">5</integer>
 
-    <dimen name="digital_height">92dp</dimen>
-    <dimen name="digital_width">58dp</dimen>
-    <dimen name="memory_flow_marginTop">10dp</dimen>
-    <dimen name="flow_icon_marginRight">30dp</dimen>
-    <dimen name="flow_icon_marginTop">10dp</dimen>
-    <dimen name="flow_icon_width">160dp</dimen>
-    <dimen name="flow_icon_height">92dp</dimen>
-    <dimen name="cicle_container_width">87dp</dimen>
-    <dimen name="cicle_container_halfwidth">35dp</dimen>
-    <dimen name="cicle_width">82dp</dimen>
-    <dimen name="memory_flow_text1_marginTop">12dp</dimen>
-    <dimen name="memory_flow_text2_marginTop">5dp</dimen>
     <dimen name="splash_width">206dp</dimen>
-    <dimen name="splash_height">220dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
     <dimen name="hide_album_frame_width">167dp</dimen>
     <dimen name="hide_album_image_frame_width">128dp</dimen>
     <dimen name="hide_album_image_frame_left">18dp</dimen>
     <dimen name="hide_album_image_frame_top">18dp</dimen>
-    <dimen name="hide_picture_frame_width">167dp</dimen>
     <dimen name="hide_pictrue_imge_frame_width">142dp</dimen>
-    <dimen name="hide_picture_iamge_frame_left">10dp</dimen>
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
     <dimen name="hide_picture_checkbox_left">107dp</dimen>
     <dimen name="hide_picture_checkbox_top">107dp</dimen>
@@ -38,19 +23,13 @@
     <dimen name="lockPatternView_height">330dp</dimen>
     <dimen name="layout_passwd_marginTop">20dp</dimen>
     <dimen name="layout_passwd_marginBottom">10dp</dimen>
-    <dimen name="home_bottom_height">250dp</dimen>
-    <dimen name="home_hide_issues_height">76dp</dimen>
-    <dimen name="home_hide_issues_padding_bottom">14dp</dimen>
     <dimen name="circle_count_text_size">74dp</dimen>
     <dimen name="circle_tip_text_size">14dp</dimen>
     <dimen name="circle_vertical_padding">14dp</dimen>
-    <dimen name="hide_issues_text_size">35dp</dimen>
-    <dimen name="hide_empty_icon_padding">6dp</dimen>
     <dimen name="circle_lock_icon_small_size">20dp</dimen>
     <dimen name="circle_lock_icon_big_size">44dp</dimen>
     <dimen name="circle_text_vertical_padding">10dp</dimen>
     <dimen name="folder_backup_text_size">14dp</dimen>
-    <dimen name="recomment_tip">500dp</dimen>
     <dimen name="success_lock_imageiv">75dp</dimen>
     <dimen name="splash_icon_margin_top">120dp</dimen>
     <dimen name="splash_icon_height">200dp</dimen>
@@ -64,7 +43,6 @@
     <dimen name="default_lock_recomment_title_top">4dp</dimen>
     <dimen name="default_lock_recomment_pagedgrideview_top">4dp</dimen>
     <dimen name="sucess_lock_recomment_pagedgrideview_top">5dp</dimen>
-    <dimen name="sucess_lock_recomment_successicon_top">35dp</dimen>
     <dimen name="app_item_iv_app_icon_width">52dp</dimen>
     <dimen name="app_item_iv_app_icon_height">52dp</dimen>
     <dimen name="default_lock_icon_width">23dp</dimen>
@@ -91,7 +69,6 @@
     <dimen name="fragment_lock_password_tv_passwd_marginleft">40dp</dimen>
     <dimen name="fragment_lock_password_tv_passwd_marginright">40dp</dimen>
     <dimen name="fragment_lock_password_setting_layout_passwd_height">40dp</dimen>
-    <dimen name="fragment_lock_password__setting_tv_passwd_width">50dp</dimen>
     <dimen name="fragment_lock_password_setting_passwd_input_tip_textsize">26sp</dimen>
     <dimen name="fragment_lock_password_setting_tv_passwd_function_tip_textsize">14sp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_width">330dp</dimen>
@@ -104,11 +81,6 @@
     <dimen name="fragment_lock_password_setting_tv_bottom">50dp</dimen>
     <dimen name="fragment_lock_password_setting_layout_passwd">10dp</dimen>
     <dimen name="fragment_lock_password_key_board">20dp</dimen>
-
-    <integer name="help_setting_press_settings_icon_left">0</integer>
-    <integer name="help_setting_press_settings_icon_top">50</integer>
-    <integer name="help_setting_press_settings_icon_right">50</integer>
-    <integer name="help_setting_press_settings_icon_bottom">0</integer>
 
     <dimen name="lock_help_item_pager_card_width">308dp</dimen>
     <dimen name="lock_help_item_pager_card_height">233dp</dimen>
@@ -151,7 +123,6 @@
     <dimen name="multi_mode_indicator_margin_top">60dp</dimen>
     <dimen name="multi_mode_add_margin_bottom">40dp</dimen>
 
-    <integer name="contactsidebar_paint_textsize">40</integer>
     <!-- privacyContact -->
     <integer name="privacy_contact_red_tip_lockWidth">25</integer>
     <integer name="privacy_contact_red_tip_lockHeight">25</integer>
@@ -163,7 +134,6 @@
     <!-- guide pages begin -->
     <dimen name="guide_page_image_margin_top">0dp</dimen>
     <dimen name="guide_page_image_height">342dp</dimen>
-    <dimen name="guide_page_image_width">360dp</dimen>
     <dimen name="guide_page_title_font_size">22dp</dimen>
     <dimen name="guide_page_content_font_size">12dp</dimen>
     <dimen name="guide_page_indicator_margin_buttom">30dp</dimen>

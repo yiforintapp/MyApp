@@ -2,17 +2,12 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">&#160;Privacy Guard&#160;</string>
-    <string name="app_count">ปริมาณการใช้</string>
-    <string name="used_memory">การใช้หน่วยความจำ</string>
-    <string name="used_flow">ใช้อัตราการไหล</string>
-    <string name="app_detail">รายละเอียดโปรแกรม</string>
     <string name="app_lock">"ล็อค   "</string>
     <string name="app_add_lock">"ล็อค   "</string>
     <string name="lock_tab">"ล็อค   "</string>
     <string name="app_backup">โปรแกรมสำรอง</string>
     <string name="app_restore">โปรแกรมกู้คืน</string>
     <string name="button_backup">สะสม</string>
-    <string name="button_install">ตั้งค่า</string>
     <string name="button_delete">ลบ</string>
     <string name="app_use_info">สถานการณ์การใช้</string>
     <string name="app_permission_info">การตรวจสอบสิทธิ์</string>
@@ -22,50 +17,30 @@
     <string name="reset_passwd_successful">รหัสผ่านของคุณได้รับการตั้งค่าใหม่ที่ประสบความสำเร็จ</string>
     <string name="stop">หยุด</string>
     <string name="reinput_anwser">คำตอบที่ไม่ถูกเอาอีกครั้ง</string>
-    <string name="please_input_pswd">กรุณาเขียนเลขรหัส</string>
-    <string name="please_input_pswd_again">เขียนรหัสอีกครั้ง</string>
     <string name="makesure">รับรอง</string>
     <string name="cancel">ยกเลิก</string>
     <string name="delete">ลบ</string>
-    <string name="passwd_set_passwd_tip">ใส่รหัส4ตัวอักษร</string>
     <string name="passwd_set_gesture_tip">เชื่อมต่ออย่างน้อย 4 จุด</string>
     <string name="passwd_hint">กรุณาเขียนเลขรหัส4ตัว</string>
     <string name="tip_no_the_same_pswd">รหัสที่ไม่ถูก ใส่อีกครั้ง</string>
     <string name="input_error_tip">ผิดXครั้ง<xliff:g>%1$s</xliff:g> อยังมีYครั้ง<xliff:g>%2$s</xliff:g></string>
-    <string name="use_gesture">ใช้รูปแบบการล็อค</string>
-    <string name="use_passwd">ใช้รหัสการล็อค</string>
     <string name="reset_passwd">เปลี่ยนรหัสผ่าน</string>
-    <string name="app_locked">ได้ล็อค</string>
-    <string name="app_unlock">ไม่ได้ล็อค</string>
     <string name="find_passwd">ลืมรหัสผ่านของคุฌ</string>
     <string name="please_wait">กรุณาโปรดลองน่อย</string>
     <string name="passwd_question">คำถาม:</string>
     <string name="passwd_anwser">คำตอบ:</string>
-    <string name="accelerate">เร่ง</string>
-    <string name="used_mem">ได้ใช้หน่วยความจำ</string>
     <string name="passwd_tip">คำใบ้รหัสผ่าน:</string>
     <string name="save">เซฟ</string>
-    <string name="passwd_protect_setting">ตัวเลือก</string>
     <string name="input_qusetion">เขียนคำถามของคุฌ</string>
     <string name="qusetion_cant_null">กรุณาเขียนคำถาม</string>
     <string name="aneser_cant_null">กรุณาเขียนคำตอบ</string>
     <string name="pleas_input_anwser">พิมพ์คำตอบคำถามเพื่อความปลอดภัยของคุณ</string>
     <string name="not_set">ไม่ได้ตั้งค่า</string>
     <string name="anwser">คำตอบ:</string>
-    <string name="not_unistall">ป้องกันการถอนตั้งค่า</string>
-    <string name="lock_screen_auto_lock">ล็อคเมื่อปิด</string>
     <string name="tips">เคล็ดลับ</string>
-    <string name="compeletely">เสร็จ</string>
 
     <!-- acceralate -->
-    <string name="clean_memory">ปุ่มเร่ง</string>
-    <string name="clean_result">ทำความสะอาดหน่วยความจำ</string>
-    <string name="best_mem">ได้เป็นดีที่สุดไม่ต้องเร่งความเร็วอีกครั้ง</string>
-    <string name="lock_count">ล็อคแล้ว</string>
-    <string name="unlock_count">ไม่ได้ล็อค</string>
-    <string name="lockscreen_access_pattern_detected">ตั้งค่าเรียบร้อย</string>
     <string name="please_input_gesture">กรุณาวาดรูป</string>
-    <string name="input_passwd_tip">กรุณาเขียนการแจ้งเตือน</string>
     <string name="switch_gesture">ใช้รูปแบบการล็อค</string>
     <string name="switch_passwd">ใช้การล็อครหัส</string>
     <string name="setting">การตั้งค่า</string>
@@ -76,13 +51,10 @@
     <string name="pp_success">คำถามรักษาความปลอดภัยสร้างเสร็จเรียบร้อยแล้ว!</string>
     <string name="passwd_setting">การตั้งค่ารหัสผ่าน</string>
     <string name="set_success">การติดตั้งสำเสร็จ!</string>
-    <string name="passwd_hint_cant_null">กรุฌาเขียนเลขรหัส</string>
     <string name="set_gesture">ตั้งค่าการล็อค</string>
     <string name="set_passwd">ตั้งค่าการล็อค</string>
-    <string name="please_input_gesture_again">วาดรูปอีกครั้ง</string>
     <string name="reset_gesture_passwd">รูปแบบการล็อค</string>
     <string name="reset_digital_passwd">การล็อครหัส</string>
-    <string name="gesture_hint">เชื่อมต่ออย่างน้อย 4 จุด</string>
     <string name="first_set_passwd_hint">ต้องเขียนเลขรหัส</string>
     <string name="make_passwd">ตกลงเลขรหัส</string>
     <string name="input_again">กรุณาเขียนอีก</string>
@@ -102,9 +74,7 @@
     <string name="delete_fail">การลบล้มเหลว!</string>
     <string name="deleting_app">ลบอยู่: %1$s</string>
     <string name="installed_app_size">การติดตั้งแอพส์: %1$d</string>
-    <string name="apk_size">ขนาด: %1$s</string>
     <string name="storage_size">พื้นที่ว่าง: %1$s</string>
-    <string name="use_storage_size">ได้ใช้พื้นที่: %1$s</string>
     <string name="unavailable">ไม่สามารถใช้ได้</string>
     <string name="bakup_fail_cancel">ไฟล์สำรองยกเลิก!</string>
     <string name="bakup_fail_full">พื้นที่จัดเก็บที่ต่ำเกินไป</string>
@@ -142,15 +112,11 @@
     <string name="forbid_uninstall">ป้องกันถอนการติดตั้ง</string>
     <string name="auto_lock">ล็อคเมื่อปิด</string>
     <string name="change_lock_time">เปลี่ยนเวลาล็อค</string>
-    <string name="recom_lock_tip">แอพส์ชันใช้ดี</string>
     <string name="new_app_lock_tip">ล็อคแอพส์ชันใหม่</string>
     <string name="passwd_protect">คำถามความปลอดภัย</string>
     <string name="change_passwd">เปลี่ยนรหัสผ่าน</string>
     <string name="passwd_notify">การแจ้งเตือน</string>
-    <string name="no_lock_item_tip">ไม่มีล็อคโปรแกรม</string>
-    <string name="lock_remind">ล็อคแอพส์</string>
     <string name="new_install_lock_remind">%1$sได้รับการติดตั้งเพียง ล็อคมันขึ้น!</string>
-    <string name="no_unlocked_item_tip">ไม่ปลดล็อคโปรแกรม</string>
     <string name="app_setting_has_update">ตรวจหาการปรับปรุง <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">ขีดจำกัดของคำเป็น40 ตัว</string>
     <string name="anwser_charsize_tip">ขีดจำกัดของคำเป็น40 ตัว</string>
@@ -161,11 +127,7 @@
     <string name="feedback_email_tip">อีเมล์</string>
     <string name="feedback_category_tip">เลือกฟิลด์</string>
     <string name="category_lock">ล็อค</string>
-    <string name="category_backup_uninstall">ถอนการติดตั้งและการสำรองข้อมูล</string>
-    <string name="category_hide_image">ซ่อนไว้รูป</string>
-    <string name="category_hide_video">ซ่อนไว้วีดีโอ</string>
     <string name="category_other">ปัญหาอีก</string>
-    <string name="category_suggest">เสนอแนะคุณลักษณะใหม่</string>
     <string name="feedback_success_title">เสนอเรียบร้อย</string>
     <string name="feedback_success_content">ขอบคุณความคิดของคุณเราจะติดตามเร็ว</string>
     <string name="app_image_hide">ซ่อนไว้รูป</string>
@@ -176,14 +138,11 @@
     <string name="app_select_none">ยกเลือก</string>
     <string name="app_hide_image">ซ่อนไว้</string>
     <string name="app_cancel_hide_image">ไม่ซ่อนไว้</string>
-    <string name="app_hide_image_edit">แก้ไข</string>
     <string name="app_add_hide_image">เพิ่ม</string>
-    <string name="app_share_hide_image">แบ่งปัน</string>
     <string name="app_unhide_dialog_content">ไม่ซ่อนไว้รูปนี้รือ?</string>
     <string name="app_delete_dialog_content">ลบรูปนี้รือ?</string>
     <string name="app_unhide_pictures_dialog_content">ไม่ซ่อนไว้รูปรือ?</string>
     <string name="app_hide_pictures_dialog_content">ซ่อนไว้รูปนี้รือ?</string>
-    <string name="app_hide_image_fail">ล้มเหลวที่จะซ่อนวิดีโอนี้!</string>
     <string name="lock_guide">แตะเพื่อล็อค</string>
     <string name="start_guide">แอพส์ชันที่ใช้มากที่สุด</string>
 
@@ -197,32 +156,23 @@
     <!-- 版权 -->
     <string name="about_copy">Copyright © 2015 LEO Network Technology. All Rights Reserved</string>
     <!-- 应用墙 -->
-    <string name="app_wall">โปรแกรมแนะนำ</string>
     <string name="app_wall_network">เครือข่ายหรือเซิร์ฟเวอร์ผิดปกติกรุณาลองใหม่อีกครั้ง!</string>
     <string name="app_wall_click">จุดใหม่</string>
     <!-- 隐私策略 -->
     <string name="protocolBar">นโยบายความเป็นส่วนตัว</string>
     <string name="lock_more">เพิ่มเติม</string>
     <string name="lock">ล็อค</string>
-    <string name="det_change_lock_time">พบว่าโปรแกรมของคุณถูกล็อคหรือไม่ล็อคบ่อยและเปลี่ยนเวลา?</string>
 
-    <string-array name="det_lock_time_items">
-        <item>30</item>
-        <item>60</item>
-    </string-array>
+
     <!-- LockerTheme -->
     <string name="localtheme">ส่วนใน</string>
     <string name="onlinetheme">ออนไลน์</string>
     <string name="lockerThemePoit">แก่นเรื่อง<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="lockerTheme">แก่นเรื่อง</string>
     <string name="defaultTheme">ผิดนัด</string>
-    <string name="moonightTheme">คืน</string>
-    <string name="orangeTheme">ตัดผลไม้</string>
     <string name="ParadoxTheme">พื้นที่ความขัดแย้ง</string>
     <string name="locker_apply">สมัครงาน</string>
     <string name="locker_uninstall">ถอนการติดตั้ง</string>
-    <string name="locker_cancel">ยกเลิก</string>
-    <string name="christmas_theme">คริสต์มาส</string>
     <string name="pull_to_refresh_pull_label">ดึงขึ้นไปฟื้นฟู</string>
     <string name="pull_to_refresh_release_label">ปล่อยเพื่อฟื้นฟู</string>
     <string name="pull_to_refresh_refreshing_label">โหลดอยู่</string>
@@ -238,7 +188,6 @@
     <string name="theme_tag_hot">ใช้ดี</string>
     <string name="about_group">เข้าร่วมกลุ่ม</string>
     <string name="about_praise">Facebook</string>
-    <string name="locker_guide">จุดเพื่อเปลี่ยนแก่นเรื่อง</string>
     <string name="locker_theme_guide">ยินดีด้วยครับ ธีมของคุณจะใช้ในการปลดล็อคหน้าจอ</string>
     <string name="locker_clean">เพิ่มประสิทธิภาพความสำเร็จได้เร็วขึ้น&#160;%1$s</string>
     <string name="setting_locker_clean">ปลดล็อคได้เพิ่มเร็ว</string>
@@ -250,13 +199,7 @@
     <string name="app_delete_dialog_content_video">ลบวิดีโอนี้ไหม?</string>
     <string name="app_unhide_video_dialog_content">ไม่ซ่อนไว้วิดีโอนี้รือ?</string>
     <string name="app_hide_video_dialog_content">ซ่อนไว้วิดีโอนี้รือ?</string>
-    <string name="hide_video_dialog_title">เล่นวิดีโอ</string>
-    <string name="hide_video_dialog_content">เพื่อปกป้องความเป็นส่วนตัวของคุณเล่นวิดีโอต้องใช้ซ่อน Video&#160;Plus，คุณต้องการที่จะติดตั้ง?</string>
     <string name="app_hide_video_fail">ล้มเหลวที่จะซ่อนวิดีโอนี้!</string>
-    <string name="hide_pic_text">ได้ซ่อนภาพ</string>
-    <string name="hide_pic_empty_text">&#160;&#160;ไม่มีซ่อนรูปภาพ</string>
-    <string name="hide_video_text">ได้ซ่อนวิดีโอ</string>
-    <string name="hide_video_empty_text">&#160;&#160;ไม่ได้ซ่อนวิดีโอ</string>
     <string name="app_backup_uninstall">ถอนการติดตั้งและการสำรองข้อมูล</string>
     <string name="circle_lock_tip_text">ล็อคแล้ว</string>
     <string name="circle_lock_empty_tip_text">การตรวจสอบไม่มีในการล็อค</string>
@@ -290,7 +233,6 @@
     <string name="lock_success">ล็อกเรียบร้อย!</string>
     <string name="lcok_success_tip">แอพส์ที่เลือกล็อคแล้ว</string>
     <string name="success_finish">เสร็จ</string>
-    <string name="app_lock_theme">แก่นเรื่อง</string>
     <string name="business_rating">คะแนน:</string>
     <string name="app_desc">บทนำ:</string>
     <string name="app_download_count">ดาวน์โหลด:</string>
@@ -312,7 +254,6 @@
 
     <string name="lock_help_password_setting_button">การตั้งค่า</string>
     <string name="lock_help_lock_setting_button">การตั้งค่าล็อค</string>
-    <string name="lock_setting_button">การตั้งค่าล็อค</string>
     <string name="lock_help_lock_theme_setting_button">เปลี่ยนแก่นเรื่อง</string>
     <string name="help_setting_guide">เคล็ดลับ</string>
 
@@ -331,8 +272,6 @@
     <string name="privacy_contact_popumenus_from_call_log">เพิ่มจากบันทึกล่าสุด</string>
     <string name="privacy_contact_popumenus_from_contact">เพิ่มจากลายชื่อ</string>
     <string name="privacy_contact_popumenus_input_phone_number">เขียนเบอร์โทร.</string>
-    <string name="privacy_message_dialog_title">นำเข้าข้อมูล?</string>
-    <string name="privacy_message_dialog_content">นำเข้าข้อความและบันทึกการโทรตัวเลขนี้หรือ ข้อมูลจะถูกลบออกจากตำแหน่งก่อนหน้า</string>
     <string name="privacy_message_progress_dialog_title">นำเข้าข้อมูล</string>
     <string name="privacy_message_progress_dialog_content">นำเข้า ... โปรดรอสักครู่</string>
     <string name="privacy_contact_activity_input_edit_name">ชื่อ</string>
@@ -349,7 +288,6 @@
     <string name="privacy_contact_progress_dialog_content">นำเข้า ... โปรดรอสักครู่</string>
     <string name="privacy_contact_callog_out">โทร.ออก</string>
     <string name="privacy_contact_callog_in">โทร.เข้า</string>
-    <string name="privacy_contact_callog_no">ไม่รับโทรศัพท์</string>
     <string name="input_toast_no_number_tip">กรุณาระบุหมายเลขโทรศัพท์</string>
     <string name="privacy_contact_checkbox_dlg_title">ลบรายชื่อ?</string>
     <string name="privacy_contact_checkbox_dlg_content">คุณแน่ใจที่จะลบสมาชิกผู้นี้จากรายชื่อส่วนตัว?</string>
@@ -390,16 +328,12 @@
     <string name="lock_mode">การเลือกโหมด</string>
     <string name="vistor_mode">แขกโหมด</string>
     <string name="unlock_all_mode">ปลดล็อกทั้งหมด</string>
-    <string name="office_mode">การงานโหมด</string>
-    <string name="family_mode">โหม์โหมด</string>
     <string name="unlock_all_mode_tip">ล็อคไม่ได้ในใต้การ "ปลดล็อกทุกโหมด"</string>
     <string name="add_new_mode">โหมดใหม่</string>
     <string name="lock_mode_all">ทูกโหมด</string>
     <string name="new_mode">โหมดใหม่</string>
     <string name="lock_mode_location">ล็อคสถานที่</string>
-    <string name="hot_on_facebook">Facebook</string>
     <string name="lock_mode_time">ล็อคเวลา</string>
-    <string name="add">เพิ่ม</string>
     <string name="please_input_mode_name">ตั้งชื่อให้โหมดใหม่ของคุณ</string>
     <string name="mode_name">ตั้งชื่อให้โหมดใหม่ของคุณ</string>
     <string name="cont_edit_visitor_name">ไม่สามารถเปลี่ยนชื่อผู้เข้าชมรูปแบบ</string>
@@ -478,18 +412,13 @@
     <string name="first_usage">นักสถิติ</string>
     <string name="first_battery">แบตเตอรี่</string>
     <string name="first_hotapp">แอพส์เก่ง</string>
-    <string name="first_installed_app">ติดตั้งแล้ว: </string>
-    <string name="first_appdata_app">การใช้ของRAM: </string>
     <string name="first_backups_app">การสะสม: </string>
-    <string name="first_dataflow_app">การใช้เดือนนี้: </string>
     <string name="first_user_app">ดาวน์โหลดของเอง: </string>
     <string name="first_used_space">พื้นที่ใช้งาน" </string>
-    <string name="first_list_uninstall">ถอนการติดตั้ง</string>
 
     <!-- Data Usage / Battery -->
     <string name="home_appmanager_donghua_tv">การใช้หน่วยความจำ</string>
     <string name="traffic_progress_bar">เดือนนี้ได้ใช้</string>
-    <string name="traff_first_page_small_set_month_used">เดือนนี้ได้ใช้(MB)</string>
     <string name="traff_first_page_small_set_low">พิมพ์แผนข้อมูลของคุณและใช้ข้อมูล (เดือน)</string>
     <string name="traff_first_page_small_set">ชุดแผนข้อมูล</string>
     <string name="no_used_traffic">ปัจจุบันไม่ได้ใช้ข้อมูลจราจร</string>
@@ -500,16 +429,12 @@
     <string name="traffic_used_lot">แจ้งเตือนการใช้</string>
     <string name="flow_settting_fist">เตือนการใช้ส่วนเกิน</string>
     <string name="flow_settting_name">การตั้งค่าแผน</string>
-    <string name="flow_settting_second">เตือนการใช้ส่วนเกิน</string>
     <string name="flow_settting_sure_bg">เสร็จสิ้นการตั้งค่า</string>
     <string name="flow_settting_dialog">ข้อมูลฟรีน้อยกว่า</string>
     <string name="flow_settting_dialog_remain">เตือนการใช้ส่วนเกิน</string>
     <string name="flow_settting_thrid">วงจรการใช้งาน</string>
-    <string name="flow_settting_thrid_first_tv">วงจรการใช้งาน</string>
     <string name="flow_settting_thrid_second_tv">แผนข้อมูล(MB)</string>
     <string name="app_elec_aca">แบตเตอรี่</string>
-    <string name="app_elec_stop">หยุด</string>
-    <string name="app_elec_zhuyi">หมายเหตุ!</string>
     <string name="app_flow_elec">การใช้</string>
     <string name="app_flow">นักสถิติ</string>
     <string name="app_elec">การจัดอันดับการบริโภค</string>
@@ -517,7 +442,6 @@
     <string name="month_remainder_triffic">เดือนนี้ไม่ใช้</string>
     <string name="month_triffic">ข้อมูลที่ใช้</string>
     <string name="flow_charts_this_month">การใช้งานในชีวิตประจำวัน</string>
-    <string name="set_flow_packages">ที่เกี่ยวข้องกับการตั้งค่า</string>
 
     <!-- What's Hot -->
     <string name="hot_app_free">ฟรี</string>
@@ -569,7 +493,6 @@
 
     <string name="lock_mode_name_cant_empty">โหมดฉากชื่อจะว่างเปล่า</string>
     <string name="lock_mode_delete_tip_title">ลบเตือน</string>
-    <string name="lock_mode_delete_tip">คุณเลือกโหมดใช้ในเวลาล็อคหรือล็อคในตำแหน่งลบฉากนี้จะสอดคล้องกับการตั้งค่าโหมดลบล็อค</string>
     <string name="please_input_name">กรุณาป้อนชื่อ</string>
     <string name="please_selset_wifi">กรุณาเลือกจุดร้อน WiFi</string>
     <string name="cur_mode_delete_tip">%1$sจะใช้หลังจากใช้ผู้เข้าชมจะลบลบโหมดนี้โหมดกำหนด</string>
