@@ -489,7 +489,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             if (mInputCount >= mMaxInput) {
                 mInputCount = 0;
                 mPasswdTip.setText(R.string.passwd_hint);
-                ((LockScreenActivity) mActivity).onUolockOutcount();
+                ((LockScreenActivity) mActivity).onUnlockOutcount();
             } else {
                 mPasswdTip.setText(String.format(
                         mActivity.getString(R.string.input_error_tip),

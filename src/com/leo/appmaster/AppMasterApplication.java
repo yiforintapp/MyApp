@@ -93,8 +93,6 @@ public class AppMasterApplication extends Application {
     public static String densityString;
     public static int MAX_OUTER_BLUR_RADIUS;
 
-    private ExecutorService mExecutorService;
-
     static {
         System.loadLibrary("leo_service");
     }
@@ -299,6 +297,8 @@ public class AppMasterApplication extends Application {
             }
         }
     }
+
+    private ExecutorService mExecutorService;
 
     private void judgeLockService() {
         if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {

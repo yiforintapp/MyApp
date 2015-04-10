@@ -414,7 +414,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }, 100);
     }
 
-    public void onUolockOutcount() {
+    public void onUnlockOutcount() {
         /**
          * notify LockManager
          */

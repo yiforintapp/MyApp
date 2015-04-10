@@ -55,7 +55,7 @@ public class LockModeView extends View {
 
     private int mDatalY;
     private int mRefreshRate = 10;
-    private int mDuration = 1000;
+    private int mDuration = 1500;
 
     private int mMoveIconHeight;
 
