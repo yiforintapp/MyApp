@@ -81,8 +81,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
 
-    private AsyncLoadImage asyncLoadImage;
-
     private void init() {
         mSelectAll = (Button) findViewById(R.id.select_all);
         mBottomBar = (LinearLayout) findViewById(R.id.bottom_bar);
@@ -134,7 +132,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mAllPath = new ArrayList<String>();
         mUnhide = new ArrayList<VideoItemBean>();
         mUnhidePath = new ArrayList<String>();
-        asyncLoadImage = new AsyncLoadImage();
         init();
         mHideVideo.setOnItemClickListener(this);
         mSelectAll.setOnClickListener(this);
@@ -446,16 +443,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mVideoItems.clear();
         mClickPosList.clear();
         mAllPath.clear();
-        if (asyncLoadImage != null) {
-            asyncLoadImage.cancel();
-        }
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        if (asyncLoadImage != null) {
-            asyncLoadImage.cancel();
+        if (mImageLoader != null) {
+            mImageLoader.clearMemoryCache();
         }
     }
 

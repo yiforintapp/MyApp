@@ -58,7 +58,6 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
     private HideVideoAdapter adapter;
-    private AsyncLoadImage asyncLoadImage;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
     private VideoHideDialog dialog;
@@ -69,7 +68,6 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_hide);
-        asyncLoadImage = new AsyncLoadImage();
         initUI();
         initImageLoder();
         adapter = new HideVideoAdapter(VideoHideGalleryActivity.this);
@@ -132,16 +130,8 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         if (hideVideos != null) {
             hideVideos.clear();
         }
-        if (asyncLoadImage != null) {
-            asyncLoadImage.cancel();
-        }
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        if (asyncLoadImage != null) {
-            asyncLoadImage.cancel();
+        if (mImageLoader != null) {
+            mImageLoader.clearMemoryCache();
         }
     }
 

@@ -157,9 +157,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
-        // TODO
         mListCallLog.post(new Runnable() {
-
             @Override
             public void run() {
                 for (ContactCallLog callLog : mCallLogList) {
