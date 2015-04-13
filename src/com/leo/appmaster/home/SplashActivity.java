@@ -39,6 +39,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.LeoLog;
@@ -73,6 +74,9 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         mEventHandler = new EventHandler();
         startInitTask();
         LeoEventBus.getDefaultBus().register(this, 2);
+        
+        // Play animation when reenter app
+        PrivacyHelper.getInstance(this).setDirty(true);
     }
 
     @Override
