@@ -33,7 +33,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 
     private ImageView iv_delete;
     private TextView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
-    private TextView mInputTip, mTvPasswdFuncTip, mTvBottom;
+    private TextView mInputTip, mTvPasswdFuncTip, mTvBottom,switchBottom;
 
     private int mInputCount = 1;
     private String mTempFirstPasswd = "";
@@ -84,7 +84,8 @@ public class PasswdSettingFragment extends BaseFragment implements
 
         mTvBottom = (TextView) findViewById(R.id.tv_bottom);
         mTvBottom.setOnClickListener(this);
-
+        switchBottom = (TextView) mActivity.findViewById(R.id.switch_bottom);
+        
         if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
             mInputTip.setText(R.string.first_set_passwd_hint);
             mTvPasswdFuncTip.setText(R.string.digital_passwd_function_hint);
@@ -181,6 +182,8 @@ public class PasswdSettingFragment extends BaseFragment implements
             mInputTip.setText(R.string.set_passwd);
         }
         mTvPasswdFuncTip.setText(R.string.digital_passwd_function_hint);
+        switchBottom.setVisibility(View.VISIBLE);
+        mTvBottom.setVisibility(View.INVISIBLE);
     }
 
     private void makesurePasswd() {
@@ -193,6 +196,8 @@ public class PasswdSettingFragment extends BaseFragment implements
                     mInputTip.setText(R.string.make_passwd);
                     mTvPasswdFuncTip.setText(R.string.input_again);
                     iv_delete.setEnabled(false);
+                    switchBottom.setVisibility(View.INVISIBLE);
+                    mTvBottom.setVisibility(View.VISIBLE);
                 } else if (mInputCount == 2) {
                     AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
                     if (mTempFirstPasswd.equals(mTempSecondPasswd)) {
