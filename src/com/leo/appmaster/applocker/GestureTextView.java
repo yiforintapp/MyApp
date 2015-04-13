@@ -16,6 +16,9 @@ public class GestureTextView extends TextView implements OnClickListener {
     private float mDownX;
     private float mUpX;
 
+    private float mDownY;
+    private float mUpY;
+
     private PretendFragment mPf;
 
     public GestureTextView(Context context) {
@@ -39,13 +42,19 @@ public class GestureTextView extends TextView implements OnClickListener {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mDownX = event.getX();
+                mDownY = event.getY();
                 break;
             case MotionEvent.ACTION_UP:
                 mUpX = event.getX();
-                float distance = Math.abs(mUpX - mDownX);
-                LeoLog.e("onTouchEvent", "distance = " + distance);
-                if (distance > 50) {
-                    if (distance > 100) {
+                mUpY = event.getY();
+                float distanceX = Math.abs(mUpX - mDownX);
+                float distanceY = Math.abs(mUpY - mDownY);
+                LeoLog.d("onTouchEvent", "distanceX = " + distanceX + "     distanceY =  "
+                        + distanceY);
+                if (distanceX > 50) {
+                    if (distanceY > 50)
+                        return true;
+                    if (distanceX > 100) {
                         if (mPf != null) {
                             mPf.onUnlockPretendSuccessfully();
                         }

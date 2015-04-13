@@ -108,8 +108,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_APP_HOME_APP_FRAGMENT_RED_TIP = "home_app_fragment_red_tip";
     public static final String PREF_APP_HOT_APP_ACTIVITY_RED_TIP = "hot_app_activity_red_tip";
 
-    public static final String PREF_APP_PRIVACY_MESSAGE_RED_TIP = "privacy_message_red_tip";
-    public static final String PREF_APP_PRIVACY_CALL_LOG_RED_TIP = "privacy_call_log_red_tip";
 
     public static final String PREF_SHOW_TIP_KEY = "last_show_tip_time";
     public static final String PREF_THEME_SUCCESS_STRATEGY = "theme_success_strategy";
@@ -157,6 +155,30 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private long mBusinessSuccessStrategy = -1;
     private long mBusinessFailStrategy = -1;
     private long mCurrentBusinessStrategy = -1;
+    
+    private String mOnlineThemeSerial = null;
+    private String mLocalThemeSerial = null;
+    private String mOnlineBusinessSerial = null;
+    private String mLocalBusinessSerial = null;
+    private long mLastCheckBusinessTime = -1;
+    private long mLastCheckThemeTime = -1;
+    private long mLastSyncBusinessTime = -1;
+    private long mUnlockCount = -1;
+    private int mRelockTimeOut = -1;
+    private long mMonthGprsAll = -1;
+    private long mItSelfTodayBase = -1;
+    private long mMonthGprsBase = -1;
+    private int mYearAppTraf = -1;
+    private int mMonthAppTraf = -1;
+    private long mGprsSend = -1;
+    private long mGprsRev = -1;
+    private long mBaseSend = -1;
+    private long mBaseRev = -1;
+    private int mRenewDay = -1;
+    private int mTotalTraffic = -1;
+    private int mUsedTraffic = -1;
+    private long mItselfMonthTraffic = -1;
+    private int mWeiZhuang = -1;
 
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
@@ -299,22 +321,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putLong(PREF_SHOW_TIP_KEY, lastShowTime).commit();
     }
 
-    public boolean getMessageRedTip() {
-        return mPref.getBoolean(PREF_APP_PRIVACY_MESSAGE_RED_TIP, false);
-    }
-
-    public void setMessageRedTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_APP_PRIVACY_MESSAGE_RED_TIP, flag).commit();
-    }
-
-    public boolean getCallLogRedTip() {
-        return mPref.getBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, false);
-    }
-
-    public void setCallLogRedTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, flag).commit();
-    }
-
     public boolean getHomeFragmentRedTip() {
         return mPref.getBoolean(PREF_APP_HOME_APP_FRAGMENT_RED_TIP, false);
     }
@@ -398,10 +404,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public String getOnlineThemeSerialNumber() {
-        return mPref.getString(PREF_ONLINE_THEME_SERIAL, "");
+        if(mOnlineThemeSerial == null) {
+            mOnlineThemeSerial = mPref.getString(PREF_ONLINE_THEME_SERIAL, "");
+        }
+        return mOnlineThemeSerial;
     }
 
     public void setOnlineThemeSerialNumber(String serial) {
+        mOnlineThemeSerial = serial;
         mPref.edit().putString(PREF_ONLINE_THEME_SERIAL, serial).commit();
     }
 
@@ -414,51 +424,75 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public String getLocalThemeSerialNumber() {
-        return mPref.getString(PREF_LOCAL_THEME_SERIAL, "");
+        if(mLocalThemeSerial == null) {
+            mLocalThemeSerial = mPref.getString(PREF_LOCAL_THEME_SERIAL, "");
+        }
+        return mLocalThemeSerial;
     }
 
     public void setLocalThemeSerialNumber(String serial) {
+        mLocalThemeSerial = serial;
         mPref.edit().putString(PREF_LOCAL_THEME_SERIAL, serial).commit();
     }
 
     public long getLastCheckThemeTime() {
-        return mPref.getLong(PREF_LAST_CHECK_NEW_THEME, 0);
+        if(mLastCheckThemeTime < 0) {
+            mLastCheckThemeTime = mPref.getLong(PREF_LAST_CHECK_NEW_THEME, 0);
+        }
+        return mLastCheckThemeTime;
     }
 
     public void setLastCheckThemeTime(long lastTime) {
+        mLastCheckThemeTime = lastTime;
         mPref.edit().putLong(PREF_LAST_CHECK_NEW_THEME, lastTime).commit();
     }
 
     public long getLastSyncBusinessTime() {
-        return mPref.getLong(PREF_LAST_SYNC_BUSINESS_TIME, 0);
+        if(mLastSyncBusinessTime < 0) {
+            mLastSyncBusinessTime = mPref.getLong(PREF_LAST_SYNC_BUSINESS_TIME, 0);
+        }
+        return mLastSyncBusinessTime;
     }
 
     public void setLastSyncBusinessTime(long lastTime) {
+        mLastSyncBusinessTime = lastTime;
         mPref.edit().putLong(PREF_LAST_SYNC_BUSINESS_TIME, lastTime).commit();
     }
 
     public long getLastCheckBusinessTime() {
-        return mPref.getLong(PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME, 0);
+        if(mLastCheckBusinessTime < 0) {
+            mLastCheckBusinessTime = mPref.getLong(PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME, 0);
+        }
+        return mLastCheckBusinessTime;
     }
 
     public void setLastCheckBusinessTime(long lastTime) {
+        mLastCheckBusinessTime = lastTime;
         mPref.edit().putLong(PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME, lastTime)
                 .commit();
     }
 
     public String getOnlineBusinessSerialNumber() {
-        return mPref.getString(PREF_ONLINE_BUSINESS_SERIAL, "");
+        if(mOnlineBusinessSerial == null) {
+            mOnlineBusinessSerial = mPref.getString(PREF_ONLINE_BUSINESS_SERIAL, "");
+        }
+        return mOnlineBusinessSerial;
     }
 
     public void setOnlineBusinessSerialNumber(String serial) {
+        mOnlineBusinessSerial = serial;
         mPref.edit().putString(PREF_ONLINE_BUSINESS_SERIAL, serial).commit();
     }
 
     public String getLocalBusinessSerialNumber() {
-        return mPref.getString(PREF_LOCAL_BUSINESS_SERIAL, "");
+        if(mLocalBusinessSerial == null) {
+            mLocalBusinessSerial = mPref.getString(PREF_LOCAL_BUSINESS_SERIAL, "");
+        }
+        return mLocalBusinessSerial;
     }
 
     public void setLocalBusinessSerialNumber(String serial) {
+        mLocalBusinessSerial = serial;
         mPref.edit().putString(PREF_LOCAL_BUSINESS_SERIAL, serial).commit();
     }
 
@@ -484,11 +518,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setUnlockCount(long count) {
+        mUnlockCount = count;
         mPref.edit().putLong(PREF_UNLOCK_COUNT, count).commit();
     }
 
     public long getUnlockCount() {
-        return mPref.getLong(PREF_UNLOCK_COUNT, 0);
+        if(mUnlockCount < 0) {
+            mUnlockCount = mPref.getLong(PREF_UNLOCK_COUNT, 0);
+        }
+        return mUnlockCount;
     }
 
     public void setRecommendLockPercent(float percent) {
@@ -561,11 +599,23 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getRelockTimeout() {
-        String time = mPref.getString(PREF_RELOCK_TIME, "0");
-        return Integer.parseInt(time) * 1000;
+        if(mRelockTimeOut < 0) {
+            String time = mPref.getString(PREF_RELOCK_TIME, "0");
+            try {
+                mRelockTimeOut = Integer.parseInt(time) * 1000;
+            } catch (Exception e) {
+                mRelockTimeOut = 0;
+            }
+        }
+        return mRelockTimeOut;
     }
 
     public void setRelockTimeout(String timeout) {
+        try {
+            mRelockTimeOut = Integer.parseInt(timeout) * 1000;
+        } catch (Exception e) {
+            mRelockTimeOut = 0;
+        }
         mPref.edit().putString(PREF_RELOCK_TIME, timeout + "").commit();
     }
 
@@ -623,29 +673,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getString(PREF_PASSWD_TIP, "");
     }
 
-    // public List<String> getLockedAppList() {
-    // return mLockedAppList;
-    // }
-
-    // public void setLockedAppList(List<String> applicationList) {
-    // mLockedAppList = applicationList;
-    // String combined = "";
-    // for (String string : applicationList) {
-    // combined = combined + string + ";";
-    // }
-    //
-    // if (applicationList == null || applicationList.isEmpty()) {
-    // LockManager.getInstatnce().stopLockService();
-    // } else {
-    // if (LockManager.getInstatnce().serviceBound()) {
-    // LockManager.getInstatnce().startLockService();
-    // } else {
-    // LockManager.getInstatnce().bindService();
-    // }
-    // }
-    //
-    // mPref.edit().putString(PREF_APPLICATION_LIST, combined).commit();
-    // }
 
     public List<String> getRecommendList() {
         return mRecommendList;
@@ -736,167 +763,162 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setMonthGprsAll(long value) {
+        mMonthGprsAll = value;
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MONTH_ALL, value).commit();
     }
 
     public long getMonthGprsAll() {
-        return mPref.getLong(PREF_APP_MANAGER_FLOW_MONTH_ALL, 0);
+        if(mMonthGprsAll < 0) {
+            mMonthGprsAll = mPref.getLong(PREF_APP_MANAGER_FLOW_MONTH_ALL, 0);
+        }
+        return mMonthGprsAll;
     }
 
     public void setItSelfTodayBase(long value) {
+        mItSelfTodayBase = value;
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE, value).commit();
     }
 
     public long getItSelfTodayBase() {
-        return mPref.getLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE, 0);
+        if(mItSelfTodayBase < 0) {
+            mItSelfTodayBase = mPref.getLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE, 0);
+        }
+        return mItSelfTodayBase;
     }
 
     public void setMonthGprsBase(long value) {
+        mMonthGprsBase = value;
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MONTH_BASE, value).commit();
     }
 
     public long getMonthGprsBase() {
-        return mPref.getLong(PREF_APP_MANAGER_FLOW_MONTH_BASE, 0);
+        if(mMonthGprsBase < 0) {
+            mMonthGprsBase = mPref.getLong(PREF_APP_MANAGER_FLOW_MONTH_BASE, 0);
+        }
+        return mMonthGprsBase;
     }
 
-    // public void setFirstIn(boolean value) {
-    // mPref.edit().putBoolean(PREF_APP_MANAGER_FLOW_FIRST_IN, value).commit();
-    // }
-
-    // public boolean getFirstIn() {
-    // return mPref.getBoolean(PREF_APP_MANAGER_FLOW_FIRST_IN, true);
-    // }
-    //
-    // public void setYear(int value) {
-    // mPref.edit().putInt(PREF_APP_MANAGER_FLOW_YEAR, value).commit();
-    // }
-    //
-    // public int getYear() {
-    // return mPref.getInt(PREF_APP_MANAGER_FLOW_YEAR, 2015);
-    // }
-    //
-    // public void setMonth(int value) {
-    // mPref.edit().putInt(PREF_APP_MANAGER_FLOW_MONTH, value).commit();
-    // }
-    //
-    // public int getMonth() {
-    // return mPref.getInt(PREF_APP_MANAGER_FLOW_MONTH, 1);
-    // }
-    //
-    // public void setDay(int value) {
-    // mPref.edit().putInt(PREF_APP_MANAGER_FLOW_DAY, value).commit();
-    // }
-    //
-    // public int getDay() {
-    // return mPref.getInt(PREF_APP_MANAGER_FLOW_DAY, 1);
-    // }
-
     public void setYearAppTraf(int value) {
+        mYearAppTraf = value;
         mPref.edit().putInt(PREF_APP_MANAGER_FLOW_YEAR_TRAF, value).commit();
     }
 
     public int getYearAppTraf() {
-        return mPref.getInt(PREF_APP_MANAGER_FLOW_YEAR_TRAF, 2015);
+        if(mYearAppTraf < 0) {
+            mYearAppTraf = mPref.getInt(PREF_APP_MANAGER_FLOW_YEAR_TRAF, 2015);
+        }
+        return mYearAppTraf;
     }
 
     public void setMonthAppTraf(int value) {
+        mMonthAppTraf = value;
         mPref.edit().putInt(PREF_APP_MANAGER_FLOW_MONTH_TRAF, value).commit();
     }
 
     public int getMonthAppTraf() {
-        return mPref.getInt(PREF_APP_MANAGER_FLOW_MONTH_TRAF, 1);
+        if(mMonthAppTraf < 0) {
+            mMonthAppTraf = mPref.getInt(PREF_APP_MANAGER_FLOW_MONTH_TRAF, 1);
+        }
+        return mMonthAppTraf;
     }
 
-    // public void setDayAppTraf(int value) {
-    // mPref.edit().putInt(PREF_APP_MANAGER_FLOW_DAY_TRAF, value).commit();
-    // }
-    //
-    // public int getDayAppTraf() {
-    // return mPref.getInt(PREF_APP_MANAGER_FLOW_DAY_TRAF, 1);
-    // }
-
     public void setGprsSend(long value) {
+        mGprsSend = value;
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_GPRS_SEND, value).commit();
     }
 
     public long getGprsSend() {
-        return mPref.getLong(PREF_APP_MANAGER_FLOW_GPRS_SEND, 0);
+        if(mGprsSend < 0) {
+            mGprsSend = mPref.getLong(PREF_APP_MANAGER_FLOW_GPRS_SEND, 0);
+        }
+        return mGprsSend;
     }
 
     public void setGprsRev(long value) {
+        mGprsRev = value;
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_GPRS_REV, value).commit();
     }
 
     public long getGprsRev() {
-        return mPref.getLong(PREF_APP_MANAGER_FLOW_GPRS_REV, 0);
+        if(mGprsRev < 0) {
+            mGprsRev = mPref.getLong(PREF_APP_MANAGER_FLOW_GPRS_REV, 0);
+        }
+        return mGprsRev;
     }
 
     public void setBaseSend(long value) {
+        mBaseSend = value;
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_BE_SEND, value).commit();
     }
 
     public long getBaseSend() {
-        return mPref.getLong(PREF_APP_MANAGER_FLOW_BE_SEND, 0);
+        if(mBaseSend < 0) {
+            mBaseSend = mPref.getLong(PREF_APP_MANAGER_FLOW_BE_SEND, 0);
+        }
+        return mBaseSend;
     }
 
     public void setBaseRev(long value) {
+        mBaseRev = value;
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW__BE_REV, value).commit();
     }
 
     public long getBaseRev() {
-        return mPref.getLong(PREF_APP_MANAGER_FLOW__BE_REV, 0);
+        if(mBaseRev < 0) {
+            mBaseRev = mPref.getLong(PREF_APP_MANAGER_FLOW__BE_REV, 0);
+        }
+        return mBaseRev;
     }
 
     public void setRenewDay(int value) {
+        mRenewDay = value;
         mPref.edit().putInt(PREF_APP_MANAGER_FLOW_RENEWDAY, value).commit();
     }
 
     public int getRenewDay() {
-        return mPref.getInt(PREF_APP_MANAGER_FLOW_RENEWDAY, 1);
+        if(mRenewDay < 0) {
+            mRenewDay = mPref.getInt(PREF_APP_MANAGER_FLOW_RENEWDAY, 1);
+        }
+        return mRenewDay;
     }
 
     public void setTotalTraffic(int value) {
+        mTotalTraffic = value;
         mPref.edit().putInt(PREF_APP_MANAGER_FLOW_TOTAL_TRAFFIC, value).commit();
     }
 
     public int getTotalTraffic() {
-        return mPref.getInt(PREF_APP_MANAGER_FLOW_TOTAL_TRAFFIC, 0);
+        if(mTotalTraffic < 0) {
+            mTotalTraffic = mPref.getInt(PREF_APP_MANAGER_FLOW_TOTAL_TRAFFIC, 0);
+        }
+        return mTotalTraffic;
     }
 
-    // public void setMonthDayClean(int value) {
-    // mPref.edit().putInt(PREF_APP_MANAGER_FLOW_MONTH_DAY_CLEAN,
-    // value).commit();
-    // }
-    //
-    // public int getMonthDayClean() {
-    // return mPref.getInt(PREF_APP_MANAGER_FLOW_MONTH_DAY_CLEAN, 1);
-    // }
-
     public void setUsedTraffic(int value) {
+        mUsedTraffic = value;
         mPref.edit().putInt(PREF_APP_MANAGER_FLOW_MONTH_USED_TRAFFIC,
                 value).commit();
     }
 
     public long getUsedTraffic() {
-        return mPref.getInt(PREF_APP_MANAGER_FLOW_MONTH_USED_TRAFFIC, 0);
+        if(mUsedTraffic < 0) {
+            mUsedTraffic = mPref.getInt(PREF_APP_MANAGER_FLOW_MONTH_USED_TRAFFIC, 0);
+        }
+        return mUsedTraffic;
     }
 
     public void setItselfMonthTraffic(long value) {
+        mItselfMonthTraffic = value;
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC,
                 value).commit();
     }
 
     public long getItselfMonthTraffic() {
-        return mPref.getLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC, 0);
+        if(mItselfMonthTraffic < 0) {
+            mItselfMonthTraffic = mPref.getLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC, 0);
+        }
+        return mItselfMonthTraffic;
     }
-
-    // public void setTodayGprs(float value) {
-    // mPref.edit().putFloat(PREF_APP_MANAGER_FLOW_TODAY_GPRS, value).commit();
-    // }
-    //
-    // public float getTodayGprs() {
-    // return mPref.getFloat(PREF_APP_MANAGER_FLOW_TODAY_GPRS, 0);
-    // }
 
     // Single App Flow
     public void setAppBaseSend(int uid, long value) {
@@ -1025,13 +1047,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getLong(PREF_LAST_ALARM_SET_TIME, 0l);
     }
 
-    // public void setIsHelpSettingChangeSucess(boolean flag){
-    // mPref.edit().putBoolean(PREF_LOCK_SETTING_CHANGE_PASSWORD,
-    // flag).commit();
-    // }
-    // public boolean getIsHelpSettingChangeSucess(){
-    // return mPref.getBoolean(PREF_LOCK_SETTING_CHANGE_PASSWORD, false);
-    // }
 
     public boolean getUnlocked() {
         return mUnlocked;
@@ -1076,11 +1091,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
     
     public void setWeiZhuang(int selected){
+        mWeiZhuang = selected;
         mPref.edit().putInt(PREF_WEIZHUANG_SELECTED, selected).commit();
     }
     
     public int getWeiZhuang(){
-        return mPref.getInt(PREF_WEIZHUANG_SELECTED, 0);
+        if(mWeiZhuang < 0) {
+            mWeiZhuang = mPref.getInt(PREF_WEIZHUANG_SELECTED, 0);
+        }
+        return mWeiZhuang;
     }
 
     public int getPretendLock() {

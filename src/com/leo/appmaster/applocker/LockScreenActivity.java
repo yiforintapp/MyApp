@@ -366,6 +366,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if (mPretendFragment != null) {
             mLockLayout.setVisibility(View.GONE);
             tans = fm.beginTransaction();
+            tans.remove(mPretendFragment);
             tans.replace(R.id.pretend_layout, mPretendFragment);
             tans.commit();
         } else {

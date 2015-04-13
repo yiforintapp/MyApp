@@ -614,9 +614,8 @@
         <item>应用错误</item>
         <item>未知来电</item>
         <item>指纹解锁</item>
-    </string-array>
+    </string-array><string name="pretend_app_error">抱歉，\" %1$s \"已停止使用</string>
 
-    <string name="pretend_app_error">抱歉，\"<xliff:g id="mode">%1$s</xliff:g>\"已停止使用</string>
     <!-- weizhuang -->
 
 
