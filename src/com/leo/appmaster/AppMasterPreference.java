@@ -1090,24 +1090,24 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag).commit();
     }
     
-    public void setWeiZhuang(int selected){
-        mWeiZhuang = selected;
-        mPref.edit().putInt(PREF_WEIZHUANG_SELECTED, selected).commit();
-    }
-    
-    public int getWeiZhuang(){
-        if(mWeiZhuang < 0) {
-            mWeiZhuang = mPref.getInt(PREF_WEIZHUANG_SELECTED, 0);
-        }
-        return mWeiZhuang;
-    }
+//    public void setWeiZhuang(int selected){
+//        mWeiZhuang = selected;
+//        mPref.edit().putInt(PREF_WEIZHUANG_SELECTED, selected).commit();
+//    }
+//    
+//    public int getWeiZhuang(){
+//        if(mWeiZhuang < 0) {
+//            mWeiZhuang = mPref.getInt(PREF_WEIZHUANG_SELECTED, 0);
+//        }
+//        return mWeiZhuang;
+//    }
 
     public int getPretendLock() {
         return mPref.getInt(PREF_CUR_PRETNED_LOCK, 0);
     }
 
-    public void setPretendLock() {
-        mPref.edit().putInt(PREF_CUR_PRETNED_LOCK, 0).commit();
+    public void setPretendLock(int selected) {
+        mPref.edit().putInt(PREF_CUR_PRETNED_LOCK, selected).commit();
     }
 
 }

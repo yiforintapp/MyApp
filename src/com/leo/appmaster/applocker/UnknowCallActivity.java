@@ -139,7 +139,7 @@ public class UnknowCallActivity extends Activity implements OnTouchListener {
                 //触发成功
                 LeoLog.d("testfuck", "触发成功");
                 Toast.makeText(this, getString(R.string.weizhuang_setting_ok), 0).show();
-                sp_unknowcall.setWeiZhuang(UnknowCallMode);
+                sp_unknowcall.setPretendLock(UnknowCallMode);
                 finish();
             }else {
                 if(!isThridRound){
