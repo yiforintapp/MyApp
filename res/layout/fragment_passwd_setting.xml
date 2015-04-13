@@ -262,6 +262,7 @@
         android:layout_marginBottom="10dp"
         android:padding="10dp"
         android:text="@string/reset_digital_passwd"
-        android:textColor="@color/common_button_selecter" />
+        android:textColor="@color/common_button_selecter" 
+        android:visibility="invisible"/>
 
 </RelativeLayout>

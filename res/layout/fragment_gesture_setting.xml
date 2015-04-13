@@ -46,6 +46,7 @@
         android:layout_marginBottom="@dimen/fragment_lock_gesture_setting_tv_bottom_marginbottom"
         android:padding="10dp"
         android:text="@string/reset_gesture_passwd"
-        android:textColor="@color/common_button_selecter" />
+        android:textColor="@color/common_button_selecter" 
+        android:visibility="invisible"/>
 
 </RelativeLayout>

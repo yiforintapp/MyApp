@@ -36,7 +36,7 @@ public class GestureSettingFragment extends BaseFragment implements
         OnClickListener, OnPatternListener, OnDismissListener,
         OnDiaogClickListener {
 
-    private TextView mTvGestureTip, mTvPasswdFuncTip, mTvBottom;
+    private TextView mTvGestureTip, mTvPasswdFuncTip, mTvBottom,mSwitchBottom;
     private LockPatternView mLockPatternView;
     private int mInputCount = 1;
     private String mTempGesture1, mTempGesture2;
@@ -57,6 +57,7 @@ public class GestureSettingFragment extends BaseFragment implements
         mTvPasswdFuncTip = (TextView) findViewById(R.id.tv_passwd_function_tip);
         mTvBottom = (TextView) findViewById(R.id.tv_bottom);
         mTvBottom.setOnClickListener(this);
+        mSwitchBottom = (TextView) mActivity.findViewById(R.id.switch_bottom);
 
         if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
             mTvGestureTip.setText(R.string.first_set_passwd_hint);
@@ -87,8 +88,10 @@ public class GestureSettingFragment extends BaseFragment implements
         } else {
             mTvGestureTip.setText(R.string.set_gesture);
         }
-
         mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
+        
+        mSwitchBottom.setVisibility(View.VISIBLE);
+        mTvBottom.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -133,6 +136,8 @@ public class GestureSettingFragment extends BaseFragment implements
             mTvPasswdFuncTip.setText(R.string.input_again);
             mLockPatternView.clearPattern();
             mInputCount++;
+            mSwitchBottom.setVisibility(View.INVISIBLE);
+            mTvBottom.setVisibility(View.VISIBLE);
         } else {
             mTempGesture2 = LockPatternUtils.patternToString(pattern);
             if (mTempGesture2.equals(mTempGesture1)) {
