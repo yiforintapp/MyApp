@@ -566,7 +566,7 @@
     </string-array>
 
     <string name="select_mode">选择情景模式</string>
-     <string name="select_wifi_mode">选择wifi</string>
+    <string name="select_wifi_mode">选择wifi</string>
     <string name="choose_ssid">请选择wifi热点</string>
     <string name="choose_enter_mode">进入时操作</string>
     <string name="choose_quit_mode">离开时操作</string>
@@ -596,5 +596,12 @@
     <string name="add_new_time_lock">添加时间锁</string>
     <string name="add_new_location_lock">添加位置锁</string>
     <string name="save_successful">保存成功</string>
+
+    <!-- version 2.1 begin -->
+    <string name="pretend_app_error">抱歉，&#34;<xliff:g id="mode">%1$s</xliff:g>&#34;已停止使用</string>
+    
+    
+    
+    <!-- version 2.1 end -->
 
 </resources>

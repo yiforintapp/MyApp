@@ -1,39 +1,50 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_lock_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_background" >
-
-    <com.leo.appmaster.ui.CommonTitleBar
-        android:id="@+id/layout_title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
-
-    <FrameLayout
-        android:id="@+id/fragment_contain"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/layout_title_bar" >
-    </FrameLayout>
+    android:layout_height="match_parent" >
 
     <RelativeLayout
-        android:id="@+id/lockerGuide"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/layout_title_bar"
-        android:layout_marginRight="50dp"
-        android:background="@drawable/lock_tutorails_button"
-        android:gravity="center"
-        android:visibility="gone" >
+        android:id="@+id/activity_lock_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-        <TextView
-            android:id="@+id/lock_guide_tv"
-            android:layout_width="wrap_content"
+        <com.leo.appmaster.ui.CommonTitleBar
+            android:id="@+id/layout_title_bar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF" />
+            android:layout_alignParentTop="true" />
+
+        <FrameLayout
+            android:id="@+id/fragment_contain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_title_bar" >
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/lockerGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/layout_title_bar"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/lock_tutorails_button"
+            android:gravity="center"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/lock_guide_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
     </RelativeLayout>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/pretend_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+    </RelativeLayout>
+
+</FrameLayout>
