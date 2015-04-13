@@ -398,7 +398,6 @@
     <string name="appwall_name">游戏中心</string>
     <string name="unlock_theme">解锁主题</string>
     <string name="lock_setting">应用锁设置</string>
-    <string name="app_weisuo">应用伪装</string>
 
     <!-- Lock Mode -->
     <string name="lock_mode">情景模式</string>
@@ -598,17 +597,27 @@
     <string name="add_new_location_lock">添加位置锁</string>
     <string name="save_successful">保存成功</string>
 
+    <!-- version 2.1 begin -->
     <!-- weizhuang -->
     <string name="title_bar_weizhuang">应用伪装</string>
     <string name="weizhuang_first_in_text">打开被锁的应用时出现伪装界面，只有你知道要如何跳过伪装页打开应用</string>
     <string name="first_in_sure_button">知道了</string>
+    <string name="unknow_call_first_title">未知号码</string>
+    <string name="unknow_call_second_title">来电</string>
+    <string name="unknow_call_thrid_first_title">使用介绍</string>
+    <string name="unknow_call_thrid_second_title">来电显示是假象哦</string>
+    <string name="unknow_call_thrid_thrid_title">按顺序划过挂断，短信，接听来解锁吧</string>
 
     <string-array name="weizhuang_type_num">
         <item>无</item>
         <item>应用错误</item>
         <item>未知来电</item>
         <item>指纹解锁</item>
-    </string-array>
+    </string-array><string name="pretend_app_error">抱歉，\" %1$s \"已停止使用</string>
+
     <!-- weizhuang -->
+
+
+    <!-- version 2.1 end -->
 
 </resources>

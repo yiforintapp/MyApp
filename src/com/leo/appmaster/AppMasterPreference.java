@@ -73,7 +73,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_HOME_LOCKED = "home_locked";
     public static final String PREF_FIRST_USE_APP = "first_use_privacy_guard";
 
-    
     public static final String PREF_APP_MANAGER_FRAGMENT_FIRST_IN = "fragment_first_in";
     // flow calulate
     // public static final String PREF_APP_MANAGER_FLOW_TODAY_GPRS = "today_ll";
@@ -83,7 +82,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_APP_MANAGER_FLOW_MONTH_USED_TRAFFIC = "used_traffic";
     public static final String PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC = "make_itself_month_traffic";
     public static final String PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE = "make_itself_today_base_traffic";
-    
+
     public static final String PREF_APP_MANAGER_FLOW_MONTH_ALL = "mouth_gprs_all";
     public static final String PREF_APP_MANAGER_FLOW_MONTH_BASE = "mouth_gprs_base";
     // public static final String PREF_APP_MANAGER_FLOW_FIRST_IN = "firstin";
@@ -108,7 +107,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_APP_MANAGER_FLOW_BROADCAST_FIRST_IN = "flow_setting_broadcast_first_in";
     public static final String PREF_APP_HOME_APP_FRAGMENT_RED_TIP = "home_app_fragment_red_tip";
     public static final String PREF_APP_HOT_APP_ACTIVITY_RED_TIP = "hot_app_activity_red_tip";
-    
+
 
     public static final String PREF_SHOW_TIP_KEY = "last_show_tip_time";
     public static final String PREF_THEME_SUCCESS_STRATEGY = "theme_success_strategy";
@@ -126,6 +125,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private boolean mLaunchOtherApp = false;
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
+    // pretend lock
+    public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
 
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -319,22 +320,23 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mLastShowTime = lastShowTime;
         mPref.edit().putLong(PREF_SHOW_TIP_KEY, lastShowTime).commit();
     }
-    
 
     public boolean getHomeFragmentRedTip() {
         return mPref.getBoolean(PREF_APP_HOME_APP_FRAGMENT_RED_TIP, false);
     }
+
     public void setHomeFragmentRedTip(boolean flag) {
         mPref.edit().putBoolean(PREF_APP_HOME_APP_FRAGMENT_RED_TIP, flag).commit();
     }
-    
+
     public boolean getHotAppActivityRedTip() {
         return mPref.getBoolean(PREF_APP_HOT_APP_ACTIVITY_RED_TIP, false);
     }
+
     public void setHotAppActivityRedTip(boolean flag) {
         mPref.edit().putBoolean(PREF_APP_HOT_APP_ACTIVITY_RED_TIP, flag).commit();
     }
-    
+
     public boolean getLockerScreenThemeGuid() {
         return mPref.getBoolean(PREF_THEME_LOCK_GUIDE, false);
     }
@@ -771,7 +773,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         }
         return mMonthGprsAll;
     }
-    
+
     public void setItSelfTodayBase(long value) {
         mItSelfTodayBase = value;
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE, value).commit();
@@ -904,7 +906,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         }
         return mUsedTraffic;
     }
-    
+
     public void setItselfMonthTraffic(long value) {
         mItselfMonthTraffic = value;
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC,
@@ -917,7 +919,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         }
         return mItselfMonthTraffic;
     }
-    
 
     // Single App Flow
     public void setAppBaseSend(int uid, long value) {
@@ -1007,7 +1008,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setFirstTime(long time) {
         mPref.edit().putLong(PREF_APP_MANAGER_FLOW_BROADCAST_FIRST_IN, time).commit();
     }
-    
+
     public long getFragmentFirstIn() {
         return mPref.getLong(PREF_APP_MANAGER_FRAGMENT_FIRST_IN, 0);
     }
@@ -1015,8 +1016,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setFragmentFirstIn(long time) {
         mPref.edit().putLong(PREF_APP_MANAGER_FRAGMENT_FIRST_IN, time).commit();
     }
-    
-    
+
     public void setLockerClean(boolean lockerClean) {
         mPref.edit().putBoolean(PREF_SETTING_LOCKER_CLEAN, lockerClean)
                 .commit();
@@ -1100,6 +1100,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             mWeiZhuang = mPref.getInt(PREF_WEIZHUANG_SELECTED, 0);
         }
         return mWeiZhuang;
+    }
+
+    public int getPretendLock() {
+        return mPref.getInt(PREF_CUR_PRETNED_LOCK, 0);
+    }
+
+    public void setPretendLock() {
+        mPref.edit().putInt(PREF_CUR_PRETNED_LOCK, 0).commit();
     }
 
 }
