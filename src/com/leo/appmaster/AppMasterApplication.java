@@ -44,7 +44,6 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -125,9 +124,7 @@ public class AppMasterApplication extends Application {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!AppMasterPreference.getInstance(AppMasterApplication.this).getFirstUse()) {
-                    checkNew();
-                }
+                checkNew();
             }
         }, 10000);
         restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
@@ -411,8 +408,8 @@ public class AppMasterApplication extends Application {
         long curTime = System.currentTimeMillis();
 
         long lastCheckTime = pref.getLastCheckBusinessTime();
-        if (lastCheckTime == 0
-                || (curTime - lastCheckTime) > pref.getBusinessCurrentStrategy()
+        if (lastCheckTime >  0
+                && (curTime - lastCheckTime) > pref.getBusinessCurrentStrategy()
         /* 2 * 60 * 1000 */) {
             HttpRequestAgent.getInstance(this).checkNewBusinessData(
                     new Listener<JSONObject>() {
@@ -508,6 +505,11 @@ public class AppMasterApplication extends Application {
                 }
             };
             Timer timer = new Timer();
+            if(lastCheckTime == 0) { // First time, check business after 24 hours
+                lastCheckTime = curTime;
+                pref.setLastCheckBusinessTime(curTime);
+                pref.setBusinessStrategy(AppMasterConfig.TIME_24_HOUR, AppMasterConfig.TIME_12_HOUR, AppMasterConfig.TIME_2_HOUR);
+            }
             long delay = pref.getBusinessCurrentStrategy()
                     - (curTime - lastCheckTime);
             timer.schedule(recheckTask, delay);
@@ -520,8 +522,8 @@ public class AppMasterApplication extends Application {
         long curTime = System.currentTimeMillis();
 
         long lastCheckTime = pref.getLastCheckThemeTime();
-        if (lastCheckTime == 0
-                || (curTime - pref.getLastCheckThemeTime()) > pref.getThemeCurrentStrategy()) {
+        if (lastCheckTime > 0
+                && (curTime - lastCheckTime) > pref.getThemeCurrentStrategy()) {
             HttpRequestAgent.getInstance(this).checkNewTheme(
                     new Listener<JSONObject>() {
 
@@ -620,6 +622,11 @@ public class AppMasterApplication extends Application {
                 }
             };
             Timer timer = new Timer();
+            if(lastCheckTime == 0) { // First time, check theme after 24 hours
+                lastCheckTime = curTime;
+                pref.setLastCheckThemeTime(curTime);
+                pref.setThemeStrategy(AppMasterConfig.TIME_24_HOUR, AppMasterConfig.TIME_12_HOUR, AppMasterConfig.TIME_2_HOUR);
+            }
             long delay = pref.getThemeCurrentStrategy()
                     - (curTime - lastCheckTime);
             timer.schedule(recheckTask, delay);
