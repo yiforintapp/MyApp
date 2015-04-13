@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -156,7 +157,6 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
         switch (position) {
             case 0:
                 // 无
-
                 Toast.makeText(this, "无", 0).show();
                 sp_weizhuang.setWeiZhuang(0);
                 mAdapt.notifyDataSetChanged();
@@ -170,14 +170,13 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
                 break;
             case 2:
                 // 未知来电
-
-                Toast.makeText(this, "未知来电", 0).show();
                 sp_weizhuang.setWeiZhuang(2);
                 mAdapt.notifyDataSetChanged();
+                Intent intent = new Intent(this,UnknowCallActivity.class);
+                this.startActivity(intent);
                 break;
             case 3:
                 // 指纹解锁
-
                 Toast.makeText(this, "指纹解锁", 0).show();
                 sp_weizhuang.setWeiZhuang(3);
                 mAdapt.notifyDataSetChanged();

@@ -596,6 +596,11 @@
     <string name="title_bar_weizhuang">应用伪装</string>
     <string name="weizhuang_first_in_text">打开被锁的应用时出现伪装界面，只有你知道要如何跳过伪装页打开应用</string>
     <string name="first_in_sure_button">知道了</string>
+    <string name="unknow_call_first_title">未知号码</string>
+    <string name="unknow_call_second_title">来电</string>
+    <string name="unknow_call_thrid_first_title">使用介绍</string>
+    <string name="unknow_call_thrid_second_title">来电显示是假象哦</string>
+    <string name="unknow_call_thrid_thrid_title">按顺序划过挂断，短信，接听来解锁吧</string>
 
     <string-array name="weizhuang_type_num">
         <item>无</item>
