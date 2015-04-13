@@ -121,7 +121,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_CURRENT_BUSINESS_STRATEGY = "business_current_strategy";
     public static final String PREF_MESSAGE_ITEM_RUNING = "message_item_runing";
     public static final String PREF_CALL_LOG_ITEM_RUNING = "call_log_item_runing";
-
+    
+    //weizhuang
+    public static final String PREF_WEIZHUANG_SELECTED = "weizhuang_selected";
+    
     private boolean mLaunchOtherApp = false;
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
@@ -1069,6 +1072,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setCallLogItemRuning(boolean flag) {
         mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag).commit();
+    }
+    
+    public void setWeiZhuang(int selected){
+        mPref.edit().putInt(PREF_WEIZHUANG_SELECTED, selected).commit();
+    }
+    
+    public int getWeiZhuang(){
+        return mPref.getInt(PREF_WEIZHUANG_SELECTED, 0);
     }
 
 }

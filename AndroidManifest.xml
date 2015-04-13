@@ -394,6 +394,18 @@
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
         <activity
+            android:name="com.leo.appmaster.applocker.WeiZhuangFirstIn"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.WeiZhuangActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
+        </activity>
+        <activity
             android:name="com.leo.appmaster.appmanage.EleActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"

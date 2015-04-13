@@ -591,4 +591,17 @@
     <string name="mode_delete_tip">"Are you sure to delete this mode's profile?"</string>
     <string name="save_successful">Save Succefully</string>
 
+    <!-- weizhuang -->
+    <string name="title_bar_weizhuang">应用伪装</string>
+    <string name="weizhuang_first_in_text">打开被锁的应用时出现伪装界面，只有你知道要如何跳过伪装页打开应用</string>
+    <string name="first_in_sure_button">知道了</string>
+
+    <string-array name="weizhuang_type_num">
+        <item>无</item>
+        <item>应用错误</item>
+        <item>未知来电</item>
+        <item>指纹解锁</item>
+    </string-array>
+    <!-- weizhuang -->
+
 </resources>

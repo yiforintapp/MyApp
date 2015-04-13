@@ -108,7 +108,7 @@
                 android:gravity="center"
                 android:paddingLeft="26dp"
                 android:paddingRight="18dp"
-                android:text="@string/lock_setting"
+                android:text="@string/app_weisuo"
                 android:textColor="#9054ff"
                 android:textSize="@dimen/home_bottom_button_text_size" />
         </LinearLayout>
