@@ -57,11 +57,16 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
         mThemeRes = this.getResources();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mAdapt != null){
+            mAdapt.notifyDataSetChanged();
+        }
+    }
+    
     private void fillData() {
-
-        // Name
         mName = getResources().getStringArray(R.array.weizhuang_type_num);
-        // icon
         mIcon[0] = mThemeRes.getDrawable(R.drawable.ic_launcher);
 
         // list
@@ -78,7 +83,6 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
         mAdapt = new WeiZhuangAdapt(this, mList);
         mGridView.setAdapter(mAdapt);
         mGridView.setOnItemClickListener(this);
-
     }
 
     /**
@@ -157,29 +161,20 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
         switch (position) {
             case 0:
                 // 无
-                Toast.makeText(this, "无", 0).show();
                 sp_weizhuang.setWeiZhuang(0);
                 mAdapt.notifyDataSetChanged();
                 break;
             case 1:
                 // 应用错误
 
-                Toast.makeText(this, "应用错误", 0).show();
-                sp_weizhuang.setWeiZhuang(1);
-                mAdapt.notifyDataSetChanged();
                 break;
             case 2:
                 // 未知来电
-                sp_weizhuang.setWeiZhuang(2);
-                mAdapt.notifyDataSetChanged();
                 Intent intent = new Intent(this,UnknowCallActivity.class);
                 this.startActivity(intent);
                 break;
             case 3:
                 // 指纹解锁
-                Toast.makeText(this, "指纹解锁", 0).show();
-                sp_weizhuang.setWeiZhuang(3);
-                mAdapt.notifyDataSetChanged();
                 break;
             default:
                 break;

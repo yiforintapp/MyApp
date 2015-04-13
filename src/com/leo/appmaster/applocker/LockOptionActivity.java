@@ -16,6 +16,7 @@ import android.text.Spanned;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
@@ -200,6 +201,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             Intent intent = null;
             ComponentName component = new ComponentName(this,
                     DeviceReceiver.class);
+            LockManager.getInstatnce().timeFilterSelf();
             if (isAdminActive()) {
                 intent = new Intent();
                 intent.setClassName("com.android.settings",

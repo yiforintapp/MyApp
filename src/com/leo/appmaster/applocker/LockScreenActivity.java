@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -202,7 +203,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mLockFragment.onLockPackageChanged(mLockedPackage);
         LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
 
-        handlePretendLock();
+        if (mPretendFragment != null) {
+            mLockLayout.setVisibility(View.GONE);
+            mPretendLayout.setVisibility(View.VISIBLE);
+        }
+
         super.onNewIntent(intent);
         // }
     }
@@ -365,9 +370,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mPretendFragment = getPretendFragment();
         if (mPretendFragment != null) {
             mLockLayout.setVisibility(View.GONE);
+            mPretendLayout.setVisibility(View.VISIBLE);
             tans = fm.beginTransaction();
-            tans.remove(mPretendFragment);
-            tans.replace(R.id.pretend_layout, mPretendFragment);
+            tans.add(R.id.pretend_layout, mPretendFragment);
             tans.commit();
         } else {
             mLockLayout.setVisibility(View.VISIBLE);
@@ -380,8 +385,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         pretendLock = 1;
         if (pretendLock == 1) { /* app error */
             PretendAppErrorFragment paf = new PretendAppErrorFragment();
-            String tip = getString(R.string.pretend_app_error, AppLoadEngine.getInstance(this)
-                    .getAppName(mLockedPackage));
+            String tip = "";
+            PackageManager pm = this.getPackageManager();
+            try {
+                ApplicationInfo info = pm.getApplicationInfo(mLockedPackage,
+                        PackageManager.GET_UNINSTALLED_PACKAGES);
+                String lab = info.loadLabel(pm).toString();
+                tip = getString(R.string.pretend_app_error, lab);
+
+            } catch (NameNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
             paf.setErrorTip(tip);
             return paf;
         } else if (pretendLock == 2) {/* unknow call */
