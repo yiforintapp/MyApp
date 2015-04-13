@@ -28,7 +28,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private FragmentManager mFm;
     private PasswdSettingFragment mPasswd;
     private GestureSettingFragment mGesture;
-    private TextView switch_bottom;
+    private TextView mSwitchBottom;
     
 
     private boolean mResetFlag;
@@ -84,11 +84,11 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         if (type == AppMasterPreference.LOCK_TYPE_GESTURE) {
             mLockType = LOCK_TYPE_GESTURE;
             tans.replace(R.id.fragment_contain, mGesture);
-            switch_bottom.setText(getString(R.string.switch_passwd));
+            mSwitchBottom.setText(getString(R.string.switch_passwd));
         } else {
             mLockType = LOCK_TYPE_PASSWD;
             tans.replace(R.id.fragment_contain, mPasswd);
-            switch_bottom.setText(getString(R.string.switch_gesture));
+            mSwitchBottom.setText(getString(R.string.switch_gesture));
         }
         tans.commit();
 
@@ -100,8 +100,8 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         mTitleBar.setOptionListener(this);
         mTitleBar.setOptionListener(this);
         mTitleBar.setTitle(R.string.passwd_setting);
-        switch_bottom = (TextView) this.findViewById(R.id.switch_bottom);
-        switch_bottom.setOnClickListener(this);
+        mSwitchBottom = (TextView) this.findViewById(R.id.switch_bottom);
+        mSwitchBottom.setOnClickListener(this);
     }
 
     @Override
@@ -120,11 +120,11 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         if (mLockType == LOCK_TYPE_PASSWD) {
             tans.replace(R.id.fragment_contain, mGesture);
             mLockType = LOCK_TYPE_GESTURE;
-            switch_bottom.setText(getString(R.string.switch_passwd));
+            mSwitchBottom.setText(getString(R.string.switch_passwd));
         } else {
             tans.replace(R.id.fragment_contain, mPasswd);
             mLockType = LOCK_TYPE_PASSWD;
-            switch_bottom.setText(getString(R.string.switch_gesture));
+            mSwitchBottom.setText(getString(R.string.switch_gesture));
         }
         tans.commit();
     }
