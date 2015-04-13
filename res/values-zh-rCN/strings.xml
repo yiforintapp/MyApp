@@ -607,7 +607,8 @@
     <string name="unknow_call_thrid_first_title">使用介绍</string>
     <string name="unknow_call_thrid_second_title">来电显示是假象哦</string>
     <string name="unknow_call_thrid_thrid_title">按顺序划过挂断，短信，接听来解锁吧</string>
-
+    <string name="weizhuang_setting_ok">设置成功</string>
+    
     <string-array name="weizhuang_type_num">
         <item>无</item>
         <item>应用错误</item>
