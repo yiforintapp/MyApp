@@ -76,7 +76,7 @@ public class LockManager {
 
     public int mLastNetType = NETWORK_MOBILE;
     public String mLastWifi = "";
-    
+
     public static interface OnUnlockedListener {
         /**
          * called when unlock successfully
@@ -159,7 +159,7 @@ public class LockManager {
         mTLMap = new HashMap<TimeLock, List<ScheduledFuture<?>>>();
         mHandler = new Handler();
         mTimeChangeReceiver = new TimeChangeReceive();
-        
+
         initFilterList();
     }
 
@@ -184,11 +184,12 @@ public class LockManager {
         }
     };
 
-    
+    private ScheduledFuture<?> mFilterSelfTast;
+
     public void initFilterList() {
         mFilterPgks.put("WaitActivity", true);
     }
-    
+
     public void recordOutcountTask(String pkg) {
         if (!TextUtils.isEmpty(pkg) && !mOutcountPkgMap.containsKey(pkg)) {
             OutcountTrackTask task = new OutcountTrackTask(pkg);
@@ -198,9 +199,9 @@ public class LockManager {
             mOutcountPkgMap.put(pkg, 10);
         }
     }
-    
+
     public int getOutcountTime(String pkg) {
-        if(mOutcountPkgMap.containsKey(pkg)) {
+        if (mOutcountPkgMap.containsKey(pkg)) {
             return mOutcountPkgMap.get(pkg);
         } else {
             return 0;
@@ -1127,6 +1128,25 @@ public class LockManager {
                 mFilterPgks.remove(packageName);
             }
         }, outtime);
+
+    }
+
+    /**
+     * time filter self 1 minute
+     */
+    public void timeFilterSelf() {
+        if (mFilterSelfTast != null && !mFilterSelfTast.isDone() && !mFilterSelfTast.isCancelled()) {
+            mFilterSelfTast.cancel(true);
+            mFilterSelfTast = null;
+        }
+
+        addFilterLockPackage(mContext.getPackageName(), true);
+        mFilterSelfTast = mScheduler.schedule(new Runnable() {
+            @Override
+            public void run() {
+                mFilterPgks.remove(mContext.getPackageName());
+            }
+        }, 1, TimeUnit.MINUTES);
     }
 
     public void removeFilterLockPackage(String filterPackage) {
@@ -1225,6 +1245,16 @@ public class LockManager {
     public boolean applyLock(int lockMode, String lockedPkg, boolean restart,
             OnUnlockedListener listener) {
 
+        if (TextUtils.equals(mContext.getPackageName(), lockedPkg)) {
+            if (mFilterSelfTast != null && !mFilterSelfTast.isDone()
+                    && !mFilterSelfTast.isCancelled()) {
+                mFilterSelfTast.cancel(true);
+                mFilterSelfTast = null;
+                mFilterPgks.remove(lockedPkg);
+                return false;
+            }
+        }
+
         if (mFilterPgks.containsKey(lockedPkg)) {
             boolean persistent = mFilterPgks.get(lockedPkg);
             if (!persistent) {
@@ -1257,7 +1287,7 @@ public class LockManager {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
             AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
-            
+
             boolean lockSelf = mContext.getPackageName().equals(lockedPkg);
             amp.setDoubleCheck(lockSelf ? null : lockedPkg);
             mContext.startActivity(intent);
@@ -1332,8 +1362,7 @@ public class LockManager {
     public void clearFilterList() {
         mFilterPgks.clear();
     }
-    
-    
+
     public class FilterPackageHolder {
         String packageName;
         boolean persistent;

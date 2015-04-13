@@ -31,6 +31,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.appmanage.business.BusinessJsonParser;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -258,6 +259,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
                     int index = Integer.parseInt(v.getTag().toString());
                     BusinessItemInfo bif = mRecommendDatas.get(index);
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "app_" + bif.packageName);
+                    LockManager.getInstatnce().timeFilterSelf();
                     if (PhoneInfoStateManager.isGooglePlayPkg()) {
                         if (AppUtil.appInstalled(mActivity,
                                 Constants.GP_PACKAGE)) {
