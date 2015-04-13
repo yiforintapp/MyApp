@@ -604,7 +604,7 @@
         <item>指纹解锁</item>
     </string-array>
 
-    <string name="pretend_app_error">抱歉，\"<xliff:g id="mode">%1$s</xliff:g>\"已停止使用</string>
+    <string name="pretend_app_error">抱歉，\" %1$s \"已停止使用</string>
     <!-- weizhuang -->
 
 </resources>
