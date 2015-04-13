@@ -28,6 +28,7 @@ import com.leo.appmaster.model.WeiZhuangInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 public class WeiZhuangActivity extends Activity implements OnItemClickListener {
+    private final static int noMode = 0;
     private Drawable[] mIcon = new Drawable[1];
     private String[] mName;
     private List<WeiZhuangInfo> mList;
@@ -133,7 +134,7 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
                 viewHolder = (WeizhuangHolder) convertView.getTag();
             }
             
-            selected = sp_weizhuang.getWeiZhuang();
+            selected = sp_weizhuang.getPretendLock();
             // who selected
             if (position == selected) {
                 viewHolder.iv_selected.setVisibility(View.VISIBLE);
@@ -161,7 +162,7 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
         switch (position) {
             case 0:
                 // 无
-                sp_weizhuang.setWeiZhuang(0);
+                sp_weizhuang.setPretendLock(noMode);
                 mAdapt.notifyDataSetChanged();
                 break;
             case 1:
