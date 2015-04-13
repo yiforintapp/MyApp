@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.model.AppItemInfo;
 
@@ -40,9 +41,9 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
     protected void onFinishInflate() {
         super.onFinishInflate();
         mIcon = (ImageView) findViewById(R.id.restore_icon);
-        mInstall =  findViewById(R.id.button_install);
+        mInstall = findViewById(R.id.button_install);
         mInstall.setOnClickListener(this);
-        mDelete =  findViewById(R.id.button_delete);
+        mDelete = findViewById(R.id.button_delete);
         mDelete.setOnClickListener(this);
         mTitle = (TextView) findViewById(R.id.restore_app_title);
         mVersion = (TextView) findViewById(R.id.restore_app_version);
@@ -52,12 +53,13 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
     @Override
     public void onClick(View v) {
         Context context = getContext();
-        BackUpActivity activity = (BackUpActivity)context;
+        BackUpActivity activity = (BackUpActivity) context;
         AppBackupRestoreManager backupManager = activity.getBackupManager();
         Object tag = getTag();
-        if(tag instanceof AppItemInfo) {
+        if (tag instanceof AppItemInfo) {
             AppItemInfo app = (AppItemInfo) tag;
-            if(v == mInstall) {
+            if (v == mInstall) {
+                LockManager.getInstatnce().timeFilterSelf();
                 backupManager.restoreApp(context, app);
 
             } else if (v == mDelete) {
@@ -65,29 +67,29 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
             }
         }
     }
-    
+
     public void setTitle(CharSequence title) {
         mTitle.setText(title);
     }
-    
+
     public void setVersion(CharSequence version) {
         mVersion.setText(version);
     }
-    
+
     public void setSize(CharSequence size) {
         mAppSize.setText(size);
     }
-    
+
     public void setIcon(Drawable icon) {
         mIcon.setImageDrawable(icon);
     }
-    
+
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         try {
             super.onRestoreInstanceState(state);
         } catch (Exception e) {
-            
+
         }
     }
 

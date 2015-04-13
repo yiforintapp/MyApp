@@ -52,7 +52,7 @@ public class GestureTextView extends TextView implements OnClickListener {
                 LeoLog.d("onTouchEvent", "distanceX = " + distanceX + "     distanceY =  "
                         + distanceY);
                 if (distanceX > 50) {
-                    if (distanceY > 50)
+                    if (distanceY > 150)
                         return true;
                     if (distanceX > 100) {
                         if (mPf != null) {

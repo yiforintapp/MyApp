@@ -944,6 +944,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             }
             /* SDK mark user click theme - end */
             if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
+                LockManager.getInstatnce().timeFilterSelf();
                 if (AppUtil
                         .appInstalled(LockerTheme.this, Constants.GP_PACKAGE)) {
                     try {

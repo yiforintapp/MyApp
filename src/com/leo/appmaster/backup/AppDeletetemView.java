@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
@@ -42,7 +43,7 @@ public class AppDeletetemView extends FrameLayout implements OnClickListener {
         super.onFinishInflate();
         mAppIcon_delete = (ImageView) findViewById(R.id.iv_icon);
         mAppTitle_delete = (TextView) findViewById(R.id.tv_title);
-//        mAppVersion_delete = (TextView) findViewById(R.id.tv_version);
+        // mAppVersion_delete = (TextView) findViewById(R.id.tv_version);
         mAppSize_delete = (TextView) findViewById(R.id.tv_size);
         mButton_delete = (ImageView) findViewById(R.id.bg_delete);
         mButton_delete.setOnClickListener(this);
@@ -71,17 +72,18 @@ public class AppDeletetemView extends FrameLayout implements OnClickListener {
             AppItemInfo app = (AppItemInfo) tag;
             if (v == mButton_delete) {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "home", "newuninstall");
+                LockManager.getInstatnce().timeFilterSelf();
                 AppUtil.uninstallApp(getContext(), app.packageName);
             }
         }
     }
-    
+
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         try {
             super.onRestoreInstanceState(state);
         } catch (Exception e) {
-            
+
         }
     }
 
