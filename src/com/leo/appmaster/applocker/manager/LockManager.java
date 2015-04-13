@@ -1332,7 +1332,8 @@ public class LockManager {
     public void clearFilterList() {
         mFilterPgks.clear();
     }
-
+    
+    
     public class FilterPackageHolder {
         String packageName;
         boolean persistent;

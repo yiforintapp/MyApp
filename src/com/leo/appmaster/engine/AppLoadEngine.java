@@ -260,6 +260,15 @@ public class AppLoadEngine extends BroadcastReceiver {
         });
     }
 
+    public String getAppName(String pkg) {
+        AppItemInfo info = mAppDetails.get(pkg);
+        if (info != null) {
+            return info.label;
+        } else {
+            return "";
+        }
+    }
+
     public ArrayList<AppItemInfo> getAllPkgInfo() {
         loadAllPkgInfo();
         ArrayList<AppItemInfo> dataList = new ArrayList<AppItemInfo>();
@@ -549,10 +558,10 @@ public class AppLoadEngine extends BroadcastReceiver {
                                 .getInstance(mContext);
                         List<String> list = pre.getHideThemeList();
                         List<String> themeList = null;
-                        if(list == null) {
+                        if (list == null) {
                             themeList = new ArrayList<String>();
                         } else {
-                           themeList = new ArrayList<String>(list);
+                            themeList = new ArrayList<String>(list);
                         }
 
                         if (!themeList.contains(packageName)) {
@@ -736,10 +745,12 @@ public class AppLoadEngine extends BroadcastReceiver {
                                                 @Override
                                                 public void onUnlocked() {
                                                     Intent intent2;
-                                                    LockMode lm = LockManager.getInstatnce().getCurLockMode();
+                                                    LockMode lm = LockManager.getInstatnce()
+                                                            .getCurLockMode();
                                                     if (lm != null && lm.defaultFlag == 1
                                                             && !lm.haveEverOpened) {
-                                                        LockManager.getInstatnce().timeFilter(mContext.getPackageName(),
+                                                        LockManager.getInstatnce().timeFilter(
+                                                                mContext.getPackageName(),
                                                                 500);
                                                         intent2 = new Intent(mContext,
                                                                 RecommentAppLockListActivity.class);
@@ -758,8 +769,10 @@ public class AppLoadEngine extends BroadcastReceiver {
                                                     } else {
                                                         LinkedList<String> list = new LinkedList<String>();
                                                         list.add(packageName);
-                                                        LockManager.getInstatnce().addPkg2Mode(list, lm);
-                                                        LockManager.getInstatnce().timeFilter(mContext.getPackageName(),
+                                                        LockManager.getInstatnce().addPkg2Mode(
+                                                                list, lm);
+                                                        LockManager.getInstatnce().timeFilter(
+                                                                mContext.getPackageName(),
                                                                 500);
                                                         intent2 = new Intent(mContext,
                                                                 AppLockListActivity.class);

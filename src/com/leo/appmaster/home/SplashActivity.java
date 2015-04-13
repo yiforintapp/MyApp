@@ -277,6 +277,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                AppMasterPreference.getInstance(SplashActivity.this).setFirstUse(false);
                 startHome();
             }
         });
