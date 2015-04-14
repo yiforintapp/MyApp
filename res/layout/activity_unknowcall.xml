@@ -106,7 +106,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/privacy_hide_pic_icon" />
 
         <ImageView
@@ -116,7 +116,7 @@
             android:layout_below="@id/iv_duanxin"
             android:layout_centerVertical="true"
             android:layout_marginLeft="45dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/privacy_applock_icon" />
 
         <ImageView
@@ -127,7 +127,7 @@
             android:layout_below="@id/iv_duanxin"
             android:layout_centerVertical="true"
             android:layout_marginRight="45dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/privacy_privacy_contact_icon" />
     </RelativeLayout>
 

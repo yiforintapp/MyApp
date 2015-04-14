@@ -167,7 +167,8 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
                 break;
             case 1:
                 // 应用错误
-
+                Intent mIntent = new Intent(this,ErrorWeiZhuang.class);
+                this.startActivity(mIntent);
                 break;
             case 2:
                 // 未知来电

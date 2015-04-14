@@ -398,7 +398,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
             paf.setErrorTip(tip);
             return paf;
         } else if (pretendLock == 2) {/* unknow call */

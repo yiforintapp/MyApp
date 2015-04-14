@@ -20,7 +20,8 @@ public class PretendAppUnknowCallFragment extends PretendFragment implements OnT
     
     @Override
     protected int layoutResourceId() {
-        return R.layout.activity_unknowcall_show_first;
+//        return R.layout.activity_unknowcall_show_first;
+        return R.layout.activity_weizhuang_firstin;
     }
 
     @Override
