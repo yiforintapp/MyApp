@@ -104,29 +104,37 @@
 
         <ImageView
             android:id="@+id/iv_duanxin"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:background="@drawable/privacy_hide_pic_icon" />
 
         <ImageView
             android:id="@+id/iv_guaduan"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_below="@id/iv_duanxin"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="45dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/privacy_applock_icon" />
 
         <ImageView
-            android:id="@+id/iv_jieting"
+            android:id="@+id/iv_dianhua_hold"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_below="@id/iv_duanxin"
+            android:longClickable="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/cll_info_answer_icon" />
+
+        <ImageView
+            android:id="@+id/iv_jieting"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_below="@id/iv_duanxin"
-            android:layout_centerVertical="true"
             android:layout_marginRight="45dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/privacy_privacy_contact_icon" />
