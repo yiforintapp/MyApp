@@ -45,6 +45,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
@@ -303,6 +304,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                     "passwdtip");
                             Intent intent = new Intent(HomeActivity.this, PasswdTipActivity.class);
                             startActivity(intent);
+                        } else if (position == 3) {
+                            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
+                                    "locksetting");
+                            Intent intent = new Intent(HomeActivity.this, LockOptionActivity.class);
+                            intent.putExtra(LockOptionActivity.TAG_COME_FROM,
+                                    LockOptionActivity.FROM_HOME);
+                            HomeActivity.this.startActivity(intent);
                         }
                         mLeoPopMenu.dismissSnapshotList();
                     }
@@ -322,6 +330,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         listItems.add(getString(R.string.reset_passwd));
         listItems.add(getString(R.string.set_protect_or_not));
         listItems.add(getString(R.string.passwd_notify));
+        listItems.add(getString(R.string.lock_setting));
         return listItems;
     }
 
