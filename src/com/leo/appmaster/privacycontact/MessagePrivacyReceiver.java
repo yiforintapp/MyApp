@@ -9,7 +9,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -62,38 +61,43 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
-            Bundle bundle = intent.getExtras();
-            Object[] pdus = (Object[]) bundle.get("pdus");
-            for (Object object : pdus) {
-                byte[] data = (byte[]) object;
-                SmsMessage message = SmsMessage.createFromPdu(data);
-                mPhoneNumber = message.getOriginatingAddress();// 电话号
-                mMessgeBody = message.getMessageBody();// 短信内容
-                mSendDate = message.getTimestampMillis();
+            // Crash from feedback
+            try {
+                Bundle bundle = intent.getExtras();
+                Object[] pdus = (Object[]) bundle.get("pdus");
+                for (Object object : pdus) {
+                    byte[] data = (byte[]) object;
+                    SmsMessage message = SmsMessage.createFromPdu(data);
+                    mPhoneNumber = message.getOriginatingAddress();// 电话号
+                    mMessgeBody = message.getMessageBody();// 短信内容
+                    mSendDate = message.getTimestampMillis();
 
-                if (!Utilities.isEmpty(mPhoneNumber)) {
-                    String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
-                    ContactBean contact = getPrivateMessage(formateNumber, mContext);
-                    if (contact != null) {
-                        abortBroadcast();
-                        String sendTime = mSimpleDateFormate.format(System.currentTimeMillis());
-                        final MessageBean messageBean = new MessageBean();
-                        messageBean.setMessageName(contact.getContactName());
-                        messageBean.setPhoneNumber(mPhoneNumber);
-                        messageBean.setMessageBody(mMessgeBody);
-                        messageBean.setMessageIsRead(0);
-                        messageBean.setMessageTime(sendTime);
-                        messageBean.setMessageType(mAnswer);
-                        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-                            @Override
-                            public void run() {
-                                PrivacyContactManager.getInstance(mContext).synMessage(
-                                        mSimpleDateFormate, messageBean, mContext,
-                                        mSendDate);
-                            }
-                        });
+                    if (!Utilities.isEmpty(mPhoneNumber)) {
+                        String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
+                        ContactBean contact = getPrivateMessage(formateNumber, mContext);
+                        if (contact != null) {
+                            abortBroadcast();
+                            String sendTime = mSimpleDateFormate.format(System.currentTimeMillis());
+                            final MessageBean messageBean = new MessageBean();
+                            messageBean.setMessageName(contact.getContactName());
+                            messageBean.setPhoneNumber(mPhoneNumber);
+                            messageBean.setMessageBody(mMessgeBody);
+                            messageBean.setMessageIsRead(0);
+                            messageBean.setMessageTime(sendTime);
+                            messageBean.setMessageType(mAnswer);
+                            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                                @Override
+                                public void run() {
+                                    PrivacyContactManager.getInstance(mContext).synMessage(
+                                            mSimpleDateFormate, messageBean, mContext,
+                                            mSendDate);
+                                }
+                            });
+                        }
                     }
                 }
+            } catch (Exception e) {
+                
             }
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
             boolean callLogRuningStatus = AppMasterPreference.getInstance(mContext)
@@ -199,39 +203,13 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
                             }
                             // 恢复正常铃声
-                            mAudioManager
-                                    .setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                            ContentResolver mCr = mContext.getContentResolver();
-                            String number = PrivacyContactUtils
-                                    .formatePhoneNumber(phoneNumber);
+                            mAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                             // 通知更新通话记录
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(
                                             new PrivacyDeletEditEvent(
                                                     PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
-                            try {
-                                // ContentValues values = new ContentValues();
-                                // values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER,
-                                // cb.getContactNumber());
-                                // values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME,
-                                // cb.getContactName());
-                                // values.put(Constants.COLUMN_CALL_LOG_DATE,
-                                // time);
-                                // values.put(Constants.COLUMN_CALL_LOG_TYPE,
-                                // type);
-                                // values.put(Constants.COLUMN_CALL_LOG_IS_READ,
-                                // isRead);//
-                                // // 保存记录
-                                // cr.insert(Constants.PRIVACY_CALL_LOG_URI,
-                                // values);
-
-                                // mCr.delete(PrivacyContactUtils.CALL_LOG_URI,
-                                // "number LIKE ? ", new String[] {
-                                // "%" + number
-                                // });
-                            } catch (Exception e) {
-                            }
                         }
                     }
                 }
