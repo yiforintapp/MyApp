@@ -56,6 +56,7 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
 
         sp_weizhuang = AppMasterPreference.getInstance(this);
         mThemeRes = this.getResources();
+        selected = sp_weizhuang.getPretendLock();
     }
 
     @Override
@@ -161,19 +162,25 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
-                // 无
-                sp_weizhuang.setPretendLock(noMode);
-                mAdapt.notifyDataSetChanged();
+                if(selected != 0){
+                    // 无
+                    sp_weizhuang.setPretendLock(noMode);
+                    mAdapt.notifyDataSetChanged();
+                }
                 break;
             case 1:
-                // 应用错误
-                Intent mIntent = new Intent(this,ErrorWeiZhuang.class);
-                this.startActivity(mIntent);
+                if(selected != 1){
+                    // 应用错误
+                    Intent mIntent = new Intent(this,ErrorWeiZhuang.class);
+                    this.startActivity(mIntent);
+                }
                 break;
             case 2:
-                // 未知来电
-                Intent intent = new Intent(this,UnknowCallActivity.class);
-                this.startActivity(intent);
+                if(selected != 2){
+                    // 未知来电
+                    Intent intent = new Intent(this,UnknowCallActivity.class);
+                    this.startActivity(intent);
+                }
                 break;
             case 3:
                 // 指纹解锁
