@@ -41,7 +41,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     @Override
     protected void onInitUI() {
         mLockModeCircle = (LockModeView) findViewById(R.id.lock_mode_circle);
-        mLockModeCircle.setOnClickListener(this);
+//        mLockModeCircle.setOnClickListener(this);
         mAppLockBtn = (TextView) findViewById(R.id.app_lock);
         mAppLockBtn.setOnClickListener(this);
         mLockThemeBtn = (TipTextView) findViewById(R.id.lock_theme);

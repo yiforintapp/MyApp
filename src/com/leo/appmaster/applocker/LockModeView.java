@@ -2,6 +2,7 @@
 package com.leo.appmaster.applocker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,7 +19,12 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class LockModeView extends View {
@@ -255,19 +261,47 @@ public class LockModeView extends View {
             case MotionEvent.ACTION_UP:
                 int upX = (int) event.getX();
                 int upY = (int) event.getY();
-                if (mBgIconDrawBount.contains(upX, upY)) {
-                    performClick();
+
+                int dy = mBgIconDrawBount.top +  (mBgIconDrawBount.bottom - mBgIconDrawBount.top)
+                        * 2 / 3;
+
+                Rect top = new Rect(mBgIconDrawBount.left, mBgIconDrawBount.top,
+                        mBgIconDrawBount.right, dy);
+                Rect bottom = new Rect(mBgIconDrawBount.left, dy,
+                        mBgIconDrawBount.right, mBgIconDrawBount.bottom);
+                
+                Context ctx = getContext();
+                if (top.contains(upX, upY)) {
+                    // to lock list
+                    SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "home", "lock");
+                    LockManager lm = LockManager.getInstatnce();
+                    LockMode curMode = lm.getCurLockMode();
+                    if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
+                        Intent intent = new Intent(ctx, RecommentAppLockListActivity.class);
+                        intent.putExtra("target", 0);
+                        ctx.startActivity(intent);
+                        curMode.haveEverOpened = true;
+                        lm.updateMode(curMode);
+                    } else {
+                        Intent intent = null;
+                        intent = new Intent(ctx, AppLockListActivity.class);
+                        ctx.startActivity(intent);
+                    }
+                } else if (bottom.contains(upX, upY)) {
+                    // to lock mode
+                    SDKWrapper.addEvent(ctx, SDKWrapper.P1, "home", "changemode");
+                    ((HomeActivity) ctx).showModePages(true);
                 }
                 break;
         }
         return true;
     }
-    
+
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         try {
             super.onRestoreInstanceState(state);
-        } catch (Exception e) {          
+        } catch (Exception e) {
         }
     }
 
