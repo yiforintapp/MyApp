@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -13,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.MotionEvent;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class GestureTextView extends TextView implements OnClickListener {
     private int top, right, bottom, left;

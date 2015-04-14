@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.fragment;
 
+import android.view.MotionEvent;
+
 import com.leo.appmaster.applocker.LockScreenActivity;
 
 public abstract class PretendFragment extends BaseFragment {
@@ -18,4 +20,5 @@ public abstract class PretendFragment extends BaseFragment {
             lsa.onBackPressed();
         }
     }
+
 }
