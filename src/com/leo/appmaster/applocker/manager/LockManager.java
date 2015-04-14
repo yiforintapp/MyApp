@@ -2,6 +2,7 @@
 package com.leo.appmaster.applocker.manager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -32,6 +34,7 @@ import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.model.LocationLock;
@@ -48,8 +51,11 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
@@ -945,6 +951,9 @@ public class LockManager {
                     LockModeDao lmd = new LockModeDao(mContext);
                     // load lock mode
                     mLockModeList = lmd.querryLockModeList();
+                    // check remove unlock-all mode< v2.1 >
+                    checkRemoveUnlockAll();
+
                     LeoLog.d("loadLockMode", mLockModeList.size() + "");
                     // load time lock
                     mTimeLockList = lmd.querryTimeLockList();
@@ -959,9 +968,59 @@ public class LockManager {
                     }
                     mLockModeLoaded = true;
                 }
+
             });
         }
         LeoLog.d("loadLockMode", "Load finish : " + mLockModeList.size());
+    }
+
+    // check remove unlock-all mode< v2.1 >
+    private void checkRemoveUnlockAll() {
+        LockMode unlockAll = null;
+        for (LockMode mode : mLockModeList) {
+            if (mode.defaultFlag == 0) {
+                unlockAll = mode;
+                break;
+            }
+        }
+
+        if (unlockAll != null) {
+            LockModeDao lmd = new LockModeDao(mContext);
+            lmd.deleteLockMode(unlockAll);
+            mLockModeList.remove(unlockAll);
+
+            if (unlockAll.isCurrentUsed) {
+                LockMode visitor = null;
+                for (LockMode mode : mLockModeList) {
+                    if (mode.defaultFlag == 1) {
+                        visitor = mode;
+                        break;
+                    }
+                }
+                visitor.isCurrentUsed = true;
+                lmd.updateLockMode(visitor);
+            }
+
+            // add home mode
+            LockMode lockMode = new LockMode();
+            lockMode.modeName = mContext.getString(R.string.family_mode);
+            lockMode.isCurrentUsed = false;
+            lockMode.defaultFlag = 3;
+            lockMode.modeIcon =
+                    BitmapFactory.decodeResource(mContext.getResources(),
+                            R.drawable.lock_mode_family);
+            LinkedList<String> list = new LinkedList<String>();
+            list.add(mContext.getPackageName());
+            for (String pkg : Constants.sDefaultHomeModeList) {
+                if (AppUtil.appInstalled(mContext, pkg)) {
+                    list.add(pkg);
+                }
+            }
+            lockMode.lockList = list;
+            mLockModeList.add(lockMode);
+            lmd.insertLockMode(lockMode);
+        }
+
     }
 
     /* add default lock mode when we first load lock mode */
@@ -994,17 +1053,19 @@ public class LockManager {
                     lmd.insertLockMode(lockMode);
 
                     // add unlock all
-                    lockMode = new LockMode();
-                    lockMode.modeName = mContext.getString(R.string.unlock_all_mode);
-                    lockMode.isCurrentUsed = false;
-                    lockMode.defaultFlag = 0;
-                    lockMode.modeIcon = BitmapFactory.decodeResource(mContext.getResources(),
-                            R.drawable.lock_mode_unlock);
-                    list = new LinkedList<String>();
-                    list.add(mContext.getPackageName());
-                    lockMode.lockList = list;
-                    mLockModeList.add(lockMode);
-                    lmd.insertLockMode(lockMode);
+                    // lockMode = new LockMode();
+                    // lockMode.modeName =
+                    // mContext.getString(R.string.unlock_all_mode);
+                    // lockMode.isCurrentUsed = false;
+                    // lockMode.defaultFlag = 0;
+                    // lockMode.modeIcon =
+                    // BitmapFactory.decodeResource(mContext.getResources(),
+                    // R.drawable.lock_mode_unlock);
+                    // list = new LinkedList<String>();
+                    // list.add(mContext.getPackageName());
+                    // lockMode.lockList = list;
+                    // mLockModeList.add(lockMode);
+                    // lmd.insertLockMode(lockMode);
                     // add office
                     // lockMode = new LockMode();
                     // lockMode.modeName = getString(R.string.office_mode);
@@ -1020,18 +1081,23 @@ public class LockManager {
                     // lmd.insertLockMode(lockMode);
 
                     // add family mode
-                    // lockMode = new LockMode();
-                    // lockMode.modeName = getString(R.string.family_mode);
-                    // lockMode.isCurrentUsed = false;
-                    // lockMode.defaultFlag = 3;
-                    // lockMode.modeIcon =
-                    // BitmapFactory.decodeResource(getResources(),
-                    // R.drawable.lock_mode_family);
-                    // list = new LinkedList<String>();
-                    // list.add(mActivity.getPackageName());
-                    // lockMode.lockList = list;
-                    // mLockModeList.add(lockMode);
-                    // lmd.insertLockMode(lockMode);
+                    lockMode = new LockMode();
+                    lockMode.modeName = mContext.getString(R.string.family_mode);
+                    lockMode.isCurrentUsed = false;
+                    lockMode.defaultFlag = 3;
+                    lockMode.modeIcon =
+                            BitmapFactory.decodeResource(mContext.getResources(),
+                                    R.drawable.lock_mode_family);
+                    list = new LinkedList<String>();
+                    list.add(mContext.getPackageName());
+                    for (String pkg : Constants.sDefaultHomeModeList) {
+                        if (AppUtil.appInstalled(mContext, pkg)) {
+                            list.add(pkg);
+                        }
+                    }
+                    lockMode.lockList = list;
+                    mLockModeList.add(lockMode);
+                    lmd.insertLockMode(lockMode);
                     return true;
                 }
             });

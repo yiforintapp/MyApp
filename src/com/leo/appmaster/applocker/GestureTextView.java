@@ -70,17 +70,21 @@ public class GestureTextView extends TextView implements OnClickListener {
                 mUpX = event.getX();
                 mUpY = event.getY();
                 float distanceX = mUpX - mDownX;
-                float distanceY = mUpY - mDownY;
-                float fitDistanceX = (right - left) * 3 / 4;
+                float distanceY = Math.abs(mUpY - mDownY);
+                float fitDistanceX = (right - left) / 3;
                 float fitDistanceY = bottom - top + 20;
-                if (distanceX > fitDistanceX) {
-                    if (distanceY < fitDistanceY) {
+                if (distanceY > fitDistanceY) {
+                    setPressed(false);
+                    return true;
+                } else if (distanceX > 50) {
+                    if (distanceX > fitDistanceX) {
                         if (mPf != null) {
                             mPf.onUnlockPretendSuccessfully();
                         }
                     }
+                    setPressed(false);
                     return true;
-                } 
+                }
                 break;
             default:
                 break;
