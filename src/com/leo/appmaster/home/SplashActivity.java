@@ -97,20 +97,6 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         mSplashIcon = (ImageView) findViewById(R.id.image_view_splash_center);
         mSplashName = (ImageView) findViewById(R.id.iv_back);
         AppMasterPreference pre = AppMasterPreference.getInstance(this);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date sta = null;
-        Date end = null;
-        try {
-            sta = sdf.parse("2015/4/14 08:30:00");
-            end = sdf.parse("2015/4/14 21:30:00");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long startTime = sta.getTime();
-        pre.setSplashStartShowTime(startTime);
-        long endTime = end.getTime();
-        pre.setSplashEndShowTime(endTime);
-
         long startShowSplashTime = pre.getSplashStartShowTime();
         long endShowSplashTime = pre.getSplashEndShowTime();
         long currentTime = System.currentTimeMillis();
