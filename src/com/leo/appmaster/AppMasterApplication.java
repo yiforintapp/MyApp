@@ -1,6 +1,7 @@
 
 package com.leo.appmaster;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,6 +12,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,13 +30,17 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.UserManager;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
@@ -44,12 +50,12 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
+import com.leo.appmaster.home.SplashBean;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
@@ -57,6 +63,7 @@ import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
@@ -130,6 +137,18 @@ public class AppMasterApplication extends Application {
                 }
             }
         }, 10000);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                // 拉取闪屏数据
+                loadSplashDate();
+            }
+        });
+        // Bitmap image =
+        // BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
+        // .getAbsolutePath()
+        // + "/appmaster/bd3eb13533fa828b217e8ff6ff1f4134970a5a41.jpg");
+        // saveSplash(image, 1, this);
         restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
@@ -228,7 +247,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 mAppsEngine.preloadAllBaseInfo();
-//                AppBusinessManager.getInstance(mInstance).init();
+                // AppBusinessManager.getInstance(mInstance).init();
                 mBackupManager.getBackupList();
                 judgeLockService();
                 judgeLockAlert();
@@ -587,7 +606,6 @@ public class AppMasterApplication extends Application {
                                     Timer timer = new Timer();
                                     timer.schedule(recheckTask,
                                             pref.getThemeCurrentStrategy());
-
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     LeoLog.e("checkNewTheme", e.getMessage());
@@ -626,6 +644,101 @@ public class AppMasterApplication extends Application {
         }
     }
 
+    /**
+     * load splash
+     */
+    public void loadSplashDate() {
+        final AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        // long curTime = System.currentTimeMillis();
+        // long lastLoadTime = pref.getLastLoadSplashTime();
+        // if (lastLoadTime == 0
+        // || (curTime - pref.getLastLoadSplashTime()) >
+        // pref.getSplashCurrentStrategy()) {
+        HttpRequestAgent.getInstance(this).loadSplashDate(new
+                Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response, boolean noMidify) {
+                        Log.e("xxxxxxx", "拉取闪屏成功");
+                        if (response != null) {
+                            try {
+                                String endDate = response.getString("c");
+                                String startDate = response.getString("b");
+                                String imageUrl = response.getString("a");
+                                Log.e("xxxxxxxxxxx", endDate + "    " + startDate + "       "
+                                        + imageUrl);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            pref.setLastCheckThemeTime(System
+                                    .currentTimeMillis());
+                        }
+
+                        TimerTask recheckTask = new TimerTask() {
+                            @Override
+                            public void run() {
+                                loadSplashDate();
+                            }
+                        };
+                        Timer timer = new Timer();
+                        timer.schedule(recheckTask,
+                                pref.getSplashCurrentStrategy());
+                    }
+                }, new ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        LeoLog.e("loadSplash", error.getMessage());
+                        pref.setThemeStrategy(pref.getSplashFailStrategy(),
+                                pref.getSplashSuccessStrategy(), pref.getSplashFailStrategy());
+                        TimerTask recheckTask = new TimerTask() {
+                            @Override
+                            public void run() {
+                                loadSplashDate();
+                            }
+                        };
+                        Timer timer = new Timer();
+                        timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
+                    }
+                });
+        // } else {
+        // pref.setThemeStrategy(pref.getSplashFailStrategy(),
+        // pref.getSplashSuccessStrategy(), pref.getSplashFailStrategy());
+        // TimerTask recheckTask = new TimerTask() {
+        // @Override
+        // public void run() {
+        // loadSplashDate();
+        // }
+        // };
+        // Timer timer = new Timer();
+        // long delay = pref.getSplashCurrentStrategy()
+        // - (curTime - lastLoadTime);
+        // timer.schedule(recheckTask, delay);
+        // }
+    }
+
+    // 保存闪屏
+    private int saveSplash(Bitmap inputStream, long fileSize, Context context) {
+        String savePath = FileOperationUtil.getSplashPath();
+        String sdPath = Environment.getExternalStorageDirectory()
+                .getAbsolutePath();
+        if (savePath == null) {
+            Log.e("xxxxxxxxxx", "没有发现该路径！");
+            return 0;
+        }
+        int bitmapSize = FileOperationUtil.getBitmapSize(inputStream);
+        boolean flag = FileOperationUtil.isMemeryEnough(bitmapSize, context, sdPath, 0);
+        if (!flag) {
+            Log.e("xxxxxxxxxx", "内存不足！");
+            return 1;
+        }
+        try {
+            FileOperationUtil.readAsFile(inputStream, FileOperationUtil.getSplashPath()
+                    + Constants.SPLASH_NAME, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     @Override
     public void onTerminate() {
         super.onTerminate();
@@ -639,6 +752,7 @@ public class AppMasterApplication extends Application {
         if (cr != null) {
             cr.unregisterContentObserver(mCallLogObserver);
             cr.unregisterContentObserver(mMessageObserver);
+            cr.unregisterContentObserver(mContactObserver);
         }
     }
 
@@ -717,4 +831,5 @@ public class AppMasterApplication extends Application {
     public static boolean isAboveICS() {
         return AppMasterApplication.SDK_VERSION >= 14;
     }
+
 }
