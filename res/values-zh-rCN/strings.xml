@@ -608,9 +608,8 @@
     <string name="unknow_call_thrid_second_title">来电显示是假象哦</string>
     <string name="unknow_call_thrid_thrid_title">按顺序划过挂断，短信，接听来解锁吧</string>
     <string name="weizhuang_setting_ok">设置成功</string>
-    <string name="weizhuang_error_title">手机屏幕上的“关闭”按钮是假象哦</string>
-    <string name="weizhuang_error_save">在“关闭“按钮上从左向右滑动设置解锁吧”</string>
-    <string name="weizhuang_error_notice">抱歉，"隐私卫士"已停止使用</string>
+    <string name="weizhuang_error_title">手机屏幕上的“关闭”按钮是假象哦，在“关闭“按钮上从左向右滑动设置解锁吧</string>
+    <string name="weizhuang_error_notice">抱歉，“隐私卫士“已停止使用</string>
     <string name="weizhuang_error_notice_set_false">哎哟！滑动距离再大一点</string>
 
     <string-array name="weizhuang_type_num">

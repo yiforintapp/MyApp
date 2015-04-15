@@ -3,23 +3,33 @@
     android:id="@+id/activity_weizhuang_firstin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@color/app_background"
-    android:gravity="center"
+    android:background="@color/white"
     android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="180dp"
+        android:background="@drawable/disguise_tips" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="40dp"
         android:text="@string/weizhuang_first_in_text" />
 
-    <Button
+    <TextView
         android:id="@+id/bt_go"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
+        android:textColor="@drawable/manager_backup_text_selecter"
+        android:background="@drawable/manager_backup_button_selecter"
         android:text="@string/first_in_sure_button" />
 
 </LinearLayout>

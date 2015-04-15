@@ -9,10 +9,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class WeiZhuangFirstIn extends Activity implements OnClickListener {
 
-    private Button mButton;
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +23,8 @@ public class WeiZhuangFirstIn extends Activity implements OnClickListener {
     }
 
     private void init() {
-        mButton = (Button) findViewById(R.id.bt_go);
-        mButton.setOnClickListener(this);
+        mTextView = (TextView) findViewById(R.id.bt_go);
+        mTextView.setOnClickListener(this);
     }
 
     @Override

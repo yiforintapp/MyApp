@@ -84,6 +84,8 @@
     <color name="guide_indicator_fill_color">#87a9dc</color>
     <!-- guide page begin -->
 
+    <color name="weisuo_text">#636363</color>
+
     <drawable name="transparent">#00000000</drawable>
 
     <color name="home_btn_lock_pressed">#e3edfd</color>

@@ -29,7 +29,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 
 public class WeiZhuangActivity extends Activity implements OnItemClickListener {
     private final static int noMode = 0;
-    private Drawable[] mIcon = new Drawable[1];
+    private Drawable[] mIcon = new Drawable[4];
     private String[] mName;
     private List<WeiZhuangInfo> mList;
     private WeiZhuangAdapt mAdapt;
@@ -69,7 +69,10 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
     
     private void fillData() {
         mName = getResources().getStringArray(R.array.weizhuang_type_num);
-        mIcon[0] = mThemeRes.getDrawable(R.drawable.ic_launcher);
+        mIcon[0] = mThemeRes.getDrawable(R.drawable.disguise_icon_no);
+        mIcon[1] = mThemeRes.getDrawable(R.drawable.disguise_iocn_error);
+        mIcon[2] = mThemeRes.getDrawable(R.drawable.disguise_icon_call);
+        mIcon[3] = mThemeRes.getDrawable(R.drawable.disguise_iocn_finger);
 
         // list
         mList = new ArrayList<WeiZhuangInfo>();
@@ -77,7 +80,7 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
         for (int i = 0; i < size; i++) {
             WeiZhuangInfo info = new WeiZhuangInfo();
             info.setAppName(mName[i]);
-            info.setIcon(mIcon[0]);
+            info.setIcon(mIcon[i]);
             mList.add(info);
         }
 
