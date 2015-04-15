@@ -178,8 +178,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private int mTotalTraffic = -1;
     private int mUsedTraffic = -1;
     private long mItselfMonthTraffic = -1;
-    private int mWeiZhuang = -1;
-
+    private int mPretendLock = -1;
+    
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
 
@@ -1103,10 +1103,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 //    }
 
     public int getPretendLock() {
-        return mPref.getInt(PREF_CUR_PRETNED_LOCK, 0);
+        if(mPretendLock < 0) {
+            mPretendLock = mPref.getInt(PREF_CUR_PRETNED_LOCK, 0);
+        }
+        return mPretendLock;
     }
 
     public void setPretendLock(int selected) {
+        mPretendLock = selected;
         mPref.edit().putInt(PREF_CUR_PRETNED_LOCK, selected).commit();
     }
 
