@@ -97,8 +97,6 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private void initUI() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTitleBar.openBackView();
-        mTitleBar.setOptionListener(this);
-        mTitleBar.setOptionListener(this);
         mTitleBar.setTitle(R.string.passwd_setting);
         mSwitchBottom = (TextView) this.findViewById(R.id.switch_bottom);
         mSwitchBottom.setOnClickListener(this);
