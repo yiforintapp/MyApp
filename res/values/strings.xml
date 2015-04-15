@@ -615,5 +615,9 @@
 
     <string name="pretend_app_error">抱歉，\" %1$s \"已停止使用</string>
     <!-- weizhuang -->
+    <string name="time_location_lock_tip_title">更智能的情景模式切换</string>
+    <string name="time_location_lock_tip_content">我们发现您频繁切换情景模式，您可以设置通过时间或者位置自动切换情景模式，是否设置？</string>
+
+    <!-- version 2.1 end -->
 
 </resources>

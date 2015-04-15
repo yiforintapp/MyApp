@@ -4,6 +4,7 @@ package com.leo.appmaster.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -14,12 +15,14 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 import android.os.storage.StorageManager;
@@ -27,7 +30,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.MediaColumns;
-
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
 
@@ -170,14 +173,16 @@ public class FileOperationUtil {
         }
     }
 
-    public static boolean isMemeryEnough(long fileSize, Context ctx, String sdPath) {
+    // 内存大小
+    public static boolean isMemeryEnough(long fileSize, Context ctx, String sdPath, int size) {
         StatFs sf = new StatFs(sdPath);
         @SuppressWarnings("deprecation")
         long blockSize = sf.getBlockSize();
         @SuppressWarnings("deprecation")
         long nAvailableblock = sf.getAvailableBlocks();
         long availableblock = (blockSize * nAvailableblock) / (1024 * 1024);
-        return fileSize / (1024 * 1024) + 10 > availableblock ? false : true;
+        long temp = fileSize / (1024 * 1024) + size;
+        return temp > availableblock ? false : true;
     }
 
     /**
@@ -243,7 +248,7 @@ public class FileOperationUtil {
                         + " to " + newPath);
                 // return ret ? newPath : null;
                 if (!ret) {
-                    boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0]);
+                    boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0], 10);
                     int returnValue = 4;
                     if (memeryFlag) {
                         returnValue = hideImageFileCopy(ctx, filePath, newName);
@@ -324,7 +329,7 @@ public class FileOperationUtil {
             LeoLog.e("unhideImageFile", ret + " : rename file " + filePath
                     + " to " + newPath);
             if (!ret) {
-                boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0]);
+                boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0], 10);
                 int returnValue = 4;
                 if (memeryFlag) {
                     returnValue = unHideImageFileCopy(ctx, filePath);
@@ -725,5 +730,59 @@ public class FileOperationUtil {
             // 复制失败
             return -1;
         }
+    }
+
+    public static boolean isSDReady() {
+        return Environment.MEDIA_MOUNTED.equals(Environment
+                .getExternalStorageState());
+    }
+
+    // 获取保存路径
+    public static String getSplashPath() {
+        if (isSDReady()) {
+            String path = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath();
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+            path += Constants.SPLASH_PATH;
+            File backupDir = new File(path);
+            if (!backupDir.exists()) {
+                boolean success = backupDir.mkdirs();
+                if (!success) {
+                    return null;
+                }
+            }
+            return path;
+        }
+        return null;
+    }
+
+    // 存储文件到磁盘
+    public static void readAsFile(Bitmap inSream, String file, Context context) throws IOException {
+        boolean falg = new File(file).exists();
+        OutputStream outStream = null;
+        outStream = new FileOutputStream(new File(file), false);
+        inSream.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+        try {
+            outStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 获取Bitmap文件大小
+    @SuppressLint("NewApi")
+    public static int getBitmapSize(Bitmap bitmap) {
+        // API 19
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return bitmap.getAllocationByteCount();
+        }
+        {// API12
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
+                return bitmap.getByteCount();
+        }
+        // earlier version
+        return bitmap.getRowBytes() * bitmap.getHeight();
     }
 }

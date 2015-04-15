@@ -410,7 +410,6 @@ public class BusinessAppFragment extends BaseFolderFragment implements
                     .findViewById(R.id.tv_app_name);
             BusinessItemInfo info = mRecommendDatas.get(position);
             File bimtap = mImageLoader.getDiskCache().get(info.iconUrl);
-
             mImageLoader.displayImage(info.iconUrl, imageView, commonOption);
             textView.setText(info.label);
             convertView.setTag(info);

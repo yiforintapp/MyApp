@@ -187,7 +187,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                     // mLockManager.setCurrentLockMode(mode);
                     // startRcommendLock();
                     // } else {
-                    mLockManager.setCurrentLockMode(mode);
+                    mLockManager.setCurrentLockMode(mode, true);
                     // }
                     SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "modeschage", "home");
                     new Thread(new Runnable() {

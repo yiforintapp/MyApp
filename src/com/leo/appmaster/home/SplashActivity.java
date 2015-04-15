@@ -1,16 +1,25 @@
 
 package com.leo.appmaster.home;
 
+import java.io.File;
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
@@ -25,6 +34,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response.ErrorListener;
@@ -32,9 +42,11 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
@@ -42,17 +54,17 @@ import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CirclePageIndicator;
+import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 
 public class SplashActivity extends BaseActivity implements OnPageChangeListener {
 
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
-
     private Handler mEventHandler;
-    
+
     /* Guide page stuff begin */
-    private ViewPager mViewPager;    
+    private ViewPager mViewPager;
     /* pages */
     private ArrayList<View> mPageViews;
     private GuideItemView mPageBackgroundView;
@@ -63,19 +75,44 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
     private int[] mPageColors = new int[4];
     private EdgeEffectCompat leftEdge;
     private EdgeEffectCompat rightEdge;
+    private RelativeLayout mSplashRL;
+    private ImageView mSplashIcon;
+    private ImageView mSplashName;
+
     /* Guide page stuff end */
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LeoLog.d("SplashActivity", "onCreate");
         setContentView(R.layout.activity_splash_guide);
-        
+        initSplash();
         mEventHandler = new EventHandler();
         startInitTask();
         LeoEventBus.getDefaultBus().register(this, 2);
-        
-        // Play animation when reenter app
+    }
+
+    @SuppressLint("NewApi")
+    private void initSplash() {
+        mSplashRL = (RelativeLayout) findViewById(R.id.splashRL);
+        mSplashIcon = (ImageView) findViewById(R.id.image_view_splash_center);
+        mSplashName = (ImageView) findViewById(R.id.iv_back);
+        AppMasterPreference pre = AppMasterPreference.getInstance(this);
+        long startShowSplashTime = pre.getSplashStartShowTime();
+        long endShowSplashTime = pre.getSplashEndShowTime();
+        long currentTime = System.currentTimeMillis();
+        if (currentTime >= startShowSplashTime && currentTime <= endShowSplashTime) {
+            String path = FileOperationUtil.getSplashPath();
+            Bitmap splash = null;
+            if (path != null && !"".equals(path)) {
+                splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME);
+            }
+            if (splash != null) {
+                mSplashIcon.setVisibility(View.INVISIBLE);
+                mSplashName.setVisibility(View.INVISIBLE);
+                BitmapDrawable splashDrawable = new BitmapDrawable(splash);
+                mSplashRL.setBackgroundDrawable(splashDrawable);
+            }
+        }
         PrivacyHelper.getInstance(this).setDirty(true);
     }
 
@@ -124,27 +161,29 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LAUNCH_HOME_ACTIVITY:
-                    if(AppMasterPreference.getInstance(SplashActivity.this).getFirstUse()){
-                        boolean guidNotShown = mMain == null || mMain.getVisibility() != View.VISIBLE;
-                        if(guidNotShown) {
+                    if (AppMasterPreference.getInstance(SplashActivity.this).getFirstUse()) {
+                        boolean guidNotShown = mMain == null
+                                || mMain.getVisibility() != View.VISIBLE;
+                        if (guidNotShown) {
                             showGuide();
                         }
-                    }else{
+                    } else {
                         startHome();
                     }
                     break;
 
                 default:
                     break;
-            }}
+            }
+        }
     }
-    
+
     private void startHome() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
             LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
             LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                    getPackageName(), true, null);          
+                    getPackageName(), true, null);
             amp.setDoubleCheck(null);
         } else {
             Intent intent = new Intent(this, LockSettingActivity.class);
@@ -210,15 +249,15 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             }
         }).start();
     }
-    
+
     /* add for Guide Screen begin */
-    private void showGuide(){
+    private void showGuide() {
         mPageColors[0] = getResources().getColor(R.color.guide_page1_background_color);
         mPageColors[1] = getResources().getColor(R.color.guide_page2_background_color);
         mPageColors[2] = getResources().getColor(R.color.guide_page3_background_color);
         mPageColors[3] = getResources().getColor(R.color.guide_page4_background_color);
-        
-        LayoutInflater inflater = getLayoutInflater();    
+
+        LayoutInflater inflater = getLayoutInflater();
         mPageViews = new ArrayList<View>();
         mPageBackgroundView = (GuideItemView) findViewById(R.id.guide_bg_view);
         mPageBackgroundView.initBackgroundColor(mPageColors[0]);
@@ -261,22 +300,23 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         tvContent = (TextView) page4.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.guide_page4_content));
         mPageViews.add(page4);
-        
-        mMain = (ViewGroup)findViewById(R.id.layout_guide);
-        mViewPager = (ViewPager)mMain.findViewById(R.id.guide_viewpager);
+
+        mMain = (ViewGroup) findViewById(R.id.layout_guide);
+        mViewPager = (ViewPager) mMain.findViewById(R.id.guide_viewpager);
         initViewPagerEdges(mViewPager);
 
         mMain.setVisibility(View.VISIBLE);
         AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
         aa.setDuration(1000);
         mMain.startAnimation(aa);
-        
+
         mViewPager.setAdapter(new GuidePageAdapter());
         mIndicator = (CirclePageIndicator) findViewById(R.id.splash_indicator);
         mIndicator.setViewPager(mViewPager);
         mIndicator.setOnPageChangeListener(this);
-        
-        Button button = (Button)   mPageViews.get(mPageViews.size()-1).findViewById(R.id.button_guide);
+
+        Button button = (Button) mPageViews.get(mPageViews.size() - 1).findViewById(
+                R.id.button_guide);
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(new OnClickListener() {
             @Override
@@ -287,50 +327,50 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         });
     }
 
-    class GuidePageAdapter extends PagerAdapter {    
-         
-        @Override    
-        public int getCount() {    
-            return mPageViews.size();    
-        }    
-    
-        @Override    
-        public boolean isViewFromObject(View arg0, Object arg1) {    
-            return arg0 == arg1;    
-        }    
-    
-        @Override    
-        public int getItemPosition(Object object) {    
-            return super.getItemPosition(object);    
-        }    
-    
-        @Override    
-        public void destroyItem(View arg0, int arg1, Object arg2) {    
-            ((ViewPager) arg0).removeView(mPageViews.get(arg1));    
-        }    
-    
-        @Override    
-        public Object instantiateItem(View arg0, int arg1) {    
-            ((ViewPager) arg0).addView(mPageViews.get(arg1));      
-            return mPageViews.get(arg1);    
-        }    
-    
-        @Override    
-        public void restoreState(Parcelable arg0, ClassLoader arg1) {    
-        }    
-    
-        @Override    
-        public Parcelable saveState() {    
-            return null;    
-        }    
-    
-        @Override    
-        public void startUpdate(View arg0) {    
-        }    
-    
-        @Override    
-        public void finishUpdate(View arg0) {    
-        }    
+    class GuidePageAdapter extends PagerAdapter {
+
+        @Override
+        public int getCount() {
+            return mPageViews.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View arg0, Object arg1) {
+            return arg0 == arg1;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return super.getItemPosition(object);
+        }
+
+        @Override
+        public void destroyItem(View arg0, int arg1, Object arg2) {
+            ((ViewPager) arg0).removeView(mPageViews.get(arg1));
+        }
+
+        @Override
+        public Object instantiateItem(View arg0, int arg1) {
+            ((ViewPager) arg0).addView(mPageViews.get(arg1));
+            return mPageViews.get(arg1);
+        }
+
+        @Override
+        public void restoreState(Parcelable arg0, ClassLoader arg1) {
+        }
+
+        @Override
+        public Parcelable saveState() {
+            return null;
+        }
+
+        @Override
+        public void startUpdate(View arg0) {
+        }
+
+        @Override
+        public void finishUpdate(View arg0) {
+        }
     }
 
     @Override
@@ -339,9 +379,9 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
 
     @Override
     public void onPageScrolled(int arg0, float arg1, int arg2) {
-        if(arg1 > 0.0f && arg0+1<mPageViews.size()){
+        if (arg1 > 0.0f && arg0 + 1 < mPageViews.size()) {
             int newColor = caculateNewColor(
-                    mPageColors[arg0], mPageColors[arg0+1], arg1);
+                    mPageColors[arg0], mPageColors[arg0 + 1], arg1);
             mPageBackgroundView.setCurrentColor(newColor);
         }
         /* disable edges scrolling effect */
@@ -359,17 +399,21 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
     @Override
     public void onPageSelected(int arg0) {
     }
-    
-    private int caculateNewColor(int originColor, int targetColor, float position){
-        int originRGB[] = {Color.red(originColor), Color.green(originColor), Color.blue(originColor)};
-        int targetRGB[] = {Color.red(targetColor), Color.green(targetColor), Color.blue(targetColor)};
+
+    private int caculateNewColor(int originColor, int targetColor, float position) {
+        int originRGB[] = {
+                Color.red(originColor), Color.green(originColor), Color.blue(originColor)
+        };
+        int targetRGB[] = {
+                Color.red(targetColor), Color.green(targetColor), Color.blue(targetColor)
+        };
         int newRGB[] = new int[3];
-        for(int i = 0;i<3;i++){
+        for (int i = 0; i < 3; i++) {
             newRGB[i] = (int) (originRGB[i] + (targetRGB[i] - originRGB[i]) * position);
         }
         return Color.rgb(newRGB[0], newRGB[1], newRGB[2]);
     }
-    
+
     private void initViewPagerEdges(ViewPager viewPager) {
         try {
             Field leftEdgeField = viewPager.getClass().getDeclaredField("mLeftEdge");
@@ -384,6 +428,6 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             e.printStackTrace();
         }
     }
-      
-   /* add for Guide Screen end */
+
+    /* add for Guide Screen end */
 }
