@@ -23,10 +23,13 @@ import com.leo.analytics.LeoAgent;
 import com.leo.analytics.update.IUIHelper;
 import com.leo.analytics.update.UpdateManager;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.home.GooglePlayGuideActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 public class UpdateActivity extends BaseActivity implements OnStateChangeListener {
@@ -44,7 +47,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
 
     private final static int MSG_UPDATE_PROGRESS = 1;
     private final static int MSG_NOTIFY_LAYOUT = 2;
-    
+
     private boolean mForce = false;
 
     public UpdateActivity() {
@@ -63,11 +66,12 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
     }
-    
+
     @Override
     protected void onStop() {
         super.onStop();
-        if(mForce && mUIType == IUIHelper.TYPE_CHECK_NEED_UPDATE && mParam == UpdateManager.FORCE_UPDATE) {
+        if (mForce && mUIType == IUIHelper.TYPE_CHECK_NEED_UPDATE
+                && mParam == UpdateManager.FORCE_UPDATE) {
             mManager.onCancelUpdate();
         }
     }
@@ -346,9 +350,9 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         int size = mManager.getSize();
         float fsize = (float) size / 1024 / 1024;
         setContentView(R.layout.dialog_alarm);
-        TextView tvId = (TextView)findViewById(R.id.dlg_title);
+        TextView tvId = (TextView) findViewById(R.id.dlg_title);
         tvId.setText(getString(R.string.update_title));
-        TextView tvMsg = (TextView)findViewById(R.id.dlg_content);
+        TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -361,6 +365,11 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             public void onClick(View v) {
                 /* sdk mark */
                 SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "sure");
+
+                if (AppUtil.appInstalled(UpdateActivity.this,
+                        Constants.GP_PACKAGE)) {
+                    LockManager.getInstatnce().timeFilterSelf();
+                }
                 mManager.onConfirmDownload();
                 // finish(); do not finish, downloading UI need the activity
             }

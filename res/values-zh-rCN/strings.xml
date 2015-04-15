@@ -566,7 +566,7 @@
     </string-array>
 
     <string name="select_mode">选择情景模式</string>
-     <string name="select_wifi_mode">选择wifi</string>
+    <string name="select_wifi_mode">选择wifi</string>
     <string name="choose_ssid">请选择wifi热点</string>
     <string name="choose_enter_mode">进入时操作</string>
     <string name="choose_quit_mode">离开时操作</string>
@@ -596,5 +596,35 @@
     <string name="add_new_time_lock">添加时间锁</string>
     <string name="add_new_location_lock">添加位置锁</string>
     <string name="save_successful">保存成功</string>
+
+    <!-- version 2.1 begin -->
+    <!-- weizhuang -->
+    <string name="title_bar_weizhuang">应用伪装</string>
+    <string name="weizhuang_first_in_text">打开被锁的应用时出现伪装界面，只有你知道要如何跳过伪装页打开应用</string>
+    <string name="first_in_sure_button">知道了</string>
+    <string name="unknow_call_first_title">未知号码</string>
+    <string name="unknow_call_second_title">来电</string>
+    <string name="unknow_call_thrid_first_title">使用介绍</string>
+    <string name="unknow_call_thrid_second_title">来电显示是假象哦</string>
+    <string name="unknow_call_thrid_thrid_title">按顺序划过挂断，短信，接听来解锁吧</string>
+    <string name="weizhuang_setting_ok">设置成功</string>
+    <string name="weizhuang_error_title">手机屏幕上的“关闭”按钮是假象哦</string>
+    <string name="weizhuang_error_save">在“关闭“按钮上从左向右滑动设置解锁吧”</string>
+    <string name="weizhuang_error_notice">抱歉，"隐私卫士"已停止使用</string>
+    <string name="weizhuang_error_notice_set_false">哎哟！滑动距离再大一点</string>
+    
+    <string-array name="weizhuang_type_num">
+        <item>无</item>
+        <item>应用错误</item>
+        <item>未知来电</item>
+        <item>指纹解锁</item>
+    </string-array>
+
+    <string name="pretend_app_error">抱歉，\" %1$s \"已停止使用</string>
+
+    <!-- weizhuang -->
+
+
+    <!-- version 2.1 end -->
 
 </resources>

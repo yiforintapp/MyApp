@@ -51,6 +51,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -126,6 +127,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
                 mSplashRL.setBackgroundDrawable(splashDrawable);
             }
         }
+        PrivacyHelper.getInstance(this).setDirty(true);
     }
 
     @Override
@@ -334,7 +336,6 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             @Override
             public void onClick(View v) {
                 AppMasterPreference.getInstance(SplashActivity.this).setFirstUse(false);
-                AppMasterApplication.getInstance().checkNew();
                 startHome();
             }
         });

@@ -294,4 +294,9 @@ public class Constants {
     public static final String SPLASH_URL = "/appmaster/flushscreen/";
     public static final String SPLASH_PATH = "appmaster/backup/";
     public static final String SPLASH_NAME = "splash_image.jpg";
+
+    // ============== default home mode list =================
+    public static final String[] sDefaultHomeModeList = new String[] {
+            "com.tencent.mm"
+    };
 }

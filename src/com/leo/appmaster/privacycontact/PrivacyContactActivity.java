@@ -11,14 +11,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -120,8 +118,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                     mTtileBar.setOptionImageVisibility(View.INVISIBLE);
                     if (mMessageTip) {
                         mMessageTip = false;
-                        AppMasterPreference.getInstance(PrivacyContactActivity.this)
-                                .setMessageRedTip(false);
                         mFragmentHolders[0].redTip = false;
                         mPrivacyContactPagerTab.notifyDataSetChanged();
                     }
@@ -130,8 +126,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                     mTtileBar.setOptionImageVisibility(View.INVISIBLE);
                     if (mCallLogTip) {
                         mCallLogTip = false;
-                        AppMasterPreference.getInstance(PrivacyContactActivity.this)
-                                .setCallLogRedTip(false);
                         mFragmentHolders[1].redTip = false;
                         mPrivacyContactPagerTab.notifyDataSetChanged();
                     }
@@ -294,7 +288,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             if (pagerPosition != 1) {
                 mFragmentHolders[1].redTip = true;
                 mPrivacyContactPagerTab.notifyDataSetChanged();
-                AppMasterPreference.getInstance(this).setCallLogRedTip(true);
                 mCallLogTip = true;
             }
         } else if (PrivacyContactUtils.PRIVACY_RECEIVER_MESSAGE_NOTIFICATION
@@ -302,7 +295,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             if (pagerPosition != 0) {
                 mFragmentHolders[0].redTip = true;
                 mPrivacyContactPagerTab.notifyDataSetChanged();
-                AppMasterPreference.getInstance(this).setMessageRedTip(true);
                 mMessageTip = true;
             }
 

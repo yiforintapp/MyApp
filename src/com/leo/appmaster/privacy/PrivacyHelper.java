@@ -51,6 +51,9 @@ public class PrivacyHelper {
     private boolean mIsComputing = false;
     
     private boolean mFirstCompute = true;
+    
+    /** Flag for play animation */
+    private boolean mDirty = true;
 
     private Level mPrivacyLevel = Level.LEVEL_ONE;
 
@@ -125,6 +128,14 @@ public class PrivacyHelper {
         }
         return false;
     }
+    
+    public boolean isDirty() {
+        return mDirty;
+    }
+    
+    public void setDirty(boolean dirty) {
+        mDirty = dirty;
+    }
 
     /**
      * Recompute privacy level when privacy data changed.
@@ -164,6 +175,7 @@ public class PrivacyHelper {
                     new PrivacyLevelChangeEvent(EventId.EVENT_PRIVACY_LEVEL_COMPUTED));
             if(!mFirstCompute) {
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "prilevel", mPrivacyLevel.ordinal() + 1 + "");
+                setDirty(true);
             }
         }
         mFirstCompute = false;
