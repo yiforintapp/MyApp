@@ -181,14 +181,34 @@ public class HttpRequestAgent {
      */
     public void loadSplashDate(Listener<JSONObject> listener,
             ErrorListener errorListener) {
-        JSONObject object = null;
-        String url = Utilities.getURL(Constants.SPLASH_URL
-                + mContext.getString(R.string.version_name) + "/" + "cn" + "/"
-                + mContext.getString(R.string.channel_code) + ".html");
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
-                errorListener);
+        // JSONObject object = null;
+        // String url = Utilities.getURL(Constants.SPLASH_URL
+        // + mContext.getString(R.string.version_name) + "/"
+        // + Utilities.getCountryID(mContext) + "/"
+        // + mContext.getString(R.string.channel_code) + ".html");
+        // JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
+        // object, listener,
+        // errorListener);
+        // request.setShouldCache(false);
+        // Log.e("xxxxxxx", "拉取闪屏");
+        // mRequestQueue.add(request);
+        String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
+        // List<String> hideThemes = AppMasterPreference.getInstance(mContext)
+        // .getHideThemeList();
+        // String combined = "";
+        // for (String string : hideThemes) {
+        // combined = combined + string + ";";
+        // }
+        String body = "update_flag="
+                + AppMasterPreference.getInstance(mContext)
+                        .getLocalThemeSerialNumber() + "&market_id="
+                + mContext.getString(R.string.channel_code) + "&language="
+                + AppwallHttpUtil.getLanguage() + "&app_ver="
+                + mContext.getString(R.string.version_name) + "&app_id="
+                + mContext.getPackageName();
+        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+                body, listener, errorListener);
         request.setShouldCache(false);
-        Log.e("xxxxxxx", "拉取闪屏");
         mRequestQueue.add(request);
     }
 
