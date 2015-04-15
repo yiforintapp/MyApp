@@ -37,6 +37,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -199,7 +200,6 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             } catch (Exception e) {
             }
         } else {
-
             ImageView image = (ImageView) view.findViewById(R.id.message_listCB);
             if (!mb.isCheck()) {
                 image.setImageDrawable(getResources().getDrawable(R.drawable.select));
@@ -221,8 +221,10 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     @SuppressLint("SimpleDateFormat")
     private void getMessages(String model, String selection, String[]
             selectionArgs) {
+        AppMasterPreference preference = AppMasterPreference.getInstance(mContext);
         List<MessageBean> mMessages = new ArrayList<MessageBean>();
         Map<String, MessageBean> messageList = new HashMap<String, MessageBean>();
+        int noReadCount = 0;
         Cursor cur = mContext.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
                 selection, selectionArgs, Constants.COLUMN_MESSAGE_DATE + " desc");
         if (cur != null) {
@@ -260,7 +262,11 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                 mb.setMessageTime(time);
                 if (threadId != null) {
                     if (!messageList.containsKey(threadId)) {
-                        mb.setCount(threadIdMessage(number));
+                        int temp = threadIdMessage(number);
+                        mb.setCount(temp);
+                        if (temp > 0) {
+                            noReadCount = noReadCount + 1;
+                        }
                         messageList.put(threadId, mb);
                     }
                 }
@@ -277,6 +283,12 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             mRestoremessgeLists = mMessages;
         }
         Collections.sort(mMessageList, PrivacyContactUtils.mMessageCamparator);
+        int count = preference.getMessageNoReadCount();
+        if (count > 0) {
+            preference.setMessageNoReadCount(count + noReadCount);
+        } else {
+            preference.setMessageNoReadCount(noReadCount);
+        }
     }
 
     private int threadIdMessage(String number) {

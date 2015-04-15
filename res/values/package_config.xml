@@ -2,7 +2,7 @@
 <resources>
 
     <string name="channel_name">Official</string>
-    <string name="channel_code">0000a</string>
-    <string name="version_name">2.1.0</string>
+    <string name="channel_code">0001a</string>
+    <string name="version_name">2.1</string>
 
 </resources>

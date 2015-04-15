@@ -31,6 +31,7 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 
@@ -756,7 +757,7 @@ public class PrivacyContactUtils {
                 if (new Date(a.getMessageTime()).after(new Date(b.getMessageTime())))
                     return -1;
                 return 0;
-            } catch(Exception e) {
+            } catch (Exception e) {
                 return 0;
             }
         }
@@ -954,9 +955,16 @@ public class PrivacyContactUtils {
             String[] selectionArgs, Context context) {
         ContentValues values = new ContentValues();
         values.put("message_is_read", read);
-        context.getContentResolver().update(Constants.PRIVACY_MESSAGE_URI,
+        int count = context.getContentResolver().update(Constants.PRIVACY_MESSAGE_URI,
                 values, selection,
                 selectionArgs);
+        if (count > 0) {
+            AppMasterPreference pre = AppMasterPreference.getInstance(context);
+            int temp = pre.getMessageNoReadCount();
+            if (temp > 0) {
+                pre.setMessageNoReadCount(temp - 1);
+            }
+        }
     }
 
     // 查询自定义短信列表thead_id

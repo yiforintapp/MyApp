@@ -107,7 +107,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_APP_MANAGER_FLOW_BROADCAST_FIRST_IN = "flow_setting_broadcast_first_in";
     public static final String PREF_APP_HOME_APP_FRAGMENT_RED_TIP = "home_app_fragment_red_tip";
     public static final String PREF_APP_HOT_APP_ACTIVITY_RED_TIP = "hot_app_activity_red_tip";
-
+    public static final String PREF_APP_PRIVACY_MESSAGE_RED_TIP = "privacy_message_red_tip";
+    public static final String PREF_APP_PRIVACY_CALL_LOG_RED_TIP = "privacy_call_log_red_tip";
     public static final String PREF_SHOW_TIP_KEY = "last_show_tip_time";
     public static final String PREF_THEME_SUCCESS_STRATEGY = "theme_success_strategy";
     public static final String PREF_THEME_FAIL_STRATEGY = "theme_fail_strategy";
@@ -117,7 +118,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_CURRENT_BUSINESS_STRATEGY = "business_current_strategy";
     public static final String PREF_MESSAGE_ITEM_RUNING = "message_item_runing";
     public static final String PREF_CALL_LOG_ITEM_RUNING = "call_log_item_runing";
-
+    public static final String PREF_SPLASH_START_SHOW_TIME = "splash_start_show_time";
+    public static final String PREF_SPLASH_END_SHOW_TIME = "splash_end_show_time";
+    public static final String PREF_CURRENT_SPLASH_STRATEGY = "current_splash_strategy";
+    public static final String PREF_SUCCESS_SPLASH_STRATEGY = "success_splash_strategy";
+    public static final String PREF_FAIL_SPLASH_STRATEGY = "fail_splash_strategy";
+    public static final String PREF_LAST_LOAD_SPLASH_TIME = "last_load_splash_time";
+    public static final String PREF_MESSAGE_NO_READ_COUNT = "message_no_read_count";
+    public static final String PREF_SPLASH_LOAD_START_TIME = "start_load_splash_time";
     // weizhuang
     public static final String PREF_WEIZHUANG_SELECTED = "weizhuang_selected";
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
@@ -154,7 +162,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private long mBusinessSuccessStrategy = -1;
     private long mBusinessFailStrategy = -1;
     private long mCurrentBusinessStrategy = -1;
-
+    private long mSplashSuccessStrategy = -1;
+    private long mSplashFailStrategy = -1;
+    private long mCurrentSplashStrategy = -1;
     private String mOnlineThemeSerial = null;
     private String mLocalThemeSerial = null;
     private String mOnlineBusinessSerial = null;
@@ -177,7 +187,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private int mTotalTraffic = -1;
     private int mUsedTraffic = -1;
     private long mItselfMonthTraffic = -1;
-    private int mWeiZhuang = -1;
+    private int mPretendLock = -1;
 
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
@@ -318,6 +328,22 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setLastShowTime(long lastShowTime) {
         mLastShowTime = lastShowTime;
         mPref.edit().putLong(PREF_SHOW_TIP_KEY, lastShowTime).commit();
+    }
+
+    public boolean getMessageRedTip() {
+        return mPref.getBoolean(PREF_APP_PRIVACY_MESSAGE_RED_TIP, false);
+    }
+
+    public void setMessageRedTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_APP_PRIVACY_MESSAGE_RED_TIP, flag).commit();
+    }
+
+    public boolean getCallLogRedTip() {
+        return mPref.getBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, false);
+    }
+
+    public void setCallLogRedTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, flag).commit();
     }
 
     public boolean getHomeFragmentRedTip() {
@@ -1100,10 +1126,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // }
 
     public int getPretendLock() {
-        return mPref.getInt(PREF_CUR_PRETNED_LOCK, 0);
+        if (mPretendLock < 0) {
+            mPretendLock = mPref.getInt(PREF_CUR_PRETNED_LOCK, 0);
+        }
+        return mPretendLock;
     }
 
     public void setPretendLock(int selected) {
+        mPretendLock = selected;
         mPref.edit().putInt(PREF_CUR_PRETNED_LOCK, selected).commit();
     }
 
@@ -1113,6 +1143,100 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setSwitchModeCount(int count) {
         mPref.edit().putInt(PREF_SWITCH_MODE_COUNT, count).commit();
+    }
+
+    // =====splash start show time set and get===================
+    public void setSplashStartShowTime(long time) {
+        mPref.edit().putLong(PREF_SPLASH_START_SHOW_TIME, time).commit();
+    }
+
+    public long getSplashStartShowTime() {
+        return mPref.getLong(PREF_SPLASH_START_SHOW_TIME, -1);
+    }
+
+    // =====splash end show time set and get===================
+    public void setSplashEndShowTime(long time) {
+        mPref.edit().putLong(PREF_SPLASH_END_SHOW_TIME, time).commit();
+    }
+
+    public long getSplashEndShowTime() {
+        return mPref.getLong(PREF_SPLASH_END_SHOW_TIME, -1);
+    }
+
+    public void setLoadSplashStrategy(long currentStrategy, long successStrategy, long failStrategy) {
+        Editor editor = null;
+        if (mCurrentSplashStrategy != currentStrategy) {
+            mCurrentSplashStrategy = currentStrategy;
+            editor = mPref.edit().putLong(PREF_CURRENT_SPLASH_STRATEGY, currentStrategy);
+        }
+        if (mSplashSuccessStrategy != successStrategy) {
+            mSplashSuccessStrategy = successStrategy;
+            if (editor == null) {
+                editor = mPref.edit().putLong(PREF_SUCCESS_SPLASH_STRATEGY, successStrategy);
+            } else {
+                editor.putLong(PREF_SUCCESS_SPLASH_STRATEGY, successStrategy);
+            }
+        }
+        if (mSplashFailStrategy != failStrategy) {
+            mSplashFailStrategy = failStrategy;
+            if (editor == null) {
+                editor = mPref.edit().putLong(PREF_FAIL_SPLASH_STRATEGY, failStrategy);
+            } else {
+                editor.putLong(PREF_FAIL_SPLASH_STRATEGY, failStrategy);
+            }
+        }
+        if (editor != null) {
+            editor.commit();
+        }
+    }
+
+    public long getSplashSuccessStrategy() {
+        if (mSplashSuccessStrategy < 0) {
+            mSplashSuccessStrategy = mPref.getLong(PREF_SUCCESS_SPLASH_STRATEGY,
+                    AppMasterConfig.TIME_12_HOUR);
+        }
+        return mSplashSuccessStrategy;
+    }
+
+    public long getSplashFailStrategy() {
+        if (mSplashFailStrategy < 0) {
+            mSplashFailStrategy = mPref.getLong(PREF_FAIL_SPLASH_STRATEGY,
+                    AppMasterConfig.TIME_2_HOUR);
+        }
+
+        return mSplashFailStrategy;
+    }
+
+    public long getSplashCurrentStrategy() {
+        if (mCurrentSplashStrategy < 0) {
+            mCurrentSplashStrategy = mPref.getLong(PREF_CURRENT_SPLASH_STRATEGY,
+                    AppMasterConfig.TIME_2_HOUR);
+        }
+        return mCurrentSplashStrategy;
+    }
+
+    public void setLastLoadSplashTime(long lashTime) {
+        mPref.edit().putLong(PREF_LAST_LOAD_SPLASH_TIME, lashTime).commit();
+    }
+
+    public long getLastLoadSplashTime() {
+        return mPref.getLong(PREF_LAST_LOAD_SPLASH_TIME, 0);
+    }
+
+    public void setStartLoadSplashTime(long time) {
+        mPref.edit().putLong(PREF_SPLASH_LOAD_START_TIME, time).commit();
+    }
+
+    public long getStartLoadSplashTime() {
+        return mPref.getLong(PREF_SPLASH_LOAD_START_TIME, 0);
+    }
+
+    public void setMessageNoReadCount(int count) {
+        mPref.edit().putInt(PREF_MESSAGE_NO_READ_COUNT, count);
+    }
+
+    public int getMessageNoReadCount() {
+        return mPref.getInt(PREF_MESSAGE_NO_READ_COUNT, 0);
     }
 
 }

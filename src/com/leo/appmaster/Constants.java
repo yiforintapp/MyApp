@@ -290,6 +290,10 @@ public class Constants {
 
     public static final Uri IMAGE_HIDE_URI = Uri.parse("content://" + AUTHORITY
             + "/" + TABLE_IMAGE_HIDE);
+    // =================Splash url=======================
+    public static final String SPLASH_URL = "/appmaster/flushscreen/";
+    public static final String SPLASH_PATH = "appmaster/backup/";
+    public static final String SPLASH_NAME = "splash_image.jpg";
 
     // ============== default home mode list =================
     public static final String[] sDefaultHomeModeList = new String[] {
