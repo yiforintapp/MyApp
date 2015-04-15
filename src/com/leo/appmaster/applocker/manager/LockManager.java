@@ -31,12 +31,17 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
+import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.LocationLockEditActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.TimeLockEditActivity;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.TimeLock;
@@ -54,6 +59,9 @@ import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
@@ -365,7 +373,7 @@ public class LockManager {
                             if (lockMode.modeId == lock.entranceModeId) {
                                 LeoLog.d("onNetworkStateChange", "hit location: " + lock.name);
                                 LeoLog.d("onNetworkStateChange", "2");
-                                setCurrentLockMode(lockMode);
+                                setCurrentLockMode(lockMode, false);
                                 break;
                             }
                         }
@@ -425,7 +433,7 @@ public class LockManager {
                                     LeoLog.d("onNetworkStateChange", "hit location: "
                                             + selseLock.name + "   "
                                             + selseLock.quitModeName);
-                                    setCurrentLockMode(lockMode);
+                                    setCurrentLockMode(lockMode, false);
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "modeschage",
                                             "local");
                                     break;
@@ -457,7 +465,7 @@ public class LockManager {
                                         LeoLog.d("onNetworkStateChange", "hit location: "
                                                 + selseLock.name + "   "
                                                 + selseLock.entranceModeName);
-                                        setCurrentLockMode(lockMode);
+                                        setCurrentLockMode(lockMode, false);
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "modeschage",
                                                 "local");
                                         break;
@@ -491,7 +499,7 @@ public class LockManager {
                                     LeoLog.d("onNetworkStateChange", "hit location: "
                                             + selseLock.name + "   "
                                             + selseLock.entranceModeName);
-                                    setCurrentLockMode(lockMode);
+                                    setCurrentLockMode(lockMode, false);
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "modeschage",
                                             "local");
                                     break;
@@ -609,7 +617,7 @@ public class LockManager {
         if (mLockModeList.remove(lockMode)) {
 
             if (lockMode.isCurrentUsed) {
-                setCurrentLockMode(mLockModeList.get(0));
+                setCurrentLockMode(mLockModeList.get(0), false);
             }
 
             // sync database
@@ -1130,7 +1138,9 @@ public class LockManager {
         return mCurrentMode.lockList;
     }
 
-    public void setCurrentLockMode(final LockMode mode) {
+    public void setCurrentLockMode(final LockMode mode, boolean fromUser) {
+        if (mCurrentMode == mode)
+            return;
         mCurrentMode.isCurrentUsed = false;
         final LockMode lastMode = mCurrentMode;
         mode.isCurrentUsed = true;
@@ -1146,6 +1156,108 @@ public class LockManager {
         });
         if (mCurrentMode != null) {
             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "modesnow", mCurrentMode.modeName);
+        }
+
+        // check show time/location lock tip
+        if (fromUser) {
+            checkLockTip();
+        }
+    }
+
+    private void checkLockTip() {
+        int switchCount = AppMasterPreference.getInstance(mContext).getSwitchModeCount();
+        switchCount++;
+        AppMasterPreference.getInstance(mContext).setSwitchModeCount(switchCount);
+        if (switchCount == 6) {
+            // TODO show tip
+            int timeLockCount = mTimeLockList.size();
+            int locationLockCount = mLocationLockList.size();
+
+            if (timeLockCount == 0 && locationLockCount == 0) {
+                // show three btn dialog
+                LEOThreeButtonDialog dialog = new LEOThreeButtonDialog(
+                        mContext);
+                dialog.setTitle(R.string.time_location_lock_tip_title);
+                String tip = mContext.getString(R.string.time_location_lock_tip_content);
+                dialog.setContent(tip);
+                dialog.setLeftBtnStr(mContext.getString(R.string.lock_mode_time));
+                dialog.setMiddleBtnStr(mContext.getString(R.string.lock_mode_location));
+                dialog.setRightBtnStr(mContext.getString(R.string.cancel));
+                dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
+                    @Override
+                    public void onClick(int which) {
+                        Intent intent = null;
+                        if (which == 0) {
+                            // new time lock
+                            intent = new Intent(mContext, TimeLockEditActivity.class);
+                            intent.putExtra("new_time_lock", true);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(intent);
+                        } else if (which == 1) {
+                            // new location lock
+                            intent = new Intent(mContext, LocationLockEditActivity.class);
+                            intent.putExtra("new_location_lock", true);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(intent);
+                        } else if (which == 2) {
+                            // cancel
+                        }
+                    }
+                });
+                dialog.getWindow().setType(
+                        WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                dialog.show();
+            } else {
+                if (timeLockCount == 0 && locationLockCount != 0) {
+                    // show time lock btn dialog
+                    LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
+                    dialog.setTitle(R.string.time_location_lock_tip_title);
+                    String tip = mContext.getString(R.string.time_location_lock_tip_content);
+                    dialog.setContent(tip);
+                    dialog.setLeftBtnStr(mContext.getString(R.string.lock_mode_time));
+                    dialog.setRightBtnStr(mContext.getString(R.string.cancel));
+                    dialog.setOnClickListener(new OnDiaogClickListener() {
+                        @Override
+                        public void onClick(int which) {
+                            Intent intent = null;
+                            if (which == 0) {
+                                // new time lock
+                                intent = new Intent(mContext, TimeLockEditActivity.class);
+                                intent.putExtra("new_time_lock", true);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(intent);
+                            } else if (which == 1) {
+                                // cancel
+                            }
+
+                        }
+                    });
+
+                } else if (timeLockCount != 0 && locationLockCount == 0) {
+                    // show lcaotion btn dialog
+                    LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
+                    dialog.setTitle(R.string.time_location_lock_tip_title);
+                    String tip = mContext.getString(R.string.time_location_lock_tip_content);
+                    dialog.setContent(tip);
+                    dialog.setLeftBtnStr(mContext.getString(R.string.lock_mode_time));
+                    dialog.setRightBtnStr(mContext.getString(R.string.cancel));
+                    dialog.setOnClickListener(new OnDiaogClickListener() {
+                        @Override
+                        public void onClick(int which) {
+                            if (which == 0) {
+                                // new time lock
+                                Intent intent = new Intent(mContext, LocationLockEditActivity.class);
+                                intent.putExtra("new_location_lock", true);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(intent);
+                            } else if (which == 1) {
+                                // cancel
+                            }
+
+                        }
+                    });
+                }
+            }
         }
     }
 
@@ -1475,7 +1587,7 @@ public class LockManager {
                     if (lockMode.modeId == modeId) {
                         LeoLog.d("TimeLockReceiver", "change current lock mode:  "
                                 + lockMode.modeName);
-                        setCurrentLockMode(lockMode);
+                        setCurrentLockMode(lockMode, false);
                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "modeschage", "time");
                         break;
                     }

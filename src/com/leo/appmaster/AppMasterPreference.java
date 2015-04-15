@@ -108,7 +108,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_APP_HOME_APP_FRAGMENT_RED_TIP = "home_app_fragment_red_tip";
     public static final String PREF_APP_HOT_APP_ACTIVITY_RED_TIP = "hot_app_activity_red_tip";
 
-
     public static final String PREF_SHOW_TIP_KEY = "last_show_tip_time";
     public static final String PREF_THEME_SUCCESS_STRATEGY = "theme_success_strategy";
     public static final String PREF_THEME_FAIL_STRATEGY = "theme_fail_strategy";
@@ -118,15 +117,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_CURRENT_BUSINESS_STRATEGY = "business_current_strategy";
     public static final String PREF_MESSAGE_ITEM_RUNING = "message_item_runing";
     public static final String PREF_CALL_LOG_ITEM_RUNING = "call_log_item_runing";
-    
-    //weizhuang
+
+    // weizhuang
     public static final String PREF_WEIZHUANG_SELECTED = "weizhuang_selected";
-    
-    private boolean mLaunchOtherApp = false;
+    public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
+
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
-    // pretend lock
-    public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
+    public static final String PREF_SWITCH_MODE_COUNT = "switch_lock_mode_count";
 
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -142,6 +140,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final int LOCK_TYPE_GESTURE = 1;
     private int mLockType = LOCK_TYPE_NONE;
 
+    private boolean mLaunchOtherApp = false;
     private boolean mUnlocked = false;
     private String mDoubleCheck = null;
     private boolean mFromOther = false;
@@ -155,7 +154,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private long mBusinessSuccessStrategy = -1;
     private long mBusinessFailStrategy = -1;
     private long mCurrentBusinessStrategy = -1;
-    
+
     private String mOnlineThemeSerial = null;
     private String mLocalThemeSerial = null;
     private String mOnlineBusinessSerial = null;
@@ -404,7 +403,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public String getOnlineThemeSerialNumber() {
-        if(mOnlineThemeSerial == null) {
+        if (mOnlineThemeSerial == null) {
             mOnlineThemeSerial = mPref.getString(PREF_ONLINE_THEME_SERIAL, "");
         }
         return mOnlineThemeSerial;
@@ -424,7 +423,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public String getLocalThemeSerialNumber() {
-        if(mLocalThemeSerial == null) {
+        if (mLocalThemeSerial == null) {
             mLocalThemeSerial = mPref.getString(PREF_LOCAL_THEME_SERIAL, "");
         }
         return mLocalThemeSerial;
@@ -436,7 +435,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getLastCheckThemeTime() {
-        if(mLastCheckThemeTime < 0) {
+        if (mLastCheckThemeTime < 0) {
             mLastCheckThemeTime = mPref.getLong(PREF_LAST_CHECK_NEW_THEME, 0);
         }
         return mLastCheckThemeTime;
@@ -448,7 +447,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getLastSyncBusinessTime() {
-        if(mLastSyncBusinessTime < 0) {
+        if (mLastSyncBusinessTime < 0) {
             mLastSyncBusinessTime = mPref.getLong(PREF_LAST_SYNC_BUSINESS_TIME, 0);
         }
         return mLastSyncBusinessTime;
@@ -460,7 +459,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getLastCheckBusinessTime() {
-        if(mLastCheckBusinessTime < 0) {
+        if (mLastCheckBusinessTime < 0) {
             mLastCheckBusinessTime = mPref.getLong(PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME, 0);
         }
         return mLastCheckBusinessTime;
@@ -473,7 +472,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public String getOnlineBusinessSerialNumber() {
-        if(mOnlineBusinessSerial == null) {
+        if (mOnlineBusinessSerial == null) {
             mOnlineBusinessSerial = mPref.getString(PREF_ONLINE_BUSINESS_SERIAL, "");
         }
         return mOnlineBusinessSerial;
@@ -485,7 +484,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public String getLocalBusinessSerialNumber() {
-        if(mLocalBusinessSerial == null) {
+        if (mLocalBusinessSerial == null) {
             mLocalBusinessSerial = mPref.getString(PREF_LOCAL_BUSINESS_SERIAL, "");
         }
         return mLocalBusinessSerial;
@@ -523,7 +522,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getUnlockCount() {
-        if(mUnlockCount < 0) {
+        if (mUnlockCount < 0) {
             mUnlockCount = mPref.getLong(PREF_UNLOCK_COUNT, 0);
         }
         return mUnlockCount;
@@ -599,7 +598,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getRelockTimeout() {
-        if(mRelockTimeOut < 0) {
+        if (mRelockTimeOut < 0) {
             String time = mPref.getString(PREF_RELOCK_TIME, "0");
             try {
                 mRelockTimeOut = Integer.parseInt(time) * 1000;
@@ -672,7 +671,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public String getPasswdTip() {
         return mPref.getString(PREF_PASSWD_TIP, "");
     }
-
 
     public List<String> getRecommendList() {
         return mRecommendList;
@@ -768,7 +766,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getMonthGprsAll() {
-        if(mMonthGprsAll < 0) {
+        if (mMonthGprsAll < 0) {
             mMonthGprsAll = mPref.getLong(PREF_APP_MANAGER_FLOW_MONTH_ALL, 0);
         }
         return mMonthGprsAll;
@@ -780,7 +778,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getItSelfTodayBase() {
-        if(mItSelfTodayBase < 0) {
+        if (mItSelfTodayBase < 0) {
             mItSelfTodayBase = mPref.getLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE, 0);
         }
         return mItSelfTodayBase;
@@ -792,7 +790,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getMonthGprsBase() {
-        if(mMonthGprsBase < 0) {
+        if (mMonthGprsBase < 0) {
             mMonthGprsBase = mPref.getLong(PREF_APP_MANAGER_FLOW_MONTH_BASE, 0);
         }
         return mMonthGprsBase;
@@ -804,7 +802,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getYearAppTraf() {
-        if(mYearAppTraf < 0) {
+        if (mYearAppTraf < 0) {
             mYearAppTraf = mPref.getInt(PREF_APP_MANAGER_FLOW_YEAR_TRAF, 2015);
         }
         return mYearAppTraf;
@@ -816,7 +814,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getMonthAppTraf() {
-        if(mMonthAppTraf < 0) {
+        if (mMonthAppTraf < 0) {
             mMonthAppTraf = mPref.getInt(PREF_APP_MANAGER_FLOW_MONTH_TRAF, 1);
         }
         return mMonthAppTraf;
@@ -828,7 +826,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getGprsSend() {
-        if(mGprsSend < 0) {
+        if (mGprsSend < 0) {
             mGprsSend = mPref.getLong(PREF_APP_MANAGER_FLOW_GPRS_SEND, 0);
         }
         return mGprsSend;
@@ -840,7 +838,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getGprsRev() {
-        if(mGprsRev < 0) {
+        if (mGprsRev < 0) {
             mGprsRev = mPref.getLong(PREF_APP_MANAGER_FLOW_GPRS_REV, 0);
         }
         return mGprsRev;
@@ -852,7 +850,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getBaseSend() {
-        if(mBaseSend < 0) {
+        if (mBaseSend < 0) {
             mBaseSend = mPref.getLong(PREF_APP_MANAGER_FLOW_BE_SEND, 0);
         }
         return mBaseSend;
@@ -864,7 +862,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getBaseRev() {
-        if(mBaseRev < 0) {
+        if (mBaseRev < 0) {
             mBaseRev = mPref.getLong(PREF_APP_MANAGER_FLOW__BE_REV, 0);
         }
         return mBaseRev;
@@ -876,7 +874,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getRenewDay() {
-        if(mRenewDay < 0) {
+        if (mRenewDay < 0) {
             mRenewDay = mPref.getInt(PREF_APP_MANAGER_FLOW_RENEWDAY, 1);
         }
         return mRenewDay;
@@ -888,7 +886,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getTotalTraffic() {
-        if(mTotalTraffic < 0) {
+        if (mTotalTraffic < 0) {
             mTotalTraffic = mPref.getInt(PREF_APP_MANAGER_FLOW_TOTAL_TRAFFIC, 0);
         }
         return mTotalTraffic;
@@ -901,7 +899,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getUsedTraffic() {
-        if(mUsedTraffic < 0) {
+        if (mUsedTraffic < 0) {
             mUsedTraffic = mPref.getInt(PREF_APP_MANAGER_FLOW_MONTH_USED_TRAFFIC, 0);
         }
         return mUsedTraffic;
@@ -914,7 +912,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public long getItselfMonthTraffic() {
-        if(mItselfMonthTraffic < 0) {
+        if (mItselfMonthTraffic < 0) {
             mItselfMonthTraffic = mPref.getLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC, 0);
         }
         return mItselfMonthTraffic;
@@ -1047,7 +1045,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getLong(PREF_LAST_ALARM_SET_TIME, 0l);
     }
 
-
     public boolean getUnlocked() {
         return mUnlocked;
     }
@@ -1089,18 +1086,18 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setCallLogItemRuning(boolean flag) {
         mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag).commit();
     }
-    
-//    public void setWeiZhuang(int selected){
-//        mWeiZhuang = selected;
-//        mPref.edit().putInt(PREF_WEIZHUANG_SELECTED, selected).commit();
-//    }
-//    
-//    public int getWeiZhuang(){
-//        if(mWeiZhuang < 0) {
-//            mWeiZhuang = mPref.getInt(PREF_WEIZHUANG_SELECTED, 0);
-//        }
-//        return mWeiZhuang;
-//    }
+
+    // public void setWeiZhuang(int selected){
+    // mWeiZhuang = selected;
+    // mPref.edit().putInt(PREF_WEIZHUANG_SELECTED, selected).commit();
+    // }
+    //
+    // public int getWeiZhuang(){
+    // if(mWeiZhuang < 0) {
+    // mWeiZhuang = mPref.getInt(PREF_WEIZHUANG_SELECTED, 0);
+    // }
+    // return mWeiZhuang;
+    // }
 
     public int getPretendLock() {
         return mPref.getInt(PREF_CUR_PRETNED_LOCK, 0);
@@ -1108,6 +1105,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setPretendLock(int selected) {
         mPref.edit().putInt(PREF_CUR_PRETNED_LOCK, selected).commit();
+    }
+
+    public int getSwitchModeCount() {
+        return mPref.getInt(PREF_SWITCH_MODE_COUNT, 0);
+    }
+
+    public void setSwitchModeCount(int count) {
+        mPref.edit().putInt(PREF_SWITCH_MODE_COUNT, count).commit();
     }
 
 }

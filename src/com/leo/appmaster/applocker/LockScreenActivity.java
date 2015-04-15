@@ -422,7 +422,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
             if (willLaunch != null) {
-                lm.setCurrentLockMode(willLaunch);
+                lm.setCurrentLockMode(willLaunch, true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
                 Toast.makeText(this,
                         this.getString(R.string.mode_change, mQuickModeName),
