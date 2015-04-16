@@ -3,19 +3,15 @@ package com.leo.appmaster.applocker;
 
 import java.util.List;
 
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.baidu.mobstat.l;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -230,7 +226,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
     }
     private void showTitleBarOption(OnClickListener listener){
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        mTtileBar.setOptionImage(R.drawable.selector_help_icon);
+        mTtileBar.setOptionImage(R.drawable.tips_icon);
         mTtileBar.setOptionListener(listener);
     }
     
