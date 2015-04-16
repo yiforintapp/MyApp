@@ -31,8 +31,8 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
 
 public class HotAppActivity extends BaseFragmentActivity {
-    private static final String MOVE_TO_NEW_APP = "move_to_new_app";
-    private static final String MOVE_TO_GAME_FRAGMENT = "move_to_game_gragment";
+    public static final String MOVE_TO_NEW_APP = "move_to_new_app";
+//    private static final String MOVE_TO_GAME_FRAGMENT = "move_to_game_gragment";
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
     private ImageView iv_red_tip;
@@ -48,7 +48,7 @@ public class HotAppActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_hotapp);
-        mFromStatusbar = getIntent().getBooleanExtra("move_to_new_app", false);
+        mFromStatusbar = getIntent().getBooleanExtra(MOVE_TO_NEW_APP, false);
         initUI();
     }
 

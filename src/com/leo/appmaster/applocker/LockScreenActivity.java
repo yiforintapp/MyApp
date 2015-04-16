@@ -42,7 +42,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
@@ -51,6 +50,7 @@ import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
 import com.leo.appmaster.fragment.PretendAppErrorFragment;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment;
+import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -395,7 +395,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 tip = getString(R.string.pretend_app_error, lab);
 
             } catch (NameNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             paf.setErrorTip(tip);
@@ -404,7 +403,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             PretendAppUnknowCallFragment unknowcall = new PretendAppUnknowCallFragment();
             return unknowcall;
         } else if (pretendLock == 3) {/* fingerprint */
-
+            PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
+            return weizhuang;
         }
         return null;
     }
@@ -422,7 +422,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
             if (willLaunch != null) {
-                lm.setCurrentLockMode(willLaunch);
+                lm.setCurrentLockMode(willLaunch, true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
                 Toast.makeText(this,
                         this.getString(R.string.mode_change, mQuickModeName),

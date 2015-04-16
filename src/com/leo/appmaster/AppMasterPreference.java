@@ -130,11 +130,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_LOAD_FAIL_NUMBER = "splash_load_fail_number";
     // weizhuang
     public static final String PREF_WEIZHUANG_SELECTED = "weizhuang_selected";
-    private boolean mLaunchOtherApp = false;
+    public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
+
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
-    // pretend lock
-    public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
+    public static final String PREF_SWITCH_MODE_COUNT = "switch_lock_mode_count";
 
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -150,6 +150,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final int LOCK_TYPE_GESTURE = 1;
     private int mLockType = LOCK_TYPE_NONE;
 
+    private boolean mLaunchOtherApp = false;
     private boolean mUnlocked = false;
     private String mDoubleCheck = null;
     private boolean mFromOther = false;
@@ -1136,6 +1137,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setPretendLock(int selected) {
         mPretendLock = selected;
         mPref.edit().putInt(PREF_CUR_PRETNED_LOCK, selected).commit();
+    }
+
+    public int getSwitchModeCount() {
+        return mPref.getInt(PREF_SWITCH_MODE_COUNT, 0);
+    }
+
+    public void setSwitchModeCount(int count) {
+        mPref.edit().putInt(PREF_SWITCH_MODE_COUNT, count).commit();
     }
 
     // =====splash start show time set and get===================

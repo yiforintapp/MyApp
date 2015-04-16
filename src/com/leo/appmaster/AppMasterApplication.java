@@ -14,7 +14,6 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,7 +32,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.os.Environment;
 import android.os.Handler;
@@ -59,7 +57,6 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
-import com.leo.appmaster.home.SplashBean;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
@@ -80,7 +77,6 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
         "NewApi", "SimpleDateFormat"
 })
 public class AppMasterApplication extends Application {
-    private static final String MOVE_TO_NEW_APP = "move_to_new_app";
 
     private AppLoadEngine mAppsEngine;
     private AppBackupRestoreManager mBackupManager;

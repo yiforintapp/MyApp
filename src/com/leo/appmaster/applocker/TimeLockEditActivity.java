@@ -127,7 +127,7 @@ public class TimeLockEditActivity extends BaseActivity implements
         mTimeLockId = intent.getLongExtra("time_lock_id", -1l);
         mEditTimeLock = new TimeLock();
         if (mNewTimeLock) {
-            LockMode mode = getUnlockAllMode();
+            LockMode mode = getVisitorMode();
             mEditTimeLock.lockModeId = mode.modeId;
             mEditTimeLock.lockModeName = mode.modeName;
             mEditTimeLock.time = new TimePoint((short) 0, (short) 0);
@@ -153,6 +153,7 @@ public class TimeLockEditActivity extends BaseActivity implements
 
     }
 
+    @Deprecated
     private LockMode getUnlockAllMode() {
         List<LockMode> modeList = LockManager.getInstatnce().getLockMode();
         for (LockMode lockMode : modeList) {
@@ -162,6 +163,17 @@ public class TimeLockEditActivity extends BaseActivity implements
         }
         return null;
     }
+    
+    private LockMode getVisitorMode() {
+        List<LockMode> modeList = LockManager.getInstatnce().getLockMode();
+        for (LockMode lockMode : modeList) {
+            if (lockMode.defaultFlag == 1) {
+                return lockMode;
+            }
+        }
+        return null;
+    }
+    
 
     @Override
     protected void onResume() {

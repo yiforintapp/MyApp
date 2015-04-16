@@ -33,7 +33,7 @@ import com.leo.appmaster.utils.LeoLog;
 public class TimeLockFragment extends BaseFragment implements OnClickListener, OnItemClickListener,
         OnItemLongClickListener, Editable {
 
-    private ListView mModeListView;
+    private ListView mLockListView;
     private View mListHeader;
 
     private List<TimeLock> mTimeLockList;
@@ -47,15 +47,15 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
 
     @Override
     protected void onInitUI() {
-        mModeListView = (ListView) findViewById(R.id.mode_list);
-        mModeListView.setOnItemClickListener(this);
-        mModeListView.setOnItemLongClickListener(this);
+        mLockListView = (ListView) findViewById(R.id.mode_list);
+        mLockListView.setOnItemClickListener(this);
+        mLockListView.setOnItemLongClickListener(this);
 
         mListHeader = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_item_header,
-                mModeListView, false);
+                mLockListView, false);
         TextView tv = (TextView) mListHeader.findViewById(R.id.tv_add_more);
         tv.setText(R.string.add_new_time_lock);
-        mModeListView.addHeaderView(mListHeader);
+        mLockListView.addHeaderView(mListHeader);
 
     }
 
@@ -75,7 +75,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mTimeLockList = LockManager.getInstatnce().getTimeLock();
         Collections.sort(mTimeLockList, new TimeLockComparator());
         mTimeLockAdapter = new TimeLockAdapter(mActivity);
-        mModeListView.setAdapter(mTimeLockAdapter);
+        mLockListView.setAdapter(mTimeLockAdapter);
 
     }
 
@@ -246,17 +246,21 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ((LockModeActivity) mActivity).onEditMode(1);
-        mModeListView.setOnItemClickListener(null);
-        mEditing = true;
-        mTimeLockAdapter.notifyDataSetChanged();
+        if (position != 0) {
+            ((LockModeActivity) mActivity).onEditMode(1);
+            mLockListView.setOnItemClickListener(null);
+            mEditing = true;
+            mLockListView.removeHeaderView(mListHeader);
+            mTimeLockAdapter.notifyDataSetChanged();
+        }
         return false;
     }
 
     @Override
     public void onFinishEditMode() {
         mEditing = false;
-        mModeListView.setOnItemClickListener(this);
+        mLockListView.setOnItemClickListener(this);
+        mLockListView.addHeaderView(mListHeader);
         mTimeLockAdapter.notifyDataSetChanged();
     }
 

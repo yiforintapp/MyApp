@@ -661,6 +661,7 @@ public class PrivacyContactUtils {
         Cursor cur = cr.query(uri, null, selection, selectionArgs, null);
         if (cur != null) {
             count = cur.getCount();
+            cur.close();
         }
         return count;
 
@@ -897,18 +898,16 @@ public class PrivacyContactUtils {
                             }
                             break;
                         }
-                        // long messageId = cr.getLong(ID);
-                        // long msgCount = cr.getLong(MESSAGE_COUNT);
-                        // long snippetCS = cr.getLong(SNIPPET_CS);
-                        // long read = cr.getLong(READ);
-                        // long type = cr.getLong(TYPE);
-                        // long hasAttach = cr.getLong(HAS_ATTACHMENT);
                     }
                 }
-                cr.close();
+                if(cr != null) {
+                    cr.close();
+                }
             }
         }
-        cur.close();
+        if(cur != null) {
+            cur.close();
+        }
         return messageList;
     }
 
@@ -980,6 +979,9 @@ public class PrivacyContactUtils {
                 threadId = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_THREAD_ID));
                 break;
             }
+        }
+        if(cur != null) {
+            cur.close();
         }
         return threadId;
     }
