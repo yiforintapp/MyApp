@@ -33,16 +33,18 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
 
 public class TimeLockFragment extends BaseFragment implements OnClickListener, OnItemClickListener,
         OnItemLongClickListener, Editable {
 
     private ListView mModeListView;
     private View mListHeader;
-    private View mLockGuideView;
-    private Button mUserKnowBtn;
+    
     private CommonTitleBar mTitleBar;
+    private View mLockGuideView;
+    private ImageView mLockGuideIcon;
+    private TextView mLockGuideText;
+    private Button mUserKnowBtn;
     private Animation mGuidAnimation;
     private  boolean mGuideOpen = false;
     
@@ -59,6 +61,8 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     protected void onInitUI() {
         mModeListView = (ListView) findViewById(R.id.mode_list);
         mLockGuideView = findViewById(R.id.lock_mode_guide);
+        mLockGuideIcon = (ImageView)mLockGuideView.findViewById(R.id.lock_guide_icon);
+        mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
         mUserKnowBtn = (Button) mLockGuideView.findViewById(R.id.mode_user_know_button);
         mTitleBar =  ((LockModeActivity)mActivity).getActivityCommonTitleBar();
         // judge whether click i know button 
@@ -304,41 +308,44 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mTimeLockAdapter.notifyDataSetChanged();
     }
 
-    /**about lock mode guide**/
-    public void lockGuide(){
-        if(mGuideOpen){
+    /** about lock mode guide **/
+    public void lockGuide() {
+        if (mGuideOpen) {
             removeGuidePage();
-        }else{
+        } else {
             showGuidePage();
         }
     }
-    
-    private void showGuidePage(){
-            mModeListView.setVisibility(View.INVISIBLE);
-            mLockGuideView.setVisibility(View.VISIBLE);
-            // if user click i know button the next time  guide page  should appearance as animation
-            if(AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()){
-                mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_in);
-                mLockGuideView.startAnimation(mGuidAnimation);
-            }
-            mUserKnowBtn.setText("button1");
-            mUserKnowBtn.setOnClickListener(this);
-            mGuideOpen = true;
-            //hide the help tip
-            mTitleBar.setOptionImageVisibility(View.INVISIBLE);
+
+    private void showGuidePage() {
+        mModeListView.setVisibility(View.INVISIBLE);
+        mLockGuideView.setVisibility(View.VISIBLE);
+        mLockGuideText.setText(R.string.time_lock_mode_guide_content);
+        mUserKnowBtn.setOnClickListener(this);
+        // if user click i know button the next time guide page should  appearance as animation
+        if (AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()) {
+            mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_in);
+            mLockGuideView.startAnimation(mGuidAnimation);
+        }
+        // hide the help tip
+        mTitleBar.setOptionImageVisibility(View.INVISIBLE);
+        mGuideOpen = true;
     }
 
-    private void removeGuidePage(){
-        mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_out);
-        mLockGuideView.startAnimation(mGuidAnimation);
+    private void removeGuidePage() {
         mLockGuideView.setVisibility(View.INVISIBLE);
         mModeListView.setVisibility(View.VISIBLE);
+        mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_out);
+        mLockGuideView.startAnimation(mGuidAnimation);
         mGuideOpen = false;
-      //show the help tip
+        // show the help tip
         mTitleBar.setOptionImageVisibility(View.VISIBLE);
     }
-    
-    public boolean getGuideOpenState(){
+
+    /**
+     * open : true
+     */
+    public boolean getGuideOpenState() {
         return this.mGuideOpen;
     }
 }

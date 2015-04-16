@@ -3,15 +3,19 @@ package com.leo.appmaster.applocker;
 
 import java.util.List;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.baidu.mobstat.l;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -177,7 +181,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
     }
     
     
-    class ModePageChangeListiner implements OnPageChangeListener{
+    class ModePageChangeListiner implements OnPageChangeListener {
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
@@ -192,39 +196,42 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         @Override
         public void onPageSelected(int arg0) {
             mTtileBar.setOptionImageVisibility(View.INVISIBLE);
-
+            /**
+             * in next two page,until user click the guide and guide page don't open then show help tip
+             */
             if (arg0 == 1) {
-                if (AppMasterPreference.getInstance(LockModeActivity.this).getTimeLockModeGuideClicked()) {
+                if(AppMasterPreference.getInstance(LockModeActivity.this).getTimeLockModeGuideClicked()){
                     mFragment = mFragmentHolders.clone()[arg0].fragment;
-                    //if guide page don't open then show help tip
-                    if(!((TimeLockFragment) mFragment).getGuideOpenState()){
-                        mTtileBar.setOptionImageVisibility(View.VISIBLE);
-                        mTtileBar.setOptionImage(R.drawable.selector_help_icon);
-                        mTtileBar.setOptionListener(new OnClickListener() {
+                    if (!((TimeLockFragment) mFragment).getGuideOpenState()) {
+                        OnClickListener listener = new OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 ((TimeLockFragment) mFragment).lockGuide();
                             }
-                        });
+                        };
+                        showTitleBarOption(listener);
                     }
                 }
             } else if (arg0 == 2) {
-                if (AppMasterPreference.getInstance(LockModeActivity.this) .getLocationLockModeGuideClicked()) {
+                if(AppMasterPreference.getInstance(LockModeActivity.this).getLocationLockModeGuideClicked()){
                     mFragment = mFragmentHolders.clone()[arg0].fragment;
-                  //if guide page don't open then show help tip
                     if (!((LocationLockFragment) mFragment).getGuideOpenState()) {
-                        mTtileBar.setOptionImageVisibility(View.VISIBLE);
-                        mTtileBar.setOptionImage(R.drawable.selector_help_icon);
-                        mTtileBar.setOptionListener(new OnClickListener() {
+                        OnClickListener listener = new OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 ((LocationLockFragment) mFragment).lockGuide();
                             }
-                        });
+                        };
+                        showTitleBarOption(listener);
                     }
                 }
             }
         }
+    }
+    private void showTitleBarOption(OnClickListener listener){
+        mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        mTtileBar.setOptionImage(R.drawable.selector_help_icon);
+        mTtileBar.setOptionListener(listener);
     }
     
 }
