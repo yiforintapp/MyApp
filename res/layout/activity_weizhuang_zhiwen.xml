@@ -36,13 +36,6 @@
         android:layout_centerInParent="true" >
 
         <ImageView
-            android:id="@+id/zhiwen_bang"
-            android:layout_width="155dp"
-            android:layout_height="3dp"
-            android:background="@drawable/disguise_finger_line"
-            android:visibility="gone" />
-
-        <ImageView
             android:id="@+id/iv_zhiwen_click"
             android:layout_width="155dp"
             android:layout_height="202dp"
@@ -53,6 +46,12 @@
             android:layout_width="155dp"
             android:layout_height="202dp"
             android:background="@drawable/disguise_finger_light" />
+
+        <ImageView
+            android:id="@+id/zhiwen_bang"
+            android:layout_width="155dp"
+            android:layout_height="15dp"
+            android:background="@drawable/disguise_finger_line" />
     </FrameLayout>
 
     <ImageView
