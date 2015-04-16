@@ -50,7 +50,7 @@ public class StatusBarEventService extends IntentService {
             targetIntent = new Intent(this, HotAppActivity.class);
 //            targetIntent.putExtra("from_statubar", true);
 //            intent.setAction("move_to_new_app");
-            targetIntent.putExtra("move_to_new_app", true);
+            targetIntent.putExtra(HotAppActivity.MOVE_TO_NEW_APP, true);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else {
