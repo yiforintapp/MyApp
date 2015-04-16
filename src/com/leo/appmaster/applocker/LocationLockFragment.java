@@ -138,7 +138,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
                 AppMasterPreference.getInstance(mActivity).setLocationLockModeGuideClicked(true);
                 removeGuidePage();
                 /** set the help tip action **/
-                mTitleBar.setOptionImage(R.drawable.selector_help_icon);
+                mTitleBar.setOptionImage(R.drawable.tips_icon);
                 mTitleBar.setOptionImageVisibility(View.VISIBLE);
                 mTitleBar.setOptionListener(new OnClickListener() {
                     @Override
@@ -308,6 +308,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
     private void showGuidePage() {
         mLockGuideView.setVisibility(View.VISIBLE);
         mLockListView.setVisibility(View.INVISIBLE);
+        mLockGuideIcon.setImageResource(R.drawable.modes_tips_position);
         mLockGuideText.setText(R.string.location_lock_mode_guide_content);
         mUserKnowBtn.setOnClickListener(this);
         // if user click i know button the next time guide page should
