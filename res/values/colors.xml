@@ -86,6 +86,8 @@
 
     <color name="weisuo_text">#636363</color>
     <color name="weisuo_text_show">#808080</color>
+    <color name="weisuo_zhiwen_bg">#242424</color>
+    <color name="weisuo_error_bg">#4285f4</color>
 
     <drawable name="transparent">#00000000</drawable>
 

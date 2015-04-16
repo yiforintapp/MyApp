@@ -186,7 +186,11 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
                 }
                 break;
             case 3:
-                // 指纹解锁
+                if(selected != 3){
+                    // 指纹解锁
+                    Intent zhiWenIntent = new Intent(this,ZhiWenActivity.class);
+                    this.startActivity(zhiWenIntent);
+                }
                 break;
             default:
                 break;
