@@ -6,10 +6,12 @@ import java.util.List;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Entity;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
@@ -187,10 +189,9 @@ public class HttpRequestAgent {
                 + Utilities.getCountryID(mContext) + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
         Log.e("xxxxxxx", "访问闪屏URL：" + url);
-        url="http://api1.leomaster.com/appmaster/flushscreen/2.1/cn/0001a.html";
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 object, listener, errorListener);
-        request.setShouldCache(false);
+        request.setShouldCache(true);
         mRequestQueue.add(request);
         Log.e("xxxxxxx", "正在拉取闪屏数据。。。。");
     }
@@ -199,7 +200,7 @@ public class HttpRequestAgent {
             Listener<Bitmap> listener, ErrorListener eListener) {
         ImageRequest request = new ImageRequest(url, listener, 200, 200,
                 Config.ARGB_8888, eListener);
-        request.setShouldCache(false);
+        request.setShouldCache(true);
         mRequestQueue.add(request);
     }
 

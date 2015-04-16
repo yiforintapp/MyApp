@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.nfc.Tag;
+import android.util.Log;
 
 import com.leo.appmaster.Constants;
 
@@ -53,7 +54,6 @@ public class AppwallHttpUtil {
 			HttpEntity entity = new UrlEncodedFormEntity(parameters, charset);
 			request.setEntity(entity);
 			HttpResponse response = client.execute(request);
-//            LeoLog.d("httpurl", "request is : "+request+"---Code is " + response.getStatusLine().getStatusCode());
 			// 获取结果码
 			if (response.getStatusLine().getStatusCode() == 200) {
 				// 获取输入流

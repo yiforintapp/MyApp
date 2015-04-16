@@ -126,6 +126,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LAST_LOAD_SPLASH_TIME = "last_load_splash_time";
     public static final String PREF_MESSAGE_NO_READ_COUNT = "message_no_read_count";
     public static final String PREF_SPLASH_LOAD_START_TIME = "start_load_splash_time";
+    public static final String PREF_SPLASH_LOAD_FAIL_DATE = "splash_load_fail_date";
+    public static final String PREF_SPLASH_LOAD_FAIL_NUMBER = "splash_load_fail_number";
     // weizhuang
     public static final String PREF_WEIZHUANG_SELECTED = "weizhuang_selected";
     private boolean mLaunchOtherApp = false;
@@ -1230,4 +1232,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_MESSAGE_NO_READ_COUNT, 0);
     }
 
+
+    public void setSplashLoadFailDate(String date) {
+        mPref.edit().putString(PREF_SPLASH_LOAD_FAIL_DATE, date).commit();
+    }
+
+    public String getSplashLoadFailDate() {
+        return mPref.getString(PREF_SPLASH_LOAD_FAIL_DATE, "splash_fail_default_date");
+    }
+    public void setSplashLoadFailNumber(int number) {
+        mPref.edit().putInt(PREF_SPLASH_LOAD_FAIL_NUMBER, number).commit();
+    }
+
+    public int getSplashLoadFailNumber() {
+        return mPref.getInt(PREF_SPLASH_LOAD_FAIL_NUMBER, 0);
+    }
 }

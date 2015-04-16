@@ -27,6 +27,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.EdgeEffectCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -100,20 +101,46 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         long startShowSplashTime = pre.getSplashStartShowTime();
         long endShowSplashTime = pre.getSplashEndShowTime();
         long currentTime = System.currentTimeMillis();
-        if (currentTime >= startShowSplashTime && currentTime <= endShowSplashTime) {
-            String path = FileOperationUtil.getSplashPath();
-            Bitmap splash = null;
-            if (path != null && !"".equals(path)) {
-                splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME);
+        /**
+         * 1.只有开始时间 2.只有结束时间 3.没有配置时间 4.开始，结束时间都有
+         */
+        if (startShowSplashTime > 0 || endShowSplashTime > 0) {
+            // 只有开始时间
+            if (endShowSplashTime <= 0 && startShowSplashTime > 0) {
+                if (currentTime >= startShowSplashTime) {
+                    showSplash();
+                }
             }
-            if (splash != null) {
-                mSplashIcon.setVisibility(View.INVISIBLE);
-                mSplashName.setVisibility(View.INVISIBLE);
-                BitmapDrawable splashDrawable = new BitmapDrawable(splash);
-                mSplashRL.setBackgroundDrawable(splashDrawable);
+            // 只有结束时间
+            if (startShowSplashTime <= 0 && endShowSplashTime > 0) {
+                if (currentTime < endShowSplashTime) {
+                    showSplash();
+                }
             }
+            // 开始，结束时间都有
+            if (startShowSplashTime > 0 && endShowSplashTime > 0) {
+                if (currentTime >= startShowSplashTime && currentTime < endShowSplashTime) {
+                    showSplash();
+                }
+            }
+        } else {
+            Log.e("splash_end&start_time", "No time!");
         }
         PrivacyHelper.getInstance(this).setDirty(true);
+    }
+
+    private void showSplash() {
+        String path = FileOperationUtil.getSplashPath();
+        Bitmap splash = null;
+        if (path != null && !"".equals(path)) {
+            splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME);
+        }
+        if (splash != null) {
+            mSplashIcon.setVisibility(View.INVISIBLE);
+            mSplashName.setVisibility(View.INVISIBLE);
+            BitmapDrawable splashDrawable = new BitmapDrawable(splash);
+            mSplashRL.setBackgroundDrawable(splashDrawable);
+        }
     }
 
     @Override
