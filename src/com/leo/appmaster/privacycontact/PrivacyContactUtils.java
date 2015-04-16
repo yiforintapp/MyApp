@@ -31,6 +31,7 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 
@@ -660,6 +661,7 @@ public class PrivacyContactUtils {
         Cursor cur = cr.query(uri, null, selection, selectionArgs, null);
         if (cur != null) {
             count = cur.getCount();
+            cur.close();
         }
         return count;
 
@@ -756,7 +758,7 @@ public class PrivacyContactUtils {
                 if (new Date(a.getMessageTime()).after(new Date(b.getMessageTime())))
                     return -1;
                 return 0;
-            } catch(Exception e) {
+            } catch (Exception e) {
                 return 0;
             }
         }
@@ -896,18 +898,16 @@ public class PrivacyContactUtils {
                             }
                             break;
                         }
-                        // long messageId = cr.getLong(ID);
-                        // long msgCount = cr.getLong(MESSAGE_COUNT);
-                        // long snippetCS = cr.getLong(SNIPPET_CS);
-                        // long read = cr.getLong(READ);
-                        // long type = cr.getLong(TYPE);
-                        // long hasAttach = cr.getLong(HAS_ATTACHMENT);
                     }
                 }
-                cr.close();
+                if(cr != null) {
+                    cr.close();
+                }
             }
         }
-        cur.close();
+        if(cur != null) {
+            cur.close();
+        }
         return messageList;
     }
 
@@ -954,9 +954,16 @@ public class PrivacyContactUtils {
             String[] selectionArgs, Context context) {
         ContentValues values = new ContentValues();
         values.put("message_is_read", read);
-        context.getContentResolver().update(Constants.PRIVACY_MESSAGE_URI,
+        int count = context.getContentResolver().update(Constants.PRIVACY_MESSAGE_URI,
                 values, selection,
                 selectionArgs);
+        if (count > 0) {
+            AppMasterPreference pre = AppMasterPreference.getInstance(context);
+            int temp = pre.getMessageNoReadCount();
+            if (temp > 0) {
+                pre.setMessageNoReadCount(temp - 1);
+            }
+        }
     }
 
     // 查询自定义短信列表thead_id
@@ -972,6 +979,9 @@ public class PrivacyContactUtils {
                 threadId = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_THREAD_ID));
                 break;
             }
+        }
+        if(cur != null) {
+            cur.close();
         }
         return threadId;
     }

@@ -591,4 +591,34 @@
     <string name="mode_delete_tip">"Are you sure to delete this mode's profile?"</string>
     <string name="save_successful">Save Succefully</string>
 
+    <!-- version 2.1 begin -->
+    <!-- weizhuang -->
+    <string name="title_bar_weizhuang">应用伪装</string>
+    <string name="weizhuang_first_in_text">打开被锁的应用时出现伪装界面，只有你知道要如何跳过伪装页打开应用</string>
+    <string name="first_in_sure_button">知道了</string>
+    <string name="unknow_call_first_title">未知号码</string>
+    <string name="unknow_call_second_title">来电</string>
+    <string name="unknow_call_thrid_first_title">使用介绍</string>
+    <string name="unknow_call_thrid_second_title">来电显示是假象哦</string>
+    <string name="unknow_call_thrid_thrid_title">按顺序划过挂断，短信，接听来解锁吧</string>
+    <string name="weizhuang_setting_ok">设置成功</string>
+    <string name="weizhuang_error_title">手机屏幕上的“关闭”按钮是假象哦，在“关闭“按钮上从左向右滑动设置解锁吧</string>
+    <string name="weizhuang_error_notice">抱歉，“隐私卫士“已停止使用</string>
+    <string name="weizhuang_error_notice_set_false">哎哟！滑动距离再大一点</string>
+    <string name="weizhuang_zhiwen_notice">指纹识别是假象哦，一秒内快速在指纹解锁处点击三次来设置解锁吧</string>
+
+    <string-array name="weizhuang_type_num">
+        <item>无</item>
+        <item>应用错误</item>
+        <item>未知来电</item>
+        <item>指纹解锁</item>
+    </string-array>
+
+    <string name="pretend_app_error">抱歉，\" %1$s \"已停止使用</string>
+    <!-- weizhuang -->
+    <string name="time_location_lock_tip_title">更智能的情景模式切换</string>
+    <string name="time_location_lock_tip_content">我们发现您频繁切换情景模式，您可以设置通过时间或者位置自动切换情景模式，是否设置？</string>
+
+    <!-- version 2.1 end -->
+
 </resources>

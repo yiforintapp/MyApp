@@ -77,7 +77,7 @@ public class LocationLockEditActivity extends BaseActivity implements
         mTimeLockId = intent.getLongExtra("location_lock_id", -1l);
         mEditLocationLock = new LocationLock();
         if (mNewLocationLock) {
-            LockMode mode = getUnlockAllMode();
+            LockMode mode = getVisitorMode();
             mEditLocationLock.entranceModeId = mode.modeId;
             mEditLocationLock.entranceModeName = mode.modeName;
             mEditLocationLock.quitModeId = mode.modeId;
@@ -161,10 +161,21 @@ public class LocationLockEditActivity extends BaseActivity implements
         }
     }
 
+    @Deprecated
     private LockMode getUnlockAllMode() {
         List<LockMode> modeList = LockManager.getInstatnce().getLockMode();
         for (LockMode lockMode : modeList) {
             if (lockMode.defaultFlag == 0) {
+                return lockMode;
+            }
+        }
+        return null;
+    }
+    
+    private LockMode getVisitorMode() {
+        List<LockMode> modeList = LockManager.getInstatnce().getLockMode();
+        for (LockMode lockMode : modeList) {
+            if (lockMode.defaultFlag == 1) {
                 return lockMode;
             }
         }

@@ -36,7 +36,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 public class LocationLockFragment extends BaseFragment implements OnClickListener,
         OnItemClickListener, OnItemLongClickListener, Editable {
 
-    private ListView mModeListView;
+    private ListView mLockListView;
     private View mListHeader;
     private List<LocationLock> mLocationLockList;
     private LocationLockAdapter mLocationLockAdapter;
@@ -57,7 +57,6 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
 
     @Override
     protected void onInitUI() {
-        mModeListView = (ListView) findViewById(R.id.mode_list);
         mLockGuideView = findViewById(R.id.lock_mode_guide);
         mLockGuideIcon = (ImageView)mLockGuideView.findViewById(R.id.lock_guide_icon);
         mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
@@ -69,13 +68,15 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
        }
         
         
-        mModeListView.setOnItemClickListener(this);
-        mModeListView.setOnItemLongClickListener(this);
+        mLockListView = (ListView) findViewById(R.id.mode_list);
+        mLockListView.setOnItemClickListener(this);
+        mLockListView.setOnItemLongClickListener(this);
+      
         mListHeader = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_item_header,
-                mModeListView, false);
+                mLockListView, false);
         TextView tv = (TextView) mListHeader.findViewById(R.id.tv_add_more);
         tv.setText(R.string.add_new_location_lock);
-        mModeListView.addHeaderView(mListHeader);
+        mLockListView.addHeaderView(mListHeader);
     }
 
     @Override
@@ -94,7 +95,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         mLocationLockList = LockManager.getInstatnce().getLocationLock();
         Collections.sort(mLocationLockList, new LocationLockComparator());
         mLocationLockAdapter = new LocationLockAdapter(mActivity);
-        mModeListView.setAdapter(mLocationLockAdapter);
+        mLockListView.setAdapter(mLocationLockAdapter);
 
     }
 
@@ -262,17 +263,21 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ((LockModeActivity) mActivity).onEditMode(2);
-        mModeListView.setOnItemClickListener(null);
-        mEditing = true;
-        mLocationLockAdapter.notifyDataSetChanged();
+        if (position != 0) {
+            ((LockModeActivity) mActivity).onEditMode(2);
+            mLockListView.setOnItemClickListener(null);
+            mEditing = true;
+            mLockListView.removeHeaderView(mListHeader);
+            mLocationLockAdapter.notifyDataSetChanged();
+        }
         return false;
     }
 
     @Override
     public void onFinishEditMode() {
         mEditing = false;
-        mModeListView.setOnItemClickListener(this);
+        mLockListView.setOnItemClickListener(this);
+        mLockListView.addHeaderView(mListHeader);
         mLocationLockAdapter.notifyDataSetChanged();
     }
 
@@ -302,7 +307,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
 
     private void showGuidePage() {
         mLockGuideView.setVisibility(View.VISIBLE);
-        mModeListView.setVisibility(View.INVISIBLE);
+        mLockListView.setVisibility(View.INVISIBLE);
         mLockGuideText.setText(R.string.location_lock_mode_guide_content);
         mUserKnowBtn.setOnClickListener(this);
         // if user click i know button the next time guide page should appearance as animation
@@ -317,7 +322,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
 
     private void removeGuidePage() {
         mLockGuideView.setVisibility(View.INVISIBLE);
-        mModeListView.setVisibility(View.VISIBLE);
+        mLockListView.setVisibility(View.VISIBLE);
         mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_out);
         mLockGuideView.startAnimation(mGuidAnimation);
         mGuideOpen = false;

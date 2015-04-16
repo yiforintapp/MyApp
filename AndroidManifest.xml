@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="33"
+    android:versionCode="34"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -392,6 +392,36 @@
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.WeiZhuangFirstIn"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.WeiZhuangActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.UnknowCallActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.ErrorWeiZhuang"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.ZhiWenActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
         </activity>
         <activity
             android:name="com.leo.appmaster.appmanage.EleActivity"

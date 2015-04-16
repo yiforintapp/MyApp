@@ -37,7 +37,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 public class TimeLockFragment extends BaseFragment implements OnClickListener, OnItemClickListener,
         OnItemLongClickListener, Editable {
 
-    private ListView mModeListView;
+    private ListView mLockListView;
     private View mListHeader;
     
     private CommonTitleBar mTitleBar;
@@ -59,7 +59,6 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
 
     @Override
     protected void onInitUI() {
-        mModeListView = (ListView) findViewById(R.id.mode_list);
         mLockGuideView = findViewById(R.id.lock_mode_guide);
         mLockGuideIcon = (ImageView)mLockGuideView.findViewById(R.id.lock_guide_icon);
         mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
@@ -70,13 +69,15 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
            showGuidePage();
       }
         
-        mModeListView.setOnItemClickListener(this);
-        mModeListView.setOnItemLongClickListener(this);
+        mLockListView = (ListView) findViewById(R.id.mode_list);
+        mLockListView.setOnItemClickListener(this);
+        mLockListView.setOnItemLongClickListener(this);
+
         mListHeader = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_item_header,
-                mModeListView, false);
+                mLockListView, false);
         TextView tv = (TextView) mListHeader.findViewById(R.id.tv_add_more);
         tv.setText(R.string.add_new_time_lock);
-        mModeListView.addHeaderView(mListHeader);
+        mLockListView.addHeaderView(mListHeader);
 
     }
 
@@ -96,7 +97,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mTimeLockList = LockManager.getInstatnce().getTimeLock();
         Collections.sort(mTimeLockList, new TimeLockComparator());
         mTimeLockAdapter = new TimeLockAdapter(mActivity);
-        mModeListView.setAdapter(mTimeLockAdapter);
+        mLockListView.setAdapter(mTimeLockAdapter);
 
     }
 
@@ -279,17 +280,21 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ((LockModeActivity) mActivity).onEditMode(1);
-        mModeListView.setOnItemClickListener(null);
-        mEditing = true;
-        mTimeLockAdapter.notifyDataSetChanged();
+        if (position != 0) {
+            ((LockModeActivity) mActivity).onEditMode(1);
+            mLockListView.setOnItemClickListener(null);
+            mEditing = true;
+            mLockListView.removeHeaderView(mListHeader);
+            mTimeLockAdapter.notifyDataSetChanged();
+        }
         return false;
     }
 
     @Override
     public void onFinishEditMode() {
         mEditing = false;
-        mModeListView.setOnItemClickListener(this);
+        mLockListView.setOnItemClickListener(this);
+        mLockListView.addHeaderView(mListHeader);
         mTimeLockAdapter.notifyDataSetChanged();
     }
 
@@ -318,7 +323,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     }
 
     private void showGuidePage() {
-        mModeListView.setVisibility(View.INVISIBLE);
+        mLockListView.setVisibility(View.INVISIBLE);
         mLockGuideView.setVisibility(View.VISIBLE);
         mLockGuideText.setText(R.string.time_lock_mode_guide_content);
         mUserKnowBtn.setOnClickListener(this);
@@ -334,7 +339,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
 
     private void removeGuidePage() {
         mLockGuideView.setVisibility(View.INVISIBLE);
-        mModeListView.setVisibility(View.VISIBLE);
+        mLockListView.setVisibility(View.VISIBLE);
         mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_out);
         mLockGuideView.startAnimation(mGuidAnimation);
         mGuideOpen = false;

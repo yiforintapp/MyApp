@@ -216,7 +216,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     }
 
                 } else {
-                    LockManager.getInstatnce().setCurrentLockMode(mode);
+                    LockManager.getInstatnce().setCurrentLockMode(mode, true);
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "modeschage", "modes");
                     Toast.makeText(mActivity,
                             mActivity.getString(R.string.mode_change, mode.modeName),
@@ -421,10 +421,13 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ((LockModeActivity) mActivity).onEditMode(0);
-        mModeListView.setOnItemClickListener(null);
-        mEditing = true;
-        mModeAdapter.notifyDataSetChanged();
+        if (position != 0) {
+            ((LockModeActivity) mActivity).onEditMode(0);
+            mModeListView.setOnItemClickListener(null);
+            mModeListView.removeHeaderView(mListHeader);
+            mEditing = true;
+            mModeAdapter.notifyDataSetChanged();
+        }
         return false;
     }
 
@@ -432,6 +435,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
     public void onFinishEditMode() {
         mEditing = false;
         mModeListView.setOnItemClickListener(this);
+        mModeListView.addHeaderView(mListHeader);
         mModeAdapter.notifyDataSetChanged();
     }
 

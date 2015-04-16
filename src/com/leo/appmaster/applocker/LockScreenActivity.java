@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -47,6 +48,10 @@ import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
+import com.leo.appmaster.fragment.PretendAppErrorFragment;
+import com.leo.appmaster.fragment.PretendAppUnknowCallFragment;
+import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
+import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -74,7 +79,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private int mLockMode;
     private String mLockedPackage;
     private CommonTitleBar mTtileBar;
-    private LockFragment mFragment;
+    private LockFragment mLockFragment;
     private Bitmap mAppBaseInfoLayoutbg;
     private LeoPopMenu mLeoPopMenu;
     private LeoDoubleLinesInputDialog mDialog;
@@ -84,6 +89,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private boolean mNewTheme;
     private RelativeLayout mLockerGuide;
+    private RelativeLayout mPretendLayout;
+    private PretendFragment mPretendFragment;
+
     private Animation mAnim;
     private String mCleanRate;
     private TextView mText;
@@ -95,6 +103,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public String mQuickModeName;
     public int mQuiclModeId;
 
+    private RelativeLayout mLockLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +114,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
 
-//        checkOutcount();
+        // checkOutcount();
     }
 
     @Override
@@ -126,7 +136,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         AppMasterPreference.getInstance(this).setUnlocked(false);
         super.onResume();
     }
-    
+
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
             super.onRestoreInstanceState(savedInstanceState);
@@ -178,23 +188,29 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
-//        if (TextUtils.equals(newLockedPkg, mLockedPackage)) {
-//            checkOutcount();
-//        } else {
-            mLockedPackage = newLockedPkg;
-            // change background
-            if (!ThemeUtils.checkThemeNeed(this)
-                    && (mLockMode == LockManager.LOCK_MODE_FULL)) {
-                BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
-                        getPackageManager(),
-                        intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG));
-                setAppInfoBackground(bd);
-            }
+        // if (TextUtils.equals(newLockedPkg, mLockedPackage)) {
+        // checkOutcount();
+        // } else {
+        mLockedPackage = newLockedPkg;
+        // change background
+        if (!ThemeUtils.checkThemeNeed(this)
+                && (mLockMode == LockManager.LOCK_MODE_FULL)) {
+            BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
+                    getPackageManager(),
+                    intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG));
+            setAppInfoBackground(bd);
+        }
 
-            mFragment.onLockPackageChanged(mLockedPackage);
-            LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
-            super.onNewIntent(intent);
-//        }
+        mLockFragment.onLockPackageChanged(mLockedPackage);
+        LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
+
+        if (mPretendFragment != null) {
+            mLockLayout.setVisibility(View.GONE);
+            mPretendLayout.setVisibility(View.VISIBLE);
+        }
+
+        super.onNewIntent(intent);
+        // }
     }
 
     private void checkOutcount() {
@@ -226,9 +242,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         int type = AppMasterPreference.getInstance(this).getLockType();
 
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
-            mFragment = new PasswdLockFragment();
+            mLockFragment = new PasswdLockFragment();
         } else {
-            mFragment = new GestureLockFragment();
+            mLockFragment = new GestureLockFragment();
         }
         if (!ThemeUtils.checkThemeNeed(this)
                 && (mLockMode == LockManager.LOCK_MODE_FULL)) {
@@ -237,8 +253,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             setAppInfoBackground(bd);
         }
         mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
-        mFragment.setLockMode(mLockMode);
-        mFragment.setPackage(mLockedPackage);
+        mLockFragment.setLockMode(mLockMode);
+        mLockFragment.setPackage(mLockedPackage);
 
         /* SDK: mark user what to unlock which app */
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -264,14 +280,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         canvas.drawColor(Color.argb(70, 0, 0, 0));
         mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
 
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
-
-        layout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
-
+        mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
+        mLockLayout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
     }
 
-    
-    
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -345,9 +357,56 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction tans = fm.beginTransaction();
-        tans.replace(R.id.fragment_contain, mFragment);
+        tans.replace(R.id.fragment_contain, mLockFragment);
         tans.commit();
 
+        handlePretendLock();
+    }
+
+    // handle pretend lock
+    private void handlePretendLock() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction tans;
+        mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
+        mPretendFragment = getPretendFragment();
+        if (mPretendFragment != null) {
+            mLockLayout.setVisibility(View.GONE);
+            mPretendLayout.setVisibility(View.VISIBLE);
+            tans = fm.beginTransaction();
+            tans.add(R.id.pretend_layout, mPretendFragment);
+            tans.commit();
+        } else {
+            mLockLayout.setVisibility(View.VISIBLE);
+            mPretendLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private PretendFragment getPretendFragment() {
+        int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
+//        pretendLock = 1;
+        if (pretendLock == 1) { /* app error */
+            PretendAppErrorFragment paf = new PretendAppErrorFragment();
+            String tip = "";
+            PackageManager pm = this.getPackageManager();
+            try {
+                ApplicationInfo info = pm.getApplicationInfo(mLockedPackage,
+                        PackageManager.GET_UNINSTALLED_PACKAGES);
+                String lab = info.loadLabel(pm).toString();
+                tip = getString(R.string.pretend_app_error, lab);
+
+            } catch (NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            paf.setErrorTip(tip);
+            return paf;
+        } else if (pretendLock == 2) {/* unknow call */
+            PretendAppUnknowCallFragment unknowcall = new PretendAppUnknowCallFragment();
+            return unknowcall;
+        } else if (pretendLock == 3) {/* fingerprint */
+            PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
+            return weizhuang;
+        }
+        return null;
     }
 
     public void onUnlockSucceed() {
@@ -363,7 +422,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
             if (willLaunch != null) {
-                lm.setCurrentLockMode(willLaunch);
+                lm.setCurrentLockMode(willLaunch, true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
                 Toast.makeText(this,
                         this.getString(R.string.mode_change, mQuickModeName),
@@ -404,7 +463,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             pref.setUnlocked(true);
             pref.setDoubleCheck(null);
         }
-       LockManager.getInstatnce().timeFilter(mLockedPackage, 1000);
+        LockManager.getInstatnce().timeFilter(mLockedPackage, 1000);
         mTtileBar.postDelayed(new Runnable() {
 
             @Override
@@ -447,13 +506,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-//        if (mLockMode == LockManager.LOCK_MODE_FULL) {
-            intent.setAction(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            startActivity(intent);
-//        } else {
-//            
-//        }
+        // if (mLockMode == LockManager.LOCK_MODE_FULL) {
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
+        // } else {
+        //
+        // }
 
         /**
          * notify LockManager
@@ -629,6 +688,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      */
     public void onEventMainThread(LockThemeChangeEvent event) {
         mRestartForThemeChanged = true;
+    }
+
+    public void removePretendFrame() {
+        mPretendLayout.setVisibility(View.GONE);
+        mLockLayout.setVisibility(View.VISIBLE);
     }
 
 }

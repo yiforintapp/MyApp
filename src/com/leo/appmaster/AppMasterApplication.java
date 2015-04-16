@@ -1,7 +1,10 @@
 
 package com.leo.appmaster;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,18 +31,22 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.UserManager;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -57,6 +64,7 @@ import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
@@ -65,9 +73,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
-@SuppressLint("NewApi")
+@SuppressLint({
+        "NewApi", "SimpleDateFormat"
+})
 public class AppMasterApplication extends Application {
-    private static final String MOVE_TO_NEW_APP = "move_to_new_app";
 
     private AppLoadEngine mAppsEngine;
     private AppBackupRestoreManager mBackupManager;
@@ -125,11 +134,21 @@ public class AppMasterApplication extends Application {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!AppMasterPreference.getInstance(AppMasterApplication.this).getFirstUse()) {
-                    checkNew();
-                }
+                checkNew();
             }
         }, 10000);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                // 拉取闪屏数据
+                loadSplashDate();
+            }
+        });
+        // Bitmap image =
+        // BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
+        // .getAbsolutePath()
+        // + "/appmaster/bd3eb13533fa828b217e8ff6ff1f4134970a5a41.jpg");
+        // saveSplash(image, 1, this);
         restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
@@ -228,7 +247,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 mAppsEngine.preloadAllBaseInfo();
-//                AppBusinessManager.getInstance(mInstance).init();
+                // AppBusinessManager.getInstance(mInstance).init();
                 mBackupManager.getBackupList();
                 judgeLockService();
                 judgeLockAlert();
@@ -411,8 +430,8 @@ public class AppMasterApplication extends Application {
         long curTime = System.currentTimeMillis();
 
         long lastCheckTime = pref.getLastCheckBusinessTime();
-        if (lastCheckTime == 0
-                || (curTime - lastCheckTime) > pref.getBusinessCurrentStrategy()
+        if (lastCheckTime > 0
+                && (curTime - lastCheckTime) > pref.getBusinessCurrentStrategy()
         /* 2 * 60 * 1000 */) {
             HttpRequestAgent.getInstance(this).checkNewBusinessData(
                     new Listener<JSONObject>() {
@@ -508,6 +527,13 @@ public class AppMasterApplication extends Application {
                 }
             };
             Timer timer = new Timer();
+            if (lastCheckTime == 0) { // First time, check business after 24
+                                      // hours
+                lastCheckTime = curTime;
+                pref.setLastCheckBusinessTime(curTime);
+                pref.setBusinessStrategy(AppMasterConfig.TIME_24_HOUR,
+                        AppMasterConfig.TIME_12_HOUR, AppMasterConfig.TIME_2_HOUR);
+            }
             long delay = pref.getBusinessCurrentStrategy()
                     - (curTime - lastCheckTime);
             timer.schedule(recheckTask, delay);
@@ -520,8 +546,8 @@ public class AppMasterApplication extends Application {
         long curTime = System.currentTimeMillis();
 
         long lastCheckTime = pref.getLastCheckThemeTime();
-        if (lastCheckTime == 0
-                || (curTime - pref.getLastCheckThemeTime()) > pref.getThemeCurrentStrategy()) {
+        if (lastCheckTime > 0
+                && (curTime - lastCheckTime) > pref.getThemeCurrentStrategy()) {
             HttpRequestAgent.getInstance(this).checkNewTheme(
                     new Listener<JSONObject>() {
 
@@ -587,7 +613,6 @@ public class AppMasterApplication extends Application {
                                     Timer timer = new Timer();
                                     timer.schedule(recheckTask,
                                             pref.getThemeCurrentStrategy());
-
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     LeoLog.e("checkNewTheme", e.getMessage());
@@ -620,10 +645,198 @@ public class AppMasterApplication extends Application {
                 }
             };
             Timer timer = new Timer();
+            if (lastCheckTime == 0) { // First time, check theme after 24 hours
+                lastCheckTime = curTime;
+                pref.setLastCheckThemeTime(curTime);
+                pref.setThemeStrategy(AppMasterConfig.TIME_24_HOUR, AppMasterConfig.TIME_12_HOUR,
+                        AppMasterConfig.TIME_2_HOUR);
+            }
             long delay = pref.getThemeCurrentStrategy()
                     - (curTime - lastCheckTime);
             timer.schedule(recheckTask, delay);
         }
+    }
+
+    /**
+     * load splash
+     */
+    public void loadSplashDate() {
+        final AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        final SimpleDateFormat timeFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+        long curTime = System.currentTimeMillis();
+        Date currentDate = new Date(curTime);
+        final String failDate = dateFormate.format(currentDate);
+        long lastLoadTime = pref.getLastLoadSplashTime();
+        if (lastLoadTime == 0
+                || (curTime - pref.getLastLoadSplashTime()) >
+                pref.getSplashCurrentStrategy()) {
+            if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())
+                    || pref.getSplashLoadFailNumber() < 0
+                    || !failDate.equals(pref.getSplashLoadFailDate())
+                    || (failDate.equals(pref.getSplashLoadFailDate()) && pref
+                            .getSplashLoadFailNumber() <= 2)) {
+                if (!failDate.equals(pref.getSplashLoadFailDate())) {
+                    pref.setSplashLoadFailDate("splash_fail_default_date");
+                    pref.setSplashLoadFailNumber(0);
+                }
+                HttpRequestAgent.getInstance(this).loadSplashDate(new
+                        Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response, boolean noMidify) {
+                                Log.e("xxxxxxx", "拉取闪屏成功");
+                                if (response != null) {
+                                    try {
+                                        Log.e("xxxxxxx", "noMidify:" + noMidify);
+                                        String endDate = response.getString("c");
+                                        String startDate = response.getString("b");
+                                        String imageUrl = response.getString("a");
+                                        Log.e("xxxxxxxxx", "endDate:" + endDate);
+                                        Log.e("xxxxxxxxx", "endDate:" + startDate);
+                                        Log.e("xxxxxxxxx", "endDate:" + imageUrl);
+                                        if (endDate != null && !"".equals(endDate)) {
+                                            long end = 0;
+                                            try {
+                                                end = dateFormate.parse(endDate).getTime();
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            pref.setSplashEndShowTime(end);
+                                        }
+                                        if (startDate != null && !"".equals(startDate)) {
+                                            long start = 0;
+                                            try {
+                                                start = dateFormate.parse(startDate).getTime();
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            pref.setSplashStartShowTime(start);
+                                        }
+                                        if (imageUrl != null && !"".equals(imageUrl)) {
+                                            getSplashImage(imageUrl);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    pref.setLastCheckThemeTime(System
+                                            .currentTimeMillis());
+                                }
+                                if (pref.getSplashLoadFailNumber() != 0) {
+                                    pref.setSplashLoadFailNumber(0);
+                                }
+                                if (!"splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
+                                    pref.setSplashLoadFailDate("splash_fail_default_date");
+                                }
+                                TimerTask recheckTask = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        loadSplashDate();
+                                    }
+                                };
+                                Timer timer = new Timer();
+                                // pref.getSplashCurrentStrategy()
+                                timer.schedule(recheckTask, 1000);
+                            }
+                        }, new ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
+                                    Log.e("xxxxxxx", "----------------------首次失败");
+                                    pref.setSplashLoadFailDate(failDate);
+                                    LeoLog.e("loadSplash", error.getMessage());
+                                    pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
+                                            pref.getSplashSuccessStrategy(),
+                                            pref.getSplashFailStrategy());
+                                    TimerTask recheckTask = new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            loadSplashDate();
+                                        }
+                                    };
+                                    Timer timer = new Timer();
+                                    // pref.getSplashCurrentStrategy()
+                                    timer.schedule(recheckTask, 1000);
+
+                                } else if (pref.getSplashLoadFailNumber() >= 0
+                                        && pref.getSplashLoadFailNumber() <= 2) {
+                                    Log.e("xxxxxxx", "----------------------失败1");
+                                    pref.setSplashLoadFailNumber(pref.getSplashLoadFailNumber() + 1);
+                                    LeoLog.e("loadSplash", error.getMessage());
+                                    pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
+                                            pref.getSplashSuccessStrategy(),
+                                            pref.getSplashFailStrategy());
+                                    TimerTask recheckTask = new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            loadSplashDate();
+                                        }
+                                    };
+                                    Timer timer = new Timer();
+                                    // pref.getSplashCurrentStrategy()
+                                    timer.schedule(recheckTask, 1000);
+                                }
+
+                            }
+                        });
+            }
+        } else {
+            Log.e("xxxxxxxx", "拉取闪屏时间间隔没到");
+            pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
+                    pref.getSplashSuccessStrategy(), pref.getSplashFailStrategy());
+            TimerTask recheckTask = new TimerTask() {
+                @Override
+                public void run() {
+                    loadSplashDate();
+                }
+            };
+            Timer timer = new Timer();
+            long delay = pref.getSplashCurrentStrategy()
+                    - (curTime - lastLoadTime);
+            timer.schedule(recheckTask, delay);
+        }
+    }
+
+    // 加载闪屏图
+    private void getSplashImage(String url) {
+        HttpRequestAgent.getInstance(this).loadSplashImage(url, new Listener<Bitmap>() {
+
+            @Override
+            public void onResponse(Bitmap response, boolean noMidify) {
+                // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片成功");
+                int imageSize = FileOperationUtil.getBitmapSize(response);
+                saveSplash(response, imageSize, getApplicationContext());
+            }
+        }, new ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片失败");
+
+            }
+        });
+    }
+
+    // 保存闪屏
+    private int saveSplash(Bitmap inputStream, long fileSize, Context context) {
+        String savePath = FileOperationUtil.getSplashPath();
+        String sdPath = Environment.getExternalStorageDirectory()
+                .getAbsolutePath();
+        if (savePath == null) {
+            Log.e("xxxxxxxxxx", "没有发现该路径！");
+            return 0;
+        }
+        int bitmapSize = FileOperationUtil.getBitmapSize(inputStream);
+        boolean flag = FileOperationUtil.isMemeryEnough(bitmapSize, context, sdPath, 0);
+        if (!flag) {
+            Log.e("xxxxxxxxxx", "内存不足！");
+            return 1;
+        }
+        try {
+            FileOperationUtil.readAsFile(inputStream, FileOperationUtil.getSplashPath()
+                    + Constants.SPLASH_NAME, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
@@ -639,6 +852,7 @@ public class AppMasterApplication extends Application {
         if (cr != null) {
             cr.unregisterContentObserver(mCallLogObserver);
             cr.unregisterContentObserver(mMessageObserver);
+            cr.unregisterContentObserver(mContactObserver);
         }
     }
 
@@ -717,4 +931,5 @@ public class AppMasterApplication extends Application {
     public static boolean isAboveICS() {
         return AppMasterApplication.SDK_VERSION >= 14;
     }
+
 }

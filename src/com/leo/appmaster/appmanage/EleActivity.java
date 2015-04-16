@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -66,7 +67,7 @@ public class EleActivity extends BaseFragmentActivity {
         am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         getBatteryStats();
     }
-    
+
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
             super.onRestoreInstanceState(savedInstanceState);
@@ -94,11 +95,11 @@ public class EleActivity extends BaseFragmentActivity {
                         return;
                     pb_loading_ele.setVisibility(View.GONE);
                     listview_ele.setVisibility(View.VISIBLE);
-                    
-//                    for(BatteryComsuption bif : mList){
-//                        LeoLog.d("testfuckele", bif.getDefaultPackageName());
-//                    }
-                    
+
+                    // for(BatteryComsuption bif : mList){
+                    // LeoLog.d("testfuckele", bif.getDefaultPackageName());
+                    // }
+
                     adapter.setData(mList);
                     break;
             }
@@ -242,8 +243,8 @@ public class EleActivity extends BaseFragmentActivity {
             BatteryComsuption abc = mList.get(index);
             String packageName = abc.getDefaultPackageName();
             LeoLog.d("Eleactivity", "OnClick咯！！");
+            LockManager.getInstatnce().timeFilterSelf();
             showInstalledAppDetails(packageName);
-
         }
     }
 
@@ -266,11 +267,11 @@ public class EleActivity extends BaseFragmentActivity {
             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             Uri uri = Uri.fromParts(SCHEME, packageName, null);
             intent.setData(uri);
-//            LeoLog.d("Eleactivity", "TRY里面，准备STARTACTIVITY");
+            // LeoLog.d("Eleactivity", "TRY里面，准备STARTACTIVITY");
             startActivity(intent);
-//            LeoLog.d("Eleactivity", "发射！！");
+            // LeoLog.d("Eleactivity", "发射！！");
         } catch (Exception e) {
-//            LeoLog.d("Eleactivity", "报错咯！！");
+            // LeoLog.d("Eleactivity", "报错咯！！");
             Intent powerUsageIntent = new Intent(Intent.ACTION_POWER_USAGE_SUMMARY);
             ResolveInfo resolveInfo = getPackageManager().resolveActivity(powerUsageIntent, 0);
             // check that the Battery app exists on this device

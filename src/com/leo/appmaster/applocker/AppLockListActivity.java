@@ -341,13 +341,13 @@ public class AppLockListActivity extends BaseActivity implements
                                 if (TextUtils.equals(selectMode, lockMode.modeName)) {
                                     if (lockMode.defaultFlag == 1
                                             && !lockMode.haveEverOpened) {
-                                        lm.setCurrentLockMode(lockMode);
+                                        lm.setCurrentLockMode(lockMode, true);
                                         SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modeschage", "applock");
                                         startRcommendLock();
                                         lockMode.haveEverOpened = true;
                                         lm.updateMode(lockMode);
                                     } else {
-                                        lm.setCurrentLockMode(lockMode);
+                                        lm.setCurrentLockMode(lockMode, true);
                                         SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modeschage", "applock");
                                         Toast.makeText(
                                                 AppLockListActivity.this,
