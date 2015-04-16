@@ -64,14 +64,15 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
         mUserKnowBtn = (Button) mLockGuideView.findViewById(R.id.mode_user_know_button);
         mTitleBar =  ((LockModeActivity)mActivity).getActivityCommonTitleBar();
-        // judge whether click i know button 
-       if(!AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()){
-           showGuidePage();
-      }
         
         mLockListView = (ListView) findViewById(R.id.mode_list);
         mLockListView.setOnItemClickListener(this);
         mLockListView.setOnItemLongClickListener(this);
+        
+        // judge whether click i know button 
+       if(!AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()){
+           showGuidePage();
+      }
 
         mListHeader = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_item_header,
                 mLockListView, false);
