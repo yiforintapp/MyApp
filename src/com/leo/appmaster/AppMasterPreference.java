@@ -126,12 +126,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LAST_LOAD_SPLASH_TIME = "last_load_splash_time";
     public static final String PREF_MESSAGE_NO_READ_COUNT = "message_no_read_count";
     public static final String PREF_SPLASH_LOAD_START_TIME = "start_load_splash_time";
+    public static final String PREF_SPLASH_LOAD_FAIL_DATE = "splash_load_fail_date";
+    public static final String PREF_SPLASH_LOAD_FAIL_NUMBER = "splash_load_fail_number";
     // weizhuang
     public static final String PREF_WEIZHUANG_SELECTED = "weizhuang_selected";
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
 
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
+    private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED="time_lock_mode_guide_user_clicked";
+    private static final String PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED="location_lock_mode_guide_user_clicked";
     public static final String PREF_SWITCH_MODE_COUNT = "switch_lock_mode_count";
 
     private List<String> mLockedAppList;
@@ -1113,6 +1117,21 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag).commit();
     }
 
+    public boolean getTimeLockModeGuideClicked(){
+        return mPref.getBoolean(PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED,false);
+    }
+    
+    public void setTimeLockModeGuideClicked(boolean flag){
+        mPref.edit().putBoolean(PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED, flag).commit();
+    }
+    
+    public boolean getLocationLockModeGuideClicked(){
+        return mPref.getBoolean(PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED,false);
+    }
+    
+    public void setLocationLockModeGuideClicked(boolean flag){
+        mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED, flag).commit();
+    }
     // public void setWeiZhuang(int selected){
     // mWeiZhuang = selected;
     // mPref.edit().putInt(PREF_WEIZHUANG_SELECTED, selected).commit();
@@ -1239,4 +1258,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_MESSAGE_NO_READ_COUNT, 0);
     }
 
+
+    public void setSplashLoadFailDate(String date) {
+        mPref.edit().putString(PREF_SPLASH_LOAD_FAIL_DATE, date).commit();
+    }
+
+    public String getSplashLoadFailDate() {
+        return mPref.getString(PREF_SPLASH_LOAD_FAIL_DATE, "splash_fail_default_date");
+    }
+    public void setSplashLoadFailNumber(int number) {
+        mPref.edit().putInt(PREF_SPLASH_LOAD_FAIL_NUMBER, number).commit();
+    }
+
+    public int getSplashLoadFailNumber() {
+        return mPref.getInt(PREF_SPLASH_LOAD_FAIL_NUMBER, 0);
+    }
 }
