@@ -50,6 +50,7 @@ import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
 import com.leo.appmaster.fragment.PretendAppErrorFragment;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment;
+import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -394,7 +395,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 tip = getString(R.string.pretend_app_error, lab);
 
             } catch (NameNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             paf.setErrorTip(tip);
@@ -403,7 +403,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             PretendAppUnknowCallFragment unknowcall = new PretendAppUnknowCallFragment();
             return unknowcall;
         } else if (pretendLock == 3) {/* fingerprint */
-
+            PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
+            return weizhuang;
         }
         return null;
     }
