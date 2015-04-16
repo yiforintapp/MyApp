@@ -133,7 +133,7 @@ public class ZhiWenActivity extends Activity implements OnClickListener {
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
                 if (mHits[0] >= (SystemClock.uptimeMillis() - 800)) {
-                    Toast.makeText(this, getString(R.string.weizhuang_setting_ok), 0).show();
+                    Toast.makeText(this, getString(R.string.zhiwen_mode_ok), 0).show();
                     sp_zhiwen_weizhuang.setPretendLock(ZHIWENWEIZHUANG);
                     finish();
                 }

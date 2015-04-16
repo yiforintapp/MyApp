@@ -82,7 +82,7 @@ public class ErrorWeiZhuang extends Activity implements OnTouchListener {
                 if (distanceX > fitDistanceX) {
                     if (distanceY < fitDistanceY) {
                         // ok
-                        Toast.makeText(this, getString(R.string.weizhuang_setting_ok), 0).show();
+                        Toast.makeText(this, getString(R.string.error_mode_ok), 0).show();
                         sp_error_weizhuang.setPretendLock(ERRORWEIZHUANG);
                         finish();
                     }
