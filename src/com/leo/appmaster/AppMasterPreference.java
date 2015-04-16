@@ -134,6 +134,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
+    private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED="time_lock_mode_guide_user_clicked";
+    private static final String PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED="location_lock_mode_guide_user_clicked";
     public static final String PREF_SWITCH_MODE_COUNT = "switch_lock_mode_count";
 
     private List<String> mLockedAppList;
@@ -1115,6 +1117,21 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag).commit();
     }
 
+    public boolean getTimeLockModeGuideClicked(){
+        return mPref.getBoolean(PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED,false);
+    }
+    
+    public void setTimeLockModeGuideClicked(boolean flag){
+        mPref.edit().putBoolean(PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED, flag).commit();
+    }
+    
+    public boolean getLocationLockModeGuideClicked(){
+        return mPref.getBoolean(PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED,false);
+    }
+    
+    public void setLocationLockModeGuideClicked(boolean flag){
+        mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED, flag).commit();
+    }
     // public void setWeiZhuang(int selected){
     // mWeiZhuang = selected;
     // mPref.edit().putInt(PREF_WEIZHUANG_SELECTED, selected).commit();
