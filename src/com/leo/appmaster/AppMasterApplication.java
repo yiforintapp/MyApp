@@ -687,42 +687,46 @@ public class AppMasterApplication extends Application {
                                 Log.e("xxxxxxx", "拉取闪屏成功");
                                 if (response != null) {
                                     try {
-                                        Log.e("xxxxxxx", "noMidify:"+noMidify);
-                                            String endDate = response.getString("c");
-                                            String startDate = response.getString("b");
-                                            String imageUrl = response.getString("a");
-                                            Log.e("xxxxxxxxx", "endDate:" + endDate);
-                                            Log.e("xxxxxxxxx", "endDate:" + startDate);
-                                            Log.e("xxxxxxxxx", "endDate:" + imageUrl);
-                                            if (endDate != null && !"".equals(endDate)) {
-                                                long end = 0;
-                                                try {
-                                                    end = dateFormate.parse(endDate).getTime();
-                                                } catch (ParseException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                pref.setSplashEndShowTime(end);
+                                        Log.e("xxxxxxx", "noMidify:" + noMidify);
+                                        String endDate = response.getString("c");
+                                        String startDate = response.getString("b");
+                                        String imageUrl = response.getString("a");
+                                        Log.e("xxxxxxxxx", "endDate:" + endDate);
+                                        Log.e("xxxxxxxxx", "endDate:" + startDate);
+                                        Log.e("xxxxxxxxx", "endDate:" + imageUrl);
+                                        if (endDate != null && !"".equals(endDate)) {
+                                            long end = 0;
+                                            try {
+                                                end = dateFormate.parse(endDate).getTime();
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
                                             }
-                                            if (startDate != null && !"".equals(startDate)) {
-                                                long start = 0;
-                                                try {
-                                                    start = dateFormate.parse(startDate).getTime();
-                                                } catch (ParseException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                pref.setSplashStartShowTime(start);
+                                            pref.setSplashEndShowTime(end);
+                                        }
+                                        if (startDate != null && !"".equals(startDate)) {
+                                            long start = 0;
+                                            try {
+                                                start = dateFormate.parse(startDate).getTime();
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
                                             }
-                                            if (imageUrl != null && !"".equals(imageUrl)) {
-                                                getSplashImage(imageUrl);
-                                            }
+                                            pref.setSplashStartShowTime(start);
+                                        }
+                                        if (imageUrl != null && !"".equals(imageUrl)) {
+                                            getSplashImage(imageUrl);
+                                        }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                     pref.setLastCheckThemeTime(System
                                             .currentTimeMillis());
                                 }
-                                pref.setSplashLoadFailNumber(-1);
-                                pref.setSplashLoadFailDate(null);
+                                if (pref.getSplashLoadFailNumber() != 0) {
+                                    pref.setSplashLoadFailNumber(0);
+                                }
+                                if (!"splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
+                                    pref.setSplashLoadFailDate("splash_fail_default_date");
+                                }
                                 TimerTask recheckTask = new TimerTask() {
                                     @Override
                                     public void run() {
@@ -798,14 +802,14 @@ public class AppMasterApplication extends Application {
 
             @Override
             public void onResponse(Bitmap response, boolean noMidify) {
-//                Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片成功");
+                // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片成功");
                 int imageSize = FileOperationUtil.getBitmapSize(response);
                 saveSplash(response, imageSize, getApplicationContext());
             }
         }, new ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片失败");
+                // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片失败");
 
             }
         });
