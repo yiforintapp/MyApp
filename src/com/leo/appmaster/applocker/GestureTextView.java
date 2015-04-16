@@ -25,12 +25,12 @@ public class GestureTextView extends TextView implements OnClickListener {
 
     public GestureTextView(Context context) {
         super(context);
-        getSize();
+//        getSize();
     }
 
     public GestureTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        getSize();
+//        getSize();
         this.setOnClickListener(this);
     }
 
@@ -38,23 +38,35 @@ public class GestureTextView extends TextView implements OnClickListener {
         mPf = pf;
     }
 
-    private void getSize() {
-        ViewTreeObserver guaduan = getViewTreeObserver();
-        guaduan.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-            public void onGlobalLayout() {
-                top = getTop();
-                right = getRight();
-                bottom = getBottom();
-                left = getLeft();
-                LeoLog.d("testerrorfragment", "top is : " + top
-                        + "--bottom is : " + bottom + "--right is : "
-                        + right + "---left is :" + left);
-                // 成功调用一次后，移除 Hook 方法，防止被反复调用
-                // removeGlobalOnLayoutListener() 方法在 API 16 后不再使用
-                // 使用新方法 removeOnGlobalLayoutListener() 代替
-                getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
+//    private void getSize() {
+//        ViewTreeObserver guaduan = getViewTreeObserver();
+//        guaduan.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+//            public void onGlobalLayout() {
+//                top = getTop();
+//                right = getRight();
+//                bottom = getBottom();
+//                left = getLeft();
+//                LeoLog.d("testerrorfragment", "11left is : " + left
+//                        + "--11top is : " + top + "--11right is : "
+//                        + right + "---11bottom is :" + bottom);
+//                // 成功调用一次后，移除 Hook 方法，防止被反复调用
+//                // removeGlobalOnLayoutListener() 方法在 API 16 后不再使用
+//                // 使用新方法 removeOnGlobalLayoutListener() 代替
+//                getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//            }
+//        });
+//    }
+    
+    @Override
+    protected void onLayout(boolean arg0, int arg1, int arg2, int arg3, int arg4) {
+        super.onLayout(arg0, arg1, arg2, arg3, arg4);
+        left = arg1;
+        top = arg2;
+        right = arg3;
+        bottom = arg4;
+//        LeoLog.d("testerrorfragment", "left is : " + left
+//                + "--top is : " + top + "--right is : "
+//                + right + "---bottom is :" + bottom);
     }
 
     @Override

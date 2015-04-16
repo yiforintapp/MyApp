@@ -181,8 +181,10 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
             case 2:
                 if(selected != 2){
                     // 未知来电
-                    Intent intent = new Intent(this,UnknowCallActivity.class);
-                    this.startActivity(intent);
+//                    Intent intent = new Intent(this,UnknowCallActivity.class);
+//                    this.startActivity(intent);
+                  Intent intent = new Intent(this,UnKnowCallActivity5.class);
+                  this.startActivity(intent);
                 }
                 break;
             case 3:
