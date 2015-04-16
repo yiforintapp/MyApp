@@ -121,7 +121,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     }
 
     private void onLoadGameAppFinish(boolean isGetData, List<AppWallBean> list) {
-        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "statusbar_game");
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "game");
         boolean flag = false;
         if (isGetData) {
             // list.clear();
@@ -136,7 +136,6 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
             List<AppItemInfo> pkgInfos = AppLoadEngine.getInstance(
                     mActivity).getAllPkgInfo();
             List<String> pkgName = new ArrayList<String>();
-            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < pkgInfos.size(); i++) {
                 if (pkgInfos.get(i).packageName.equals("com.android.vending")) {
                     flagGp = true;
@@ -339,7 +338,6 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                     AppWallUrlBean appUrl = null;
                     List<String[]> sort = new ArrayList<String[]>();
                     String urlStr = null;
-                    Uri url = null;
                     for (int i = 0; i < urls.size(); i++) {
                         appUrl = urls.get(i);
                         String[] tempStr = new String[2];
