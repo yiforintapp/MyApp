@@ -71,10 +71,48 @@
         android:longClickable="true" >
 
         <ImageView
+            android:id="@+id/iv_guaduan"
+            android:layout_width="32dp"
+            android:layout_height="25dp"
+            android:background="@drawable/disguise_call_red" />
+
+        <ImageView
+            android:id="@+id/iv_duanxin"
+            android:layout_width="32dp"
+            android:layout_height="25dp"
+            android:background="@drawable/disguise_call_blue" />
+
+        <ImageView
+            android:id="@+id/iv_jieting"
+            android:layout_width="32dp"
+            android:layout_height="25dp"
+            android:background="@drawable/disguise_call_sms" />
+
+        <ImageView
+            android:id="@+id/iv_guaduan_big"
+            android:layout_width="64dp"
+            android:layout_height="50dp"
+            android:background="@drawable/disguise_call_red"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_duanxin_big"
+            android:layout_width="64dp"
+            android:layout_height="50dp"
+            android:background="@drawable/disguise_call_blue"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_jieting_big"
+            android:layout_width="64dp"
+            android:layout_height="50dp"
+            android:background="@drawable/disguise_call_sms"
+            android:visibility="invisible" />
+
+        <ImageView
             android:id="@+id/iv_dianhua_hold"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_below="@id/tv_use_tips_content"
             android:background="@drawable/disguise_call"
             android:longClickable="true" />
     </com.leo.appmaster.applocker.GestureRelative>
