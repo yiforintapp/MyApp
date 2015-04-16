@@ -130,6 +130,8 @@
     <dimen name="privacy_suggest_padding">12dp</dimen>
     <dimen name="privacy_suggest_icon_text_margin">12dp</dimen>
     <dimen name="privacy_suggest_text_margin">0dp</dimen>
+        <dimen name="privacy_suggest_arrow_padding_right">12dp</dimen>
+    <dimen name="privacy_suggest_arrow_padding_top">26dp</dimen>
     <dimen name="home_bottom_button_height">64dp</dimen>
     <dimen name="home_bottom_button_text_size">14dp</dimen>
     <dimen name="home_bottom_button_text_margin">10dp</dimen>

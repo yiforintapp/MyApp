@@ -38,6 +38,15 @@
                 android:layout_marginTop="@dimen/privacy_suggest_padding"
                 android:src="@drawable/privacy_applock_icon" />
 
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/privacy_suggest_arrow_padding_top"
+                android:scaleType="centerInside"
+                android:src="@drawable/privacy_proposals_arrow" />
+
             <LinearLayout
                 android:id="@+id/suggest_applock_text"
                 android:layout_width="match_parent"
@@ -72,7 +81,7 @@
                     android:id="@+id/suggest_applock_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                      android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                    android:layout_marginTop="@dimen/privacy_suggest_text_margin"
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:text="@string/privacy_no_app_lock_des"
@@ -99,6 +108,15 @@
                 android:layout_marginTop="@dimen/privacy_suggest_padding"
                 android:src="@drawable/privacy_hide_pic_icon" />
 
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/privacy_suggest_arrow_padding_top"
+                android:scaleType="centerInside"
+                android:src="@drawable/privacy_proposals_arrow" />
+
             <LinearLayout
                 android:id="@+id/suggest_hide_pic_text"
                 android:layout_width="match_parent"
@@ -122,7 +140,7 @@
                     android:id="@+id/suggest_hide_pic_suggest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                      android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                    android:layout_marginTop="@dimen/privacy_suggest_text_margin"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/privacy_no_pic_hide"
@@ -133,7 +151,7 @@
                     android:id="@+id/suggest_hide_pic_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                      android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                    android:layout_marginTop="@dimen/privacy_suggest_text_margin"
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:text="@string/privacy_no_pic_hide_des"
@@ -160,6 +178,15 @@
                 android:layout_marginTop="@dimen/privacy_suggest_padding"
                 android:src="@drawable/privacy_hide_video_icon" />
 
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/privacy_suggest_arrow_padding_top"
+                android:scaleType="centerInside"
+                android:src="@drawable/privacy_proposals_arrow" />
+
             <LinearLayout
                 android:id="@+id/suggest_hide_video_text"
                 android:layout_width="match_parent"
@@ -183,7 +210,7 @@
                     android:id="@+id/suggest_hide_video_suggest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                      android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                    android:layout_marginTop="@dimen/privacy_suggest_text_margin"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/privacy_no_video_hide"
@@ -194,7 +221,7 @@
                     android:id="@+id/suggest_hide_video_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                      android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                    android:layout_marginTop="@dimen/privacy_suggest_text_margin"
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:text="@string/privacy_no_video_hide_des"
@@ -221,6 +248,15 @@
                 android:layout_marginTop="@dimen/privacy_suggest_padding"
                 android:src="@drawable/privacy_privacy_contact_icon" />
 
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/privacy_suggest_arrow_padding_top"
+                android:scaleType="centerInside"
+                android:src="@drawable/privacy_proposals_arrow" />
+
             <LinearLayout
                 android:id="@+id/suggest_privacy_contact_text"
                 android:layout_width="match_parent"
@@ -244,7 +280,7 @@
                     android:id="@+id/suggest_privacy_contact_suggest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                      android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                    android:layout_marginTop="@dimen/privacy_suggest_text_margin"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/privacy_no_privacy_contact"
@@ -255,7 +291,7 @@
                     android:id="@+id/suggest_privacy_contact_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                      android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                    android:layout_marginTop="@dimen/privacy_suggest_text_margin"
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:text="@string/privacy_no_privacy_contact_des"
