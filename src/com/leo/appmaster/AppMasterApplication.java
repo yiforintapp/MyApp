@@ -138,7 +138,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 checkNew();
-                // 拉取闪屏数据
+                // 获取闪屏数据
                 loadSplashDate();
             }
         }, 10, TimeUnit.SECONDS);
@@ -692,7 +692,7 @@ public class AppMasterApplication extends Application {
     }
 
     /**
-     * load splash
+     * 加载闪屏
      */
     public void loadSplashDate() {
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);
@@ -710,9 +710,15 @@ public class AppMasterApplication extends Application {
                     || !failDate.equals(pref.getSplashLoadFailDate())
                     || (failDate.equals(pref.getSplashLoadFailDate()) && pref
                             .getSplashLoadFailNumber() <= 2)) {
+                // 日期变化数据初始化
                 if (!failDate.equals(pref.getSplashLoadFailDate())) {
-                    pref.setSplashLoadFailDate("splash_fail_default_date");
-                    pref.setSplashLoadFailNumber(0);
+                    if (pref.getSplashLoadFailNumber() != 0) {
+                        pref.setSplashLoadFailNumber(0);
+                    }
+                    if (!"splash_fail_default_date"
+                            .equals(pref.getSplashLoadFailDate())) {
+                        pref.setSplashLoadFailDate("splash_fail_default_date");
+                    }
                 }
                 HttpRequestAgent.getInstance(this).loadSplashDate(new
                         Listener<JSONObject>() {
@@ -725,8 +731,9 @@ public class AppMasterApplication extends Application {
                                         String startDate = response.getString("b");
                                         String imageUrl = response.getString("a");
                                         String splashUriFlag = imageUrl + startDate + endDate;
+                                        Log.e("xxxxxxx", "数据：" + splashUriFlag);
+                                        // 保存获取的数据
                                         if (!pref.getSplashUriFlag().equals(splashUriFlag)) {
-                                            Log.e("xxxxxxx", "===============进来");
                                             if (splashUriFlag != null && !"".equals(splashUriFlag)) {
                                                 pref.setSplashUriFlag(splashUriFlag);
                                             }
@@ -758,6 +765,7 @@ public class AppMasterApplication extends Application {
                                     pref.setLastCheckThemeTime(System
                                             .currentTimeMillis());
                                 }
+                                // 拉取成功数据初始化
                                 if (pref.getSplashLoadFailNumber() != 0) {
                                     pref.setSplashLoadFailNumber(0);
                                 }
@@ -772,45 +780,31 @@ public class AppMasterApplication extends Application {
                                     }
                                 };
                                 Timer timer = new Timer();
-                                // pref.getSplashCurrentStrategy()
-                                timer.schedule(recheckTask, 1000);
+                                timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
                             }
                         }, new ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                // 拉取失败重试策略
+                                LeoLog.e("loadSplash", error.getMessage());
+                                // Log.e("xxxxxxxxxxxxxxx", "加载闪屏失败");
                                 if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
-                                    Log.e("xxxxxxx", "----------------------首次失败");
                                     pref.setSplashLoadFailDate(failDate);
-                                    pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
-                                            pref.getSplashSuccessStrategy(),
-                                            pref.getSplashFailStrategy());
-                                    TimerTask recheckTask = new TimerTask() {
-                                        @Override
-                                        public void run() {
-                                            loadSplashDate();
-                                        }
-                                    };
-                                    Timer timer = new Timer();
-                                    // pref.getSplashCurrentStrategy()
-                                    timer.schedule(recheckTask, 1000);
-
                                 } else if (pref.getSplashLoadFailNumber() >= 0
                                         && pref.getSplashLoadFailNumber() <= 2) {
-                                    Log.e("xxxxxxx", "----------------------失败");
                                     pref.setSplashLoadFailNumber(pref.getSplashLoadFailNumber() + 1);
-                                    LeoLog.e("loadSplash", error.getMessage());
-                                    pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
-                                            pref.getSplashSuccessStrategy(),
-                                            pref.getSplashFailStrategy());
-                                    TimerTask recheckTask = new TimerTask() {
-                                        @Override
-                                        public void run() {
-                                            loadSplashDate();
-                                        }
-                                    };
-                                    Timer timer = new Timer();
-                                    timer.schedule(recheckTask, 1000);
                                 }
+                                pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
+                                        pref.getSplashSuccessStrategy(),
+                                        pref.getSplashFailStrategy());
+                                TimerTask recheckTask = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        loadSplashDate();
+                                    }
+                                };
+                                Timer timer = new Timer();
+                                timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
                             }
                         });
             }
@@ -843,7 +837,6 @@ public class AppMasterApplication extends Application {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片失败");
-
             }
         });
     }
@@ -854,21 +847,17 @@ public class AppMasterApplication extends Application {
         String sdPath = Environment.getExternalStorageDirectory()
                 .getAbsolutePath();
         if (savePath == null) {
-            // Log.e("xxxxxxxxxx", "没有发现该路径！");
+            Log.e("saveSplashImage", "no found path！");
             return 0;
         }
         int bitmapSize = FileOperationUtil.getBitmapSize(inputStream);
         boolean flag = FileOperationUtil.isMemeryEnough(bitmapSize, context, sdPath, 0);
         if (!flag) {
-            // Log.e("xxxxxxxxxx", "内存不足！");
+            Log.e("saveSplashImage", "memery no enough！");
             return 1;
         }
-        try {
-            FileOperationUtil.readAsFile(inputStream, FileOperationUtil.getSplashPath()
-                    + Constants.SPLASH_NAME, this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileOperationUtil.readAsFile(inputStream, FileOperationUtil.getSplashPath()
+                + Constants.SPLASH_NAME, this);
         return -1;
     }
 

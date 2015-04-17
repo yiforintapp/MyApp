@@ -759,17 +759,13 @@ public class FileOperationUtil {
     }
 
     // 存储文件到磁盘
-    public static void readAsFile(Bitmap inSream, String file, Context context) throws IOException {
-        boolean falg = new File(file).exists();
-        OutputStream outStream = null;
-        if (falg) {
-            outStream = new FileOutputStream(new File(file), false);
+    public static void readAsFile(Bitmap inSream, String file, Context context) {
+        try {
+            OutputStream outStream = new FileOutputStream(new File(file), false);
             inSream.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-            try {
-                outStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            outStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

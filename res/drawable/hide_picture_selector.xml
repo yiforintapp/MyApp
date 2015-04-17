@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/photo_hidden_disable" android:state_focused="true"></item>
-    <item android:drawable="@drawable/photo_hidden_press" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/hidden_icon_sel" android:state_pressed="true"></item>
     <item android:drawable="@drawable/photo_hidden_disable" android:state_enabled="false"></item>
-    <item android:drawable="@drawable/photo_hidden_hidden" android:state_enabled="true"></item>
-    <item android:drawable="@drawable/photo_hidden_hidden"></item>
+    <item android:drawable="@drawable/hidden_icon" android:state_enabled="true"></item>
+    <item android:drawable="@drawable/hidden_icon"></item>
 
 </selector>
