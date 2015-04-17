@@ -287,28 +287,6 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
         startActivity(intent);
     }
     
-    
-    public void tryRemoveUnlockAllShortcut(Context ctx) {
-        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
-            Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
-            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            shortcutIntent.putExtra("quick_lock_mode", true);
-            shortcutIntent.putExtra("lock_mode_id", 0);
-            shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
-
-            Intent shortcut = new Intent(
-                    "com.android.launcher.action.UNINSTALL_SHORTCUT");
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            shortcut.putExtra("duplicate", false);
-            shortcut.putExtra("from_shortcut", true);
-            ctx.sendBroadcast(shortcut);
-            AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
-        }
-
-    }
-    
-
     private void installLockModeShortcut(LockMode lockMode) {
         Intent shortcutIntent = new Intent(mActivity, LockScreenActivity.class);
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

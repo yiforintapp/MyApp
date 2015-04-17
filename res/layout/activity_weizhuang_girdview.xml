@@ -4,11 +4,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.leo.appmaster.ui.CommonTitleBar
-        android:id="@+id/weizhuang_title_bar"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_background" />
+        android:background="@color/app_background" >
+
+        <com.leo.appmaster.ui.CommonTitleBar
+            android:id="@+id/weizhuang_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/trffic_setting_iv"
+            android:layout_width="@dimen/app_manager_flowactivity_small_icon_width_height"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/traffic_small_icon_selector"
+            android:visibility="gone" >
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/weizhuang_ask"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/tips_icon"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

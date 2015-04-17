@@ -1180,27 +1180,28 @@ public class LockManager {
                 dialog.setTitle(R.string.time_location_lock_tip_title);
                 String tip = mContext.getString(R.string.time_location_lock_tip_content);
                 dialog.setContent(tip);
-                dialog.setLeftBtnStr(mContext.getString(R.string.lock_mode_time));
-                dialog.setMiddleBtnStr(mContext.getString(R.string.lock_mode_location));
-                dialog.setRightBtnStr(mContext.getString(R.string.cancel));
+                dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
+                dialog.setMiddleBtnStr(mContext.getString(R.string.lock_mode_time));
+                dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_location));
+                dialog.setRightBtnBackground(R.drawable.dlg_right_button_selector);
                 dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
                     @Override
                     public void onClick(int which) {
                         Intent intent = null;
                         if (which == 0) {
+                            // cancel
+                        } else if (which == 1) {
                             // new time lock
                             intent = new Intent(mContext, TimeLockEditActivity.class);
                             intent.putExtra("new_time_lock", true);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             mContext.startActivity(intent);
-                        } else if (which == 1) {
+                        } else if (which == 2) {
                             // new location lock
                             intent = new Intent(mContext, LocationLockEditActivity.class);
                             intent.putExtra("new_location_lock", true);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             mContext.startActivity(intent);
-                        } else if (which == 2) {
-                            // cancel
                         }
                     }
                 });
@@ -1214,24 +1215,27 @@ public class LockManager {
                     dialog.setTitle(R.string.time_location_lock_tip_title);
                     String tip = mContext.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
-                    dialog.setLeftBtnStr(mContext.getString(R.string.lock_mode_time));
-                    dialog.setRightBtnStr(mContext.getString(R.string.cancel));
+                    dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_time));
+                    dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override
                         public void onClick(int which) {
                             Intent intent = null;
                             if (which == 0) {
+                                // cancel
+                            } else if (which == 1) {
                                 // new time lock
                                 intent = new Intent(mContext, TimeLockEditActivity.class);
                                 intent.putExtra("new_time_lock", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(intent);
-                            } else if (which == 1) {
-                                // cancel
                             }
 
                         }
                     });
+                    dialog.getWindow().setType(
+                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    dialog.show();
 
                 } else if (timeLockCount != 0 && locationLockCount == 0) {
                     // show lcaotion btn dialog
@@ -1245,17 +1249,20 @@ public class LockManager {
                         @Override
                         public void onClick(int which) {
                             if (which == 0) {
+                                // cancel
+                            } else if (which == 1) {
                                 // new time lock
                                 Intent intent = new Intent(mContext, LocationLockEditActivity.class);
                                 intent.putExtra("new_location_lock", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(intent);
-                            } else if (which == 1) {
-                                // cancel
                             }
 
                         }
                     });
+                    dialog.getWindow().setType(
+                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    dialog.show();
                 }
             }
         }

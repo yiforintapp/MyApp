@@ -3,7 +3,6 @@ package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -47,9 +46,6 @@ public class ErrorWeiZhuang extends Activity implements OnTouchListener {
             button_right = tv_make_sure_error.getRight();
             button_bottom = tv_make_sure_error.getBottom();
             button_left = tv_make_sure_error.getLeft();
-            LeoLog.d("testerror", "button_top is : " + button_top + "----button_right is : "
-                    + button_right + "----button_bottom is :" + button_bottom
-                    + "----button_left is : " + button_left);
         }
         super.onWindowFocusChanged(hasFocus);
     }
@@ -64,19 +60,12 @@ public class ErrorWeiZhuang extends Activity implements OnTouchListener {
                 mDownY = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                // LeoLog.d("testerror", "X is :" + event.getX() +
-                // "----  Y is :" + event.getY());
                 break;
             case MotionEvent.ACTION_UP:
                 mUpX = event.getX();
                 mUpY = event.getY();
-                // float distanceX = Math.abs(mUpX - mDownX);
-                // float distanceY = Math.abs(mUpY - mDownY);
                 float distanceX = mUpX - mDownX;
-                float distanceY = mUpY - mDownY;
-                // LeoLog.d("onTouchEvent", "distanceX = " + distanceX +
-                // "     distanceY =  "
-                // + distanceY);
+                float distanceY = Math.abs(mUpY - mDownY);
                 float fitDistanceX = (button_right - button_left) * 3 / 4;
                 float fitDistanceY = button_bottom - button_top + 20;
                 if (distanceX > fitDistanceX) {

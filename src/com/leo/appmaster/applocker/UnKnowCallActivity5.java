@@ -108,12 +108,10 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
             // 圆心在？
             mYuanX = mViewContent.getPointX();
             mYuanY = mViewContent.getPointY();
-            LeoLog.d("testnewcall", "mYuanX : " + mYuanX + "mYuanY : " + mYuanY);
 
             // 直径是？
             mZhiJing = mViewContent.getZhiJing();
             mBanJing = mZhiJing / 2;
-            LeoLog.d("testnewcall", "mZhiJing : " + mZhiJing + "mBanJing " + mBanJing);
 
             hold_left = (int) (mYuanX - (hold_width / 2));
             hold_top = (int) (mYuanY - (hold_height / 2));
@@ -282,6 +280,28 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
                         isControlJie = true;
                     }
 
+                    
+                    if(left < gua_left){
+                        left = gua_left;
+                        right = left + iv_dianhua_hold.getWidth();
+                    }
+                    
+                    if(top < duan_top){
+                        top = duan_top;
+                        bottom = top + iv_dianhua_hold.getHeight();
+                    }
+                    
+                    if(right > jie_right){
+                        right = jie_right;
+                        left = right - iv_dianhua_hold.getWidth();
+                    }
+                    
+                    if(bottom > duan_yuan_y + mZhiJing){
+                        bottom = (int) (duan_yuan_y + mZhiJing);
+                        top = bottom - iv_dianhua_hold.getHeight();
+                    }
+                    
+                    
                     v.layout(left, top, right, bottom);
                     startX = (int) event.getRawX();
                     startY = (int) event.getRawY();

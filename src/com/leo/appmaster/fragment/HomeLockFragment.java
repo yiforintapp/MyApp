@@ -32,6 +32,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private TipTextView mLockThemeBtn;
     private TextView mLockModeBtn;
     private TextView mLockSettingBtn;
+    private AppMasterPreference sp_weizhuang;
 
     @Override
     protected int layoutResourceId() {
@@ -40,6 +41,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
 
     @Override
     protected void onInitUI() {
+        sp_weizhuang = sp_weizhuang.getInstance(mActivity);
         mLockModeCircle = (LockModeView) findViewById(R.id.lock_mode_circle);
 //        mLockModeCircle.setOnClickListener(this);
         mAppLockBtn = (TextView) findViewById(R.id.app_lock);
@@ -168,10 +170,11 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     }
 
     private void enterAppWeiZhuang() {
-        boolean isFirstIn = true;
+        boolean isFirstIn = sp_weizhuang.getWeiZhuang();
         Intent intent ;
         if(isFirstIn){
             intent = new Intent(mActivity, WeiZhuangFirstIn.class);
+            sp_weizhuang.setWeiZhuang(false);
         }else {
             intent = new Intent(mActivity, WeiZhuangActivity.class);
         }
