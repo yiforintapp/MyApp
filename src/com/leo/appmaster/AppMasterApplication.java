@@ -142,7 +142,6 @@ public class AppMasterApplication extends Application {
                 loadSplashDate();
             }
         }, 10, TimeUnit.SECONDS);
-
         restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
@@ -285,7 +284,6 @@ public class AppMasterApplication extends Application {
                 // hit update
                 if (Integer.parseInt(versionCode) == 34) {
                     // remove unlock-all shortcut v2.1
-                    LeoLog.e("xxxx", "tryRemoveUnlockAllShortcut");
                     tryRemoveUnlockAllShortcut(this);
                 }
             }
@@ -465,7 +463,7 @@ public class AppMasterApplication extends Application {
 
         long lastCheckTime = pref.getLastCheckBusinessTime();
         if (lastCheckTime > 0
-                && (curTime - lastCheckTime) > pref.getBusinessCurrentStrategy()
+                && (Math.abs(curTime - lastCheckTime)) > pref.getBusinessCurrentStrategy()
         /* 2 * 60 * 1000 */) {
             HttpRequestAgent.getInstance(this).checkNewBusinessData(
                     new Listener<JSONObject>() {
@@ -581,7 +579,7 @@ public class AppMasterApplication extends Application {
 
         long lastCheckTime = pref.getLastCheckThemeTime();
         if (lastCheckTime > 0
-                && (curTime - lastCheckTime) > pref.getThemeCurrentStrategy()) {
+                && (Math.abs(curTime - lastCheckTime)) > pref.getThemeCurrentStrategy()) {
             HttpRequestAgent.getInstance(this).checkNewTheme(
                     new Listener<JSONObject>() {
 
@@ -696,7 +694,7 @@ public class AppMasterApplication extends Application {
      */
     public void loadSplashDate() {
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        final SimpleDateFormat timeFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        final SimpleDateFormat timeFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         long curTime = System.currentTimeMillis();
         Date currentDate = new Date(curTime);
@@ -724,18 +722,22 @@ public class AppMasterApplication extends Application {
                         Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response, boolean noMidify) {
-                                Log.e("xxxxxxx", "拉取闪屏成功");
+                                // Log.e("xxxxxxx", "拉取闪屏成功");
                                 if (response != null) {
                                     try {
-                                        String endDate = response.getString("c");
                                         String startDate = response.getString("b");
                                         String imageUrl = response.getString("a");
+                                        String endDate = response.getString("c");
                                         String splashUriFlag = imageUrl + startDate + endDate;
-                                        Log.e("xxxxxxx", "数据：" + splashUriFlag);
+                                        // Log.e("xxxxxxx", "数据：" +
+                                        // splashUriFlag);
                                         // 保存获取的数据
                                         if (!pref.getSplashUriFlag().equals(splashUriFlag)) {
                                             if (splashUriFlag != null && !"".equals(splashUriFlag)) {
                                                 pref.setSplashUriFlag(splashUriFlag);
+                                                // 初始化显示时间段
+                                                pref.setSplashStartShowTime(-1);
+                                                pref.setSplashEndShowTime(-1);
                                             }
                                             if (endDate != null && !"".equals(endDate)) {
                                                 long end = 0;
@@ -792,6 +794,7 @@ public class AppMasterApplication extends Application {
                                     pref.setSplashLoadFailDate(failDate);
                                 } else if (pref.getSplashLoadFailNumber() >= 0
                                         && pref.getSplashLoadFailNumber() <= 2) {
+                                    // Log.e("xxxxxxxxxxxxxxx", "失败，重试！");
                                     pref.setSplashLoadFailNumber(pref.getSplashLoadFailNumber() + 1);
                                 }
                                 pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),

@@ -49,9 +49,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                     + mb.getMessageBody() + "\"", null);
                 } catch (Exception e) {
                 }
-            } else {
-                PrivacyContactManager.getInstance(mContext).updateSysMessage();
             }
+            // 更新短信列表
+            // else {
+            // PrivacyContactManager.getInstance(mContext).updateSysMessage();
+            // }
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
             ContactBean call = PrivacyContactManager.getInstance(mContext).getLastCall();
             if (call != null) {
@@ -117,7 +119,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 PrivacyContactManager.getInstance(mContext).updateSysCallLog();
             }
         } else if (CONTACT_MODEL.equals(mFlag)) {
-            PrivacyContactManager.getInstance(mContext).updateSysContact();
+//            PrivacyContactManager.getInstance(mContext).updateSysContact();
         }
     }
 }
