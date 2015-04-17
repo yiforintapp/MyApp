@@ -12,11 +12,51 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="@color/white"
-         android:listSelector="@drawable/manager_backup_list_selecter"
         android:divider="#e3e3e3"
         android:dividerHeight="1dp"
+        android:listSelector="@drawable/manager_backup_list_selecter"
         android:paddingLeft="16dp"
         android:scrollbars="none" >
     </ListView>
+
+    <RelativeLayout
+        android:id="@+id/lock_mode_guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="#f3f3f3"
+        android:visibility="invisible" >
+
+        <ImageView
+            android:id="@+id/lock_guide_icon"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="36dp" />
+
+        <TextView
+            android:id="@+id/lock_guide_text"
+            android:layout_width="294dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lock_guide_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="34dp"
+            android:textColor="#808080"
+            android:textSize="14dp"/>
+
+        <Button
+            android:id="@+id/mode_user_know_button"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/lock_guide_text"
+            android:layout_marginTop="38dp"
+            android:background="@drawable/manager_backup_button_selecter" 
+            android:textColor="@drawable/manager_backup_text_selecter"
+            android:textSize="14dp"
+            android:text="@string/lock_mode_guide_button_text" />
+    </RelativeLayout>
 
 </RelativeLayout>
