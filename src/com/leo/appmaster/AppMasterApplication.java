@@ -13,6 +13,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,21 +40,20 @@ import android.os.Handler;
 import android.os.UserManager;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -95,6 +96,8 @@ public class AppMasterApplication extends Application {
     public Handler mHandler;
     public static SharedPreferences sharedPreferences;
     public static String usedThemePackage;
+
+    private ScheduledExecutorService mExecutorService;
     // public static String number;
 
     public static int SDK_VERSION;
@@ -114,7 +117,7 @@ public class AppMasterApplication extends Application {
         initDensity(this);
         mActivityList = new ArrayList<Activity>();
         mInstance = this;
-        mExecutorService = Executors.newFixedThreadPool(3);
+        mExecutorService = Executors.newScheduledThreadPool(3);
         mHandler = new Handler();
         mAppsEngine = AppLoadEngine.getInstance(this);
         mBackupManager = new AppBackupRestoreManager(this);
@@ -131,14 +134,15 @@ public class AppMasterApplication extends Application {
         // init lock manager
         LockManager.getInstatnce().init();
 
-        mHandler.postDelayed(new Runnable() {
+        mExecutorService.schedule(new Runnable() {
             @Override
             public void run() {
                 checkNew();
                 // 获取闪屏数据
                 loadSplashDate();
             }
-        }, 10000);
+        }, 10, TimeUnit.SECONDS);
+
         restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
@@ -236,15 +240,58 @@ public class AppMasterApplication extends Application {
         postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
-                mAppsEngine.preloadAllBaseInfo();
-                // AppBusinessManager.getInstance(mInstance).init();
-                mBackupManager.getBackupList();
+                checkVresionUpdate();
                 judgeLockService();
                 judgeLockAlert();
                 // judgeStatictiUnlockCount();
                 initImageLoader();
+                mAppsEngine.preloadAllBaseInfo();
+                // AppBusinessManager.getInstance(mInstance).init();
+                mBackupManager.getBackupList();
             }
         });
+    }
+
+    public void tryRemoveUnlockAllShortcut(Context ctx) {
+        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
+            Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            shortcutIntent.putExtra("quick_lock_mode", true);
+            shortcutIntent.putExtra("lock_mode_id", 0);
+            shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
+
+            Intent shortcut = new Intent(
+                    "com.android.launcher.action.UNINSTALL_SHORTCUT");
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            shortcut.putExtra("duplicate", false);
+            shortcut.putExtra("from_shortcut", true);
+            ctx.sendBroadcast(shortcut);
+            AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
+        }
+
+    }
+
+    protected void checkVresionUpdate() {
+        String lastVercode = AppMasterPreference.getInstance(this).getLastVersion();
+        if (TextUtils.isEmpty(lastVercode)) {
+            // first install
+
+        } else {
+            String versionCode = PhoneInfo.getVersionCode(this);
+
+            if (Integer.parseInt(lastVercode) < Integer.parseInt(versionCode)) {
+                // hit update
+                if (Integer.parseInt(versionCode) == 34) {
+                    // remove unlock-all shortcut v2.1
+                    LeoLog.e("xxxx", "tryRemoveUnlockAllShortcut");
+                    tryRemoveUnlockAllShortcut(this);
+                }
+
+                AppMasterPreference.getInstance(this).setLastVersion(versionCode);
+            }
+        }
+
     }
 
     private void judgeStatictiUnlockCount() {
@@ -306,8 +353,6 @@ public class AppMasterApplication extends Application {
             }
         }
     }
-
-    private ExecutorService mExecutorService;
 
     private void judgeLockService() {
         if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
@@ -687,7 +732,7 @@ public class AppMasterApplication extends Application {
                                         String startDate = response.getString("b");
                                         String imageUrl = response.getString("a");
                                         String splashUriFlag = imageUrl + startDate + endDate;
-                                        Log.e("xxxxxxx", "数据："+splashUriFlag);
+                                        Log.e("xxxxxxx", "数据：" + splashUriFlag);
                                         // 保存获取的数据
                                         if (!pref.getSplashUriFlag().equals(splashUriFlag)) {
                                             if (splashUriFlag != null && !"".equals(splashUriFlag)) {
@@ -743,7 +788,7 @@ public class AppMasterApplication extends Application {
                             public void onErrorResponse(VolleyError error) {
                                 // 拉取失败重试策略
                                 LeoLog.e("loadSplash", error.getMessage());
-                                Log.e("xxxxxxxxxxxxxxx", "加载闪屏失败");
+                                // Log.e("xxxxxxxxxxxxxxx", "加载闪屏失败");
                                 if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
                                     pref.setSplashLoadFailDate(failDate);
                                 } else if (pref.getSplashLoadFailNumber() >= 0

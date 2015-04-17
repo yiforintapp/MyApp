@@ -138,6 +138,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private static final String PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED = "location_lock_mode_guide_user_clicked";
     public static final String PREF_SWITCH_MODE_COUNT = "switch_lock_mode_count";
     public static final String PREF_SPLASH_URL_FLAG = "splash_url_flag";
+    public static final String PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG = "remove_unlock_all_shortcut";
+
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1282,4 +1284,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public String getSplashUriFlag() {
         return mPref.getString(PREF_SPLASH_URL_FLAG, "splash_flag");
     }
+
+    public void setRemoveUnlockAllShortcutFlag(boolean removed) {
+        mPref.edit().putBoolean(PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG, removed).commit();
+    }
+
+    public boolean getRemoveUnlockAllShortcutFlag() {
+        return mPref.getBoolean(PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG, false);
+    }
+
 }

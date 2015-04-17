@@ -3,6 +3,7 @@ package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
@@ -29,6 +30,7 @@ public class GestureRelative extends RelativeLayout {
     private int duan_left, duan_top, duan_right, duan_bottom;
     private int jie_left, jie_top, jie_right, jie_bottom;
     private Activity mActivity;
+    private PretendFragment mPf;
     private AppMasterPreference sp_unknowcall;
 
     public GestureRelative(Context context) {
@@ -137,6 +139,8 @@ public class GestureRelative extends RelativeLayout {
                             .show();
                     sp_unknowcall.setPretendLock(UnknowCallMode);
                     mActivity.finish();
+                }else {
+                    mPf.onUnlockPretendSuccessfully();
                 }
             } else {
                 if (!isThridRound) {
@@ -155,35 +159,34 @@ public class GestureRelative extends RelativeLayout {
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         canvas.drawCircle(CirPointX, CirPointY, mBanJing, CirPanint);
-
         super.onDraw(canvas);
     }
 
     public void setGuaPosition(int left, int top, int right, int bottom) {
-        // LeoLog.d("testlay",
-        // "gua_left :"+gua_left+"--gua_top :"+gua_top+"--gua_right :"+gua_right+"--gua_bottom :"+gua_bottom);
         gua_left = left;
         gua_top = top;
         gua_right = right;
         gua_bottom = bottom;
+        LeoLog.d("testlay",
+        "gua_left :"+gua_left+"--gua_top :"+gua_top+"--gua_right :"+gua_right+"--gua_bottom :"+gua_bottom);
     }
 
     public void setDuanPosition(int left, int top, int right, int bottom) {
-        // LeoLog.d("testlay",
-        // "duan_left :"+duan_left+"--duan_top :"+duan_top+"--duan_right :"+duan_right+"--duan_bottom :"+duan_bottom);
         duan_left = left;
         duan_top = top;
         duan_right = right;
         duan_bottom = bottom;
+        LeoLog.d("testlay",
+        "duan_left :"+duan_left+"--duan_top :"+duan_top+"--duan_right :"+duan_right+"--duan_bottom :"+duan_bottom);
     }
 
     public void setJiePosition(int left, int top, int right, int bottom) {
-        // LeoLog.d("testlay",
-        // "jie_left :"+jie_left+"--jie_top :"+jie_top+"--jie_right :"+jie_right+"--jie_bottom :"+jie_bottom);
         jie_left = left;
         jie_top = top;
         jie_right = right;
         jie_bottom = bottom;
+        LeoLog.d("testlay",
+        "jie_left :"+jie_left+"--jie_top :"+jie_top+"--jie_right :"+jie_right+"--jie_bottom :"+jie_bottom);
     }
 
     public void setisFromActivity(boolean isActivity) {
@@ -192,5 +195,9 @@ public class GestureRelative extends RelativeLayout {
 
     public void setActivity(Activity act) {
         mActivity = act;
+    }
+    
+    public void setPretendFragment(PretendFragment pf) {
+        mPf = pf;
     }
 }

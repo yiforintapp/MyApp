@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LocationLock;
@@ -178,7 +179,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     Toast.makeText(mActivity,
                             mActivity.getString(R.string.create_mode_shortcut_tip, mode.modeName),
                             Toast.LENGTH_SHORT).show();
-                    installShortcut(mode);
+                    installLockModeShortcut(mode);
                 }
             }
         });
@@ -285,15 +286,35 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
         intent.putExtra("new_mode", true);
         startActivity(intent);
     }
+    
+    
+    public void tryRemoveUnlockAllShortcut(Context ctx) {
+        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
+            Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            shortcutIntent.putExtra("quick_lock_mode", true);
+            shortcutIntent.putExtra("lock_mode_id", 0);
+            shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
 
-    private void installShortcut(LockMode lockMode) {
+            Intent shortcut = new Intent(
+                    "com.android.launcher.action.UNINSTALL_SHORTCUT");
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            shortcut.putExtra("duplicate", false);
+            shortcut.putExtra("from_shortcut", true);
+            ctx.sendBroadcast(shortcut);
+            AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
+        }
+
+    }
+    
+
+    private void installLockModeShortcut(LockMode lockMode) {
         Intent shortcutIntent = new Intent(mActivity, LockScreenActivity.class);
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         shortcutIntent.putExtra("quick_lock_mode", true);
         shortcutIntent.putExtra("lock_mode_id", lockMode.modeId);
         shortcutIntent.putExtra("lock_mode_name", lockMode.modeName);
-        // shortcutIntent.setAction(Intent.ACTION_MAIN);
-        // shortcutIntent.addCategory(Intent.CATEGORY_DEFAULT);
 
         Intent shortcut = new Intent(
                 "com.android.launcher.action.INSTALL_SHORTCUT");
