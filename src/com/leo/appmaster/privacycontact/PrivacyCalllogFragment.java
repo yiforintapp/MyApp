@@ -131,6 +131,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         mDeleteCallLog.remove(calllog);
                         mCallLogCount = mCallLogCount - 1;
                     }
+                    updateTitleBarSelectStatus();
                 }
             }
         });
@@ -141,7 +142,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 LeoEventBus.getDefaultBus().post(
                         new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
-                                PrivacyContactUtils.FROM_CALL_LOG_EVENT));
+                                PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
                 mIsEditModel = true;
                 mAdapter.notifyDataSetChanged();
                 return true;
@@ -150,6 +151,18 @@ public class PrivacyCalllogFragment extends BaseFragment {
 
         PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
         task.execute("");
+    }
+ // 更新TitleBar
+    private void updateTitleBarSelectStatus() {
+        if (mDeleteCallLog != null && mDeleteCallLog.size() > 0) {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.FROM_CALL_LOG_EVENT));
+        } else {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
+        }
     }
 
     public void onEventMainThread(PrivacyDeletEditEvent event) {

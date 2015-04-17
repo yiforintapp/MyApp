@@ -169,12 +169,23 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         LeoEventBus.getDefaultBus().post(
                 new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
-                        PrivacyContactUtils.FROM_MESSAGE_EVENT));
+                        PrivacyContactUtils.FROM_MESSAGE_NO_SELECT_EVENT));
         mIsEditModel = true;
         mAdapter.notifyDataSetChanged();
         return true;
     }
-
+ // 更新TitleBar
+    private void updateTitleBarSelectStatus() {
+        if (mRestorMessages != null && mRestorMessages.size() > 0) {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.FROM_MESSAGE_EVENT));
+        } else {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.FROM_MESSAGE_NO_SELECT_EVENT));
+        }
+    }
     @Override
     public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
         MessageBean mb = mMessageList.get(position);
@@ -212,6 +223,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                 mRestorMessages.remove(mb);
                 mRestoreCount = mRestoreCount - 1;
             }
+            updateTitleBarSelectStatus();
         }
     }
 
