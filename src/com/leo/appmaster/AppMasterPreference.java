@@ -129,7 +129,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_LOAD_FAIL_DATE = "splash_load_fail_date";
     public static final String PREF_SPLASH_LOAD_FAIL_NUMBER = "splash_load_fail_number";
     // weizhuang
-    public static final String PREF_WEIZHUANG_SELECTED = "weizhuang_selected";
+    public static final String PREF_WEIZHUANG_FIRST_IN = "weizhuang_first_in";
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
 
     // lock mode
@@ -1135,17 +1135,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED, flag).commit();
     }
 
-    // public void setWeiZhuang(int selected){
-    // mWeiZhuang = selected;
-    // mPref.edit().putInt(PREF_WEIZHUANG_SELECTED, selected).commit();
-    // }
-    //
-    // public int getWeiZhuang(){
-    // if(mWeiZhuang < 0) {
-    // mWeiZhuang = mPref.getInt(PREF_WEIZHUANG_SELECTED, 0);
-    // }
-    // return mWeiZhuang;
-    // }
+    public void setWeiZhuang(boolean isfirstin) {
+        mPref.edit().putBoolean(PREF_WEIZHUANG_FIRST_IN, isfirstin).commit();
+    }
+
+    public boolean getWeiZhuang() {
+            return  mPref.getBoolean(PREF_WEIZHUANG_FIRST_IN, true);
+    }
 
     public int getPretendLock() {
         if (mPretendLock < 0) {

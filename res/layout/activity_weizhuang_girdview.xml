@@ -4,11 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.leo.appmaster.ui.CommonTitleBar
-        android:id="@+id/weizhuang_title_bar"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_background" />
+        android:background="@color/app_background" >
+
+        <com.leo.appmaster.ui.CommonTitleBar
+            android:id="@+id/weizhuang_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/weizhuang_ask"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/tips_icon"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

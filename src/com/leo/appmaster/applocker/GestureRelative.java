@@ -12,6 +12,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
@@ -34,8 +35,7 @@ public class GestureRelative extends RelativeLayout {
     private PretendFragment mPf;
     private PretendAppUnknowCallFragment5 unknowFragment;
     private AppMasterPreference sp_unknowcall;
-    
-    
+
     public GestureRelative(Context context) {
         super(context);
         init(context);
@@ -103,11 +103,11 @@ public class GestureRelative extends RelativeLayout {
             if (!isFirstRound && !isSecondRound && !isThridRound) {
                 // 首先进入挂断区域
                 isFirstRound = true;
-                LeoLog.d("testfuck", "首先进入挂断区域");
+                // LeoLog.d("testfuck", "首先进入挂断区域");
             } else {
                 if (!isFirstRound) {
                     // 进入了别的区域
-                    LeoLog.d("testfuck", "非首次进入挂断区域");
+                    // LeoLog.d("testfuck", "非首次进入挂断区域");
                     isSecondRound = false;
                     isThridRound = false;
                 } else if (isSecondRound) {
@@ -120,11 +120,11 @@ public class GestureRelative extends RelativeLayout {
             if (isFirstRound && !isSecondRound && !isThridRound) {
                 isSecondRound = true;
                 // 顺利进入第二
-                LeoLog.d("testfuck", "顺利进入第二");
+                // LeoLog.d("testfuck", "顺利进入第二");
             } else {
                 if (!isSecondRound) {
                     // 非正确进入第二
-                    LeoLog.d("testfuck", "非正确进入第二");
+                    // LeoLog.d("testfuck", "非正确进入第二");
                     isFirstRound = false;
                     isThridRound = false;
                 }
@@ -135,21 +135,22 @@ public class GestureRelative extends RelativeLayout {
             if (isFirstRound && isSecondRound && !isThridRound) {
                 isThridRound = true;
                 // 顺利进入第三
-                LeoLog.d("testfuck", "顺利进入第三");
+                // LeoLog.d("testfuck", "顺利进入第三");
                 // 触发成功
-                LeoLog.d("testfuck", "触发成功");
+                // LeoLog.d("testfuck", "触发成功");
                 if (isFromActivity) {
                     Toast.makeText(mContext, mContext.getString(R.string.weizhuang_setting_ok), 0)
                             .show();
                     sp_unknowcall.setPretendLock(UnknowCallMode);
                     mActivity.finish();
                 } else {
+                    unknowFragment.setCanCel();
                     mPf.onUnlockPretendSuccessfully();
                 }
             } else {
                 if (!isThridRound) {
                     // 非正确进入第三
-                    LeoLog.d("testfuck", "非正确进入第三");
+                    // LeoLog.d("testfuck", "非正确进入第三");
                     isFirstRound = false;
                     isSecondRound = false;
                 }
@@ -171,8 +172,6 @@ public class GestureRelative extends RelativeLayout {
         gua_top = top;
         gua_right = right;
         gua_bottom = bottom;
-        // LeoLog.d("testlay",
-        // "gua_left :"+gua_left+"--gua_top :"+gua_top+"--gua_right :"+gua_right+"--gua_bottom :"+gua_bottom);
     }
 
     public void setDuanPosition(int left, int top, int right, int bottom) {
@@ -180,8 +179,6 @@ public class GestureRelative extends RelativeLayout {
         duan_top = top;
         duan_right = right;
         duan_bottom = bottom;
-        // LeoLog.d("testlay",
-        // "duan_left :"+duan_left+"--duan_top :"+duan_top+"--duan_right :"+duan_right+"--duan_bottom :"+duan_bottom);
     }
 
     public void setJiePosition(int left, int top, int right, int bottom) {
@@ -189,8 +186,6 @@ public class GestureRelative extends RelativeLayout {
         jie_top = top;
         jie_right = right;
         jie_bottom = bottom;
-        // LeoLog.d("testlay",
-        // "jie_left :"+jie_left+"--jie_top :"+jie_top+"--jie_right :"+jie_right+"--jie_bottom :"+jie_bottom);
     }
 
     public void setisFromActivity(boolean isActivity) {
@@ -208,5 +203,6 @@ public class GestureRelative extends RelativeLayout {
     public void setFragment(PretendAppUnknowCallFragment5 fragment) {
         unknowFragment = fragment;
     }
-    
+
+
 }

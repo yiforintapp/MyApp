@@ -27,7 +27,7 @@ import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.model.WeiZhuangInfo;
 import com.leo.appmaster.ui.CommonTitleBar;
 
-public class WeiZhuangActivity extends Activity implements OnItemClickListener {
+public class WeiZhuangActivity extends Activity implements OnItemClickListener, OnClickListener {
     private final static int noMode = 0;
     private Drawable[] mIcon = new Drawable[4];
     private String[] mName;
@@ -38,7 +38,8 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
     private Resources mThemeRes;
     private AppMasterPreference sp_weizhuang;
     private int selected = 0;
-
+    private ImageView weizhuang_ask;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,10 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
         mTtileBar.setTitle(R.string.title_bar_weizhuang);
         mTtileBar.openBackView();
 
+        weizhuang_ask = (ImageView) findViewById(R.id.weizhuang_ask);
+        weizhuang_ask.setVisibility(View.VISIBLE);
+        weizhuang_ask.setOnClickListener(this);
+        
         mGridView = (GridView) findViewById(R.id.gv_weizhuang);
 
         sp_weizhuang = AppMasterPreference.getInstance(this);
@@ -193,6 +198,19 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener {
                     Intent zhiWenIntent = new Intent(this,ZhiWenActivity.class);
                     this.startActivity(zhiWenIntent);
                 }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.weizhuang_ask:
+                Intent intent = new Intent(this,WeiZhuangFirstIn.class);
+                startActivity(intent);
+                finish();
                 break;
             default:
                 break;
