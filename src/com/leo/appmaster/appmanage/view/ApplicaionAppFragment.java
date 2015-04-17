@@ -260,8 +260,6 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
                     BusinessItemInfo bif = mRecommendDatas.get(index);
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hot_cli", "app_"
                             + bif.packageName);
-                    LeoLog.d("testgetname", "app_"
-                            + bif.packageName);
                     LockManager.getInstatnce().timeFilterSelf();
                     if (PhoneInfoStateManager.isGooglePlayPkg()) {
                         if (AppUtil.appInstalled(mActivity,

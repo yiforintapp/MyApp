@@ -30,6 +30,9 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
     private int gua_left_big, gua_top_big, gua_right_big, gua_bottom_big;
     private int duan_left_big, duan_top_big, duan_right_big, duan_bottom_big;
     private int jie_left_big, jie_top_big, jie_right_big, jie_bottom_big;
+    private boolean isControlGua = false;
+    private boolean isControlDuan = false;
+    private boolean isControlJie = false;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -39,12 +42,18 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
 
                     iv_guaduan.layout(gua_left, gua_top, gua_right, gua_bottom);
                     iv_guaduan_big.layout(gua_left_big, gua_top_big, gua_right_big, gua_bottom_big);
-                    
+
                     iv_duanxin.layout(duan_left, duan_top, duan_right, duan_bottom);
-                    iv_duanxin_big.layout(duan_left_big, duan_top_big, duan_right_big, duan_bottom_big);
-                    
+                    iv_duanxin_big.layout(duan_left_big, duan_top_big, duan_right_big,
+                            duan_bottom_big);
+
                     iv_jieting.layout(jie_left, jie_top, jie_right, jie_bottom);
                     iv_jieting_big.layout(jie_left_big, jie_top_big, jie_right_big, jie_bottom_big);
+
+                    iv_dianhua_hold.setVisibility(View.VISIBLE);
+                    iv_guaduan.setVisibility(View.VISIBLE);
+                    iv_duanxin.setVisibility(View.VISIBLE);
+                    iv_jieting.setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;
@@ -158,7 +167,7 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
         new Thread() {
             public void run() {
                 try {
-                    sleep(70);
+                    sleep(30);
                     handler.sendEmptyMessage(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -190,8 +199,43 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
                     int right = (int) (lc_right + newX);
 
                     if (left < gua_right + 10 && top > gua_top - gua_top / 2
-                            && bottom < gua_bottom + gua_bottom / 2) {
+                            && bottom < gua_bottom + gua_bottom / 2 && right > gua_left - 10) {
                         iv_guaduan_big.setVisibility(View.VISIBLE);
+                        iv_guaduan.setVisibility(View.INVISIBLE);
+                        isControlGua = false;
+                    } else {
+                        if (!isControlGua) {
+                            iv_guaduan_big.setVisibility(View.INVISIBLE);
+                            iv_guaduan.setVisibility(View.VISIBLE);
+                        }
+                        isControlGua = true;
+                    }
+
+                    if (top < duan_bottom + 10 && bottom > duan_top - 10
+                            && left > duan_left - duan_left / 2
+                            && right < duan_right + duan_right / 2) {
+                        iv_duanxin.setVisibility(View.INVISIBLE);
+                        iv_duanxin_big.setVisibility(View.VISIBLE);
+                        isControlDuan = false;
+                    } else {
+                        if (!isControlDuan) {
+                            iv_duanxin.setVisibility(View.VISIBLE);
+                            iv_duanxin_big.setVisibility(View.INVISIBLE);
+                        }
+                        isControlDuan = true;
+                    }
+
+                    if (right > jie_left - 10 && top > jie_top - jie_top / 2
+                            && bottom < jie_bottom + jie_bottom / 2 && left < jie_right + 10) {
+                        iv_jieting_big.setVisibility(View.VISIBLE);
+                        iv_jieting.setVisibility(View.INVISIBLE);
+                        isControlJie = false;
+                    } else {
+                        if (!isControlJie) {
+                            iv_jieting_big.setVisibility(View.INVISIBLE);
+                            iv_jieting.setVisibility(View.VISIBLE);
+                        }
+                        isControlJie = true;
                     }
                     
                     v.layout(left, top, right, bottom);
@@ -200,6 +244,14 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
                     break;
                 case MotionEvent.ACTION_UP:
                     v.layout(hold_left, hold_top, hold_right, hold_bottom);
+
+                    iv_guaduan_big.setVisibility(View.INVISIBLE);
+                    iv_guaduan.setVisibility(View.VISIBLE);
+                    iv_duanxin_big.setVisibility(View.INVISIBLE);
+                    iv_duanxin.setVisibility(View.VISIBLE);
+                    iv_jieting_big.setVisibility(View.INVISIBLE);
+                    iv_jieting.setVisibility(View.VISIBLE);
+                    
                     break;
                 default:
                     break;
