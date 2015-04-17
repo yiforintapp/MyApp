@@ -762,12 +762,14 @@ public class FileOperationUtil {
     public static void readAsFile(Bitmap inSream, String file, Context context) throws IOException {
         boolean falg = new File(file).exists();
         OutputStream outStream = null;
-        outStream = new FileOutputStream(new File(file), false);
-        inSream.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-        try {
-            outStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (falg) {
+            outStream = new FileOutputStream(new File(file), false);
+            inSream.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            try {
+                outStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
