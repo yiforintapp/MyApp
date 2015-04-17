@@ -232,6 +232,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if (mQuickLockMode) {
             mQuickModeName = intent.getStringExtra("lock_mode_name");
             mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
+            
+            //home mode replace unlock-all mode
+            if(mQuiclModeId == 0) {
+                mQuiclModeId = 3;
+            }
         }
         mLockMode = intent.getIntExtra(EXTRA_LOCK_MODE,
                 LockManager.LOCK_MODE_FULL);
@@ -383,7 +388,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private PretendFragment getPretendFragment() {
         int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
-//        pretendLock = 1;
+        // pretendLock = 1;
         if (pretendLock == 1) { /* app error */
             PretendAppErrorFragment paf = new PretendAppErrorFragment();
             String tip = "";
@@ -696,14 +701,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     /**
      * show the tip when mode success activating
      */
-    private void showModeActiveTip(){
+    private void showModeActiveTip() {
         View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
         TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
         mActiveText.setText(this.getString(R.string.mode_change, mQuickModeName));
-        Toast toast = new Toast(this); 
+        Toast toast = new Toast(this);
         toast.setView(mTipView);
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0); 
-        toast.setDuration(Toast.LENGTH_SHORT); 
-        toast.show(); 
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

@@ -255,6 +255,8 @@ public class AppMasterApplication extends Application {
         if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
             Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
+            shortcutIntent.setAction(Intent.ACTION_VIEW);
             shortcutIntent.putExtra("quick_lock_mode", true);
             shortcutIntent.putExtra("lock_mode_id", 0);
             shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
