@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -49,6 +51,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.leo.appmaster.Constants;
 
 /**
  * A network performing Volley requests over an {@link HttpStack}.
@@ -63,7 +66,6 @@ public class BasicNetwork implements Network {
 	protected final HttpStack mHttpStack;
 
 	protected final ByteArrayPool mPool;
-
 	/**
 	 * @param httpStack
 	 *            HTTP stack to be used
@@ -101,7 +103,6 @@ public class BasicNetwork implements Network {
 				httpResponse = mHttpStack.performRequest(request, headers);
 				StatusLine statusLine = httpResponse.getStatusLine();
 				int statusCode = statusLine.getStatusCode();
-
 				responseHeaders = convertHeaders(httpResponse.getAllHeaders());
 				// Handle cache validation.
 				if (statusCode == HttpStatus.SC_NOT_MODIFIED) {
