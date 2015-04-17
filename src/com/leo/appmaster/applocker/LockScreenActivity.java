@@ -109,6 +109,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_setting);
+        mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         handleIntent();
         initUI();
         checkCleanMem();
@@ -324,7 +325,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
         mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
         mThemeView = (ImageView) findViewById(R.id.img_layout_right);
-        mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         TextView lockGuideTv = (TextView) mLockerGuide.findViewById(R.id.lock_guide_tv);
         lockGuideTv.setText(getString(R.string.help_setting_guide));
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
