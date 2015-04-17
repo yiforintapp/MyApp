@@ -240,9 +240,8 @@ public class AppMasterApplication extends Application {
         postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
-                checkVresionUpdate();
+                checkUpdateFinish();
                 judgeLockService();
-                judgeLockAlert();
                 // judgeStatictiUnlockCount();
                 initImageLoader();
                 mAppsEngine.preloadAllBaseInfo();
@@ -272,14 +271,14 @@ public class AppMasterApplication extends Application {
 
     }
 
-    protected void checkVresionUpdate() {
-        String lastVercode = AppMasterPreference.getInstance(this).getLastVersion();
+    protected void checkUpdateFinish() {
+        judgeLockAlert();
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        String lastVercode = pref.getLastVersion();
+        String versionCode = PhoneInfo.getVersionCode(this);
         if (TextUtils.isEmpty(lastVercode)) {
             // first install
-
         } else {
-            String versionCode = PhoneInfo.getVersionCode(this);
-
             if (Integer.parseInt(lastVercode) < Integer.parseInt(versionCode)) {
                 // hit update
                 if (Integer.parseInt(versionCode) == 34) {
@@ -287,10 +286,9 @@ public class AppMasterApplication extends Application {
                     LeoLog.e("xxxx", "tryRemoveUnlockAllShortcut");
                     tryRemoveUnlockAllShortcut(this);
                 }
-
-                AppMasterPreference.getInstance(this).setLastVersion(versionCode);
             }
         }
+        pref.setLastVersion(versionCode);
 
     }
 
@@ -325,7 +323,6 @@ public class AppMasterApplication extends Application {
                                                                              // new
                                                                              // version
             pref.setHaveEverAppLoaded(false);
-            pref.setLastVersion(PhoneInfo.getVersionCode(this));
             intent = new Intent(this, LockReceiver.class);
             intent.setAction(LockReceiver.ALARM_LOCK_ACTION);
 
