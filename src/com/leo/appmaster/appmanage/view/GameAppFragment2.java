@@ -379,7 +379,9 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                     String packageName = all.get(index).getDownload().get(0).getUrl();
                     if (packageName != null && !packageName.equals("")) {
                         SDKWrapper
-                                .addEvent(mActivity, SDKWrapper.P1, "hots", "game_" + packageName);
+                                .addEvent(mActivity, SDKWrapper.P1, "hot_cli", "game_"
+                                        + packageName);
+                        LeoLog.d("testgetname", "game_" + packageName);
                     } else {
                         // String urlPageName =
                         // all.get(index).getDownload().get(1).getUrl();
