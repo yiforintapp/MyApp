@@ -167,9 +167,10 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             // 短信删除
             mTtileBar.setOptionImageVisibility(View.VISIBLE);
             mTtileBar.setOptionImage(R.drawable.sms_delete);
+            mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
+                    R.drawable.privacy_title_bt_selecter);
             // 删除
             mTtileBar.setOptionListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
@@ -218,6 +219,8 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             // 通话记录编辑模式
             mTtileBar.setOptionImageVisibility(View.VISIBLE);
             mTtileBar.setOptionImage(R.drawable.sms_delete);
+            mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
+                    R.drawable.privacy_title_bt_selecter);
             mTtileBar.setOptionListener(new OnClickListener() {
 
                 @Override
@@ -249,8 +252,9 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             });
             // 联系人编辑模式
             mTtileBar.setOptionImage(R.drawable.sms_delete);
+            mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
+                    R.drawable.privacy_title_bt_selecter);
             mTtileBar.setOptionListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
@@ -278,8 +282,55 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             Toast.makeText(PrivacyContactActivity.this,
                     getResources().getString(R.string.privacy_add_contact_toast),
                     Toast.LENGTH_SHORT).show();
+        } else if (PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT.equals(event.eventMsg)) {
+            setNoSelectImage();
+        }else if(PrivacyContactUtils.FROM_MESSAGE_NO_SELECT_EVENT.equals(event.eventMsg)){
+            setNoSelectImage();
+            mTtileBar.findViewById(R.id.message_restore).setVisibility(View.VISIBLE);
+            mTtileBar.findViewById(R.id.message_restore_icon).setBackgroundResource(
+                    R.drawable.un_recovery_icon);
+            mTtileBar.findViewById(R.id.message_restore).setOnClickListener(null);
+            mTtileBar.findViewById(R.id.message_restore).setBackgroundResource(0);
+            mTtileBar.setBackViewListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    mTtileBar.setHelpSettingVisiblity(View.GONE);
+                    chanageEditModel();
+                    LeoEventBus.getDefaultBus().post(
+                            new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+                }
+            });
+            
+            
+            
         }
 
+    }
+
+    public void setNoSelectImage() {
+        mIsEditModel = true;
+        mPrivacyContactPagerTab.setVisibility(View.GONE);
+        mPrivacyContactViewPager.setOnTouchListener(new OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+                return true;
+            }
+        });
+        mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        mTtileBar.setOptionImage(R.drawable.un_delete);
+        mTtileBar.setOptionListener(null);
+        mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(0);
+        mTtileBar.setBackViewListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                chanageEditModel();
+                LeoEventBus.getDefaultBus().post(
+                        new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+            }
+        });
     }
 
     public void onEventMainThread(PrivacyDeletEditEvent event) {
@@ -297,7 +348,14 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 mPrivacyContactPagerTab.notifyDataSetChanged();
                 mMessageTip = true;
             }
-
+            mTtileBar.setBackViewListener(new OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    chanageEditModel();
+                    LeoEventBus.getDefaultBus().post(
+                            new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+                }
+            });
         }
     }
 
@@ -393,7 +451,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     protected void onResume() {
         super.onResume();
     }
-    
+
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
             super.onRestoreInstanceState(savedInstanceState);

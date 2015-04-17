@@ -134,10 +134,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
-    private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED="time_lock_mode_guide_user_clicked";
-    private static final String PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED="location_lock_mode_guide_user_clicked";
+    private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED = "time_lock_mode_guide_user_clicked";
+    private static final String PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED = "location_lock_mode_guide_user_clicked";
     public static final String PREF_SWITCH_MODE_COUNT = "switch_lock_mode_count";
-
+    public static final String PREF_SPLASH_URL_FLAG = "splash_url_flag";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1117,21 +1117,22 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag).commit();
     }
 
-    public boolean getTimeLockModeGuideClicked(){
-        return mPref.getBoolean(PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED,false);
+    public boolean getTimeLockModeGuideClicked() {
+        return mPref.getBoolean(PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED, false);
     }
-    
-    public void setTimeLockModeGuideClicked(boolean flag){
+
+    public void setTimeLockModeGuideClicked(boolean flag) {
         mPref.edit().putBoolean(PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED, flag).commit();
     }
-    
-    public boolean getLocationLockModeGuideClicked(){
-        return mPref.getBoolean(PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED,false);
+
+    public boolean getLocationLockModeGuideClicked() {
+        return mPref.getBoolean(PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED, false);
     }
-    
-    public void setLocationLockModeGuideClicked(boolean flag){
+
+    public void setLocationLockModeGuideClicked(boolean flag) {
         mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED, flag).commit();
     }
+
     // public void setWeiZhuang(int selected){
     // mWeiZhuang = selected;
     // mPref.edit().putInt(PREF_WEIZHUANG_SELECTED, selected).commit();
@@ -1258,7 +1259,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_MESSAGE_NO_READ_COUNT, 0);
     }
 
-
     public void setSplashLoadFailDate(String date) {
         mPref.edit().putString(PREF_SPLASH_LOAD_FAIL_DATE, date).commit();
     }
@@ -1266,11 +1266,20 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public String getSplashLoadFailDate() {
         return mPref.getString(PREF_SPLASH_LOAD_FAIL_DATE, "splash_fail_default_date");
     }
+
     public void setSplashLoadFailNumber(int number) {
         mPref.edit().putInt(PREF_SPLASH_LOAD_FAIL_NUMBER, number).commit();
     }
 
     public int getSplashLoadFailNumber() {
         return mPref.getInt(PREF_SPLASH_LOAD_FAIL_NUMBER, 0);
+    }
+
+    public void setSplashUriFlag(String string) {
+        mPref.edit().putString(PREF_SPLASH_URL_FLAG, string).commit();
+    }
+
+    public String getSplashUriFlag() {
+        return mPref.getString(PREF_SPLASH_URL_FLAG, "splash_flag");
     }
 }

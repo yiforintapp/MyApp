@@ -53,6 +53,8 @@ public class PrivacyContactUtils {
     public static final String FROM_MESSAGE_EVENT = "from_message_event";
     public static final String FROM_CALL_LOG_EVENT = "from_call_log_event";
     public static final String FROM_CONTACT_EVENT = "from_contact_event";
+    public static final String FROM_CONTACT_NO_SELECT_EVENT = "from_contact_no_select_event";
+    public static final String FROM_MESSAGE_NO_SELECT_EVENT = "from_message_no_select_event";
     public static final String CANCEL_EDIT_MODEL = "cancel_edit_model";
     public static final String EDIT_MODEL_OPERATION_RESTORE = "edit_model_operatioin_restore";
     public static final String CALL_LOG_EDIT_MODEL_OPERATION_DELETE = "call_log_edit_model_operatioin_delete";

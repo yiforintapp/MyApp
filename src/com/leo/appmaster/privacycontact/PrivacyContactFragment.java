@@ -105,6 +105,7 @@ public class PrivacyContactFragment extends BaseFragment {
                         mDeleteContact.remove(contact);
                         mDeleteCount = mDeleteCount - 1;
                     }
+                    updateTitleBarSelectStatus();
                 }
             }
         });
@@ -114,7 +115,7 @@ public class PrivacyContactFragment extends BaseFragment {
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 LeoEventBus.getDefaultBus().post(
                         new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
-                                PrivacyContactUtils.FROM_CONTACT_EVENT));
+                                PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
                 mIsEditModel = true;
                 mAdapter.notifyDataSetChanged();
                 return true;
@@ -123,6 +124,19 @@ public class PrivacyContactFragment extends BaseFragment {
 
         PrivacyContactMyDateTask task = new PrivacyContactMyDateTask();
         task.execute("");
+    }
+
+    // 更新TitleBar
+    private void updateTitleBarSelectStatus() {
+        if (mDeleteContact != null && mDeleteContact.size() > 0) {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.FROM_CONTACT_EVENT));
+        } else {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
+        }
     }
 
     public void onEventMainThread(PrivacyDeletEditEvent event) {

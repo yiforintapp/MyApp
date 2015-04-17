@@ -366,14 +366,14 @@
     <string name="input_toast_no_number_tip">请输入电话号码</string>
     <string name="privacy_contact_checkbox_dlg_title">移出联系人？</string>
     <string name="privacy_contact_checkbox_dlg_content">确定将联系人移出隐私空间？</string>
-    <string name="privacy_contact_checkbox_dlg_checktext">恢复联系人的信息和通话记录</string>
+    <string name="privacy_contact_checkbox_dlg_checktext">恢复联系人的信息</string>
     <string name="privacy_contact_edit_contact">编辑隐私联系人</string>
     <string name="privacy_contact_edit_content">是否保存所做修改？</string>
     <string name="privacy_contact_edit_left_btn">是</string>
     <string name="privacy_contact_edit_right_btn">否</string>
     <string name="privacy_message_delete_message">确定将短信删除?</string>
     <string name="privacy_message_resotre_message">确定将短信记录恢复到系统?</string>
-    <string name="privacy_call_delete_call_log">是否删除通话记录?</string>
+    <string name="privacy_call_delete_call_log">确认将通话记录删除?</string>
     <string name="privacy_contact_default_text">添加隐私联系人</string>
     <string name="privacy_call_log_default_text">加密你和TA的通话</string>
     <string name="privacy_message_default_text">加密你和TA的短信</string>
