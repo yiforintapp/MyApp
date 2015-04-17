@@ -115,19 +115,17 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             if (startShowSplashTime <= 0 && endShowSplashTime > 0) {
                 if (currentTime < endShowSplashTime) {
                     showSplash();
-                }
+                } 
             }
             // 开始，结束时间都存在
             if (startShowSplashTime > 0 && endShowSplashTime > 0) {
-                boolean f1=currentTime >= startShowSplashTime;
-                boolean f2=currentTime < endShowSplashTime;
                 if (currentTime >= startShowSplashTime && currentTime < endShowSplashTime) {
                     showSplash();
-                }
+                } 
             }
         } else {
-            //没有开始，结束时间或者为默认
-            Log.e("splash_end&start_time", "No time!");
+            // 没有开始，没有结束时间,默认
+            Log.d("splash_end&start_time", "No time!");
         }
         PrivacyHelper.getInstance(this).setDirty(true);
     }

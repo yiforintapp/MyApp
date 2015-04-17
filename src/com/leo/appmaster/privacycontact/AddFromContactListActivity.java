@@ -410,7 +410,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 PrivacyContactManager pm = PrivacyContactManager
                         .getInstance(AddFromContactListActivity.this);
                 ArrayList<ContactCallLog> callLogs = pm.getSysCallLog();
-                ArrayList<MessageBean> messages = pm.getSysMessage();
+//                ArrayList<MessageBean> messages = pm.getSysMessage();
                 List<String> addNumber = new ArrayList<String>();
                 for (ContactBean contact : mAddPrivacyContact) {
                     addNumber.add(contact.getContactNumber());
@@ -451,15 +451,17 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             mHandler.sendMessage(messge);
                         }
                     }
-                    for (MessageBean messageBean : messages) {
-                        String formateNumber = PrivacyContactUtils.formatePhoneNumber(messageBean
-                                .getPhoneNumber());
-                        for (String string : addNumber) {
-                            if (string.contains(formateNumber)) {
-                                pm.removeSysMessage(messageBean);
-                            }
-                        }
-                    }
+                    //更新隐私短信
+                    // for (MessageBean messageBean : messages) {
+                    // String formateNumber =
+                    // PrivacyContactUtils.formatePhoneNumber(messageBean
+                    // .getPhoneNumber());
+                    // for (String string : addNumber) {
+                    // if (string.contains(formateNumber)) {
+                    // pm.removeSysMessage(messageBean);
+                    // }
+                    // }
+                    // }
                 }
                 // 导入通话记录
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
@@ -609,11 +611,12 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         protected Integer doInBackground(Boolean... arg0) {
             boolean flag = arg0[0];
             if (flag) {
+                mPhoneContact =
+                        PrivacyContactUtils.getSysContact(AddFromContactListActivity.this,
+                                getContentResolver(), null, null);
                 // mPhoneContact =
-                // PrivacyContactUtils.getSysContact(AddFromContactListActivity.this,
-                // getContentResolver(), null, null);
-                mPhoneContact = PrivacyContactManager.getInstance(AddFromContactListActivity.this)
-                        .getSysContacts();
+                // PrivacyContactManager.getInstance(AddFromContactListActivity.this)
+                // .getSysContacts();
 
             }
             return null;

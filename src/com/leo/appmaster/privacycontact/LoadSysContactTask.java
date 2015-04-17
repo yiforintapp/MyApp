@@ -21,8 +21,8 @@ public class LoadSysContactTask extends AsyncTask<String, String, Boolean> {
 
         PrivacyContactManager pm = PrivacyContactManager.getInstance(mContext);
         pm.loadSysCallLog();
-        pm.loadSysContacts();
-        pm.loadSysMessage();
+//        pm.loadSysContacts();
+//        pm.loadSysMessage();
         return null;
     }
 

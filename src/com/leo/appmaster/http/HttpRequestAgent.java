@@ -186,7 +186,7 @@ public class HttpRequestAgent {
                 + mContext.getString(R.string.version_name) + "/"
                 + Utilities.getCountryID(mContext) + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
-        // Log.e("xxxxxxx", "访问闪屏URL：" + url);
+//         Log.e("xxxxxxx", "访问闪屏URL：" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 object, listener, errorListener);
         request.setShouldCache(true);
