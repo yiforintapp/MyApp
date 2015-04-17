@@ -174,7 +174,7 @@ public class HttpRequestAgent {
     }
 
     /**
-     * load splash from server
+     * 加载闪屏
      * 
      * @param listener
      * @param eListener
@@ -186,17 +186,24 @@ public class HttpRequestAgent {
                 + mContext.getString(R.string.version_name) + "/"
                 + Utilities.getCountryID(mContext) + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
-        Log.e("xxxxxxx", "访问闪屏URL：" + url);
+        // Log.e("xxxxxxx", "访问闪屏URL：" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 object, listener, errorListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);
-        Log.e("xxxxxxx", "正在拉取闪屏数据。。。。");
+        // Log.e("xxxxxxx", "正在拉取闪屏数据。。。。");
     }
 
+    /**
+     * 加载闪屏图
+     * 
+     * @param url
+     * @param listener
+     * @param eListener
+     */
     public void loadSplashImage(final String url,
             Listener<Bitmap> listener, ErrorListener eListener) {
-        ImageRequest request = new ImageRequest(url, listener, 200, 200,
+        ImageRequest request = new ImageRequest(url, listener, 0, 0,
                 Config.ARGB_8888, eListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);

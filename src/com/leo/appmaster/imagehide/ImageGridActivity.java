@@ -120,8 +120,15 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                         mClickPosList.remove((Integer) position);
                     }
                     if (mClickList.size() < mPicturesList.size()) {
+                        mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                                getResources().getDrawable(R.drawable.select_all_selector), null,
+                                null);
                         mSelectAll.setText(R.string.app_select_all);
                     } else {
+                        mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                                getResources().getDrawable(R.drawable.no_select_all_selector),
+                                null,
+                                null);
                         mSelectAll.setText(R.string.app_select_none);
                     }
                     updateRightButton();
@@ -229,7 +236,6 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             mTtileBar.setOptionImageVisibility(View.VISIBLE);
             mTtileBar.setOptionImage(R.drawable.edit_mode_name);
             mTtileBar.setOptionListener(this);
-
             mBottomBar.setVisibility(View.GONE);
         }
     }
@@ -333,9 +339,15 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                     mClickList.clear();
                     mClickList.addAll(mPicturesList);
                     mSelectAll.setText(R.string.app_select_none);
+                    mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                            null);
                 } else {
                     mClickList.clear();
                     mSelectAll.setText(R.string.app_select_all);
+                    mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
                 }
                 updateRightButton();
                 mImageAdapter.notifyDataSetChanged();

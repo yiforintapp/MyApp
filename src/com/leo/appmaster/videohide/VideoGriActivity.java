@@ -314,9 +314,17 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 mClickPosList.remove((Integer) position);
             }
             if (mClickList.size() < mVideoItems.size()) {
+                mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                        getResources().getDrawable(R.drawable.select_all_selector), null,
+                        null);
                 mSelectAll.setText(R.string.app_select_all);
+
             } else {
+                mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                        getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                        null);
                 mSelectAll.setText(R.string.app_select_none);
+
             }
             updateRightButton();
         }
@@ -331,9 +339,15 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                     mClickList.clear();
                     mClickList.addAll(mVideoItems);
                     mSelectAll.setText(R.string.app_select_none);
+                    mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                            null);
                 } else {
                     mClickList.clear();
                     mSelectAll.setText(R.string.app_select_all);
+                    mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
                 }
                 updateRightButton();
                 mHideVideoAdapter.notifyDataSetChanged();
