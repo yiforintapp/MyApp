@@ -109,6 +109,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_setting);
+        mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         handleIntent();
         initUI();
         checkCleanMem();
@@ -279,8 +280,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         drawable.draw(canvas);
         canvas.drawColor(Color.argb(70, 0, 0, 0));
         mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
-
-        mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         mLockLayout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
     }
 

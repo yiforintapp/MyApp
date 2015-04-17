@@ -41,6 +41,7 @@ import android.telephony.TelephonyManager;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
@@ -101,7 +102,7 @@ public class AppMasterApplication extends Application {
     public static int densityDpi;
     public static String densityString;
     public static int MAX_OUTER_BLUR_RADIUS;
-
+    public static String SPLASH_URL_FLAG = "splash_flag";
     static {
         System.loadLibrary("leo_service");
     }
@@ -684,36 +685,42 @@ public class AppMasterApplication extends Application {
                         Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response, boolean noMidify) {
-                                Log.e("xxxxxxx", "拉取闪屏成功");
+                                // Log.e("xxxxxxx", "拉取闪屏成功");
                                 if (response != null) {
                                     try {
-                                        Log.e("xxxxxxx", "noMidify:" + noMidify);
                                         String endDate = response.getString("c");
                                         String startDate = response.getString("b");
                                         String imageUrl = response.getString("a");
-                                        Log.e("xxxxxxxxx", "endDate:" + endDate);
-                                        Log.e("xxxxxxxxx", "endDate:" + startDate);
-                                        Log.e("xxxxxxxxx", "endDate:" + imageUrl);
-                                        if (endDate != null && !"".equals(endDate)) {
-                                            long end = 0;
-                                            try {
-                                                end = dateFormate.parse(endDate).getTime();
-                                            } catch (ParseException e) {
-                                                e.printStackTrace();
+                                        String splashUriFlag = imageUrl + startDate + endDate;
+//                                        Log.e("xxxxxxxxx", "打印:" + splashUriFlag);
+//                                        Log.e("xxxxxxxxx", "endDate:" + endDate);
+//                                        Log.e("xxxxxxxxx", "endDate:" + startDate);
+//                                        Log.e("xxxxxxxxx", "endDate:" + imageUrl);
+//                                        Log.e("xxxxxxxxx", "endDate:" + splashUriFlag);
+                                        if (!SPLASH_URL_FLAG.equals(splashUriFlag)) {
+//                                            Log.e("xxxxxxxxxxxxxx", "==================进来几次");
+                                            SPLASH_URL_FLAG = splashUriFlag;
+                                            if (endDate != null && !"".equals(endDate)) {
+                                                long end = 0;
+                                                try {
+                                                    end = dateFormate.parse(endDate).getTime();
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                pref.setSplashEndShowTime(end);
                                             }
-                                            pref.setSplashEndShowTime(end);
-                                        }
-                                        if (startDate != null && !"".equals(startDate)) {
-                                            long start = 0;
-                                            try {
-                                                start = dateFormate.parse(startDate).getTime();
-                                            } catch (ParseException e) {
-                                                e.printStackTrace();
+                                            if (startDate != null && !"".equals(startDate)) {
+                                                long start = 0;
+                                                try {
+                                                    start = dateFormate.parse(startDate).getTime();
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                pref.setSplashStartShowTime(start);
                                             }
-                                            pref.setSplashStartShowTime(start);
-                                        }
-                                        if (imageUrl != null && !"".equals(imageUrl)) {
-                                            getSplashImage(imageUrl);
+                                            if (imageUrl != null && !"".equals(imageUrl)) {
+                                                getSplashImage(imageUrl);
+                                            }
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -735,13 +742,13 @@ public class AppMasterApplication extends Application {
                                 };
                                 Timer timer = new Timer();
                                 // pref.getSplashCurrentStrategy()
-                                timer.schedule(recheckTask, 1000);
+                                timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
                             }
                         }, new ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
-                                    Log.e("xxxxxxx", "----------------------首次失败");
+                                    // Log.e("xxxxxxx", "----------------------首次失败");
                                     pref.setSplashLoadFailDate(failDate);
                                     LeoLog.e("loadSplash", error.getMessage());
                                     pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
@@ -754,12 +761,11 @@ public class AppMasterApplication extends Application {
                                         }
                                     };
                                     Timer timer = new Timer();
-                                    // pref.getSplashCurrentStrategy()
-                                    timer.schedule(recheckTask, 1000);
+                                    timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
 
                                 } else if (pref.getSplashLoadFailNumber() >= 0
                                         && pref.getSplashLoadFailNumber() <= 2) {
-                                    Log.e("xxxxxxx", "----------------------失败1");
+                                    // Log.e("xxxxxxx", "----------------------失败");
                                     pref.setSplashLoadFailNumber(pref.getSplashLoadFailNumber() + 1);
                                     LeoLog.e("loadSplash", error.getMessage());
                                     pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
@@ -772,15 +778,12 @@ public class AppMasterApplication extends Application {
                                         }
                                     };
                                     Timer timer = new Timer();
-                                    // pref.getSplashCurrentStrategy()
-                                    timer.schedule(recheckTask, 1000);
+                                    timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
                                 }
-
                             }
                         });
             }
         } else {
-            Log.e("xxxxxxxx", "拉取闪屏时间间隔没到");
             pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
                     pref.getSplashSuccessStrategy(), pref.getSplashFailStrategy());
             TimerTask recheckTask = new TimerTask() {
@@ -790,8 +793,7 @@ public class AppMasterApplication extends Application {
                 }
             };
             Timer timer = new Timer();
-            long delay = pref.getSplashCurrentStrategy()
-                    - (curTime - lastLoadTime);
+            long delay = pref.getSplashCurrentStrategy() - (curTime - lastLoadTime);
             timer.schedule(recheckTask, delay);
         }
     }
@@ -821,13 +823,13 @@ public class AppMasterApplication extends Application {
         String sdPath = Environment.getExternalStorageDirectory()
                 .getAbsolutePath();
         if (savePath == null) {
-            Log.e("xxxxxxxxxx", "没有发现该路径！");
+            // Log.e("xxxxxxxxxx", "没有发现该路径！");
             return 0;
         }
         int bitmapSize = FileOperationUtil.getBitmapSize(inputStream);
         boolean flag = FileOperationUtil.isMemeryEnough(bitmapSize, context, sdPath, 0);
         if (!flag) {
-            Log.e("xxxxxxxxxx", "内存不足！");
+            // Log.e("xxxxxxxxxx", "内存不足！");
             return 1;
         }
         try {

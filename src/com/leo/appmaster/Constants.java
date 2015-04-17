@@ -1,6 +1,9 @@
 
 package com.leo.appmaster;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import android.provider.MediaStore.MediaColumns;
 import android.net.Uri;
 

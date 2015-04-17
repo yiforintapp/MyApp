@@ -74,19 +74,22 @@
             android:id="@+id/iv_guaduan"
             android:layout_width="32dp"
             android:layout_height="25dp"
-            android:background="@drawable/disguise_call_red" />
+            android:background="@drawable/disguise_call_red"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_duanxin"
             android:layout_width="32dp"
             android:layout_height="25dp"
-            android:background="@drawable/disguise_call_blue" />
+            android:background="@drawable/disguise_call_blue"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_jieting"
             android:layout_width="32dp"
             android:layout_height="25dp"
-            android:background="@drawable/disguise_call_sms" />
+            android:background="@drawable/disguise_call_sms"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_guaduan_big"
@@ -114,7 +117,8 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:background="@drawable/disguise_call"
-            android:longClickable="true" />
+            android:longClickable="true"
+            android:visibility="invisible" />
     </com.leo.appmaster.applocker.GestureRelative>
 
 </LinearLayout>
