@@ -13,6 +13,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,21 +40,20 @@ import android.os.Handler;
 import android.os.UserManager;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -95,6 +96,8 @@ public class AppMasterApplication extends Application {
     public Handler mHandler;
     public static SharedPreferences sharedPreferences;
     public static String usedThemePackage;
+
+    private ScheduledExecutorService mExecutorService;
     // public static String number;
 
     public static int SDK_VERSION;
@@ -114,7 +117,7 @@ public class AppMasterApplication extends Application {
         initDensity(this);
         mActivityList = new ArrayList<Activity>();
         mInstance = this;
-        mExecutorService = Executors.newFixedThreadPool(3);
+        mExecutorService = Executors.newScheduledThreadPool(3);
         mHandler = new Handler();
         mAppsEngine = AppLoadEngine.getInstance(this);
         mBackupManager = new AppBackupRestoreManager(this);
@@ -131,14 +134,15 @@ public class AppMasterApplication extends Application {
         // init lock manager
         LockManager.getInstatnce().init();
 
-        mHandler.postDelayed(new Runnable() {
+        mExecutorService.schedule(new Runnable() {
             @Override
             public void run() {
                 checkNew();
-                // 拉取闪屏数据
+                // 获取闪屏数据
                 loadSplashDate();
             }
-        }, 10000);
+        }, 10, TimeUnit.SECONDS);
+
         restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
@@ -236,15 +240,58 @@ public class AppMasterApplication extends Application {
         postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
+                checkUpdateFinish();
+                judgeLockService();
+                // judgeStatictiUnlockCount();
+                initImageLoader();
                 mAppsEngine.preloadAllBaseInfo();
                 // AppBusinessManager.getInstance(mInstance).init();
                 mBackupManager.getBackupList();
-                judgeLockService();
-                judgeLockAlert();
-                // judgeStatictiUnlockCount();
-                initImageLoader();
             }
         });
+    }
+
+    public void tryRemoveUnlockAllShortcut(Context ctx) {
+        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
+            Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
+            shortcutIntent.setAction(Intent.ACTION_VIEW);
+            shortcutIntent.putExtra("quick_lock_mode", true);
+            shortcutIntent.putExtra("lock_mode_id", 0);
+            shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
+
+            Intent shortcut = new Intent(
+                    "com.android.launcher.action.UNINSTALL_SHORTCUT");
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            shortcut.putExtra("duplicate", false);
+            shortcut.putExtra("from_shortcut", true);
+            ctx.sendBroadcast(shortcut);
+            AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
+        }
+
+    }
+
+    protected void checkUpdateFinish() {
+        judgeLockAlert();
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        String lastVercode = pref.getLastVersion();
+        String versionCode = PhoneInfo.getVersionCode(this);
+        if (TextUtils.isEmpty(lastVercode)) {
+            // first install
+        } else {
+            if (Integer.parseInt(lastVercode) < Integer.parseInt(versionCode)) {
+                // hit update
+                if (Integer.parseInt(versionCode) == 34) {
+                    // remove unlock-all shortcut v2.1
+                    LeoLog.e("xxxx", "tryRemoveUnlockAllShortcut");
+                    tryRemoveUnlockAllShortcut(this);
+                }
+            }
+        }
+        pref.setLastVersion(versionCode);
+
     }
 
     private void judgeStatictiUnlockCount() {
@@ -278,7 +325,6 @@ public class AppMasterApplication extends Application {
                                                                              // new
                                                                              // version
             pref.setHaveEverAppLoaded(false);
-            pref.setLastVersion(PhoneInfo.getVersionCode(this));
             intent = new Intent(this, LockReceiver.class);
             intent.setAction(LockReceiver.ALARM_LOCK_ACTION);
 
@@ -306,8 +352,6 @@ public class AppMasterApplication extends Application {
             }
         }
     }
-
-    private ExecutorService mExecutorService;
 
     private void judgeLockService() {
         if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
@@ -648,7 +692,7 @@ public class AppMasterApplication extends Application {
     }
 
     /**
-     * load splash
+     * 加载闪屏
      */
     public void loadSplashDate() {
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);
@@ -666,23 +710,30 @@ public class AppMasterApplication extends Application {
                     || !failDate.equals(pref.getSplashLoadFailDate())
                     || (failDate.equals(pref.getSplashLoadFailDate()) && pref
                             .getSplashLoadFailNumber() <= 2)) {
+                // 日期变化数据初始化
                 if (!failDate.equals(pref.getSplashLoadFailDate())) {
-                    pref.setSplashLoadFailDate("splash_fail_default_date");
-                    pref.setSplashLoadFailNumber(0);
+                    if (pref.getSplashLoadFailNumber() != 0) {
+                        pref.setSplashLoadFailNumber(0);
+                    }
+                    if (!"splash_fail_default_date"
+                            .equals(pref.getSplashLoadFailDate())) {
+                        pref.setSplashLoadFailDate("splash_fail_default_date");
+                    }
                 }
                 HttpRequestAgent.getInstance(this).loadSplashDate(new
                         Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response, boolean noMidify) {
-                                 Log.e("xxxxxxx", "拉取闪屏成功");
+                                Log.e("xxxxxxx", "拉取闪屏成功");
                                 if (response != null) {
                                     try {
                                         String endDate = response.getString("c");
                                         String startDate = response.getString("b");
                                         String imageUrl = response.getString("a");
                                         String splashUriFlag = imageUrl + startDate + endDate;
+                                        Log.e("xxxxxxx", "数据：" + splashUriFlag);
+                                        // 保存获取的数据
                                         if (!pref.getSplashUriFlag().equals(splashUriFlag)) {
-                                            Log.e("xxxxxxx", "===============进来");
                                             if (splashUriFlag != null && !"".equals(splashUriFlag)) {
                                                 pref.setSplashUriFlag(splashUriFlag);
                                             }
@@ -714,6 +765,7 @@ public class AppMasterApplication extends Application {
                                     pref.setLastCheckThemeTime(System
                                             .currentTimeMillis());
                                 }
+                                // 拉取成功数据初始化
                                 if (pref.getSplashLoadFailNumber() != 0) {
                                     pref.setSplashLoadFailNumber(0);
                                 }
@@ -728,45 +780,31 @@ public class AppMasterApplication extends Application {
                                     }
                                 };
                                 Timer timer = new Timer();
-                                // pref.getSplashCurrentStrategy()
-                                timer.schedule(recheckTask, 1000);
+                                timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
                             }
                         }, new ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                // 拉取失败重试策略
+                                LeoLog.e("loadSplash", error.getMessage());
+                                // Log.e("xxxxxxxxxxxxxxx", "加载闪屏失败");
                                 if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
-                                     Log.e("xxxxxxx", "----------------------首次失败");
                                     pref.setSplashLoadFailDate(failDate);
-                                    pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
-                                            pref.getSplashSuccessStrategy(),
-                                            pref.getSplashFailStrategy());
-                                    TimerTask recheckTask = new TimerTask() {
-                                        @Override
-                                        public void run() {
-                                            loadSplashDate();
-                                        }
-                                    };
-                                    Timer timer = new Timer();
-//                                    pref.getSplashCurrentStrategy()
-                                    timer.schedule(recheckTask,1000);
-
                                 } else if (pref.getSplashLoadFailNumber() >= 0
                                         && pref.getSplashLoadFailNumber() <= 2) {
-                                     Log.e("xxxxxxx", "----------------------失败");
                                     pref.setSplashLoadFailNumber(pref.getSplashLoadFailNumber() + 1);
-                                    LeoLog.e("loadSplash", error.getMessage());
-                                    pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
-                                            pref.getSplashSuccessStrategy(),
-                                            pref.getSplashFailStrategy());
-                                    TimerTask recheckTask = new TimerTask() {
-                                        @Override
-                                        public void run() {
-                                            loadSplashDate();
-                                        }
-                                    };
-                                    Timer timer = new Timer();
-                                    timer.schedule(recheckTask, 1000);
                                 }
+                                pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
+                                        pref.getSplashSuccessStrategy(),
+                                        pref.getSplashFailStrategy());
+                                TimerTask recheckTask = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        loadSplashDate();
+                                    }
+                                };
+                                Timer timer = new Timer();
+                                timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
                             }
                         });
             }
@@ -799,7 +837,6 @@ public class AppMasterApplication extends Application {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片失败");
-
             }
         });
     }
@@ -810,21 +847,17 @@ public class AppMasterApplication extends Application {
         String sdPath = Environment.getExternalStorageDirectory()
                 .getAbsolutePath();
         if (savePath == null) {
-            // Log.e("xxxxxxxxxx", "没有发现该路径！");
+            Log.e("saveSplashImage", "no found path！");
             return 0;
         }
         int bitmapSize = FileOperationUtil.getBitmapSize(inputStream);
         boolean flag = FileOperationUtil.isMemeryEnough(bitmapSize, context, sdPath, 0);
         if (!flag) {
-            // Log.e("xxxxxxxxxx", "内存不足！");
+            Log.e("saveSplashImage", "memery no enough！");
             return 1;
         }
-        try {
-            FileOperationUtil.readAsFile(inputStream, FileOperationUtil.getSplashPath()
-                    + Constants.SPLASH_NAME, this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileOperationUtil.readAsFile(inputStream, FileOperationUtil.getSplashPath()
+                + Constants.SPLASH_NAME, this);
         return -1;
     }
 
