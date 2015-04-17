@@ -39,6 +39,7 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
     private AppMasterPreference sp_weizhuang;
     private int selected = 0;
     private ImageView weizhuang_ask;
+    private View trffic_setting_iv;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,10 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
 
         weizhuang_ask = (ImageView) findViewById(R.id.weizhuang_ask);
         weizhuang_ask.setVisibility(View.VISIBLE);
-        weizhuang_ask.setOnClickListener(this);
+        trffic_setting_iv = findViewById(R.id.trffic_setting_iv);
+        trffic_setting_iv.setVisibility(View.VISIBLE);
+        trffic_setting_iv.setOnClickListener(this);
+        
         
         mGridView = (GridView) findViewById(R.id.gv_weizhuang);
 
@@ -207,7 +211,7 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.weizhuang_ask:
+            case R.id.trffic_setting_iv:
                 Intent intent = new Intent(this,WeiZhuangFirstIn.class);
                 startActivity(intent);
                 finish();

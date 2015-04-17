@@ -14,6 +14,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <RelativeLayout
+            android:id="@+id/trffic_setting_iv"
+            android:layout_width="@dimen/app_manager_flowactivity_small_icon_width_height"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/traffic_small_icon_selector"
+            android:visibility="gone" >
+        </RelativeLayout>
+
         <ImageView
             android:id="@+id/weizhuang_ask"
             android:layout_width="24dp"
