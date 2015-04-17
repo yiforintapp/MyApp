@@ -284,7 +284,6 @@ public class AppMasterApplication extends Application {
                 // hit update
                 if (Integer.parseInt(versionCode) == 34) {
                     // remove unlock-all shortcut v2.1
-                    LeoLog.e("xxxx", "tryRemoveUnlockAllShortcut");
                     tryRemoveUnlockAllShortcut(this);
                 }
             }
