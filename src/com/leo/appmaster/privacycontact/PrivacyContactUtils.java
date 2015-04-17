@@ -93,6 +93,8 @@ public class PrivacyContactUtils {
     public static final String PRIVACY_ADD_CONTACT_UPDATE = "add_contact_update";
     public static final String PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP = "all_call_notification_hang_up";
     public static final String PRIVACY_INTERCEPT_CONTACT_EVENT = "intercept_contact_event";
+    public static final String PRIVACY_EDIT_NAME_UPDATE_CALL_LOG_EVENT="edit_name_udpate_call_log_event";
+    public static final String PRIVACY_EDIT_NAME_UPDATE_MESSAGE_EVENT="edit_name_udpate_message_event";
     public static final int ID = 0;
 
     public static final int DATE = 1;
