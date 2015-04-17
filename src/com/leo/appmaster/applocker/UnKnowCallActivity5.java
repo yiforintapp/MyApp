@@ -30,6 +30,9 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
     private int gua_left_big, gua_top_big, gua_right_big, gua_bottom_big;
     private int duan_left_big, duan_top_big, duan_right_big, duan_bottom_big;
     private int jie_left_big, jie_top_big, jie_right_big, jie_bottom_big;
+    private boolean isControlGua = false;
+    private boolean isControlDuan = false;
+    private boolean isControlJie = false;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -39,12 +42,18 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
 
                     iv_guaduan.layout(gua_left, gua_top, gua_right, gua_bottom);
                     iv_guaduan_big.layout(gua_left_big, gua_top_big, gua_right_big, gua_bottom_big);
-                    
+
                     iv_duanxin.layout(duan_left, duan_top, duan_right, duan_bottom);
-                    iv_duanxin_big.layout(duan_left_big, duan_top_big, duan_right_big, duan_bottom_big);
-                    
+                    iv_duanxin_big.layout(duan_left_big, duan_top_big, duan_right_big,
+                            duan_bottom_big);
+
                     iv_jieting.layout(jie_left, jie_top, jie_right, jie_bottom);
                     iv_jieting_big.layout(jie_left_big, jie_top_big, jie_right_big, jie_bottom_big);
+
+                    iv_dianhua_hold.setVisibility(View.VISIBLE);
+                    iv_guaduan.setVisibility(View.VISIBLE);
+                    iv_duanxin.setVisibility(View.VISIBLE);
+                    iv_jieting.setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;
@@ -109,6 +118,8 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
             setPosition();
             // 电话柄位于？
             setHold();
+            mViewContent.setisFromActivity(true);
+            mViewContent.setActivity(this);
         }
         super.onWindowFocusChanged(hasFocus);
     }
@@ -117,50 +128,65 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
         // 挂断
         gua_yuan_x = (int) (mYuanX - mBanJing);
         gua_yuan_y = (int) mYuanY;
-        gua_left = gua_yuan_x - (iv_guaduan.getWidth() / 2);
-        gua_top = gua_yuan_y - (iv_guaduan.getHeight() / 2);
-        gua_right = gua_yuan_x + (iv_guaduan.getWidth() / 2);
-        gua_bottom = gua_yuan_y + (iv_guaduan.getHeight() / 2);
+        int gua_width = iv_guaduan.getWidth();
+        int gua_height = iv_guaduan.getHeight();
+        gua_left = gua_yuan_x - (gua_width / 2);
+        gua_top = gua_yuan_y - (gua_height / 2);
+        gua_right = gua_yuan_x + (gua_width / 2);
+        gua_bottom = gua_yuan_y + (gua_height / 2);
+        mViewContent.setGuaPosition(gua_left, gua_top, gua_right, gua_bottom);
         // big
-        gua_left_big = gua_yuan_x - (iv_guaduan_big.getWidth() / 2);
-        gua_top_big = gua_yuan_y - (iv_guaduan_big.getHeight() / 2);
-        gua_right_big = gua_yuan_x + (iv_guaduan_big.getWidth() / 2);
-        gua_bottom_big = gua_yuan_y + (iv_guaduan_big.getHeight() / 2);
+        int gua_big_width = iv_guaduan_big.getWidth();
+        int gua_big_height = iv_guaduan_big.getHeight();
+        gua_left_big = gua_yuan_x - (gua_big_width / 2);
+        gua_top_big = gua_yuan_y - (gua_big_height / 2);
+        gua_right_big = gua_yuan_x + (gua_big_width / 2);
+        gua_bottom_big = gua_yuan_y + (gua_big_height / 2);
 
         // 短信
         duan_yuan_x = (int) mYuanX;
         duan_yuan_y = (int) (mYuanY - mBanJing);
-        duan_left = duan_yuan_x - (iv_duanxin.getWidth() / 2);
-        duan_top = duan_yuan_y - (iv_duanxin.getHeight() / 2);
-        duan_right = duan_yuan_x + (iv_duanxin.getWidth() / 2);
-        duan_bottom = duan_yuan_y + (iv_duanxin.getHeight() / 2);
+        int duan_width = iv_duanxin.getWidth();
+        int duan_height = iv_duanxin.getHeight();
+        duan_left = duan_yuan_x - (duan_width / 2);
+        duan_top = duan_yuan_y - (duan_height / 2);
+        duan_right = duan_yuan_x + (duan_width / 2);
+        duan_bottom = duan_yuan_y + (duan_height / 2);
+        mViewContent.setDuanPosition(duan_left, duan_top, duan_right, duan_bottom);
         // big
-        duan_left_big = duan_yuan_x - (iv_duanxin_big.getWidth() / 2);
-        duan_top_big = duan_yuan_y - (iv_duanxin_big.getHeight() / 2);
-        duan_right_big = duan_yuan_x + (iv_duanxin_big.getWidth() / 2);
-        duan_bottom_big = duan_yuan_y + (iv_duanxin_big.getHeight() / 2);
+        int duan_big_width = iv_duanxin_big.getWidth();
+        int duan_big_height = iv_duanxin_big.getHeight();
+        duan_left_big = duan_yuan_x - (duan_big_width / 2);
+        duan_top_big = duan_yuan_y - (duan_big_height / 2);
+        duan_right_big = duan_yuan_x + (duan_big_width / 2);
+        duan_bottom_big = duan_yuan_y + (duan_big_height / 2);
 
         // 接听
         jie_yuan_x = (int) (mYuanX + mBanJing);
         jie_yuan_y = (int) mYuanY;
-        jie_left = jie_yuan_x - (iv_guaduan.getWidth() / 2);
-        jie_top = jie_yuan_y - (iv_guaduan.getHeight() / 2);
-        jie_right = jie_yuan_x + (iv_guaduan.getWidth() / 2);
-        jie_bottom = jie_yuan_y + (iv_guaduan.getHeight() / 2);
+        int jie_width = iv_guaduan.getWidth();
+        int jie_height = iv_guaduan.getHeight();
+        jie_left = jie_yuan_x - (jie_width / 2);
+        jie_top = jie_yuan_y - (jie_height / 2);
+        jie_right = jie_yuan_x + (jie_width / 2);
+        jie_bottom = jie_yuan_y + (jie_height / 2);
+        mViewContent.setJiePosition(jie_left, jie_top, jie_right, jie_bottom);
         // big
-        jie_left_big = jie_yuan_x - (iv_guaduan_big.getWidth() / 2);
-        jie_top_big = jie_yuan_y - (iv_guaduan_big.getHeight() / 2);
-        jie_right_big = jie_yuan_x + (iv_guaduan_big.getWidth() / 2);
-        jie_bottom_big = jie_yuan_y + (iv_guaduan_big.getHeight() / 2);
+        int jie_big_width = iv_guaduan_big.getWidth();
+        int jie_big_height = iv_guaduan_big.getHeight();
+        jie_left_big = jie_yuan_x - (jie_big_width / 2);
+        jie_top_big = jie_yuan_y - (jie_big_height / 2);
+        jie_right_big = jie_yuan_x + (jie_big_width / 2);
+        jie_bottom_big = jie_yuan_y + (jie_big_height / 2);
     }
 
     private void setHold() {
         new Thread() {
             public void run() {
                 try {
-                    sleep(70);
+//                    sleep(30);
                     handler.sendEmptyMessage(1);
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             };
@@ -190,16 +216,59 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
                     int right = (int) (lc_right + newX);
 
                     if (left < gua_right + 10 && top > gua_top - gua_top / 2
-                            && bottom < gua_bottom + gua_bottom / 2) {
+                            && bottom < gua_bottom + gua_bottom / 2 && right > gua_left - 10) {
                         iv_guaduan_big.setVisibility(View.VISIBLE);
+                        iv_guaduan.setVisibility(View.INVISIBLE);
+                        isControlGua = false;
+                    } else {
+                        if (!isControlGua) {
+                            iv_guaduan_big.setVisibility(View.INVISIBLE);
+                            iv_guaduan.setVisibility(View.VISIBLE);
+                        }
+                        isControlGua = true;
                     }
-                    
+
+                    if (top < duan_bottom + 10 && bottom > duan_top - 10
+                            && left > duan_left - duan_left / 2
+                            && right < duan_right + duan_right / 2) {
+                        iv_duanxin.setVisibility(View.INVISIBLE);
+                        iv_duanxin_big.setVisibility(View.VISIBLE);
+                        isControlDuan = false;
+                    } else {
+                        if (!isControlDuan) {
+                            iv_duanxin.setVisibility(View.VISIBLE);
+                            iv_duanxin_big.setVisibility(View.INVISIBLE);
+                        }
+                        isControlDuan = true;
+                    }
+
+                    if (right > jie_left - 10 && top > jie_top - jie_top / 2
+                            && bottom < jie_bottom + jie_bottom / 2 && left < jie_right + 10) {
+                        iv_jieting_big.setVisibility(View.VISIBLE);
+                        iv_jieting.setVisibility(View.INVISIBLE);
+                        isControlJie = false;
+                    } else {
+                        if (!isControlJie) {
+                            iv_jieting_big.setVisibility(View.INVISIBLE);
+                            iv_jieting.setVisibility(View.VISIBLE);
+                        }
+                        isControlJie = true;
+                    }
+
                     v.layout(left, top, right, bottom);
                     startX = (int) event.getRawX();
                     startY = (int) event.getRawY();
                     break;
                 case MotionEvent.ACTION_UP:
                     v.layout(hold_left, hold_top, hold_right, hold_bottom);
+
+                    iv_guaduan_big.setVisibility(View.INVISIBLE);
+                    iv_guaduan.setVisibility(View.VISIBLE);
+                    iv_duanxin_big.setVisibility(View.INVISIBLE);
+                    iv_duanxin.setVisibility(View.VISIBLE);
+                    iv_jieting_big.setVisibility(View.INVISIBLE);
+                    iv_jieting.setVisibility(View.VISIBLE);
+
                     break;
                 default:
                     break;
