@@ -19,11 +19,10 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
             iv_duanxin_big, iv_jieting_big;
     private GestureRelative mViewContent;
 
-    private int hold_left, hold_top, hold_right, hold_bottom;
+    private int hold_width, hold_height,hold_left, hold_top, hold_right, hold_bottom;
     private float mYuanX, mYuanY, mZhiJing, mBanJing;
     private int startX, startY;
     private float lc_left, lc_top, lc_right, lc_bottom;
-    private float hold_width, hold_height;
     private int gua_yuan_x, gua_yuan_y, gua_left, gua_top, gua_right, gua_bottom;
     private int duan_yuan_x, duan_yuan_y, duan_left, duan_top, duan_right, duan_bottom;
     private int jie_yuan_x, jie_yuan_y, jie_left, jie_top, jie_right, jie_bottom;
@@ -73,9 +72,10 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
         tv_use_tips.setVisibility(View.VISIBLE);
         tv_use_tips_content = (TextView) findViewById(R.id.tv_use_tips_content);
         tv_use_tips_content.setVisibility(View.VISIBLE);
-        iv_guaduan = (ImageView) findViewById(R.id.iv_guaduan);
 
         mViewContent = (GestureRelative) findViewById(R.id.mid_view);
+        mViewContent.setisFromActivity(true);
+        mViewContent.setActivity(this);
         iv_dianhua_hold = (ImageView) findViewById(R.id.iv_dianhua_hold);
         iv_dianhua_hold.setOnTouchListener(this);
 
@@ -118,8 +118,6 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
             setPosition();
             // 电话柄位于？
             setHold();
-            mViewContent.setisFromActivity(true);
-            mViewContent.setActivity(this);
         }
         super.onWindowFocusChanged(hasFocus);
     }
@@ -184,7 +182,7 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
         new Thread() {
             public void run() {
                 try {
-//                    sleep(30);
+                    sleep(150);
                     handler.sendEmptyMessage(1);
                 } catch (Exception e) {
                     e.printStackTrace();

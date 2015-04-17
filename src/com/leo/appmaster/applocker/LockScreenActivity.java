@@ -50,6 +50,7 @@ import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
 import com.leo.appmaster.fragment.PretendAppErrorFragment;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment;
+import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.lockertheme.LockerTheme;
@@ -399,7 +400,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             paf.setErrorTip(tip);
             return paf;
         } else if (pretendLock == 2) {/* unknow call */
-            PretendAppUnknowCallFragment unknowcall = new PretendAppUnknowCallFragment();
+            PretendAppUnknowCallFragment5 unknowcall = new PretendAppUnknowCallFragment5();
             return unknowcall;
         } else if (pretendLock == 3) {/* fingerprint */
             PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
