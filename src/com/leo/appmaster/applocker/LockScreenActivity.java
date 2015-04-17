@@ -423,9 +423,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (willLaunch != null) {
                 lm.setCurrentLockMode(willLaunch, true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
-                Toast.makeText(this,
-                        this.getString(R.string.mode_change, mQuickModeName),
-                        Toast.LENGTH_SHORT).show();
+                showModeActiveTip();
             } else {
                 // Toast.makeText(this, mQuickModeName + "模式不存在, 请重试",
                 // 0).show();
@@ -694,4 +692,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mLockLayout.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * show the tip when mode success activating
+     */
+    private void showModeActiveTip(){
+        View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
+        TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
+        mActiveText.setText(this.getString(R.string.mode_change, mQuickModeName));
+        Toast toast = new Toast(this); 
+        toast.setView(mTipView);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0); 
+        toast.setDuration(Toast.LENGTH_SHORT); 
+        toast.show(); 
+    }
 }
