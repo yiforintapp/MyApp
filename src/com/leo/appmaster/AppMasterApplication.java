@@ -464,7 +464,7 @@ public class AppMasterApplication extends Application {
 
         long lastCheckTime = pref.getLastCheckBusinessTime();
         if (lastCheckTime > 0
-                && (curTime - lastCheckTime) > pref.getBusinessCurrentStrategy()
+                && (Math.abs(curTime - lastCheckTime)) > pref.getBusinessCurrentStrategy()
         /* 2 * 60 * 1000 */) {
             HttpRequestAgent.getInstance(this).checkNewBusinessData(
                     new Listener<JSONObject>() {
@@ -580,7 +580,7 @@ public class AppMasterApplication extends Application {
 
         long lastCheckTime = pref.getLastCheckThemeTime();
         if (lastCheckTime > 0
-                && (curTime - lastCheckTime) > pref.getThemeCurrentStrategy()) {
+                && (Math.abs(curTime - lastCheckTime)) > pref.getThemeCurrentStrategy()) {
             HttpRequestAgent.getInstance(this).checkNewTheme(
                     new Listener<JSONObject>() {
 
