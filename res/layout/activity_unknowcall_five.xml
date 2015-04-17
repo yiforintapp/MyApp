@@ -113,6 +113,20 @@
             android:visibility="invisible" />
 
         <ImageView
+            android:id="@+id/iv_tips_left"
+            android:layout_width="28dp"
+            android:layout_height="35dp"
+            android:background="@drawable/gesture_leftslide"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_tips_right"
+            android:layout_width="47dp"
+            android:layout_height="57dp"
+            android:background="@drawable/gesture_rightslide"
+            android:visibility="invisible" />
+
+        <ImageView
             android:id="@+id/iv_dianhua_hold"
             android:layout_width="56dp"
             android:layout_height="56dp"

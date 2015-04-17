@@ -3,6 +3,7 @@ package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -31,8 +32,10 @@ public class GestureRelative extends RelativeLayout {
     private int jie_left, jie_top, jie_right, jie_bottom;
     private Activity mActivity;
     private PretendFragment mPf;
+    private PretendAppUnknowCallFragment5 unknowFragment;
     private AppMasterPreference sp_unknowcall;
-
+    
+    
     public GestureRelative(Context context) {
         super(context);
         init(context);
@@ -40,19 +43,20 @@ public class GestureRelative extends RelativeLayout {
 
     public GestureRelative(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         init(context);
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
         CirPointX = (r - l) / 2;
         CirPointY = (b - t) / 2;
         // LeoLog.d("testlay", "l :"+l+"--t :"+t+"--r :"+r+"--b :"+b);
         mZhiJing = (b - t) * 7 / 8;
         mBanJing = mZhiJing / 2;
-
-        super.onLayout(changed, l, t, r, b);
+        if (unknowFragment != null) {
+            unknowFragment.setPlace();
+        }
     }
 
     private void init(Context context) {
@@ -139,7 +143,7 @@ public class GestureRelative extends RelativeLayout {
                             .show();
                     sp_unknowcall.setPretendLock(UnknowCallMode);
                     mActivity.finish();
-                }else {
+                } else {
                     mPf.onUnlockPretendSuccessfully();
                 }
             } else {
@@ -155,11 +159,11 @@ public class GestureRelative extends RelativeLayout {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         CirPanint.setStyle(Paint.Style.STROKE);
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         canvas.drawCircle(CirPointX, CirPointY, mBanJing, CirPanint);
-        super.onDraw(canvas);
     }
 
     public void setGuaPosition(int left, int top, int right, int bottom) {
@@ -167,8 +171,8 @@ public class GestureRelative extends RelativeLayout {
         gua_top = top;
         gua_right = right;
         gua_bottom = bottom;
-        LeoLog.d("testlay",
-        "gua_left :"+gua_left+"--gua_top :"+gua_top+"--gua_right :"+gua_right+"--gua_bottom :"+gua_bottom);
+        // LeoLog.d("testlay",
+        // "gua_left :"+gua_left+"--gua_top :"+gua_top+"--gua_right :"+gua_right+"--gua_bottom :"+gua_bottom);
     }
 
     public void setDuanPosition(int left, int top, int right, int bottom) {
@@ -176,8 +180,8 @@ public class GestureRelative extends RelativeLayout {
         duan_top = top;
         duan_right = right;
         duan_bottom = bottom;
-        LeoLog.d("testlay",
-        "duan_left :"+duan_left+"--duan_top :"+duan_top+"--duan_right :"+duan_right+"--duan_bottom :"+duan_bottom);
+        // LeoLog.d("testlay",
+        // "duan_left :"+duan_left+"--duan_top :"+duan_top+"--duan_right :"+duan_right+"--duan_bottom :"+duan_bottom);
     }
 
     public void setJiePosition(int left, int top, int right, int bottom) {
@@ -185,8 +189,8 @@ public class GestureRelative extends RelativeLayout {
         jie_top = top;
         jie_right = right;
         jie_bottom = bottom;
-        LeoLog.d("testlay",
-        "jie_left :"+jie_left+"--jie_top :"+jie_top+"--jie_right :"+jie_right+"--jie_bottom :"+jie_bottom);
+        // LeoLog.d("testlay",
+        // "jie_left :"+jie_left+"--jie_top :"+jie_top+"--jie_right :"+jie_right+"--jie_bottom :"+jie_bottom);
     }
 
     public void setisFromActivity(boolean isActivity) {
@@ -196,8 +200,13 @@ public class GestureRelative extends RelativeLayout {
     public void setActivity(Activity act) {
         mActivity = act;
     }
-    
+
     public void setPretendFragment(PretendFragment pf) {
         mPf = pf;
     }
+
+    public void setFragment(PretendAppUnknowCallFragment5 fragment) {
+        unknowFragment = fragment;
+    }
+    
 }

@@ -239,9 +239,8 @@ public class AppMasterApplication extends Application {
         postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
-                checkVresionUpdate();
+                checkUpdateFinish();
                 judgeLockService();
-                judgeLockAlert();
                 // judgeStatictiUnlockCount();
                 initImageLoader();
                 mAppsEngine.preloadAllBaseInfo();
@@ -255,6 +254,8 @@ public class AppMasterApplication extends Application {
         if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
             Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
+            shortcutIntent.setAction(Intent.ACTION_VIEW);
             shortcutIntent.putExtra("quick_lock_mode", true);
             shortcutIntent.putExtra("lock_mode_id", 0);
             shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
@@ -271,14 +272,14 @@ public class AppMasterApplication extends Application {
 
     }
 
-    protected void checkVresionUpdate() {
-        String lastVercode = AppMasterPreference.getInstance(this).getLastVersion();
+    protected void checkUpdateFinish() {
+        judgeLockAlert();
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        String lastVercode = pref.getLastVersion();
+        String versionCode = PhoneInfo.getVersionCode(this);
         if (TextUtils.isEmpty(lastVercode)) {
             // first install
-
         } else {
-            String versionCode = PhoneInfo.getVersionCode(this);
-
             if (Integer.parseInt(lastVercode) < Integer.parseInt(versionCode)) {
                 // hit update
                 if (Integer.parseInt(versionCode) == 34) {
@@ -286,10 +287,9 @@ public class AppMasterApplication extends Application {
                     LeoLog.e("xxxx", "tryRemoveUnlockAllShortcut");
                     tryRemoveUnlockAllShortcut(this);
                 }
-
-                AppMasterPreference.getInstance(this).setLastVersion(versionCode);
             }
         }
+        pref.setLastVersion(versionCode);
 
     }
 
@@ -324,7 +324,6 @@ public class AppMasterApplication extends Application {
                                                                              // new
                                                                              // version
             pref.setHaveEverAppLoaded(false);
-            pref.setLastVersion(PhoneInfo.getVersionCode(this));
             intent = new Intent(this, LockReceiver.class);
             intent.setAction(LockReceiver.ALARM_LOCK_ACTION);
 

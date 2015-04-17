@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
     private TextView tv_use_tips, tv_use_tips_content;
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
-            iv_duanxin_big, iv_jieting_big;
+            iv_duanxin_big, iv_jieting_big,iv_tips_left,iv_tips_right;
     private GestureRelative mViewContent;
 
     private int hold_width, hold_height,hold_left, hold_top, hold_right, hold_bottom;
@@ -29,6 +29,8 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
     private int gua_left_big, gua_top_big, gua_right_big, gua_bottom_big;
     private int duan_left_big, duan_top_big, duan_right_big, duan_bottom_big;
     private int jie_left_big, jie_top_big, jie_right_big, jie_bottom_big;
+    private int tip_left_x,tip_left_y,tip_left_left,tip_left_top,tip_left_right,tip_left_bottom;
+    private int tip_right_x,tip_right_y,tip_right_left,tip_right_top,tip_right_right,tip_right_bottom;
     private boolean isControlGua = false;
     private boolean isControlDuan = false;
     private boolean isControlJie = false;
@@ -49,6 +51,11 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
                     iv_jieting.layout(jie_left, jie_top, jie_right, jie_bottom);
                     iv_jieting_big.layout(jie_left_big, jie_top_big, jie_right_big, jie_bottom_big);
 
+                    iv_tips_left.layout(tip_left_left, tip_left_top, tip_left_right, tip_left_bottom);
+                    iv_tips_right.layout(tip_right_left, tip_right_top, tip_right_right, tip_right_bottom);
+                    
+                    iv_tips_left.setVisibility(View.VISIBLE);
+                    iv_tips_right.setVisibility(View.VISIBLE);
                     iv_dianhua_hold.setVisibility(View.VISIBLE);
                     iv_guaduan.setVisibility(View.VISIBLE);
                     iv_duanxin.setVisibility(View.VISIBLE);
@@ -87,6 +94,8 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
         iv_duanxin_big = (ImageView) findViewById(R.id.iv_duanxin_big);
         iv_jieting_big = (ImageView) findViewById(R.id.iv_jieting_big);
 
+        iv_tips_left = (ImageView) findViewById(R.id.iv_tips_left);
+        iv_tips_right = (ImageView) findViewById(R.id.iv_tips_right);
     }
 
     @Override
@@ -176,6 +185,26 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
         jie_top_big = jie_yuan_y - (jie_big_height / 2);
         jie_right_big = jie_yuan_x + (jie_big_width / 2);
         jie_bottom_big = jie_yuan_y + (jie_big_height / 2);
+        
+        //left tip
+        tip_left_x = (gua_yuan_x + duan_yuan_x)/2;
+        tip_left_y = (gua_yuan_y + duan_yuan_y)/2;
+        int tip_left_width = iv_tips_left.getWidth();
+        int tip_left_height = iv_tips_left.getHeight();
+        tip_left_left = tip_left_x - (tip_left_width/2);
+        tip_left_top = tip_left_y - (tip_left_height/2);
+        tip_left_right = tip_left_x + (tip_left_width/2);
+        tip_left_bottom = tip_left_y + (tip_left_height/2);
+        
+        //right tip
+        tip_right_x = (jie_yuan_x+ duan_yuan_x)/2;
+        tip_right_y = (jie_yuan_y + duan_yuan_y)/2;
+        int tip_right_width = iv_tips_right.getWidth();
+        int tip_right_height = iv_tips_right.getHeight();
+        tip_right_left = tip_right_x - (tip_right_width/2);
+        tip_right_top = tip_right_y - (tip_right_height/2);
+        tip_right_right = tip_right_x + (tip_right_width/2);
+        tip_right_bottom = tip_right_y + (tip_right_height/2);
     }
 
     private void setHold() {
