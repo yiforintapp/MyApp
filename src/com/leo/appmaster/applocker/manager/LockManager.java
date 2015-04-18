@@ -1233,6 +1233,9 @@ public class LockManager {
 
                         }
                     });
+                    dialog.getWindow().setType(
+                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    dialog.show();
 
                 } else if (timeLockCount != 0 && locationLockCount == 0) {
                     // show lcaotion btn dialog
@@ -1257,6 +1260,9 @@ public class LockManager {
 
                         }
                     });
+                    dialog.getWindow().setType(
+                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    dialog.show();
                 }
             }
         }
