@@ -152,7 +152,8 @@ public class PrivacyCalllogFragment extends BaseFragment {
         PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
         task.execute("");
     }
- // 更新TitleBar
+
+    // 更新TitleBar
     private void updateTitleBarSelectStatus() {
         if (mDeleteCallLog != null && mDeleteCallLog.size() > 0) {
             LeoEventBus.getDefaultBus().post(
@@ -210,6 +211,10 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     mIsShow = false;
                 }
             }
+        } else if (PrivacyContactUtils.PRIVACY_EDIT_NAME_UPDATE_CALL_LOG_EVENT
+                .equals(event.editModel)) {
+            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
+            task.execute("");
         }
     }
 

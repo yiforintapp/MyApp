@@ -104,7 +104,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/home_button_setting_selecter"
-                android:drawableLeft="@drawable/setting_icon"
+                android:drawableLeft="@drawable/disguise_icon"
                 android:gravity="center"
                 android:paddingLeft="26dp"
                 android:paddingRight="18dp"

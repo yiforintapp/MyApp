@@ -1,7 +1,9 @@
 
 package com.leo.appmaster.fragment;
 
+import android.app.Service;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +38,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     private boolean isControlJie = false;
     private GestureRelative mViewContent;
     private int mVersion;
+    private Vibrator vib;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -57,6 +60,9 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_guaduan.setVisibility(View.VISIBLE);
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
+
+                    vib.vibrate(new long[]{1000, 1000, 1000, 1000}, 1 );
+                    
                     break;
                 default:
                     break;
@@ -83,6 +89,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         mVersion = PhoneInfo.getAndroidVersion();
         init();
         GlobalLayoutListener();
+        vib = (Vibrator) getActivity().getSystemService(Service.VIBRATOR_SERVICE);
     }
 
     private void init() {
@@ -181,6 +188,26 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                         isControlJie = true;
                     }
 
+                    if (left < gua_left) {
+                        left = gua_left;
+                        right = left + iv_dianhua_hold.getWidth();
+                    }
+
+                    if (top < duan_top) {
+                        top = duan_top;
+                        bottom = top + iv_dianhua_hold.getHeight();
+                    }
+
+                    if (right > jie_right) {
+                        right = jie_right;
+                        left = right - iv_dianhua_hold.getWidth();
+                    }
+
+                    if (bottom > duan_yuan_y + mZhiJing) {
+                        bottom = (int) (duan_yuan_y + mZhiJing);
+                        top = bottom - iv_dianhua_hold.getHeight();
+                    }
+
                     v.layout(left, top, right, bottom);
                     startX = (int) event.getRawX();
                     startY = (int) event.getRawY();
@@ -190,6 +217,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                             || iv_duanxin_big.getVisibility() == View.VISIBLE
                             || iv_jieting_big.getVisibility() == View.VISIBLE) {
                         onUnlockPretendFailed();
+                        vib.cancel();
                     } else {
                         v.layout(hold_left, hold_top, hold_right, hold_bottom);
                     }
@@ -288,5 +316,9 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                 }
             }
         });
+    }
+
+    public void setCanCel() {
+        vib.cancel();
     }
 }

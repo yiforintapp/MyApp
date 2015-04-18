@@ -130,6 +130,10 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             mButtomTipIsShow = true;
             PrivacyContactDateTask task = new PrivacyContactDateTask();
             task.execute("");
+        } else if (PrivacyContactUtils.PRIVACY_EDIT_NAME_UPDATE_MESSAGE_EVENT
+                .equals(mEditModelOperaction)) {
+            PrivacyContactDateTask task = new PrivacyContactDateTask();
+            task.execute("");
         }
     }
 
@@ -174,7 +178,8 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         mAdapter.notifyDataSetChanged();
         return true;
     }
- // 更新TitleBar
+
+    // 更新TitleBar
     private void updateTitleBarSelectStatus() {
         if (mRestorMessages != null && mRestorMessages.size() > 0) {
             LeoEventBus.getDefaultBus().post(
@@ -186,6 +191,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                             PrivacyContactUtils.FROM_MESSAGE_NO_SELECT_EVENT));
         }
     }
+
     @Override
     public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
         MessageBean mb = mMessageList.get(position);
