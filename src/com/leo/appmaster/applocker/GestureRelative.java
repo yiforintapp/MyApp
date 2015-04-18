@@ -13,6 +13,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -37,6 +39,7 @@ public class GestureRelative extends RelativeLayout {
     private PretendAppUnknowCallFragment5 unknowFragment;
     private AppMasterPreference sp_unknowcall;
     private Vibrator vib;
+    private Canvas mYCanvas;
 
     public GestureRelative(Context context) {
         super(context);
@@ -162,8 +165,6 @@ public class GestureRelative extends RelativeLayout {
         }
     }
 
-    
-    
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -171,7 +172,27 @@ public class GestureRelative extends RelativeLayout {
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         canvas.drawCircle(CirPointX, CirPointY, mBanJing, CirPanint);
+        mYCanvas = canvas;
     }
+
+//    private void drawDongHua(final Canvas mycanvas) {
+//
+//        new Thread() {
+//            public void run() {
+//                try {
+//                    mycanvas.drawCircle(CirPointX, CirPointY, gua_right * 2, CirPanint);
+//                    LeoLog.d("testwhat", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                    Paint paint = new Paint();
+//                    paint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
+//                    mycanvas.drawPaint(paint);
+//                    paint.setXfermode(new PorterDuffXfermode(Mode.SRC));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//            };
+//        }.start();
+//    }
 
     public void setGuaPosition(int left, int top, int right, int bottom) {
         gua_left = left;
