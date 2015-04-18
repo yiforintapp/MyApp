@@ -23,7 +23,7 @@
 
     <RelativeLayout
         android:id="@+id/content_show_nothing"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone" >
@@ -36,10 +36,11 @@
             android:background="@drawable/app_nothing_traffic_show" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/just_nothing_show_iv"
             android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:layout_marginTop="18dp"
             android:text="@string/no_used_traffic"
             android:textColor="@color/nothing_show_text"
