@@ -694,7 +694,8 @@ public class AppMasterApplication extends Application {
      */
     public void loadSplashDate() {
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);
-//        final SimpleDateFormat timeFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // final SimpleDateFormat timeFormate = new
+        // SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         long curTime = System.currentTimeMillis();
         Date currentDate = new Date(curTime);
@@ -732,12 +733,20 @@ public class AppMasterApplication extends Application {
                                         // Log.e("xxxxxxx", "数据：" +
                                         // splashUriFlag);
                                         // 保存获取的数据
-                                        if (!pref.getSplashUriFlag().equals(splashUriFlag)) {
-                                            if (splashUriFlag != null && !"".equals(splashUriFlag)) {
-                                                pref.setSplashUriFlag(splashUriFlag);
-                                                // 初始化显示时间段
-                                                pref.setSplashStartShowTime(-1);
-                                                pref.setSplashEndShowTime(-1);
+                                        String prefStringUri = pref.getSplashUriFlag();
+                                        int prefInt = pref.getSaveSplashIsMemeryEnough();
+                                        if (!prefStringUri.equals(splashUriFlag) || prefInt != -1) {
+                                            if (!prefStringUri.equals(splashUriFlag)) {
+                                                if (splashUriFlag != null
+                                                        && !"".equals(splashUriFlag)) {
+                                                    pref.setSplashUriFlag(splashUriFlag);
+                                                    // 初始化显示时间段
+                                                    pref.setSplashStartShowTime(-1);
+                                                    pref.setSplashEndShowTime(-1);
+                                                }
+                                            }
+                                            if (prefInt != -1) {
+                                                pref.setSaveSplashIsMemeryEnough(-1);
                                             }
                                             if (endDate != null && !"".equals(endDate)) {
                                                 long end = 0;
@@ -851,11 +860,13 @@ public class AppMasterApplication extends Application {
                 .getAbsolutePath();
         if (savePath == null) {
             Log.e("saveSplashImage", "no found path！");
+            AppMasterPreference.getInstance(this).setSaveSplashIsMemeryEnough(0);
             return 0;
         }
         int bitmapSize = FileOperationUtil.getBitmapSize(inputStream);
         boolean flag = FileOperationUtil.isMemeryEnough(bitmapSize, context, sdPath, 0);
         if (!flag) {
+            AppMasterPreference.getInstance(this).setSaveSplashIsMemeryEnough(1);
             Log.e("saveSplashImage", "memery no enough！");
             return 1;
         }
