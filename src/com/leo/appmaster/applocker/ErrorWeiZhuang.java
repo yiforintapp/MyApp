@@ -5,7 +5,9 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 
 import android.app.Activity;
+import android.app.Service;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -24,7 +26,8 @@ public class ErrorWeiZhuang extends Activity implements OnTouchListener {
     private int button_right;
     private int button_bottom;
     private int button_left;
-
+    private Vibrator vib;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,7 @@ public class ErrorWeiZhuang extends Activity implements OnTouchListener {
         tv_make_sure_error.setOnTouchListener(this);
 
         sp_error_weizhuang = AppMasterPreference.getInstance(this);
+        vib = (Vibrator) this.getSystemService(Service.VIBRATOR_SERVICE);
     }
 
     @Override
@@ -73,6 +77,7 @@ public class ErrorWeiZhuang extends Activity implements OnTouchListener {
                         // ok
                         Toast.makeText(this, getString(R.string.error_mode_ok), 0).show();
                         sp_error_weizhuang.setPretendLock(ERRORWEIZHUANG);
+                        vib.vibrate(150);
                         finish();
                     }
                 } else {

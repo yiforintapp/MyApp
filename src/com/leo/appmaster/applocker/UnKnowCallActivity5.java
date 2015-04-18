@@ -5,8 +5,10 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
+import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -34,7 +36,7 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
     private boolean isControlGua = false;
     private boolean isControlDuan = false;
     private boolean isControlJie = false;
-
+    
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {

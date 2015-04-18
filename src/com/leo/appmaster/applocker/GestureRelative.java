@@ -8,6 +8,7 @@ import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -35,6 +36,7 @@ public class GestureRelative extends RelativeLayout {
     private PretendFragment mPf;
     private PretendAppUnknowCallFragment5 unknowFragment;
     private AppMasterPreference sp_unknowcall;
+    private Vibrator vib;
 
     public GestureRelative(Context context) {
         super(context);
@@ -63,6 +65,7 @@ public class GestureRelative extends RelativeLayout {
         this.mContext = context;
         CirPanint = new Paint();
         sp_unknowcall = AppMasterPreference.getInstance(mContext);
+        vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
     }
 
     public int getPointX() {
@@ -142,6 +145,7 @@ public class GestureRelative extends RelativeLayout {
                     Toast.makeText(mContext, mContext.getString(R.string.weizhuang_setting_ok), 0)
                             .show();
                     sp_unknowcall.setPretendLock(UnknowCallMode);
+                    vib.vibrate(150);
                     mActivity.finish();
                 } else {
                     unknowFragment.setCanCel();
@@ -158,6 +162,8 @@ public class GestureRelative extends RelativeLayout {
         }
     }
 
+    
+    
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -203,6 +209,5 @@ public class GestureRelative extends RelativeLayout {
     public void setFragment(PretendAppUnknowCallFragment5 fragment) {
         unknowFragment = fragment;
     }
-
 
 }

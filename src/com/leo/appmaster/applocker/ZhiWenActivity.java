@@ -5,9 +5,11 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 
 import android.app.Activity;
+import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
@@ -24,6 +26,7 @@ public class ZhiWenActivity extends Activity implements OnClickListener {
     private ImageView iv_zhiwen_tips, zhiwen_bang, show_slowly_iv, iv_zhiwen_click;
     private AppMasterPreference sp_zhiwen_weizhuang;
     private float iv_zhiwen_click_height;
+    private Vibrator vib;
     // three click
     long[] mHits = new long[3];
 
@@ -61,6 +64,7 @@ public class ZhiWenActivity extends Activity implements OnClickListener {
         iv_zhiwen_click.setOnClickListener(this);
         show_slowly_iv = (ImageView) findViewById(R.id.show_slowly_iv);
         zhiwen_bang = (ImageView) findViewById(R.id.zhiwen_bang);
+        vib = (Vibrator) this.getSystemService(Service.VIBRATOR_SERVICE);
     }
 
     @Override
@@ -135,6 +139,7 @@ public class ZhiWenActivity extends Activity implements OnClickListener {
                 if (mHits[0] >= (SystemClock.uptimeMillis() - 800)) {
                     Toast.makeText(this, getString(R.string.zhiwen_mode_ok), 0).show();
                     sp_zhiwen_weizhuang.setPretendLock(ZHIWENWEIZHUANG);
+                    vib.vibrate(150);
                     finish();
                 }
                 break;
