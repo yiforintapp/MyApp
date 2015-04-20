@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -30,6 +31,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.MediaColumns;
+
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
@@ -762,7 +764,7 @@ public class FileOperationUtil {
     public static void readAsFile(Bitmap inSream, String file, Context context) {
         try {
             OutputStream outStream = new FileOutputStream(new File(file), false);
-            inSream.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            inSream.compress(Bitmap.CompressFormat.PNG, 100, outStream);
             outStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -783,4 +785,5 @@ public class FileOperationUtil {
         // earlier version
         return bitmap.getRowBytes() * bitmap.getHeight();
     }
+
 }

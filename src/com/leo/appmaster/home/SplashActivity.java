@@ -109,18 +109,24 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             if (endShowSplashTime <= 0 && startShowSplashTime > 0) {
                 if (currentTime >= startShowSplashTime) {
                     showSplash();
+                } else {
+                    deleteImage();
                 }
             }
             // 只有结束时间
             if (startShowSplashTime <= 0 && endShowSplashTime > 0) {
                 if (currentTime < endShowSplashTime) {
                     showSplash();
+                } else {
+                    deleteImage();
                 }
             }
             // 开始，结束时间都存在
             if (startShowSplashTime > 0 && endShowSplashTime > 0) {
                 if (currentTime >= startShowSplashTime && currentTime < endShowSplashTime) {
                     showSplash();
+                } else {
+                    deleteImage();
                 }
             }
         } else {
@@ -464,4 +470,14 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
     }
 
     /* add for Guide Screen end */
+    // 删除目录下的图片
+    public static boolean deleteImage() {
+        boolean flag = false;
+        File file = new File(FileOperationUtil.getSplashPath()
+                + Constants.SPLASH_NAME);
+        if (file.exists()) {
+            flag = file.delete();
+        }
+        return flag;
+    }
 }
