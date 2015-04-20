@@ -6,10 +6,8 @@ import com.leo.appmaster.ui.CirCleDongHua;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
-import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -171,9 +169,9 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
             hold_top = (int) (mYuanY - (hold_height / 2));
             hold_right = (int) (mYuanX + (hold_width / 2));
             hold_bottom = (int) (mYuanY + (hold_height / 2));
-            LeoLog.d("testnewcall", "hold_left is : " + hold_left
-                    + "--hold_top is : " + hold_top + "--hold_right is : "
-                    + hold_right + "hold_bottom is : " + hold_bottom);
+//            LeoLog.d("testnewcall", "hold_left is : " + hold_left
+//                    + "--hold_top is : " + hold_top + "--hold_right is : "
+//                    + hold_right + "hold_bottom is : " + hold_bottom);
 
             // 挂断，短信，接听icon位置
             setPosition();

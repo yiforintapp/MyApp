@@ -5,7 +5,6 @@ import android.app.Service;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.view.Display;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
