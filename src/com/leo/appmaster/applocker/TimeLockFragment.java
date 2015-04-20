@@ -53,6 +53,16 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     private boolean mEditing;
     
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //judge whether  setted  time lock mode
+        mTimeLockList = LockManager.getInstatnce().getTimeLock();
+        if(mTimeLockList.size()>0){
+            AppMasterPreference.getInstance(mActivity).setTimeLockModeSetOver(true);
+        }
+    }
+    
+    @Override
     protected int layoutResourceId() {
         return R.layout.fragment_lock_mode;
     }
@@ -70,7 +80,8 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockListView.setOnItemLongClickListener(this);
         
         // judge whether click i know button 
-       if(!AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()){
+       if(!AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked() && mTimeLockList.size()<=0 && 
+               !AppMasterPreference.getInstance(mActivity).getTimeLockModeSetOVer()){
            showGuidePage();
       }
 
@@ -81,7 +92,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockListView.addHeaderView(mListHeader);
 
     }
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LeoEventBus.getDefaultBus().register(this);
@@ -150,6 +161,8 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
                 /** set the help tip action **/
                 mTitleBar.setOptionImage(R.drawable.tips_icon);
                 mTitleBar.setOptionImageVisibility(View.VISIBLE);
+                Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
+                mTitleBar.setOptionAnimation(animation);
                 mTitleBar.setOptionListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -329,13 +342,11 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockGuideIcon.setImageResource(R.drawable.modes_tips_time);
         mLockGuideText.setText(R.string.time_lock_mode_guide_content);
         mUserKnowBtn.setOnClickListener(this);
-        // if user click i know button the next time guide page should  appearance as animation
+        // if ever pack up guide page then  next time guide page should appearance as animation
         if (AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()) {
             mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_in);
             mLockGuideView.startAnimation(mGuidAnimation);
         }
-        // hide the help tip
-        mTitleBar.setOptionImageVisibility(View.INVISIBLE);
         mGuideOpen = true;
     }
 
@@ -345,8 +356,6 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_out);
         mLockGuideView.startAnimation(mGuidAnimation);
         mGuideOpen = false;
-        // show the help tip
-        mTitleBar.setOptionImageVisibility(View.VISIBLE);
     }
 
     /**

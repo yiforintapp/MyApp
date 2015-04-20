@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -109,6 +110,10 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     public void setOptionListener(OnClickListener listener) {
         mTvOptionText.setOnClickListener(listener);
         mTvOptionImage.setOnClickListener(listener);
+    }
+    
+    public void setOptionAnimation(Animation animation){
+        mTvOptionImage.startAnimation(animation);
     }
 
     public void openBackView() {
