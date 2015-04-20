@@ -1243,7 +1243,7 @@ public class LockManager {
                     dialog.setTitle(R.string.time_location_lock_tip_title);
                     String tip = mContext.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
-                    dialog.setLeftBtnStr(mContext.getString(R.string.lock_mode_time));
+                    dialog.setLeftBtnStr(mContext.getString(R.string.lock_mode_location));
                     dialog.setRightBtnStr(mContext.getString(R.string.cancel));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override
