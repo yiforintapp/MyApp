@@ -51,6 +51,16 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
     private boolean mGuideOpen = false;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //judge whether  setted  time lock mode
+        mLocationLockList = LockManager.getInstatnce().getLocationLock();
+        if(mLocationLockList.size()>0){
+            AppMasterPreference.getInstance(mActivity).setLocationLockModeSetOver(true);
+        }
+    }
+    
+    @Override
     protected int layoutResourceId() {
         return R.layout.fragment_lock_mode;
     }
@@ -68,7 +78,8 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         mLockListView.setOnItemLongClickListener(this);
 
         // judge whether click i know button
-        if (!AppMasterPreference.getInstance(mActivity).getLocationLockModeGuideClicked()) {
+        if (!AppMasterPreference.getInstance(mActivity).getLocationLockModeGuideClicked() && 
+                !AppMasterPreference.getInstance(mActivity).getLocationLockModeSetOVer()) {
             showGuidePage();
         }
 
@@ -140,6 +151,8 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
                 /** set the help tip action **/
                 mTitleBar.setOptionImage(R.drawable.tips_icon);
                 mTitleBar.setOptionImageVisibility(View.VISIBLE);
+                Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
+                mTitleBar.setOptionAnimation(animation);
                 mTitleBar.setOptionListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -311,14 +324,11 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         mLockGuideIcon.setImageResource(R.drawable.modes_tips_position);
         mLockGuideText.setText(R.string.location_lock_mode_guide_content);
         mUserKnowBtn.setOnClickListener(this);
-        // if user click i know button the next time guide page should
-        // appearance as animation
+        // if ever pack up guide page then  next time guide page should appearance as animation
         if (AppMasterPreference.getInstance(mActivity).getLocationLockModeGuideClicked()) {
             mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_in);
             mLockGuideView.startAnimation(mGuidAnimation);
         }
-        // hide the help tip
-        mTitleBar.setOptionImageVisibility(View.INVISIBLE);
         mGuideOpen = true;
     }
 
@@ -328,8 +338,6 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_out);
         mLockGuideView.startAnimation(mGuidAnimation);
         mGuideOpen = false;
-        // show the help tip
-        mTitleBar.setOptionImageVisibility(View.VISIBLE);
     }
 
     /**
