@@ -213,7 +213,6 @@ public class EditPrivacyContactActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
-        // return updateUmber;
     }
 
     // 更新隐私通话联系人名称

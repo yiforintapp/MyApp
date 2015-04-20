@@ -770,6 +770,10 @@ public class AppMasterApplication extends Application {
                                                 getSplashImage(imageUrl);
                                             }
                                         }
+                                        long successStrategy = pref.getThemeSuccessStrategy();
+                                        long failStrategy = pref.getThemeFailStrategy();
+                                        pref.setThemeStrategy(successStrategy, successStrategy,
+                                                failStrategy);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

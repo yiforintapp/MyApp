@@ -34,6 +34,8 @@ import android.util.Log;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 
 public class PrivacyContactUtils {
     public static final Uri SMS_INBOXS = Uri.parse("content://sms/");
@@ -93,8 +95,11 @@ public class PrivacyContactUtils {
     public static final String PRIVACY_ADD_CONTACT_UPDATE = "add_contact_update";
     public static final String PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP = "all_call_notification_hang_up";
     public static final String PRIVACY_INTERCEPT_CONTACT_EVENT = "intercept_contact_event";
-    public static final String PRIVACY_EDIT_NAME_UPDATE_CALL_LOG_EVENT="edit_name_udpate_call_log_event";
-    public static final String PRIVACY_EDIT_NAME_UPDATE_MESSAGE_EVENT="edit_name_udpate_message_event";
+    public static final String PRIVACY_EDIT_NAME_UPDATE_CALL_LOG_EVENT = "edit_name_udpate_call_log_event";
+    public static final String PRIVACY_EDIT_NAME_UPDATE_MESSAGE_EVENT = "edit_name_udpate_message_event";
+    public static final String PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT = "privacy_contact_activity_cancel_red_tip";
+    public static final String PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT = "privacy_contact_activity_call_log_cancel_red_tip";
+
     public static final int ID = 0;
 
     public static final int DATE = 1;
@@ -904,12 +909,12 @@ public class PrivacyContactUtils {
                         }
                     }
                 }
-                if(cr != null) {
+                if (cr != null) {
                     cr.close();
                 }
             }
         }
-        if(cur != null) {
+        if (cur != null) {
             cur.close();
         }
         return messageList;
@@ -963,9 +968,18 @@ public class PrivacyContactUtils {
                 selectionArgs);
         if (count > 0) {
             AppMasterPreference pre = AppMasterPreference.getInstance(context);
-            int temp = pre.getMessageNoReadCount();
-            if (temp > 0) {
-                pre.setMessageNoReadCount(temp - 1);
+            for (int i = 0; i < count; i++) {
+                int temp = pre.getMessageNoReadCount();
+                if (temp > 0) {
+                    pre.setMessageNoReadCount(temp - 1);
+                    if (temp - 1 <= 0) {
+                        LeoEventBus
+                                .getDefaultBus()
+                                .post(
+                                        new PrivacyDeletEditEvent(
+                                                PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT));
+                    }
+                }
             }
         }
     }
@@ -984,7 +998,7 @@ public class PrivacyContactUtils {
                 break;
             }
         }
-        if(cur != null) {
+        if (cur != null) {
             cur.close();
         }
         return threadId;
