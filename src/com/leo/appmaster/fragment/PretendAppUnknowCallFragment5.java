@@ -5,6 +5,7 @@ import android.app.Service;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -46,7 +47,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            LeoLog.d("testfragment", "收到message了吗");
+            LeoLog.d("testfragment", "收到message!!!");
             switch (msg.what) {
                 case 1:
                     iv_dianhua_hold.layout(hold_left, hold_top, hold_right, hold_bottom);
@@ -76,6 +77,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                         vib.vibrate(new long[] {
                                 1000, 1000, 1000, 1000
                         }, 1);
+                        LeoLog.d("testFragment", "start 震动 ! ");
                     }
 
 
@@ -120,9 +122,11 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
     @Override
     public void onStop() {
+        LeoLog.d("testFragment", "onStop");
         isStop = true;
         if(vib != null){
             vib.cancel();
+            LeoLog.d("testFragment", "onStop , vib.cancel()");
         }
         super.onStop();
     }
@@ -130,6 +134,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     @Override
     public void onResume() {
         isStop = false;
+        LeoLog.d("testFragment", "onResume");
         super.onResume();
     }
     
@@ -181,6 +186,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     mHandler.sendEmptyMessage(2);
                     sleep(50);
                     mHandler.sendEmptyMessage(1);
+                    LeoLog.d("testFragment", "setPlace ! ");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -387,4 +393,15 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     public void setCanCel() {
         vib.cancel();
     }
+    
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        
+//        if (keyCode == KeyEvent.KEYCODE_BACK
+//                 && event.getRepeatCount() == 0) {
+//            //do something...
+//             return true;
+//         }
+//         return super.onKeyDown(keyCode, event);
+//     }
+    
 }
