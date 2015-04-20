@@ -2,6 +2,7 @@
 package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.fragment.PretendFragment;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Context;
@@ -22,41 +23,25 @@ public class GestureTextView extends TextView implements OnClickListener {
     private float mUpY;
 
     private PretendFragment mPf;
+    private Context mContext;
 
     public GestureTextView(Context context) {
         super(context);
-//        getSize();
+        this.mContext = context;
+        // getSize();
     }
 
     public GestureTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-//        getSize();
+        // getSize();
         this.setOnClickListener(this);
+        this.mContext = context;
     }
 
     public void setPretendFragment(PretendFragment pf) {
         mPf = pf;
     }
 
-//    private void getSize() {
-//        ViewTreeObserver guaduan = getViewTreeObserver();
-//        guaduan.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-//            public void onGlobalLayout() {
-//                top = getTop();
-//                right = getRight();
-//                bottom = getBottom();
-//                left = getLeft();
-//                LeoLog.d("testerrorfragment", "11left is : " + left
-//                        + "--11top is : " + top + "--11right is : "
-//                        + right + "---11bottom is :" + bottom);
-//                // 成功调用一次后，移除 Hook 方法，防止被反复调用
-//                // removeGlobalOnLayoutListener() 方法在 API 16 后不再使用
-//                // 使用新方法 removeOnGlobalLayoutListener() 代替
-//                getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//            }
-//        });
-//    }
-    
     @Override
     protected void onLayout(boolean arg0, int arg1, int arg2, int arg3, int arg4) {
         super.onLayout(arg0, arg1, arg2, arg3, arg4);
@@ -64,9 +49,6 @@ public class GestureTextView extends TextView implements OnClickListener {
         top = arg2;
         right = arg3;
         bottom = arg4;
-//        LeoLog.d("testerrorfragment", "left is : " + left
-//                + "--top is : " + top + "--right is : "
-//                + right + "---bottom is :" + bottom);
     }
 
     @Override
@@ -92,6 +74,8 @@ public class GestureTextView extends TextView implements OnClickListener {
                     if (distanceX > fitDistanceX) {
                         if (mPf != null) {
                             mPf.onUnlockPretendSuccessfully();
+                            SDKWrapper
+                                    .addEvent(mContext, SDKWrapper.P1, "appcover", "done_AppError");
                         }
                     }
                     setPressed(false);

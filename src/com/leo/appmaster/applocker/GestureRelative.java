@@ -5,6 +5,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendFragment;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
@@ -157,6 +158,8 @@ public class GestureRelative extends RelativeLayout {
                 } else {
                     unknowFragment.setCanCel();
                     mPf.onUnlockPretendSuccessfully();
+                    SDKWrapper
+                            .addEvent(mContext, SDKWrapper.P1, "appcover", "done_UnknowCall");
                 }
             } else {
                 if (!isThridRound) {

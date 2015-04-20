@@ -62,7 +62,6 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
         trffic_setting_iv.setVisibility(View.VISIBLE);
         trffic_setting_iv.setOnClickListener(this);
         
-        
         mGridView = (GridView) findViewById(R.id.gv_weizhuang);
 
         sp_weizhuang = AppMasterPreference.getInstance(this);
