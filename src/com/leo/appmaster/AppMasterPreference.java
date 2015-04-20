@@ -140,7 +140,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_URL_FLAG = "splash_url_flag";
     public static final String PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG = "remove_unlock_all_shortcut";
     public static final String PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH="save_splash_memery_no_enough";
-
+    public static final String PREF_TIME_LOCK_MODE_SET_OVER="time_lock_mode_set_over";
+    public static final String PREF_LOCATION_LOCK_MODE_SET_OVER="location_lock_mode_set_over";
+    
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1295,5 +1297,18 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getSaveSplashIsMemeryEnough() {
         return mPref.getInt(PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH, -1);
+    }
+    
+    public void setTimeLockModeSetOver(boolean setted){
+        mPref.edit().putBoolean(PREF_TIME_LOCK_MODE_SET_OVER, setted).commit();
+    }
+    public boolean getTimeLockModeSetOVer(){
+        return mPref.getBoolean(PREF_TIME_LOCK_MODE_SET_OVER, false);
+    }
+    public void setLocationLockModeSetOver(boolean setted){
+        mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_SET_OVER, setted).commit();
+    }
+    public boolean getLocationLockModeSetOVer(){
+        return mPref.getBoolean(PREF_LOCATION_LOCK_MODE_SET_OVER, false);
     }
 }
