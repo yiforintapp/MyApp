@@ -5,6 +5,7 @@ import android.app.Service;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.GestureRelative;
+import com.leo.appmaster.ui.CirCleDongHua;
 import com.leo.appmaster.utils.LeoLog;
 
 public class PretendAppUnknowCallFragment5 extends PretendFragment implements OnTouchListener {
@@ -36,12 +38,16 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     private boolean isControlGua = false;
     private boolean isControlDuan = false;
     private boolean isControlJie = false;
+    private boolean isStartDong = false;
+    private boolean isStop = false;
     private GestureRelative mViewContent;
     private int mVersion;
     private Vibrator vib;
+    private CirCleDongHua myself_circle;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
+            LeoLog.d("testfragment", "收到message!!!");
             switch (msg.what) {
                 case 1:
                     iv_dianhua_hold.layout(hold_left, hold_top, hold_right, hold_bottom);
@@ -49,6 +55,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_guaduan.layout(gua_left, gua_top, gua_right, gua_bottom);
                     iv_guaduan_big.layout(gua_left_big, gua_top_big, gua_right_big, gua_bottom_big);
 
+                    
                     iv_duanxin.layout(duan_left, duan_top, duan_right, duan_bottom);
                     iv_duanxin_big.layout(duan_left_big, duan_top_big, duan_right_big,
                             duan_bottom_big);
@@ -56,13 +63,30 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_jieting.layout(jie_left, jie_top, jie_right, jie_bottom);
                     iv_jieting_big.layout(jie_left_big, jie_top_big, jie_right_big, jie_bottom_big);
 
+                    if(!isStartDong){
+                        myself_circle.setVisibility(View.VISIBLE);
+                        showDonghua();
+                    }
+
                     iv_dianhua_hold.setVisibility(View.VISIBLE);
                     iv_guaduan.setVisibility(View.VISIBLE);
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
 
-                    vib.vibrate(new long[]{1000, 1000, 1000, 1000}, 1 );
-                    
+                    if(!isStop){
+                        vib.vibrate(new long[] {
+                                1000, 1000, 1000, 1000
+                        }, 1);
+                        LeoLog.d("testFragment", "start 震动 ! ");
+                    }
+
+
+                    break;
+                case 2:
+                    iv_dianhua_hold.setVisibility(View.INVISIBLE);
+                    iv_guaduan.setVisibility(View.INVISIBLE);
+                    iv_duanxin.setVisibility(View.INVISIBLE);
+                    iv_jieting.setVisibility(View.INVISIBLE);
                     break;
                 default:
                     break;
@@ -70,6 +94,50 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         };
     };
 
+    
+    
+    protected void showDonghua() {
+        isStartDong = true;
+        new Thread() {
+            public void run() {
+                int startInt = 0;
+                int mAplha = 0;
+                while (mBanJing > startInt) {
+                    try {
+                        Thread.sleep(15);
+                        startInt += 2;
+                        mAplha = 255 - (int) (startInt * 255 / mBanJing);
+                        if (mAplha < 0) {
+                            mAplha = 0;
+                        }
+                        myself_circle.setProgress(startInt, mAplha);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                showDonghua();
+            };
+        }.start();
+    }
+
+    @Override
+    public void onStop() {
+        LeoLog.d("testFragment", "onStop");
+        isStop = true;
+        if(vib != null){
+            vib.cancel();
+            LeoLog.d("testFragment", "onStop , vib.cancel()");
+        }
+        super.onStop();
+    }
+    
+    @Override
+    public void onResume() {
+        isStop = false;
+        LeoLog.d("testFragment", "onResume");
+        super.onResume();
+    }
+    
     @Override
     protected int layoutResourceId() {
         return R.layout.activity_unknowcall_five;
@@ -107,18 +175,18 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         iv_guaduan_big = (ImageView) findViewById(R.id.iv_guaduan_big);
         iv_duanxin_big = (ImageView) findViewById(R.id.iv_duanxin_big);
         iv_jieting_big = (ImageView) findViewById(R.id.iv_jieting_big);
+
+        myself_circle = (CirCleDongHua) findViewById(R.id.myself_circle);
     }
 
     public void setPlace() {
         new Thread() {
             public void run() {
                 try {
-                    iv_dianhua_hold.setVisibility(View.INVISIBLE);
-                    iv_guaduan.setVisibility(View.INVISIBLE);
-                    iv_duanxin.setVisibility(View.INVISIBLE);
-                    iv_jieting.setVisibility(View.INVISIBLE);
+                    mHandler.sendEmptyMessage(2);
                     sleep(50);
                     mHandler.sendEmptyMessage(1);
+                    LeoLog.d("testFragment", "setPlace ! ");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -131,6 +199,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         if (v.getId() == R.id.iv_dianhua_hold) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:// 手指按下屏幕
+                    myself_circle.setVisibility(View.INVISIBLE);
                     startX = (int) event.getRawX();
                     startY = (int) event.getRawY();
                     break;
@@ -220,6 +289,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                         vib.cancel();
                     } else {
                         v.layout(hold_left, hold_top, hold_right, hold_bottom);
+                        myself_circle.setVisibility(View.VISIBLE);
                     }
 
                     break;
@@ -237,6 +307,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                 // 圆心在？
                 mYuanX = mViewContent.getPointX();
                 mYuanY = mViewContent.getPointY();
+                myself_circle.setYuan(mYuanX, mYuanY);
+
                 // 直径是？
                 mZhiJing = mViewContent.getZhiJing();
                 mBanJing = mZhiJing / 2;
@@ -321,4 +393,15 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     public void setCanCel() {
         vib.cancel();
     }
+    
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        
+//        if (keyCode == KeyEvent.KEYCODE_BACK
+//                 && event.getRepeatCount() == 0) {
+//            //do something...
+//             return true;
+//         }
+//         return super.onKeyDown(keyCode, event);
+//     }
+    
 }

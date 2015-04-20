@@ -606,8 +606,6 @@
     <string name="unknow_call_second_title">来电</string>
     <string name="unknow_call_thrid_first_title">使用介绍</string>
     <string name="unknow_call_all_content">来电显示是假象哦，按顺序划过挂断，短信，接听来解锁吧</string>
-    <string name="unknow_call_thrid_second_title">来电显示是假象哦</string>
-    <string name="unknow_call_thrid_thrid_title">按顺序划过挂断，短信，接听来解锁吧</string>
     <string name="weizhuang_setting_ok">未知来电模式已开启</string>
     <string name="error_mode_ok">应用错误模式已开启</string>
     <string name="zhiwen_mode_ok">指纹识别模式已开启</string>
@@ -627,7 +625,7 @@
     <!-- weizhuang -->
 
     <string name="time_location_lock_tip_title">更智能的情景模式切换</string>
-    <string name="time_location_lock_tip_content">我们发现您频繁切换情景模式，您可以设置通过时间或者位置自动切换情景模式，是否设置？</string>
+    <string name="time_location_lock_tip_content">我们发现您频繁切换情景模式，您可以设置通过时间锁或者位置锁自动切换情景模式，是否设置？</string>
 
     <string name="time_lock_mode_guide_content">时间锁可以在您指定的时间点击激活某个情景模式，建议您添加属于您自己的时间锁</string>
     <string name="location_lock_mode_guide_content">位置锁可以在您指定的地点触发情景模式，比如激活访客模式等，位置通过wifi热点来标注。这非常适合在您的家庭和公司之间建立不同的位置锁</string>

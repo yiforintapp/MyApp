@@ -8,10 +8,13 @@ import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -28,6 +31,7 @@ public class GestureRelative extends RelativeLayout {
     private boolean isFirstRound = false;
     private boolean isSecondRound = false;
     private boolean isThridRound = false;
+    private boolean isFlaseControl = false;
     private int gua_left, gua_top, gua_right, gua_bottom;
     private int duan_left, duan_top, duan_right, duan_bottom;
     private int jie_left, jie_top, jie_right, jie_bottom;
@@ -35,6 +39,8 @@ public class GestureRelative extends RelativeLayout {
     private PretendFragment mPf;
     private PretendAppUnknowCallFragment5 unknowFragment;
     private AppMasterPreference sp_unknowcall;
+    private Vibrator vib;
+    private Canvas mYCanvas;
 
     public GestureRelative(Context context) {
         super(context);
@@ -63,6 +69,7 @@ public class GestureRelative extends RelativeLayout {
         this.mContext = context;
         CirPanint = new Paint();
         sp_unknowcall = AppMasterPreference.getInstance(mContext);
+        vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
     }
 
     public int getPointX() {
@@ -91,6 +98,7 @@ public class GestureRelative extends RelativeLayout {
                 isFirstRound = false;
                 isSecondRound = false;
                 isThridRound = false;
+                isFlaseControl = false;
                 break;
         }
         return true;
@@ -100,7 +108,7 @@ public class GestureRelative extends RelativeLayout {
         // 挂断?
         if (x < gua_right && y > gua_top && y < gua_bottom && x > gua_left) {
             // 进入挂断区域，先判断是否从别处进入
-            if (!isFirstRound && !isSecondRound && !isThridRound) {
+            if (!isFirstRound && !isSecondRound && !isThridRound && !isFlaseControl) {
                 // 首先进入挂断区域
                 isFirstRound = true;
                 // LeoLog.d("testfuck", "首先进入挂断区域");
@@ -108,16 +116,19 @@ public class GestureRelative extends RelativeLayout {
                 if (!isFirstRound) {
                     // 进入了别的区域
                     // LeoLog.d("testfuck", "非首次进入挂断区域");
+                    isFlaseControl = true;
                     isSecondRound = false;
                     isThridRound = false;
                 } else if (isSecondRound) {
                     isSecondRound = false;
+                    isFlaseControl = true;
                 }
             }
         }
+
         // 短信?
         if (x > duan_left && x < duan_right && y < duan_bottom && y > duan_top) {
-            if (isFirstRound && !isSecondRound && !isThridRound) {
+            if (isFirstRound && !isSecondRound && !isThridRound && !isFlaseControl) {
                 isSecondRound = true;
                 // 顺利进入第二
                 // LeoLog.d("testfuck", "顺利进入第二");
@@ -125,14 +136,16 @@ public class GestureRelative extends RelativeLayout {
                 if (!isSecondRound) {
                     // 非正确进入第二
                     // LeoLog.d("testfuck", "非正确进入第二");
+                    isFlaseControl = true;
                     isFirstRound = false;
                     isThridRound = false;
                 }
             }
         }
+
         // 接听?
         if (x > jie_left && y > jie_top && y < jie_bottom && x < jie_right) {
-            if (isFirstRound && isSecondRound && !isThridRound) {
+            if (isFirstRound && isSecondRound && !isThridRound && !isFlaseControl) {
                 isThridRound = true;
                 // 顺利进入第三
                 // LeoLog.d("testfuck", "顺利进入第三");
@@ -142,6 +155,7 @@ public class GestureRelative extends RelativeLayout {
                     Toast.makeText(mContext, mContext.getString(R.string.weizhuang_setting_ok), 0)
                             .show();
                     sp_unknowcall.setPretendLock(UnknowCallMode);
+                    vib.vibrate(150);
                     mActivity.finish();
                 } else {
                     unknowFragment.setCanCel();
@@ -151,6 +165,7 @@ public class GestureRelative extends RelativeLayout {
                 if (!isThridRound) {
                     // 非正确进入第三
                     // LeoLog.d("testfuck", "非正确进入第三");
+                    isFlaseControl = true;
                     isFirstRound = false;
                     isSecondRound = false;
                 }
@@ -165,6 +180,7 @@ public class GestureRelative extends RelativeLayout {
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         canvas.drawCircle(CirPointX, CirPointY, mBanJing, CirPanint);
+        mYCanvas = canvas;
     }
 
     public void setGuaPosition(int left, int top, int right, int bottom) {
@@ -203,6 +219,5 @@ public class GestureRelative extends RelativeLayout {
     public void setFragment(PretendAppUnknowCallFragment5 fragment) {
         unknowFragment = fragment;
     }
-
 
 }

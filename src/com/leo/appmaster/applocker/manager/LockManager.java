@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.Intent.ShortcutIconResource;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.IBinder;
@@ -997,18 +998,6 @@ public class LockManager {
             lmd.deleteLockMode(unlockAll);
             mLockModeList.remove(unlockAll);
 
-            if (unlockAll.isCurrentUsed) {
-                LockMode visitor = null;
-                for (LockMode mode : mLockModeList) {
-                    if (mode.defaultFlag == 1) {
-                        visitor = mode;
-                        break;
-                    }
-                }
-                visitor.isCurrentUsed = true;
-                lmd.updateLockMode(visitor);
-            }
-
             // add home mode
             LockMode lockMode = new LockMode();
             lockMode.modeName = mContext.getString(R.string.family_mode);
@@ -1025,10 +1014,55 @@ public class LockManager {
                 }
             }
             lockMode.lockList = list;
-            mLockModeList.add(lockMode);
+            if (unlockAll.isCurrentUsed) {
+                lockMode.isCurrentUsed = true;
+            }
+            installHomeModeShortcut(mContext, lockMode);
+
+            mLockModeList.add(1, lockMode);
             lmd.insertLockMode(lockMode);
         }
 
+    }
+
+    private void installHomeModeShortcut(Context ctx, LockMode lockMode) {
+        Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
+        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        shortcutIntent.putExtra("quick_lock_mode", true);
+        shortcutIntent.putExtra("lock_mode_id", lockMode.modeId);
+        shortcutIntent.putExtra("lock_mode_name", lockMode.modeName);
+
+        Intent shortcut = new Intent(
+                "com.android.launcher.action.INSTALL_SHORTCUT");
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, lockMode.modeName);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        /*
+         * 0: unlock all; 1: visitor mode; 2: office mode; 3: family mode; -1:
+         * other
+         */
+        ShortcutIconResource iconRes = null;
+        if (lockMode.defaultFlag == 0) {
+            iconRes = Intent.ShortcutIconResource
+                    .fromContext(ctx, R.drawable.lock_mode_unlock);
+        } else if (lockMode.defaultFlag == 1) {
+            iconRes = Intent.ShortcutIconResource
+                    .fromContext(ctx, R.drawable.lock_mode_visitor);
+        } else if (lockMode.defaultFlag == 2) {
+            iconRes = Intent.ShortcutIconResource
+                    .fromContext(ctx, R.drawable.lock_mode_office);
+        } else if (lockMode.defaultFlag == 3) {
+            iconRes = Intent.ShortcutIconResource
+                    .fromContext(ctx, R.drawable.lock_mode_family);
+        } else {
+            iconRes = Intent.ShortcutIconResource
+                    .fromContext(ctx, R.drawable.lock_mode_default);
+        }
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+        shortcut.putExtra("duplicate", false);
+        shortcut.putExtra("from_shortcut", true);
+        ctx.sendBroadcast(shortcut);
+
+        SDKWrapper.addEvent(ctx, SDKWrapper.P1, "shortcuts", lockMode.modeName);
     }
 
     /* add default lock mode when we first load lock mode */
@@ -1243,7 +1277,7 @@ public class LockManager {
                     dialog.setTitle(R.string.time_location_lock_tip_title);
                     String tip = mContext.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
-                    dialog.setLeftBtnStr(mContext.getString(R.string.lock_mode_time));
+                    dialog.setLeftBtnStr(mContext.getString(R.string.lock_mode_location));
                     dialog.setRightBtnStr(mContext.getString(R.string.cancel));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override

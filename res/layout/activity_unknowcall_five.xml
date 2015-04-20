@@ -70,6 +70,12 @@
         android:background="@drawable/disguise_call_person"
         android:longClickable="true" >
 
+        <com.leo.appmaster.ui.CirCleDongHua
+            android:id="@+id/myself_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+
         <ImageView
             android:id="@+id/iv_guaduan"
             android:layout_width="32dp"

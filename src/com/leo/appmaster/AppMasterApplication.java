@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -51,6 +52,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
@@ -252,6 +254,7 @@ public class AppMasterApplication extends Application {
 
     public void tryRemoveUnlockAllShortcut(Context ctx) {
         if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
+            //remove unlock all shortcut
             Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
@@ -259,7 +262,6 @@ public class AppMasterApplication extends Application {
             shortcutIntent.putExtra("quick_lock_mode", true);
             shortcutIntent.putExtra("lock_mode_id", 0);
             shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
-
             Intent shortcut = new Intent(
                     "com.android.launcher.action.UNINSTALL_SHORTCUT");
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
@@ -267,6 +269,7 @@ public class AppMasterApplication extends Application {
             shortcut.putExtra("duplicate", false);
             shortcut.putExtra("from_shortcut", true);
             ctx.sendBroadcast(shortcut);
+            
             AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
         }
 
