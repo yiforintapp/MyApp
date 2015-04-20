@@ -1025,7 +1025,7 @@ public class LockManager {
                 }
             }
             lockMode.lockList = list;
-            mLockModeList.add(lockMode);
+            mLockModeList.add(0, lockMode);
             lmd.insertLockMode(lockMode);
         }
 
