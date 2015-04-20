@@ -20,6 +20,7 @@ import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.PagedGridView;
 
 public class SuccessAppLockListActivity extends BaseActivity implements OnClickListener {
@@ -46,12 +47,12 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     }
 
     private void initUI() {
-        // CommonTitleBar mCommonTitleBar = (CommonTitleBar)
-        // findViewById(R.id.layout_title_bar);
+        CommonTitleBar mCommonTitleBar = (CommonTitleBar)
+                findViewById(R.id.layout_title_bar);
         // mCommonTitleBar = (CommonTitleBar)
         // findViewById(R.id.layout_title_bar);
         // mCommonTitleBar.setTitle(R.string.app_lock);
-        // mCommonTitleBar.openBackView();
+        mCommonTitleBar.setBackArrowVisibility(View.GONE);
         mAppPager = (PagedGridView) findViewById(R.id.recomment_pager_unlock);
         lockTV = (TextView) findViewById(R.id.success_recomment_lock);
         lockTV.setOnClickListener(this);
