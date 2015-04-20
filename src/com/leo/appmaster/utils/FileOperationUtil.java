@@ -762,7 +762,7 @@ public class FileOperationUtil {
     public static void readAsFile(Bitmap inSream, String file, Context context) {
         try {
             OutputStream outStream = new FileOutputStream(new File(file), false);
-            inSream.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            inSream.compress(Bitmap.CompressFormat.PNG, 100, outStream);
             outStream.close();
         } catch (IOException e) {
             e.printStackTrace();
