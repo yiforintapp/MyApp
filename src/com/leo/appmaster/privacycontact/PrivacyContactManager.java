@@ -159,8 +159,9 @@ public class PrivacyContactManager {
     // 拦截短信处理
     public synchronized void synMessage(SimpleDateFormat sdf, MessageBean message,
             Context mContext, Long sendDate) {
-        boolean messageItemRuning = AppMasterPreference.getInstance(mContext)
-                .getMessageItemRuning();
+        AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
+        boolean messageItemRuning = pre.getMessageItemRuning();
+        int count = pre.getMessageNoReadCount();
         if (mMessage != null) {
             long date = 0;
             try {
@@ -184,6 +185,11 @@ public class PrivacyContactManager {
                 String number = PrivacyContactUtils.formatePhoneNumber(message.getPhoneNumber());
                 ContentResolver mCr = mContext.getContentResolver();
                 Uri messageFlag = mCr.insert(Constants.PRIVACY_MESSAGE_URI, values);
+                if (count > 0) {
+                    pre.setMessageNoReadCount(count + 1);
+                } else {
+                    pre.setMessageNoReadCount(1);
+                }
                 // 发送拦截通知
                 if (messageItemRuning) {
                     NotificationManager notificationManager = (NotificationManager) mContext
@@ -237,6 +243,11 @@ public class PrivacyContactManager {
             String number = PrivacyContactUtils.formatePhoneNumber(message.getPhoneNumber());
             ContentResolver mCr = mContext.getContentResolver();
             Uri messageFlag = mCr.insert(Constants.PRIVACY_MESSAGE_URI, values);
+            if (count > 0) {
+                pre.setMessageNoReadCount(count + 1);
+            } else {
+                pre.setMessageNoReadCount(1);
+            }
             // 发送拦截通知
             if (messageItemRuning) {
                 NotificationManager notificationManager = (NotificationManager) mContext
@@ -346,7 +357,7 @@ public class PrivacyContactManager {
 
     public ArrayList<ContactBean> getSysContacts() {
         loadSysContacts();
-         return (ArrayList<ContactBean>) mSysContactBean.clone();
+        return (ArrayList<ContactBean>) mSysContactBean.clone();
     }
 
     public void removeSysContact(ContactBean contact) {

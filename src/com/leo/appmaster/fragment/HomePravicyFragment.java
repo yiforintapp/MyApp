@@ -9,8 +9,10 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.eventbus.event.PrivacyLevelChangeEvent;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -34,14 +36,16 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     private View mPrivacyCallIcon;
     private View mHidePicIcon;
     private View mHideVideoIcon;
+    private TipTextView mCallLogTv, mMessageTv;
+    private AppMasterPreference mPreference;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         LeoEventBus.getDefaultBus().register(this);
         LoadSysContactTask loadSysContactData = new LoadSysContactTask(mActivity);
-        // 加载联系人数据
         loadSysContactData.execute("home_pravicy_load_contact_date");
+        mPreference = AppMasterPreference.getInstance(getActivity());
     }
 
     @Override
@@ -63,6 +67,25 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
 
     public void onEventMainThread(PrivacyLevelChangeEvent event) {
         onLevelChange(PrivacyHelper.getInstance(mActivity).getCurLevelColor().toIntColor());
+    }
+
+    public void onEventMainThread(PrivacyDeletEditEvent event) {
+        if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT
+                .equals(event.editModel)
+                || PrivacyContactUtils.PRIVACY_RECEIVER_MESSAGE_NOTIFICATION
+                        .equals(event.editModel)) {
+            // 短信未查看
+            isShowRedTip(mMessageTv, 0);
+        } else if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT
+                .equals(event.editModel)
+                || PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION
+                        .equals(event.editModel)
+                || PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP
+                        .equals(event.editModel)) {
+            
+            // 通话未查看
+            isShowRedTip(mCallLogTv, 1);
+        }
     }
 
     private void onLevelChange(int color) {
@@ -96,17 +119,35 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         mPrivacyMessage = findViewById(R.id.privacy_sms_layout);
         mPrivacyMessage.setOnClickListener(this);
         mPrivacyMessageIcon = mPrivacyMessage.findViewById(R.id.privacy_sms_img);
-
+        mMessageTv = (TipTextView) mPrivacyMessage.findViewById(R.id.privacy_sms_text);
+        isShowRedTip(mMessageTv, 0);
         mPrivacyCall = findViewById(R.id.privacy_call_layout);
         mPrivacyCall.setOnClickListener(this);
         mPrivacyCallIcon = mPrivacyCall.findViewById(R.id.privacy_call_img);
-
+        mCallLogTv = (TipTextView) mPrivacyCall.findViewById(R.id.privacy_call_text);
+        isShowRedTip(mCallLogTv, 1);
         onLevelChange(PrivacyHelper.getInstance(mActivity).getCurLevelColor().toIntColor());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    private void isShowRedTip(TipTextView view, int flag) {
+        int cunt = 0;
+        if (flag == 0) {
+            // 短信未读数
+            cunt = mPreference.getMessageNoReadCount();
+        } else if (flag == 1) {
+            // 通话未读数
+            cunt = mPreference.getCallLogNoReadCount();
+        }
+        if (cunt > 0) {
+            view.showTip(true);
+        } else {
+            view.showTip(false);
+        }
     }
 
     @Override

@@ -282,9 +282,6 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                     if (!messageList.containsKey(threadId)) {
                         int temp = threadIdMessage(number);
                         mb.setCount(temp);
-                        if (temp > 0) {
-                            noReadCount = noReadCount + 1;
-                        }
                         messageList.put(threadId, mb);
                     }
                 }
@@ -301,12 +298,6 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             mRestoremessgeLists = mMessages;
         }
         Collections.sort(mMessageList, PrivacyContactUtils.mMessageCamparator);
-        int count = preference.getMessageNoReadCount();
-        if (count > 0) {
-            preference.setMessageNoReadCount(count + noReadCount);
-        } else {
-            preference.setMessageNoReadCount(noReadCount);
-        }
     }
 
     private int threadIdMessage(String number) {
