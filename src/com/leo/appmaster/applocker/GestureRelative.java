@@ -13,8 +13,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -40,7 +38,6 @@ public class GestureRelative extends RelativeLayout {
     private PretendAppUnknowCallFragment5 unknowFragment;
     private AppMasterPreference sp_unknowcall;
     private Vibrator vib;
-    private Canvas mYCanvas;
 
     public GestureRelative(Context context) {
         super(context);
@@ -180,7 +177,6 @@ public class GestureRelative extends RelativeLayout {
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         canvas.drawCircle(CirPointX, CirPointY, mBanJing, CirPanint);
-        mYCanvas = canvas;
     }
 
     public void setGuaPosition(int left, int top, int right, int bottom) {
