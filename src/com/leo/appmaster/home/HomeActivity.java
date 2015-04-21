@@ -50,6 +50,7 @@ import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
@@ -407,20 +408,19 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 //                    sendBroadcast(appWallShortcut);
 //                    prefernece.edit().putBoolean("shortcut_appwall", false);
                 } else {
-                    Intent appWallShortIntent = new Intent(this, AppWallActivity.class);
-                    appWallShortIntent.putExtra("from_appwall_shortcut", true);
-                    appWallShortIntent.setAction(Intent.ACTION_MAIN);
-                    appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                    appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Intent appWallShortIntent = new Intent(HomeActivity.this, ProxyActivity.class);
+                    appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                            StatusBarEventService.EVENT_BUSINESS_GAME);
                     Intent appWallShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
                     appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.appwall_name));
-                    ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(this,
+                    ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(HomeActivity.this,
                             R.drawable.game);
                     appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
                     appWallShortcut.putExtra("duplicate", false);
                     appWallShortcut.putExtra("from_shortcut", true);
                     appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
                     sendBroadcast(appWallShortcut);
+                    prefernece.edit().putBoolean("shortcut_appwall", true).commit();
                 }
                 if (prefernece.getBoolean(KEY_ROOT_CHECK, true)) {
                     boolean root = RootChecker.isRoot();
