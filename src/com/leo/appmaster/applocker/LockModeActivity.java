@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -16,6 +17,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
 
@@ -212,6 +214,8 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
                 public void onClick(View v) {
                     AppMasterPreference.getInstance(LockModeActivity.this).setTimeLockModeGuideClicked(true);
                     ((TimeLockFragment) mFragment).lockGuide();
+                    /* SDK Event Mark */
+                    SDKWrapper.addEvent(LockModeActivity.this, SDKWrapper.P1, "help", "time");
                 }
             };
         } else if (currentPageItem == 2) {
@@ -221,6 +225,8 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
                 public void onClick(View v) {
                     AppMasterPreference.getInstance(LockModeActivity.this).setLocationLockModeGuideClicked(true);
                     ((LocationLockFragment) mFragment).lockGuide();
+                    /* SDK Event Mark */
+                    SDKWrapper.addEvent(LockModeActivity.this, SDKWrapper.P1, "help", "local");
                 }
             };
         }

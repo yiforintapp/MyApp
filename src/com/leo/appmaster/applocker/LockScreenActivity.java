@@ -590,7 +590,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 } catch (Exception e) {
                 }
                 /* SDK Event Mark */
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help");
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help_tip");
                 break;
             default:
                 break;
