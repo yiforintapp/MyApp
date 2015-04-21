@@ -230,7 +230,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             if (current < mFragmentHolders.length) {
                 HomeFragmentHoler hfh = mFragmentHolders[current];
                 if (hfh != null && hfh.fragment instanceof Selectable) {
-                    ((Selectable) (hfh.fragment)).onSelected();
+                    ((Selectable) (hfh.fragment)).onSelected(current);
                 }
             }
         }
@@ -717,7 +717,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (arg0 == 1 && mFragmentHolders[arg0].fragment instanceof Selectable) {
             ((Selectable) mFragmentHolders[mViewPager.getCurrentItem()].fragment).onScrolling();
         } else {
-            ((Selectable) mFragmentHolders[mViewPager.getCurrentItem()].fragment).onSelected();
+            ((Selectable) mFragmentHolders[mViewPager.getCurrentItem()].fragment).onSelected(arg0);
         }
     }
 
@@ -729,7 +729,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     @Override
     public void onPageSelected(int arg0) {
         if (mFragmentHolders[arg0].fragment instanceof Selectable) {
-            ((Selectable) mFragmentHolders[arg0].fragment).onSelected();
+            ((Selectable) mFragmentHolders[arg0].fragment).onSelected(arg0);
         }
     }
 

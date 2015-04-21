@@ -217,7 +217,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     }
 
     @Override
-    public void onSelected() {
+    public void onSelected(int position) {
         if (mPrivacyLevel != null) {
             mPrivacyLevel.palyAnim();
         }

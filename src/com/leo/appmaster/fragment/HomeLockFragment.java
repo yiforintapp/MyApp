@@ -211,7 +211,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     }
 
     @Override
-    public void onSelected() {
+    public void onSelected(int position) {
         if (mLockModeCircle != null) {
             mLockModeCircle.startAnimation();
         }
