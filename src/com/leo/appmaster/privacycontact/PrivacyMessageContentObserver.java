@@ -165,8 +165,16 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                     number,
                                     mContext);
                             // -------------------------------------------------------发送通知-------------------------------------------------
-                            if (CallLog.Calls.OUTGOING_TYPE != type) {
-                                new MessagePrivacyReceiver().callLogNotification(mContext);
+                            if (call.getAnswerType() == 1) {
+                                if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                    if (CallLog.Calls.MISSED_TYPE == type) {
+                                        new MessagePrivacyReceiver().callLogNotification(mContext);
+                                    }
+                                }
+                            } else if (call.getAnswerType() == 0) {
+                                if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                    new MessagePrivacyReceiver().callLogNotification(mContext);
+                                }
                             }
                         }
                     }
