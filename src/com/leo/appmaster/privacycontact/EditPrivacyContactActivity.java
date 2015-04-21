@@ -310,7 +310,8 @@ public class EditPrivacyContactActivity extends BaseActivity {
                         mCurrentNumber
                     });
             // 判断是否更新隐私短信和隐私通话列表
-            if (mCurrentNumber.equals(mPhoneNumber) && !mCurrentName.equals(mPhoneName)) {
+            String number=PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
+            if (mCurrentNumber.contains(number) && !mCurrentName.equals(mPhoneName)) {
                 ContentValues updateMessageNameValues = new ContentValues();
                 updateMessageNameValues.put(Constants.COLUMN_MESSAGE_CONTACT_NAME, mPhoneName);
                 ContentValues updateCallLogNameValues = new ContentValues();
