@@ -712,8 +712,7 @@ public class AppMasterApplication extends Application {
                     || pref.getSplashLoadFailNumber() < 0
                     || !failDate.equals(pref.getSplashLoadFailDate())
                     || (failDate.equals(pref.getSplashLoadFailDate()) && pref
-                            .getSplashLoadFailNumber() <= 2)
-                    || pref.getSaveSplashIsMemeryEnough() != -1) {
+                            .getSplashLoadFailNumber() <= 2)) {
                 // 日期变化数据初始化
                 if (!failDate.equals(pref.getSplashLoadFailDate())) {
                     if (pref.getSplashLoadFailNumber() != 0) {
