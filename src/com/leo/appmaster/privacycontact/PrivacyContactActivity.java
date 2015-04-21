@@ -347,16 +347,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 mFragmentHolders[0].redTip = true;
                 mPrivacyContactPagerTab.notifyDataSetChanged();
             }
-            // }
-            // mTtileBar.setBackViewListener(new OnClickListener() {
-            // @Override
-            // public void onClick(View arg0) {
-            // chanageEditModel();
-            // LeoEventBus.getDefaultBus().post(
-            // new
-            // PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
-            // }
-            // });
         } else if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT
                 .equals(event.editModel)) {
             mFragmentHolders[0].redTip = false;

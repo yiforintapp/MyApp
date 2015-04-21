@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         android:background="@color/all_backgroud"
         android:orientation="vertical"
-        android:padding="@dimen/app_manager_padding" >
+        android:padding="@dimen/new_app_manager_padding" >
 
         <GridView
             android:id="@+id/gv_weizhuang"

@@ -297,7 +297,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 vh.content = (TextView) convertView.findViewById(R.id.call_log_list_dateTV);
                 vh.typeImage = (ImageView) convertView.findViewById(R.id.call_log_type);
                 vh.checkImage = (ImageView) convertView.findViewById(R.id.call_log_itemCB);
-                vh.checkImage.setTag(mb);
                 vh.contactIcon = (CircleImageView) convertView.findViewById(R.id.contactIV);
                 // vh.count = (TextView)
                 // convertView.findViewById(R.id.call_log_list_countTV);
@@ -409,6 +408,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     vh.bottomLine.setVisibility(View.VISIBLE);
                 }
             }
+            vh.checkImage.setTag(mb);
             return convertView;
         }
     }

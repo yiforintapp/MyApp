@@ -76,7 +76,7 @@
                     android:focusable="true"
                     android:gravity="center"
                     android:padding="12dp"
-                    android:text="@string/makesure"
+                    android:text="@string/error_cancel_button"
                     android:textColor="@color/white" />
             </LinearLayout>
 

@@ -613,6 +613,10 @@
     <string name="weizhuang_error_notice">抱歉，“隐私卫士“已停止使用</string>
     <string name="weizhuang_error_notice_set_false">哎哟！滑动距离再大一点</string>
     <string name="weizhuang_zhiwen_notice">指纹识别是假象哦，一秒内快速在指纹解锁处点击三次来设置解锁吧</string>
+    <string name="error_cancel_button">关闭</string>
+    <string name="open_weizhuang_dialog_title">启动伪装</string>
+    <string name="open_weizhuang_dialog_content">恭喜！您已学会使用此伪装，是否开启？</string>
+    <string name="open_weizhuang_dialog_sure">开启</string>
 
     <string-array name="weizhuang_type_num">
         <item>无</item>

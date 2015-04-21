@@ -401,6 +401,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 tip = getString(R.string.pretend_app_error, lab);
 
             } catch (NameNotFoundException e) {
+                tip = getString(R.string.weizhuang_error_notice);
                 e.printStackTrace();
             }
             paf.setErrorTip(tip);
@@ -590,7 +591,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 } catch (Exception e) {
                 }
                 /* SDK Event Mark */
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help");
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help_tip");
                 break;
             default:
                 break;

@@ -76,7 +76,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     if (cursor != null) {
                         while (cursor.moveToNext()) {
                             String number = cursor.getString(cursor.getColumnIndex("number"));
-                            String name = cursor.getString(cursor.getColumnIndex("name"));
+                            // String name =
+                            // cursor.getString(cursor.getColumnIndex("name"));
+                            String name = call.getContactName();
                             cursor.getString(cursor.getColumnIndex("duration"));
                             Date date = new Date(Long.parseLong(cursor.getString(cursor
                                     .getColumnIndex(CallLog.Calls.DATE))));
@@ -99,26 +101,56 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             }
                             values.put(Constants.COLUMN_CALL_LOG_DATE, time);
                             values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
-                            if (CallLog.Calls.OUTGOING_TYPE == type) {
-                                values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
-                            } else {
-                                values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+                            if (call.getAnswerType() == 1) {
+                                if (CallLog.Calls.OUTGOING_TYPE == type
+                                        || CallLog.Calls.MISSED_TYPE != type) {
+                                    values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
+                                } else {
+                                    values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+                                }
+                            } else if (call.getAnswerType() == 0) {
+                                if (CallLog.Calls.OUTGOING_TYPE == type) {
+                                    values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
+                                } else {
+                                    values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+                                }
                             }
                             // 保存记录
                             cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
-                            if (CallLog.Calls.OUTGOING_TYPE != type) {
-                                AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
-                                int count = pre.getMessageNoReadCount();
-                                if (count > 0) {
-                                    pre.setCallLogNoReadCount(count + 1);
-                                } else {
-                                    pre.setCallLogNoReadCount(1);
+                            if (call.getAnswerType() == 1) {
+                                if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                    if (CallLog.Calls.MISSED_TYPE == type) {
+                                        AppMasterPreference pre = AppMasterPreference
+                                                .getInstance(mContext);
+                                        int count = pre.getMessageNoReadCount();
+                                        if (count > 0) {
+                                            pre.setCallLogNoReadCount(count + 1);
+                                        } else {
+                                            pre.setCallLogNoReadCount(1);
+                                        }
+                                        LeoEventBus
+                                                .getDefaultBus()
+                                                .post(
+                                                        new PrivacyDeletEditEvent(
+                                                                PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
+                                    }
                                 }
-                                LeoEventBus
-                                        .getDefaultBus()
-                                        .post(
-                                                new PrivacyDeletEditEvent(
-                                                        PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
+                            } else if (call.getAnswerType() == 0) {
+                                if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                    AppMasterPreference pre = AppMasterPreference
+                                            .getInstance(mContext);
+                                    int count = pre.getMessageNoReadCount();
+                                    if (count > 0) {
+                                        pre.setCallLogNoReadCount(count + 1);
+                                    } else {
+                                        pre.setCallLogNoReadCount(1);
+                                    }
+                                    LeoEventBus
+                                            .getDefaultBus()
+                                            .post(
+                                                    new PrivacyDeletEditEvent(
+                                                            PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
+                                }
                             }
                             // 通知更新通话记录
                             LeoEventBus
@@ -133,8 +165,16 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                     number,
                                     mContext);
                             // -------------------------------------------------------发送通知-------------------------------------------------
-                            if (CallLog.Calls.OUTGOING_TYPE != type) {
-                                new MessagePrivacyReceiver().callLogNotification(mContext);
+                            if (call.getAnswerType() == 1) {
+                                if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                    if (CallLog.Calls.MISSED_TYPE == type) {
+                                        new MessagePrivacyReceiver().callLogNotification(mContext);
+                                    }
+                                }
+                            } else if (call.getAnswerType() == 0) {
+                                if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                    new MessagePrivacyReceiver().callLogNotification(mContext);
+                                }
                             }
                         }
                     }

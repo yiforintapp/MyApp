@@ -61,6 +61,7 @@ public class LocationLockEditActivity extends BaseActivity implements
     private long mTimeLockId;
     private boolean mEdited;
     private String mLockName;
+    private boolean mFromDialog;
 
     private LocationLock mEditLocationLock;
 
@@ -76,6 +77,7 @@ public class LocationLockEditActivity extends BaseActivity implements
         Intent intent = getIntent();
         mNewLocationLock = intent.getBooleanExtra("new_location_lock", false);
         mTimeLockId = intent.getLongExtra("location_lock_id", -1l);
+        mFromDialog = intent.getBooleanExtra("from_dialog", false);
         mEditLocationLock = new LocationLock();
         if (mNewLocationLock) {
             LockMode mode = getHomeMode();
@@ -387,7 +389,9 @@ public class LocationLockEditActivity extends BaseActivity implements
                             this.getString(R.string.lock_mode_location),
                             mEditLocationLock.name),
                     Toast.LENGTH_SHORT).show();
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "local", "dialog");
+            if(mFromDialog){
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "local", "dialog");
+            }
         } else {
             lm.updateLocationLock(mEditLocationLock);
             Toast.makeText(this, R.string.save_successful, Toast.LENGTH_SHORT).show();

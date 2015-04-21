@@ -10,9 +10,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -20,12 +20,11 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.model.WeiZhuangInfo;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 public class WeiZhuangActivity extends Activity implements OnItemClickListener, OnClickListener {
@@ -35,14 +34,13 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
     private List<WeiZhuangInfo> mList;
     private WeiZhuangAdapt mAdapt;
     private CommonTitleBar mTtileBar;
-    private Animation mOpenTips;
     private GridView mGridView;
     private Resources mThemeRes;
     private AppMasterPreference sp_weizhuang;
     private int selected = 0;
     private ImageView weizhuang_ask;
     private View trffic_setting_iv;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +59,7 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
         trffic_setting_iv = findViewById(R.id.trffic_setting_iv);
         trffic_setting_iv.setVisibility(View.VISIBLE);
         trffic_setting_iv.setOnClickListener(this);
-        
+
         mGridView = (GridView) findViewById(R.id.gv_weizhuang);
 
         sp_weizhuang = AppMasterPreference.getInstance(this);
@@ -72,11 +70,11 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
-        if(mAdapt != null){
+        if (mAdapt != null) {
             mAdapt.notifyDataSetChanged();
         }
     }
-    
+
     private void fillData() {
         mName = getResources().getStringArray(R.array.weizhuang_type_num);
         mIcon[0] = mThemeRes.getDrawable(R.drawable.disguise_icon_no);
@@ -136,7 +134,6 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
                 convertView = getLayoutInflater().inflate(
                         R.layout.item_weizhuang_gridview, null);
                 viewHolder = new WeizhuangHolder();
-                viewHolder.item_all_content = convertView.findViewById(R.id.item_all_content);
                 viewHolder.iv_icon = (ImageView) convertView
                         .findViewById(R.id.item_icon);
                 viewHolder.iv_selected = (ImageView) convertView
@@ -147,7 +144,7 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
             } else {
                 viewHolder = (WeizhuangHolder) convertView.getTag();
             }
-            
+
             selected = sp_weizhuang.getPretendLock();
             // who selected
             if (position == selected) {
@@ -166,7 +163,6 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
     }
 
     private static class WeizhuangHolder {
-        private View item_all_content;
         private ImageView iv_icon, iv_selected;
         private TextView tv_name;
     }
@@ -175,32 +171,33 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
-                if(selected != 0){
+                if (selected != 0) {
                     // 无
                     sp_weizhuang.setPretendLock(noMode);
                     mAdapt.notifyDataSetChanged();
                 }
                 break;
             case 1:
-                if(selected != 1){
+                if (selected != 1) {
                     // 应用错误
-                    Intent mIntent = new Intent(this,ErrorWeiZhuang.class);
+                    Intent mIntent = new Intent(this, ErrorWeiZhuang.class);
                     this.startActivity(mIntent);
                 }
                 break;
             case 2:
-                if(selected != 2){
+                if (selected != 2) {
                     // 未知来电
-//                    Intent intent = new Intent(this,UnknowCallActivity.class);
-//                    this.startActivity(intent);
-                  Intent intent = new Intent(this,UnKnowCallActivity5.class);
-                  this.startActivity(intent);
+                    // Intent intent = new
+                    // Intent(this,UnknowCallActivity.class);
+                    // this.startActivity(intent);
+                    Intent intent = new Intent(this, UnKnowCallActivity5.class);
+                    this.startActivity(intent);
                 }
                 break;
             case 3:
-                if(selected != 3){
+                if (selected != 3) {
                     // 指纹解锁
-                    Intent zhiWenIntent = new Intent(this,ZhiWenActivity.class);
+                    Intent zhiWenIntent = new Intent(this, ZhiWenActivity.class);
                     this.startActivity(zhiWenIntent);
                 }
                 break;
@@ -213,10 +210,12 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.trffic_setting_iv:
-                Intent intent = new Intent(this,WeiZhuangFirstIn.class);
+                /* SDK Event Mark */
+                SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1, "help", "cover");
+                Intent intent = new Intent(this, WeiZhuangFirstIn.class);
                 startActivity(intent);
                 finish();
-                overridePendingTransition( R.anim.lock_mode_guide_in, R.anim.hold_stay);
+                overridePendingTransition(R.anim.lock_mode_guide_in, R.anim.hold_stay);
                 break;
             default:
                 break;
