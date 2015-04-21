@@ -267,11 +267,11 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     Constants.PRIVACY_CALL_LOG_URI, values);
             AppMasterPreference pre = AppMasterPreference
                     .getInstance(mContext);
-            int count = pre.getMessageNoReadCount();
+            int count = pre.getCallLogNoReadCount();
             if (count > 0) {
-                pre.setMessageNoReadCount(count + 1);
+                pre.setCallLogNoReadCount(count + 1);
             } else {
-                pre.setMessageNoReadCount(1);
+                pre.setCallLogNoReadCount(1);
             }
             if (uri != null) {
                 // 通知更新通话记录
@@ -280,8 +280,13 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                         .post(
                                 new PrivacyDeletEditEvent(
                                         PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP));
-                
+
             }
+            LeoEventBus
+                    .getDefaultBus()
+                    .post(
+                            new PrivacyDeletEditEvent(
+                                    PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
             // 发送通知
             callLogNotification(mContext);
         }
