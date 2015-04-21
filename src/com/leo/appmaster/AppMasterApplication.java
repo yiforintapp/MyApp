@@ -807,7 +807,7 @@ public class AppMasterApplication extends Application {
                             public void onErrorResponse(VolleyError error) {
                                 // 拉取失败重试策略
                                 LeoLog.e("loadSplash", error.getMessage());
-                                Log.e("xxxxxxxxxxxxxxx", "加载闪屏失败");
+//                                Log.e("xxxxxxxxxxxxxxx", "加载闪屏失败");
                                 if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
                                     pref.setSplashLoadFailDate(failDate);
                                 } else if (pref.getSplashLoadFailNumber() >= 0
