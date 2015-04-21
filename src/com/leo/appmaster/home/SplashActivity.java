@@ -88,8 +88,8 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         // mSplashIcon = (ImageView)
         // findViewById(R.id.image_view_splash_center);
         // mSplashName = (ImageView) findViewById(R.id.iv_back);
-        //        showSplash();
-         initSplash();
+        // showSplash();
+        initSplash();
         mEventHandler = new EventHandler();
         startInitTask();
         LeoEventBus.getDefaultBus().register(this, 2);
@@ -156,15 +156,12 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
         }
         if (splash != null) {
-            mSplashIcon.setVisibility(View.INVISIBLE);
-            mSplashName.setVisibility(View.INVISIBLE);
             byte[] chunk = splash.getNinePatchChunk();
             if (NinePatch.isNinePatchChunk(chunk) && chunk != null) {
+                mSplashIcon.setVisibility(View.INVISIBLE);
+                mSplashName.setVisibility(View.INVISIBLE);
                 mSplashRL.setBackgroundDrawable(new NinePatchDrawable(getResources(),
                         splash, chunk, NinePatchChunk.deserialize(chunk).mPaddings, null));
-            } else{
-                BitmapDrawable drawable = new BitmapDrawable(splash);
-                mSplashRL.setBackgroundDrawable(drawable);
             }
         }
     }
