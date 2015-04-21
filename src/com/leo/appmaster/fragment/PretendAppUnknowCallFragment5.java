@@ -2,6 +2,7 @@
 package com.leo.appmaster.fragment;
 
 import android.app.Service;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.view.Display;
@@ -13,6 +14,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
@@ -24,7 +26,7 @@ import com.leo.appmaster.utils.LeoLog;
 public class PretendAppUnknowCallFragment5 extends PretendFragment implements OnTouchListener {
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
             iv_duanxin_big, iv_jieting_big;
-    private View activity_weizhuang_firstin;
+    private LinearLayout activity_weizhuang_firstin;
     private float mYuanX, mYuanY, mZhiJing, mBanJing;
     private int hold_width, hold_height, hold_left, hold_top, hold_right, hold_bottom;
     private int gua_yuan_x, gua_yuan_y, gua_left, gua_top, gua_right, gua_bottom;
@@ -141,14 +143,20 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
     @Override
     protected void onInitUI() {
-        activity_weizhuang_firstin = findViewById(R.id.activity_weizhuang_firstin);
+        activity_weizhuang_firstin = (LinearLayout) findViewById(R.id.activity_weizhuang_firstin);
+
         // make content match the screen
-        Display display = mActivity.getWindowManager().getDefaultDisplay();
-        Window window = mActivity.getWindow();
-        LayoutParams windowLayoutParams = window.getAttributes(); // 获取对话框当前的参数值
-        windowLayoutParams.width = (int) (display.getWidth());
-        windowLayoutParams.height = (int) (display.getHeight());
-        activity_weizhuang_firstin.setLayoutParams(windowLayoutParams);
+        // Display display = mActivity.getWindowManager().getDefaultDisplay();
+        // Window window = mActivity.getWindow();
+        // LayoutParams windowLayoutParams = window.getAttributes(); //
+        // 获取对话框当前的参数值
+        // windowLayoutParams.width = (int) (display.getWidth());
+        // windowLayoutParams.height = (int) (display.getHeight());
+        // LeoLog.d("testunknow", "屏幕高：" + display.getHeight());
+
+        android.widget.LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        activity_weizhuang_firstin.setLayoutParams(lp);
 
         SDKWrapper
                 .addEvent(mActivity, SDKWrapper.P1, "appcover", "UnknowCall");
