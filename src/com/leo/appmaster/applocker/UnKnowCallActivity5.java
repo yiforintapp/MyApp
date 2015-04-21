@@ -1,20 +1,26 @@
 
 package com.leo.appmaster.applocker;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.CirCleDongHua;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 
 import android.app.Activity;
+import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
+    private final static int UnknowCallMode = 2;
     private TextView tv_use_tips, tv_use_tips_content;
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
             iv_duanxin_big, iv_jieting_big, iv_tips_left, iv_tips_right;
@@ -39,7 +45,10 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
     private boolean isControlDuan = false;
     private boolean isControlJie = false;
     private boolean isShowing = false;
-
+    private LEOAlarmDialog mAlarmDialog;
+    private AppMasterPreference sp_unknowcall;
+    private Vibrator vib;
+    
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -60,8 +69,8 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
                             tip_left_bottom);
                     iv_tips_right.layout(tip_right_left, tip_right_top, tip_right_right,
                             tip_right_bottom);
-                    
-                    if(!isShowing){
+
+                    if (!isShowing) {
                         myself_circle.setVisibility(View.VISIBLE);
                         showDonghua();
                     }
@@ -79,8 +88,6 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
         };
     };
 
-    
-    
     @Override
     protected void onStop() {
         iv_tips_left.setVisibility(View.INVISIBLE);
@@ -105,12 +112,12 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
             public void run() {
                 int startInt = 0;
                 int mAplha = 0;
-                while(mBanJing > startInt){
+                while (mBanJing > startInt) {
                     try {
                         Thread.sleep(15);
                         startInt += 2;
-                        mAplha = 255 -  (int) (startInt*255 / mBanJing);
-                        if(mAplha < 0){
+                        mAplha = 255 - (int) (startInt * 255 / mBanJing);
+                        if (mAplha < 0) {
                             mAplha = 0;
                         }
                         myself_circle.setProgress(startInt, mAplha);
@@ -124,6 +131,9 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
     }
 
     private void init() {
+        sp_unknowcall = AppMasterPreference.getInstance(this);
+        vib = (Vibrator) this.getSystemService(Service.VIBRATOR_SERVICE);
+        
         tv_use_tips = (TextView) findViewById(R.id.tv_use_tips);
         tv_use_tips.setVisibility(View.VISIBLE);
         tv_use_tips_content = (TextView) findViewById(R.id.tv_use_tips_content);
@@ -169,9 +179,6 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
             hold_top = (int) (mYuanY - (hold_height / 2));
             hold_right = (int) (mYuanX + (hold_width / 2));
             hold_bottom = (int) (mYuanY + (hold_height / 2));
-//            LeoLog.d("testnewcall", "hold_left is : " + hold_left
-//                    + "--hold_top is : " + hold_top + "--hold_right is : "
-//                    + hold_right + "hold_bottom is : " + hold_bottom);
 
             // 挂断，短信，接听icon位置
             setPosition();
@@ -274,7 +281,7 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
     public boolean onTouch(View v, MotionEvent event) {
         if (v.getId() == R.id.iv_dianhua_hold) {
             switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:// 手指按下屏幕
+                case MotionEvent.ACTION_DOWN:
                     myself_circle.setVisibility(View.INVISIBLE);
                     startX = (int) event.getRawX();
                     startY = (int) event.getRawY();
@@ -375,4 +382,41 @@ public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
         }
         return false;
     }
+
+    protected void makeText() {
+        Toast.makeText(this, getString(R.string.weizhuang_setting_ok), 0)
+                .show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mAlarmDialog != null) {
+            mAlarmDialog.dismiss();
+            mAlarmDialog = null;
+        }
+        super.onDestroy();
+    }
+
+    public void showAlarmDialog(String title, String content, String sureText) {
+        if (mAlarmDialog == null) {
+            mAlarmDialog = new LEOAlarmDialog(this);
+            mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {
+                @Override
+                public void onClick(int which) {
+                    // ok
+                    if (which == 1) {
+                        makeText();
+                        sp_unknowcall.setPretendLock(UnknowCallMode);
+                        vib.vibrate(150);
+                        UnKnowCallActivity5.this.finish();
+                    }
+                }
+            });
+        }
+        mAlarmDialog.setSureButtonText(sureText);
+        mAlarmDialog.setTitle(title);
+        mAlarmDialog.setContent(content);
+        mAlarmDialog.show();
+    }
+
 }

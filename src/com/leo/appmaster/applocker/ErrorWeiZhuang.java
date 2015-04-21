@@ -3,6 +3,8 @@ package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 
 import android.app.Activity;
 import android.app.Service;
@@ -27,7 +29,8 @@ public class ErrorWeiZhuang extends Activity implements OnTouchListener {
     private int button_bottom;
     private int button_left;
     private Vibrator vib;
-    
+    private LEOAlarmDialog mAlarmDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +77,9 @@ public class ErrorWeiZhuang extends Activity implements OnTouchListener {
                 float fitDistanceY = button_bottom - button_top + 20;
                 if (distanceX > fitDistanceX) {
                     if (distanceY < fitDistanceY) {
-                        // ok
-                        Toast.makeText(this, getString(R.string.error_mode_ok), 0).show();
-                        sp_error_weizhuang.setPretendLock(ERRORWEIZHUANG);
-                        vib.vibrate(150);
-                        finish();
+                        showAlarmDialog(getString(R.string.open_weizhuang_dialog_title),
+                                getString(R.string.open_weizhuang_dialog_content),
+                                getString(R.string.open_weizhuang_dialog_sure));
                     }
                 } else {
                     if (distanceX > 0) {
@@ -93,5 +94,41 @@ public class ErrorWeiZhuang extends Activity implements OnTouchListener {
         }
 
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mAlarmDialog != null) {
+            mAlarmDialog.dismiss();
+            mAlarmDialog = null;
+        }
+        super.onDestroy();
+    }
+
+    private void showAlarmDialog(String title, String content, String sureText) {
+        if (mAlarmDialog == null) {
+            mAlarmDialog = new LEOAlarmDialog(this);
+            mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {
+                @Override
+                public void onClick(int which) {
+                    // ok
+                    if(which == 1){
+                        makeText();
+                        sp_error_weizhuang.setPretendLock(ERRORWEIZHUANG);
+                        vib.vibrate(150);
+                        ErrorWeiZhuang.this.finish();
+                    }
+
+                }
+            });
+        }
+        mAlarmDialog.setSureButtonText(sureText);
+        mAlarmDialog.setTitle(title);
+        mAlarmDialog.setContent(content);
+        mAlarmDialog.show();
+    }
+
+    protected void makeText() {
+        Toast.makeText(this, getString(R.string.error_mode_ok), 0).show();
     }
 }

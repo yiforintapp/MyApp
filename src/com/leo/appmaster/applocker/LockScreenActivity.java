@@ -399,6 +399,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 tip = getString(R.string.pretend_app_error, lab);
 
             } catch (NameNotFoundException e) {
+                tip = getString(R.string.weizhuang_error_notice);
                 e.printStackTrace();
             }
             paf.setErrorTip(tip);

@@ -1,14 +1,11 @@
 
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.LeoLog;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -18,10 +15,8 @@ import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class GestureRelative extends RelativeLayout {
-    private final static int UnknowCallMode = 2;
     private Paint CirPanint;
     private int CirPointX, CirPointY;
     private int mZhiJing, mBanJing;
@@ -34,11 +29,9 @@ public class GestureRelative extends RelativeLayout {
     private int gua_left, gua_top, gua_right, gua_bottom;
     private int duan_left, duan_top, duan_right, duan_bottom;
     private int jie_left, jie_top, jie_right, jie_bottom;
-    private Activity mActivity;
+    private UnKnowCallActivity5 mActivity;
     private PretendFragment mPf;
     private PretendAppUnknowCallFragment5 unknowFragment;
-    private AppMasterPreference sp_unknowcall;
-    private Vibrator vib;
 
     public GestureRelative(Context context) {
         super(context);
@@ -66,8 +59,6 @@ public class GestureRelative extends RelativeLayout {
     private void init(Context context) {
         this.mContext = context;
         CirPanint = new Paint();
-        sp_unknowcall = AppMasterPreference.getInstance(mContext);
-        vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
     }
 
     public int getPointX() {
@@ -150,11 +141,9 @@ public class GestureRelative extends RelativeLayout {
                 // 触发成功
                 // LeoLog.d("testfuck", "触发成功");
                 if (isFromActivity) {
-                    Toast.makeText(mContext, mContext.getString(R.string.weizhuang_setting_ok), 0)
-                            .show();
-                    sp_unknowcall.setPretendLock(UnknowCallMode);
-                    vib.vibrate(150);
-                    mActivity.finish();
+                    mActivity.showAlarmDialog(mContext.getString(R.string.open_weizhuang_dialog_title),
+                            mContext.getString(R.string.open_weizhuang_dialog_content),
+                            mContext.getString(R.string.open_weizhuang_dialog_sure));
                 } else {
                     unknowFragment.setCanCel();
                     mPf.onUnlockPretendSuccessfully();
@@ -207,7 +196,7 @@ public class GestureRelative extends RelativeLayout {
         isFromActivity = isActivity;
     }
 
-    public void setActivity(Activity act) {
+    public void setActivity(UnKnowCallActivity5 act) {
         mActivity = act;
     }
 
