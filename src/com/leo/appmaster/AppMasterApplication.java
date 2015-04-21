@@ -255,7 +255,7 @@ public class AppMasterApplication extends Application {
 
     public void tryRemoveUnlockAllShortcut(Context ctx) {
         if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
-            //remove unlock all shortcut
+            // remove unlock all shortcut
             Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
@@ -270,7 +270,7 @@ public class AppMasterApplication extends Application {
             shortcut.putExtra("duplicate", false);
             shortcut.putExtra("from_shortcut", true);
             ctx.sendBroadcast(shortcut);
-            
+
             AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
         }
 
@@ -712,7 +712,8 @@ public class AppMasterApplication extends Application {
                     || pref.getSplashLoadFailNumber() < 0
                     || !failDate.equals(pref.getSplashLoadFailDate())
                     || (failDate.equals(pref.getSplashLoadFailDate()) && pref
-                            .getSplashLoadFailNumber() <= 2)) {
+                            .getSplashLoadFailNumber() <= 2)
+                    || pref.getSaveSplashIsMemeryEnough() != -1) {
                 // 日期变化数据初始化
                 if (!failDate.equals(pref.getSplashLoadFailDate())) {
                     if (pref.getSplashLoadFailNumber() != 0) {
@@ -858,6 +859,8 @@ public class AppMasterApplication extends Application {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片失败");
+                AppMasterPreference.getInstance(getApplicationContext())
+                        .setSaveSplashIsMemeryEnough(2);
             }
         });
     }
