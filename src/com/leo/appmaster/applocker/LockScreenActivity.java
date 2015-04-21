@@ -227,13 +227,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private void handleIntent() {
         Intent intent = getIntent();
+        mRestartForThemeChanged = intent.getBooleanExtra("from_theme_change", false);
         mQuickLockMode = intent.getBooleanExtra("quick_lock_mode", false);
         if (mQuickLockMode) {
             mQuickModeName = intent.getStringExtra("lock_mode_name");
             mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
-            
-            //home mode replace unlock-all mode
-            if(mQuiclModeId == 0) {
+
+            // home mode replace unlock-all mode
+            if (mQuiclModeId == 0) {
                 mQuiclModeId = 3;
             }
         }
@@ -322,6 +323,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             Intent intent = getIntent();
             finish();
             mRestartForThemeChanged = false;
+            intent.putExtra("from_theme_change", true);
             startActivity(intent);
         }
     }
@@ -373,7 +375,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         FragmentTransaction tans;
         mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
         mPretendFragment = getPretendFragment();
-        if (mPretendFragment != null) {
+        if (mPretendFragment != null && !mRestartForThemeChanged) {
             mLockLayout.setVisibility(View.GONE);
             mPretendLayout.setVisibility(View.VISIBLE);
             tans = fm.beginTransaction();
@@ -426,6 +428,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     break;
                 }
             }
+
+            if (willLaunch == null) {
+                LockMode homeMode = null;
+                for (LockMode lockMode : modeList) {
+                    if (lockMode.defaultFlag == 3) {
+                        homeMode = lockMode;
+                        break;
+                    }
+                }
+                willLaunch = homeMode;
+            }
             if (willLaunch != null) {
                 lm.setCurrentLockMode(willLaunch, true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
@@ -434,6 +447,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // Toast.makeText(this, mQuickModeName + "模式不存在, 请重试",
                 // 0).show();
             }
+
         } else {
             /**
              * notify LockManager
@@ -577,7 +591,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 } catch (Exception e) {
                 }
                 /* SDK Event Mark */
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help");
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help_tip");
                 break;
             default:
                 break;

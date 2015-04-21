@@ -38,6 +38,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
@@ -68,6 +69,7 @@ public class TimeLockEditActivity extends BaseActivity implements
     private boolean mNewTimeLock;
     private long mTimeLockId;
     private boolean mEdited;
+    private boolean mFromDialog;
 
     private TimeLock mEditTimeLock;
     private String mLockName;
@@ -125,6 +127,7 @@ public class TimeLockEditActivity extends BaseActivity implements
         Intent intent = getIntent();
         mNewTimeLock = intent.getBooleanExtra("new_time_lock", false);
         mTimeLockId = intent.getLongExtra("time_lock_id", -1l);
+        mFromDialog = intent.getBooleanExtra("from_dialog", false);
         mEditTimeLock = new TimeLock();
         if (mNewTimeLock) {
             LockMode mode = getHomeMode();
@@ -359,6 +362,9 @@ public class TimeLockEditActivity extends BaseActivity implements
                     this.getString(R.string.lock_change, this.getString(R.string.lock_mode_time),
                             mEditTimeLock.name),
                     Toast.LENGTH_SHORT).show();
+            if(mFromDialog){
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "time", "dialog");
+            }
         } else {
             if (!mOpenRepeat) {
                 Calendar calendar = Calendar.getInstance();

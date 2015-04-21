@@ -38,6 +38,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
@@ -60,6 +61,7 @@ public class LocationLockEditActivity extends BaseActivity implements
     private long mTimeLockId;
     private boolean mEdited;
     private String mLockName;
+    private boolean mFromDialog;
 
     private LocationLock mEditLocationLock;
 
@@ -75,6 +77,7 @@ public class LocationLockEditActivity extends BaseActivity implements
         Intent intent = getIntent();
         mNewLocationLock = intent.getBooleanExtra("new_location_lock", false);
         mTimeLockId = intent.getLongExtra("location_lock_id", -1l);
+        mFromDialog = intent.getBooleanExtra("from_dialog", false);
         mEditLocationLock = new LocationLock();
         if (mNewLocationLock) {
             LockMode mode = getHomeMode();
@@ -386,6 +389,9 @@ public class LocationLockEditActivity extends BaseActivity implements
                             this.getString(R.string.lock_mode_location),
                             mEditLocationLock.name),
                     Toast.LENGTH_SHORT).show();
+            if(mFromDialog){
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "local", "dialog");
+            }
         } else {
             lm.updateLocationLock(mEditLocationLock);
             Toast.makeText(this, R.string.save_successful, Toast.LENGTH_SHORT).show();
