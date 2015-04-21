@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -21,11 +20,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.model.WeiZhuangInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -37,7 +34,6 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
     private List<WeiZhuangInfo> mList;
     private WeiZhuangAdapt mAdapt;
     private CommonTitleBar mTtileBar;
-    private Animation mOpenTips;
     private GridView mGridView;
     private Resources mThemeRes;
     private AppMasterPreference sp_weizhuang;
@@ -138,7 +134,6 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
                 convertView = getLayoutInflater().inflate(
                         R.layout.item_weizhuang_gridview, null);
                 viewHolder = new WeizhuangHolder();
-                viewHolder.item_all_content = convertView.findViewById(R.id.item_all_content);
                 viewHolder.iv_icon = (ImageView) convertView
                         .findViewById(R.id.item_icon);
                 viewHolder.iv_selected = (ImageView) convertView
@@ -168,7 +163,6 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
     }
 
     private static class WeizhuangHolder {
-        private View item_all_content;
         private ImageView iv_icon, iv_selected;
         private TextView tv_name;
     }
