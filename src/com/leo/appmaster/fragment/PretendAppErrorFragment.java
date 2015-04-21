@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.GestureTextView;
+import com.leo.appmaster.sdk.SDKWrapper;
 
 public class PretendAppErrorFragment extends PretendFragment {
 
@@ -26,6 +27,9 @@ public class PretendAppErrorFragment extends PretendFragment {
         }
         mGtv = (GestureTextView) findViewById(R.id.tv_make_sure);
         mGtv.setPretendFragment(this);
+        
+        SDKWrapper
+                .addEvent(mActivity, SDKWrapper.P1, "appcover", "AppError");
     }
 
     public void setErrorTip(String name) {

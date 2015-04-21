@@ -5,18 +5,26 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Handler;
 import android.provider.CallLog;
+import android.telecom.Call;
 import android.util.Log;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.utils.NotificationUtil;
 
 @SuppressLint("NewApi")
 public class PrivacyMessageContentObserver extends ContentObserver {
@@ -91,9 +99,27 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             }
                             values.put(Constants.COLUMN_CALL_LOG_DATE, time);
                             values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
-                            values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+                            if (CallLog.Calls.OUTGOING_TYPE == type) {
+                                values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
+                            } else {
+                                values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+                            }
                             // 保存记录
                             cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
+                            if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
+                                int count = pre.getMessageNoReadCount();
+                                if (count > 0) {
+                                    pre.setCallLogNoReadCount(count + 1);
+                                } else {
+                                    pre.setCallLogNoReadCount(1);
+                                }
+                                LeoEventBus
+                                        .getDefaultBus()
+                                        .post(
+                                                new PrivacyDeletEditEvent(
+                                                        PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
+                            }
                             // 通知更新通话记录
                             LeoEventBus
                                     .getDefaultBus()
@@ -106,6 +132,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?",
                                     number,
                                     mContext);
+                            // -------------------------------------------------------发送通知-------------------------------------------------
+                            if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                new MessagePrivacyReceiver().callLogNotification(mContext);
+                            }
                         }
                     }
 
@@ -119,7 +149,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 PrivacyContactManager.getInstance(mContext).updateSysCallLog();
             }
         } else if (CONTACT_MODEL.equals(mFlag)) {
-//            PrivacyContactManager.getInstance(mContext).updateSysContact();
+            // PrivacyContactManager.getInstance(mContext).updateSysContact();
         }
     }
 }

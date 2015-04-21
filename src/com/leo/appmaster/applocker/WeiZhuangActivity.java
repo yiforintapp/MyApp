@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -34,6 +35,7 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
     private List<WeiZhuangInfo> mList;
     private WeiZhuangAdapt mAdapt;
     private CommonTitleBar mTtileBar;
+    private Animation mOpenTips;
     private GridView mGridView;
     private Resources mThemeRes;
     private AppMasterPreference sp_weizhuang;
@@ -59,7 +61,6 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
         trffic_setting_iv = findViewById(R.id.trffic_setting_iv);
         trffic_setting_iv.setVisibility(View.VISIBLE);
         trffic_setting_iv.setOnClickListener(this);
-        
         
         mGridView = (GridView) findViewById(R.id.gv_weizhuang);
 
@@ -215,6 +216,7 @@ public class WeiZhuangActivity extends Activity implements OnItemClickListener, 
                 Intent intent = new Intent(this,WeiZhuangFirstIn.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition( R.anim.lock_mode_guide_in, R.anim.hold_stay);
                 break;
             default:
                 break;

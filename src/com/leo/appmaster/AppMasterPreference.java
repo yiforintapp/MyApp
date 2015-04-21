@@ -125,6 +125,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_FAIL_SPLASH_STRATEGY = "fail_splash_strategy";
     public static final String PREF_LAST_LOAD_SPLASH_TIME = "last_load_splash_time";
     public static final String PREF_MESSAGE_NO_READ_COUNT = "message_no_read_count";
+    public static final String PREF_CALL_LOG_NO_READ_COUNT = "call_log_no_read_count";
     public static final String PREF_SPLASH_LOAD_START_TIME = "start_load_splash_time";
     public static final String PREF_SPLASH_LOAD_FAIL_DATE = "splash_load_fail_date";
     public static final String PREF_SPLASH_LOAD_FAIL_NUMBER = "splash_load_fail_number";
@@ -140,7 +141,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_URL_FLAG = "splash_url_flag";
     public static final String PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG = "remove_unlock_all_shortcut";
     public static final String PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH="save_splash_memery_no_enough";
-
+    public static final String PREF_TIME_LOCK_MODE_SET_OVER="time_lock_mode_set_over";
+    public static final String PREF_LOCATION_LOCK_MODE_SET_OVER="location_lock_mode_set_over";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1141,7 +1143,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getWeiZhuang() {
-            return  mPref.getBoolean(PREF_WEIZHUANG_FIRST_IN, true);
+        return mPref.getBoolean(PREF_WEIZHUANG_FIRST_IN, true);
     }
 
     public int getPretendLock() {
@@ -1251,7 +1253,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setMessageNoReadCount(int count) {
-        mPref.edit().putInt(PREF_MESSAGE_NO_READ_COUNT, count);
+        mPref.edit().putInt(PREF_MESSAGE_NO_READ_COUNT, count).commit();
     }
 
     public int getMessageNoReadCount() {
@@ -1281,7 +1283,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public String getSplashUriFlag() {
         return mPref.getString(PREF_SPLASH_URL_FLAG, "splash_flag");
     }
-    
+
     public void setRemoveUnlockAllShortcutFlag(boolean removed) {
         mPref.edit().putBoolean(PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG, removed).commit();
     }
@@ -1289,11 +1291,33 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getRemoveUnlockAllShortcutFlag() {
         return mPref.getBoolean(PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG, false);
     }
+
     public void setSaveSplashIsMemeryEnough(int flag) {
         mPref.edit().putInt(PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH, flag).commit();
     }
 
     public int getSaveSplashIsMemeryEnough() {
         return mPref.getInt(PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH, -1);
+    }
+
+    public void setCallLogNoReadCount(int count) {
+        mPref.edit().putInt(PREF_CALL_LOG_NO_READ_COUNT, count).commit();
+    }
+
+    public int getCallLogNoReadCount() {
+        return mPref.getInt(PREF_CALL_LOG_NO_READ_COUNT, 0);
+    }
+    
+    public void setTimeLockModeSetOver(boolean setted){
+        mPref.edit().putBoolean(PREF_TIME_LOCK_MODE_SET_OVER, setted).commit();
+    }
+    public boolean getTimeLockModeSetOVer(){
+        return mPref.getBoolean(PREF_TIME_LOCK_MODE_SET_OVER, false);
+    }
+    public void setLocationLockModeSetOver(boolean setted){
+        mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_SET_OVER, setted).commit();
+    }
+    public boolean getLocationLockModeSetOVer(){
+        return mPref.getBoolean(PREF_LOCATION_LOCK_MODE_SET_OVER, false);
     }
 }

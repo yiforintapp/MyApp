@@ -56,7 +56,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
 
         // mTtileBar.setOptionImageVisibility(View.VISIBLE);
         // mTtileBar.setOptionImage(R.drawable.mode_add_button);
-         mTtileBar.setOptionListener(this);
+        // mTtileBar.setOptionListener(this);
     }
 
     @Override
@@ -167,6 +167,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         mTtileBar.setOptionImage(R.drawable.delete);
         mViewPager.setScrollable(false);
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        mTtileBar.setOptionListener(this);
     }
     
     public CommonTitleBar getActivityCommonTitleBar(){
@@ -192,35 +193,26 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         @Override
         public void onPageSelected(int arg0) {
             mTtileBar.setOptionImageVisibility(View.INVISIBLE);
-            /**
-             * in next two page,until user click the guide and guide page don't open then show help tip
-             */
             if (arg0 == 1) {
-                if(AppMasterPreference.getInstance(LockModeActivity.this).getTimeLockModeGuideClicked()){
-                    mFragment = mFragmentHolders.clone()[arg0].fragment;
-                    if (!((TimeLockFragment) mFragment).getGuideOpenState()) {
-                        OnClickListener listener = new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ((TimeLockFragment) mFragment).lockGuide();
-                            }
-                        };
-                        showTitleBarOption(listener);
+                mFragment = mFragmentHolders.clone()[arg0].fragment;
+                OnClickListener listener = new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AppMasterPreference.getInstance(LockModeActivity.this).setTimeLockModeGuideClicked(true);
+                        ((TimeLockFragment) mFragment).lockGuide();
                     }
-                }
+                };
+                showTitleBarOption(listener);
             } else if (arg0 == 2) {
-                if(AppMasterPreference.getInstance(LockModeActivity.this).getLocationLockModeGuideClicked()){
-                    mFragment = mFragmentHolders.clone()[arg0].fragment;
-                    if (!((LocationLockFragment) mFragment).getGuideOpenState()) {
-                        OnClickListener listener = new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ((LocationLockFragment) mFragment).lockGuide();
-                            }
-                        };
-                        showTitleBarOption(listener);
+                mFragment = mFragmentHolders.clone()[arg0].fragment;
+                OnClickListener listener = new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AppMasterPreference.getInstance(LockModeActivity.this).setLocationLockModeGuideClicked(true);
+                        ((LocationLockFragment) mFragment).lockGuide();
                     }
-                }
+                };
+                showTitleBarOption(listener);
             }
         }
     }

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.GestureRelative;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CirCleDongHua;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -46,7 +47,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            LeoLog.d("testfragment", "收到message了吗");
+            // LeoLog.d("testfragment", "收到message!!!");
             switch (msg.what) {
                 case 1:
                     iv_dianhua_hold.layout(hold_left, hold_top, hold_right, hold_bottom);
@@ -54,7 +55,6 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_guaduan.layout(gua_left, gua_top, gua_right, gua_bottom);
                     iv_guaduan_big.layout(gua_left_big, gua_top_big, gua_right_big, gua_bottom_big);
 
-                    
                     iv_duanxin.layout(duan_left, duan_top, duan_right, duan_bottom);
                     iv_duanxin_big.layout(duan_left_big, duan_top_big, duan_right_big,
                             duan_bottom_big);
@@ -62,7 +62,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_jieting.layout(jie_left, jie_top, jie_right, jie_bottom);
                     iv_jieting_big.layout(jie_left_big, jie_top_big, jie_right_big, jie_bottom_big);
 
-                    if(!isStartDong){
+                    if (!isStartDong) {
                         myself_circle.setVisibility(View.VISIBLE);
                         showDonghua();
                     }
@@ -72,12 +72,12 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
 
-                    if(!isStop){
+                    if (!isStop) {
                         vib.vibrate(new long[] {
                                 1000, 1000, 1000, 1000
                         }, 1);
+                        // LeoLog.d("testFragment", "start 震动 ! ");
                     }
-
 
                     break;
                 case 2:
@@ -92,8 +92,6 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         };
     };
 
-    
-    
     protected void showDonghua() {
         isStartDong = true;
         new Thread() {
@@ -120,19 +118,22 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
     @Override
     public void onStop() {
+        // LeoLog.d("testFragment", "onStop");
         isStop = true;
-        if(vib != null){
+        if (vib != null) {
             vib.cancel();
+            // LeoLog.d("testFragment", "onStop , vib.cancel()");
         }
         super.onStop();
     }
-    
+
     @Override
     public void onResume() {
         isStop = false;
+        // LeoLog.d("testFragment", "onResume");
         super.onResume();
     }
-    
+
     @Override
     protected int layoutResourceId() {
         return R.layout.activity_unknowcall_five;
@@ -148,6 +149,9 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         windowLayoutParams.width = (int) (display.getWidth());
         windowLayoutParams.height = (int) (display.getHeight());
         activity_weizhuang_firstin.setLayoutParams(windowLayoutParams);
+
+        SDKWrapper
+                .addEvent(mActivity, SDKWrapper.P1, "appcover", "UnknowCall");
 
         mVersion = PhoneInfo.getAndroidVersion();
         init();
@@ -181,6 +185,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     mHandler.sendEmptyMessage(2);
                     sleep(50);
                     mHandler.sendEmptyMessage(1);
+                    // LeoLog.d("testFragment", "setPlace ! ");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -314,9 +319,9 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                 hold_top = (int) (mYuanY - (hold_height / 2));
                 hold_right = (int) (mYuanX + (hold_width / 2));
                 hold_bottom = (int) (mYuanY + (hold_height / 2));
-                LeoLog.d("testnewcall", "hold_left is : " + hold_left
-                        + "--hold_top is : " + hold_top + "--hold_right is : "
-                        + hold_right + "hold_bottom is : " + hold_bottom);
+                // LeoLog.d("testnewcall", "hold_left is : " + hold_left
+                // + "--hold_top is : " + hold_top + "--hold_right is : "
+                // + hold_right + "hold_bottom is : " + hold_bottom);
 
                 // gua
                 gua_yuan_x = (int) (mYuanX - mBanJing);
@@ -387,4 +392,5 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     public void setCanCel() {
         vib.cancel();
     }
+
 }

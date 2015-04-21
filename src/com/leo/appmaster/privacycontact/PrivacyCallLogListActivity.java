@@ -322,7 +322,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                         .getInt(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_IS_READ));
                 if (isRead == 0) {
                     String readNumberFlag = PrivacyContactUtils.formatePhoneNumber(numberCall);
-                    PrivacyCalllogFragment.updateMessageMyselfIsRead(1,
+                    PrivacyCalllogFragment.updateCallLogMyselfIsRead(1,
                             "call_log_phone_number LIKE ? ",
                             new String[] {
                                 "%" + readNumberFlag

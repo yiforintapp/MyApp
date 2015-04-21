@@ -32,8 +32,9 @@ public class WeiZhuangFirstIn extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.bt_go:
                 Intent intent = new Intent(this, WeiZhuangActivity.class);
-                this.startActivity(intent);
+                startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.hold_in, R.anim.lock_mode_guide_out);
                 break;
             default:
                 break;

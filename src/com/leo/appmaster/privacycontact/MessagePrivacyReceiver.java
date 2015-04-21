@@ -97,11 +97,9 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     }
                 }
             } catch (Exception e) {
-                
+
             }
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
-            boolean callLogRuningStatus = AppMasterPreference.getInstance(mContext)
-                    .getCallLogItemRuning();
             // 获取来电号码
             final String phoneNumber =
                     intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
@@ -134,69 +132,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                 // 挂断电话
                                 mITelephony.endCall();
                                 // 判断是否为5.0系统，特别处理
-                                if (Build.VERSION.SDK_INT >= 21) {
-                                    ContentValues values = new ContentValues();
-                                    values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER,
-                                            cb.getContactNumber());
-                                    if (!"".equals(cb.getContactName())
-                                            && cb.getContactName() != null) {
-                                        values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME,
-                                                cb.getContactName());
-                                    } else {
-                                        values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME,
-                                                cb.getContactNumber());
-                                    }
-                                    values.put(Constants.COLUMN_CALL_LOG_DATE,
-                                            mSimpleDateFormate.format(System.currentTimeMillis()));
-                                    values.put(Constants.COLUMN_CALL_LOG_TYPE,
-                                            CallLog.Calls.INCOMING_TYPE);
-                                    values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
-                                    // 保存记录
-                                    Uri uri = mContext.getContentResolver().insert(
-                                            Constants.PRIVACY_CALL_LOG_URI, values);
-                                    if (uri != null) {
-                                        // 通知更新通话记录
-                                        LeoEventBus
-                                                .getDefaultBus()
-                                                .post(
-                                                        new PrivacyDeletEditEvent(
-                                                                PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP));
-                                    }
-                                }
-                                // 发送通知
-                                if (callLogRuningStatus) {
-                                    NotificationManager notificationManager = (NotificationManager)
-                                            mContext
-                                                    .getSystemService(Context.NOTIFICATION_SERVICE);
-                                    Notification notification = new Notification();
-                                    Intent intentPending = new Intent(mContext,
-                                            PrivacyContactActivity.class);
-                                    intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intentPending.putExtra(
-                                            PrivacyContactUtils.TO_PRIVACY_CONTACT,
-                                            PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
-                                    intentPending.putExtra("message_call_notifi", true);
-                                    PendingIntent contentIntent = PendingIntent
-                                            .getActivity(
-                                                    mContext,
-                                                    0,
-                                                    intentPending,
-                                                    PendingIntent.FLAG_UPDATE_CURRENT);
-                                    notification.icon = R.drawable.ic_launcher_notification;
-                                    notification.tickerText = mContext
-                                            .getString(R.string.privacy_contact_notification_title_big);
-                                    notification.flags = Notification.FLAG_AUTO_CANCEL;
-                                    notification
-                                            .setLatestEventInfo(
-                                                    mContext,
-                                                    mContext.getString(R.string.privacy_contact_notification_title_big),
-                                                    mContext.getString(R.string.privacy_contact_notification_title_small),
-                                                    contentIntent);
-                                    NotificationUtil.setBigIcon(notification,
-                                            R.drawable.ic_launcher_notification_big);
-                                    notification.when = System.currentTimeMillis();
-                                    notificationManager.notify(20140902, notification);
-                                }
+                                saveCallLog(cb);
                                 Log.d("MessagePrivacyReceiver",
                                         "Call intercept successful!");
                             } catch (Exception e) {
@@ -205,11 +141,11 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             // 恢复正常铃声
                             mAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                             // 通知更新通话记录
-                            LeoEventBus
-                                    .getDefaultBus()
-                                    .post(
-                                            new PrivacyDeletEditEvent(
-                                                    PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
+                            // LeoEventBus
+                            // .getDefaultBus()
+                            // .post(
+                            // new PrivacyDeletEditEvent(
+                            // PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
                         }
                     }
                 }
@@ -268,4 +204,85 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         return flagContact;
     }
 
+    public void callLogNotification(Context context) {
+        boolean callLogRuningStatus = AppMasterPreference.getInstance(
+                context)
+                .getCallLogItemRuning();
+        if (callLogRuningStatus) {
+            NotificationManager notificationManager = (NotificationManager)
+                    context
+                            .getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = new Notification();
+            Intent intentPending = new Intent(context,
+                    PrivacyContactActivity.class);
+            intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intentPending.putExtra(
+                    PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                    PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
+            intentPending.putExtra("message_call_notifi", true);
+            PendingIntent contentIntent = PendingIntent
+                    .getActivity(
+                            context,
+                            0,
+                            intentPending,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+            notification.icon = R.drawable.ic_launcher_notification;
+            notification.tickerText = context
+                    .getString(R.string.privacy_contact_notification_title_big);
+            notification.flags = Notification.FLAG_AUTO_CANCEL;
+            notification
+                    .setLatestEventInfo(
+                            context,
+                            context.getString(R.string.privacy_contact_notification_title_big),
+                            context.getString(R.string.privacy_contact_notification_title_small),
+                            contentIntent);
+            NotificationUtil.setBigIcon(notification,
+                    R.drawable.ic_launcher_notification_big);
+            notification.when = System.currentTimeMillis();
+            notificationManager.notify(20140902, notification);
+        }
+    }
+
+    private void saveCallLog(ContactBean contact) {
+        // 判断是否为5.0系统，特别处理
+        if (Build.VERSION.SDK_INT >= 21) {
+            ContentValues values = new ContentValues();
+            values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER,
+                    contact.getContactNumber());
+            if (!"".equals(contact.getContactName())
+                    && contact.getContactName() != null) {
+                values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME,
+                        contact.getContactName());
+            } else {
+                values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME,
+                        contact.getContactNumber());
+            }
+            values.put(Constants.COLUMN_CALL_LOG_DATE,
+                    mSimpleDateFormate.format(System.currentTimeMillis()));
+            values.put(Constants.COLUMN_CALL_LOG_TYPE,
+                    CallLog.Calls.INCOMING_TYPE);
+            values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+            // 保存记录
+            Uri uri = mContext.getContentResolver().insert(
+                    Constants.PRIVACY_CALL_LOG_URI, values);
+            AppMasterPreference pre = AppMasterPreference
+                    .getInstance(mContext);
+            int count = pre.getMessageNoReadCount();
+            if (count > 0) {
+                pre.setMessageNoReadCount(count + 1);
+            } else {
+                pre.setMessageNoReadCount(1);
+            }
+            if (uri != null) {
+                // 通知更新通话记录
+                LeoEventBus
+                        .getDefaultBus()
+                        .post(
+                                new PrivacyDeletEditEvent(
+                                        PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP));
+            }
+            // 发送通知
+            callLogNotification(mContext);
+        }
+    }
 }

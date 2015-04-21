@@ -161,7 +161,7 @@
     <dimen name="privacy_call_log_item_calllog_list_call_log_itemCB_layout_width">38dp</dimen>
     <dimen name="privacy_call_log_item_calllog_list_call_log_itemCB_layout_height">38dp</dimen>
     <dimen name="privacy_call_log_item_calllog_list_call_log_itemCB_layout_marginLeft">12dp</dimen>
-    <dimen name="privacy_call_log_item_calllog_list_call_log_itemCB_layout_marginRight">14dp</dimen>
+    <dimen name="privacy_call_log_item_calllog_list_call_log_itemCB_layout_marginRight">16dp</dimen>
     <dimen name="privacy_call_log_item_calllog_list_message_itemLT_layout_height">72dp</dimen>
     <dimen name="privacy_contact_dialog_button_width">32dp</dimen>
     <dimen name="privacy_contact_dialog_button_height">32dp</dimen>
@@ -215,7 +215,7 @@
     <dimen name="multi_mode_add_margin_bottom">6dp</dimen>
 
     <!-- HomeAppManagerFragment -->
-    <dimen name="app_manager_padding">16dp</dimen> <!-- 14 -->
+    <dimen name="app_manager_padding">10dp</dimen> <!-- 14 -->
     <dimen name="app_manager_four_icon_total_height">70dp</dimen> <!-- 62 -->
     <dimen name="app_manager_four_icon_width_height">24dp</dimen> <!-- 22 -->
     <dimen name="app_manager_four_icon_margin_top">14dp</dimen> <!-- 12 -->

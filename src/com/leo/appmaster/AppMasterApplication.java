@@ -61,6 +61,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
+import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
@@ -750,6 +751,7 @@ public class AppMasterApplication extends Application {
                                                     // 初始化显示时间段
                                                     pref.setSplashStartShowTime(-1);
                                                     pref.setSplashEndShowTime(-1);
+                                                    SplashActivity.deleteImage();
                                                 }
                                             }
                                             if (prefInt != -1) {
@@ -777,6 +779,10 @@ public class AppMasterApplication extends Application {
                                                 getSplashImage(imageUrl);
                                             }
                                         }
+                                        long successStrategy = pref.getThemeSuccessStrategy();
+                                        long failStrategy = pref.getThemeFailStrategy();
+                                        pref.setThemeStrategy(successStrategy, successStrategy,
+                                                failStrategy);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -856,6 +862,8 @@ public class AppMasterApplication extends Application {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片失败");
+                AppMasterPreference.getInstance(getApplicationContext())
+                        .setSaveSplashIsMemeryEnough(2);
             }
         });
     }

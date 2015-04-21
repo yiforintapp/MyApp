@@ -5,6 +5,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendFragment;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
@@ -13,8 +14,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -31,6 +30,7 @@ public class GestureRelative extends RelativeLayout {
     private boolean isFirstRound = false;
     private boolean isSecondRound = false;
     private boolean isThridRound = false;
+    private boolean isFlaseControl = false;
     private int gua_left, gua_top, gua_right, gua_bottom;
     private int duan_left, duan_top, duan_right, duan_bottom;
     private int jie_left, jie_top, jie_right, jie_bottom;
@@ -39,7 +39,6 @@ public class GestureRelative extends RelativeLayout {
     private PretendAppUnknowCallFragment5 unknowFragment;
     private AppMasterPreference sp_unknowcall;
     private Vibrator vib;
-    private Canvas mYCanvas;
 
     public GestureRelative(Context context) {
         super(context);
@@ -97,6 +96,7 @@ public class GestureRelative extends RelativeLayout {
                 isFirstRound = false;
                 isSecondRound = false;
                 isThridRound = false;
+                isFlaseControl = false;
                 break;
         }
         return true;
@@ -106,7 +106,7 @@ public class GestureRelative extends RelativeLayout {
         // 挂断?
         if (x < gua_right && y > gua_top && y < gua_bottom && x > gua_left) {
             // 进入挂断区域，先判断是否从别处进入
-            if (!isFirstRound && !isSecondRound && !isThridRound) {
+            if (!isFirstRound && !isSecondRound && !isThridRound && !isFlaseControl) {
                 // 首先进入挂断区域
                 isFirstRound = true;
                 // LeoLog.d("testfuck", "首先进入挂断区域");
@@ -114,16 +114,19 @@ public class GestureRelative extends RelativeLayout {
                 if (!isFirstRound) {
                     // 进入了别的区域
                     // LeoLog.d("testfuck", "非首次进入挂断区域");
+                    isFlaseControl = true;
                     isSecondRound = false;
                     isThridRound = false;
                 } else if (isSecondRound) {
                     isSecondRound = false;
+                    isFlaseControl = true;
                 }
             }
         }
+
         // 短信?
         if (x > duan_left && x < duan_right && y < duan_bottom && y > duan_top) {
-            if (isFirstRound && !isSecondRound && !isThridRound) {
+            if (isFirstRound && !isSecondRound && !isThridRound && !isFlaseControl) {
                 isSecondRound = true;
                 // 顺利进入第二
                 // LeoLog.d("testfuck", "顺利进入第二");
@@ -131,14 +134,16 @@ public class GestureRelative extends RelativeLayout {
                 if (!isSecondRound) {
                     // 非正确进入第二
                     // LeoLog.d("testfuck", "非正确进入第二");
+                    isFlaseControl = true;
                     isFirstRound = false;
                     isThridRound = false;
                 }
             }
         }
+
         // 接听?
         if (x > jie_left && y > jie_top && y < jie_bottom && x < jie_right) {
-            if (isFirstRound && isSecondRound && !isThridRound) {
+            if (isFirstRound && isSecondRound && !isThridRound && !isFlaseControl) {
                 isThridRound = true;
                 // 顺利进入第三
                 // LeoLog.d("testfuck", "顺利进入第三");
@@ -153,11 +158,14 @@ public class GestureRelative extends RelativeLayout {
                 } else {
                     unknowFragment.setCanCel();
                     mPf.onUnlockPretendSuccessfully();
+                    SDKWrapper
+                            .addEvent(mContext, SDKWrapper.P1, "appcover", "done_UnknowCall");
                 }
             } else {
                 if (!isThridRound) {
                     // 非正确进入第三
                     // LeoLog.d("testfuck", "非正确进入第三");
+                    isFlaseControl = true;
                     isFirstRound = false;
                     isSecondRound = false;
                 }
@@ -172,27 +180,7 @@ public class GestureRelative extends RelativeLayout {
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         canvas.drawCircle(CirPointX, CirPointY, mBanJing, CirPanint);
-        mYCanvas = canvas;
     }
-
-//    private void drawDongHua(final Canvas mycanvas) {
-//
-//        new Thread() {
-//            public void run() {
-//                try {
-//                    mycanvas.drawCircle(CirPointX, CirPointY, gua_right * 2, CirPanint);
-//                    LeoLog.d("testwhat", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                    Paint paint = new Paint();
-//                    paint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
-//                    mycanvas.drawPaint(paint);
-//                    paint.setXfermode(new PorterDuffXfermode(Mode.SRC));
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//            };
-//        }.start();
-//    }
 
     public void setGuaPosition(int left, int top, int right, int bottom) {
         gua_left = left;

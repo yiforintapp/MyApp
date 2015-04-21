@@ -4,7 +4,7 @@
         android:duration="500"
         android:fromAlpha="0.0"
         android:toAlpha="1.0"
-        android:interpolator="@android:anim/accelerate_interpolator"></alpha>
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"></alpha>
 	<scale
 	    android:duration="500"
 	    android:fromXScale="0.0"
@@ -14,6 +14,6 @@
 	    android:fillAfter="true"
 	    android:pivotX="50%"
 	    android:pivotY="50%"
-	    android:interpolator="@android:anim/accelerate_interpolator"></scale>
+	    android:interpolator="@android:anim/accelerate_decelerate_interpolator"></scale>
 	
 </set>

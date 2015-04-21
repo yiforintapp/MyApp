@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#f3f3f3"
-    android:padding="16dp" >
+    android:padding="10dp" >
 
     <com.leo.appmaster.privacy.PrivacyLevelView
         android:id="@+id/privacy_level"
@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:background="@drawable/home_button_selecter"
             android:gravity="center_vertical"
-            android:paddingLeft="16dp"
+            android:paddingLeft="21dp"
             android:orientation="horizontal" >
 
             <ImageView
@@ -69,7 +69,7 @@
             android:layout_weight="1"
             android:background="@drawable/home_button_selecter"
             android:gravity="center_vertical"
-            android:paddingLeft="16dp"
+            android:paddingLeft="21dp"
             android:orientation="horizontal" >
 
             <ImageView
@@ -114,7 +114,7 @@
             android:layout_weight="1"
             android:background="@drawable/home_button_selecter"
             android:gravity="center_vertical"
-            android:paddingLeft="16dp"
+            android:paddingLeft="21dp"
             android:orientation="horizontal" >
 
             <ImageView
@@ -125,7 +125,7 @@
                 android:background="@color/privacy_level_1"
                 android:scaleType="centerInside" />
 
-            <TextView
+            <com.leo.appmaster.fragment.TipTextView
                 android:id="@+id/privacy_sms_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -148,7 +148,7 @@
             android:layout_weight="1"
             android:background="@drawable/home_button_selecter"
             android:gravity="center_vertical"
-            android:paddingLeft="16dp"
+            android:paddingLeft="21dp"
             android:orientation="horizontal" >
 
             <ImageView
@@ -159,7 +159,7 @@
                 android:background="@color/privacy_level_1"
                 android:scaleType="centerInside" />
 
-            <TextView
+            <com.leo.appmaster.fragment.TipTextView
                 android:id="@+id/privacy_call_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

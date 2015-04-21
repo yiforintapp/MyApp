@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.fragment;
 
-import android.view.MotionEvent;
 
 import com.leo.appmaster.applocker.LockScreenActivity;
 

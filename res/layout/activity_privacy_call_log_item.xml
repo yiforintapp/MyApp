@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/privacy_call_log_item_title_bar"
-        android:layout_marginLeft="21.33dp"
-        android:layout_marginRight="21.33dp"
-        android:layout_marginTop="21.33dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/white_bg"
         android:orientation="vertical"
         android:paddingTop="@dimen/activity_privacy_contact_item_paddingTop" >
@@ -46,9 +46,9 @@
                     android:id="@+id/add_from_call_log_itemLT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="8dp"
-                    android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@+id/calllog_item_sendmessage"
                     android:orientation="vertical" >
 
@@ -107,7 +107,7 @@
             android:id="@+id/call_log_item_top_bottom_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#e3e3e3" />
+            android:background="@drawable/test_list_divider" />
 
         <ListView
             android:id="@+id/contactLV"
