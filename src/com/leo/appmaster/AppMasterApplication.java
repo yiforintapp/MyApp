@@ -254,25 +254,27 @@ public class AppMasterApplication extends Application {
     }
 
     public void tryRemoveUnlockAllShortcut(Context ctx) {
-//        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
-            // remove unlock all shortcut
-            Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
-            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
-            shortcutIntent.setAction(Intent.ACTION_VIEW);
+        // if
+        // (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag())
+        // {
+        // remove unlock all shortcut
+        Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
+        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
+        shortcutIntent.setAction(Intent.ACTION_VIEW);
         shortcutIntent.putExtra("quick_lock_mode", true);
         shortcutIntent.putExtra("lock_mode_id", 0);
         shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
-            Intent shortcut = new Intent(
-                    "com.android.launcher.action.UNINSTALL_SHORTCUT");
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            shortcut.putExtra("duplicate", false);
-            shortcut.putExtra("from_shortcut", true);
-            ctx.sendBroadcast(shortcut);
+        Intent shortcut = new Intent(
+                "com.android.launcher.action.UNINSTALL_SHORTCUT");
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        shortcut.putExtra("duplicate", false);
+        shortcut.putExtra("from_shortcut", true);
+        ctx.sendBroadcast(shortcut);
 
-            AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
-//        }
+        AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
+        // }
 
     }
 
@@ -811,7 +813,7 @@ public class AppMasterApplication extends Application {
                             public void onErrorResponse(VolleyError error) {
                                 // 拉取失败重试策略
                                 LeoLog.e("loadSplash", error.getMessage());
-//                                Log.e("xxxxxxxxxxxxxxx", "加载闪屏失败");
+                                // Log.e("xxxxxxxxxxxxxxx", "加载闪屏失败");
                                 if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
                                     pref.setSplashLoadFailDate(failDate);
                                 } else if (pref.getSplashLoadFailNumber() >= 0
@@ -850,6 +852,10 @@ public class AppMasterApplication extends Application {
 
     // 加载闪屏图
     private void getSplashImage(String url) {
+        final SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+        final AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        Date currentDate = new Date(System.currentTimeMillis());
+        final String failDate = dateFormate.format(currentDate);
         HttpRequestAgent.getInstance(this).loadSplashImage(url, new Listener<Bitmap>() {
 
             @Override
@@ -864,6 +870,23 @@ public class AppMasterApplication extends Application {
                 // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片失败");
                 AppMasterPreference.getInstance(getApplicationContext())
                         .setSaveSplashIsMemeryEnough(2);
+                if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
+                    pref.setSplashLoadFailDate(failDate);
+                } else if (pref.getSplashLoadFailNumber() >= 0
+                        && pref.getSplashLoadFailNumber() <= 2) {
+                    pref.setSplashLoadFailNumber(pref.getSplashLoadFailNumber() + 1);
+                }
+                pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
+                        pref.getSplashSuccessStrategy(),
+                        pref.getSplashFailStrategy());
+                TimerTask recheckTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        loadSplashDate();
+                    }
+                };
+                Timer timer = new Timer();
+                timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
             }
         });
     }
