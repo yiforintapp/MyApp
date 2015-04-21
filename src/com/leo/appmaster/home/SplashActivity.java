@@ -146,7 +146,10 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         String path = FileOperationUtil.getSplashPath();
         Bitmap splash = null;
         if (path != null && !"".equals(path)) {
-            splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME);
+            BitmapFactory.Options option=new BitmapFactory.Options();
+            option.inTargetDensity=getResources().getDisplayMetrics().densityDpi;
+            option.inScaled=true;
+            splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
         }
         if (splash != null) {
             mSplashIcon.setVisibility(View.INVISIBLE);
