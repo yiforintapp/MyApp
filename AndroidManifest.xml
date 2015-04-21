@@ -90,6 +90,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.leo.appmaster.home.ProxyActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        </activity>
+         <activity
             android:name="com.leo.appmaster.home.HomeActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
