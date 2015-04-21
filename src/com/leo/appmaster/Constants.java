@@ -296,7 +296,7 @@ public class Constants {
     // =================Splash url=======================
     public static final String SPLASH_URL = "/appmaster/flushscreen/";
     public static final String SPLASH_PATH = "appmaster/backup/";
-    public static final String SPLASH_NAME = "splash_image.png";
+    public static final String SPLASH_NAME = "splash_image.9.png";
 
     // ============== default home mode list =================
     public static final String[] sDefaultHomeModeList = new String[] {

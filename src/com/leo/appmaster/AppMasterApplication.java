@@ -750,8 +750,12 @@ public class AppMasterApplication extends Application {
                                                         && !"".equals(splashUriFlag)) {
                                                     pref.setSplashUriFlag(splashUriFlag);
                                                     // 初始化显示时间段
-                                                    pref.setSplashStartShowTime(-1);
-                                                    pref.setSplashEndShowTime(-1);
+                                                    if (pref.getSplashStartShowTime() != -1) {
+                                                        pref.setSplashStartShowTime(-1);
+                                                    }
+                                                    if (pref.getSplashEndShowTime() != -1) {
+                                                        pref.setSplashEndShowTime(-1);
+                                                    }
                                                 }
                                             }
                                             SplashActivity.deleteImage();

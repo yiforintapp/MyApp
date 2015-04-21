@@ -38,6 +38,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
@@ -359,6 +360,7 @@ public class TimeLockEditActivity extends BaseActivity implements
                     this.getString(R.string.lock_change, this.getString(R.string.lock_mode_time),
                             mEditTimeLock.name),
                     Toast.LENGTH_SHORT).show();
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "time", "dialog");
         } else {
             if (!mOpenRepeat) {
                 Calendar calendar = Calendar.getInstance();
