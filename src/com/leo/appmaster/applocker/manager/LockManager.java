@@ -1228,12 +1228,14 @@ public class LockManager {
                             // new time lock
                             intent = new Intent(mContext, TimeLockEditActivity.class);
                             intent.putExtra("new_time_lock", true);
+                            intent.putExtra("from_dialog", true);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             mContext.startActivity(intent);
                         } else if (which == 2) {
                             // new location lock
                             intent = new Intent(mContext, LocationLockEditActivity.class);
                             intent.putExtra("new_location_lock", true);
+                            intent.putExtra("from_dialog", true);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             mContext.startActivity(intent);
                         }
