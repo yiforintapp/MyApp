@@ -198,7 +198,7 @@
 
 
     <!-- HomeAppManagerFragment -->
-    <dimen name="app_manager_padding">14dp</dimen>
+    <dimen name="app_manager_padding">10dp</dimen>
     <dimen name="app_manager_four_icon_total_height">62dp</dimen>
     <dimen name="app_manager_four_icon_width_height">22dp</dimen>
     <dimen name="app_manager_four_icon_margin_top">12dp</dimen>

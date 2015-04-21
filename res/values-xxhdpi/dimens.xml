@@ -215,7 +215,7 @@
     <dimen name="multi_mode_add_margin_bottom">6dp</dimen>
 
     <!-- HomeAppManagerFragment -->
-    <dimen name="app_manager_padding">16dp</dimen> <!-- 14 -->
+    <dimen name="app_manager_padding">10dp</dimen> <!-- 14 -->
     <dimen name="app_manager_four_icon_total_height">70dp</dimen> <!-- 62 -->
     <dimen name="app_manager_four_icon_width_height">24dp</dimen> <!-- 22 -->
     <dimen name="app_manager_four_icon_margin_top">14dp</dimen> <!-- 12 -->

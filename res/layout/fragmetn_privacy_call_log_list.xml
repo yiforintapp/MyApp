@@ -65,6 +65,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="月/天/年"
+                        android:textSize="10dp"
                         android:textColor="#DFDDDD" />
                 </RelativeLayout>
 
