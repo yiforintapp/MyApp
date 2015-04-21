@@ -427,6 +427,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     break;
                 }
             }
+
+            if (willLaunch == null) {
+                LockMode homeMode = null;
+                for (LockMode lockMode : modeList) {
+                    if (lockMode.defaultFlag == 3) {
+                        homeMode = lockMode;
+                        break;
+                    }
+                }
+                willLaunch = homeMode;
+            }
             if (willLaunch != null) {
                 lm.setCurrentLockMode(willLaunch, true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
@@ -435,6 +446,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // Toast.makeText(this, mQuickModeName + "模式不存在, 请重试",
                 // 0).show();
             }
+
         } else {
             /**
              * notify LockManager

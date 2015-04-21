@@ -788,6 +788,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         dialog.cancel();
                     }
                 } else if (which == 2) {
+                    LockManager.getInstatnce().timeFilterSelf();
                     Uri uri = Uri.fromParts("package",
                             lastSelectedItem.packageName, null);
                     Intent intent = new Intent(Intent.ACTION_DELETE, uri);
