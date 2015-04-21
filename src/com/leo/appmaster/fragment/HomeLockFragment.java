@@ -145,7 +145,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                 enterLockMode();
                 break;
             case R.id.lock_setting:
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "locksetting");
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "appcover");
 //                enterLockSetting();
                 enterAppWeiZhuang();
                 break;
