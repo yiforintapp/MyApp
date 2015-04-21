@@ -76,7 +76,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     if (cursor != null) {
                         while (cursor.moveToNext()) {
                             String number = cursor.getString(cursor.getColumnIndex("number"));
-                            String name = cursor.getString(cursor.getColumnIndex("name"));
+                            // String name =
+                            // cursor.getString(cursor.getColumnIndex("name"));
+                            String name = call.getContactName();
                             cursor.getString(cursor.getColumnIndex("duration"));
                             Date date = new Date(Long.parseLong(cursor.getString(cursor
                                     .getColumnIndex(CallLog.Calls.DATE))));
