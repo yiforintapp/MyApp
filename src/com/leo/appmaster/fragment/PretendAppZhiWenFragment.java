@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.fragment;
 
 import android.os.SystemClock;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.SDKWrapper;
 
 public class PretendAppZhiWenFragment extends PretendFragment implements OnClickListener {
     private View zhiwen_content;
@@ -24,7 +26,7 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
     private int mVersion;
     // three click
     long[] mHits = new long[3];
-    
+
     @Override
     protected int layoutResourceId() {
         return R.layout.activity_weizhuang_zhiwen;
@@ -33,7 +35,7 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
     @Override
     protected void onInitUI() {
         zhiwen_content = findViewById(R.id.zhiwen_content);
-        
+
         // make content match the screen
         Display display = mActivity.getWindowManager().getDefaultDisplay();
         Window window = mActivity.getWindow();
@@ -41,12 +43,15 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
         windowLayoutParams.width = (int) (display.getWidth());
         windowLayoutParams.height = (int) (display.getHeight());
         zhiwen_content.setLayoutParams(windowLayoutParams);
-        
+
+        SDKWrapper
+                .addEvent(mActivity, SDKWrapper.P1, "appcover", "FingerPrint");
+
         iv_zhiwen_click = (ImageView) findViewById(R.id.iv_zhiwen_click);
         iv_zhiwen_click.setOnClickListener(this);
         show_slowly_iv = (ImageView) findViewById(R.id.show_slowly_iv);
         zhiwen_bang = (ImageView) findViewById(R.id.zhiwen_bang);
-        
+
         mVersion = PhoneInfo.getAndroidVersion();
         getZhiWen();
     }
@@ -69,6 +74,7 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
             }
         });
     }
+
     private void showDongHuaAlpha(final float i, final float j) {
         // zhiwen
         AlphaAnimation alpha = new AlphaAnimation(i, j);
@@ -94,7 +100,7 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
         });
         show_slowly_iv.setAnimation(alpha);
     }
-    
+
     private void showDongHuaTrans(final float k, final float z) {
         // zhiwen bang
         TranslateAnimation trans = new TranslateAnimation(0,
@@ -112,16 +118,16 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if(k<z){
-                    showDongHuaTrans(iv_zhiwen_click_height - 30,0);
-                }else {
+                if (k < z) {
+                    showDongHuaTrans(iv_zhiwen_click_height - 30, 0);
+                } else {
                     showDongHuaTrans(0, iv_zhiwen_click_height - 30);
                 }
             }
         });
         zhiwen_bang.setAnimation(trans);
     }
-    
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -130,6 +136,8 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
                 if (mHits[0] >= (SystemClock.uptimeMillis() - 800)) {
                     onUnlockPretendSuccessfully();
+                    SDKWrapper
+                            .addEvent(mActivity, SDKWrapper.P1, "appcover", "done_FingerPrint");
                 }
                 break;
             default:
