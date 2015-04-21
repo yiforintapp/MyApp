@@ -273,7 +273,7 @@ public class LockModeView extends View {
                 Context ctx = getContext();
                 if (top.contains(upX, upY)) {
                     // to lock list
-                    SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "home", "lock");
+                    SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "home", "lock_ball");
                     LockManager lm = LockManager.getInstatnce();
                     LockMode curMode = lm.getCurLockMode();
                     if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
