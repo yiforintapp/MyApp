@@ -3,10 +3,7 @@ package com.leo.appmaster.home;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,9 +14,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.NinePatch;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
@@ -47,7 +45,6 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
@@ -58,6 +55,7 @@ import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
+import com.leo.appmaster.utils.NinePatchChunk;
 
 public class SplashActivity extends BaseActivity implements OnPageChangeListener {
 
@@ -86,6 +84,11 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         super.onCreate(savedInstanceState);
         LeoLog.d("SplashActivity", "onCreate");
         setContentView(R.layout.activity_splash_guide);
+        // mSplashRL = (RelativeLayout) findViewById(R.id.splashRL);
+        // mSplashIcon = (ImageView)
+        // findViewById(R.id.image_view_splash_center);
+        // mSplashName = (ImageView) findViewById(R.id.iv_back);
+        // showSplash();
         initSplash();
         mEventHandler = new EventHandler();
         startInitTask();
@@ -145,14 +148,21 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
     private void showSplash() {
         String path = FileOperationUtil.getSplashPath();
         Bitmap splash = null;
+
         if (path != null && !"".equals(path)) {
-            splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME);
+            BitmapFactory.Options option = new BitmapFactory.Options();
+            option.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
+            option.inScaled = true;
+            splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
         }
         if (splash != null) {
-            mSplashIcon.setVisibility(View.INVISIBLE);
-            mSplashName.setVisibility(View.INVISIBLE);
-            BitmapDrawable splashDrawable = new BitmapDrawable(splash);
-            mSplashRL.setBackgroundDrawable(splashDrawable);
+            byte[] chunk = splash.getNinePatchChunk();
+            if (NinePatch.isNinePatchChunk(chunk) && chunk != null) {
+                mSplashIcon.setVisibility(View.INVISIBLE);
+                mSplashName.setVisibility(View.INVISIBLE);
+                mSplashRL.setBackgroundDrawable(new NinePatchDrawable(getResources(),
+                        splash, chunk, NinePatchChunk.deserialize(chunk).mPaddings, null));
+            }
         }
     }
 

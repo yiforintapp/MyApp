@@ -8,9 +8,9 @@
         android:layout_height="match_parent"
         android:background="@color/all_backgroud"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/app_manager_padding"
-        android:paddingRight="@dimen/app_manager_padding"
-        android:paddingTop="@dimen/app_manager_padding" >
+        android:paddingLeft="@dimen/new_app_manager_padding"
+        android:paddingRight="@dimen/new_app_manager_padding"
+        android:paddingTop="@dimen/new_app_manager_padding" >
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
             android:layout_height="@dimen/app_manager_backup_item_checkbox_width_height"
             android:layout_gravity="right|center_vertical"
             android:layout_marginLeft="@dimen/app_manager_backup_check_margin_left"
-            android:layout_marginRight="@dimen/app_manager_backup_check_margin_right"
+            android:layout_marginRight="@dimen/new_app_manager_backup_check_margin_right"
             android:src="@drawable/app_unselect" >
 
             <ImageView

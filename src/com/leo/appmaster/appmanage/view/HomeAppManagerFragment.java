@@ -164,7 +164,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             setListView();
 
             if (curFastThanset) {
-                // LeoLog.d("testfuckdelete", "onPostExecute ，show动画咯");
                 isShowIng = true;
                 curFastThanset = false;
                 showdonghua();

@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
@@ -37,12 +38,17 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
         zhiwen_content = findViewById(R.id.zhiwen_content);
 
         // make content match the screen
-        Display display = mActivity.getWindowManager().getDefaultDisplay();
-        Window window = mActivity.getWindow();
-        LayoutParams windowLayoutParams = window.getAttributes(); // 获取对话框当前的参数值
-        windowLayoutParams.width = (int) (display.getWidth());
-        windowLayoutParams.height = (int) (display.getHeight());
-        zhiwen_content.setLayoutParams(windowLayoutParams);
+        // Display display = mActivity.getWindowManager().getDefaultDisplay();
+        // Window window = mActivity.getWindow();
+        // LayoutParams windowLayoutParams = window.getAttributes(); //
+        // 获取对话框当前的参数值
+        // windowLayoutParams.width = (int) (display.getWidth());
+        // windowLayoutParams.height = (int) (display.getHeight());
+        // zhiwen_content.setLayoutParams(windowLayoutParams);
+
+        android.widget.LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        zhiwen_content.setLayoutParams(lp);
 
         SDKWrapper
                 .addEvent(mActivity, SDKWrapper.P1, "appcover", "FingerPrint");
