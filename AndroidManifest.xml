@@ -90,6 +90,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.leo.appmaster.home.ProxyActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        </activity>
+         <activity
             android:name="com.leo.appmaster.home.HomeActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
@@ -126,7 +133,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.lockscreen"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -18,6 +18,7 @@ public class TaskChangeHandler {
     public static final String LOCKSCREENNAME = "LockScreenActivity";
     public static final String HOMENAME = "HomeActivity";
     public static final String SPLASHNAME = "SplashActivity";
+    public static final String PROXYNAME = "ProxyActivity";
 
     private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
     private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
@@ -85,7 +86,7 @@ public class TaskChangeHandler {
             }
             if (doubleCheck) {
                 if (mLastRunningPkg.isEmpty() || (isCurrentSelf && (activity
-                        .contains(SPLASHNAME)) || (!unlocked && activity
+                        .contains(SPLASHNAME) || activity.contains(PROXYNAME)) || (!unlocked && activity
                         .contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
@@ -95,7 +96,7 @@ public class TaskChangeHandler {
                 }
             } else {
                 if (mLastRunningPkg.isEmpty() || (isCurrentSelf && (activity
-                        .contains(SPLASHNAME)) || (activity
+                        .contains(SPLASHNAME) || activity.contains(PROXYNAME)) || (activity
                             .contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
