@@ -74,12 +74,15 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
             mPagerTab.setVisibility(View.VISIBLE);
             mViewPager.setScrollable(true);
             mPagerTab.setCurrentItem(mEditIndex);
-            // mTtileBar.setOptionImage(R.drawable.mode_add_button);
             mTtileBar.setOptionImageVisibility(View.INVISIBLE);
             Fragment f = mFragmentHolders.clone()[mEditIndex].fragment;
             if (f instanceof Editable) {
                 ((Editable) f).onFinishEditMode();
             }
+            //show help tip
+          if(mEditIndex!=0){
+                showTitleBarOption(mEditIndex);
+           }
         } else {
             super.onBackPressed();
         }
@@ -191,35 +194,42 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         }
 
         @Override
-        public void onPageSelected(int arg0) {
+        public void onPageSelected(int position) {
             mTtileBar.setOptionImageVisibility(View.INVISIBLE);
-            if (arg0 == 1) {
-                mFragment = mFragmentHolders.clone()[arg0].fragment;
-                OnClickListener listener = new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AppMasterPreference.getInstance(LockModeActivity.this).setTimeLockModeGuideClicked(true);
-                        ((TimeLockFragment) mFragment).lockGuide();
-                    }
-                };
-                showTitleBarOption(listener);
-            } else if (arg0 == 2) {
-                mFragment = mFragmentHolders.clone()[arg0].fragment;
-                OnClickListener listener = new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AppMasterPreference.getInstance(LockModeActivity.this).setLocationLockModeGuideClicked(true);
-                        ((LocationLockFragment) mFragment).lockGuide();
-                    }
-                };
-                showTitleBarOption(listener);
-            }
+            showTitleBarOption(position);
         }
     }
-    private void showTitleBarOption(OnClickListener listener){
+    
+    private void showTitleBarOption(int currentPageItem){
+        OnClickListener listener = null;
+        if(currentPageItem ==0){
+            return;
+        }
+        if (currentPageItem == 1) {
+            mFragment = mFragmentHolders.clone()[currentPageItem].fragment;
+             listener = new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppMasterPreference.getInstance(LockModeActivity.this).setTimeLockModeGuideClicked(true);
+                    ((TimeLockFragment) mFragment).lockGuide();
+                }
+            };
+        } else if (currentPageItem == 2) {
+            mFragment = mFragmentHolders.clone()[currentPageItem].fragment;
+             listener = new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppMasterPreference.getInstance(LockModeActivity.this).setLocationLockModeGuideClicked(true);
+                    ((LocationLockFragment) mFragment).lockGuide();
+                }
+            };
+        }
+        
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
         mTtileBar.setOptionImage(R.drawable.tips_icon);
-        mTtileBar.setOptionListener(listener);
+        if(null != listener){
+            mTtileBar.setOptionListener(listener);
+        }
     }
     
 }
