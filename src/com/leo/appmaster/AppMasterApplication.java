@@ -254,15 +254,15 @@ public class AppMasterApplication extends Application {
     }
 
     public void tryRemoveUnlockAllShortcut(Context ctx) {
-        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
+//        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
             // remove unlock all shortcut
             Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
             shortcutIntent.setAction(Intent.ACTION_VIEW);
-            shortcutIntent.putExtra("quick_lock_mode", true);
-            shortcutIntent.putExtra("lock_mode_id", 0);
-            shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
+        shortcutIntent.putExtra("quick_lock_mode", true);
+        shortcutIntent.putExtra("lock_mode_id", 0);
+        shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
             Intent shortcut = new Intent(
                     "com.android.launcher.action.UNINSTALL_SHORTCUT");
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
@@ -272,7 +272,7 @@ public class AppMasterApplication extends Application {
             ctx.sendBroadcast(shortcut);
 
             AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
-        }
+//        }
 
     }
 
@@ -283,6 +283,10 @@ public class AppMasterApplication extends Application {
         String versionCode = PhoneInfo.getVersionCode(this);
         if (TextUtils.isEmpty(lastVercode)) {
             // first install
+            if (Integer.parseInt(versionCode) == 34) {
+                // remove unlock-all shortcut v2.1
+                tryRemoveUnlockAllShortcut(this);
+            }
         } else {
             if (Integer.parseInt(lastVercode) < Integer.parseInt(versionCode)) {
                 // hit update
@@ -293,7 +297,7 @@ public class AppMasterApplication extends Application {
             }
         }
         pref.setLastVersion(versionCode);
-
+        tryRemoveUnlockAllShortcut(this);
     }
 
     private void judgeStatictiUnlockCount() {

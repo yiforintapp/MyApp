@@ -53,7 +53,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //judge whether  setted  time lock mode
+        //judge whether  setted  location lock mode
         mLocationLockList = LockManager.getInstatnce().getLocationLock();
         if(mLocationLockList.size()>0){
             AppMasterPreference.getInstance(mActivity).setLocationLockModeSetOver(true);
@@ -77,7 +77,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         mLockListView.setOnItemClickListener(this);
         mLockListView.setOnItemLongClickListener(this);
 
-        // judge whether click i know button
+        // if don't pack up the guide page and have not been set location lock mode
         if (!AppMasterPreference.getInstance(mActivity).getLocationLockModeGuideClicked() && 
                 !AppMasterPreference.getInstance(mActivity).getLocationLockModeSetOVer()) {
             showGuidePage();
@@ -119,6 +119,12 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
     public void onEventMainThread(LocationLockEvent event) {
         mLocationLockList = LockManager.getInstatnce().getLocationLock();
         mLocationLockAdapter.notifyDataSetChanged();
+        //cancle guide page
+        if(mLocationLockList.size()==1){
+            mLockGuideView.setVisibility(View.INVISIBLE);
+            mLockListView.setVisibility(View.VISIBLE);
+            mGuideOpen = false;
+        }
     }
 
     @Override

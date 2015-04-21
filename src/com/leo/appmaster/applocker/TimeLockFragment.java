@@ -79,8 +79,8 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockListView.setOnItemClickListener(this);
         mLockListView.setOnItemLongClickListener(this);
         
-        // judge whether click i know button 
-       if(!AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked() && mTimeLockList.size()<=0 && 
+     // if don't pack up the guide page and have not been set time lock mode
+       if(!AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()  && 
                !AppMasterPreference.getInstance(mActivity).getTimeLockModeSetOVer()){
            showGuidePage();
       }
@@ -122,6 +122,12 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     public void onEventMainThread(TimeLockEvent event) {
         mTimeLockList = LockManager.getInstatnce().getTimeLock();
         mTimeLockAdapter.notifyDataSetChanged();
+      //cancle guide page
+        if(mTimeLockList.size()==1){
+            mLockGuideView.setVisibility(View.INVISIBLE);
+            mLockListView.setVisibility(View.VISIBLE);
+            mGuideOpen = false;
+        }
     }
 
     @Override
