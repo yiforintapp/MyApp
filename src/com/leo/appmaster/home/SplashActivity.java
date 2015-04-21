@@ -84,10 +84,11 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         super.onCreate(savedInstanceState);
         LeoLog.d("SplashActivity", "onCreate");
         setContentView(R.layout.activity_splash_guide);
-        mSplashRL = (RelativeLayout) findViewById(R.id.splashRL);
-        mSplashIcon = (ImageView) findViewById(R.id.image_view_splash_center);
-        mSplashName = (ImageView) findViewById(R.id.iv_back);
-//        showSplash();
+        // mSplashRL = (RelativeLayout) findViewById(R.id.splashRL);
+        // mSplashIcon = (ImageView)
+        // findViewById(R.id.image_view_splash_center);
+        // mSplashName = (ImageView) findViewById(R.id.iv_back);
+        //        showSplash();
          initSplash();
         mEventHandler = new EventHandler();
         startInitTask();
