@@ -280,6 +280,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                         .post(
                                 new PrivacyDeletEditEvent(
                                         PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP));
+                
             }
             // 发送通知
             callLogNotification(mContext);
