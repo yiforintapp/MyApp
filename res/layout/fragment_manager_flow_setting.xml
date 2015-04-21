@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/all_backgroud"
-        android:padding="16dp" >
+        android:padding="@dimen/new_app_manager_padding" >
 
         <LinearLayout
             android:layout_width="match_parent"

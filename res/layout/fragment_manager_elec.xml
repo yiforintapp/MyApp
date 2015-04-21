@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/all_backgroud"
-        android:padding="@dimen/app_manager_padding" >
+        android:padding="@dimen/new_app_manager_padding" >
 
         <TextView
             android:id="@+id/batterySummary"
