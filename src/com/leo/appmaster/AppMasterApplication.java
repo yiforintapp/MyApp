@@ -1,7 +1,6 @@
 
 package com.leo.appmaster;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +29,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -52,7 +49,6 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
@@ -69,6 +65,7 @@ import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -249,32 +246,35 @@ public class AppMasterApplication extends Application {
                 mAppsEngine.preloadAllBaseInfo();
                 // AppBusinessManager.getInstance(mInstance).init();
                 mBackupManager.getBackupList();
+                // GP check
+                if (!AppUtil.appInstalled(AppMasterApplication.this, Constants.GP_PACKAGE)) {
+                    SDKWrapper.addEvent(AppMasterApplication.this, SDKWrapper.P1, "gp_check", "nogp");
+                }
             }
         });
     }
 
     public void tryRemoveUnlockAllShortcut(Context ctx) {
-        // if
-        // (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag())
-        // {
-        // remove unlock all shortcut
-        Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
-        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
-        shortcutIntent.setAction(Intent.ACTION_VIEW);
-        shortcutIntent.putExtra("quick_lock_mode", true);
-        shortcutIntent.putExtra("lock_mode_id", 0);
-        shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
-        Intent shortcut = new Intent(
-                "com.android.launcher.action.UNINSTALL_SHORTCUT");
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        shortcut.putExtra("duplicate", false);
-        shortcut.putExtra("from_shortcut", true);
-        ctx.sendBroadcast(shortcut);
+        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag())
+        {
+            // remove unlock all shortcut
+            Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
+            shortcutIntent.setAction(Intent.ACTION_VIEW);
+            shortcutIntent.putExtra("quick_lock_mode", true);
+            shortcutIntent.putExtra("lock_mode_id", 0);
+            shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
+            Intent shortcut = new Intent(
+                    "com.android.launcher.action.UNINSTALL_SHORTCUT");
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            shortcut.putExtra("duplicate", false);
+            shortcut.putExtra("from_shortcut", true);
+            ctx.sendBroadcast(shortcut);
 
-        AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
-        // }
+            AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
+        }
 
     }
 

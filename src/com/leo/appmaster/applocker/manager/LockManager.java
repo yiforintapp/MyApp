@@ -960,8 +960,6 @@ public class LockManager {
                     LockModeDao lmd = new LockModeDao(mContext);
                     // load lock mode
                     mLockModeList = lmd.querryLockModeList();
-                    // check remove unlock-all mode< v2.1 >
-                    checkRemoveUnlockAll();
 
                     LeoLog.d("loadLockMode", mLockModeList.size() + "");
                     // load time lock
@@ -969,6 +967,9 @@ public class LockManager {
                     // load location lock
                     mLocationLockList = lmd.querryLocationLockList();
 
+                 // check remove unlock-all mode< v2.1 >
+                    checkRemoveUnlockAll();
+                    
                     for (LockMode lockMode : mLockModeList) {
                         if (lockMode.isCurrentUsed) {
                             mCurrentMode = lockMode;
@@ -994,16 +995,17 @@ public class LockManager {
         }
 
         if (unlockAll != null) {
+            // first, rejust lock mode list
             LockModeDao lmd = new LockModeDao(mContext);
             lmd.deleteLockMode(unlockAll);
             mLockModeList.remove(unlockAll);
 
             // add home mode
-            LockMode lockMode = new LockMode();
-            lockMode.modeName = mContext.getString(R.string.family_mode);
-            lockMode.isCurrentUsed = false;
-            lockMode.defaultFlag = 3;
-            lockMode.modeIcon =
+            LockMode homeMode = new LockMode();
+            homeMode.modeName = mContext.getString(R.string.family_mode);
+            homeMode.isCurrentUsed = false;
+            homeMode.defaultFlag = 3;
+            homeMode.modeIcon =
                     BitmapFactory.decodeResource(mContext.getResources(),
                             R.drawable.lock_mode_family);
             LinkedList<String> list = new LinkedList<String>();
@@ -1013,14 +1015,41 @@ public class LockManager {
                     list.add(pkg);
                 }
             }
-            lockMode.lockList = list;
+            homeMode.lockList = list;
             if (unlockAll.isCurrentUsed) {
-                lockMode.isCurrentUsed = true;
+                homeMode.isCurrentUsed = true;
             }
-            installHomeModeShortcut(mContext, lockMode);
+            // installHomeModeShortcut(mContext, lockMode);
+            mLockModeList.add(1, homeMode);
+            lmd.insertLockMode(homeMode);
 
-            mLockModeList.add(1, lockMode);
-            lmd.insertLockMode(lockMode);
+            // second, rejust time lock
+            for (TimeLock timeLock : mTimeLockList) {
+                if (timeLock.lockModeId == unlockAll.modeId) {
+                    timeLock.lockModeId = homeMode.modeId;
+                    timeLock.lockModeName = homeMode.modeName;
+                    lmd.updateTimeLock(timeLock);
+                }
+            }
+
+            // third, rejust location lock
+            boolean hit = false;
+            for (LocationLock locationLock : mLocationLockList) {
+                hit = false;
+                if (locationLock.entranceModeId == unlockAll.modeId) {
+                    locationLock.entranceModeId = homeMode.modeId;
+                    locationLock.entranceModeName = homeMode.modeName;
+                    hit = true;
+                }
+                if (locationLock.quitModeId == unlockAll.modeId) {
+                    locationLock.quitModeId = homeMode.modeId;
+                    locationLock.quitModeName = homeMode.modeName;
+                    hit = true;
+                }
+                if (hit) {
+                    lmd.updateLocationLock(locationLock);
+                }
+            }
         }
 
     }
