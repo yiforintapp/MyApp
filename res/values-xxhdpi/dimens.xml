@@ -197,7 +197,7 @@
     <dimen name="privacy_suggest_padding">16dp</dimen>
     <dimen name="privacy_suggest_icon_text_margin">12dp</dimen>
     <dimen name="privacy_suggest_text_margin">4dp</dimen>
-        <dimen name="privacy_suggest_arrow_padding_right">12dp</dimen>
+    <dimen name="privacy_suggest_arrow_padding_right">12dp</dimen>
     <dimen name="privacy_suggest_arrow_padding_top">26dp</dimen>
     <dimen name="home_bottom_button_height">84dp</dimen>
     <dimen name="home_bottom_button_text_size">16dp</dimen>
@@ -215,6 +215,7 @@
     <dimen name="multi_mode_add_margin_bottom">6dp</dimen>
 
     <!-- HomeAppManagerFragment -->
+    <dimen name="new_app_manager_padding">10dp</dimen>
     <dimen name="app_manager_padding">16dp</dimen> <!-- 14 -->
     <dimen name="app_manager_four_icon_total_height">70dp</dimen> <!-- 62 -->
     <dimen name="app_manager_four_icon_width_height">24dp</dimen> <!-- 22 -->
@@ -251,6 +252,7 @@
     <dimen name="app_manager_backup_backup_button_margin_left">40dp</dimen> <!-- 35 -->
     <dimen name="app_manager_backup_check_margin_left">20dp</dimen> <!-- 14 -->
     <dimen name="app_manager_backup_check_margin_right">32dp</dimen> <!-- 28 -->
+        <dimen name="new_app_manager_backup_check_margin_right">26dp</dimen> 
     <dimen name="app_manager_backup_item_text_width">150dp</dimen> <!-- 130 -->
     <dimen name="app_manager_backup_item_two_text_margin_top">10dp</dimen> <!-- 8 -->
     <dimen name="app_manager_backup_item_checkbox_width_height">18dp</dimen> <!-- 16 -->
