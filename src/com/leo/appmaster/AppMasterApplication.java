@@ -1,6 +1,8 @@
 
 package com.leo.appmaster;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -860,12 +862,19 @@ public class AppMasterApplication extends Application {
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);
         Date currentDate = new Date(System.currentTimeMillis());
         final String failDate = dateFormate.format(currentDate);
-        HttpRequestAgent.getInstance(this).loadSplashImage(url, new Listener<Bitmap>() {
+        HttpRequestAgent.getInstance(this).loadSplashImage(url, new Listener<InputStream>() {
 
             @Override
-            public void onResponse(Bitmap response, boolean noMidify) {
+            public void onResponse(InputStream response, boolean noMidify) {
                 // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片成功");
-                int imageSize = FileOperationUtil.getBitmapSize(response);
+//                int imageSize = FileOperationUtil.getBitmapSize(response.available());
+                int imageSize=0;
+                try {
+                    imageSize = response.available();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 saveSplash(response, imageSize, getApplicationContext());
             }
         }, new ErrorListener() {
@@ -896,7 +905,7 @@ public class AppMasterApplication extends Application {
     }
 
     // 保存闪屏
-    private int saveSplash(Bitmap inputStream, long fileSize, Context context) {
+    private int saveSplash(InputStream inputStream, long fileSize, Context context) {
         String savePath = FileOperationUtil.getSplashPath();
         String sdPath = Environment.getExternalStorageDirectory()
                 .getAbsolutePath();
@@ -905,8 +914,8 @@ public class AppMasterApplication extends Application {
             AppMasterPreference.getInstance(this).setSaveSplashIsMemeryEnough(0);
             return 0;
         }
-        int bitmapSize = FileOperationUtil.getBitmapSize(inputStream);
-        boolean flag = FileOperationUtil.isMemeryEnough(bitmapSize, context, sdPath, 0);
+//        int bitmapSize = FileOperationUtil.getBitmapSize(inputStream);
+        boolean flag = FileOperationUtil.isMemeryEnough(fileSize, context, sdPath, 0);
         if (!flag) {
             AppMasterPreference.getInstance(this).setSaveSplashIsMemeryEnough(1);
             Log.e("saveSplashImage", "memery no enough！");

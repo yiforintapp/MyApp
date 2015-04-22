@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.http;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -202,8 +204,8 @@ public class HttpRequestAgent {
      * @param eListener
      */
     public void loadSplashImage(final String url,
-            Listener<Bitmap> listener, ErrorListener eListener) {
-        ImageRequest request = new ImageRequest(url, listener, 0, 0,
+            Listener<InputStream> listener, ErrorListener eListener) {
+        FileRequest request = new FileRequest(url, listener, 0, 0,
                 Config.ARGB_8888, eListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);
