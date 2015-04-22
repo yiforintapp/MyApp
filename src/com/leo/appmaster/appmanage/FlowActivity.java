@@ -54,8 +54,8 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         trffic_setting_iv.setOnClickListener(this);
         
         mPagerTab = (LeoPagerTab) findViewById(R.id.traffic_app_tab_indicator);
+        mPagerTab.setOnPageChangeListener(this);
         mViewPager = (ViewPager) findViewById(R.id.traffic_app_viewpager);
-        mViewPager.setOnPageChangeListener(this);
         initFragment();
 
         mViewPager.setAdapter(new ManagerFlowAdapter(getSupportFragmentManager()));
