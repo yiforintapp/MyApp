@@ -209,9 +209,9 @@ public class LockManager {
         if (!TextUtils.isEmpty(pkg) && !mOutcountPkgMap.containsKey(pkg)) {
             OutcountTrackTask task = new OutcountTrackTask(pkg);
             ScheduledFuture<?> future = mScheduler.scheduleAtFixedRate(new OutcountTrackTask(pkg),
-                    0, 1, TimeUnit.SECONDS);
+                    0, 500, TimeUnit.MILLISECONDS);
             mOutcountTaskMap.put(task, future);
-            mOutcountPkgMap.put(pkg, 10);
+            mOutcountPkgMap.put(pkg, 10 * 1000);
         }
     }
 
@@ -1706,7 +1706,7 @@ public class LockManager {
                     mOutcountPkgMap.remove(pkg);
                     future.cancel(true);
                 } else {
-                    mOutcountPkgMap.put(pkg, time - 1);
+                    mOutcountPkgMap.put(pkg, time - 500);
                 }
             }
         }

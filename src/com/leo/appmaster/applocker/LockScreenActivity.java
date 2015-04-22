@@ -115,7 +115,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
 
-        // checkOutcount();
+        checkOutcount();
     }
 
     @Override
@@ -189,39 +189,38 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
-        // if (TextUtils.equals(newLockedPkg, mLockedPackage)) {
-        // checkOutcount();
-        // } else {
-        mLockedPackage = newLockedPkg;
-        // change background
-        if (!ThemeUtils.checkThemeNeed(this)
-                && (mLockMode == LockManager.LOCK_MODE_FULL)) {
-            BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
-                    getPackageManager(),
-                    intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG));
-            setAppInfoBackground(bd);
+        if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
+            mLockedPackage = newLockedPkg;
+            // change background
+            if (!ThemeUtils.checkThemeNeed(this)
+                    && (mLockMode == LockManager.LOCK_MODE_FULL)) {
+                BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
+                        getPackageManager(),
+                        intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG));
+                setAppInfoBackground(bd);
+            }
+
+            mLockFragment.onLockPackageChanged(mLockedPackage);
+            LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
+
+            if (mPretendFragment != null) {
+                mLockLayout.setVisibility(View.GONE);
+                mPretendLayout.setVisibility(View.VISIBLE);
+            }
         }
-
-        mLockFragment.onLockPackageChanged(mLockedPackage);
-        LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
-
-        if (mPretendFragment != null) {
-            mLockLayout.setVisibility(View.GONE);
-            mPretendLayout.setVisibility(View.VISIBLE);
-        }
-
+        checkOutcount();
         super.onNewIntent(intent);
-        // }
     }
 
     private void checkOutcount() {
         LockManager lm = LockManager.getInstatnce();
         int outcountTime = lm.getOutcountTime(mLockedPackage);
+        LeoLog.e("xxxx", "outcountTime = " + outcountTime);
         if (outcountTime > 0) {
             LockManager.getInstatnce().timeFilter(getPackageName(), 200);
-            Intent intent2 = new Intent(this, WaitActivity.class);
-            intent2.putExtra("outcount_time", outcountTime);
-            startActivity(intent2);
+            Intent intent = new Intent(this, WaitActivity.class);
+            intent.putExtra("outcount_time", 10 - outcountTime / 1000);
+            startActivity(intent);
         }
     }
 
