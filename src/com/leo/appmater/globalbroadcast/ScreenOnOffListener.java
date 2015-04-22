@@ -1,6 +1,7 @@
 
 package com.leo.appmater.globalbroadcast;
 
+import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Intent;
@@ -30,6 +31,6 @@ public class ScreenOnOffListener extends BroadcastListener {
      * added, changed, removed
      */
     public void onScreenChanged(Intent intent) {
-        LeoLog.d(TAG, "onScreenChanged: " + intent.getAction());
+//        LeoLog.d(TAG, "onScreenChanged: " + intent.getAction());
     }
 }
