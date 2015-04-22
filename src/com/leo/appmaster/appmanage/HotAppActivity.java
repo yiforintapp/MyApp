@@ -32,7 +32,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.utils.LeoLog;
 
-public class HotAppActivity extends BaseFragmentActivity implements OnPageChangeListener {
+public class HotAppActivity extends BaseFragmentActivity implements OnPageChangeListener  {
     public static final String FROME_STATUSBAR = "from_statusbar";
     public static final String SHOW_PAGE = "show_page";
 
@@ -83,8 +83,8 @@ public class HotAppActivity extends BaseFragmentActivity implements OnPageChange
         if (sp_hot_app.getHotAppActivityRedTip()) {
             iv_red_tip.setVisibility(View.VISIBLE);
         }
+        mPagerTab.setOnPageChangeListener(this);
         mViewPager = (ViewPager) findViewById(R.id.hotapp_app_viewpager);
-        mViewPager.setOnPageChangeListener(this);
         initFragment();
 
         mViewPager.setAdapter(new HotAppAdapter(getSupportFragmentManager()));
@@ -155,19 +155,17 @@ public class HotAppActivity extends BaseFragmentActivity implements OnPageChange
     @Override
     protected void onResume() {
         if (mViewPager != null) {
-            LeoLog.d("testHot", "onResume , mPage is : " + mPage);
+//            LeoLog.d("testHot", "onResume , mPage is : " + mPage);
             mViewPager.setCurrentItem(mPage);
         }
         super.onResume();
     }
-
-    
     
     @Override
     protected void onStop() {
         //离开时记录现在在which page
         mPage = mViewPager.getCurrentItem();
-        LeoLog.d("testHot", "onStop , mPage is : " + mPage);
+//        LeoLog.d("testHot", "onStop , mPage is : " + mPage);
         super.onStop();
     }
 
@@ -235,16 +233,18 @@ public class HotAppActivity extends BaseFragmentActivity implements OnPageChange
 
     @Override
     public void onPageScrollStateChanged(int arg0) {
-
+        
     }
 
     @Override
     public void onPageScrolled(int arg0, float arg1, int arg2) {
-
+        
     }
 
     @Override
     public void onPageSelected(int arg0) {
-
+//        LeoLog.d("testHot", "onPageSelected , mPage is : " + arg0);
+        mPage = arg0;
     }
+
 }
