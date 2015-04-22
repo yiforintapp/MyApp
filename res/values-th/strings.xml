@@ -406,6 +406,7 @@
     <string name="aready_lock">ได้ล็อค</string>
     <string name="choose_mode">โหมดเลือกฉาก</string>
     <string name="create_mode_shortcut_title">สร้างทางลัด</string>
+     <string name="create_mode_shortcut_tip">เพิ่มทางลัดไปยังเดสก์ทอป %1$s</string>
     <string name="create_mode_shortcut_content">สร้างทางลัดที่จะได้รับการเข้าถึงที่รวดเร็วในการเลือกโหมด</string>
     <string name="mode_change">ถูกเปิดใช้งาน<xliff:g id="mode">%1$s</xliff:g></string>
     <string name="lock_change">ถูกเปิดใช้งาน<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
@@ -570,6 +571,9 @@
     <string name="lock_mode_name_cant_empty">โหมดฉากชื่อจะว่างเปล่า</string>
     <string name="lock_mode_delete_tip_title">ลบเตือน</string>
     <string name="lock_mode_delete_tip">คุณเลือกโหมดใช้ในเวลาล็อคหรือล็อคในตำแหน่งลบฉากนี้จะสอดคล้องกับการตั้งค่าโหมดลบล็อค</string>
+    <string name="lock_mode_delete_tip_both">การลบโหมดนี้จะมีผลต่อตัวเลือกโหมดในการตั้งค่าเวลาและสถานที่การตั้งค่า</string>
+    <string name="lock_mode_delete_tip_time">การลบโหมดนี้จะมีผลต่อตัวเลือกโหมดในการตั้งค่าเวลา</string>
+    <string name="lock_mode_delete_tip_location">การลบโหมดนี้จะมีผลต่อตัวเลือกโหมดในการตั้งค่าที่ตั้ง</string>
     <string name="please_input_name">กรุณาป้อนชื่อ</string>
     <string name="please_selset_wifi">กรุณาเลือกจุดร้อน WiFi</string>
     <string name="cur_mode_delete_tip">%1$sจะใช้หลังจากใช้ผู้เข้าชมจะลบลบโหมดนี้โหมดกำหนด</string>
@@ -594,7 +598,7 @@
     <string name="error_mode_ok">เปิดใช้งานโหมดแอพลิเคชันทำงานผิดปกติ</string>
     <string name="zhiwen_mode_ok">เปิดใช้งานโหมดการตรวจสอบลายนิ้วมือ</string>
     <string name="weizhuang_error_title">ปลดล็อกโดยเลื่อนปุ่ม"ปิด"จากซ้ายไปขวา</string>
-    <string name="weizhuang_error_notice">ขออภัย "LEO Privacy Guard"ถูกปิดใช้งานแล้ว</string>
+    <string name="weizhuang_error_notice">ขออภัย \"Privacy Guard\" ถูกปิดใช้งานแล้ว</string>
     <string name="weizhuang_error_notice_set_false">แหม เลื่อนไปอีกหน่อยนะ</string>
     <string name="weizhuang_zhiwen_notice">ปลดล็อกโดยคลิกจุดปลดล็อกด้วยลายนิ้วมือ3ครั้งภายใน1วิ</string>
     <string name="error_cancel_button">ปิด</string>

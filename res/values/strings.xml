@@ -604,7 +604,7 @@
     <string name="error_mode_ok">Error Mode was enabled</string>
     <string name="zhiwen_mode_ok">Fingerprint identification mode was enabled</string>
     <string name="weizhuang_error_title">Slide to unlock on Close</string>
-    <string name="weizhuang_error_notice">Sorry, Privacy Guard has stopped.</string>
+    <string name="weizhuang_error_notice">Sorry, \"Privacy Guard\" has stopped.</string>
     <string name="weizhuang_error_notice_set_false">Oops! Longer sliding distance</string>
     <string name="weizhuang_zhiwen_notice">Tap 3 times within 1 second to unlock</string>
     <string name="error_cancel_button">Close</string>
