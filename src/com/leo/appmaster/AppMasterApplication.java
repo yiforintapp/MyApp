@@ -251,7 +251,8 @@ public class AppMasterApplication extends Application {
                 mBackupManager.getBackupList();
                 // GP check
                 if (!AppUtil.appInstalled(AppMasterApplication.this, Constants.GP_PACKAGE)) {
-                    SDKWrapper.addEvent(AppMasterApplication.this, SDKWrapper.P1, "gp_check", "nogp");
+                    SDKWrapper.addEvent(AppMasterApplication.this, SDKWrapper.P1, "gp_check",
+                            "nogp");
                 }
             }
         });
@@ -793,7 +794,7 @@ public class AppMasterApplication extends Application {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    pref.setLastCheckThemeTime(System
+                                    pref.setLastLoadSplashTime(System
                                             .currentTimeMillis());
                                 }
                                 // 拉取成功数据初始化
@@ -829,6 +830,8 @@ public class AppMasterApplication extends Application {
                                 pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
                                         pref.getSplashSuccessStrategy(),
                                         pref.getSplashFailStrategy());
+                                pref.setLastLoadSplashTime(System
+                                        .currentTimeMillis());
                                 TimerTask recheckTask = new TimerTask() {
                                     @Override
                                     public void run() {
@@ -861,12 +864,12 @@ public class AppMasterApplication extends Application {
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);
         Date currentDate = new Date(System.currentTimeMillis());
         final String failDate = dateFormate.format(currentDate);
-        String dir=FileOperationUtil.getSplashPath()+Constants.SPLASH_NAME;
-        HttpRequestAgent.getInstance(this).loadSplashImage(url, dir,new Listener<File>() {
+        String dir = FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME;
+        HttpRequestAgent.getInstance(this).loadSplashImage(url, dir, new Listener<File>() {
 
             @Override
             public void onResponse(File response, boolean noMidify) {
-                //TODO sucess
+                // TODO sucess
             }
         }, new ErrorListener() {
             @Override
