@@ -135,6 +135,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         } else {
             // 没有开始，没有结束时间,默认
             Log.d("splash_end&start_time", "No time!");
+            deleteImage();
             if (mSplashIcon.getVisibility() == View.INVISIBLE) {
                 mSplashIcon.setVisibility(View.VISIBLE);
             }
@@ -151,6 +152,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
 
         if (path != null && !"".equals(path)) {
             BitmapFactory.Options option = new BitmapFactory.Options();
+            option.inDensity = 480;
             option.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
             option.inScaled = true;
             splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
