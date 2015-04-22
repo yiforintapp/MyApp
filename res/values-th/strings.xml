@@ -598,7 +598,7 @@
     <string name="error_mode_ok">เปิดใช้งานโหมดแอพลิเคชันทำงานผิดปกติ</string>
     <string name="zhiwen_mode_ok">เปิดใช้งานโหมดการตรวจสอบลายนิ้วมือ</string>
     <string name="weizhuang_error_title">ปลดล็อกโดยเลื่อนปุ่ม"ปิด"จากซ้ายไปขวา</string>
-    <string name="weizhuang_error_notice">ขออภัย "LEO Privacy Guard"ถูกปิดใช้งานแล้ว</string>
+    <string name="weizhuang_error_notice">ขออภัย \"Privacy Guard\" ถูกปิดใช้งานแล้ว</string>
     <string name="weizhuang_error_notice_set_false">แหม เลื่อนไปอีกหน่อยนะ</string>
     <string name="weizhuang_zhiwen_notice">ปลดล็อกโดยคลิกจุดปลดล็อกด้วยลายนิ้วมือ3ครั้งภายใน1วิ</string>
     <string name="error_cancel_button">ปิด</string>
