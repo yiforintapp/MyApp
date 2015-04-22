@@ -761,10 +761,16 @@ public class FileOperationUtil {
     }
 
     // 存储文件到磁盘
-    public static void readAsFile(Bitmap inSream, String file, Context context) {
+    public static void readAsFile(InputStream inSream, String file, Context context) {
         try {
             OutputStream outStream = new FileOutputStream(new File(file), false);
-            inSream.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            // inSream.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            byte bt[] = new byte[1024 * 8];
+            int c;
+            while ((c = inSream.read(bt)) > 0) {
+                outStream.write(bt, 0, c);
+            }
+            outStream.close();
             outStream.close();
         } catch (IOException e) {
             e.printStackTrace();

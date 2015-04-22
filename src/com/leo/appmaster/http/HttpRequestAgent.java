@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.http;
 
+import java.io.File;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -8,12 +9,12 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.util.Log;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -186,12 +187,10 @@ public class HttpRequestAgent {
                 + mContext.getString(R.string.version_name) + "/"
                 + Utilities.getCountryID(mContext) + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
-//         Log.e("xxxxxxx", "访问闪屏URL：" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 object, listener, errorListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);
-        // Log.e("xxxxxxx", "正在拉取闪屏数据。。。。");
     }
 
     /**
@@ -201,10 +200,9 @@ public class HttpRequestAgent {
      * @param listener
      * @param eListener
      */
-    public void loadSplashImage(final String url,
-            Listener<Bitmap> listener, ErrorListener eListener) {
-        ImageRequest request = new ImageRequest(url, listener, 0, 0,
-                Config.ARGB_8888, eListener);
+    public void loadSplashImage(final String url, String dir,
+            Listener<File> listener, ErrorListener eListener) {
+        FileRequest request = new FileRequest(url, dir,listener,eListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);
     }
