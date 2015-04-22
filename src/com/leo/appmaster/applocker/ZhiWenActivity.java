@@ -3,6 +3,8 @@ package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 
 import android.app.Activity;
 import android.app.Service;
@@ -29,6 +31,7 @@ public class ZhiWenActivity extends Activity implements OnClickListener {
     private Vibrator vib;
     // three click
     long[] mHits = new long[3];
+    private LEOAlarmDialog mAlarmDialog;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -120,9 +123,9 @@ public class ZhiWenActivity extends Activity implements OnClickListener {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if(k<z){
+                if (k < z) {
                     handler.sendEmptyMessage(2);
-                }else {
+                } else {
                     showDongHuaTrans(0, iv_zhiwen_click_height - 30);
                 }
             }
@@ -137,14 +140,50 @@ public class ZhiWenActivity extends Activity implements OnClickListener {
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
                 if (mHits[0] >= (SystemClock.uptimeMillis() - 800)) {
-                    Toast.makeText(this, getString(R.string.zhiwen_mode_ok), 0).show();
-                    sp_zhiwen_weizhuang.setPretendLock(ZHIWENWEIZHUANG);
-                    vib.vibrate(150);
-                    finish();
+                    showAlarmDialog(getString(R.string.open_weizhuang_dialog_title),
+                            getString(R.string.open_weizhuang_dialog_content),
+                            getString(R.string.open_weizhuang_dialog_sure));
                 }
                 break;
             default:
                 break;
         }
     }
+
+    private void showAlarmDialog(String title, String content, String sureText) {
+        if (mAlarmDialog == null) {
+            mAlarmDialog = new LEOAlarmDialog(this);
+            mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {
+                @Override
+                public void onClick(int which) {
+                    // ok
+                    if (which == 1) {
+                        makeText();
+                        sp_zhiwen_weizhuang.setPretendLock(ZHIWENWEIZHUANG);
+                        vib.vibrate(150);
+                        ZhiWenActivity.this.finish();
+                    }
+
+                }
+            });
+        }
+        mAlarmDialog.setSureButtonText(sureText);
+        mAlarmDialog.setTitle(title);
+        mAlarmDialog.setContent(content);
+        mAlarmDialog.show();
+    }
+
+    protected void makeText() {
+        Toast.makeText(this, getString(R.string.zhiwen_mode_ok), 0).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mAlarmDialog != null) {
+            mAlarmDialog.dismiss();
+            mAlarmDialog = null;
+        }
+        super.onDestroy();
+    }
+
 }

@@ -31,7 +31,13 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
 
 public class HotAppActivity extends BaseFragmentActivity {
-    public static final String MOVE_TO_NEW_APP = "move_to_new_app";
+    public static final String FROME_STATUSBAR = "from_statusbar";
+    public static final String SHOW_PAGE = "show_page";
+    
+    public static final int PAGE_APP = 0;
+    public static final int PAGE_GAME = 1;
+    
+    
 //    private static final String MOVE_TO_GAME_FRAGMENT = "move_to_game_gragment";
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
@@ -42,13 +48,18 @@ public class HotAppActivity extends BaseFragmentActivity {
     private ApplicaionAppFragment appFragment;
     private AppMasterPreference sp_hot_app;
     
-    boolean mFromStatusbar;
+    private boolean mFromStatusbar;
+    private int mPage = PAGE_APP;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_hotapp);
-        mFromStatusbar = getIntent().getBooleanExtra(MOVE_TO_NEW_APP, false);
+        Intent intent = getIntent();
+        if(intent != null) {
+            mFromStatusbar = intent.getBooleanExtra(FROME_STATUSBAR, false);
+            mPage = intent.getIntExtra(SHOW_PAGE, PAGE_APP);
+        }
         initUI();
     }
 
@@ -142,13 +153,9 @@ public class HotAppActivity extends BaseFragmentActivity {
     protected void onResume() {
         super.onResume();
 
-        if (mFromStatusbar) {
-            // 指定去新品速递
-            mViewPager.setCurrentItem(0);
-        } /*else if (MOVE_TO_GAME_FRAGMENT.equals(intent.getAction())) {
-            // 没指定就默认游戏中心
-            mViewPager.setCurrentItem(1);
-        }*/
+        if(mViewPager != null) {
+            mViewPager.setCurrentItem(mPage);
+        }
 
     }
 

@@ -157,6 +157,12 @@ public class LEOAlarmDialog extends LEOBaseDialog {
         mContent.setGravity(gravity);
     }
 
+    public void setSureButtonText(String mText) {
+        if (mText != null) {
+            mRightBtn.setText(mText);
+        }
+    }
+
     public void setOnClickListener(OnDiaogClickListener listener) {
         mListener = listener;
     }

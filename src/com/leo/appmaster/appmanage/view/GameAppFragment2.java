@@ -34,6 +34,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.model.AppItemInfo;
@@ -345,6 +346,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                         tempStr[1] = appUrl.getUrl();
                         sort.add(tempStr);
                     }
+                    LockManager.getInstatnce().timeFilterSelf();
                     int number = sort.size();
                     if (number >= 2) {
                         for (int i = 0; i < number; i++) {
