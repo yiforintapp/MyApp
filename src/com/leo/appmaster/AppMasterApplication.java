@@ -794,8 +794,6 @@ public class AppMasterApplication extends Application {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    pref.setLastLoadSplashTime(System
-                                            .currentTimeMillis());
                                 }
                                 // 拉取成功数据初始化
                                 if (pref.getSplashLoadFailNumber() != 0) {
@@ -870,6 +868,8 @@ public class AppMasterApplication extends Application {
             @Override
             public void onResponse(File response, boolean noMidify) {
                 // TODO sucess
+                pref.setLastLoadSplashTime(System
+                        .currentTimeMillis());
             }
         }, new ErrorListener() {
             @Override
@@ -892,6 +892,8 @@ public class AppMasterApplication extends Application {
                         loadSplashDate();
                     }
                 };
+                pref.setLastLoadSplashTime(System
+                        .currentTimeMillis());
                 Timer timer = new Timer();
                 timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
             }
