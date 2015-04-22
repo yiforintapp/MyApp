@@ -135,6 +135,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         } else {
             // 没有开始，没有结束时间,默认
             Log.d("splash_end&start_time", "No time!");
+            deleteImage();
             if (mSplashIcon.getVisibility() == View.INVISIBLE) {
                 mSplashIcon.setVisibility(View.VISIBLE);
             }
