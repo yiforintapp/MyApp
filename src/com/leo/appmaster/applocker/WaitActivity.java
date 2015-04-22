@@ -136,6 +136,10 @@ public class WaitActivity extends BaseActivity {
 //        va = null;
 //        returned = true;
 //        super.onBackPressed();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        this.startActivity(intent);
+        
     }
 
     private class UpdateTask implements Runnable {

@@ -497,12 +497,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_OUTCOUNT));
 
         AppMasterPreference.getInstance(this).setDoubleCheck(null);
-
+        LockManager.getInstatnce().recordOutcountTask(mLockedPackage);
+        
         Intent intent = new Intent(this, WaitActivity.class);
         intent.putExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG, mLockedPackage);
         startActivity(intent);
 
-        LockManager.getInstatnce().recordOutcountTask(mLockedPackage);
     }
 
     private void findPasswd() {
