@@ -145,6 +145,10 @@ public class AppMasterApplication extends Application {
                 loadSplashDate();
             }
         }, 10, TimeUnit.SECONDS);
+        if (AppMasterPreference.getInstance(getApplicationContext()).getIsFirstInstallApp()) {
+            SplashActivity.deleteImage();
+            AppMasterPreference.getInstance(getApplicationContext()).setIsFirstInstallApp(false);
+        }
         restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
@@ -867,7 +871,6 @@ public class AppMasterApplication extends Application {
 
             @Override
             public void onResponse(File response, boolean noMidify) {
-                // TODO sucess
                 pref.setLastLoadSplashTime(System
                         .currentTimeMillis());
             }
@@ -886,14 +889,14 @@ public class AppMasterApplication extends Application {
                 pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
                         pref.getSplashSuccessStrategy(),
                         pref.getSplashFailStrategy());
+                pref.setLastLoadSplashTime(System
+                        .currentTimeMillis());
                 TimerTask recheckTask = new TimerTask() {
                     @Override
                     public void run() {
                         loadSplashDate();
                     }
                 };
-                pref.setLastLoadSplashTime(System
-                        .currentTimeMillis());
                 Timer timer = new Timer();
                 timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
             }

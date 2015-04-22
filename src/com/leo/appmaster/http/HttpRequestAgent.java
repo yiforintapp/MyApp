@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.util.Log;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -182,6 +183,7 @@ public class HttpRequestAgent {
      */
     public void loadSplashDate(Listener<JSONObject> listener,
             ErrorListener errorListener) {
+//        Log.e("xxxxxxx", "开始加载");
         String object = "";
         String url = Utilities.getURL(Constants.SPLASH_URL
                 + mContext.getString(R.string.version_name) + "/"

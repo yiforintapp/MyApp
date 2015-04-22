@@ -143,6 +143,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH="save_splash_memery_no_enough";
     public static final String PREF_TIME_LOCK_MODE_SET_OVER="time_lock_mode_set_over";
     public static final String PREF_LOCATION_LOCK_MODE_SET_OVER="location_lock_mode_set_over";
+    public static final String PREF_FIRST_INSTALL_APP="first_install_app";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1319,5 +1320,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
     public boolean getLocationLockModeSetOVer(){
         return mPref.getBoolean(PREF_LOCATION_LOCK_MODE_SET_OVER, false);
+    }
+    public void setIsFirstInstallApp(boolean flag){
+        mPref.edit().putBoolean(PREF_FIRST_INSTALL_APP, flag).commit();
+    }
+    public boolean getIsFirstInstallApp(){
+        return mPref.getBoolean(PREF_FIRST_INSTALL_APP, true);
     }
 }
