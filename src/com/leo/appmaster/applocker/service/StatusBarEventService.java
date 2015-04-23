@@ -21,6 +21,7 @@ public class StatusBarEventService extends IntentService {
 
     public static final int EVENT_NEW_THEME = 0;
     public static final int EVENT_BUSINESS_APP = 1;
+    public static final int EVENT_BUSINESS_GAME = 2;
 
     public StatusBarEventService() {
         super("");
@@ -48,9 +49,17 @@ public class StatusBarEventService extends IntentService {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "hots", "statusbar_app");
             LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
             targetIntent = new Intent(this, HotAppActivity.class);
-//            targetIntent.putExtra("from_statubar", true);
-//            intent.setAction("move_to_new_app");
-            targetIntent.putExtra("move_to_new_app", true);
+            targetIntent.putExtra(HotAppActivity.FROME_STATUSBAR, true);
+            targetIntent.putExtra(HotAppActivity.SHOW_PAGE, HotAppActivity.PAGE_APP);
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            
+        } else if (eventType == EVENT_BUSINESS_GAME) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "hots", "statusbar_game");
+            LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+            targetIntent = new Intent(this, HotAppActivity.class);
+            targetIntent.putExtra(HotAppActivity.FROME_STATUSBAR, true);
+            targetIntent.putExtra(HotAppActivity.SHOW_PAGE, HotAppActivity.PAGE_GAME);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else {

@@ -59,6 +59,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public static boolean isClean = false;
     public static boolean isShowIng = false;
     private boolean curFastThanset = false;
+    private int lastPosition = -1;
 
     // private boolean isReNewFragment = false;
 
@@ -164,7 +165,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             setListView();
 
             if (curFastThanset) {
-                // LeoLog.d("testfuckdelete", "onPostExecute ，show动画咯");
                 isShowIng = true;
                 curFastThanset = false;
                 showdonghua();
@@ -575,11 +575,12 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     @Override
-    public void onSelected() {
-
-        if (!isClean && !isShowIng) {
+    public void onSelected(int position) {
+   LeoLog.d("testdonghua", "position is : " + position + "----lastPosition is : " + lastPosition);
+        if (!isClean && !isShowIng && lastPosition != position) {
             isShowIng = true;
             showdonghua();
+            lastPosition = position;
         }
 
         curFastThanset = true;

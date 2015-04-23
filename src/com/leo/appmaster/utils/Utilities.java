@@ -19,7 +19,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.nfc.Tag;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -241,4 +242,16 @@ public final class Utilities {
         LeoLog.d("httpurl", "gameFragment Http is :::"+"http://" + SDKWrapper.getBestServerDomain() + suffix);
         return "http://" + SDKWrapper.getBestServerDomain() + suffix;
     }
+    
+    public static String getCountryID(Context context) {
+        TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        String id = tm.getSimCountryIso();
+        if(isEmpty(id)) {
+            id = "d";
+        } else {
+            id = id.toLowerCase();
+        }
+        return id;
+    }
+    
 }

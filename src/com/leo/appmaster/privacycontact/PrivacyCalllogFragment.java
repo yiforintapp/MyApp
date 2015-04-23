@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -108,7 +109,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         // 标记为已读
                         String readNumberFlag = PrivacyContactUtils.formatePhoneNumber(calllog
                                 .getCallLogNumber());
-                        updateMessageMyselfIsRead(1,
+                        updateCallLogMyselfIsRead(1,
                                 "call_log_phone_number LIKE ? and call_log_is_read = 0",
                                 new String[] {
                                     "%" + readNumberFlag
@@ -131,6 +132,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         mDeleteCallLog.remove(calllog);
                         mCallLogCount = mCallLogCount - 1;
                     }
+                    updateTitleBarSelectStatus();
                 }
             }
         });
@@ -141,7 +143,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 LeoEventBus.getDefaultBus().post(
                         new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
-                                PrivacyContactUtils.FROM_CALL_LOG_EVENT));
+                                PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
                 mIsEditModel = true;
                 mAdapter.notifyDataSetChanged();
                 return true;
@@ -150,6 +152,19 @@ public class PrivacyCalllogFragment extends BaseFragment {
 
         PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
         task.execute("");
+    }
+
+    // 更新TitleBar
+    private void updateTitleBarSelectStatus() {
+        if (mDeleteCallLog != null && mDeleteCallLog.size() > 0) {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.FROM_CALL_LOG_EVENT));
+        } else {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
+        }
     }
 
     public void onEventMainThread(PrivacyDeletEditEvent event) {
@@ -174,29 +189,33 @@ public class PrivacyCalllogFragment extends BaseFragment {
             PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
             task.execute("");
         } else if (PrivacyContactUtils.PRIVACY_INTERCEPT_CONTACT_EVENT.equals(event.editModel)) {
-            mIsRead = false;
+            // mIsRead = false;
             PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
             task.execute("");
-            mIsUpdate = false;
-            mIsShow = true;
+            // mIsUpdate = false;
+            // mIsShow = true;
             // Log.d("PrivacyCallLogFrag", "Notification intercept!");
         } else if (PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP
                 .equals(event.editModel)) {
-            if (mIsUpdate) {
-                // Log.e("PrivacyCallLogFrag", "Not intercept!");
-                mIsRead = true;
-                PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
-                task.execute("");
-            } else {
-                // Log.e("PrivacyCallLogFrag", "Intercept!");
-                mIsUpdate = true;
-                if (mIsShow) {
-                    // Log.e("PrivacyCallLogFrag", "Intercept show red tip!");
-                    PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
-                    task.execute("");
-                    mIsShow = false;
-                }
-            }
+            // if (mIsUpdate) {
+            // // Log.e("PrivacyCallLogFrag", "Not intercept!");
+            // mIsRead = true;
+            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
+            task.execute("");
+            // } else {
+            // // Log.e("PrivacyCallLogFrag", "Intercept!");
+            // mIsUpdate = true;
+            // if (mIsShow) {
+            // // Log.e("PrivacyCallLogFrag", "Intercept show red tip!");
+            // PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
+            // task.execute("");
+            // mIsShow = false;
+            // }
+            // }
+        } else if (PrivacyContactUtils.PRIVACY_EDIT_NAME_UPDATE_CALL_LOG_EVENT
+                .equals(event.editModel)) {
+            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
+            task.execute("");
         }
     }
 
@@ -278,7 +297,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 vh.content = (TextView) convertView.findViewById(R.id.call_log_list_dateTV);
                 vh.typeImage = (ImageView) convertView.findViewById(R.id.call_log_type);
                 vh.checkImage = (ImageView) convertView.findViewById(R.id.call_log_itemCB);
-                vh.checkImage.setTag(mb);
                 vh.contactIcon = (CircleImageView) convertView.findViewById(R.id.contactIV);
                 // vh.count = (TextView)
                 // convertView.findViewById(R.id.call_log_list_countTV);
@@ -390,6 +408,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     vh.bottomLine.setVisibility(View.VISIBLE);
                 }
             }
+            vh.checkImage.setTag(mb);
             return convertView;
         }
     }
@@ -438,45 +457,45 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         String contactCallLog = entry.getKey();
                         if (!contactCallLog.contains(formateNumber)) {
                             // if (!callLogList.containsKey(number)) {
-                            if (!mIsRead) {
-                                callLog.setCallLogCount(threadIdMessage(number));
-                            } else {
-                                // 正常接听模式红点处理
-                                callLog.setCallLogCount(-1);
-                                if (callLog.getIsRead() == 0) {
-                                    String readNumberFlag = PrivacyContactUtils
-                                            .formatePhoneNumber(callLog
-                                                    .getCallLogNumber());
-                                    PrivacyCalllogFragment.updateMessageMyselfIsRead(1,
-                                            "call_log_phone_number LIKE ? ",
-                                            new String[] {
-                                                "%" + readNumberFlag
-                                            }, mContext);
-                                    callLog.setIsRead(1);
-                                }
-                            }
+                            // if (!mIsRead) {
+                            callLog.setCallLogCount(threadIdMessage(number));
+                            // } else {
+                            // // 正常接听模式红点处理
+                            // callLog.setCallLogCount(-1);
+                            // if (callLog.getIsRead() == 0) {
+                            // String readNumberFlag = PrivacyContactUtils
+                            // .formatePhoneNumber(callLog
+                            // .getCallLogNumber());
+                            // PrivacyCalllogFragment.updateMessageMyselfIsRead(1,
+                            // "call_log_phone_number LIKE ? ",
+                            // new String[] {
+                            // "%" + readNumberFlag
+                            // }, mContext);
+                            // callLog.setIsRead(1);
+                            // }
+                            // }
                             callLogList.put(number, callLog);
                             // }
                         }
                     }
                 } else {
-                    if (!mIsRead) {
-                        callLog.setCallLogCount(threadIdMessage(number));
-                    } else {
-                        // 正常接听模式红点处理
-                        callLog.setCallLogCount(-1);
-                        if (callLog.getIsRead() == 0) {
-                            String readNumberFlag = PrivacyContactUtils
-                                    .formatePhoneNumber(callLog
-                                            .getCallLogNumber());
-                            PrivacyCalllogFragment.updateMessageMyselfIsRead(1,
-                                    "call_log_phone_number LIKE ? ",
-                                    new String[] {
-                                        "%" + readNumberFlag
-                                    }, mContext);
-                            callLog.setIsRead(1);
-                        }
-                    }
+                    // if (!mIsRead) {
+                    callLog.setCallLogCount(threadIdMessage(number));
+                    // } else {
+                    // // 正常接听模式红点处理
+                    // callLog.setCallLogCount(-1);
+                    // if (callLog.getIsRead() == 0) {
+                    // String readNumberFlag = PrivacyContactUtils
+                    // .formatePhoneNumber(callLog
+                    // .getCallLogNumber());
+                    // PrivacyCalllogFragment.updateMessageMyselfIsRead(1,
+                    // "call_log_phone_number LIKE ? ",
+                    // new String[] {
+                    // "%" + readNumberFlag
+                    // }, mContext);
+                    // callLog.setIsRead(1);
+                    // }
+                    // }
                     callLogList.put(number, callLog);
                 }
             }
@@ -614,14 +633,30 @@ public class PrivacyCalllogFragment extends BaseFragment {
         return count;
     }
 
-    // 标记为已读
-    public static void updateMessageMyselfIsRead(int read, String selection,
+    // 通话记录标记为已读
+    public static void updateCallLogMyselfIsRead(int read, String selection,
             String[] selectionArgs, Context context) {
         ContentValues values = new ContentValues();
         values.put("call_log_is_read", read);
-        context.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI,
+        int count = context.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI,
                 values, selection,
                 selectionArgs);
+        if (count > 0) {
+            AppMasterPreference pre = AppMasterPreference.getInstance(context);
+            for (int i = 0; i < count; i++) {
+                int temp = pre.getCallLogNoReadCount();
+                if (temp > 0) {
+                    pre.setCallLogNoReadCount(temp - 1);
+                    if (temp - 1 <= 0) {
+                        LeoEventBus
+                                .getDefaultBus()
+                                .post(
+                                        new PrivacyDeletEditEvent(
+                                                PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
+                    }
+                }
+            }
+        }
     }
 
     private class PrivacyContactCallLogTask extends AsyncTask<String, Boolean, Boolean> {

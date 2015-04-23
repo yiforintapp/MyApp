@@ -99,7 +99,7 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 			mRightBtn.setText(rStr);
 		}
 	}
-
+	
 	public void setRightBtnBackground(Drawable drawable) {
 		if (drawable != null) {
 			mRightBtn.setBackgroundDrawable(drawable);

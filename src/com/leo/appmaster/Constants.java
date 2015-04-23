@@ -1,6 +1,9 @@
 
 package com.leo.appmaster;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import android.provider.MediaStore.MediaColumns;
 import android.net.Uri;
 
@@ -107,7 +110,8 @@ public class Constants {
      */
     public static final String APP_LOCK_LIST_URL = "/appmaster/applockerrecommend";
 
-//    public static final String APP_LOCK_LIST_DEBUG2 = "http://192.168.1.142:8080/appmaster/appmaster/applockerrecommend";
+    // public static final String APP_LOCK_LIST_DEBUG2 =
+    // "http://192.168.1.142:8080/appmaster/appmaster/applockerrecommend";
     public static final String GP_PACKAGE = "com.android.vending";// GP package
                                                                   // name
     public static final int LOCK_TIP_INTERVAL_OF_DATE = 3;
@@ -289,4 +293,13 @@ public class Constants {
 
     public static final Uri IMAGE_HIDE_URI = Uri.parse("content://" + AUTHORITY
             + "/" + TABLE_IMAGE_HIDE);
+    // =================Splash url=======================
+    public static final String SPLASH_URL = "/appmaster/flushscreen/";
+    public static final String SPLASH_PATH = "appmaster/backup/";
+    public static final String SPLASH_NAME = "splash_image.9.png";
+
+    // ============== default home mode list =================
+    public static final String[] sDefaultHomeModeList = new String[] {
+            "com.tencent.mm"
+    };
 }

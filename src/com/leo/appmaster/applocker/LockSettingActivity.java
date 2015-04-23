@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 public class LockSettingActivity extends BaseFragmentActivity implements
         OnClickListener {
@@ -27,11 +28,14 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private FragmentManager mFm;
     private PasswdSettingFragment mPasswd;
     private GestureSettingFragment mGesture;
+    private TextView mSwitchBottom;
 
     private boolean mResetFlag;
 
     public boolean mToLockList;
     public boolean mJustFinish;
+    public boolean mFromQuickMode;
+    public int mModeId;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -65,6 +69,8 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         mResetFlag = intent.getBooleanExtra(RESET_PASSWD_FLAG, false);
         mToLockList = intent.getBooleanExtra("to_lock_list", false);
         mJustFinish = intent.getBooleanExtra("just_finish", false);
+        mFromQuickMode = intent.getBooleanExtra("from_quick_mode", false);
+        mModeId = intent.getIntExtra("mode_id", -1);
     }
 
     private void initFragment() {
@@ -81,11 +87,11 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         if (type == AppMasterPreference.LOCK_TYPE_GESTURE) {
             mLockType = LOCK_TYPE_GESTURE;
             tans.replace(R.id.fragment_contain, mGesture);
-            mTitleBar.setOptionText(getString(R.string.switch_passwd));
+            mSwitchBottom.setText(getString(R.string.switch_passwd));
         } else {
             mLockType = LOCK_TYPE_PASSWD;
             tans.replace(R.id.fragment_contain, mPasswd);
-            mTitleBar.setOptionText(getString(R.string.switch_gesture));
+            mSwitchBottom.setText(getString(R.string.switch_gesture));
         }
         tans.commit();
 
@@ -94,20 +100,17 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private void initUI() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTitleBar.openBackView();
-        mTitleBar.setOptionListener(this);
-        mTitleBar.setOptionListener(this);
-        mTitleBar.setOptionTextVisibility(View.VISIBLE);
-        mTitleBar.setOptionText("");
         mTitleBar.setTitle(R.string.passwd_setting);
+        mSwitchBottom = (TextView) this.findViewById(R.id.switch_bottom);
+        mSwitchBottom.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_option_text:
+            case R.id.switch_bottom:
                 switchLockType();
                 break;
-
             default:
                 break;
         }
@@ -118,11 +121,11 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         if (mLockType == LOCK_TYPE_PASSWD) {
             tans.replace(R.id.fragment_contain, mGesture);
             mLockType = LOCK_TYPE_GESTURE;
-            mTitleBar.setOptionText(getString(R.string.switch_passwd));
+            mSwitchBottom.setText(getString(R.string.switch_passwd));
         } else {
             tans.replace(R.id.fragment_contain, mPasswd);
             mLockType = LOCK_TYPE_PASSWD;
-            mTitleBar.setOptionText(getString(R.string.switch_gesture));
+            mSwitchBottom.setText(getString(R.string.switch_gesture));
         }
         tans.commit();
     }

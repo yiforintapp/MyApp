@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LocationLock;
@@ -178,7 +179,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     Toast.makeText(mActivity,
                             mActivity.getString(R.string.create_mode_shortcut_tip, mode.modeName),
                             Toast.LENGTH_SHORT).show();
-                    installShortcut(mode);
+                    installLockModeShortcut(mode);
                 }
             }
         });
@@ -216,7 +217,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     }
 
                 } else {
-                    LockManager.getInstatnce().setCurrentLockMode(mode);
+                    LockManager.getInstatnce().setCurrentLockMode(mode, true);
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "modeschage", "modes");
                     Toast.makeText(mActivity,
                             mActivity.getString(R.string.mode_change, mode.modeName),
@@ -285,15 +286,13 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
         intent.putExtra("new_mode", true);
         startActivity(intent);
     }
-
-    private void installShortcut(LockMode lockMode) {
+    
+    private void installLockModeShortcut(LockMode lockMode) {
         Intent shortcutIntent = new Intent(mActivity, LockScreenActivity.class);
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         shortcutIntent.putExtra("quick_lock_mode", true);
         shortcutIntent.putExtra("lock_mode_id", lockMode.modeId);
         shortcutIntent.putExtra("lock_mode_name", lockMode.modeName);
-        // shortcutIntent.setAction(Intent.ACTION_MAIN);
-        // shortcutIntent.addCategory(Intent.CATEGORY_DEFAULT);
 
         Intent shortcut = new Intent(
                 "com.android.launcher.action.INSTALL_SHORTCUT");
@@ -421,10 +420,13 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ((LockModeActivity) mActivity).onEditMode(0);
-        mModeListView.setOnItemClickListener(null);
-        mEditing = true;
-        mModeAdapter.notifyDataSetChanged();
+        if (position != 0) {
+            ((LockModeActivity) mActivity).onEditMode(0);
+            mModeListView.setOnItemClickListener(null);
+            mModeListView.removeHeaderView(mListHeader);
+            mEditing = true;
+            mModeAdapter.notifyDataSetChanged();
+        }
         return false;
     }
 
@@ -432,6 +434,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
     public void onFinishEditMode() {
         mEditing = false;
         mModeListView.setOnItemClickListener(this);
+        mModeListView.addHeaderView(mListHeader);
         mModeAdapter.notifyDataSetChanged();
     }
 

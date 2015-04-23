@@ -12,35 +12,54 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LocationLock;
-import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
-import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.ui.CommonTitleBar;
 
 public class LocationLockFragment extends BaseFragment implements OnClickListener,
         OnItemClickListener, OnItemLongClickListener, Editable {
 
-    private ListView mModeListView;
+    private ListView mLockListView;
     private View mListHeader;
     private List<LocationLock> mLocationLockList;
     private LocationLockAdapter mLocationLockAdapter;
     private boolean mEditing;
 
+    private CommonTitleBar mTitleBar;
+    private View mLockGuideView;
+    private ImageView mLockGuideIcon;
+    private TextView mLockGuideText;
+    private Button mUserKnowBtn;
+    private Animation mGuidAnimation;
+    private boolean mGuideOpen = false;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //judge whether  setted  location lock mode
+        mLocationLockList = LockManager.getInstatnce().getLocationLock();
+        if(mLocationLockList.size()>0){
+            AppMasterPreference.getInstance(mActivity).setLocationLockModeSetOver(true);
+        }
+    }
+    
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_lock_mode;
@@ -48,14 +67,27 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
 
     @Override
     protected void onInitUI() {
-        mModeListView = (ListView) findViewById(R.id.mode_list);
-        mModeListView.setOnItemClickListener(this);
-        mModeListView.setOnItemLongClickListener(this);
+        mLockGuideView = findViewById(R.id.lock_mode_guide);
+        mLockGuideIcon = (ImageView) mLockGuideView.findViewById(R.id.lock_guide_icon);
+        mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
+        mUserKnowBtn = (Button) mLockGuideView.findViewById(R.id.mode_user_know_button);
+        mTitleBar = ((LockModeActivity) mActivity).getActivityCommonTitleBar();
+
+        mLockListView = (ListView) findViewById(R.id.mode_list);
+        mLockListView.setOnItemClickListener(this);
+        mLockListView.setOnItemLongClickListener(this);
+
+        // if don't pack up the guide page and have not been set location lock mode
+        if (!AppMasterPreference.getInstance(mActivity).getLocationLockModeGuideClicked() && 
+                !AppMasterPreference.getInstance(mActivity).getLocationLockModeSetOVer()) {
+            showGuidePage();
+        }
+
         mListHeader = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_item_header,
-                mModeListView, false);
+                mLockListView, false);
         TextView tv = (TextView) mListHeader.findViewById(R.id.tv_add_more);
         tv.setText(R.string.add_new_location_lock);
-        mModeListView.addHeaderView(mListHeader);
+        mLockListView.addHeaderView(mListHeader);
     }
 
     @Override
@@ -74,7 +106,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         mLocationLockList = LockManager.getInstatnce().getLocationLock();
         Collections.sort(mLocationLockList, new LocationLockComparator());
         mLocationLockAdapter = new LocationLockAdapter(mActivity);
-        mModeListView.setAdapter(mLocationLockAdapter);
+        mLockListView.setAdapter(mLocationLockAdapter);
 
     }
 
@@ -87,6 +119,12 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
     public void onEventMainThread(LocationLockEvent event) {
         mLocationLockList = LockManager.getInstatnce().getLocationLock();
         mLocationLockAdapter.notifyDataSetChanged();
+        //cancle guide page
+        if(mLocationLockList.size()==1){
+            mLockGuideView.setVisibility(View.INVISIBLE);
+            mLockListView.setVisibility(View.VISIBLE);
+            mGuideOpen = false;
+        }
     }
 
     @Override
@@ -113,7 +151,21 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
                     LockManager.getInstatnce().openLocationLock(locationLock, locationLock.using);
                 }
                 break;
-
+            case R.id.mode_user_know_button:
+                AppMasterPreference.getInstance(mActivity).setLocationLockModeGuideClicked(true);
+                removeGuidePage();
+                /** set the help tip action **/
+                mTitleBar.setOptionImage(R.drawable.tips_icon);
+                mTitleBar.setOptionImageVisibility(View.VISIBLE);
+                Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
+                mTitleBar.setOptionAnimation(animation);
+                mTitleBar.setOptionListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        lockGuide();
+                    }
+                });
+                break;
             default:
                 break;
         }
@@ -230,17 +282,21 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ((LockModeActivity) mActivity).onEditMode(2);
-        mModeListView.setOnItemClickListener(null);
-        mEditing = true;
-        mLocationLockAdapter.notifyDataSetChanged();
+        if (position != 0) {
+            ((LockModeActivity) mActivity).onEditMode(2);
+            mLockListView.setOnItemClickListener(null);
+            mEditing = true;
+            mLockListView.removeHeaderView(mListHeader);
+            mLocationLockAdapter.notifyDataSetChanged();
+        }
         return false;
     }
 
     @Override
     public void onFinishEditMode() {
         mEditing = false;
-        mModeListView.setOnItemClickListener(this);
+        mLockListView.setOnItemClickListener(this);
+        mLockListView.addHeaderView(mListHeader);
         mLocationLockAdapter.notifyDataSetChanged();
     }
 
@@ -257,5 +313,43 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
             lm.removeLocationLock(lock);
         }
         mLocationLockAdapter.notifyDataSetChanged();
+    }
+
+    /** about lock mode guide **/
+    public void lockGuide() {
+        if (mGuideOpen) {
+            removeGuidePage();
+        } else {
+            showGuidePage();
+        }
+    }
+
+    private void showGuidePage() {
+        mLockGuideView.setVisibility(View.VISIBLE);
+        mLockListView.setVisibility(View.INVISIBLE);
+        mLockGuideIcon.setImageResource(R.drawable.modes_tips_position);
+        mLockGuideText.setText(R.string.location_lock_mode_guide_content);
+        mUserKnowBtn.setOnClickListener(this);
+        // if ever pack up guide page then  next time guide page should appearance as animation
+        if (AppMasterPreference.getInstance(mActivity).getLocationLockModeGuideClicked()) {
+            mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_in);
+            mLockGuideView.startAnimation(mGuidAnimation);
+        }
+        mGuideOpen = true;
+    }
+
+    private void removeGuidePage() {
+        mLockGuideView.setVisibility(View.INVISIBLE);
+        mLockListView.setVisibility(View.VISIBLE);
+        mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_out);
+        mLockGuideView.startAnimation(mGuidAnimation);
+        mGuideOpen = false;
+    }
+
+    /**
+     * open : true
+     */
+    public boolean getGuideOpenState() {
+        return this.mGuideOpen;
     }
 }

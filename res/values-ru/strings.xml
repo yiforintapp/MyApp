@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="app_name">Privacy Guard</string>
+    <string name="app_count">применение  количество  применение  количество </string>
+    <string name="used_memory"> Использование памяти </string>
+    <string name="used_flow"> использование  потока </string>
+    <string name="app_detail"> применение детали </string>
+    <string name="app_lock">замок app</string>
+    <string name="app_add_lock">блокировать</string>
+    <string name="lock_tab">замок app</string>
+    <string name="app_backup"> применение  резервного копирования </string>
+    <string name="app_restore"> применение  восстановления </string>
+    <string name="button_backup">бэкап</string>
+    <string name="button_install">установка</string>
+    <string name="button_delete">удалить</string>
+    <string name="app_use_info"> использования </string>
+    <string name="app_permission_info"> контроль доступа </string>
+    <string name="uninstall">удаление</string>
+    <string name="set_gesture_suc">настройка жесткой пароли успешно</string>
+    <string name="set_passwd_suc">настройка цифровых пароли успешно</string>
+    <string name="reset_passwd_successful">настройка цифровых пароли успешно</string>
+    <string name="stop">стоп</string>
+    <string name="reinput_anwser">не правильный ответ</string>
+    <string name="please_input_pswd">введите пароль</string>
+    <string name="please_input_pswd_again">введите пароль повторно</string>
+    <string name="makesure">утверждать</string>
+    <string name="cancel">отменить</string>
+    <string name="delete">удалить</string>
+    <string name="passwd_set_passwd_tip">Введите пароль</string>
+    <string name="passwd_set_gesture_tip">Связайтесь по минимум 4 точки</string>
+    <string name="passwd_hint">введите пароль на 4 цифры</string>
+    <string name="tip_no_the_same_pswd">пароль не совпал</string>
+    <string name="input_error_tip">ошиблись <xliff:g>%1$s</xliff:g>，ещё<xliff:g>%2$s</xliff:g>раза</string>
+    <string name="use_gesture">жестовой пароль</string>
+    <string name="use_passwd">цифровой пароль </string>
+    <string name="reset_passwd">изменить пароль</string>
+    <string name="app_locked"> уже  плюс  замок </string>
+    <string name="app_unlock"> без  замка </string>
+    <string name="find_passwd">забыть пароль</string>
+    <string name="please_wait">попробуйте дальше</string>
+    <string name="passwd_question">вопрос</string>
+    <string name="passwd_anwser">ответ</string>
+    <string name="accelerate"> ускорение </string>
+    <string name="used_mem"> Использование памяти </string>
+    <string name="passwd_tip">введите чаевые пароли</string>
+    <string name="save">сохранить</string>
+    <string name="passwd_protect_setting">ворпос для защиты</string>
+    <string name="input_qusetion">Введите вопрос</string>
+    <string name="qusetion_cant_null">вопрос нельзя быть пустой</string>
+    <string name="aneser_cant_null">ответ нельзя быть пустой</string>
+    <string name="pleas_input_anwser">введите ответ вопросов о защите пароли</string>
+    <string name="not_set"> не установлен </string>
+    <string name="anwser">ответ</string>
+    <string name="not_unistall">предотвращать удаление</string>
+    <string name="lock_screen_auto_lock">автоблокировка при блокировании экрана</string>
+    <string name="tips">обзор</string>
+    <string name="compeletely">готово</string> <!-- acceralate -->
+    <string name="clean_memory"> кнопка  ускорения </string>
+    <string name="clean_result"> Очистить память </string>
+    <string name="best_mem"> уже  -  лучший,  нет необходимости  вновь  ускорение </string>
+    <string name="lock_count"> уже  плюс  замок </string>
+    <string name="unlock_count"> без  замка </string>
+    <string name="lockscreen_access_pattern_detected">Готово рисунки</string>
+    <string name="please_input_gesture">Чертите рисунок</string>
+    <string name="input_passwd_tip">введите чаевые пароли</string>
+    <string name="switch_gesture">жестовой пароль</string>
+    <string name="switch_passwd">цифровой пароль </string>
+    <string name="setting">настройки</string>
+    <string name="passwd_hint_tip">чаевые пароли</string>
+    <string name="set_protect_or_not">вопрос о защите пароли</string>
+    <string name="set_protect_message">рекомендуем настроить вопрос для защиты пароли</string>
+    <string name="find_gesture">забыть пароль</string>
+    <string name="pp_success">настройка защиты пароли успешно</string>
+    <string name="passwd_setting"> пароль </string>
+    <string name="set_success">успешно настроить</string>
+    <string name="passwd_hint_cant_null">настроить пароли жеста</string>
+    <string name="set_gesture">жестовой пароль</string>
+    <string name="set_passwd">цифровой пароль </string>
+    <string name="please_input_gesture_again">повторно чертите </string>
+    <string name="reset_gesture_passwd">жестовой пароль</string>
+    <string name="reset_digital_passwd">цифровой пароль </string>
+    <string name="gesture_hint">Связайтесь по минимум 4 точки</string>
+    <string name="first_set_passwd_hint">устоновите пароль</string>
+    <string name="make_passwd">утвержать пароль</string>
+    <string name="input_again">введите повторно</string>
+    <string name="gestur_passwd_function_hint">Связайтесь по минимум 4 точки</string>
+    <string name="digital_passwd_function_hint">введите пароль на 4 цифры</string>
+    <string name="gesture_start_hint">ослабите хватку через рисунки</string>
+    <string name="lock_right_now">сразу блокирование</string>
+    <string name="lock_15_sec">15 секунд</string>
+    <string name="lock_30_sec">30 секунд</string>
+    <string name="lock_1_min">1 минута</string>
+    <string name="lock_3_min">3 минуты</string>
+    <string name="lock_5_min">5 минут</string>
+    <string name="app_version">версия:%1$s</string>
+    <string name="backuping">сейчас бэкап: %1$s</string>
+    <string name="no_application_selected">Не выбрано любое приложение</string>
+    <string name="backup_finish">успех бэкапа!</string>
+    <string name="delete_fail"> Исключить неудачи  ! </string>
+    <string name="deleting_app">Сейчас удалить: %1$s</string>
+    <string name="installed_app_size">монтаж приложений: %1$d</string>
+    <string name="apk_size">обьем: %1$s</string>
+    <string name="storage_size">остаточное место памяти:%1$s</string>
+    <string name="use_storage_size"> уже  с    пространства  : %1$s</string>
+    <string name="unavailable"> не имеется </string>
+    <string name="bakup_fail_cancel">бэкап уже отменил</string>
+    <string name="bakup_fail_full">место памяти не хватает</string>
+    <string name="bakup_fail_unavailable">карта памяти не доступлен</string>
+    <string name="no_app_backuped">вы ещё не бэкап приложений</string>
+
+    <string-array name="lock_time_entrys">
+        <item>@string/lock_right_now</item>
+        <item>@string/lock_15_sec</item>
+        <item>@string/lock_30_sec</item>
+        <item>@string/lock_1_min</item>
+        <item>@string/lock_3_min</item>
+        <item>@string/lock_5_min</item>
+    </string-array>
+    <string-array name="lock_time_items">
+        <item>0</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>300</item>
+    </string-array>
+
+    <string name="app_details"> применение детали </string>
+    <string name="app_memory"> системы занимает &#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_cache_size"> занимают  кэш &#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_permission1"> опасность  разрешения </string>
+    <string name="app_permission2"> обычные  разрешения </string>
+    <string name="app_permission3"> Важным  разрешения </string>
+    <string name="app_setting_update">проверить обновление</string>
+    <string name="feedback">мнения абонента</string>
+    <string name="grade">оценить маркета Google</string>
+    <string name="grade_tip">прошу дать нам оценку, чтобы мы улучшили</string>
+    <string name="app_setting_about">в отношении</string>
+    <string name="forbid_uninstall">предотвращать удаление</string>
+    <string name="auto_lock">автоблокировка при блокировании экрана</string>
+    <string name="change_lock_time">блокирование времени</string>
+    <string name="recom_lock_tip">тревоги блокирования</string>
+    <string name="new_app_lock_tip">тревога блокирования</string>
+    <string name="passwd_protect">вопрос о защите пароли</string>
+    <string name="change_passwd">изменить пароль</string>
+    <string name="passwd_notify">чаевые пароли</string>
+    <string name="no_lock_item_tip"> Нет  блокировки  применения </string>
+    <string name="lock_remind">напоминаем блокировать приложение</string>
+    <string name="new_install_lock_remind">обнаружено монтаж %1$s,рекомендуем блокировать</string>
+    <string name="no_unlocked_item_tip"> Нет  блокировки  применения </string>
+    <string name="app_setting_has_update">проверить обновление<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
+    <string name="question_charsize_tip">вопрос не больше 40 символов</string>
+    <string name="anwser_charsize_tip">Ответ не больше 40 символов</string>
+    <string name="query_delete">Удалить документ бэкапа %1$s,после удаления не может восстановить</string>
+    <string name="backuped_count">успешно бэкап %1$d документы.Место вложения:%2$s</string>
+    <string name="feedback_commit">подать</string>
+    <string name="feedback_content_tip">Какие проблемы вы встретились？</string>
+    <string name="feedback_email_tip">ваша обычно используемая почта</string>
+    <string name="feedback_category_tip">выбрайте тип вопросов</string>
+    <string name="category_lock">замок app</string>
+    <string name="category_backup_uninstall"> Удалить  и резервного копирования </string>
+    <string name="category_hide_image">скрытая картина</string>
+    <string name="category_hide_video">скрытое видео</string>
+    <string name="category_other">другие проблемы</string>
+    <string name="category_suggest">внести нам предложение</string>
+    <string name="feedback_success_title">передать успешно</string>
+    <string name="feedback_success_content">Спасибо ваши мнения，мы будем скорее вести ваши проблемы.</string>
+    <string name="app_image_hide">скрытая картина</string>
+    <string name="app_no_image_hide">нажмите кнопку“+”，добавить фото，которым нужно скрыть</string>
+    <string name="app_no_image">не добавленных картинки</string>
+    <string name="app_image_gallery">коллекция фото</string>
+    <string name="app_select_all">выбрать все</string>
+    <string name="app_select_none">Отменить</string>
+    <string name="app_hide_image">скрыть</string>
+    <string name="app_cancel_hide_image">отменить скыть</string>
+    <string name="app_hide_image_edit">редактировать</string>
+    <string name="app_add_hide_image">добавить</string>
+    <string name="app_share_hide_image">поделить</string>
+    <string name="app_unhide_dialog_content">Отменить скрыть это фото？</string>
+    <string name="app_delete_dialog_content">Удаление это фото?</string>
+    <string name="app_unhide_pictures_dialog_content">Отменить скрыть твои избранные фото？</string>
+    <string name="app_hide_pictures_dialog_content">Скрыть ваши избранные фото？</string>
+    <string name="app_hide_image_fail"> доступ для записи  этой  фотографии  нет  ,  скрыть  провал! </string>
+    <string name="lock_guide">нажмите блокирование</string>
+    <string name="start_guide">рекомендируем блокировать</string> <!-- App lock -->
+    <string-array name="sort_type">
+        <item>очередь по умолчанию</item>
+        <item>названия прилождений</item>
+        <item>по времени установок</item>
+    </string-array> <!-- 版权 -->
+    <string name="about_copy">Copyright © 2015 LEO Network Technology. All Rights Reserved</string> <!-- 应用墙 -->
+    <string name="app_wall"> рекомендуется применение </string>
+    <string name="app_wall_network">Не доступной сети,попробуйте повторно</string>
+    <string name="app_wall_click">повторите</string> <!-- 隐私策略 -->
+    <string name="protocolBar">соглашение о тайной защите</string>
+    <string name="lock_more">больше</string>
+    <string name="lock">замок</string>
+    <string name="det_change_lock_time"> Вы  нашли  применение  часто  блокировки  ,  изменить  время блокировки  ли  ? </string>
+
+    <string-array name="det_lock_time_items">
+        <item>30</item>
+        <item>60</item>
+    </string-array> <!-- LockerTheme -->
+    <string name="localtheme">местный</string>
+    <string name="onlinetheme">онлайн</string>
+    <string name="lockerThemePoit">тема замок приложения<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
+    <string name="lockerTheme">тема замок приложения</string>
+    <string name="defaultTheme">умолчание</string>
+    <string name="moonightTheme"> ночь </string>
+    <string name="orangeTheme"> резать фрукты </string>
+    <string name="ParadoxTheme"> пространство  противоречия </string>
+    <string name="locker_apply">приложение</string>
+    <string name="locker_uninstall">удаление</string>
+    <string name="locker_cancel">отменить</string>
+    <string name="christmas_theme"> рождество </string>
+    <string name="pull_to_refresh_pull_label">тянуть сверх для обновления</string>
+    <string name="pull_to_refresh_release_label">отпускать обновление</string>
+    <string name="pull_to_refresh_refreshing_label">Загрузить...</string> <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
+    <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
+    <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
+    <string name="no_more_theme">нет больше темы</string>
+    <string name="no_more_onlinetheme">Уже скачать все темы，мы будем скорее добавить новые темы</string>
+    <string name="find_new_theme"> найти  новые темы </string>
+    <string name="find_new_theme_content"> Вы  применение  замок  есть  новые темы  ,  нажмите для просмотра </string>
+    <string name="theme_tag_new">HOT</string>
+    <string name="theme_tag_hot">NEW</string>
+    <string name="about_group">группа фанатов</string>
+    <string name="about_praise">фисбук</string>
+    <string name="locker_guide">нажмите и заменять тему разблокировки</string>
+    <string name="locker_theme_guide">поздравляю！Твоя тема будет применить в интерфейсе блокирования приложений</string>
+    <string name="locker_clean"> оптимизация  скорости  %1$s  успех  ,  уже  &#160; </string>
+    <string name="setting_locker_clean">ускорение</string>
+    <string name="app_no_video_hide">нажмите кнопку“+”，добавить видео，которым нужно скрыть</string>
+    <string name="app_no_video_gallery_hide">не скрытое видео</string>
+    <string name="app_video_hide">скрытое видео</string>
+    <string name="app_video_gallery">коллекция видео</string>
+    <string name="app_unhide_dialog_content_video">Отменить скрыть это видео？</string>
+    <string name="app_delete_dialog_content_video">Удалить это видео？</string>
+    <string name="app_unhide_video_dialog_content">Отменить скрыть ваши избранные видео？</string>
+    <string name="app_hide_video_dialog_content">Скрыть избранное видео?</string>
+    <string name="hide_video_dialog_title"> играть в видео </string>
+    <string name="hide_video_dialog_content"> для  защиты вашей конфиденциальности  воспроизведения  видео  необходимо использовать  скрытые  Video&#160;  плюс  ,  установлены  ли  ? </string>
+    <string name="app_hide_video_fail">Это видео не может скрыть без право редактирования</string>
+    <string name="hide_pic_text"> уже  скрывать  фотографии </string>
+    <string name="hide_pic_empty_text">не скрыть фото</string>
+    <string name="hide_video_text"> уже  скрытые  видео </string>
+    <string name="hide_video_empty_text">Вы ещё не скрыли видео</string>
+    <string name="app_backup_uninstall"> Удалить  и резервного копирования </string>
+    <string name="circle_lock_tip_text">блокировано</string>
+    <string name="circle_lock_empty_tip_text"> Нет  блокировки  применения </string>
+    <string name="feedback_error">почта ошибка,введите повторно</string>
+    <string name="googlePlayGuide">скроллите внизу и дайте нам оценку</string>
+    <string name="folder_backup_restore"> применение  восстановления </string>
+    <string name="folder_sort_flow"> наиболее  потребление  потока </string>
+    <string name="folder_sort_capacity"> наиболее  занимают пространство </string>
+    <string name="folder_recommend"> новый  экспресс </string>
+    <!--
+    >
+    <string name="toast_download_fail_network">Не доступной сети,не удалось скачать тему,попробуйте повторно</string>
+    <string name="toast_download_fail_storage">“Не удалось скачать，место карты SD не хватает”</string>
+    <string name="toast_exit_when_storagemode"> В настоящее время использование  большой  режим хранения  , тема  не может  использовать  часть функций  . </string>
+    <string name="toast_download_failstart">Не доступной сети,попробуйте повторно</string>
+    <string name="toast_download_fail_sdcard_unmount"> В настоящее время использование  большой  режим хранения  ,  загрузки  функции  временно  не  может использовать. </string>
+    <string name="download_sdcard_status_error">Не удалось скачать ，карта SD не доступлен посетить</string>
+    <string name="download_failed_toast">"Не удалось скачать"</string>
+    <string name="download_network_invalid_toast">Не доступной сети,попробуйте повторно</string>
+    <string name="download_success_notify_title">тема замок приложения<xliff:g id="filename">%1$s</xliff:g> Загрузить  успеха</string>
+    <string name="downloaded_success">успешно загрузить，кликать приложение</string>
+    <string name="download_failure_notify_title">тема замок приложения<xliff:g id="filename">%1$s</xliff:g>Не удалось скачать </string>
+    <string name="downloaded_failure">"Не удалось скачать"</string>
+    -->
+    <string name="backup">бэкап</string>
+    <string name="restore">восстановить</string>
+    <string name="backuped">уже бэкап</string>
+    <string name="delete_successfully">успешно удалить</string>
+    <string name="no_more_business_app">не новых приложений，посмотрите попозже</string>
+    <string name="no_business_app">не новых приложений，посмотрите попозже</string>
+    <string name="space_consumption"> пространство  занимают  : </string>
+    <string name="cache_size"> Размер кэша  : </string>
+    <string name="power_consumption"> потребление энергии  : </string>
+    <string name="flow_consumption"> расход  потока  : </string>
+    <string name="memory_consumption"> объем памяти  : </string>
+    <string name="backup_path"> запасной путь  : </string>
+    <string name="backup_time"> резервное время  : </string>
+    <string name="app_size"> ПФА  , размер: </string>
+    <string name="version"> номер версии  : </string>
+    <string name="install_time"> %1$s  дней назад </string>
+    <string name="folder_new"> новый </string>
+    <string name="new_app_tip_content"> есть  весело  новых приложений,  быстро  посмотрим </string>
+    <string name="new_app_tip_title"> нашли  новое применение </string>
+    <string name="no_backup_app_tip">вы ещё не бэкап приложений</string>
+    <string name="other_people_use_tip"> другие  люди используют </string>
+    <string name="recomment_list_title">рекомендуем блокировать</string>
+    <string name="lock_success">Добавить замок успешно</string>
+    <string name="lcok_success_tip">блокировано</string>
+    <string name="success_finish">готово</string>
+    <string name="app_lock_theme">тема замок приложения</string>
+    <string name="business_rating"> Счёт: </string>
+    <string name="app_desc"> введение: </string>
+    <string name="app_download_count"> загрузок  : </string>
+    <string name="business_size"> размер: </string>
+    <string name="app_download"> высокая скорость  загрузки </string>
+    <string name="app_google_download">загружать бесплатно</string>
+    <string name="help_setting_tip_title">чаевые помощи</string>
+    <string name="lock_help_password_setting_content_gesture">нажмите настройки пароли [UI], введите пароль, после проверки ID, повторно настроить пароль</string>
+    <string name="lock_help_password_setting_content_password">нажмите настройки пароли [UI], введите пароль, после проверки ID, повторно настроить пароль</string>
+    <string name="lock_help_lock_setting_content">войти в настройку блокирования,вы можете вырать время блокирования</string>
+    <string name="lock_help_lock_theme_content">У нас есть много тем о блокирований приложнения，давайте попробуем некоторые красивых тем.</string>
+
+    <string-array name="lock_help_setting_title">
+        <item>как изменить код?</item>
+        <item>часто блокировано？</item>
+        <item>изменить тему</item>
+    </string-array>
+
+    <string name="lock_help_password_setting_button">настройки</string>
+    <string name="lock_help_lock_setting_button">настройка блокировки</string>
+    <string name="lock_setting_button">настройка блокировки</string>
+    <string name="lock_help_lock_theme_setting_button">изменить тему</string>
+    <string name="help_setting_guide">чаевые помощи</string> <!-- V2.0 -->
+    <string name="pravicy_protect">защита</string>
+    <string name="privacy_level">тайный класс</string>
+    <string name="privacy_contacts">личные контакты</string>
+    <string name="privacy_sms">тайное сообщение</string>
+    <string name="privacy_call">тайный разговор</string> <!-- privacy_contact_v2.0 start -->
+    <string name="privacy_contact_message">сообщение</string>
+    <string name="privacy_contact_calllog">разговор</string>
+    <string name="privacy_contact_contact">контакты</string>
+    <string name="privacy_contact_popumenus_add_new_privacy_contact">добавить контакт</string>
+    <string name="privacy_contact_popumenus_from_message">добавить из сообщения</string>
+    <string name="privacy_contact_popumenus_from_call_log">добавить из разговора</string>
+    <string name="privacy_contact_popumenus_from_contact">добавить в имеющийся</string>
+    <string name="privacy_contact_popumenus_input_phone_number">введите пароль ручной</string>
+    <string name="privacy_message_dialog_title">Вводить записи?</string>
+    <string name="privacy_message_dialog_content">Вводить сообщении и разговорные записи этих номеров?</string>
+    <string name="privacy_message_progress_dialog_title">нагрузка</string>
+    <string name="privacy_message_progress_dialog_content">сейчас вводить записи</string>
+    <string name="privacy_contact_activity_input_edit_name">имя</string>
+    <string name="privacy_contact_activity_input_edit_number">телефонный номер(реквизит）<Data><![CDATA[<b><font color="#ff0000">＊</font></b>]]></Data></string>
+    <string name="privacy_contact_activity_input_checkbox_normal">ответ</string>
+    <string name="privacy_contact_activity_input_checkbox_hangup">Отбой</string>
+    <string name="privacy_contact_notification_title_big">сообщение</string>
+    <string name="privacy_contact_notification_title_small">новое сообщение</string>
+    <string name="privacy_add_contact_toast">Это номер уже существует</string>
+    <string name="privacy_contact_edittext_hint">введите содержание</string>
+    <string name="privacy_contact_add_log_dialog_title">Вводить записи?</string>
+    <string name="privacy_contact_add_log_dialog_dialog_content">Вводить сообщении и разговорные записи этих номеров?</string>
+    <string name="privacy_contact_progress_dialog_title">нагрузка</string>
+    <string name="privacy_contact_progress_dialog_content">сейчас вводить записи</string>
+    <string name="privacy_contact_callog_out">исходящий вызов</string>
+    <string name="privacy_contact_callog_in">входящий</string>
+    <string name="privacy_contact_callog_no"> пропущенный </string>
+    <string name="input_toast_no_number_tip">введите номер телефона</string>
+    <string name="privacy_contact_checkbox_dlg_title">Вынести контакт?</string>
+    <string name="privacy_contact_checkbox_dlg_content">Вынести контакт из личного зона?</string>
+    <string name="privacy_contact_checkbox_dlg_checktext">Восстановить контактные записи сообщения и разговора</string>
+    <string name="privacy_contact_edit_contact">сообщение системы</string>
+    <string name="privacy_contact_edit_content">Сохранить изменение？</string>
+    <string name="privacy_contact_edit_left_btn">да</string>
+    <string name="privacy_contact_edit_right_btn">нет</string>
+    <string name="privacy_message_delete_message">Удаление сообщения？</string>
+    <string name="privacy_message_resotre_message">Уточните восстановить списки SMS в систему</string>
+    <string name="privacy_call_delete_call_log">Удалить списки разговора？</string>
+    <string name="privacy_contact_default_text">добавить личный контакт</string>
+    <string name="privacy_call_log_default_text">шифрация разговоров между тобой и ней/него</string>
+    <string name="privacy_message_default_text">шифрация сообщения между тобой и ней/него</string>
+    <string name="privacy_add_contact_default_text">У вас не проявленной контакта</string>
+    <string name="privacy_add_message_default_text">список сообщения пустой</string>
+    <string name="privacy_add_call_log_default_text">список разговора пустой</string>
+    <string name="privacy_contact_text">секретные связи и отказать подмечать</string>
+    <string name="privacy_contact_dialog_texts">отправка сообщения</string>
+    <string name="privacy_caontact_dialog_call">вызов</string>
+    <string name="privacy_contact_toast_no_choose">выбрайте телефонный номер</string>
+    <string name="privacy_message_item_send_message_fail">не удалось отправить сообщение</string>
+    <string name="privacy_message_not_privacy_tip">Из-за лимита системы Android 4.4 и выше，функция личного СМС возможна не может работать нормально</string> <!-- privacy_contact_v2.0 end -->
+    <!-- ImageHide -->
+    <string name="no_image_hide_dialog_title">удалите стандартную картину</string>
+    <string name="no_image_hide_dialog_content">удачно сохранина картинка на тайном защитнике, из-за ограничения системных правил, удалите стандартную картинку, вы можете просмотреть скрытую картинку в тайном защитнике</string>
+    <string name="no_image_hide_dialog_button">понял</string>
+    <string name="image_hide_memery_insuficient_dialog_title">не хватает памяти</string>
+    <string name="image_hide_memery_insuficient_dialog_content">не хватает место на карте SD , нельзя скрыть картинку, освободите место</string>
+    <string name="image_unhide_memery_insuficient_dialog_content">не хватает место на карте SD , нельзя восстановить картинку, освободите место</string>
+    <string name="image_hide_memery_insuficient_dialog_button">я понял(-а)</string>
+    <string name="appwall_name"> игровой центр </string>
+    <string name="unlock_theme">темы</string>
+    <string name="lock_setting">настройка</string> <!-- Lock Mode -->
+    <string name="lock_mode">формат сценки</string>
+    <string name="vistor_mode">режим визита</string>
+    <string name="unlock_all_mode">разблокиравание</string>
+    <string name="office_mode"> режим управления </string>
+    <string name="family_mode">семейный режим</string>
+    <string name="unlock_all_mode_tip">Не можно блокировать предложении в режиме разблокирования всех，выбрайте другие режимы.</string>
+    <string name="add_new_mode">добавить</string>
+    <string name="lock_mode_all">все режимы</string>
+    <string name="new_mode">новый формат</string>
+    <string name="lock_mode_location">положение</string>
+    <string name="hot_on_facebook">Facebook</string>
+    <string name="lock_mode_time">время</string>
+    <string name="add">добавить</string>
+    <string name="please_input_mode_name">введите имя формата сценки</string>
+    <string name="mode_name">имя формат сценки</string>
+    <string name="cont_edit_visitor_name">нельзя изменить название гостевого рижима</string>
+    <string name="aready_lock"> уже  плюс  замок </string>
+    <string name="choose_mode">выберите рижим сцены (громкости звука)</string>
+    <string name="create_mode_shortcut_title">создать ярлык</string>
+    <string name="create_mode_shortcut_tip">создать ярлык</string>
+    <string name="create_mode_shortcut_content">создать ярлык,можно быстро задействовать это модель в рабочем столе</string>
+    <string name="mode_change">включена<xliff:g id="mode">%1$s</xliff:g></string>
+    <string name="lock_change">включена<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
+    <string name="position_lock_no_wifi">нет списка Wi-Fi</string> <!-- Privacy Protection -->
+    <string name="privacy_level_1">опасно</string>
+    <string name="privacy_level_2">тревога</string>
+    <string name="privacy_level_3">обычно</string>
+    <string name="privacy_level_4">хорошо</string>
+    <string name="privacy_level_5">супер</string>
+    <string name="privacy_title_applcok">блокировать</string>
+    <string name="privacy_title_hide_pic">скрытая картина</string>
+    <string name="privacy_title_hide_video">скрытое видео</string>
+    <string name="privacy_title_privacy_contact">личные контакты</string>
+    <string name="privacy_suggest_title">совет личной защиты</string>
+    <string name="privacy_no_app_lock">не блокоровано</string>
+    <string name="privacy_no_pic_hide">Вы ещё не скрыли фото</string>
+    <string name="privacy_no_video_hide">Вы ещё не скрыли видео</string>
+    <string name="privacy_no_privacy_contact">довавить тайный контакт</string>
+    <string name="privacy_no_app_lock_des">рекомендуем блокировать приложнения, защитить ваши секреты.</string>
+    <string name="privacy_no_pic_hide_des">рекомендуем пользовать функцию “Скрыть фото”</string>
+    <string name="privacy_no_video_hide_des">рекомендуем скрыть личные видио</string>
+    <string name="privacy_no_privacy_contact_des">Добавление тайных контактов может защитить ваши списки связи</string>
+    <string name="privacy_more_app_lock">блокировать больше</string>
+    <string name="privacy_more_pic_hide">скрыть больше фото</string>
+    <string name="privacy_more_video_hide">скрыть больше видео</string>
+    <string name="privacy_more_privacy_contact">добать больше контактов</string>
+    <string name="privacy_more_app_lock_des">рекомендуем блокировать больше приложнений, защитить ваши секреты.</string>
+    <string name="privacy_more_pic_hide_des">пользуете “Скрыть фото”，чтобы скрыть некоторые личные фото</string>
+    <string name="privacy_more_video_hide_des">рекомендуем скрыть личные видио</string>
+    <string name="privacy_more_privacy_contact_des">Добавление тайных контактов может защитить ваши списки связи</string>
+    <string name="privacy_suggest_perfect_toast">личная защита достигнула на лучшей уровне</string> <!-- elec manager -->
+    <string name="battery_history_days"><xliff:g id="DAYS">%1$d</xliff:g> день  <xliff:g id="HOURS">%2$d</xliff:g> час  <xliff:g id="MINUTES">%3$d</xliff:g>филиал <xliff:g id="SECONDS">%4$d</xliff:g>секунд</string>
+    <string name="battery_history_hours"><xliff:g id="HOURS">%1$d</xliff:g> час  <xliff:g id="MINUTES">%2$d</xliff:g>филиал<xliff:g id="SECONDS">%3$d</xliff:g>секунд</string>
+    <string name="battery_history_minutes"><xliff:g id="MINUTES">%1$d</xliff:g>филиал<xliff:g id="SECONDS">%2$d</xliff:g>секунд</string>
+    <string name="battery_history_seconds">секунд</string>
+    <string name="battery_info_status_charging_ac"> (  AC  ) </string>
+    <string name="battery_info_status_charging_usb"> (USB  ) </string>
+    <string name="battery_info_status_discharging"> В настоящее время  потребление электроэнергии </string>
+    <string name="battery_info_status_not_charging"> не  в  зарядки </string>
+    <string name="battery_info_status_full"> достаточно электроэнергии </string>
+    <string name="battery_info_status_unknown"> Неизвестный </string>
+    <string name="battery_info_status_charging"> В настоящее время  зарядки </string>
+    <string name="power_usage_level_and_status"><xliff:g id="MINUTES">%1$d</xliff:g>филиал <xliff:g id="SECONDS">%2$d</xliff:g>секунд</string>
+    <string name="power_screen">экран</string>
+    <string name="power_wifi">Wi-Fi</string>
+    <string name="power_bluetooth">bluetooth</string>
+    <string name="power_cell">сигнал телефона</string>
+    <string name="power_phone">голосовой звонок</string>
+    <string name="power_idle">телефон в режиме ожидания</string>
+    <string name="process_kernel_label">Android OS</string>
+    <string name="process_mediaserver_label">медиасервер</string>
+    <string name="battery_cannot_do">эта функция не может быть выключена</string> <!-- Backup and Restore -->
+    <string name="app_backup_back">бэкап</string>
+    <string name="app_backup_v2">бэкап</string>
+    <string name="app_restore_v2">восстановить</string>
+    <string name="app_delete_v2">удалить</string>
+    <string name="app_game">игры</string>
+    <string name="app_application">приложение</string>
+    <string name="app_hot_app">люкс</string>
+    <string name="back_backed">уже бэкап</string>
+    <string name="the_best_status_toast"> уже  -  лучший,  попробуйте позже </string> <!-- My Apps -->
+    <string name="myapp_details">информация для использования</string>
+    <string name="app_manager">APP</string>
+    <string name="first_backup">бэкап</string>
+    <string name="first_usage">трафик</string>
+    <string name="first_battery">батарей</string>
+    <string name="first_hotapp">люкс</string>
+    <string name="first_installed_app">установлено</string>
+    <string name="first_appdata_app">приложение и данные：</string>
+    <string name="first_backups_app">уже бэкап：</string>
+    <string name="first_dataflow_app">месячный трафик：</string>
+    <string name="first_user_app">приложение потребителя</string>
+    <string name="first_used_space">занять место</string>
+    <string name="first_list_uninstall">удаление</string> <!-- Data Usage / Battery -->
+    <string name="home_appmanager_donghua_tv">внутреняя память</string>
+    <string name="traffic_progress_bar">месячный трафик</string>
+    <string name="traff_first_page_small_set_month_used">этот месяц</string>
+    <string name="traff_first_page_small_set_low">Вы можете ввести ваш пакет услуг трафика и уже пользоваемый трафик в этой месяц</string>
+    <string name="traff_first_page_small_set">настроить пакет</string>
+    <string name="no_used_traffic">пока не данных рейтинга для трафика,проверите дальше</string>
+    <string name="traffic_used_lot_stop_network">закрыть сеть</string>
+    <string name="traffic_used_lot_cancel">продолжать</string>
+    <string name="traffic_used_lot_text">расходы трафика этого месяца перекрывали %1$s%%</string>
+    <string name="traffic_used_finish_text">Ваш трафик уже истощил в этой месяц,рекомендуем закрыть сетёвой доступ</string>
+    <string name="traffic_used_lot">тревога трафика</string>
+    <string name="flow_settting_fist">тревога перерасхода</string>
+    <string name="flow_settting_name">настройка трафика</string>
+    <string name="flow_settting_second">тревога трафика</string>
+    <string name="flow_settting_sure_bg">совершено заполнение устройства</string>
+    <string name="flow_settting_dialog">месячный трафик</string>
+    <string name="flow_settting_dialog_remain">когда расход трафика в каждый месяц достигнёт уровнь настройки,включать тревогу</string>
+    <string name="flow_settting_thrid">отчетный день</string>
+    <string name="flow_settting_thrid_first_tv">месячный день</string>
+    <string name="flow_settting_thrid_second_tv">пакет XX MB</string>
+    <string name="flow_settting_thrid_month_used_data">этот месяц</string>
+    <string name="app_elec_aca">батарей</string>
+    <string name="app_elec_stop">стоп</string>
+    <string name="app_elec_zhuyi">Внимание! </string>
+    <string name="app_flow_elec">расход  потока </string>
+    <string name="app_flow">трафик</string>
+    <string name="app_elec">рейтинг</string>
+    <string name="today_triffic">сейгодня：XX MB</string>
+    <string name="month_remainder_triffic">остаток:XX MB</string>
+    <string name="month_triffic">месячный трафик</string>
+    <string name="flow_charts_this_month">ежедневный расход трафика</string>
+    <string name="home_app_manager_apps_delete">удаление</string>
+    <string name="home_app_manager_mem_clean">память устройства очищена на %1$S</string>
+    <string name="home_app_manager_mem_clean_one">очищен 1Мб памяти</string> <!-- What's Hot -->
+    <string name="hot_app_free"> бесплатно </string>
+
+    <string-array name="default_psw_protect_entrys">
+        <item>Как зовут маме?</item>
+        <item>Как зовут папе?</item>
+        <item>Как зовут учителю?</item>
+        <item>номер поспорта</item>
+    </string-array>
+
+    <string name="mode_save_hint">сохранить</string>
+    <string name="time_lock_save_hint">Сохранить</string>
+    <string name="location_lock_save_hint">сохранить</string>
+    <string name="mode_save_ask">сохранить %1$s?</string>
+    <string name="repeat">повторить</string>
+    <string name="no_repeat">не повторять</string>
+
+    <string-array name="days_of_week">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+
+    <string name="select_mode">выберите рижим сцены (громкости звука)</string>
+    <string name="select_wifi_mode">выберите wifi</string>
+    <string name="choose_ssid">выберите точку доступа Wi-Fi</string>
+    <string name="choose_enter_mode">операция，когда войти</string>
+    <string name="choose_quit_mode">операция，когда уйти</string> <!-- guide page begin -->
+    <string name="guide_page1_title">формат сценки</string>
+    <string name="guide_page1_content">интеллектуально блокировать</string>
+    <string name="guide_page2_title">класс личной защиты</string>
+    <string name="guide_page2_content">впервые создали личный класс</string>
+    <string name="guide_page3_title">личные контакты</string>
+    <string name="guide_page3_content">защищать мои и их личные связи</string>
+    <string name="guide_page4_title">контроль расхода приложнений</string>
+    <string name="guide_page4_content">легко проверить расходы</string>
+    <string name="guide_button_text">сразу  испытать</string> <!-- guide page end -->
+    <string name="lock_mode_name_cant_empty">название режима сцены не может быть пустым</string>
+    <string name="lock_mode_delete_tip_title">Удалить формат сценки</string>
+    <string name="lock_mode_delete_tip_both">это проводит к удалению соответствующих блокирований времени и положения</string>
+    <string name="lock_mode_delete_tip_time">это проводит к удалению соответствующих блокирований времени и положения</string>
+    <string name="lock_mode_delete_tip_location">это проводит к удалению соответствующих блокирований времени и положения</string>
+    <string name="please_input_name">введите имени</string>
+    <string name="please_selset_wifi">выберите точку доступа Wi-Fi</string>
+    <string name="cur_mode_delete_tip">удаление режима проводит к удалению соответстующих настроек блокирования </string>
+    <string name="mode_delete_tip">удалить режим сцены?</string>
+    <string name="add_mode">добавить</string>
+    <string name="add_new_time_lock">добавить</string>
+    <string name="add_new_location_lock">добавить точку положения</string>
+    <string name="save_successful">сохранено</string> <!-- version 2.1 begin -->
+    <!-- weizhuang -->
+    <string name="title_bar_weizhuang">маскировка</string>
+    <string name="weizhuang_first_in_text">показывают максированный интерфейс при разблокировке, только вы знаете как включить</string>
+    <string name="first_in_sure_button">понял</string>
+    <string name="unknow_call_first_title">неизвестный номер</string>
+    <string name="unknow_call_second_title">входящий</string>
+    <string name="unknow_call_thrid_first_title">инструкция</string>
+    <string name="unknow_call_all_content">скользните повестить,сообщение и ответить,чтобы разблокировать</string>
+    <string name="weizhuang_setting_ok">включен режим неизвестного звонка</string>
+    <string name="error_mode_ok">включен режим ошибки приложения</string>
+    <string name="zhiwen_mode_ok">включен режим отпечатки</string>
+    <string name="weizhuang_error_title">скользните на кнопку Закрыть слева направо,чтобы разблокировать</string>
+    <string name="weizhuang_error_notice">к сожалению,”Privacy Guard :был прекращен</string>
+    <string name="weizhuang_error_notice_set_false">ой, двигайте побольше</string>
+    <string name="weizhuang_zhiwen_notice">нажмите три раза в течение одной секунды,чтобы разблокировать</string>
+    <string name="error_cancel_button">закрыть</string>
+    <string name="open_weizhuang_dialog_title">начать это  маскировка</string>
+    <string name="open_weizhuang_dialog_content">Поздравляю  !  вы  научились  использовать это  камуфляж  ,  ли открыть? </string>
+    <string name="open_weizhuang_dialog_sure">открыть</string>
+
+    <string-array name="weizhuang_type_num">
+        <item>нет</item>
+        <item>ошибка</item>
+        <item>входящий</item>
+        <item>отпечаток</item>
+    </string-array>
+
+    <string name="pretend_app_error">к сожалению，\" %1$s \" был прекращен</string> <!-- weizhuang -->
+    <string name="time_location_lock_tip_title">разумное переключение</string>
+    <string name="time_location_lock_tip_content">вы можете установить автоматический обмен режима по времени и месту, установить?</string>
+    <string name="time_lock_mode_guide_content">замок времени может активировать режим сцены в указанное вам время, рекомендуем добавить собственный замок времени</string>
+    <string name="location_lock_mode_guide_content">замок положения можеи запустить режим сцены в указанном вам месте,WiFi отмечает местоположение</string>
+    <string name="lock_mode_guide_button_text">понял</string>
+	<string name="mode_missing">Ты не  создать  режим  этой  сцены  ,  пожалуйста,  удалить этот  ярлык </string>
+ <!-- version 2.1 end -->
+
+</resources>

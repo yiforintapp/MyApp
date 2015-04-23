@@ -17,7 +17,7 @@
         android:id="@+id/message_content"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/privacy_call_log_item_calllog_list_message_itemLT_layout_height"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/contactIV" >
 
         <LinearLayout
@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/privacy_contact_list_item_layout_marginLeft"
             android:layout_marginRight="@dimen/privacy_message_item_message_itemLT_layout_marginRight"
             android:orientation="vertical" >
 

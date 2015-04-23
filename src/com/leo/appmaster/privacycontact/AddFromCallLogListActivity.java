@@ -423,20 +423,21 @@ public class AddFromCallLogListActivity extends BaseActivity {
                         }
                     }
                     // 更新联系人缓存
-                    ArrayList<MessageBean> messages = pm.getSysMessage();
-                    List<String> addNumbers = new ArrayList<String>();
-                    for (ContactCallLog callLogBean : mAddPrivacyCallLog) {
-                        addNumbers.add(callLogBean.getCallLogNumber());
-                    }
-                    for (MessageBean messge : messages) {
-                        String formateNumber = PrivacyContactUtils.formatePhoneNumber(messge
-                                .getPhoneNumber());
-                        for (String string : addNumbers) {
-                            if (string.contains(formateNumber)) {
-                                pm.removeSysMessage(messge);
-                            }
-                        }
-                    }
+                    // ArrayList<MessageBean> messages = pm.getSysMessage();
+                    // List<String> addNumbers = new ArrayList<String>();
+                    // for (ContactCallLog callLogBean : mAddPrivacyCallLog) {
+                    // addNumbers.add(callLogBean.getCallLogNumber());
+                    // }
+                    // for (MessageBean messge : messages) {
+                    // String formateNumber =
+                    // PrivacyContactUtils.formatePhoneNumber(messge
+                    // .getPhoneNumber());
+                    // for (String string : addNumbers) {
+                    // if (string.contains(formateNumber)) {
+                    // pm.removeSysMessage(messge);
+                    // }
+                    // }
+                    // }
                 }
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
                     LeoEventBus.getDefaultBus().post(

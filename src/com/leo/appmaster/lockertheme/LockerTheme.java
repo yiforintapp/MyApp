@@ -24,6 +24,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -787,6 +788,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         dialog.cancel();
                     }
                 } else if (which == 2) {
+                    LockManager.getInstatnce().timeFilterSelf();
                     Uri uri = Uri.fromParts("package",
                             lastSelectedItem.packageName, null);
                     Intent intent = new Intent(Intent.ACTION_DELETE, uri);
@@ -944,6 +946,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             }
             /* SDK mark user click theme - end */
             if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
+                LockManager.getInstatnce().timeFilterSelf();
                 if (AppUtil
                         .appInstalled(LockerTheme.this, Constants.GP_PACKAGE)) {
                     try {

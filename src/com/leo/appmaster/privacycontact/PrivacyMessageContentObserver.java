@@ -5,18 +5,26 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Handler;
 import android.provider.CallLog;
+import android.telecom.Call;
 import android.util.Log;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.utils.NotificationUtil;
 
 @SuppressLint("NewApi")
 public class PrivacyMessageContentObserver extends ContentObserver {
@@ -49,9 +57,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                     + mb.getMessageBody() + "\"", null);
                 } catch (Exception e) {
                 }
-            } else {
-                PrivacyContactManager.getInstance(mContext).updateSysMessage();
             }
+            // 更新短信列表
+            // else {
+            // PrivacyContactManager.getInstance(mContext).updateSysMessage();
+            // }
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
             ContactBean call = PrivacyContactManager.getInstance(mContext).getLastCall();
             if (call != null) {
@@ -66,7 +76,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     if (cursor != null) {
                         while (cursor.moveToNext()) {
                             String number = cursor.getString(cursor.getColumnIndex("number"));
-                            String name = cursor.getString(cursor.getColumnIndex("name"));
+                            // String name =
+                            // cursor.getString(cursor.getColumnIndex("name"));
+                            String name = call.getContactName();
                             cursor.getString(cursor.getColumnIndex("duration"));
                             Date date = new Date(Long.parseLong(cursor.getString(cursor
                                     .getColumnIndex(CallLog.Calls.DATE))));
@@ -89,9 +101,57 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             }
                             values.put(Constants.COLUMN_CALL_LOG_DATE, time);
                             values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
-                            values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+                            if (call.getAnswerType() == 1) {
+                                if (CallLog.Calls.OUTGOING_TYPE == type
+                                        || CallLog.Calls.MISSED_TYPE != type) {
+                                    values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
+                                } else {
+                                    values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+                                }
+                            } else if (call.getAnswerType() == 0) {
+                                if (CallLog.Calls.OUTGOING_TYPE == type) {
+                                    values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
+                                } else {
+                                    values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+                                }
+                            }
                             // 保存记录
                             cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
+                            if (call.getAnswerType() == 1) {
+                                if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                    if (CallLog.Calls.MISSED_TYPE == type) {
+                                        AppMasterPreference pre = AppMasterPreference
+                                                .getInstance(mContext);
+                                        int count = pre.getMessageNoReadCount();
+                                        if (count > 0) {
+                                            pre.setCallLogNoReadCount(count + 1);
+                                        } else {
+                                            pre.setCallLogNoReadCount(1);
+                                        }
+                                        LeoEventBus
+                                                .getDefaultBus()
+                                                .post(
+                                                        new PrivacyDeletEditEvent(
+                                                                PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
+                                    }
+                                }
+                            } else if (call.getAnswerType() == 0) {
+                                if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                    AppMasterPreference pre = AppMasterPreference
+                                            .getInstance(mContext);
+                                    int count = pre.getMessageNoReadCount();
+                                    if (count > 0) {
+                                        pre.setCallLogNoReadCount(count + 1);
+                                    } else {
+                                        pre.setCallLogNoReadCount(1);
+                                    }
+                                    LeoEventBus
+                                            .getDefaultBus()
+                                            .post(
+                                                    new PrivacyDeletEditEvent(
+                                                            PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
+                                }
+                            }
                             // 通知更新通话记录
                             LeoEventBus
                                     .getDefaultBus()
@@ -104,6 +164,18 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?",
                                     number,
                                     mContext);
+                            // -------------------------------------------------------发送通知-------------------------------------------------
+                            if (call.getAnswerType() == 1) {
+                                if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                    if (CallLog.Calls.MISSED_TYPE == type) {
+                                        new MessagePrivacyReceiver().callLogNotification(mContext);
+                                    }
+                                }
+                            } else if (call.getAnswerType() == 0) {
+                                if (CallLog.Calls.OUTGOING_TYPE != type) {
+                                    new MessagePrivacyReceiver().callLogNotification(mContext);
+                                }
+                            }
                         }
                     }
 
@@ -117,7 +189,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 PrivacyContactManager.getInstance(mContext).updateSysCallLog();
             }
         } else if (CONTACT_MODEL.equals(mFlag)) {
-            PrivacyContactManager.getInstance(mContext).updateSysContact();
+            // PrivacyContactManager.getInstance(mContext).updateSysContact();
         }
     }
 }

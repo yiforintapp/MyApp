@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_background" >
+
+        <com.leo.appmaster.ui.CommonTitleBar
+            android:id="@+id/weizhuang_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/trffic_setting_iv"
+            android:layout_width="@dimen/app_manager_flowactivity_small_icon_width_height"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/traffic_small_icon_selector"
+            android:visibility="gone" >
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/weizhuang_ask"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/tips_icon"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/all_backgroud"
+        android:orientation="vertical"
+        android:padding="@dimen/new_app_manager_padding" >
+
+        <GridView
+            android:id="@+id/gv_weizhuang"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadingEdge="none"
+            android:gravity="center"
+            android:horizontalSpacing="1dp"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="1dp" />
+    </LinearLayout>
+
+</LinearLayout>

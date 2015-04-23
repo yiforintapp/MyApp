@@ -45,9 +45,12 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
@@ -228,7 +231,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             if (current < mFragmentHolders.length) {
                 HomeFragmentHoler hfh = mFragmentHolders[current];
                 if (hfh != null && hfh.fragment instanceof Selectable) {
-                    ((Selectable) (hfh.fragment)).onSelected();
+                    ((Selectable) (hfh.fragment)).onSelected(current);
                 }
             }
         }
@@ -302,6 +305,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                     "passwdtip");
                             Intent intent = new Intent(HomeActivity.this, PasswdTipActivity.class);
                             startActivity(intent);
+                        } else if (position == 3) {
+                            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
+                                    "locksetting");
+                            Intent intent = new Intent(HomeActivity.this, LockOptionActivity.class);
+                            intent.putExtra(LockOptionActivity.TAG_COME_FROM,
+                                    LockOptionActivity.FROM_HOME);
+                            HomeActivity.this.startActivity(intent);
                         }
                         mLeoPopMenu.dismissSnapshotList();
                     }
@@ -321,6 +331,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         listItems.add(getString(R.string.reset_passwd));
         listItems.add(getString(R.string.set_protect_or_not));
         listItems.add(getString(R.string.passwd_notify));
+        listItems.add(getString(R.string.lock_setting));
         return listItems;
     }
 
@@ -381,21 +392,35 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     sendBroadcast(shortcut);
                     prefernece.edit().putBoolean("shortcut", true).commit();
                 }
-                boolean appwallFlag = prefernece.getBoolean("shortcut_appwall", true);
+                boolean appwallFlag = prefernece.getBoolean("shortcut_appwall", false);
                 if (appwallFlag) {
-                    Intent appWallShortIntent = new Intent(HomeActivity.this, AppWallActivity.class);
-                    appWallShortIntent.putExtra("from_appwall_shortcut", true);
-                    appWallShortIntent.setAction(Intent.ACTION_MAIN);
-                    appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                    appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Intent appWallShortcut = new Intent(
-                            "com.android.launcher.action.UNINSTALL_SHORTCUT");
-                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                            getString(R.string.appwall_name));
+//                    Intent appWallShortIntent = new Intent(HomeActivity.this, AppWallActivity.class);
+//                    appWallShortIntent.putExtra("from_appwall_shortcut", true);
+//                    appWallShortIntent.setAction(Intent.ACTION_MAIN);
+//                    appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
+//                    appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    Intent appWallShortcut = new Intent(
+//                            "com.android.launcher.action.UNINSTALL_SHORTCUT");
+//                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+//                            getString(R.string.appwall_name));
+//                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
+//                    appWallShortcut.putExtra("duplicate", true);
+//                    sendBroadcast(appWallShortcut);
+//                    prefernece.edit().putBoolean("shortcut_appwall", false);
+                } else {
+                    Intent appWallShortIntent = new Intent(HomeActivity.this, ProxyActivity.class);
+                    appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                            StatusBarEventService.EVENT_BUSINESS_GAME);
+                    Intent appWallShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.appwall_name));
+                    ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(HomeActivity.this,
+                            R.drawable.game);
+                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
+                    appWallShortcut.putExtra("duplicate", false);
+                    appWallShortcut.putExtra("from_shortcut", true);
                     appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
-                    appWallShortcut.putExtra("duplicate", true);
                     sendBroadcast(appWallShortcut);
-                    prefernece.edit().putBoolean("shortcut_appwall", false);
+                    prefernece.edit().putBoolean("shortcut_appwall", true).commit();
                 }
                 if (prefernece.getBoolean(KEY_ROOT_CHECK, true)) {
                     boolean root = RootChecker.isRoot();
@@ -428,6 +453,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     boolean haveTip = AppMasterPreference.getInstance(
                             HomeActivity.this).getGoogleTipShowed();
                     if (count >= 50 && !haveTip) {
+                        LockManager.getInstatnce().timeFilterSelf();
                         Intent intent = new Intent(HomeActivity.this,
                                 GradeTipActivity.class);
                         HomeActivity.this.startActivity(intent);
@@ -447,6 +473,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
                     "google+");
             Intent intentBeta = null;
+            LockManager.getInstatnce().timeFilterSelf();
             if (AppUtil.appInstalled(getApplicationContext(),
                     "com.google.android.apps.plus")) {
                 intentBeta = new Intent(Intent.ACTION_VIEW);
@@ -489,6 +516,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
                     "Facebook");
             Intent intentLikeUs = null;
+            LockManager.getInstatnce().timeFilterSelf();
             if (AppUtil.appInstalled(getApplicationContext(),
                     "com.facebook.katana")) {
                 intentLikeUs = new Intent(Intent.ACTION_VIEW);
@@ -516,6 +544,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             /* sdk mark */
             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
                     "googleplay");
+            LockManager.getInstatnce().timeFilterSelf();
             if (AppUtil.appInstalled(getApplicationContext(),
                     "com.android.vending")) {
                 intent = new Intent(Intent.ACTION_VIEW);
@@ -703,7 +732,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (arg0 == 1 && mFragmentHolders[arg0].fragment instanceof Selectable) {
             ((Selectable) mFragmentHolders[mViewPager.getCurrentItem()].fragment).onScrolling();
         } else {
-            ((Selectable) mFragmentHolders[mViewPager.getCurrentItem()].fragment).onSelected();
+            ((Selectable) mFragmentHolders[mViewPager.getCurrentItem()].fragment).onSelected(arg0);
         }
     }
 
@@ -715,7 +744,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     @Override
     public void onPageSelected(int arg0) {
         if (mFragmentHolders[arg0].fragment instanceof Selectable) {
-            ((Selectable) mFragmentHolders[arg0].fragment).onSelected();
+            ((Selectable) mFragmentHolders[arg0].fragment).onSelected(arg0);
         }
     }
 

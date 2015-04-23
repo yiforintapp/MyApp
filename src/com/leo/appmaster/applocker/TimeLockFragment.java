@@ -14,32 +14,54 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.ui.CommonTitleBar;
 
 public class TimeLockFragment extends BaseFragment implements OnClickListener, OnItemClickListener,
         OnItemLongClickListener, Editable {
 
-    private ListView mModeListView;
+    private ListView mLockListView;
     private View mListHeader;
-
+    
+    private CommonTitleBar mTitleBar;
+    private View mLockGuideView;
+    private ImageView mLockGuideIcon;
+    private TextView mLockGuideText;
+    private Button mUserKnowBtn;
+    private Animation mGuidAnimation;
+    private  boolean mGuideOpen = false;
+    
     private List<TimeLock> mTimeLockList;
     private TimeLockAdapter mTimeLockAdapter;
     private boolean mEditing;
-
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //judge whether  setted  time lock mode
+        mTimeLockList = LockManager.getInstatnce().getTimeLock();
+        if(mTimeLockList.size()>0){
+            AppMasterPreference.getInstance(mActivity).setTimeLockModeSetOver(true);
+        }
+    }
+    
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_lock_mode;
@@ -47,18 +69,30 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
 
     @Override
     protected void onInitUI() {
-        mModeListView = (ListView) findViewById(R.id.mode_list);
-        mModeListView.setOnItemClickListener(this);
-        mModeListView.setOnItemLongClickListener(this);
+        mLockGuideView = findViewById(R.id.lock_mode_guide);
+        mLockGuideIcon = (ImageView)mLockGuideView.findViewById(R.id.lock_guide_icon);
+        mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
+        mUserKnowBtn = (Button) mLockGuideView.findViewById(R.id.mode_user_know_button);
+        mTitleBar =  ((LockModeActivity)mActivity).getActivityCommonTitleBar();
+        
+        mLockListView = (ListView) findViewById(R.id.mode_list);
+        mLockListView.setOnItemClickListener(this);
+        mLockListView.setOnItemLongClickListener(this);
+        
+     // if don't pack up the guide page and have not been set time lock mode
+       if(!AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()  && 
+               !AppMasterPreference.getInstance(mActivity).getTimeLockModeSetOVer()){
+           showGuidePage();
+      }
 
         mListHeader = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_item_header,
-                mModeListView, false);
+                mLockListView, false);
         TextView tv = (TextView) mListHeader.findViewById(R.id.tv_add_more);
         tv.setText(R.string.add_new_time_lock);
-        mModeListView.addHeaderView(mListHeader);
+        mLockListView.addHeaderView(mListHeader);
 
     }
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LeoEventBus.getDefaultBus().register(this);
@@ -75,7 +109,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mTimeLockList = LockManager.getInstatnce().getTimeLock();
         Collections.sort(mTimeLockList, new TimeLockComparator());
         mTimeLockAdapter = new TimeLockAdapter(mActivity);
-        mModeListView.setAdapter(mTimeLockAdapter);
+        mLockListView.setAdapter(mTimeLockAdapter);
 
     }
 
@@ -88,6 +122,12 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     public void onEventMainThread(TimeLockEvent event) {
         mTimeLockList = LockManager.getInstatnce().getTimeLock();
         mTimeLockAdapter.notifyDataSetChanged();
+      //cancle guide page
+        if(mTimeLockList.size()==1){
+            mLockGuideView.setVisibility(View.INVISIBLE);
+            mLockListView.setVisibility(View.VISIBLE);
+            mGuideOpen = false;
+        }
     }
 
     @Override
@@ -121,7 +161,21 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
 
                 mTimeLockAdapter.notifyDataSetChanged();
                 break;
-
+            case R.id.mode_user_know_button:
+                AppMasterPreference.getInstance(mActivity).setTimeLockModeGuideClicked(true);
+                removeGuidePage();
+                /** set the help tip action **/
+                mTitleBar.setOptionImage(R.drawable.tips_icon);
+                mTitleBar.setOptionImageVisibility(View.VISIBLE);
+                Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
+                mTitleBar.setOptionAnimation(animation);
+                mTitleBar.setOptionListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        lockGuide();
+                    }
+                });
+                break;
             default:
                 break;
         }
@@ -246,17 +300,21 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ((LockModeActivity) mActivity).onEditMode(1);
-        mModeListView.setOnItemClickListener(null);
-        mEditing = true;
-        mTimeLockAdapter.notifyDataSetChanged();
+        if (position != 0) {
+            ((LockModeActivity) mActivity).onEditMode(1);
+            mLockListView.setOnItemClickListener(null);
+            mEditing = true;
+            mLockListView.removeHeaderView(mListHeader);
+            mTimeLockAdapter.notifyDataSetChanged();
+        }
         return false;
     }
 
     @Override
     public void onFinishEditMode() {
         mEditing = false;
-        mModeListView.setOnItemClickListener(this);
+        mLockListView.setOnItemClickListener(this);
+        mLockListView.addHeaderView(mListHeader);
         mTimeLockAdapter.notifyDataSetChanged();
     }
 
@@ -275,4 +333,41 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mTimeLockAdapter.notifyDataSetChanged();
     }
 
+    /** about lock mode guide **/
+    public void lockGuide() {
+        if (mGuideOpen) {
+            removeGuidePage();
+        } else {
+            showGuidePage();
+        }
+    }
+
+    private void showGuidePage() {
+        mLockListView.setVisibility(View.INVISIBLE);
+        mLockGuideView.setVisibility(View.VISIBLE);
+        mLockGuideIcon.setImageResource(R.drawable.modes_tips_time);
+        mLockGuideText.setText(R.string.time_lock_mode_guide_content);
+        mUserKnowBtn.setOnClickListener(this);
+        // if ever pack up guide page then  next time guide page should appearance as animation
+        if (AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()) {
+            mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_in);
+            mLockGuideView.startAnimation(mGuidAnimation);
+        }
+        mGuideOpen = true;
+    }
+
+    private void removeGuidePage() {
+        mLockGuideView.setVisibility(View.INVISIBLE);
+        mLockListView.setVisibility(View.VISIBLE);
+        mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_out);
+        mLockGuideView.startAnimation(mGuidAnimation);
+        mGuideOpen = false;
+    }
+
+    /**
+     * open : true
+     */
+    public boolean getGuideOpenState() {
+        return this.mGuideOpen;
+    }
 }

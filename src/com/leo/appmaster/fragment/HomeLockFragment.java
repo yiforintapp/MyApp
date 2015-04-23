@@ -14,6 +14,8 @@ import com.leo.appmaster.applocker.LockModeActivity;
 import com.leo.appmaster.applocker.LockModeView;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.WeiZhuangActivity;
+import com.leo.appmaster.applocker.WeiZhuangFirstIn;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -30,6 +32,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private TipTextView mLockThemeBtn;
     private TextView mLockModeBtn;
     private TextView mLockSettingBtn;
+    private AppMasterPreference sp_weizhuang;
 
     @Override
     protected int layoutResourceId() {
@@ -38,8 +41,9 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
 
     @Override
     protected void onInitUI() {
+        sp_weizhuang = sp_weizhuang.getInstance(mActivity);
         mLockModeCircle = (LockModeView) findViewById(R.id.lock_mode_circle);
-        mLockModeCircle.setOnClickListener(this);
+//        mLockModeCircle.setOnClickListener(this);
         mAppLockBtn = (TextView) findViewById(R.id.app_lock);
         mAppLockBtn.setOnClickListener(this);
         mLockThemeBtn = (TipTextView) findViewById(R.id.lock_theme);
@@ -141,8 +145,9 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                 enterLockMode();
                 break;
             case R.id.lock_setting:
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "locksetting");
-                enterLockSetting();
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "appcover");
+//                enterLockSetting();
+                enterAppWeiZhuang();
                 break;
             case R.id.lock_mode_circle:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "changemode");
@@ -162,6 +167,18 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                 break;
         }
 
+    }
+
+    private void enterAppWeiZhuang() {
+        boolean isFirstIn = sp_weizhuang.getWeiZhuang();
+        Intent intent ;
+        if(isFirstIn){
+            intent = new Intent(mActivity, WeiZhuangFirstIn.class);
+            sp_weizhuang.setWeiZhuang(false);
+        }else {
+            intent = new Intent(mActivity, WeiZhuangActivity.class);
+        }
+        mActivity.startActivity(intent);
     }
 
     private void enterLockSetting() {
@@ -194,7 +211,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     }
 
     @Override
-    public void onSelected() {
+    public void onSelected(int position) {
         if (mLockModeCircle != null) {
             mLockModeCircle.startAnimation();
         }

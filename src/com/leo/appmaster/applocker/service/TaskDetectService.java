@@ -165,7 +165,6 @@ public class TaskDetectService extends Service {
                 long TotalTraffic = sp_traffic.getTotalTraffic() * 1024;
                 // 设置了流量套餐才去检测
                 if (TotalTraffic > 0) {
-                    // 流量预警
                     TrafficNote(TotalTraffic);
                 }
             }

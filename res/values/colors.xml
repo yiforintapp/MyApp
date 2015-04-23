@@ -59,7 +59,7 @@
     <color name="selector_traffic_text">#4fd300</color>
     <color name="selector_back_list_bg">#e3edfd</color>
     <color name="selector_day_traffic_set_line">#e3e3e3</color>
-        <color name="nothing_show_text">#d3d3d4</color>
+    <color name="nothing_show_text">#d3d3d4</color>
     <!-- guide page begin -->
     <color name="guide_page1_background_color">#1eb1d9</color>
     <color name="guide_page2_background_color">#64ad30</color>
@@ -67,6 +67,11 @@
     <color name="guide_page4_background_color">#fca53d</color>
     <color name="guide_indicator_fill_color">#87a9dc</color>
     <!-- guide page begin -->
+
+    <color name="weisuo_text">#636363</color>
+    <color name="weisuo_text_show">#808080</color>
+    <color name="weisuo_zhiwen_bg">#242424</color>
+    <color name="weisuo_error_bg">#4285f4</color>
 
     <drawable name="transparent">#00000000</drawable>
 

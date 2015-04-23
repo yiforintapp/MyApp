@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -29,10 +30,17 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
+import com.leo.appmaster.utils.LeoLog;
 
-public class HotAppActivity extends BaseFragmentActivity {
-    private static final String MOVE_TO_NEW_APP = "move_to_new_app";
-    private static final String MOVE_TO_GAME_FRAGMENT = "move_to_game_gragment";
+public class HotAppActivity extends BaseFragmentActivity implements OnPageChangeListener  {
+    public static final String FROME_STATUSBAR = "from_statusbar";
+    public static final String SHOW_PAGE = "show_page";
+
+    public static final int PAGE_APP = 0;
+    public static final int PAGE_GAME = 1;
+
+    // private static final String MOVE_TO_GAME_FRAGMENT =
+    // "move_to_game_gragment";
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
     private ImageView iv_red_tip;
@@ -41,14 +49,19 @@ public class HotAppActivity extends BaseFragmentActivity {
     private GameAppFragment2 gameFragment;
     private ApplicaionAppFragment appFragment;
     private AppMasterPreference sp_hot_app;
-    
-    boolean mFromStatusbar;
-    
+
+    private boolean mFromStatusbar;
+    private int mPage = PAGE_APP;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_hotapp);
-        mFromStatusbar = getIntent().getBooleanExtra("move_to_new_app", false);
+        Intent intent = getIntent();
+        if (intent != null) {
+            mFromStatusbar = intent.getBooleanExtra(FROME_STATUSBAR, false);
+            mPage = intent.getIntExtra(SHOW_PAGE, PAGE_APP);
+        }
         initUI();
     }
 
@@ -67,9 +80,10 @@ public class HotAppActivity extends BaseFragmentActivity {
 
         mPagerTab = (LeoPagerTab) findViewById(R.id.hotapp_app_tab_indicator);
         iv_red_tip = (ImageView) findViewById(R.id.iv_red_tip);
-        if(sp_hot_app.getHotAppActivityRedTip()){
+        if (sp_hot_app.getHotAppActivityRedTip()) {
             iv_red_tip.setVisibility(View.VISIBLE);
         }
+        mPagerTab.setOnPageChangeListener(this);
         mViewPager = (ViewPager) findViewById(R.id.hotapp_app_viewpager);
         initFragment();
 
@@ -78,31 +92,31 @@ public class HotAppActivity extends BaseFragmentActivity {
         mPagerTab.setViewPager(mViewPager);
     }
 
-    public void dimissRedTip(){
+    public void dimissRedTip() {
         iv_red_tip.setVisibility(View.GONE);
         sp_hot_app.setHotAppActivityRedTip(false);
         sp_hot_app.setHomeFragmentRedTip(false);
     }
-    
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
             super.onRestoreInstanceState(savedInstanceState);
         } catch (Exception e) {
-            
+
         }
 
     }
-    
+
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
         try {
             super.onRestoreInstanceState(savedInstanceState, persistentState);
         } catch (Exception e) {
-            
+
         }
     }
-    
+
     @Override
     public void onBackPressed() {
         Intent intent = null;
@@ -140,16 +154,25 @@ public class HotAppActivity extends BaseFragmentActivity {
 
     @Override
     protected void onResume() {
+        if (mViewPager != null) {
+//            LeoLog.d("testHot", "onResume , mPage is : " + mPage);
+            mViewPager.setCurrentItem(mPage);
+        }
         super.onResume();
+    }
+    
+    @Override
+    protected void onStop() {
+        //离开时记录现在在which page
+        mPage = mViewPager.getCurrentItem();
+//        LeoLog.d("testHot", "onStop , mPage is : " + mPage);
+        super.onStop();
+    }
 
-        if (mFromStatusbar) {
-            // 指定去新品速递
-            mViewPager.setCurrentItem(0);
-        } /*else if (MOVE_TO_GAME_FRAGMENT.equals(intent.getAction())) {
-            // 没指定就默认游戏中心
-            mViewPager.setCurrentItem(1);
-        }*/
-
+    @Override
+    protected void onDestroy() {
+//        LeoLog.d("testHot", "onDestroy");
+        super.onDestroy();
     }
 
     private void initFragment() {
@@ -207,4 +230,21 @@ public class HotAppActivity extends BaseFragmentActivity {
         String title;
         BaseFragment fragment;
     }
+
+    @Override
+    public void onPageScrollStateChanged(int arg0) {
+        
+    }
+
+    @Override
+    public void onPageScrolled(int arg0, float arg1, int arg2) {
+        
+    }
+
+    @Override
+    public void onPageSelected(int arg0) {
+//        LeoLog.d("testHot", "onPageSelected , mPage is : " + arg0);
+        mPage = arg0;
+    }
+
 }

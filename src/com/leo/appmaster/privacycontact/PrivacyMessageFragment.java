@@ -37,6 +37,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -129,6 +130,10 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             mButtomTipIsShow = true;
             PrivacyContactDateTask task = new PrivacyContactDateTask();
             task.execute("");
+        } else if (PrivacyContactUtils.PRIVACY_EDIT_NAME_UPDATE_MESSAGE_EVENT
+                .equals(mEditModelOperaction)) {
+            PrivacyContactDateTask task = new PrivacyContactDateTask();
+            task.execute("");
         }
     }
 
@@ -168,10 +173,23 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         LeoEventBus.getDefaultBus().post(
                 new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
-                        PrivacyContactUtils.FROM_MESSAGE_EVENT));
+                        PrivacyContactUtils.FROM_MESSAGE_NO_SELECT_EVENT));
         mIsEditModel = true;
         mAdapter.notifyDataSetChanged();
         return true;
+    }
+
+    // 更新TitleBar
+    private void updateTitleBarSelectStatus() {
+        if (mRestorMessages != null && mRestorMessages.size() > 0) {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.FROM_MESSAGE_EVENT));
+        } else {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                            PrivacyContactUtils.FROM_MESSAGE_NO_SELECT_EVENT));
+        }
     }
 
     @Override
@@ -199,7 +217,6 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             } catch (Exception e) {
             }
         } else {
-
             ImageView image = (ImageView) view.findViewById(R.id.message_listCB);
             if (!mb.isCheck()) {
                 image.setImageDrawable(getResources().getDrawable(R.drawable.select));
@@ -212,6 +229,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                 mRestorMessages.remove(mb);
                 mRestoreCount = mRestoreCount - 1;
             }
+            updateTitleBarSelectStatus();
         }
     }
 
@@ -221,8 +239,10 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     @SuppressLint("SimpleDateFormat")
     private void getMessages(String model, String selection, String[]
             selectionArgs) {
+        AppMasterPreference preference = AppMasterPreference.getInstance(mContext);
         List<MessageBean> mMessages = new ArrayList<MessageBean>();
         Map<String, MessageBean> messageList = new HashMap<String, MessageBean>();
+        int noReadCount = 0;
         Cursor cur = mContext.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
                 selection, selectionArgs, Constants.COLUMN_MESSAGE_DATE + " desc");
         if (cur != null) {
@@ -260,7 +280,8 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                 mb.setMessageTime(time);
                 if (threadId != null) {
                     if (!messageList.containsKey(threadId)) {
-                        mb.setCount(threadIdMessage(number));
+                        int temp = threadIdMessage(number);
+                        mb.setCount(temp);
                         messageList.put(threadId, mb);
                     }
                 }

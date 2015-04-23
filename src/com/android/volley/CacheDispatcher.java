@@ -17,17 +17,17 @@
 package com.android.volley;
 
 import android.os.Process;
+import android.util.Log;
 
 import java.util.concurrent.BlockingQueue;
 
 /**
  * Provides a thread for performing cache triage on a queue of requests.
- *
- * Requests added to the specified cache queue are resolved from cache.
- * Any deliverable response is posted back to the caller via a
- * {@link ResponseDelivery}.  Cache misses and responses that require
- * refresh are enqueued on the specified network queue for processing
- * by a {@link NetworkDispatcher}.
+ * Requests added to the specified cache queue are resolved from cache. Any
+ * deliverable response is posted back to the caller via a
+ * {@link ResponseDelivery}. Cache misses and responses that require refresh are
+ * enqueued on the specified network queue for processing by a
+ * {@link NetworkDispatcher}.
  */
 public class CacheDispatcher extends Thread {
 
@@ -49,8 +49,8 @@ public class CacheDispatcher extends Thread {
     private volatile boolean mQuit = false;
 
     /**
-     * Creates a new cache triage dispatcher thread.  You must call {@link #start()}
-     * in order to begin processing.
+     * Creates a new cache triage dispatcher thread. You must call
+     * {@link #start()} in order to begin processing.
      *
      * @param cacheQueue Queue of incoming requests for triage
      * @param networkQueue Queue to post requests that require network to
@@ -67,7 +67,7 @@ public class CacheDispatcher extends Thread {
     }
 
     /**
-     * Forces this dispatcher to quit immediately.  If any requests are still in
+     * Forces this dispatcher to quit immediately. If any requests are still in
      * the queue, they are not guaranteed to be processed.
      */
     public void quit() {
@@ -77,7 +77,8 @@ public class CacheDispatcher extends Thread {
 
     @Override
     public void run() {
-        if (DEBUG) VolleyLog.v("start new dispatcher");
+        if (DEBUG)
+            VolleyLog.v("start new dispatcher");
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 
         // Make a blocking call to initialize the cache.
@@ -90,7 +91,8 @@ public class CacheDispatcher extends Thread {
                 final Request<?> request = mCacheQueue.take();
                 request.addMarker("cache-queue-take");
 
-                // If the request has been canceled, don't bother dispatching it.
+                // If the request has been canceled, don't bother dispatching
+                // it.
                 if (request.isCanceled()) {
                     request.finish("cache-discard-canceled");
                     continue;
@@ -113,17 +115,19 @@ public class CacheDispatcher extends Thread {
                     continue;
                 }
 
-                // We have a cache hit; parse its data for delivery back to the request.
+                // We have a cache hit; parse its data for delivery back to the
+                // request.
                 request.addMarker("cache-hit");
                 Response<?> response = request.parseNetworkResponse(
                         new NetworkResponse(entry.data, entry.responseHeaders));
                 request.addMarker("cache-hit-parsed");
-
                 if (!entry.refreshNeeded()) {
-                    // Completely unexpired cache hit. Just deliver the response.
+                    // Completely unexpired cache hit. Just deliver the
+                    // response.
                     mDelivery.postResponse(request, response);
                 } else {
-                    // Soft-expired cache hit. We can deliver the cached response,
+                    // Soft-expired cache hit. We can deliver the cached
+                    // response,
                     // but we need to also send the request to the network for
                     // refreshing.
                     request.addMarker("cache-hit-refresh-needed");
@@ -133,7 +137,8 @@ public class CacheDispatcher extends Thread {
                     response.intermediate = true;
 
                     // Post the intermediate response back to the user and have
-                    // the delivery then forward the request along to the network.
+                    // the delivery then forward the request along to the
+                    // network.
                     mDelivery.postResponse(request, response, new Runnable() {
                         @Override
                         public void run() {

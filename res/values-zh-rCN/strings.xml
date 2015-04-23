@@ -40,8 +40,9 @@
     <string name="tips">提示</string>
     <!-- acceralate -->
     <string name="please_input_gesture">请绘制解锁图案</string>
-    <string name="switch_gesture">使用手势</string>
-    <string name="switch_passwd">使用数字</string>
+    <string name="input_passwd_tip">请输入密码提示</string>
+    <string name="switch_gesture">使用手势密码</string>
+    <string name="switch_passwd">使用数字密码</string>
     <string name="setting">设置</string>
     <string name="passwd_hint_tip">密码提示：</string>
     <string name="set_protect_or_not">"密保问题"</string>
@@ -303,14 +304,14 @@
     <string name="input_toast_no_number_tip">请输入电话号码</string>
     <string name="privacy_contact_checkbox_dlg_title">移出联系人？</string>
     <string name="privacy_contact_checkbox_dlg_content">确定将联系人移出隐私空间？</string>
-    <string name="privacy_contact_checkbox_dlg_checktext">恢复联系人的信息和通话记录</string>
+    <string name="privacy_contact_checkbox_dlg_checktext">恢复联系人的信息</string>
     <string name="privacy_contact_edit_contact">编辑隐私联系人</string>
     <string name="privacy_contact_edit_content">是否保存所做修改？</string>
     <string name="privacy_contact_edit_left_btn">是</string>
     <string name="privacy_contact_edit_right_btn">否</string>
     <string name="privacy_message_delete_message">确定将短信删除?</string>
     <string name="privacy_message_resotre_message">确定将短信记录恢复到系统?</string>
-    <string name="privacy_call_delete_call_log">是否删除通话记录?</string>
+    <string name="privacy_call_delete_call_log">确认将通话记录删除?</string>
     <string name="privacy_contact_default_text">添加隐私联系人</string>
     <string name="privacy_call_log_default_text">加密你和TA的通话</string>
     <string name="privacy_message_default_text">加密你和TA的短信</string>
@@ -490,7 +491,7 @@
     </string-array>
 
     <string name="select_mode">选择情景模式</string>
-     <string name="select_wifi_mode">选择wifi</string>
+    <string name="select_wifi_mode">选择wifi</string>
     <string name="choose_ssid">请选择wifi热点</string>
     <string name="choose_enter_mode">进入时操作</string>
     <string name="choose_quit_mode">离开时操作</string>
@@ -520,5 +521,44 @@
     <string name="add_new_time_lock">添加时间锁</string>
     <string name="add_new_location_lock">添加位置锁</string>
     <string name="save_successful">保存成功</string>
+
+    <!-- version 2.1 begin -->
+    <!-- weizhuang -->
+    <string name="title_bar_weizhuang">应用伪装</string>
+    <string name="weizhuang_first_in_text">打开被锁的应用时出现伪装界面，只有你知道要如何跳过伪装页打开应用</string>
+    <string name="first_in_sure_button">知道了</string>
+    <string name="unknow_call_first_title">未知号码</string>
+    <string name="unknow_call_second_title">来电</string>
+    <string name="unknow_call_thrid_first_title">使用介绍</string>
+    <string name="unknow_call_all_content">来电显示是假象哦，按顺序划过挂断，短信，接听来解锁吧</string>
+    <string name="weizhuang_setting_ok">未知来电模式已开启</string>
+    <string name="error_mode_ok">应用错误模式已开启</string>
+    <string name="zhiwen_mode_ok">指纹识别模式已开启</string>
+    <string name="weizhuang_error_title">手机屏幕上的“关闭”按钮是假象哦，在“关闭“按钮上从左向右滑动设置解锁吧</string>
+    <string name="weizhuang_error_notice">抱歉，“隐私卫士“已停止使用</string>
+    <string name="weizhuang_error_notice_set_false">哎哟！滑动距离再大一点</string>
+    <string name="weizhuang_zhiwen_notice">指纹识别是假象哦，一秒内快速在指纹解锁处点击三次来设置解锁吧</string>
+    <string name="error_cancel_button">关闭</string>
+    <string name="open_weizhuang_dialog_title">启动伪装</string>
+    <string name="open_weizhuang_dialog_content">恭喜！您已学会使用此伪装，是否开启？</string>
+    <string name="open_weizhuang_dialog_sure">开启</string>
+
+    <string-array name="weizhuang_type_num">
+        <item>无</item>
+        <item>应用错误</item>
+        <item>未知来电</item>
+        <item>指纹解锁</item>
+    </string-array>
+
+    <string name="pretend_app_error">抱歉，\" %1$s \"已停止使用</string>
+    <!-- weizhuang -->
+
+    <string name="time_location_lock_tip_title">更智能的情景模式切换</string>
+    <string name="time_location_lock_tip_content">我们发现您频繁切换情景模式，您可以设置通过时间锁或者位置锁自动切换情景模式，是否设置？</string>
+    <string name="time_lock_mode_guide_content">时间锁可以在您指定的时间点击激活某个情景模式，建议您添加属于您自己的时间锁</string>
+    <string name="location_lock_mode_guide_content">位置锁可以在您指定的地点触发情景模式，比如激活访客模式等，位置通过wifi热点来标注。这非常适合在您的家庭和公司之间建立不同的位置锁</string>
+    <string name="lock_mode_guide_button_text">知道了</string>
+    <string name="mode_missing">"你还没创建该情景模式，请删除此快捷方式"</string>
+    <!-- version 2.1 end -->
 
 </resources>

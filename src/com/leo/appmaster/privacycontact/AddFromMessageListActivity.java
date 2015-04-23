@@ -447,9 +447,10 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                             mHandler.sendMessage(messge);
                         }
                     }
-                    for (MessageBean messageBean : mAddPrivacyMessage) {
-                        pm.removeSysMessage(messageBean);
-                    }
+                    // 更新联系人隐私短信
+                    // for (MessageBean messageBean : mAddPrivacyMessage) {
+                    // pm.removeSysMessage(messageBean);
+                    // }
                 }
                 // 导入通话记录
                 if (mAddCallLogs != null) {
@@ -558,10 +559,11 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         protected Integer doInBackground(Boolean... arg0) {
             boolean flag = arg0[0];
             if (flag) {
-                // mMessageList = PrivacyContactUtils
-                // .queryMessageList(AddFromMessageListActivity.this);
-                mMessageList = PrivacyContactManager.getInstance(AddFromMessageListActivity.this)
-                        .getSysMessage();
+                mMessageList = PrivacyContactUtils
+                        .queryMessageList(AddFromMessageListActivity.this);
+                // mMessageList =
+                // PrivacyContactManager.getInstance(AddFromMessageListActivity.this)
+                // .getSysMessage();
                 // mMessageList =
                 // PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this,
                 // AddFromMessageListActivity.this.getContentResolver(), null,

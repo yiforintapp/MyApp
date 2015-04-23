@@ -1,17 +1,22 @@
 
 package com.leo.appmaster.privacycontact;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -183,31 +188,58 @@ public class EditPrivacyContactActivity extends BaseActivity {
     }
 
     // 更新隐私短信联系人名称
-    private int updateMessageMyselfName(ContentValues values, String selection,
-            String[] selectionArgs) {
-        int updateUmber = -1;
-        try {
-            updateUmber = this.getContentResolver().update(Constants.PRIVACY_MESSAGE_URI,
-                    values, selection,
-                    selectionArgs);
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void updateMessageMyselfName(ContentValues values, String selection,
+            String formateNumber) {
+        List<String> messageNumbers = new ArrayList<String>();
+        Cursor cusor = this.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
+                "contact_phone_number LIKE ? ", new String[] {
+                    "%" + formateNumber
+                }, null);
+        if (cusor != null && cusor.getCount() > 0) {
+            while (cusor.moveToNext()) {
+                String number = cusor.getString(cusor
+                        .getColumnIndex(Constants.COLUMN_MESSAGE_PHONE_NUMBER));
+                messageNumbers.add(number);
+            }
         }
-        return updateUmber;
+        for (String string : messageNumbers) {
+            try {
+                this.getContentResolver().update(Constants.PRIVACY_MESSAGE_URI,
+                        values, selection,
+                        new String[] {
+                            string
+                        });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // 更新隐私通话联系人名称
-    private int updateCallLogMyselfName(ContentValues values, String selection,
-            String[] selectionArgs) {
-        int updateUmber = -1;
-        try {
-            updateUmber = this.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI,
-                    values, selection,
-                    selectionArgs);
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void updateCallLogMyselfName(ContentValues values, String selection, String number) {
+        List<String> callLogNumbers = new ArrayList<String>();
+        Cursor cursor = this.getContentResolver().query(Constants.PRIVACY_CALL_LOG_URI, null,
+                "call_log_phone_number LIKE ? ", new String[] {
+                    "%" + number
+                }, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                String calllog = cursor.getString(cursor
+                        .getColumnIndex(Constants.COLUMN_CALL_LOG_PHONE_NUMBER));
+                callLogNumbers.add(calllog);
+            }
         }
-        return updateUmber;
+        for (String string : callLogNumbers) {
+            try {
+                this.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI, values, selection,
+                        new String[] {
+                            string
+                        });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     private void showEditContactDialog(String content, String leftBtn, String rightBtn) {
@@ -224,7 +256,6 @@ public class EditPrivacyContactActivity extends BaseActivity {
                     mEditDialog.cancel();
                     EditPrivacyContactActivity.this.finish();
                 }
-
             }
         });
         mEditDialog.setCanceledOnTouchOutside(false);
@@ -278,21 +309,34 @@ public class EditPrivacyContactActivity extends BaseActivity {
                     new String[] {
                         mCurrentNumber
                     });
-            // ContentValues updateNameValues = new ContentValues();
-            // updateNameValues.put(Constants.COLUMN_CONTACT_NAME, mPhoneName);
-            // String formateNumber =
-            // PrivacyContactUtils.formatePhoneNumber(mCurrentNumber);
-            // int updateMessageName = updateMessageMyselfName(updateNameValues,
-            // "contact_phone_number LIEK ?",
-            // new String[] {
-            // "%" + formateNumber
-            // });
-            // int updateCallLogName = updateCallLogMyselfName(updateNameValues,
-            // "call_log_phone_number LIKE ? ",
-            // new String[] {
-            // "%" + formateNumber
-            // });
+            // 判断是否更新隐私短信和隐私通话列表
+            String number=PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
+            if (mCurrentNumber.contains(number) && !mCurrentName.equals(mPhoneName)) {
+                ContentValues updateMessageNameValues = new ContentValues();
+                updateMessageNameValues.put(Constants.COLUMN_MESSAGE_CONTACT_NAME, mPhoneName);
+                ContentValues updateCallLogNameValues = new ContentValues();
+                updateCallLogNameValues.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, mPhoneName);
+                String formateNumber =
+                        PrivacyContactUtils.formatePhoneNumber(mCurrentNumber);
+                // 更新隐私短信名称
+                updateMessageMyselfName(updateMessageNameValues,
+                        "contact_phone_number = ?", formateNumber);
+                // 更新隐私通话名称
+                updateCallLogMyselfName(updateCallLogNameValues,
+                        "call_log_phone_number = ? ", formateNumber);
+                //通知更新列表
+                LeoEventBus
+                        .getDefaultBus()
+                        .post(
+                                new PrivacyDeletEditEvent(
+                                        PrivacyContactUtils.PRIVACY_EDIT_NAME_UPDATE_CALL_LOG_EVENT));
+                LeoEventBus
+                        .getDefaultBus()
+                        .post(
+                                new PrivacyDeletEditEvent(
+                                        PrivacyContactUtils.PRIVACY_EDIT_NAME_UPDATE_MESSAGE_EVENT));
 
+            }
             return result;
         }
 

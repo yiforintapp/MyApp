@@ -34,6 +34,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.model.AppItemInfo;
@@ -121,7 +122,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     }
 
     private void onLoadGameAppFinish(boolean isGetData, List<AppWallBean> list) {
-        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "statusbar_game");
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hots", "game");
         boolean flag = false;
         if (isGetData) {
             // list.clear();
@@ -136,7 +137,6 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
             List<AppItemInfo> pkgInfos = AppLoadEngine.getInstance(
                     mActivity).getAllPkgInfo();
             List<String> pkgName = new ArrayList<String>();
-            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < pkgInfos.size(); i++) {
                 if (pkgInfos.get(i).packageName.equals("com.android.vending")) {
                     flagGp = true;
@@ -339,7 +339,6 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                     AppWallUrlBean appUrl = null;
                     List<String[]> sort = new ArrayList<String[]>();
                     String urlStr = null;
-                    Uri url = null;
                     for (int i = 0; i < urls.size(); i++) {
                         appUrl = urls.get(i);
                         String[] tempStr = new String[2];
@@ -347,6 +346,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                         tempStr[1] = appUrl.getUrl();
                         sort.add(tempStr);
                     }
+                    LockManager.getInstatnce().timeFilterSelf();
                     int number = sort.size();
                     if (number >= 2) {
                         for (int i = 0; i < number; i++) {
@@ -381,7 +381,8 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                     String packageName = all.get(index).getDownload().get(0).getUrl();
                     if (packageName != null && !packageName.equals("")) {
                         SDKWrapper
-                                .addEvent(mActivity, SDKWrapper.P1, "hots", "game_" + packageName);
+                                .addEvent(mActivity, SDKWrapper.P1, "hot_cli", "game_"
+                                        + packageName);
                     } else {
                         // String urlPageName =
                         // all.get(index).getDownload().get(1).getUrl();

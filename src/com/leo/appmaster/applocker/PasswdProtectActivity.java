@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -26,6 +28,7 @@ import com.android.internal.content.NativeLibraryHelper.Handle;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -80,6 +83,7 @@ public class PasswdProtectActivity extends BaseActivity implements
                     mTtileBar.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            hideIME();
                             onBackPressed();
                         }
                     }, 300);
@@ -214,14 +218,14 @@ public class PasswdProtectActivity extends BaseActivity implements
             SDKWrapper.addEvent(this, SDKWrapper.P1, "first", "setpwdp_submit");
             Toast.makeText(this, R.string.pp_success, Toast.LENGTH_SHORT)
                     .show();
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    onBackPressed();
-                }
-            }, 500);
+            // Handler handler = new Handler();
+            // handler.postDelayed(new Runnable() {
+            //
+            // @Override
+            // public void run() {
+            onBackPressed();
+            // }
+            // }, 500);
         } else if (v == mAnwser) {
             if (mAnwser.isFocused()) {
                 mHandler.postDelayed(new Runnable() {
@@ -237,21 +241,43 @@ public class PasswdProtectActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
+        hideIME();
         boolean toHome = getIntent().getBooleanExtra("to_home", false);
         boolean toLockList = getIntent().getBooleanExtra("to_lock_list", false);
+        boolean quickMode = getIntent().getBooleanExtra("quick_mode", false);
+        int quickModeId = getIntent().getIntExtra("mode_id", -1);
         if (toHome) {
             LockManager.getInstatnce().timeFilter(getPackageName(), 500);
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
-            finish();
         } else if (toLockList) {
             Intent intent = new Intent(this,
                     AppLockListActivity.class);
             this.startActivity(intent);
-            finish();
-        } else {
-            super.onBackPressed();
+        } else if (quickMode) {
+            LockManager lm = LockManager.getInstatnce();
+            List<LockMode> modeList = lm.getLockMode();
+            for (LockMode lockMode : modeList) {
+                if (lockMode.modeId == quickModeId) {
+                    showModeActiveTip(lockMode);
+                    break;
+                }
+            }
         }
+        super.onBackPressed();
     }
 
+    /**
+     * show the tip when mode success activating
+     */
+    private void showModeActiveTip(LockMode mode) {
+        View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
+        TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
+        mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
+        Toast toast = new Toast(this);
+        toast.setView(mTipView);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
+    }
 }

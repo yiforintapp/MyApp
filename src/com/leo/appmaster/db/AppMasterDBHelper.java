@@ -254,5 +254,4 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_LOCATION_LOCK);
         }
     }
-
 }

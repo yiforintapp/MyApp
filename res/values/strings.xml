@@ -514,4 +514,43 @@
     <string name="mode_delete_tip">"Are you sure to delete this mode's profile?"</string>
     <string name="save_successful">Save Succefully</string>
 
+    <!-- version 2.1 begin -->
+    <!-- weizhuang -->
+    <string name="title_bar_weizhuang">App Cover</string>
+    <string name="weizhuang_first_in_text">Only you know how to skip the cover when app unlocked</string>
+    <string name="first_in_sure_button">OK</string>
+    <string name="unknow_call_first_title">Unknown Number</string>
+    <string name="unknow_call_second_title">Calling</string>
+    <string name="unknow_call_thrid_first_title">Instruction</string>
+    <string name="unknow_call_all_content">Slide to unlock decline, SMS and answer in order</string>
+    <string name="weizhuang_setting_ok">Unknown caller mode was enabled</string>
+    <string name="error_mode_ok">Error Mode was enabled</string>
+    <string name="zhiwen_mode_ok">Fingerprint identification mode was enabled</string>
+    <string name="weizhuang_error_title">Slide to unlock on Close</string>
+    <string name="weizhuang_error_notice">Sorry, \"Privacy Guard\" has stopped.</string>
+    <string name="weizhuang_error_notice_set_false">Oops! Longer sliding distance</string>
+    <string name="weizhuang_zhiwen_notice">Tap 3 times within 1 second to unlock</string>
+    <string name="error_cancel_button">Close</string>
+    <string name="open_weizhuang_dialog_title">Start cover</string>
+    <string name="open_weizhuang_dialog_content">Congrats! You got this cover. Start it?</string>
+    <string name="open_weizhuang_dialog_sure">Start</string>
+
+    <string-array name="weizhuang_type_num">
+        <item>No Cover</item>
+        <item>Error</item>
+        <item>Unknown Caller</item>
+        <item>Fingerprint</item>
+    </string-array>
+
+    <string name="pretend_app_error">Sorry,\" %1$s \"has stopped.</string>
+    <!-- weizhuang -->
+    <string name="time_location_lock_tip_title">More Modes</string>
+    <string name="time_location_lock_tip_content">Set time or position auto-mode to avoid frequent switch. Set now?</string>
+    <string name="time_lock_mode_guide_content">Time lock can enable a mode with your click. Add your own time lock.</string>
+    <string name="location_lock_mode_guide_content">Enable your chosen mode with position lock by WIFI hot spot, like guest mode. Suit position locks of your home and company.</string>
+    <string name="lock_mode_guide_button_text">OK</string>
+    <string name="mode_missing">"You don't create the mode, please delete this shortcut"</string>
+
+    <!-- version 2.1 end -->
+
 </resources>

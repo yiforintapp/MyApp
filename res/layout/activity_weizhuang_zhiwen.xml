@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/zhiwen_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/weisuo_zhiwen_bg" >
+
+    <TextView
+        android:id="@+id/tv_zhiwen_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/weizhuang_zhiwen_text_m_top"
+        android:text="@string/unknow_call_thrid_first_title"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_zhiwen_jieshao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_zhiwen_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="@dimen/weizhuang_unknowcall_tips_text_content_m_top"
+        android:text="@string/weizhuang_zhiwen_notice"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/iv_content_zhiwen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" >
+
+        <ImageView
+            android:id="@+id/iv_zhiwen_click"
+            android:layout_width="@dimen/weizhuang_zhiwen_icon_width"
+            android:layout_height="@dimen/weizhuang_zhiwen_icon_height"
+            android:background="@drawable/disguise_finger_bg" />
+
+        <ImageView
+            android:id="@+id/show_slowly_iv"
+            android:layout_width="@dimen/weizhuang_zhiwen_icon_width"
+            android:layout_height="@dimen/weizhuang_zhiwen_icon_height"
+            android:background="@drawable/disguise_finger_light" />
+
+        <ImageView
+            android:id="@+id/zhiwen_bang"
+            android:layout_width="@dimen/weizhuang_zhiwen_icon_width"
+            android:layout_height="15dp"
+            android:background="@drawable/disguise_finger_line" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/iv_zhiwen_tips"
+        android:layout_width="@dimen/weizhuang_zhiwen_icon_tips_width"
+        android:layout_height="@dimen/weizhuang_zhiwen_icon_tips_height"
+        android:layout_below="@id/iv_content_zhiwen"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/weizhuang_zhiwen_icon_m_top"
+        android:background="@drawable/gesture_threetap"
+        android:visibility="gone" />
+
+</RelativeLayout>

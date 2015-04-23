@@ -132,7 +132,7 @@
     <dimen name="privacy_call_log_item_calllog_item_scalllog_item_sendmessage_layout_marginRight">62dp</dimen>
     <dimen name="privacy_call_log_item_calllog_item_scalllog_item_calllog_item_call_layout_marginRight">14dp</dimen>
     <dimen name="privacy_call_log_item_calllog_list_call_log_itemCB_layout_marginLeft">12dp</dimen>
-    <dimen name="privacy_call_log_item_calllog_list_call_log_itemCB_layout_marginRight">14dp</dimen>
+    <dimen name="privacy_call_log_item_calllog_list_call_log_itemCB_layout_marginRight">16dp</dimen>
     <dimen name="privacy_call_log_item_calllog_list_message_itemLT_layout_height">72dp</dimen>
     <dimen name="privacy_contact_dialog_button_width">32dp</dimen>
     <dimen name="privacy_contact_dialog_button_height">32dp</dimen>
@@ -161,6 +161,8 @@
     <dimen name="privacy_level_seprator_padding">12dp</dimen>
     <dimen name="privacy_level_padding">32dp</dimen>
     <dimen name="privacy_suggest_padding">16dp</dimen>
+        <dimen name="privacy_suggest_arrow_padding_right">12dp</dimen>
+    <dimen name="privacy_suggest_arrow_padding_top">26dp</dimen>
     <dimen name="privacy_suggest_icon_text_margin">12dp</dimen>
     <dimen name="privacy_suggest_text_margin">4dp</dimen>
     <dimen name="home_bottom_button_height">84dp</dimen>
@@ -179,7 +181,7 @@
     <dimen name="multi_mode_add_margin_bottom">6dp</dimen>
 
     <!-- HomeAppManagerFragment -->
-    <dimen name="app_manager_padding">16dp</dimen> <!-- 14 -->
+    <dimen name="app_manager_padding">10dp</dimen> <!-- 14 -->
     <dimen name="app_manager_four_icon_total_height">70dp</dimen> <!-- 62 -->
     <dimen name="app_manager_four_icon_width_height">24dp</dimen> <!-- 22 -->
     <dimen name="app_manager_four_icon_margin_top">14dp</dimen> <!-- 12 -->
@@ -268,4 +270,21 @@
     <dimen name="time_lock_name_max_width">200dp</dimen>
     <dimen name="day_view_width">55dp</dimen>
 
+     <!-- lock mode begin  -->
+    <dimen name="home_lock_mode_guide_image_width">150dp</dimen>
+    <dimen name="home_lock_mode_guide_image_height">150dp</dimen>
+    <dimen name="home_lock_mode_guide_image_margin_top">36dp</dimen>
+    <dimen name="home_lock_mode_guide_text_margin_top">34dp</dimen>
+    <dimen name="home_lock_mode_guide_text_size">14dp</dimen>
+    <dimen name="home_lock_mode_guide_btn_width">100dp</dimen>
+    <dimen name="home_lock_mode_guide_btn_height">30dp</dimen>
+    <dimen name="home_lock_mode_guide_btn_margin_top">38dp</dimen>
+    
+    <dimen name="home_lock_mode_active_tip_width">192dp</dimen>
+    <dimen name="home_lock_mode_active_tip_image_width">74dp</dimen>
+    <dimen name="home_lock_mode_active_tip_image_height">74dp</dimen>
+    <dimen name="home_lock_mode_active_tip_image_margin_top">9dp</dimen>
+    <dimen name="home_lock_mode_active_tip_text_margin_top">6dp</dimen>
+    <dimen name="home_lock_mode_active_tip_text_margin_bottom">6dp</dimen>
+    <!-- lock mode end -->
 </resources>

@@ -204,6 +204,7 @@ public class AppLockListActivity extends BaseActivity implements
         mLastSelectApp = (AppInfo) view.getTag();
         AppInfo info = null;
         LockManager lm = LockManager.getInstatnce();
+        LockMode curMode = lm.getCurLockMode();
         if (mLastSelectApp.isLocked) {
             mLastSelectApp.isLocked = false;
             for (AppInfo baseInfo : mLockedList) {
@@ -222,9 +223,7 @@ public class AppLockListActivity extends BaseActivity implements
             // to set view unlocked
             ((LockImageView) view.findViewById(R.id.iv_app_icon))
                     .setLocked(false);
-
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "unlock: "
-                    + mLastSelectApp.packageName);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "unlock_"+curMode.modeName+"_"+mLastSelectApp.packageName);
         } else {
             mLastSelectApp.isLocked = true;
             for (AppInfo baseInfo : mUnlockList) {
@@ -245,8 +244,7 @@ public class AppLockListActivity extends BaseActivity implements
             ((LockImageView) view.findViewById(R.id.iv_app_icon))
                     .setLocked(true);
 
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", " lock: "
-                    + mLastSelectApp.packageName);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "lock_"+curMode.modeName+"_"+mLastSelectApp.packageName);
         }
         // saveLockList();
     }
@@ -341,13 +339,13 @@ public class AppLockListActivity extends BaseActivity implements
                                 if (TextUtils.equals(selectMode, lockMode.modeName)) {
                                     if (lockMode.defaultFlag == 1
                                             && !lockMode.haveEverOpened) {
-                                        lm.setCurrentLockMode(lockMode);
+                                        lm.setCurrentLockMode(lockMode, true);
                                         SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modeschage", "applock");
                                         startRcommendLock();
                                         lockMode.haveEverOpened = true;
                                         lm.updateMode(lockMode);
                                     } else {
-                                        lm.setCurrentLockMode(lockMode);
+                                        lm.setCurrentLockMode(lockMode, true);
                                         SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modeschage", "applock");
                                         Toast.makeText(
                                                 AppLockListActivity.this,

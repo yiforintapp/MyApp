@@ -163,7 +163,6 @@
     <string name="lock_more">เพิ่มเติม</string>
     <string name="lock">ล็อค</string>
 
-
     <!-- LockerTheme -->
     <string name="localtheme">ส่วนใน</string>
     <string name="onlinetheme">ออนไลน์</string>
@@ -340,6 +339,7 @@
     <string name="aready_lock">ได้ล็อค</string>
     <string name="choose_mode">โหมดเลือกฉาก</string>
     <string name="create_mode_shortcut_title">สร้างทางลัด</string>
+    <string name="create_mode_shortcut_tip">เพิ่มทางลัดไปยังเดสก์ทอป %1$s</string>
     <string name="create_mode_shortcut_content">สร้างทางลัดที่จะได้รับการเข้าถึงที่รวดเร็วในการเลือกโหมด</string>
     <string name="mode_change">ถูกเปิดใช้งาน<xliff:g id="mode">%1$s</xliff:g></string>
     <string name="lock_change">ถูกเปิดใช้งาน<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
@@ -493,6 +493,10 @@
 
     <string name="lock_mode_name_cant_empty">โหมดฉากชื่อจะว่างเปล่า</string>
     <string name="lock_mode_delete_tip_title">ลบเตือน</string>
+    <string name="lock_mode_delete_tip">คุณเลือกโหมดใช้ในเวลาล็อคหรือล็อคในตำแหน่งลบฉากนี้จะสอดคล้องกับการตั้งค่าโหมดลบล็อค</string>
+    <string name="lock_mode_delete_tip_both">การลบโหมดนี้จะมีผลต่อตัวเลือกโหมดในการตั้งค่าเวลาและสถานที่การตั้งค่า</string>
+    <string name="lock_mode_delete_tip_time">การลบโหมดนี้จะมีผลต่อตัวเลือกโหมดในการตั้งค่าเวลา</string>
+    <string name="lock_mode_delete_tip_location">การลบโหมดนี้จะมีผลต่อตัวเลือกโหมดในการตั้งค่าที่ตั้ง</string>
     <string name="please_input_name">กรุณาป้อนชื่อ</string>
     <string name="please_selset_wifi">กรุณาเลือกจุดร้อน WiFi</string>
     <string name="cur_mode_delete_tip">%1$sจะใช้หลังจากใช้ผู้เข้าชมจะลบลบโหมดนี้โหมดกำหนด</string>
@@ -503,5 +507,44 @@
     <string name="save_successful">ความสำเร็จ</string>
     <string name="mode_delete_tip">คุณต้องการลบโปรไฟล์</string>
     <string name="position_lock_no_wifi">ไม่มี WiFi รายการ</string>
+
+    <!-- version 2.1 begin -->
+    <!-- weizhuang -->
+    <string name="title_bar_weizhuang">การพรางตา</string>
+    <string name="weizhuang_first_in_text">มีUIปลอมออกมาเมื่อเปิดโปรแกรมที่ถูกล็อกไว้ รู้วิธีเปิดเพียงคุณคนเดียวเท่านั้น</string>
+    <string name="first_in_sure_button">ทราบแล้ว</string>
+    <string name="unknow_call_first_title">เลขหมายที่ไม่รู้จัก</string>
+    <string name="unknow_call_second_title">โทรศัพท์เข้า</string>
+    <string name="unknow_call_thrid_first_title">คำแนะนำการใช้งาน</string>
+    <string name="unknow_call_all_content">ปลดล็อกโดยขีดปฏิเสธสาย ข้อความ รับสายตามลำดับ</string>
+    <string name="weizhuang_setting_ok">เปิดใช้งานโหมดการแสดงเลขหมายที่ไม่รู้จัก</string>
+    <string name="error_mode_ok">เปิดใช้งานโหมดแอพลิเคชันทำงานผิดปกติ</string>
+    <string name="zhiwen_mode_ok">เปิดใช้งานโหมดการตรวจสอบลายนิ้วมือ</string>
+    <string name="weizhuang_error_title">ปลดล็อกโดยเลื่อนปุ่ม"ปิด"จากซ้ายไปขวา</string>
+    <string name="weizhuang_error_notice">ขออภัย \"Privacy Guard\" ถูกปิดใช้งานแล้ว</string>
+    <string name="weizhuang_error_notice_set_false">แหม เลื่อนไปอีกหน่อยนะ</string>
+    <string name="weizhuang_zhiwen_notice">ปลดล็อกโดยคลิกจุดปลดล็อกด้วยลายนิ้วมือ3ครั้งภายใน1วิ</string>
+    <string name="error_cancel_button">ปิด</string>
+    <string name="open_weizhuang_dialog_title">เริ่มปลอมตัวนี้</string>
+    <string name="open_weizhuang_dialog_content">ยินดีด้วยครับ คุณได้เรียนรู้ที่จะใช้หน้ากากนี้จะเปิด</string>
+    <string name="open_weizhuang_dialog_sure">เปิด</string>
+
+    <string-array name="weizhuang_type_num">
+        <item>ไม่มี</item>
+        <item>ผิดปกติ</item>
+        <item>โทรเข้า</item>
+        <item>ลายนิ้วมือ</item>
+    </string-array>
+
+    <string name="pretend_app_error">ขออภัย \" %1$s \"ถูกปิดใช้งานแล้ว</string>
+    <!-- weizhuang -->
+
+    <string name="time_location_lock_tip_title">สลับแบบอัจฉริยะ</string>
+    <string name="time_location_lock_tip_content">เราสังเกตว่าคุณมีการสลับโหมดบ่อยมาก คุณสามารถตั้งค่าให้สลับโหมดอัตโนมัติตามเวลาหรือตำแหน่ง ยืนยันการตั้งค่า</string>
+    <string name="time_lock_mode_guide_content">ไทม์ล็อกสามารถคลิกเปิดใช้งานโหมดตามเวลาที่ตั้งไว้ แนะนำให้เพิ่มไทม์ล็อกของคุณเอง</string>
+    <string name="location_lock_mode_guide_content">โพสิชั่นล็อกจะคลิกเปิดใช้โหมดในตำแหน่งที่คุณได้ตั้งไว้โดยแสดงตำแหน่งผ่าน wifi hotspot</string>
+    <string name="lock_mode_guide_button_text">ทราบแล้ว</string>
+    <string name="mode_missing">คุณยังไม่ได้สร้างรูปแบบสถานการณ์นี้กรุณาลบทางลัดนี้</string>
+    <!-- version 2.1 end -->
 
 </resources>

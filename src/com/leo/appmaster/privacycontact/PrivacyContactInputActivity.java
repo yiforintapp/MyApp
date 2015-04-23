@@ -312,7 +312,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                 PrivacyContactManager pm = PrivacyContactManager
                         .getInstance(PrivacyContactInputActivity.this);
                 ArrayList<ContactCallLog> callLogs = pm.getSysCallLog();
-                ArrayList<MessageBean> messages = pm.getSysMessage();
+//                ArrayList<MessageBean> messages = pm.getSysMessage();
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
 
                 // 导入短信和通话记录
@@ -355,12 +355,13 @@ public class PrivacyContactInputActivity extends BaseActivity {
                             mHandler.sendMessage(messge);
                         }
                     }
-                    for (MessageBean messageBean : messages) {
-                        if (messageBean.getPhoneNumber().contains(formateNumber)) {
-                            pm.removeSysMessage(messageBean);
-                        }
-
-                    }
+                    //更新短信列表
+//                    for (MessageBean messageBean : messages) {
+//                        if (messageBean.getPhoneNumber().contains(formateNumber)) {
+//                            pm.removeSysMessage(messageBean);
+//                        }
+//
+//                    }
 
                 }
                 // 导入通话记录

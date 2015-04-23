@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#f3f3f3"
-    android:padding="16dp" >
+    android:padding="@dimen/new_app_manager_padding" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -104,11 +104,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/home_button_setting_selecter"
-                android:drawableLeft="@drawable/setting_icon"
+                android:drawableLeft="@drawable/disguise_icon"
                 android:gravity="center"
                 android:paddingLeft="26dp"
                 android:paddingRight="18dp"
-                android:text="@string/lock_setting"
+                android:text="@string/title_bar_weizhuang"
                 android:textColor="#9054ff"
                 android:textSize="@dimen/home_bottom_button_text_size" />
         </LinearLayout>

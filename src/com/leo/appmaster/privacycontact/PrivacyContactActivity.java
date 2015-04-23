@@ -41,7 +41,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     private boolean mIsEditModel = false;
     private int pagerPosition;
     private AddPrivacyContactDialog mAddPrivacyContact;
-    private boolean mMessageTip = false;
     private boolean mCallLogTip = false;
     private boolean mBackFlag = false;
 
@@ -118,20 +117,16 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 pagerPosition = position;
                 if (position == 0) {
                     mTtileBar.setOptionImageVisibility(View.INVISIBLE);
-                    if (mMessageTip) {
-                        mMessageTip = false;
-                        AppMasterPreference.getInstance(PrivacyContactActivity.this)
-                                .setMessageRedTip(false);
+                    if (AppMasterPreference.getInstance(PrivacyContactActivity.this)
+                            .getMessageNoReadCount() <= 0) {
                         mFragmentHolders[0].redTip = false;
                         mPrivacyContactPagerTab.notifyDataSetChanged();
                     }
                 }
                 if (position == 1) {
                     mTtileBar.setOptionImageVisibility(View.INVISIBLE);
-                    if (mCallLogTip) {
+                    if (AppMasterPreference.getInstance(PrivacyContactActivity.this).getCallLogNoReadCount()<=0) {
                         mCallLogTip = false;
-                        AppMasterPreference.getInstance(PrivacyContactActivity.this)
-                                .setCallLogRedTip(false);
                         mFragmentHolders[1].redTip = false;
                         mPrivacyContactPagerTab.notifyDataSetChanged();
                     }
@@ -173,9 +168,10 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             // 短信删除
             mTtileBar.setOptionImageVisibility(View.VISIBLE);
             mTtileBar.setOptionImage(R.drawable.sms_delete);
+            mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
+                    R.drawable.privacy_title_bt_selecter);
             // 删除
             mTtileBar.setOptionListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
@@ -224,6 +220,8 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             // 通话记录编辑模式
             mTtileBar.setOptionImageVisibility(View.VISIBLE);
             mTtileBar.setOptionImage(R.drawable.sms_delete);
+            mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
+                    R.drawable.privacy_title_bt_selecter);
             mTtileBar.setOptionListener(new OnClickListener() {
 
                 @Override
@@ -255,8 +253,9 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             });
             // 联系人编辑模式
             mTtileBar.setOptionImage(R.drawable.sms_delete);
+            mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
+                    R.drawable.privacy_title_bt_selecter);
             mTtileBar.setOptionListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
@@ -284,28 +283,78 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             Toast.makeText(PrivacyContactActivity.this,
                     getResources().getString(R.string.privacy_add_contact_toast),
                     Toast.LENGTH_SHORT).show();
+        } else if (PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT.equals(event.eventMsg)) {
+            setNoSelectImage();
+        } else if (PrivacyContactUtils.FROM_MESSAGE_NO_SELECT_EVENT.equals(event.eventMsg)) {
+            setNoSelectImage();
+            mTtileBar.findViewById(R.id.message_restore).setVisibility(View.VISIBLE);
+            mTtileBar.findViewById(R.id.message_restore_icon).setBackgroundResource(
+                    R.drawable.un_recovery_icon);
+            mTtileBar.findViewById(R.id.message_restore).setOnClickListener(null);
+            mTtileBar.findViewById(R.id.message_restore).setBackgroundResource(0);
+            mTtileBar.setBackViewListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    mTtileBar.setHelpSettingVisiblity(View.GONE);
+                    chanageEditModel();
+                    LeoEventBus.getDefaultBus().post(
+                            new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+                }
+            });
+
         }
 
+    }
+
+    public void setNoSelectImage() {
+        mIsEditModel = true;
+        mPrivacyContactPagerTab.setVisibility(View.GONE);
+        mPrivacyContactViewPager.setOnTouchListener(new OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+                return true;
+            }
+        });
+        mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        mTtileBar.setOptionImage(R.drawable.un_delete);
+        mTtileBar.setOptionListener(null);
+        mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(0);
+        mTtileBar.setBackViewListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                chanageEditModel();
+                LeoEventBus.getDefaultBus().post(
+                        new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+            }
+        });
     }
 
     public void onEventMainThread(PrivacyDeletEditEvent event) {
         if (PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION
                 .equals(event.editModel)) {
-            if (pagerPosition != 1) {
-                mFragmentHolders[1].redTip = true;
-                mPrivacyContactPagerTab.notifyDataSetChanged();
-                AppMasterPreference.getInstance(this).setCallLogRedTip(true);
-                mCallLogTip = true;
-            }
+            // if (pagerPosition != 1) {
+            mFragmentHolders[1].redTip = true;
+            mPrivacyContactPagerTab.notifyDataSetChanged();
+            mCallLogTip = true;
+            // }
         } else if (PrivacyContactUtils.PRIVACY_RECEIVER_MESSAGE_NOTIFICATION
                 .equals(event.editModel)) {
-            if (pagerPosition != 0) {
+            // if (pagerPosition != 0) {
+            if (AppMasterPreference.getInstance(this).getMessageNoReadCount() > 0) {
                 mFragmentHolders[0].redTip = true;
                 mPrivacyContactPagerTab.notifyDataSetChanged();
-                AppMasterPreference.getInstance(this).setMessageRedTip(true);
-                mMessageTip = true;
             }
-
+        } else if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT
+                .equals(event.editModel)) {
+            mFragmentHolders[0].redTip = false;
+            mPrivacyContactPagerTab.notifyDataSetChanged();
+        }else if(PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT
+                .equals(event.editModel)){
+            mFragmentHolders[1].redTip = false;
+            mPrivacyContactPagerTab.notifyDataSetChanged();
         }
     }
 
@@ -355,7 +404,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         messageFragment.setContent(holder.title);
         holder.fragment = messageFragment;
         mFragmentHolders[0] = holder;
-        if (mMessageTip) {
+        if (AppMasterPreference.getInstance(this).getMessageNoReadCount() > 0) {
             mFragmentHolders[0].redTip = true;
         }
         /**
@@ -367,7 +416,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         pravicyCalllogFragment.setContent(holder.title);
         holder.fragment = pravicyCalllogFragment;
         mFragmentHolders[1] = holder;
-        if (mCallLogTip) {
+        if (AppMasterPreference.getInstance(this).getCallLogNoReadCount()>0) {
             mFragmentHolders[1].redTip = true;
         }
         /**
@@ -401,7 +450,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     protected void onResume() {
         super.onResume();
     }
-    
+
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
             super.onRestoreInstanceState(savedInstanceState);

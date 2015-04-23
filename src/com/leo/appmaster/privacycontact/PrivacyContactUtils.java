@@ -31,8 +31,11 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 
 public class PrivacyContactUtils {
     public static final Uri SMS_INBOXS = Uri.parse("content://sms/");
@@ -52,6 +55,8 @@ public class PrivacyContactUtils {
     public static final String FROM_MESSAGE_EVENT = "from_message_event";
     public static final String FROM_CALL_LOG_EVENT = "from_call_log_event";
     public static final String FROM_CONTACT_EVENT = "from_contact_event";
+    public static final String FROM_CONTACT_NO_SELECT_EVENT = "from_contact_no_select_event";
+    public static final String FROM_MESSAGE_NO_SELECT_EVENT = "from_message_no_select_event";
     public static final String CANCEL_EDIT_MODEL = "cancel_edit_model";
     public static final String EDIT_MODEL_OPERATION_RESTORE = "edit_model_operatioin_restore";
     public static final String CALL_LOG_EDIT_MODEL_OPERATION_DELETE = "call_log_edit_model_operatioin_delete";
@@ -90,6 +95,11 @@ public class PrivacyContactUtils {
     public static final String PRIVACY_ADD_CONTACT_UPDATE = "add_contact_update";
     public static final String PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP = "all_call_notification_hang_up";
     public static final String PRIVACY_INTERCEPT_CONTACT_EVENT = "intercept_contact_event";
+    public static final String PRIVACY_EDIT_NAME_UPDATE_CALL_LOG_EVENT = "edit_name_udpate_call_log_event";
+    public static final String PRIVACY_EDIT_NAME_UPDATE_MESSAGE_EVENT = "edit_name_udpate_message_event";
+    public static final String PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT = "privacy_contact_activity_cancel_red_tip";
+    public static final String PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT = "privacy_contact_activity_call_log_cancel_red_tip";
+
     public static final int ID = 0;
 
     public static final int DATE = 1;
@@ -660,6 +670,7 @@ public class PrivacyContactUtils {
         Cursor cur = cr.query(uri, null, selection, selectionArgs, null);
         if (cur != null) {
             count = cur.getCount();
+            cur.close();
         }
         return count;
 
@@ -756,7 +767,7 @@ public class PrivacyContactUtils {
                 if (new Date(a.getMessageTime()).after(new Date(b.getMessageTime())))
                     return -1;
                 return 0;
-            } catch(Exception e) {
+            } catch (Exception e) {
                 return 0;
             }
         }
@@ -896,18 +907,16 @@ public class PrivacyContactUtils {
                             }
                             break;
                         }
-                        // long messageId = cr.getLong(ID);
-                        // long msgCount = cr.getLong(MESSAGE_COUNT);
-                        // long snippetCS = cr.getLong(SNIPPET_CS);
-                        // long read = cr.getLong(READ);
-                        // long type = cr.getLong(TYPE);
-                        // long hasAttach = cr.getLong(HAS_ATTACHMENT);
                     }
                 }
-                cr.close();
+                if (cr != null) {
+                    cr.close();
+                }
             }
         }
-        cur.close();
+        if (cur != null) {
+            cur.close();
+        }
         return messageList;
     }
 
@@ -954,9 +963,25 @@ public class PrivacyContactUtils {
             String[] selectionArgs, Context context) {
         ContentValues values = new ContentValues();
         values.put("message_is_read", read);
-        context.getContentResolver().update(Constants.PRIVACY_MESSAGE_URI,
+        int count = context.getContentResolver().update(Constants.PRIVACY_MESSAGE_URI,
                 values, selection,
                 selectionArgs);
+        if (count > 0) {
+            AppMasterPreference pre = AppMasterPreference.getInstance(context);
+            for (int i = 0; i < count; i++) {
+                int temp = pre.getMessageNoReadCount();
+                if (temp > 0) {
+                    pre.setMessageNoReadCount(temp - 1);
+                    if (temp - 1 <= 0) {
+                        LeoEventBus
+                                .getDefaultBus()
+                                .post(
+                                        new PrivacyDeletEditEvent(
+                                                PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT));
+                    }
+                }
+            }
+        }
     }
 
     // 查询自定义短信列表thead_id
@@ -972,6 +997,9 @@ public class PrivacyContactUtils {
                 threadId = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_THREAD_ID));
                 break;
             }
+        }
+        if (cur != null) {
+            cur.close();
         }
         return threadId;
     }

@@ -8,12 +8,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
 
@@ -24,7 +28,8 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
     private CommonTitleBar mTtileBar;
     private boolean mEditMode;
     private int mEditIndex;
-
+    private Fragment mFragment;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +40,14 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
     private void initUI() {
         mPagerTab = (LeoPagerTab) findViewById(R.id.tab_indicator);
         mViewPager = (EditableViewPager) findViewById(R.id.viewpager);
+        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        
         initFragment();
         mViewPager.setAdapter(new HomePagerAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2);
         mPagerTab.setViewPager(mViewPager);
-
-        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        mPagerTab.setOnPageChangeListener(new ModePageChangeListiner());
+        
         mTtileBar.setTitle(R.string.lock_mode);
         mTtileBar.setBackViewListener(new OnClickListener() {
             @Override
@@ -51,7 +58,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
 
         // mTtileBar.setOptionImageVisibility(View.VISIBLE);
         // mTtileBar.setOptionImage(R.drawable.mode_add_button);
-         mTtileBar.setOptionListener(this);
+        // mTtileBar.setOptionListener(this);
     }
 
     @Override
@@ -69,12 +76,15 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
             mPagerTab.setVisibility(View.VISIBLE);
             mViewPager.setScrollable(true);
             mPagerTab.setCurrentItem(mEditIndex);
-            // mTtileBar.setOptionImage(R.drawable.mode_add_button);
             mTtileBar.setOptionImageVisibility(View.INVISIBLE);
             Fragment f = mFragmentHolders.clone()[mEditIndex].fragment;
             if (f instanceof Editable) {
                 ((Editable) f).onFinishEditMode();
             }
+            //show help tip
+          if(mEditIndex!=0){
+                showTitleBarOption(mEditIndex);
+           }
         } else {
             super.onBackPressed();
         }
@@ -162,5 +172,70 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         mTtileBar.setOptionImage(R.drawable.delete);
         mViewPager.setScrollable(false);
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        mTtileBar.setOptionListener(this);
     }
+    
+    public CommonTitleBar getActivityCommonTitleBar(){
+        if(null != mTtileBar){
+            return this.mTtileBar;
+        }
+        return null;
+    }
+    
+    
+    class ModePageChangeListiner implements OnPageChangeListener {
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            mTtileBar.setOptionImageVisibility(View.INVISIBLE);
+            showTitleBarOption(position);
+        }
+    }
+    
+    private void showTitleBarOption(int currentPageItem){
+        OnClickListener listener = null;
+        if(currentPageItem ==0){
+            return;
+        }
+        if (currentPageItem == 1) {
+            mFragment = mFragmentHolders.clone()[currentPageItem].fragment;
+             listener = new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppMasterPreference.getInstance(LockModeActivity.this).setTimeLockModeGuideClicked(true);
+                    ((TimeLockFragment) mFragment).lockGuide();
+                    /* SDK Event Mark */
+                    SDKWrapper.addEvent(LockModeActivity.this, SDKWrapper.P1, "help", "time");
+                }
+            };
+        } else if (currentPageItem == 2) {
+            mFragment = mFragmentHolders.clone()[currentPageItem].fragment;
+             listener = new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppMasterPreference.getInstance(LockModeActivity.this).setLocationLockModeGuideClicked(true);
+                    ((LocationLockFragment) mFragment).lockGuide();
+                    /* SDK Event Mark */
+                    SDKWrapper.addEvent(LockModeActivity.this, SDKWrapper.P1, "help", "local");
+                }
+            };
+        }
+        
+        mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        mTtileBar.setOptionImage(R.drawable.tips_icon);
+        if(null != listener){
+            mTtileBar.setOptionListener(listener);
+        }
+    }
+    
 }
