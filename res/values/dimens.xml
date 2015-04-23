@@ -202,6 +202,5 @@
     <dimen name="home_lock_mode_active_tip_image_margin_top">9dp</dimen>
     <dimen name="home_lock_mode_active_tip_text_margin_top">6dp</dimen>
     <dimen name="home_lock_mode_active_tip_text_margin_bottom">6dp</dimen>
-
     <!-- lock mode end -->
 </resources>
