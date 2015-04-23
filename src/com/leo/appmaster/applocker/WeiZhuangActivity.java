@@ -4,13 +4,11 @@ package com.leo.appmaster.applocker;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -24,10 +22,11 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.WeiZhuangInfo;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 
-public class WeiZhuangActivity extends Activity implements OnItemClickListener, OnClickListener {
+public class WeiZhuangActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private final static int noMode = 0;
     private Drawable[] mIcon = new Drawable[4];
     private String[] mName;

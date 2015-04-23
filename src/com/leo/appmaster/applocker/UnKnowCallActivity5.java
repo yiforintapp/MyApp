@@ -1,13 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.ui.CirCleDongHua;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-
-import android.app.Activity;
 import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,7 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UnKnowCallActivity5 extends Activity implements OnTouchListener {
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.ui.CirCleDongHua;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+
+public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener {
     private final static int UnknowCallMode = 2;
     private TextView tv_use_tips, tv_use_tips_content;
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,

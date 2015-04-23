@@ -1,12 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-
-import android.app.Activity;
 import android.app.Service;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -16,7 +10,13 @@ import android.view.View.OnTouchListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ErrorWeiZhuang extends Activity implements OnTouchListener {
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+
+public class ErrorWeiZhuang extends BaseActivity implements OnTouchListener {
     private final static int ERRORWEIZHUANG = 1;
     private TextView tv_make_sure_error;
     private AppMasterPreference sp_error_weizhuang;

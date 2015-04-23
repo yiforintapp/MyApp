@@ -1,12 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-
-import android.app.Activity;
 import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,7 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ZhiWenActivity extends Activity implements OnClickListener {
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+
+public class ZhiWenActivity extends BaseActivity implements OnClickListener {
     private final static int ZHIWENWEIZHUANG = 3;
     private TextView tv_zhiwen_title, tv_zhiwen_jieshao;
     private ImageView iv_zhiwen_tips, zhiwen_bang, show_slowly_iv, iv_zhiwen_click;
