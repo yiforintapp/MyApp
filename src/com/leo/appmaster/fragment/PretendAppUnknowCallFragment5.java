@@ -434,7 +434,6 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
             action = intent.getAction();  
             if(Intent.ACTION_SCREEN_ON.equals(action)){  
             }else if(Intent.ACTION_SCREEN_OFF.equals(action)){  
-//                LeoLog.d("testUnknow", "ACTION_SCREEN_OFF");
                 isScreenOff = true;
             }  
         }  

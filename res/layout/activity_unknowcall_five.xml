@@ -8,15 +8,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="210dp"
+        android:layout_height="@dimen/weizhuang_unknowcall_first_content"
         android:background="@drawable/disguise_call_bg1" >
 
         <TextView
             android:id="@+id/call_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginLeft="@dimen/weizhuang_unknowcall_text_phone_m_left"
+            android:layout_marginTop="@dimen/weizhuang_unknowcall_text_phone_m_top"
             android:text="@string/unknow_call_second_title"
             android:textColor="@color/white"
             android:textSize="22dp" />
@@ -25,11 +25,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/call_phone"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="@dimen/weizhuang_unknowcall_text_phone_m_left"
             android:layout_marginTop="7dp"
             android:text="@string/unknow_call_first_title"
             android:textColor="@color/white"
-            android:textSize="46dp" />
+            android:textSize="@dimen/weizhuang_unknowcall_text_unknow" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -56,7 +56,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="@dimen/weizhuang_unknowcall_tips_text_content_m_top"
             android:text="@string/unknow_call_all_content"
             android:textColor="@color/white"
             android:textSize="16dp"
@@ -78,64 +78,64 @@
 
         <ImageView
             android:id="@+id/iv_guaduan"
-            android:layout_width="32dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/weizhuang_unknowcall_guaduan_width"
+            android:layout_height="@dimen/weizhuang_unknowcall_guaduan_height"
             android:background="@drawable/disguise_call_red"
             android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_duanxin"
-            android:layout_width="32dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/weizhuang_unknowcall_guaduan_width"
+            android:layout_height="@dimen/weizhuang_unknowcall_guaduan_height"
             android:background="@drawable/disguise_call_blue"
             android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_jieting"
-            android:layout_width="32dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/weizhuang_unknowcall_guaduan_width"
+            android:layout_height="@dimen/weizhuang_unknowcall_guaduan_height"
             android:background="@drawable/disguise_call_sms"
             android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_guaduan_big"
-            android:layout_width="64dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/weizhuang_unknowcall_guaduan_big_width"
+            android:layout_height="@dimen/weizhuang_unknowcall_guaduan_big_height"
             android:background="@drawable/disguise_call_red"
             android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_duanxin_big"
-            android:layout_width="64dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/weizhuang_unknowcall_guaduan_big_width"
+            android:layout_height="@dimen/weizhuang_unknowcall_guaduan_big_height"
             android:background="@drawable/disguise_call_blue"
             android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_jieting_big"
-            android:layout_width="64dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/weizhuang_unknowcall_guaduan_big_width"
+            android:layout_height="@dimen/weizhuang_unknowcall_guaduan_big_height"
             android:background="@drawable/disguise_call_sms"
             android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_tips_left"
-            android:layout_width="28dp"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/weizhuang_unknowcall_icon_tips_left_width"
+            android:layout_height="@dimen/weizhuang_unknowcall_icon_tips_left_height"
             android:background="@drawable/gesture_leftslide"
             android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_tips_right"
-            android:layout_width="47dp"
-            android:layout_height="57dp"
+            android:layout_width="@dimen/weizhuang_unknowcall_icon_tips_right_width"
+            android:layout_height="@dimen/weizhuang_unknowcall_icon_tips_right_height"
             android:background="@drawable/gesture_rightslide"
             android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_dianhua_hold"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="@dimen/weizhuang_unknowcall_icon_hold"
+            android:layout_height="@dimen/weizhuang_unknowcall_icon_hold"
             android:background="@drawable/disguise_call"
             android:longClickable="true"
             android:visibility="invisible" />
