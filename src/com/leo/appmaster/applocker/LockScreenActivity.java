@@ -242,7 +242,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
-        LeoLog.e("xxxx", "mLockedPackage = " + mLockedPackage + "newLockedPkg = " + newLockedPkg);
         if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
             mLockedPackage = newLockedPkg;
             // change background
@@ -269,7 +268,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void checkOutcount() {
         LockManager lm = LockManager.getInstatnce();
         int outcountTime = lm.getOutcountTime(mLockedPackage);
-        LeoLog.e("xxxx", "outcountTime = " + outcountTime);
         if (outcountTime > 0) {
             LockManager.getInstatnce().timeFilter(getPackageName(), 200);
             Intent intent = new Intent(this, WaitActivity.class);

@@ -39,8 +39,6 @@ public class WaitActivity extends BaseActivity {
         mTimeView.updateDegree(mInitDegree);
         mWaitTime = 10 - mInitTime;
         mTvTime.setText("00:" + mWaitTime);
-        LeoLog.e("xxxx", "mInitTime = " + mInitTime + "         mInitDegree =  " + mInitDegree
-                + "       mWaitTime = " + mWaitTime);
         mTask = new UpdateTask();
         startWaitTime();
     }
