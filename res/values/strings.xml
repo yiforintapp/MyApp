@@ -626,6 +626,7 @@
     <string name="time_lock_mode_guide_content">Time lock can enable a mode with your click. Add your own time lock.</string>
     <string name="location_lock_mode_guide_content">Enable your chosen mode with position lock by WIFI hot spot, like guest mode. Suit position locks of your home and company.</string>
     <string name="lock_mode_guide_button_text">OK</string>
+    <string name="mode_missing">"You don't create the mode, please delete this shortcut"</string>
 
     <!-- version 2.1 end -->
 

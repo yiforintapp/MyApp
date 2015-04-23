@@ -7,6 +7,7 @@ import java.util.List;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -59,6 +60,7 @@ import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
@@ -83,6 +85,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private Bitmap mAppBaseInfoLayoutbg;
     private LeoPopMenu mLeoPopMenu;
     private LeoDoubleLinesInputDialog mDialog;
+    private LEOAlarmDialog mTipDialog;
     private EditText mEtQuestion, mEtAnwser;
     private String mLockTitle;
     private ImageView mThemeView;
@@ -105,12 +108,43 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private RelativeLayout mLockLayout;
 
+    private boolean mMissingDialogShowing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_setting);
         mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         handleIntent();
+
+        if (mQuickLockMode) {
+            LockManager lm = LockManager.getInstatnce();
+            List<LockMode> modeList = lm.getLockMode();
+            LockMode mode = null;
+            for (LockMode lockMode : modeList) {
+                if (lockMode.modeId == mQuiclModeId) {
+                    mode = lockMode;
+                    break;
+                }
+            }
+            if (mode != null) {
+                if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+                    if (mode.defaultFlag != -1) {
+                        Intent intent = new Intent(this, LockSettingActivity.class);
+                        intent.putExtra("from_quick_mode", true);
+                        intent.putExtra("just_finish", true);
+                        intent.putExtra("mode_id", mQuiclModeId);
+                        this.startActivity(intent);
+                    }
+                    finish();
+                    return;
+                }
+            } else {
+                showModeMissedTip();
+                return;
+            }
+        }
+
         initUI();
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
@@ -118,23 +152,42 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         checkOutcount();
     }
 
+    private void showModeMissedTip() {
+        mMissingDialogShowing = true;
+        mTipDialog = new LEOAlarmDialog(this);
+        mTipDialog.setTitle(R.string.tips_title);
+        mTipDialog.setContent(getString(R.string.mode_missing));
+        mTipDialog.setRightBtnStr(getString(R.string.lock_mode_guide_button_text));
+        mTipDialog.setLeftBtnVisibility(false);
+        mTipDialog.setRightBtnListener(new LEOAlarmDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                LockScreenActivity.this.finish();
+            }
+        });
+        mTipDialog.show();
+    }
+
     @Override
     protected void onResume() {
-        boolean lockThemeGuid = checkNewTheme();
-        if (mLockMode == LockManager.LOCK_MODE_FULL) {
-            if (!lockThemeGuid) {
-                mLockerGuide.setVisibility(View.VISIBLE);
-                themeGuide(mLockerGuide, mAnim);
-            } else {
-                mLockerGuide.setVisibility(View.GONE);
+        if (!mMissingDialogShowing) {
+            boolean lockThemeGuid = checkNewTheme();
+            if (mLockMode == LockManager.LOCK_MODE_FULL) {
+                if (!lockThemeGuid) {
+                    mLockerGuide.setVisibility(View.VISIBLE);
+                    themeGuide(mLockerGuide, mAnim);
+                } else {
+                    mLockerGuide.setVisibility(View.GONE);
+                }
+                /*
+                 * tell PushUIHelper than do not show dialog when lockscreen is
+                 * shown
+                 */
+                PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(true);
             }
-            /*
-             * tell PushUIHelper than do not show dialog when lockscreen is
-             * shown
-             */
-            PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(true);
+            AppMasterPreference.getInstance(this).setUnlocked(false);
         }
-        AppMasterPreference.getInstance(this).setUnlocked(false);
         super.onResume();
     }
 
@@ -189,6 +242,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
+        LeoLog.e("xxxx", "mLockedPackage = " + mLockedPackage + "newLockedPkg = " + newLockedPkg);
         if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
             mLockedPackage = newLockedPkg;
             // change background
@@ -196,7 +250,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     && (mLockMode == LockManager.LOCK_MODE_FULL)) {
                 BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
                         getPackageManager(),
-                        intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG));
+                        mLockedPackage);
                 setAppInfoBackground(bd);
             }
 
@@ -498,7 +552,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         AppMasterPreference.getInstance(this).setDoubleCheck(null);
         LockManager.getInstatnce().recordOutcountTask(mLockedPackage);
-        
+
         Intent intent = new Intent(this, WaitActivity.class);
         intent.putExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG, mLockedPackage);
         startActivity(intent);

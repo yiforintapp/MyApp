@@ -617,7 +617,7 @@
     <string name="time_lock_mode_guide_content">ไทม์ล็อกสามารถคลิกเปิดใช้งานโหมดตามเวลาที่ตั้งไว้ แนะนำให้เพิ่มไทม์ล็อกของคุณเอง</string>
     <string name="location_lock_mode_guide_content">โพสิชั่นล็อกจะคลิกเปิดใช้โหมดในตำแหน่งที่คุณได้ตั้งไว้โดยแสดงตำแหน่งผ่าน wifi hotspot</string>
     <string name="lock_mode_guide_button_text">ทราบแล้ว</string>
-
+    <string name="mode_missing">คุณยังไม่ได้สร้างรูปแบบสถานการณ์นี้กรุณาลบทางลัดนี้</string>
     <!-- version 2.1 end -->
 
 </resources>

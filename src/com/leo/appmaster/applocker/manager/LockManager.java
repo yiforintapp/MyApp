@@ -43,6 +43,7 @@ import com.leo.appmaster.applocker.LocationLockEditActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.TimeLockEditActivity;
+import com.leo.appmaster.applocker.WaitActivity;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.TimeLock;
@@ -168,9 +169,9 @@ public class LockManager {
         mFilterActivitys = new HashMap<String, Boolean>();
         mOutcountPkgMap = new HashMap<String, Integer>();
         mOutcountTaskMap = new HashMap<Runnable, ScheduledFuture<?>>();
-        mLockModeList = new LinkedList<LockMode>();
-        mTimeLockList = new LinkedList<TimeLock>();
-        mLocationLockList = new LinkedList<LocationLock>();
+        mLockModeList = new ArrayList<LockMode>();
+        mTimeLockList = new ArrayList<TimeLock>();
+        mLocationLockList = new ArrayList<LocationLock>();
         mTLMap = new HashMap<TimeLock, List<ScheduledFuture<?>>>();
         mHandler = new Handler();
         mTimeChangeReceiver = new TimeChangeReceive();
@@ -967,9 +968,9 @@ public class LockManager {
                     // load location lock
                     mLocationLockList = lmd.querryLocationLockList();
 
-                 // check remove unlock-all mode< v2.1 >
+                    // check remove unlock-all mode< v2.1 >
                     checkRemoveUnlockAll();
-                    
+
                     for (LockMode lockMode : mLockModeList) {
                         if (lockMode.isCurrentUsed) {
                             mCurrentMode = lockMode;
@@ -1578,7 +1579,9 @@ public class LockManager {
         final String lastRunningPkg = mDetectService.getLastRunningPackage();
         final String lastRunningActivity = mDetectService.getLastRunningActivity();
         if (list.contains(lastRunningPkg)
-                && !LockScreenActivity.class.getName().contains(lastRunningActivity)) {
+                && !LockScreenActivity.class.getName().contains(lastRunningActivity)
+                && !WaitActivity.class
+                        .getName().contains(lastRunningActivity)) {
             LeoLog.d("Track Lock Screen",
                     "apply lockscreen form screen on => " + lastRunningPkg
                             + "/" + lastRunningActivity);

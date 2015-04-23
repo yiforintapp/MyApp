@@ -6,6 +6,8 @@ import java.util.List;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -25,6 +27,7 @@ import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.DisplayMode;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -36,7 +39,7 @@ public class GestureSettingFragment extends BaseFragment implements
         OnClickListener, OnPatternListener, OnDismissListener,
         OnDiaogClickListener {
 
-    private TextView mTvGestureTip, mTvPasswdFuncTip, mTvBottom,mSwitchBottom;
+    private TextView mTvGestureTip, mTvPasswdFuncTip, mTvBottom, mSwitchBottom;
     private LockPatternView mLockPatternView;
     private int mInputCount = 1;
     private String mTempGesture1, mTempGesture2;
@@ -89,7 +92,7 @@ public class GestureSettingFragment extends BaseFragment implements
             mTvGestureTip.setText(R.string.set_gesture);
         }
         mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
-        
+
         mSwitchBottom.setVisibility(View.VISIBLE);
         mTvBottom.setVisibility(View.INVISIBLE);
     }
@@ -234,6 +237,13 @@ public class GestureSettingFragment extends BaseFragment implements
                 mActivity.startActivity(intent);
             } else if (((LockSettingActivity) mActivity).mJustFinish) {
                 // todo nothing
+                if (((LockSettingActivity) mActivity).mFromQuickMode) {
+                    intent = new Intent(mActivity, PasswdProtectActivity.class);
+                    int modeId = ((LockSettingActivity) mActivity).mModeId;
+                    intent.putExtra("quick_mode", true);
+                    intent.putExtra("mode_id", modeId);
+                    mActivity.startActivity(intent);
+                }
             } else {
                 intent = new Intent(mActivity, PasswdProtectActivity.class);
                 intent.putExtra("to_home", true);
@@ -248,6 +258,17 @@ public class GestureSettingFragment extends BaseFragment implements
                 startActivity(intent);
             } else if (((LockSettingActivity) mActivity).mJustFinish) {
                 // do nothing
+                if (((LockSettingActivity) mActivity).mFromQuickMode) {
+                    int modeId = ((LockSettingActivity) mActivity).mModeId;
+                    LockManager lm = LockManager.getInstatnce();
+                    List<LockMode> modeList = lm.getLockMode();
+                    for (LockMode lockMode : modeList) {
+                        if (lockMode.modeId == modeId) {
+                            showModeActiveTip(lockMode);
+                            break;
+                        }
+                    }
+                }
             } else {
                 LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
                 intent = new Intent(mActivity, HomeActivity.class);
@@ -265,6 +286,20 @@ public class GestureSettingFragment extends BaseFragment implements
             }
         }, 2000);
         mActivity.finish();
+    }
+
+    /**
+     * show the tip when mode success activating
+     */
+    private void showModeActiveTip(LockMode mode) {
+        View mTipView = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_active_tip, null);
+        TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
+        mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
+        Toast toast = new Toast(mActivity);
+        toast.setView(mTipView);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override

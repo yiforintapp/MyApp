@@ -29,12 +29,13 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private PasswdSettingFragment mPasswd;
     private GestureSettingFragment mGesture;
     private TextView mSwitchBottom;
-    
 
     private boolean mResetFlag;
 
     public boolean mToLockList;
     public boolean mJustFinish;
+    public boolean mFromQuickMode;
+    public int mModeId;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -68,6 +69,8 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         mResetFlag = intent.getBooleanExtra(RESET_PASSWD_FLAG, false);
         mToLockList = intent.getBooleanExtra("to_lock_list", false);
         mJustFinish = intent.getBooleanExtra("just_finish", false);
+        mFromQuickMode = intent.getBooleanExtra("from_quick_mode", false);
+        mModeId = intent.getIntExtra("mode_id", -1);
     }
 
     private void initFragment() {

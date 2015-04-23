@@ -1,9 +1,13 @@
 
 package com.leo.appmaster.fragment;
 
+import java.util.List;
+
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -20,6 +24,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -33,7 +38,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 
     private ImageView iv_delete;
     private TextView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
-    private TextView mInputTip, mTvPasswdFuncTip, mTvBottom,mSwitchBottom;
+    private TextView mInputTip, mTvPasswdFuncTip, mTvBottom, mSwitchBottom;
 
     private int mInputCount = 1;
     private String mTempFirstPasswd = "";
@@ -85,7 +90,7 @@ public class PasswdSettingFragment extends BaseFragment implements
         mTvBottom = (TextView) findViewById(R.id.tv_bottom);
         mTvBottom.setOnClickListener(this);
         mSwitchBottom = (TextView) mActivity.findViewById(R.id.switch_bottom);
-        
+
         if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
             mInputTip.setText(R.string.first_set_passwd_hint);
             mTvPasswdFuncTip.setText(R.string.digital_passwd_function_hint);
@@ -336,8 +341,14 @@ public class PasswdSettingFragment extends BaseFragment implements
                 mActivity.startActivity(intent);
             } else if (((LockSettingActivity) mActivity).mJustFinish) {
                 // todo nothing
-                intent = new Intent(mActivity, PasswdProtectActivity.class);
-                mActivity.startActivity(intent);
+                if (((LockSettingActivity) mActivity).mFromQuickMode) {
+                    intent = new Intent(mActivity, PasswdProtectActivity.class);
+
+                    int modeId = ((LockSettingActivity) mActivity).mModeId;
+                    intent.putExtra("quick_mode", true);
+                    intent.putExtra("mode_id", modeId);
+                    mActivity.startActivity(intent);
+                }
             } else {
                 intent = new Intent(mActivity, PasswdProtectActivity.class);
                 intent.putExtra("to_home", true);
@@ -352,6 +363,17 @@ public class PasswdSettingFragment extends BaseFragment implements
                 startActivity(intent);
             } else if (((LockSettingActivity) mActivity).mJustFinish) {
                 // do nothing
+                if (((LockSettingActivity) mActivity).mFromQuickMode) {
+                    int modeId = ((LockSettingActivity) mActivity).mModeId;
+                    LockManager lm = LockManager.getInstatnce();
+                    List<LockMode> modeList = lm.getLockMode();
+                    for (LockMode lockMode : modeList) {
+                        if (lockMode.modeId == modeId) {
+                            showModeActiveTip(lockMode);
+                            break;
+                        }
+                    }
+                }
             } else {
                 intent = new Intent(mActivity, HomeActivity.class);
                 mActivity.startActivity(intent);
@@ -370,6 +392,20 @@ public class PasswdSettingFragment extends BaseFragment implements
         }, 2000);
 
         mActivity.finish();
+    }
+
+    /**
+     * show the tip when mode success activating
+     */
+    private void showModeActiveTip(LockMode mode) {
+        View mTipView = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_active_tip, null);
+        TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
+        mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
+        Toast toast = new Toast(mActivity);
+        toast.setView(mTipView);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override

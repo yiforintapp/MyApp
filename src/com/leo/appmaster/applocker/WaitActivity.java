@@ -54,7 +54,7 @@ public class WaitActivity extends BaseActivity {
 
     @Override
     protected void onStop() {
-         returned = true;
+//         returned = true;
         super.onStop();
     }
 
