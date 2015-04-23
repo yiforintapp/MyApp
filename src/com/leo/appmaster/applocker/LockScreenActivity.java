@@ -116,9 +116,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         setContentView(R.layout.activity_lock_setting);
         mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         handleIntent();
-
+        LockManager lm = LockManager.getInstatnce();
+        lm.setPauseScreenonLock(true);
+        // for fix lock mode shortcut bug
         if (mQuickLockMode) {
-            LockManager lm = LockManager.getInstatnce();
             List<LockMode> modeList = lm.getLockMode();
             LockMode mode = null;
             for (LockMode lockMode : modeList) {
@@ -342,6 +343,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onDestroy() {
+        LockManager.getInstatnce().setPauseScreenonLock(false);
         super.onDestroy();
         if (mAppBaseInfoLayoutbg != null) {
             mAppBaseInfoLayoutbg.recycle();

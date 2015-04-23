@@ -2,7 +2,6 @@
 package com.leo.appmaster.applocker.manager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -38,10 +36,8 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LocationLockEditActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.TimeLockEditActivity;
 import com.leo.appmaster.applocker.WaitActivity;
 import com.leo.appmaster.applocker.model.LocationLock;
@@ -58,14 +54,12 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
@@ -134,6 +128,7 @@ public class LockManager {
     private HashMap<TimeLock, List<ScheduledFuture<?>>> mTLMap;
     private LockMode mCurrentMode;
     private boolean mLockModeLoaded;
+    private boolean mPauseScreenonLock;
 
     /*
      * record ortcount unlock
@@ -222,6 +217,10 @@ public class LockManager {
         } else {
             return 0;
         }
+    }
+    
+    public void setPauseScreenonLock(boolean pause) {
+        mPauseScreenonLock = pause;
     }
 
     public void init() {
@@ -1576,6 +1575,12 @@ public class LockManager {
             LeoLog.d(TAG, "mDetectService = null");
             return;
         }
+        
+        if(mPauseScreenonLock) {
+            LeoLog.d(TAG, "mPauseScreenonLock = true");
+            return;
+        }
+        
         final String lastRunningPkg = mDetectService.getLastRunningPackage();
         final String lastRunningActivity = mDetectService.getLastRunningActivity();
         if (list.contains(lastRunningPkg)
