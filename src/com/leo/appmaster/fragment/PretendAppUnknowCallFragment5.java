@@ -2,6 +2,10 @@
 package com.leo.appmaster.fragment;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -41,11 +45,13 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     private boolean isControlDuan = false;
     private boolean isControlJie = false;
     private boolean isStartDong = false;
-    private boolean isStop = false;
+    private  boolean isStop = false;
+    private boolean isScreenOff = false;
     private GestureRelative mViewContent;
     private int mVersion;
     private Vibrator vib;
     private CirCleDongHua myself_circle;
+    private ScreenBroadcastReceiver mScreenReceiver; 
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -118,6 +124,16 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         }.start();
     }
 
+    
+    
+    @Override
+    public void onDestroy() {
+        mActivity.unregisterReceiver(mScreenReceiver);
+        super.onDestroy();
+    }
+
+
+
     @Override
     public void onStop() {
         // LeoLog.d("testFragment", "onStop");
@@ -131,7 +147,11 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
     @Override
     public void onResume() {
-        isStop = false;
+        if(!isScreenOff){
+            isStop = false;
+        }else {
+            isStop = true;
+        }
         // LeoLog.d("testFragment", "onResume");
         super.onResume();
     }
@@ -145,15 +165,6 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     protected void onInitUI() {
         activity_weizhuang_firstin = (LinearLayout) findViewById(R.id.activity_weizhuang_firstin);
 
-        // make content match the screen
-        // Display display = mActivity.getWindowManager().getDefaultDisplay();
-        // Window window = mActivity.getWindow();
-        // LayoutParams windowLayoutParams = window.getAttributes(); //
-        // 获取对话框当前的参数值
-        // windowLayoutParams.width = (int) (display.getWidth());
-        // windowLayoutParams.height = (int) (display.getHeight());
-        // LeoLog.d("testunknow", "屏幕高：" + display.getHeight());
-
         android.widget.LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         activity_weizhuang_firstin.setLayoutParams(lp);
@@ -161,6 +172,9 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         SDKWrapper
                 .addEvent(mActivity, SDKWrapper.P1, "appcover", "UnknowCall");
 
+        
+        mScreenReceiver = new ScreenBroadcastReceiver();  
+        startScreenBroadcastReceiver();
         mVersion = PhoneInfo.getAndroidVersion();
         init();
         GlobalLayoutListener();
@@ -400,5 +414,29 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     public void setCanCel() {
         vib.cancel();
     }
-
+    
+    private void startScreenBroadcastReceiver(){  
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction(Intent.ACTION_SCREEN_ON);  
+        filter.addAction(Intent.ACTION_SCREEN_OFF);  
+        mActivity.registerReceiver(mScreenReceiver, filter);  
+    }  
+    
+    /** 
+     * screen状态广播接收者 
+     * @author zhangyg 
+     * 
+     */  
+    private class ScreenBroadcastReceiver extends BroadcastReceiver{  
+        private String action = null;  
+        @Override  
+        public void onReceive(Context context, Intent intent) {  
+            action = intent.getAction();  
+            if(Intent.ACTION_SCREEN_ON.equals(action)){  
+            }else if(Intent.ACTION_SCREEN_OFF.equals(action)){  
+                isScreenOff = true;
+            }  
+        }  
+    }  
+    
 }

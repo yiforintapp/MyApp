@@ -175,5 +175,23 @@
      <dimen name="home_lock_count_text_size">46dp</dimen>
     <dimen name="home_lock_mode_name_size">8dp</dimen>
     <dimen name="home_lock_text_padding">6dp</dimen>
+    
+     <!-- lock mode begin  -->
+     <dimen name="home_lock_mode_guide_image_width">124dp</dimen>
+    <dimen name="home_lock_mode_guide_image_height">124dp</dimen>
+    <dimen name="home_lock_mode_guide_image_margin_top">20dp</dimen>
+    <dimen name="home_lock_mode_guide_text_margin_top">20dp</dimen>
+    <dimen name="home_lock_mode_guide_text_size">12dp</dimen>
+    <dimen name="home_lock_mode_guide_btn_width">84dp</dimen>
+    <dimen name="home_lock_mode_guide_btn_height">26dp</dimen>
+    <dimen name="home_lock_mode_guide_btn_margin_top">24dp</dimen>
+    
+    <dimen name="home_lock_mode_active_tip_width">180dp</dimen>
+    <dimen name="home_lock_mode_active_tip_image_width">56dp</dimen>
+    <dimen name="home_lock_mode_active_tip_image_height">56dp</dimen>
+    <dimen name="home_lock_mode_active_tip_image_margin_top">8dp</dimen>
+    <dimen name="home_lock_mode_active_tip_text_margin_top">8dp</dimen>
+    <dimen name="home_lock_mode_active_tip_text_margin_bottom">8dp</dimen>
 
+	<!-- lock mode end -->
 </resources>
