@@ -260,7 +260,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (mPretendFragment != null) {
                 mLockLayout.setVisibility(View.GONE);
                 mPretendLayout.setVisibility(View.VISIBLE);
-                if(mPretendFragment instanceof PretendAppErrorFragment) {
+                if (mPretendFragment instanceof PretendAppErrorFragment) {
                     String tip = "";
                     PackageManager pm = this.getPackageManager();
                     try {
@@ -273,8 +273,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         tip = getString(R.string.weizhuang_error_notice);
                         e.printStackTrace();
                     }
-                    
-                    ((PretendAppErrorFragment)mPretendFragment).setErrorTip(tip);
+
+                    ((PretendAppErrorFragment) mPretendFragment).setErrorTip(tip);
                 }
             }
         }
@@ -469,7 +469,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 String lab = info.loadLabel(pm).toString();
                 tip = getString(R.string.pretend_app_error, lab);
 
-            } catch (NameNotFoundException e) {
+            } catch (Exception e) {
                 tip = getString(R.string.weizhuang_error_notice);
                 e.printStackTrace();
             }
