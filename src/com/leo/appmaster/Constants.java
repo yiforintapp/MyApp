@@ -299,7 +299,11 @@ public class Constants {
     public static final String SPLASH_NAME = "splash_image.9.png";
 
     // ============== default home mode list =================
-    public static final String[] sDefaultHomeModeList = new String[] {
+    public static String[] sDefaultHomeModeList = new String[] {
+            "com.whatsapp",
+            "com.facebook.orca",
+            "com.android.mms",
+            "com.facebook.katana",
             "com.tencent.mm"
     };
 }
