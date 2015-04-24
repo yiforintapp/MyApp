@@ -260,6 +260,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (mPretendFragment != null) {
                 mLockLayout.setVisibility(View.GONE);
                 mPretendLayout.setVisibility(View.VISIBLE);
+                if(mPretendFragment instanceof PretendAppErrorFragment) {
+                    String tip = "";
+                    PackageManager pm = this.getPackageManager();
+                    try {
+                        ApplicationInfo info = pm.getApplicationInfo(mLockedPackage,
+                                PackageManager.GET_UNINSTALLED_PACKAGES);
+                        String lab = info.loadLabel(pm).toString();
+                        tip = getString(R.string.pretend_app_error, lab);
+
+                    } catch (NameNotFoundException e) {
+                        tip = getString(R.string.weizhuang_error_notice);
+                        e.printStackTrace();
+                    }
+                    
+                    ((PretendAppErrorFragment)mPretendFragment).setErrorTip(tip);
+                }
             }
         }
         checkOutcount();
