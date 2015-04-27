@@ -316,7 +316,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         mLeoPopMenu.dismissSnapshotList();
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(getRightMenuItems());
+                mLeoPopMenu.setPopMenuItems(this,getRightMenuItems());
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.iv_option_image), null, null);
                 break;

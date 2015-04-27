@@ -195,16 +195,15 @@ public class AppLockListActivity extends BaseActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         animateItem(view);
-
-        if (LockManager.getInstatnce().getCurLockMode().defaultFlag == 0) {
+        LockManager lm = LockManager.getInstatnce();
+        LockMode curMode = lm.getCurLockMode();
+        if (curMode == null || curMode.defaultFlag == 0) {
             Toast.makeText(this, R.string.unlock_all_mode_tip, Toast.LENGTH_SHORT).show();
             return;
         }
 
         mLastSelectApp = (AppInfo) view.getTag();
         AppInfo info = null;
-        LockManager lm = LockManager.getInstatnce();
-        LockMode curMode = lm.getCurLockMode();
         if (mLastSelectApp.isLocked) {
             mLastSelectApp.isLocked = false;
             for (AppInfo baseInfo : mLockedList) {
@@ -309,10 +308,12 @@ public class AppLockListActivity extends BaseActivity implements
                         AppMasterPreference.getInstance(
                                 AppLockListActivity.this).setSortType(
                                 mCurSortType);
-                        mLeoPopMenu.dismissSnapshotList();
+                        if(mLeoPopMenu != null) {
+                            mLeoPopMenu.dismissSnapshotList();
+                        }
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(getSortMenuItems());
+                mLeoPopMenu.setPopMenuItems(this,getSortMenuItems());
                 mLeoPopMenu.showPopMenu(this,
                         mIvSortSelected, null, null);
                 break;
@@ -367,7 +368,7 @@ public class AppLockListActivity extends BaseActivity implements
                         }
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(getLockModeMenuItems());
+                mLeoPopMenu.setPopMenuItems(this,getLockModeMenuItems());
                 mLeoPopMenu.showPopMenu(this, mIvBack, null, null);
                 break;
             case R.id.mask_layer:

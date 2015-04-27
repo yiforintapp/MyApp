@@ -200,7 +200,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
             styles.width = LayoutParams.MATCH_PARENT;
             styles.height = LayoutParams.WRAP_CONTENT;
             styles.animation = R.style.PopupListAnimUpDown;
-            mLeoPopMenu.setPopMenuItems(mCategories);
+            mLeoPopMenu.setPopMenuItems(FeedbackActivity.this,mCategories);
             mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
@@ -242,7 +242,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
             styles.width = LayoutParams.MATCH_PARENT;
             styles.height = LayoutParams.WRAP_CONTENT;
             styles.animation = R.style.PopupListAnimUpDown;
-            mLeoPopMenu.setPopMenuItems(mEmails);
+            mLeoPopMenu.setPopMenuItems(FeedbackActivity.this,mEmails);
             mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
