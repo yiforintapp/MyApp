@@ -24,7 +24,7 @@
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/weizhuang_ask"
+            android:id="@+id/weizhuang_ask_iv"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentRight="true"
@@ -51,7 +51,45 @@
             android:listSelector="@android:color/transparent"
             android:numColumns="2"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="1dp" />
+            android:verticalSpacing="1dp"/>
+
+        <LinearLayout
+            android:id="@+id/activity_weizhuang_firstin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="88dp"
+                android:background="@drawable/disguise_tips" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="45dp"
+                android:layout_marginRight="45dp"
+                android:layout_marginTop="50dp"
+                android:text="@string/weizhuang_first_in_text"
+                android:textColor="@color/weisuo_text_show"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/bt_go"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/manager_backup_button_selecter"
+                android:gravity="center"
+                android:text="@string/first_in_sure_button"
+                android:textColor="@drawable/manager_backup_text_selecter"
+                android:textSize="14dp" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

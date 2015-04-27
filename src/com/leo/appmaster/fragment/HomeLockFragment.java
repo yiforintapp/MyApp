@@ -43,7 +43,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     protected void onInitUI() {
         sp_weizhuang = sp_weizhuang.getInstance(mActivity);
         mLockModeCircle = (LockModeView) findViewById(R.id.lock_mode_circle);
-//        mLockModeCircle.setOnClickListener(this);
+        // mLockModeCircle.setOnClickListener(this);
         mAppLockBtn = (TextView) findViewById(R.id.app_lock);
         mAppLockBtn.setOnClickListener(this);
         mLockThemeBtn = (TipTextView) findViewById(R.id.lock_theme);
@@ -73,11 +73,11 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     public void onDestroyView() {
         super.onDestroyView();
     }
-    
+
     @Override
     public void onStop() {
         super.onStop();
-        if(mLockModeCircle != null) {
+        if (mLockModeCircle != null) {
             mLockModeCircle.stopAnimation();
         }
     }
@@ -146,7 +146,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                 break;
             case R.id.lock_setting:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "appcover");
-//                enterLockSetting();
+                // enterLockSetting();
                 enterAppWeiZhuang();
                 break;
             case R.id.lock_mode_circle:
@@ -170,14 +170,8 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     }
 
     private void enterAppWeiZhuang() {
-        boolean isFirstIn = sp_weizhuang.getWeiZhuang();
-        Intent intent ;
-        if(isFirstIn){
-            intent = new Intent(mActivity, WeiZhuangFirstIn.class);
-            sp_weizhuang.setWeiZhuang(false);
-        }else {
-            intent = new Intent(mActivity, WeiZhuangActivity.class);
-        }
+        Intent intent;
+        intent = new Intent(mActivity, WeiZhuangActivity.class);
         mActivity.startActivity(intent);
     }
 
