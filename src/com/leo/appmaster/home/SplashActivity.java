@@ -113,7 +113,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
                 if (currentTime >= startShowSplashTime) {
                     showSplash();
                 } else {
-//                    deleteImage();
+                    // deleteImage();
                 }
             }
             // 只有结束时间
@@ -121,7 +121,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
                 if (currentTime < endShowSplashTime) {
                     showSplash();
                 } else {
-//                    deleteImage();
+                    // deleteImage();
                 }
             }
             // 开始，结束时间都存在
@@ -129,13 +129,13 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
                 if (currentTime >= startShowSplashTime && currentTime < endShowSplashTime) {
                     showSplash();
                 } else {
-//                    deleteImage();
+                    // deleteImage();
                 }
             }
         } else {
             // 没有开始，没有结束时间,默认
             Log.d("splash_end&start_time", "No time!");
-//            deleteImage();
+            // deleteImage();
             if (mSplashIcon.getVisibility() == View.INVISIBLE) {
                 mSplashIcon.setVisibility(View.VISIBLE);
             }
@@ -220,7 +220,28 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
                             showGuide();
                         }
                     } else {
-                        startHome();
+                        AppMasterPreference pre = AppMasterPreference
+                                .getInstance(SplashActivity.this);
+                        if (!pre.getAppVersionName().equals("default_version_name")) {
+                            // 存储的版本号
+                            String versionName = pre.getAppVersionName();
+                            // float version = Float.valueOf(versionName);
+                            // 获取当前的版本号
+                            String currentVersionName = SplashActivity.this
+                                    .getString(R.string.version_name);
+                            if (!versionName.equals(currentVersionName)) {
+                                boolean guidNotShown = mMain == null
+                                        || mMain.getVisibility() != View.VISIBLE;
+                                if (guidNotShown) {
+                                    showGuide();
+                                }
+                                pre.setAppVersionName(currentVersionName);
+                            } else {
+                                startHome();
+                            }
+                        } else {
+                            startHome();
+                        }
                     }
                     break;
 
@@ -375,6 +396,10 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             public void onClick(View v) {
                 AppMasterPreference.getInstance(SplashActivity.this).setFirstUse(false);
                 startHome();
+                String currentVersionName = SplashActivity.this
+                        .getString(R.string.version_name);
+                AppMasterPreference.getInstance(SplashActivity.this).setAppVersionName(
+                        currentVersionName);
             }
         });
     }

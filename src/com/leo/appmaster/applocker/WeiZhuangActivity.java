@@ -9,14 +9,18 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -39,6 +43,10 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     private int selected = 0;
     private ImageView weizhuang_ask;
     private View trffic_setting_iv;
+    private LinearLayout mWeizhuangHelp;
+    private TextView mKnowBt;
+    private Animation mGuidAnimation;
+    private boolean mIsOpenHelp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +61,9 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         mTtileBar.setTitle(R.string.title_bar_weizhuang);
         mTtileBar.openBackView();
 
-        weizhuang_ask = (ImageView) findViewById(R.id.weizhuang_ask);
+        weizhuang_ask = (ImageView) findViewById(R.id.weizhuang_ask_iv);
         weizhuang_ask.setVisibility(View.VISIBLE);
-        trffic_setting_iv = findViewById(R.id.trffic_setting_iv);
+        trffic_setting_iv = (View) findViewById(R.id.trffic_setting_iv);
         trffic_setting_iv.setVisibility(View.VISIBLE);
         trffic_setting_iv.setOnClickListener(this);
 
@@ -64,6 +72,15 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         sp_weizhuang = AppMasterPreference.getInstance(this);
         mThemeRes = this.getResources();
         selected = sp_weizhuang.getPretendLock();
+
+        mWeizhuangHelp = (LinearLayout) findViewById(R.id.activity_weizhuang_firstin);
+        mKnowBt = (TextView) mWeizhuangHelp.findViewById(R.id.bt_go);
+        mKnowBt.setOnClickListener(this);
+        if (sp_weizhuang.getWeiZhuang()) {
+            mWeizhuangHelp.setVisibility(View.VISIBLE);
+            mGridView.setVisibility(View.GONE);
+            mIsOpenHelp = true;
+        }
     }
 
     @Override
@@ -211,10 +228,38 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             case R.id.trffic_setting_iv:
                 /* SDK Event Mark */
                 SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1, "help", "cover");
-                Intent intent = new Intent(this, WeiZhuangFirstIn.class);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.lock_mode_guide_in, R.anim.hold_stay);
+                mGuidAnimation = AnimationUtils.loadAnimation(WeiZhuangActivity.this,
+                        R.anim.lock_mode_guide_in);
+                if (mIsOpenHelp) {
+                    mWeizhuangHelp.setVisibility(View.GONE);
+                    mGridView.setVisibility(View.VISIBLE);
+                    mWeizhuangHelp.startAnimation(AnimationUtils
+                            .loadAnimation(WeiZhuangActivity.this, R.anim.lock_mode_guide_out));
+                    mIsOpenHelp = false;
+                } else {
+                    mGridView.setVisibility(View.GONE);
+                    mWeizhuangHelp.setVisibility(View.VISIBLE);
+                    mWeizhuangHelp.startAnimation(mGuidAnimation);
+                    mIsOpenHelp = true;
+                }
+                if (sp_weizhuang.getWeiZhuang()) {
+                    sp_weizhuang.setWeiZhuang(false);
+                }
+                break;
+            case R.id.bt_go:
+                mWeizhuangHelp.setVisibility(View.GONE);
+                mGridView.setVisibility(View.VISIBLE);
+                mGuidAnimation = AnimationUtils
+                        .loadAnimation(WeiZhuangActivity.this, R.anim.lock_mode_guide_out);
+                mWeizhuangHelp.startAnimation(mGuidAnimation);
+                Animation animation =
+                        AnimationUtils.loadAnimation(WeiZhuangActivity.this,
+                                R.anim.help_tip_show);
+                weizhuang_ask.startAnimation(animation);
+                if (sp_weizhuang.getWeiZhuang()) {
+                    sp_weizhuang.setWeiZhuang(false);
+                }
+                mIsOpenHelp = false;
                 break;
             default:
                 break;
