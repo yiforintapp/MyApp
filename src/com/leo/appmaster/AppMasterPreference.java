@@ -140,10 +140,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SWITCH_MODE_COUNT = "switch_lock_mode_count";
     public static final String PREF_SPLASH_URL_FLAG = "splash_url_flag";
     public static final String PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG = "remove_unlock_all_shortcut";
-    public static final String PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH="save_splash_memery_no_enough";
-    public static final String PREF_TIME_LOCK_MODE_SET_OVER="time_lock_mode_set_over";
-    public static final String PREF_LOCATION_LOCK_MODE_SET_OVER="location_lock_mode_set_over";
-    public static final String PREF_FIRST_INSTALL_APP="first_install_app";
+    public static final String PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH = "save_splash_memery_no_enough";
+    public static final String PREF_TIME_LOCK_MODE_SET_OVER = "time_lock_mode_set_over";
+    public static final String PREF_LOCATION_LOCK_MODE_SET_OVER = "location_lock_mode_set_over";
+    public static final String PREF_FIRST_INSTALL_APP = "first_install_app";
+    public static final String PREF_APP_VERSION_NAME = "app_version_name";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1308,23 +1309,36 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public int getCallLogNoReadCount() {
         return mPref.getInt(PREF_CALL_LOG_NO_READ_COUNT, 0);
     }
-    
-    public void setTimeLockModeSetOver(boolean setted){
+
+    public void setTimeLockModeSetOver(boolean setted) {
         mPref.edit().putBoolean(PREF_TIME_LOCK_MODE_SET_OVER, setted).commit();
     }
-    public boolean getTimeLockModeSetOVer(){
+
+    public boolean getTimeLockModeSetOVer() {
         return mPref.getBoolean(PREF_TIME_LOCK_MODE_SET_OVER, false);
     }
-    public void setLocationLockModeSetOver(boolean setted){
+
+    public void setLocationLockModeSetOver(boolean setted) {
         mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_SET_OVER, setted).commit();
     }
-    public boolean getLocationLockModeSetOVer(){
+
+    public boolean getLocationLockModeSetOVer() {
         return mPref.getBoolean(PREF_LOCATION_LOCK_MODE_SET_OVER, false);
     }
-    public void setIsFirstInstallApp(boolean flag){
+
+    public void setIsFirstInstallApp(boolean flag) {
         mPref.edit().putBoolean(PREF_FIRST_INSTALL_APP, flag).commit();
     }
-    public boolean getIsFirstInstallApp(){
+
+    public boolean getIsFirstInstallApp() {
         return mPref.getBoolean(PREF_FIRST_INSTALL_APP, true);
+    }
+
+    public void setAppVersionName(String name) {
+        mPref.edit().putString(PREF_APP_VERSION_NAME, name).commit();
+    }
+
+    public String getAppVersionName() {
+        return mPref.getString(PREF_APP_VERSION_NAME, "default_version_name");
     }
 }
