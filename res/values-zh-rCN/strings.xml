@@ -633,8 +633,9 @@
     <string name="time_lock_mode_guide_content">时间锁可以在您指定的时间点击激活某个情景模式，建议您添加属于您自己的时间锁</string>
     <string name="location_lock_mode_guide_content">位置锁可以在您指定的地点触发情景模式，比如激活访客模式等，位置通过wifi热点来标注。这非常适合在您的家庭和公司之间建立不同的位置锁</string>
     <string name="lock_mode_guide_button_text">知道了</string>
-      <string name="mode_missing">"你还没创建该情景模式，请删除此快捷方式"</string>
+    <string name="mode_missing">"你还没创建该情景模式，请删除此快捷方式"</string>
 
     <!-- version 2.1 end -->
+    <string name="pg_appmanager_quick_gesture_name">快捷手势</string>
 
 </resources>

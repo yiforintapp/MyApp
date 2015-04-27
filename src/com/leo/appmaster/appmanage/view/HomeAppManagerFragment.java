@@ -71,7 +71,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private RoundProgressBar roundProgressBar;
     private ProgressBar pb_loading;
     private View bg_show_xz_bf, bg_show_ll, bg_show_dl, bg_show_hotapp, two_text_content,
-            content_donghua_ok;
+            content_donghua_ok,mQuickGesture;
     private ListView list_delete;
     private AppBackupRestoreManager mDeleteManager;
     private AppDeleteAdapter mDeleteAdapter;
@@ -245,6 +245,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         mDeleteManager.registerBackupListener(this);
         mDeleteAdapter = new AppDeleteAdapter(mDeleteManager, HomeAppManagerFragment.this.mActivity);
         resources = AppMasterApplication.getInstance().getResources();
+        mQuickGesture=findViewById(R.id.bg_show_quick_gesture);
+        mQuickGesture.setOnClickListener(this);
     }
 
     public void fillData() {
@@ -354,6 +356,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 if (!isCleanning) {
                     cleanMem();
                 }
+                break;
+            case R.id.bg_show_quick_gesture:
+                
+                
                 break;
         }
     }
