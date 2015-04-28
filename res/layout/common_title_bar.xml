@@ -76,8 +76,8 @@
         android:background="@drawable/title_bar_option_selector"
         android:gravity="center"
         android:paddingBottom="5dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:paddingTop="5dp"
         android:visibility="visible" />
     <!-- android:background="@drawable/common_button_selecter" -->

@@ -35,12 +35,12 @@
             <LinearLayout
                 android:id="@+id/layout_questions"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="42dp"
                 android:layout_below="@+id/mode_name_tv"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/input_box_line"
-                android:gravity="right"
+                android:background="@drawable/message_item_text_box_selecter"
+                android:gravity="center_vertical"
                 android:orientation="horizontal" >
 
                 <EditText
@@ -51,10 +51,9 @@
                     android:background="@null"
                     android:ems="10"
                     android:maxLength="40"
-                    android:singleLine="true"
+                    android:paddingLeft="12dp"
                     android:textSize="16sp" >
-
-                    <requestFocus />
+ 					<requestFocus />
                 </EditText>
 
                 <ImageView
@@ -80,29 +79,19 @@
             <EditText
                 android:id="@+id/et_anwser"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="42dp"
                 android:layout_below="@+id/textView2"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/input_box_line"
+                android:paddingLeft="16dp"
+                android:background="@drawable/message_item_text_box_selecter"
                 android:ems="10"
                 android:maxLength="40"
                 android:singleLine="true"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_save"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/et_anwser"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="60dp"
-                android:background="@drawable/mycheck_button_selecter"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="@string/save"
-                android:textColor="@drawable/manager_backup_text_selecter"
-                android:textSize="22sp" />
+                android:text="dddd"
+                android:textSize="16sp" >
+                </EditText>
+          
         </RelativeLayout>
     </ScrollView>
 

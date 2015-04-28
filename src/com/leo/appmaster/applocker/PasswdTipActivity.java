@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,7 @@ import com.leo.appmaster.utils.LeoLog;
 public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 	CommonTitleBar mTitleBar;
 	EditText mEtTip;
-	TextView mTvMakesure;
+	ImageView mTvMakesure;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +33,12 @@ public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 
 	private void initUI() {
 		mEtTip = (EditText) findViewById(R.id.et_passwd_tip);
-		mTvMakesure = (TextView) findViewById(R.id.tv_make_sure);
-		mTvMakesure.setOnClickListener(this);
 		mTitleBar = (CommonTitleBar) findViewById(R.id.commonTitleBar1);
 		mTitleBar.setTitle(R.string.passwd_notify);
 		mTitleBar.openBackView();
+		mTitleBar.setOptionImage(R.drawable.mode_done);
+		mTvMakesure = (ImageView) mTitleBar.findViewById(R.id.tv_option_image);
+		mTitleBar.setOptionListener(this);
 		String tip = AppMasterPreference.getInstance(this).getPasswdTip();
 		if (tip != null) {
 			mEtTip.setText(tip);

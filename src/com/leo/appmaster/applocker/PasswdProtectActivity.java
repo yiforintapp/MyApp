@@ -18,18 +18,16 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.PopupWindow.OnDismissListener;
 
-import com.android.internal.content.NativeLibraryHelper.Handle;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -44,11 +42,12 @@ public class PasswdProtectActivity extends BaseActivity implements
 
     private View mSpinnerQuestions;
     private EditText mQuestion, mAnwser;
-    private TextView mSave;
+    private ImageView mSave;
     private ScrollView mScrollView;
     private LeoPopMenu mLeoPopMenu;
     private Handler mHandler = new Handler();
-
+    private View mLayoutQues;
+    
     private List<String> mCategories;
 
     @Override
@@ -71,7 +70,8 @@ public class PasswdProtectActivity extends BaseActivity implements
     private void initUI() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.passwd_protect);
-        // mTtileBar.openBackView();
+        mSave = (ImageView)mTtileBar.findViewById(R.id.tv_option_image);
+        mTtileBar.setOptionImage(R.drawable.mode_done);
         mTtileBar.setBackViewListener(new OnClickListener() {
 
             @Override
@@ -122,6 +122,7 @@ public class PasswdProtectActivity extends BaseActivity implements
                         .showPopMenu(PasswdProtectActivity.this, mSpinnerQuestions, styles, null);
             }
         });
+        mLayoutQues = findViewById(R.id.layout_questions);
         mQuestion = (EditText) findViewById(R.id.et_question);
         mQuestion.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
@@ -154,7 +155,6 @@ public class PasswdProtectActivity extends BaseActivity implements
                 }
             }
         });
-        mSave = (TextView) findViewById(R.id.tv_save);
         mSave.setOnClickListener(this);
 
         mScrollView = (ScrollView) findViewById(R.id.scroll);

@@ -71,7 +71,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/textbox_bg_selector"
+                android:background="@drawable/message_item_text_box_selecter"
                 android:ems="10"
                 android:gravity="center_vertical"
                 android:hint="@string/please_input_name"
@@ -130,11 +130,14 @@
                     android:textSize="16dp" />
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="6dp"
-                    android:layout_weight="0"
-                    android:background="@drawable/choose_normal"
-                    android:clickable="false" />
+                       android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                     android:layout_weight="0"
+                    android:layout_gravity="center_vertical|right"
+                    android:padding="10dp"
+                    android:src="@drawable/pswd_protected_down"
+                     android:clickable="false" />
+                    />
             </LinearLayout>
 
             <TextView
@@ -173,11 +176,13 @@
                     android:textSize="16dp" />
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="6dp"
-                    android:layout_weight="0"
-                    android:background="@drawable/choose_normal"
-                    android:clickable="false" />
+                       android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                     android:layout_weight="0"
+                    android:layout_gravity="center_vertical|right"
+                    android:padding="10dp"
+                    android:src="@drawable/pswd_protected_down"
+                     android:clickable="false"  />
             </LinearLayout>
 
             <TextView
@@ -217,11 +222,13 @@
                     android:textSize="16dp" />
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="6dp"
-                    android:layout_weight="0"
-                    android:background="@drawable/choose_normal"
-                    android:clickable="false" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                     android:layout_weight="0"
+                    android:layout_gravity="center_vertical|right"
+                    android:padding="10dp"
+                    android:src="@drawable/pswd_protected_down"
+                     android:clickable="false" />
             </LinearLayout>
             
             <View
