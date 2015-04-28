@@ -636,6 +636,10 @@
     <string name="mode_missing">"你还没创建该情景模式，请删除此快捷方式"</string>
 
     <!-- version 2.1 end -->
+
+
+    <!-- version 2.3 begin -->
+    <!-- quick gesture -->
     <string name="pg_appmanager_quick_gesture_name">快捷手势</string>
     <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">开启快捷手势</string>
     <string name="pg_appmanager_quick_gesture_option_switch_setting">开关设置</string>
@@ -650,5 +654,14 @@
     <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text">右侧底部</string>
     <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_center_text">左侧中部</string>
     <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_center_text">右侧中部</string>
+    
+    
+    
+     <string name="dynamic">动态</string>
+     <string name="quick_switcher">快捷开关</string>
+     <string name="most_used">最常使用</string>
+    <!-- quick gesture -->
+    
+    <!-- version 2.3 end -->
 
 </resources>
