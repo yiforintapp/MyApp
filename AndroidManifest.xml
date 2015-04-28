@@ -92,11 +92,11 @@
         <activity
             android:name="com.leo.appmaster.home.ProxyActivity"
             android:excludeFromRecents="true"
-            android:noHistory="true"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-         <activity
+        <activity
             android:name="com.leo.appmaster.home.HomeActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
@@ -468,6 +468,12 @@
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.quickgestures.QuickGestureActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
         </activity>
 
         <service

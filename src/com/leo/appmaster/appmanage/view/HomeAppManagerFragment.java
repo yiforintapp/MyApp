@@ -43,6 +43,7 @@ import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.quickgestures.QuickGestureActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RoundProgressBar;
 import com.leo.appmaster.utils.LeoLog;
@@ -71,7 +72,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private RoundProgressBar roundProgressBar;
     private ProgressBar pb_loading;
     private View bg_show_xz_bf, bg_show_ll, bg_show_dl, bg_show_hotapp, two_text_content,
-            content_donghua_ok,mQuickGesture;
+            content_donghua_ok, mQuickGesture;
     private ListView list_delete;
     private AppBackupRestoreManager mDeleteManager;
     private AppDeleteAdapter mDeleteAdapter;
@@ -239,13 +240,13 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         tv_installed_app = (TextView) mHeadView.findViewById(R.id.tv_installed_app);
         tv_ap_data = (TextView) mHeadView.findViewById(R.id.tv_ap_data);
         tv_backup_num = (TextView) mHeadView.findViewById(R.id.tv_backup_num);
-        
+
         mCleaner = ProcessCleaner.getInstance(mActivity);
         mDeleteManager = AppMasterApplication.getInstance().getBuckupManager();
         mDeleteManager.registerBackupListener(this);
         mDeleteAdapter = new AppDeleteAdapter(mDeleteManager, HomeAppManagerFragment.this.mActivity);
         resources = AppMasterApplication.getInstance().getResources();
-        mQuickGesture=findViewById(R.id.bg_show_quick_gesture);
+        mQuickGesture = findViewById(R.id.bg_show_quick_gesture);
         mQuickGesture.setOnClickListener(this);
     }
 
@@ -358,8 +359,12 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 }
                 break;
             case R.id.bg_show_quick_gesture:
-                
-                
+                Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
+                try {
+                    startActivity(quickIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
@@ -582,7 +587,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     @Override
     public void onSelected(int position) {
-   LeoLog.d("testdonghua", "position is : " + position + "----lastPosition is : " + lastPosition);
+        LeoLog.d("testdonghua", "position is : " + position + "----lastPosition is : "
+                + lastPosition);
         if (!isClean && !isShowIng && lastPosition != position) {
             isShowIng = true;
             showdonghua();

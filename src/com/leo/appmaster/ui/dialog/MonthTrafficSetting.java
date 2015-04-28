@@ -17,11 +17,11 @@ import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 public class MonthTrafficSetting extends LEOBaseDialog {
     private Context mContext;
-    private TextView seekbar_text, sure_button,seekbar_text_progress;
+    private TextView seekbar_text, sure_button, seekbar_text_progress;
     private SeekBar mSeekBar;
     private AppMasterPreference sp_notice_flow;
     private int progressInt;
-    
+
     private OnDiaogClickListener mListener;
 
     public interface OnDiaogClickListener {
@@ -44,19 +44,18 @@ public class MonthTrafficSetting extends LEOBaseDialog {
         sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
         progressInt = sp_notice_flow.getFlowSettingBar();
         seekbar_text.setText(resources.getString(R.string.flow_settting_dialog_remain));
-        seekbar_text_progress.setText(progressInt+"%");
-        
+        seekbar_text_progress.setText(progressInt + "%");
+
         mSeekBar = (SeekBar) dlgView.findViewById(R.id.mSeekBar);
         mSeekBar.setProgress(progressInt);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                mMatchTextView.setProgress(progress * 1f / 100);
                 Resources resources = AppMasterApplication.getInstance().getResources();
-                if(progress == 0){
-                    seekbar_text_progress.setText(1+"%");
-                }else {
-                    seekbar_text_progress.setText(progress+"%");
+                if (progress == 0) {
+                    seekbar_text_progress.setText(1 + "%");
+                } else {
+                    seekbar_text_progress.setText(progress + "%");
                 }
 
             }
@@ -71,7 +70,7 @@ public class MonthTrafficSetting extends LEOBaseDialog {
                 progressInt = seekBar.getProgress();
             }
         });
-        
+
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int arg1) {
@@ -82,16 +81,16 @@ public class MonthTrafficSetting extends LEOBaseDialog {
                 dialog.dismiss();
             }
         };
-        
+
         setRightBtnListener(listener);
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
     }
-    
+
     public void setOnClickListener(OnDiaogClickListener listener) {
         mListener = listener;
     }
-    
+
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
         sure_button.setTag(rListener);
         sure_button.setOnClickListener(new View.OnClickListener() {

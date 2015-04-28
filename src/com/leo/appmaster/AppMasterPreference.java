@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.leo.appmaster.applocker.AppLockListActivity;
 
@@ -145,6 +146,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LOCATION_LOCK_MODE_SET_OVER = "location_lock_mode_set_over";
     public static final String PREF_FIRST_INSTALL_APP = "first_install_app";
     public static final String PREF_APP_VERSION_NAME = "app_version_name";
+    public static final String PREF_SWITCH_OPEN_QUICK_GESTURE = "switch_open_quick_gesture";
+    public static final String PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP = "switch_open_no_read_message_tip";
+    public static final String PREF_SWITCH_OPEN_RECENTLY_CONTACT = "switch_open_recently_contact";
+    public static final String PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP = "switch_open_privacy_contact_message_tip";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1340,5 +1345,37 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public String getAppVersionName() {
         return mPref.getString(PREF_APP_VERSION_NAME, "default_version_name");
+    }
+
+    public void setSwitchOpenQuickGesture(boolean flag) {
+        mPref.edit().putBoolean(PREF_SWITCH_OPEN_QUICK_GESTURE, flag).commit();
+    }
+
+    public boolean getSwitchOpenQuickGesture() {
+        return mPref.getBoolean(PREF_SWITCH_OPEN_QUICK_GESTURE, false);
+    }
+
+    public void setSwitchOpenNoReadMessageTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP, flag).commit();
+    }
+
+    public boolean getSwitchOpenNoReadMessageTip() {
+        return mPref.getBoolean(PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP, false);
+    }
+
+    public void setSwitchOpenRecentlyContact(boolean flag) {
+        mPref.edit().putBoolean(PREF_SWITCH_OPEN_RECENTLY_CONTACT, flag).commit();
+    }
+
+    public boolean getSwitchOpenRecentlyContact() {
+        return mPref.getBoolean(PREF_SWITCH_OPEN_RECENTLY_CONTACT, false);
+    }
+
+    public void setSwitchOpenPrivacyContactMessageTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP, flag).commit();
+    }
+
+    public boolean getSwitchOpenPrivacyContactMessageTip() {
+        return mPref.getBoolean(PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP, false);
     }
 }

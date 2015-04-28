@@ -5,20 +5,19 @@
     android:background="@color/white" >
 
     <com.leo.appmaster.ui.CommonTitleBar
-        android:id="@+id/layout_title_bar"
+        android:id="@+id/layout_quick_gesture_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/app_background" />
-   <ListView
+
+    <ListView
         android:id="@+id/quick_gesture_lv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/layout_title_bar"
-        android:layout_margin="16dp"
-        android:background="#ffffff"
-        android:divider="#f0f0f0"
-        android:dividerHeight="1dp"
-        android:listSelector="@null"
-        android:scrollbarStyle="outsideOverlay"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_quick_gesture_title_bar"
+        android:background="@drawable/white_bg"
+        android:divider="@null"
+        android:listSelector="@drawable/manager_backup_list_selecter"
         android:scrollbars="none" />
+
 </RelativeLayout>

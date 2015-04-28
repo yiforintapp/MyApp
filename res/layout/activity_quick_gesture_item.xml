@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/activity_privacy_contact_item_paddingLeft" >
+
+    <RelativeLayout
+        android:id="@+id/message_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/quick_gesture_option_IV"
+            android:layout_width="@dimen/privacy_contact_icon_size"
+            android:layout_height="@dimen/privacy_contact_icon_size"
+            android:layout_centerVertical="true"
+            android:src="@drawable/default_user_avatar"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/message_itemLT"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/privacy_call_log_item_calllog_list_message_itemLT_layout_height"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/contactIV" >
+
+            <LinearLayout
+                android:id="@+id/message_linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="40dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/quick_gesture_item_nameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="理奥网络"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/message_item_numberTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="理奥网络"
+                    android:textColor="#DFDDDD"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/quick_gesture_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:button="@drawable/quick_gesture_switch_selector"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
