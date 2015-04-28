@@ -630,4 +630,7 @@
 
     <!-- version 2.1 end -->
 
+   <!-- version 2.2 start -->
+    <string name="feed_back_content_guide">Please fill in your wish to describe the problem of feedback.</string>
+    <!-- version 2.2 end -->
 </resources>

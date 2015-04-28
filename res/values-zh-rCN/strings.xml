@@ -636,5 +636,9 @@
       <string name="mode_missing">"你还没创建该情景模式，请删除此快捷方式"</string>
 
     <!-- version 2.1 end -->
+    
+    <!-- version 2.2 start -->
+    <string name="feed_back_content_guide">您遇到的问题</string>
+    <!-- version 2.2 end -->
 
 </resources>

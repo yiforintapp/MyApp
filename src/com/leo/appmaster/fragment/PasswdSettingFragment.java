@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -296,7 +297,7 @@ public class PasswdSettingFragment extends BaseFragment implements
     }
 
     private void inputPasswd(String s) {
-        if (mTvPasswd1.getText().equals("")) {
+        if (mTvPasswd1.getText().toString().equals("")) {
             mTvPasswd1.setText("*");
             iv_delete.setEnabled(true);
             if (mInputCount == 1) {
@@ -304,21 +305,21 @@ public class PasswdSettingFragment extends BaseFragment implements
             } else {
                 mTempSecondPasswd = mTempSecondPasswd + s;
             }
-        } else if (mTvPasswd2.getText().equals("")) {
+        } else if (mTvPasswd2.getText().toString().equals("")) {
             mTvPasswd2.setText("*");
             if (mInputCount == 1) {
                 mTempFirstPasswd = mTempFirstPasswd + s;
             } else {
                 mTempSecondPasswd = mTempSecondPasswd + s;
             }
-        } else if (mTvPasswd3.getText().equals("")) {
+        } else if (mTvPasswd3.getText().toString().equals("")) {
             mTvPasswd3.setText("*");
             if (mInputCount == 1) {
                 mTempFirstPasswd = mTempFirstPasswd + s;
             } else {
                 mTempSecondPasswd = mTempSecondPasswd + s;
             }
-        } else if (mTvPasswd4.getText().equals("")) {
+        } else if (mTvPasswd4.getText().toString().equals("")) {
             mTvPasswd4.setText("*");
             if (mInputCount == 1) {
                 mTempFirstPasswd = mTempFirstPasswd + s;

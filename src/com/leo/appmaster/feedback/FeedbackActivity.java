@@ -275,7 +275,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
                 public void onDismiss(DialogInterface dialog) {
                     mCategoryPos = -1;
                     mEditContent.setText("");
-                    mCategory.setText(R.string.feedback_category_tip);
+                    mCategory.setText("");
                     mCategory.setTag(null);
                     finish();
                 }
@@ -289,7 +289,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if(v == mEditEmail) {
-            mEmailLayout.setBackgroundResource(hasFocus ? R.drawable.text_bg_acitve : R.drawable.text_bg_normal);
+            mEmailLayout.setBackgroundResource(hasFocus ? R.drawable.text_box_active: R.drawable.text_box_normal);
         }
     }
 }
