@@ -8,8 +8,6 @@
         android:id="@+id/commonTitleBar1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:background="@color/app_background" >
     </com.leo.appmaster.ui.CommonTitleBar>
 
@@ -27,32 +25,17 @@
     <EditText
         android:id="@+id/et_passwd_tip"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="42dp"
         android:layout_below="@+id/mode_name_tv"
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
         android:layout_marginTop="22dp"
-        android:background="@drawable/input_box_line"
+        android:paddingLeft="12dp"
+        android:background="@drawable/message_item_text_box_selecter"
         android:ems="10"
         android:singleLine="true"
         android:textSize="18sp" >
 
-        <requestFocus />
     </EditText>
-
-    <TextView
-        android:id="@+id/tv_make_sure"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_below="@+id/et_passwd_tip"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="17dp"
-        android:layout_marginRight="17dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/mycheck_button_selecter"
-        android:gravity="center"
-        android:text="@string/makesure"
-        android:textColor="@drawable/manager_backup_text_selecter"
-        android:textSize="22sp" />
 
 </RelativeLayout>

@@ -40,10 +40,10 @@
     <string name="find_passwd">ลืมรหัสผ่านของคุฌ</string>
     <string name="please_wait">กรุณาโปรดลองน่อย</string>
     <string name="passwd_question">คำถาม:</string>
-    <string name="passwd_anwser">คำตอบ:</string>
+    <string name="passwd_anwser">คำตอบ</string>
     <string name="accelerate">เร่ง</string>
     <string name="used_mem">ได้ใช้หน่วยความจำ</string>
-    <string name="passwd_tip">คำใบ้รหัสผ่าน:</string>
+    <string name="passwd_tip">คำใบ้รหัสผ่าน</string>
     <string name="save">เซฟ</string>
     <string name="passwd_protect_setting">ตัวเลือก</string>
     <string name="input_qusetion">เขียนคำถามของคุฌ</string>

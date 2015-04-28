@@ -41,13 +41,13 @@
     <string name="find_passwd">Forget passwd</string>
     <string name="please_wait">Please try again later</string>
     <string name="passwd_question">Question: </string>
-    <string name="passwd_anwser">Answer: </string>
+    <string name="passwd_anwser">Answer</string>
     <string name="accelerate">Boost</string>
     <string name="used_mem">Memory Used</string>
-    <string name="passwd_tip">Please enter a password hint: </string>
+    <string name="passwd_tip">Please enter a password hint</string>
     <string name="save">Save</string>
     <string name="passwd_protect_setting">Security Question Settings</string>
-    <string name="input_qusetion">Please enter a security question: </string>
+    <string name="input_qusetion">Please enter a security question</string>
     <string name="qusetion_cant_null">Please enter a question</string>
     <string name="aneser_cant_null">Please enter your answer</string>
     <string name="pleas_input_anwser">Answer your security question</string>
