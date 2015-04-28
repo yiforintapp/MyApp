@@ -40,13 +40,13 @@
     <string name="find_passwd">密码找回</string>
     <string name="please_wait">请稍候再试</string>
     <string name="passwd_question">问题：</string>
-    <string name="passwd_anwser">答案：</string>
+    <string name="passwd_anwser">答案</string>
     <string name="accelerate">加速</string>
     <string name="used_mem">使用内存</string>
-    <string name="passwd_tip">请输入密码提示：</string>
+    <string name="passwd_tip">请输入密码提示</string>
     <string name="save">保存</string>
     <string name="passwd_protect_setting">密保问题设置</string>
-    <string name="input_qusetion">请输入密保问题：</string>
+    <string name="input_qusetion">请输入密保问题</string>
     <string name="qusetion_cant_null">问题不能为空</string>
     <string name="aneser_cant_null">答案不能为空</string>
     <string name="pleas_input_anwser">请输入密保问题的答案</string>
