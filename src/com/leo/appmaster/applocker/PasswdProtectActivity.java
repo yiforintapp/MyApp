@@ -103,7 +103,7 @@ public class PasswdProtectActivity extends BaseActivity implements
             public void onClick(View v) {
                 if (mLeoPopMenu == null) {
                     mLeoPopMenu = new LeoPopMenu();
-                    mLeoPopMenu.setPopMenuItems(mCategories);
+                    mLeoPopMenu.setPopMenuItems(PasswdProtectActivity.this,mCategories);
                     mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view,

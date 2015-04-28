@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.privacycontact;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -350,7 +349,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                             receiveTime = time + "\u00A0AM";
                         }
                         vh.receiveContentTime.setText(receiveTime);
-                    } catch (ParseException e) {
+                    } catch (Exception e) {
                     }
                 } else if (mb.getMessageType() == 2) {
                     vh.receiveMessage.setVisibility(View.GONE);
@@ -377,7 +376,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                             sendTime = time + "\u00A0AM";
                         }
                         vh.sendContentTime.setText(sendTime);
-                    } catch (ParseException e) {
+                    } catch (Exception e) {
                     }
 
                 }
@@ -418,18 +417,22 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                             }, this);
                 }
                 String time = cur.getString(cur.getColumnIndex(Constants.COLUMN_MESSAGE_DATE));
-                Date date = new Date(time);
-                String showDateTemp = mDateFormatDay.format(date);
-                if (showDate == null || showDate.size() == 0) {
-                    showDate.add(showDateTemp);
-                    mb.setShowDate(showDateTemp);
-                    mShowDates.add(showDateTemp);
-                } else {
-                    if (!showDate.contains(showDateTemp)) {
+                try {
+                    Date date = new Date(time);
+                    String showDateTemp = mDateFormatDay.format(date);
+                    if (showDate == null || showDate.size() == 0) {
                         showDate.add(showDateTemp);
                         mb.setShowDate(showDateTemp);
                         mShowDates.add(showDateTemp);
+                    } else {
+                        if (!showDate.contains(showDateTemp)) {
+                            showDate.add(showDateTemp);
+                            mb.setShowDate(showDateTemp);
+                            mShowDates.add(showDateTemp);
+                        }
                     }
+                } catch (Exception e) {
+                    
                 }
                 mb.setMessageBody(body);
                 mb.setMessageName(name);

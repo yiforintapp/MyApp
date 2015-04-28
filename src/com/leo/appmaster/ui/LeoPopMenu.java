@@ -1,12 +1,16 @@
 
 package com.leo.appmaster.ui;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextPaint;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +31,11 @@ import com.leo.appmaster.R;
 public class LeoPopMenu {
 
     public final static int DIRECTION_DOWN = 1;
+    public final static float SMALLWidth = 160.0f;
+    public final static float FITWidth = 200.0f;
+
+    public final static float OVERPX = 220.0f;
+    public static boolean isOverWidth = false;
 
     public static class LayoutStyles {
         public int width;
@@ -61,7 +70,13 @@ public class LeoPopMenu {
         }
 
         if (styles == null) {
-            mStyles.width = DipPixelUtil.dip2px((Context) activity, 160.0f);
+            float popWidth = 0;
+            if (!isOverWidth) {
+                popWidth = SMALLWidth;
+            } else {
+                popWidth = FITWidth;
+            }
+            mStyles.width = DipPixelUtil.dip2px((Context) activity, popWidth);
             mStyles.height = LayoutParams.WRAP_CONTENT;
             if (mAnimaStyle != -1) {
                 mStyles.animation = mAnimaStyle;
@@ -134,8 +149,25 @@ public class LeoPopMenu {
         return convertView;
     }
 
-    public void setPopMenuItems(List<String> items) {
+    public void setPopMenuItems(Context mContext, List<String> items) {
         mItems = items;
+
+        float mMaxLength = 0;
+        TextView testTextView = new TextView(mContext);
+        for (int i = 0; i < mItems.size(); i++) {
+            testTextView.setText(mItems.get(i));
+            float mOne = getTextViewLength(testTextView, mItems.get(i));
+            Log.d("testLength", "mOne is : " + mOne);
+            if (mOne > mMaxLength) {
+                mMaxLength = mOne;
+            }
+        }
+        Log.d("testLength", "mMaxLength is : " + mMaxLength);
+        if (mMaxLength > OVERPX) {
+            isOverWidth = true;
+        } else {
+            isOverWidth = false;
+        }
     }
 
     public List<String> getPopMenuItems() {
@@ -206,8 +238,15 @@ public class LeoPopMenu {
             } else {
                 mHolder.mItemName.setText(mListItems.get(position));
             }
-
             return convertView;
         }
     }
+
+    public static float getTextViewLength(TextView textView, String text) {
+        TextPaint paint = textView.getPaint();
+        // 得到使用该paint写上text的时候,像素为多少
+        float textLength = paint.measureText(text);
+        return textLength;
+    }
+
 }

@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="center"
-        android:singleLine="true"
         android:textColor="@color/setting_menu_text_color"
         android:textSize="15dp" />
 
