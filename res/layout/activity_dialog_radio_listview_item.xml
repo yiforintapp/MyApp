@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="10dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/answer_icon"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/dialog_radio_itme_normalRB"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:button="@drawable/quick_gesture_dialog_radio_selector" />
+
+        <TextView
+            android:id="@+id/dialog_radio_itme_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:text="@string/privacy_contact_activity_input_checkbox_normal"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+</LinearLayout>

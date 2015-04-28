@@ -150,6 +150,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP = "switch_open_no_read_message_tip";
     public static final String PREF_SWITCH_OPEN_RECENTLY_CONTACT = "switch_open_recently_contact";
     public static final String PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP = "switch_open_privacy_contact_message_tip";
+
+    public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM = "dialog_radio_setting_left_bottom";
+    public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM = "dialog_radio_setting_right_bottom";
+    public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_CENTER = "dialog_radio_setting_left_center";
+    public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_CENTER = "dialog_radio_setting_right_center";
+    public static final String PREF_QUICK_GESTURE_DIALOG_SEEKBAR_PROGRESS_VALUE = "dialog_seekbar_progress_value";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1377,5 +1383,48 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getSwitchOpenPrivacyContactMessageTip() {
         return mPref.getBoolean(PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP, false);
+    }
+
+    public void setDialogRadioLeftBottom(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM, flag).commit();
+    }
+
+    public boolean getDialogRadioLeftBottom() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM, false);
+    }
+
+    public void setDialogRadioRightBottom(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM, flag)
+                .commit();
+    }
+
+    public boolean getDialogRadioRightBottom() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM, false);
+    }
+
+    public void setDialogRadioLeftCenter(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_CENTER, flag).commit();
+    }
+
+    public boolean getDialogRadioLeftCenter() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_CENTER, false);
+    }
+
+    public void setDialogRadioRightCenter(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_CENTER, flag)
+                .commit();
+    }
+
+    public boolean getDialogRadioRightCenter() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_CENTER, false);
+    }
+
+    public void setQuickGestureDialogSeekBarValue(int value) {
+        mPref.edit().putInt(PREF_QUICK_GESTURE_DIALOG_SEEKBAR_PROGRESS_VALUE, value)
+                .commit();
+    }
+
+    public int getQuickGestureDialogSeekBarValue() {
+        return mPref.getInt(PREF_QUICK_GESTURE_DIALOG_SEEKBAR_PROGRESS_VALUE, -1);
     }
 }

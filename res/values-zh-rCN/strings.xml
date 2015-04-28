@@ -646,5 +646,9 @@
     <string name="pg_appmanager_quick_gesture_option_recently_contact">最近联系人</string>
     <string name="pg_appmanager_quick_gesture_option_privacy_contact_message_tip">隐私联系人信息提示</string>
     <string name="pg_appmanager_quick_gesture_option_able_sliding_time">可划出时机</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text">左侧底部</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text">右侧底部</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_center_text">左侧中部</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_center_text">右侧中部</string>
 
 </resources>

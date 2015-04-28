@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp" >
+
+    <LinearLayout
+        android:id="@+id/content_all_item"
+        android:layout_width="@dimen/dlg_horizental_margin"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="15dp" >
+
+        <TextView
+            android:id="@+id/dialog_tilte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:text="@string/flow_settting_dialog"
+            android:textColor="@color/flow_setting_tv"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/seekbar_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:text="The remaining traffic 80%"
+            android:textColor="@color/flow_item_small"
+            android:textSize="12dp" />
+
+        <RelativeLayout
+            android:id="@+id/content_seek_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp" >
+
+            <SeekBar
+                android:id="@+id/mSeekBar"
+                style="@style/Widget.SeekBar.Normal"
+                android:layout_width="@dimen/app_manager_hotactivity_list_item_text_des_width"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2dp"
+                android:max="100" />
+
+            <TextView
+                android:id="@+id/seekbar_text_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/TrafficSetting_persent_margin_right"
+                android:text="50%"
+                android:textColor="@color/flow_item_small"
+                android:textSize="12dp" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/radioLV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/sure_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/manager_backup_button_selecter"
+            android:gravity="center"
+            android:text="@string/flow_settting_sure_bg"
+            android:textColor="@drawable/manager_backup_text_selecter"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -79,5 +79,6 @@
     <color name="home_btn_theme_pressed">#e8f7d9</color>
     <color name="home_btn_mode_pressed">#fff4d0</color>
     <color name="home_btn_setting_pressed">#e7dcff</color>
+    <color name="quick_gesture_switch_setting">#D3D1D1</color>
 
 </resources>
