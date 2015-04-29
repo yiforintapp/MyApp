@@ -43,6 +43,7 @@ public class CornerTabs extends View {
     private TextPaint mTextPaint;
     private Drawable mBackground, mCorner, mCover;
     private int mCornerWidth, mCornerHeight;
+    private int mCoverAngle;
 
     public CornerTabs(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -79,6 +80,12 @@ public class CornerTabs extends View {
         mOvalStartAngle = 210;
         // mOffset = context.getResources().getDimensionPixelSize(
         // R.dimen.center_tab_offset);
+
+        if (mType == 0) {
+            mCoverAngle = -28;
+        } else {
+            mCoverAngle = 28;
+        }
 
         mBackground = res.getDrawable(R.drawable.tab_bg);
         mCorner = res.getDrawable(R.drawable.corner);
@@ -173,9 +180,12 @@ public class CornerTabs extends View {
         mCorner.draw(canvas);
 
         // second, draw Oval
+        canvas.save();
+        canvas.rotate(mCoverAngle, 0, mTotalHeight);
         mCover.setBounds(0, mTotalHeight - mCover.getIntrinsicHeight(), mCover.getIntrinsicWidth(),
                 mTotalHeight);
         mCover.draw(canvas);
+        canvas.restore();
 
         // third, draw text
         canvas.drawTextOnPath(mDynamic, mDynPath, mCornerWidth + 80, mTextSize / 2, mTextPaint);

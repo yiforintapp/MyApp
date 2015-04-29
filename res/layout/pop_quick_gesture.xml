@@ -16,4 +16,29 @@
         android:layout_gravity="left|bottom"
         android:src="@drawable/rotate_bg" />
 
+    <com.leo.appmaster.quickgestures.view.QuickGestureLayout
+        android:id="@+id/qg_layout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.leo.appmaster.quickgestures.view.QuickGestureLayout
+        android:id="@+id/qg_layout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="removeItem"
+        android:text="remove" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:onClick="addItem"
+        android:text="add" />
+
 </FrameLayout>
