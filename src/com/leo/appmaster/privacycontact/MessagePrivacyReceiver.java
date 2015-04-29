@@ -98,6 +98,8 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                 }
             } catch (Exception e) {
 
+            } catch (Error error) {
+                
             }
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
             // 获取来电号码
