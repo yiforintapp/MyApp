@@ -62,6 +62,7 @@ import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.quickgestures.view.QuickGesturePopup;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
@@ -269,12 +270,16 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_menu:
-                if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
-                    mDrawerLayout.closeDrawer(Gravity.START);
-                } else {
-                    mDrawerLayout.openDrawer(Gravity.START);
-                    SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "menu");
-                }
+//                if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+//                    mDrawerLayout.closeDrawer(Gravity.START);
+//                } else {
+//                    mDrawerLayout.openDrawer(Gravity.START);
+//                    SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "menu");
+//                }
+                
+                Intent intent = new Intent(this, QuickGesturePopup.class);
+                startActivity(intent);
+                
                 break;
             case R.id.iv_option_image:
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "password");

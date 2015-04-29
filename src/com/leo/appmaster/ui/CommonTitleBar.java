@@ -148,6 +148,9 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mTvLogo.setVisibility(View.VISIBLE);
     }
 
+    public View getOptionImageView(){
+        return mTvOptionImage;
+    }
     @Override
     public void onClick(View v) {
         if (mLayoutBackView == v) {

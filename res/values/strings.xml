@@ -41,13 +41,13 @@
     <string name="find_passwd">Forget passwd</string>
     <string name="please_wait">Please try again later</string>
     <string name="passwd_question">Question: </string>
-    <string name="passwd_anwser">Answer: </string>
+    <string name="passwd_anwser">Answer</string>
     <string name="accelerate">Boost</string>
     <string name="used_mem">Memory Used</string>
-    <string name="passwd_tip">Please enter a password hint: </string>
+    <string name="passwd_tip">Please enter a password hint</string>
     <string name="save">Save</string>
     <string name="passwd_protect_setting">Security Question Settings</string>
-    <string name="input_qusetion">Please enter a security question: </string>
+    <string name="input_qusetion">Please enter a security question</string>
     <string name="qusetion_cant_null">Please enter a question</string>
     <string name="aneser_cant_null">Please enter your answer</string>
     <string name="pleas_input_anwser">Answer your security question</string>
@@ -628,6 +628,15 @@
     <string name="lock_mode_guide_button_text">OK</string>
     <string name="mode_missing">"You don't create the mode, please delete this shortcut"</string>
     <!-- version 2.1 end -->
+
+
+    <!-- version 2.2 start -->
+    <string name="feed_back_content_guide">Please fill in your wish to describe the problem of feedback.</string>
+    <!-- version 2.2 end -->
+
+
+    <!-- version 2.3 start -->
     <string name="pg_appmanager_quick_gesture_name">快捷手势</string>
+    <!-- version 2.3 end -->
 
 </resources>

@@ -155,10 +155,9 @@
     <dimen name="pager_margin_top">60dp</dimen>
     <dimen name="multi_mode_indicator_margin_top">34dp</dimen>
     <dimen name="multi_mode_add_margin_bottom">24dp</dimen>
-
     <dimen name="day_view_width">45dp</dimen>
 
-    <!-- lock mode begin  -->
+    <!-- lock mode begin -->
     <dimen name="home_lock_mode_guide_image_width">150dp</dimen>
     <dimen name="home_lock_mode_guide_image_height">150dp</dimen>
     <dimen name="home_lock_mode_guide_image_margin_top">36dp</dimen>
@@ -167,7 +166,6 @@
     <dimen name="home_lock_mode_guide_btn_width">100dp</dimen>
     <dimen name="home_lock_mode_guide_btn_height">30dp</dimen>
     <dimen name="home_lock_mode_guide_btn_margin_top">38dp</dimen>
-    
     <dimen name="home_lock_mode_active_tip_width">192dp</dimen>
     <dimen name="home_lock_mode_active_tip_image_width">74dp</dimen>
     <dimen name="home_lock_mode_active_tip_image_height">74dp</dimen>
@@ -175,4 +173,11 @@
     <dimen name="home_lock_mode_active_tip_text_margin_top">6dp</dimen>
     <dimen name="home_lock_mode_active_tip_text_margin_bottom">6dp</dimen>
     <!-- lock mode end -->
+
+
+    <!-- quick guesture begin -->
+    <dimen name="qg_conner_tab_text_size">12dp</dimen>
+
+    <!-- quick guesture end -->
+
 </resources>
