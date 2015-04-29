@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.ui;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
@@ -10,7 +8,6 @@ import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextPaint;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -157,12 +154,10 @@ public class LeoPopMenu {
         for (int i = 0; i < mItems.size(); i++) {
             testTextView.setText(mItems.get(i));
             float mOne = getTextViewLength(testTextView, mItems.get(i));
-            Log.d("testLength", "mOne is : " + mOne);
             if (mOne > mMaxLength) {
                 mMaxLength = mOne;
             }
         }
-        Log.d("testLength", "mMaxLength is : " + mMaxLength);
         if (mMaxLength > OVERPX) {
             isOverWidth = true;
         } else {

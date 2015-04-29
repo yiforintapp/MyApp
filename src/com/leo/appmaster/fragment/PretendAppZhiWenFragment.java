@@ -1,12 +1,12 @@
 
 package com.leo.appmaster.fragment;
 
+import android.content.pm.VerifierInfo;
+import android.os.Handler;
 import android.os.SystemClock;
-import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager.LayoutParams;
 import android.view.animation.AlphaAnimation;
@@ -21,12 +21,34 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.SDKWrapper;
 
 public class PretendAppZhiWenFragment extends PretendFragment implements OnClickListener {
+    private final static int SHOWLOCK = 1;
+    private final static int SHOWUNLOCK = 2;
+    private final static int FINISHFRAGMENT = 3;
     private View zhiwen_content;
-    private ImageView iv_zhiwen_tips, zhiwen_bang, show_slowly_iv, iv_zhiwen_click;
+    private ImageView iv_zhiwen_tips, zhiwen_bang, show_slowly_iv, iv_zhiwen_click, finger_lock,
+            finger_unlock;
     private float iv_zhiwen_click_height;
     private int mVersion;
     // three click
     long[] mHits = new long[3];
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case SHOWLOCK:
+                    finger_lock.setVisibility(View.VISIBLE);
+                    finger_unlock.setVisibility(View.GONE);
+                    break;
+                case SHOWUNLOCK:
+                    finger_lock.setVisibility(View.GONE);
+                    finger_unlock.setVisibility(View.VISIBLE);
+                    break;
+                case FINISHFRAGMENT:
+                    onUnlockPretendSuccessfully();
+                    break;
+            }
+        };
+    };
 
     @Override
     protected int layoutResourceId() {
@@ -57,6 +79,8 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
         iv_zhiwen_click.setOnClickListener(this);
         show_slowly_iv = (ImageView) findViewById(R.id.show_slowly_iv);
         zhiwen_bang = (ImageView) findViewById(R.id.zhiwen_bang);
+        finger_lock = (ImageView) findViewById(R.id.finger_lock);
+        finger_unlock = (ImageView) findViewById(R.id.finger_unlock);
 
         mVersion = PhoneInfo.getAndroidVersion();
         getZhiWen();
@@ -141,7 +165,9 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
                 if (mHits[0] >= (SystemClock.uptimeMillis() - 800)) {
-                    onUnlockPretendSuccessfully();
+
+                    showFeedBack();
+
                     SDKWrapper
                             .addEvent(mActivity, SDKWrapper.P1, "appcover", "done_FingerPrint");
                 }
@@ -149,6 +175,22 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
             default:
                 break;
         }
+    }
+
+    private void showFeedBack() {
+        new Thread() {
+            public void run() {
+                try {
+                    mHandler.sendEmptyMessage(SHOWLOCK);
+                    sleep(300);
+                    mHandler.sendEmptyMessage(SHOWUNLOCK);
+                    sleep(600);
+                    mHandler.sendEmptyMessage(FINISHFRAGMENT);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            };
+        }.start();
     }
 
 }

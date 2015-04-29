@@ -1,16 +1,27 @@
 
 package com.leo.appmaster.fragment;
 
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.GestureTextView;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 
 public class PretendAppErrorFragment extends PretendFragment {
 
     private GestureTextView mGtv;
     private TextView mTitle;
+    private View selector_done;
+
+    private int mSleWidth = 0;
+    private int mSleHeight = 0;
 
     private String mTips = "";
 
@@ -27,9 +38,42 @@ public class PretendAppErrorFragment extends PretendFragment {
         }
         mGtv = (GestureTextView) findViewById(R.id.tv_make_sure);
         mGtv.setPretendFragment(this);
-        
+
+        selector_done = findViewById(R.id.selector_done);
+
         SDKWrapper
                 .addEvent(mActivity, SDKWrapper.P1, "appcover", "AppError");
+    }
+
+    public void setSelector(int left, int top, int right, int bottom) {
+        LeoLog.d("setSelector", "left :" + left + "--top :" + top + "--right :" + right
+                + "--bottom :" + bottom);
+        mSleWidth = right - left;
+        mSleHeight = bottom - top;
+    }
+
+    public void startMove() {
+        FrameLayout.LayoutParams lParams = new FrameLayout.LayoutParams(mSleWidth, mSleHeight);
+        selector_done.setLayoutParams(lParams);
+        selector_done.setVisibility(View.VISIBLE);
+        
+        TranslateAnimation ta1 = new TranslateAnimation(-mSleWidth, 0, 0, 0);
+        ta1.setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                onUnlockPretendSuccessfully();
+            }
+        });
+        ta1.setDuration(800);
+        selector_done.startAnimation(ta1);
     }
 
     public void setErrorTip(String name) {
