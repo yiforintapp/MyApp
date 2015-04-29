@@ -2,6 +2,7 @@
 package com.leo.appmaster.applocker.service;
 
 import java.util.List;
+import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -23,6 +24,7 @@ import android.net.NetworkInfo.State;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
@@ -30,6 +32,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.quickgestures.QuickGestureWindowManager;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.LeoLog;
@@ -53,7 +56,8 @@ public class TaskDetectService extends Service {
             0, 0, 0
     };
 
-    private ScheduledFuture<?> mflowDatectFuture;;
+    private ScheduledFuture<?> mflowDatectFuture;
+    private ScheduledFuture<?> mFloatWindowFuture;
     private TimerTask flowDetecTask;
 
     private ScheduledExecutorService mScheduledExecutor;
@@ -63,6 +67,8 @@ public class TaskDetectService extends Service {
     private TaskChangeHandler mLockHandler;
     private TaskDetectBinder mBinder = new TaskDetectBinder();
     private AppMasterPreference sp_traffic;
+    private TimerTask mFloatWindowTask;
+    private Timer timer;
 
     public class TaskDetectBinder extends Binder {
         public TaskDetectService getService() {
@@ -92,6 +98,8 @@ public class TaskDetectService extends Service {
         if (!mServiceStarted) {
             startDetect();
         }
+        // 创建悬浮窗
+//        startFloatWindowTask();
         return START_STICKY;
     }
 
@@ -138,6 +146,23 @@ public class TaskDetectService extends Service {
         mDetectTask = new DetectTask();
         mDetectFuture = mScheduledExecutor.scheduleWithFixedDelay(mDetectTask, 0, period,
                 TimeUnit.MILLISECONDS);
+    }
+
+    private void startFloatWindowTask() {
+        stopFloatWindowTask();
+        mFloatWindowTask = new FloatWindowTask();
+        mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1000,
+                TimeUnit.MILLISECONDS);
+        Log.e("#############", "启动!");
+    }
+
+    private void stopFloatWindowTask() {
+        if (mFloatWindowFuture != null) {
+            mFloatWindowFuture.cancel(false);
+            mFloatWindowFuture = null;
+            mFloatWindowTask = null;
+            Log.e("#############", "停止!");
+        }
     }
 
     @Override
@@ -353,6 +378,30 @@ public class TaskDetectService extends Service {
             if (mLockHandler != null && pkgName != null && activityName != null) {
                 mLockHandler.handleAppLaunch(pkgName, activityName);
             }
+
         }
+
+    }
+
+    private class FloatWindowTask extends TimerTask {
+
+        @Override
+        public void run() {
+            // 创建悬浮窗
+            createSwipWindowing();
+            Log.e("#############", "创建!");
+        }
+
+    }
+
+    // 创建悬浮窗
+    private void createSwipWindowing() {
+        Log.e("#############", "正在创建。。。。");
+        // if (!MyWindowManager.isSwipShowing()) {
+        // 透明悬浮窗
+//        MyWindowManager.createSwipWindow(getApplicationContext());
+        // MyWindowManager.createSwipWindow(getApplicationContext(),
+        // "left_bottom");
+        // }
     }
 }

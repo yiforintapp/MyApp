@@ -35,6 +35,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private List<QuickGestureSettingBean> mQuickGestureSettingOption;
     private AppMasterPreference mPre;
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
+    private QuickGesturesAreaView mAreaView;
     private TextView second_tv_setting;
     private AppMasterPreference sp_notice_flow;
     private boolean mLeftBottom, mRightBottm, mRightCenter, mLeftCenter;
@@ -54,6 +55,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private void initUi() {
         mQuickGestureLV = (ListView) findViewById(R.id.quick_gesture_lv);
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
+        mAreaView = (QuickGesturesAreaView) findViewById(R.id.quick_gesture_area);
         mTitleBar.openBackView();
         mQuickGestureLV.setOnItemClickListener(this);
     }
@@ -166,11 +168,11 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             if (position == 1) {
                 convertView.setBackgroundColor(QuickGestureActivity.this.getResources().getColor(
                         R.color.quick_gesture_switch_setting));
-            }else{
+            } else {
                 convertView.setBackgroundColor(QuickGestureActivity.this.getResources().getColor(
                         R.color.white));
             }
-                
+
             vh.switchView.setOnCheckedChangeListener(QuickGestureActivity.this);
             return convertView;
         }
@@ -183,7 +185,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         } else if (arg2 == 2) {
             Log.e("##########", "2:" + arg2);
         } else if (arg2 == 3) {
-
+            mAreaView.setVisibility(View.VISIBLE);
             showSettingDialog(true);
         } else if (arg2 == 7) {
             Log.e("##########", "7:" + arg2);
@@ -254,6 +256,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
             @Override
             public void onClick(int progress) {
+                mAreaView.setVisibility(View.GONE);
                 // Log.e("##################", "mLeftBottom:" + mLeftBottom);
                 // Log.e("##################", "mRightBottm:" + mRightBottm);
                 // Log.e("##################", "mLeftCenter:" + mLeftCenter);
@@ -320,12 +323,16 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         int flag = (Integer) arg0.getTag();
                         if (flag == 0) {
                             mLeftBottom = arg1;
+                            mAreaView.setIsShowLeftBottom(arg1);
                         } else if (flag == 1) {
                             mRightBottm = arg1;
+                            mAreaView.setIsShowRightBottom(arg1);
                         } else if (flag == 2) {
                             mLeftCenter = arg1;
+                            mAreaView.setIsShowLeftCenter(arg1);
                         } else if (flag == 3) {
                             mRightCenter = arg1;
+                            mAreaView.setIsShowRightCenter(arg1);
                         }
                     }
                 });

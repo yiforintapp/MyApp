@@ -65,6 +65,7 @@ import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
+import com.leo.appmaster.quickgestures.FloatWindowService;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -150,6 +151,9 @@ public class AppMasterApplication extends Application {
         restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
+        //创建悬浮窗
+        Intent intent=new Intent(getApplicationContext(),FloatWindowService.class);
+        startService(intent);
     }
 
     private String getUserSerial() {

@@ -486,6 +486,10 @@
             android:name="com.leo.appmaster.applocker.service.StatusBarEventService"
             android:exported="true" >
         </service>
+        <service
+            android:name="com.leo.appmaster.quickgestures.FloatWindowService"
+            android:exported="true" >
+        </service>
 
         <receiver
             android:name="com.leo.appmaster.applocker.receiver.LockReceiver"
