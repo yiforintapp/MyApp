@@ -1,6 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,21 +7,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
 
 public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 	CommonTitleBar mTitleBar;
 	EditText mEtTip;
-	ImageView mTvMakesure;
+	View  mTvMakesure;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +32,7 @@ public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 		mTitleBar.setTitle(R.string.passwd_notify);
 		mTitleBar.openBackView();
 		mTitleBar.setOptionImage(R.drawable.mode_done);
-		mTvMakesure = (ImageView) mTitleBar.findViewById(R.id.tv_option_image);
+		mTvMakesure =  mTitleBar.getOptionImageView();
 		mTitleBar.setOptionListener(this);
 		String tip = AppMasterPreference.getInstance(this).getPasswdTip();
 		if (tip != null) {

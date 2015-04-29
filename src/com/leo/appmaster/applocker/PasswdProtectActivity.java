@@ -42,7 +42,7 @@ public class PasswdProtectActivity extends BaseActivity implements
 
     private View mSpinnerQuestions;
     private EditText mQuestion, mAnwser;
-    private ImageView mSave;
+    private View  mSave;
     private ScrollView mScrollView;
     private LeoPopMenu mLeoPopMenu;
     private Handler mHandler = new Handler();
@@ -70,8 +70,9 @@ public class PasswdProtectActivity extends BaseActivity implements
     private void initUI() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.passwd_protect);
-        mSave = (ImageView)mTtileBar.findViewById(R.id.tv_option_image);
+        mSave = mTtileBar.getOptionImageView();
         mTtileBar.setOptionImage(R.drawable.mode_done);
+        mTtileBar.setOptionListener(this);
         mTtileBar.setBackViewListener(new OnClickListener() {
 
             @Override
@@ -155,7 +156,6 @@ public class PasswdProtectActivity extends BaseActivity implements
                 }
             }
         });
-        mSave.setOnClickListener(this);
 
         mScrollView = (ScrollView) findViewById(R.id.scroll);
         String question = AppMasterPreference.getInstance(this).getPpQuestion();
