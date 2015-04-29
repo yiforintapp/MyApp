@@ -22,6 +22,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.quickgestures.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -185,7 +187,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         } else if (arg2 == 2) {
             Log.e("##########", "2:" + arg2);
         } else if (arg2 == 3) {
-            mAreaView.setVisibility(View.VISIBLE);
+//            mAreaView.setVisibility(View.VISIBLE);
             showSettingDialog(true);
         } else if (arg2 == 7) {
             Log.e("##########", "7:" + arg2);
@@ -256,17 +258,17 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
             @Override
             public void onClick(int progress) {
-                mAreaView.setVisibility(View.GONE);
-                // Log.e("##################", "mLeftBottom:" + mLeftBottom);
-                // Log.e("##################", "mRightBottm:" + mRightBottm);
-                // Log.e("##################", "mLeftCenter:" + mLeftCenter);
-                // Log.e("##################", "mRightCenter:" + mRightCenter);
+//                mAreaView.setVisibility(View.GONE);
                 // 保存设置的值
                 mPre.setDialogRadioLeftBottom(mLeftBottom);
                 mPre.setDialogRadioRightBottom(mRightBottm);
                 mPre.setDialogRadioLeftCenter(mLeftCenter);
                 mPre.setDialogRadioRightCenter(mRightCenter);
                 mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog.getSeekBarProgressValue());
+                LeoEventBus
+                        .getDefaultBus()
+                        .post(new PrivacyDeletEditEvent(
+                                QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
             }
         });
         mAlarmDialog.setCancelable(false);

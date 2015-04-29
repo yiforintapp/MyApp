@@ -45,7 +45,7 @@ public class QuickGesturesAreaView extends ViewGroup {
     @SuppressLint("ResourceAsColor")
     private void initUI(Context mContext) {
         this.mContext = mContext;
-        setBackgroundResource(R.drawable.test_home);
+        setBackgroundResource(R.color.quick_gesture_switch_setting);
         setFocusable(true);
         setClickable(true);
     }

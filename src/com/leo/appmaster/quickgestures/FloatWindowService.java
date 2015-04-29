@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Service;
@@ -35,6 +39,13 @@ public class FloatWindowService extends Service {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        LeoEventBus
+                .getDefaultBus().register(this);
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 开启定时器，每隔0.5秒刷新一次
         if (timer == null) {
@@ -51,38 +62,23 @@ public class FloatWindowService extends Service {
         startService(intent);
         timer.cancel();
         timer = null;
+        LeoEventBus
+                .getDefaultBus().unregister(this);
+    }
+
+    public void onEventMainThread(PrivacyDeletEditEvent event) {
+        String flag = event.editModel;
+        if (QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
+                .equals(flag)) {
+            createFloatWindow();
+        }
+
     }
 
     class RefreshTask extends TimerTask {
         @Override
         public void run() {
-            if (!QuickGestureWindowManager.isLeftBottomShowing()
-                    || !QuickGestureWindowManager.isLeftCenterShowing()
-                    || !QuickGestureWindowManager.isLeftTopShowing()
-                    || !QuickGestureWindowManager.isRightBottomShowing()
-                    || !QuickGestureWindowManager.isRightCenterShowing()
-                    || !QuickGestureWindowManager.isRightTopShowing()) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 透明悬浮窗
-                        // 左
-                        QuickGestureWindowManager
-                                .createFloatLeftBottomWindow(getApplicationContext());
-                        QuickGestureWindowManager
-                                .createFloatLeftCenterWindow(getApplicationContext());
-                        QuickGestureWindowManager.createFloatLeftTopWindow(getApplicationContext());
-                        // 右
-                        QuickGestureWindowManager
-                                .createFloatRightBottomWindow(getApplicationContext());
-                        QuickGestureWindowManager
-                                .createFloatRightCenterWindow(getApplicationContext());
-                        QuickGestureWindowManager
-                                .createFloatRightTopWindow(getApplicationContext());
-                    }
-                });
-            }
-
+            createFloatWindow();
             // 当前界面不是桌面，且有悬浮窗显示，则移除悬浮窗。
             // else if (!isHome() && MyWindowManager.isWindowShowing()) {
             // handler.post(new Runnable() {
@@ -106,7 +102,6 @@ public class FloatWindowService extends Service {
             // });
             // }
         }
-
     }
 
     /**
@@ -134,5 +129,49 @@ public class FloatWindowService extends Service {
             names.add(ri.activityInfo.packageName);
         }
         return names;
+    }
+
+    private void createFloatWindow() {
+        if (!QuickGestureWindowManager.isLeftBottomShowing()
+                || !QuickGestureWindowManager.isLeftCenterShowing()
+                || !QuickGestureWindowManager.isLeftTopShowing()
+                || !QuickGestureWindowManager.isRightBottomShowing()
+                || !QuickGestureWindowManager.isRightCenterShowing()
+                || !QuickGestureWindowManager.isRightTopShowing()) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    AppMasterPreference pre = AppMasterPreference
+                            .getInstance(getApplicationContext());
+                    // 透明悬浮窗
+                    // 左
+                    if (pre.getDialogRadioLeftBottom()) {
+                        QuickGestureWindowManager
+                                .createFloatLeftBottomWindow(getApplicationContext());
+                        QuickGestureWindowManager
+                                .createFloatLeftCenterWindow(getApplicationContext());
+                        QuickGestureWindowManager
+                                .createFloatLeftTopWindow(getApplicationContext());
+                    } else {
+                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), 1);
+                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), 2);
+                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), 3);
+                    }
+                    // 右
+                    if (pre.getDialogRadioRightBottom()) {
+                        QuickGestureWindowManager
+                                .createFloatRightBottomWindow(getApplicationContext());
+                        QuickGestureWindowManager
+                                .createFloatRightCenterWindow(getApplicationContext());
+                        QuickGestureWindowManager
+                                .createFloatRightTopWindow(getApplicationContext());
+                    } else {
+                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), -1);
+                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), -2);
+                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), -3);
+                    }
+                }
+            });
+        }
     }
 }

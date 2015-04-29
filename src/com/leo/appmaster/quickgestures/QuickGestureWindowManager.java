@@ -15,10 +15,9 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
 public class QuickGestureWindowManager {
-
+    public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_finish_notification";
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView;
     private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView;
-    private static LayoutParams contentWindowParams;
     private static LayoutParams mLeftBottomParams, mLeftCenterParams, mLeftTopParams;
     private static LayoutParams mRightBottomParams, mRightCenterParams, mRightTopParams;
     private static WindowManager mWindowManager;
@@ -40,7 +39,6 @@ public class QuickGestureWindowManager {
     private static float mLeftTopWidth = 50;
     // 左上高度
     private static float mLeftTopHeight = 300;
-
     // 右下宽度
     private static float mRightBottomWidth = 200;
     // 右下高度
@@ -100,9 +98,11 @@ public class QuickGestureWindowManager {
                 mLeftBottomParams = new LayoutParams();
                 mLeftBottomParams.width = (int) mLeftBottomWidth;
                 mLeftBottomParams.height = (int) mLeftBottomHeight;
-                mLeftBottomParams.gravity = Gravity.LEFT | Gravity.BOTTOM;
-                mLeftBottomParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3; 
-                mLeftBottomParams.format = PixelFormat.RGBA_8888; 
+                // mLeftBottomParams.gravity = Gravity.LEFT | Gravity.BOTTOM;
+                mLeftBottomParams.x = -(width / 2);
+                mLeftBottomParams.y = (height / 2);
+                mLeftBottomParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mLeftBottomParams.format = PixelFormat.RGBA_8888;
                 mLeftBottomParams.flags =
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -163,8 +163,8 @@ public class QuickGestureWindowManager {
                 mLeftCenterParams.x = (int) -(width / 2);
                 mLeftCenterParams.y = (int) ((height / 2)
                         - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
-                mLeftCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3; 
-                mLeftCenterParams.format = PixelFormat.RGBA_8888; 
+                mLeftCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mLeftCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterParams.flags =
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -224,8 +224,8 @@ public class QuickGestureWindowManager {
                 mLeftTopParams.x = -(width / 2);
                 mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2) + mLeftBottomHeight
                         + mLeftCenterHeight - 10));
-                mLeftTopParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3; 
-                mLeftTopParams.format = PixelFormat.RGBA_8888; 
+                mLeftTopParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mLeftTopParams.format = PixelFormat.RGBA_8888;
                 mLeftTopParams.flags =
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -283,8 +283,8 @@ public class QuickGestureWindowManager {
                 mRightBottomParams.width = (int) mRightBottomWidth;
                 mRightBottomParams.height = (int) mRightBottomHeight;
                 mRightBottomParams.gravity = Gravity.RIGHT | Gravity.BOTTOM;
-                mRightBottomParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3; 
-                mRightBottomParams.format = PixelFormat.RGBA_8888; 
+                mRightBottomParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mRightBottomParams.format = PixelFormat.RGBA_8888;
                 mRightBottomParams.flags =
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -343,8 +343,8 @@ public class QuickGestureWindowManager {
                 mRightCenterParams.x = (int) (width / 2);
                 mRightCenterParams.y = (int) ((height / 2)
                         - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
-                mRightCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3; 
-                mRightCenterParams.format = PixelFormat.RGBA_8888; 
+                mRightCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mRightCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterParams.flags =
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -403,8 +403,8 @@ public class QuickGestureWindowManager {
                 mRightTopParams.x = (width / 2);
                 mRightTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2) + mLeftBottomHeight
                         + mLeftCenterHeight - 10));
-                mRightTopParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3; 
-                mRightTopParams.format = PixelFormat.RGBA_8888; 
+                mRightTopParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mRightTopParams.format = PixelFormat.RGBA_8888;
                 mRightTopParams.flags =
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -457,12 +457,41 @@ public class QuickGestureWindowManager {
         }
     }
 
-    public static void removeFanWindow(Context context) {
-        if (mContent != null) {
-            WindowManager windowManager = getWindowManager(context);
-            windowManager.removeView(mContent);
-            mContent = null;
+    public static void updateView(Context context, int flag, int value) {
+        WindowManager windowManager = getWindowManager(context);
+        WindowManager manager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        int height = display.getHeight();
+        int width = display.getWidth();
+        // 左下
+        mLeftBottomParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
+        mLeftBottomParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
+        mLeftBottomParams.x = -(width / 2);
+        mLeftBottomParams.y = (height / 2) - value;
+        // 左中
+        mLeftCenterParams.x = (int) -(width / 2);
+        mLeftCenterParams.y = (int) ((height / 2)
+                - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
+        mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
+        mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+        // 左上
+
+        mLeftTopParams.x = -(width / 2);
+        mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2) + mLeftBottomParams.height + mLeftCenterParams.height))
+                - value;
+        mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
+        mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
+        if (mLeftBottomView != null) {
+            mWindowManager.updateViewLayout(mLeftBottomView, mLeftBottomParams);
         }
+        if (mLeftCenterView != null) {
+            mWindowManager.updateViewLayout(mLeftCenterView, mLeftCenterParams);
+        }
+        if (mLeftTopView != null) {
+            mWindowManager.updateViewLayout(mLeftTopView, mLeftTopParams);
+        }
+
     }
 
     public static boolean isLeftBottomShowing() {
@@ -500,20 +529,4 @@ public class QuickGestureWindowManager {
         return mWindowManager;
     }
 
-    public static void createThreeFan(Context applicationContext) {
-        if (contentWindowParams == null) {
-            contentWindowParams = new WindowManager.LayoutParams();
-            // contentWindowParams.height =
-            // WindowManager.LayoutParams.MATCH_PARENT;
-            // contentWindowParams.width =
-            // WindowManager.LayoutParams.MATCH_PARENT;
-            contentWindowParams.format = PixelFormat.RGBA_8888;
-            contentWindowParams.type =
-                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-            // contentWindowParams.flags =
-            // WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-            // | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-            // | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;// 焦点
-        }
-    }
 }
