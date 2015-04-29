@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.fragment;
 
+import android.R.integer;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,7 +30,7 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class PretendAppUnknowCallFragment5 extends PretendFragment implements OnTouchListener {
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
-            iv_duanxin_big, iv_jieting_big;
+            iv_duanxin_big, iv_jieting_big, finish_lock;
     private LinearLayout activity_weizhuang_firstin;
     private float mYuanX, mYuanY, mZhiJing, mBanJing;
     private int hold_width, hold_height, hold_left, hold_top, hold_right, hold_bottom;
@@ -39,19 +40,21 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     private int gua_left_big, gua_top_big, gua_right_big, gua_bottom_big;
     private int duan_left_big, duan_top_big, duan_right_big, duan_bottom_big;
     private int jie_left_big, jie_top_big, jie_right_big, jie_bottom_big;
+    private int finish_left, finish_top, finish_right, finish_bottom;
     private int startX, startY;
     private float lc_left, lc_top, lc_right, lc_bottom;
     private boolean isControlGua = false;
     private boolean isControlDuan = false;
     private boolean isControlJie = false;
     private boolean isStartDong = false;
-    private  boolean isStop = false;
+    private boolean isStop = false;
     private boolean isScreenOff = false;
     private GestureRelative mViewContent;
     private int mVersion;
     private Vibrator vib;
     private CirCleDongHua myself_circle;
-    private ScreenBroadcastReceiver mScreenReceiver; 
+    private ScreenBroadcastReceiver mScreenReceiver;
+    private int mFinishLockWidth, mFinishLockHeight;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -80,6 +83,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
 
+                    finish_lock.layout(finish_left, finish_top, finish_right, finish_bottom);
+
                     if (!isStop) {
                         vib.vibrate(new long[] {
                                 1000, 1000, 1000, 1000
@@ -93,6 +98,12 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_guaduan.setVisibility(View.INVISIBLE);
                     iv_duanxin.setVisibility(View.INVISIBLE);
                     iv_jieting.setVisibility(View.INVISIBLE);
+                    break;
+                case 3:
+                    finish_lock.setVisibility(View.VISIBLE);
+                    break;
+                case 4:
+                    onUnlockPretendSuccessfully();
                     break;
                 default:
                     break;
@@ -124,15 +135,11 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         }.start();
     }
 
-    
-    
     @Override
     public void onDestroy() {
         mActivity.unregisterReceiver(mScreenReceiver);
         super.onDestroy();
     }
-
-
 
     @Override
     public void onStop() {
@@ -147,9 +154,9 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
     @Override
     public void onResume() {
-        if(!isScreenOff){
+        if (!isScreenOff) {
             isStop = false;
-        }else {
+        } else {
             isStop = true;
         }
         // LeoLog.d("testFragment", "onResume");
@@ -172,8 +179,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         SDKWrapper
                 .addEvent(mActivity, SDKWrapper.P1, "appcover", "UnknowCall");
 
-        
-        mScreenReceiver = new ScreenBroadcastReceiver();  
+        mScreenReceiver = new ScreenBroadcastReceiver();
         startScreenBroadcastReceiver();
         mVersion = PhoneInfo.getAndroidVersion();
         init();
@@ -198,6 +204,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         iv_jieting_big = (ImageView) findViewById(R.id.iv_jieting_big);
 
         myself_circle = (CirCleDongHua) findViewById(R.id.myself_circle);
+        finish_lock = (ImageView) findViewById(R.id.finish_lock);
     }
 
     public void setPlace() {
@@ -402,6 +409,16 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                 jie_right_big = jie_yuan_x + (jie_big_width / 2);
                 jie_bottom_big = jie_yuan_y + (jie_big_height / 2);
 
+                // mFinishLockWidth = jie_right - gua_left;
+                // mFinishLockHeight = gua_bottom - duan_top;
+                // LeoLog.d("testUnknowCall", "mFinishLockWidth :" +
+                // mFinishLockWidth + "mFinishLockHeight :" +
+                // mFinishLockHeight);
+                finish_left = gua_left - gua_width/2 + 10;
+                finish_top = duan_top - duan_height/2;
+                finish_right = jie_right + jie_width/2 - 10;
+                finish_bottom = gua_bottom + gua_height/2;
+
                 if (mVersion > 16) {
                     mViewContent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 } else {
@@ -411,32 +428,49 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         });
     }
 
+    private void startScreenBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        mActivity.registerReceiver(mScreenReceiver, filter);
+    }
+
+    /**
+     * screen状态广播接收者
+     * 
+     * @author zhangyg
+     */
+    private class ScreenBroadcastReceiver extends BroadcastReceiver {
+        private String action = null;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            action = intent.getAction();
+            if (Intent.ACTION_SCREEN_ON.equals(action)) {
+            } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+                isScreenOff = true;
+            }
+        }
+    }
+
     public void setCanCel() {
+        isStop = true;
         vib.cancel();
     }
-    
-    private void startScreenBroadcastReceiver(){  
-        IntentFilter filter = new IntentFilter();  
-        filter.addAction(Intent.ACTION_SCREEN_ON);  
-        filter.addAction(Intent.ACTION_SCREEN_OFF);  
-        mActivity.registerReceiver(mScreenReceiver, filter);  
-    }  
-    
-    /** 
-     * screen状态广播接收者 
-     * @author zhangyg 
-     * 
-     */  
-    private class ScreenBroadcastReceiver extends BroadcastReceiver{  
-        private String action = null;  
-        @Override  
-        public void onReceive(Context context, Intent intent) {  
-            action = intent.getAction();  
-            if(Intent.ACTION_SCREEN_ON.equals(action)){  
-            }else if(Intent.ACTION_SCREEN_OFF.equals(action)){  
-                isScreenOff = true;
-            }  
-        }  
-    }  
-    
+
+    public void setFinishView() {
+        new Thread() {
+            public void run() {
+                try {
+                    mHandler.sendEmptyMessage(3);
+                    sleep(1000);
+                    mHandler.sendEmptyMessage(4);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            };
+        }.start();
+    }
+
 }

@@ -1,11 +1,15 @@
 
 package com.leo.appmaster.applocker;
 
+import com.leo.appmaster.fragment.PretendAppErrorFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -22,8 +26,10 @@ public class GestureTextView extends TextView implements OnClickListener {
     private float mDownY;
     private float mUpY;
 
-    private PretendFragment mPf;
+    private PretendAppErrorFragment mPf;
     private Context mContext;
+    private Paint mPaint;
+    private boolean isSetSelector = false;
 
     public GestureTextView(Context context) {
         super(context);
@@ -36,10 +42,21 @@ public class GestureTextView extends TextView implements OnClickListener {
         // getSize();
         this.setOnClickListener(this);
         this.mContext = context;
+        mPaint = new Paint();
     }
 
-    public void setPretendFragment(PretendFragment pf) {
+    public void setPretendFragment(PretendAppErrorFragment pf) {
         mPf = pf;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+
+        mPaint.setColor(Color.BLUE);// 设置灰色
+        mPaint.setStyle(Paint.Style.FILL);// 设置填满
+        canvas.drawRect(0, 0, 0, 0, mPaint);// 长方形
+
+        super.onDraw(canvas);
     }
 
     @Override
@@ -49,6 +66,15 @@ public class GestureTextView extends TextView implements OnClickListener {
         top = arg2;
         right = arg3;
         bottom = arg4;
+
+        LeoLog.d("testTextview", "left :" + left + "--top :" + top + "--right :" + right
+                + "--bottom :" + bottom);
+
+        if (mPf != null && !isSetSelector) {
+            mPf.setSelector(left,top,right,bottom);
+            isSetSelector = true;
+        }
+
     }
 
     @Override
@@ -73,7 +99,8 @@ public class GestureTextView extends TextView implements OnClickListener {
                 } else if (distanceX > 50) {
                     if (distanceX > fitDistanceX) {
                         if (mPf != null) {
-                            mPf.onUnlockPretendSuccessfully();
+                            mPf.startMove();
+//                            mPf.onUnlockPretendSuccessfully();
                             SDKWrapper
                                     .addEvent(mContext, SDKWrapper.P1, "appcover", "done_AppError");
                         }
