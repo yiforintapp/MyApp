@@ -53,7 +53,6 @@
                     android:maxLength="40"
                     android:paddingLeft="12dp"
                     android:textSize="16sp" >
- 					<requestFocus />
                 </EditText>
 
                 <ImageView
