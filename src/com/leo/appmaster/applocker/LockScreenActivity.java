@@ -341,20 +341,24 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void setAppInfoBackground(Drawable drawable) {
-        int h = drawable.getIntrinsicHeight() * 9 / 10;
-        int w = h * 3 / 5;
-        mAppBaseInfoLayoutbg = Bitmap.createBitmap(w, h,
-                Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(mAppBaseInfoLayoutbg);
-        canvas.drawColor(Color.WHITE);
-        drawable.setBounds(-(drawable.getIntrinsicWidth() - w) / 2,
-                -(drawable.getIntrinsicHeight() - h) / 2,
-                (drawable.getIntrinsicWidth() - w) / 2 + w,
-                (drawable.getIntrinsicHeight() - h) / 2 + h);
-        drawable.draw(canvas);
-        canvas.drawColor(Color.argb(70, 0, 0, 0));
-        mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
-        mLockLayout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
+        if(drawable != null) {
+            int h = drawable.getIntrinsicHeight() * 9 / 10;
+            int w = h * 3 / 5;
+            if(h > 0 && w > 0) {
+                mAppBaseInfoLayoutbg = Bitmap.createBitmap(w, h,
+                        Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(mAppBaseInfoLayoutbg);
+                canvas.drawColor(Color.WHITE);
+                drawable.setBounds(-(drawable.getIntrinsicWidth() - w) / 2,
+                        -(drawable.getIntrinsicHeight() - h) / 2,
+                        (drawable.getIntrinsicWidth() - w) / 2 + w,
+                        (drawable.getIntrinsicHeight() - h) / 2 + h);
+                drawable.draw(canvas);
+                canvas.drawColor(Color.argb(70, 0, 0, 0));
+                mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
+                mLockLayout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
+            }
+        }
     }
 
     @Override
