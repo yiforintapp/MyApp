@@ -145,8 +145,9 @@ public class GestureRelative extends RelativeLayout {
                             mContext.getString(R.string.open_weizhuang_dialog_content),
                             mContext.getString(R.string.open_weizhuang_dialog_sure));
                 } else {
+                    unknowFragment.setFinishView();
                     unknowFragment.setCanCel();
-                    mPf.onUnlockPretendSuccessfully();
+//                    mPf.onUnlockPretendSuccessfully();
                     SDKWrapper
                             .addEvent(mContext, SDKWrapper.P1, "appcover", "done_UnknowCall");
                 }

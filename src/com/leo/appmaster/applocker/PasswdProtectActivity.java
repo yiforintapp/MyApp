@@ -74,7 +74,6 @@ public class PasswdProtectActivity extends BaseActivity implements
         mTtileBar.setOptionImage(R.drawable.mode_done);
         mTtileBar.setOptionListener(this);
         mTtileBar.setBackViewListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager) getApplicationContext()
@@ -123,6 +122,7 @@ public class PasswdProtectActivity extends BaseActivity implements
                         .showPopMenu(PasswdProtectActivity.this, mSpinnerQuestions, styles, null);
             }
         });
+      
         mLayoutQues = findViewById(R.id.layout_questions);
         mQuestion = (EditText) findViewById(R.id.et_question);
         mQuestion.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -130,24 +130,23 @@ public class PasswdProtectActivity extends BaseActivity implements
             public void onFocusChange(View view, boolean isFucus) {
                 if (isFucus) {
                     mHandler.postDelayed(new Runnable() {
-
                         @Override
                         public void run() {
                             mScrollView.fullScroll(View.FOCUS_UP);
                         }
                     }, 100);
                 }
+                mLayoutQues.setBackgroundResource(isFucus ? R.drawable.text_box_active : R.drawable.text_box_normal);
             }
         });
+        
         mAnwser = (EditText) findViewById(R.id.et_anwser);
         mAnwser.setOnClickListener(this);
         mAnwser.setOnFocusChangeListener(new OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View view, boolean isFucus) {
                 if (isFucus) {
                     mHandler.postDelayed(new Runnable() {
-
                         @Override
                         public void run() {
                             mScrollView.fullScroll(View.FOCUS_DOWN);

@@ -239,7 +239,7 @@ public final class Utilities {
     }
 
     public static String getURL(String suffix) {
-        LeoLog.d("httpurl", "gameFragment Http is :::"+"http://" + SDKWrapper.getBestServerDomain() + suffix);
+//        LeoLog.d("httpurl", "gameFragment Http is :::"+"http://" + SDKWrapper.getBestServerDomain() + suffix);
         return "http://" + SDKWrapper.getBestServerDomain() + suffix;
     }
     

@@ -32,9 +32,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.media.AudioManager;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.UserManager;
 import android.provider.ContactsContract;
@@ -42,7 +40,6 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;

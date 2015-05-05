@@ -130,8 +130,6 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
     @Override
     protected void onInitUI() {
         initUI();
-        // if(mRecommendDatas.size() <1){
-
         AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
             @Override
             public void run() {

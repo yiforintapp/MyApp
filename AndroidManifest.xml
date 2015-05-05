@@ -297,7 +297,8 @@
             android:name="com.leo.appmaster.lockertheme.LockerTheme"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" 
+            android:theme="@style/Theme.PageIndicatorDefaults" >
             <category android:name="android.intent.category.DEFAULT" />
         </activity>
         <!-- lockerThemeGuide -->

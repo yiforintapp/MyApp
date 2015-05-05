@@ -22,9 +22,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -61,6 +59,7 @@ import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
@@ -73,19 +72,19 @@ import com.leo.appmater.globalbroadcast.PackageChangedListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class LockerTheme extends BaseActivity implements OnClickListener, ThemeChanageListener,
-        OnPageChangeListener, OnRefreshListener2<ListView> {
+         OnRefreshListener2<ListView> {
 
-    private View mTabContainer;
     private ViewPager mViewPager;
     private PullToRefreshListView localThemeList;
     private PullToRefreshListView mOnlineThemeList;
     private View mOnlineThemeView;
     private View mOnlineThemeHolder;
     private View mErrorView, mLayoutEmptyTip;
-    private TextView mTvRetry, mTvLocal, mTvOnline;
+    private TextView mTvRetry;
     private ProgressBar mProgressBar;
     private LEOThreeButtonDialog dialog;
-
+    private LeoPagerTab mPagerTab;
+    
     private List<ThemeItemInfo> mLocalThemes;
     private List<ThemeItemInfo> mOnlineThemes;
     private LockerThemeAdapter mLocalThemeAdapter;
@@ -476,17 +475,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     }
 
     private void initUI() {
-        mTabContainer = findViewById(R.id.tab_container);
-        mTvLocal = (TextView) findViewById(R.id.local);
-        mTvOnline = (TextView) findViewById(R.id.online);
-        mTvLocal.setOnClickListener(this);
-        mTvOnline.setOnClickListener(this);
+        mPagerTab = (LeoPagerTab) findViewById(R.id.tab_indicator);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
 
         LayoutInflater inflater = LayoutInflater.from(this);
         CommonTitleBar title = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         title.setTitle(R.string.lockerTheme);
         title.setBackViewListener(this);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
 
         // inflate local theme
         localThemeList = (PullToRefreshListView) inflater.inflate(
@@ -527,6 +522,17 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             }
 
             @Override
+            public CharSequence getPageTitle(int position) {
+                String title = "";
+                if(position ==0){
+                    title = getString(R.string.localtheme);
+                }else if(position == 1){
+                    title = getString(R.string.onlinetheme);
+                }
+                return  title;
+            }
+            
+            @Override
             public Object instantiateItem(ViewGroup container, int position) {
                 View view = null;
                 if (position == 0) {
@@ -539,9 +545,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 return view;
             }
         });
-        mViewPager.setOnPageChangeListener(this);
-        setCurrentPage(0);
-
+        mPagerTab.setViewPager(mViewPager);
     }
 
     private void onLoadMoreThemeFinish(boolean succeed, Object object) {
@@ -823,19 +827,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         return defaultTheme;
     }
 
-    private void setCurrentPage(int page) {
-        if (page == 0) {
-            mTvLocal.setTextColor(getResources().getColor(
-                    R.color.tab_select_text));
-            mTvOnline.setTextColor(getResources().getColor(R.color.white));
-            mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_l);
-        } else {
-            mTvLocal.setTextColor(getResources().getColor(R.color.white));
-            mTvOnline.setTextColor(getResources().getColor(
-                    R.color.tab_select_text));
-            mTabContainer.setBackgroundResource(R.drawable.stacked_tabs_r);
-        }
-    }
 
     /**
      * setLockerGuideShare
@@ -866,14 +857,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             case R.id.tv_reload:
                 doReload();
                 break;
-            case R.id.local:
-                mViewPager.setCurrentItem(0, true);
-                break;
             case R.id.layout_title_back:
                 onBackPressed();
-                break;
-            case R.id.online:
-                mViewPager.setCurrentItem(1, true);
                 break;
             default:
                 break;
@@ -916,19 +901,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
         loadMoreOnlineTheme();
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int arg0) {
-    }
-
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
-    }
-
-    @Override
-    public void onPageSelected(int arg0) {
-        setCurrentPage(arg0);
     }
 
     private class ThemeItemClickListener implements OnItemClickListener {

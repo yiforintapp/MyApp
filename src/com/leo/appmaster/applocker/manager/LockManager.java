@@ -558,7 +558,7 @@ public class LockManager {
 
     public void removePkgFromMode(List<String> pkgs, final LockMode mode) {
 
-        if (pkgs != null) {
+        if (pkgs != null && mode != null) {
             for (String pkg : pkgs) {
                 if (mode.lockList.contains(pkg)) {
                     mode.lockList.remove(pkg);
