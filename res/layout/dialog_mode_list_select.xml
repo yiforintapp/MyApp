@@ -3,14 +3,14 @@
     android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/dialog_bg"
+    android:background="@drawable/bg"
     android:gravity="center" >
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@+id/mode_list_container"
-        android:background="@color/gray" />
+        android:background="@drawable/line" />
 
     <RelativeLayout
         android:id="@+id/mode_list_container"
@@ -23,12 +23,11 @@
             android:id="@+id/mode_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/gray"
+            android:divider="@drawable/line"
              android:listSelector="@drawable/manager_backup_list_selecter"
             android:dividerHeight="1dp"
             android:overScrollMode="never"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
+            android:paddingLeft="16dp"
             android:scrollbars="none" />
 
         <TextView
@@ -39,11 +38,6 @@
             android:text="@string/position_lock_no_wifi" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@+id/dlg_bottom_layout"
-        android:background="@color/gray" />
 
     <LinearLayout
         android:id="@+id/dlg_bottom_layout"
@@ -52,16 +46,17 @@
         android:layout_below="@+id/mode_list_container"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="24dp" >
+        >
 
         <TextView
             android:id="@+id/dlg_bottom_btn"
             android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:background="@drawable/dlg_left_button_selector"
+            android:layout_height="48dp"
+            android:background="@drawable/dlg_bottom_button_selector"
             android:gravity="center"
             android:text="@string/cancel"
-            android:textColor="#0084ff" />
+            android:textSize="16dp"
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <TextView
@@ -70,12 +65,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="24dp"
+        android:layout_margin="18dp"
         android:ellipsize="end"
         android:gravity="center"
         android:text="@string/select_wifi_mode"
-        android:textColor="#202020"
-        android:textSize="20dp"
+        android:textColor="#676767"
+        android:textSize="18dp"
         android:visibility="visible" />
 
 </RelativeLayout>

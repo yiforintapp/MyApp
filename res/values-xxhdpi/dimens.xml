@@ -178,7 +178,7 @@
     <dimen name="home_lock_mode_name_size">14dp</dimen>
     <dimen name="home_lock_text_padding">8dp</dimen>
     <dimen name="multi_mode_title_margin_top">138dp</dimen>
-    <dimen name="pager_margin_top">60dp</dimen>
+    <dimen name="pager_margin_top">57dp</dimen>
     <dimen name="multi_mode_indicator_margin_top">54dp</dimen>
     <dimen name="multi_mode_add_margin_bottom">6dp</dimen>
 

@@ -4,6 +4,7 @@ package com.leo.appmaster.applocker;
 import java.util.Arrays;
 import java.util.List;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +13,18 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +32,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.TimeLockEditActivity.Holder;
+import com.leo.appmaster.applocker.TimeLockEditActivity.ModeListAdapter;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.home.HomeActivity;
@@ -34,6 +42,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
+import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 public class PasswdProtectActivity extends BaseActivity implements
         OnClickListener {
@@ -47,8 +56,12 @@ public class PasswdProtectActivity extends BaseActivity implements
     private LeoPopMenu mLeoPopMenu;
     private Handler mHandler = new Handler();
     private View mLayoutQues;
+    private Dialog mQuesDialog;
+    private ListView mQuesList;
+    
     
     private List<String> mCategories;
+    private String  mSelectQues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +114,7 @@ public class PasswdProtectActivity extends BaseActivity implements
         mSpinnerQuestions.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mLeoPopMenu == null) {
+              /*  if (mLeoPopMenu == null) {
                     mLeoPopMenu = new LeoPopMenu();
                     mLeoPopMenu.setPopMenuItems(PasswdProtectActivity.this,mCategories);
                     mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
@@ -119,7 +132,38 @@ public class PasswdProtectActivity extends BaseActivity implements
                 styles.height = LayoutParams.WRAP_CONTENT;
                 styles.animation = R.style.PopupListAnimUpDown;
                 mLeoPopMenu
-                        .showPopMenu(PasswdProtectActivity.this, mSpinnerQuestions, styles, null);
+                        .showPopMenu(PasswdProtectActivity.this, mSpinnerQuestions, styles, null);*/
+                if (mQuesDialog == null) {
+                    mQuesDialog = new LEOBaseDialog(PasswdProtectActivity.this);
+                    mQuesDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    mQuesDialog.setContentView(R.layout.dialog_mode_list_select);
+                    mQuesDialog.findViewById(R.id.no_wifi).setVisibility(View.GONE);
+                }
+                mQuesList = (ListView) mQuesDialog.findViewById(R.id.mode_list);
+                mQuesList.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position,
+                            long id) {
+                        mQuestion.setText(mCategories.get(position));
+                        mQuestion.selectAll();
+                        mSelectQues = mCategories.get(position);
+                        mQuesDialog.dismiss();
+                    }
+                });
+                View cancel = mQuesDialog.findViewById(R.id.dlg_bottom_btn);
+                cancel.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mQuesDialog.dismiss();
+                    }
+                });
+                
+                TextView mTitle = (TextView) mQuesDialog.findViewById(R.id.dlg_title);
+                mTitle.setText(getResources().getString(R.string.input_qusetion));
+                ListAdapter adapter = new QuesListAdapter(PasswdProtectActivity.this);
+                mQuesList.setAdapter(adapter);
+
+                mQuesDialog.show();
             }
         });
       
@@ -278,5 +322,64 @@ public class PasswdProtectActivity extends BaseActivity implements
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.show();
+    }
+    
+    class QuesListAdapter extends BaseAdapter{
+
+        private LayoutInflater inflater;
+        
+        public QuesListAdapter(Context ctx) {
+            inflater = LayoutInflater.from(ctx);
+        }
+        
+        @Override
+        public int getCount() {
+            return mCategories.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mCategories.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Holder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.item_common_select, parent, false);
+                holder = new Holder();
+                holder.name = (TextView) convertView.findViewById(R.id.tv_item_content);
+                holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);
+                convertView.setTag(holder);
+            } else {
+                holder = (Holder) convertView.getTag();
+            }
+
+            holder.name.setText(mCategories.get(position));
+            
+            if(mSelectQues != null ){
+                if(mCategories.get(position).equals(mSelectQues)){
+                    holder.selecte.setVisibility(View.VISIBLE);
+                }else{
+                    holder.selecte.setVisibility(View.GONE);
+                }
+            }else{
+                if (mCategories.get(position).equals( AppMasterPreference.getInstance(PasswdProtectActivity.this).getPpQuestion())) {
+                    holder.selecte.setVisibility(View.VISIBLE);
+                } else {
+                    holder.selecte.setVisibility(View.GONE);
+                }
+            }
+            return convertView;
+        }
+    }
+    public static class Holder {
+        TextView name;
+        ImageView selecte;
     }
 }
