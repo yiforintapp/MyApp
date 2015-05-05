@@ -99,7 +99,6 @@ public class PrivacyContactUtils {
     public static final String PRIVACY_EDIT_NAME_UPDATE_MESSAGE_EVENT = "edit_name_udpate_message_event";
     public static final String PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT = "privacy_contact_activity_cancel_red_tip";
     public static final String PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT = "privacy_contact_activity_call_log_cancel_red_tip";
-
     public static final int ID = 0;
 
     public static final int DATE = 1;

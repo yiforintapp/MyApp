@@ -1482,5 +1482,4 @@ public class LockPatternView extends ViewGroup {
                 && (mLockMode == LockManager.LOCK_MODE_FULL);
     }
     
-    
 }

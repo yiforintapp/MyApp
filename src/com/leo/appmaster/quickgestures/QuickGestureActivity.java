@@ -22,6 +22,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.quickgestures.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -35,6 +37,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private List<QuickGestureSettingBean> mQuickGestureSettingOption;
     private AppMasterPreference mPre;
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
+    private QuickGesturesAreaView mAreaView;
     private TextView second_tv_setting;
     private AppMasterPreference sp_notice_flow;
     private boolean mLeftBottom, mRightBottm, mRightCenter, mLeftCenter;
@@ -54,6 +57,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private void initUi() {
         mQuickGestureLV = (ListView) findViewById(R.id.quick_gesture_lv);
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
+        mAreaView = (QuickGesturesAreaView) findViewById(R.id.quick_gesture_area);
         mTitleBar.openBackView();
         mQuickGestureLV.setOnItemClickListener(this);
     }
@@ -166,11 +170,11 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             if (position == 1) {
                 convertView.setBackgroundColor(QuickGestureActivity.this.getResources().getColor(
                         R.color.quick_gesture_switch_setting));
-            }else{
+            } else {
                 convertView.setBackgroundColor(QuickGestureActivity.this.getResources().getColor(
                         R.color.white));
             }
-                
+
             vh.switchView.setOnCheckedChangeListener(QuickGestureActivity.this);
             return convertView;
         }
@@ -183,7 +187,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         } else if (arg2 == 2) {
             Log.e("##########", "2:" + arg2);
         } else if (arg2 == 3) {
-
+//            mAreaView.setVisibility(View.VISIBLE);
             showSettingDialog(true);
         } else if (arg2 == 7) {
             Log.e("##########", "7:" + arg2);
@@ -254,16 +258,17 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
             @Override
             public void onClick(int progress) {
-                // Log.e("##################", "mLeftBottom:" + mLeftBottom);
-                // Log.e("##################", "mRightBottm:" + mRightBottm);
-                // Log.e("##################", "mLeftCenter:" + mLeftCenter);
-                // Log.e("##################", "mRightCenter:" + mRightCenter);
+//                mAreaView.setVisibility(View.GONE);
                 // 保存设置的值
                 mPre.setDialogRadioLeftBottom(mLeftBottom);
                 mPre.setDialogRadioRightBottom(mRightBottm);
                 mPre.setDialogRadioLeftCenter(mLeftCenter);
                 mPre.setDialogRadioRightCenter(mRightCenter);
                 mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog.getSeekBarProgressValue());
+                LeoEventBus
+                        .getDefaultBus()
+                        .post(new PrivacyDeletEditEvent(
+                                QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
             }
         });
         mAlarmDialog.setCancelable(false);
@@ -320,12 +325,16 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         int flag = (Integer) arg0.getTag();
                         if (flag == 0) {
                             mLeftBottom = arg1;
+                            mAreaView.setIsShowLeftBottom(arg1);
                         } else if (flag == 1) {
                             mRightBottm = arg1;
+                            mAreaView.setIsShowRightBottom(arg1);
                         } else if (flag == 2) {
                             mLeftCenter = arg1;
+                            mAreaView.setIsShowLeftCenter(arg1);
                         } else if (flag == 3) {
                             mRightCenter = arg1;
+                            mAreaView.setIsShowRightCenter(arg1);
                         }
                     }
                 });
