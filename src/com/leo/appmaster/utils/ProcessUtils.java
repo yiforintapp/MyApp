@@ -78,7 +78,7 @@ public class ProcessUtils {
 
 	// 获得总内存, 以B为单位
 	public static long getTotalMem() {
-		long mTotal;
+		long mTotal = 0;
 		// /proc/meminfo读出的内核信息进行解释
 		String path = "/proc/meminfo";
 		String content = null;
@@ -88,29 +88,23 @@ public class ProcessUtils {
 			String line;
 			if ((line = br.readLine()) != null) {
 				content = line;
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			}	     
+	        // beginIndex
+	        int begin = content.indexOf(':');
+	        // endIndex
+	        int end = content.indexOf('k');
+	        // 截取字符串信息
+	        content = content.substring(begin + 1, end).trim();
+	        mTotal = Integer.parseInt(content) * 1024L;
+		} catch (Exception e) {
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
 				}
 			}
 		}
-		// beginIndex
-		int begin = content.indexOf(':');
-		// endIndex
-		int end = content.indexOf('k');
-		// 截取字符串信息
-
-		content = content.substring(begin + 1, end).trim();
-
-		mTotal = Integer.parseInt(content) * 1024L;
 		return mTotal;
 	}
 }

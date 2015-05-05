@@ -33,15 +33,27 @@
                 android:layout_height="1dp"
                 android:background="@color/gray" />
 
-            <com.leo.appmaster.applocker.GestureTextView
-                android:id="@+id/tv_make_sure"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/home_button_lock_selecter"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="@string/error_cancel_button"
-                android:textColor="@color/black" />
+                android:layout_height="wrap_content" >
+
+                <com.leo.appmaster.applocker.GestureTextView
+                    android:id="@+id/tv_make_sure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/home_button_lock_selecter"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:text="@string/error_cancel_button"
+                    android:textColor="@color/black" />
+
+                <View
+                    android:id="@+id/selector_done"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="#e0DFDFDF"
+                    android:visibility="gone" />
+            </FrameLayout>
         </LinearLayout>
     </LinearLayout>
 

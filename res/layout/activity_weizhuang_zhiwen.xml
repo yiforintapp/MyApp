@@ -53,6 +53,22 @@
             android:layout_width="@dimen/weizhuang_zhiwen_icon_width"
             android:layout_height="15dp"
             android:background="@drawable/disguise_finger_line" />
+
+        <ImageView
+            android:id="@+id/finger_lock"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:background="@drawable/finger_lock"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/finger_unlock"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:background="@drawable/finger_unlock"
+            android:visibility="gone" />
     </FrameLayout>
 
     <ImageView
