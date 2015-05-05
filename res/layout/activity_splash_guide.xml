@@ -9,7 +9,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#007fff"
-    android:gravity="center_horizontal" >
+    android:gravity="center_horizontal"
+   >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -57,9 +58,9 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="@dimen/guide_page_indicator_margin_buttom"
         leoindicator:radiu="4dp"
-        leoindicator:fillColor="@color/white"
-        leoindicator:pageColor="@color/guide_indicator_fill_color"
-        leoindicator:strokeColor="#00000000" />
+        leoindicator:fillColor="@color/black"
+        leoindicator:pageColor="#00000000"
+        leoindicator:strokeColor="@color/gray" />
 </FrameLayout>
 
 </FrameLayout>
