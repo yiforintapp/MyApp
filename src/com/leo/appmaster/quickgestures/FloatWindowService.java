@@ -21,17 +21,23 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+/**
+ * FloatWindowService
+ * 
+ * @author run
+ */
 public class FloatWindowService extends Service {
 
     /**
      * 用于在线程中创建或移除悬浮窗。
      */
-    private Handler handler = new Handler();
+    private Handler mHandler = new Handler();
 
     /**
      * 定时器，定时进行检测当前应该创建还是移除悬浮窗。
      */
     private Timer timer;
+    private boolean mIsRefreshTask = true;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -55,6 +61,17 @@ public class FloatWindowService extends Service {
         return START_STICKY;
     }
 
+    private void stopFloatWindowServiceTask() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    public void stopFloatWindow() {
+        stopFloatWindowServiceTask();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -70,7 +87,7 @@ public class FloatWindowService extends Service {
         String flag = event.editModel;
         if (QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
-            createFloatWindow();
+            QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
         }
 
     }
@@ -78,7 +95,7 @@ public class FloatWindowService extends Service {
     class RefreshTask extends TimerTask {
         @Override
         public void run() {
-            createFloatWindow();
+            QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
             // 当前界面不是桌面，且有悬浮窗显示，则移除悬浮窗。
             // else if (!isHome() && MyWindowManager.isWindowShowing()) {
             // handler.post(new Runnable() {
@@ -90,7 +107,6 @@ public class FloatWindowService extends Service {
             // }
             // });
             // }
-
             // 当前界面是桌面，且有悬浮窗显示，则更新内存数据。
             // else if (isHome() && MyWindowManager.isWindowShowing()) {
             // handler.post(new Runnable() {
@@ -131,47 +147,4 @@ public class FloatWindowService extends Service {
         return names;
     }
 
-    private void createFloatWindow() {
-        if (!QuickGestureWindowManager.isLeftBottomShowing()
-                || !QuickGestureWindowManager.isLeftCenterShowing()
-                || !QuickGestureWindowManager.isLeftTopShowing()
-                || !QuickGestureWindowManager.isRightBottomShowing()
-                || !QuickGestureWindowManager.isRightCenterShowing()
-                || !QuickGestureWindowManager.isRightTopShowing()) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    AppMasterPreference pre = AppMasterPreference
-                            .getInstance(getApplicationContext());
-                    // 透明悬浮窗
-                    // 左
-                    if (pre.getDialogRadioLeftBottom()) {
-                        QuickGestureWindowManager
-                                .createFloatLeftBottomWindow(getApplicationContext());
-                        QuickGestureWindowManager
-                                .createFloatLeftCenterWindow(getApplicationContext());
-                        QuickGestureWindowManager
-                                .createFloatLeftTopWindow(getApplicationContext());
-                    } else {
-                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), 1);
-                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), 2);
-                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), 3);
-                    }
-                    // 右
-                    if (pre.getDialogRadioRightBottom()) {
-                        QuickGestureWindowManager
-                                .createFloatRightBottomWindow(getApplicationContext());
-                        QuickGestureWindowManager
-                                .createFloatRightCenterWindow(getApplicationContext());
-                        QuickGestureWindowManager
-                                .createFloatRightTopWindow(getApplicationContext());
-                    } else {
-                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), -1);
-                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), -2);
-                        QuickGestureWindowManager.removeSwipWindow(getApplicationContext(), -3);
-                    }
-                }
-            });
-        }
-    }
 }

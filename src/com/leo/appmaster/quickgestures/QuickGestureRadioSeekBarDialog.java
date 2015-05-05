@@ -16,7 +16,11 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
-
+/**
+ * QuickGestureRadioSeekBarDialog
+ * @author run
+ *
+ */
 public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
     private Context mContext;
     private TextView seekbar_text, sure_button, seekbar_text_progress, title;

@@ -1,10 +1,13 @@
 
 package com.leo.appmaster.quickgestures;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -14,6 +17,11 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
+/**
+ * QuickGestureWindowManager
+ * 
+ * @author run
+ */
 public class QuickGestureWindowManager {
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_finish_notification";
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView;
@@ -282,7 +290,8 @@ public class QuickGestureWindowManager {
                 mRightBottomParams = new LayoutParams();
                 mRightBottomParams.width = (int) mRightBottomWidth;
                 mRightBottomParams.height = (int) mRightBottomHeight;
-                mRightBottomParams.gravity = Gravity.RIGHT | Gravity.BOTTOM;
+                mRightBottomParams.x = (width / 2);
+                mRightBottomParams.y = (height / 2);
                 mRightBottomParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
                 mRightBottomParams.format = PixelFormat.RGBA_8888;
                 mRightBottomParams.flags =
@@ -482,6 +491,28 @@ public class QuickGestureWindowManager {
                 - value;
         mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
         mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
+        // 右下
+        mRightBottomParams.width = (int) ((mRightBottomWidth / 2) + (value / 2)) * 2;
+        mRightBottomParams.height = (int) ((mRightBottomHeight / 2) + (value)) * 2;
+        mRightBottomParams.x = +(width / 2);
+        mRightBottomParams.y = (height / 2) - value;
+        Log.e("##############", "X:" + (width / 2) + "Y:" + ((height / 2) - value));
+
+        // 右中
+        mRightCenterParams.x = (int) (width / 2);
+        mRightCenterParams.y = (int) ((height / 2)
+                - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
+        mRightCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
+        mRightCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
+
+        // 右上
+        mRightTopParams.x = (width / 2);
+        mRightTopParams.y = (int) ((height / 2) - ((mRightTopHeight / 2)
+                + mRightBottomParams.height + mRightCenterParams.height))
+                - value;
+        mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
+        mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
+        // 更新左边
         if (mLeftBottomView != null) {
             mWindowManager.updateViewLayout(mLeftBottomView, mLeftBottomParams);
         }
@@ -491,7 +522,16 @@ public class QuickGestureWindowManager {
         if (mLeftTopView != null) {
             mWindowManager.updateViewLayout(mLeftTopView, mLeftTopParams);
         }
-
+        // 更新右边
+        if (mRightBottomView != null) {
+            mWindowManager.updateViewLayout(mRightBottomView, mRightBottomParams);
+        }
+        if (mRightCenterView != null) {
+            mWindowManager.updateViewLayout(mRightCenterView, mRightCenterParams);
+        }
+        if (mRightTopView != null) {
+            mWindowManager.updateViewLayout(mRightTopView, mRightTopParams);
+        }
     }
 
     public static boolean isLeftBottomShowing() {
@@ -529,4 +569,99 @@ public class QuickGestureWindowManager {
         return mWindowManager;
     }
 
+    public static void createFloatWindow(Handler handler, final Context context) {
+        if (!QuickGestureWindowManager.isLeftBottomShowing()
+                || !QuickGestureWindowManager.isLeftCenterShowing()
+                || !QuickGestureWindowManager.isLeftTopShowing()
+                || !QuickGestureWindowManager.isRightBottomShowing()
+                || !QuickGestureWindowManager.isRightCenterShowing()
+                || !QuickGestureWindowManager.isRightTopShowing()) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    AppMasterPreference pre = AppMasterPreference
+                            .getInstance(context);
+                    // 透明悬浮窗
+                    // 左
+                    if (pre.getDialogRadioLeftBottom()) {
+                        QuickGestureWindowManager
+                                .createFloatLeftBottomWindow(context);
+                        QuickGestureWindowManager
+                                .createFloatLeftCenterWindow(context);
+                        QuickGestureWindowManager
+                                .createFloatLeftTopWindow(context);
+                    } else {
+                        QuickGestureWindowManager.removeSwipWindow(context, 1);
+                        QuickGestureWindowManager.removeSwipWindow(context, 2);
+                        QuickGestureWindowManager.removeSwipWindow(context, 3);
+                    }
+                    // 右
+                    if (pre.getDialogRadioRightBottom()) {
+                        QuickGestureWindowManager
+                                .createFloatRightBottomWindow(context);
+                        QuickGestureWindowManager
+                                .createFloatRightCenterWindow(context);
+                        QuickGestureWindowManager
+                                .createFloatRightTopWindow(context);
+                    } else {
+                        QuickGestureWindowManager.removeSwipWindow(context, -1);
+                        QuickGestureWindowManager.removeSwipWindow(context, -2);
+                        QuickGestureWindowManager.removeSwipWindow(context, -3);
+                    }
+                }
+            });
+        }
+    }
+
+    public static void updateFloatWindowBackgroudColor(boolean flag) {
+        if (flag) {
+            if (mLeftBottomView != null) {
+                mLeftBottomView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+            }
+            if (mLeftCenterView != null) {
+                mLeftCenterView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+            }
+            if (mLeftTopView != null) {
+                mLeftTopView.setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+            }
+            if (mRightBottomView != null) {
+                mRightBottomView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+            }
+            if (mRightCenterView != null) {
+                mRightCenterView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+            }
+            if (mRightTopView != null) {
+                mRightTopView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+            }
+        } else if (!flag) {
+            if (mLeftBottomView != null) {
+                mLeftBottomView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+            }
+            if (mLeftCenterView != null) {
+                mLeftCenterView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+            }
+            if (mLeftTopView != null) {
+                mLeftTopView.setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+            }
+            if (mRightBottomView != null) {
+                mRightBottomView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+            }
+            if (mRightCenterView != null) {
+                mRightCenterView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+            }
+            if (mRightTopView != null) {
+                mRightTopView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+            }
+        }
+    }
 }

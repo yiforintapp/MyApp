@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,11 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.LeoLog;
 
+/**
+ * QuickGestureActivity
+ * 
+ * @author run
+ */
 public class QuickGestureActivity extends BaseActivity implements OnItemClickListener,
         OnCheckedChangeListener {
     private ListView mQuickGestureLV;
@@ -40,7 +47,11 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private QuickGesturesAreaView mAreaView;
     private TextView second_tv_setting;
     private AppMasterPreference sp_notice_flow;
+    private boolean mEditQuickAreaFlag = false;
+    private boolean mAlarmDialogFlag = false;
+    private boolean mHomePasueFlag = false;
     private boolean mLeftBottom, mRightBottm, mRightCenter, mLeftCenter;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +71,27 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mAreaView = (QuickGesturesAreaView) findViewById(R.id.quick_gesture_area);
         mTitleBar.openBackView();
         mQuickGestureLV.setOnItemClickListener(this);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (!mEditQuickAreaFlag && mAlarmDialogFlag) {
+            QuickGestureWindowManager.updateFloatWindowBackgroudColor(mAlarmDialogFlag);
+            QuickGestureWindowManager.createFloatWindow(mHandler, QuickGestureActivity.this);
+            mEditQuickAreaFlag = true;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mEditQuickAreaFlag == true) {
+            mEditQuickAreaFlag = false;
+            QuickGestureWindowManager.updateFloatWindowBackgroudColor(mEditQuickAreaFlag);
+            QuickGestureWindowManager.createFloatWindow(mHandler, QuickGestureActivity.this);
+            mHomePasueFlag = true;
+        }
     }
 
     private void fillSettingData() {
@@ -169,7 +201,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             }
             if (position == 1) {
                 convertView.setBackgroundColor(QuickGestureActivity.this.getResources().getColor(
-                        R.color.quick_gesture_switch_setting));
+                        R.color.quick_gesture_switch_setting_show_color));
             } else {
                 convertView.setBackgroundColor(QuickGestureActivity.this.getResources().getColor(
                         R.color.white));
@@ -182,22 +214,31 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        if (arg2 == 1) {
-            Log.e("##########", "1:" + arg2);
-        } else if (arg2 == 2) {
-            Log.e("##########", "2:" + arg2);
-        } else if (arg2 == 3) {
-//            mAreaView.setVisibility(View.VISIBLE);
-            showSettingDialog(true);
-        } else if (arg2 == 7) {
-            Log.e("##########", "7:" + arg2);
+        if (mPre.getSwitchOpenQuickGesture()) {
+            if (arg2 == 1) {
+                Log.e("##########", "1:" + arg2);
+            } else if (arg2 == 2) {
+                Log.e("##########", "2:" + arg2);
+            } else if (arg2 == 3) {
+                mEditQuickAreaFlag = true;
+                showSettingDialog(true);
+            } else if (arg2 == 7) {
+                Log.e("##########", "7:" + arg2);
+            }
         }
-
     }
 
     @Override
     public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
         if ((Integer) arg0.getTag() == 0) {
+            if (!arg1) {
+                new FloatWindowService().stopFloatWindow();
+            } else {
+                if (!mPre.getSwitchOpenQuickGesture()) {
+                    Intent intent = new Intent(getApplicationContext(), FloatWindowService.class);
+                    startService(intent);
+                }
+            }
             mPre.setSwitchOpenQuickGesture(arg1);
         } else if ((Integer) arg0.getTag() == 4) {
             mPre.setSwitchOpenNoReadMessageTip(arg1);
@@ -258,7 +299,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
             @Override
             public void onClick(int progress) {
-//                mAreaView.setVisibility(View.GONE);
+                mEditQuickAreaFlag = false;
+                mAlarmDialogFlag = false;
+                // mAreaView.setVisibility(View.GONE);
                 // 保存设置的值
                 mPre.setDialogRadioLeftBottom(mLeftBottom);
                 mPre.setDialogRadioRightBottom(mRightBottm);
@@ -269,10 +312,15 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         .getDefaultBus()
                         .post(new PrivacyDeletEditEvent(
                                 QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
+                QuickGestureWindowManager.updateFloatWindowBackgroudColor(mEditQuickAreaFlag);
+                QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
             }
         });
         mAlarmDialog.setCancelable(false);
         mAlarmDialog.show();
+        mAlarmDialogFlag = true;
+        QuickGestureWindowManager.updateFloatWindowBackgroudColor(mEditQuickAreaFlag);
+        QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
     }
 
     // 弹出框的Adapter
