@@ -241,7 +241,7 @@ public class CirclePageIndicator extends View implements PagerIndicator {
         }
 
         final float threeRadius = mRadius * 5;
-        final float shortOffset = shortPaddingBefore + mRadius;
+        final float shortOffset = shortPaddingBefore + mRadius+getStrokeWidth();
         float longOffset = longPaddingBefore + mRadius;
         if (mCentered) {
             longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f)
@@ -273,7 +273,7 @@ public class CirclePageIndicator extends View implements PagerIndicator {
 
             // Only paint stroke if a stroke width was non-zero
             if (pageFillRadius != mRadius) {
-                canvas.drawCircle(dX, dY, mRadius + 4, mPaintStroke);
+                canvas.drawCircle(dX, dY, mRadius, mPaintStroke);
             }
         }
 
@@ -510,7 +510,7 @@ public class CirclePageIndicator extends View implements PagerIndicator {
             result = specSize;
         } else {
             // Measure the height
-            result = (int) (2 * mRadius + getPaddingTop() + getPaddingBottom() + 1);
+            result = (int) (2 * mRadius + getPaddingTop() + getPaddingBottom() + getStrokeWidth()*2);
             // Respect AT_MOST value if that was what is called for by
             // measureSpec
             if (specMode == MeasureSpec.AT_MOST) {
