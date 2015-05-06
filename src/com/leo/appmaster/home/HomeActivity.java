@@ -255,6 +255,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             showModePages(false/* , new int[]{1,1} */);
             return;
         }
+        
+        // Whether the child consumed the event
+        HomeFragmentHoler holder = mFragmentHolders[mViewPager.getCurrentItem()];
+        if(holder != null && holder.fragment != null && holder.fragment.onBackPressed()) {
+            return;
+        }
 
         super.onBackPressed();
 
