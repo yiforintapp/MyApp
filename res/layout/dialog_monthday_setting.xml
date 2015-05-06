@@ -111,7 +111,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
-            android:background="@drawable/manager_backup_button_selecter"
+            android:background="@drawable/manager_done_right_button_selecter"
             android:gravity="center"
             android:text="@string/flow_settting_sure_bg"
             android:textColor="@drawable/manager_backup_text_selecter"

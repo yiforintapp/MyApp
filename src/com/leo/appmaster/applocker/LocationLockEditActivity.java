@@ -248,7 +248,7 @@ public class LocationLockEditActivity extends BaseActivity implements
 
     private void showModeList(final int which) {
         if (mModeListDialog == null) {
-            mModeListDialog = new LEOBaseDialog(this);
+            mModeListDialog = new LEOBaseDialog(this,R.style.bt_dialog);
             mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
             mModeList = (ListView) mModeListDialog.findViewById(R.id.mode_list);
@@ -306,7 +306,7 @@ public class LocationLockEditActivity extends BaseActivity implements
 
     private void showWifiList() {
         if (mModeListDialog == null) {
-            mModeListDialog = new LEOBaseDialog(this);
+            mModeListDialog = new LEOBaseDialog(this,R.style.bt_dialog);
             mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
             View container = mModeListDialog.findViewById(R.id.mode_list_container);

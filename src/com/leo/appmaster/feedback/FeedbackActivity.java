@@ -260,7 +260,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
      */
     private void showQuesCategoryDialog(){
         if (mCategoryDialog == null) {
-            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this);
+            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this,R.style.bt_dialog);
             mCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mCategoryDialog.setContentView(R.layout.dialog_common_list_select);
             mCategoryDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
