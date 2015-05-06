@@ -49,6 +49,8 @@ public class CornerTabs extends View {
     private float mMostUsedTargetAngle = 30;
     private float mSwitcherTargetAngle = 0;
 
+    private int mSnapDuration = 100;
+
     public CornerTabs(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
@@ -61,6 +63,27 @@ public class CornerTabs extends View {
                     @Override
                     public boolean onSingleTapUp(MotionEvent e) {
                         // mContainer.onCenterTabClick(e);
+                        float x = e.getX();
+                        float y = e.getY();
+
+                        double offset2CfC = (double) Math.sqrt(Math.pow((x - 0), 2)
+                                + Math.pow((y - mTotalHeight), 2));
+
+                        if (offset2CfC <= mCornerWidth) {
+                            // TODO
+                            LeoLog.e(TAG, "onCorner click");
+                            onConerClick();
+                        } else if (offset2CfC <= mTotalWidth) {
+                            double d = Math.atan2(mTotalHeight - y, x) * 180 / Math.PI;
+                            LeoLog.e(TAG, "d = " + d);
+                            if (d < 30) {
+                                mContainer.snapToSwitcher();
+                            } else if (d < 60) {
+                                mContainer.snapToMostUsed();
+                            } else {
+                                mContainer.snapToDynamic();
+                            }
+                        }
                         return super.onSingleTapUp(e);
                     }
 
@@ -92,6 +115,11 @@ public class CornerTabs extends View {
 
         mCornerWidth = mCorner.getIntrinsicWidth();
         mCornerHeight = mCorner.getIntrinsicHeight();
+    }
+
+    private void onConerClick() {
+        // TODO Auto-generated method stub
+
     }
 
     @Override
@@ -224,7 +252,7 @@ public class CornerTabs extends View {
         } else {
             va = ValueAnimator.ofFloat(-30, mSwitcherTargetAngle);
         }
-        va.setDuration(300);
+        va.setDuration(mSnapDuration);
         va.setInterpolator(new DecelerateInterpolator());
         va.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -244,7 +272,7 @@ public class CornerTabs extends View {
                 invalidate();
             }
         });
-
+        va.start();
     }
 
     public void snapSwitcher2Dynamic() {
@@ -254,7 +282,7 @@ public class CornerTabs extends View {
         } else {
             va = ValueAnimator.ofFloat(90, mDymicTargetAngle);
         }
-        va.setDuration(300);
+        va.setDuration(mSnapDuration);
         va.setInterpolator(new DecelerateInterpolator());
         va.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -274,6 +302,7 @@ public class CornerTabs extends View {
                 invalidate();
             }
         });
+        va.start();
     }
 
     public void setAlpha(int mAlpha) {

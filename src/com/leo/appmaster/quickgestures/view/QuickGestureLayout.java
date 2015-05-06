@@ -3,7 +3,10 @@ package com.leo.appmaster.quickgestures.view;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
+import com.leo.appmaster.utils.LeoLog;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
@@ -168,7 +171,7 @@ public class QuickGestureLayout extends ViewGroup {
             setPivotX(mTotalWidth);
             setPivotY(mTotalHeight);
         }
-        
+
         mContainer = (QuickGestureContainer) getParent();
     }
 
@@ -196,6 +199,57 @@ public class QuickGestureLayout extends ViewGroup {
             }
         }
         super.addView(child);
+    }
+
+    private void animateItem(View view) {
+
+        AnimatorSet as = new AnimatorSet();
+        as.setDuration(300);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f,
+                0.8f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f,
+                0.8f, 1f);
+        as.playTogether(scaleX, scaleY);
+        as.start();
+    }
+
+    public void checkItemClick(float x, float y) {
+        // TODO
+        View hitView = null, tempView = null;
+        for (int i = 0; i < getChildCount(); i++) {
+            tempView = getChildAt(i);
+            if (x > tempView.getLeft() && x < tempView.getRight()
+                    && y > tempView.getTop() && y < tempView.getBottom()) {
+                hitView = tempView;
+                LeoLog.d("checkItemClick", "hitView");
+                break;
+            }
+        }
+
+        if (hitView != null) {
+            animateItem(hitView);
+            // TODO
+        }
+    }
+
+    public void checkItemLongClick(float x, float y) {
+        // TODO
+        View hitView = null, tempView = null;
+        for (int i = 0; i < getChildCount(); i++) {
+            tempView = getChildAt(i);
+            if (x > tempView.getLeft() && x < tempView.getRight()
+                    && y > tempView.getTop() && y < tempView.getBottom()) {
+                hitView = tempView;
+                LeoLog.d("checkItemLongClick", "hitView");
+                break;
+            }
+        }
+
+        if (hitView != null) {
+//            animateItem(hitView);
+            // TODO
+            hitView.startDrag(null, new DragShadowBuilder(hitView), hitView, 0);
+        }
     }
 
     public void setCurrentRotateDegree(float degree) {
@@ -226,5 +280,4 @@ public class QuickGestureLayout extends ViewGroup {
             super(width, height);
         }
     }
-
 }

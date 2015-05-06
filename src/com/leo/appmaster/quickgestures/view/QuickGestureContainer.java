@@ -8,6 +8,8 @@ import com.leo.appmaster.utils.LeoLog;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
@@ -44,7 +46,7 @@ public class QuickGestureContainer extends FrameLayout {
     private float mRotateDegree;
 
     private boolean mSnaping;
-    private int mFullRotateDuration = 500;
+    private int mFullRotateDuration = 300;
 
     public QuickGestureContainer(Context context) {
         super(context);
@@ -61,6 +63,15 @@ public class QuickGestureContainer extends FrameLayout {
                     @Override
                     public boolean onSingleTapUp(MotionEvent e) {
                         LeoLog.d(TAG, "onSingleTapUp");
+                        QuickGestureLayout gestureLayout = null;
+                        if (mCurrentGestureType == GType.DymicLayout) {
+                            gestureLayout = mDymicLayout;
+                        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+                            gestureLayout = mMostUsedLayout;
+                        } else {
+                            gestureLayout = mSwitcherLayout;
+                        }
+                        gestureLayout.checkItemClick(e.getX(), e.getY());
                         return super.onSingleTapUp(e);
                     }
 
@@ -92,6 +103,15 @@ public class QuickGestureContainer extends FrameLayout {
                     @Override
                     public void onLongPress(MotionEvent e) {
                         LeoLog.d(TAG, "onLongPress");
+                        QuickGestureLayout gestureLayout = null;
+                        if (mCurrentGestureType == GType.DymicLayout) {
+                            gestureLayout = mDymicLayout;
+                        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+                            gestureLayout = mMostUsedLayout;
+                        } else {
+                            gestureLayout = mSwitcherLayout;
+                        }
+                        gestureLayout.checkItemLongClick(e.getX(), e.getY());
                         super.onLongPress(e);
                     }
                 });
@@ -169,7 +189,6 @@ public class QuickGestureContainer extends FrameLayout {
     }
 
     private void onTouchDown() {
-        LeoLog.d(TAG, "onTouchDown mRotateDegree = " + mRotateDegree);
         if (mCurrentGestureType == GType.DymicLayout) {
             mMostUsedLayout.setCurrentRotateDegree(90);
             mSwitcherLayout.setCurrentRotateDegree(-90);
@@ -182,7 +201,6 @@ public class QuickGestureContainer extends FrameLayout {
             mDymicLayout.setCurrentRotateDegree(90);
             mMostUsedLayout.setCurrentRotateDegree(-90);
             mSwitcherLayout.setCurrentRotateDegree(0);
-
         }
         mDymicLayout.setVisibility(View.VISIBLE);
         mMostUsedLayout.setVisibility(View.VISIBLE);
@@ -289,7 +307,7 @@ public class QuickGestureContainer extends FrameLayout {
             return;
 
         float duration = Math.abs(90 - mRotateDegree) / 90 * mFullRotateDuration;
-        ValueAnimator va = ValueAnimator.ofFloat(mRotateDegree, mRotateDegree > 0 ? 90 : -90);
+        ValueAnimator va = ValueAnimator.ofFloat(mRotateDegree, mRotateDegree >= 0 ? 90 : -90);
         va.setDuration((long) duration);
         va.setInterpolator(new DecelerateInterpolator());
         va.addListener(new AnimatorListenerAdapter() {
@@ -429,6 +447,26 @@ public class QuickGestureContainer extends FrameLayout {
         return mRotateDegree;
     }
 
+    public void showOpenAnimation() {
+        setPivotX(0);
+        setPivotY(mSelfHeight);
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(600);
+        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f, 1.05f, 1.0f);
+        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f, 1.05f, 1.0f);
+        set.playTogether(animationx, animationy);
+    }
+
+    public void showCloseAnimation() {
+        setPivotX(0);
+        setPivotY(mSelfHeight);
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(600);
+        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 1.0f, 1.05f, 0.0f);
+        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 1.0f, 1.05f, 0.0f);
+        set.playTogether(animationx, animationy);
+    }
+
     public void hideGestureLayout(GType type) {
         if (type == GType.DymicLayout) {
             mDymicLayout.setVisibility(View.GONE);
@@ -446,6 +484,37 @@ public class QuickGestureContainer extends FrameLayout {
             mMostUsedLayout.setVisibility(View.VISIBLE);
         } else if (type == GType.SwitcherLayout) {
             mSwitcherLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void snapToSwitcher() {
+        if (mCurrentGestureType == GType.DymicLayout) {
+            onTouchDown();
+            snapToPrevious();
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            onTouchDown();
+            snapToNext();
+        }
+    }
+
+    public void snapToMostUsed() {
+        if (mCurrentGestureType == GType.DymicLayout) {
+            onTouchDown();
+            snapToNext();
+        } else if (mCurrentGestureType == GType.SwitcherLayout) {
+            onTouchDown();
+            snapToPrevious();
+        }
+
+    }
+
+    public void snapToDynamic() {
+        if (mCurrentGestureType == GType.MostUsedLayout) {
+            onTouchDown();
+            snapToPrevious();
+        } else if (mCurrentGestureType == GType.SwitcherLayout) {
+            onTouchDown();
+            snapToNext();
         }
     }
 
