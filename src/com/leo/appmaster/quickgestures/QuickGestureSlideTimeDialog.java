@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -33,11 +35,11 @@ import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
     private Context mContext;
     private TextView sure_button, title, mFreeDisturbTv;
-    private int progressInt;
     private ListView mRadioListView;
     private OnDiaogClickListener mListener;
     private LinearLayout mFreeDisturbAppHs;
     private CheckBox mJustHomeCb, mAppHomeCb;
+    private ImageView mAddFreeDisturbAppIv;
 
     public interface OnDiaogClickListener {
         public void onClick(int progress);
@@ -58,10 +60,11 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
         sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
         mRadioListView = (ListView) dlgView.findViewById(R.id.radioLV);
         mFreeDisturbAppHs = (LinearLayout) dlgView.findViewById(R.id.slide_time_app_hs);
-        mFreeDisturbTv = (TextView) dlgView.findViewById(R.id.free_disturb_tv);
+        mFreeDisturbTv = (TextView) dlgView.findViewById(R.id.free_disturbTV);
         mJustHomeCb = (CheckBox) dlgView.findViewById(R.id.dialog_radio_slide_time_just_home_cb);
         mAppHomeCb = (CheckBox) dlgView
                 .findViewById(R.id.dialog_radio_slide_time_all_app_and_home_cb);
+        mAddFreeDisturbAppIv = (ImageView) dlgView.findViewById(R.id.add_free_disturb_appIV);
         mJustHomeCb.setSelected(AppMasterPreference.getInstance(mContext).getSlideTimeJustHome());
         mAppHomeCb.setSelected(AppMasterPreference.getInstance(mContext)
                 .getSlideTimeAllAppAndHome());
@@ -108,6 +111,10 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
         setCanceledOnTouchOutside(true);
     }
 
+    public void setAddFreeDisturbOnClickListener(android.view.View.OnClickListener listener) {
+        mAddFreeDisturbAppIv.setOnClickListener(listener);
+    }
+
     public void setOnClickListener(OnDiaogClickListener listener) {
         mListener = listener;
     }
@@ -150,7 +157,9 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
     }
 
     public void setFreeDisturbText(int textId) {
-        mFreeDisturbTv.setText(textId);
+        if (textId > 0) {
+            mFreeDisturbTv.setText(textId);
+        }
     }
 
     public void setFreeDisturbApp(List<Integer> apps) {
@@ -163,5 +172,21 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
                 }
             }
         }
+        int count = mFreeDisturbAppHs.getChildCount();
+        // for (int i = 0; i < count; i++) {
+        // View view = mFreeDisturbAppHs.getChildAt(i);
+        // view.setOnLongClickListener(new OnLongClickListener() {
+        //
+        // @Override
+        // public boolean onLongClick(View arg0) {
+        // Toast.makeText(mContext, "进入编辑模式", Toast.LENGTH_SHORT).show();
+        // return false;
+        // }
+        // });
+        // }
     }
+
+    // public void setFreeDisturbAppOnItemListener(){
+    // mFreeDisturbAppHs
+    // }
 }
