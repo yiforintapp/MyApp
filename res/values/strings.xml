@@ -655,6 +655,7 @@
     <string name="pg_appmanager_quick_gesture_slide_time_just_home_text">仅桌面</string>
     <string name="pg_appmanager_quick_gesture_slide_time_home_and_all_app_text">桌面和所有应用</string>
     <string name="pg_appmanager_quick_gesture_slide_time_no_disturb_text">免干扰应用</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_toast_text">请至少选择一个区域</string>
     <string name="dynamic">动态</string>
     <string name="quick_switcher">快捷开关</string>
     <string name="most_used">最常使用</string>

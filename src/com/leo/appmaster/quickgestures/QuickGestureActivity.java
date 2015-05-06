@@ -4,16 +4,20 @@ package com.leo.appmaster.quickgestures;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -21,7 +25,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -30,7 +34,6 @@ import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.quickgestures.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
 
 /**
  * QuickGestureActivity
@@ -253,6 +256,36 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 Log.e("##########", "1:" + arg2);
             } else if (arg2 == 2) {
                 Log.e("##########", "2:" + arg2);
+                // boolean flag = QuickGestureWindowManager.isMIUI();
+                // boolean isOpenWindow =
+                // BuildProperties.isMiuiFloatWindowOpAllowed(QuickGestureActivity.this);
+                // Log.e("##########", "flag:" + flag + "isOpenWindow:" +
+                // isOpenWindow);
+                // if (flag && !isOpenWindow) {
+                // Intent intent = new
+                // Intent("miui.intent.action.APP_PERM_EDITOR");
+                // intent.setClassName("com.miui.securitycenter",
+                // "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+                // intent.putExtra("extra_pkgname",
+                // QuickGestureActivity.this.getPackageName());
+                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // try {
+                // startActivity(intent);
+                // } catch (Exception e) {
+                // e.printStackTrace();
+                // Intent intent1 = new Intent(
+                // Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                // Uri uri = Uri.fromParts("package",
+                // QuickGestureActivity.this.getPackageName(), null);
+                // intent.setData(uri);
+                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // try {
+                // QuickGestureActivity.this.startActivity(intent);
+                // } catch (Exception e1) {
+                // e1.printStackTrace();
+                // }
+                // }
+                // }
             } else if (arg2 == 3) {
                 mEditQuickAreaFlag = true;
                 showSettingDialog(true);
@@ -336,17 +369,26 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 mEditQuickAreaFlag = false;
                 mAlarmDialogFlag = false;
                 // 保存设置的值
-                mPre.setDialogRadioLeftBottom(mLeftBottom);
-                mPre.setDialogRadioRightBottom(mRightBottm);
-                mPre.setDialogRadioLeftCenter(mLeftCenter);
-                mPre.setDialogRadioRightCenter(mRightCenter);
-                mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog.getSeekBarProgressValue());
-                LeoEventBus
-                        .getDefaultBus()
-                        .post(new PrivacyDeletEditEvent(
-                                QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
-                QuickGestureWindowManager.updateFloatWindowBackgroudColor(mEditQuickAreaFlag);
-                QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
+                if (mLeftBottom || mRightBottm || mLeftCenter || mRightCenter) {
+                    mPre.setDialogRadioLeftBottom(mLeftBottom);
+                    mPre.setDialogRadioRightBottom(mRightBottm);
+                    mPre.setDialogRadioLeftCenter(mLeftCenter);
+                    mPre.setDialogRadioRightCenter(mRightCenter);
+                    mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog.getSeekBarProgressValue());
+                    QuickGestureWindowManager.updateFloatWindowBackgroudColor(mEditQuickAreaFlag);
+                    QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
+                    if (mAlarmDialog != null) {
+                        mAlarmDialog.dismiss();
+                    }
+                } else {
+                    Toast.makeText(
+                            QuickGestureActivity.this,
+                            QuickGestureActivity.this
+                                    .getResources()
+                                    .getString(
+                                            R.string.pg_appmanager_quick_gesture_option_dialog_radio_toast_text),
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
         mAlarmDialog.setCancelable(false);
@@ -405,9 +447,17 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         if (flag == 0) {
                             mLeftBottom = arg1;
                             mAreaView.setIsShowLeftBottom(arg1);
+                            LeoEventBus
+                                    .getDefaultBus()
+                                    .post(new PrivacyDeletEditEvent(
+                                            QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 1) {
                             mRightBottm = arg1;
                             mAreaView.setIsShowRightBottom(arg1);
+                            LeoEventBus
+                                    .getDefaultBus()
+                                    .post(new PrivacyDeletEditEvent(
+                                            QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 2) {
                             mLeftCenter = arg1;
                             mAreaView.setIsShowLeftCenter(arg1);
@@ -433,8 +483,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         if (mSlideTimeDialog == null) {
             mSlideTimeDialog = new QuickGestureSlideTimeDialog(this);
         }
+        mSlideTimeDialog.setFreeDisturbVisibility(true);
+        mSlideTimeDialog
+                .setFreeDisturbText(R.string.pg_appmanager_quick_gesture_slide_time_no_disturb_text);
         mSlideTimeDialog.setTitle(R.string.pg_appmanager_quick_gesture_option_able_sliding_time);
-        //构造数据
+        mSlideTimeDialog.setAddFreeDisturbOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Toast.makeText(QuickGestureActivity.this, "添加免打扰应用", Toast.LENGTH_SHORT).show();
+            }
+        });
+        // 构造数据
         List<Integer> data = new ArrayList<Integer>();
         data.add(R.drawable.ic_launcher);
         data.add(R.drawable.ic_launcher);

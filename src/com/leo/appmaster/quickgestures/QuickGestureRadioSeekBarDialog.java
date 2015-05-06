@@ -65,7 +65,7 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
                 } else {
                     seekbar_text_progress.setText(progress + "%");
                 }
-                QuickGestureWindowManager.updateView(mContext, 1, seekBar.getProgress());
+                QuickGestureWindowManager.updateView(mContext, seekBar.getProgress());
             }
 
             @Override
@@ -85,7 +85,6 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
                 if (mListener != null) {
                     mListener.onClick(progressInt);
                 }
-                dialog.dismiss();
             }
         };
 
