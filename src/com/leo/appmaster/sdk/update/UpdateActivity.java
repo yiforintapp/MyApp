@@ -99,7 +99,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 } else if (param == UpdateManager.FORCE_UPDATE) {
                     showForceUpdate();
                     mForce = true;
-                }/* normal or force update */
+                } /*normal or force update */
                 break;
             case IUIHelper.TYPE_CHECK_NO_UPDATE:
                 showNoUpdate();
@@ -123,7 +123,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             case IUIHelper.TYPE_DOWNLOAD_FAILED:
                 showDownloadFailed();
                 break;
-        }
+       }
     }
 
     private void showDownloadFailed() {
@@ -166,7 +166,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         Spanned feature = mManager.getFeature();
         int size = mManager.getSize();
         float fsize = (float) size / 1024 / 1024;
-        setContentView(R.layout.dialog_message);
+        setContentView(R.layout.dialog_message_single_done);
         TextView tvId = (TextView) findViewById(R.id.dlg_title);
         tvId.setText(getString(R.string.update_title));
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
@@ -273,7 +273,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     }
 
     private void showNoUpdate() {
-        setContentView(R.layout.dialog_message);
+        setContentView(R.layout.dialog_message_single_done);
         TextView title = (TextView) findViewById(R.id.dlg_title);
         title.setText(getString(R.string.tips_title));
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
@@ -288,7 +288,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     }
 
     private void showNoNetwork() {
-        setContentView(R.layout.dialog_message);
+        setContentView(R.layout.dialog_message_single_done);
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.network_error_msg));
         TextView tvBtn = (TextView) findViewById(R.id.dlg_bottom_btn);

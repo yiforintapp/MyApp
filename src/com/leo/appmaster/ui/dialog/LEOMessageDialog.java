@@ -74,7 +74,7 @@ public class LEOMessageDialog extends LEOBaseDialog {
     }
 
     private void initUI() {
-        View dlgView = LayoutInflater.from(mContext).inflate(R.layout.dialog_message, null);
+        View dlgView = LayoutInflater.from(mContext).inflate(R.layout.dialog_message_single_done, null);
 
 //        mLeftIcon = (ImageView) dlgView.findViewById(R.id.dlg_left_icon);
 //        mLeftIcon.setVisibility(View.GONE);

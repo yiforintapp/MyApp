@@ -169,7 +169,7 @@
     <dimen name="home_bottom_button_height">84dp</dimen>
     <dimen name="home_bottom_button_text_size">16dp</dimen>
     <dimen name="home_bottom_button_text_margin">12dp</dimen>
-    <dimen name="dlg_horizental_margin">268dp</dimen>
+    <dimen name="dlg_horizental_margin">258dp</dimen>
     <dimen name="dlg_three_button_text_size">14dp</dimen>
     <dimen name="text_icon_margin">13dp</dimen>
     <dimen name="home_lock_count_text_size">66dp</dimen>
