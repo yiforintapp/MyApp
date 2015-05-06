@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -29,6 +32,11 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.LeoLog;
 
+/**
+ * QuickGestureActivity
+ * 
+ * @author run
+ */
 public class QuickGestureActivity extends BaseActivity implements OnItemClickListener,
         OnCheckedChangeListener {
     private ListView mQuickGestureLV;
@@ -37,10 +45,15 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private List<QuickGestureSettingBean> mQuickGestureSettingOption;
     private AppMasterPreference mPre;
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
+    private QuickGestureSlideTimeDialog mSlideTimeDialog;
     private QuickGesturesAreaView mAreaView;
     private TextView second_tv_setting;
     private AppMasterPreference sp_notice_flow;
+    private boolean mEditQuickAreaFlag = false;
+    private boolean mAlarmDialogFlag = false;
+    private boolean mHomePasueFlag = false;
     private boolean mLeftBottom, mRightBottm, mRightCenter, mLeftCenter;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +65,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         fillSettingData();
         mAdapter = new QuickGestureAdapter(this, mQuickGestureSettingOption);
         mQuickGestureLV.setAdapter(mAdapter);
+        LeoEventBus.getDefaultBus().register(this);
     }
 
     private void initUi() {
@@ -60,6 +74,44 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mAreaView = (QuickGesturesAreaView) findViewById(R.id.quick_gesture_area);
         mTitleBar.openBackView();
         mQuickGestureLV.setOnItemClickListener(this);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (!mEditQuickAreaFlag && mAlarmDialogFlag) {
+            QuickGestureWindowManager.updateFloatWindowBackgroudColor(mAlarmDialogFlag);
+            QuickGestureWindowManager.createFloatWindow(mHandler, QuickGestureActivity.this);
+            mEditQuickAreaFlag = true;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mEditQuickAreaFlag == true) {
+            mEditQuickAreaFlag = false;
+            QuickGestureWindowManager.updateFloatWindowBackgroudColor(mEditQuickAreaFlag);
+            QuickGestureWindowManager.createFloatWindow(mHandler, QuickGestureActivity.this);
+            mHomePasueFlag = true;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LeoEventBus.getDefaultBus().unregister(this);
+    }
+
+    public void onEventMainThread(PrivacyDeletEditEvent event) {
+        String flag = event.editModel;
+        if (QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION
+                .equals(flag)) {
+            mQuickGestureSettingOption.clear();
+            fillSettingData();
+            mAdapter.notifyDataSetChanged();
+        }
+
     }
 
     private void fillSettingData() {
@@ -106,22 +158,23 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         private LayoutInflater layoutInflater;
         private Context mContext;
         private int count = 0;
-        private List<QuickGestureSettingBean> mBeans;
+
+        // private List<QuickGestureSettingBean> mBeans;
 
         public QuickGestureAdapter(Context context, List<QuickGestureSettingBean> beans) {
             layoutInflater = LayoutInflater.from(context);
             mContext = context;
-            mBeans = beans;
+            mQuickGestureSettingOption = beans;
         }
 
         @Override
         public int getCount() {
-            return mBeans.size();
+            return mQuickGestureSettingOption.size();
         }
 
         @Override
         public Object getItem(int arg0) {
-            return mBeans.get(arg0);
+            return mQuickGestureSettingOption.get(arg0);
         }
 
         @Override
@@ -132,7 +185,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         class ViewHolder {
             ImageView imageView;
             CheckBox switchView;
-            TextView title;
+            TextView title, content;
         }
 
         @Override
@@ -144,12 +197,13 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 vh.imageView = (ImageView) convertView.findViewById(R.id.quick_gesture_option_IV);
                 vh.switchView = (CheckBox) convertView.findViewById(R.id.quick_gesture_check);
                 vh.title = (TextView) convertView.findViewById(R.id.quick_gesture_item_nameTV);
+                vh.content = (TextView) convertView.findViewById(R.id.quick_gesture_item_cotentTV);
                 convertView.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
             vh.switchView.setTag(position);
-            QuickGestureSettingBean bean = mBeans.get(position);
+            QuickGestureSettingBean bean = mQuickGestureSettingOption.get(position);
             vh.title.setText(bean.getName());
             if (position == 0 || position == 4
                     || position == 5
@@ -169,12 +223,24 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             }
             if (position == 1) {
                 convertView.setBackgroundColor(QuickGestureActivity.this.getResources().getColor(
-                        R.color.quick_gesture_switch_setting));
+                        R.color.quick_gesture_switch_setting_show_color));
             } else {
                 convertView.setBackgroundColor(QuickGestureActivity.this.getResources().getColor(
                         R.color.white));
             }
-
+            if (position == 7) {
+                vh.content.setVisibility(View.VISIBLE);
+                if (mPre.getSlideTimeJustHome()) {
+                    vh.content
+                            .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
+                }
+                if (mPre.getSlideTimeAllAppAndHome()) {
+                    vh.content
+                            .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
+                }
+            } else {
+                vh.content.setVisibility(View.GONE);
+            }
             vh.switchView.setOnCheckedChangeListener(QuickGestureActivity.this);
             return convertView;
         }
@@ -182,22 +248,31 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        if (arg2 == 1) {
-            Log.e("##########", "1:" + arg2);
-        } else if (arg2 == 2) {
-            Log.e("##########", "2:" + arg2);
-        } else if (arg2 == 3) {
-//            mAreaView.setVisibility(View.VISIBLE);
-            showSettingDialog(true);
-        } else if (arg2 == 7) {
-            Log.e("##########", "7:" + arg2);
+        if (mPre.getSwitchOpenQuickGesture()) {
+            if (arg2 == 1) {
+                Log.e("##########", "1:" + arg2);
+            } else if (arg2 == 2) {
+                Log.e("##########", "2:" + arg2);
+            } else if (arg2 == 3) {
+                mEditQuickAreaFlag = true;
+                showSettingDialog(true);
+            } else if (arg2 == 7) {
+                showSlideShowTimeSettingDialog();
+            }
         }
-
     }
 
     @Override
     public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
         if ((Integer) arg0.getTag() == 0) {
+            if (!arg1) {
+                new FloatWindowService().stopFloatWindow();
+            } else {
+                if (!mPre.getSwitchOpenQuickGesture()) {
+                    Intent intent = new Intent(getApplicationContext(), FloatWindowService.class);
+                    startService(intent);
+                }
+            }
             mPre.setSwitchOpenQuickGesture(arg1);
         } else if ((Integer) arg0.getTag() == 4) {
             mPre.setSwitchOpenNoReadMessageTip(arg1);
@@ -258,7 +333,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
             @Override
             public void onClick(int progress) {
-//                mAreaView.setVisibility(View.GONE);
+                mEditQuickAreaFlag = false;
+                mAlarmDialogFlag = false;
                 // 保存设置的值
                 mPre.setDialogRadioLeftBottom(mLeftBottom);
                 mPre.setDialogRadioRightBottom(mRightBottm);
@@ -269,10 +345,15 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         .getDefaultBus()
                         .post(new PrivacyDeletEditEvent(
                                 QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
+                QuickGestureWindowManager.updateFloatWindowBackgroudColor(mEditQuickAreaFlag);
+                QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
             }
         });
         mAlarmDialog.setCancelable(false);
         mAlarmDialog.show();
+        mAlarmDialogFlag = true;
+        QuickGestureWindowManager.updateFloatWindowBackgroudColor(mEditQuickAreaFlag);
+        QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
     }
 
     // 弹出框的Adapter
@@ -305,7 +386,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         class ViewHolder {
             TextView textView;
             CheckBox checkBox;
-
         }
 
         @Override
@@ -321,7 +401,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
                     @Override
                     public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-                        // Log.e("###################", "选择：" + arg0.getTag());
                         int flag = (Integer) arg0.getTag();
                         if (flag == 0) {
                             mLeftBottom = arg1;
@@ -348,5 +427,25 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             vh.checkBox.setChecked(bean.isCheck);
             return convertView;
         }
+    }
+
+    private void showSlideShowTimeSettingDialog() {
+        if (mSlideTimeDialog == null) {
+            mSlideTimeDialog = new QuickGestureSlideTimeDialog(this);
+        }
+        mSlideTimeDialog.setTitle(R.string.pg_appmanager_quick_gesture_option_able_sliding_time);
+        //构造数据
+        List<Integer> data = new ArrayList<Integer>();
+        data.add(R.drawable.ic_launcher);
+        data.add(R.drawable.ic_launcher);
+        data.add(R.drawable.ic_launcher);
+        data.add(R.drawable.ic_launcher);
+        data.add(R.drawable.ic_launcher);
+        data.add(R.drawable.ic_launcher);
+        data.add(R.drawable.ic_launcher);
+        data.add(R.drawable.ic_launcher);
+        data.add(R.drawable.ic_launcher);
+        mSlideTimeDialog.setFreeDisturbApp(data);
+        mSlideTimeDialog.show();
     }
 }

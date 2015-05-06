@@ -14,7 +14,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
+/**
+ * QuickGesturesAreaView
+ * @author run
+ *
+ */
 public class QuickGesturesAreaView extends ViewGroup {
     public static int viewWidth;
     public static int viewHeight;
@@ -45,61 +49,61 @@ public class QuickGesturesAreaView extends ViewGroup {
     @SuppressLint("ResourceAsColor")
     private void initUI(Context mContext) {
         this.mContext = mContext;
-        setBackgroundResource(R.color.quick_gesture_switch_setting);
+        setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
         setFocusable(true);
         setClickable(true);
     }
 
     @Override
     protected void onLayout(boolean arg0, int arg1, int arg2, int arg3, int arg4) {
-        float leftX = 0;
-        float leftY = 0;
-        int cWidth = 100;
-        int cHeight = 200;
-        WindowManager manager = (WindowManager) mContext
-                .getSystemService(Context.WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        int height = display.getHeight();
-        int width = display.getWidth();
-        // 左边
-        // 左下
-        if (mLeftBottomFlag) {
-            getChildAt(0).layout((int) leftX, (int) height - cHeight - cHeight - cHeight,
-                    (int) cWidth,
-                    (int) height - cHeight - cHeight);
-            getChildAt(1).layout((int) leftX, (int) height - cHeight - cHeight, (int) cWidth,
-                    (int) height - cHeight);
-
-            getChildAt(2).layout((int) leftX, (int) height - cHeight,
-                    (int) cWidth,
-                    (int) height);
-        }
-        // 左中
-        if (mLeftCenterFlag) {
-            getChildAt(1).layout((int) leftX, (int) height - cHeight - cHeight - cHeight,
-                    (int) cWidth,
-                    (int) height - cHeight);
-        }
-        // 右边
-        // 右下
-        if (mRightBottomFlag) {
-            getChildAt(3).layout((int) width - cWidth, (int) height - cHeight - cHeight - cHeight,
-                    (int) width, (int) height - cHeight - cHeight);
-
-            getChildAt(4).layout((int) width - cWidth, (int) height - cHeight - cHeight,
-                    (int) width,
-                    (int) height - cHeight);
-
-            getChildAt(5).layout((int) width - cWidth, (int) height - cHeight, (int) width,
-                    (int) height);
-        }
-        // 右中
-        if (mRightCenterFlag) {
-            getChildAt(4).layout((int) width - cWidth, (int) height - cHeight - cHeight - cHeight,
-                    (int) width,
-                    (int) height - cHeight);
-
-        }
+//        float leftX = 0;
+//        float leftY = 0;
+//        int cWidth = 100;
+//        int cHeight = 200;
+//        WindowManager manager = (WindowManager) mContext
+//                .getSystemService(Context.WINDOW_SERVICE);
+//        Display display = manager.getDefaultDisplay();
+//        int height = display.getHeight();
+//        int width = display.getWidth();
+//        // 左边
+//        // 左下
+//        if (mLeftBottomFlag) {
+//            getChildAt(0).layout((int) leftX, (int) height - cHeight - cHeight - cHeight,
+//                    (int) cWidth,
+//                    (int) height - cHeight - cHeight);
+//            getChildAt(1).layout((int) leftX, (int) height - cHeight - cHeight, (int) cWidth,
+//                    (int) height - cHeight);
+//
+//            getChildAt(2).layout((int) leftX, (int) height - cHeight,
+//                    (int) cWidth,
+//                    (int) height);
+//        }
+//        // 左中
+//        if (mLeftCenterFlag) {
+//            getChildAt(1).layout((int) leftX, (int) height - cHeight - cHeight - cHeight,
+//                    (int) cWidth,
+//                    (int) height - cHeight);
+//        }
+//        // 右边
+//        // 右下
+//        if (mRightBottomFlag) {
+//            getChildAt(3).layout((int) width - cWidth, (int) height - cHeight - cHeight - cHeight,
+//                    (int) width, (int) height - cHeight - cHeight);
+//
+//            getChildAt(4).layout((int) width - cWidth, (int) height - cHeight - cHeight,
+//                    (int) width,
+//                    (int) height - cHeight);
+//
+//            getChildAt(5).layout((int) width - cWidth, (int) height - cHeight, (int) width,
+//                    (int) height);
+//        }
+//        // 右中
+//        if (mRightCenterFlag) {
+//            getChildAt(4).layout((int) width - cWidth, (int) height - cHeight - cHeight - cHeight,
+//                    (int) width,
+//                    (int) height - cHeight);
+//
+//        }
 
     }
 
