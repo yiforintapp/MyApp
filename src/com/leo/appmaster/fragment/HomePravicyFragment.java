@@ -3,10 +3,9 @@ package com.leo.appmaster.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.MotionEvent;
+import android.graphics.Color;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -18,7 +17,6 @@ import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacy.PrivacyHelper.Level;
 import com.leo.appmaster.privacy.PrivacyLevelView;
-import com.leo.appmaster.privacy.PrivacySuggestActivity;
 import com.leo.appmaster.privacycontact.LoadSysContactTask;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -37,6 +35,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     private View mHidePicIcon;
     private View mHideVideoIcon;
     private TipTextView mCallLogTv, mMessageTv;
+    private View mProposalView;
     private AppMasterPreference mPreference;
 
     @Override
@@ -46,6 +45,10 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         LoadSysContactTask loadSysContactData = new LoadSysContactTask(mActivity);
         loadSysContactData.execute("home_pravicy_load_contact_date");
         mPreference = AppMasterPreference.getInstance(getActivity());
+        
+        if(mActivity != null) {
+            mProposalView = mActivity.findViewById(R.id.privacy_proposal);
+        }
     }
 
     @Override
@@ -63,6 +66,15 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     public void onStop() {
         super.onStop();
         onScrolling();
+    }
+    
+    @Override
+    public boolean onBackPressed() {
+        if(mProposalView != null && mProposalView.getVisibility() == View.VISIBLE) {
+            mProposalView.setVisibility(View.GONE);
+            return true;
+        }
+        return super.onBackPressed();
     }
 
     public void onEventMainThread(PrivacyLevelChangeEvent event) {
@@ -202,8 +214,12 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                     Toast.makeText(mActivity, R.string.privacy_suggest_perfect_toast,
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    intent = new Intent(getActivity(), PrivacySuggestActivity.class);
-                    startActivity(intent);
+//                    intent = new Intent(getActivity(), PrivacySuggestActivity.class);
+//                    startActivity(intent);
+                    if(mProposalView != null) {
+//                        mProposalView.setBackgroundColor(Color.GREEN);
+//                        mProposalView.setVisibility(View.VISIBLE);
+                    }
                 }
             default:
                 break;

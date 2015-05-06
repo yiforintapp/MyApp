@@ -80,4 +80,11 @@
         android:layout_height="match_parent"
         android:layout="@layout/multi_mode_view_wrapper" />
 
+    <FrameLayout
+        android:id="@+id/privacy_proposal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+    </FrameLayout>
+
 </FrameLayout>
