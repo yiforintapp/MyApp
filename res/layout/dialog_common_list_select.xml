@@ -9,18 +9,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/mode_list_container"
+        android:layout_above="@+id/list_container"
         android:background="@drawable/line" />
 
     <RelativeLayout
-        android:id="@+id/mode_list_container"
+        android:id="@+id/list_container"
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_below="@+id/dlg_title"
         android:layout_centerHorizontal="true" >
 
         <ListView
-            android:id="@+id/mode_list"
+            android:id="@+id/item_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@drawable/line"
@@ -31,7 +31,7 @@
             android:scrollbars="none" />
 
         <TextView
-            android:id="@+id/no_wifi"
+            android:id="@+id/no_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -43,7 +43,7 @@
         android:id="@+id/dlg_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mode_list_container"
+        android:layout_below="@+id/list_container"
         android:gravity="center"
         android:orientation="vertical"
         >

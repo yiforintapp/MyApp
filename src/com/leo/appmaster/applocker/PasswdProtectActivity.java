@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -32,16 +31,12 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.TimeLockEditActivity.Holder;
-import com.leo.appmaster.applocker.TimeLockEditActivity.ModeListAdapter;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.LeoPopMenu;
-import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 public class PasswdProtectActivity extends BaseActivity implements
@@ -53,7 +48,6 @@ public class PasswdProtectActivity extends BaseActivity implements
     private EditText mQuestion, mAnwser;
     private View  mSave;
     private ScrollView mScrollView;
-    private LeoPopMenu mLeoPopMenu;
     private Handler mHandler = new Handler();
     private View mLayoutQues;
     private Dialog mQuesDialog;
@@ -114,32 +108,13 @@ public class PasswdProtectActivity extends BaseActivity implements
         mSpinnerQuestions.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  if (mLeoPopMenu == null) {
-                    mLeoPopMenu = new LeoPopMenu();
-                    mLeoPopMenu.setPopMenuItems(PasswdProtectActivity.this,mCategories);
-                    mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view,
-                                int position, long id) {
-                            mQuestion.setText(mCategories.get(position));
-                            mQuestion.selectAll();
-                            mLeoPopMenu.dismissSnapshotList();
-                        }
-                    });
-                }
-                LayoutStyles styles = new LayoutStyles();
-                styles.width = LayoutParams.MATCH_PARENT;
-                styles.height = LayoutParams.WRAP_CONTENT;
-                styles.animation = R.style.PopupListAnimUpDown;
-                mLeoPopMenu
-                        .showPopMenu(PasswdProtectActivity.this, mSpinnerQuestions, styles, null);*/
                 if (mQuesDialog == null) {
                     mQuesDialog = new LEOBaseDialog(PasswdProtectActivity.this);
                     mQuesDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    mQuesDialog.setContentView(R.layout.dialog_mode_list_select);
-                    mQuesDialog.findViewById(R.id.no_wifi).setVisibility(View.GONE);
+                    mQuesDialog.setContentView(R.layout.dialog_common_list_select);
+                    mQuesDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
                 }
-                mQuesList = (ListView) mQuesDialog.findViewById(R.id.mode_list);
+                mQuesList = (ListView) mQuesDialog.findViewById(R.id.item_list);
                 mQuesList.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position,
