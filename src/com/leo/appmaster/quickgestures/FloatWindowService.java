@@ -87,7 +87,34 @@ public class FloatWindowService extends Service {
         String flag = event.editModel;
         if (QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
-            QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
+            // QuickGestureWindowManager.createFloatWindow(mHandler,
+            // getApplicationContext());
+            // 左
+            if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
+                QuickGestureWindowManager.removeSwipWindow(this, 1);
+                QuickGestureWindowManager.removeSwipWindow(this, 2);
+                QuickGestureWindowManager.removeSwipWindow(this, 3);
+            } else {
+                QuickGestureWindowManager
+                        .createFloatLeftBottomWindow(this);
+                QuickGestureWindowManager
+                        .createFloatLeftCenterWindow(this);
+                QuickGestureWindowManager
+                        .createFloatLeftTopWindow(this);
+            }
+            // 右
+            if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
+                QuickGestureWindowManager.removeSwipWindow(this, -1);
+                QuickGestureWindowManager.removeSwipWindow(this, -2);
+                QuickGestureWindowManager.removeSwipWindow(this, -3);
+            } else {
+                QuickGestureWindowManager
+                        .createFloatRightBottomWindow(this);
+                QuickGestureWindowManager
+                        .createFloatRightCenterWindow(this);
+                QuickGestureWindowManager
+                        .createFloatRightTopWindow(this);
+            }
         }
 
     }

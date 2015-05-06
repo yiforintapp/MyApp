@@ -1392,7 +1392,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getDialogRadioLeftBottom() {
-        return mPref.getBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM, false);
+        return mPref.getBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM, true);
     }
 
     public void setDialogRadioRightBottom(boolean flag) {
@@ -1401,7 +1401,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getDialogRadioRightBottom() {
-        return mPref.getBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM, false);
+        return mPref.getBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM, true);
     }
 
     public void setDialogRadioLeftCenter(boolean flag) {

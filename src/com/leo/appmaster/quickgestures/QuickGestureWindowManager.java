@@ -1,21 +1,26 @@
 
 package com.leo.appmaster.quickgestures;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
+import java.io.IOException;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
 
 /**
  * QuickGestureWindowManager
@@ -467,7 +472,7 @@ public class QuickGestureWindowManager {
         }
     }
 
-    public static void updateView(Context context, int flag, int value) {
+    public static void updateView(Context context, int value) {
         WindowManager windowManager = getWindowManager(context);
         WindowManager manager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
@@ -475,44 +480,53 @@ public class QuickGestureWindowManager {
         int height = display.getHeight();
         int width = display.getWidth();
         // 左下
-        mLeftBottomParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
-        mLeftBottomParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
-        mLeftBottomParams.x = -(width / 2);
-        mLeftBottomParams.y = (height / 2) - value;
+        if (mLeftBottomParams != null) {
+            mLeftBottomParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
+            mLeftBottomParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
+            mLeftBottomParams.x = -(width / 2);
+            mLeftBottomParams.y = (height / 2) - value;
+        }
         // 左中
-        mLeftCenterParams.x = (int) -(width / 2);
-        mLeftCenterParams.y = (int) ((height / 2)
-                - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
-        mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
-        mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+        if (mLeftCenterParams != null) {
+            mLeftCenterParams.x = (int) -(width / 2);
+            mLeftCenterParams.y = (int) ((height / 2)
+                    - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
+            mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
+            mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+        }
         // 左上
-
-        mLeftTopParams.x = -(width / 2);
-        mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2) + mLeftBottomParams.height + mLeftCenterParams.height))
-                - value;
-        mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
-        mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
+        if (mLeftTopParams != null) {
+            mLeftTopParams.x = -(width / 2);
+            mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2)
+                    + mLeftBottomParams.height + mLeftCenterParams.height))
+                    - value;
+            mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
+            mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
+        }
         // 右下
-        mRightBottomParams.width = (int) ((mRightBottomWidth / 2) + (value / 2)) * 2;
-        mRightBottomParams.height = (int) ((mRightBottomHeight / 2) + (value)) * 2;
-        mRightBottomParams.x = +(width / 2);
-        mRightBottomParams.y = (height / 2) - value;
-        Log.e("##############", "X:" + (width / 2) + "Y:" + ((height / 2) - value));
-
+        if (mRightBottomParams != null) {
+            mRightBottomParams.width = (int) ((mRightBottomWidth / 2) + (value / 2)) * 2;
+            mRightBottomParams.height = (int) ((mRightBottomHeight / 2) + (value)) * 2;
+            mRightBottomParams.x = +(width / 2);
+            mRightBottomParams.y = (height / 2) - value;
+        }
         // 右中
-        mRightCenterParams.x = (int) (width / 2);
-        mRightCenterParams.y = (int) ((height / 2)
-                - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
-        mRightCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
-        mRightCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
-
+        if (mRightCenterParams != null) {
+            mRightCenterParams.x = (int) (width / 2);
+            mRightCenterParams.y = (int) ((height / 2)
+                    - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
+            mRightCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
+            mRightCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
+        }
         // 右上
-        mRightTopParams.x = (width / 2);
-        mRightTopParams.y = (int) ((height / 2) - ((mRightTopHeight / 2)
-                + mRightBottomParams.height + mRightCenterParams.height))
-                - value;
-        mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
-        mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
+        if (mRightTopParams != null) {
+            mRightTopParams.x = (width / 2);
+            mRightTopParams.y = (int) ((height / 2) - ((mRightTopHeight / 2)
+                    + mRightBottomParams.height + mRightCenterParams.height))
+                    - value;
+            mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
+            mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
+        }
         // 更新左边
         if (mLeftBottomView != null) {
             mWindowManager.updateViewLayout(mLeftBottomView, mLeftBottomParams);
@@ -649,7 +663,8 @@ public class QuickGestureWindowManager {
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
             }
             if (mLeftTopView != null) {
-                mLeftTopView.setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+                mLeftTopView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
             }
             if (mRightBottomView != null) {
                 mRightBottomView
@@ -665,4 +680,5 @@ public class QuickGestureWindowManager {
             }
         }
     }
+
 }
