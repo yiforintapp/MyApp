@@ -41,6 +41,7 @@
         <attr name="strokeWidth" />
         <!-- View background -->
         <attr name="android:background" />
+        
     </declare-styleable>
     <declare-styleable name="LinePageIndicator">
 

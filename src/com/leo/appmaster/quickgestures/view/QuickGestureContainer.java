@@ -308,6 +308,7 @@ public class QuickGestureContainer extends FrameLayout {
                     mSwitcherLayout.setVisibility(View.VISIBLE);
                     mDymicLayout.setVisibility(View.GONE);
                     mMostUsedLayout.setVisibility(View.GONE);
+                    mCornerTabs.snapDynamic2Switcher();
                 } else if (mCurrentGestureType == GType.MostUsedLayout) {
                     mCurrentGestureType = GType.DymicLayout;
                     mDymicLayout.setVisibility(View.VISIBLE);
@@ -367,6 +368,7 @@ public class QuickGestureContainer extends FrameLayout {
                     mDymicLayout.setVisibility(View.VISIBLE);
                     mMostUsedLayout.setVisibility(View.GONE);
                     mSwitcherLayout.setVisibility(View.GONE);
+                    mCornerTabs.snapSwitcher2Dynamic();
                 }
                 mRotateDegree = 0;
             }

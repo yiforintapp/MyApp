@@ -119,7 +119,7 @@
     <dimen name="home_lock_mode_name_size">10dp</dimen>
     <dimen name="home_lock_text_padding">6dp</dimen>
     
-    <dimen name="pager_margin_top">34dp</dimen>
+    <dimen name="pager_margin_top">31dp</dimen>
 
     
             <!-- guide pages begin -->

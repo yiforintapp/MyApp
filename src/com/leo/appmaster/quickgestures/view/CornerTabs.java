@@ -7,6 +7,10 @@ import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -21,6 +25,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 public class CornerTabs extends View {
     private static final String TAG = "CornerTabs";
@@ -42,7 +47,7 @@ public class CornerTabs extends View {
 
     private float mDymicTargetAngle = 58;
     private float mMostUsedTargetAngle = 30;
-    private float mSwitcherTargetAngle = -2;
+    private float mSwitcherTargetAngle = 0;
 
     public CornerTabs(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -135,7 +140,7 @@ public class CornerTabs extends View {
                 mCoverAngle = mSwitcherTargetAngle + degree;
             }
         }
-        
+
         LeoLog.e(TAG, "mCoverAngle = " + mCoverAngle);
 
         invalidate();
@@ -210,6 +215,65 @@ public class CornerTabs extends View {
                 mTextPaint);
 
         super.onDraw(canvas);
+    }
+
+    public void snapDynamic2Switcher() {
+        ValueAnimator va;
+        if (mOrientation == Orientation.Left) {
+            va = ValueAnimator.ofFloat(30, mSwitcherTargetAngle);
+        } else {
+            va = ValueAnimator.ofFloat(-30, mSwitcherTargetAngle);
+        }
+        va.setDuration(300);
+        va.setInterpolator(new DecelerateInterpolator());
+        va.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+        });
+        va.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mCoverAngle = (Float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+
+    }
+
+    public void snapSwitcher2Dynamic() {
+        ValueAnimator va;
+        if (mOrientation == Orientation.Left) {
+            va = ValueAnimator.ofFloat(-90, -mDymicTargetAngle);
+        } else {
+            va = ValueAnimator.ofFloat(90, mDymicTargetAngle);
+        }
+        va.setDuration(300);
+        va.setInterpolator(new DecelerateInterpolator());
+        va.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+        });
+        va.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mCoverAngle = (Float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
     }
 
     public void setAlpha(int mAlpha) {
