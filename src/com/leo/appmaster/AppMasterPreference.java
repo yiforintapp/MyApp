@@ -156,6 +156,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_CENTER = "dialog_radio_setting_left_center";
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_CENTER = "dialog_radio_setting_right_center";
     public static final String PREF_QUICK_GESTURE_DIALOG_SEEKBAR_PROGRESS_VALUE = "dialog_seekbar_progress_value";
+    public static final String PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_JUST_HOME = "quick_gesture_dialog_slide_time_setting_just_home";
+    public static final String PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_ALL_APP_AND_HOME = "quick_gesture_dialog_slide_time_setting_all_app_and_home";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1426,5 +1428,23 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getQuickGestureDialogSeekBarValue() {
         return mPref.getInt(PREF_QUICK_GESTURE_DIALOG_SEEKBAR_PROGRESS_VALUE, -1);
+    }
+
+    public void setSlideTimeJustHome(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_JUST_HOME, flag).commit();
+    }
+
+    public boolean getSlideTimeJustHome() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_JUST_HOME, false);
+    }
+
+    public void setSlideTimeAllAppAndHome(boolean flag) {
+        mPref.edit()
+                .putBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_ALL_APP_AND_HOME, flag).commit();
+    }
+
+    public boolean getSlideTimeAllAppAndHome() {
+        return mPref
+                .getBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_ALL_APP_AND_HOME, true);
     }
 }

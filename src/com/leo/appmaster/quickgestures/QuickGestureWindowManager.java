@@ -24,6 +24,7 @@ import android.widget.Toast;
  */
 public class QuickGestureWindowManager {
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_finish_notification";
+    public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_slide_time_setting_finish_notification";
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView;
     private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView;
     private static LayoutParams mLeftBottomParams, mLeftCenterParams, mLeftTopParams;

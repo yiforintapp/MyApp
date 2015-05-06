@@ -43,7 +43,7 @@
             android:layout_marginTop="15dp" >
 
             <SeekBar
-                android:id="@+id/mSeekBar"
+                android:id="@+id/qucik_seekBar"
                 style="@style/Widget.SeekBar.Normal"
                 android:layout_width="@dimen/app_manager_hotactivity_list_item_text_des_width"
                 android:layout_height="wrap_content"

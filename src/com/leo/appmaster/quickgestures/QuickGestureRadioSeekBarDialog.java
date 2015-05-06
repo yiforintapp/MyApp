@@ -53,7 +53,7 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         // progressInt = sp_notice_flow.getFlowSettingBar();
         seekbar_text.setText(resources.getString(R.string.flow_settting_dialog_remain));
         // seekbar_text_progress.setText(progressInt + "%");
-        mSeekBar = (SeekBar) dlgView.findViewById(R.id.mSeekBar);
+        mSeekBar = (SeekBar) dlgView.findViewById(R.id.qucik_seekBar);
         // mSeekBar.setProgress(progressInt);
         mRadioListView = (ListView) dlgView.findViewById(R.id.radioLV);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -84,7 +84,6 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
             public void onClick(DialogInterface dialog, int arg1) {
                 if (mListener != null) {
                     mListener.onClick(progressInt);
-                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "freechange");
                 }
                 dialog.dismiss();
             }

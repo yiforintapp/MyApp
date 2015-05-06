@@ -45,15 +45,14 @@
                     android:textSize="16dp" />
 
                 <TextView
-                    android:id="@+id/message_item_numberTV"
+                    android:id="@+id/quick_gesture_item_cotentTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="理奥网络"
-                    android:textColor="#DFDDDD"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:textColor="#DFDDDD" />
             </LinearLayout>
 
             <CheckBox
