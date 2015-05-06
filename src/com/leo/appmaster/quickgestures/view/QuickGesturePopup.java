@@ -15,7 +15,7 @@ import android.widget.ImageView;
 
 public class QuickGesturePopup extends Activity {
 
-    QuickGestureLayout qgLayout1, qgLayout2;
+    QuickGestureLayout mDymixLayout, mMostUsedLayout, mSwitcherLayout;
     private ImageView iv0;
     private ImageView iv1;
     private ImageView iv2;
@@ -28,132 +28,187 @@ public class QuickGesturePopup extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture);
-        qgLayout1 = (QuickGestureLayout) findViewById(R.id.qg_layout1);
-        qgLayout2 = (QuickGestureLayout) findViewById(R.id.qg_layout2);
-
+        mDymixLayout = (QuickGestureLayout) findViewById(R.id.qg_dymic_layout);
+        mMostUsedLayout = (QuickGestureLayout) findViewById(R.id.qg_mostused_layout);
+        mSwitcherLayout = (QuickGestureLayout) findViewById(R.id.qg_switcher_layout);
         fillQg1();
-//        fillQg2();
+        fillQg2();
+        fillQg3();
     }
 
     private void fillQg1() {
-        LayoutParams params = null;
-        iv0 = new ImageView(this);
-        iv0.setImageResource(R.drawable.add_icon);
-        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.position = 0;
-        iv0.setLayoutParams(params);
-        qgLayout1.addView(iv0);
-
-        iv1 = new ImageView(this);
-        iv1.setImageResource(R.drawable.app_done_bnt);
-        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.position = 1;
-        iv1.setLayoutParams(params);
-        qgLayout1.addView(iv1);
-
-        iv2 = new ImageView(this);
-        iv2.setImageResource(R.drawable.app_delete_btn);
-        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.position = 2;
-        iv2.setLayoutParams(params);
-        qgLayout1.addView(iv2);
-
-        iv3 = new ImageView(this);
-        iv3.setImageResource(R.drawable.add_mode_icon);
-        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.position = 3;
-        iv3.setLayoutParams(params);
-        qgLayout1.addView(iv3);
-
-        iv4 = new ImageView(this);
-        iv4.setImageResource(R.drawable.app_data_usage_icon);
-        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.position = 4;
-        iv4.setLayoutParams(params);
-        qgLayout1.addView(iv4);
-
-        iv5 = new ImageView(this);
-        iv5.setImageResource(R.drawable.app_all_backuped);
-        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.position = 5;
-        iv5.setLayoutParams(params);
-        qgLayout1.addView(iv5);
-
-        iv6 = new ImageView(this);
-        iv6.setImageResource(R.drawable.add_contacts_btn);
-        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.position = 6;
-        iv6.setLayoutParams(params);
-        iv6.setOnLongClickListener(new OnLongClickListener() {
-            
-            @Override
-            public boolean onLongClick(View v) {
-                v.startDrag(null, new DragShadowBuilder(v), v, 0);
-                return true;
-            }
-        });
-        qgLayout1.addView(iv6);
-//        qgLayout1.setRotation(-45);
-    }
-
-    private void fillQg2() {
         LayoutParams params = null;
         iv0 = new ImageView(this);
         iv0.setImageResource(R.drawable.ic_launcher);
         params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.position = 0;
         iv0.setLayoutParams(params);
-        qgLayout2.addView(iv0);
+        mDymixLayout.addView(iv0);
 
         iv1 = new ImageView(this);
         iv1.setImageResource(R.drawable.ic_launcher);
         params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.position = 1;
         iv1.setLayoutParams(params);
-        qgLayout2.addView(iv1);
+        mDymixLayout.addView(iv1);
 
         iv2 = new ImageView(this);
         iv2.setImageResource(R.drawable.ic_launcher);
         params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.position = 2;
         iv2.setLayoutParams(params);
-        qgLayout2.addView(iv2);
+        mDymixLayout.addView(iv2);
 
         iv3 = new ImageView(this);
         iv3.setImageResource(R.drawable.ic_launcher);
         params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.position = 3;
         iv3.setLayoutParams(params);
-        qgLayout2.addView(iv3);
+        mDymixLayout.addView(iv3);
 
         iv4 = new ImageView(this);
         iv4.setImageResource(R.drawable.ic_launcher);
         params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.position = 4;
         iv4.setLayoutParams(params);
-        qgLayout2.addView(iv4);
+        mDymixLayout.addView(iv4);
 
         iv5 = new ImageView(this);
         iv5.setImageResource(R.drawable.ic_launcher);
         params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.position = 5;
         iv5.setLayoutParams(params);
-        qgLayout2.addView(iv5);
+        mDymixLayout.addView(iv5);
 
         iv6 = new ImageView(this);
         iv6.setImageResource(R.drawable.ic_launcher);
         params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.position = 6;
         iv6.setLayoutParams(params);
-        qgLayout2.addView(iv6);
-        qgLayout2.setRotation(-315);
+        iv6.setOnLongClickListener(new OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                v.startDrag(null, new DragShadowBuilder(v), v, 0);
+                return true;
+            }
+        });
+        mDymixLayout.addView(iv6);
+        // mDymixLayout.setRotation(-45);
     }
 
+    private void fillQg2() {
+        LayoutParams params = null;
+        iv0 = new ImageView(this);
+        iv0.setImageResource(R.drawable.call_info_sms_icon);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 0;
+        iv0.setLayoutParams(params);
+        mMostUsedLayout.addView(iv0);
+
+        iv1 = new ImageView(this);
+        iv1.setImageResource(R.drawable.call_info_sms_icon);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 1;
+        iv1.setLayoutParams(params);
+        mMostUsedLayout.addView(iv1);
+
+        iv2 = new ImageView(this);
+        iv2.setImageResource(R.drawable.call_info_sms_icon);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 2;
+        iv2.setLayoutParams(params);
+        mMostUsedLayout.addView(iv2);
+
+        iv3 = new ImageView(this);
+        iv3.setImageResource(R.drawable.call_info_sms_icon);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 3;
+        iv3.setLayoutParams(params);
+        mMostUsedLayout.addView(iv3);
+
+        iv4 = new ImageView(this);
+        iv4.setImageResource(R.drawable.call_info_sms_icon);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 4;
+        iv4.setLayoutParams(params);
+        mMostUsedLayout.addView(iv4);
+
+        iv5 = new ImageView(this);
+        iv5.setImageResource(R.drawable.call_info_sms_icon);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 5;
+        iv5.setLayoutParams(params);
+        mMostUsedLayout.addView(iv5);
+
+        iv6 = new ImageView(this);
+        iv6.setImageResource(R.drawable.call_info_sms_icon);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 6;
+        iv6.setLayoutParams(params);
+        mMostUsedLayout.addView(iv6);
+        // mMostUsedLayout.setRotation(-315);
+    }
+
+    
+    private void fillQg3() {
+        LayoutParams params = null;
+        iv0 = new ImageView(this);
+        iv0.setImageResource(R.drawable.app_stop_btn);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 0;
+        iv0.setLayoutParams(params);
+        mSwitcherLayout.addView(iv0);
+
+        iv1 = new ImageView(this);
+        iv1.setImageResource(R.drawable.app_stop_btn);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 1;
+        iv1.setLayoutParams(params);
+        mSwitcherLayout.addView(iv1);
+
+        iv2 = new ImageView(this);
+        iv2.setImageResource(R.drawable.app_stop_btn);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 2;
+        iv2.setLayoutParams(params);
+        mSwitcherLayout.addView(iv2);
+
+        iv3 = new ImageView(this);
+        iv3.setImageResource(R.drawable.app_stop_btn);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 3;
+        iv3.setLayoutParams(params);
+        mSwitcherLayout.addView(iv3);
+
+        iv4 = new ImageView(this);
+        iv4.setImageResource(R.drawable.app_stop_btn);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 4;
+        iv4.setLayoutParams(params);
+        mSwitcherLayout.addView(iv4);
+
+        iv5 = new ImageView(this);
+        iv5.setImageResource(R.drawable.app_stop_btn);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 5;
+        iv5.setLayoutParams(params);
+        mSwitcherLayout.addView(iv5);
+
+        iv6 = new ImageView(this);
+        iv6.setImageResource(R.drawable.app_stop_btn);
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.position = 6;
+        iv6.setLayoutParams(params);
+        mSwitcherLayout.addView(iv6);
+        // mMostUsedLayout.setRotation(-315);
+    }
+    
     public void removeItem(View v) {
-        qgLayout1.removeView(iv2);
+        mDymixLayout.removeView(iv2);
     }
 
     public void addItem(View v) {
-        qgLayout1.addView(iv2);
+        mDymixLayout.addView(iv2);
     }
 }

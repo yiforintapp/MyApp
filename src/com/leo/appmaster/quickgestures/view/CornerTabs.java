@@ -2,6 +2,8 @@
 package com.leo.appmaster.quickgestures.view;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
+import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -23,18 +25,11 @@ import android.view.View;
 public class CornerTabs extends View {
     private static final String TAG = "CornerTabs";
 
-    private RectF mOval;
     private int mOffset;
     private GestureDetector mGestureDetector;
-    private int mCircleCenterX;
-    private int mCircleCenterY;
-    private float mOvalStartAngle;
-    // private QuickLauncherLayoutContainer mContainer;
+    private QuickGestureContainer mContainer;
 
-    /*
-     * 0: left; 1: right
-     */
-    private int mType = 0;
+    private Orientation mOrientation = Orientation.Left;
     private int mTotalWidth, mTotalHeight;
     private String mDynamic, mMostUsed, mQuickSwitcher;
     private float mTextSize;
@@ -43,7 +38,11 @@ public class CornerTabs extends View {
     private TextPaint mTextPaint;
     private Drawable mBackground, mCorner, mCover;
     private int mCornerWidth, mCornerHeight;
-    private int mCoverAngle;
+    private float mCoverAngle;
+
+    private float mDymicTargetAngle = 58;
+    private float mMostUsedTargetAngle = 30;
+    private float mSwitcherTargetAngle = -2;
 
     public CornerTabs(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -76,15 +75,10 @@ public class CornerTabs extends View {
         mTextPaint.setTextSize(mTextSize);
         mTextPaint.setColor(Color.WHITE);
 
-        mOval = new RectF();
-        mOvalStartAngle = 210;
-        // mOffset = context.getResources().getDimensionPixelSize(
-        // R.dimen.center_tab_offset);
-
-        if (mType == 0) {
-            mCoverAngle = -28;
+        if (mOrientation == Orientation.Left) {
+            mCoverAngle = -mDymicTargetAngle;
         } else {
-            mCoverAngle = 28;
+            mCoverAngle = mDymicTargetAngle;
         }
 
         mBackground = res.getDrawable(R.drawable.tab_bg);
@@ -93,7 +87,6 @@ public class CornerTabs extends View {
 
         mCornerWidth = mCorner.getIntrinsicWidth();
         mCornerHeight = mCorner.getIntrinsicHeight();
-        LeoLog.e("xxxx", "mCornerWidth = " + mCornerWidth + "    mCornerHeight = " + mCornerHeight);
     }
 
     @Override
@@ -110,23 +103,46 @@ public class CornerTabs extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right,
             int bottom) {
-        mCircleCenterX = (right - left) / 2;
-        mCircleCenterY = (bottom - top) / 2;
-        mOval.set(mOffset, mOffset, right - left - mOffset, bottom - top
-                - mOffset);
         // mContainer = (QuickLauncherLayoutContainer) getParent();
         super.onLayout(changed, left, top, right, bottom);
 
         mTotalWidth = getMeasuredWidth();
         mTotalHeight = getMeasuredHeight();
 
-        LeoLog.e("xxxx", "mTotalWidth = " + mTotalWidth + "    mTotalHeight = " + mTotalHeight);
         makePath();
+        mContainer = (QuickGestureContainer) getParent();
+    }
 
+    public void updateCoverDegree(float degree) {
+        LeoLog.e(TAG, "degree = " + degree);
+        GType type = mContainer.getCurrentGestureType();
+        if (type == GType.DymicLayout) {
+            if (mOrientation == Orientation.Left) {
+                mCoverAngle = -mDymicTargetAngle + degree;
+            } else {
+                mCoverAngle = mDymicTargetAngle + degree;
+            }
+        } else if (type == GType.MostUsedLayout) {
+            if (mOrientation == Orientation.Left) {
+                mCoverAngle = -mMostUsedTargetAngle + degree;
+            } else {
+                mCoverAngle = mMostUsedTargetAngle + degree;
+            }
+        } else {
+            if (mOrientation == Orientation.Left) {
+                mCoverAngle = -mSwitcherTargetAngle + degree;
+            } else {
+                mCoverAngle = mSwitcherTargetAngle + degree;
+            }
+        }
+        
+        LeoLog.e(TAG, "mCoverAngle = " + mCoverAngle);
+
+        invalidate();
     }
 
     private void makePath() {
-        if (mType == 1) {
+        if (mOrientation == Orientation.Right) {
             // dynPath
             mDynPath = new Path();
             mDynPath.moveTo(
@@ -171,7 +187,7 @@ public class CornerTabs extends View {
         // first, draw bg
         mBackground.setBounds(0, 0, mTotalWidth, mTotalHeight);
         mBackground.draw(canvas);
-        if (mType == 0) {
+        if (mOrientation == Orientation.Left) {
             mCorner.setBounds(0, mTotalHeight - mCornerHeight, mCornerWidth, mTotalHeight);
         } else {
             mCorner.setBounds(mTotalWidth - mCornerWidth, mTotalHeight - mCornerHeight,
@@ -179,7 +195,7 @@ public class CornerTabs extends View {
         }
         mCorner.draw(canvas);
 
-        // second, draw Oval
+        // second, draw Cover
         canvas.save();
         canvas.rotate(mCoverAngle, 0, mTotalHeight);
         mCover.setBounds(0, mTotalHeight - mCover.getIntrinsicHeight(), mCover.getIntrinsicWidth(),
@@ -193,51 +209,13 @@ public class CornerTabs extends View {
         canvas.drawTextOnPath(mQuickSwitcher, mQuickPath, mCornerWidth + 80, mTextSize / 2,
                 mTextPaint);
 
-        // mTabP.setARGB(mAlpha, 0x0f, 0x1f, 0x6c);
-        if (mOvalStartAngle > 360) {
-            mOvalStartAngle -= 360;
-        } else if (mOvalStartAngle < 0) {
-            mOvalStartAngle += 360;
-        }
-        // if (mContainer.isFlinging()) {
-        // invalidate(0, 0, mCircleCenterX * 2, mCircleCenterY * 2);
-        // }
-
-        // path = new Path();
-
-        // canvas.drawTextOnPath(mDynamic, path, 0, 0, mTextP);
-
         super.onDraw(canvas);
     }
 
-    public float getOvalStartAngle() {
-        return mOvalStartAngle;
-    }
-
-    public void setOvalStartAngle(float mOvalStartAngle) {
-        this.mOvalStartAngle = mOvalStartAngle;
-    }
-
     public void setAlpha(int mAlpha) {
-        // this.mAlpha =(int) (255 / 5 + mAlpha * 4 / 5);
     }
 
     public void setStartAngleFromTab(int tab) {
-        // int angle = 210;
-        // switch (tab) {
-        // // case QuickLauncherMananger.TAB_MOST_USED:
-        // angle = 90;
-        // break;
-        // // case QuickLauncherMananger.TAB_RECENTLY_LAUNCHED:
-        // angle = 210;
-        // break;
-        // // case QuickLauncherMananger.TAB_RECENTLY_INSTALLED:
-        // angle = 330;
-        // break;
-        // default:
-        // break;
-        // }
-        // mOvalStartAngle = angle;
     }
 
 }
