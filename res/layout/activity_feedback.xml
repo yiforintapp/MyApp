@@ -19,7 +19,7 @@
             android:layout_below="@id/layout_title_bar"
             android:layout_marginTop="20dp"
              android:layout_marginLeft="20dp"
-            android:text="@string/feedback_category_tip"
+            android:text="@string/feedback_category_guide"
             android:textColor="@color/black"
             android:textSize="14dp" />
     
@@ -43,6 +43,7 @@
             android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:textColor="@color/black"
+            android:hint="@string/feedback_category_tip"
             android:textSize="14dp" />
 
         <ImageView
