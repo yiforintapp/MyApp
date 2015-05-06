@@ -6,6 +6,7 @@
     android:background="#aa000000"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:hapticFeedbackEnabled="true"
     android:layerType="hardware" >
 
     <com.leo.appmaster.quickgestures.view.CornerTabs

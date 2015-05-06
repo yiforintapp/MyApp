@@ -10,6 +10,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -249,6 +250,7 @@ public class QuickGestureLayout extends ViewGroup {
 //            animateItem(hitView);
             // TODO
             hitView.startDrag(null, new DragShadowBuilder(hitView), hitView, 0);
+            hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         }
     }
 
