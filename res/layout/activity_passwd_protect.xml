@@ -28,9 +28,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/input_qusetion"
-                android:textSize="16sp" />
+                android:textColor="@color/black"
+                android:textSize="14dp"  />
 
             <LinearLayout
                 android:id="@+id/layout_questions"
@@ -38,7 +39,7 @@
                 android:layout_height="42dp"
                 android:layout_below="@+id/mode_name_tv"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/message_item_text_box_selecter"
                 android:gravity="center_vertical"
                 android:orientation="horizontal" >
@@ -52,7 +53,7 @@
                     android:ems="10"
                     android:maxLength="40"
                     android:paddingLeft="12dp"
-                    android:textSize="16sp" >
+                    android:textSize="14dp" >
                 </EditText>
 
                 <ImageView
@@ -71,9 +72,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_questions"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:text="@string/passwd_anwser"
-                android:textSize="16sp" />
+                android:textColor="@color/black"
+                android:textSize="14dp"  />
 
             <EditText
                 android:id="@+id/et_anwser"
@@ -81,14 +83,13 @@
                 android:layout_height="42dp"
                 android:layout_below="@+id/textView2"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="10dp"
                 android:paddingLeft="16dp"
                 android:background="@drawable/message_item_text_box_selecter"
                 android:ems="10"
                 android:maxLength="40"
                 android:singleLine="true"
-                android:text="dddd"
-                android:textSize="16sp" >
+                android:textSize="14dp" >
                 </EditText>
           
         </RelativeLayout>

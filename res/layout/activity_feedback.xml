@@ -19,7 +19,7 @@
             android:layout_below="@id/layout_title_bar"
             android:layout_marginTop="20dp"
              android:layout_marginLeft="20dp"
-            android:text="@string/feedback_category_tip"
+            android:text="@string/feedback_category_guide"
             android:textColor="@color/black"
             android:textSize="14dp" />
     
@@ -43,16 +43,17 @@
             android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:textColor="@color/black"
+            android:hint="@string/feedback_category_tip"
             android:textSize="14dp" />
 
         <ImageView
             android:id="@+id/feedback_category_arrow"
-            android:layout_width="20dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/choose_normal" />
+            android:src="@drawable/pswd_protected_down" />
     </FrameLayout>
 
     
@@ -63,7 +64,7 @@
             android:layout_below="@id/feedback_category_layout"
             android:layout_marginTop="40dp"
              android:layout_marginLeft="20dp"
-            android:text="@string/feedback_email_tip"
+            android:text="@string/feed_back_email_guide"
             android:textColor="@color/black"
             android:textSize="14dp" />
     <FrameLayout
@@ -94,12 +95,12 @@
 
         <ImageView
             android:id="@+id/feedback_email_arrow"
-            android:layout_width="20dp"
+             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/choose_normal" 
+            android:src="@drawable/pswd_protected_down" 
             android:clickable="true"/>
     </FrameLayout>
 
@@ -129,21 +130,4 @@
         android:textColor="@color/black"
         android:textSize="14dp" />
 
-    <TextView
-        android:id="@+id/feedback_commit"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/feedback_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/check_update_button"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="@string/feedback_commit"
-        android:textColor="@color/white"
-        android:textSize="16dp" />
-
-    
 </RelativeLayout>

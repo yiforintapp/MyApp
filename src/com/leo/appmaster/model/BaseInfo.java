@@ -10,6 +10,8 @@ public class BaseInfo {
 	public static final int ITEM_TYPE_NORMAL_APP = 0;
 	public static final int ITEM_TYPE_FOLDER = 1;
 	public static final int ITEM_TYPE_BUSINESS_APP = 2;
+	//add at v2.3
+	public static final int ITEM_TYPE_SWITCHER = 3;
 
 	/**
 	 * label

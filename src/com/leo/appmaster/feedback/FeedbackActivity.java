@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -12,16 +13,20 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow.OnDismissListener;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +34,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.LeoPopMenu;
-import com.leo.appmaster.ui.LeoPopMenu.LayoutStyles;
+import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 
 
@@ -46,9 +50,10 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
     private TextView mCategory;
     private ImageView mCategoryImg;
     private View mCategoryLayout;
-
-    private LeoPopMenu mLeoPopMenu;
-
+    private CommonTitleBar mTitleBar;
+    
+    private Dialog mCategoryDialog;
+    private ListView mCategoryListView;
     private LEOMessageDialog mMessageDialog;
 
     private final static int[] sCategoryIds = {
@@ -85,9 +90,13 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
     }
 
     private void initUi() {
-        CommonTitleBar titleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        titleBar.setTitle(R.string.feedback);
-        titleBar.openBackView();
+        mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        mTitleBar.setTitle(R.string.feedback);
+        mTitleBar.openBackView();
+        mTitleBar.setOptionImage(R.drawable.mode_done);
+        mTitleBar.setOptionListener(this);
+        mBtnCommit = mTitleBar.getOptionImageView();
+        
         mEditContent = (EditText) findViewById(R.id.feedback_content);
         mEmailLayout = findViewById(R.id.feedback_email_layout);
         mEditEmail = (EditText) findViewById(R.id.feedback_email);
@@ -95,12 +104,11 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         mEmailImg =  (ImageView) findViewById(R.id.feedback_email_arrow);
         mEmailImg.setOnClickListener(this);
         mEmailImg.setVisibility(mEmails.size() > 1 ? View.VISIBLE : View.GONE);
+        
         mCategoryLayout = findViewById(R.id.feedback_category_layout);
         mCategoryLayout.setOnClickListener(this);
         mCategory = (TextView) findViewById(R.id.feedback_category_title);
         mCategoryImg = (ImageView) findViewById(R.id.feedback_category_arrow);
-        mBtnCommit = findViewById(R.id.feedback_commit);
-        mBtnCommit.setOnClickListener(this);
         for (int i = 0; i < sCategoryIds.length; i++) {
             mCategories.add(getString(sCategoryIds[i]));
         }
@@ -109,12 +117,10 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 checkCommitable();
@@ -161,8 +167,8 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
             }
         }
         mBtnCommit.setEnabled(commitable);
-        mBtnCommit.setBackgroundResource(commitable ? R.drawable.check_update_button
-                : R.drawable.update_btn_disable_bg);
+        mTitleBar.setOptionImage(commitable ? R.drawable.mode_done
+                : R.drawable.undone);
     }
 
     @Override
@@ -195,30 +201,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
     public void onClick(View v) {
         hideIME();
         if (v == mCategoryLayout) {
-            mLeoPopMenu = new LeoPopMenu();
-            LayoutStyles styles = new LayoutStyles();
-            styles.width = LayoutParams.MATCH_PARENT;
-            styles.height = LayoutParams.WRAP_CONTENT;
-            styles.animation = R.style.PopupListAnimUpDown;
-            mLeoPopMenu.setPopMenuItems(FeedbackActivity.this,mCategories);
-            mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                        int position, long id) {
-                    mCategory.setText(mCategories.get(position));
-                    mCategoryPos = position;
-                    mCategory.setTag(1);
-                    mLeoPopMenu.dismissSnapshotList();
-                    checkCommitable();
-                }
-            });
-            mLeoPopMenu.showPopMenu(this, mCategory, styles, new OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    mCategoryImg.setImageResource(R.drawable.choose_normal);
-                }
-            });
-            mCategoryImg.setImageResource(R.drawable.choose_active);
+            showQuesCategoryDialog();
         } else if (v == mBtnCommit) {
             if (mEditEmail.getText().toString().trim().matches(EMAIL_EXPRESSION)) {
                 FeedbackHelper.getInstance().tryCommit(mCategory.getText().toString(),
@@ -237,28 +220,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
             }
             SDKWrapper.addEvent(this, SDKWrapper.P1, "setting", "fb_submit");
         } else if( v == mEmailImg) {
-            mLeoPopMenu = new LeoPopMenu();
-            LayoutStyles styles = new LayoutStyles();
-            styles.width = LayoutParams.MATCH_PARENT;
-            styles.height = LayoutParams.WRAP_CONTENT;
-            styles.animation = R.style.PopupListAnimUpDown;
-            mLeoPopMenu.setPopMenuItems(FeedbackActivity.this,mEmails);
-            mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                        int position, long id) {
-                    mEditEmail.setText(mEmails.get(position));
-                    mLeoPopMenu.dismissSnapshotList();
-                    checkCommitable();
-                }
-            });
-            mLeoPopMenu.showPopMenu(this, mEditEmail, styles, new OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    mEmailImg.setImageResource(R.drawable.choose_normal);
-                }
-            });
-            mEmailImg.setImageResource(R.drawable.choose_active);
+            showEmailListDialog();
         }
     }
 
@@ -291,5 +253,174 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         if(v == mEditEmail) {
             mEmailLayout.setBackgroundResource(hasFocus ? R.drawable.text_box_active: R.drawable.text_box_normal);
         }
+    }
+    
+    /**
+     * show  question selection dialog
+     */
+    private void showQuesCategoryDialog(){
+        if (mCategoryDialog == null) {
+            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this);
+            mCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            mCategoryDialog.setContentView(R.layout.dialog_common_list_select);
+            mCategoryDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
+        }
+        TextView mTitle = (TextView) mCategoryDialog.findViewById(R.id.dlg_title);
+        mTitle.setText(getResources().getString(R.string.feedback_category_tip));
+        
+        mCategoryListView = (ListView) mCategoryDialog.findViewById(R.id.item_list);
+        mCategoryListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                    long id) {
+                mCategory.setText(mCategories.get(position));
+                mCategoryPos = position;
+                mCategory.setTag(1);
+                mCategoryDialog.dismiss();
+                checkCommitable();
+            }
+        });
+        ListAdapter adapter = new CategoryListAdapter(FeedbackActivity.this);
+        mCategoryListView.setAdapter(adapter);
+        
+        View cancel = mCategoryDialog.findViewById(R.id.dlg_bottom_btn);
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCategoryDialog.dismiss();
+            }
+        });
+        mCategoryDialog.show();
+    }
+    
+    class CategoryListAdapter extends BaseAdapter{
+
+        private LayoutInflater inflater;
+        
+        public CategoryListAdapter(Context ctx) {
+            inflater = LayoutInflater.from(ctx);
+        }
+        
+        @Override
+        public int getCount() {
+            return mCategories.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mCategories.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Holder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.item_common_select, parent, false);
+                holder = new Holder();
+                holder.name = (TextView) convertView.findViewById(R.id.tv_item_content);
+                holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);
+                convertView.setTag(holder);
+            } else {
+                holder = (Holder) convertView.getTag();
+            }
+            holder.name.setText(mCategories.get(position));
+            
+            if(mCategoryPos >=0 && position == mCategoryPos ){
+                    holder.selecte.setVisibility(View.VISIBLE);
+            }else{
+                    holder.selecte.setVisibility(View.GONE);
+            }
+            return convertView;
+        }
+    }
+    /**
+     * show  email selection dialog
+     */
+    private void showEmailListDialog(){
+        if (mCategoryDialog == null) {
+            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this);
+            mCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            mCategoryDialog.setContentView(R.layout.dialog_common_list_select);
+            mCategoryDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
+        }
+        TextView mTitle = (TextView) mCategoryDialog.findViewById(R.id.dlg_title);
+        mTitle.setText(getResources().getString(R.string.feed_back_email_guide));
+        
+        mCategoryListView = (ListView) mCategoryDialog.findViewById(R.id.item_list);
+        mCategoryListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                    long id) {
+                mEditEmail.setText(mEmails.get(position));
+                mCategoryDialog.dismiss();
+                checkCommitable();
+            }
+        });
+        ListAdapter adapter = new EmailListAdapter(FeedbackActivity.this);
+        mCategoryListView.setAdapter(adapter);
+        
+        View cancel = mCategoryDialog.findViewById(R.id.dlg_bottom_btn);
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCategoryDialog.dismiss();
+            }
+        });
+        mCategoryDialog.show();
+    }
+    
+    class EmailListAdapter extends BaseAdapter{
+
+        private LayoutInflater inflater;
+        
+        public EmailListAdapter(Context ctx) {
+            inflater = LayoutInflater.from(ctx);
+        }
+        
+        @Override
+        public int getCount() {
+            return mEmails.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mEmails.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Holder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.item_common_select, parent, false);
+                holder = new Holder();
+                holder.name = (TextView) convertView.findViewById(R.id.tv_item_content);
+                holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);
+                convertView.setTag(holder);
+            } else {
+                holder = (Holder) convertView.getTag();
+            }
+            holder.name.setText(mEmails.get(position));
+            
+            if(!mEditEmail.getText().toString().isEmpty() && mEditEmail.getText().toString().equals(mEmails.get(position))){
+                holder.selecte.setVisibility(View.VISIBLE);
+            }else{
+                holder.selecte.setVisibility(View.GONE);
+            }
+            return convertView;
+        }
+    }
+    public static class Holder {
+        TextView name;
+        ImageView selecte;
     }
 }

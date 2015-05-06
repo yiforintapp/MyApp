@@ -4,6 +4,9 @@ package com.leo.appmaster.home;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -250,6 +253,12 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View view = mViews.get(position);
+            AnimatorSet set = new AnimatorSet();
+            set.setDuration(600);
+            Animator animationx = ObjectAnimator.ofFloat(view, "scaleX", 0.7f,1.05f,0.95f,1.0f);
+            Animator animationy = ObjectAnimator.ofFloat(view, "scaleY", 0.7f,1.05f,0.95f,1.0f);
+            set.playTogether(animationx,animationy);
+            set.start();
             container.addView(view);
             return view;
         }

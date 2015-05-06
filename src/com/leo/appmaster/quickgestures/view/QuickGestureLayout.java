@@ -2,6 +2,7 @@
 package com.leo.appmaster.quickgestures.view;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,17 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class QuickGestureLayout extends ViewGroup {
-    // private QuickLauncherLayoutContainer mParent;
+
+    private QuickGestureContainer mContainer;
 
     private int mTotalWidth, mTotalHeight;
     private int mItemSize;
     private int mInnerRadius, mOuterRadius;
     private int mRingCount;
+    private float mCurrentRotateDegree;
 
-    /*
-     * 0: left; 1: right
-     */
-    private int mType;
+    private Orientation mOrientation = Orientation.Left;
     private static final int INNER_RING_MAX_COUNT = 4;
 
     public QuickGestureLayout(Context context) {
@@ -29,7 +29,6 @@ public class QuickGestureLayout extends ViewGroup {
 
     public QuickGestureLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-
         init();
     }
 
@@ -39,7 +38,7 @@ public class QuickGestureLayout extends ViewGroup {
         mInnerRadius = res.getDimensionPixelSize(R.dimen.qg_layout_inner_radius);
         mOuterRadius = res.getDimensionPixelSize(R.dimen.qg_layout_outer_radius);
         mRingCount = 1;
-        mType = 0;
+        mOrientation = Orientation.Left;
     }
 
     public QuickGestureLayout(Context context, AttributeSet attrs, int defStyle) {
@@ -57,7 +56,6 @@ public class QuickGestureLayout extends ViewGroup {
         final int count = getChildCount();
         int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mItemSize, MeasureSpec.EXACTLY);
         int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mItemSize, MeasureSpec.EXACTLY);
-        // mParent = (QuickLauncherLayoutContainer) this.getParent();
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
             if (child.getVisibility() == GONE) {
@@ -122,7 +120,7 @@ public class QuickGestureLayout extends ViewGroup {
                 continue;
 
             if (params.position < innerRingCount) { // match first ring
-                if (mType == 0) {
+                if (mOrientation == Orientation.Left) {
                     left = (int) (mInnerRadius
                             * Math.cos(Math.toRadians(innerStartAngle - params.position
                                     * innertAngleInterval)) - halfItemSize);
@@ -137,7 +135,7 @@ public class QuickGestureLayout extends ViewGroup {
                         * Math.sin(Math.toRadians(innerStartAngle - params.position
                                 * innertAngleInterval)) - halfItemSize);
             } else { // match second ring
-                if (mType == 0) {
+                if (mOrientation == Orientation.Left) {
                     left = (int) (mOuterRadius
                             * Math.cos(Math.toRadians(outerStartAngle
                                     - (params.position - innerRingCount)
@@ -160,9 +158,18 @@ public class QuickGestureLayout extends ViewGroup {
             child.layout(left, top, left + mItemSize, top + mItemSize);
         }
 
+        /*
+         * now set pivot
+         */
+        if (mOrientation == Orientation.Left) {
+            setPivotX(0f);
+            setPivotY(mTotalHeight);
+        } else {
+            setPivotX(mTotalWidth);
+            setPivotY(mTotalHeight);
+        }
         
-        setPivotX(0f);
-        setPivotY(mTotalHeight);
+        mContainer = (QuickGestureContainer) getParent();
     }
 
     @Override
@@ -191,6 +198,15 @@ public class QuickGestureLayout extends ViewGroup {
         super.addView(child);
     }
 
+    public void setCurrentRotateDegree(float degree) {
+        mCurrentRotateDegree = degree;
+        setRotation(mCurrentRotateDegree);
+    }
+
+    public float getCurrentRotateDegree() {
+        return mCurrentRotateDegree;
+    }
+
     public int pointToPosition(float x, float y) {
         for (int i = 0; i < getChildCount(); i++) {
             View item = (View) getChildAt(i);
@@ -209,7 +225,6 @@ public class QuickGestureLayout extends ViewGroup {
         public LayoutParams(int width, int height) {
             super(width, height);
         }
-
     }
 
 }
