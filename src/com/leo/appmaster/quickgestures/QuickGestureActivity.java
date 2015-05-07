@@ -57,6 +57,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private boolean mHomePasueFlag = false;
     private boolean mLeftBottom, mRightBottm, mRightCenter, mLeftCenter;
     private Handler mHandler = new Handler();
+    private QuickGestureFreeDisturbAppDialog mFreeDisturbApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -492,6 +493,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             @Override
             public void onClick(View arg0) {
                 Toast.makeText(QuickGestureActivity.this, "添加免打扰应用", Toast.LENGTH_SHORT).show();
+                showAllAppDialog();
             }
         });
         // 构造数据
@@ -507,5 +509,13 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         data.add(R.drawable.ic_launcher);
         mSlideTimeDialog.setFreeDisturbApp(data);
         mSlideTimeDialog.show();
+    }
+
+    private void showAllAppDialog() {
+        if (mFreeDisturbApp == null) {
+            mFreeDisturbApp = new QuickGestureFreeDisturbAppDialog(this);
+        }
+        mFreeDisturbApp.setTitle(R.string.pg_appmanager_quick_gesture_select_free_disturb_app_text);
+        mFreeDisturbApp.show();
     }
 }
