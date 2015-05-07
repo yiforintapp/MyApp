@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.quickgestures;
+package com.leo.appmaster.quickgestures.ui;
 
 import java.util.List;
 
@@ -25,6 +25,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.quickgestures.QuickGestureWindowManager;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 /**

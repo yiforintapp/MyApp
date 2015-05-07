@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.quickgestures;
+package com.leo.appmaster.quickgestures.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,11 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
-import com.leo.appmaster.quickgestures.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
+import com.leo.appmaster.quickgestures.FloatWindowService;
+import com.leo.appmaster.quickgestures.QuickGestureWindowManager;
+import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
+import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
+import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 

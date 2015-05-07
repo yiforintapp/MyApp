@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.quickgestures;
+package com.leo.appmaster.quickgestures.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;

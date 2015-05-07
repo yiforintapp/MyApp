@@ -20,13 +20,13 @@
         android:listSelector="@drawable/manager_backup_list_selecter"
         android:scrollbars="none" />
 
-    <com.leo.appmaster.quickgestures.QuickGesturesAreaView
+    <com.leo.appmaster.quickgestures.view.QuickGesturesAreaView
         android:id="@+id/quick_gesture_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true" 
         android:visibility="gone"
         >
-    </com.leo.appmaster.quickgestures.QuickGesturesAreaView>
+    </com.leo.appmaster.quickgestures.view.QuickGesturesAreaView>
 
 </RelativeLayout>

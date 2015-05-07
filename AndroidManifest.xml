@@ -238,7 +238,7 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.quickgestures.QuickGestureActivity"
+            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >

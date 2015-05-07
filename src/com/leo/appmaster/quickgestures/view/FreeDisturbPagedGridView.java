@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.quickgestures;
+package com.leo.appmaster.quickgestures.view;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.List;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppInfo;
+import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.LeoApplistCirclePageIndicator;
 import com.leo.appmaster.ui.LockImageView;

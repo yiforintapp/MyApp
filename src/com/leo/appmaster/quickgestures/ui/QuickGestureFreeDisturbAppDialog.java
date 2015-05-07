@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.quickgestures;
+package com.leo.appmaster.quickgestures.ui;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -32,6 +32,9 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
+import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
+import com.leo.appmaster.quickgestures.view.FreeDisturbPagedGridView;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;

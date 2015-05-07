@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.quickgestures;
+package com.leo.appmaster.utils;
 
 //引用到的工具类
 import java.io.File;

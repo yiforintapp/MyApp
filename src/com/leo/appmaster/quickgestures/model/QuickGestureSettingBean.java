@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.quickgestures;
+package com.leo.appmaster.quickgestures.model;
 
 public class QuickGestureSettingBean {
     private int icon;

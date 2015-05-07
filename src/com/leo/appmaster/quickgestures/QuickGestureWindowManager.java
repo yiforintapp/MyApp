@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 
 /**
  * QuickGestureWindowManager
