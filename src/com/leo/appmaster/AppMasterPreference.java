@@ -50,6 +50,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_UNLOCK_ALL_APP = "lock_setting_unlock_all";
     public static final String PREF_LOCK_SETTING = "lock_setting";
     public static final String PREF_LOCK_SETTING_CHANGE_PASSWORD = "lock_setting_chanage_password";
+    
+    public static final String PREF_LAST_FILTER_SELF_TIME = "last_filter_self_time";
 
     // online theme
     public static final String PREF_ONLINE_THEME_SERIAL = "online_theme_serialnumber";
@@ -220,6 +222,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setUseThemeGuide(boolean flag) {
         mPref.edit().putBoolean(PREF_USE_LOCK_THEME_GUIDE, flag).commit();
+    }
+    
+    public void  setLastFilterSelfTime(long time) {
+        mPref.edit().putLong(PREF_LAST_FILTER_SELF_TIME, time).commit();
+    }
+    
+    public long getLastFilterSelfTime() {
+        return mPref.getLong(PREF_LAST_FILTER_SELF_TIME, 0);
     }
 
     public long getBusinessSuccessStrategy() {

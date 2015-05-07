@@ -29,7 +29,7 @@ public class LeoPopMenu {
 
     public final static int DIRECTION_DOWN = 1;
     public final static float SMALLWidth = 160.0f;
-    public final static float FITWidth = 200.0f;
+    public final static float FITWidth = 230.0f;
 
     public final static float OVERPX = 220.0f;
     public static boolean isOverWidth = false;
