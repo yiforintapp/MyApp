@@ -62,7 +62,7 @@
                     android:textSize="8dp" />
             </RelativeLayout>
 
-            <com.leo.appmaster.ui.RoundProgressBar
+            <com.leo.appmaster.ui.MulticolorRoundProgressBar
                 android:id="@+id/mProgressBar"
                 android:layout_width="@dimen/app_manager_home_logo_width_height"
                 android:layout_height="@dimen/app_manager_home_logo_width_height"

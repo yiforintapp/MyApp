@@ -44,6 +44,7 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.MulticolorRoundProgressBar;
 import com.leo.appmaster.ui.RoundProgressBar;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
@@ -68,7 +69,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public boolean isCleanning = false;
     private Handler mHandler = new Handler();
     private View mHeadView;
-    private RoundProgressBar roundProgressBar;
+    private MulticolorRoundProgressBar roundProgressBar;
     private ProgressBar pb_loading;
     private View bg_show_xz_bf, bg_show_ll, bg_show_dl, bg_show_hotapp, two_text_content,
             content_donghua_ok;
@@ -234,7 +235,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         content_donghua_ok = mHeadView.findViewById(R.id.content_donghua_ok);
         two_text_content = mHeadView.findViewById(R.id.two_text_content);
         tv_from_big_donghua = (TextView) mHeadView.findViewById(R.id.tv_from_big_donghua);
-        roundProgressBar = (RoundProgressBar) mHeadView.findViewById(R.id.mProgressBar);
+        roundProgressBar = (MulticolorRoundProgressBar) mHeadView.findViewById(R.id.mProgressBar);
 
         tv_installed_app = (TextView) mHeadView.findViewById(R.id.tv_installed_app);
         tv_ap_data = (TextView) mHeadView.findViewById(R.id.tv_ap_data);
