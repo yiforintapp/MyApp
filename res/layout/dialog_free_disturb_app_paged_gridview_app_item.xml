@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:padding="@dimen/app_item_linearlayout_padding" >
 
-    <com.leo.appmaster.ui.LockImageView
+    <com.leo.appmaster.quickgestures.FreeDisturbImageView
         android:id="@+id/iv_app_icon_free"
         android:layout_width="35dp"
         android:layout_height="35dp"

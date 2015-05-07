@@ -158,6 +158,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_DIALOG_SEEKBAR_PROGRESS_VALUE = "dialog_seekbar_progress_value";
     public static final String PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_JUST_HOME = "quick_gesture_dialog_slide_time_setting_just_home";
     public static final String PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_ALL_APP_AND_HOME = "quick_gesture_dialog_slide_time_setting_all_app_and_home";
+    public static final String PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME = "quick_gesture_free_disturb_app_package_name";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1431,7 +1432,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSlideTimeJustHome(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_JUST_HOME, flag).commit();
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_JUST_HOME, flag)
+                .commit();
     }
 
     public boolean getSlideTimeJustHome() {
@@ -1440,11 +1442,47 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setSlideTimeAllAppAndHome(boolean flag) {
         mPref.edit()
-                .putBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_ALL_APP_AND_HOME, flag).commit();
+                .putBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_ALL_APP_AND_HOME, flag)
+                .commit();
     }
 
     public boolean getSlideTimeAllAppAndHome() {
         return mPref
                 .getBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_ALL_APP_AND_HOME, true);
+    }
+
+    public void setFreeDisturbAppPackageNameAdd(String name) {
+        String string = getFreeDisturbAppPackageName();
+        StringBuffer sb = null;
+        String packageNames = null;
+        if (!PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME.equals(string)) {
+            sb = new StringBuffer(string);
+            sb.append(name);
+            packageNames = sb.toString() + ";";
+        } else {
+            packageNames = name + ";";
+        }
+        mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME, packageNames)
+                .commit();
+    }
+
+    // public void setFreeDisturbAppPackageNameRemove(String name) {
+    // String string = getFreeDisturbAppPackageName();
+    // StringBuffer sb = null;
+    // String packageNames = null;
+    // if (!PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME.equals(string)) {
+    // sb = new StringBuffer(string);
+    // sb.append(name);
+    // packageNames = sb.toString() + ";";
+    // string.
+    // }
+    // mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME,
+    // packageNames)
+    // .commit();
+    // }
+
+    public String getFreeDisturbAppPackageName() {
+        return mPref.getString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME,
+                PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME);
     }
 }

@@ -17,6 +17,7 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class FreeDisturbPagedGridView extends LinearLayout {
     private PagerAdapter mAdapter;
     private int mPageItemCount;
     private ArrayList<GridView> mGridViewList;
-    private ArrayList<List<AppInfo>> mPageDatas;
+    private ArrayList<List<FreeDisturbAppInfo>> mPageDatas;
 
     private OnItemClickListener mClickListener;
     private OnTouchListener mTouchListener;
@@ -50,7 +51,7 @@ public class FreeDisturbPagedGridView extends LinearLayout {
         mInflater = LayoutInflater.from(context);
     }
 
-    public void setDatas(List<AppInfo> data, int cellX, int cellY) {
+    public void setDatas(List<FreeDisturbAppInfo> data, int cellX, int cellY) {
         mCellX = cellX;
         mCellY = cellY;
         mPageItemCount = mCellX * mCellY;
@@ -61,7 +62,7 @@ public class FreeDisturbPagedGridView extends LinearLayout {
         mFlag = flag;
     }
 
-    private void updateUI(List<AppInfo> data) {
+    private void updateUI(List<FreeDisturbAppInfo> data) {
         mPageCount = (int) Math
                 .ceil(((double) data.size()) / (mCellX * mCellY));
         int itemCounts[] = new int[mPageCount];
@@ -75,11 +76,11 @@ public class FreeDisturbPagedGridView extends LinearLayout {
         }
 
         mGridViewList = new ArrayList<GridView>();
-        mPageDatas = new ArrayList<List<AppInfo>>();
+        mPageDatas = new ArrayList<List<FreeDisturbAppInfo>>();
 
         for (i = 0; i < mPageCount; i++) {
             GridviewAdapter adapter = null;
-            List<AppInfo> pageData = null;
+            List<FreeDisturbAppInfo> pageData = null;
             GridView gridView = (GridView) mInflater.inflate(
                     R.layout.dialog_free_disturb_app_grid_page_item, mViewPager, false);
             if (i == mPageCount - 1) {
@@ -111,21 +112,21 @@ public class FreeDisturbPagedGridView extends LinearLayout {
 
     }
 
-    public void notifyChange(List<AppInfo> list) {
+    public void notifyChange(List<FreeDisturbAppInfo> list) {
         updateUI(list);
     }
 
-    private List<AppInfo> copyFrom(List<AppInfo> source) {
-        ArrayList<AppInfo> list = null;
+    private List<FreeDisturbAppInfo> copyFrom(List<FreeDisturbAppInfo> source) {
+        ArrayList<FreeDisturbAppInfo> list = null;
         if (source != null) {
-            list = new ArrayList<AppInfo>();
-            AppInfo item;
-            for (AppInfo info : source) {
-                item = new AppInfo();
+            list = new ArrayList<FreeDisturbAppInfo>();
+            FreeDisturbAppInfo item;
+            for (FreeDisturbAppInfo info : source) {
+                item = new FreeDisturbAppInfo();
                 item.packageName = info.packageName;
                 item.icon = info.icon;
                 item.label = info.label;
-                item.isLocked = info.isLocked;
+                item.isFreeDisturb = info.isFreeDisturb;
                 list.add(item);
             }
         }
@@ -180,17 +181,17 @@ public class FreeDisturbPagedGridView extends LinearLayout {
     }
 
     private class GridviewAdapter extends BaseAdapter {
-        List<AppInfo> mList;
+        List<FreeDisturbAppInfo> mList;
 
         private int mPageIndex;
 
-        public GridviewAdapter(List<AppInfo> list, int page) {
+        public GridviewAdapter(List<FreeDisturbAppInfo> list, int page) {
             super();
             mPageIndex = page;
             initData(list);
         }
 
-        private void initData(List<AppInfo> list) {
+        private void initData(List<FreeDisturbAppInfo> list) {
             mList = list;
         }
 
@@ -210,7 +211,7 @@ public class FreeDisturbPagedGridView extends LinearLayout {
         }
 
         class ViewHolder {
-            LockImageView imageView;
+            FreeDisturbImageView imageView;
             TextView textView;
         }
 
@@ -221,7 +222,7 @@ public class FreeDisturbPagedGridView extends LinearLayout {
                 vh = new ViewHolder();
                 convertView = mInflater.inflate(
                         R.layout.dialog_free_disturb_app_paged_gridview_app_item, null);
-                vh.imageView = (LockImageView) convertView
+                vh.imageView = (FreeDisturbImageView) convertView
                         .findViewById(R.id.iv_app_icon_free);
                 vh.textView = (TextView) convertView
                         .findViewById(R.id.tv_app_name_free);
@@ -229,8 +230,8 @@ public class FreeDisturbPagedGridView extends LinearLayout {
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
-            AppInfo info = mList.get(position);
-            vh.imageView.setDefaultRecommendApp(info.isLocked);
+            FreeDisturbAppInfo info = mList.get(position);
+            vh.imageView.setDefaultRecommendApp(info.isFreeDisturb);
             vh.imageView.setImageDrawable(info.icon);
             vh.textView.setText(info.label);
             convertView.setTag(info);

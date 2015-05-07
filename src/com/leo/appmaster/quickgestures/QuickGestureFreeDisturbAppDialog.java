@@ -1,7 +1,9 @@
 
 package com.leo.appmaster.quickgestures;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,7 +45,6 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private Context mContext;
     private FreeDisturbPagedGridView mGridView;
     private TextView mTitle;
-    private List<AppItemInfo> mUnLockedList;
 
     public interface OnDiaogClickListener {
         public void onClick(int progress);
@@ -51,7 +53,6 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     public QuickGestureFreeDisturbAppDialog(Context context) {
         super(context, R.style.bt_dialog);
         mContext = context.getApplicationContext();
-        mUnLockedList = new ArrayList<AppItemInfo>();
         initUI();
     }
 
@@ -66,14 +67,19 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 animateItem(arg1);
-                AppInfo selectInfl = (AppInfo) arg1.getTag();
-                if (selectInfl.isLocked) {
-                    selectInfl.isLocked = false;
-                    ((LockImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                FreeDisturbAppInfo selectInfl = (FreeDisturbAppInfo) arg1.getTag();
+                if (selectInfl.isFreeDisturb) {
+                    selectInfl.isFreeDisturb = false;
+                    
+                    
+                    
+                    ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(false);
                 } else {
-                    selectInfl.isLocked = true;
-                    ((LockImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                    selectInfl.isFreeDisturb = true;
+                    AppMasterPreference.getInstance(mContext).setFreeDisturbAppPackageNameAdd(
+                            selectInfl.packageName);
+                    ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(true);
                 }
 
@@ -90,16 +96,42 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     }
 
     private void loadData() {
+        List<String> packageNames = null;
+        // 所有应用
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(mContext)
                 .getAllPkgInfo();
-        List<String> lockList = LockManager.getInstatnce().getCurLockList();
-        for (AppItemInfo appDetailInfo : list) {
-            appDetailInfo.isLocked = false;
-            mUnLockedList.add(appDetailInfo);
+        // 打扰的应用
+        List<FreeDisturbAppInfo> mDisturbList = new ArrayList<FreeDisturbAppInfo>();
+        // 免打扰的应用
+        ArrayList<FreeDisturbAppInfo> freeDisturbApp = new ArrayList<FreeDisturbAppInfo>();
+        String packageName = AppMasterPreference.getInstance(mContext)
+                .getFreeDisturbAppPackageName();
+        if (AppMasterPreference.PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME
+                .equals(packageName)) {
+            Log.e("######################", "没有免干扰应用");
+        } else {
+            String[] names = packageName.split(";");
+            packageNames = Arrays.asList(names);
         }
-        ArrayList<AppInfo> resault = new ArrayList<AppInfo>(mUnLockedList);
+        for (AppItemInfo appDetailInfo : list) {
+            FreeDisturbAppInfo appInfo = new FreeDisturbAppInfo();
+            appInfo.icon = appDetailInfo.icon;
+            appInfo.packageName = appDetailInfo.packageName;
+            appInfo.label = appDetailInfo.label;
+            if (packageNames != null) {
+                if (packageNames.contains(appDetailInfo.packageName)) {
+                    appInfo.isFreeDisturb = true;
+                    freeDisturbApp.add(appInfo);
+                    Log.e("############", "" + appInfo.isFreeDisturb);
+                } else {
+                    appInfo.isFreeDisturb = false;
+                    mDisturbList.add(appInfo);
+                }
+            }
+        }
+        freeDisturbApp.addAll(mDisturbList);
         int rowCount = mContext.getResources().getInteger(R.integer.gridview_row_count);
-        mGridView.setDatas(resault, 4, rowCount);
+        mGridView.setDatas(freeDisturbApp, 4, rowCount);
     }
 
     private void animateItem(View view) {
