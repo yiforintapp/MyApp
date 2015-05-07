@@ -19,6 +19,7 @@ public class LEOMessageDialog extends LEOBaseDialog {
     private TextView mTitle;
     private TextView mContent;
     private TextView mBottomBtn;
+    private ImageView mIcon;
     private DialogInterface.OnClickListener mBottomBtnListener = null;
 
     public LEOMessageDialog(Context context) {
@@ -46,6 +47,10 @@ public class LEOMessageDialog extends LEOBaseDialog {
             mBottomBtn.setText(bottomStr);
     }
 
+    public void setDialogIcon(int resID){
+           mIcon.setImageResource(resID);
+    }
+    
     public void setBottomBtnListener(DialogInterface.OnClickListener bListener) {
         if (bListener != null) {
             mBottomBtnListener = bListener;
@@ -80,7 +85,8 @@ public class LEOMessageDialog extends LEOBaseDialog {
 //        mLeftIcon.setVisibility(View.GONE);
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
-
+        mIcon = (ImageView) dlgView.findViewById(R.id.dlg_icon);
+        
         mBottomBtn = (TextView) dlgView.findViewById(R.id.dlg_bottom_btn);
         mBottomBtn.setVisibility(View.VISIBLE);
         if (mBottomBtnListener == null) {

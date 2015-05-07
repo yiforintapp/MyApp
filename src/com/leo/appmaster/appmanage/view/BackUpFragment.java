@@ -31,6 +31,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
+import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 
 public class BackUpFragment extends BaseFragment implements AppBackupDataListener, OnClickListener,
         OnItemClickListener {
@@ -43,7 +44,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
     private Handler mHandler = new Handler();
     private AppBackupRestoreManager mBackupManager;
     private AppBackupAdapter mBackupAdapter;
-    private LEOProgressDialog mProgressDialog;
+    private LEORoundProgressDialog mProgressDialog;
     private LEOAlarmDialog mAlarmDialog;
     private LEOMessageDialog mMessageDialog;
     private AppItemInfo mPendingDelApp;
@@ -318,7 +319,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
     private void showProgressDialog(String title, String message, int max,
             boolean indeterminate, boolean cancelable) {
         if (mProgressDialog == null) {
-            mProgressDialog = new LEOProgressDialog(getActivity());
+            mProgressDialog = new LEORoundProgressDialog(getActivity());
             mProgressDialog.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
@@ -333,9 +334,9 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
         mProgressDialog.setCancelable(cancelable);
         mProgressDialog.setButtonVisiable(cancelable);
         mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setIndeterminate(indeterminate);
         mProgressDialog.setMax(max);
         mProgressDialog.setProgress(0);
+        mProgressDialog.setProgressTextVisiable(true);
         mProgressDialog.setMessage(message);
         mProgressDialog.setTitle(title);
         mProgressDialog.show();
@@ -424,6 +425,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
 
         mMessageDialog.setTitle(title);
         mMessageDialog.setContent(message);
+        mMessageDialog.setDialogIcon(R.drawable.done_icon);
         mMessageDialog.show();
     }
 

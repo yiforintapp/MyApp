@@ -21,6 +21,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.ui.LineView;
 import com.leo.appmaster.ui.LineView.BackUpCallBack;
+import com.leo.appmaster.ui.MulticolorRoundProgressBar;
 import com.leo.appmaster.ui.RoundProgressBar;
 import com.leo.appmaster.ui.dialog.MonthDaySetting;
 import com.leo.appmaster.ui.dialog.MonthDaySetting.OnTrafficDialogClickListener;
@@ -31,7 +32,7 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
     private static final int CHANGE_TEXT = 0;
     private ProgressBar pb_loading;
     private int progress = 0;
-    private RoundProgressBar roundProgressBar;
+    private MulticolorRoundProgressBar roundProgressBar;
     private HorizontalScrollView horizontalScroll;
     private TextView tv_total_ll, tv_normal_ll, tv_remainder_ll, tv_from_donghua;
     private LineView lineView;
@@ -68,7 +69,7 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
     protected void onInitUI() {
         // LeoEventBus.getDefaultBus().register(this);
         tv_from_donghua = (TextView) findViewById(R.id.tv_from_donghua);
-        roundProgressBar = (RoundProgressBar) findViewById(R.id.roundProgressBar);
+        roundProgressBar = (MulticolorRoundProgressBar) findViewById(R.id.roundProgressBar);
         flow_all_content = findViewById(R.id.flow_all_content);
         flow_setting = (TextView) findViewById(R.id.flow_setting);
         flow_setting.setOnClickListener(this);
