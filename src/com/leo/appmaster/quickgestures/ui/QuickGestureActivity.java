@@ -497,9 +497,17 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         } else if (flag == 2) {
                             mLeftCenter = arg1;
                             mPre.setDialogRadioLeftCenter(arg1);
+                            LeoEventBus
+                                    .getDefaultBus()
+                                    .post(new QuickGestureFloatWindowEvent(
+                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 3) {
                             mRightCenter = arg1;
                             mPre.setDialogRadioRightCenter(arg1);
+                            LeoEventBus
+                                    .getDefaultBus()
+                                    .post(new QuickGestureFloatWindowEvent(
+                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
                         }
                     }
                 });

@@ -489,7 +489,7 @@ public class TaskDetectService extends Service {
             }
             // 左侧中部
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
-
+                FloatWindowHelper.removeSwipWindow(this, 4);
             } else {
                 FloatWindowHelper
                         .createFloatLeftCenterCenterWindow(this);
@@ -500,7 +500,7 @@ public class TaskDetectService extends Service {
             }
             // 右侧中部
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
-                FloatWindowHelper.removeSwipWindow(this, -1);
+                FloatWindowHelper.removeSwipWindow(this, -4);
             } else {
                 FloatWindowHelper.createFloatRightCenterCenterWindow(this);
                 if (AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {

@@ -661,6 +661,14 @@ public class FloatWindowHelper {
             mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
             mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
         }
+        // 左边中部
+        if (mLeftCenterCenterParams != null) {
+            mLeftCenterCenterParams.x = (int) -(width / 2);
+            mLeftCenterCenterParams.y = (int) ((height / 2)
+                    - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
+            mLeftCenterCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
+            mLeftCenterCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+        }
         // 左上
         if (mLeftTopParams != null) {
             mLeftTopParams.x = -(width / 2);
@@ -694,6 +702,14 @@ public class FloatWindowHelper {
             mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
             mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
         }
+        // 右侧中部
+        if (mRightCenterCenterParams != null) {
+            mRightCenterCenterParams.x = (int) (width / 2);
+            mRightCenterCenterParams.y = (int) ((height / 2)
+                    - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
+            mRightCenterCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
+            mRightCenterCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
+        }
         // 更新左边
         if (mLeftBottomView != null) {
             mWindowManager.updateViewLayout(mLeftBottomView, mLeftBottomParams);
@@ -704,6 +720,9 @@ public class FloatWindowHelper {
         if (mLeftTopView != null) {
             mWindowManager.updateViewLayout(mLeftTopView, mLeftTopParams);
         }
+        if (mLeftCenterCenterView != null) {
+            mWindowManager.updateViewLayout(mLeftCenterCenterView, mLeftCenterCenterParams);
+        }
         // 更新右边
         if (mRightBottomView != null) {
             mWindowManager.updateViewLayout(mRightBottomView, mRightBottomParams);
@@ -713,6 +732,9 @@ public class FloatWindowHelper {
         }
         if (mRightTopView != null) {
             mWindowManager.updateViewLayout(mRightTopView, mRightTopParams);
+        }
+        if (mRightCenterCenterView != null) {
+            mWindowManager.updateViewLayout(mRightCenterCenterView, mRightCenterCenterParams);
         }
     }
 
