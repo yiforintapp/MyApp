@@ -31,10 +31,14 @@ import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 public class FloatWindowHelper {
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_finish_notification";
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_slide_time_setting_finish_notification";
-    private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,mLeftCenterCenterView;
-    private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView,mRightCenterCenterView;
-    private static LayoutParams mLeftBottomParams, mLeftCenterParams, mLeftTopParams,mLeftCenterCenterParams;
-    private static LayoutParams mRightBottomParams, mRightCenterParams, mRightTopParams,mRightCenterCenterParams;
+    private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,
+            mLeftCenterCenterView;
+    private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView,
+            mRightCenterCenterView;
+    private static LayoutParams mLeftBottomParams, mLeftCenterParams, mLeftTopParams,
+            mLeftCenterCenterParams;
+    private static LayoutParams mRightBottomParams, mRightCenterParams, mRightTopParams,
+            mRightCenterCenterParams;
     private static WindowManager mWindowManager;
     private static float startX;
     private static float startY;
@@ -72,6 +76,11 @@ public class FloatWindowHelper {
     private static float mRightTopHeight = 300;
 
     // 左下
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void createFloatLeftBottomWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftBottomView == null) {
@@ -120,8 +129,8 @@ public class FloatWindowHelper {
                 // mLeftBottomParams.gravity = Gravity.LEFT | Gravity.BOTTOM;
                 mLeftBottomParams.x = -(width / 2);
                 mLeftBottomParams.y = (height / 2);
-                mLeftBottomParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
-                mLeftBottomParams.format = PixelFormat.RGBA_8888;
+                mLeftBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mLeftBottomParams.format = PixelFormat.OPAQUE;
                 mLeftBottomParams.flags =
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -133,6 +142,11 @@ public class FloatWindowHelper {
     }
 
     // 左中
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void createFloatLeftCenterWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftCenterView == null) {
@@ -194,7 +208,12 @@ public class FloatWindowHelper {
         }
     }
 
-    // ×××××××××××××××××××××××××××××××××××左侧中部×××××××××××××××××××××××××××××××××××××××××××
+    // ×××××××××××××××××××××××××××××××××××左侧中部×××××××××××××××××××××××
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void createFloatLeftCenterCenterWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftCenterCenterView == null) {
@@ -256,8 +275,12 @@ public class FloatWindowHelper {
         }
     }
 
-    // ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
-    // 左上
+    // 左上××××××××××××××××××××××××××××××××××××××××××××××××
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void createFloatLeftTopWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftTopView == null) {
@@ -320,6 +343,11 @@ public class FloatWindowHelper {
     }
 
     // 右下
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void createFloatRightBottomWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightBottomView == null) {
@@ -379,6 +407,11 @@ public class FloatWindowHelper {
     }
 
     // 右中
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void createFloatRightCenterWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightCenterView == null) {
@@ -439,6 +472,11 @@ public class FloatWindowHelper {
     }
 
     // ×××××××××××××××××××××××××右侧中部××××××××××××××××××××××××××××××××××
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void createFloatRightCenterCenterWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightCenterCenterView == null) {
@@ -498,8 +536,12 @@ public class FloatWindowHelper {
         }
     }
 
-    // ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
-    // 右上
+    // 右上×××××××××××××××××××××××××××××××××××××××××××××××××××
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void createFloatRightTopWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightTopView == null) {
@@ -559,7 +601,12 @@ public class FloatWindowHelper {
         }
     }
 
-    // 移除悬浮窗口
+    /**
+     * 移除悬浮窗口 
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void removeSwipWindow(Context context, int flag) {
         WindowManager windowManager = getWindowManager(context);
         if (flag == 1) {
@@ -617,6 +664,11 @@ public class FloatWindowHelper {
         }
     }
 
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void updateView(Context context, int value) {
         WindowManager windowManager = getWindowManager(context);
         WindowManager manager = (WindowManager) context
@@ -729,50 +781,55 @@ public class FloatWindowHelper {
         return mWindowManager;
     }
 
-    public static void createFloatWindow(Handler handler, final Context context) {
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
+    public static void createFloatWindow(Context context) {
         if (!FloatWindowHelper.isLeftBottomShowing()
                 || !FloatWindowHelper.isLeftCenterShowing()
                 || !FloatWindowHelper.isLeftTopShowing()
                 || !FloatWindowHelper.isRightBottomShowing()
                 || !FloatWindowHelper.isRightCenterShowing()
                 || !FloatWindowHelper.isRightTopShowing()) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    AppMasterPreference pre = AppMasterPreference
-                            .getInstance(context);
-                    // 透明悬浮窗
-                    // 左
-                    if (pre.getDialogRadioLeftBottom()) {
-                        FloatWindowHelper
-                                .createFloatLeftBottomWindow(context);
-                        FloatWindowHelper
-                                .createFloatLeftCenterWindow(context);
-                        FloatWindowHelper
-                                .createFloatLeftTopWindow(context);
-                    } else {
-                        FloatWindowHelper.removeSwipWindow(context, 1);
-                        FloatWindowHelper.removeSwipWindow(context, 2);
-                        FloatWindowHelper.removeSwipWindow(context, 3);
-                    }
-                    // 右
-                    if (pre.getDialogRadioRightBottom()) {
-                        FloatWindowHelper
-                                .createFloatRightBottomWindow(context);
-                        FloatWindowHelper
-                                .createFloatRightCenterWindow(context);
-                        FloatWindowHelper
-                                .createFloatRightTopWindow(context);
-                    } else {
-                        FloatWindowHelper.removeSwipWindow(context, -1);
-                        FloatWindowHelper.removeSwipWindow(context, -2);
-                        FloatWindowHelper.removeSwipWindow(context, -3);
-                    }
-                }
-            });
+            AppMasterPreference pre = AppMasterPreference
+                    .getInstance(context);
+            // 透明悬浮窗
+            // 左
+            if (pre.getDialogRadioLeftBottom()) {
+                FloatWindowHelper
+                        .createFloatLeftBottomWindow(context);
+                FloatWindowHelper
+                        .createFloatLeftCenterWindow(context);
+                FloatWindowHelper
+                        .createFloatLeftTopWindow(context);
+            } else {
+                FloatWindowHelper.removeSwipWindow(context, 1);
+                FloatWindowHelper.removeSwipWindow(context, 2);
+                FloatWindowHelper.removeSwipWindow(context, 3);
+            }
+            // 右
+            if (pre.getDialogRadioRightBottom()) {
+                FloatWindowHelper
+                        .createFloatRightBottomWindow(context);
+                FloatWindowHelper
+                        .createFloatRightCenterWindow(context);
+                FloatWindowHelper
+                        .createFloatRightTopWindow(context);
+            } else {
+                FloatWindowHelper.removeSwipWindow(context, -1);
+                FloatWindowHelper.removeSwipWindow(context, -2);
+                FloatWindowHelper.removeSwipWindow(context, -3);
+            }
         }
     }
 
+    /**
+     * must call in UI thread
+     * 
+     * @param context
+     */
     public static void updateFloatWindowBackgroudColor(boolean flag) {
         if (flag) {
             if (mLeftBottomView != null) {

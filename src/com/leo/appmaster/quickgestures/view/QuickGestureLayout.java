@@ -245,6 +245,7 @@ public class QuickGestureLayout extends ViewGroup {
                     if (info instanceof AppItemInfo) {
                         AppItemInfo appInfo = (AppItemInfo) info;
                         Intent intent = new Intent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.setComponent(new ComponentName(appInfo.packageName,
                                 appInfo.activityName));
                         getContext().startActivity(intent);
