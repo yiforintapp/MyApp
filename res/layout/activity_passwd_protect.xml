@@ -52,6 +52,7 @@
                     android:background="@null"
                     android:ems="10"
                     android:maxLength="40"
+                    android:singleLine="true"
                     android:paddingLeft="12dp"
                     android:textSize="14dp" >
                 </EditText>
