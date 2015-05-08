@@ -54,7 +54,7 @@
             android:layout_below="@+id/lock_guide_text"
             android:layout_marginTop="@dimen/home_lock_mode_guide_btn_margin_top"
             android:background="@drawable/manager_done_button_selecter" 
-            android:textColor="@drawable/manager_backup_text_selecter"
+            android:textColor="@color/white"
              android:textSize="@dimen/home_lock_mode_guide_text_size"
             android:text="@string/lock_mode_guide_button_text" />
     </RelativeLayout>
