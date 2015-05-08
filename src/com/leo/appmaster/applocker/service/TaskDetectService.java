@@ -35,7 +35,7 @@ import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.quickgestures.QuickGestureWindowManager;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.LeoLog;
@@ -104,9 +104,9 @@ public class TaskDetectService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (!mServiceStarted) {
             startDetect();
-            // 创建悬浮窗
-            startFloatWindow();
         }
+        // 创建悬浮窗
+        startFloatWindow();
         return START_STICKY;
     }
 
@@ -399,40 +399,40 @@ public class TaskDetectService extends Service {
 
     private class FloatWindowTask implements Runnable {
         public void run() {
-            QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
+            FloatWindowHelper.createFloatWindow(mHandler, getApplicationContext());
         }
     }
 
     public void onEventMainThread(PrivacyDeletEditEvent event) {
         String flag = event.editModel;
-        if (QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
+        if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
             // 左侧底部
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
-                QuickGestureWindowManager.removeSwipWindow(this, 1);
-                QuickGestureWindowManager.removeSwipWindow(this, 2);
-                QuickGestureWindowManager.removeSwipWindow(this, 3);
+                FloatWindowHelper.removeSwipWindow(this, 1);
+                FloatWindowHelper.removeSwipWindow(this, 2);
+                FloatWindowHelper.removeSwipWindow(this, 3);
                 Log.e("####################", "去除");
             } else {
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatLeftBottomWindow(this);
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatLeftCenterWindow(this);
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatLeftTopWindow(this);
                 Log.e("####################", "增加");
             }
             // 右侧底部
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
-                QuickGestureWindowManager.removeSwipWindow(this, -1);
-                QuickGestureWindowManager.removeSwipWindow(this, -2);
-                QuickGestureWindowManager.removeSwipWindow(this, -3);
+                FloatWindowHelper.removeSwipWindow(this, -1);
+                FloatWindowHelper.removeSwipWindow(this, -2);
+                FloatWindowHelper.removeSwipWindow(this, -3);
             } else {
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatRightBottomWindow(this);
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatRightCenterWindow(this);
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatRightTopWindow(this);
             }
             // 左侧中部

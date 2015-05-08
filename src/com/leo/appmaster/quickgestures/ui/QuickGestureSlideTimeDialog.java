@@ -26,7 +26,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
-import com.leo.appmaster.quickgestures.QuickGestureWindowManager;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 /**
@@ -85,7 +85,7 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
                 LeoEventBus
                         .getDefaultBus()
                         .post(new PrivacyDeletEditEvent(
-                                QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
+                                FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
             }
         });
         mAppHomeCb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -100,7 +100,7 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
                 LeoEventBus
                         .getDefaultBus()
                         .post(new PrivacyDeletEditEvent(
-                                QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
+                                FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
             }
         });
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {

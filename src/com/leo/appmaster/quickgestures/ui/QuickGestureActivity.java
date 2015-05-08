@@ -41,7 +41,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.FloatWindowService;
-import com.leo.appmaster.quickgestures.QuickGestureWindowManager;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
@@ -145,7 +145,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     public void onEventMainThread(PrivacyDeletEditEvent event) {
         String flag = event.editModel;
-        if (QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION
+        if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION
                 .equals(flag)) {
             mQuickGestureSettingOption.clear();
             fillSettingData();
@@ -337,17 +337,16 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         if ((Integer) arg0.getTag() == 0) {
             if (!arg1) {
                 mFloatWindowService.stopFloatWindow();
-                //移除悬浮窗
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, 1);
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, 2);
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, 3);
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, -1);
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, -2);
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, -3);
+                // 移除悬浮窗
+                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 1);
+                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 2);
+                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 3);
+                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -1);
+                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -2);
+                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -3);
             } else {
                 if (!mPre.getSwitchOpenQuickGesture()) {
                     mFloatWindowService.startFloatWindow();
-
                 }
             }
             mPre.setSwitchOpenQuickGesture(arg1);
@@ -494,14 +493,14 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(new PrivacyDeletEditEvent(
-                                            QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
+                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 1) {
                             mRightBottm = arg1;
                             mPre.setDialogRadioRightBottom(arg1);
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(new PrivacyDeletEditEvent(
-                                            QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
+                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 2) {
                             mLeftCenter = arg1;
                             mPre.setDialogRadioLeftCenter(arg1);
