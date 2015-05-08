@@ -116,6 +116,9 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 
     public void setRightBtnVisiable(int visiable) {
         mRightBtn.setVisibility(visiable);
+        if(visiable != View.VISIBLE){
+            setSecondBtnBackground(R.drawable.manager_third_button_selecter);
+        }
     }
 
 
@@ -194,4 +197,7 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 		mListener = listener;
 	}
 
+	public void setSecondBtnBackground(int background){
+	    mMidBtn.setBackgroundResource(background);
+	}
 }
