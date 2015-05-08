@@ -436,8 +436,16 @@ public class TaskDetectService extends Service {
                         .createFloatRightTopWindow(this);
             }
             // 左侧中部
-            
+            if (!AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
+            } else {
+
+            }
             // 右侧中部
+            if (!AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
+
+            } else {
+
+            }
         }
 
     }
