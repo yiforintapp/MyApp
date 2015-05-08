@@ -148,11 +148,11 @@ public class AppMasterApplication extends Application {
         restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
-        if (AppMasterPreference.getInstance(getApplicationContext()).getSwitchOpenQuickGesture()) {
-            // 创建悬浮窗
-            Intent intent = new Intent(getApplicationContext(), FloatWindowService.class);
-            startService(intent);
-        }
+//        if (AppMasterPreference.getInstance(getApplicationContext()).getSwitchOpenQuickGesture()) {
+//            // 创建悬浮窗
+//            Intent intent = new Intent(getApplicationContext(), FloatWindowService.class);
+//            startService(intent);
+//        }
     }
 
     private String getUserSerial() {
