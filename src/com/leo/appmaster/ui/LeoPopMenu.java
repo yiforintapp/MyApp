@@ -8,6 +8,8 @@ import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
@@ -29,11 +32,14 @@ public class LeoPopMenu {
 
     public final static int DIRECTION_DOWN = 1;
     public final static float SMALLWidth = 160.0f;
-    public final static float FITWidth = 230.0f;
+    public final static float LongWidth = 230.0f;
 
     public final static float OVERPX = 220.0f;
     public static boolean isOverWidth = false;
 
+    private static float newSmallWidth;
+    private static float newLongWidth;
+    
     public static class LayoutStyles {
         public int width;
         public int height;
@@ -69,11 +75,13 @@ public class LeoPopMenu {
         if (styles == null) {
             float popWidth = 0;
             if (!isOverWidth) {
-                popWidth = SMALLWidth;
+                popWidth = newSmallWidth;
             } else {
-                popWidth = FITWidth;
+                popWidth = newLongWidth;
             }
+            LeoLog.d("LeoPopMenu", "popWidth is : " + popWidth);
             mStyles.width = DipPixelUtil.dip2px((Context) activity, popWidth);
+            // LeoLog.d("LeoPopMenu", "dip2px popWidth is : " + mStyles.width);
             mStyles.height = LayoutParams.WRAP_CONTENT;
             if (mAnimaStyle != -1) {
                 mStyles.animation = mAnimaStyle;
@@ -149,19 +157,79 @@ public class LeoPopMenu {
     public void setPopMenuItems(Context mContext, List<String> items) {
         mItems = items;
 
+        Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
+        int W = mDisplay.getWidth();
+        int H = mDisplay.getHeight();
+        Log.i("Main", "Width = " + W);
+        Log.i("Main", "Height = " + H);
+        LeoLog.d("LeoPopMenu", "Width = " + W);
+        LeoLog.d("LeoPopMenu", "Height = " + H);
+        
+        
         float mMaxLength = 0;
         TextView testTextView = new TextView(mContext);
         for (int i = 0; i < mItems.size(); i++) {
             testTextView.setText(mItems.get(i));
             float mOne = getTextViewLength(testTextView, mItems.get(i));
+            LeoLog.d("LeoPopMenu", "字符：" + mItems.get(i) + "...长度：" + mOne);
             if (mOne > mMaxLength) {
                 mMaxLength = mOne;
             }
         }
-        if (mMaxLength > OVERPX) {
-            isOverWidth = true;
-        } else {
-            isOverWidth = false;
+
+        if (W >=1080) {
+            if (mMaxLength > OVERPX) {
+                isOverWidth = true;
+                if(mMaxLength > 260){
+                    newLongWidth = mMaxLength - 120;
+                }else {
+                    newLongWidth = mMaxLength - 100;
+                }
+
+                if(newLongWidth > 210){
+                    newLongWidth = 210;
+                }
+            } else {
+                isOverWidth = false;
+                if (mMaxLength < SMALLWidth) {
+                    newSmallWidth = mMaxLength - 20;
+                } else if(mMaxLength < 180){
+                    newSmallWidth = mMaxLength - 40;
+                }else {
+                    newSmallWidth = mMaxLength - 60;
+                }
+            }
+        } else if(W == 720){
+            if (mMaxLength > OVERPX) {
+                isOverWidth = true;
+                newLongWidth = LongWidth - 20;
+                if(newLongWidth > 210){
+                    newLongWidth = 210;
+                }
+            } else {
+                isOverWidth = false;
+                if (mMaxLength < SMALLWidth) {
+                    newSmallWidth = mMaxLength;
+                } else {
+                    newSmallWidth = mMaxLength - 20;
+                }
+            }
+        } else{
+            if (mMaxLength > OVERPX) {
+                isOverWidth = true;
+                newLongWidth = LongWidth + 30;
+                if(newLongWidth > 210){
+                    newLongWidth = 210;
+                }
+            } else {
+                isOverWidth = false;
+//                if (mMaxLength < SMALLWidth) {
+                    newSmallWidth = mMaxLength + 40;
+//                }
+//                else {
+//                    newSmallWidth = mMaxLength ;
+//                }
+            }
         }
     }
 
