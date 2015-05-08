@@ -320,7 +320,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         public View getView(int position, View convertView, ViewGroup parent) {
             Holder holder;
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_checkbox_select, parent, false);
+                convertView = inflater.inflate(R.layout.item_common_select, parent, false);
                 holder = new Holder();
                 holder.name = (TextView) convertView.findViewById(R.id.tv_item_content);
                 holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);
@@ -401,7 +401,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         public View getView(int position, View convertView, ViewGroup parent) {
             Holder holder;
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_checkbox_select, parent, false);
+                convertView = inflater.inflate(R.layout.item_common_select, parent, false);
                 holder = new Holder();
                 holder.name = (TextView) convertView.findViewById(R.id.tv_item_content);
                 holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);
