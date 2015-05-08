@@ -638,8 +638,8 @@
     <!-- version 2.1 end -->
     
     <!-- version 2.2 start -->
-    <string name="feed_back_content_guide">您遇到的问题</string>
-    <string name="feed_back_email_guide">邮箱</string>
+    <string name="feedback_content_guide">您遇到的问题</string>
+    <string name="feedback_email_guide">邮箱</string>
     <string name="feedback_category_guide">问题类型</string>
     <!-- version 2.2 end -->
 

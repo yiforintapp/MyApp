@@ -441,9 +441,9 @@ public class PrivacyContactFragment extends BaseFragment {
             }
         });
         mPCDialog.setCanceledOnTouchOutside(true);
-        mPCDialog.getWindow().setLayout(
+       /* mPCDialog.getWindow().setLayout(
                 (int) getResources().getDimension(R.dimen.privacy_contact_edit_dialog_width),
-                (int) getResources().getDimension(R.dimen.privacy_contact_edit_dialog_height));
+                (int) getResources().getDimension(R.dimen.privacy_contact_edit_dialog_height));*/
         mPCDialog.show();
     }
 

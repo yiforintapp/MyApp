@@ -64,7 +64,7 @@
             android:layout_below="@id/feedback_category_layout"
             android:layout_marginTop="40dp"
              android:layout_marginLeft="20dp"
-            android:text="@string/feed_back_email_guide"
+            android:text="@string/feedback_email_guide"
             android:textColor="@color/black"
             android:textSize="14dp" />
     <FrameLayout
@@ -112,7 +112,7 @@
             android:layout_below="@id/feedback_email_layout"
             android:layout_marginTop="40dp"
              android:layout_marginLeft="20dp"
-            android:text="@string/feed_back_content_guide"
+            android:text="@string/feedback_content_guide"
             android:textColor="@color/black"
             android:textSize="14dp" />
     <EditText
