@@ -304,11 +304,11 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
         if ((Integer) arg0.getTag() == 0) {
             if (!arg1) {
-                new FloatWindowService().stopFloatWindow();
+//                new FloatWindowService().stopFloatWindow();
             } else {
                 if (!mPre.getSwitchOpenQuickGesture()) {
-                    Intent intent = new Intent(getApplicationContext(), FloatWindowService.class);
-                    startService(intent);
+//                    Intent intent = new Intent(getApplicationContext(), FloatWindowService.class);
+//                    startService(intent);
                 }
             }
             mPre.setSwitchOpenQuickGesture(arg1);

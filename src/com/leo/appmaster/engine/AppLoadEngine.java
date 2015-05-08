@@ -347,7 +347,8 @@ public class AppLoadEngine extends BroadcastReceiver {
                     // continue;
                     AppItemInfo appInfo = new AppItemInfo();
                     appInfo.type = BaseInfo.ITEM_TYPE_NORMAL_APP;
-                    loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
+                    loadAppInfoOfPackage(packageName, resolveInfo.activityInfo.name,
+                            applicationInfo, appInfo);
                     try {
                         appInfo.installTime = mPm
                                 .getPackageInfo(packageName, 0).firstInstallTime;
@@ -385,7 +386,14 @@ public class AppLoadEngine extends BroadcastReceiver {
             for (ApplicationInfo applicationInfo : all) {
                 String packageName = applicationInfo.packageName;
                 AppItemInfo appInfo = new AppItemInfo();
-                loadAppInfoOfPackage(packageName, applicationInfo, appInfo);
+                Intent intent = new Intent(Intent.ACTION_MAIN, null);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                intent.setPackage(packageName);
+                List<ResolveInfo> apps = mPm.queryIntentActivities(intent,
+                        0);
+                ResolveInfo info = apps.get(0);
+                loadAppInfoOfPackage(packageName, info != null ? info.activityInfo.name : "",
+                        applicationInfo, appInfo);
                 try {
                     appInfo.installTime = mPm.getPackageInfo(packageName, 0).firstInstallTime;
                 } catch (NameNotFoundException e) {
@@ -405,7 +413,7 @@ public class AppLoadEngine extends BroadcastReceiver {
     }
 
     private void loadAppInfoOfPackage(String packageName,
-            ApplicationInfo applicationInfo, AppItemInfo appInfo) {
+            String activityName, ApplicationInfo applicationInfo, AppItemInfo appInfo) {
         // first fill base info
         try {
             PackageInfo pInfo = mPm.getPackageInfo(packageName, 0);
@@ -414,6 +422,7 @@ public class AppLoadEngine extends BroadcastReceiver {
         } catch (NameNotFoundException e) {
         }
         appInfo.packageName = packageName;
+        appInfo.activityName = activityName;
         appInfo.label = applicationInfo.loadLabel(mPm).toString().trim();
         try {
             appInfo.icon = applicationInfo.loadIcon(mPm);
@@ -837,7 +846,8 @@ public class AppLoadEngine extends BroadcastReceiver {
                         if (apps.size() > 0) {
                             ApplicationInfo applicationInfo = apps.get(0).activityInfo.applicationInfo;
                             AppItemInfo appInfo = new AppItemInfo();
-                            loadAppInfoOfPackage(packages[i], applicationInfo,
+                            loadAppInfoOfPackage(packages[i], apps.get(0).activityInfo.name,
+                                    applicationInfo,
                                     appInfo);
                             mAppDetails.put(packages[i], appInfo);
                             changedFinal.add(appInfo);
@@ -856,7 +866,8 @@ public class AppLoadEngine extends BroadcastReceiver {
                                     mainIntent, 0);
                             if (apps.size() > 0) {
                                 ApplicationInfo applicationInfo = apps.get(0).activityInfo.applicationInfo;
-                                loadAppInfoOfPackage(packages[i], applicationInfo,
+                                loadAppInfoOfPackage(packages[i], apps.get(0).activityInfo.name,
+                                        applicationInfo,
                                         appInfo);
                                 changedFinal.add(appInfo);
                             }

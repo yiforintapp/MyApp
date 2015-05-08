@@ -2,13 +2,21 @@
 package com.leo.appmaster.quickgestures.view;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
@@ -19,7 +27,7 @@ public class QuickGestureLayout extends ViewGroup {
     private QuickGestureContainer mContainer;
 
     private int mTotalWidth, mTotalHeight;
-    private int mItemSize;
+    private int mItemSize, mIconSize;
     private int mInnerRadius, mOuterRadius;
     private int mRingCount;
     private float mCurrentRotateDegree;
@@ -39,6 +47,7 @@ public class QuickGestureLayout extends ViewGroup {
     private void init() {
         Resources res = getContext().getResources();
         mItemSize = res.getDimensionPixelSize(R.dimen.qg_item_size);
+        mIconSize = res.getDimensionPixelSize(R.dimen.qg_item_icon_size);
         mInnerRadius = res.getDimensionPixelSize(R.dimen.qg_layout_inner_radius);
         mOuterRadius = res.getDimensionPixelSize(R.dimen.qg_layout_outer_radius);
         mRingCount = 1;
@@ -47,6 +56,22 @@ public class QuickGestureLayout extends ViewGroup {
 
     public QuickGestureLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    public int getItemSize() {
+        return mItemSize;
+    }
+
+    public int getIconSize() {
+        return mIconSize;
+    }
+
+    public int getOuterRadius() {
+        return mOuterRadius;
+    }
+
+    public int getInnerRadius() {
+        return mInnerRadius;
     }
 
     @Override
@@ -202,7 +227,7 @@ public class QuickGestureLayout extends ViewGroup {
         super.addView(child);
     }
 
-    private void animateItem(View view) {
+    private void animateItem(final View view) {
 
         AnimatorSet as = new AnimatorSet();
         as.setDuration(300);
@@ -211,6 +236,24 @@ public class QuickGestureLayout extends ViewGroup {
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f,
                 0.8f, 1f);
         as.playTogether(scaleX, scaleY);
+        as.addListener(new AnimatorListenerAdapter() {
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (!mContainer.isEditing()) {
+                    BaseInfo info = (BaseInfo) view.getTag();
+                    if (info instanceof AppItemInfo) {
+                        AppItemInfo appInfo = (AppItemInfo) info;
+                        Intent intent = new Intent();
+                        intent.setComponent(new ComponentName(appInfo.packageName,
+                                appInfo.activityName));
+                        getContext().startActivity(intent);
+                    } else if (info instanceof QuickSwitcherInfo) {
+
+                    }
+                }
+            }
+        });
         as.start();
     }
 
@@ -228,13 +271,21 @@ public class QuickGestureLayout extends ViewGroup {
         }
 
         if (hitView != null) {
-            animateItem(hitView);
-            // TODO
+            if (mContainer.isEditing()) {
+                GestureItemView giv = (GestureItemView) hitView;
+                Rect rect = giv.getCrossRect();
+                int offsetX = (int) (x - hitView.getLeft());
+                int onnsetY = (int) (y - hitView.getTop());
+                if (rect.contains(offsetX, onnsetY)) {
+                    removeView(hitView);
+                }
+            } else {
+                animateItem(hitView);
+            }
         }
     }
 
     public void checkItemLongClick(float x, float y) {
-        // TODO
         View hitView = null, tempView = null;
         for (int i = 0; i < getChildCount(); i++) {
             tempView = getChildAt(i);
@@ -247,10 +298,35 @@ public class QuickGestureLayout extends ViewGroup {
         }
 
         if (hitView != null) {
-//            animateItem(hitView);
-            // TODO
-            hitView.startDrag(null, new DragShadowBuilder(hitView), hitView, 0);
+            // animateItem(hitView);
+            hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f), hitView, 0);
             hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+        }
+    }
+
+    public void checkActionDownInEditing(float x, float y) {
+        // TODO
+        View hitView = null, tempView = null;
+        for (int i = 0; i < getChildCount(); i++) {
+            tempView = getChildAt(i);
+            if (x > tempView.getLeft() && x < tempView.getRight()
+                    && y > tempView.getTop() && y < tempView.getBottom()) {
+                hitView = tempView;
+                LeoLog.d("checkItemClick", "hitView");
+                break;
+            }
+        }
+        if (hitView != null) {
+            if (mContainer.isEditing()) {
+                GestureItemView giv = (GestureItemView) hitView;
+                Rect rect = giv.getCrossRect();
+                int offsetX = (int) (x - hitView.getLeft());
+                int onnsetY = (int) (y - hitView.getTop());
+                if (!rect.contains(offsetX, onnsetY)) {
+                    hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f), hitView, 0);
+                    hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                }
+            }
         }
     }
 
@@ -272,6 +348,13 @@ public class QuickGestureLayout extends ViewGroup {
             }
         }
         return -1;
+    }
+
+    public void leaveEditMode() {
+        for (int i = 0; i < getChildCount(); i++) {
+            GestureItemView item = (GestureItemView) getChildAt(i);
+            item.leaveEditMode();
+        }
     }
 
     public static class LayoutParams extends ViewGroup.LayoutParams {
