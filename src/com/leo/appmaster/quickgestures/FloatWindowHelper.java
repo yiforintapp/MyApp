@@ -119,8 +119,8 @@ public class FloatWindowHelper {
             });
 
             if (mLeftBottomParams == null) {
-                int height = windowManager.getDefaultDisplay().getWidth();
-                int width = windowManager.getDefaultDisplay().getHeight();
+                int width = windowManager.getDefaultDisplay().getWidth();
+                int height = windowManager.getDefaultDisplay().getHeight();
                 mLeftBottomParams = new LayoutParams();
                 mLeftBottomParams.width = (int) mLeftBottomWidth;
                 mLeftBottomParams.height = (int) mLeftBottomHeight;
@@ -130,12 +130,13 @@ public class FloatWindowHelper {
                 mLeftBottomParams.format = PixelFormat.RGBA_8888;
                 mLeftBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
-                
-//                mLeftBottomParams.flags =   WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-//                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-//                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-//                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND; 
-                
+
+                // mLeftBottomParams.flags =
+                // WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                // | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                // | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                // | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+
             }
             windowManager.addView(mLeftBottomView, mLeftBottomParams);
         }
@@ -184,8 +185,8 @@ public class FloatWindowHelper {
             });
 
             if (mLeftCenterParams == null) {
-                int height = windowManager.getDefaultDisplay().getWidth();
-                int width = windowManager.getDefaultDisplay().getHeight();
+                int width = windowManager.getDefaultDisplay().getWidth();
+                int height = windowManager.getDefaultDisplay().getHeight();
                 mLeftCenterParams = new LayoutParams();
                 mLeftCenterParams.width = (int) mLeftCenterWidth;
                 mLeftCenterParams.height = (int) mLeftCenterHeight;
@@ -245,8 +246,8 @@ public class FloatWindowHelper {
             });
 
             if (mLeftCenterCenterParams == null) {
-                int height = windowManager.getDefaultDisplay().getWidth();
-                int width = windowManager.getDefaultDisplay().getHeight();
+                int width = windowManager.getDefaultDisplay().getWidth();
+                int height = windowManager.getDefaultDisplay().getHeight();
                 mLeftCenterCenterParams = new LayoutParams();
                 mLeftCenterCenterParams.width = (int) mLeftCenterWidth;
                 mLeftCenterCenterParams.height = (int) mLeftCenterCenterHeight;
@@ -306,8 +307,8 @@ public class FloatWindowHelper {
             });
 
             if (mLeftTopParams == null) {
-                int height = windowManager.getDefaultDisplay().getWidth();
-                int width = windowManager.getDefaultDisplay().getHeight();
+                int width = windowManager.getDefaultDisplay().getWidth();
+                int height = windowManager.getDefaultDisplay().getHeight();
                 mLeftTopParams = new LayoutParams();
                 mLeftTopParams.width = (int) mLeftTopWidth;
                 mLeftTopParams.height = (int) mLeftTopHeight;
@@ -366,8 +367,8 @@ public class FloatWindowHelper {
                 }
             });
             if (mRightBottomParams == null) {
-                int height = windowManager.getDefaultDisplay().getWidth();
-                int width = windowManager.getDefaultDisplay().getHeight();
+                int width = windowManager.getDefaultDisplay().getWidth();
+                int height = windowManager.getDefaultDisplay().getHeight();
                 mRightBottomParams = new LayoutParams();
                 mRightBottomParams.width = (int) mRightBottomWidth;
                 mRightBottomParams.height = (int) mRightBottomHeight;
@@ -424,8 +425,8 @@ public class FloatWindowHelper {
                 }
             });
             if (mRightCenterParams == null) {
-                int height = windowManager.getDefaultDisplay().getWidth();
-                int width = windowManager.getDefaultDisplay().getHeight();
+                int width = windowManager.getDefaultDisplay().getWidth();
+                int height = windowManager.getDefaultDisplay().getHeight();
                 mRightCenterParams = new LayoutParams();
                 mRightCenterParams.width = (int) mRightCenterWidth;
                 mRightCenterParams.height = (int) mRightCenterHeight;
@@ -483,8 +484,8 @@ public class FloatWindowHelper {
                 }
             });
             if (mRightCenterCenterParams == null) {
-                int height = windowManager.getDefaultDisplay().getWidth();
-                int width = windowManager.getDefaultDisplay().getHeight();
+                int width = windowManager.getDefaultDisplay().getWidth();
+                int height = windowManager.getDefaultDisplay().getHeight();
                 mRightCenterCenterParams = new LayoutParams();
                 mRightCenterCenterParams.width = (int) mRightCenterWidth;
                 mRightCenterCenterParams.height = (int) mRightCenterCenterHeight;
@@ -542,8 +543,8 @@ public class FloatWindowHelper {
                 }
             });
             if (mRightTopParams == null) {
-                int height = windowManager.getDefaultDisplay().getWidth();
-                int width = windowManager.getDefaultDisplay().getHeight();
+                int width = windowManager.getDefaultDisplay().getWidth();
+                int height = windowManager.getDefaultDisplay().getHeight();
                 mRightTopParams = new LayoutParams();
                 mRightTopParams.width = (int) mRightTopWidth;
                 mRightTopParams.height = (int) mRightTopHeight;
