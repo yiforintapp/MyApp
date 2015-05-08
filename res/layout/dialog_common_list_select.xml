@@ -38,26 +38,16 @@
             android:text="@string/position_lock_no_wifi" />
     </RelativeLayout>
 
-
-    <LinearLayout
-        android:id="@+id/dlg_bottom_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/list_container"
-        android:gravity="center"
-        android:orientation="vertical"
-        >
-
         <TextView
             android:id="@+id/dlg_bottom_btn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@drawable/dlg_bottom_button_selector"
+            android:layout_below="@+id/list_container"
+            android:background="@drawable/manager_cancel_single_button_selecter"
             android:gravity="center"
             android:text="@string/cancel"
             android:textSize="16dp"
             android:textColor="@color/white" />
-    </LinearLayout>
 
     <TextView
         android:id="@+id/dlg_title"
@@ -68,7 +58,7 @@
         android:layout_margin="18dp"
         android:ellipsize="end"
         android:gravity="center"
-        android:text="@string/select_wifi_mode"
+        android:text="title"
         android:textColor="#676767"
         android:textSize="18dp"
         android:textStyle="bold"

@@ -320,7 +320,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         public View getView(int position, View convertView, ViewGroup parent) {
             Holder holder;
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_common_select, parent, false);
+                convertView = inflater.inflate(R.layout.item_checkbox_select, parent, false);
                 holder = new Holder();
                 holder.name = (TextView) convertView.findViewById(R.id.tv_item_content);
                 holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);
@@ -343,7 +343,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
      */
     private void showEmailListDialog(){
         if (mCategoryDialog == null) {
-            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this);
+            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this,R.style.bt_dialog);
             mCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mCategoryDialog.setContentView(R.layout.dialog_common_list_select);
             mCategoryDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
@@ -401,7 +401,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         public View getView(int position, View convertView, ViewGroup parent) {
             Holder holder;
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_common_select, parent, false);
+                convertView = inflater.inflate(R.layout.item_checkbox_select, parent, false);
                 holder = new Holder();
                 holder.name = (TextView) convertView.findViewById(R.id.tv_item_content);
                 holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);

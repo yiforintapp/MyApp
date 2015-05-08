@@ -665,6 +665,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putString(PREF_RELOCK_TIME, timeout + "").commit();
     }
 
+    public String getRelockStringTime(){
+        return  mPref.getString(PREF_RELOCK_TIME, "0");
+    }
+    
     public void setUnlockAllApp(boolean flag) {
         mPref.edit().putBoolean(PREF_UNLOCK_ALL_APP, flag).commit();
     }
