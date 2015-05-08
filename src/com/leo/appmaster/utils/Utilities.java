@@ -3,12 +3,17 @@ package com.leo.appmaster.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,7 +25,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -239,19 +243,39 @@ public final class Utilities {
     }
 
     public static String getURL(String suffix) {
-//        LeoLog.d("httpurl", "gameFragment Http is :::"+"http://" + SDKWrapper.getBestServerDomain() + suffix);
+        // LeoLog.d("httpurl", "gameFragment Http is :::"+"http://" +
+        // SDKWrapper.getBestServerDomain() + suffix);
         return "http://" + SDKWrapper.getBestServerDomain() + suffix;
     }
-    
+
     public static String getCountryID(Context context) {
-        TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
         String id = tm.getSimCountryIso();
-        if(isEmpty(id)) {
+        if (isEmpty(id)) {
             id = "d";
         } else {
             id = id.toLowerCase();
         }
         return id;
     }
-    
+
+    // 判断当前是否为桌面
+    public static  boolean isHome(Context context) {
+        ActivityManager mActivityManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<RunningTaskInfo> rti = mActivityManager.getRunningTasks(1);
+
+        List<String> names = new ArrayList<String>();
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        List<ResolveInfo> resolveInfo = packageManager.queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo ri : resolveInfo) {
+            names.add(ri.activityInfo.packageName);
+        }
+
+        return names.contains(rti.get(0).topActivity.getPackageName());
+    }
 }
