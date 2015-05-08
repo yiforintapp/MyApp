@@ -19,13 +19,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
@@ -84,7 +83,7 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
                 dismiss();
                 LeoEventBus
                         .getDefaultBus()
-                        .post(new PrivacyDeletEditEvent(
+                        .post(new QuickGestureFloatWindowEvent(
                                 FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
             }
         });
@@ -99,7 +98,7 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
                 dismiss();
                 LeoEventBus
                         .getDefaultBus()
-                        .post(new PrivacyDeletEditEvent(
+                        .post(new QuickGestureFloatWindowEvent(
                                 FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
             }
         });

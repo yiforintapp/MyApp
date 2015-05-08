@@ -38,9 +38,8 @@ import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.applocker.service.TaskDetectService.TaskDetectBinder;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.quickgestures.FloatWindowService;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
@@ -79,7 +78,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
             mFloatWindowService = null;
-            Log.e("############", "停止！");
         }
 
         @Override
@@ -93,7 +91,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_gesture);
-        bindService();
+//        bindService();
         mQuickGestureSettingOption = new ArrayList<QuickGestureSettingBean>();
         mPre = AppMasterPreference.getInstance(this);
         initUi();
@@ -143,7 +141,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         this.bindService(intent, mServiceConnect, 901);
     }
 
-    public void onEventMainThread(PrivacyDeletEditEvent event) {
+    public void onEventMainThread(QuickGestureFloatWindowEvent event) {
         String flag = event.editModel;
         if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION
                 .equals(flag)) {
@@ -492,14 +490,14 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             mPre.setDialogRadioLeftBottom(arg1);
                             LeoEventBus
                                     .getDefaultBus()
-                                    .post(new PrivacyDeletEditEvent(
+                                    .post(new QuickGestureFloatWindowEvent(
                                             FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 1) {
                             mRightBottm = arg1;
                             mPre.setDialogRadioRightBottom(arg1);
                             LeoEventBus
                                     .getDefaultBus()
-                                    .post(new PrivacyDeletEditEvent(
+                                    .post(new QuickGestureFloatWindowEvent(
                                             FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 2) {
                             mLeftCenter = arg1;

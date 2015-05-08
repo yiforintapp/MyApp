@@ -34,6 +34,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.ui.Traffic;
@@ -405,7 +406,7 @@ public class TaskDetectService extends Service {
         }
     }
 
-    public void onEventMainThread(PrivacyDeletEditEvent event) {
+    public void onEventMainThread(QuickGestureFloatWindowEvent event) {
         String flag = event.editModel;
         if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {

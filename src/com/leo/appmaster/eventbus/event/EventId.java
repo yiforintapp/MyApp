@@ -28,6 +28,9 @@ public interface EventId {
     public static final int EVENT_BACKUP = 1009;
     public static final int EVENT_DELETE = 1010;
     public static final int EVENT_DAY_TRAFFIC_SET = 1011;
-    
+
     public static final int EVENT_NEW_THEME = 1012;
+    /* Quick gesture floatWindow eventId */
+    public static final int EVENT_QUICK_GESTURE_FLOAT_WINDOW = 1013;
+    /* Quick gesture floatWindow end */
 }

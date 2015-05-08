@@ -297,7 +297,7 @@
             android:name="com.leo.appmaster.lockertheme.LockerTheme"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:screenOrientation="portrait" 
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
             <category android:name="android.intent.category.DEFAULT" />
         </activity>
@@ -480,7 +480,7 @@
             android:name="com.leo.appmaster.quickgestures.view.QuickGesturePopup"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent"  >
+            android:theme="@android:style/Theme.Translucent" >
         </activity>
 
         <service
@@ -491,10 +491,6 @@
         </service>
         <service
             android:name="com.leo.appmaster.applocker.service.StatusBarEventService"
-            android:exported="true" >
-        </service>
-        <service
-            android:name="com.leo.appmaster.quickgestures.FloatWindowService"
             android:exported="true" >
         </service>
 
