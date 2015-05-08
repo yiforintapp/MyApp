@@ -349,7 +349,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
             mCategoryDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
         }
         TextView mTitle = (TextView) mCategoryDialog.findViewById(R.id.dlg_title);
-        mTitle.setText(getResources().getString(R.string.feed_back_email_guide));
+        mTitle.setText(getResources().getString(R.string.feedback_email_guide));
         
         mCategoryListView = (ListView) mCategoryDialog.findViewById(R.id.item_list);
         mCategoryListView.setOnItemClickListener(new OnItemClickListener() {
