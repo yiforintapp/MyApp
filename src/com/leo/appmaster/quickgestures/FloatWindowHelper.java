@@ -28,7 +28,7 @@ import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
  * 
  * @author run
  */
-public class QuickGestureWindowManager {
+public class FloatWindowHelper {
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_finish_notification";
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_slide_time_setting_finish_notification";
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,mLeftCenterCenterView;
@@ -730,12 +730,12 @@ public class QuickGestureWindowManager {
     }
 
     public static void createFloatWindow(Handler handler, final Context context) {
-        if (!QuickGestureWindowManager.isLeftBottomShowing()
-                || !QuickGestureWindowManager.isLeftCenterShowing()
-                || !QuickGestureWindowManager.isLeftTopShowing()
-                || !QuickGestureWindowManager.isRightBottomShowing()
-                || !QuickGestureWindowManager.isRightCenterShowing()
-                || !QuickGestureWindowManager.isRightTopShowing()) {
+        if (!FloatWindowHelper.isLeftBottomShowing()
+                || !FloatWindowHelper.isLeftCenterShowing()
+                || !FloatWindowHelper.isLeftTopShowing()
+                || !FloatWindowHelper.isRightBottomShowing()
+                || !FloatWindowHelper.isRightCenterShowing()
+                || !FloatWindowHelper.isRightTopShowing()) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -744,29 +744,29 @@ public class QuickGestureWindowManager {
                     // 透明悬浮窗
                     // 左
                     if (pre.getDialogRadioLeftBottom()) {
-                        QuickGestureWindowManager
+                        FloatWindowHelper
                                 .createFloatLeftBottomWindow(context);
-                        QuickGestureWindowManager
+                        FloatWindowHelper
                                 .createFloatLeftCenterWindow(context);
-                        QuickGestureWindowManager
+                        FloatWindowHelper
                                 .createFloatLeftTopWindow(context);
                     } else {
-                        QuickGestureWindowManager.removeSwipWindow(context, 1);
-                        QuickGestureWindowManager.removeSwipWindow(context, 2);
-                        QuickGestureWindowManager.removeSwipWindow(context, 3);
+                        FloatWindowHelper.removeSwipWindow(context, 1);
+                        FloatWindowHelper.removeSwipWindow(context, 2);
+                        FloatWindowHelper.removeSwipWindow(context, 3);
                     }
                     // 右
                     if (pre.getDialogRadioRightBottom()) {
-                        QuickGestureWindowManager
+                        FloatWindowHelper
                                 .createFloatRightBottomWindow(context);
-                        QuickGestureWindowManager
+                        FloatWindowHelper
                                 .createFloatRightCenterWindow(context);
-                        QuickGestureWindowManager
+                        FloatWindowHelper
                                 .createFloatRightTopWindow(context);
                     } else {
-                        QuickGestureWindowManager.removeSwipWindow(context, -1);
-                        QuickGestureWindowManager.removeSwipWindow(context, -2);
-                        QuickGestureWindowManager.removeSwipWindow(context, -3);
+                        FloatWindowHelper.removeSwipWindow(context, -1);
+                        FloatWindowHelper.removeSwipWindow(context, -2);
+                        FloatWindowHelper.removeSwipWindow(context, -3);
                     }
                 }
             });

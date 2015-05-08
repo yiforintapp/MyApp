@@ -85,34 +85,34 @@ public class FloatWindowService extends Service {
 
     public void onEventMainThread(PrivacyDeletEditEvent event) {
         String flag = event.editModel;
-        if (QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
+        if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
             // QuickGestureWindowManager.createFloatWindow(mHandler,
             // getApplicationContext());
             // 左
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
-                QuickGestureWindowManager.removeSwipWindow(this, 1);
-                QuickGestureWindowManager.removeSwipWindow(this, 2);
-                QuickGestureWindowManager.removeSwipWindow(this, 3);
+                FloatWindowHelper.removeSwipWindow(this, 1);
+                FloatWindowHelper.removeSwipWindow(this, 2);
+                FloatWindowHelper.removeSwipWindow(this, 3);
             } else {
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatLeftBottomWindow(this);
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatLeftCenterWindow(this);
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatLeftTopWindow(this);
             }
             // 右
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
-                QuickGestureWindowManager.removeSwipWindow(this, -1);
-                QuickGestureWindowManager.removeSwipWindow(this, -2);
-                QuickGestureWindowManager.removeSwipWindow(this, -3);
+                FloatWindowHelper.removeSwipWindow(this, -1);
+                FloatWindowHelper.removeSwipWindow(this, -2);
+                FloatWindowHelper.removeSwipWindow(this, -3);
             } else {
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatRightBottomWindow(this);
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatRightCenterWindow(this);
-                QuickGestureWindowManager
+                FloatWindowHelper
                         .createFloatRightTopWindow(this);
             }
         }

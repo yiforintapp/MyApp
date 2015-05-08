@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.quickgestures.QuickGestureWindowManager;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 /**
@@ -66,7 +66,7 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
                 } else {
                     seekbar_text_progress.setText(progress + "%");
                 }
-                QuickGestureWindowManager.updateView(mContext, seekBar.getProgress());
+                FloatWindowHelper.updateView(mContext, seekBar.getProgress());
             }
 
             @Override
