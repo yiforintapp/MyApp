@@ -48,10 +48,8 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private Context mContext;
     private FreeDisturbPagedGridView mGridView;
     private TextView mTitle;
-
-    public interface OnDiaogClickListener {
-        public void onClick(int progress);
-    }
+    private List<FreeDisturbAppInfo> mDisturbList = null;
+    private List<FreeDisturbAppInfo> mFreeDisturbApp = null;
 
     public QuickGestureFreeDisturbAppDialog(Context context) {
         super(context, R.style.bt_dialog);
@@ -73,11 +71,16 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                 FreeDisturbAppInfo selectInfl = (FreeDisturbAppInfo) arg1.getTag();
                 if (selectInfl.isFreeDisturb) {
                     selectInfl.isFreeDisturb = false;
-
+                    mDisturbList.add(selectInfl);
+                    mFreeDisturbApp.remove(selectInfl);
+                    AppMasterPreference.getInstance(mContext).setFreeDisturbAppPackageNameRemove(
+                            selectInfl.packageName);
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(false);
                 } else {
                     selectInfl.isFreeDisturb = true;
+                    mFreeDisturbApp.add(selectInfl);
+                    mDisturbList.remove(selectInfl);
                     AppMasterPreference.getInstance(mContext).setFreeDisturbAppPackageNameAdd(
                             selectInfl.packageName);
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
@@ -102,9 +105,9 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(mContext)
                 .getAllPkgInfo();
         // 打扰的应用
-        List<FreeDisturbAppInfo> mDisturbList = new ArrayList<FreeDisturbAppInfo>();
+        mDisturbList = new ArrayList<FreeDisturbAppInfo>();
         // 免打扰的应用
-        List<FreeDisturbAppInfo> freeDisturbApp = new ArrayList<FreeDisturbAppInfo>();
+        mFreeDisturbApp = new ArrayList<FreeDisturbAppInfo>();
         String packageName = AppMasterPreference.getInstance(mContext)
                 .getFreeDisturbAppPackageName();
         if (AppMasterPreference.PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME
@@ -122,8 +125,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             if (packageNames != null) {
                 if (packageNames.contains(appDetailInfo.packageName)) {
                     appInfo.isFreeDisturb = true;
-                    freeDisturbApp.add(appInfo);
-                    Log.e("############", "" + appInfo.isFreeDisturb);
+                    mFreeDisturbApp.add(appInfo);
                 } else {
                     appInfo.isFreeDisturb = false;
                     mDisturbList.add(appInfo);
@@ -133,13 +135,13 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                 mDisturbList.add(appInfo);
             }
         }
-        if (freeDisturbApp != null && freeDisturbApp.size() > 0) {
-            freeDisturbApp.addAll(mDisturbList);
+        if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
+            mFreeDisturbApp.addAll(mDisturbList);
         } else {
-            freeDisturbApp = mDisturbList;
+            mFreeDisturbApp = mDisturbList;
         }
         int rowCount = mContext.getResources().getInteger(R.integer.gridview_row_count);
-        mGridView.setDatas(freeDisturbApp, 4, rowCount);
+        mGridView.setDatas(mFreeDisturbApp, 4, rowCount);
     }
 
     private void animateItem(View view) {

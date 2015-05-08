@@ -96,7 +96,7 @@ public class TaskDetectService extends Service {
                 TimeUnit.MILLISECONDS);
         LeoEventBus
                 .getDefaultBus().register(this);
-        mHandler=new Handler();
+        mHandler = new Handler();
         super.onCreate();
     }
 
@@ -106,7 +106,7 @@ public class TaskDetectService extends Service {
             startDetect();
         }
         // 创建悬浮窗
-        startFloatWindowTask();
+        startFloatWindow();
         return START_STICKY;
     }
 
@@ -155,6 +155,10 @@ public class TaskDetectService extends Service {
                 TimeUnit.MILLISECONDS);
     }
 
+    public void startFloatWindow() {
+        startFloatWindowTask();
+    }
+
     private void startFloatWindowTask() {
         stopFloatWindowTask();
         mFloatWindowTask = new FloatWindowTask();
@@ -170,10 +174,15 @@ public class TaskDetectService extends Service {
         }
     }
 
+    public void stopFloatWindow() {
+        stopFloatWindowTask();
+    }
+
     @Override
     public void onDestroy() {
         stopDetect();
         stopFlowTask();
+        stopFloatWindow();
         sendBroadcast(new Intent("com.leo.appmaster.restart"));
         super.onDestroy();
     }
@@ -390,22 +399,20 @@ public class TaskDetectService extends Service {
 
     private class FloatWindowTask implements Runnable {
         public void run() {
-            QuickGestureWindowManager.createFloatWindow(mHandler,getApplicationContext());
+            QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
         }
     }
-
 
     public void onEventMainThread(PrivacyDeletEditEvent event) {
         String flag = event.editModel;
         if (QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
-            // QuickGestureWindowManager.createFloatWindow(mHandler,
-            // getApplicationContext());
             // 左
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
                 QuickGestureWindowManager.removeSwipWindow(this, 1);
                 QuickGestureWindowManager.removeSwipWindow(this, 2);
                 QuickGestureWindowManager.removeSwipWindow(this, 3);
+                Log.e("####################", "去除");
             } else {
                 QuickGestureWindowManager
                         .createFloatLeftBottomWindow(this);
@@ -413,6 +420,7 @@ public class TaskDetectService extends Service {
                         .createFloatLeftCenterWindow(this);
                 QuickGestureWindowManager
                         .createFloatLeftTopWindow(this);
+                Log.e("####################", "增加");
             }
             // 右
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {

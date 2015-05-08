@@ -50,6 +50,8 @@ public class QuickGestureWindowManager {
     private static float mLeftCenterWidth = 100;
     // 左中高度
     private static float mLeftCenterHeight = 200;
+    // 左侧中部高度
+    private static float mLeftCenterCenterHeight = 400;
     // 左上宽度
     private static float mLeftTopWidth = 50;
     // 左上高度
@@ -62,6 +64,8 @@ public class QuickGestureWindowManager {
     private static float mRightCenterWidth = 100;
     // 右中高度
     private static float mRightCenterHeight = 200;
+    // 右侧中部高度
+    private static float mRightCenterCenterHeight = 400;
     // 右上宽度
     private static float mRightTopWidth = 50;
     // 右上高度
@@ -190,6 +194,69 @@ public class QuickGestureWindowManager {
         }
     }
 
+    // ×××××××××××××××××××××××××××××××××××左侧中部×××××××××××××××××××××××××××××××××××××××××××
+    public static void createFloatLeftCenterCenterWindow(final Context mContext) {
+        final WindowManager windowManager = getWindowManager(mContext);
+        if (mLeftCenterView == null) {
+            mLeftCenterView = new QuickGesturesAreaView(mContext);
+            mLeftCenterView.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_OUTSIDE:
+                            break;
+                        case MotionEvent.ACTION_DOWN:
+                            startX = event.getRawX();
+                            startY = event.getRawY();
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            float moveX = Math.abs(startX - event.getRawX());
+                            float moveY = Math.abs(startY - event.getRawY());
+                            if ((moveX > mLeftCenterParams.width / 4 || moveY > mLeftCenterParams.height / 4)
+                                    && !isMoveIng) {
+                                isMoveIng = true;
+                                removeSwipWindow(mContext, 2);
+                                Toast.makeText(mContext, "碰到我的区域了！", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            isMoveIng = false;
+                            if (Math.abs(startX - event.getRawX()) < 5
+                                    || Math.abs(startY - event.getRawY()) < 5) {
+                                removeSwipWindow(mContext, 2);
+                            }
+                            break;
+                    }
+                    return false;
+                }
+            });
+
+            if (mLeftCenterParams == null) {
+                WindowManager manager = (WindowManager) mContext
+                        .getSystemService(Context.WINDOW_SERVICE);
+                Display display = manager.getDefaultDisplay();
+                float height = display.getHeight();
+                float width = display.getWidth();
+                mLeftCenterParams = new LayoutParams();
+                mLeftCenterParams.width = (int) mLeftCenterWidth;
+                mLeftCenterParams.height = (int) mLeftCenterCenterHeight;
+                mLeftCenterParams.type = 2002;
+                mLeftCenterParams.x = (int) -(width / 2);
+                mLeftCenterParams.y = (int) ((height / 2)
+                        - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
+                mLeftCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mLeftCenterParams.format = PixelFormat.RGBA_8888;
+                mLeftCenterParams.flags =
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+            }
+            windowManager.addView(mLeftCenterView, mLeftCenterParams);
+        }
+    }
+
+    // ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
     // 左上
     public static void createFloatLeftTopWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
@@ -371,6 +438,67 @@ public class QuickGestureWindowManager {
         }
     }
 
+    // ×××××××××××××××××××××××××右侧中部××××××××××××××××××××××××××××××××××
+    public static void createFloatRightCenterCenterWindow(final Context mContext) {
+        final WindowManager windowManager = getWindowManager(mContext);
+        if (mRightCenterView == null) {
+            mRightCenterView = new QuickGesturesAreaView(mContext);
+            mRightCenterView.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_OUTSIDE:
+                            break;
+                        case MotionEvent.ACTION_DOWN:
+                            startX = event.getRawX();
+                            startY = event.getRawY();
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            float moveX = Math.abs(startX - event.getRawX());
+                            float moveY = Math.abs(startY - event.getRawY());
+                            if ((moveX > mRightCenterParams.width / 4 || moveY > mRightCenterParams.height / 4)
+                                    && !isMoveIng) {
+                                isMoveIng = true;
+                                removeSwipWindow(mContext, -2);
+                                Toast.makeText(mContext, "碰到我的区域了！", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            isMoveIng = false;
+                            if (Math.abs(startX - event.getRawX()) < 5
+                                    || Math.abs(startY - event.getRawY()) < 5) {
+                                removeSwipWindow(mContext, -2);
+                            }
+                            break;
+                    }
+                    return false;
+                }
+            });
+            if (mRightCenterParams == null) {
+                WindowManager manager = (WindowManager) mContext
+                        .getSystemService(Context.WINDOW_SERVICE);
+                Display display = manager.getDefaultDisplay();
+                int height = display.getHeight();
+                int width = display.getWidth();
+                mRightCenterParams = new LayoutParams();
+                mRightCenterParams.width = (int) mRightCenterWidth;
+                mRightCenterParams.height = (int) mRightCenterCenterHeight;
+                mRightCenterParams.x = (int) (width / 2);
+                mRightCenterParams.y = (int) ((height / 2)
+                        - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
+                mRightCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mRightCenterParams.format = PixelFormat.RGBA_8888;
+                mRightCenterParams.flags =
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+            }
+            windowManager.addView(mRightCenterView, mRightCenterParams);
+        }
+    }
+
+    // ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
     // 右上
     public static void createFloatRightTopWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
@@ -439,36 +567,49 @@ public class QuickGestureWindowManager {
             if (mLeftBottomView != null) {
                 windowManager.removeView(mLeftBottomView);
                 mLeftBottomView = null;
+                Log.e("##########", "左下不为空");
+            } else {
+                Log.e("##########", "左下为空");
             }
         } else if (flag == 2) {
             // 左中
             if (mLeftCenterView != null) {
                 windowManager.removeView(mLeftCenterView);
                 mLeftCenterView = null;
+            } else {
+                Log.e("##########", "左中为空");
             }
         } else if (flag == 3) {
             // 左上
             if (mLeftTopView != null) {
                 windowManager.removeView(mLeftTopView);
                 mLeftTopView = null;
+            } else {
+                Log.e("##########", "左上为空");
             }
         } else if (flag == -1) {
             // 右下
             if (mRightBottomView != null) {
                 windowManager.removeView(mRightBottomView);
                 mRightBottomView = null;
+            } else {
+                Log.e("##########", "右下为空");
             }
         } else if (flag == -2) {
             // 右中
             if (mRightCenterView != null) {
                 windowManager.removeView(mRightCenterView);
                 mRightCenterView = null;
+            } else {
+                Log.e("##########", "右中为空");
             }
         } else if (flag == -3) {
             // 右上
             if (mRightTopView != null) {
                 windowManager.removeView(mRightTopView);
                 mRightTopView = null;
+            } else {
+                Log.e("##########", "右上为空");
             }
         }
     }

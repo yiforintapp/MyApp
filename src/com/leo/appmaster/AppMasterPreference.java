@@ -1466,20 +1466,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
                 .commit();
     }
 
-    // public void setFreeDisturbAppPackageNameRemove(String name) {
-    // String string = getFreeDisturbAppPackageName();
-    // StringBuffer sb = null;
-    // String packageNames = null;
-    // if (!PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME.equals(string)) {
-    // sb = new StringBuffer(string);
-    // sb.append(name);
-    // packageNames = sb.toString() + ";";
-    // string.
-    // }
-    // mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME,
-    // packageNames)
-    // .commit();
-    // }
+    public void setFreeDisturbAppPackageNameRemove(String name) {
+        String string = getFreeDisturbAppPackageName();
+        String packageNames = null;
+        if (!PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME.equals(string)) {
+            packageNames = string.replace(name + ";", "");
+        }
+        mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME,
+                packageNames)
+                .commit();
+    }
 
     public String getFreeDisturbAppPackageName() {
         return mPref.getString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME,

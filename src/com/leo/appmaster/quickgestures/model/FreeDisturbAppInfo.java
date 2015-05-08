@@ -12,4 +12,8 @@ public class FreeDisturbAppInfo extends BaseInfo {
      * isFreeDisturb
      */
     public boolean isFreeDisturb;
+    /*
+     * isEditFreeDisturb
+     */
+    public boolean isEditFreeDisturb = false;
 }
