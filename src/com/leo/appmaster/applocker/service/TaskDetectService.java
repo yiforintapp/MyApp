@@ -397,7 +397,7 @@ public class TaskDetectService extends Service {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-//                    FloatWindowHelper.createFloatWindow(getApplicationContext());
+                    FloatWindowHelper.createFloatWindow(getApplicationContext());
                 }
             });
         }
@@ -412,7 +412,6 @@ public class TaskDetectService extends Service {
                 FloatWindowHelper.removeSwipWindow(this, 1);
                 FloatWindowHelper.removeSwipWindow(this, 2);
                 FloatWindowHelper.removeSwipWindow(this, 3);
-                Log.e("####################", "去除");
             } else {
                 FloatWindowHelper
                         .createFloatLeftBottomWindow(this);
@@ -420,7 +419,6 @@ public class TaskDetectService extends Service {
                         .createFloatLeftCenterWindow(this);
                 FloatWindowHelper
                         .createFloatLeftTopWindow(this);
-                Log.e("####################", "增加");
             }
             // 右侧底部
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {

@@ -91,7 +91,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_gesture);
-//        bindService();
+        bindService();
         mQuickGestureSettingOption = new ArrayList<QuickGestureSettingBean>();
         mPre = AppMasterPreference.getInstance(this);
         initUi();
