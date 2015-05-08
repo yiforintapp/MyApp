@@ -104,7 +104,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.height / 4)
+                            if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 onTouchAreaShowQuick(-1, mLeftBottomView);
@@ -164,7 +164,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftCenterParams.width / 4 || moveY > mLeftCenterParams.height / 4)
+                            if ((moveX > mLeftCenterParams.width / 4 || moveY > mLeftCenterParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 onTouchAreaShowQuick(-1, mLeftBottomView);
@@ -226,7 +226,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftCenterCenterParams.width / 4 || moveY > mLeftCenterCenterParams.height / 4)
+                            if ((moveX > mLeftCenterCenterParams.width / 4 || moveY > mLeftCenterCenterParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 onTouchAreaShowQuick(-1, mLeftBottomView);
@@ -288,7 +288,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftTopParams.width / 4 || moveY > mLeftTopParams.height / 4)
+                            if ((moveX > mLeftTopParams.width / 4 || moveY > mLeftTopParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 onTouchAreaShowQuick(-1, mLeftBottomView);
@@ -350,7 +350,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightBottomParams.width / 4 || moveY > mRightBottomParams.height / 4)
+                            if ((moveX > mRightBottomParams.width / 4 || moveY > mRightBottomParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 onTouchAreaShowQuick(1, mRightBottomView);
@@ -409,7 +409,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightCenterParams.width / 4 || moveY > mRightCenterParams.height / 4)
+                            if ((moveX > mRightCenterParams.width / 4 || moveY > mRightCenterParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 onTouchAreaShowQuick(1, mRightBottomView);
@@ -469,7 +469,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightCenterCenterParams.width / 4 || moveY > mRightCenterCenterParams.height / 4)
+                            if ((moveX > mRightCenterCenterParams.width / 4 || moveY > mRightCenterCenterParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 onTouchAreaShowQuick(1, mRightBottomView);
@@ -529,7 +529,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightTopParams.width / 4 || moveY > mRightTopParams.height / 4)
+                            if ((moveX > mRightTopParams.width / 4 || moveY > mRightTopParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 onTouchAreaShowQuick(1, mRightBottomView);
