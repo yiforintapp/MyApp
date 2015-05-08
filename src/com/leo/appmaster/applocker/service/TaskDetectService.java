@@ -104,9 +104,9 @@ public class TaskDetectService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (!mServiceStarted) {
             startDetect();
+            // 创建悬浮窗
+            startFloatWindow();
         }
-        // 创建悬浮窗
-        startFloatWindow();
         return START_STICKY;
     }
 
