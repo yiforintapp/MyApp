@@ -31,10 +31,10 @@ import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 public class QuickGestureWindowManager {
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_finish_notification";
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_slide_time_setting_finish_notification";
-    private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView;
-    private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView;
-    private static LayoutParams mLeftBottomParams, mLeftCenterParams, mLeftTopParams;
-    private static LayoutParams mRightBottomParams, mRightCenterParams, mRightTopParams;
+    private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,mLeftCenterCenterView;
+    private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView,mRightCenterCenterView;
+    private static LayoutParams mLeftBottomParams, mLeftCenterParams, mLeftTopParams,mLeftCenterCenterParams;
+    private static LayoutParams mRightBottomParams, mRightCenterParams, mRightTopParams,mRightCenterCenterParams;
     private static WindowManager mWindowManager;
     private static float startX;
     private static float startY;
@@ -89,7 +89,7 @@ public class QuickGestureWindowManager {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftBottomParams.width / 2 || moveY > mLeftBottomParams.height / 4)
+                            if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 1);
@@ -197,9 +197,9 @@ public class QuickGestureWindowManager {
     // ×××××××××××××××××××××××××××××××××××左侧中部×××××××××××××××××××××××××××××××××××××××××××
     public static void createFloatLeftCenterCenterWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
-        if (mLeftCenterView == null) {
-            mLeftCenterView = new QuickGesturesAreaView(mContext);
-            mLeftCenterView.setOnTouchListener(new OnTouchListener() {
+        if (mLeftCenterCenterView == null) {
+            mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
+            mLeftCenterCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
@@ -231,28 +231,28 @@ public class QuickGestureWindowManager {
                 }
             });
 
-            if (mLeftCenterParams == null) {
+            if (mLeftCenterCenterParams == null) {
                 WindowManager manager = (WindowManager) mContext
                         .getSystemService(Context.WINDOW_SERVICE);
                 Display display = manager.getDefaultDisplay();
                 float height = display.getHeight();
                 float width = display.getWidth();
-                mLeftCenterParams = new LayoutParams();
-                mLeftCenterParams.width = (int) mLeftCenterWidth;
-                mLeftCenterParams.height = (int) mLeftCenterCenterHeight;
-                mLeftCenterParams.type = 2002;
-                mLeftCenterParams.x = (int) -(width / 2);
-                mLeftCenterParams.y = (int) ((height / 2)
+                mLeftCenterCenterParams = new LayoutParams();
+                mLeftCenterCenterParams.width = (int) mLeftCenterWidth;
+                mLeftCenterCenterParams.height = (int) mLeftCenterCenterHeight;
+                mLeftCenterCenterParams.type = 2002;
+                mLeftCenterCenterParams.x = (int) -(width / 2);
+                mLeftCenterCenterParams.y = (int) ((height / 2)
                         - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
-                mLeftCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
-                mLeftCenterParams.format = PixelFormat.RGBA_8888;
-                mLeftCenterParams.flags =
+                mLeftCenterCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mLeftCenterCenterParams.format = PixelFormat.RGBA_8888;
+                mLeftCenterCenterParams.flags =
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                                 | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
             }
-            windowManager.addView(mLeftCenterView, mLeftCenterParams);
+            windowManager.addView(mLeftCenterCenterView, mLeftCenterCenterParams);
         }
     }
 
@@ -441,9 +441,9 @@ public class QuickGestureWindowManager {
     // ×××××××××××××××××××××××××右侧中部××××××××××××××××××××××××××××××××××
     public static void createFloatRightCenterCenterWindow(final Context mContext) {
         final WindowManager windowManager = getWindowManager(mContext);
-        if (mRightCenterView == null) {
-            mRightCenterView = new QuickGesturesAreaView(mContext);
-            mRightCenterView.setOnTouchListener(new OnTouchListener() {
+        if (mRightCenterCenterView == null) {
+            mRightCenterCenterView = new QuickGesturesAreaView(mContext);
+            mRightCenterCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
@@ -456,7 +456,7 @@ public class QuickGestureWindowManager {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightCenterParams.width / 4 || moveY > mRightCenterParams.height / 4)
+                            if ((moveX > mRightCenterCenterParams.width / 4 || moveY > mRightCenterCenterParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -2);
@@ -474,27 +474,27 @@ public class QuickGestureWindowManager {
                     return false;
                 }
             });
-            if (mRightCenterParams == null) {
+            if (mRightCenterCenterParams == null) {
                 WindowManager manager = (WindowManager) mContext
                         .getSystemService(Context.WINDOW_SERVICE);
                 Display display = manager.getDefaultDisplay();
                 int height = display.getHeight();
                 int width = display.getWidth();
-                mRightCenterParams = new LayoutParams();
-                mRightCenterParams.width = (int) mRightCenterWidth;
-                mRightCenterParams.height = (int) mRightCenterCenterHeight;
-                mRightCenterParams.x = (int) (width / 2);
-                mRightCenterParams.y = (int) ((height / 2)
+                mRightCenterCenterParams = new LayoutParams();
+                mRightCenterCenterParams.width = (int) mRightCenterWidth;
+                mRightCenterCenterParams.height = (int) mRightCenterCenterHeight;
+                mRightCenterCenterParams.x = (int) (width / 2);
+                mRightCenterCenterParams.y = (int) ((height / 2)
                         - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
-                mRightCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
-                mRightCenterParams.format = PixelFormat.RGBA_8888;
-                mRightCenterParams.flags =
+                mRightCenterCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mRightCenterCenterParams.format = PixelFormat.RGBA_8888;
+                mRightCenterCenterParams.flags =
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                                 | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
             }
-            windowManager.addView(mRightCenterView, mRightCenterParams);
+            windowManager.addView(mRightCenterCenterView, mRightCenterCenterParams);
         }
     }
 
@@ -567,7 +567,6 @@ public class QuickGestureWindowManager {
             if (mLeftBottomView != null) {
                 windowManager.removeView(mLeftBottomView);
                 mLeftBottomView = null;
-                Log.e("##########", "左下不为空");
             } else {
                 Log.e("##########", "左下为空");
             }
@@ -587,6 +586,8 @@ public class QuickGestureWindowManager {
             } else {
                 Log.e("##########", "左上为空");
             }
+        } else if (flag == 4) {
+
         } else if (flag == -1) {
             // 右下
             if (mRightBottomView != null) {
@@ -611,6 +612,8 @@ public class QuickGestureWindowManager {
             } else {
                 Log.e("##########", "右上为空");
             }
+        } else if (flag == -4) {
+
         }
     }
 

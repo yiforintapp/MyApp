@@ -407,7 +407,7 @@ public class TaskDetectService extends Service {
         String flag = event.editModel;
         if (QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
-            // 左
+            // 左侧底部
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
                 QuickGestureWindowManager.removeSwipWindow(this, 1);
                 QuickGestureWindowManager.removeSwipWindow(this, 2);
@@ -422,7 +422,7 @@ public class TaskDetectService extends Service {
                         .createFloatLeftTopWindow(this);
                 Log.e("####################", "增加");
             }
-            // 右
+            // 右侧底部
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
                 QuickGestureWindowManager.removeSwipWindow(this, -1);
                 QuickGestureWindowManager.removeSwipWindow(this, -2);
@@ -434,6 +434,17 @@ public class TaskDetectService extends Service {
                         .createFloatRightCenterWindow(this);
                 QuickGestureWindowManager
                         .createFloatRightTopWindow(this);
+            }
+            // 左侧中部
+            if (!AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
+            } else {
+
+            }
+            // 右侧中部
+            if (!AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
+
+            } else {
+
             }
         }
 
