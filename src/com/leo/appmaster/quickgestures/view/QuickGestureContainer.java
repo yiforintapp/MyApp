@@ -1,8 +1,11 @@
 
 package com.leo.appmaster.quickgestures.view;
 
+import java.util.List;
+
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.utils.BitmapUtils;
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -13,9 +16,15 @@ import android.animation.ObjectAnimator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -45,7 +54,8 @@ public class QuickGestureContainer extends FrameLayout {
     private float mTouchDownX, mTouchDownY;
     private float mRotateDegree;
 
-    private boolean mSnaping;
+    private volatile boolean mEditing;
+    private  boolean mSnaping;
     private int mFullRotateDuration = 300;
 
     public QuickGestureContainer(Context context) {
@@ -63,15 +73,32 @@ public class QuickGestureContainer extends FrameLayout {
                     @Override
                     public boolean onSingleTapUp(MotionEvent e) {
                         LeoLog.d(TAG, "onSingleTapUp");
-                        QuickGestureLayout gestureLayout = null;
-                        if (mCurrentGestureType == GType.DymicLayout) {
-                            gestureLayout = mDymicLayout;
-                        } else if (mCurrentGestureType == GType.MostUsedLayout) {
-                            gestureLayout = mMostUsedLayout;
+
+                        double offset2CfC = (double) Math.sqrt(Math.pow((e.getX() - 0), 2)
+                                + Math.pow((e.getY() - mSelfHeight), 2));
+
+                        if (offset2CfC > (mDymicLayout.getOuterRadius() + 200)) {
+                            if (mEditing) {
+                                // TODO leave edit mode
+                                leaveEditMode();
+                            } else {
+                                ((Activity) QuickGestureContainer.this.getContext())
+                                        .onBackPressed();
+                                // TODO close quick gesture
+
+                            }
+
                         } else {
-                            gestureLayout = mSwitcherLayout;
+                            QuickGestureLayout gestureLayout = null;
+                            if (mCurrentGestureType == GType.DymicLayout) {
+                                gestureLayout = mDymicLayout;
+                            } else if (mCurrentGestureType == GType.MostUsedLayout) {
+                                gestureLayout = mMostUsedLayout;
+                            } else {
+                                gestureLayout = mSwitcherLayout;
+                            }
+                            gestureLayout.checkItemClick(e.getX(), e.getY());
                         }
-                        gestureLayout.checkItemClick(e.getX(), e.getY());
                         return super.onSingleTapUp(e);
                     }
 
@@ -80,21 +107,22 @@ public class QuickGestureContainer extends FrameLayout {
                             float velocityY) {
                         LeoLog.d(TAG, "onFling: velocityX = " + velocityX + "  velocityY = "
                                 + velocityY);
+                        if (!mEditing) {
+                            if (mOrientation == Orientation.Left) {
+                                if (velocityX > 0 && velocityY > 0
+                                        && (velocityX > 300 || velocityY > 300)) {
+                                    snapToPrevious();
+                                    return true;
+                                }
 
-                        if (mOrientation == Orientation.Left) {
-                            if (velocityX > 0 && velocityY > 0
-                                    && (velocityX > 300 || velocityY > 300)) {
-                                snapToPrevious();
-                                return true;
+                                if (velocityX < 0 && velocityY < 0
+                                        && (velocityX < -300 || velocityY < -300)) {
+                                    snapToNext();
+                                    return true;
+                                }
+                            } else {
+                                // TODO
                             }
-
-                            if (velocityX < 0 && velocityY < 0
-                                    && (velocityX < -300 || velocityY < -300)) {
-                                snapToNext();
-                                return true;
-                            }
-                        } else {
-                            // TODO
                         }
 
                         return super.onFling(e1, e2, velocityX, velocityY);
@@ -103,18 +131,70 @@ public class QuickGestureContainer extends FrameLayout {
                     @Override
                     public void onLongPress(MotionEvent e) {
                         LeoLog.d(TAG, "onLongPress");
-                        QuickGestureLayout gestureLayout = null;
-                        if (mCurrentGestureType == GType.DymicLayout) {
-                            gestureLayout = mDymicLayout;
-                        } else if (mCurrentGestureType == GType.MostUsedLayout) {
-                            gestureLayout = mMostUsedLayout;
-                        } else {
-                            gestureLayout = mSwitcherLayout;
+                        if (!mEditing) {
+                            QuickGestureLayout gestureLayout = null;
+                            if (mCurrentGestureType == GType.DymicLayout) {
+                                gestureLayout = mDymicLayout;
+                            } else if (mCurrentGestureType == GType.MostUsedLayout) {
+                                gestureLayout = mMostUsedLayout;
+                            } else {
+                                gestureLayout = mSwitcherLayout;
+                            }
+                            gestureLayout.checkItemLongClick(e.getX(), e.getY());
+                            super.onLongPress(e);
                         }
-                        gestureLayout.checkItemLongClick(e.getX(), e.getY());
-                        super.onLongPress(e);
                     }
+
                 });
+
+    }
+
+    private void leaveEditMode() {
+        mEditing = false;
+        mDymicLayout.leaveEditMode();
+        mMostUsedLayout.leaveEditMode();
+        mSwitcherLayout.leaveEditMode();
+    }
+
+    public boolean isEditing() {
+        return mEditing;
+    }
+
+    @Override
+    public boolean onDragEvent(DragEvent event) {
+        ClipData data = event.getClipData();
+        mEditing = true;
+        switch (event.getAction()) {
+            case DragEvent.ACTION_DRAG_STARTED: {
+                LeoLog.i(TAG, "ACTION_DRAG_STARTED");
+                break;
+            }
+            case DragEvent.ACTION_DRAG_ENDED: {
+                LeoLog.i(TAG, "ACTION_DRAG_ENDED");
+                break;
+            }
+            case DragEvent.ACTION_DRAG_LOCATION: {
+                LeoLog.i(TAG, "ACTION_DRAG_LOCATION: x = " + event.getX() + "  y = " + event.getY());
+                break;
+            }
+            case DragEvent.ACTION_DROP: {
+                Log.i(TAG, "ACTION_DROP");
+                break;
+            }
+            case DragEvent.ACTION_DRAG_ENTERED: {
+                LeoLog.i(TAG, "ACTION_DRAG_ENTERED ");
+                break;
+            }
+
+            case DragEvent.ACTION_DRAG_EXITED: {
+                LeoLog.i(TAG, "ACTION_DRAG_EXITED ");
+                break;
+            }
+            default:
+                Log.i(TAG, "other drag event: " + event);
+                break;
+        }
+        return true;
 
     }
 
@@ -144,16 +224,34 @@ public class QuickGestureContainer extends FrameLayout {
         float moveX, moveY;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mTouchDownX = event.getX();
-                mTouchDownY = event.getY();
-                onTouchDown();
+                if (mEditing) {
+                    LeoLog.d(TAG, "ACTION_DOWN in editing ");
+                    QuickGestureLayout gestureLayout = null;
+                    if (mCurrentGestureType == GType.DymicLayout) {
+                        gestureLayout = mDymicLayout;
+                    } else if (mCurrentGestureType == GType.MostUsedLayout) {
+                        gestureLayout = mMostUsedLayout;
+                    } else {
+                        gestureLayout = mSwitcherLayout;
+                    }
+                    gestureLayout.checkActionDownInEditing(event.getX(), event.getY());
+                } else {
+                    mTouchDownX = event.getX();
+                    mTouchDownY = event.getY();
+                    onTouchDown();
+                }
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                moveX = event.getX();
-                moveY = event.getY();
-                computeRotateDegree(mTouchDownX, mTouchDownY, moveX, moveY);
-                onTouchMove();
+                if (mEditing) {
+                    LeoLog.d(TAG, "ACTION_MOVE in editing ");
+
+                } else {
+                    moveX = event.getX();
+                    moveY = event.getY();
+                    computeRotateDegree(mTouchDownX, mTouchDownY, moveX, moveY);
+                    onTouchMove();
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 onTouchUp();
@@ -402,7 +500,7 @@ public class QuickGestureContainer extends FrameLayout {
         va.start();
     }
 
-    public void fillGestureItem(GType type, BaseInfo[] infos) {
+    public void fillGestureItem(GType type, List<? extends BaseInfo> infos) {
         if (infos == null) {
             LeoLog.e(TAG, "fillGestureItem, infos is null");
             return;
@@ -418,21 +516,29 @@ public class QuickGestureContainer extends FrameLayout {
 
         if (targetLayout != null) {
             targetLayout.removeAllViews();
-            TextView tv = null;
+            GestureItemView tv = null;
             QuickGestureLayout.LayoutParams lp = null;
             BaseInfo info = null;
-            for (int i = 0; i < infos.length; i++) {
+            int iconSize = targetLayout.getIconSize();
+            for (int i = 0; i < infos.size(); i++) {
                 if (i >= 9) {
                     break;
                 }
-                tv = new TextView(getContext());
+                tv = new GestureItemView(getContext());
                 lp = new QuickGestureLayout.LayoutParams(
-                        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                        targetLayout.getItemSize(), targetLayout.getItemSize());
                 lp.position = i;
+                tv.setGravity(Gravity.CENTER_HORIZONTAL);
                 tv.setLayoutParams(lp);
-                info = infos[i];
+
+                info = infos.get(i);
                 tv.setText(info.label);
-                tv.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null, null);
+                tv.setTextSize(12);
+                info.icon.setBounds(0, 0, iconSize, iconSize);
+                tv.setCompoundDrawables(null, info.icon, null, null);
+                if (info.eventNumber > 0) {
+                    tv.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+                }
                 tv.setTag(info);
                 targetLayout.addView(tv);
             }

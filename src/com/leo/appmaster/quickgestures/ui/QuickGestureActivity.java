@@ -337,12 +337,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         if ((Integer) arg0.getTag() == 0) {
             if (!arg1) {
                 mFloatWindowService.stopFloatWindow();
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, 1);
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, 2);
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, 3);
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, -1);
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, -2);
-                QuickGestureWindowManager.removeSwipWindow(QuickGestureActivity.this, -3);
             } else {
                 if (!mPre.getSwitchOpenQuickGesture()) {
                     mFloatWindowService.startFloatWindow();
