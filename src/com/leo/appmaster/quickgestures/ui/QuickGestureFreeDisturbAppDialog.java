@@ -73,9 +73,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                 FreeDisturbAppInfo selectInfl = (FreeDisturbAppInfo) arg1.getTag();
                 if (selectInfl.isFreeDisturb) {
                     selectInfl.isFreeDisturb = false;
-                    
-                    
-                    
+
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(false);
                 } else {
@@ -106,7 +104,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         // 打扰的应用
         List<FreeDisturbAppInfo> mDisturbList = new ArrayList<FreeDisturbAppInfo>();
         // 免打扰的应用
-        ArrayList<FreeDisturbAppInfo> freeDisturbApp = new ArrayList<FreeDisturbAppInfo>();
+        List<FreeDisturbAppInfo> freeDisturbApp = new ArrayList<FreeDisturbAppInfo>();
         String packageName = AppMasterPreference.getInstance(mContext)
                 .getFreeDisturbAppPackageName();
         if (AppMasterPreference.PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME
@@ -130,9 +128,16 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     appInfo.isFreeDisturb = false;
                     mDisturbList.add(appInfo);
                 }
+            } else {
+                appInfo.isFreeDisturb = false;
+                mDisturbList.add(appInfo);
             }
         }
-        freeDisturbApp.addAll(mDisturbList);
+        if (freeDisturbApp != null && freeDisturbApp.size() > 0) {
+            freeDisturbApp.addAll(mDisturbList);
+        } else {
+            freeDisturbApp = mDisturbList;
+        }
         int rowCount = mContext.getResources().getInteger(R.integer.gridview_row_count);
         mGridView.setDatas(freeDisturbApp, 4, rowCount);
     }

@@ -23,6 +23,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -31,6 +32,8 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.quickgestures.QuickGestureWindowManager;
 import com.leo.appmaster.ui.Traffic;
@@ -67,8 +70,9 @@ public class TaskDetectService extends Service {
     private TaskChangeHandler mLockHandler;
     private TaskDetectBinder mBinder = new TaskDetectBinder();
     private AppMasterPreference sp_traffic;
-    private TimerTask mFloatWindowTask;
+    private FloatWindowTask mFloatWindowTask;
     private Timer timer;
+    private Handler mHandler;
 
     public class TaskDetectBinder extends Binder {
         public TaskDetectService getService() {
@@ -90,6 +94,9 @@ public class TaskDetectService extends Service {
         flowDetecTask = new FlowTask();
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
+        LeoEventBus
+                .getDefaultBus().register(this);
+        mHandler=new Handler();
         super.onCreate();
     }
 
@@ -99,7 +106,7 @@ public class TaskDetectService extends Service {
             startDetect();
         }
         // 创建悬浮窗
-//        startFloatWindowTask();
+        startFloatWindowTask();
         return START_STICKY;
     }
 
@@ -151,9 +158,8 @@ public class TaskDetectService extends Service {
     private void startFloatWindowTask() {
         stopFloatWindowTask();
         mFloatWindowTask = new FloatWindowTask();
-        mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1000,
+        mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 2000,
                 TimeUnit.MILLISECONDS);
-        Log.e("#############", "启动!");
     }
 
     private void stopFloatWindowTask() {
@@ -161,7 +167,6 @@ public class TaskDetectService extends Service {
             mFloatWindowFuture.cancel(false);
             mFloatWindowFuture = null;
             mFloatWindowTask = null;
-            Log.e("#############", "停止!");
         }
     }
 
@@ -383,25 +388,46 @@ public class TaskDetectService extends Service {
 
     }
 
-    private class FloatWindowTask extends TimerTask {
-
-        @Override
+    private class FloatWindowTask implements Runnable {
         public void run() {
-            // 创建悬浮窗
-            createSwipWindowing();
-            Log.e("#############", "创建!");
+            QuickGestureWindowManager.createFloatWindow(mHandler,getApplicationContext());
         }
-
     }
 
-    // 创建悬浮窗
-    private void createSwipWindowing() {
-        Log.e("#############", "正在创建。。。。");
-        // if (!MyWindowManager.isSwipShowing()) {
-        // 透明悬浮窗
-//        MyWindowManager.createSwipWindow(getApplicationContext());
-        // MyWindowManager.createSwipWindow(getApplicationContext(),
-        // "left_bottom");
-        // }
+
+    public void onEventMainThread(PrivacyDeletEditEvent event) {
+        String flag = event.editModel;
+        if (QuickGestureWindowManager.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
+                .equals(flag)) {
+            // QuickGestureWindowManager.createFloatWindow(mHandler,
+            // getApplicationContext());
+            // 左
+            if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
+                QuickGestureWindowManager.removeSwipWindow(this, 1);
+                QuickGestureWindowManager.removeSwipWindow(this, 2);
+                QuickGestureWindowManager.removeSwipWindow(this, 3);
+            } else {
+                QuickGestureWindowManager
+                        .createFloatLeftBottomWindow(this);
+                QuickGestureWindowManager
+                        .createFloatLeftCenterWindow(this);
+                QuickGestureWindowManager
+                        .createFloatLeftTopWindow(this);
+            }
+            // 右
+            if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
+                QuickGestureWindowManager.removeSwipWindow(this, -1);
+                QuickGestureWindowManager.removeSwipWindow(this, -2);
+                QuickGestureWindowManager.removeSwipWindow(this, -3);
+            } else {
+                QuickGestureWindowManager
+                        .createFloatRightBottomWindow(this);
+                QuickGestureWindowManager
+                        .createFloatRightCenterWindow(this);
+                QuickGestureWindowManager
+                        .createFloatRightTopWindow(this);
+            }
+        }
+
     }
 }

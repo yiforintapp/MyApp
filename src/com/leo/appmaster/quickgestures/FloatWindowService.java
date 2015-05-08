@@ -122,7 +122,7 @@ public class FloatWindowService extends Service {
     class RefreshTask extends TimerTask {
         @Override
         public void run() {
-            QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
+//            QuickGestureWindowManager.createFloatWindow(mHandler, getApplicationContext());
             // 当前界面不是桌面，且有悬浮窗显示，则移除悬浮窗。
             // else if (!isHome() && MyWindowManager.isWindowShowing()) {
             // handler.post(new Runnable() {
