@@ -197,8 +197,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         private Context mContext;
         private int count = 0;
 
-        // private List<QuickGestureSettingBean> mBeans;
-
         public QuickGestureAdapter(Context context, List<QuickGestureSettingBean> beans) {
             layoutInflater = LayoutInflater.from(context);
             mContext = context;

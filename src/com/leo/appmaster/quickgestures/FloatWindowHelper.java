@@ -32,6 +32,8 @@ import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 public class FloatWindowHelper {
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_finish_notification";
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_slide_time_setting_finish_notification";
+    public static final int ONTUCH_LEFT_FLAG = -1;
+    public static final int ONTUCH_RIGHT_FLAG = 1;
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,
             mLeftCenterCenterView;
     private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView,
@@ -103,7 +105,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 1);
-                                onTouchAreaShowQuick();
+                                onTouchAreaShowQuick(-1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -162,7 +164,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 2);
-                                onTouchAreaShowQuick();
+                                onTouchAreaShowQuick(-1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -196,7 +198,7 @@ public class FloatWindowHelper {
         }
     }
 
-    // ×××××××××××××××××××××××××××××××××××左侧中部×××××××××××××××××××××××
+    // 左侧中部
     /**
      * must call in UI thread
      * 
@@ -222,15 +224,15 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftCenterCenterParams.width / 4 || moveY > mLeftCenterCenterParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeSwipWindow(mContext, 2);
-                                onTouchAreaShowQuick();
+                                removeSwipWindow(mContext, 4);
+                                onTouchAreaShowQuick(-1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 5
                                     || Math.abs(startY - event.getRawY()) < 5) {
-                                removeSwipWindow(mContext, 2);
+                                removeSwipWindow(mContext, 4);
                             }
                             break;
                     }
@@ -257,7 +259,7 @@ public class FloatWindowHelper {
         }
     }
 
-    // 左上××××××××××××××××××××××××××××××××××××××××××××××××
+    // 左上
     /**
      * must call in UI thread
      * 
@@ -284,7 +286,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 3);
-                                onTouchAreaShowQuick();
+                                onTouchAreaShowQuick(-1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -345,7 +347,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -1);
-                                onTouchAreaShowQuick();
+                                onTouchAreaShowQuick(1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -403,7 +405,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -2);
-                                onTouchAreaShowQuick();
+                                onTouchAreaShowQuick(1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -435,7 +437,7 @@ public class FloatWindowHelper {
         }
     }
 
-    // ×××××××××××××××××××××××××右侧中部××××××××××××××××××××××××××××××××××
+    // 右侧中部
     /**
      * must call in UI thread
      * 
@@ -461,15 +463,15 @@ public class FloatWindowHelper {
                             if ((moveX > mRightCenterCenterParams.width / 4 || moveY > mRightCenterCenterParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeSwipWindow(mContext, -2);
-                                onTouchAreaShowQuick();
+                                removeSwipWindow(mContext, -4);
+                                onTouchAreaShowQuick(1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 5
                                     || Math.abs(startY - event.getRawY()) < 5) {
-                                removeSwipWindow(mContext, -2);
+                                removeSwipWindow(mContext, -4);
                             }
                             break;
                     }
@@ -494,7 +496,7 @@ public class FloatWindowHelper {
         }
     }
 
-    // 右上×××××××××××××××××××××××××××××××××××××××××××××××××××
+    // 右上
     /**
      * must call in UI thread
      * 
@@ -521,7 +523,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -3);
-                                onTouchAreaShowQuick();
+                                onTouchAreaShowQuick(1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -579,7 +581,10 @@ public class FloatWindowHelper {
                 mLeftTopView = null;
             }
         } else if (flag == 4) {
-
+            // 左侧中部
+            if (mLeftCenterCenterView != null) {
+                windowManager.removeView(mLeftCenterCenterView);
+            }
         } else if (flag == -1) {
             // 右下
             if (mRightBottomView != null) {
@@ -599,7 +604,10 @@ public class FloatWindowHelper {
                 mRightTopView = null;
             }
         } else if (flag == -4) {
-
+            // 右侧中部
+            if (mRightCenterCenterView != null) {
+                windowManager.removeView(mRightCenterCenterView);
+            }
         }
     }
 
@@ -697,6 +705,10 @@ public class FloatWindowHelper {
         return mLeftTopView != null;
     }
 
+    public static boolean isLeftCenterCenterShowing() {
+        return mLeftCenterCenterView != null;
+    }
+
     public static boolean isRightBottomShowing() {
         return mRightBottomView != null;
     }
@@ -709,8 +721,8 @@ public class FloatWindowHelper {
         return mRightTopView != null;
     }
 
-    public static boolean isFanShowing() {
-        return isFanShowing;
+    public static boolean isRightCenterCenterShowing() {
+        return mRightCenterCenterView != null;
     }
 
     private static WindowManager getWindowManager(Context context) {
@@ -731,7 +743,9 @@ public class FloatWindowHelper {
                 || !FloatWindowHelper.isLeftTopShowing()
                 || !FloatWindowHelper.isRightBottomShowing()
                 || !FloatWindowHelper.isRightCenterShowing()
-                || !FloatWindowHelper.isRightTopShowing()) {
+                || !FloatWindowHelper.isRightTopShowing()
+                || !FloatWindowHelper.isLeftCenterCenterShowing()
+                || !FloatWindowHelper.isRightCenterCenterShowing()) {
             AppMasterPreference pre = AppMasterPreference
                     .getInstance(context);
             // 透明悬浮窗
@@ -838,8 +852,12 @@ public class FloatWindowHelper {
         }
     }
 
-    private static void onTouchAreaShowQuick() {
+    private static void onTouchAreaShowQuick(int flag) {
         // 滑动显示快捷
-
+        if (flag == -1) {
+            // 左边划出
+        } else if (flag == 1) {
+         // 右边划出
+        }
     }
 }

@@ -4,39 +4,28 @@ package com.leo.appmaster.quickgestures.ui;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockListActivity.DefalutAppComparator;
-import com.leo.appmaster.applocker.AppLockListActivity.InstallTimeComparator;
-import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
 import com.leo.appmaster.quickgestures.view.FreeDisturbPagedGridView;
-import com.leo.appmaster.ui.LockImageView;
-import com.leo.appmaster.ui.PagedGridView;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 /**
