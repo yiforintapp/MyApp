@@ -44,6 +44,7 @@ public class QuickGestureContainer extends FrameLayout {
         DymicLayout, MostUsedLayout, SwitcherLayout;
     }
 
+    private RightGesturePopupWindow mPopWindow;
     private QuickGestureLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
     private CornerTabs mCornerTabs;
     private GType mCurrentGestureType = GType.DymicLayout;
@@ -55,7 +56,7 @@ public class QuickGestureContainer extends FrameLayout {
     private float mRotateDegree;
 
     private volatile boolean mEditing;
-    private  boolean mSnaping;
+    private boolean mSnaping;
     private int mFullRotateDuration = 300;
 
     public QuickGestureContainer(Context context) {
@@ -82,10 +83,10 @@ public class QuickGestureContainer extends FrameLayout {
                                 // TODO leave edit mode
                                 leaveEditMode();
                             } else {
-                                ((Activity) QuickGestureContainer.this.getContext())
-                                        .onBackPressed();
                                 // TODO close quick gesture
-
+                                if (mPopWindow != null) {
+                                    mPopWindow.dismiss();
+                                }
                             }
 
                         } else {
@@ -622,6 +623,10 @@ public class QuickGestureContainer extends FrameLayout {
             onTouchDown();
             snapToNext();
         }
+    }
+
+    public void setPopWindow(RightGesturePopupWindow rightGesturePopupWindow) {
+        mPopWindow = rightGesturePopupWindow;
     }
 
 }

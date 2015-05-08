@@ -29,7 +29,6 @@ import android.widget.ImageView;
 public class QuickGesturePopup extends Activity {
 
     private QuickGestureContainer mContainer;
-    QuickGestureLayout mDymixLayout, mMostUsedLayout, mSwitcherLayout;
     private ImageView iv0;
     private ImageView iv1;
     private ImageView iv2;
@@ -43,9 +42,6 @@ public class QuickGesturePopup extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture);
-        mDymixLayout = (QuickGestureLayout) findViewById(R.id.qg_dymic_layout);
-        mMostUsedLayout = (QuickGestureLayout) findViewById(R.id.qg_mostused_layout);
-        mSwitcherLayout = (QuickGestureLayout) findViewById(R.id.qg_switcher_layout);
         mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
 
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
@@ -64,14 +60,6 @@ public class QuickGesturePopup extends Activity {
 
     private void fillQg3() {
         mContainer.fillGestureItem(GType.SwitcherLayout, list.subList(17, 24));
-    }
-
-    public void removeItem(View v) {
-        mDymixLayout.removeView(iv2);
-    }
-
-    public void addItem(View v) {
-        mDymixLayout.addView(iv2);
     }
 
     @Override
