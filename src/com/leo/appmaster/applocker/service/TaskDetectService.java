@@ -11,9 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Service;
@@ -29,16 +26,12 @@ import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 //import android.app.ActivityManager.AppTask;
@@ -401,7 +394,12 @@ public class TaskDetectService extends Service {
 
     private class FloatWindowTask implements Runnable {
         public void run() {
-            FloatWindowHelper.createFloatWindow(mHandler, getApplicationContext());
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    FloatWindowHelper.createFloatWindow(getApplicationContext());
+                }
+            });
         }
     }
 
