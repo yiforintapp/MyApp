@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.leo.appmaster.privacy.PrivacyProposalLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/privacy_proposal_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:visibility="invisible" >
+
+    <View
+        android:id="@+id/bg_statusbar"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:background="#4285f4" />
+
+    <com.leo.appmaster.ui.CommonTitleBar
+        android:id="@+id/layout_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bg_statusbar"
+        android:background="@color/app_background" />
+
+    <ScrollView
+        android:id="@+id/proposal_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/layout_title_bar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/transparent"
+        android:scrollbarDefaultDelayBeforeFade="0"
+        android:fadeScrollbars="true" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <RelativeLayout
+                android:id="@+id/top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="266dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:background="@color/white" >
+
+                <TextView
+                    android:id="@+id/proposal_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal"
+                    android:maxLines="3"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:text="@string/privacy_proposal_tip"
+                    android:textColor="#646464"
+                    android:textSize="14dp" />
+
+                <com.leo.appmaster.privacy.PrivacyStatusView
+                    android:id="@+id/proposal_status"
+                    android:layout_width="170dp"
+                    android:layout_height="14dp"
+                    android:layout_above="@id/proposal_tip"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="17dp" />
+
+                <com.leo.appmaster.privacy.PrivacyLevelSmallView
+                    android:id="@+id/proposal_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/proposal_status"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/privacy_suggest_applock"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_below="@id/top_layout"
+                android:layout_marginBottom="@dimen/privacy_suggest_padding"
+                android:layout_marginTop="@dimen/privacy_suggest_padding"
+                android:background="@drawable/privacy_suggest_applock_selector"
+                android:paddingRight="@dimen/privacy_suggest_padding" >
+
+                <ImageView
+                    android:id="@+id/suggest_applock_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/privacy_suggest_padding"
+                    android:layout_marginTop="@dimen/privacy_suggest_padding"
+                    android:src="@drawable/privacy_applock_icon" />
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/privacy_suggest_arrow_padding_top"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/privacy_proposals_arrow" />
+
+                <LinearLayout
+                    android:id="@+id/suggest_applock_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/privacy_suggest_icon_text_margin"
+                    android:layout_toRightOf="@id/suggest_applock_icon"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/suggest_applock_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/privacy_title_applcok"
+                        android:textColor="#4285f4"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/suggest_applock_suggest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/privacy_no_app_lock"
+                        android:textColor="#646464"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/suggest_applock_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:text="@string/privacy_no_app_lock_des"
+                        android:textColor="#a7a7a7"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/privacy_suggest_hide_pic"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_below="@id/privacy_suggest_applock"
+                android:layout_marginBottom="@dimen/privacy_suggest_padding"
+                android:background="@drawable/privacy_suggest_hidepic_selector"
+                android:paddingRight="@dimen/privacy_suggest_padding" >
+
+                <ImageView
+                    android:id="@+id/suggest_hide_pic_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/privacy_suggest_padding"
+                    android:layout_marginTop="@dimen/privacy_suggest_padding"
+                    android:src="@drawable/privacy_hide_pic_icon" />
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/privacy_suggest_arrow_padding_top"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/privacy_proposals_arrow" />
+
+                <LinearLayout
+                    android:id="@+id/suggest_hide_pic_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/privacy_suggest_icon_text_margin"
+                    android:layout_toRightOf="@id/suggest_hide_pic_icon"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/suggest_hide_pic_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/privacy_title_hide_pic"
+                        android:textColor="#4285f4"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/suggest_hide_pic_suggest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/privacy_no_pic_hide"
+                        android:textColor="#646464"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/suggest_hide_pic_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:text="@string/privacy_no_pic_hide_des"
+                        android:textColor="#a7a7a7"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/privacy_suggest_hide_video"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_below="@id/privacy_suggest_hide_pic"
+                android:layout_marginBottom="@dimen/privacy_suggest_padding"
+                android:background="@drawable/privacy_suggest_hidevideo_selector"
+                android:paddingRight="@dimen/privacy_suggest_padding" >
+
+                <ImageView
+                    android:id="@+id/suggest_hide_video_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/privacy_suggest_padding"
+                    android:layout_marginTop="@dimen/privacy_suggest_padding"
+                    android:src="@drawable/privacy_hide_video_icon" />
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/privacy_suggest_arrow_padding_top"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/privacy_proposals_arrow" />
+
+                <LinearLayout
+                    android:id="@+id/suggest_hide_video_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/privacy_suggest_icon_text_margin"
+                    android:layout_toRightOf="@id/suggest_hide_video_icon"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/suggest_hide_video_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/privacy_title_hide_video"
+                        android:textColor="#4285f4"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/suggest_hide_video_suggest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/privacy_no_video_hide"
+                        android:textColor="#646464"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/suggest_hide_video_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:text="@string/privacy_no_video_hide_des"
+                        android:textColor="#a7a7a7"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/privacy_suggest_privacy_contact"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_below="@id/privacy_suggest_hide_video"
+                android:layout_marginBottom="@dimen/privacy_suggest_padding"
+                android:background="@drawable/privacy_suggest_contact_selector"
+                android:paddingRight="@dimen/privacy_suggest_padding" >
+
+                <ImageView
+                    android:id="@+id/suggest_privacy_contact_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/privacy_suggest_padding"
+                    android:layout_marginTop="@dimen/privacy_suggest_padding"
+                    android:src="@drawable/privacy_privacy_contact_icon" />
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/privacy_suggest_arrow_padding_top"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/privacy_proposals_arrow" />
+
+                <LinearLayout
+                    android:id="@+id/suggest_privacy_contact_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/privacy_suggest_icon_text_margin"
+                    android:layout_toRightOf="@id/suggest_privacy_contact_icon"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/suggest_privacy_contact_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/privacy_title_privacy_contact"
+                        android:textColor="#4285f4"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/suggest_privacy_contact_suggest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/privacy_no_privacy_contact"
+                        android:textColor="#646464"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/suggest_privacy_contact_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:text="@string/privacy_no_privacy_contact_des"
+                        android:textColor="#a7a7a7"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</com.leo.appmaster.privacy.PrivacyProposalLayout>

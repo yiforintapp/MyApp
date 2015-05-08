@@ -90,6 +90,10 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     public void setBackArrowVisibility(int visibility) {
         mIvBackArrow.setVisibility(visibility);
     }
+    
+    public void setBackArrowImg(int imgID) {
+        mIvBackArrow.setImageResource(imgID);
+    }
 
     public void setOptionTextVisibility(int visibility) {
         mTvOptionText.setVisibility(visibility);

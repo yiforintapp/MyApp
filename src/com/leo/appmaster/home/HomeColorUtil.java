@@ -38,6 +38,10 @@ public class HomeColorUtil {
         public int toIntColor() {
             return Color.rgb(red, green, blue);
         }
+        
+        public int toIntColorWithAlpha(int alpha) {
+            return Color.argb(alpha, red, green, blue);
+        }
     }
 
 }

@@ -641,6 +641,7 @@
     <string name="feed_back_content_guide">您遇到的问题</string>
     <string name="feed_back_email_guide">邮箱</string>
     <string name="feedback_category_guide">问题类型</string>
+   <string name="privacy_proposal_tip">您的隐私等级为%1$s，建议您进行以下操作，以提高您的隐私等级</string>
     <!-- version 2.2 end -->
 
 </resources>
