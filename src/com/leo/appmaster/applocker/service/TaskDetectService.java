@@ -107,10 +107,8 @@ public class TaskDetectService extends Service {
         }
 
         if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
-            // 创建悬浮窗
             startFloatWindow();
         }
-
         return START_STICKY;
     }
 
