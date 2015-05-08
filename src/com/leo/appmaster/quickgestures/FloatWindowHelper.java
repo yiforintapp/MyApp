@@ -1,24 +1,14 @@
 
 package com.leo.appmaster.quickgestures;
 
-import java.io.IOException;
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.PixelFormat;
-import android.os.Handler;
-import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -105,7 +95,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 1);
-                                onTouchAreaShowQuick(-1);
+                                onTouchAreaShowQuick(-1,mLeftBottomView);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -164,7 +154,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 2);
-                                onTouchAreaShowQuick(-1);
+                                onTouchAreaShowQuick(-1,mLeftBottomView);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -225,7 +215,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 4);
-                                onTouchAreaShowQuick(-1);
+                                onTouchAreaShowQuick(-1,mLeftBottomView);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -286,7 +276,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 3);
-                                onTouchAreaShowQuick(-1);
+                                onTouchAreaShowQuick(-1,mLeftBottomView);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -347,7 +337,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -1);
-                                onTouchAreaShowQuick(1);
+                                onTouchAreaShowQuick(1,mRightBottomView);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -405,7 +395,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -2);
-                                onTouchAreaShowQuick(1);
+                                onTouchAreaShowQuick(1,mRightBottomView);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -464,7 +454,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -4);
-                                onTouchAreaShowQuick(1);
+                                onTouchAreaShowQuick(1,mRightBottomView);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -523,7 +513,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -3);
-                                onTouchAreaShowQuick(1);
+                                onTouchAreaShowQuick(1,mRightBottomView);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -584,6 +574,7 @@ public class FloatWindowHelper {
             // 左侧中部
             if (mLeftCenterCenterView != null) {
                 windowManager.removeView(mLeftCenterCenterView);
+                mLeftCenterCenterView = null;
             }
         } else if (flag == -1) {
             // 右下
@@ -607,6 +598,7 @@ public class FloatWindowHelper {
             // 右侧中部
             if (mRightCenterCenterView != null) {
                 windowManager.removeView(mRightCenterCenterView);
+                mRightCenterCenterView = null;
             }
         }
     }
@@ -852,12 +844,12 @@ public class FloatWindowHelper {
         }
     }
 
-    private static void onTouchAreaShowQuick(int flag) {
+    private static void onTouchAreaShowQuick(int flag,View view) {
         // 滑动显示快捷
         if (flag == -1) {
             // 左边划出
         } else if (flag == 1) {
-         // 右边划出
+            // 右边划出
         }
     }
 }
