@@ -129,8 +129,8 @@ public class FloatWindowHelper {
                 // mLeftBottomParams.gravity = Gravity.LEFT | Gravity.BOTTOM;
                 mLeftBottomParams.x = -(width / 2);
                 mLeftBottomParams.y = (height / 2);
-                mLeftBottomParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
-                mLeftBottomParams.format = PixelFormat.RGBA_8888;
+                mLeftBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mLeftBottomParams.format = PixelFormat.OPAQUE;
                 mLeftBottomParams.flags =
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH

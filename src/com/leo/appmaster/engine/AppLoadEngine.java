@@ -391,7 +391,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                 intent.setPackage(packageName);
                 List<ResolveInfo> apps = mPm.queryIntentActivities(intent,
                         0);
-                ResolveInfo info = apps.get(0);
+                ResolveInfo info = apps.size() > 0 ? apps.get(0) : null;
                 loadAppInfoOfPackage(packageName, info != null ? info.activityInfo.name : "",
                         applicationInfo, appInfo);
                 try {

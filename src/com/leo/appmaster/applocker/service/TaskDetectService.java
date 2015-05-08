@@ -397,7 +397,7 @@ public class TaskDetectService extends Service {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    FloatWindowHelper.createFloatWindow(getApplicationContext());
+//                    FloatWindowHelper.createFloatWindow(getApplicationContext());
                 }
             });
         }
