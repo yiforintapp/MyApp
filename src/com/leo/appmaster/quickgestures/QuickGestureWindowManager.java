@@ -567,7 +567,6 @@ public class QuickGestureWindowManager {
             if (mLeftBottomView != null) {
                 windowManager.removeView(mLeftBottomView);
                 mLeftBottomView = null;
-                Log.e("##########", "左下不为空");
             } else {
                 Log.e("##########", "左下为空");
             }
