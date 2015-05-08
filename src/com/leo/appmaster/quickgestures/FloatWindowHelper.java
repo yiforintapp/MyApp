@@ -103,7 +103,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 1);
-                                Toast.makeText(mContext, "碰到我的区域了！", Toast.LENGTH_SHORT).show();
+                                onTouchAreaShowQuick();
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -130,13 +130,6 @@ public class FloatWindowHelper {
                 mLeftBottomParams.format = PixelFormat.RGBA_8888;
                 mLeftBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
-
-                // mLeftBottomParams.flags =
-                // WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                // | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                // | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                // | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
-
             }
             windowManager.addView(mLeftBottomView, mLeftBottomParams);
         }
@@ -169,7 +162,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 2);
-                                Toast.makeText(mContext, "碰到我的区域了！", Toast.LENGTH_SHORT).show();
+                                onTouchAreaShowQuick();
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -230,7 +223,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 2);
-                                Toast.makeText(mContext, "碰到我的区域了！", Toast.LENGTH_SHORT).show();
+                                onTouchAreaShowQuick();
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -291,7 +284,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, 3);
-                                Toast.makeText(mContext, "碰到我的区域了！", Toast.LENGTH_SHORT).show();
+                                onTouchAreaShowQuick();
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -352,7 +345,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -1);
-                                Toast.makeText(mContext, "碰到我的区域了！", Toast.LENGTH_SHORT).show();
+                                onTouchAreaShowQuick();
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -410,7 +403,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -2);
-                                Toast.makeText(mContext, "碰到我的区域了！", Toast.LENGTH_SHORT).show();
+                                onTouchAreaShowQuick();
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -469,7 +462,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -2);
-                                Toast.makeText(mContext, "碰到我的区域了！", Toast.LENGTH_SHORT).show();
+                                onTouchAreaShowQuick();
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -528,7 +521,7 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 removeSwipWindow(mContext, -3);
-                                Toast.makeText(mContext, "碰到我的区域了！", Toast.LENGTH_SHORT).show();
+                                onTouchAreaShowQuick();
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -572,24 +565,18 @@ public class FloatWindowHelper {
             if (mLeftBottomView != null) {
                 windowManager.removeView(mLeftBottomView);
                 mLeftBottomView = null;
-            } else {
-                Log.e("##########", "左下为空");
             }
         } else if (flag == 2) {
             // 左中
             if (mLeftCenterView != null) {
                 windowManager.removeView(mLeftCenterView);
                 mLeftCenterView = null;
-            } else {
-                Log.e("##########", "左中为空");
             }
         } else if (flag == 3) {
             // 左上
             if (mLeftTopView != null) {
                 windowManager.removeView(mLeftTopView);
                 mLeftTopView = null;
-            } else {
-                Log.e("##########", "左上为空");
             }
         } else if (flag == 4) {
 
@@ -598,24 +585,18 @@ public class FloatWindowHelper {
             if (mRightBottomView != null) {
                 windowManager.removeView(mRightBottomView);
                 mRightBottomView = null;
-            } else {
-                Log.e("##########", "右下为空");
             }
         } else if (flag == -2) {
             // 右中
             if (mRightCenterView != null) {
                 windowManager.removeView(mRightCenterView);
                 mRightCenterView = null;
-            } else {
-                Log.e("##########", "右中为空");
             }
         } else if (flag == -3) {
             // 右上
             if (mRightTopView != null) {
                 windowManager.removeView(mRightTopView);
                 mRightTopView = null;
-            } else {
-                Log.e("##########", "右上为空");
             }
         } else if (flag == -4) {
 
@@ -857,4 +838,8 @@ public class FloatWindowHelper {
         }
     }
 
+    private static void onTouchAreaShowQuick() {
+        // 滑动显示快捷
+
+    }
 }
