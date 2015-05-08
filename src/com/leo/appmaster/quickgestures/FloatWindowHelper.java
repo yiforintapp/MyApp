@@ -44,7 +44,7 @@ public class FloatWindowHelper {
     private static WindowManager mWindowManager;
 
     private static RightGesturePopupWindow mRightPopup;
-    private static boolean mPopWindowShowing;
+    public static boolean mPopWindowShowing;
 
     private static float startX;
     private static float startY;

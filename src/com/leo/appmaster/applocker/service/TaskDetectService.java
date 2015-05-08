@@ -405,6 +405,7 @@ public class TaskDetectService extends Service {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    if(!FloatWindowHelper.mPopWindowShowing){
                     boolean isJustHome = AppMasterPreference.getInstance(getApplicationContext())
                             .getSlideTimeJustHome();
                     boolean isAppsAndHome = AppMasterPreference
@@ -424,6 +425,7 @@ public class TaskDetectService extends Service {
                             removeAllFloatWindow();
                         }
                     }
+                }
                 }
             });
         }
