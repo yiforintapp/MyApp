@@ -3,6 +3,7 @@ package com.leo.appmaster.quickgestures;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -94,8 +95,9 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeSwipWindow(mContext, 1);
-                                onTouchAreaShowQuick(-1,mLeftBottomView);
+                                onTouchAreaShowQuick(-1, mLeftBottomView);
+                                // removeSwipWindow(mContext, 1);
+                                deleteLeftAllFloatWindow(mContext);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -153,8 +155,9 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftCenterParams.width / 4 || moveY > mLeftCenterParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeSwipWindow(mContext, 2);
-                                onTouchAreaShowQuick(-1,mLeftBottomView);
+                                onTouchAreaShowQuick(-1, mLeftBottomView);
+                                // removeSwipWindow(mContext, 2);
+                                deleteLeftAllFloatWindow(mContext);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -214,8 +217,9 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftCenterCenterParams.width / 4 || moveY > mLeftCenterCenterParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeSwipWindow(mContext, 4);
-                                onTouchAreaShowQuick(-1,mLeftBottomView);
+                                onTouchAreaShowQuick(-1, mLeftBottomView);
+                                // removeSwipWindow(mContext, 4);
+                                deleteLeftAllFloatWindow(mContext);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -275,8 +279,9 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftTopParams.width / 4 || moveY > mLeftTopParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeSwipWindow(mContext, 3);
-                                onTouchAreaShowQuick(-1,mLeftBottomView);
+                                onTouchAreaShowQuick(-1, mLeftBottomView);
+                                // removeSwipWindow(mContext, 3);
+                                deleteLeftAllFloatWindow(mContext);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -336,8 +341,9 @@ public class FloatWindowHelper {
                             if ((moveX > mRightBottomParams.width / 4 || moveY > mRightBottomParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeSwipWindow(mContext, -1);
-                                onTouchAreaShowQuick(1,mRightBottomView);
+                                onTouchAreaShowQuick(1, mRightBottomView);
+                                // removeSwipWindow(mContext, -1);
+                                deleteRightAllFloatWindow(mContext);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -394,8 +400,9 @@ public class FloatWindowHelper {
                             if ((moveX > mRightCenterParams.width / 4 || moveY > mRightCenterParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeSwipWindow(mContext, -2);
-                                onTouchAreaShowQuick(1,mRightBottomView);
+                                onTouchAreaShowQuick(1, mRightBottomView);
+                                // removeSwipWindow(mContext, -2);
+                                deleteRightAllFloatWindow(mContext);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -453,8 +460,9 @@ public class FloatWindowHelper {
                             if ((moveX > mRightCenterCenterParams.width / 4 || moveY > mRightCenterCenterParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeSwipWindow(mContext, -4);
-                                onTouchAreaShowQuick(1,mRightBottomView);
+                                onTouchAreaShowQuick(1, mRightBottomView);
+                                // removeSwipWindow(mContext, -4);
+                                deleteRightAllFloatWindow(mContext);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -512,8 +520,9 @@ public class FloatWindowHelper {
                             if ((moveX > mRightTopParams.width / 4 || moveY > mRightTopParams.height / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeSwipWindow(mContext, -3);
-                                onTouchAreaShowQuick(1,mRightBottomView);
+                                onTouchAreaShowQuick(1, mRightBottomView);
+                                // removeSwipWindow(mContext, -3);
+                                deleteRightAllFloatWindow(mContext);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -601,6 +610,28 @@ public class FloatWindowHelper {
                 mRightCenterCenterView = null;
             }
         }
+    }
+
+    // 删除除左侧底部所有悬浮窗
+    private static void deleteLeftAllFloatWindow(Context context) {
+        removeSwipWindow(context, 2);
+        removeSwipWindow(context, 3);
+        removeSwipWindow(context, 4);
+        removeSwipWindow(context, -1);
+        removeSwipWindow(context, -2);
+        removeSwipWindow(context, -3);
+        removeSwipWindow(context, -4);
+    }
+
+    // 删除除右侧底部所有悬浮窗
+    private static void deleteRightAllFloatWindow(Context context) {
+        removeSwipWindow(context, 2);
+        removeSwipWindow(context, 3);
+        removeSwipWindow(context, 4);
+        removeSwipWindow(context, 1);
+        removeSwipWindow(context, -2);
+        removeSwipWindow(context, -3);
+        removeSwipWindow(context, -4);
     }
 
     /**
@@ -844,7 +875,7 @@ public class FloatWindowHelper {
         }
     }
 
-    private static void onTouchAreaShowQuick(int flag,View view) {
+    private static void onTouchAreaShowQuick(int flag, View view) {
         // 滑动显示快捷
         if (flag == -1) {
             // 左边划出

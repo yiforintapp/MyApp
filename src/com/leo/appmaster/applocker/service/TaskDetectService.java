@@ -429,6 +429,7 @@ public class TaskDetectService extends Service {
         }
     }
 
+    // 移除所有悬浮窗
     private void removeAllFloatWindow() {
         FloatWindowHelper.removeSwipWindow(getApplicationContext(), 1);
         FloatWindowHelper.removeSwipWindow(getApplicationContext(), 2);
@@ -440,6 +441,7 @@ public class TaskDetectService extends Service {
         FloatWindowHelper.removeSwipWindow(getApplicationContext(), -4);
     }
 
+    // 当前是否运行免打扰应用
     private boolean isRuningFreeDisturbApp(ActivityManager cctivityManager) {
         boolean flag = false;
         List<RunningTaskInfo> tasks = cctivityManager.getRunningTasks(1);
@@ -487,14 +489,24 @@ public class TaskDetectService extends Service {
             }
             // 左侧中部
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
-            } else {
 
+            } else {
+                FloatWindowHelper
+                        .createFloatLeftCenterCenterWindow(this);
+                if (AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
+                    FloatWindowHelper.removeSwipWindow(this, 2);
+                    FloatWindowHelper.removeSwipWindow(this, 3);
+                }
             }
             // 右侧中部
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
-
+                FloatWindowHelper.removeSwipWindow(this, -1);
             } else {
-
+                FloatWindowHelper.createFloatRightCenterCenterWindow(this);
+                if (AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
+                    FloatWindowHelper.removeSwipWindow(this, -2);
+                    FloatWindowHelper.removeSwipWindow(this, -3);
+                }
             }
         }
 
