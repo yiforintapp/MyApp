@@ -12,6 +12,7 @@ import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -118,24 +119,23 @@ public class FloatWindowHelper {
             });
 
             if (mLeftBottomParams == null) {
-                WindowManager manager = (WindowManager) mContext
-                        .getSystemService(Context.WINDOW_SERVICE);
-                Display display = manager.getDefaultDisplay();
-                int height = display.getHeight();
-                int width = display.getWidth();
+                int height = windowManager.getDefaultDisplay().getWidth();
+                int width = windowManager.getDefaultDisplay().getHeight();
                 mLeftBottomParams = new LayoutParams();
                 mLeftBottomParams.width = (int) mLeftBottomWidth;
                 mLeftBottomParams.height = (int) mLeftBottomHeight;
-                // mLeftBottomParams.gravity = Gravity.LEFT | Gravity.BOTTOM;
                 mLeftBottomParams.x = -(width / 2);
                 mLeftBottomParams.y = (height / 2);
                 mLeftBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
-                mLeftBottomParams.format = PixelFormat.OPAQUE;
-                mLeftBottomParams.flags =
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+                mLeftBottomParams.format = PixelFormat.RGBA_8888;
+                mLeftBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
+                
+//                mLeftBottomParams.flags =   WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+//                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+//                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+//                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND; 
+                
             }
             windowManager.addView(mLeftBottomView, mLeftBottomParams);
         }
@@ -184,11 +184,8 @@ public class FloatWindowHelper {
             });
 
             if (mLeftCenterParams == null) {
-                WindowManager manager = (WindowManager) mContext
-                        .getSystemService(Context.WINDOW_SERVICE);
-                Display display = manager.getDefaultDisplay();
-                float height = display.getHeight();
-                float width = display.getWidth();
+                int height = windowManager.getDefaultDisplay().getWidth();
+                int width = windowManager.getDefaultDisplay().getHeight();
                 mLeftCenterParams = new LayoutParams();
                 mLeftCenterParams.width = (int) mLeftCenterWidth;
                 mLeftCenterParams.height = (int) mLeftCenterHeight;
@@ -196,13 +193,10 @@ public class FloatWindowHelper {
                 mLeftCenterParams.x = (int) -(width / 2);
                 mLeftCenterParams.y = (int) ((height / 2)
                         - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
-                mLeftCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mLeftCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterParams.format = PixelFormat.RGBA_8888;
-                mLeftCenterParams.flags =
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+                mLeftCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
             windowManager.addView(mLeftCenterView, mLeftCenterParams);
         }
@@ -251,11 +245,8 @@ public class FloatWindowHelper {
             });
 
             if (mLeftCenterCenterParams == null) {
-                WindowManager manager = (WindowManager) mContext
-                        .getSystemService(Context.WINDOW_SERVICE);
-                Display display = manager.getDefaultDisplay();
-                float height = display.getHeight();
-                float width = display.getWidth();
+                int height = windowManager.getDefaultDisplay().getWidth();
+                int width = windowManager.getDefaultDisplay().getHeight();
                 mLeftCenterCenterParams = new LayoutParams();
                 mLeftCenterCenterParams.width = (int) mLeftCenterWidth;
                 mLeftCenterCenterParams.height = (int) mLeftCenterCenterHeight;
@@ -263,13 +254,10 @@ public class FloatWindowHelper {
                 mLeftCenterCenterParams.x = (int) -(width / 2);
                 mLeftCenterCenterParams.y = (int) ((height / 2)
                         - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
-                mLeftCenterCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mLeftCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterCenterParams.format = PixelFormat.RGBA_8888;
-                mLeftCenterCenterParams.flags =
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+                mLeftCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
             windowManager.addView(mLeftCenterCenterView, mLeftCenterCenterParams);
         }
@@ -318,24 +306,18 @@ public class FloatWindowHelper {
             });
 
             if (mLeftTopParams == null) {
-                WindowManager manager = (WindowManager) mContext
-                        .getSystemService(Context.WINDOW_SERVICE);
-                Display display = manager.getDefaultDisplay();
-                int height = display.getHeight();
-                int width = display.getWidth();
+                int height = windowManager.getDefaultDisplay().getWidth();
+                int width = windowManager.getDefaultDisplay().getHeight();
                 mLeftTopParams = new LayoutParams();
                 mLeftTopParams.width = (int) mLeftTopWidth;
                 mLeftTopParams.height = (int) mLeftTopHeight;
                 mLeftTopParams.x = -(width / 2);
                 mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2) + mLeftBottomHeight
                         + mLeftCenterHeight - 10));
-                mLeftTopParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mLeftTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftTopParams.format = PixelFormat.RGBA_8888;
-                mLeftTopParams.flags =
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+                mLeftTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
 
             windowManager.addView(mLeftTopView, mLeftTopParams);
@@ -384,23 +366,17 @@ public class FloatWindowHelper {
                 }
             });
             if (mRightBottomParams == null) {
-                WindowManager manager = (WindowManager) mContext
-                        .getSystemService(Context.WINDOW_SERVICE);
-                Display display = manager.getDefaultDisplay();
-                int height = display.getHeight();
-                int width = display.getWidth();
+                int height = windowManager.getDefaultDisplay().getWidth();
+                int width = windowManager.getDefaultDisplay().getHeight();
                 mRightBottomParams = new LayoutParams();
                 mRightBottomParams.width = (int) mRightBottomWidth;
                 mRightBottomParams.height = (int) mRightBottomHeight;
                 mRightBottomParams.x = (width / 2);
                 mRightBottomParams.y = (height / 2);
-                mRightBottomParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mRightBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightBottomParams.format = PixelFormat.RGBA_8888;
-                mRightBottomParams.flags =
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+                mRightBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
             windowManager.addView(mRightBottomView, mRightBottomParams);
         }
@@ -448,24 +424,18 @@ public class FloatWindowHelper {
                 }
             });
             if (mRightCenterParams == null) {
-                WindowManager manager = (WindowManager) mContext
-                        .getSystemService(Context.WINDOW_SERVICE);
-                Display display = manager.getDefaultDisplay();
-                int height = display.getHeight();
-                int width = display.getWidth();
+                int height = windowManager.getDefaultDisplay().getWidth();
+                int width = windowManager.getDefaultDisplay().getHeight();
                 mRightCenterParams = new LayoutParams();
                 mRightCenterParams.width = (int) mRightCenterWidth;
                 mRightCenterParams.height = (int) mRightCenterHeight;
                 mRightCenterParams.x = (int) (width / 2);
                 mRightCenterParams.y = (int) ((height / 2)
                         - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
-                mRightCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mRightCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterParams.format = PixelFormat.RGBA_8888;
-                mRightCenterParams.flags =
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+                mRightCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
             windowManager.addView(mRightCenterView, mRightCenterParams);
         }
@@ -513,24 +483,18 @@ public class FloatWindowHelper {
                 }
             });
             if (mRightCenterCenterParams == null) {
-                WindowManager manager = (WindowManager) mContext
-                        .getSystemService(Context.WINDOW_SERVICE);
-                Display display = manager.getDefaultDisplay();
-                int height = display.getHeight();
-                int width = display.getWidth();
+                int height = windowManager.getDefaultDisplay().getWidth();
+                int width = windowManager.getDefaultDisplay().getHeight();
                 mRightCenterCenterParams = new LayoutParams();
                 mRightCenterCenterParams.width = (int) mRightCenterWidth;
                 mRightCenterCenterParams.height = (int) mRightCenterCenterHeight;
                 mRightCenterCenterParams.x = (int) (width / 2);
                 mRightCenterCenterParams.y = (int) ((height / 2)
                         - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
-                mRightCenterCenterParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mRightCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterCenterParams.format = PixelFormat.RGBA_8888;
-                mRightCenterCenterParams.flags =
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+                mRightCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
             windowManager.addView(mRightCenterCenterView, mRightCenterCenterParams);
         }
@@ -578,32 +542,25 @@ public class FloatWindowHelper {
                 }
             });
             if (mRightTopParams == null) {
-                WindowManager manager = (WindowManager) mContext
-                        .getSystemService(Context.WINDOW_SERVICE);
-                Display display = manager.getDefaultDisplay();
-                int height = display.getHeight();
-                int width = display.getWidth();
+                int height = windowManager.getDefaultDisplay().getWidth();
+                int width = windowManager.getDefaultDisplay().getHeight();
                 mRightTopParams = new LayoutParams();
                 mRightTopParams.width = (int) mRightTopWidth;
                 mRightTopParams.height = (int) mRightTopHeight;
                 mRightTopParams.x = (width / 2);
                 mRightTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2) + mLeftBottomHeight
                         + mLeftCenterHeight - 10));
-                mRightTopParams.type = LayoutParams.FIRST_SYSTEM_WINDOW + 3;
+                mRightTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightTopParams.format = PixelFormat.RGBA_8888;
-                mRightTopParams.flags =
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+                mRightTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
             windowManager.addView(mRightTopView, mRightTopParams);
         }
     }
 
     /**
-     * 移除悬浮窗口 
-     * must call in UI thread
+     * 移除悬浮窗口 must call in UI thread
      * 
      * @param context
      */
