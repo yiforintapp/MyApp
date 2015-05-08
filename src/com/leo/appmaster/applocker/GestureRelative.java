@@ -6,6 +6,7 @@ import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
@@ -32,6 +34,8 @@ public class GestureRelative extends RelativeLayout {
     private UnKnowCallActivity5 mActivity;
     private PretendFragment mPf;
     private PretendAppUnknowCallFragment5 unknowFragment;
+    private int screenW;
+    private int screenH;
 
     public GestureRelative(Context context) {
         super(context);
@@ -46,8 +50,14 @@ public class GestureRelative extends RelativeLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+        if(screenH >= 1280){
+            CirPointY = (b - t) / 2 + 30;
+        }else if(screenH == 800){
+            CirPointY = (b - t) / 2 + 20;
+        }else {
+            CirPointY = (b - t) / 2 + 10;
+        }
         CirPointX = (r - l) / 2;
-        CirPointY = (b - t) / 2;
         // LeoLog.d("testlay", "l :"+l+"--t :"+t+"--r :"+r+"--b :"+b);
         mZhiJing = (b - t) * 7 / 8;
         mBanJing = mZhiJing / 2;
@@ -59,6 +69,9 @@ public class GestureRelative extends RelativeLayout {
     private void init(Context context) {
         this.mContext = context;
         CirPanint = new Paint();
+        Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
+        screenW = mDisplay.getWidth();
+        screenH = mDisplay.getHeight();
     }
 
     public int getPointX() {

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_weizhuang_firstin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    android:orientation="vertical" >
+    android:background="@color/black" >
 
     <RelativeLayout
+        android:id="@+id/blue_background"
         android:layout_width="match_parent"
         android:layout_height="@dimen/weizhuang_unknowcall_first_content"
         android:background="@drawable/disguise_call_bg1" >
@@ -33,9 +33,11 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/text_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black" >
+        android:layout_below="@id/blue_background"
+        android:background="@color/transparent" >
 
         <TextView
             android:id="@+id/tv_use_tips"
@@ -67,6 +69,7 @@
         android:id="@+id/mid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/text_content"
         android:background="@drawable/disguise_call_person"
         android:longClickable="true" >
 
@@ -148,4 +151,4 @@
             android:visibility="gone" />
     </com.leo.appmaster.applocker.GestureRelative>
 
-</LinearLayout>
+</RelativeLayout>
