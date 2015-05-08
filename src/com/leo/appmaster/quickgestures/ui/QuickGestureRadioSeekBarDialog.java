@@ -17,10 +17,11 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+
 /**
  * QuickGestureRadioSeekBarDialog
+ * 
  * @author run
- *
  */
 public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
     private Context mContext;
@@ -51,11 +52,8 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         seekbar_text = (TextView) dlgView.findViewById(R.id.seekbar_text);
         seekbar_text_progress = (TextView) dlgView.findViewById(R.id.seekbar_text_progress);
         sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
-        // progressInt = sp_notice_flow.getFlowSettingBar();
         seekbar_text.setText(resources.getString(R.string.flow_settting_dialog_remain));
-        // seekbar_text_progress.setText(progressInt + "%");
         mSeekBar = (SeekBar) dlgView.findViewById(R.id.qucik_seekBar);
-        // mSeekBar.setProgress(progressInt);
         mRadioListView = (ListView) dlgView.findViewById(R.id.radioLV);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

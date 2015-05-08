@@ -30,6 +30,7 @@ import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.Utilities;
@@ -393,14 +394,65 @@ public class TaskDetectService extends Service {
     }
 
     private class FloatWindowTask implements Runnable {
+        ActivityManager mActivityManager;
+
+        public FloatWindowTask() {
+            mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        }
+
+        @Override
         public void run() {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    FloatWindowHelper.createFloatWindow(getApplicationContext());
+                    boolean isJustHome = AppMasterPreference.getInstance(getApplicationContext())
+                            .getSlideTimeJustHome();
+                    boolean isAppsAndHome = AppMasterPreference
+                            .getInstance(getApplicationContext())
+                            .getSlideTimeAllAppAndHome();
+                    if (isAppsAndHome) {
+                        if (!isRuningFreeDisturbApp(mActivityManager)) {
+                            FloatWindowHelper.createFloatWindow(getApplicationContext());
+                        } else {
+                            removeAllFloatWindow();
+                        }
+                    } else if (isJustHome) {
+                        boolean isHomeFlag = Utilities.isHome(getApplicationContext());
+                        if (isHomeFlag) {
+                            FloatWindowHelper.createFloatWindow(getApplicationContext());
+                        } else {
+                            removeAllFloatWindow();
+                        }
+                    }
                 }
             });
         }
+    }
+
+    private void removeAllFloatWindow() {
+        FloatWindowHelper.removeSwipWindow(getApplicationContext(), 1);
+        FloatWindowHelper.removeSwipWindow(getApplicationContext(), 2);
+        FloatWindowHelper.removeSwipWindow(getApplicationContext(), 3);
+        FloatWindowHelper.removeSwipWindow(getApplicationContext(), 4);
+        FloatWindowHelper.removeSwipWindow(getApplicationContext(), -1);
+        FloatWindowHelper.removeSwipWindow(getApplicationContext(), -2);
+        FloatWindowHelper.removeSwipWindow(getApplicationContext(), -3);
+        FloatWindowHelper.removeSwipWindow(getApplicationContext(), -4);
+    }
+
+    private boolean isRuningFreeDisturbApp(ActivityManager cctivityManager) {
+        boolean flag = false;
+        List<RunningTaskInfo> tasks = cctivityManager.getRunningTasks(1);
+        if (tasks != null && tasks.size() > 0) {
+            RunningTaskInfo topTaskInfo = tasks.get(0);
+            if (topTaskInfo.topActivity == null) {
+                return flag;
+            }
+            String pkgName = topTaskInfo.topActivity.getPackageName();
+            flag = QuickGestureManager.getFreeDisturbAppName(getApplicationContext()).contains(
+                    pkgName);
+        }
+        return flag;
     }
 
     public void onEventMainThread(QuickGestureFloatWindowEvent event) {

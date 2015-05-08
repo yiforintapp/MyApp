@@ -2,19 +2,15 @@
 package com.leo.appmaster.quickgestures.ui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import android.app.AppOpsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +37,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
@@ -535,8 +532,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 if (arg2 == 0) {
-                    Toast.makeText(QuickGestureActivity.this, "添加免打扰应用",
-                            Toast.LENGTH_SHORT).show();
                     showAllAppDialog();
                 }
             }
@@ -545,8 +540,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
             @Override
             public boolean onLongClick(View arg0) {
-                Toast.makeText(QuickGestureActivity.this, "编辑模式",
-                        Toast.LENGTH_SHORT).show();
                 getEditFreeDisturbAppInfo(true);
                 mSlideTimeAdapter.notifyDataSetChanged();
                 return false;
@@ -584,15 +577,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         List<String> packageNames = null;
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(this)
                 .getAllPkgInfo();
-        String packageName = AppMasterPreference.getInstance(this)
-                .getFreeDisturbAppPackageName();
-        if (AppMasterPreference.PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME
-                .equals(packageName)) {
-            Log.e("######################", "没有免干扰应用");
-        } else {
-            String[] names = packageName.split(";");
-            packageNames = Arrays.asList(names);
-        }
+        packageNames = QuickGestureManager.getFreeDisturbAppName(this);
         for (AppItemInfo appDetailInfo : list) {
             FreeDisturbAppInfo appInfo = new FreeDisturbAppInfo();
             appInfo.icon = appDetailInfo.icon;

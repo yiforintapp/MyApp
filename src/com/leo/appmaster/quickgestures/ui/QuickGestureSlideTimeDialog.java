@@ -65,8 +65,6 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
         mJustHomeCb = (CheckBox) dlgView.findViewById(R.id.dialog_radio_slide_time_just_home_cb);
         mAppHomeCb = (CheckBox) dlgView
                 .findViewById(R.id.dialog_radio_slide_time_all_app_and_home_cb);
-        // mAddFreeDisturbAppIv = (ImageView)
-        // dlgView.findViewById(R.id.add_free_disturb_appIV);
         mHorizontalLV = (LeoHorizontalListView) dlgView
                 .findViewById(R.id.quick_gesture_horizontalLV);
         mJustHomeCb.setSelected(AppMasterPreference.getInstance(mContext).getSlideTimeJustHome());
@@ -114,17 +112,6 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
     }
-
-    //
-    // public void
-    // setAddFreeDisturbOnClickListener(android.view.View.OnClickListener
-    // listener) {
-    // mAddFreeDisturbAppIv.setOnClickListener(listener);
-    // }
-
-    // public void setOnClickListener(OnDiaogClickListener listener) {
-    // mListener = listener;
-    // }
 
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
         sure_button.setTag(rListener);
