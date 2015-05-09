@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.utils.BitmapUtils;
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
@@ -531,12 +532,17 @@ public class QuickGestureContainer extends FrameLayout {
                 lp.position = i;
                 tv.setGravity(Gravity.CENTER_HORIZONTAL);
                 tv.setLayoutParams(lp);
-
                 info = infos.get(i);
                 tv.setText(info.label);
                 tv.setTextSize(12);
-                info.icon.setBounds(0, 0, iconSize, iconSize);
-                tv.setCompoundDrawables(null, info.icon, null, null);
+                if (info instanceof QuickSwitcherInfo) {
+                    QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
+                    sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+                    tv.setCompoundDrawables(null, sInfo.switchIcon[0], null, null);
+                } else {
+                    info.icon.setBounds(0, 0, iconSize, iconSize);
+                    tv.setCompoundDrawables(null, info.icon, null, null);
+                }
                 if (info.eventNumber > 0) {
                     tv.setDecorateAction(new EventAction(getContext(), info.eventNumber));
                 }
