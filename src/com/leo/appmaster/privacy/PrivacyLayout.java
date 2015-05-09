@@ -34,7 +34,7 @@ public class PrivacyLayout extends RelativeLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if(mPrivacyLevel != null) {
-            mPrivacyLevel.cancelAnim();
+            mPrivacyLevel.cancelAnim(false);
         }    
         return super.onInterceptTouchEvent(ev);
     }
