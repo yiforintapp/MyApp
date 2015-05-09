@@ -524,6 +524,7 @@ public class QuickGestureContainer extends FrameLayout {
     }
 
     public void fillSwitchItem(QuickGestureLayout targetLayout, List<? extends BaseInfo> infos) {
+        LeoLog.d("QuickGestureContainer", "每次打开都会走吗～～");
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView tv = null;
@@ -548,6 +549,8 @@ public class QuickGestureContainer extends FrameLayout {
                     checkBlueToothStatus(sInfo,iconSize,tv);
                 }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)){
                     checkFlashLightStatus(sInfo,iconSize,tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.WLAN)){
+                    checkWlanStatus(sInfo,iconSize,tv);
                 }
                 if (sInfo.eventNumber > 0) {
                     tv.setDecorateAction(new EventAction(getContext(), sInfo.eventNumber));
@@ -555,6 +558,18 @@ public class QuickGestureContainer extends FrameLayout {
                 tv.setTag(sInfo);
                 targetLayout.addView(tv);
             }
+        }
+    }
+
+    private void checkWlanStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if (QuickSwitchManager.checkWlan()) {
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        } else {
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
         }
     }
 

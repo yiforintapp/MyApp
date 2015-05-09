@@ -671,6 +671,7 @@
     <string name="most_used">最常使用</string>
     <string name="quick_guesture_bluetooth">蓝牙</string>
     <string name="quick_guesture_flashlight">手电筒</string>
+    <string name="quick_guesture_wlan">WLAN</string>
     <!-- quick gesture -->
 
 

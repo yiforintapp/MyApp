@@ -16,21 +16,23 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
+import android.net.wifi.WifiManager;
 
 public class QuickSwitchManager {
 
     private static QuickSwitchManager mInstance;
     public final static String BLUETOOTH = "bluetooth";
     public final static String FLASHLIGHT = "flashlight";
-    
+    public final static String WLAN = "wlan";
+
     private Context mContext;
-    private PackageManager mPm;
-    private CountDownLatch mLatch;
     private static BluetoothAdapter mBluetoothAdapter;
+    private WifiManager mWifimanager;
     public Camera mCamera;
     private static boolean isBlueToothOpen = false;
     private static boolean isFlashLightOpen = false;
-    
+    private static boolean isWlantOpen = false;
+
     public static synchronized QuickSwitchManager getInstance(Context context) {
         if (mInstance == null) {
             mInstance = new QuickSwitchManager(context);
@@ -40,10 +42,17 @@ public class QuickSwitchManager {
 
     private QuickSwitchManager(Context context) {
         mContext = context.getApplicationContext();
-        mPm = mContext.getPackageManager();
-        mLatch = new CountDownLatch(1);
-
         blueTooth();
+        Wlan();
+    }
+
+    private void Wlan() {
+        mWifimanager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        if (mWifimanager.isWifiEnabled()) {
+            isWlantOpen = true;
+        } else {
+            isWlantOpen = false;
+        }
     }
 
     private void blueTooth() {
@@ -62,19 +71,43 @@ public class QuickSwitchManager {
         QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
         lanyaInfo.label = mContext.getResources().getString(R.string.quick_guesture_bluetooth);
         lanyaInfo.switchIcon = new Drawable[2];
-        lanyaInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_bluetooth_pre);
+        lanyaInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_bluetooth_pre);
         lanyaInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_bluetooth);
         lanyaInfo.iDentiName = BLUETOOTH;
         mSwitchList.add(lanyaInfo);
-        //手电筒
+        // 手电筒
         QuickSwitcherInfo flashlightInfo = new QuickSwitcherInfo();
-        flashlightInfo.label = mContext.getResources().getString(R.string.quick_guesture_flashlight);
+        flashlightInfo.label = mContext.getResources()
+                .getString(R.string.quick_guesture_flashlight);
         flashlightInfo.switchIcon = new Drawable[2];
-        flashlightInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_flashlight_pre);
-        flashlightInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_flashlight);
+        flashlightInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_flashlight_pre);
+        flashlightInfo.switchIcon[1] = mContext.getResources().getDrawable(
+                R.drawable.switch_flashlight);
         flashlightInfo.iDentiName = FLASHLIGHT;
         mSwitchList.add(flashlightInfo);
+        // WLAN
+        QuickSwitcherInfo wlanInfo = new QuickSwitcherInfo();
+        wlanInfo.label = mContext.getResources().getString(R.string.quick_guesture_wlan);
+        wlanInfo.switchIcon = new Drawable[2];
+        wlanInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_wifi_pre);
+        wlanInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_wifi);
+        wlanInfo.iDentiName = WLAN;
+        mSwitchList.add(wlanInfo);
         return mSwitchList;
+    }
+
+    public void toggleWlan(QuickGestureContainer mContainer, List<QuickSwitcherInfo> list,
+            QuickGestureLayout quickGestureLayout) {
+        if (!mWifimanager.isWifiEnabled()) {
+            mWifimanager.setWifiEnabled(true);
+            isWlantOpen = true;
+        } else {
+            mWifimanager.setWifiEnabled(false);
+            isWlantOpen = false;
+        }
+        mContainer.fillSwitchItem(quickGestureLayout, list);
     }
 
     public void toggleBluetooth(QuickGestureContainer mContainer, List<QuickSwitcherInfo> list,
@@ -122,7 +155,7 @@ public class QuickSwitchManager {
         }
         mContainer.fillSwitchItem(quickGestureLayout, list);
     }
-    
+
     public static boolean checkBlueTooth() {
         if (isBlueToothOpen) {
             return true;
@@ -130,9 +163,17 @@ public class QuickSwitchManager {
             return false;
         }
     }
-    
+
     public static boolean checkFlashLight() {
         if (isFlashLightOpen) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean checkWlan() {
+        if (isWlantOpen) {
             return true;
         } else {
             return false;
