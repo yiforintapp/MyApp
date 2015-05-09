@@ -24,9 +24,6 @@ import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 public class QuickGestureLayout extends ViewGroup {
