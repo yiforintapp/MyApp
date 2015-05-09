@@ -100,7 +100,7 @@ public class GestureItemView extends TextView {
                 LeoLog.i(TAG, "ACTION_DRAG_STARTED");
                 enterEditMode();
                 if (event.getLocalState() == this) {
-                     setVisibility(View.INVISIBLE);
+                    setVisibility(View.INVISIBLE);
                 }
                 break;
             }
@@ -123,7 +123,10 @@ public class GestureItemView extends TextView {
             }
             case DragEvent.ACTION_DRAG_ENTERED: {
                 LeoLog.i(TAG, "ACTION_DRAG_ENTERED ");
-                mHolderLayout.squeezeItems((GestureItemView) event.getLocalState(), this);
+                if ((GestureItemView) event.getLocalState() != this) {
+                    mHolderLayout.squeezeItems((GestureItemView) event.getLocalState(), this);
+//                    mHolderLayout.replaceItems((GestureItemView) event.getLocalState(), this);
+                }
                 break;
             }
 

@@ -23,6 +23,9 @@ import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 public class QuickGestureLayout extends ViewGroup {
@@ -36,6 +39,9 @@ public class QuickGestureLayout extends ViewGroup {
     private float mCurrentRotateDegree;
 
     private Orientation mOrientation = Orientation.Left;
+    private AnimatorSet mReorderAnimator;
+    private boolean mAnimCanceled;
+
     private static final int INNER_RING_MAX_COUNT = 4;
 
     public QuickGestureLayout(Context context) {
@@ -361,18 +367,50 @@ public class QuickGestureLayout extends ViewGroup {
         }
     }
 
+    public void replaceItems(GestureItemView fromView, GestureItemView toView) {
+        QuickGestureLayout.LayoutParams fromLP = (LayoutParams) fromView.getLayoutParams();
+        QuickGestureLayout.LayoutParams toLP = (LayoutParams) toView.getLayoutParams();
+
+        int from = fromLP.position;
+        int to = toLP.position;
+
+        toLP.position = from;
+        fromLP.position = to;
+
+    }
+
     public void squeezeItems(GestureItemView fromView, GestureItemView toView) {
+
+        if (mReorderAnimator != null && mReorderAnimator.isRunning()) {
+            mReorderAnimator.cancel();
+        }
+
         int from = ((QuickGestureLayout.LayoutParams) fromView.getLayoutParams()).position;
         int to = ((QuickGestureLayout.LayoutParams) toView.getLayoutParams()).position;
-        GestureItemView[] hitViews = new GestureItemView[from - to + 1];
+
+        boolean isForward = to > from;
+        final GestureItemView[] hitViews = new GestureItemView[Math.abs(to - from) + 1];
         hitViews[0] = fromView;
         GestureItemView hitView;
         QuickGestureLayout.LayoutParams hitLP;
         for (int i = 0; i < getChildCount(); i++) {
             hitView = (GestureItemView) getChildAt(i);
+            // hitView.setLeft((int) (hitView.getLeft() +
+            // hitView.getTranslationX()));
+            // hitView.setTop((int) (hitView.getTop() +
+            // hitView.getTranslationY()));
+            // hitView.setTranslationX(0);
+            // hitView.setTranslationY(0);
+
             hitLP = (LayoutParams) hitView.getLayoutParams();
-            if (hitLP.position > from && hitLP.position <= to) {
-                hitViews[hitLP.position - from] = hitView;
+            if (isForward) {
+                if (hitLP.position > from && hitLP.position <= to) {
+                    hitViews[hitLP.position - from] = hitView;
+                }
+            } else {
+                if (hitLP.position >= to && hitLP.position < from) {
+                    hitViews[from - hitLP.position] = hitView;
+                }
             }
         }
 
@@ -380,28 +418,65 @@ public class QuickGestureLayout extends ViewGroup {
         for (int i = 1; i < hitViews.length; i++) {
             animators.add(createTranslationAnimations(hitViews[i], hitViews[i - 1]));
         }
-
-        AnimatorSet resultSet = new AnimatorSet();
-        resultSet.playTogether(animators);
-        resultSet.setDuration(500);
-        resultSet.setInterpolator(new AccelerateDecelerateInterpolator());
-        resultSet.addListener(new AnimatorListenerAdapter() {
+        mReorderAnimator = new AnimatorSet();
+        mReorderAnimator.playTogether(animators);
+        mReorderAnimator.setDuration(200);
+        mReorderAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        mReorderAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
+                mAnimCanceled = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                mAnimCanceled = true;
+                super.onAnimationCancel(animation);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                int lastPosition = ((QuickGestureLayout.LayoutParams) hitViews[hitViews.length - 1]
+                        .getLayoutParams()).position;
+                int nextPosition;
+                for (int i = hitViews.length - 1; i >= 0; i--) {
+                    if (i == 0) {
+                        ((QuickGestureLayout.LayoutParams) hitViews[i].getLayoutParams()).position = lastPosition;
+                    } else {
+                        nextPosition = ((QuickGestureLayout.LayoutParams) hitViews[i - 1]
+                                .getLayoutParams()).position;
+                        ((QuickGestureLayout.LayoutParams) hitViews[i].getLayoutParams()).position = nextPosition;
+                    }
+                }
+
+                if (mAnimCanceled) {
+                    for (GestureItemView gestureItemView : hitViews) {
+//                        gestureItemView.setLeft((int) (gestureItemView.getLeft() + gestureItemView
+//                                .getTranslationX()));
+//                        gestureItemView.setTop((int) (gestureItemView.getTop() + gestureItemView
+//                                .getTranslationY()));
+                        gestureItemView.setTranslationX(0);
+                        gestureItemView.setTranslationY(0);
+                    }
+                } else {
+                    for (GestureItemView gestureItemView : hitViews) {
+                        gestureItemView.setTranslationX(0);
+                        gestureItemView.setTranslationY(0);
+                    }
+
+                    requestLayout();
+                }
             }
         });
-        resultSet.start();
+        mReorderAnimator.start();
+
     }
 
-    private AnimatorSet createTranslationAnimations(View fromView, View toView) {
+    private AnimatorSet createTranslationAnimations(GestureItemView fromView, GestureItemView toView) {
         ObjectAnimator animX = ObjectAnimator.ofFloat(fromView, "translationX",
-                0, toView.getLeft() - fromView.getLeft());
+                fromView.getTranslationX(), toView.getLeft() - fromView.getLeft());
         ObjectAnimator animY = ObjectAnimator.ofFloat(fromView, "translationY",
-                0, toView.getTop() - fromView.getTop());
+                fromView.getTranslationY(), toView.getTop() - fromView.getTop());
         AnimatorSet animSetXY = new AnimatorSet();
         animSetXY.playTogether(animX, animY);
         return animSetXY;
