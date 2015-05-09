@@ -254,7 +254,7 @@ public class QuickGestureLayout extends ViewGroup {
                         QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
                         //蓝牙
                         if(sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)){
-                            QuickSwitchManager.getInstance(getContext()).toggleBluetooth();
+                            QuickSwitchManager.getInstance(getContext()).toggleBluetooth(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
                         }
                     }
                 }
