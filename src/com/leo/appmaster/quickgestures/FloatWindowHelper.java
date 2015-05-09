@@ -46,7 +46,7 @@ public class FloatWindowHelper {
 
     private static RightGesturePopupWindow mRightPopup;
     public static boolean mPopWindowShowing;
-
+    public static boolean mEditQuickAreaFlag = false;
     private static float startX;
     private static float startY;
     // private static WindowManager windowManager;
@@ -62,7 +62,7 @@ public class FloatWindowHelper {
     // 左中高度
     private static float mLeftCenterHeight = 200;
     // 左侧中部高度
-    private static float mLeftCenterCenterHeight = 400;
+    private static float mLeftCenterCenterHeight = 800;
     // 左上宽度
     private static float mLeftTopWidth = 50;
     // 左上高度
@@ -76,7 +76,7 @@ public class FloatWindowHelper {
     // 右中高度
     private static float mRightCenterHeight = 200;
     // 右侧中部高度
-    private static float mRightCenterCenterHeight = 400;
+    private static float mRightCenterCenterHeight = 800;
     // 右上宽度
     private static float mRightTopWidth = 50;
     // 右上高度
@@ -88,7 +88,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatLeftBottomWindow(final Context mContext) {
+    public static void createFloatLeftBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
@@ -129,10 +129,11 @@ public class FloatWindowHelper {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight();
                 mLeftBottomParams = new LayoutParams();
-                mLeftBottomParams.width = (int) mLeftBottomWidth;
-                mLeftBottomParams.height = (int) mLeftBottomHeight;
+                mLeftBottomParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
+                mLeftBottomParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
                 mLeftBottomParams.x = -(width / 2);
-                mLeftBottomParams.y = (height / 2);
+                mLeftBottomParams.y = (height / 2) - value;
+
                 mLeftBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftBottomParams.format = PixelFormat.RGBA_8888;
                 mLeftBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -148,7 +149,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatLeftCenterWindow(final Context mContext) {
+    public static void createFloatLeftCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftCenterView == null) {
             mLeftCenterView = new QuickGesturesAreaView(mContext);
@@ -189,12 +190,11 @@ public class FloatWindowHelper {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight();
                 mLeftCenterParams = new LayoutParams();
-                mLeftCenterParams.width = (int) mLeftCenterWidth;
-                mLeftCenterParams.height = (int) mLeftCenterHeight;
-                mLeftCenterParams.type = 2002;
                 mLeftCenterParams.x = (int) -(width / 2);
                 mLeftCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
+                        - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
+                mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
+                mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
                 mLeftCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -210,7 +210,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatLeftCenterCenterWindow(final Context mContext) {
+    public static void createFloatLeftCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
@@ -251,12 +251,11 @@ public class FloatWindowHelper {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight();
                 mLeftCenterCenterParams = new LayoutParams();
-                mLeftCenterCenterParams.width = (int) mLeftCenterWidth;
-                mLeftCenterCenterParams.height = (int) mLeftCenterCenterHeight;
-                mLeftCenterCenterParams.type = 2002;
                 mLeftCenterCenterParams.x = (int) -(width / 2);
                 mLeftCenterCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
+                        - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
+                mLeftCenterCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
+                mLeftCenterCenterParams.height = (int) ((mLeftCenterCenterHeight / 2) + (value)) * 2;
                 mLeftCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -272,7 +271,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatLeftTopWindow(final Context mContext) {
+    public static void createFloatLeftTopWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftTopView == null) {
             mLeftTopView = new QuickGesturesAreaView(mContext);
@@ -313,11 +312,12 @@ public class FloatWindowHelper {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight();
                 mLeftTopParams = new LayoutParams();
-                mLeftTopParams.width = (int) mLeftTopWidth;
-                mLeftTopParams.height = (int) mLeftTopHeight;
                 mLeftTopParams.x = -(width / 2);
-                mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2) + mLeftBottomHeight
-                        + mLeftCenterHeight - 10));
+                mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2)
+                        + mLeftBottomParams.height + mLeftCenterParams.height))
+                        - value;
+                mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
+                mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
                 mLeftTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftTopParams.format = PixelFormat.RGBA_8888;
                 mLeftTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -334,7 +334,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatRightBottomWindow(final Context mContext) {
+    public static void createFloatRightBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
@@ -374,10 +374,10 @@ public class FloatWindowHelper {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight();
                 mRightBottomParams = new LayoutParams();
-                mRightBottomParams.width = (int) mRightBottomWidth;
-                mRightBottomParams.height = (int) mRightBottomHeight;
-                mRightBottomParams.x = (width / 2);
-                mRightBottomParams.y = (height / 2);
+                mRightBottomParams.width = (int) ((mRightBottomWidth / 2) + (value / 2)) * 2;
+                mRightBottomParams.height = (int) ((mRightBottomHeight / 2) + (value)) * 2;
+                mRightBottomParams.x = +(width / 2);
+                mRightBottomParams.y = (height / 2) - value;
                 mRightBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightBottomParams.format = PixelFormat.RGBA_8888;
                 mRightBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -393,7 +393,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatRightCenterWindow(final Context mContext) {
+    public static void createFloatRightCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightCenterView == null) {
             mRightCenterView = new QuickGesturesAreaView(mContext);
@@ -433,11 +433,11 @@ public class FloatWindowHelper {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight();
                 mRightCenterParams = new LayoutParams();
-                mRightCenterParams.width = (int) mRightCenterWidth;
-                mRightCenterParams.height = (int) mRightCenterHeight;
                 mRightCenterParams.x = (int) (width / 2);
                 mRightCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
+                        - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
+                mRightCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
+                mRightCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
                 mRightCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -453,7 +453,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatRightCenterCenterWindow(final Context mContext) {
+    public static void createFloatRightCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
@@ -493,11 +493,11 @@ public class FloatWindowHelper {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight();
                 mRightCenterCenterParams = new LayoutParams();
-                mRightCenterCenterParams.width = (int) mRightCenterWidth;
-                mRightCenterCenterParams.height = (int) mRightCenterCenterHeight;
                 mRightCenterCenterParams.x = (int) (width / 2);
                 mRightCenterCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + mLeftBottomHeight) - 10);
+                        - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
+                mRightCenterCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
+                mRightCenterCenterParams.height = (int) ((mRightCenterCenterHeight / 2) + (value)) * 2;
                 mRightCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -513,7 +513,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatRightTopWindow(final Context mContext) {
+    public static void createFloatRightTopWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightTopView == null) {
             mRightTopView = new QuickGesturesAreaView(mContext);
@@ -553,11 +553,12 @@ public class FloatWindowHelper {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight();
                 mRightTopParams = new LayoutParams();
-                mRightTopParams.width = (int) mRightTopWidth;
-                mRightTopParams.height = (int) mRightTopHeight;
                 mRightTopParams.x = (width / 2);
-                mRightTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2) + mLeftBottomHeight
-                        + mLeftCenterHeight - 10));
+                mRightTopParams.y = (int) ((height / 2) - ((mRightTopHeight / 2)
+                        + mRightBottomParams.height + mRightCenterParams.height))
+                        - value;
+                mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
+                mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
                 mRightTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightTopParams.format = PixelFormat.RGBA_8888;
                 mRightTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -680,7 +681,7 @@ public class FloatWindowHelper {
             mLeftCenterCenterParams.y = (int) ((height / 2)
                     - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
             mLeftCenterCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
-            mLeftCenterCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+            mLeftCenterCenterParams.height = (int) ((mLeftCenterCenterHeight / 2) + (value)) * 2;
         }
         // 左上
         if (mLeftTopParams != null) {
@@ -721,7 +722,7 @@ public class FloatWindowHelper {
             mRightCenterCenterParams.y = (int) ((height / 2)
                     - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
             mRightCenterCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
-            mRightCenterCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
+            mRightCenterCenterParams.height = (int) ((mRightCenterCenterHeight / 2) + (value)) * 2;
         }
         // 更新左边
         if (mLeftBottomView != null) {
@@ -795,7 +796,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatWindow(Context context) {
+    public static void createFloatWindow(Context context, int value) {
         if (!FloatWindowHelper.isLeftBottomShowing()
                 || !FloatWindowHelper.isLeftCenterShowing()
                 || !FloatWindowHelper.isLeftTopShowing()
@@ -810,11 +811,11 @@ public class FloatWindowHelper {
             // 左侧底部
             if (pre.getDialogRadioLeftBottom()) {
                 FloatWindowHelper
-                        .createFloatLeftBottomWindow(context);
+                        .createFloatLeftBottomWindow(context, value);
                 FloatWindowHelper
-                        .createFloatLeftCenterWindow(context);
+                        .createFloatLeftCenterWindow(context, value);
                 FloatWindowHelper
-                        .createFloatLeftTopWindow(context);
+                        .createFloatLeftTopWindow(context, value);
             } else {
                 FloatWindowHelper.removeSwipWindow(context, 1);
                 FloatWindowHelper.removeSwipWindow(context, 2);
@@ -823,11 +824,11 @@ public class FloatWindowHelper {
             // 右侧底部
             if (pre.getDialogRadioRightBottom()) {
                 FloatWindowHelper
-                        .createFloatRightBottomWindow(context);
+                        .createFloatRightBottomWindow(context, value);
                 FloatWindowHelper
-                        .createFloatRightCenterWindow(context);
+                        .createFloatRightCenterWindow(context, value);
                 FloatWindowHelper
-                        .createFloatRightTopWindow(context);
+                        .createFloatRightTopWindow(context, value);
             } else {
                 FloatWindowHelper.removeSwipWindow(context, -1);
                 FloatWindowHelper.removeSwipWindow(context, -2);
@@ -837,7 +838,7 @@ public class FloatWindowHelper {
             if (pre.getDialogRadioLeftCenter()) {
                 FloatWindowHelper.removeSwipWindow(context, 2);
                 FloatWindowHelper.removeSwipWindow(context, 3);
-                FloatWindowHelper.createFloatLeftCenterCenterWindow(context);
+                FloatWindowHelper.createFloatLeftCenterCenterWindow(context, value);
             } else {
 
             }
@@ -845,7 +846,7 @@ public class FloatWindowHelper {
             if (pre.getDialogRadioRightCenter()) {
                 FloatWindowHelper.removeSwipWindow(context, -2);
                 FloatWindowHelper.removeSwipWindow(context, -3);
-                FloatWindowHelper.createFloatRightCenterCenterWindow(context);
+                FloatWindowHelper.createFloatRightCenterCenterWindow(context, value);
             } else {
 
             }
@@ -918,7 +919,8 @@ public class FloatWindowHelper {
                         R.layout.pop_quick_gesture, null);
                 WindowManager windowManager = getWindowManager(view.getContext());
                 int width = windowManager.getDefaultDisplay().getWidth();
-                int height = windowManager.getDefaultDisplay().getHeight() - DipPixelUtil.dip2px(view.getContext(), 25);
+                int height = windowManager.getDefaultDisplay().getHeight()
+                        - DipPixelUtil.dip2px(view.getContext(), 25);
                 mRightPopup = new RightGesturePopupWindow(contentView, width, height, true);
             }
 
