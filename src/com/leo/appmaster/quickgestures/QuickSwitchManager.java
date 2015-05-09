@@ -6,30 +6,31 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
-import com.leo.appmaster.utils.LeoLog;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.widget.Toast;
+import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 
 public class QuickSwitchManager {
 
     private static QuickSwitchManager mInstance;
     public final static String BLUETOOTH = "bluetooth";
+    public final static String FLASHLIGHT = "flashlight";
+    
     private Context mContext;
     private PackageManager mPm;
     private CountDownLatch mLatch;
     private static BluetoothAdapter mBluetoothAdapter;
+    public Camera mCamera;
     private static boolean isBlueToothOpen = false;
-
+    private static boolean isFlashLightOpen = false;
+    
     public static synchronized QuickSwitchManager getInstance(Context context) {
         if (mInstance == null) {
             mInstance = new QuickSwitchManager(context);
@@ -61,10 +62,18 @@ public class QuickSwitchManager {
         QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
         lanyaInfo.label = mContext.getResources().getString(R.string.quick_guesture_bluetooth);
         lanyaInfo.switchIcon = new Drawable[2];
-        lanyaInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.app_backup_icon);
-        lanyaInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.app_battery_icon);
+        lanyaInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_bluetooth_pre);
+        lanyaInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_bluetooth);
         lanyaInfo.iDentiName = BLUETOOTH;
         mSwitchList.add(lanyaInfo);
+        //手电筒
+        QuickSwitcherInfo flashlightInfo = new QuickSwitcherInfo();
+        flashlightInfo.label = mContext.getResources().getString(R.string.quick_guesture_flashlight);
+        flashlightInfo.switchIcon = new Drawable[2];
+        flashlightInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_flashlight_pre);
+        flashlightInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_flashlight);
+        flashlightInfo.iDentiName = FLASHLIGHT;
+        mSwitchList.add(flashlightInfo);
         return mSwitchList;
     }
 
@@ -76,17 +85,54 @@ public class QuickSwitchManager {
         if (!mBluetoothAdapter.isEnabled()) {
             mBluetoothAdapter.enable();
             isBlueToothOpen = true;
-            LeoLog.d("QuickGestureContainer", "开启蓝牙");
         } else {
             mBluetoothAdapter.disable();
             isBlueToothOpen = false;
-            LeoLog.d("QuickGestureContainer", "关闭蓝牙");
         }
         mContainer.fillSwitchItem(quickGestureLayout, list);
     }
 
+    public void toggleFlashLight(QuickGestureContainer mContainer, List<QuickSwitcherInfo> list,
+            QuickGestureLayout quickGestureLayout) {
+        if (!isFlashLightOpen) {
+            isFlashLightOpen = true;
+            try {
+                mCamera = Camera.open();
+            } catch (Exception e) {
+                if (mCamera != null) {
+                    mCamera.release();
+                    mCamera = null;
+                }
+                return;
+            }
+            try {
+                Parameters params = mCamera.getParameters();
+                params.setFlashMode(Parameters.FLASH_MODE_TORCH);
+                mCamera.setParameters(params);
+                mCamera.startPreview();
+            } catch (Exception ee) {
+                return;
+            }
+        } else {
+            isFlashLightOpen = false;
+            Parameters params = mCamera.getParameters();
+            params.setFlashMode(Parameters.FLASH_MODE_OFF);
+            mCamera.stopPreview();
+            mCamera.release();
+        }
+        mContainer.fillSwitchItem(quickGestureLayout, list);
+    }
+    
     public static boolean checkBlueTooth() {
         if (isBlueToothOpen) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public static boolean checkFlashLight() {
+        if (isFlashLightOpen) {
             return true;
         } else {
             return false;
