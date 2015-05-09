@@ -1246,7 +1246,7 @@ public class LockManager {
                 dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
                 dialog.setMiddleBtnStr(mContext.getString(R.string.lock_mode_time));
                 dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_location));
-                dialog.setRightBtnBackground(R.drawable.dlg_right_button_selector);
+                dialog.setRightBtnBackground(R.drawable.manager_mode_lock_third_button_selecter);
                 dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
                     @Override
                     public void onClick(int which) {
@@ -1281,6 +1281,7 @@ public class LockManager {
                     String tip = mContext.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
                     dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_time));
+                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
                     dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override
@@ -1310,6 +1311,7 @@ public class LockManager {
                     String tip = mContext.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
                     dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_location));
+                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
                     dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override
