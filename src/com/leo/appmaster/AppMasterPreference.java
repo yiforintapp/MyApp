@@ -1428,7 +1428,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getQuickGestureDialogSeekBarValue() {
-        return mPref.getInt(PREF_QUICK_GESTURE_DIALOG_SEEKBAR_PROGRESS_VALUE, -1);
+        return mPref.getInt(PREF_QUICK_GESTURE_DIALOG_SEEKBAR_PROGRESS_VALUE, 0);
     }
 
     public void setSlideTimeJustHome(boolean flag) {

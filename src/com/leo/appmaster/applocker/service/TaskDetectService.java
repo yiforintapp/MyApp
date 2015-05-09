@@ -31,6 +31,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.Utilities;
@@ -405,27 +406,36 @@ public class TaskDetectService extends Service {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if(!FloatWindowHelper.mPopWindowShowing){
-                    boolean isJustHome = AppMasterPreference.getInstance(getApplicationContext())
-                            .getSlideTimeJustHome();
-                    boolean isAppsAndHome = AppMasterPreference
-                            .getInstance(getApplicationContext())
-                            .getSlideTimeAllAppAndHome();
-                    if (isAppsAndHome) {
-                        if (!isRuningFreeDisturbApp(mActivityManager)) {
-                            FloatWindowHelper.createFloatWindow(getApplicationContext());
-                        } else {
-                            removeAllFloatWindow();
+                    int value = AppMasterPreference.getInstance(getApplicationContext())
+                            .getQuickGestureDialogSeekBarValue();
+                    if (!FloatWindowHelper.mPopWindowShowing) {
+                        boolean isJustHome = AppMasterPreference.getInstance(
+                                getApplicationContext())
+                                .getSlideTimeJustHome();
+                        boolean isAppsAndHome = AppMasterPreference
+                                .getInstance(getApplicationContext())
+                                .getSlideTimeAllAppAndHome();
+                        // 设置背景
+                        if (FloatWindowHelper.mEditQuickAreaFlag) {
+                            FloatWindowHelper
+                                    .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
                         }
-                    } else if (isJustHome) {
-                        boolean isHomeFlag = Utilities.isHome(getApplicationContext());
-                        if (isHomeFlag) {
-                            FloatWindowHelper.createFloatWindow(getApplicationContext());
-                        } else {
-                            removeAllFloatWindow();
+                        if (isAppsAndHome) {
+                            if (!isRuningFreeDisturbApp(mActivityManager)
+                                    || FloatWindowHelper.mEditQuickAreaFlag) {
+                                FloatWindowHelper.createFloatWindow(getApplicationContext(), value);
+                            } else {
+                                removeAllFloatWindow();
+                            }
+                        } else if (isJustHome) {
+                            boolean isHomeFlag = Utilities.isHome(getApplicationContext());
+                            if (isHomeFlag) {
+                                FloatWindowHelper.createFloatWindow(getApplicationContext(), value);
+                            } else {
+                                removeAllFloatWindow();
+                            }
                         }
                     }
-                }
                 }
             });
         }
@@ -461,6 +471,8 @@ public class TaskDetectService extends Service {
 
     public void onEventMainThread(QuickGestureFloatWindowEvent event) {
         String flag = event.editModel;
+        int value = AppMasterPreference.getInstance(getApplicationContext())
+                .getQuickGestureDialogSeekBarValue();
         if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
             // 左侧底部
@@ -470,11 +482,11 @@ public class TaskDetectService extends Service {
                 FloatWindowHelper.removeSwipWindow(this, 3);
             } else {
                 FloatWindowHelper
-                        .createFloatLeftBottomWindow(this);
+                        .createFloatLeftBottomWindow(this, value);
                 FloatWindowHelper
-                        .createFloatLeftCenterWindow(this);
+                        .createFloatLeftCenterWindow(this, value);
                 FloatWindowHelper
-                        .createFloatLeftTopWindow(this);
+                        .createFloatLeftTopWindow(this, value);
             }
             // 右侧底部
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
@@ -483,18 +495,18 @@ public class TaskDetectService extends Service {
                 FloatWindowHelper.removeSwipWindow(this, -3);
             } else {
                 FloatWindowHelper
-                        .createFloatRightBottomWindow(this);
+                        .createFloatRightBottomWindow(this, value);
                 FloatWindowHelper
-                        .createFloatRightCenterWindow(this);
+                        .createFloatRightCenterWindow(this, value);
                 FloatWindowHelper
-                        .createFloatRightTopWindow(this);
+                        .createFloatRightTopWindow(this, value);
             }
             // 左侧中部
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
                 FloatWindowHelper.removeSwipWindow(this, 4);
             } else {
                 FloatWindowHelper
-                        .createFloatLeftCenterCenterWindow(this);
+                        .createFloatLeftCenterCenterWindow(this, value);
                 if (AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
                     FloatWindowHelper.removeSwipWindow(this, 2);
                     FloatWindowHelper.removeSwipWindow(this, 3);
@@ -504,7 +516,7 @@ public class TaskDetectService extends Service {
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
                 FloatWindowHelper.removeSwipWindow(this, -4);
             } else {
-                FloatWindowHelper.createFloatRightCenterCenterWindow(this);
+                FloatWindowHelper.createFloatRightCenterCenterWindow(this, value);
                 if (AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
                     FloatWindowHelper.removeSwipWindow(this, -2);
                     FloatWindowHelper.removeSwipWindow(this, -3);
