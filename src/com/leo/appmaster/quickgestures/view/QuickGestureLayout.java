@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 public class QuickGestureLayout extends ViewGroup {
 
@@ -375,12 +376,35 @@ public class QuickGestureLayout extends ViewGroup {
             }
         }
 
-        ArrayList<ObjectAnimator> animators = new ArrayList<ObjectAnimator>();
-        ObjectAnimator translateAnima;
+        ArrayList<Animator> animators = new ArrayList<Animator>();
         for (int i = 1; i < hitViews.length; i++) {
-//            translateAnima = ObjectAnimator.ofInt(hitViews[i], "tran"
+            animators.add(createTranslationAnimations(hitViews[i], hitViews[i - 1]));
         }
 
+        AnimatorSet resultSet = new AnimatorSet();
+        resultSet.playTogether(animators);
+        resultSet.setDuration(500);
+        resultSet.setInterpolator(new AccelerateDecelerateInterpolator());
+        resultSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+            }
+        });
+        resultSet.start();
+    }
+
+    private AnimatorSet createTranslationAnimations(View fromView, View toView) {
+        ObjectAnimator animX = ObjectAnimator.ofFloat(fromView, "translationX",
+                0, toView.getLeft() - fromView.getLeft());
+        ObjectAnimator animY = ObjectAnimator.ofFloat(fromView, "translationY",
+                0, toView.getTop() - fromView.getTop());
+        AnimatorSet animSetXY = new AnimatorSet();
+        animSetXY.playTogether(animX, animY);
+        return animSetXY;
     }
 
     public static class LayoutParams extends ViewGroup.LayoutParams {
