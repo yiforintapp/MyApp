@@ -660,6 +660,7 @@
     <string name="dynamic">动态</string>
     <string name="quick_switcher">快捷开关</string>
     <string name="most_used">最常使用</string>
+    <string name="quick_guesture_bluetooth">蓝牙</string>
     <!-- version 2.3 end -->
 
 </resources>
