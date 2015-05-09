@@ -327,7 +327,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     @Override
     public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-        if ((Integer) arg0.getTag() == 0) {
+        int position = (Integer) arg0.getTag();
+        if (position == 0) {
             if (!arg1) {
                 mFloatWindowService.stopFloatWindow();
                 // 移除悬浮窗
@@ -343,12 +344,16 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 }
             }
             mPre.setSwitchOpenQuickGesture(arg1);
-        } else if ((Integer) arg0.getTag() == 4) {
+            mQuickGestureSettingOption.get(position).setCheck(arg1);
+        } else if (position == 4) {
             mPre.setSwitchOpenNoReadMessageTip(arg1);
-        } else if ((Integer) arg0.getTag() == 5) {
+            mQuickGestureSettingOption.get(position).setCheck(arg1);
+        } else if (position == 5) {
             mPre.setSwitchOpenRecentlyContact(arg1);
-        } else if ((Integer) arg0.getTag() == 6) {
+            mQuickGestureSettingOption.get(position).setCheck(arg1);
+        } else if (position == 6) {
             mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
+            mQuickGestureSettingOption.get(position).setCheck(arg1);
         }
     }
 

@@ -62,6 +62,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="16dp"
+                android:focusable="false"
                 android:button="@drawable/quick_gesture_switch_selector"
                 android:visibility="gone" />
         </RelativeLayout>
