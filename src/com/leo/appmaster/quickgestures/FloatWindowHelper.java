@@ -20,6 +20,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.quickgestures.view.RightGesturePopupWindow;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -918,22 +919,9 @@ public class FloatWindowHelper {
                         R.layout.pop_quick_gesture, null);
                 WindowManager windowManager = getWindowManager(view.getContext());
                 int width = windowManager.getDefaultDisplay().getWidth();
-                int height = windowManager.getDefaultDisplay().getHeight();
+                int height = windowManager.getDefaultDisplay().getHeight() - DipPixelUtil.dip2px(view.getContext(), 25);
                 mRightPopup = new RightGesturePopupWindow(contentView, width, height, true);
             }
-
-            // // 左边划出
-            // LinearLayout layout = new
-            // LinearLayout(AppMasterApplication.getInstance());
-            // layout.setBackgroundColor(Color.GRAY);
-            // TextView tv = new TextView(AppMasterApplication.getInstance());
-            // tv.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-            // LayoutParams.WRAP_CONTENT));
-            // tv.setText("I'm a pop -----------------------------!");
-            // tv.setTextColor(Color.WHITE);
-            // layout.addView(tv);
-
-            // PopupWindow popupWindow = new PopupWindow(layout, 500, 360);
 
             mRightPopup.setFocusable(true);
             mRightPopup.setOutsideTouchable(false);
@@ -942,8 +930,8 @@ public class FloatWindowHelper {
             int[] location = new int[2];
             view.getLocationOnScreen(location);
 
-            mRightPopup.showAtLocation(view, Gravity.NO_GRAVITY, location[0], location[1]
-                    - mRightPopup.getHeight());
+            mRightPopup.showAtLocation(view, Gravity.NO_GRAVITY, 0,
+                    -mRightPopup.getHeight());
             mPopWindowShowing = true;
             mRightPopup.setOnDismissListener(new OnDismissListener() {
                 @Override
