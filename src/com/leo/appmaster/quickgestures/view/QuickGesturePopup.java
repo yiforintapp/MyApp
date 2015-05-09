@@ -5,6 +5,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import com.leo.appmaster.R;
 
@@ -17,6 +18,8 @@ import android.os.Bundle;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
@@ -28,6 +31,7 @@ import android.widget.ImageView;
 
 public class QuickGesturePopup extends Activity {
 
+    private static int switchNum;
     private QuickGestureContainer mContainer;
     private ImageView iv0;
     private ImageView iv1;
@@ -37,6 +41,7 @@ public class QuickGesturePopup extends Activity {
     private ImageView iv5;
     private ImageView iv6;
     private AbstractList<AppItemInfo> list;
+    private List<QuickSwitcherInfo> mSwitchList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,12 @@ public class QuickGesturePopup extends Activity {
         mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
 
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
+        
+        switchNum = 9;
+        if (mSwitchList == null) {
+            mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
+        }
+        
         fillQg1();
         fillQg2();
         fillQg3();
@@ -59,7 +70,8 @@ public class QuickGesturePopup extends Activity {
     }
 
     private void fillQg3() {
-        mContainer.fillGestureItem(GType.SwitcherLayout, list.subList(17, 24));
+//        mContainer.fillGestureItem(GType.SwitcherLayout, list.subList(17, 25));
+        mContainer.fillGestureItem(GType.SwitcherLayout, mSwitchList);
     }
 
     @Override

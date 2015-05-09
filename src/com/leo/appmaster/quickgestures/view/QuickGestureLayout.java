@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
@@ -258,8 +259,12 @@ public class QuickGestureLayout extends ViewGroup {
                         intent.setComponent(new ComponentName(appInfo.packageName,
                                 appInfo.activityName));
                         getContext().startActivity(intent);
-                    } else if (info instanceof QuickSwitcherInfo) {
-
+                    } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
+                        QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
+                        //蓝牙
+                        if(sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)){
+                            QuickSwitchManager.getInstance(getContext()).toggleBluetooth(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
+                        }
                     }
                 }
             }

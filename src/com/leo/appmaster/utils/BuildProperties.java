@@ -92,7 +92,7 @@ public class BuildProperties {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            method.checkOp(op, Binder.getCallingUid(), context.getPackageName());
+//            method.checkOp(op, Binder.getCallingUid(), context.getPackageName());
             if (AppOpsManager.MODE_ALLOWED == (Integer) manager.checkOp(op,
                     Binder.getCallingUid(), context.getPackageName())) {
                 return true;
@@ -107,7 +107,6 @@ public class BuildProperties {
         }
         return false;
     }
-
     public static Object invokePrivateMethod(Object obj, String methodName) throws Exception {
         Object value = null;
         Class<?> cls = obj.getClass();

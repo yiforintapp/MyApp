@@ -159,7 +159,7 @@ public class TaskDetectService extends Service {
     private void startFloatWindowTask() {
         stopFloatWindowTask();
         mFloatWindowTask = new FloatWindowTask();
-        mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 2000,
+        mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1500,
                 TimeUnit.MILLISECONDS);
     }
 
@@ -475,6 +475,11 @@ public class TaskDetectService extends Service {
                 .getQuickGestureDialogSeekBarValue();
         if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
+            // 设置背景
+            if (FloatWindowHelper.mEditQuickAreaFlag) {
+                FloatWindowHelper
+                        .updateFloatWindowBackgroudColor(true);
+            }
             // 左侧底部
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
                 FloatWindowHelper.removeSwipWindow(this, 1);
