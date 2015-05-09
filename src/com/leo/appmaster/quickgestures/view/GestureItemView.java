@@ -21,6 +21,7 @@ import android.widget.TextView;
 public class GestureItemView extends TextView {
 
     private static final String TAG = "GestureTextView";
+    private QuickGestureLayout mHolderLayout;
     private DecorateAction mDecorateAction;
     private boolean mEditing;
     private Drawable mCrossDrawable;
@@ -60,6 +61,12 @@ public class GestureItemView extends TextView {
     }
 
     @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        mHolderLayout = (QuickGestureLayout) getParent();
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mEditing) {
@@ -93,7 +100,7 @@ public class GestureItemView extends TextView {
                 LeoLog.i(TAG, "ACTION_DRAG_STARTED");
                 enterEditMode();
                 if (event.getLocalState() == this) {
-                    setVisibility(View.INVISIBLE);
+                     setVisibility(View.INVISIBLE);
                 }
                 break;
             }
@@ -111,10 +118,12 @@ public class GestureItemView extends TextView {
             }
             case DragEvent.ACTION_DROP: {
                 LeoLog.i(TAG, "ACTION_DROP");
+                mHolderLayout.requestLayout();
                 break;
             }
             case DragEvent.ACTION_DRAG_ENTERED: {
                 LeoLog.i(TAG, "ACTION_DRAG_ENTERED ");
+                mHolderLayout.squeezeItems((GestureItemView) event.getLocalState(), this);
                 break;
             }
 

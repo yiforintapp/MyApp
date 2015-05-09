@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.quickgestures.view;
 
+import java.util.ArrayList;
+
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -356,6 +358,29 @@ public class QuickGestureLayout extends ViewGroup {
             GestureItemView item = (GestureItemView) getChildAt(i);
             item.leaveEditMode();
         }
+    }
+
+    public void squeezeItems(GestureItemView fromView, GestureItemView toView) {
+        int from = ((QuickGestureLayout.LayoutParams) fromView.getLayoutParams()).position;
+        int to = ((QuickGestureLayout.LayoutParams) toView.getLayoutParams()).position;
+        GestureItemView[] hitViews = new GestureItemView[from - to + 1];
+        hitViews[0] = fromView;
+        GestureItemView hitView;
+        QuickGestureLayout.LayoutParams hitLP;
+        for (int i = 0; i < getChildCount(); i++) {
+            hitView = (GestureItemView) getChildAt(i);
+            hitLP = (LayoutParams) hitView.getLayoutParams();
+            if (hitLP.position > from && hitLP.position <= to) {
+                hitViews[hitLP.position - from] = hitView;
+            }
+        }
+
+        ArrayList<ObjectAnimator> animators = new ArrayList<ObjectAnimator>();
+        ObjectAnimator translateAnima;
+        for (int i = 1; i < hitViews.length; i++) {
+//            translateAnima = ObjectAnimator.ofInt(hitViews[i], "tran"
+        }
+
     }
 
     public static class LayoutParams extends ViewGroup.LayoutParams {
