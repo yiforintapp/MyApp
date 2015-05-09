@@ -546,6 +546,8 @@ public class QuickGestureContainer extends FrameLayout {
                 if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
                     // check 蓝牙状态
                     checkBlueToothStatus(sInfo,iconSize,tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)){
+                    checkFlashLightStatus(sInfo,iconSize,tv);
                 }
                 if (sInfo.eventNumber > 0) {
                     tv.setDecorateAction(new EventAction(getContext(), sInfo.eventNumber));
@@ -556,17 +558,27 @@ public class QuickGestureContainer extends FrameLayout {
         }
     }
 
+    private void checkFlashLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if (QuickSwitchManager.checkFlashLight()) {
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        } else {
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        }
+    }
+
     private void checkBlueToothStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkBlueTooth()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                     null);
-            LeoLog.d("QuickGestureContainer", "蓝牙开启状态，icon设置为垃圾桶！");
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
             tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
                     null);
-            LeoLog.d("QuickGestureContainer", "蓝牙关闭状态，icon设置为电量！");
         }
     }
 
