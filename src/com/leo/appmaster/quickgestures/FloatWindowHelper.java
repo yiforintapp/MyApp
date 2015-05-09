@@ -46,7 +46,7 @@ public class FloatWindowHelper {
 
     private static RightGesturePopupWindow mRightPopup;
     public static boolean mPopWindowShowing;
-
+    public static boolean mEditQuickAreaFlag = false;
     private static float startX;
     private static float startY;
     // private static WindowManager windowManager;
@@ -919,7 +919,8 @@ public class FloatWindowHelper {
                         R.layout.pop_quick_gesture, null);
                 WindowManager windowManager = getWindowManager(view.getContext());
                 int width = windowManager.getDefaultDisplay().getWidth();
-                int height = windowManager.getDefaultDisplay().getHeight() - DipPixelUtil.dip2px(view.getContext(), 25);
+                int height = windowManager.getDefaultDisplay().getHeight()
+                        - DipPixelUtil.dip2px(view.getContext(), 25);
                 mRightPopup = new RightGesturePopupWindow(contentView, width, height, true);
             }
 
