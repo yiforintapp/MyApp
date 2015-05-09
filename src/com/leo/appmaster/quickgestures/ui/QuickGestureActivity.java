@@ -8,9 +8,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +46,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaog
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.BuildProperties;
 
 /**
  * QuickGestureActivity
@@ -279,37 +282,38 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             if (arg2 == 1) {
                 Log.e("##########", "1:" + arg2);
             } else if (arg2 == 2) {
-                Log.e("##########", "2:" + arg2);
-                // boolean flag = QuickGestureWindowManager.isMIUI();
-                // boolean isOpenWindow =
-                // BuildProperties.isMiuiFloatWindowOpAllowed(QuickGestureActivity.this);
-                // Log.e("##########", "flag:" + flag + "isOpenWindow:" +
-                // isOpenWindow);
-                // if (flag && !isOpenWindow) {
-                // Intent intent = new
-                // Intent("miui.intent.action.APP_PERM_EDITOR");
-                // intent.setClassName("com.miui.securitycenter",
-                // "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-                // intent.putExtra("extra_pkgname",
-                // QuickGestureActivity.this.getPackageName());
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // try {
-                // startActivity(intent);
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // Intent intent1 = new Intent(
-                // Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                // Uri uri = Uri.fromParts("package",
-                // QuickGestureActivity.this.getPackageName(), null);
-                // intent.setData(uri);
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // try {
-                // QuickGestureActivity.this.startActivity(intent);
-                // } catch (Exception e1) {
-                // e1.printStackTrace();
-                // }
-                // }
-                // }
+//                Log.e("##########", "2:" + arg2);
+//                boolean flag = BuildProperties.isMIUI();
+//                boolean isOpenWindow =
+//                        BuildProperties.isMiuiFloatWindowOpAllowed(QuickGestureActivity.this);
+//                Log.e("##########", "flag:" + flag + "isOpenWindow:" +
+//                        isOpenWindow);
+//                if (flag && !isOpenWindow) {
+////                if (flag) {
+//                    Intent intent = new
+//                            Intent("miui.intent.action.APP_PERM_EDITOR");
+//                    intent.setClassName("com.miui.securitycenter",
+//                            "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+//                    intent.putExtra("extra_pkgname",
+//                            QuickGestureActivity.this.getPackageName());
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    try {
+//                        startActivity(intent);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        Intent intent1 = new Intent(
+//                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                        Uri uri = Uri.fromParts("package",
+//                                QuickGestureActivity.this.getPackageName(), null);
+//                        intent.setData(uri);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        try {
+//                            QuickGestureActivity.this.startActivity(intent);
+//                        } catch (Exception e1) {
+//                            e1.printStackTrace();
+//                        }
+//                    }
+//                }
             } else if (arg2 == 3) {
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);

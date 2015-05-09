@@ -81,6 +81,8 @@ public class FloatWindowHelper {
     private static float mRightTopWidth = 50;
     // 右上高度
     private static float mRightTopHeight = 300;
+    // 距离底部的距离
+    private static float mMarginBottom = 200;
 
     // 左下
     /**
@@ -868,6 +870,10 @@ public class FloatWindowHelper {
                 mLeftCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
             }
+            if (mLeftCenterCenterView != null) {
+                mLeftCenterCenterView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+            }
             if (mLeftTopView != null) {
                 mLeftTopView.setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
             }
@@ -877,6 +883,10 @@ public class FloatWindowHelper {
             }
             if (mRightCenterView != null) {
                 mRightCenterView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+            }
+            if (mRightCenterCenterView != null) {
+                mRightCenterCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
             }
             if (mRightTopView != null) {
@@ -892,6 +902,10 @@ public class FloatWindowHelper {
                 mLeftCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
             }
+            if (mLeftCenterCenterView != null) {
+                mLeftCenterCenterView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+            }
             if (mLeftTopView != null) {
                 mLeftTopView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
@@ -902,6 +916,10 @@ public class FloatWindowHelper {
             }
             if (mRightCenterView != null) {
                 mRightCenterView
+                        .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+            }
+            if (mRightCenterCenterView != null) {
+                mRightCenterCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
             }
             if (mRightTopView != null) {
