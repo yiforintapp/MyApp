@@ -524,7 +524,6 @@ public class QuickGestureContainer extends FrameLayout {
     }
 
     public void fillSwitchItem(QuickGestureLayout targetLayout, List<? extends BaseInfo> infos) {
-        LeoLog.d("QuickGestureContainer", "每次打开都会走吗～～");
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView tv = null;
@@ -548,9 +547,14 @@ public class QuickGestureContainer extends FrameLayout {
                     // check 蓝牙状态
                     checkBlueToothStatus(sInfo,iconSize,tv);
                 }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)){
+                    //手电筒状态
                     checkFlashLightStatus(sInfo,iconSize,tv);
                 }else if(sInfo.iDentiName.equals(QuickSwitchManager.WLAN)){
+                    //Wifi状态
                     checkWlanStatus(sInfo,iconSize,tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.CRAME)){
+                    //Crame状态
+                    checkCrameStatus(sInfo,iconSize,tv);
                 }
                 if (sInfo.eventNumber > 0) {
                     tv.setDecorateAction(new EventAction(getContext(), sInfo.eventNumber));
@@ -559,6 +563,12 @@ public class QuickGestureContainer extends FrameLayout {
                 targetLayout.addView(tv);
             }
         }
+    }
+
+    private void checkCrameStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                null);
     }
 
     private void checkWlanStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {

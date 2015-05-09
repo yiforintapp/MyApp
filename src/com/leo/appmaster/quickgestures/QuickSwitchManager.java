@@ -12,11 +12,13 @@ import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.net.wifi.WifiManager;
+import android.provider.MediaStore;
 
 public class QuickSwitchManager {
 
@@ -24,6 +26,7 @@ public class QuickSwitchManager {
     public final static String BLUETOOTH = "bluetooth";
     public final static String FLASHLIGHT = "flashlight";
     public final static String WLAN = "wlan";
+    public final static String CRAME = "carme";
 
     private Context mContext;
     private static BluetoothAdapter mBluetoothAdapter;
@@ -95,6 +98,13 @@ public class QuickSwitchManager {
         wlanInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_wifi);
         wlanInfo.iDentiName = WLAN;
         mSwitchList.add(wlanInfo);
+        // 相机
+        QuickSwitcherInfo carmeInfo = new QuickSwitcherInfo();
+        carmeInfo.label = mContext.getResources().getString(R.string.quick_guesture_carme);
+        carmeInfo.switchIcon = new Drawable[1];
+        carmeInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_camera);
+        carmeInfo.iDentiName = CRAME;
+        mSwitchList.add(carmeInfo);
         return mSwitchList;
     }
 
@@ -178,5 +188,11 @@ public class QuickSwitchManager {
         } else {
             return false;
         }
+    }
+
+    public void openCrame() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
+        mContext.startActivity(intent);
     }
 }
