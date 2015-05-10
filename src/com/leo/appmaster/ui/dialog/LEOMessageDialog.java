@@ -7,9 +7,12 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 public class LEOMessageDialog extends LEOBaseDialog {
     public static final String TAG = "XLOneButtonDialog";
@@ -49,6 +52,13 @@ public class LEOMessageDialog extends LEOBaseDialog {
 
     public void setDialogIcon(int resID){
            mIcon.setImageResource(resID);
+    }
+    
+    public void setDialogIconSize(int width,int  height){
+        LayoutParams params = (LayoutParams) mIcon.getLayoutParams();
+        params.width = DipPixelUtil.dip2px(mContext, width);
+        params.height = DipPixelUtil.dip2px(mContext, height);
+        mIcon.setLayoutParams(params);
     }
     
     public void setBottomBtnListener(DialogInterface.OnClickListener bListener) {
