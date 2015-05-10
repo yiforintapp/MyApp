@@ -222,7 +222,9 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
                     } else {
                         AppMasterPreference pre = AppMasterPreference
                                 .getInstance(SplashActivity.this);
-                        if (!pre.getAppVersionName().equals("default_version_name")) {
+                        if (!pre.getAppVersionName().equals("default_version_name")
+                                || "2.2".equals(SplashActivity.this
+                                        .getString(R.string.version_name))) {
                             // 存储的版本号
                             String versionName = pre.getAppVersionName();
                             // float version = Float.valueOf(versionName);
