@@ -18,6 +18,9 @@ public class LEORoundProgressDialog extends LEOBaseDialog {
 	private TextView mMessage;
 	private RoundProgressBar mProgressBar;
 	private View bottomLayout;
+	private View mCustomProTextView;
+	private TextView mCustomProDownText;
+	private TextView mCustomProTotalText;
 
 	public LEORoundProgressDialog(Context context) {
 		super(context, R.style.bt_dialog);
@@ -53,10 +56,21 @@ public class LEORoundProgressDialog extends LEOBaseDialog {
 
 	public void setProgress(int currentValue) {
 	    mCurrent = currentValue;
+	    mProgressBar.setProgress(mCurrent);
 	    if(mProgressBar.ifTextIsDisplayable()){
 	        mProgressBar.setProgressText(mCurrent  + "/" + mMax);
+	    }else if(mCustomProTextView.getVisibility() == View.VISIBLE){
+	        mCustomProDownText.setText(String.valueOf(mCurrent));
+	        mCustomProTotalText.setText(String.valueOf(mMax));
 	    }
-        mProgressBar.setProgress(mCurrent);
+	}
+	
+	/**
+	 * set custom progress text visiable
+	 * @param visiable
+	 */
+	public void setCustomProgressTextVisiable(boolean visiable){
+	    mCustomProTextView.setVisibility(visiable?View.VISIBLE:View.GONE);
 	}
 
 	private void initUI() {
@@ -65,6 +79,9 @@ public class LEORoundProgressDialog extends LEOBaseDialog {
 		mMessage = (TextView) dlgView.findViewById(R.id.dlg_content);
 		mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
 		mProgressBar = (RoundProgressBar) dlgView.findViewById(R.id.dlg_pro);
+		mCustomProTextView = dlgView.findViewById(R.id.dlg_custom_pro_text);
+		mCustomProDownText = (TextView) mCustomProTextView.findViewById(R.id.dlg_pro_text_down);
+		mCustomProTotalText = (TextView) mCustomProTextView.findViewById(R.id.dlg_pro_text_total);
 		bottomLayout = dlgView.findViewById(R.id.dlg_bottom_btn);
 		
 		bottomLayout.setOnClickListener(new View.OnClickListener() {           

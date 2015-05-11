@@ -1,30 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="320dp"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:layout_marginLeft="24dp"
-    android:layout_marginRight="24dp"
-    android:background="@drawable/dialog_bg"
-    android:gravity="center" >
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/dlg_title"
         style="@style/dlg_title_txt"
         android:layout_width="@dimen/dlg_horizental_margin"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:gravity="center"
+        android:ellipsize="end"
         android:text="@string/tips"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 
     <RelativeLayout
         android:id="@+id/layout_content"
         android:layout_width="@dimen/dlg_horizental_margin"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dlg_title"
+        android:layout_gravity="center"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:paddingBottom="24dp" >
 
         <TextView
@@ -33,10 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:textSize="16dp"
             android:gravity="center"
-            android:paddingTop="24dp" 
-            android:paddingBottom="10dp" />
+            android:paddingBottom="10dp"
+            android:paddingTop="24dp"
+            android:textSize="16dp" />
 
         <ProgressBar
             android:id="@+id/dlg_pro"
@@ -49,12 +50,10 @@
 
     <LinearLayout
         android:id="@+id/dlg_bottom_layout"
-        android:layout_width="@dimen/dlg_horizental_margin"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
         android:gravity="center"
-        android:orientation="vertical"
-        android:paddingBottom="24dp" >
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/dlg_bottom_btn"
@@ -64,4 +63,4 @@
             android:text="@string/cancel" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

@@ -49,6 +49,20 @@ public class MonthTrafficSetting extends LEOBaseDialog {
         seekbar_text_progress = (TextView) dlgView.findViewById(R.id.seekbar_text_progress);
         progressInt = sp_notice_flow.getFlowSettingBar();
         seekbar_text_progress.setText(progressInt+"%");
+        //得到seekbar_text_progress 大小，初始化位置
+        ViewTreeObserver vto =  seekbar_text_progress.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onGlobalLayout() {
+                seekbar_text_progress.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                progressTextWidth = seekbar_text_progress.getWidth();
+                progressTextHeight = seekbar_text_progress.getHeight();
+                
+                /**init the position of seekbar_text_progress **/
+                resetSeekbarTextMargin(mSeekBar.getThumb().getBounds().centerX());
+            }
+        });
         
         sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
         
@@ -70,21 +84,6 @@ public class MonthTrafficSetting extends LEOBaseDialog {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 progressInt = seekBar.getProgress();
-            }
-        });
-        
-        //得到seekbar_text_progress 大小，初始化位置
-        ViewTreeObserver vto =  seekbar_text_progress.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-            @SuppressWarnings("deprecation")
-            @Override
-            public void onGlobalLayout() {
-                seekbar_text_progress.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                progressTextWidth = seekbar_text_progress.getWidth();
-                progressTextHeight = seekbar_text_progress.getHeight();
-                
-                /**init the position of seekbar_text_progress **/
-                resetSeekbarTextMargin(mSeekBar.getThumb().getBounds().centerX());
             }
         });
         
