@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.utils;
 
-//引用到的工具类
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,6 +20,11 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
 
+/**
+ * 判断小米系统工具类
+ * 
+ * @author run
+ */
 public class BuildProperties {
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
@@ -80,33 +84,25 @@ public class BuildProperties {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static boolean checkOp(Context context, int op) {
         final int version = Build.VERSION.SDK_INT;
-
         if (version >= 19) {
             AppOpsManager manager = (AppOpsManager) context
                     .getSystemService(Context.APP_OPS_SERVICE);
-            // try {
             AppOpsManager method = null;
             try {
                 method = (AppOpsManager) invokePrivateMethod(manager, "checkOp");
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-//            method.checkOp(op, Binder.getCallingUid(), context.getPackageName());
             if (AppOpsManager.MODE_ALLOWED == (Integer) manager.checkOp(op,
                     Binder.getCallingUid(), context.getPackageName())) {
                 return true;
             } else {
                 return false;
             }
-            // } catch (Exception e) {
-            // // Flog.e(e.getMessage());
-            // }
-        } else {
-            // Flog.e("Below API 19 cannot invoke!");
         }
         return false;
     }
+
     public static Object invokePrivateMethod(Object obj, String methodName) throws Exception {
         Object value = null;
         Class<?> cls = obj.getClass();
@@ -125,8 +121,9 @@ public class BuildProperties {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static boolean isMiuiFloatWindowOpAllowed(Context context) {
         final int version = Build.VERSION.SDK_INT;
+        boolean flag;
         if (version >= 19) {
-            checkOp(context, AppOpsManager.OP_SYSTEM_ALERT_WINDOW);
+            flag = checkOp(context, AppOpsManager.OP_SYSTEM_ALERT_WINDOW);
         } else {
             if ((context.getApplicationInfo().flags & 1 << 27) == 1) {
                 return true;
@@ -134,10 +131,9 @@ public class BuildProperties {
                 return false;
             }
         }
-        return false;
+        return flag;
     }
 
-    // 判断系统类型
     public static boolean isMIUI() {
         try {
             final BuildProperties prop = BuildProperties.newInstance();

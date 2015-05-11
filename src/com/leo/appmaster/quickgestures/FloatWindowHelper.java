@@ -5,23 +5,25 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.PopupWindow.OnDismissListener;
+import android.widget.RelativeLayout;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.quickgestures.view.RightGesturePopupWindow;
 import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
 
 /**
  * QuickGestureWindowManager
@@ -36,10 +38,11 @@ public class FloatWindowHelper {
     public static final int ONTUCH_RIGHT_FLAG = 1;
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,
             mLeftCenterCenterView;
+    private static RelativeLayout mMiuiTipRl;
     private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView,
             mRightCenterCenterView;
     private static LayoutParams mLeftBottomParams, mLeftCenterParams, mLeftTopParams,
-            mLeftCenterCenterParams;
+            mLeftCenterCenterParams, mMiuiTipParams;
     private static LayoutParams mRightBottomParams, mRightCenterParams, mRightTopParams,
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
@@ -232,7 +235,7 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftCenterCenterParams.width / 4 || moveY > mLeftCenterCenterParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(-1, mLeftBottomView);
+                                onTouchAreaShowQuick(-1, mLeftCenterCenterView);
                                 // removeSwipWindow(mContext, 4);
                                 deleteLeftAllFloatWindow(mContext);
                             }
@@ -252,10 +255,11 @@ public class FloatWindowHelper {
             if (mLeftCenterCenterParams == null) {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight();
+                int leftBottomHeight = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
                 mLeftCenterCenterParams = new LayoutParams();
                 mLeftCenterCenterParams.x = (int) -(width / 2);
                 mLeftCenterCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
+                        - ((mLeftCenterHeight / 2) + leftBottomHeight) - 10) - value;
                 mLeftCenterCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
                 mLeftCenterCenterParams.height = (int) ((mLeftCenterCenterHeight / 2) + (value)) * 2;
                 mLeftCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
@@ -475,7 +479,7 @@ public class FloatWindowHelper {
                             if ((moveX > mRightCenterCenterParams.width / 4 || moveY > mRightCenterCenterParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(1, mRightBottomView);
+                                onTouchAreaShowQuick(1, mRightCenterCenterView);
                                 // removeSwipWindow(mContext, -4);
                                 deleteRightAllFloatWindow(mContext);
                             }
@@ -494,10 +498,11 @@ public class FloatWindowHelper {
             if (mRightCenterCenterParams == null) {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight();
+                int rightBottomHeight = (int) ((mRightBottomHeight / 2) + (value)) * 2;
                 mRightCenterCenterParams = new LayoutParams();
                 mRightCenterCenterParams.x = (int) (width / 2);
                 mRightCenterCenterParams.y = (int) ((height / 2)
-                        - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
+                        - ((mRightCenterHeight / 2) + rightBottomHeight) - 10) - value;
                 mRightCenterCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
                 mRightCenterCenterParams.height = (int) ((mRightCenterCenterHeight / 2) + (value)) * 2;
                 mRightCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
@@ -819,9 +824,9 @@ public class FloatWindowHelper {
                 FloatWindowHelper
                         .createFloatLeftTopWindow(context, value);
             } else {
-                FloatWindowHelper.removeSwipWindow(context, 1);
-                FloatWindowHelper.removeSwipWindow(context, 2);
-                FloatWindowHelper.removeSwipWindow(context, 3);
+                // FloatWindowHelper.removeSwipWindow(context, 1);
+                // FloatWindowHelper.removeSwipWindow(context, 2);
+                // FloatWindowHelper.removeSwipWindow(context, 3);
             }
             // 右侧底部
             if (pre.getDialogRadioRightBottom()) {
@@ -832,25 +837,30 @@ public class FloatWindowHelper {
                 FloatWindowHelper
                         .createFloatRightTopWindow(context, value);
             } else {
-                FloatWindowHelper.removeSwipWindow(context, -1);
-                FloatWindowHelper.removeSwipWindow(context, -2);
-                FloatWindowHelper.removeSwipWindow(context, -3);
+                // FloatWindowHelper.removeSwipWindow(context, -1);
+                // FloatWindowHelper.removeSwipWindow(context, -2);
+                // FloatWindowHelper.removeSwipWindow(context, -3);
             }
             // 左侧中部
             if (pre.getDialogRadioLeftCenter()) {
                 FloatWindowHelper.removeSwipWindow(context, 2);
                 FloatWindowHelper.removeSwipWindow(context, 3);
                 FloatWindowHelper.createFloatLeftCenterCenterWindow(context, value);
-            } else {
-
+                if (pre.getDialogRadioLeftBottom()) {
+                    FloatWindowHelper
+                            .createFloatLeftBottomWindow(context, value);
+                }
             }
             // 右侧中部
             if (pre.getDialogRadioRightCenter()) {
                 FloatWindowHelper.removeSwipWindow(context, -2);
                 FloatWindowHelper.removeSwipWindow(context, -3);
                 FloatWindowHelper.createFloatRightCenterCenterWindow(context, value);
-            } else {
+                if (pre.getDialogRadioRightBottom()) {
+                    FloatWindowHelper
+                            .createFloatRightBottomWindow(context, value);
 
+                }
             }
         }
     }
@@ -929,6 +939,38 @@ public class FloatWindowHelper {
         }
     }
 
+    // MIUI系统提示层
+    public static void createMiuiTipWindow(final Context mContext) {
+        final WindowManager windowManager = getWindowManager(mContext);
+        if (mMiuiTipRl == null) {
+            mMiuiTipRl = (RelativeLayout) LayoutInflater.from(mContext).inflate(
+                    R.layout.activity_miui_open_float_window_tip, null);
+            mMiuiTipRl.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    if (mMiuiTipRl != null) {
+                        windowManager.removeView(mMiuiTipRl);
+                        mMiuiTipRl = null;
+                    }
+                }
+            });
+            if (mMiuiTipParams == null) {
+                int width = windowManager.getDefaultDisplay().getWidth();
+                int height = windowManager.getDefaultDisplay().getHeight();
+                mMiuiTipParams = new LayoutParams();
+                mMiuiTipParams.width = width;
+                mMiuiTipParams.height = height;
+                mMiuiTipParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mMiuiTipParams.format = PixelFormat.RGBA_8888;
+                mMiuiTipParams.windowAnimations = R.anim.lock_mode_guide_in;
+                mMiuiTipParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
+            }
+            windowManager.addView(mMiuiTipRl, mMiuiTipParams);
+        }
+    }
+
     private static void onTouchAreaShowQuick(int flag, View view) {
         // 滑动显示快捷
         if (flag == -1) {
@@ -962,4 +1004,5 @@ public class FloatWindowHelper {
             // 右边划出
         }
     }
+
 }
