@@ -31,6 +31,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.MediaColumns;
+import android.util.Log;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.imagehide.PhotoAibum;
@@ -475,6 +476,12 @@ public class FileOperationUtil {
                     String path = cursor.getString(1);
                     String dir_id = cursor.getString(3);
                     String dir = cursor.getString(4);
+                    // 过滤闪屏图
+                    if (FileOperationUtil.getSplashPath() != null
+                            && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
+                                    .equals(path)) {
+                        continue;
+                    }
                     if (!countMap.containsKey(dir_id)) {
                         pa = new PhotoAibum();
                         pa.setName(dir);
