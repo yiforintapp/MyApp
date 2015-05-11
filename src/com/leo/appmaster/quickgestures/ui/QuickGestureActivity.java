@@ -315,15 +315,15 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 // }
                 // FloatWindowHelper.createMiuiTipWindow(QuickGestureActivity.this);
                 // }
-                Uri uri = Uri.parse("tel:" + "1008611");
-                Intent intent = new Intent(Intent.ACTION_DIAL,
-                        uri);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(intent);
-                } catch (Exception e) {
-                }
-                FloatWindowHelper.createMiuiTipWindow(QuickGestureActivity.this);
+                // Uri uri = Uri.parse("tel:" + "1008611");
+                // Intent intent = new Intent(Intent.ACTION_DIAL,
+                // uri);
+                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // try {
+                // startActivity(intent);
+                // } catch (Exception e) {
+                // }
+                // FloatWindowHelper.createMiuiTipWindow(QuickGestureActivity.this);
             } else if (arg2 == 3) {
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);
