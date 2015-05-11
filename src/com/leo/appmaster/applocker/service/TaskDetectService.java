@@ -512,7 +512,7 @@ public class TaskDetectService extends Service {
             } else {
                 FloatWindowHelper
                         .createFloatLeftCenterCenterWindow(this, value);
-                if (AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
+                if (AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
                     FloatWindowHelper.removeSwipWindow(this, 2);
                     FloatWindowHelper.removeSwipWindow(this, 3);
                 }

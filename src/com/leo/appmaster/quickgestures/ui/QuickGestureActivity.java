@@ -282,38 +282,48 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             if (arg2 == 1) {
                 Log.e("##########", "1:" + arg2);
             } else if (arg2 == 2) {
-//                Log.e("##########", "2:" + arg2);
-//                boolean flag = BuildProperties.isMIUI();
-//                boolean isOpenWindow =
-//                        BuildProperties.isMiuiFloatWindowOpAllowed(QuickGestureActivity.this);
-//                Log.e("##########", "flag:" + flag + "isOpenWindow:" +
-//                        isOpenWindow);
-//                if (flag && !isOpenWindow) {
-////                if (flag) {
-//                    Intent intent = new
-//                            Intent("miui.intent.action.APP_PERM_EDITOR");
-//                    intent.setClassName("com.miui.securitycenter",
-//                            "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-//                    intent.putExtra("extra_pkgname",
-//                            QuickGestureActivity.this.getPackageName());
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    try {
-//                        startActivity(intent);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        Intent intent1 = new Intent(
-//                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//                        Uri uri = Uri.fromParts("package",
-//                                QuickGestureActivity.this.getPackageName(), null);
-//                        intent.setData(uri);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        try {
-//                            QuickGestureActivity.this.startActivity(intent);
-//                        } catch (Exception e1) {
-//                            e1.printStackTrace();
-//                        }
-//                    }
-//                }
+                Log.e("##########", "2:" + arg2);
+                // boolean flag = BuildProperties.isMIUI();
+                // boolean isOpenWindow =
+                // BuildProperties.isMiuiFloatWindowOpAllowed(QuickGestureActivity.this);
+                // Log.e("##########", "flag:" + flag + "isOpenWindow:" +
+                // isOpenWindow);
+                // if (flag && !isOpenWindow) {
+                // // miuiTip();
+                // Intent intent = new
+                // Intent("miui.intent.action.APP_PERM_EDITOR");
+                // intent.setClassName("com.miui.securitycenter",
+                // "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+                // intent.putExtra("extra_pkgname",
+                // QuickGestureActivity.this.getPackageName());
+                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // try {
+                // startActivity(intent);
+                // } catch (Exception e) {
+                // e.printStackTrace();
+                // Intent intent1 = new Intent(
+                // Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                // Uri uri = Uri.fromParts("package",
+                // QuickGestureActivity.this.getPackageName(), null);
+                // intent.setData(uri);
+                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // try {
+                // QuickGestureActivity.this.startActivity(intent);
+                // } catch (Exception e1) {
+                // e1.printStackTrace();
+                // }
+                // }
+                // FloatWindowHelper.createMiuiTipWindow(QuickGestureActivity.this);
+                // }
+                // Uri uri = Uri.parse("tel:" + "1008611");
+                // Intent intent = new Intent(Intent.ACTION_DIAL,
+                // uri);
+                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // try {
+                // startActivity(intent);
+                // } catch (Exception e) {
+                // }
+                // FloatWindowHelper.createMiuiTipWindow(QuickGestureActivity.this);
             } else if (arg2 == 3) {
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);
@@ -322,6 +332,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             }
         }
     }
+
 
     @Override
     public void onCheckedChanged(CompoundButton arg0, boolean arg1) {

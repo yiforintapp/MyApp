@@ -61,38 +61,22 @@ public class ImageGalleryActivity extends BaseActivity {
         mTtileBar.openBackView();
         mGridView = (GridView) findViewById(R.id.image_gallery_folder);
         mGridView.setAdapter(mAlbumAdapt);
-        // mGridView.setOnScrollListener(new OnScrollListener() {
-        // @Override
-        // public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-        // mScrollX = mGridView.getScrollX();
-        // mScrollY = mGridView.getScrollY();
-        // }
-        // }
-        //
-        // @Override
-        // public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3)
-        // {
-        // // TODO Auto-generated method stub
-        //
-        // }
-        // });
         mNoPictureHint = (RelativeLayout) findViewById(R.id.no_picture);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mImageLoader != null) {
+        if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();
         }
     }
-    
+
     @Override
     public void finish() {
         super.finish();
-        if(mImageLoader != null) {
+        if (mImageLoader != null) {
             mImageLoader.stop();
         }
     }
@@ -224,7 +208,7 @@ public class ImageGalleryActivity extends BaseActivity {
                         @Override
                         public void onItemClick(AdapterView<?> arg0, View arg1,
                                 int position, long arg3) {
-                            if(position < mAlbumList.size()) {
+                            if (position < mAlbumList.size()) {
                                 Intent intent = new Intent(ImageGalleryActivity.this,
                                         ImageGridActivity.class);
                                 Bundle bundle = new Bundle();

@@ -1,27 +1,42 @@
 
 package com.leo.appmaster.quickgestures;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import com.android.internal.view.RotationPolicy;
 import com.leo.appmaster.R;
+import com.leo.appmaster.appsetting.AboutActivity;
+import com.leo.appmaster.home.ProtocolActivity;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
 
+import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
+import android.location.LocationManager;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.PowerManager;
+import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.SoundEffectConstants;
+import android.widget.Toast;
 
 public class QuickSwitchManager {
 
@@ -31,18 +46,44 @@ public class QuickSwitchManager {
     public final static String WLAN = "wlan";
     public final static String CRAME = "carme";
     public final static String SOUND = "sound";
+    public final static String LIGHT = "light";
+    public final static String SPEEDUP = "speedup";
+    public final static String CHANGEMODE = "changemode";
+    public final static String SWITCHSET = "switchset";
+    public final static String SETTING = "setting";
+    public final static String GPS = "gps";
+    public final static String FLYMODE = "flymode";
+    public final static String ROTATION = "rotation";
+    public final static String MOBILEDATA = "mobiledata";
+    public final static String HOME = "home";
     private Context mContext;
     private static BluetoothAdapter mBluetoothAdapter;
     private WifiManager mWifimanager;
     public Camera mCamera;
     private AudioManager mSoundManager;
-    private static boolean isBlueToothOpen = false;
-    private static boolean isFlashLightOpen = false;
-    private static boolean isWlantOpen = false;
+    private PowerManager mPowerManager;
+    public static boolean isBlueToothOpen = false;
+    public static boolean isFlashLightOpen = false;
+    public static boolean isWlantOpen = false;
+    public static boolean isGpsOpen = false;
+    public static boolean isFlyModeOpen = false;
+    public static boolean isRotationOpen = false;
+    public static boolean isMobileDataOpen = false;
     private static int mSoundStatus;
     public final static int mSound = 0;
     public final static int mQuite = 1;
     public final static int mVibrate = 2;
+    private static int mLightStatus;
+    public static final int LIGHT_ERR = -1;
+    public static final int LIGHT_AUTO = 0;
+    public static final int LIGHT_NORMAL = 64;
+    public static final int LIGHT_50_PERCENT = 127;
+    public static final int LIGHT_100_PERCENT = 255;
+    private Vibrator vib;
+    private LocationManager locationManager;
+    private int isAirplaneMode;
+    private int mRotateState;
+    private ConnectivityManager mConnectivityManager;
 
     public static synchronized QuickSwitchManager getInstance(Context context) {
         if (mInstance == null) {
@@ -53,9 +94,71 @@ public class QuickSwitchManager {
 
     private QuickSwitchManager(Context context) {
         mContext = context.getApplicationContext();
-        blueTooth();
+        vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
+
+        // 打开前判断每一个的状态
+        BlueTooth();
         Wlan();
         Sound();
+        LightPower();
+        GPS();
+        FlyMode();
+        Rotation();
+        MobileData();
+    }
+
+    private void MobileData() {
+        mConnectivityManager = (ConnectivityManager) mContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        try {
+            boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
+                    null);
+            if (isMobileDataEnable) {
+                isMobileDataOpen = true;
+            } else {
+                isMobileDataOpen = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void Rotation() {
+        try {
+            mRotateState = android.provider.Settings.System.getInt(mContext.getContentResolver(),
+                    android.provider.Settings.System.ACCELEROMETER_ROTATION);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (mRotateState == 1) {
+            isRotationOpen = true;
+        } else {
+            isRotationOpen = false;
+        }
+    }
+
+    private void FlyMode() {
+        isAirplaneMode = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.AIRPLANE_MODE_ON, 0);
+        if (isAirplaneMode == 1) {
+            isFlyModeOpen = true;
+        } else {
+            isFlyModeOpen = false;
+        }
+    }
+
+    private void GPS() {
+        locationManager = (LocationManager) mContext
+                .getSystemService(Context.LOCATION_SERVICE);
+        // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
+        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (gps || network) {
+            isGpsOpen = true;
+        } else {
+            isGpsOpen = false;
+        }
     }
 
     private void Sound() {
@@ -78,7 +181,7 @@ public class QuickSwitchManager {
         }
     }
 
-    private void blueTooth() {
+    private void BlueTooth() {
         mBluetoothAdapter = BluetoothAdapter
                 .getDefaultAdapter();
         if (mBluetoothAdapter.isEnabled()) {
@@ -86,6 +189,61 @@ public class QuickSwitchManager {
         } else {
             isBlueToothOpen = false;
         }
+    }
+
+    private void LightPower() {
+        mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+        refreshLightButton();
+    }
+
+    // 更新按钮
+    private void refreshLightButton()
+    {
+        switch (getBrightStatus())
+        {
+            case LIGHT_AUTO:
+                mLightStatus = LIGHT_AUTO;
+                break;
+            case LIGHT_NORMAL:
+                mLightStatus = LIGHT_NORMAL;
+                break;
+            case LIGHT_50_PERCENT:
+                mLightStatus = LIGHT_50_PERCENT;
+                break;
+            case LIGHT_100_PERCENT:
+                mLightStatus = LIGHT_100_PERCENT;
+                break;
+            case LIGHT_ERR:
+                mLightStatus = LIGHT_ERR;
+                break;
+        }
+    }
+
+    // 得到当前亮度值状态
+    private int getBrightStatus() {
+        int light = 0;
+        boolean auto = false;
+        ContentResolver cr = mContext.getContentResolver();
+        try {
+            auto = Settings.System.getInt(cr,
+                    Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
+            if (!auto) {
+                light = android.provider.Settings.System.getInt(cr,
+                        Settings.System.SCREEN_BRIGHTNESS, -1);
+                if (light > 0 && light <= LIGHT_NORMAL) {
+                    return LIGHT_NORMAL;
+                } else if (light > LIGHT_NORMAL && light <= LIGHT_50_PERCENT) {
+                    return LIGHT_50_PERCENT;
+                } else if (light > LIGHT_50_PERCENT && light <= LIGHT_100_PERCENT) {
+                    return LIGHT_100_PERCENT;
+                }
+            } else {
+                return LIGHT_AUTO;
+            }
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return LIGHT_ERR;
     }
 
     public List<QuickSwitcherInfo> getSwitchList(int switchNum) {
@@ -136,7 +294,99 @@ public class QuickSwitchManager {
                 R.drawable.switch_volume_vibration);
         soundInfo.iDentiName = SOUND;
         mSwitchList.add(soundInfo);
-
+        // 亮度
+        QuickSwitcherInfo lightInfo = new QuickSwitcherInfo();
+        lightInfo.label = mContext.getResources().getString(R.string.quick_guesture_light);
+        lightInfo.switchIcon = new Drawable[4];
+        lightInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_brightness_automatic);
+        lightInfo.switchIcon[1] = mContext.getResources()
+                .getDrawable(R.drawable.switch_brightness_min);
+        lightInfo.switchIcon[2] = mContext.getResources().getDrawable(
+                R.drawable.switch_brightness_half);
+        lightInfo.switchIcon[3] = mContext.getResources().getDrawable(
+                R.drawable.switch_brightness_max);
+        lightInfo.iDentiName = LIGHT;
+        mSwitchList.add(lightInfo);
+        // 系统设置
+        QuickSwitcherInfo settingInfo = new QuickSwitcherInfo();
+        settingInfo.label = mContext.getResources().getString(R.string.quick_guesture_setting);
+        settingInfo.switchIcon = new Drawable[1];
+        settingInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_gestureset_pre);
+        settingInfo.iDentiName = SETTING;
+        mSwitchList.add(settingInfo);
+        // 加速
+        QuickSwitcherInfo speedUpInfo = new QuickSwitcherInfo();
+        speedUpInfo.label = mContext.getResources().getString(R.string.quick_guesture_speedup);
+        speedUpInfo.switchIcon = new Drawable[1];
+        speedUpInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
+        speedUpInfo.iDentiName = SPEEDUP;
+        mSwitchList.add(speedUpInfo);
+        // Home
+        QuickSwitcherInfo homeInfo = new QuickSwitcherInfo();
+        homeInfo.label = mContext.getResources()
+                .getString(R.string.quick_guesture_home);
+        homeInfo.switchIcon = new Drawable[1];
+        homeInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_home);
+        homeInfo.iDentiName = HOME;
+        mSwitchList.add(homeInfo);
+        // 移动数据
+        QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
+        mobileDataInfo.label = mContext.getResources()
+                .getString(R.string.quick_guesture_mobliedata);
+        mobileDataInfo.switchIcon = new Drawable[2];
+        mobileDataInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_data_pre);
+        mobileDataInfo.switchIcon[1] = mContext.getResources().getDrawable(
+                R.drawable.switch_data);
+        mobileDataInfo.iDentiName = MOBILEDATA;
+        mSwitchList.add(mobileDataInfo);
+        // 屏幕旋转
+        QuickSwitcherInfo rotationInfo = new QuickSwitcherInfo();
+        rotationInfo.label = mContext.getResources().getString(R.string.quick_guesture_rotation);
+        rotationInfo.switchIcon = new Drawable[2];
+        rotationInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_rotation_pre);
+        rotationInfo.switchIcon[1] = mContext.getResources().getDrawable(
+                R.drawable.switch_rotation);
+        rotationInfo.iDentiName = ROTATION;
+        mSwitchList.add(rotationInfo);
+        // 飞行模式
+        QuickSwitcherInfo flyModeInfo = new QuickSwitcherInfo();
+        flyModeInfo.label = mContext.getResources().getString(R.string.quick_guesture_flymode);
+        flyModeInfo.switchIcon = new Drawable[2];
+        flyModeInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_flightmode_pre);
+        flyModeInfo.switchIcon[1] = mContext.getResources().getDrawable(
+                R.drawable.switch_flightmode);
+        flyModeInfo.iDentiName = FLYMODE;
+        mSwitchList.add(flyModeInfo);
+        // GPS
+        QuickSwitcherInfo gpsInfo = new QuickSwitcherInfo();
+        gpsInfo.label = mContext.getResources().getString(R.string.quick_guesture_gps);
+        gpsInfo.switchIcon = new Drawable[2];
+        gpsInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_gps_pre);
+        gpsInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_gps);
+        gpsInfo.iDentiName = GPS;
+        mSwitchList.add(gpsInfo);
+        // 手势设置
+        QuickSwitcherInfo switchSetInfo = new QuickSwitcherInfo();
+        switchSetInfo.label = mContext.getResources().getString(R.string.quick_guesture_switchset);
+        switchSetInfo.switchIcon = new Drawable[1];
+        switchSetInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_gestureset_pre);
+        switchSetInfo.iDentiName = SWITCHSET;
+        mSwitchList.add(switchSetInfo);
+        // 情景模式切换
+        QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
+        changeModeInfo.label = mContext.getResources()
+                .getString(R.string.quick_guesture_changemode);
+        changeModeInfo.switchIcon = new Drawable[1];
+        changeModeInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_mode);
+        changeModeInfo.iDentiName = CHANGEMODE;
+        mSwitchList.add(changeModeInfo);
         return mSwitchList;
     }
 
@@ -179,6 +429,10 @@ public class QuickSwitchManager {
         } else if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
             mSoundManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
             mSoundStatus = mVibrate;
+            if (vib == null) {
+                vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
+            }
+            vib.vibrate(150);
         } else if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE) {
             mSoundManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
             mSoundStatus = mSound;
@@ -251,10 +505,271 @@ public class QuickSwitchManager {
         }
     }
 
+    public static int checkLight() {
+        if (mLightStatus == LIGHT_AUTO) {
+            return LIGHT_AUTO;
+        } else if (mLightStatus == LIGHT_NORMAL) {
+            return LIGHT_NORMAL;
+        } else if (mLightStatus == LIGHT_50_PERCENT) {
+            return LIGHT_50_PERCENT;
+        } else if (mLightStatus == LIGHT_100_PERCENT) {
+            return LIGHT_100_PERCENT;
+        } else {
+            return LIGHT_ERR;
+        }
+    }
+
     public void openCrame() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
 
+    public void toggleLight(QuickGestureContainer mContainer, List<QuickSwitcherInfo> switchList,
+            QuickGestureLayout quickGestureLayout) {
+        int light = 0;
+        switch (getBrightStatus()) {
+            case LIGHT_AUTO:
+                light = LIGHT_NORMAL - 1;
+                stopAutoBrightness(mContext.getContentResolver());
+                mLightStatus = LIGHT_NORMAL;
+                break;
+            case LIGHT_NORMAL:
+                light = LIGHT_50_PERCENT - 1;
+                mLightStatus = LIGHT_50_PERCENT;
+                break;
+            case LIGHT_50_PERCENT:
+                light = LIGHT_100_PERCENT - 1;
+                mLightStatus = LIGHT_100_PERCENT;
+                break;
+            case LIGHT_100_PERCENT:
+                startAutoBrightness(mContext.getContentResolver());
+                mLightStatus = LIGHT_AUTO;
+                break;
+            case LIGHT_ERR:
+                light = LIGHT_NORMAL - 1;
+                break;
+        }
+        setLight(light);
+        setScreenLightValue(mContext.getContentResolver(), light);
+        mContainer.fillSwitchItem(quickGestureLayout, switchList);
+        // refreshLightButton();
+    }
+
+    /*
+     * 因为PowerManager提供的函数setBacklightBrightness接口是隐藏的，
+     * 所以在基于第三方开发调用该函数时，只能通过反射实现在运行时调用
+     */
+    private void setLight(int light) {
+        try {
+            // 得到PowerManager类对应的Class对象
+            Class<?> pmClass = Class.forName(mPowerManager.getClass().getName());
+            // 得到PowerManager类中的成员mService（mService为PowerManagerService类型）
+            Field field = pmClass.getDeclaredField("mService");
+            field.setAccessible(true);
+            // 实例化mService
+            Object iPM = field.get(mPowerManager);
+            // 得到PowerManagerService对应的Class对象
+            Class<?> iPMClass = Class.forName(iPM.getClass().getName());
+            /*
+             * 得到PowerManagerService的函数setBacklightBrightness对应的Method对象，
+             * PowerManager的函数setBacklightBrightness实现在PowerManagerService中
+             */
+            Method method = iPMClass.getDeclaredMethod("setBacklightBrightness", int.class);
+            method.setAccessible(true);
+            // 调用实现PowerManagerService的setBacklightBrightness
+            method.invoke(iPM, light);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 启动自动调节亮度
+    public void startAutoBrightness(ContentResolver cr)
+    {
+        Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS_MODE,
+                Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+    }
+
+    // 关闭自动调节亮度
+    public void stopAutoBrightness(ContentResolver cr)
+    {
+        Settings.System.putInt(cr, Settings.System.SCREEN_BRIGHTNESS_MODE,
+                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+    }
+
+    // 设置改变亮度值
+    public void setScreenLightValue(ContentResolver resolver, int value)
+    {
+        android.provider.Settings.System.putInt(resolver, Settings.System.SCREEN_BRIGHTNESS,
+                value);
+    }
+
+    public void speedUp() {
+        Toast.makeText(mContext, "加你的头～方案还没出！", 0).show();
+    }
+
+    public void toggleMode() {
+        Toast.makeText(mContext, "切你的头～方案还没出！", 0).show();
+    }
+
+    public void switchSet() {
+        Intent intent = new Intent(mContext, QuickGestureActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+    }
+
+    public void goSetting() {
+        Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+    }
+
+    public static boolean checkGps() {
+        if (isGpsOpen) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void toggleGPS() {
+        try {
+            Intent callGPSSettingIntent = new Intent(
+                    android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            callGPSSettingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(callGPSSettingIntent);
+        } catch (Exception e) {
+            Toast.makeText(mContext, "GPS is not available!", 0).show();
+        }
+    }
+
+    public static boolean checkFlyMode() {
+        if (isFlyModeOpen) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void toggleFlyMode() {
+        try {
+            Intent callFLYSettingIntent = new Intent(
+                    android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+            callFLYSettingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(callFLYSettingIntent);
+        } catch (Exception e) {
+            Toast.makeText(mContext, "Flight mode is not available!", 0).show();
+        }
+    }
+
+    public static boolean checkRotation() {
+        if (isRotationOpen) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void toggleRotation(QuickGestureContainer mContainer, List<QuickSwitcherInfo> list,
+            QuickGestureLayout quickGestureLayout) {
+        try {
+            mRotateState = android.provider.Settings.System.getInt(mContext.getContentResolver(),
+                    android.provider.Settings.System.ACCELEROMETER_ROTATION);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (mRotateState == 1) {
+            // 得到uri
+            Uri uri = android.provider.Settings.System.getUriFor("accelerometer_rotation");
+            // 沟通设置status的值改变屏幕旋转设置
+            android.provider.Settings.System.putInt(mContext.getContentResolver(),
+                    "accelerometer_rotation",
+                    0);
+            // 通知改变
+            mContext.getContentResolver().notifyChange(uri, null);
+            isRotationOpen = false;
+        } else {
+            // 得到uri
+            Uri uri = android.provider.Settings.System.getUriFor("accelerometer_rotation");
+            // 沟通设置status的值改变屏幕旋转设置
+            android.provider.Settings.System.putInt(mContext.getContentResolver(),
+                    "accelerometer_rotation",
+                    1);
+            // 通知改变
+            mContext.getContentResolver().notifyChange(uri, null);
+            isRotationOpen = true;
+        }
+        mContainer.fillSwitchItem(quickGestureLayout, list);
+    }
+
+    public static boolean checkMoblieData() {
+        if (isMobileDataOpen) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void toggleMobileData(QuickGestureContainer mContainer,
+            List<QuickSwitcherInfo> switchList, QuickGestureLayout quickGestureLayout) {
+        Object[] arg = null;
+        try {
+            boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
+                    arg);
+            if (isMobileDataEnable) {
+                invokeBooleanArgMethod("setMobileDataEnabled", false);
+                isMobileDataOpen = false;
+            } else {
+                invokeBooleanArgMethod("setMobileDataEnabled", true);
+                isMobileDataOpen = true;
+            }
+            mContainer.fillSwitchItem(quickGestureLayout, switchList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean invokeMethod(String methodName, Object[] arg)
+            throws Exception {
+        ConnectivityManager mConnectivityManager = (ConnectivityManager) mContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        Class ownerClass = mConnectivityManager.getClass();
+        Class[] argsClass = null;
+        if (arg != null) {
+            argsClass = new Class[1];
+            argsClass[0] = arg.getClass();
+        }
+        Method method = ownerClass.getMethod(methodName, argsClass);
+        Boolean isOpen = (Boolean) method.invoke(mConnectivityManager, arg);
+        return isOpen;
+    }
+
+    public Object invokeBooleanArgMethod(String methodName, boolean value)
+            throws Exception {
+        ConnectivityManager mConnectivityManager = (ConnectivityManager) mContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        Class ownerClass = mConnectivityManager.getClass();
+        Class[] argsClass = new Class[1];
+        argsClass[0] = boolean.class;
+        Method method = ownerClass.getMethod(methodName, argsClass);
+        return method.invoke(mConnectivityManager, value);
+    }
+
+    public void goHome() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+        intent.addCategory(Intent.CATEGORY_HOME);
+        mContext.startActivity(intent);
+    }
 }

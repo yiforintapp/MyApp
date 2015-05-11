@@ -497,6 +497,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >
         </activity>
+        <activity
+            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureMiuiOpenFloatWindwoTip"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
 
         <service
             android:name="com.leo.appmaster.applocker.service.TaskDetectService"
