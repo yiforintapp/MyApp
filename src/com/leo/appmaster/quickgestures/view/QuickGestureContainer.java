@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.utils.BitmapUtils;
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
@@ -36,6 +37,7 @@ import android.widget.TextView;
 public class QuickGestureContainer extends FrameLayout {
 
     public static final String TAG = "QuickGestureContainer";
+    private List<QuickSwitcherInfo> mSwitchList;
 
     public static enum Orientation {
         Left, Right;
@@ -510,12 +512,149 @@ public class QuickGestureContainer extends FrameLayout {
         QuickGestureLayout targetLayout = null;
         if (type == GType.DymicLayout) {
             targetLayout = mDymicLayout;
+            fillItem(targetLayout, infos);
         } else if (type == GType.MostUsedLayout) {
             targetLayout = mMostUsedLayout;
+            fillItem(targetLayout, infos);
         } else if (type == GType.SwitcherLayout) {
             targetLayout = mSwitcherLayout;
+            setSwitchList((List<QuickSwitcherInfo>) infos);
+            fillSwitchItem(targetLayout, infos);
         }
+    }
 
+    public void fillSwitchItem(QuickGestureLayout targetLayout, List<? extends BaseInfo> infos) {
+        if (targetLayout != null) {
+            targetLayout.removeAllViews();
+            GestureItemView tv = null;
+            QuickGestureLayout.LayoutParams lp = null;
+            QuickSwitcherInfo sInfo = null;
+            int iconSize = targetLayout.getIconSize();
+            for (int i = 0; i < infos.size(); i++) {
+                if (i >= 9) {
+                    break;
+                }
+                tv = new GestureItemView(getContext());
+                lp = new QuickGestureLayout.LayoutParams(
+                        targetLayout.getItemSize(), targetLayout.getItemSize());
+                lp.position = i;
+                tv.setGravity(Gravity.CENTER_HORIZONTAL);
+                tv.setLayoutParams(lp);
+                sInfo = (QuickSwitcherInfo) infos.get(i);
+                tv.setText(sInfo.label);
+                tv.setTextSize(12);
+                if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+                    // check 蓝牙状态
+                    checkBlueToothStatus(sInfo, iconSize, tv);
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+                    // 手电筒状态
+                    checkFlashLightStatus(sInfo, iconSize, tv);
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
+                    // Wifi状态
+                    checkWlanStatus(sInfo, iconSize, tv);
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
+                    // Crame状态
+                    checkCrameStatus(sInfo, iconSize, tv);
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
+                    // Sound状态
+                    checkSoundStatus(sInfo, iconSize, tv);
+                }else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+                    // Sound状态
+                    checkLightStatus(sInfo, iconSize, tv);
+                }
+                if (sInfo.eventNumber > 0) {
+                    tv.setDecorateAction(new EventAction(getContext(), sInfo.eventNumber));
+                }
+                tv.setTag(sInfo);
+                targetLayout.addView(tv);
+            }
+        }
+    }
+
+    private void checkLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if(QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_AUTO){
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        }else  if(QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_NORMAL){
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        }else  if(QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_50_PERCENT){
+            sInfo.switchIcon[2].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[2], null,
+                    null);
+        }else  if(QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_100_PERCENT){
+            sInfo.switchIcon[3].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[3], null,
+                    null);
+        }else {
+            //err
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        }
+    }
+
+    private void checkSoundStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if (QuickSwitchManager.checkSound() == QuickSwitchManager.mSound) {
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        } else if (QuickSwitchManager.checkSound() == QuickSwitchManager.mQuite) {
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        } else {
+            sInfo.switchIcon[2].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[2], null,
+                    null);
+        }
+    }
+
+    private void checkCrameStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                null);
+    }
+
+    private void checkWlanStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if (QuickSwitchManager.checkWlan()) {
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        } else {
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        }
+    }
+
+    private void checkFlashLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if (QuickSwitchManager.checkFlashLight()) {
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        } else {
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        }
+    }
+
+    private void checkBlueToothStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if (QuickSwitchManager.checkBlueTooth()) {
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        } else {
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        }
+    }
+
+    public void fillItem(QuickGestureLayout targetLayout, List<? extends BaseInfo> infos) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView tv = null;
@@ -535,14 +674,8 @@ public class QuickGestureContainer extends FrameLayout {
                 info = infos.get(i);
                 tv.setText(info.label);
                 tv.setTextSize(12);
-                if (info instanceof QuickSwitcherInfo) {
-                    QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
-                    sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-                    tv.setCompoundDrawables(null, sInfo.switchIcon[0], null, null);
-                } else {
-                    info.icon.setBounds(0, 0, iconSize, iconSize);
-                    tv.setCompoundDrawables(null, info.icon, null, null);
-                }
+                info.icon.setBounds(0, 0, iconSize, iconSize);
+                tv.setCompoundDrawables(null, info.icon, null, null);
                 if (info.eventNumber > 0) {
                     tv.setDecorateAction(new EventAction(getContext(), info.eventNumber));
                 }
@@ -619,6 +752,14 @@ public class QuickGestureContainer extends FrameLayout {
             snapToPrevious();
         }
 
+    }
+
+    public void setSwitchList(List<QuickSwitcherInfo> list) {
+        mSwitchList = list;
+    }
+
+    public List<QuickSwitcherInfo> getSwitchList() {
+        return mSwitchList;
     }
 
     public void snapToDynamic() {

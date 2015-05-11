@@ -197,7 +197,6 @@ public class CornerTabs extends View {
             mDynPath = new Path();
             mDynPath.moveTo(0f, mTotalHeight);
             mDynPath.lineTo((float) (mTotalHeight / Math.tan(Math.toRadians(75))), 0f);
-            LeoLog.e("xxxx", (float) (mTotalHeight / Math.tan(Math.toRadians(75))) + "");
 
             // mostPath
             mMostPath = new Path();
@@ -209,8 +208,6 @@ public class CornerTabs extends View {
             mQuickPath.moveTo(0f, mTotalHeight);
             mQuickPath.lineTo(mTotalWidth, (float) (mTotalHeight - mTotalWidth
                     * Math.tan(Math.toRadians(15))));
-            LeoLog.e("xxxx", (float) (mTotalHeight - mTotalWidth
-                    * Math.tan(Math.toRadians(15))) + "");
         }
 
     }

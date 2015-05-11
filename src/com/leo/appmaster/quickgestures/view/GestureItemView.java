@@ -21,6 +21,7 @@ import android.widget.TextView;
 public class GestureItemView extends TextView {
 
     private static final String TAG = "GestureTextView";
+    private QuickGestureLayout mHolderLayout;
     private DecorateAction mDecorateAction;
     private boolean mEditing;
     private Drawable mCrossDrawable;
@@ -57,6 +58,12 @@ public class GestureItemView extends TextView {
         Rect rect = new Rect(0, 0, mCrossDrawable.getIntrinsicWidth(),
                 mCrossDrawable.getIntrinsicHeight());
         return rect;
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        mHolderLayout = (QuickGestureLayout) getParent();
     }
 
     @Override
@@ -111,10 +118,15 @@ public class GestureItemView extends TextView {
             }
             case DragEvent.ACTION_DROP: {
                 LeoLog.i(TAG, "ACTION_DROP");
+                mHolderLayout.requestLayout();
                 break;
             }
             case DragEvent.ACTION_DRAG_ENTERED: {
                 LeoLog.i(TAG, "ACTION_DRAG_ENTERED ");
+                if ((GestureItemView) event.getLocalState() != this) {
+                    mHolderLayout.squeezeItems((GestureItemView) event.getLocalState(), this);
+//                    mHolderLayout.replaceItems((GestureItemView) event.getLocalState(), this);
+                }
                 break;
             }
 

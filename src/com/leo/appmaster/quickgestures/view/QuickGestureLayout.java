@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.quickgestures.view;
 
+import java.util.ArrayList;
+
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -22,6 +24,7 @@ import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 public class QuickGestureLayout extends ViewGroup {
 
@@ -34,6 +37,9 @@ public class QuickGestureLayout extends ViewGroup {
     private float mCurrentRotateDegree;
 
     private Orientation mOrientation = Orientation.Left;
+    private AnimatorSet mReorderAnimator;
+    private boolean mAnimCanceled;
+
     private static final int INNER_RING_MAX_COUNT = 4;
 
     public QuickGestureLayout(Context context) {
@@ -254,7 +260,17 @@ public class QuickGestureLayout extends ViewGroup {
                         QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
                         //蓝牙
                         if(sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)){
-                            QuickSwitchManager.getInstance(getContext()).toggleBluetooth();
+                            QuickSwitchManager.getInstance(getContext()).toggleBluetooth(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)){
+                            QuickSwitchManager.getInstance(getContext()).toggleFlashLight(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.WLAN)){
+                            QuickSwitchManager.getInstance(getContext()).toggleWlan(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.CRAME)){
+                            QuickSwitchManager.getInstance(getContext()).openCrame();
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SOUND)){
+                            QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)){
+                            QuickSwitchManager.getInstance(getContext()).toggleLight(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
                         }
                     }
                 }
@@ -361,6 +377,121 @@ public class QuickGestureLayout extends ViewGroup {
             GestureItemView item = (GestureItemView) getChildAt(i);
             item.leaveEditMode();
         }
+    }
+
+    public void replaceItems(GestureItemView fromView, GestureItemView toView) {
+        QuickGestureLayout.LayoutParams fromLP = (LayoutParams) fromView.getLayoutParams();
+        QuickGestureLayout.LayoutParams toLP = (LayoutParams) toView.getLayoutParams();
+
+        int from = fromLP.position;
+        int to = toLP.position;
+
+        toLP.position = from;
+        fromLP.position = to;
+
+    }
+
+    public void squeezeItems(GestureItemView fromView, GestureItemView toView) {
+
+        if (mReorderAnimator != null && mReorderAnimator.isRunning()) {
+            mReorderAnimator.cancel();
+        }
+
+        int from = ((QuickGestureLayout.LayoutParams) fromView.getLayoutParams()).position;
+        int to = ((QuickGestureLayout.LayoutParams) toView.getLayoutParams()).position;
+
+        boolean isForward = to > from;
+        final GestureItemView[] hitViews = new GestureItemView[Math.abs(to - from) + 1];
+        hitViews[0] = fromView;
+        GestureItemView hitView;
+        QuickGestureLayout.LayoutParams hitLP;
+        for (int i = 0; i < getChildCount(); i++) {
+            hitView = (GestureItemView) getChildAt(i);
+            // hitView.setLeft((int) (hitView.getLeft() +
+            // hitView.getTranslationX()));
+            // hitView.setTop((int) (hitView.getTop() +
+            // hitView.getTranslationY()));
+            // hitView.setTranslationX(0);
+            // hitView.setTranslationY(0);
+
+            hitLP = (LayoutParams) hitView.getLayoutParams();
+            if (isForward) {
+                if (hitLP.position > from && hitLP.position <= to) {
+                    hitViews[hitLP.position - from] = hitView;
+                }
+            } else {
+                if (hitLP.position >= to && hitLP.position < from) {
+                    hitViews[from - hitLP.position] = hitView;
+                }
+            }
+        }
+
+        ArrayList<Animator> animators = new ArrayList<Animator>();
+        for (int i = 1; i < hitViews.length; i++) {
+            animators.add(createTranslationAnimations(hitViews[i], hitViews[i - 1]));
+        }
+        mReorderAnimator = new AnimatorSet();
+        mReorderAnimator.playTogether(animators);
+        mReorderAnimator.setDuration(200);
+        mReorderAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        mReorderAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mAnimCanceled = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                mAnimCanceled = true;
+                super.onAnimationCancel(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                int lastPosition = ((QuickGestureLayout.LayoutParams) hitViews[hitViews.length - 1]
+                        .getLayoutParams()).position;
+                int nextPosition;
+                for (int i = hitViews.length - 1; i >= 0; i--) {
+                    if (i == 0) {
+                        ((QuickGestureLayout.LayoutParams) hitViews[i].getLayoutParams()).position = lastPosition;
+                    } else {
+                        nextPosition = ((QuickGestureLayout.LayoutParams) hitViews[i - 1]
+                                .getLayoutParams()).position;
+                        ((QuickGestureLayout.LayoutParams) hitViews[i].getLayoutParams()).position = nextPosition;
+                    }
+                }
+
+                if (mAnimCanceled) {
+                    for (GestureItemView gestureItemView : hitViews) {
+//                        gestureItemView.setLeft((int) (gestureItemView.getLeft() + gestureItemView
+//                                .getTranslationX()));
+//                        gestureItemView.setTop((int) (gestureItemView.getTop() + gestureItemView
+//                                .getTranslationY()));
+                        gestureItemView.setTranslationX(0);
+                        gestureItemView.setTranslationY(0);
+                    }
+                } else {
+                    for (GestureItemView gestureItemView : hitViews) {
+                        gestureItemView.setTranslationX(0);
+                        gestureItemView.setTranslationY(0);
+                    }
+
+                    requestLayout();
+                }
+            }
+        });
+        mReorderAnimator.start();
+
+    }
+
+    private AnimatorSet createTranslationAnimations(GestureItemView fromView, GestureItemView toView) {
+        ObjectAnimator animX = ObjectAnimator.ofFloat(fromView, "translationX",
+                fromView.getTranslationX(), toView.getLeft() - fromView.getLeft());
+        ObjectAnimator animY = ObjectAnimator.ofFloat(fromView, "translationY",
+                fromView.getTranslationY(), toView.getTop() - fromView.getTop());
+        AnimatorSet animSetXY = new AnimatorSet();
+        animSetXY.playTogether(animX, animY);
+        return animSetXY;
     }
 
     public static class LayoutParams extends ViewGroup.LayoutParams {
