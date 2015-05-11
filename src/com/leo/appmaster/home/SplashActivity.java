@@ -60,6 +60,7 @@ import com.leo.appmaster.utils.NinePatchChunk;
 public class SplashActivity extends BaseActivity implements OnPageChangeListener {
 
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
+    public static final String PG_VERSION_NAME = "2.2";
     private Handler mEventHandler;
 
     /* Guide page stuff begin */
@@ -223,7 +224,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
                         AppMasterPreference pre = AppMasterPreference
                                 .getInstance(SplashActivity.this);
                         if (!pre.getAppVersionName().equals("default_version_name")
-                                || "2.2".equals(SplashActivity.this
+                                || PG_VERSION_NAME.equals(SplashActivity.this
                                         .getString(R.string.version_name))) {
                             // 存储的版本号
                             String versionName = pre.getAppVersionName();
