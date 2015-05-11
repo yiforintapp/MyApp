@@ -555,10 +555,12 @@ public class QuickGestureContainer extends FrameLayout {
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
                     // Crame状态
                     checkCrameStatus(sInfo, iconSize, tv);
-                }
-                else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
                     // Sound状态
                     checkSoundStatus(sInfo, iconSize, tv);
+                }else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+                    // Sound状态
+                    checkLightStatus(sInfo, iconSize, tv);
                 }
                 if (sInfo.eventNumber > 0) {
                     tv.setDecorateAction(new EventAction(getContext(), sInfo.eventNumber));
@@ -566,6 +568,31 @@ public class QuickGestureContainer extends FrameLayout {
                 tv.setTag(sInfo);
                 targetLayout.addView(tv);
             }
+        }
+    }
+
+    private void checkLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if(QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_AUTO){
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        }else  if(QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_NORMAL){
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        }else  if(QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_50_PERCENT){
+            sInfo.switchIcon[2].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[2], null,
+                    null);
+        }else  if(QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_100_PERCENT){
+            sInfo.switchIcon[3].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[3], null,
+                    null);
+        }else {
+            //err
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
         }
     }
 

@@ -665,6 +665,7 @@
     <string name="quick_guesture_wlan">WLAN</string>
     <string name="quick_guesture_carme">相机</string>
     <string name="quick_guesture_sound">声音</string>
+    <string name="quick_guesture_light">屏幕亮度</string>
     <!-- version 2.3 end -->
 
 </resources>
