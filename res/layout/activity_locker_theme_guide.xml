@@ -39,10 +39,10 @@
 
         <TextView
             android:id="@+id/tv_save"
-            android:layout_width="@dimen/locker_theme_guide_tv_save_width"
-            android:layout_height="@dimen/locker_theme_guide_tv_save_height"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/guide_button_selecter"
+            android:background="@drawable/manager_middle_button_selecter"
             android:clickable="true"
             android:gravity="center"
             android:text="@string/makesure"

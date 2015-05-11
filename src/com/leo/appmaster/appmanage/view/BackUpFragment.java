@@ -426,6 +426,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
         mMessageDialog.setTitle(title);
         mMessageDialog.setContent(message);
         mMessageDialog.setDialogIcon(R.drawable.done_icon);
+        mMessageDialog.setDialogIconSize(76,76);
         mMessageDialog.show();
     }
 

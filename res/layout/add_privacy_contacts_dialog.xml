@@ -17,10 +17,11 @@
             <TextView
                 android:id="@+id/dlag_title"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:text="@string/privacy_contact_popumenus_add_new_privacy_contact"
-                android:textColor="@color/black"
+                android:textColor="#676767"
+                android:textStyle="bold"
                 android:textSize="20dp" />
 
             <ImageView
@@ -39,7 +40,7 @@
                 <LinearLayout
                      android:id="@+id/dlg_add_sms"
                     android:layout_width="match_parent"
-                    android:layout_height="74dp"
+                    android:layout_height="64dp"
                     android:gravity="center"
                     android:background="@drawable/manager_backup_list_selecter"
                     android:orientation="horizontal"
@@ -70,7 +71,7 @@
                 <LinearLayout
                     android:id="@+id/dlg_add_call"
                     android:layout_width="match_parent"
-                    android:layout_height="74dp"
+                    android:layout_height="64dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:background="@drawable/manager_backup_list_selecter">
@@ -101,7 +102,7 @@
                 <LinearLayout
                      android:id="@+id/dlg_add_contact"
                     android:layout_width="match_parent"
-                    android:layout_height="74dp"
+                    android:layout_height="64dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:background="@drawable/manager_backup_list_selecter" >
@@ -132,7 +133,7 @@
                 <LinearLayout
                     android:id="@+id/dlg_add_input"
                     android:layout_width="match_parent"
-                    android:layout_height="74dp"
+                    android:layout_height="64dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:background="@drawable/manager_backup_list_selecter" >
