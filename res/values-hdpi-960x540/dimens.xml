@@ -292,7 +292,7 @@
     <dimen name="privacy_proposal_tip_padding">46dp</dimen>
     <dimen name="privacy_proposal_tip_text_size">14dp</dimen>
     <dimen name="privacy_proposal_status_width">170dp</dimen>
-    <dimen name="privacy_proposal_status_height">14dp</dimen>
+    <dimen name="privacy_proposal_status_height">10dp</dimen>
     <dimen name="privacy_proposal_status_padding_bottom">17dp</dimen>
     <dimen name="privacy_suggest_height">120dp</dimen>
 

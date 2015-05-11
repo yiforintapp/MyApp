@@ -166,12 +166,12 @@
     <dimen name="privacy_proposal_small_text_size">10dp</dimen>
     <dimen name="privacy_proposal_big_text_size">32dp</dimen>
     <dimen name="privacy_scanning_offset">14dp</dimen>
-    <dimen name="privacy_proposal_top_height">266dp</dimen>
-    <dimen name="privacy_proposal_tip_padding">46dp</dimen>
-    <dimen name="privacy_proposal_tip_text_size">14dp</dimen>
+    <dimen name="privacy_proposal_top_height">186dp</dimen>
+    <dimen name="privacy_proposal_tip_padding">42dp</dimen>
+    <dimen name="privacy_proposal_tip_text_size">10dp</dimen>
     <dimen name="privacy_proposal_status_width">170dp</dimen>
     <dimen name="privacy_proposal_status_height">14dp</dimen>
-    <dimen name="privacy_proposal_status_padding_bottom">17dp</dimen>
-    <dimen name="privacy_suggest_height">120dp</dimen>
+    <dimen name="privacy_proposal_status_padding_bottom">6dp</dimen>
+    <dimen name="privacy_suggest_height">82dp</dimen>
 
 </resources>
