@@ -147,7 +147,7 @@
     <!-- lock mode begin -->
     <dimen name="home_lock_mode_guide_image_width">124dp</dimen>
     <dimen name="home_lock_mode_guide_image_height">124dp</dimen>
-    <dimen name="home_lock_mode_guide_image_margin_top">20dp</dimen>
+    <dimen name="home_lock_mode_guide_image_margin_top">24dp</dimen>
     <dimen name="home_lock_mode_guide_text_margin_top">20dp</dimen>
     <dimen name="home_lock_mode_guide_text_size">12dp</dimen>
     <dimen name="home_lock_mode_guide_btn_width">84dp</dimen>
@@ -173,5 +173,8 @@
     <dimen name="privacy_proposal_status_height">14dp</dimen>
     <dimen name="privacy_proposal_status_padding_bottom">17dp</dimen>
     <dimen name="privacy_suggest_height">120dp</dimen>
+    
+    <!--  weizhuang -->
+    <dimen name="weizhaung_guide_image_margin_top">30dp</dimen>
 
 </resources>
