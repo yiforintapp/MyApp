@@ -267,6 +267,8 @@ public class QuickGestureLayout extends ViewGroup {
                             QuickSwitchManager.getInstance(getContext()).toggleWlan(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
                         }else if(sInfo.iDentiName.equals(QuickSwitchManager.CRAME)){
                             QuickSwitchManager.getInstance(getContext()).openCrame();
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SOUND)){
+                            QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
                         }
                     }
                 }

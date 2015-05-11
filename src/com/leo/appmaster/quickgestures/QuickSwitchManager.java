@@ -17,8 +17,11 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
+import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.SoundEffectConstants;
 
 public class QuickSwitchManager {
 
@@ -27,14 +30,19 @@ public class QuickSwitchManager {
     public final static String FLASHLIGHT = "flashlight";
     public final static String WLAN = "wlan";
     public final static String CRAME = "carme";
-
+    public final static String SOUND = "sound";
     private Context mContext;
     private static BluetoothAdapter mBluetoothAdapter;
     private WifiManager mWifimanager;
     public Camera mCamera;
+    private AudioManager mSoundManager;
     private static boolean isBlueToothOpen = false;
     private static boolean isFlashLightOpen = false;
     private static boolean isWlantOpen = false;
+    private static int mSoundStatus;
+    public final static int mSound = 0;
+    public final static int mQuite = 1;
+    public final static int mVibrate = 2;
 
     public static synchronized QuickSwitchManager getInstance(Context context) {
         if (mInstance == null) {
@@ -47,6 +55,18 @@ public class QuickSwitchManager {
         mContext = context.getApplicationContext();
         blueTooth();
         Wlan();
+        Sound();
+    }
+
+    private void Sound() {
+        mSoundManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+        if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
+            mSoundStatus = 0;
+        } else if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
+            mSoundStatus = 1;
+        } else if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE) {
+            mSoundStatus = 2;
+        }
     }
 
     private void Wlan() {
@@ -105,6 +125,18 @@ public class QuickSwitchManager {
         carmeInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_camera);
         carmeInfo.iDentiName = CRAME;
         mSwitchList.add(carmeInfo);
+        // 声音
+        QuickSwitcherInfo soundInfo = new QuickSwitcherInfo();
+        soundInfo.label = mContext.getResources().getString(R.string.quick_guesture_sound);
+        soundInfo.switchIcon = new Drawable[3];
+        soundInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_volume_min);
+        soundInfo.switchIcon[1] = mContext.getResources()
+                .getDrawable(R.drawable.switch_volume_mute);
+        soundInfo.switchIcon[2] = mContext.getResources().getDrawable(
+                R.drawable.switch_volume_vibration);
+        soundInfo.iDentiName = SOUND;
+        mSwitchList.add(soundInfo);
+
         return mSwitchList;
     }
 
@@ -123,7 +155,8 @@ public class QuickSwitchManager {
     public void toggleBluetooth(QuickGestureContainer mContainer, List<QuickSwitcherInfo> list,
             QuickGestureLayout quickGestureLayout) {
         if (mBluetoothAdapter == null) {
-            return;
+            mBluetoothAdapter = BluetoothAdapter
+                    .getDefaultAdapter();
         }
         if (!mBluetoothAdapter.isEnabled()) {
             mBluetoothAdapter.enable();
@@ -133,6 +166,24 @@ public class QuickSwitchManager {
             isBlueToothOpen = false;
         }
         mContainer.fillSwitchItem(quickGestureLayout, list);
+    }
+
+    public void toggleSound(QuickGestureContainer mContainer, List<QuickSwitcherInfo> switchList,
+            QuickGestureLayout quickGestureLayout) {
+        if (mSoundManager == null) {
+            mSoundManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+        }
+        if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
+            mSoundManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+            mSoundStatus = mQuite;
+        } else if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
+            mSoundManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+            mSoundStatus = mVibrate;
+        } else if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE) {
+            mSoundManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+            mSoundStatus = mSound;
+        }
+        mContainer.fillSwitchItem(quickGestureLayout, switchList);
     }
 
     public void toggleFlashLight(QuickGestureContainer mContainer, List<QuickSwitcherInfo> list,
@@ -190,9 +241,20 @@ public class QuickSwitchManager {
         }
     }
 
+    public static int checkSound() {
+        if (mSoundStatus == mSound) {
+            return mSound;
+        } else if (mSoundStatus == mQuite) {
+            return mQuite;
+        } else {
+            return mVibrate;
+        }
+    }
+
     public void openCrame() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
+
 }
