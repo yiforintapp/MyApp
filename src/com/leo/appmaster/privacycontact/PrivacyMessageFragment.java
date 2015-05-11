@@ -49,7 +49,6 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 
 public class PrivacyMessageFragment extends BaseFragment implements OnItemClickListener,
         OnItemLongClickListener {
@@ -422,6 +421,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         mProgressDialog.setMessage(content);
         mProgressDialog.setMax(maxValue);
         mProgressDialog.setProgress(currentValue);
+        mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();

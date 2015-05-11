@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 public class BackUpFragment extends BaseFragment implements AppBackupDataListener, OnClickListener,
         OnItemClickListener {
@@ -336,7 +338,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMax(max);
         mProgressDialog.setProgress(0);
-        mProgressDialog.setProgressTextVisiable(true);
+        mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setMessage(message);
         mProgressDialog.setTitle(title);
         mProgressDialog.show();
@@ -426,7 +428,11 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
         mMessageDialog.setTitle(title);
         mMessageDialog.setContent(message);
         mMessageDialog.setDialogIcon(R.drawable.done_icon);
-        mMessageDialog.setDialogIconSize(76,76);
+        LayoutParams params = (LayoutParams) mMessageDialog.getDialogIcomLayout();
+        params.width = DipPixelUtil.dip2px(getActivity(), 76);
+        params.height = DipPixelUtil.dip2px(getActivity(), 76);
+        params.topMargin = DipPixelUtil.dip2px(getActivity(), 22);
+        mMessageDialog.setDialogIconLayout(params);
         mMessageDialog.show();
     }
 

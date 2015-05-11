@@ -517,6 +517,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
         mProgressDialog.setMessage(content);
         mProgressDialog.setMax(maxValue);
         mProgressDialog.setProgress(currentValue);
+        mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
