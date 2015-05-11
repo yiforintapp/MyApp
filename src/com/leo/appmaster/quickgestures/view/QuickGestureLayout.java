@@ -15,11 +15,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
@@ -41,7 +43,8 @@ public class QuickGestureLayout extends ViewGroup {
     private boolean mAnimCanceled;
 
     private static final int INNER_RING_MAX_COUNT = 4;
-
+    private Context mContext;
+    
     public QuickGestureLayout(Context context) {
         this(context, null);
     }
@@ -271,6 +274,24 @@ public class QuickGestureLayout extends ViewGroup {
                             QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
                         }else if(sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)){
                             QuickSwitchManager.getInstance(getContext()).toggleLight(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)){
+                            QuickSwitchManager.getInstance(getContext()).speedUp();
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)){
+                            QuickSwitchManager.getInstance(getContext()).toggleMode();
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)){
+                            QuickSwitchManager.getInstance(getContext()).switchSet();
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SETTING)){
+                            QuickSwitchManager.getInstance(getContext()).goSetting();
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.GPS)){
+                            QuickSwitchManager.getInstance(getContext()).toggleGPS();
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)){
+                            QuickSwitchManager.getInstance(getContext()).toggleFlyMode();
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)){
+                            QuickSwitchManager.getInstance(getContext()).toggleRotation(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)){
+                            QuickSwitchManager.getInstance(getContext()).toggleMobileData(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
+                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.HOME)){
+                            QuickSwitchManager.getInstance(getContext()).goHome();
                         }
                     }
                 }

@@ -676,6 +676,15 @@
     <string name="quick_guesture_carme">相机</string>
     <string name="quick_guesture_sound">声音</string>
     <string name="quick_guesture_light">屏幕亮度</string>
+    <string name="quick_guesture_speedup">加速</string>
+    <string name="quick_guesture_changemode">情景模式切换</string>
+    <string name="quick_guesture_switchset">手势设置</string>
+    <string name="quick_guesture_setting">系统设置</string>
+    <string name="quick_guesture_gps">GPS</string>
+    <string name="quick_guesture_flymode">飞行模式</string>
+    <string name="quick_guesture_rotation">屏幕旋转</string>
+    <string name="quick_guesture_mobliedata">移动数据</string>
+    <string name="quick_guesture_home">桌面</string>
     <!-- quick gesture -->
 
 
