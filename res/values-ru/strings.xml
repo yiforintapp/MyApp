@@ -602,5 +602,8 @@
     <string name="lock_mode_guide_button_text">понял</string> 
     <string name="mode_missing">Ты не создать режим этой сцены , пожалуйста, удалить этот ярлык</string>
     <!-- version 2.1 end -->
-
+    
+	<!-- version 2.2 start -->
+	 <string name="lock_mode_name_maxlength">30</string>
+	 <!-- version 2.2 end -->
 </resources>
