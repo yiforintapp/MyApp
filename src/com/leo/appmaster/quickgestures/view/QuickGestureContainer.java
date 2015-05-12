@@ -628,7 +628,7 @@ public class QuickGestureContainer extends FrameLayout {
                     // Sound状态
                     checkSoundStatus(sInfo, iconSize, tv);
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
-                    // Sound状态
+                    // 亮度状态
                     checkLightStatus(sInfo, iconSize, tv);
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
                     // 加速

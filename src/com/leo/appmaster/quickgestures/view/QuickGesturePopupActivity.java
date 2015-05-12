@@ -4,6 +4,7 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.AbstractList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -20,26 +21,35 @@ import android.view.WindowManager;
 
 public class QuickGesturePopupActivity extends Activity {
 
-    private static int switchNum;
+    private static int switchNum = 9;
     private QuickGestureContainer mContainer;
     private AbstractList<AppItemInfo> list;
     private List<QuickSwitcherInfo> mSwitchList;
+    private AppMasterPreference mSpSwitch;
+    private String mSwitchListFromSp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture_left);
-
+        mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
+        mSpSwitch = AppMasterPreference.getInstance(this);
+        mSwitchListFromSp = mSpSwitch.getSwitchList();
+        
+        list = AppLoadEngine.getInstance(this).getAllPkgInfo();
+        
         Window window = getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
         params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         window.setAttributes(params);
 
-        mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
-        list = AppLoadEngine.getInstance(this).getAllPkgInfo();
-        switchNum = 9;
         if (mSwitchList == null) {
-            mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
+            if(mSwitchListFromSp.isEmpty()){
+                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
+            }else {
+                
+            }
+
         }
 
         fillQg1();
