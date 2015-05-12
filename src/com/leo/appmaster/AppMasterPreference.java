@@ -160,6 +160,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_ALL_APP_AND_HOME = "quick_gesture_dialog_slide_time_setting_all_app_and_home";
     public static final String PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME = "quick_gesture_free_disturb_app_package_name";
     public static final String PREF_QUICK_GESTURE_APP_LAUNCH_RECODER = "quick_gesture_app_launch_recoder";
+    public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST = "quick_gesture_quickswitch_list";
 
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -1487,6 +1488,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public String getAppLaunchRecoder() {
         return mPref.getString(PREF_QUICK_GESTURE_APP_LAUNCH_RECODER,
                 "");
+    }
+
+    public String getSwitchList() {
+        return mPref.getString(PREF_QUICK_GESTURE_QUICKSWITCH_LIST,
+                "");
+    }
+
+    public void setSwitchList(String mSwitchList) {
+        mPref.edit().putString(PREF_QUICK_GESTURE_QUICKSWITCH_LIST, mSwitchList)
+                .commit();
     }
 
     public void setAppLaunchRecoder(String recoders) {

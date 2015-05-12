@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 
 import android.animation.Animator;
@@ -34,7 +35,7 @@ import android.widget.ImageView;
 
 public class QuickGesturePopup extends Activity {
 
-    private static int switchNum;
+    private static int switchNum = 9;
     private QuickGestureContainer mContainer;
     private ImageView iv0;
     private ImageView iv1;
@@ -45,18 +46,26 @@ public class QuickGesturePopup extends Activity {
     private ImageView iv6;
     private AbstractList<AppItemInfo> list;
     private List<QuickSwitcherInfo> mSwitchList;
+    private AppMasterPreference mSpSwitch;
+    private String mSwitchListFromSp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture_left);
         mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
-
+        mSpSwitch = AppMasterPreference.getInstance(this);
+        mSwitchListFromSp = mSpSwitch.getSwitchList();
+        
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
         
-        switchNum = 9;
         if (mSwitchList == null) {
-            mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
+            if(mSwitchListFromSp.isEmpty()){
+                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
+            }else {
+                
+            }
+
         }
         
         fillQg1();
@@ -75,7 +84,6 @@ public class QuickGesturePopup extends Activity {
     }
 
     private void fillQg3() {
-//        mContainer.fillGestureItem(GType.SwitcherLayout, list.subList(17, 25));
         mContainer.fillGestureItem(GType.SwitcherLayout, mSwitchList);
     }
 
