@@ -224,8 +224,8 @@ public class PrivacyLevelView extends View {
         
         if(mScannAnimating) {
             canvas.save();
-            canvas.rotate(mScanDegree, mIconDrawBount.centerX(), mIconDrawBount.centerY() - mScanningOffset);
-            mScanning.setBounds(mIconDrawBount.left, mIconDrawBount.top - mScanningOffset, mIconDrawBount.right, mIconDrawBount.bottom - mScanningOffset);
+            canvas.rotate(mScanDegree, mIconDrawBount.centerX(), mIconDrawBount.centerY());
+            mScanning.setBounds(mIconDrawBount.left - mScanningOffset, mIconDrawBount.top - mScanningOffset, mIconDrawBount.right + mScanningOffset, mIconDrawBount.bottom + mScanningOffset);
             mScanning.draw(canvas);
             canvas.restore();
             if(mScanningItem != null) {
