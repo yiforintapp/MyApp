@@ -44,10 +44,10 @@ public class QuickGesturePopupActivity extends Activity {
 
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
 
-        Window window = getWindow();
-        WindowManager.LayoutParams params = window.getAttributes();
-        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        window.setAttributes(params);
+//        Window window = getWindow();
+//        WindowManager.LayoutParams params = window.getAttributes();
+//        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+//        window.setAttributes(params);
 
         if (mSwitchList == null) {
             if (mSwitchListFromSp.isEmpty()) {
