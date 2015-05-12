@@ -631,9 +631,9 @@
     <!-- version 2.1 end -->
 
    <!-- version 2.2 start -->
-    <string name="feedback_content_guide">您遇到的问题</string>
-    <string name="feedback_email_guide">邮箱</string>
-    <string name="feedback_category_guide">问题类型</string>
-     <string name="privacy_proposal_tip">您的隐私等级为%1$s，建议您进行以下操作，以提高您的隐私等级</string>
+    <string name="feedback_content_guide">Hi, can I help you?</string>
+    <string name="feedback_email_guide">Your Email</string>
+    <string name="feedback_category_guide">Select A Question</string>
+     <string name="privacy_proposal_tip">Your privacy level is %1$s, please flowing the proposals to upgrade it.</string>
     <!-- version 2.2 end -->
 </resources>

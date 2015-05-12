@@ -624,5 +624,12 @@
     <string name="mode_missing">คุณยังไม่ได้สร้างรูปแบบสถานการณ์นี้กรุณาลบทางลัดนี้</string>
 
     <!-- version 2.1 end -->
+    
+       <!-- version 2.2 start -->
+    <string name="feedback_content_guide">ปัญหาที่ท่านพบ</string>
+    <string name="feedback_email_guide">อีเมล์</string>
+    <string name="feedback_category_guide">ประเภทปัญหา</string>
+     <string name="privacy_proposal_tip">ระดับลับ %1$s ทำดังนี้</string>
+    <!-- version 2.2 end -->
 
 </resources>
