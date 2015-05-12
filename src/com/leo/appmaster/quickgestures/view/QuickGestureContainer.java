@@ -98,9 +98,11 @@ public class QuickGestureContainer extends FrameLayout {
                                 leaveEditMode();
                             } else {
                                 // TODO close quick gesture
-                                if (mPopWindow != null) {
-                                    mPopWindow.dismiss();
-                                }
+                                // if (mPopWindow != null) {
+                                // // mPopWindow.dismiss();
+                                //
+                                // }
+                                showCloseAnimation();
                             }
 
                         } else {
@@ -162,6 +164,19 @@ public class QuickGestureContainer extends FrameLayout {
 
                 });
 
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        if (mOrientation == Orientation.Left) {
+            setPivotX(0f);
+            setPivotY(getMeasuredHeight());
+        } else {
+            setPivotX(getMeasuredWidth());
+            setPivotY(getMeasuredHeight());
+        }
     }
 
     private void leaveEditMode() {
@@ -614,6 +629,33 @@ public class QuickGestureContainer extends FrameLayout {
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
                     // Sound状态
                     checkLightStatus(sInfo, iconSize, tv);
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
+                    // 加速
+                    checkSpeedUpStatus(sInfo, iconSize, tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)){
+                    //情景模式切换
+                    checkChangeMode(sInfo, iconSize, tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)){
+                    //手势设置
+                    checkSwitchSet(sInfo, iconSize, tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.SETTING)){
+                    //系统设置
+                    checkSetting(sInfo, iconSize, tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.GPS)){
+                    //GPS
+                    checkGPS(sInfo, iconSize, tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)){
+                    //飞行模式
+                    checkFlyMode(sInfo, iconSize, tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)){
+                    //飞行模式
+                    checkRotation(sInfo, iconSize, tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)){
+                    //移动数据
+                    checkMobileData(sInfo, iconSize, tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.HOME)){
+                    //移动数据
+                    checkHome(sInfo, iconSize, tv);
                 }
                 if (sInfo.eventNumber > 0) {
                     tv.setDecorateAction(new EventAction(getContext(), sInfo.eventNumber));
@@ -622,6 +664,86 @@ public class QuickGestureContainer extends FrameLayout {
                 targetLayout.addView(tv);
             }
         }
+    }
+
+    private void checkLockScreen(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                null);
+    }
+
+    private void checkHome(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                null);
+    }
+
+    private void checkMobileData(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if (QuickSwitchManager.checkMoblieData()) {
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        } 
+    }
+
+    private void checkRotation(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if (QuickSwitchManager.checkRotation()) {
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        } else {
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        }
+    }
+
+    private void checkFlyMode(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if (QuickSwitchManager.checkFlyMode()) {
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        } else {
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        }
+    }
+
+    private void checkGPS(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        if (QuickSwitchManager.checkGps()) {
+            sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                    null);
+        } else {
+            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
+                    null);
+        }
+    }
+
+    private void checkSetting(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                null);
+    }
+
+    private void checkSwitchSet(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                null);
+    }
+
+    private void checkChangeMode(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                null);
+    }
+
+    private void checkSpeedUpStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                null);
     }
 
     private void checkLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
@@ -747,22 +869,30 @@ public class QuickGestureContainer extends FrameLayout {
     }
 
     public void showOpenAnimation() {
-        setPivotX(0);
-        setPivotY(mSelfHeight);
         AnimatorSet set = new AnimatorSet();
         set.setDuration(600);
-        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f, 1.05f, 1.0f);
-        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f, 1.05f, 1.0f);
+        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f, 1.05f,
+                1.0f);
+        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f, 1.05f,
+                1.0f);
         set.playTogether(animationx, animationy);
+        set.start();
     }
 
     public void showCloseAnimation() {
-        setPivotX(0);
-        setPivotY(mSelfHeight);
         AnimatorSet set = new AnimatorSet();
         set.setDuration(600);
-        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 1.0f, 1.05f, 0.0f);
-        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 1.0f, 1.05f, 0.0f);
+        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 1.0f,
+                1.05f, 0.0f);
+        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 1.0f,
+                1.05f, 0.0f);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                FloatWindowHelper.closeQuickGesture(mOrientation);
+                super.onAnimationEnd(animation);
+            }
+        });
         set.playTogether(animationx, animationy);
     }
 

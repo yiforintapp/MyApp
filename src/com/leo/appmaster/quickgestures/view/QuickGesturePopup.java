@@ -23,8 +23,11 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
@@ -46,7 +49,7 @@ public class QuickGesturePopup extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pop_quick_gesture);
+        setContentView(R.layout.pop_quick_gesture_left);
         mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
 
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
@@ -59,6 +62,8 @@ public class QuickGesturePopup extends Activity {
         fillQg1();
         fillQg2();
         fillQg3();
+        
+        mContainer.showOpenAnimation();  
     }
 
     private void fillQg1() {
@@ -72,6 +77,13 @@ public class QuickGesturePopup extends Activity {
     private void fillQg3() {
 //        mContainer.fillGestureItem(GType.SwitcherLayout, list.subList(17, 25));
         mContainer.fillGestureItem(GType.SwitcherLayout, mSwitchList);
+    }
+
+    
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

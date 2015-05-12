@@ -57,7 +57,7 @@ public class BusinessJsonParser {
                         }
                     }
                     LeoLog.d("BusinessJsonParser", "list = " + list);
-                }else if(code == 1){
+                } else if (code == 1) {
                     list = null;
                 }
             } catch (Exception e) {
@@ -67,4 +67,57 @@ public class BusinessJsonParser {
         }
         return list;
     }
+
+    public static List<BusinessItemInfo> parserGestureData(Context ctx,
+            JSONObject jsonObject) {
+        ArrayList<BusinessItemInfo> list = null;
+
+        if (jsonObject != null) {
+            try {
+                int code = jsonObject.getInt("code");
+                if (code == 0) {
+                    if (jsonObject.isNull("data")) {
+                        LeoLog.e("parserJsonObject", "data is null");
+                        return list;
+                    }
+
+                    JSONArray array = jsonObject.getJSONArray("data");
+                    list = new ArrayList<BusinessItemInfo>();
+                    JSONObject temp = null;
+                    BusinessItemInfo bean = null;
+                    for (int i = 0; i < array.length(); i++) {
+                        try {
+                            temp = array.getJSONObject(i);
+                            bean = new BusinessItemInfo();
+                            bean.iconUrl = temp.getString("a");
+                            bean.label = temp.getString("b");
+                            bean.packageName = temp.getString("d");
+                            bean.type = BaseInfo.ITEM_TYPE_BUSINESS_APP;
+                            bean.appSize = 0;
+                            bean.gpPriority = Integer.parseInt(temp
+                                    .getString("e"));
+                            bean.containType = BusinessItemInfo.CONTAIN_QUICK_GESTURE;
+                            bean.gpUrl = temp.getString("f");
+                            bean.appDownloadUrl = temp
+                                    .getString("c");
+                            bean.desc = "";
+                            bean.appDownloadCount = "";
+                            bean.rating = 0;
+                            list.add(bean);
+                        } catch (JSONException e) {
+                            LeoLog.e("parserJsonObject", e.getMessage());
+                        }
+                    }
+                    LeoLog.d("BusinessJsonParser", "list = " + list);
+                } else if (code == 1) {
+                    list = null;
+                }
+            } catch (Exception e) {
+                LeoLog.e("parserJsonObject", e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
 }

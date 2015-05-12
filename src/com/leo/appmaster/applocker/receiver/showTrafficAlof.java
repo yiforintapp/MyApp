@@ -28,7 +28,7 @@ public class showTrafficAlof extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         this.mContext = context;
         sp_broadcast = AppMasterPreference.getInstance(mContext);
-        isSwtich = sp_broadcast.getFlowSetting();
+        isSwtich = sp_broadcast.getFlowSetting(); 
         firstIn = sp_broadcast.getFirstTime();
         secondIn = System.currentTimeMillis();
         String action = intent.getAction();

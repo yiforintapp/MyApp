@@ -2,7 +2,6 @@
 package com.leo.appmaster.applocker.service;
 
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,7 +21,6 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
@@ -31,7 +29,6 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.Utilities;
@@ -66,7 +63,6 @@ public class TaskDetectService extends Service {
     private TaskDetectBinder mBinder = new TaskDetectBinder();
     private AppMasterPreference sp_traffic;
     private FloatWindowTask mFloatWindowTask;
-    private Timer timer;
     private Handler mHandler;
 
     public class TaskDetectBinder extends Binder {
@@ -408,7 +404,7 @@ public class TaskDetectService extends Service {
                 public void run() {
                     int value = AppMasterPreference.getInstance(getApplicationContext())
                             .getQuickGestureDialogSeekBarValue();
-                    if (!FloatWindowHelper.mPopWindowShowing) {
+                    if (!FloatWindowHelper.mGestureShowing) {
                         boolean isJustHome = AppMasterPreference.getInstance(
                                 getApplicationContext())
                                 .getSlideTimeJustHome();
@@ -463,8 +459,8 @@ public class TaskDetectService extends Service {
                 return flag;
             }
             String pkgName = topTaskInfo.topActivity.getPackageName();
-            flag = QuickGestureManager.getFreeDisturbAppName(getApplicationContext()).contains(
-                    pkgName);
+            flag = QuickGestureManager.getInstance(getApplicationContext()).getFreeDisturbAppName()
+                    .contains(pkgName);
         }
         return flag;
     }
