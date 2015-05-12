@@ -1,49 +1,55 @@
-<com.leo.appmaster.quickgestures.view.QuickGestureContainer xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gesture_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:hapticFeedbackEnabled="true"
-    android:layerType="hardware" >
+    android:background="#bb000000" >
 
-    <com.leo.appmaster.quickgestures.view.CornerTabs
-        android:id="@+id/cornerTabs"
-        android:layout_width="126dp"
-        android:layout_height="126dp"
-        android:layout_gravity="left|bottom" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left|bottom"
-        android:src="@drawable/rotate_bg_big" />
-
-    <com.leo.appmaster.quickgestures.view.QuickGestureLayout
-        android:id="@+id/qg_dymic_layout"
+    <com.leo.appmaster.quickgestures.view.QuickGestureContainer
+        android:id="@+id/gesture_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:layerType="hardware" />
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hapticFeedbackEnabled="true"
+        android:layerType="hardware" >
 
-    <com.leo.appmaster.quickgestures.view.QuickGestureLayout
-        android:id="@+id/qg_mostused_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:layerType="hardware"
-        android:visibility="gone" />
+        <com.leo.appmaster.quickgestures.view.CornerTabs
+            android:id="@+id/cornerTabs"
+            android:layout_width="126dp"
+            android:layout_height="126dp"
+            android:layout_gravity="left|bottom" />
 
-    <com.leo.appmaster.quickgestures.view.QuickGestureLayout
-        android:id="@+id/qg_switcher_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:layerType="hardware"
-        android:visibility="gone" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            android:src="@drawable/rotate_bg_big" />
 
-</com.leo.appmaster.quickgestures.view.QuickGestureContainer>
+        <com.leo.appmaster.quickgestures.view.QuickGestureLayout
+            android:id="@+id/qg_dymic_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layerType="hardware" />
+
+        <com.leo.appmaster.quickgestures.view.QuickGestureLayout
+            android:id="@+id/qg_mostused_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layerType="hardware"
+            android:visibility="gone" />
+
+        <com.leo.appmaster.quickgestures.view.QuickGestureLayout
+            android:id="@+id/qg_switcher_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layerType="hardware"
+            android:visibility="gone" />
+    </com.leo.appmaster.quickgestures.view.QuickGestureContainer>
+
+</RelativeLayout>

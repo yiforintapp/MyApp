@@ -62,7 +62,7 @@ import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.quickgestures.view.QuickGesturePopup;
+import com.leo.appmaster.quickgestures.view.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
@@ -277,7 +277,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 //                    SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "menu");
 //                }
                 
-                Intent intent = new Intent(this, QuickGesturePopup.class);
+                Intent intent = new Intent(this, QuickGesturePopupActivity.class);
                 startActivity(intent);
                 
                 break;
