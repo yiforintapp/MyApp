@@ -12,6 +12,7 @@ import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface.OnShowListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class RightGesturePopupWindow extends PopupWindow {
         fillQg2();
         fillQg3();
         fillQg3();
+        
     }
 
     private void fillQg1() {
@@ -47,4 +49,5 @@ public class RightGesturePopupWindow extends PopupWindow {
         mContainer.fillGestureItem(GType.SwitcherLayout,
                 QuickSwitchManager.getInstance(mContainer.getContext()).getSwitchList(9));
     }
+    
 }

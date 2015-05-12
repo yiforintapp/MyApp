@@ -576,7 +576,6 @@ public class QuickSwitchManager {
         setLight(light);
         setScreenLightValue(mContext.getContentResolver(), light);
         mContainer.fillSwitchItem(quickGestureLayout, switchList);
-        // refreshLightButton();
     }
 
     /*

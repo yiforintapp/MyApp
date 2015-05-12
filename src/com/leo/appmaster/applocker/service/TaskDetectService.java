@@ -408,7 +408,7 @@ public class TaskDetectService extends Service {
                 public void run() {
                     int value = AppMasterPreference.getInstance(getApplicationContext())
                             .getQuickGestureDialogSeekBarValue();
-                    if (!FloatWindowHelper.mPopWindowShowing) {
+                    if (!FloatWindowHelper.mGestureShowing) {
                         boolean isJustHome = AppMasterPreference.getInstance(
                                 getApplicationContext())
                                 .getSlideTimeJustHome();

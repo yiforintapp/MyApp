@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.utils.BitmapUtils;
@@ -87,9 +88,11 @@ public class QuickGestureContainer extends FrameLayout {
                                 leaveEditMode();
                             } else {
                                 // TODO close quick gesture
-                                if (mPopWindow != null) {
-                                    mPopWindow.dismiss();
-                                }
+                                // if (mPopWindow != null) {
+                                // // mPopWindow.dismiss();
+                                //
+                                // }
+                                showCloseAnimation();
                             }
 
                         } else {
@@ -151,6 +154,19 @@ public class QuickGestureContainer extends FrameLayout {
 
                 });
 
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        if (mOrientation == Orientation.Left) {
+            setPivotX(0f);
+            setPivotY(getMeasuredHeight());
+        } else {
+            setPivotX(getMeasuredWidth());
+            setPivotY(getMeasuredHeight());
+        }
     }
 
     private void leaveEditMode() {
@@ -805,22 +821,30 @@ public class QuickGestureContainer extends FrameLayout {
     }
 
     public void showOpenAnimation() {
-        setPivotX(0);
-        setPivotY(mSelfHeight);
         AnimatorSet set = new AnimatorSet();
         set.setDuration(600);
-        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f, 1.05f, 1.0f);
-        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f, 1.05f, 1.0f);
+        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f, 1.05f,
+                1.0f);
+        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f, 1.05f,
+                1.0f);
         set.playTogether(animationx, animationy);
+        set.start();
     }
 
     public void showCloseAnimation() {
-        setPivotX(0);
-        setPivotY(mSelfHeight);
         AnimatorSet set = new AnimatorSet();
         set.setDuration(600);
-        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 1.0f, 1.05f, 0.0f);
-        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 1.0f, 1.05f, 0.0f);
+        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 1.0f,
+                1.05f, 0.0f);
+        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 1.0f,
+                1.05f, 0.0f);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                FloatWindowHelper.closeQuickGesture(mOrientation);
+                super.onAnimationEnd(animation);
+            }
+        });
         set.playTogether(animationx, animationy);
     }
 

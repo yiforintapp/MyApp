@@ -301,4 +301,14 @@
         <item name="android:progressDrawable">@drawable/ele_progress_horizontal_try</item>
     </style>
 
+    <style name="left_gesture_popup_animation">
+        <item name="@android:windowEnterAnimation">@anim/left_gesture_popup_show</item>
+        <item name="@android:windowExitAnimation">@anim/left_gesture_popup_hide</item>
+    </style>
+
+    <style name="right_gesture_popup_animation">
+        <item name="@android:windowEnterAnimation">@anim/right_gesture_popup_show</item>
+        <item name="@android:windowExitAnimation">@anim/right_gesture_popup_hide</item>
+    </style>
+
 </resources>
