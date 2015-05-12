@@ -340,14 +340,6 @@ public class QuickSwitchManager {
                 R.drawable.switch_brightness_max);
         lightInfo.iDentiName = LIGHT;
         mSwitchList.add(lightInfo);
-        // 系统设置
-        QuickSwitcherInfo settingInfo = new QuickSwitcherInfo();
-        settingInfo.label = mContext.getResources().getString(R.string.quick_guesture_setting);
-        settingInfo.switchIcon = new Drawable[1];
-        settingInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_gestureset_pre);
-        settingInfo.iDentiName = SETTING;
-        mSwitchList.add(settingInfo);
         // 加速
         QuickSwitcherInfo speedUpInfo = new QuickSwitcherInfo();
         speedUpInfo.label = mContext.getResources().getString(R.string.quick_guesture_speedup);
@@ -355,6 +347,22 @@ public class QuickSwitchManager {
         speedUpInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
         speedUpInfo.iDentiName = SPEEDUP;
         mSwitchList.add(speedUpInfo);
+        // 手势设置
+        QuickSwitcherInfo switchSetInfo = new QuickSwitcherInfo();
+        switchSetInfo.label = mContext.getResources().getString(R.string.quick_guesture_switchset);
+        switchSetInfo.switchIcon = new Drawable[1];
+        switchSetInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_gestureset_pre);
+        switchSetInfo.iDentiName = SWITCHSET;
+        mSwitchList.add(switchSetInfo);
+        // 情景模式切换
+        QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
+        changeModeInfo.label = mContext.getResources()
+                .getString(R.string.quick_guesture_changemode);
+        changeModeInfo.switchIcon = new Drawable[1];
+        changeModeInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_mode);
+        changeModeInfo.iDentiName = CHANGEMODE;
+        mSwitchList.add(changeModeInfo);
         // 移动数据
         QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
         mobileDataInfo.label = mContext.getResources()
@@ -366,6 +374,14 @@ public class QuickSwitchManager {
                 R.drawable.switch_data);
         mobileDataInfo.iDentiName = MOBILEDATA;
         mSwitchList.add(mobileDataInfo);
+        // 系统设置
+        QuickSwitcherInfo settingInfo = new QuickSwitcherInfo();
+        settingInfo.label = mContext.getResources().getString(R.string.quick_guesture_setting);
+        settingInfo.switchIcon = new Drawable[1];
+        settingInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_gestureset_pre);
+        settingInfo.iDentiName = SETTING;
+        mSwitchList.add(settingInfo);
         // GPS
         QuickSwitcherInfo gpsInfo = new QuickSwitcherInfo();
         gpsInfo.label = mContext.getResources().getString(R.string.quick_guesture_gps);
@@ -403,22 +419,6 @@ public class QuickSwitchManager {
                 R.drawable.switch_flightmode);
         flyModeInfo.iDentiName = FLYMODE;
         mSwitchList.add(flyModeInfo);
-        // 手势设置
-        QuickSwitcherInfo switchSetInfo = new QuickSwitcherInfo();
-        switchSetInfo.label = mContext.getResources().getString(R.string.quick_guesture_switchset);
-        switchSetInfo.switchIcon = new Drawable[1];
-        switchSetInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_gestureset_pre);
-        switchSetInfo.iDentiName = SWITCHSET;
-        mSwitchList.add(switchSetInfo);
-        // 情景模式切换
-        QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
-        changeModeInfo.label = mContext.getResources()
-                .getString(R.string.quick_guesture_changemode);
-        changeModeInfo.switchIcon = new Drawable[1];
-        changeModeInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_mode);
-        changeModeInfo.iDentiName = CHANGEMODE;
-        mSwitchList.add(changeModeInfo);
         return mSwitchList;
     }
 
