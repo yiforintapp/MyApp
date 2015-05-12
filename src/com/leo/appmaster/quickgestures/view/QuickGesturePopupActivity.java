@@ -13,6 +13,10 @@ import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -63,7 +67,7 @@ public class QuickGesturePopupActivity extends Activity {
         finish();
         super.onStop();
     }
-    
+
     private void fillQg1() {
         mContainer.fillGestureItem(GType.DymicLayout, list.subList(0, 7));
     }
@@ -83,7 +87,37 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-//        mContainer.showCloseAnimation();
-         super.onBackPressed();
+        mContainer.showCloseAnimation();
+        // super.onBackPressed();
     }
+
+    public void showCloseAnimation() {
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(600);
+        Animator animationx = ObjectAnimator.ofFloat(mContainer, "scaleX", 1.0f,
+                1.05f, 0.0f);
+        Animator animationy = ObjectAnimator.ofFloat(mContainer, "scaleY", 1.0f,
+                1.05f, 0.0f);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                QuickGesturePopupActivity.this.finish();
+                super.onAnimationEnd(animation);
+            }
+        });
+        set.playTogether(animationx, animationy);
+        set.start();
+    }
+
+    public void showOpenAnimation() {
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(600);
+        Animator animationx = ObjectAnimator.ofFloat(mContainer, "scaleX", 0.0f, 1.05f,
+                1.0f);
+        Animator animationy = ObjectAnimator.ofFloat(mContainer, "scaleY", 0.0f, 1.05f,
+                1.0f);
+        set.playTogether(animationx, animationy);
+        set.start();
+    }
+
 }
