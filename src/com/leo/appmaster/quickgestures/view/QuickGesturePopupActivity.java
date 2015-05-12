@@ -49,7 +49,6 @@ public class QuickGesturePopupActivity extends Activity {
             }else {
                 
             }
-
         }
 
         fillQg1();
