@@ -17,6 +17,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 public class MonthTrafficSetting extends LEOBaseDialog {
     private Context mContext;
@@ -125,7 +126,7 @@ public class MonthTrafficSetting extends LEOBaseDialog {
      * @param seekBarCenterX
      */
     private void resetSeekbarTextMargin(int seekBarCenterX){
-        int leftMargin = seekBarCenterX-progressTextWidth/2+13;
+        int leftMargin = seekBarCenterX-progressTextWidth/2+DipPixelUtil.dip2px(mContext, 6.5f);
         if(leftMargin<0){
             leftMargin = 0;
         }

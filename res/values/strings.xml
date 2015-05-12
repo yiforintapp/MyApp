@@ -635,5 +635,6 @@
     <string name="feedback_email_guide">Your Email</string>
     <string name="feedback_category_guide">Select A Question</string>
      <string name="privacy_proposal_tip">Your privacy level is %1$s, please flowing the proposals to upgrade it.</string>
+    <string name="lock_mode_name_maxlength">30</string>
     <!-- version 2.2 end -->
 </resources>

@@ -4,6 +4,10 @@
     android:layout_height="72dp"
     android:background="@color/white" >
 
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/manager_backup_list_selecter">
     <TextView
         android:id="@+id/tv_add_more"
         android:layout_width="wrap_content"
@@ -23,4 +27,5 @@
         android:layout_alignTop="@+id/tv_add_more"
         android:src="@drawable/add_icon" />
 
+    </RelativeLayout>
 </RelativeLayout>

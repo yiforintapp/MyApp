@@ -630,6 +630,7 @@
     <string name="feedback_email_guide">อีเมล์</string>
     <string name="feedback_category_guide">ประเภทปัญหา</string>
      <string name="privacy_proposal_tip">ระดับลับ %1$s ทำดังนี้</string>
+     <string name="lock_mode_name_maxlength">30</string>
     <!-- version 2.2 end -->
 
 </resources>
