@@ -51,7 +51,7 @@
             android:listSelector="@android:color/transparent"
             android:numColumns="2"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="1dp"/>
+            android:verticalSpacing="1dp" />
 
         <LinearLayout
             android:id="@+id/activity_weizhuang_firstin"
@@ -62,10 +62,10 @@
             android:visibility="gone" >
 
             <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="@dimen/home_lock_mode_guide_image_width"
+                android:layout_height="@dimen/home_lock_mode_guide_image_height"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="88dp"
+                android:layout_marginTop="@dimen/weizhaung_guide_image_margin_top"
                 android:background="@drawable/disguise_tips" />
 
             <TextView
@@ -73,22 +73,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
                 android:layout_marginRight="45dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="@dimen/home_lock_mode_guide_text_margin_top"
                 android:text="@string/weizhuang_first_in_text"
                 android:textColor="@color/weisuo_text_show"
-                android:textSize="16dp" />
+                android:textSize="@dimen/home_lock_mode_guide_text_size" />
 
             <TextView
                 android:id="@+id/bt_go"
-                android:layout_width="100dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/home_lock_mode_guide_btn_width"
+                android:layout_height="@dimen/home_lock_mode_guide_btn_height"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="@dimen/home_lock_mode_guide_btn_margin_top"
                 android:background="@drawable/manager_done_button_selecter"
                 android:gravity="center"
                 android:text="@string/first_in_sure_button"
                 android:textColor="@color/white"
-                android:textSize="14dp" />
+                android:textSize="@dimen/home_lock_mode_guide_text_size" />
         </LinearLayout>
     </LinearLayout>
 

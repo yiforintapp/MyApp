@@ -24,6 +24,8 @@
     <dimen name="digital_item_marginBottom">8dp</dimen>
     <dimen name="lockPatternView_height">330dp</dimen>
     <dimen name="layout_passwd_marginTop">20dp</dimen>
+    
+    
     <dimen name="layout_passwd_marginBottom">15dp</dimen>
     <dimen name="circle_count_text_size">74dp</dimen>
     <dimen name="circle_tip_text_size">14dp</dimen>
@@ -327,4 +329,6 @@
     <dimen name="privacy_proposal_status_padding_bottom">17dp</dimen>
     <dimen name="privacy_suggest_height">120dp</dimen>
 
+    <!--  weizhuang -->
+    <dimen name="weizhaung_guide_image_margin_top">60dp</dimen>
 </resources>

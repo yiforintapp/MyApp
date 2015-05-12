@@ -297,4 +297,6 @@
     <dimen name="privacy_proposal_status_padding_bottom">8dp</dimen>
     <dimen name="privacy_suggest_height">100dp</dimen>
 
+    <!--  weizhuang -->
+    <dimen name="weizhaung_guide_image_margin_top">60dp</dimen>
 </resources>
