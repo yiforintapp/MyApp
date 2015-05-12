@@ -17,6 +17,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +117,8 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
         mTimeListView = (ListView) mTimeSettingDialog.findViewById(R.id.item_list);
         View parentView = (View) mTimeListView.getParent();
         RelativeLayout.LayoutParams linearParams =(RelativeLayout.LayoutParams) parentView.getLayoutParams(); //取控件textView当前的布局参数 
-        linearParams.height = DipPixelUtil.dip2px(this, 330);
+        linearParams.height = (int) (getResources().getDimension(R.dimen.dialog_list_item_height)*6);
+        Log.i("hasFocus",  "  "+ linearParams.height);
         parentView.setLayoutParams(linearParams);
         mTimeListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -136,7 +138,7 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
         });
         
         TextView mTitle = (TextView) mTimeSettingDialog.findViewById(R.id.dlg_title);
-        mTitle.setText(getResources().getString(R.string.input_qusetion));
+        mTitle.setText(getResources().getString(R.string.change_lock_time));
         ListAdapter adapter = new TimeListAdapter(this);
         mTimeListView.setAdapter(adapter);
         mTimeSettingDialog.show();

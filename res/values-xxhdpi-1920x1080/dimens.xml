@@ -145,8 +145,12 @@
     <dimen name="privacy_proposal_status_height">14dp</dimen>
     <dimen name="privacy_proposal_status_padding_bottom">17dp</dimen>
     <dimen name="privacy_suggest_height">120dp</dimen>
-    
-    <!--  weizhuang -->
-    <dimen name="weizhaung_guide_image_margin_top">70dp</dimen>
 
+    <!-- weizhuang -->
+    <dimen name="weizhaung_guide_image_margin_top">70dp</dimen>
+    
+    <dimen name="dialog_list_width">300dp</dimen>
+    <dimen name="dialog_list_btn_height">48dp</dimen>
+    <dimen name="dialog_list_item_height">55dp</dimen>
+	<dimen name="dialog_contact_item_height">64dp</dimen>
 </resources>

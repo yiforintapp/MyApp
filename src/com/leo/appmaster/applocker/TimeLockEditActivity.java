@@ -48,7 +48,6 @@ public class TimeLockEditActivity extends BaseActivity implements
         OnClickListener, OnValueChangeListener, Formatter, OnItemClickListener {
 
     public LayoutInflater mInflater;
-    private LeoSingleLinesInputDialog mModeNameDiglog;
     private LEOAlarmDialog mMakeSureChange;
     private LEOBaseDialog mModeListDialog;
     private TextView mTvTitle;
@@ -58,7 +57,6 @@ public class TimeLockEditActivity extends BaseActivity implements
     private TextView mTvRepeat;
     private DayOfWeekSelectedView mDayOfWeekView;
     private View mModeSelectLayout;
-    private View mSelectedDownIcon;
     private TextView mTvName;
     private View mIvSave;
     private View mIvBack;
@@ -95,7 +93,6 @@ public class TimeLockEditActivity extends BaseActivity implements
         mDayOfWeekView = (DayOfWeekSelectedView) findViewById(R.id.day_of_week_layout);
         mModeSelectLayout = findViewById(R.id.layout_mode_name);
         mModeSelectLayout.setOnClickListener(this);
-        mSelectedDownIcon = findViewById(R.id.imageView1);
         mTvName = (TextView) findViewById(R.id.tv_mode_name);
         mIvSave = findViewById(R.id.iv_edit_finish);
         mIvSave.setOnClickListener(this);

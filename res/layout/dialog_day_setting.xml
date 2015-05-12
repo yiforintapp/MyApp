@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="320dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/bg"
     android:gravity="center" >
 
+    <RelativeLayout 
+          android:layout_width="@dimen/dialog_list_width"
+  		  android:layout_height="wrap_content"
+        >
+    
     <TextView
         android:id="@+id/dlg_title"
         android:layout_width="wrap_content"
@@ -17,7 +22,7 @@
         android:gravity="center"
         android:text="@string/flow_settting_thrid"
         android:textColor="#676767"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="visible" />
 
@@ -42,12 +47,12 @@
     <TextView
         android:id="@+id/cancel_button"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dialog_list_btn_height"
         android:layout_below="@+id/daytraffic_lv"
         android:background="@drawable/manager_cancel_single_button_selecter"
         android:gravity="center"
         android:text="@string/cancel"
         android:textColor="@color/white"
-        android:textSize="16dp" />
-
+        android:textSize="16sp" />
 </RelativeLayout>
+</LinearLayout>

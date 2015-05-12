@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/bg"
@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/dialog_list_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical" >
@@ -22,7 +22,7 @@
                 android:text="@string/privacy_contact_popumenus_add_new_privacy_contact"
                 android:textColor="#676767"
                 android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <ImageView
                 android:id="@+id/call_log_item_top_bottom_line"
@@ -40,7 +40,7 @@
                 <LinearLayout
                      android:id="@+id/dlg_add_sms"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="@dimen/dialog_contact_item_height"
                     android:gravity="center"
                     android:background="@drawable/manager_backup_list_selecter"
                     android:orientation="horizontal"
@@ -55,11 +55,11 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
+                        android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:text="@string/privacy_contact_popumenus_from_message"
                         android:textColor="#a3a3a3"
-                        android:textSize="18dp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <ImageView
@@ -71,7 +71,7 @@
                 <LinearLayout
                     android:id="@+id/dlg_add_call"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="@dimen/dialog_contact_item_height"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:background="@drawable/manager_backup_list_selecter">
@@ -85,7 +85,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
+                        android:layout_height="match_parent"
                         android:background="@drawable/manager_backup_list_selecter"
                         android:gravity="center_vertical"
                         android:text="@string/privacy_contact_popumenus_from_call_log"
@@ -102,7 +102,7 @@
                 <LinearLayout
                      android:id="@+id/dlg_add_contact"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="@dimen/dialog_contact_item_height"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:background="@drawable/manager_backup_list_selecter" >
@@ -116,12 +116,12 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
+                        android:layout_height="match_parent"
                         android:background="@drawable/manager_backup_list_selecter"
                         android:gravity="center_vertical"
                         android:text="@string/privacy_contact_popumenus_from_contact"
                         android:textColor="#a3a3a3"
-                        android:textSize="18dp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <ImageView
@@ -133,7 +133,7 @@
                 <LinearLayout
                     android:id="@+id/dlg_add_input"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="@dimen/dialog_contact_item_height"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:background="@drawable/manager_backup_list_selecter" >
@@ -147,12 +147,12 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
+                        android:layout_height="match_parent"
                         android:background="@drawable/manager_backup_list_selecter"
                         android:gravity="center_vertical"
                         android:text="@string/privacy_contact_popumenus_input_phone_number"
                         android:textColor="#a3a3a3"
-                        android:textSize="18dp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
     </LinearLayout>
