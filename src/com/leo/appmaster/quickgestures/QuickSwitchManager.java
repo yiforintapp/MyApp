@@ -125,9 +125,11 @@ public class QuickSwitchManager {
         mGpsObserver.startObserver();
     }
 
-    private void MobileData() {
-        mConnectivityManager = (ConnectivityManager) mContext
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+    public void MobileData() {
+        if(mConnectivityManager == null){
+            mConnectivityManager = (ConnectivityManager) mContext
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+        }
         try {
             boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
                     null);
@@ -156,7 +158,7 @@ public class QuickSwitchManager {
         }
     }
 
-    private void FlyMode() {
+    public void FlyMode() {
         isAirplaneMode = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.AIRPLANE_MODE_ON, 0);
         if (isAirplaneMode == 1) {
@@ -182,8 +184,10 @@ public class QuickSwitchManager {
         }
     }
 
-    private void Sound() {
-        mSoundManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+    public void Sound() {
+        if(mSoundManager == null){
+            mSoundManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+        }
         if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
             mSoundStatus = 0;
         } else if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
@@ -193,8 +197,10 @@ public class QuickSwitchManager {
         }
     }
 
-    private void Wlan() {
-        mWifimanager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+    public void Wlan() {
+        if(mWifimanager == null){
+            mWifimanager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        }
         if (mWifimanager.isWifiEnabled()) {
             isWlantOpen = true;
         } else {
@@ -202,9 +208,11 @@ public class QuickSwitchManager {
         }
     }
 
-    private void BlueTooth() {
-        mBluetoothAdapter = BluetoothAdapter
-                .getDefaultAdapter();
+    public void BlueTooth() {
+        if(mBluetoothAdapter == null){
+            mBluetoothAdapter = BluetoothAdapter
+                    .getDefaultAdapter();
+        }
         if (mBluetoothAdapter.isEnabled()) {
             isBlueToothOpen = true;
         } else {

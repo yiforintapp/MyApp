@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.quickgestures.receiver;
 
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.content.BroadcastReceiver;
@@ -14,25 +15,26 @@ public class QuickSwitchReceiver extends BroadcastReceiver {
     private static final String AIRPLANE_MODE = "android.intent.action.AIRPLANE_MODE";
     private static final String NETWORK_CHANGE = "android.intent.action.ANY_DATA_STATE";
     public static final String RINGER_MODE_CHANGED = "android.media.RINGER_MODE_CHANGED";
-
+    private long firstIn = 0;
+    private long secondIn = 0;
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (WIFI_STATE_CHANGED.equals(action)) {
             LeoLog.d("QuickSwitchReceiver", "wifi change");
-            
+            QuickSwitchManager.getInstance(context).Wlan();
         } else if (BLUETOOTH_STATE_CHANGED.equals(action) || BLUETOOTH_ACTION.equals(action)) {
             LeoLog.d("QuickSwitchReceiver", "蓝牙 change");
-            
+            QuickSwitchManager.getInstance(context).BlueTooth();
         } else if (AIRPLANE_MODE.equals(action)) {
             LeoLog.d("QuickSwitchReceiver", "飞行 change");
-            
+            QuickSwitchManager.getInstance(context).FlyMode();
         } else if (NETWORK_CHANGE.equals(action)) {
             LeoLog.d("QuickSwitchReceiver", "数据网络 change");
-            
+            QuickSwitchManager.getInstance(context).MobileData();
         } else if (RINGER_MODE_CHANGED.equals(action)) {
             LeoLog.d("QuickSwitchReceiver", "音量 change");
-            
+            QuickSwitchManager.getInstance(context).Sound();
         }
     }
 
