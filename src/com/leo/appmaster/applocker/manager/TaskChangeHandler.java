@@ -9,17 +9,19 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.LeoLog;
 
 public class TaskChangeHandler {
 
     public static final String EXTRA_LOCKED_APP_PKG = "locked_app_pkg";
-    
+
     public static final String LOCKSCREENNAME = "LockScreenActivity";
     public static final String HOMENAME = "HomeActivity";
     public static final String SPLASHNAME = "SplashActivity";
     public static final String PROXYNAME = "ProxyActivity";
     public static final String WAITNAME = "WaitActivity";
+    public static final String GESTURE = "QuickGesturePopupActivity";
 
     private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
     private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
@@ -31,9 +33,8 @@ public class TaskChangeHandler {
     private ActivityManager mAm;
     private String mLastRunningPkg = "";
     private String mLastRuningActivity = "";
-    
+
     private boolean mIsFirstDetect;
-    
 
     public TaskChangeHandler(Context mContext) {
         this.mContext = mContext.getApplicationContext();
@@ -51,7 +52,6 @@ public class TaskChangeHandler {
         }
         return pkg;
     }
-    
 
     public String getLastRunningPackage() {
         return mLastRunningPkg;
@@ -60,19 +60,18 @@ public class TaskChangeHandler {
     public String getLastRunningActivity() {
         return mLastRuningActivity;
     }
-    
 
     public void handleAppLaunch(String pkg, String activity) {
         if (pkg == null || activity == null)
             return;
-        if(mIsFirstDetect) {
+        if (mIsFirstDetect) {
             LeoLog.d("Track Lock Screen", "is first lock,so we ignor this time");
             mLastRunningPkg = pkg;
             mLastRuningActivity = activity;
             mIsFirstDetect = false;
             return;
         }
-//         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+        // LeoLog.i("handleAppLaunch", pkg + "/" + activity);
         String myPackage = mContext.getPackageName();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
@@ -86,9 +85,13 @@ public class TaskChangeHandler {
                 amp.setFromOther(true);
             }
             if (doubleCheck) {
-                if (mLastRunningPkg.isEmpty() || (isCurrentSelf && (activity
-                        .contains(SPLASHNAME) || activity.contains(PROXYNAME) || activity.contains(WAITNAME)) 
-                        || (!unlocked && activity.contains(LOCKSCREENNAME)))
+                if (mLastRunningPkg.isEmpty()
+                        || (isCurrentSelf
+                                && (activity
+                                        .contains(SPLASHNAME) || activity
+                                        .contains(GESTURE) || activity.contains(PROXYNAME) || activity
+                                            .contains(WAITNAME))
+                                || (!unlocked && activity.contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
                     mLastRunningPkg = pkg;
@@ -96,9 +99,13 @@ public class TaskChangeHandler {
                     return;
                 }
             } else {
-                if (mLastRunningPkg.isEmpty() || (isCurrentSelf && (activity
-                        .contains(SPLASHNAME) || activity.contains(PROXYNAME)|| activity.contains(WAITNAME)) || (activity
-                            .contains(LOCKSCREENNAME)))
+                if (mLastRunningPkg.isEmpty()
+                        || (isCurrentSelf
+                                && (activity
+                                        .contains(SPLASHNAME) || activity
+                                        .contains(GESTURE) || activity.contains(PROXYNAME) || activity
+                                            .contains(WAITNAME)) || (activity
+                                    .contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
                     mLastRunningPkg = pkg;
@@ -108,9 +115,10 @@ public class TaskChangeHandler {
             }
             mLastRunningPkg = pkg;
             mLastRuningActivity = activity;
-            
-            
-            
+
+            // remocde app launch recoder
+            QuickGestureManager.getInstance(mContext).recodeAppLaunch(mLastRunningPkg);
+
             // For android 5.0, download package changed
             if (pkg.equals(DOWNLAOD_PKG_21)) {
                 pkg = DOWNLAOD_PKG;
