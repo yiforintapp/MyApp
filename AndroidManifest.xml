@@ -59,6 +59,21 @@
     <!-- LEO push: end -->
 
 
+    <!-- quickSwitch -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" />
+    <uses-permission android:name="android.permission.USES_POLICY_FORCE_LOCK" />
+    <uses-permission android:name="android.permission.DEVICE_POWER" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.autofocus" />
+    <!-- quickSwitch -->
+
+
     <!-- baidu mtj permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -92,11 +107,11 @@
         <activity
             android:name="com.leo.appmaster.home.ProxyActivity"
             android:excludeFromRecents="true"
-            android:noHistory="true"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-         <activity
+        <activity
             android:name="com.leo.appmaster.home.HomeActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
@@ -238,6 +253,12 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
+            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
             android:name="com.leo.appmaster.imagehide.ImageGridActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
@@ -291,7 +312,7 @@
             android:name="com.leo.appmaster.lockertheme.LockerTheme"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:screenOrientation="portrait" 
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
             <category android:name="android.intent.category.DEFAULT" />
         </activity>
@@ -470,6 +491,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
+        <activity
+            android:name="com.leo.appmaster.quickgestures.view.QuickGesturePopup"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureMiuiOpenFloatWindwoTip"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
 
         <service
             android:name="com.leo.appmaster.applocker.service.TaskDetectService"
@@ -522,6 +555,18 @@
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name="com.leo.appmaster.quickgestures.receiver.QuickSwitchReceiver"
+            android:exported="true" >
+            <intent-filter android:priority="10000" >
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="android.bluetooth.a2dp.profile.action.CONNECTION_STATE_CHANGED" />
+                <action android:name="android.intent.action.AIRPLANE_MODE" />
+                <action android:name="android.intent.action.ANY_DATA_STATE" />
+                <action android:name="android.media.RINGER_MODE_CHANGED" />
+            </intent-filter>
+        </receiver>
 
         <provider
             android:name="com.leo.appmaster.db.AppMasterProvider"
@@ -549,11 +594,7 @@
             android:name="BaiduMobAd_EXCEPTION_LOG"
             android:value="true" />
         <!-- for Baidu MTJ end -->
-        
-         <!-- for TalkingData start -->
-        <meta-data android:name="TD_APP_ID" android:value="FDFC3A6C0157D012BB647FD3CAE0245A"/>
-        <meta-data android:name="TD_CHANNEL_ID" android:value="@string/channel_code"/>
-        <!-- for TalkingData end -->
+
 
         <!-- for LEO push sdk -->
         <service android:name="com.leo.push.PushService" />
