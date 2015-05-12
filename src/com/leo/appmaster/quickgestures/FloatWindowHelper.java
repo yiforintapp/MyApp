@@ -27,11 +27,12 @@ import android.widget.RelativeLayout;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
-import com.leo.appmaster.quickgestures.view.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.quickgestures.view.RightGesturePopupWindow;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 
 /**
  * QuickGestureWindowManager
@@ -56,13 +57,7 @@ public class FloatWindowHelper {
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
 
-    public static RightGesturePopupWindow mRightPopup;
-    public static boolean mPopWindowShowing;
-    private static RightGesturePopupWindow sRightPopup, sLeftPopup;
-    private static QuickGestureContainer mRightGesture, mLeftGesture;
-    private static LayoutParams mRightGestureParams, mLeftGestureParams;
     public static boolean mGestureShowing = false;
-
     public static boolean mEditQuickAreaFlag = false;
     private static float startX;
     private static float startY;
@@ -145,14 +140,16 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
+                            LeoLog.e("xxxx", "ACTION_MOVE");
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.width / 4)
                                     && !isMoveIng) {
+                                LeoLog.e("xxxx", "launch quick gesture");
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(-1, mLeftBottomView);
-                                // removeSwipWindow(mContext, 1);
-                                deleteLeftAllFloatWindow(mContext);
+                                deleteAllFloatWindow(mContext);
+                                mGestureShowing = true;
+                                onTouchAreaShowQuick(-1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -202,26 +199,37 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
                         case MotionEvent.ACTION_DOWN:
+                            isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
+                            LeoLog.e("xxxx", "ACTION_MOVE");
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.width / 4)
-                                    && !isMoveIng) {
+                            LeoLog.e("xxxx", "width = " + mLeftBottomParams.width
+                                    + "     height = " + mLeftBottomParams.height);
+                            LeoLog.e("xxxx", "moveX = " + moveX + "     moveY = " + moveY
+                                    + "          isMoveIng = " + isMoveIng);
+                            if (((moveX > mLeftBottomParams.width / 6 || moveY > mLeftBottomParams.height / 5)
+                            && !isMoveIng)) {
+                                LeoLog.e("xxxx", "launch quick gesture");
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(-1, mLeftBottomView);
-                                // removeSwipWindow(mContext, 1);
-                                deleteLeftAllFloatWindow(mContext);
+                                deleteAllFloatWindow(mContext);
+                                mGestureShowing = true;
+                                onTouchAreaShowQuick(-1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 5
-                                    || Math.abs(startY - event.getRawY()) < 5) {
+                            if (Math.abs(startX - event.getRawX()) < 10
+                                    || Math.abs(startY - event.getRawY()) < 10) {
                                 removeSwipWindow(mContext, 1);
                             }
+                            break;
+
+                        case MotionEvent.ACTION_CANCEL:
+                            isMoveIng = false;
                             break;
                     }
                     return false;
@@ -242,7 +250,11 @@ public class FloatWindowHelper {
                 mLeftBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
-            windowManager.addView(mLeftBottomView, mLeftBottomParams);
+            if (!mGestureShowing) {
+                windowManager.addView(mLeftBottomView, mLeftBottomParams);
+            } else {
+                mLeftBottomView = null;
+            }
         }
     }
 
@@ -263,6 +275,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
                         case MotionEvent.ACTION_DOWN:
+                            isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
                             break;
@@ -272,9 +285,9 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftCenterParams.width / 4 || moveY > mLeftCenterParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(-1, mLeftBottomView);
-                                // removeSwipWindow(mContext, 2);
-                                deleteLeftAllFloatWindow(mContext);
+                                deleteAllFloatWindow(mContext);
+                                mGestureShowing = true;
+                                onTouchAreaShowQuick(-1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -303,7 +316,12 @@ public class FloatWindowHelper {
                 mLeftCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
-            windowManager.addView(mLeftCenterView, mLeftCenterParams);
+
+            if (!mGestureShowing) {
+                windowManager.addView(mLeftCenterView, mLeftCenterParams);
+            } else {
+                mLeftCenterView = null;
+            }
         }
     }
 
@@ -324,6 +342,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
                         case MotionEvent.ACTION_DOWN:
+                            isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
                             break;
@@ -333,9 +352,10 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftCenterCenterParams.width / 4 || moveY > mLeftCenterCenterParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(-1, mLeftCenterCenterView);
-                                // removeSwipWindow(mContext, 4);
-                                deleteLeftAllFloatWindow(mContext);
+                                deleteAllFloatWindow(mContext);
+                                mGestureShowing = true;
+                                onTouchAreaShowQuick(-1);
+
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -365,7 +385,12 @@ public class FloatWindowHelper {
                 mLeftCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
-            windowManager.addView(mLeftCenterCenterView, mLeftCenterCenterParams);
+
+            if (!mGestureShowing) {
+                windowManager.addView(mLeftCenterCenterView, mLeftCenterCenterParams);
+            } else {
+                mLeftCenterCenterView = null;
+            }
         }
     }
 
@@ -386,6 +411,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
                         case MotionEvent.ACTION_DOWN:
+                            isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
                             break;
@@ -395,9 +421,9 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftTopParams.width / 4 || moveY > mLeftTopParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(-1, mLeftBottomView);
-                                // removeSwipWindow(mContext, 3);
-                                deleteLeftAllFloatWindow(mContext);
+                                deleteAllFloatWindow(mContext);
+                                mGestureShowing = true;
+                                onTouchAreaShowQuick(-1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -428,7 +454,11 @@ public class FloatWindowHelper {
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
 
-            windowManager.addView(mLeftTopView, mLeftTopParams);
+            if (!mGestureShowing) {
+                windowManager.addView(mLeftTopView, mLeftTopParams);
+            } else {
+                mLeftTopView = null;
+            }
         }
     }
 
@@ -449,6 +479,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
                         case MotionEvent.ACTION_DOWN:
+                            isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
                             break;
@@ -458,9 +489,9 @@ public class FloatWindowHelper {
                             if ((moveX > mRightBottomParams.width / 4 || moveY > mRightBottomParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(1, mRightBottomView);
-                                // removeSwipWindow(mContext, -1);
-                                deleteRightAllFloatWindow(mContext);
+                                deleteAllFloatWindow(mContext);
+                                mGestureShowing = true;
+                                onTouchAreaShowQuick(1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -487,7 +518,12 @@ public class FloatWindowHelper {
                 mRightBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
-            windowManager.addView(mRightBottomView, mRightBottomParams);
+
+            if (!mGestureShowing) {
+                windowManager.addView(mRightBottomView, mRightBottomParams);
+            } else {
+                mRightBottomView = null;
+            }
         }
     }
 
@@ -508,6 +544,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
                         case MotionEvent.ACTION_DOWN:
+                            isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
                             break;
@@ -517,9 +554,9 @@ public class FloatWindowHelper {
                             if ((moveX > mRightCenterParams.width / 4 || moveY > mRightCenterParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(1, mRightBottomView);
-                                // removeSwipWindow(mContext, -2);
-                                deleteRightAllFloatWindow(mContext);
+                                deleteAllFloatWindow(mContext);
+                                mGestureShowing = true;
+                                onTouchAreaShowQuick(1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -547,7 +584,12 @@ public class FloatWindowHelper {
                 mRightCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
-            windowManager.addView(mRightCenterView, mRightCenterParams);
+
+            if (!mGestureShowing) {
+                windowManager.addView(mRightCenterView, mRightCenterParams);
+            } else {
+                mRightCenterView = null;
+            }
         }
     }
 
@@ -568,6 +610,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
                         case MotionEvent.ACTION_DOWN:
+                            isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
                             break;
@@ -577,9 +620,9 @@ public class FloatWindowHelper {
                             if ((moveX > mRightCenterCenterParams.width / 4 || moveY > mRightCenterCenterParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(1, mRightCenterCenterView);
-                                // removeSwipWindow(mContext, -4);
-                                deleteRightAllFloatWindow(mContext);
+                                deleteAllFloatWindow(mContext);
+                                mGestureShowing = true;
+                                onTouchAreaShowQuick(1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -608,7 +651,12 @@ public class FloatWindowHelper {
                 mRightCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
-            windowManager.addView(mRightCenterCenterView, mRightCenterCenterParams);
+
+            if (!mGestureShowing) {
+                windowManager.addView(mRightCenterCenterView, mRightCenterCenterParams);
+            } else {
+                mRightCenterCenterView = null;
+            }
         }
     }
 
@@ -629,6 +677,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
                         case MotionEvent.ACTION_DOWN:
+                            isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
                             break;
@@ -638,9 +687,9 @@ public class FloatWindowHelper {
                             if ((moveX > mRightTopParams.width / 4 || moveY > mRightTopParams.width / 4)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                onTouchAreaShowQuick(1, mRightBottomView);
-                                // removeSwipWindow(mContext, -3);
-                                deleteRightAllFloatWindow(mContext);
+                                deleteAllFloatWindow(mContext);
+                                mGestureShowing = true;
+                                onTouchAreaShowQuick(1);
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -669,7 +718,12 @@ public class FloatWindowHelper {
                 mRightTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             }
-            windowManager.addView(mRightTopView, mRightTopParams);
+
+            if (!mGestureShowing) {
+                windowManager.addView(mRightTopView, mRightTopParams);
+            } else {
+                mRightTopView = null;
+            }
         }
     }
 
@@ -731,23 +785,13 @@ public class FloatWindowHelper {
         }
     }
 
-    // 删除除左侧底部所有悬浮窗
-    private static void deleteLeftAllFloatWindow(Context context) {
+    // 删除底部所有悬浮窗
+    private static void deleteAllFloatWindow(Context context) {
+        removeSwipWindow(context, 1);
         removeSwipWindow(context, 2);
         removeSwipWindow(context, 3);
         removeSwipWindow(context, 4);
         removeSwipWindow(context, -1);
-        removeSwipWindow(context, -2);
-        removeSwipWindow(context, -3);
-        removeSwipWindow(context, -4);
-    }
-
-    // 删除除右侧底部所有悬浮窗
-    private static void deleteRightAllFloatWindow(Context context) {
-        removeSwipWindow(context, 2);
-        removeSwipWindow(context, 3);
-        removeSwipWindow(context, 4);
-        removeSwipWindow(context, 1);
         removeSwipWindow(context, -2);
         removeSwipWindow(context, -3);
         removeSwipWindow(context, -4);
@@ -1078,7 +1122,7 @@ public class FloatWindowHelper {
         }
     }
 
-    private static void onTouchAreaShowQuick(int flag, View view) {
+    private static void onTouchAreaShowQuick(int flag) {
         if (flag == -1) {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
