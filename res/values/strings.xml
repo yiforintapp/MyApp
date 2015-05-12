@@ -676,6 +676,7 @@
     <string name="quick_guesture_rotation">屏幕旋转</string>
     <string name="quick_guesture_mobliedata">移动数据</string>
     <string name="quick_guesture_home">桌面</string>
+    <string name="quick_guesture_lockscreen">锁屏</string>
     <!-- version 2.3 end -->
 
 </resources>

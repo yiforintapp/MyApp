@@ -614,6 +614,12 @@ public class QuickGestureContainer extends FrameLayout {
         }
     }
 
+    private void checkLockScreen(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                null);
+    }
+
     private void checkHome(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
         tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,

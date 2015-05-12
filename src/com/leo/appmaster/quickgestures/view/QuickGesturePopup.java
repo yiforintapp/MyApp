@@ -23,6 +23,7 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.DipPixelUtil;
 
 import android.view.View;
@@ -76,6 +77,13 @@ public class QuickGesturePopup extends Activity {
     private void fillQg3() {
 //        mContainer.fillGestureItem(GType.SwitcherLayout, list.subList(17, 25));
         mContainer.fillGestureItem(GType.SwitcherLayout, mSwitchList);
+    }
+
+    
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
