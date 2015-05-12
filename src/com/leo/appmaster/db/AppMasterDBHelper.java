@@ -10,7 +10,7 @@ import com.leo.appmaster.Constants;
 public class AppMasterDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "appmaster.db";
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 6;
 
     private static final String CREATE_DOWNLOAD_TABLE = "CREATE TABLE IF NOT EXISTS "
             + Constants.TABLE_DOWNLOAD
@@ -252,6 +252,16 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_LOCK_MODE);
             db.execSQL(CREATE_TIME_LOCK);
             db.execSQL(CREATE_LOCATION_LOCK);
+        } else if (newVersion == 6) {
+            db.execSQL("DROP TABLE IF EXISTS " + "applist_business");
+            db.execSQL("CREATE TABLE IF NOT EXISTS applist_business ("
+                    + "_id INTEGER PRIMARY KEY," + "lebal TEXT,"
+                    + "package_name TEXT," + "icon_url TEXT,"
+                    + "download_url TEXT," + "icon BLOB,"
+                    + "container_id INTEGER," + "rating TEXT,"
+                    + "download_count TEXT," + "desc TEXT,"
+                    + "gp_priority INTEGER," + "gp_url TEXT,"
+                    + "app_size INTEGER," + "icon_status INTEGER" + ");");
         }
     }
 }

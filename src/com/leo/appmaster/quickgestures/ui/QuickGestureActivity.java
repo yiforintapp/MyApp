@@ -604,7 +604,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         List<String> packageNames = null;
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(this)
                 .getAllPkgInfo();
-        packageNames = QuickGestureManager.getFreeDisturbAppName(this);
+        packageNames = QuickGestureManager.getInstance(this).getFreeDisturbAppName();
         for (AppItemInfo appDetailInfo : list) {
             FreeDisturbAppInfo appInfo = new FreeDisturbAppInfo();
             appInfo.icon = appDetailInfo.icon;

@@ -1,97 +1,104 @@
+
 package com.leo.appmaster.model;
 
 public class BusinessItemInfo extends BaseInfo {
-	/**
-	 * app list
-	 */
-	public static final int CONTAIN_APPLIST = 1;
-	/**
-	 * system folder
-	 */
-	public static final int CONTAIN_FLOW_SORT = 2;
-	/**
-	 * running folder
-	 */
-	public static final int CONTAIN_CAPACITY_SORT = 3;
-	/**
-	 * business folder
-	 */
-	public static final int CONTAIN_BUSINESS_FOLDER = 4;
+    /**
+     * app list
+     */
+    public static final int CONTAIN_APPLIST = 1;
+    /**
+     * system folder
+     */
+    public static final int CONTAIN_FLOW_SORT = 2;
+    /**
+     * running folder
+     */
+    public static final int CONTAIN_CAPACITY_SORT = 3;
+    /**
+     * business folder
+     */
+    public static final int CONTAIN_BUSINESS_FOLDER = 4;
 
-	/**
-	 * contain type of four above
-	 */
-	public int containType;
+    /**
+     * quick gesture
+     */
+    public static final int CONTAIN_QUICK_GESTURE = 5;
 
-	/**
-	 * app package name
-	 */
-	public String packageName;
+    /**
+     * contain type of four above
+     */
+    public int containType;
 
-	/**
-	 * icon url
-	 */
-	public String iconUrl;
+    /**
+     * app package name
+     */
+    public String packageName;
 
-	/**
-	 * app icon loaded
-	 */
-	public boolean iconLoaded;
+    /**
+     * icon url
+     */
+    public String iconUrl;
 
-	/**
-	 * app download url
-	 */
-	public String appDownloadUrl;
+    /**
+     * app icon loaded
+     */
+    public boolean iconLoaded;
 
-	/**
-	 * app package size
-	 */
-	public long appSize;
-	
-	/**
-	 * app rating
-	 */
-	public float rating = 2.5f;
-	
-	/**
-	 * app downlaod count
-	 */
-	public String appDownloadCount;
-	
-	/**
-	 * app describtion
-	 */
-	public String desc;
+    /**
+     * app download url
+     */
+    public String appDownloadUrl;
 
-	/**
-	 * the download priority
-	 */
-	public int gpPriority;
+    /**
+     * app package size
+     */
+    public long appSize;
 
-	/**
-	 * gp url
-	 */
-	public String gpUrl;
+    /**
+     * app rating
+     */
+    public float rating = 2.5f;
 
-//	/**
-//	 * app type
-//	 */
-//	public int appType;
+    /**
+     * app downlaod count
+     */
+    public String appDownloadCount;
 
-	/**
-	 * Tag
-	 */
-	public Object tag;
-	
-	/**
-	 * is local app
-	 */
-	public boolean installed;
+    /**
+     * app describtion
+     */
+    public String desc;
 
-	@Override
-	public String toString() {
-		return "label = " + label +  "       packageName = "+ packageName +"    iconUrl = " + iconUrl + "  appSize = "
-				+ appSize + "    type = " + type + "  appDownloadUrl =  "
-				+ appDownloadUrl + "    gpUrl = " + gpUrl + "   icon = " + icon;
-	}
+    /**
+     * the download priority
+     */
+    public int gpPriority;
+
+    /**
+     * gp url
+     */
+    public String gpUrl;
+
+    // /**
+    // * app type
+    // */
+    // public int appType;
+
+    /**
+     * Tag
+     */
+    public Object tag;
+
+    /**
+     * is local app
+     */
+    public boolean installed;
+
+    @Override
+    public String toString() {
+        return "label = " + label + "       packageName = " + packageName + "    iconUrl = "
+                + iconUrl + "  appSize = "
+                + appSize + "    type = " + type + "  appDownloadUrl =  "
+                + appDownloadUrl + "    gpUrl = " + gpUrl + "   icon = " + icon;
+    }
 }

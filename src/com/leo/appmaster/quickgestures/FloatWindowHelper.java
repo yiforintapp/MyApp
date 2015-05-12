@@ -50,7 +50,7 @@ public class FloatWindowHelper {
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
 
-    private static RightGesturePopupWindow mRightPopup, mLeftPopup;
+    private static RightGesturePopupWindow sRightPopup, sLeftPopup;
     private static QuickGestureContainer mRightGesture, mLeftGesture;
     private static LayoutParams mRightGestureParams, mLeftGestureParams;
     public static boolean mGestureShowing = false;
@@ -946,9 +946,9 @@ public class FloatWindowHelper {
 
     public static void closeQuickGesture(QuickGestureContainer.Orientation orientation) {
         if (orientation == QuickGestureContainer.Orientation.Left) {
-            mLeftPopup.dismiss();
+            sLeftPopup.dismiss();
         } else {
-            mRightPopup.dismiss();
+            sRightPopup.dismiss();
         }
     }
 
@@ -988,7 +988,7 @@ public class FloatWindowHelper {
     private static void onTouchAreaShowQuick(int flag, View view) {
         if (flag == -1) {
             // 左边划出
-            if (mLeftPopup == null) {
+            if (sLeftPopup == null) {
                 View contentView =
                         LayoutInflater.from(view.getContext()).inflate(
                                 R.layout.pop_quick_gesture_left, null);
@@ -997,27 +997,27 @@ public class FloatWindowHelper {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight()
                         - DipPixelUtil.dip2px(view.getContext(), 25);
-                mLeftPopup = new RightGesturePopupWindow(contentView, width,
+                sLeftPopup = new RightGesturePopupWindow(contentView, width,
                         height, true);
-                mLeftPopup.setFocusable(true);
-                mLeftPopup.setOutsideTouchable(false);
+                sLeftPopup.setFocusable(true);
+                sLeftPopup.setOutsideTouchable(false);
                 ColorDrawable dw = new ColorDrawable(Color.argb(230, 0, 0, 0));
-                mLeftPopup.setBackgroundDrawable(dw);
-                mLeftPopup.setOnDismissListener(new OnDismissListener() {
+                sLeftPopup.setBackgroundDrawable(dw);
+                sLeftPopup.setOnDismissListener(new OnDismissListener() {
                     @Override
                     public void onDismiss() {
                         mGestureShowing = false;
                     }
                 });
                 // mLeftPopup.setAnimationStyle(R.style.left_gesture_popup_animation);
-                mLeftPopup.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                sLeftPopup.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mGestureShowing = true;
             int[] location = new int[2];
             view.getLocationOnScreen(location);
-            mLeftPopup.showAtLocation(view, Gravity.NO_GRAVITY, 0,
-                    -mLeftPopup.getHeight());
-            View contentView = mLeftPopup.getContentView();
+            sLeftPopup.showAtLocation(view, Gravity.NO_GRAVITY, 0,
+                    -sLeftPopup.getHeight());
+            View contentView = sLeftPopup.getContentView();
             AnimatorSet set = new AnimatorSet();
             set.setDuration(1000);
             Animator animationx = ObjectAnimator.ofFloat(contentView, "scaleX", 0.0f, 1.05f,
@@ -1050,7 +1050,7 @@ public class FloatWindowHelper {
         } else if (flag == 1) {
             // 右边划出
 
-            if (mRightPopup == null) {
+            if (sRightPopup == null) {
                 View contentView =
                         LayoutInflater.from(view.getContext()).inflate(
                                 R.layout.pop_quick_gesture_left, null);
@@ -1059,26 +1059,26 @@ public class FloatWindowHelper {
                 int width = windowManager.getDefaultDisplay().getWidth();
                 int height = windowManager.getDefaultDisplay().getHeight()
                         - DipPixelUtil.dip2px(view.getContext(), 25);
-                mRightPopup = new RightGesturePopupWindow(contentView, width,
+                sRightPopup = new RightGesturePopupWindow(contentView, width,
                         height, true);
-                mRightPopup.setFocusable(true);
-                mRightPopup.setOutsideTouchable(false);
+                sRightPopup.setFocusable(true);
+                sRightPopup.setOutsideTouchable(false);
                 ColorDrawable dw = new ColorDrawable(Color.argb(200, 255, 255, 255));
-                mRightPopup.setBackgroundDrawable(dw);
-                mRightPopup.setOnDismissListener(new OnDismissListener() {
+                sRightPopup.setBackgroundDrawable(dw);
+                sRightPopup.setOnDismissListener(new OnDismissListener() {
                     @Override
                     public void onDismiss() {
                         mGestureShowing = false;
                     }
                 });
-                mRightPopup.setAnimationStyle(R.style.right_gesture_popup_animation);
-                mRightPopup.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                sRightPopup.setAnimationStyle(R.style.right_gesture_popup_animation);
+                sRightPopup.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mGestureShowing = true;
             int[] location = new int[2];
             view.getLocationOnScreen(location);
-            mRightPopup.showAtLocation(view, Gravity.NO_GRAVITY, 0,
-                    -mRightPopup.getHeight());
+            sRightPopup.showAtLocation(view, Gravity.NO_GRAVITY, 0,
+                    -sRightPopup.getHeight());
 
             // WindowManager windowManager =
             // getWindowManager(view.getContext());

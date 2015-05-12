@@ -108,6 +108,9 @@ public class TaskChangeHandler {
             }
             mLastRunningPkg = pkg;
             mLastRuningActivity = activity;
+            
+            
+            
             // For android 5.0, download package changed
             if (pkg.equals(DOWNLAOD_PKG_21)) {
                 pkg = DOWNLAOD_PKG;
