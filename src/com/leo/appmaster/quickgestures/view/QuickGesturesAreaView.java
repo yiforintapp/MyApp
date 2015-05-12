@@ -70,8 +70,8 @@ public class QuickGesturesAreaView extends View {
     @SuppressLint("ResourceAsColor")
     private void initUI(Context mContext) {
         this.mContext = mContext;
-        setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
-        // setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+//        setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+         setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
         setFocusable(true);
         setClickable(true);
     }
