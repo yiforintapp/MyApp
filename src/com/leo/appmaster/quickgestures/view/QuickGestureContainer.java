@@ -103,7 +103,7 @@ public class QuickGestureContainer extends FrameLayout {
                                 Activity activity = (Activity) QuickGestureContainer.this
                                         .getContext();
                                 activity.onBackPressed();
-                                // showCloseAnimation();
+                                showCloseAnimation();
                             }
 
                         } else {
@@ -872,9 +872,9 @@ public class QuickGestureContainer extends FrameLayout {
     public void showOpenAnimation() {
         AnimatorSet set = new AnimatorSet();
         set.setDuration(600);
-        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f, 1.05f,
+        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f, 1.15f,
                 1.0f);
-        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f, 1.05f,
+        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f, 1.15f,
                 1.0f);
         set.playTogether(animationx, animationy);
         set.start();
@@ -884,9 +884,9 @@ public class QuickGestureContainer extends FrameLayout {
         AnimatorSet set = new AnimatorSet();
         set.setDuration(600);
         Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 1.0f,
-                1.05f, 0.0f);
+                1.15f, 0.0f);
         Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 1.0f,
-                1.05f, 0.0f);
+                1.15f, 0.0f);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -896,6 +896,7 @@ public class QuickGestureContainer extends FrameLayout {
             }
         });
         set.playTogether(animationx, animationy);
+        set.start();
     }
 
     public void hideGestureLayout(GType type) {
