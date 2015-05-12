@@ -14,6 +14,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -261,7 +262,7 @@ public final class Utilities {
     }
 
     // 判断当前是否为桌面
-    public static  boolean isHome(Context context) {
+    public static boolean isHome(Context context) {
         ActivityManager mActivityManager = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningTaskInfo> rti = mActivityManager.getRunningTasks(1);
@@ -275,7 +276,20 @@ public final class Utilities {
         for (ResolveInfo ri : resolveInfo) {
             names.add(ri.activityInfo.packageName);
         }
-
         return names.contains(rti.get(0).topActivity.getPackageName());
+    }
+
+    // 横竖屏判断
+    public static int isScreenType(Context context) {
+        Configuration configuiation = context.getResources().getConfiguration();
+        int ori = configuiation.orientation; // 获取屏幕方向
+        if (ori == configuiation.ORIENTATION_LANDSCAPE) {
+            // 横屏
+            return -1;
+        } else if (ori == configuiation.ORIENTATION_PORTRAIT) {
+            // 竖屏
+            return 1;
+        }
+        return 0;
     }
 }
