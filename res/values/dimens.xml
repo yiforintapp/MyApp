@@ -189,4 +189,6 @@
     <dimen name="home_shader_view_height">112dp</dimen>
     <dimen name="statusbar_height">25dp</dimen>
 
+    <!--  weizhuang -->
+    <dimen name="weizhaung_guide_image_margin_top">60dp</dimen>
 </resources>

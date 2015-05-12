@@ -187,8 +187,8 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                     
                     delayTime = 600;
                     AnimatorSet scaleSet = new AnimatorSet();
-                    Animator animationx = ObjectAnimator.ofFloat(modeIcon, "scaleX", 0.9f, 1.0f);
-                    Animator animationy = ObjectAnimator.ofFloat(modeIcon, "scaleY", 0.9f, 1.0f);
+                    Animator animationx = ObjectAnimator.ofFloat(modeIcon, "scaleX", 0.9f,0.95f, 1.0f);
+                    Animator animationy = ObjectAnimator.ofFloat(modeIcon, "scaleY", 0.9f, 0.95f,1.0f);
                     scaleSet.playTogether(animationx, animationy);
                     Animator alphaAnimator = ObjectAnimator.ofFloat(selectedImg, "alpha", 0.9f, 1.0f);
                     AnimatorSet set = new AnimatorSet();
