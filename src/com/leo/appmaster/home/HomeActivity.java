@@ -62,7 +62,7 @@ import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.quickgestures.view.QuickGesturePopupActivity;
+import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
