@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.utils;
 
+import java.util.List;
+
 import com.leo.appmaster.Constants;
 
 import android.app.Activity;
@@ -115,4 +117,7 @@ public class AppUtil {
         return TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();
     }
 
+    public static void ListToString(List switchList){
+        
+    }
 }
