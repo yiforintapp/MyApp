@@ -126,7 +126,7 @@ public class QuickSwitchManager {
     }
 
     public void MobileData() {
-        if(mConnectivityManager == null){
+        if (mConnectivityManager == null) {
             mConnectivityManager = (ConnectivityManager) mContext
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
         }
@@ -185,7 +185,7 @@ public class QuickSwitchManager {
     }
 
     public void Sound() {
-        if(mSoundManager == null){
+        if (mSoundManager == null) {
             mSoundManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         }
         if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
@@ -198,7 +198,7 @@ public class QuickSwitchManager {
     }
 
     public void Wlan() {
-        if(mWifimanager == null){
+        if (mWifimanager == null) {
             mWifimanager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         }
         if (mWifimanager.isWifiEnabled()) {
@@ -209,7 +209,7 @@ public class QuickSwitchManager {
     }
 
     public void BlueTooth() {
-        if(mBluetoothAdapter == null){
+        if (mBluetoothAdapter == null) {
             mBluetoothAdapter = BluetoothAdapter
                     .getDefaultAdapter();
         }

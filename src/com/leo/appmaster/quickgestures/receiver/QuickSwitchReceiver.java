@@ -15,8 +15,6 @@ public class QuickSwitchReceiver extends BroadcastReceiver {
     private static final String AIRPLANE_MODE = "android.intent.action.AIRPLANE_MODE";
     private static final String NETWORK_CHANGE = "android.intent.action.ANY_DATA_STATE";
     public static final String RINGER_MODE_CHANGED = "android.media.RINGER_MODE_CHANGED";
-    private long firstIn = 0;
-    private long secondIn = 0;
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
