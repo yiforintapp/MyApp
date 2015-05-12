@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;

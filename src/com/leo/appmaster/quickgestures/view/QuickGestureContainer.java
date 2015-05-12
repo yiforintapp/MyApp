@@ -1,14 +1,21 @@
 
 package com.leo.appmaster.quickgestures.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
+import com.leo.appmaster.model.AppInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.utils.BitmapUtils;
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -16,13 +23,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.DragEvent;
@@ -92,7 +100,10 @@ public class QuickGestureContainer extends FrameLayout {
                                 // // mPopWindow.dismiss();
                                 //
                                 // }
-                                showCloseAnimation();
+                                Activity activity = (Activity) QuickGestureContainer.this
+                                        .getContext();
+                                activity.onBackPressed();
+                                // showCloseAnimation();
                             }
 
                         } else {
@@ -237,7 +248,6 @@ public class QuickGestureContainer extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         if (mSnaping)
             return false;
         mGesDetector.onTouchEvent(event);
@@ -528,7 +538,7 @@ public class QuickGestureContainer extends FrameLayout {
         QuickGestureLayout targetLayout = null;
         if (type == GType.DymicLayout) {
             targetLayout = mDymicLayout;
-            fillItem(targetLayout, infos);
+            fillDynamicItem(targetLayout, infos);
         } else if (type == GType.MostUsedLayout) {
             targetLayout = mMostUsedLayout;
             fillItem(targetLayout, infos);
@@ -536,6 +546,49 @@ public class QuickGestureContainer extends FrameLayout {
             targetLayout = mSwitcherLayout;
             setSwitchList((List<QuickSwitcherInfo>) infos);
             fillSwitchItem(targetLayout, infos);
+        }
+    }
+
+    public void fillDynamicItem(QuickGestureLayout targetLayout, List<? extends BaseInfo> itemInfo) {
+        if (targetLayout != null) {
+            targetLayout.removeAllViews();
+            GestureItemView tv = null;
+            QuickGestureLayout.LayoutParams lp = null;
+            BaseInfo info = null;
+            int iconSize = targetLayout.getIconSize();
+            List<BaseInfo> infos = (List<BaseInfo>) itemInfo;
+            // 快捷手势未读短信提醒
+            boolean isShowMsmTip = AppMasterPreference.getInstance(getContext())
+                    .getSwitchOpenNoReadMessageTip();
+            if (isShowMsmTip) {
+                BaseInfo item = new BaseInfo();
+                item.icon = getContext().getResources().getDrawable(R.drawable.add_mode_icon);
+                item.label = getContext().getResources()
+                        .getString(R.string.privacy_contact_message);
+                item.eventNumber = 3;
+                infos.add(0, item);
+            }
+            for (int i = 0; i < infos.size(); i++) {
+                if (i >= 9) {
+                    break;
+                }
+                tv = new GestureItemView(getContext());
+                lp = new QuickGestureLayout.LayoutParams(
+                        targetLayout.getItemSize(), targetLayout.getItemSize());
+                lp.position = i;
+                tv.setGravity(Gravity.CENTER_HORIZONTAL);
+                tv.setLayoutParams(lp);
+                info = infos.get(i);
+                tv.setText(info.label);
+                tv.setTextSize(12);
+                info.icon.setBounds(0, 0, iconSize, iconSize);
+                tv.setCompoundDrawables(null, info.icon, null, null);
+                if (info.eventNumber > 0) {
+                    tv.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+                }
+                tv.setTag(info);
+                targetLayout.addView(tv);
+            }
         }
     }
 
@@ -580,29 +633,29 @@ public class QuickGestureContainer extends FrameLayout {
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
                     // 加速
                     checkSpeedUpStatus(sInfo, iconSize, tv);
-                }else if(sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)){
-                    //情景模式切换
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
+                    // 情景模式切换
                     checkChangeMode(sInfo, iconSize, tv);
-                }else if(sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)){
-                    //手势设置
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
+                    // 手势设置
                     checkSwitchSet(sInfo, iconSize, tv);
-                }else if(sInfo.iDentiName.equals(QuickSwitchManager.SETTING)){
-                    //系统设置
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
+                    // 系统设置
                     checkSetting(sInfo, iconSize, tv);
-                }else if(sInfo.iDentiName.equals(QuickSwitchManager.GPS)){
-                    //GPS
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
+                    // GPS
                     checkGPS(sInfo, iconSize, tv);
-                }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)){
-                    //飞行模式
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
+                    // 飞行模式
                     checkFlyMode(sInfo, iconSize, tv);
-                }else if(sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)){
-                    //飞行模式
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
+                    // 飞行模式
                     checkRotation(sInfo, iconSize, tv);
-                }else if(sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)){
-                    //移动数据
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+                    // 移动数据
                     checkMobileData(sInfo, iconSize, tv);
-                }else if(sInfo.iDentiName.equals(QuickSwitchManager.HOME)){
-                    //移动数据
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
+                    // 移动数据
                     checkHome(sInfo, iconSize, tv);
                 }
                 if (sInfo.eventNumber > 0) {
@@ -630,10 +683,6 @@ public class QuickGestureContainer extends FrameLayout {
         if (QuickSwitchManager.checkMoblieData()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
-                    null);
-        } else {
-            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
                     null);
         }
     }
@@ -841,7 +890,8 @@ public class QuickGestureContainer extends FrameLayout {
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                FloatWindowHelper.closeQuickGesture(mOrientation);
+                Activity activity = (Activity) QuickGestureContainer.this.getContext();
+                activity.finish();
                 super.onAnimationEnd(animation);
             }
         });
