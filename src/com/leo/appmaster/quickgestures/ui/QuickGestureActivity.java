@@ -8,11 +8,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,10 +41,12 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
+import com.leo.appmaster.quickgestures.view.GestureItemView;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
+import com.leo.appmaster.quickgestures.view.RightGesturePopupWindow;
+import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.BuildProperties;
 
 /**
  * QuickGestureActivity
@@ -333,7 +333,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         }
     }
 
-
     @Override
     public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
         int position = (Integer) arg0.getTag();
@@ -357,6 +356,22 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         } else if (position == 4) {
             mPre.setSwitchOpenNoReadMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
+            if (arg1) {
+                // 查看短信数据库未读短信数量
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int noReadCount = QuickGestureManager
+                                .getNoReadMsg(QuickGestureActivity.this);
+                        if (noReadCount > 0) {
+                            // TODO
+                            /**
+                             * 首次打开，通知 显示短信提示，入口
+                             */
+                        }
+                    }
+                }).start();
+            }
         } else if (position == 5) {
             mPre.setSwitchOpenRecentlyContact(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);

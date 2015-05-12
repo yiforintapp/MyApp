@@ -37,6 +37,7 @@ public class QuickSwitchManager {
     public final static String CRAME = "carme";
     public final static String SOUND = "sound";
     public final static String LIGHT = "light";
+    public final static String MSM_PACKAGE_NAME = "com.android.contacts";
     private Context mContext;
     private static BluetoothAdapter mBluetoothAdapter;
     private WifiManager mWifimanager;

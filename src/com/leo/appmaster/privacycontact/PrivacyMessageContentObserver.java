@@ -24,6 +24,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.NotificationUtil;
 
 @SuppressLint("NewApi")
@@ -62,6 +63,14 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             // else {
             // PrivacyContactManager.getInstance(mContext).updateSysMessage();
             // }
+
+            /*
+             * 快捷手势未读短信提醒
+             */
+            int count = QuickGestureManager.getNoReadMsg(mContext);
+            if (count > 0) {
+                Log.e("##################", "未读短信：" + count);
+            }
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
             ContactBean call = PrivacyContactManager.getInstance(mContext).getLastCall();
             if (call != null) {
@@ -187,6 +196,13 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 }
             } else {
                 PrivacyContactManager.getInstance(mContext).updateSysCallLog();
+            }
+            /*
+             * 快捷手势未读短信提醒
+             */
+            int count = QuickGestureManager.getMissedCallCount(mContext);
+            if (count > 0) {
+                Log.e("##################", "未读通话：" + count);
             }
         } else if (CONTACT_MODEL.equals(mFlag)) {
             // PrivacyContactManager.getInstance(mContext).updateSysContact();
