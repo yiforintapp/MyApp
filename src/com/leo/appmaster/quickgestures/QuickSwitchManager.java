@@ -346,6 +346,17 @@ public class QuickSwitchManager {
         speedUpInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
         speedUpInfo.iDentiName = SPEEDUP;
         mSwitchList.add(speedUpInfo);
+        // 移动数据
+        QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
+        mobileDataInfo.label = mContext.getResources()
+                .getString(R.string.quick_guesture_mobliedata);
+        mobileDataInfo.switchIcon = new Drawable[2];
+        mobileDataInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_data_pre);
+        mobileDataInfo.switchIcon[1] = mContext.getResources().getDrawable(
+                R.drawable.switch_data);
+        mobileDataInfo.iDentiName = MOBILEDATA;
+        mSwitchList.add(mobileDataInfo);
         // GPS
         QuickSwitcherInfo gpsInfo = new QuickSwitcherInfo();
         gpsInfo.label = mContext.getResources().getString(R.string.quick_guesture_gps);
@@ -373,17 +384,6 @@ public class QuickSwitchManager {
                 R.drawable.switch_home);
         homeInfo.iDentiName = HOME;
         mSwitchList.add(homeInfo);
-        // 移动数据
-        QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
-        mobileDataInfo.label = mContext.getResources()
-                .getString(R.string.quick_guesture_mobliedata);
-        mobileDataInfo.switchIcon = new Drawable[2];
-        mobileDataInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_data_pre);
-        mobileDataInfo.switchIcon[1] = mContext.getResources().getDrawable(
-                R.drawable.switch_data);
-        mobileDataInfo.iDentiName = MOBILEDATA;
-        mSwitchList.add(mobileDataInfo);
         // 飞行模式
         QuickSwitcherInfo flyModeInfo = new QuickSwitcherInfo();
         flyModeInfo.label = mContext.getResources().getString(R.string.quick_guesture_flymode);
