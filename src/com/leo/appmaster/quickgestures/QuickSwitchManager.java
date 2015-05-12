@@ -15,13 +15,17 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Service;
+import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothAdapter;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
@@ -30,6 +34,7 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.provider.MediaStore;
@@ -79,6 +84,9 @@ public class QuickSwitchManager {
     public static final int LIGHT_NORMAL = 64;
     public static final int LIGHT_50_PERCENT = 127;
     public static final int LIGHT_100_PERCENT = 255;
+    private RotationObserver mRotationObserver;
+    private BrightObserver mBrightObserver;
+    private GpsObserver mGpsObserver;
     private Vibrator vib;
     private LocationManager locationManager;
     private int isAirplaneMode;
@@ -105,6 +113,16 @@ public class QuickSwitchManager {
         FlyMode();
         Rotation();
         MobileData();
+
+        // 屏幕旋转观察者
+        mRotationObserver = new RotationObserver(new Handler());
+        mRotationObserver.startObserver();
+        // 屏幕亮度观察者
+        mBrightObserver = new BrightObserver(new Handler());
+        mBrightObserver.startObserver();
+        // GPS观察者
+        mGpsObserver = new GpsObserver(new Handler());
+        mGpsObserver.startObserver();
     }
 
     private void MobileData() {
@@ -127,6 +145,7 @@ public class QuickSwitchManager {
         try {
             mRotateState = android.provider.Settings.System.getInt(mContext.getContentResolver(),
                     android.provider.Settings.System.ACCELEROMETER_ROTATION);
+            // 观察屏幕旋转开关
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,8 +167,10 @@ public class QuickSwitchManager {
     }
 
     private void GPS() {
-        locationManager = (LocationManager) mContext
-                .getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager == null) {
+            locationManager = (LocationManager) mContext
+                    .getSystemService(Context.LOCATION_SERVICE);
+        }
         // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
         boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
@@ -192,7 +213,9 @@ public class QuickSwitchManager {
     }
 
     private void LightPower() {
-        mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+        if (mPowerManager == null) {
+            mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+        }
         refreshLightButton();
     }
 
@@ -323,6 +346,24 @@ public class QuickSwitchManager {
         speedUpInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
         speedUpInfo.iDentiName = SPEEDUP;
         mSwitchList.add(speedUpInfo);
+        // GPS
+        QuickSwitcherInfo gpsInfo = new QuickSwitcherInfo();
+        gpsInfo.label = mContext.getResources().getString(R.string.quick_guesture_gps);
+        gpsInfo.switchIcon = new Drawable[2];
+        gpsInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_gps_pre);
+        gpsInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_gps);
+        gpsInfo.iDentiName = GPS;
+        mSwitchList.add(gpsInfo);
+        // 屏幕旋转
+        QuickSwitcherInfo rotationInfo = new QuickSwitcherInfo();
+        rotationInfo.label = mContext.getResources().getString(R.string.quick_guesture_rotation);
+        rotationInfo.switchIcon = new Drawable[2];
+        rotationInfo.switchIcon[0] = mContext.getResources().getDrawable(
+                R.drawable.switch_rotation_pre);
+        rotationInfo.switchIcon[1] = mContext.getResources().getDrawable(
+                R.drawable.switch_rotation);
+        rotationInfo.iDentiName = ROTATION;
+        mSwitchList.add(rotationInfo);
         // Home
         QuickSwitcherInfo homeInfo = new QuickSwitcherInfo();
         homeInfo.label = mContext.getResources()
@@ -343,16 +384,6 @@ public class QuickSwitchManager {
                 R.drawable.switch_data);
         mobileDataInfo.iDentiName = MOBILEDATA;
         mSwitchList.add(mobileDataInfo);
-        // 屏幕旋转
-        QuickSwitcherInfo rotationInfo = new QuickSwitcherInfo();
-        rotationInfo.label = mContext.getResources().getString(R.string.quick_guesture_rotation);
-        rotationInfo.switchIcon = new Drawable[2];
-        rotationInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_rotation_pre);
-        rotationInfo.switchIcon[1] = mContext.getResources().getDrawable(
-                R.drawable.switch_rotation);
-        rotationInfo.iDentiName = ROTATION;
-        mSwitchList.add(rotationInfo);
         // 飞行模式
         QuickSwitcherInfo flyModeInfo = new QuickSwitcherInfo();
         flyModeInfo.label = mContext.getResources().getString(R.string.quick_guesture_flymode);
@@ -363,14 +394,6 @@ public class QuickSwitchManager {
                 R.drawable.switch_flightmode);
         flyModeInfo.iDentiName = FLYMODE;
         mSwitchList.add(flyModeInfo);
-        // GPS
-        QuickSwitcherInfo gpsInfo = new QuickSwitcherInfo();
-        gpsInfo.label = mContext.getResources().getString(R.string.quick_guesture_gps);
-        gpsInfo.switchIcon = new Drawable[2];
-        gpsInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_gps_pre);
-        gpsInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_gps);
-        gpsInfo.iDentiName = GPS;
-        mSwitchList.add(gpsInfo);
         // 手势设置
         QuickSwitcherInfo switchSetInfo = new QuickSwitcherInfo();
         switchSetInfo.label = mContext.getResources().getString(R.string.quick_guesture_switchset);
@@ -713,6 +736,94 @@ public class QuickSwitchManager {
         mContainer.fillSwitchItem(quickGestureLayout, list);
     }
 
+    // 观察屏幕旋转设置变化
+    public class RotationObserver extends ContentObserver {
+        ContentResolver mRotationResolver;
+
+        public RotationObserver(Handler handler) {
+            super(handler);
+            mRotationResolver = mContext.getContentResolver();
+        }
+
+        // 屏幕旋转设置改变时调用
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            // 更新按钮状态
+            LeoLog.d("QuickSwitchManager", " 屏幕旋转设置改变!!");
+            Rotation();
+        }
+
+        public void startObserver() {
+            mRotationResolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.ACCELEROMETER_ROTATION), false,
+                    this);
+        }
+
+        public void stopObserver() {
+            mRotationResolver.unregisterContentObserver(this);
+        }
+    }
+
+    // 观察亮度设置变化
+    private class BrightObserver extends ContentObserver {
+        ContentResolver mBrightResolver;
+
+        public BrightObserver(Handler handler) {
+            super(handler);
+            mBrightResolver = mContext.getContentResolver();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            LightPower();
+        }
+
+        // 注册观察
+        public void startObserver() {
+            mBrightResolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.SCREEN_BRIGHTNESS), false,
+                    this);
+            mBrightResolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.SCREEN_BRIGHTNESS_MODE), false,
+                    this);
+        }
+
+        // 解除观察
+        public void stopObserver() {
+            mBrightResolver.unregisterContentObserver(this);
+        }
+    }
+
+    // 观察GPS设置变化
+    private class GpsObserver extends ContentObserver {
+        ContentResolver mGpsResolver;
+
+        public GpsObserver(Handler handler) {
+            super(handler);
+            mGpsResolver = mContext.getContentResolver();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            GPS();
+        }
+
+        // 注册观察
+        public void startObserver() {
+            mGpsResolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.LOCATION_PROVIDERS_ALLOWED),
+                    false, this);
+        }
+
+        // 解除观察
+        public void stopObserver() {
+            mGpsResolver.unregisterContentObserver(this);
+        }
+    }
+
     public static boolean checkMoblieData() {
         if (isMobileDataOpen) {
             return true;
@@ -768,8 +879,9 @@ public class QuickSwitchManager {
 
     public void goHome() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);
         mContext.startActivity(intent);
     }
+
 }
