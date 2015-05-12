@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Display;
 import android.view.Gravity;
@@ -42,6 +44,7 @@ public class FloatWindowHelper {
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_slide_time_setting_finish_notification";
     public static final int ONTUCH_LEFT_FLAG = -1;
     public static final int ONTUCH_RIGHT_FLAG = 1;
+    public static final String QUICK_GESTURE_MSM_TIP = "quick_gesture_msm_tip";
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,
             mLeftCenterCenterView;
     private static RelativeLayout mMiuiTipRl;
@@ -53,6 +56,11 @@ public class FloatWindowHelper {
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
 
+    public static RightGesturePopupWindow mRightPopup;
+    public static boolean mPopWindowShowing;
+    private static RightGesturePopupWindow sRightPopup, sLeftPopup;
+    private static QuickGestureContainer mRightGesture, mLeftGesture;
+    private static LayoutParams mRightGestureParams, mLeftGestureParams;
     public static boolean mGestureShowing = false;
 
     public static boolean mEditQuickAreaFlag = false;
@@ -91,6 +99,91 @@ public class FloatWindowHelper {
     private static float mRightTopHeight = 300;
     // 距离底部的距离
     private static float mMarginBottom = 200;
+    private static final int LEFT_BOTTOM_FLAG = 1;
+    private static final int LEFT_CENTER_FLAG = 2;
+    private static final int LEFT_TOP_FLAG = 3;
+    private static final int LEFT_CENTER_CENTER_FLAG = 4;
+    private static final int RIGHT_BOTTOM_FLAG = -1;
+    private static final int RIGHT_CENTER_FLAG = -2;
+    private static final int RIGHT_CENTER_CENTER_FLAG = -3;
+    private static final int RIGHT_TOP_FLAG = -4;
+
+    // TODO
+    private void slidRemoveArea(int flag) {
+        if (LEFT_BOTTOM_FLAG == flag) {
+
+        } else if (LEFT_CENTER_FLAG == flag) {
+
+        } else if (LEFT_TOP_FLAG == flag) {
+
+        } else if (LEFT_CENTER_CENTER_FLAG == flag) {
+
+        } else if (RIGHT_BOTTOM_FLAG == flag) {
+
+        } else if (RIGHT_CENTER_FLAG == flag) {
+
+        } else if (RIGHT_CENTER_CENTER_FLAG == flag) {
+
+        } else if (RIGHT_TOP_FLAG == flag) {
+
+        }
+    }
+
+    public static void initFloatWindwo(final Context mContext, int value, View view,
+            LayoutParams layoutParams, int flag) {
+        final WindowManager windowManager = getWindowManager(mContext);
+        if (view == null) {
+            view = new QuickGesturesAreaView(mContext);
+            view.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_OUTSIDE:
+                            break;
+                        case MotionEvent.ACTION_DOWN:
+                            startX = event.getRawX();
+                            startY = event.getRawY();
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            float moveX = Math.abs(startX - event.getRawX());
+                            float moveY = Math.abs(startY - event.getRawY());
+                            if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.width / 4)
+                                    && !isMoveIng) {
+                                isMoveIng = true;
+                                onTouchAreaShowQuick(-1, mLeftBottomView);
+                                // removeSwipWindow(mContext, 1);
+                                deleteLeftAllFloatWindow(mContext);
+                            }
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            isMoveIng = false;
+                            if (Math.abs(startX - event.getRawX()) < 5
+                                    || Math.abs(startY - event.getRawY()) < 5) {
+                                removeSwipWindow(mContext, 1);
+                            }
+                            break;
+                    }
+                    return false;
+                }
+            });
+
+            if (layoutParams == null) {
+                int width = windowManager.getDefaultDisplay().getWidth();
+                int height = windowManager.getDefaultDisplay().getHeight();
+                layoutParams = new LayoutParams();
+                layoutParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
+                layoutParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
+                layoutParams.x = -(width / 2);
+                layoutParams.y = (height / 2) - value;
+
+                layoutParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                layoutParams.format = PixelFormat.RGBA_8888;
+                layoutParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
+            }
+            windowManager.addView(view, layoutParams);
+        }
+    }
 
     // 左下
     /**
@@ -587,49 +680,49 @@ public class FloatWindowHelper {
      */
     public static void removeSwipWindow(Context context, int flag) {
         WindowManager windowManager = getWindowManager(context);
-        if (flag == 1) {
+        if (LEFT_BOTTOM_FLAG == flag) {
             // 左下
             if (mLeftBottomView != null) {
                 windowManager.removeView(mLeftBottomView);
                 mLeftBottomView = null;
             }
-        } else if (flag == 2) {
+        } else if (LEFT_CENTER_FLAG == flag) {
             // 左中
             if (mLeftCenterView != null) {
                 windowManager.removeView(mLeftCenterView);
                 mLeftCenterView = null;
             }
-        } else if (flag == 3) {
+        } else if (LEFT_TOP_FLAG == flag) {
             // 左上
             if (mLeftTopView != null) {
                 windowManager.removeView(mLeftTopView);
                 mLeftTopView = null;
             }
-        } else if (flag == 4) {
+        } else if (LEFT_CENTER_CENTER_FLAG == flag) {
             // 左侧中部
             if (mLeftCenterCenterView != null) {
                 windowManager.removeView(mLeftCenterCenterView);
                 mLeftCenterCenterView = null;
             }
-        } else if (flag == -1) {
+        } else if (RIGHT_BOTTOM_FLAG == flag) {
             // 右下
             if (mRightBottomView != null) {
                 windowManager.removeView(mRightBottomView);
                 mRightBottomView = null;
             }
-        } else if (flag == -2) {
+        } else if (RIGHT_CENTER_FLAG == flag) {
             // 右中
             if (mRightCenterView != null) {
                 windowManager.removeView(mRightCenterView);
                 mRightCenterView = null;
             }
-        } else if (flag == -3) {
+        } else if (RIGHT_CENTER_CENTER_FLAG == flag) {
             // 右上
             if (mRightTopView != null) {
                 windowManager.removeView(mRightTopView);
                 mRightTopView = null;
             }
-        } else if (flag == -4) {
+        } else if (RIGHT_TOP_FLAG == flag) {
             // 右侧中部
             if (mRightCenterCenterView != null) {
                 windowManager.removeView(mRightCenterCenterView);
@@ -987,88 +1080,11 @@ public class FloatWindowHelper {
 
     private static void onTouchAreaShowQuick(int flag, View view) {
         if (flag == -1) {
-            // 左边划出
-            // if (sLeftPopup == null) {
-            // View contentView =
-            // LayoutInflater.from(view.getContext()).inflate(
-            // R.layout.pop_quick_gesture_left, null);
-            // WindowManager windowManager =
-            // getWindowManager(view.getContext());
-            // int width = windowManager.getDefaultDisplay().getWidth();
-            // int height = windowManager.getDefaultDisplay().getHeight()
-            // - DipPixelUtil.dip2px(view.getContext(), 25);
-            // sLeftPopup = new RightGesturePopupWindow(contentView, width,
-            // height, true);
-            // sLeftPopup.setFocusable(true);
-            // sLeftPopup.setOutsideTouchable(false);
-            // ColorDrawable dw = new ColorDrawable(Color.argb(230, 0, 0, 0));
-            // sLeftPopup.setBackgroundDrawable(dw);
-            // sLeftPopup.setOnDismissListener(new OnDismissListener() {
-            // @Override
-            // public void onDismiss() {
-            // mGestureShowing = false;
-            // }
-            // });
-            // //
-            // mLeftPopup.setAnimationStyle(R.style.left_gesture_popup_animation);
-            // sLeftPopup.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-            // }
-            // mGestureShowing = true;
-            // int[] location = new int[2];
-            // view.getLocationOnScreen(location);
-            // sLeftPopup.showAtLocation(view, Gravity.NO_GRAVITY, 0,
-            // -sLeftPopup.getHeight());
-            // View contentView = sLeftPopup.getContentView();
-            // AnimatorSet set = new AnimatorSet();
-            // set.setDuration(1000);
-            // Animator animationx = ObjectAnimator.ofFloat(contentView,
-            // "scaleX", 0.0f, 1.05f,
-            // 1.0f);
-            // Animator animationy = ObjectAnimator.ofFloat(contentView,
-            // "scaleY", 0.0f, 1.05f,
-            // 1.0f);
-            // set.playTogether(animationx, animationy);
-            // set.start();
-
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             AppMasterApplication.getInstance().startActivity(intent);
-
         } else if (flag == 1) {
-            // 右边划出
-
-            // if (sRightPopup == null) {
-            // View contentView =
-            // LayoutInflater.from(view.getContext()).inflate(
-            // R.layout.pop_quick_gesture_left, null);
-            // WindowManager windowManager =
-            // getWindowManager(view.getContext());
-            // int width = windowManager.getDefaultDisplay().getWidth();
-            // int height = windowManager.getDefaultDisplay().getHeight()
-            // - DipPixelUtil.dip2px(view.getContext(), 25);
-            // sRightPopup = new RightGesturePopupWindow(contentView, width,
-            // height, true);
-            // sRightPopup.setFocusable(true);
-            // sRightPopup.setOutsideTouchable(false);
-            // ColorDrawable dw = new ColorDrawable(Color.argb(200, 255, 255,
-            // 255));
-            // sRightPopup.setBackgroundDrawable(dw);
-            // sRightPopup.setOnDismissListener(new OnDismissListener() {
-            // @Override
-            // public void onDismiss() {
-            // mGestureShowing = false;
-            // }
-            // });
-            // sRightPopup.setAnimationStyle(R.style.right_gesture_popup_animation);
-            // sRightPopup.setWindowLayoutType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-            // }
-            // mGestureShowing = true;
-            // int[] location = new int[2];
-            // view.getLocationOnScreen(location);
-            // sRightPopup.showAtLocation(view, Gravity.NO_GRAVITY, 0,
-            // -sRightPopup.getHeight());
-
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

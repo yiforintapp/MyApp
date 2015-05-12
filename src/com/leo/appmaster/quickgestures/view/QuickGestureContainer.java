@@ -1,9 +1,17 @@
 
 package com.leo.appmaster.quickgestures.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
+import com.leo.appmaster.model.AppInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
@@ -17,10 +25,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.DragEvent;
@@ -90,7 +100,10 @@ public class QuickGestureContainer extends FrameLayout {
                                 // // mPopWindow.dismiss();
                                 //
                                 // }
-                                showCloseAnimation();
+                                Activity activity = (Activity) QuickGestureContainer.this
+                                        .getContext();
+                                activity.onBackPressed();
+                                // showCloseAnimation();
                             }
 
                         } else {
@@ -235,7 +248,6 @@ public class QuickGestureContainer extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         if (mSnaping)
             return false;
         mGesDetector.onTouchEvent(event);
@@ -526,7 +538,7 @@ public class QuickGestureContainer extends FrameLayout {
         QuickGestureLayout targetLayout = null;
         if (type == GType.DymicLayout) {
             targetLayout = mDymicLayout;
-            fillItem(targetLayout, infos);
+            fillDynamicItem(targetLayout, infos);
         } else if (type == GType.MostUsedLayout) {
             targetLayout = mMostUsedLayout;
             fillItem(targetLayout, infos);
@@ -534,6 +546,49 @@ public class QuickGestureContainer extends FrameLayout {
             targetLayout = mSwitcherLayout;
             setSwitchList((List<QuickSwitcherInfo>) infos);
             fillSwitchItem(targetLayout, infos);
+        }
+    }
+
+    public void fillDynamicItem(QuickGestureLayout targetLayout, List<? extends BaseInfo> itemInfo) {
+        if (targetLayout != null) {
+            targetLayout.removeAllViews();
+            GestureItemView tv = null;
+            QuickGestureLayout.LayoutParams lp = null;
+            BaseInfo info = null;
+            int iconSize = targetLayout.getIconSize();
+            List<BaseInfo> infos = (List<BaseInfo>) itemInfo;
+            // 快捷手势未读短信提醒
+            boolean isShowMsmTip = AppMasterPreference.getInstance(getContext())
+                    .getSwitchOpenNoReadMessageTip();
+            if (isShowMsmTip) {
+                BaseInfo item = new BaseInfo();
+                item.icon = getContext().getResources().getDrawable(R.drawable.add_mode_icon);
+                item.label = getContext().getResources()
+                        .getString(R.string.privacy_contact_message);
+                item.eventNumber = 3;
+                infos.add(0, item);
+            }
+            for (int i = 0; i < infos.size(); i++) {
+                if (i >= 9) {
+                    break;
+                }
+                tv = new GestureItemView(getContext());
+                lp = new QuickGestureLayout.LayoutParams(
+                        targetLayout.getItemSize(), targetLayout.getItemSize());
+                lp.position = i;
+                tv.setGravity(Gravity.CENTER_HORIZONTAL);
+                tv.setLayoutParams(lp);
+                info = infos.get(i);
+                tv.setText(info.label);
+                tv.setTextSize(12);
+                info.icon.setBounds(0, 0, iconSize, iconSize);
+                tv.setCompoundDrawables(null, info.icon, null, null);
+                if (info.eventNumber > 0) {
+                    tv.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+                }
+                tv.setTag(info);
+                targetLayout.addView(tv);
+            }
         }
     }
 
@@ -628,10 +683,6 @@ public class QuickGestureContainer extends FrameLayout {
         if (QuickSwitchManager.checkMoblieData()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
-                    null);
-        } else {
-            sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
                     null);
         }
     }

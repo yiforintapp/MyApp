@@ -52,6 +52,7 @@ public class QuickSwitchManager {
     public final static String CRAME = "carme";
     public final static String SOUND = "sound";
     public final static String LIGHT = "light";
+    public final static String MSM_PACKAGE_NAME = "com.android.contacts";
     public final static String SPEEDUP = "speedup";
     public final static String CHANGEMODE = "changemode";
     public final static String SWITCHSET = "switchset";
