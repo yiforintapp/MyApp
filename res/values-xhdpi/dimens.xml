@@ -134,7 +134,7 @@
 
     <!-- guide pages begin -->
     <dimen name="guide_page_image_margin_top">0dp</dimen>
-    <dimen name="guide_page_image_height">382dp</dimen>
+    <dimen name="guide_page_image_height">342dp</dimen>
     <dimen name="guide_page_title_font_size">22dp</dimen>
     <dimen name="guide_page_content_font_size">12dp</dimen>
     <dimen name="guide_page_indicator_margin_buttom">30dp</dimen>

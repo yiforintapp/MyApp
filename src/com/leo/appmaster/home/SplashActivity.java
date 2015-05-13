@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.NinePatch;
+import android.graphics.Point;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,7 +25,9 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.EdgeEffectCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -318,6 +321,14 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
 
     /* add for Guide Screen begin */
     private void showGuide() {
+        
+        Display display = getWindowManager().getDefaultDisplay(); //Activity#getWindowManager()
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        Log.i("hasFocus", width +" "+ height);
+        
         mPageColors[0] = getResources().getColor(R.color.guide_page1_background_color);
         mPageColors[1] = getResources().getColor(R.color.guide_page2_background_color);
         mPageColors[2] = getResources().getColor(R.color.guide_page3_background_color);
