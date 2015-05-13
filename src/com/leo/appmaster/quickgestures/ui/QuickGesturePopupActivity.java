@@ -7,7 +7,6 @@ import java.util.List;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -20,7 +19,10 @@ import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 import com.leo.appmaster.utils.LeoLog;
 
-public class QuickGesturePopupActivity extends Activity {
+import android.view.View.OnSystemUiVisibilityChangeListener;
+
+public class QuickGesturePopupActivity extends Activity implements
+        OnSystemUiVisibilityChangeListener {
 
     private static int switchNum;
     private QuickGestureContainer mContainer;
@@ -34,13 +36,16 @@ public class QuickGesturePopupActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture_left);
 
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        decorView.setSystemUiVisibility(uiOptions);
+        // Window window = getWindow();
+        // WindowManager.LayoutParams params = window.getAttributes();
+        // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        // window.setAttributes(params);
 
         mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
-        mSpSwitch = AppMasterPreference.getInstance(this);
+        // mContainer.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        mContainer.setOnSystemUiVisibilityChangeListener(this);
 
+        mSpSwitch = AppMasterPreference.getInstance(this);
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
 
         if (mSwitchList == null) {
@@ -68,7 +73,14 @@ public class QuickGesturePopupActivity extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        LeoLog.e("xxxx", "onPause");
+        super.onPause();
+    }
+
+    @Override
     protected void onStop() {
+        LeoLog.e("xxxx", "onStop");
         FloatWindowHelper.mGestureShowing = false;
         // 去除系统短信未读提示
         if (FloatWindowHelper.isShowSysNoReadMessage) {
@@ -110,6 +122,12 @@ public class QuickGesturePopupActivity extends Activity {
         }
 
         // super.onBackPressed();
+    }
+
+    @Override
+    public void onSystemUiVisibilityChange(int visibility) {
+        LeoLog.e("xxxx", "visibility = " + visibility);
+
     }
 
 }

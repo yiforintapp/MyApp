@@ -117,7 +117,7 @@ public class TaskChangeHandler {
             mLastRuningActivity = activity;
 
             // remocde app launch recoder
-            QuickGestureManager.getInstance(mContext).recodeAppLaunch(mLastRunningPkg);
+            QuickGestureManager.getInstance(mContext).recordAppLaunch(mLastRunningPkg);
 
             // For android 5.0, download package changed
             if (pkg.equals(DOWNLAOD_PKG_21)) {
