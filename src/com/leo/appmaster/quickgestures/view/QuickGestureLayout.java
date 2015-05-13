@@ -420,7 +420,7 @@ public class QuickGestureLayout extends ViewGroup {
         fromLP.position = to;
 
     }
-
+    
     public boolean isReordering() {
         return mRecodering;
     }
@@ -441,6 +441,10 @@ public class QuickGestureLayout extends ViewGroup {
         QuickGestureLayout.LayoutParams hitLP;
         for (int i = 0; i < getChildCount(); i++) {
             hitView = (GestureItemView) getChildAt(i);
+            hitView.setLeft((int) (hitView.getLeft() +
+                    hitView.getTranslationX()));
+            hitView.setTop((int) (hitView.getTop() +
+                    hitView.getTranslationY()));
             hitView.setTranslationX(0);
             hitView.setTranslationY(0);
 
@@ -494,11 +498,23 @@ public class QuickGestureLayout extends ViewGroup {
                     }
                 }
 
-                for (GestureItemView gestureItemView : hitViews) {
-                    gestureItemView.setTranslationX(0);
-                    gestureItemView.setTranslationY(0);
+                if (mAnimCanceled) {
+                    for (GestureItemView gestureItemView : hitViews) {
+                        gestureItemView.setLeft((int) (gestureItemView.getLeft() + gestureItemView
+                                .getTranslationX()));
+                        gestureItemView.setTop((int) (gestureItemView.getTop() + gestureItemView
+                                .getTranslationY()));
+                        gestureItemView.setTranslationX(0);
+                        gestureItemView.setTranslationY(0);
+                    }
+                } else {
+                    for (GestureItemView gestureItemView : hitViews) {
+                        gestureItemView.setTranslationX(0);
+                        gestureItemView.setTranslationY(0);
+                    }
+
+                    requestLayout();
                 }
-                requestLayout();
             }
         });
         mReorderAnimator.start();
