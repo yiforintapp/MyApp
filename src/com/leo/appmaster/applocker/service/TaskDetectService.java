@@ -21,6 +21,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
@@ -403,6 +404,11 @@ public class TaskDetectService extends Service {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    // 屏幕改变
+                    if (Utilities.isScreenChange(getApplicationContext())) {
+                        Log.e("#############", "发生改变");
+                        FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                    }
                     int value = AppMasterPreference.getInstance(getApplicationContext())
                             .getQuickGestureDialogSeekBarValue();
                     if (!FloatWindowHelper.mGestureShowing) {
@@ -422,32 +428,20 @@ public class TaskDetectService extends Service {
                                     || FloatWindowHelper.mEditQuickAreaFlag) {
                                 FloatWindowHelper.createFloatWindow(getApplicationContext(), value);
                             } else {
-                                removeAllFloatWindow();
+                                FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                             }
                         } else if (isJustHome) {
                             boolean isHomeFlag = Utilities.isHome(getApplicationContext());
                             if (isHomeFlag) {
                                 FloatWindowHelper.createFloatWindow(getApplicationContext(), value);
                             } else {
-                                removeAllFloatWindow();
+                                FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                             }
                         }
                     }
                 }
             });
         }
-    }
-
-    // 移除所有悬浮窗
-    private void removeAllFloatWindow() {
-        FloatWindowHelper.removeSwipWindow(getApplicationContext(), 1);
-        FloatWindowHelper.removeSwipWindow(getApplicationContext(), 2);
-        FloatWindowHelper.removeSwipWindow(getApplicationContext(), 3);
-        FloatWindowHelper.removeSwipWindow(getApplicationContext(), 4);
-        FloatWindowHelper.removeSwipWindow(getApplicationContext(), -1);
-        FloatWindowHelper.removeSwipWindow(getApplicationContext(), -2);
-        FloatWindowHelper.removeSwipWindow(getApplicationContext(), -3);
-        FloatWindowHelper.removeSwipWindow(getApplicationContext(), -4);
     }
 
     // 当前是否运行免打扰应用
