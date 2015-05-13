@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/locker_theme_guide_width"
-    android:layout_height="@dimen/locker_theme_guide_height" >
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/lockerThemeGuideLT"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/locker_theme_guide_height" 
         android:background="#159fff"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
@@ -16,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/locker_theme_guide_guideTitleTV_marginTop"
-            android:text="@string/locker_theme_guide"
+            android:text="This theme will be applied to your lock screen!"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/locker_theme_guide_guideTitleTV_textsize" />
@@ -32,8 +34,7 @@
     <RelativeLayout
         android:id="@+id/lockerThemeGuideRT"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_below="@id/lockerThemeGuideLT"
+        android:layout_height="48dp"
         android:background="@color/white"
         android:gravity="center" >
 
@@ -50,4 +51,4 @@
             android:textSize="@dimen/locker_theme_guide_tv_save_textsize" />
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

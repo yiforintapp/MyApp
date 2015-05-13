@@ -100,12 +100,12 @@
     <integer name="help_setting_icon_bottom">25</integer>
 
     <dimen name="help_icon_width_parent">50dp</dimen>
-    <dimen name="locker_theme_guide_width">317dp</dimen>
-    <dimen name="locker_theme_guide_height">428dp</dimen>
+    <dimen name="locker_theme_guide_width">267dp</dimen>
+    <dimen name="locker_theme_guide_height">320dp</dimen>
     <dimen name="locker_theme_guide_tv_save_width">300dp</dimen>
     <dimen name="locker_theme_guide_tv_save_height">47dp</dimen>
-    <dimen name="locker_theme_guide_guideImageIV_marginTop">30dp</dimen>
-    <dimen name="locker_theme_guide_guideTitleTV_marginTop">41dp</dimen>
+    <dimen name="locker_theme_guide_guideImageIV_marginTop">20dp</dimen>
+    <dimen name="locker_theme_guide_guideTitleTV_marginTop">26dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_textsize">16dp</dimen>
     <dimen name="locker_theme_guide_tv_save_textsize">22sp</dimen>
     <dimen name="memery_dialog_button_width">100dp</dimen>
