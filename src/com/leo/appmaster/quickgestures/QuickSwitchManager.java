@@ -279,6 +279,7 @@ public class QuickSwitchManager {
     }
 
     public List<QuickSwitcherInfo> getSwitchList(int switchNum) {
+        String mSwitchListString;
         List<QuickSwitcherInfo> mSwitchList = new ArrayList<QuickSwitcherInfo>();
         // 蓝牙开关
         QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
@@ -288,6 +289,7 @@ public class QuickSwitchManager {
                 R.drawable.switch_bluetooth_pre);
         lanyaInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_bluetooth);
         lanyaInfo.iDentiName = BLUETOOTH;
+        lanyaInfo.position = 0;
         mSwitchList.add(lanyaInfo);
         // 手电筒
         QuickSwitcherInfo flashlightInfo = new QuickSwitcherInfo();
@@ -299,6 +301,7 @@ public class QuickSwitchManager {
         flashlightInfo.switchIcon[1] = mContext.getResources().getDrawable(
                 R.drawable.switch_flashlight);
         flashlightInfo.iDentiName = FLASHLIGHT;
+        flashlightInfo.position = 1;
         mSwitchList.add(flashlightInfo);
         // WLAN
         QuickSwitcherInfo wlanInfo = new QuickSwitcherInfo();
@@ -307,6 +310,7 @@ public class QuickSwitchManager {
         wlanInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_wifi_pre);
         wlanInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_wifi);
         wlanInfo.iDentiName = WLAN;
+        wlanInfo.position = 2;
         mSwitchList.add(wlanInfo);
         // 相机
         QuickSwitcherInfo carmeInfo = new QuickSwitcherInfo();
@@ -314,6 +318,7 @@ public class QuickSwitchManager {
         carmeInfo.switchIcon = new Drawable[1];
         carmeInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_camera);
         carmeInfo.iDentiName = CRAME;
+        carmeInfo.position = 3;
         mSwitchList.add(carmeInfo);
         // 声音
         QuickSwitcherInfo soundInfo = new QuickSwitcherInfo();
@@ -325,6 +330,7 @@ public class QuickSwitchManager {
         soundInfo.switchIcon[2] = mContext.getResources().getDrawable(
                 R.drawable.switch_volume_vibration);
         soundInfo.iDentiName = SOUND;
+        soundInfo.position = 4;
         mSwitchList.add(soundInfo);
         // 亮度
         QuickSwitcherInfo lightInfo = new QuickSwitcherInfo();
@@ -339,6 +345,7 @@ public class QuickSwitchManager {
         lightInfo.switchIcon[3] = mContext.getResources().getDrawable(
                 R.drawable.switch_brightness_max);
         lightInfo.iDentiName = LIGHT;
+        lightInfo.position = 5;
         mSwitchList.add(lightInfo);
         // 加速
         QuickSwitcherInfo speedUpInfo = new QuickSwitcherInfo();
@@ -346,6 +353,7 @@ public class QuickSwitchManager {
         speedUpInfo.switchIcon = new Drawable[1];
         speedUpInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
         speedUpInfo.iDentiName = SPEEDUP;
+        speedUpInfo.position = 6;
         mSwitchList.add(speedUpInfo);
         // 手势设置
         QuickSwitcherInfo switchSetInfo = new QuickSwitcherInfo();
@@ -354,6 +362,7 @@ public class QuickSwitchManager {
         switchSetInfo.switchIcon[0] = mContext.getResources().getDrawable(
                 R.drawable.switch_gestureset_pre);
         switchSetInfo.iDentiName = SWITCHSET;
+        switchSetInfo.position = 7;
         mSwitchList.add(switchSetInfo);
         // 情景模式切换
         QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
@@ -362,6 +371,7 @@ public class QuickSwitchManager {
         changeModeInfo.switchIcon = new Drawable[1];
         changeModeInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_mode);
         changeModeInfo.iDentiName = CHANGEMODE;
+        changeModeInfo.position = 8;
         mSwitchList.add(changeModeInfo);
         // 移动数据
         QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
@@ -373,6 +383,7 @@ public class QuickSwitchManager {
         mobileDataInfo.switchIcon[1] = mContext.getResources().getDrawable(
                 R.drawable.switch_data);
         mobileDataInfo.iDentiName = MOBILEDATA;
+        mobileDataInfo.position = 9;
         mSwitchList.add(mobileDataInfo);
         // 系统设置
         QuickSwitcherInfo settingInfo = new QuickSwitcherInfo();
@@ -381,6 +392,7 @@ public class QuickSwitchManager {
         settingInfo.switchIcon[0] = mContext.getResources().getDrawable(
                 R.drawable.switch_gestureset_pre);
         settingInfo.iDentiName = SETTING;
+        settingInfo.position = 10;
         mSwitchList.add(settingInfo);
         // GPS
         QuickSwitcherInfo gpsInfo = new QuickSwitcherInfo();
@@ -389,6 +401,7 @@ public class QuickSwitchManager {
         gpsInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_gps_pre);
         gpsInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_gps);
         gpsInfo.iDentiName = GPS;
+        gpsInfo.position = 11;
         mSwitchList.add(gpsInfo);
         // 屏幕旋转
         QuickSwitcherInfo rotationInfo = new QuickSwitcherInfo();
@@ -399,6 +412,7 @@ public class QuickSwitchManager {
         rotationInfo.switchIcon[1] = mContext.getResources().getDrawable(
                 R.drawable.switch_rotation);
         rotationInfo.iDentiName = ROTATION;
+        rotationInfo.position = 12;
         mSwitchList.add(rotationInfo);
         // Home
         QuickSwitcherInfo homeInfo = new QuickSwitcherInfo();
@@ -408,6 +422,7 @@ public class QuickSwitchManager {
         homeInfo.switchIcon[0] = mContext.getResources().getDrawable(
                 R.drawable.switch_home);
         homeInfo.iDentiName = HOME;
+        homeInfo.position = 13;
         mSwitchList.add(homeInfo);
         // 飞行模式
         QuickSwitcherInfo flyModeInfo = new QuickSwitcherInfo();
@@ -418,6 +433,7 @@ public class QuickSwitchManager {
         flyModeInfo.switchIcon[1] = mContext.getResources().getDrawable(
                 R.drawable.switch_flightmode);
         flyModeInfo.iDentiName = FLYMODE;
+        flyModeInfo.position = 14;
         mSwitchList.add(flyModeInfo);
         return mSwitchList;
     }
