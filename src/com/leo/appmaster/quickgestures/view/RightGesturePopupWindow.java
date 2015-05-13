@@ -33,7 +33,6 @@ public class RightGesturePopupWindow extends PopupWindow {
         fillQg1();
         fillQg2();
         fillQg3();
-        fillQg3();
         
     }
 

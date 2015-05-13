@@ -114,6 +114,10 @@ public class GestureItemView extends TextView {
             }
             case DragEvent.ACTION_DRAG_LOCATION: {
                 LeoLog.i(TAG, "ACTION_DRAG_LOCATION: x = " + event.getX() + "  y = " + event.getY());
+                if ((GestureItemView) event.getLocalState() != this
+                        && !mHolderLayout.isReordering()) {
+                    mHolderLayout.squeezeItems((GestureItemView) event.getLocalState(), this);
+                }
                 break;
             }
             case DragEvent.ACTION_DROP: {
@@ -123,9 +127,9 @@ public class GestureItemView extends TextView {
             }
             case DragEvent.ACTION_DRAG_ENTERED: {
                 LeoLog.i(TAG, "ACTION_DRAG_ENTERED ");
-                if ((GestureItemView) event.getLocalState() != this) {
+                if ((GestureItemView) event.getLocalState() != this
+                        && !mHolderLayout.isReordering()) {
                     mHolderLayout.squeezeItems((GestureItemView) event.getLocalState(), this);
-//                    mHolderLayout.replaceItems((GestureItemView) event.getLocalState(), this);
                 }
                 break;
             }

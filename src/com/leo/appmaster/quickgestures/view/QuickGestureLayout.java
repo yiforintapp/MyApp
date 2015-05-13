@@ -15,15 +15,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +38,12 @@ public class QuickGestureLayout extends ViewGroup {
 
     private Orientation mOrientation = Orientation.Left;
     private AnimatorSet mReorderAnimator;
+    private boolean mRecodering;
     private boolean mAnimCanceled;
 
     private static final int INNER_RING_MAX_COUNT = 4;
     private Context mContext;
-    
+
     public QuickGestureLayout(Context context) {
         this(context, null);
     }
@@ -262,36 +260,46 @@ public class QuickGestureLayout extends ViewGroup {
                         getContext().startActivity(intent);
                     } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
                         QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
-                        //蓝牙
-                        if(sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)){
-                            QuickSwitchManager.getInstance(getContext()).toggleBluetooth(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)){
-                            QuickSwitchManager.getInstance(getContext()).toggleFlashLight(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.WLAN)){
-                            QuickSwitchManager.getInstance(getContext()).toggleWlan(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.CRAME)){
+                        // 蓝牙
+                        if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+                            QuickSwitchManager.getInstance(getContext())
+                                    .toggleBluetooth(mContainer, mContainer.getSwitchList(),
+                                            QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+                            QuickSwitchManager.getInstance(getContext())
+                                    .toggleFlashLight(mContainer, mContainer.getSwitchList(),
+                                            QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
+                            QuickSwitchManager.getInstance(getContext()).toggleWlan(mContainer,
+                                    mContainer.getSwitchList(), QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
                             QuickSwitchManager.getInstance(getContext()).openCrame();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SOUND)){
-                            QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)){
-                            QuickSwitchManager.getInstance(getContext()).toggleLight(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
+                            QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,
+                                    mContainer.getSwitchList(), QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+                            QuickSwitchManager.getInstance(getContext()).toggleLight(mContainer,
+                                    mContainer.getSwitchList(), QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
                             QuickSwitchManager.getInstance(getContext()).speedUp();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
                             QuickSwitchManager.getInstance(getContext()).toggleMode();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
                             QuickSwitchManager.getInstance(getContext()).switchSet();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SETTING)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
                             QuickSwitchManager.getInstance(getContext()).goSetting();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.GPS)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
                             QuickSwitchManager.getInstance(getContext()).toggleGPS();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
                             QuickSwitchManager.getInstance(getContext()).toggleFlyMode();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)){
-                            QuickSwitchManager.getInstance(getContext()).toggleRotation(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)){
-                            QuickSwitchManager.getInstance(getContext()).toggleMobileData(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.HOME)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
+                            QuickSwitchManager.getInstance(getContext()).toggleRotation(mContainer,
+                                    mContainer.getSwitchList(), QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+                            QuickSwitchManager.getInstance(getContext())
+                                    .toggleMobileData(mContainer, mContainer.getSwitchList(),
+                                            QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
                             QuickSwitchManager.getInstance(getContext()).goHome();
                         }
                     }
@@ -413,6 +421,10 @@ public class QuickGestureLayout extends ViewGroup {
 
     }
 
+    public boolean isReordering() {
+        return mRecodering;
+    }
+
     public void squeezeItems(GestureItemView fromView, GestureItemView toView) {
 
         if (mReorderAnimator != null && mReorderAnimator.isRunning()) {
@@ -429,12 +441,8 @@ public class QuickGestureLayout extends ViewGroup {
         QuickGestureLayout.LayoutParams hitLP;
         for (int i = 0; i < getChildCount(); i++) {
             hitView = (GestureItemView) getChildAt(i);
-            // hitView.setLeft((int) (hitView.getLeft() +
-            // hitView.getTranslationX()));
-            // hitView.setTop((int) (hitView.getTop() +
-            // hitView.getTranslationY()));
-            // hitView.setTranslationX(0);
-            // hitView.setTranslationY(0);
+            hitView.setTranslationX(0);
+            hitView.setTranslationY(0);
 
             hitLP = (LayoutParams) hitView.getLayoutParams();
             if (isForward) {
@@ -460,16 +468,19 @@ public class QuickGestureLayout extends ViewGroup {
             @Override
             public void onAnimationStart(Animator animation) {
                 mAnimCanceled = false;
+                mRecodering = true;
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 mAnimCanceled = true;
+                mRecodering = false;
                 super.onAnimationCancel(animation);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                mRecodering = false;
                 int lastPosition = ((QuickGestureLayout.LayoutParams) hitViews[hitViews.length - 1]
                         .getLayoutParams()).position;
                 int nextPosition;
@@ -483,23 +494,11 @@ public class QuickGestureLayout extends ViewGroup {
                     }
                 }
 
-                if (mAnimCanceled) {
-                    for (GestureItemView gestureItemView : hitViews) {
-//                        gestureItemView.setLeft((int) (gestureItemView.getLeft() + gestureItemView
-//                                .getTranslationX()));
-//                        gestureItemView.setTop((int) (gestureItemView.getTop() + gestureItemView
-//                                .getTranslationY()));
-                        gestureItemView.setTranslationX(0);
-                        gestureItemView.setTranslationY(0);
-                    }
-                } else {
-                    for (GestureItemView gestureItemView : hitViews) {
-                        gestureItemView.setTranslationX(0);
-                        gestureItemView.setTranslationY(0);
-                    }
-
-                    requestLayout();
+                for (GestureItemView gestureItemView : hitViews) {
+                    gestureItemView.setTranslationX(0);
+                    gestureItemView.setTranslationY(0);
                 }
+                requestLayout();
             }
         });
         mReorderAnimator.start();
