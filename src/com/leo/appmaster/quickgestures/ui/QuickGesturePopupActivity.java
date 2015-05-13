@@ -14,6 +14,7 @@ import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -40,7 +41,6 @@ public class QuickGesturePopupActivity extends Activity {
         setContentView(R.layout.pop_quick_gesture_left);
         mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
         mSpSwitch = AppMasterPreference.getInstance(this);
-        mSwitchListFromSp = mSpSwitch.getSwitchList();
 
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
 
@@ -49,13 +49,18 @@ public class QuickGesturePopupActivity extends Activity {
 //        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 //        window.setAttributes(params);
 
-        if (mSwitchList == null) {
-            if (mSwitchListFromSp.isEmpty()) {
-                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
-            } else {
-
-            }
-
+        mSwitchListFromSp = mSpSwitch.getSwitchList();
+        switchNum = mSpSwitch.getSwitchListSize();
+        LeoLog.d("testFirstInGet", "mSwitchListFromSp : " + mSwitchListFromSp);
+        if (mSwitchListFromSp.isEmpty()) {
+            mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
+            String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
+                    switchNum);
+            mSpSwitch.setSwitchList(saveToSp);
+            LeoLog.d("testFirstInGet", "saveToSp:" + saveToSp);
+        } else {
+            LeoLog.d("testFirstInGet", "get list from sp");
+            mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
         }
 
         fillQg1();
