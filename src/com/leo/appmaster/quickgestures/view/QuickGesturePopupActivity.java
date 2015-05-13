@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.quickgestures.ui;
+package com.leo.appmaster.quickgestures.view;
 
 import java.util.AbstractList;
 import java.util.List;
@@ -11,7 +11,6 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -22,6 +21,8 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class QuickGesturePopupActivity extends Activity {
 
@@ -36,15 +37,15 @@ public class QuickGesturePopupActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture_left);
-
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        decorView.setSystemUiVisibility(uiOptions);
-
         mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
         mSpSwitch = AppMasterPreference.getInstance(this);
 
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
+
+        Window window = getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        window.setAttributes(params);
 
         mSwitchListFromSp = mSpSwitch.getSwitchList();
         switchNum = mSpSwitch.getSwitchListSize();
@@ -65,8 +66,6 @@ public class QuickGesturePopupActivity extends Activity {
         fillQg3();
 
         mContainer.showOpenAnimation();
-
-        overridePendingTransition(-1, -1);
     }
 
     @Override
@@ -94,14 +93,37 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-
-        if (mContainer.isEditing()) {
-            mContainer.leaveEditMode();
-        } else {
-            mContainer.showCloseAnimation();
-        }
-
+        mContainer.showCloseAnimation();
         // super.onBackPressed();
+    }
+
+    public void showCloseAnimation() {
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(600);
+        Animator animationx = ObjectAnimator.ofFloat(mContainer, "scaleX", 1.0f,
+                1.05f, 0.0f);
+        Animator animationy = ObjectAnimator.ofFloat(mContainer, "scaleY", 1.0f,
+                1.05f, 0.0f);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                QuickGesturePopupActivity.this.finish();
+                super.onAnimationEnd(animation);
+            }
+        });
+        set.playTogether(animationx, animationy);
+        set.start();
+    }
+
+    public void showOpenAnimation() {
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(600);
+        Animator animationx = ObjectAnimator.ofFloat(mContainer, "scaleX", 0.0f, 1.05f,
+                1.0f);
+        Animator animationy = ObjectAnimator.ofFloat(mContainer, "scaleY", 0.0f, 1.05f,
+                1.0f);
+        set.playTogether(animationx, animationy);
+        set.start();
     }
 
 }

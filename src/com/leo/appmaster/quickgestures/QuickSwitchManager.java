@@ -13,6 +13,7 @@ import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
 import com.leo.appmaster.utils.LeoLog;
 
+import android.R.integer;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
@@ -84,6 +85,7 @@ public class QuickSwitchManager {
     private int isAirplaneMode;
     private int mRotateState;
     private ConnectivityManager mConnectivityManager;
+    private Handler mHandler;
 
     public static synchronized QuickSwitchManager getInstance(Context context) {
         if (mInstance == null) {
@@ -98,22 +100,23 @@ public class QuickSwitchManager {
 
         // 打开前判断每一个的状态
         blueTooth();
-        Wlan();
-        Sound();
-        LightPower();
-        GPS();
-        FlyMode();
-        Rotation();
+        wlan();
+        sound();
+        lightPower();
+        gps();
+        flyMode();
+        rotation();
         mobileData();
 
+        mHandler = new Handler();
         // 屏幕旋转观察者
-        mRotationObserver = new RotationObserver(new Handler());
+        mRotationObserver = new RotationObserver(mHandler);
         mRotationObserver.startObserver();
         // 屏幕亮度观察者
-        mBrightObserver = new BrightObserver(new Handler());
+        mBrightObserver = new BrightObserver(mHandler);
         mBrightObserver.startObserver();
         // GPS观察者
-        mGpsObserver = new GpsObserver(new Handler());
+        mGpsObserver = new GpsObserver(mHandler);
         mGpsObserver.startObserver();
     }
 
@@ -135,7 +138,7 @@ public class QuickSwitchManager {
         }
     }
 
-    private void Rotation() {
+    private void rotation() {
         try {
             mRotateState = android.provider.Settings.System.getInt(mContext.getContentResolver(),
                     android.provider.Settings.System.ACCELEROMETER_ROTATION);
@@ -150,7 +153,7 @@ public class QuickSwitchManager {
         }
     }
 
-    public void FlyMode() {
+    public void flyMode() {
         isAirplaneMode = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.AIRPLANE_MODE_ON, 0);
         if (isAirplaneMode == 1) {
@@ -160,7 +163,7 @@ public class QuickSwitchManager {
         }
     }
 
-    private void GPS() {
+    private void gps() {
         if (locationManager == null) {
             locationManager = (LocationManager) mContext
                     .getSystemService(Context.LOCATION_SERVICE);
@@ -176,7 +179,7 @@ public class QuickSwitchManager {
         }
     }
 
-    public void Sound() {
+    public void sound() {
         if (mSoundManager == null) {
             mSoundManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         }
@@ -189,7 +192,7 @@ public class QuickSwitchManager {
         }
     }
 
-    public void Wlan() {
+    public void wlan() {
         if (mWifimanager == null) {
             mWifimanager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         }
@@ -212,7 +215,7 @@ public class QuickSwitchManager {
         }
     }
 
-    private void LightPower() {
+    private void lightPower() {
         if (mPowerManager == null) {
             mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
         }
@@ -269,160 +272,232 @@ public class QuickSwitchManager {
         return LIGHT_ERR;
     }
 
+    public Drawable[] getIconFromName(String IdentiName) {
+        Drawable[] iCons = null;
+        if (IdentiName.equals(BLUETOOTH)) {
+            iCons = new Drawable[2];
+            iCons[0] = mContext.getResources().getDrawable(
+                    R.drawable.switch_bluetooth_pre);
+            iCons[1] = mContext.getResources().getDrawable(R.drawable.switch_bluetooth);
+        } else if (IdentiName.equals(FLASHLIGHT)) {
+            iCons = new Drawable[2];
+            iCons[0] = mContext.getResources().getDrawable(
+                    R.drawable.switch_flashlight_pre);
+            iCons[1] = mContext.getResources().getDrawable(
+                    R.drawable.switch_flashlight);
+        } else if (IdentiName.equals(WLAN)) {
+            iCons = new Drawable[2];
+            iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_wifi_pre);
+            iCons[1] = mContext.getResources().getDrawable(R.drawable.switch_wifi);
+        } else if (IdentiName.equals(CRAME)) {
+            iCons = new Drawable[1];
+            iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_camera);
+        } else if (IdentiName.equals(SOUND)) {
+            iCons = new Drawable[3];
+            iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_volume_min);
+            iCons[1] = mContext.getResources()
+                    .getDrawable(R.drawable.switch_volume_mute);
+            iCons[2] = mContext.getResources().getDrawable(
+                    R.drawable.switch_volume_vibration);
+        } else if (IdentiName.equals(LIGHT)) {
+            iCons = new Drawable[4];
+            iCons[0] = mContext.getResources().getDrawable(
+                    R.drawable.switch_brightness_automatic);
+            iCons[1] = mContext.getResources()
+                    .getDrawable(R.drawable.switch_brightness_min);
+            iCons[2] = mContext.getResources().getDrawable(
+                    R.drawable.switch_brightness_half);
+            iCons[3] = mContext.getResources().getDrawable(
+                    R.drawable.switch_brightness_max);
+        } else if (IdentiName.equals(SPEEDUP)) {
+            iCons = new Drawable[1];
+            iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
+        } else if (IdentiName.equals(SWITCHSET)) {
+            iCons = new Drawable[1];
+            iCons[0] = mContext.getResources().getDrawable(
+                    R.drawable.switch_gestureset_pre);
+        } else if (IdentiName.equals(CHANGEMODE)) {
+            iCons = new Drawable[1];
+            iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_mode);
+        } else if (IdentiName.equals(MOBILEDATA)) {
+            iCons = new Drawable[2];
+            iCons[0] = mContext.getResources().getDrawable(
+                    R.drawable.switch_data_pre);
+            iCons[1] = mContext.getResources().getDrawable(
+                    R.drawable.switch_data);
+        } else if (IdentiName.equals(SETTING)) {
+            iCons = new Drawable[1];
+            iCons[0] = mContext.getResources().getDrawable(
+                    R.drawable.switch_gestureset_pre);
+        } else if (IdentiName.equals(GPS)) {
+            iCons = new Drawable[2];
+            iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_gps_pre);
+            iCons[1] = mContext.getResources().getDrawable(R.drawable.switch_gps);
+        } else if (IdentiName.equals(ROTATION)) {
+            iCons = new Drawable[2];
+            iCons[0] = mContext.getResources().getDrawable(
+                    R.drawable.switch_rotation_pre);
+            iCons[1] = mContext.getResources().getDrawable(
+                    R.drawable.switch_rotation);
+        } else if (IdentiName.equals(HOME)) {
+            iCons = new Drawable[1];
+            iCons[0] = mContext.getResources().getDrawable(
+                    R.drawable.switch_home);
+        } else if (IdentiName.equals(FLYMODE)) {
+            iCons = new Drawable[2];
+            iCons[0] = mContext.getResources().getDrawable(
+                    R.drawable.switch_flightmode_pre);
+            iCons[1] = mContext.getResources().getDrawable(
+                    R.drawable.switch_flightmode);
+        }
+        return iCons;
+    }
+
+    public String getLabelFromName(String IdentiName) {
+        String mLabel = "";
+        if (IdentiName.equals(BLUETOOTH)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_bluetooth);
+        } else if (IdentiName.equals(FLASHLIGHT)) {
+            mLabel = mContext.getResources()
+                    .getString(R.string.quick_guesture_flashlight);
+        } else if (IdentiName.equals(WLAN)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_wlan);
+        } else if (IdentiName.equals(CRAME)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_carme);
+        } else if (IdentiName.equals(SOUND)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_sound);
+        } else if (IdentiName.equals(LIGHT)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_light);
+        } else if (IdentiName.equals(SPEEDUP)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_speedup);
+        } else if (IdentiName.equals(SWITCHSET)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_switchset);
+        } else if (IdentiName.equals(CHANGEMODE)) {
+            mLabel = mContext.getResources()
+                    .getString(R.string.quick_guesture_changemode);
+        } else if (IdentiName.equals(MOBILEDATA)) {
+            mLabel = mContext.getResources()
+                    .getString(R.string.quick_guesture_mobliedata);
+        } else if (IdentiName.equals(SETTING)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_setting);
+        } else if (IdentiName.equals(GPS)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_gps);
+        } else if (IdentiName.equals(ROTATION)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_rotation);
+        } else if (IdentiName.equals(HOME)) {
+            mLabel = mContext.getResources()
+                    .getString(R.string.quick_guesture_home);
+        } else if (IdentiName.equals(FLYMODE)) {
+            mLabel = mContext.getResources().getString(R.string.quick_guesture_flymode);
+        }
+        return mLabel;
+    }
+
     public List<QuickSwitcherInfo> getSwitchList(int switchNum) {
         List<QuickSwitcherInfo> mSwitchList = new ArrayList<QuickSwitcherInfo>();
         // 蓝牙开关
         QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
-        lanyaInfo.label = mContext.getResources().getString(R.string.quick_guesture_bluetooth);
-        lanyaInfo.switchIcon = new Drawable[2];
-        lanyaInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_bluetooth_pre);
-        lanyaInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_bluetooth);
         lanyaInfo.iDentiName = BLUETOOTH;
+        lanyaInfo.switchIcon = getIconFromName(BLUETOOTH);
+        lanyaInfo.label = getLabelFromName(BLUETOOTH);
         lanyaInfo.position = 0;
         mSwitchList.add(lanyaInfo);
         // 手电筒
         QuickSwitcherInfo flashlightInfo = new QuickSwitcherInfo();
-        flashlightInfo.label = mContext.getResources()
-                .getString(R.string.quick_guesture_flashlight);
-        flashlightInfo.switchIcon = new Drawable[2];
-        flashlightInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_flashlight_pre);
-        flashlightInfo.switchIcon[1] = mContext.getResources().getDrawable(
-                R.drawable.switch_flashlight);
         flashlightInfo.iDentiName = FLASHLIGHT;
+        flashlightInfo.switchIcon = getIconFromName(FLASHLIGHT);
+        flashlightInfo.label = getLabelFromName(FLASHLIGHT);
         flashlightInfo.position = 1;
         mSwitchList.add(flashlightInfo);
         // WLAN
         QuickSwitcherInfo wlanInfo = new QuickSwitcherInfo();
-        wlanInfo.label = mContext.getResources().getString(R.string.quick_guesture_wlan);
-        wlanInfo.switchIcon = new Drawable[2];
-        wlanInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_wifi_pre);
-        wlanInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_wifi);
         wlanInfo.iDentiName = WLAN;
+        wlanInfo.switchIcon = getIconFromName(WLAN);
+        wlanInfo.label = getLabelFromName(WLAN);
         wlanInfo.position = 2;
         mSwitchList.add(wlanInfo);
         // 相机
         QuickSwitcherInfo carmeInfo = new QuickSwitcherInfo();
-        carmeInfo.label = mContext.getResources().getString(R.string.quick_guesture_carme);
-        carmeInfo.switchIcon = new Drawable[1];
-        carmeInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_camera);
         carmeInfo.iDentiName = CRAME;
+        carmeInfo.switchIcon = getIconFromName(CRAME);
+        carmeInfo.label = getLabelFromName(CRAME);
         carmeInfo.position = 3;
         mSwitchList.add(carmeInfo);
         // 声音
         QuickSwitcherInfo soundInfo = new QuickSwitcherInfo();
-        soundInfo.label = mContext.getResources().getString(R.string.quick_guesture_sound);
-        soundInfo.switchIcon = new Drawable[3];
-        soundInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_volume_min);
-        soundInfo.switchIcon[1] = mContext.getResources()
-                .getDrawable(R.drawable.switch_volume_mute);
-        soundInfo.switchIcon[2] = mContext.getResources().getDrawable(
-                R.drawable.switch_volume_vibration);
         soundInfo.iDentiName = SOUND;
+        soundInfo.switchIcon = getIconFromName(SOUND);
+        soundInfo.label = getLabelFromName(SOUND);
         soundInfo.position = 4;
         mSwitchList.add(soundInfo);
         // 亮度
         QuickSwitcherInfo lightInfo = new QuickSwitcherInfo();
-        lightInfo.label = mContext.getResources().getString(R.string.quick_guesture_light);
-        lightInfo.switchIcon = new Drawable[4];
-        lightInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_brightness_automatic);
-        lightInfo.switchIcon[1] = mContext.getResources()
-                .getDrawable(R.drawable.switch_brightness_min);
-        lightInfo.switchIcon[2] = mContext.getResources().getDrawable(
-                R.drawable.switch_brightness_half);
-        lightInfo.switchIcon[3] = mContext.getResources().getDrawable(
-                R.drawable.switch_brightness_max);
         lightInfo.iDentiName = LIGHT;
+        lightInfo.switchIcon = getIconFromName(LIGHT);
+        lightInfo.label = getLabelFromName(LIGHT);
         lightInfo.position = 5;
         mSwitchList.add(lightInfo);
         // 加速
         QuickSwitcherInfo speedUpInfo = new QuickSwitcherInfo();
-        speedUpInfo.label = mContext.getResources().getString(R.string.quick_guesture_speedup);
-        speedUpInfo.switchIcon = new Drawable[1];
-        speedUpInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
         speedUpInfo.iDentiName = SPEEDUP;
+        speedUpInfo.switchIcon = getIconFromName(SPEEDUP);
+        speedUpInfo.label = getLabelFromName(SPEEDUP);
         speedUpInfo.position = 6;
         mSwitchList.add(speedUpInfo);
         // 手势设置
         QuickSwitcherInfo switchSetInfo = new QuickSwitcherInfo();
-        switchSetInfo.label = mContext.getResources().getString(R.string.quick_guesture_switchset);
-        switchSetInfo.switchIcon = new Drawable[1];
-        switchSetInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_gestureset_pre);
         switchSetInfo.iDentiName = SWITCHSET;
+        switchSetInfo.switchIcon = getIconFromName(SWITCHSET);
+        switchSetInfo.label = getLabelFromName(SWITCHSET);
         switchSetInfo.position = 7;
         mSwitchList.add(switchSetInfo);
         // 情景模式切换
         QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
-        changeModeInfo.label = mContext.getResources()
-                .getString(R.string.quick_guesture_changemode);
-        changeModeInfo.switchIcon = new Drawable[1];
-        changeModeInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_mode);
         changeModeInfo.iDentiName = CHANGEMODE;
+        changeModeInfo.switchIcon = getIconFromName(CHANGEMODE);
+        changeModeInfo.label = getLabelFromName(CHANGEMODE);
         changeModeInfo.position = 8;
         mSwitchList.add(changeModeInfo);
         // 移动数据
         QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
-        mobileDataInfo.label = mContext.getResources()
-                .getString(R.string.quick_guesture_mobliedata);
-        mobileDataInfo.switchIcon = new Drawable[2];
-        mobileDataInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_data_pre);
-        mobileDataInfo.switchIcon[1] = mContext.getResources().getDrawable(
-                R.drawable.switch_data);
         mobileDataInfo.iDentiName = MOBILEDATA;
+        mobileDataInfo.switchIcon = getIconFromName(MOBILEDATA);
+        mobileDataInfo.label = getLabelFromName(MOBILEDATA);
         mobileDataInfo.position = 9;
         mSwitchList.add(mobileDataInfo);
         // 系统设置
         QuickSwitcherInfo settingInfo = new QuickSwitcherInfo();
-        settingInfo.label = mContext.getResources().getString(R.string.quick_guesture_setting);
-        settingInfo.switchIcon = new Drawable[1];
-        settingInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_gestureset_pre);
         settingInfo.iDentiName = SETTING;
+        settingInfo.switchIcon = getIconFromName(SETTING);
+        settingInfo.label = getLabelFromName(SETTING);
         settingInfo.position = 10;
         mSwitchList.add(settingInfo);
         // GPS
         QuickSwitcherInfo gpsInfo = new QuickSwitcherInfo();
-        gpsInfo.label = mContext.getResources().getString(R.string.quick_guesture_gps);
-        gpsInfo.switchIcon = new Drawable[2];
-        gpsInfo.switchIcon[0] = mContext.getResources().getDrawable(R.drawable.switch_gps_pre);
-        gpsInfo.switchIcon[1] = mContext.getResources().getDrawable(R.drawable.switch_gps);
         gpsInfo.iDentiName = GPS;
+        gpsInfo.switchIcon = getIconFromName(GPS);
+        gpsInfo.label = getLabelFromName(GPS);
         gpsInfo.position = 11;
         mSwitchList.add(gpsInfo);
         // 屏幕旋转
         QuickSwitcherInfo rotationInfo = new QuickSwitcherInfo();
-        rotationInfo.label = mContext.getResources().getString(R.string.quick_guesture_rotation);
-        rotationInfo.switchIcon = new Drawable[2];
-        rotationInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_rotation_pre);
-        rotationInfo.switchIcon[1] = mContext.getResources().getDrawable(
-                R.drawable.switch_rotation);
         rotationInfo.iDentiName = ROTATION;
+        rotationInfo.switchIcon = getIconFromName(ROTATION);
+        rotationInfo.label = getLabelFromName(ROTATION);
         rotationInfo.position = 12;
         mSwitchList.add(rotationInfo);
         // Home
         QuickSwitcherInfo homeInfo = new QuickSwitcherInfo();
-        homeInfo.label = mContext.getResources()
-                .getString(R.string.quick_guesture_home);
-        homeInfo.switchIcon = new Drawable[1];
-        homeInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_home);
         homeInfo.iDentiName = HOME;
+        homeInfo.switchIcon = getIconFromName(HOME);
+        homeInfo.label = getLabelFromName(HOME);
         homeInfo.position = 13;
         mSwitchList.add(homeInfo);
         // 飞行模式
         QuickSwitcherInfo flyModeInfo = new QuickSwitcherInfo();
-        flyModeInfo.label = mContext.getResources().getString(R.string.quick_guesture_flymode);
-        flyModeInfo.switchIcon = new Drawable[2];
-        flyModeInfo.switchIcon[0] = mContext.getResources().getDrawable(
-                R.drawable.switch_flightmode_pre);
-        flyModeInfo.switchIcon[1] = mContext.getResources().getDrawable(
-                R.drawable.switch_flightmode);
         flyModeInfo.iDentiName = FLYMODE;
+        flyModeInfo.switchIcon = getIconFromName(FLYMODE);
+        flyModeInfo.label = getLabelFromName(FLYMODE);
         flyModeInfo.position = 14;
         mSwitchList.add(flyModeInfo);
         return mSwitchList;
@@ -765,7 +840,7 @@ public class QuickSwitchManager {
             super.onChange(selfChange);
             // 更新按钮状态
             LeoLog.d("QuickSwitchManager", " 屏幕旋转设置改变!!");
-            Rotation();
+            rotation();
         }
 
         public void startObserver() {
@@ -791,7 +866,7 @@ public class QuickSwitchManager {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            LightPower();
+            lightPower();
         }
 
         // 注册观察
@@ -822,7 +897,7 @@ public class QuickSwitchManager {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            GPS();
+            gps();
         }
 
         // 注册观察
@@ -904,12 +979,8 @@ public class QuickSwitchManager {
             QuickSwitcherInfo switchInfo = mSwitchList.get(i);
             String name = switchInfo.iDentiName;
             int position = switchInfo.position;
-            Drawable[] icons = switchInfo.switchIcon;
-            for (int j = 0; j < icons.length; j++) {
-                
-            }
 
-            LeoLog.d("AppUtil", "name : " + name + "--position" + position);
+            LeoLog.d("QuickSwitchManager", "name : " + name + "--position" + position);
             if (i == 0) {
                 ListString = name + ":" + position;
             } else {
@@ -921,12 +992,19 @@ public class QuickSwitchManager {
 
     public List<QuickSwitcherInfo> StringToList(String mSwitchListFromSp) {
         List<QuickSwitcherInfo> mSwitcherList = new ArrayList<QuickSwitcherInfo>();
-        String[] mSwitchInfo = mSwitchListFromSp.split(",");
-        // LeoLog.d("AppUtil", "name : " + name + "--position" + position);
-        for (int i = 0; i < mSwitchInfo.length; i++) {
-
+        String[] mSwitchAllInfo = mSwitchListFromSp.split(",");
+        for (int i = 0; i < mSwitchAllInfo.length; i++) {
+            QuickSwitcherInfo mInfo = new QuickSwitcherInfo();
+            String[] mEachOneInfo = mSwitchAllInfo[i].split(":");
+            LeoLog.d("QuickSwitchManager",
+                    "name : " + mEachOneInfo[0] + "--position" + Integer.parseInt(mEachOneInfo[1]));
+            mInfo.iDentiName = mEachOneInfo[0];
+            mInfo.position = Integer.parseInt(mEachOneInfo[1]);
+            mInfo.label = getLabelFromName(mEachOneInfo[0]);
+            mInfo.switchIcon = getIconFromName(mEachOneInfo[0]);
+            mSwitcherList.add(mInfo);
         }
-        return null;
+        return mSwitcherList;
     }
 
 }
