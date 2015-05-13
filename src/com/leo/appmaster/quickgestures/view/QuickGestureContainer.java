@@ -1,17 +1,10 @@
 
 package com.leo.appmaster.quickgestures.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
-import com.leo.appmaster.model.AppInfo;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
@@ -25,12 +18,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.DragEvent;
@@ -38,10 +28,8 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 public class QuickGestureContainer extends FrameLayout {
 
@@ -180,7 +168,7 @@ public class QuickGestureContainer extends FrameLayout {
         }
     }
 
-    private void leaveEditMode() {
+    public void leaveEditMode() {
         mEditing = false;
         mDymicLayout.leaveEditMode();
         mMostUsedLayout.leaveEditMode();

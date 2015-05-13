@@ -9,6 +9,7 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -29,21 +30,17 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 
 public class QuickGestureLayout extends ViewGroup {
 
+    private static final int INNER_RING_MAX_COUNT = 4;
     private QuickGestureContainer mContainer;
-
+    private Orientation mOrientation = Orientation.Left;
+    private AnimatorSet mReorderAnimator;
+    private boolean mRecodering;
+    private boolean mAnimCanceled;
     private int mTotalWidth, mTotalHeight;
     private int mItemSize, mIconSize;
     private int mInnerRadius, mOuterRadius;
     private int mRingCount;
     private float mCurrentRotateDegree;
-
-    private Orientation mOrientation = Orientation.Left;
-    private AnimatorSet mReorderAnimator;
-    private boolean mRecodering;
-    private boolean mAnimCanceled;
-
-    private static final int INNER_RING_MAX_COUNT = 4;
-    private Context mContext;
 
     public QuickGestureLayout(Context context) {
         this(context, null);
@@ -527,9 +524,19 @@ public class QuickGestureLayout extends ViewGroup {
     }
 
     private void saveReorderPosition() {
-//        if() {
-////            QuickGestureManager.getInstance(getContext()).updateSwitcherData(infos)
-//        }
+        if (mContainer != null) {
+            GType gType = mContainer.getCurrentGestureType();
+            if (gType == GType.DymicLayout) {
+                // TODO update dynamic list
+
+            } else if (gType == GType.MostUsedLayout) {
+                // TODO update most used list
+
+            } else if (gType == GType.SwitcherLayout) {
+                // TODO update switcher list
+
+            }
+        }
     }
 
     private AnimatorSet createTranslationAnimations(GestureItemView fromView, GestureItemView toView) {

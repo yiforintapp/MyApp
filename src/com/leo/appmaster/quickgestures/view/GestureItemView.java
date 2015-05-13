@@ -41,7 +41,7 @@ public class GestureItemView extends TextView {
     }
 
     private void init() {
-        mCrossDrawable = getContext().getResources().getDrawable(R.drawable.app_uninstall_btn);
+        mCrossDrawable = getContext().getResources().getDrawable(R.drawable.gesture_item_delete);
         mCrossDrawable.setBounds(0, 0, mCrossDrawable.getIntrinsicWidth(),
                 mCrossDrawable.getIntrinsicWidth());
     }
