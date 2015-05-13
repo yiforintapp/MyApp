@@ -3,7 +3,6 @@ package com.leo.appmaster.quickgestures;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -11,10 +10,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog.Calls;
-import android.util.Log;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 
@@ -26,7 +25,7 @@ public class QuickGestureManager {
     private TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
 
     private QuickGestureManager(Context ctx) {
-        mContext = ctx;
+        mContext = ctx.getApplicationContext();
         init();
     }
 
@@ -39,6 +38,14 @@ public class QuickGestureManager {
 
     private void init() {
         loadAppLaunchReoder();
+    }
+
+    public void stopFloatWindow() {
+        LockManager.getInstatnce().stopFloatWindowService();
+    }
+
+    public void startFloatWindow() {
+        LockManager.getInstatnce().startFloatWindowService();
     }
 
     public void loadAppLaunchReoder() {
@@ -172,17 +179,21 @@ public class QuickGestureManager {
         }
         return noReadMsgCount;
     }
-    //获取未读通话
-    public static  int getMissedCallCount(Context context) {
+
+    // 获取未读通话
+    public static int getMissedCallCount(Context context) {
         int missedCallCount = 0;
         Cursor c = null;
         try {
             String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
             String[] selectionArgs = new String[] {
-                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1) };
+                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
+            };
 
             c = context.getContentResolver().query(Calls.CONTENT_URI,
-                    new String[] { Calls.NUMBER, Calls.TYPE, Calls.NEW },
+                    new String[] {
+                            Calls.NUMBER, Calls.TYPE, Calls.NEW
+                    },
                     selection, selectionArgs, Calls.DEFAULT_SORT_ORDER);
 
             if (c != null) {
@@ -190,13 +201,14 @@ public class QuickGestureManager {
             }
         } catch (Exception e) {
         } finally {
-            if(c != null) {
+            if (c != null) {
                 c.close();
             }
         }
 
         return missedCallCount;
     }
+
     class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {
         String pkg;
         int launchCount;

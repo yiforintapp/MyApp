@@ -248,6 +248,7 @@ public class QuickGestureContainer extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        LeoLog.e(TAG, "onTouchEvent");
         if (mSnaping)
             return false;
         mGesDetector.onTouchEvent(event);
@@ -891,6 +892,7 @@ public class QuickGestureContainer extends FrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 Activity activity = (Activity) QuickGestureContainer.this.getContext();
+                FloatWindowHelper.mGestureShowing = false;
                 activity.finish();
                 super.onAnimationEnd(animation);
             }

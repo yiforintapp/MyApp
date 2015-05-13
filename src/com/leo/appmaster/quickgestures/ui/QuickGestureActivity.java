@@ -70,25 +70,11 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private List<FreeDisturbAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
     private Handler mHandler = new Handler();
-    private TaskDetectService mFloatWindowService;
-    private ServiceConnection mServiceConnect = new ServiceConnection() {
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mFloatWindowService = null;
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            mFloatWindowService = ((TaskDetectBinder) arg1).getService();
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_gesture);
-        bindService();
         mQuickGestureSettingOption = new ArrayList<QuickGestureSettingBean>();
         mPre = AppMasterPreference.getInstance(this);
         initUi();
@@ -128,11 +114,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
-    }
-
-    public void bindService() {
-        Intent intent = new Intent(this, TaskDetectService.class);
-        this.bindService(intent, mServiceConnect, 901);
     }
 
     public void onEventMainThread(QuickGestureFloatWindowEvent event) {
@@ -338,7 +319,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         int position = (Integer) arg0.getTag();
         if (position == 0) {
             if (!arg1) {
-                mFloatWindowService.stopFloatWindow();
+                QuickGestureManager.getInstance(this).stopFloatWindow();
                 // 移除悬浮窗
                 FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 1);
                 FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 2);
@@ -348,7 +329,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -3);
             } else {
                 if (!mPre.getSwitchOpenQuickGesture()) {
-                    mFloatWindowService.startFloatWindow();
+                    QuickGestureManager.getInstance(this).startFloatWindow();
                 }
             }
             mPre.setSwitchOpenQuickGesture(arg1);
