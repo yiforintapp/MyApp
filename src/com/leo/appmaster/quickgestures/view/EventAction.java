@@ -32,7 +32,7 @@ public class EventAction implements DecorateAction {
 
     @Override
     public void draw(Canvas canvas, View view) {
-        draw(canvas, mNumber, view.getWidth(), 0);
+            draw(canvas, mNumber, view.getWidth(), 0);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class EventAction implements DecorateAction {
     }
 
     public EventAction(Context context, int number) {
-        mNumBg = context.getResources().getDrawable(R.drawable.unradio_buttons);
+        mNumBg = context.getResources().getDrawable(R.drawable.red_tip);
         mNumber = number;
     }
 
@@ -67,28 +67,29 @@ public class EventAction implements DecorateAction {
         } else {
             mNumberPaint.setTextSize(22);
         }
+        if (number > 0) {
+            final int width = mNumBg.getIntrinsicWidth();
+            final int height = mNumBg.getIntrinsicHeight();
+            final String str = String.valueOf(number);
+            int realW = (int) mNumberPaint.measureText(str);
+            int left = (width - realW) / 2;
+            int top = height / 2 + 3;
 
-        final int width = mNumBg.getIntrinsicWidth();
-        final int height = mNumBg.getIntrinsicHeight();
-        final String str = String.valueOf(number);
-        int realW = (int) mNumberPaint.measureText(str);
-        int left = (width - realW) / 2;
-        int top = height / 2 + 3;
-
-        if (number > 99) {
-            int fontSize = 22;
-            for (; fontSize >= 2; fontSize -= 2) {
-                mNumberPaint.setTextSize(fontSize);
-                realW = (int) mNumberPaint.measureText(str);
-                if (realW < width - 20) {
-                    break;
+            if (number > 99) {
+                int fontSize = 22;
+                for (; fontSize >= 2; fontSize -= 2) {
+                    mNumberPaint.setTextSize(fontSize);
+                    realW = (int) mNumberPaint.measureText(str);
+                    if (realW < width - 20) {
+                        break;
+                    }
                 }
+                left = (width - realW) / 2;
+                top = height / 2 + 3;
             }
-            left = (width - realW) / 2;
-            top = height / 2 + 3;
+            canvas.drawText(String.valueOf(number), left, top, mNumberPaint);
+            canvas.translate(-scrollX, -scrollY);
         }
-        canvas.drawText(String.valueOf(number), left, top, mNumberPaint);
-        canvas.translate(-scrollX, -scrollY);
     }
 
     private void initPaint() {
@@ -106,4 +107,5 @@ public class EventAction implements DecorateAction {
     public Rect getDrawRect() {
         return mDrawRect;
     }
+
 }

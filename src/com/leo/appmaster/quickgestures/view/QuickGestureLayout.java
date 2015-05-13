@@ -246,7 +246,7 @@ public class QuickGestureLayout extends ViewGroup {
                 params.position++;
             }
         }
-//        saveReorderPosition();
+        // saveReorderPosition();
         super.addView(child);
     }
 
@@ -336,6 +336,8 @@ public class QuickGestureLayout extends ViewGroup {
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_CALL_BUTTON);
                             mContext.startActivity(intent);
+                            GestureItemView item = (GestureItemView) view;
+                            item.cancelShowReadTip();
                         } else if (QuickSwitchManager.PRIVACY_NO_READ_CONTACT_TIP
                                 .equals(((QuickGestureContactTipInfo) info).flag)) {
                             Intent intent = new Intent();
@@ -573,7 +575,7 @@ public class QuickGestureLayout extends ViewGroup {
 
             } else if (gType == GType.MostUsedLayout) {
                 // TODO update most used list
-                
+
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;
@@ -587,7 +589,7 @@ public class QuickGestureLayout extends ViewGroup {
                     mSwitchList.add(sInfo);
                     LeoLog.d("QuickGestureLayout", "名字：" + sInfo.label + "位置：" + position);
                 }
-                 QuickGestureManager.getInstance(getContext()).updateSwitcherData(mSwitchList);
+                QuickGestureManager.getInstance(getContext()).updateSwitcherData(mSwitchList);
             }
         }
     }

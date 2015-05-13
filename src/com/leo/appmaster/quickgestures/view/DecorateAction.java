@@ -16,6 +16,6 @@ public interface DecorateAction {
     public void draw(Canvas canvas, View view);
 
     public void setAlpha(int alpha);
-    
+
     public Rect getDrawRect();
 }
