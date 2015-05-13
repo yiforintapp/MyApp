@@ -93,7 +93,6 @@ public class QuickGesturePopupActivity extends Activity {
     @Override
     protected void onDestroy() {
         FloatWindowHelper.mGestureShowing = false;
-        Log.e("############", "" + FloatWindowHelper.isShowSysNoReadMessage);
         // 去除系统短信未读提示
         if (FloatWindowHelper.isShowSysNoReadMessage) {
             FloatWindowHelper.isShowSysNoReadMessage = false;

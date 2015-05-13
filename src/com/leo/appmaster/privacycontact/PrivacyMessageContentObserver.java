@@ -6,30 +6,22 @@ import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Handler;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
-import android.telecom.Call;
 import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
-import com.leo.appmaster.utils.NotificationUtil;
 
 @SuppressLint("NewApi")
 public class PrivacyMessageContentObserver extends ContentObserver {
@@ -52,6 +44,22 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         ContentResolver cr = mContext.getContentResolver();
         PrivacyContactManager pcm = PrivacyContactManager.getInstance(mContext);
         if (MESSAGE_MODEL.equals(mFlag)) {
+
+            /*
+             * 快捷手势未读短信提醒
+             */
+            List<MessageBean> messages = PrivacyContactUtils
+                    .getSysMessage(mContext, cr,
+                            "read=0 AND type=1", null, false);
+            if (messages != null && messages.size() > 0) {
+                QuickGestureManager.getInstance(mContext).mMessages = messages;
+                FloatWindowHelper.isShowSysNoReadMessage = true;
+                FloatWindowHelper.removeSwipWindow(mContext, 1);
+                FloatWindowHelper.removeSwipWindow(mContext, -1);
+            }
+            /*
+             * _________________________________________________
+             */
             MessageBean mb = pcm.getLastMessage();
             if (mb != null) {
                 String number = mb.getPhoneNumber();
@@ -67,20 +75,27 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             // else {
             // PrivacyContactManager.getInstance(mContext).updateSysMessage();
             // }
-
+        } else if (CALL_LOG_MODEL.equals(mFlag)) {
             /*
-             * 快捷手势未读短信提醒
+             * 快捷手势未读通话记录提醒
              */
-            QuickGestureManager.getInstance(mContext).mMessages = PrivacyContactUtils
-                    .getSysMessage(mContext, cr,
-                            "read=0 AND type=1", null, false);
-            if (QuickGestureManager.getInstance(mContext).mMessages != null
-                    && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
+            String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
+            String[] selectionArgs = new String[] {
+                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
+            };
+            List<ContactCallLog> callLogs = PrivacyContactUtils
+                    .getSysCallLog(mContext,
+                            mContext.getContentResolver(), selection,
+                            selectionArgs);
+            if (callLogs != null && callLogs.size() > 0) {
+                QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
                 FloatWindowHelper.isShowSysNoReadMessage = true;
                 FloatWindowHelper.removeSwipWindow(mContext, 1);
                 FloatWindowHelper.removeSwipWindow(mContext, -1);
             }
-        } else if (CALL_LOG_MODEL.equals(mFlag)) {
+            /*
+             * ------------------------------------------------------------------
+             */
             ContactBean call = PrivacyContactManager.getInstance(mContext).getLastCall();
             if (call != null) {
                 Cursor cursor = null;
@@ -205,24 +220,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 }
             } else {
                 PrivacyContactManager.getInstance(mContext).updateSysCallLog();
-            }
-            /*
-             * 快捷手势未读短信提醒
-             */
-            String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
-            String[] selectionArgs = new String[] {
-                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
-            };
-            QuickGestureManager.getInstance(mContext).mCallLogs = PrivacyContactUtils
-                    .getSysCallLog(mContext,
-                            mContext.getContentResolver(), selection,
-                            selectionArgs);
-            if (QuickGestureManager.getInstance(mContext).mCallLogs != null
-                    && QuickGestureManager.getInstance(mContext).mCallLogs
-                            .size() > 0) {
-                FloatWindowHelper.isShowSysNoReadMessage = true;
-                FloatWindowHelper.removeSwipWindow(mContext, 1);
-                FloatWindowHelper.removeSwipWindow(mContext, -1);
             }
         } else if (CONTACT_MODEL.equals(mFlag)) {
             // PrivacyContactManager.getInstance(mContext).updateSysContact();

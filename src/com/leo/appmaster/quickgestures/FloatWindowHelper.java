@@ -61,8 +61,6 @@ public class FloatWindowHelper {
     public static boolean mGestureShowing = false;
     public static boolean mEditQuickAreaFlag = false;
     public static boolean isShowSysNoReadMessage = false;
-    public static boolean isShowPrivacyMsm=false;
-    public static boolean isShowPrivacyCallLog=false;
     private static float startX;
     private static float startY;
     // private static WindowManager windowManager;

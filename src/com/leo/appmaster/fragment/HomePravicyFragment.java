@@ -3,6 +3,7 @@ package com.leo.appmaster.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.eventbus.event.PrivacyLevelChangeEvent;
@@ -23,6 +25,7 @@ import com.leo.appmaster.privacycontact.LoadSysContactTask;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
@@ -77,7 +80,6 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                         .equals(event.editModel)) {
             // 短信未查看
             isShowRedTip(mMessageTv, 0);
-            FloatWindowHelper.isShowPrivacyMsm = true;
         } else if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT
                 .equals(event.editModel)
                 || PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION
@@ -86,7 +88,6 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                         .equals(event.editModel)) {
             // 通话未查看
             isShowRedTip(mCallLogTv, 1);
-            FloatWindowHelper.isShowPrivacyCallLog = true;
         }
     }
 
@@ -147,6 +148,13 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         }
         if (cunt > 0) {
             view.showTip(true);
+            if (flag == 1) {
+                LockManager.getInstatnce().isShowPrivacyCallLog = true;
+                FloatWindowHelper.isShowSysNoReadMessage = true;
+            } else if (flag == 0) {
+                LockManager.getInstatnce().isShowPrivacyMsm = true;
+                FloatWindowHelper.isShowSysNoReadMessage = true;
+            }
         } else {
             view.showTip(false);
         }

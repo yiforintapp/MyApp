@@ -386,11 +386,13 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -1);
                         }
                     }
-                });
+                }).start();
+                ;
             }
         } else if (position == 6) {
             mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
+            FloatWindowHelper.isShowSysNoReadMessage = true;
         }
     }
 

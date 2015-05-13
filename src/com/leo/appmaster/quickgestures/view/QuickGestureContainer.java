@@ -2,14 +2,7 @@
 package com.leo.appmaster.quickgestures.view;
 
 import java.util.List;
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-//import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
-import com.leo.appmaster.utils.LeoLog;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -28,8 +21,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
@@ -40,6 +35,8 @@ import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
+//import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
+
 public class QuickGestureContainer extends FrameLayout {
 
     public static final String TAG = "QuickGestureContainer";
@@ -563,8 +560,8 @@ public class QuickGestureContainer extends FrameLayout {
             boolean isShowPrivacyContactTip = AppMasterPreference.getInstance(getContext())
                     .getSwitchOpenPrivacyContactMessageTip();
             if (isShowMsmTip) {
-                if (QuickGestureManager.getInstance(mContext).mMessages.size() > 0
-                        && QuickGestureManager.getInstance(mContext).mMessages != null) {
+                if (QuickGestureManager.getInstance(mContext).mMessages != null
+                        && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
                     for (MessageBean message : QuickGestureManager.getInstance(mContext).mMessages) {
                         QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
                         item.icon = getContext().getResources().getDrawable(
@@ -605,7 +602,8 @@ public class QuickGestureContainer extends FrameLayout {
             }
             // 快捷手势未读隐私短信提示
             if (isShowPrivacyContactTip) {
-                if (FloatWindowHelper.isShowPrivacyCallLog || FloatWindowHelper.isShowPrivacyMsm) {
+                if (LockManager.getInstatnce().isShowPrivacyCallLog
+                        || LockManager.getInstatnce().isShowPrivacyMsm) {
                     QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
                     item.icon = getContext().getResources().getDrawable(
                             R.drawable.add_mode_icon);
@@ -617,7 +615,7 @@ public class QuickGestureContainer extends FrameLayout {
                 }
             }
             for (int i = 0; i < infos.size(); i++) {
-                if (i >= 9) {
+                if (i >= 8) {
                     break;
                 }
                 tv = new GestureItemView(getContext());
