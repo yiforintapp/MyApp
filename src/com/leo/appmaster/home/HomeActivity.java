@@ -211,6 +211,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
 
     }
+    
+    public int getCurrentPage() {
+        if(mViewPager != null) {
+            return mViewPager.getCurrentItem();
+        } else {
+            return 0;
+        }
+    }
 
     @Override
     protected void onResume() {

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewStub;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -14,6 +13,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.eventbus.event.PrivacyLevelChangeEvent;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacy.PrivacyHelper.Level;
@@ -247,7 +247,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
 
     @Override
     public void onScanningFinish() {
-        if (mProposalView != null) {
+        if (mProposalView != null && mActivity instanceof HomeActivity && ((HomeActivity)mActivity).getCurrentPage() == 1) {
             Rect rect = new Rect();
             mPrivacyLevel.getLevelRectOnScreen(rect);
             mProposalView.show(rect);
