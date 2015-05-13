@@ -3,31 +3,32 @@ package com.leo.appmaster.quickgestures.view;
 
 import java.util.ArrayList;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.os.Vibrator;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
+import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGestureLayout extends ViewGroup {
 
@@ -45,13 +46,14 @@ public class QuickGestureLayout extends ViewGroup {
 
     private static final int INNER_RING_MAX_COUNT = 4;
     private Context mContext;
-    
+
     public QuickGestureLayout(Context context) {
         this(context, null);
     }
 
     public QuickGestureLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        mContext = context;
         init();
     }
 
@@ -262,37 +264,76 @@ public class QuickGestureLayout extends ViewGroup {
                         getContext().startActivity(intent);
                     } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
                         QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
-                        //蓝牙
-                        if(sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)){
-                            QuickSwitchManager.getInstance(getContext()).toggleBluetooth(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)){
-                            QuickSwitchManager.getInstance(getContext()).toggleFlashLight(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.WLAN)){
-                            QuickSwitchManager.getInstance(getContext()).toggleWlan(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.CRAME)){
+                        // 蓝牙
+                        if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+                            QuickSwitchManager.getInstance(getContext())
+                                    .toggleBluetooth(mContainer, mContainer.getSwitchList(),
+                                            QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+                            QuickSwitchManager.getInstance(getContext())
+                                    .toggleFlashLight(mContainer, mContainer.getSwitchList(),
+                                            QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
+                            QuickSwitchManager.getInstance(getContext()).toggleWlan(mContainer,
+                                    mContainer.getSwitchList(), QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
                             QuickSwitchManager.getInstance(getContext()).openCrame();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SOUND)){
-                            QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)){
-                            QuickSwitchManager.getInstance(getContext()).toggleLight(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
+                            QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,
+                                    mContainer.getSwitchList(), QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+                            QuickSwitchManager.getInstance(getContext()).toggleLight(mContainer,
+                                    mContainer.getSwitchList(), QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
                             QuickSwitchManager.getInstance(getContext()).speedUp();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
                             QuickSwitchManager.getInstance(getContext()).toggleMode();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
                             QuickSwitchManager.getInstance(getContext()).switchSet();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.SETTING)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
                             QuickSwitchManager.getInstance(getContext()).goSetting();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.GPS)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
                             QuickSwitchManager.getInstance(getContext()).toggleGPS();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
                             QuickSwitchManager.getInstance(getContext()).toggleFlyMode();
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)){
-                            QuickSwitchManager.getInstance(getContext()).toggleRotation(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)){
-                            QuickSwitchManager.getInstance(getContext()).toggleMobileData(mContainer,mContainer.getSwitchList(),QuickGestureLayout.this);
-                        }else if(sInfo.iDentiName.equals(QuickSwitchManager.HOME)){
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
+                            QuickSwitchManager.getInstance(getContext()).toggleRotation(mContainer,
+                                    mContainer.getSwitchList(), QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+                            QuickSwitchManager.getInstance(getContext())
+                                    .toggleMobileData(mContainer, mContainer.getSwitchList(),
+                                            QuickGestureLayout.this);
+                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
                             QuickSwitchManager.getInstance(getContext()).goHome();
+                        }
+                    } else if (info instanceof QuickGestureContactTipInfo) {
+                        // 短信提醒
+                        QuickGestureContactTipInfo bean = (QuickGestureContactTipInfo) info;
+                        if (QuickSwitchManager.SYS_NO_READ_MESSAGE_TIP
+                                .equals(((QuickGestureContactTipInfo) info).flag)) {
+                            Uri smsToUri = Uri.parse("smsto://" +
+                                    bean.phoneNumber);
+                            Intent mIntent = new
+                                    Intent(android.content.Intent.ACTION_SENDTO,
+                                            smsToUri);
+                            try {
+                                mContext.startActivity(mIntent);
+                            } catch (Exception e) {
+                            }
+                            // 电话提醒
+                        } else if (QuickSwitchManager.SYS_NO_READ_CALL_LOG_TIP
+                                .equals(((QuickGestureContactTipInfo) info).flag)) {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_CALL_BUTTON);
+                            mContext.startActivity(intent);
+                        } else if (QuickSwitchManager.PRIVACY_NO_READ_CONTACT_TIP
+                                .equals(((QuickGestureContactTipInfo) info).flag)) {
+                            Intent intent = new Intent();
+                            intent.setClass(mContext, PrivacyContactActivity.class);
+                            try {
+                                mContext.startActivity(intent);
+                            } catch (Exception e) {
+                            }
                         }
                     }
                 }
@@ -407,7 +448,6 @@ public class QuickGestureLayout extends ViewGroup {
 
         int from = fromLP.position;
         int to = toLP.position;
-
         toLP.position = from;
         fromLP.position = to;
 
@@ -485,10 +525,12 @@ public class QuickGestureLayout extends ViewGroup {
 
                 if (mAnimCanceled) {
                     for (GestureItemView gestureItemView : hitViews) {
-//                        gestureItemView.setLeft((int) (gestureItemView.getLeft() + gestureItemView
-//                                .getTranslationX()));
-//                        gestureItemView.setTop((int) (gestureItemView.getTop() + gestureItemView
-//                                .getTranslationY()));
+                        // gestureItemView.setLeft((int)
+                        // (gestureItemView.getLeft() + gestureItemView
+                        // .getTranslationX()));
+                        // gestureItemView.setTop((int)
+                        // (gestureItemView.getTop() + gestureItemView
+                        // .getTranslationY()));
                         gestureItemView.setTranslationX(0);
                         gestureItemView.setTranslationY(0);
                     }

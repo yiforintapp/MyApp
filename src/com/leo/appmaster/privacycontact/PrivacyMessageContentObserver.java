@@ -3,6 +3,7 @@ package com.leo.appmaster.privacycontact;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -16,6 +17,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Handler;
 import android.provider.CallLog;
+import android.provider.CallLog.Calls;
 import android.telecom.Call;
 import android.util.Log;
 
@@ -24,7 +26,9 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.utils.NotificationUtil;
 
 @SuppressLint("NewApi")
@@ -67,9 +71,14 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             /*
              * 快捷手势未读短信提醒
              */
-            int count = QuickGestureManager.getNoReadMsg(mContext);
-            if (count > 0) {
-                Log.e("##################", "未读短信：" + count);
+            QuickGestureManager.getInstance(mContext).mMessages = PrivacyContactUtils
+                    .getSysMessage(mContext, cr,
+                            "read=0 AND type=1", null, false);
+            if (QuickGestureManager.getInstance(mContext).mMessages != null
+                    && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
+                FloatWindowHelper.isShowSysNoReadMessage = true;
+                FloatWindowHelper.removeSwipWindow(mContext, 1);
+                FloatWindowHelper.removeSwipWindow(mContext, -1);
             }
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
             ContactBean call = PrivacyContactManager.getInstance(mContext).getLastCall();
@@ -200,9 +209,20 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             /*
              * 快捷手势未读短信提醒
              */
-            int count = QuickGestureManager.getMissedCallCount(mContext);
-            if (count > 0) {
-                Log.e("##################", "未读通话：" + count);
+            String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
+            String[] selectionArgs = new String[] {
+                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
+            };
+            QuickGestureManager.getInstance(mContext).mCallLogs = PrivacyContactUtils
+                    .getSysCallLog(mContext,
+                            mContext.getContentResolver(), selection,
+                            selectionArgs);
+            if (QuickGestureManager.getInstance(mContext).mCallLogs != null
+                    && QuickGestureManager.getInstance(mContext).mCallLogs
+                            .size() > 0) {
+                FloatWindowHelper.isShowSysNoReadMessage = true;
+                FloatWindowHelper.removeSwipWindow(mContext, 1);
+                FloatWindowHelper.removeSwipWindow(mContext, -1);
             }
         } else if (CONTACT_MODEL.equals(mFlag)) {
             // PrivacyContactManager.getInstance(mContext).updateSysContact();

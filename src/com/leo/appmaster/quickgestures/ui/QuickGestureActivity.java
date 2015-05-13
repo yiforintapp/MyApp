@@ -11,6 +11,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.provider.CallLog.Calls;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
@@ -342,13 +344,20 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        int noReadCount = QuickGestureManager
-                                .getNoReadMsg(QuickGestureActivity.this);
-                        if (noReadCount > 0) {
-                            // TODO
-                            /**
-                             * 首次打开，通知 显示短信提示，入口
-                             */
+                        // TODO
+                        /**
+                         * 首次打开，通知 显示短信提示，入口
+                         */
+                        QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages = PrivacyContactUtils
+                                .getSysMessage(QuickGestureActivity.this,
+                                        QuickGestureActivity.this.getContentResolver(),
+                                        "read=0 AND type=1", null, false);
+                        if (QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages != null
+                                && QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages
+                                        .size() > 0) {
+                            FloatWindowHelper.isShowSysNoReadMessage = true;
+                            FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 1);
+                            FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -1);
                         }
                     }
                 }).start();
@@ -356,6 +365,29 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         } else if (position == 5) {
             mPre.setSwitchOpenRecentlyContact(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
+            if (arg1) {
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
+                        String[] selectionArgs = new String[] {
+                                String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
+                        };
+                        QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs = PrivacyContactUtils
+                                .getSysCallLog(QuickGestureActivity.this,
+                                        QuickGestureActivity.this.getContentResolver(), selection,
+                                        selectionArgs);
+                        if (QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs != null
+                                && QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs
+                                        .size() > 0) {
+                            FloatWindowHelper.isShowSysNoReadMessage = true;
+                            FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 1);
+                            FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -1);
+                        }
+                    }
+                });
+            }
         } else if (position == 6) {
             mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);

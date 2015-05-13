@@ -9,12 +9,15 @@ import java.util.TreeSet;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.CallLog;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.privacycontact.ContactCallLog;
+import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 
 public class QuickGestureManager {
@@ -23,6 +26,8 @@ public class QuickGestureManager {
     private Context mContext;
     private static QuickGestureManager mInstance;
     private TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
+    public List<MessageBean> mMessages;
+    public List<ContactCallLog> mCallLogs;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
@@ -150,7 +155,7 @@ public class QuickGestureManager {
     }
 
     // 获取未读短信数量
-    public static int getNoReadMsg(Context context) {
+    public int getNoReadMsg(Context context) {
         int noReadMsgCount = 0;
         Cursor c = null;
         try {
@@ -181,7 +186,7 @@ public class QuickGestureManager {
     }
 
     // 获取未读通话
-    public static int getMissedCallCount(Context context) {
+    public int getMissedCallCount(Context context) {
         int missedCallCount = 0;
         Cursor c = null;
         try {

@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
@@ -21,6 +20,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -44,10 +44,10 @@ public class QuickGesturePopupActivity extends Activity {
 
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
 
-//        Window window = getWindow();
-//        WindowManager.LayoutParams params = window.getAttributes();
-//        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-//        window.setAttributes(params);
+        // Window window = getWindow();
+        // WindowManager.LayoutParams params = window.getAttributes();
+        // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        // window.setAttributes(params);
 
         if (mSwitchList == null) {
             if (mSwitchListFromSp.isEmpty()) {
@@ -68,6 +68,11 @@ public class QuickGesturePopupActivity extends Activity {
     @Override
     protected void onStop() {
         FloatWindowHelper.mGestureShowing = false;
+        Log.e("############", "" + FloatWindowHelper.isShowSysNoReadMessage);
+        // 去除系统短信未读提示
+        if (FloatWindowHelper.isShowSysNoReadMessage) {
+            FloatWindowHelper.isShowSysNoReadMessage = false;
+        }
         finish();
         super.onStop();
     }
@@ -87,6 +92,11 @@ public class QuickGesturePopupActivity extends Activity {
     @Override
     protected void onDestroy() {
         FloatWindowHelper.mGestureShowing = false;
+        Log.e("############", "" + FloatWindowHelper.isShowSysNoReadMessage);
+        // 去除系统短信未读提示
+        if (FloatWindowHelper.isShowSysNoReadMessage) {
+            FloatWindowHelper.isShowSysNoReadMessage = false;
+        }
         super.onDestroy();
     }
 
