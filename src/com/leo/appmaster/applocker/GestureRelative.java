@@ -5,6 +5,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
 import android.app.Service;
@@ -28,6 +29,7 @@ public class GestureRelative extends RelativeLayout {
     private boolean isSecondRound = false;
     private boolean isThridRound = false;
     private boolean isFlaseControl = false;
+    public static boolean isInit = false;
     private int gua_left, gua_top, gua_right, gua_bottom;
     private int duan_left, duan_top, duan_right, duan_bottom;
     private int jie_left, jie_top, jie_right, jie_bottom;
@@ -36,6 +38,8 @@ public class GestureRelative extends RelativeLayout {
     private PretendAppUnknowCallFragment5 unknowFragment;
     private int screenW;
     private int screenH;
+
+    public boolean mFilterLayout;
 
     public GestureRelative(Context context) {
         super(context);
@@ -49,12 +53,16 @@ public class GestureRelative extends RelativeLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-        if(screenH >= 1280){
+        if (mFilterLayout) {
+            mFilterLayout = false;
+        } else {
+            super.onLayout(changed, l, t, r, b);
+        }
+        if (screenH >= 1280) {
             CirPointY = (b - t) / 2 + 30;
-        }else if(screenH == 800){
+        } else if (screenH == 800) {
             CirPointY = (b - t) / 2 + 20;
-        }else {
+        } else {
             CirPointY = (b - t) / 2 + 10;
         }
         CirPointX = (r - l) / 2;
@@ -64,6 +72,7 @@ public class GestureRelative extends RelativeLayout {
         if (unknowFragment != null) {
             unknowFragment.setPlace();
         }
+        LeoLog.d("testGElayout", "喔操走onLayout了");
     }
 
     private void init(Context context) {
@@ -72,6 +81,7 @@ public class GestureRelative extends RelativeLayout {
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
         screenW = mDisplay.getWidth();
         screenH = mDisplay.getHeight();
+        LeoLog.d("testGElayout", "喔操走init了");
     }
 
     public int getPointX() {
@@ -154,13 +164,14 @@ public class GestureRelative extends RelativeLayout {
                 // 触发成功
                 // LeoLog.d("testfuck", "触发成功");
                 if (isFromActivity) {
-                    mActivity.showAlarmDialog(mContext.getString(R.string.open_weizhuang_dialog_title),
+                    mActivity.showAlarmDialog(
+                            mContext.getString(R.string.open_weizhuang_dialog_title),
                             mContext.getString(R.string.open_weizhuang_dialog_content),
                             mContext.getString(R.string.open_weizhuang_dialog_sure));
                 } else {
                     unknowFragment.setFinishView();
                     unknowFragment.setCanCel();
-//                    mPf.onUnlockPretendSuccessfully();
+                    // mPf.onUnlockPretendSuccessfully();
                     SDKWrapper
                             .addEvent(mContext, SDKWrapper.P1, "appcover", "done_UnknowCall");
                 }
@@ -183,6 +194,7 @@ public class GestureRelative extends RelativeLayout {
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         canvas.drawCircle(CirPointX, CirPointY, mBanJing, CirPanint);
+        LeoLog.d("testGElayout", "喔操走onDraw了");
     }
 
     public void setGuaPosition(int left, int top, int right, int bottom) {

@@ -258,6 +258,7 @@
     <dimen name="guide_go_button_height">38dp</dimen>
     <dimen name="guide_go_button_width">138dp</dimen>
     <dimen name="guide_go_button_text_size">16dp</dimen>
+    <dimen name="guide_go_button_bottom">21dp</dimen>
     <!-- guide pages end -->
 
     <dimen name="app_manager_hotapp_rep_tip_margin">8dp</dimen> <!-- 2 -->

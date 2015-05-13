@@ -122,21 +122,22 @@
     <dimen name="home_bottom_button_height">54dp</dimen>
     <dimen name="home_bottom_button_text_size">14dp</dimen>
     <dimen name="home_bottom_button_text_margin">10dp</dimen>
-    <dimen name="dlg_horizental_margin">234dp</dimen>
+    <dimen name="dlg_horizental_margin">220dp</dimen>
     <dimen name="dlg_three_button_text_size">12dp</dimen>
 
     <!-- guide pages begin -->
     <dimen name="guide_page_image_margin_top">0dp</dimen>
-    <dimen name="guide_page_image_height">242dp</dimen>
+    <dimen name="guide_page_image_height">228dp</dimen>
     <dimen name="guide_page_title_font_size">22dp</dimen>
     <dimen name="guide_page_content_font_size">12dp</dimen>
-    <dimen name="guide_page_indicator_margin_buttom">30dp</dimen>
+    <dimen name="guide_page_indicator_margin_buttom">20dp</dimen>
     <dimen name="guide_title_margin_buttom">6dp</dimen>
-    <dimen name="guide_content_margin_buttom">50dp</dimen>
+    <dimen name="guide_content_margin_buttom">42dp</dimen>
     <dimen name="guide_go_button_margin_buttom">122dp</dimen>
     <dimen name="guide_go_button_height">38dp</dimen>
     <dimen name="guide_go_button_width">138dp</dimen>
     <dimen name="guide_go_button_text_size">16dp</dimen>
+    <dimen name="guide_go_button_bottom">12dp</dimen>
     <!-- guide pages end -->
 
     <dimen name="home_lock_tip_size">6dp</dimen>
