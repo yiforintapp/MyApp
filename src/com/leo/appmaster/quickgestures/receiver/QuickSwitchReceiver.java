@@ -23,13 +23,13 @@ public class QuickSwitchReceiver extends BroadcastReceiver {
             QuickSwitchManager.getInstance(context).Wlan();
         } else if (BLUETOOTH_STATE_CHANGED.equals(action) || BLUETOOTH_ACTION.equals(action)) {
             LeoLog.d("QuickSwitchReceiver", "蓝牙 change");
-            QuickSwitchManager.getInstance(context).BlueTooth();
+            QuickSwitchManager.getInstance(context).blueTooth();
         } else if (AIRPLANE_MODE.equals(action)) {
             LeoLog.d("QuickSwitchReceiver", "飞行 change");
             QuickSwitchManager.getInstance(context).FlyMode();
         } else if (NETWORK_CHANGE.equals(action)) {
             LeoLog.d("QuickSwitchReceiver", "数据网络 change");
-            QuickSwitchManager.getInstance(context).MobileData();
+            QuickSwitchManager.getInstance(context).mobileData();
         } else if (RINGER_MODE_CHANGED.equals(action)) {
             LeoLog.d("QuickSwitchReceiver", "音量 change");
             QuickSwitchManager.getInstance(context).Sound();

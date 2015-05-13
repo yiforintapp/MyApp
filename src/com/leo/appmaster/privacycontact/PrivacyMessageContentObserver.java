@@ -67,7 +67,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             /*
              * 快捷手势未读短信提醒
              */
-            int count = QuickGestureManager.getNoReadMsg(mContext);
+            int count = QuickGestureManager.getInstance(mContext).getNoReadMsg();
             if (count > 0) {
                 Log.e("##################", "未读短信：" + count);
             }
@@ -200,7 +200,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             /*
              * 快捷手势未读短信提醒
              */
-            int count = QuickGestureManager.getMissedCallCount(mContext);
+            int count = QuickGestureManager.getInstance(mContext).getMissedCallCount();
             if (count > 0) {
                 Log.e("##################", "未读通话：" + count);
             }

@@ -130,7 +130,7 @@ public class QuickGestureManager {
     }
 
     public void updateSwitcherData(List<QuickSwitcherInfo> infos) {
-
+        
     }
 
     public void onRunningPkgChanged(String pkg) {
@@ -150,12 +150,12 @@ public class QuickGestureManager {
     }
 
     // 获取未读短信数量
-    public static int getNoReadMsg(Context context) {
+    public int getNoReadMsg() {
         int noReadMsgCount = 0;
         Cursor c = null;
         try {
             Uri uri = Uri.parse("content://sms");
-            c = context.getContentResolver().query(uri, null,
+            c = mContext.getContentResolver().query(uri, null,
                     "read=0 AND type=1", null, null);
             if (c != null) {
                 noReadMsgCount = c.getCount();
@@ -163,7 +163,7 @@ public class QuickGestureManager {
                 c = null;
             }
             uri = Uri.parse("content://mms");
-            c = context.getContentResolver().query(uri, null,
+            c = mContext.getContentResolver().query(uri, null,
                     "read=0 AND m_type=132", null, null);
 
             if (c != null) {
@@ -181,7 +181,7 @@ public class QuickGestureManager {
     }
 
     // 获取未读通话
-    public static int getMissedCallCount(Context context) {
+    public int getMissedCallCount() {
         int missedCallCount = 0;
         Cursor c = null;
         try {
@@ -190,7 +190,7 @@ public class QuickGestureManager {
                     String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
             };
 
-            c = context.getContentResolver().query(Calls.CONTENT_URI,
+            c = mContext.getContentResolver().query(Calls.CONTENT_URI,
                     new String[] {
                             Calls.NUMBER, Calls.TYPE, Calls.NEW
                     },

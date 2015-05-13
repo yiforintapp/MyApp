@@ -343,7 +343,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                     @Override
                     public void run() {
                         int noReadCount = QuickGestureManager
-                                .getNoReadMsg(QuickGestureActivity.this);
+                                .getInstance(QuickGestureActivity.this)
+                                .getNoReadMsg();
                         if (noReadCount > 0) {
                             // TODO
                             /**

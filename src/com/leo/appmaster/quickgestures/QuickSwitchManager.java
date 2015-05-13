@@ -97,14 +97,14 @@ public class QuickSwitchManager {
         vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
 
         // 打开前判断每一个的状态
-        BlueTooth();
+        blueTooth();
         Wlan();
         Sound();
         LightPower();
         GPS();
         FlyMode();
         Rotation();
-        MobileData();
+        mobileData();
 
         // 屏幕旋转观察者
         mRotationObserver = new RotationObserver(new Handler());
@@ -117,7 +117,7 @@ public class QuickSwitchManager {
         mGpsObserver.startObserver();
     }
 
-    public void MobileData() {
+    public void mobileData() {
         if (mConnectivityManager == null) {
             mConnectivityManager = (ConnectivityManager) mContext
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -200,7 +200,7 @@ public class QuickSwitchManager {
         }
     }
 
-    public void BlueTooth() {
+    public void blueTooth() {
         if (mBluetoothAdapter == null) {
             mBluetoothAdapter = BluetoothAdapter
                     .getDefaultAdapter();

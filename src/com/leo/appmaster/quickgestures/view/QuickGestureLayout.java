@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
@@ -220,6 +221,7 @@ public class QuickGestureLayout extends ViewGroup {
                 params.position--;
             }
         }
+        saveReorderPosition();
         super.removeView(view);
     }
 
@@ -233,6 +235,7 @@ public class QuickGestureLayout extends ViewGroup {
                 params.position++;
             }
         }
+        saveReorderPosition();
         super.addView(child);
     }
 
@@ -420,7 +423,7 @@ public class QuickGestureLayout extends ViewGroup {
         fromLP.position = to;
 
     }
-    
+
     public boolean isReordering() {
         return mRecodering;
     }
@@ -498,6 +501,8 @@ public class QuickGestureLayout extends ViewGroup {
                     }
                 }
 
+                saveReorderPosition();
+
                 if (mAnimCanceled) {
                     for (GestureItemView gestureItemView : hitViews) {
                         gestureItemView.setLeft((int) (gestureItemView.getLeft() + gestureItemView
@@ -516,9 +521,15 @@ public class QuickGestureLayout extends ViewGroup {
                     requestLayout();
                 }
             }
+
         });
         mReorderAnimator.start();
+    }
 
+    private void saveReorderPosition() {
+//        if() {
+////            QuickGestureManager.getInstance(getContext()).updateSwitcherData(infos)
+//        }
     }
 
     private AnimatorSet createTranslationAnimations(GestureItemView fromView, GestureItemView toView) {
