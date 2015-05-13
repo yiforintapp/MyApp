@@ -23,9 +23,11 @@ public class QuickGestureManager {
     private Context mContext;
     private static QuickGestureManager mInstance;
     private TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
+    private AppMasterPreference mSpSwitch;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
+        mSpSwitch = AppMasterPreference.getInstance(mContext);
         init();
     }
 
@@ -130,7 +132,10 @@ public class QuickGestureManager {
     }
 
     public void updateSwitcherData(List<QuickSwitcherInfo> infos) {
-        
+        String saveToSp = QuickSwitchManager.getInstance(mContext)
+                .ListToString(infos, infos.size());
+        mSpSwitch.setSwitchList(saveToSp);
+        mSpSwitch.setSwitchListSize(infos.size());
     }
 
     public void onRunningPkgChanged(String pkg) {

@@ -2,6 +2,7 @@
 package com.leo.appmaster.quickgestures.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
@@ -533,8 +534,19 @@ public class QuickGestureLayout extends ViewGroup {
                 // TODO update most used list
 
             } else if (gType == GType.SwitcherLayout) {
-                // TODO update switcher list
-
+                int mNum = getChildCount();
+                LayoutParams params = null;
+                List<QuickSwitcherInfo> mSwitchList = new ArrayList<QuickSwitcherInfo>();
+                LeoLog.d("QuickGestureLayout", "总孩子数：" + mNum);
+                for (int i = 0; i < mNum; i++) {
+                    params = (LayoutParams) getChildAt(i).getLayoutParams();
+                    int position = params.position;
+                    QuickSwitcherInfo sInfo = (QuickSwitcherInfo) getChildAt(i).getTag();
+                    sInfo.position = position;
+                    mSwitchList.add(sInfo);
+                    LeoLog.d("QuickGestureLayout", "名字：" + sInfo.label + "位置：" + position);
+                }
+                 QuickGestureManager.getInstance(getContext()).updateSwitcherData(mSwitchList);
             }
         }
     }
