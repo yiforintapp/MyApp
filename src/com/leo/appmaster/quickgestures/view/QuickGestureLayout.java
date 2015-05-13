@@ -246,7 +246,7 @@ public class QuickGestureLayout extends ViewGroup {
                 params.position++;
             }
         }
-        saveReorderPosition();
+//        saveReorderPosition();
         super.addView(child);
     }
 

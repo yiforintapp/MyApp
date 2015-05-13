@@ -19,6 +19,7 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
@@ -139,9 +140,9 @@ public class QuickGestureManager {
     public void updateSwitcherData(List<QuickSwitcherInfo> infos) {
         String saveToSp = QuickSwitchManager.getInstance(mContext)
                 .ListToString(infos, infos.size());
+        LeoLog.d("updateSwitcherData", "saveToSp:" + saveToSp);
         mSpSwitch.setSwitchList(saveToSp);
         mSpSwitch.setSwitchListSize(infos.size());
-
     }
 
     public void onRunningPkgChanged(String pkg) {
