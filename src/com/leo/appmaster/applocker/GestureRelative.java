@@ -39,6 +39,8 @@ public class GestureRelative extends RelativeLayout {
     private int screenW;
     private int screenH;
 
+    public boolean mFilterLayout;
+
     public GestureRelative(Context context) {
         super(context);
         init(context);
@@ -51,12 +53,16 @@ public class GestureRelative extends RelativeLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-        if(screenH >= 1280){
+        if (mFilterLayout) {
+            mFilterLayout = false;
+        } else {
+            super.onLayout(changed, l, t, r, b);
+        }
+        if (screenH >= 1280) {
             CirPointY = (b - t) / 2 + 30;
-        }else if(screenH == 800){
+        } else if (screenH == 800) {
             CirPointY = (b - t) / 2 + 20;
-        }else {
+        } else {
             CirPointY = (b - t) / 2 + 10;
         }
         CirPointX = (r - l) / 2;
@@ -158,13 +164,14 @@ public class GestureRelative extends RelativeLayout {
                 // 触发成功
                 // LeoLog.d("testfuck", "触发成功");
                 if (isFromActivity) {
-                    mActivity.showAlarmDialog(mContext.getString(R.string.open_weizhuang_dialog_title),
+                    mActivity.showAlarmDialog(
+                            mContext.getString(R.string.open_weizhuang_dialog_title),
                             mContext.getString(R.string.open_weizhuang_dialog_content),
                             mContext.getString(R.string.open_weizhuang_dialog_sure));
                 } else {
                     unknowFragment.setFinishView();
                     unknowFragment.setCanCel();
-//                    mPf.onUnlockPretendSuccessfully();
+                    // mPf.onUnlockPretendSuccessfully();
                     SDKWrapper
                             .addEvent(mContext, SDKWrapper.P1, "appcover", "done_UnknowCall");
                 }

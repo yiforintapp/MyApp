@@ -85,6 +85,9 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
 
+                    
+                    mViewContent.mFilterLayout = true;
+                    
                     finish_lock.layout(finish_left, finish_top, finish_right, finish_bottom);
 
                     if (!isStop) {
@@ -222,8 +225,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         new Thread() {
             public void run() {
                 try {
-                    mHandler.sendEmptyMessage(2);
-                    sleep(50);
+//                    mHandler.sendEmptyMessage(2);
+//                    sleep(50);
                     mHandler.sendEmptyMessage(1);
                     // LeoLog.d("testFragment", "setPlace ! ");
                 } catch (Exception e) {
