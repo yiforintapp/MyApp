@@ -35,6 +35,9 @@
                 android:id="@+id/mode_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxWidth="@dimen/mode_name_max_width"
+                android:singleLine="true"
                 android:text="lock mode"
                 android:textColor="@color/white"
                 android:textSize="18dp" />
