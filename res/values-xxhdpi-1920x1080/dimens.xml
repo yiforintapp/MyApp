@@ -106,6 +106,7 @@
     <dimen name="guide_go_button_height">38dp</dimen>
     <dimen name="guide_go_button_width">138dp</dimen>
     <dimen name="guide_go_button_text_size">16dp</dimen>
+    <dimen name="guide_go_button_bottom">21dp</dimen>
     <!-- guide pages end -->
     <dimen name="hide_album_frame_width">149dp</dimen>
     <dimen name="hide_album_image_frame_width">115dp</dimen>
