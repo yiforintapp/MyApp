@@ -209,10 +209,10 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         iv_duanxin_big = (ImageView) findViewById(R.id.iv_duanxin_big);
         iv_jieting_big = (ImageView) findViewById(R.id.iv_jieting_big);
 
-        iv_test_icon = new ImageView(mActivity);
-        iv_test_icon.setBackground(mActivity.getResources().getDrawable(R.drawable.app_seekbar_btn));
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(25, 25);  
-        iv_test_icon.setLayoutParams(params);
+//        iv_test_icon = new ImageView(mActivity);
+//        iv_test_icon.setBackground(mActivity.getResources().getDrawable(R.drawable.app_seekbar_btn));
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(25, 25);  
+//        iv_test_icon.setLayoutParams(params);
         
         myself_circle = (CirCleDongHua) findViewById(R.id.myself_circle);
         finish_lock = (ImageView) findViewById(R.id.finish_lock);
