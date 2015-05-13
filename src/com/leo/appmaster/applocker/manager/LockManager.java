@@ -218,7 +218,7 @@ public class LockManager {
             return 0;
         }
     }
-    
+
     public void setPauseScreenonLock(boolean pause) {
         mPauseScreenonLock = pause;
     }
@@ -1439,6 +1439,14 @@ public class LockManager {
         mTLMap.clear();
     }
 
+    public void stopFloatWindowService() {
+        mDetectService.stopFloatWindow();
+    }
+
+    public void startFloatWindowService() {
+        mDetectService.startFloatWindow();
+    }
+
     public void startLockService() {
         LeoLog.d(TAG, "startLockService");
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
@@ -1575,12 +1583,12 @@ public class LockManager {
             LeoLog.d(TAG, "mDetectService = null");
             return;
         }
-        
-        if(mPauseScreenonLock) {
+
+        if (mPauseScreenonLock) {
             LeoLog.d(TAG, "mPauseScreenonLock = true");
             return;
         }
-        
+
         final String lastRunningPkg = mDetectService.getLastRunningPackage();
         final String lastRunningActivity = mDetectService.getLastRunningActivity();
         if (list.contains(lastRunningPkg)
