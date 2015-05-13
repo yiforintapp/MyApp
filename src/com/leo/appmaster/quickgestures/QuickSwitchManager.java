@@ -5,12 +5,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
-import com.android.internal.view.RotationPolicy;
 import com.leo.appmaster.R;
-import com.leo.appmaster.appsetting.AboutActivity;
-import com.leo.appmaster.home.ProtocolActivity;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
@@ -18,13 +14,10 @@ import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Service;
-import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothAdapter;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
@@ -39,8 +32,6 @@ import android.os.PowerManager;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.SoundEffectConstants;
 import android.widget.Toast;
 
 public class QuickSwitchManager {
@@ -279,7 +270,6 @@ public class QuickSwitchManager {
     }
 
     public List<QuickSwitcherInfo> getSwitchList(int switchNum) {
-        String mSwitchListString;
         List<QuickSwitcherInfo> mSwitchList = new ArrayList<QuickSwitcherInfo>();
         // 蓝牙开关
         QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
@@ -906,6 +896,37 @@ public class QuickSwitchManager {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);
         mContext.startActivity(intent);
+    }
+
+    public String ListToString(List<QuickSwitcherInfo> mSwitchList, int mNum) {
+        String ListString = "";
+        for (int i = 0; i < mNum; i++) {
+            QuickSwitcherInfo switchInfo = mSwitchList.get(i);
+            String name = switchInfo.iDentiName;
+            int position = switchInfo.position;
+            Drawable[] icons = switchInfo.switchIcon;
+            for (int j = 0; j < icons.length; j++) {
+                
+            }
+
+            LeoLog.d("AppUtil", "name : " + name + "--position" + position);
+            if (i == 0) {
+                ListString = name + ":" + position;
+            } else {
+                ListString = ListString + "," + name + ":" + position;
+            }
+        }
+        return ListString;
+    }
+
+    public List<QuickSwitcherInfo> StringToList(String mSwitchListFromSp) {
+        List<QuickSwitcherInfo> mSwitcherList = new ArrayList<QuickSwitcherInfo>();
+        String[] mSwitchInfo = mSwitchListFromSp.split(",");
+        // LeoLog.d("AppUtil", "name : " + name + "--position" + position);
+        for (int i = 0; i < mSwitchInfo.length; i++) {
+
+        }
+        return null;
     }
 
 }
