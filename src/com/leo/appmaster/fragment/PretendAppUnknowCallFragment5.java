@@ -31,7 +31,7 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class PretendAppUnknowCallFragment5 extends PretendFragment implements OnTouchListener {
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
-            iv_duanxin_big, iv_jieting_big, finish_lock;
+            iv_duanxin_big, iv_jieting_big, finish_lock,iv_test_icon;
     private RelativeLayout activity_weizhuang_firstin;
     private View text_content;
     private float mYuanX, mYuanY, mZhiJing, mBanJing;
@@ -94,6 +94,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                         // LeoLog.d("testFragment", "start 震动 ! ");
                     }
 
+                    mViewContent.isInit = true;
                     break;
                 case 2:
                     iv_dianhua_hold.setVisibility(View.INVISIBLE);
@@ -208,6 +209,11 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         iv_duanxin_big = (ImageView) findViewById(R.id.iv_duanxin_big);
         iv_jieting_big = (ImageView) findViewById(R.id.iv_jieting_big);
 
+        iv_test_icon = new ImageView(mActivity);
+        iv_test_icon.setBackground(mActivity.getResources().getDrawable(R.drawable.app_seekbar_btn));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(25, 25);  
+        iv_test_icon.setLayoutParams(params);
+        
         myself_circle = (CirCleDongHua) findViewById(R.id.myself_circle);
         finish_lock = (ImageView) findViewById(R.id.finish_lock);
     }

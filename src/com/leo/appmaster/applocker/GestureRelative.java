@@ -5,6 +5,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.app.Activity;
 import android.app.Service;
@@ -28,6 +29,7 @@ public class GestureRelative extends RelativeLayout {
     private boolean isSecondRound = false;
     private boolean isThridRound = false;
     private boolean isFlaseControl = false;
+    public static boolean isInit = false;
     private int gua_left, gua_top, gua_right, gua_bottom;
     private int duan_left, duan_top, duan_right, duan_bottom;
     private int jie_left, jie_top, jie_right, jie_bottom;
@@ -64,6 +66,7 @@ public class GestureRelative extends RelativeLayout {
         if (unknowFragment != null) {
             unknowFragment.setPlace();
         }
+        LeoLog.d("testGElayout", "喔操走onLayout了");
     }
 
     private void init(Context context) {
@@ -72,6 +75,7 @@ public class GestureRelative extends RelativeLayout {
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
         screenW = mDisplay.getWidth();
         screenH = mDisplay.getHeight();
+        LeoLog.d("testGElayout", "喔操走init了");
     }
 
     public int getPointX() {
@@ -183,6 +187,7 @@ public class GestureRelative extends RelativeLayout {
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         canvas.drawCircle(CirPointX, CirPointY, mBanJing, CirPanint);
+        LeoLog.d("testGElayout", "喔操走onDraw了");
     }
 
     public void setGuaPosition(int left, int top, int right, int bottom) {
