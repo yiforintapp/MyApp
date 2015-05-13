@@ -29,7 +29,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/transparent"
-        android:scrollbarDefaultDelayBeforeFade="0"
+        android:scrollbars="none"
         android:fadeScrollbars="true" >
 
         <RelativeLayout
