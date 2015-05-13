@@ -10,6 +10,7 @@
         android:layout_toLeftOf="@id/iv_selected"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:gravity="center_vertical"
         android:textColor="#a7a7a7"
         android:textSize="14sp" />
 
