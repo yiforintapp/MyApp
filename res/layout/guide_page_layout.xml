@@ -19,7 +19,7 @@
         android:layout_below="@id/guide_image"
         android:layout_centerHorizontal="true"
         android:paddingRight="6dp"
-        android:layout_marginBottom="21dp"
+        android:layout_marginBottom="@dimen/guide_go_button_bottom"
         android:background="@drawable/letgo_bg"
         android:text="@string/guide_button_text"
         android:textColor="@color/guide_page4_background_color"
@@ -43,6 +43,8 @@
         android:ellipsize="end"
         android:layout_marginBottom="@dimen/guide_content_margin_buttom"
         android:textColor="#acacac"
+                android:text="ddddddddddddvvvdddddddddddddddddddddddddddddddddddddddddvvvvvvvvvvdd"
+        
         android:textSize="@dimen/guide_page_content_font_size" />
     
     <TextView
@@ -51,8 +53,10 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/guide_tv_content"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:layout_marginBottom="@dimen/guide_title_margin_buttom"
         android:textColor="#595757"
+        android:text="dddddddddddddddddddddd"
         android:textSize="@dimen/guide_page_title_font_size" />
 	</RelativeLayout>
     
