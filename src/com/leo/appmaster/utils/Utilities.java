@@ -39,6 +39,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 public final class Utilities {
 
     private static final int MAX_ICON = 4;
+    public static int mCurrentCreenChangeStatus = 1;
 
     public static Drawable getFolderScalePicture(Context context,
             List<AppItemInfo> folderList, int type) {
@@ -282,14 +283,34 @@ public final class Utilities {
     // 横竖屏判断
     public static int isScreenType(Context context) {
         Configuration configuiation = context.getResources().getConfiguration();
-        int ori = configuiation.orientation; // 获取屏幕方向
+        int ori = configuiation.orientation;
         if (ori == configuiation.ORIENTATION_LANDSCAPE) {
             // 横屏
+            mCurrentCreenChangeStatus = -1;
             return -1;
         } else if (ori == configuiation.ORIENTATION_PORTRAIT) {
             // 竖屏
+            mCurrentCreenChangeStatus = 1;
             return 1;
         }
         return 0;
+    }
+
+    // 判断屏幕是否发生改变
+    public static boolean isScreenChange(Context context) {
+        Configuration configuiation = context.getResources().getConfiguration();
+        int ori = configuiation.orientation; // 获取屏幕方向
+        if (ori == configuiation.ORIENTATION_LANDSCAPE) {
+            if (mCurrentCreenChangeStatus != -1) {
+                mCurrentCreenChangeStatus = -1;
+                return true;
+            }
+        } else if (ori == configuiation.ORIENTATION_PORTRAIT) {
+            if (mCurrentCreenChangeStatus != 1) {
+                mCurrentCreenChangeStatus = 1;
+                return true;
+            }
+        }
+        return false;
     }
 }
