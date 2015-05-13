@@ -9,12 +9,15 @@ import java.util.TreeSet;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.CallLog;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.privacycontact.ContactCallLog;
+import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 
 public class QuickGestureManager {
@@ -24,6 +27,8 @@ public class QuickGestureManager {
     private static QuickGestureManager mInstance;
     private TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
     private AppMasterPreference mSpSwitch;
+    public List<MessageBean> mMessages;
+    public List<ContactCallLog> mCallLogs;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
@@ -136,6 +141,7 @@ public class QuickGestureManager {
                 .ListToString(infos, infos.size());
         mSpSwitch.setSwitchList(saveToSp);
         mSpSwitch.setSwitchListSize(infos.size());
+
     }
 
     public void onRunningPkgChanged(String pkg) {

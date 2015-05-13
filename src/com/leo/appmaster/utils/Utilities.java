@@ -227,7 +227,6 @@ public final class Utilities {
 
     public static boolean isChinese(char c) {
         Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
-
         if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
                 || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
                 || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
@@ -299,7 +298,7 @@ public final class Utilities {
     // 判断屏幕是否发生改变
     public static boolean isScreenChange(Context context) {
         Configuration configuiation = context.getResources().getConfiguration();
-        int ori = configuiation.orientation; // 获取屏幕方向
+        int ori = configuiation.orientation;
         if (ori == configuiation.ORIENTATION_LANDSCAPE) {
             if (mCurrentCreenChangeStatus != -1) {
                 mCurrentCreenChangeStatus = -1;

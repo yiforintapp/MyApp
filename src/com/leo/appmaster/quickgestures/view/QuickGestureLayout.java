@@ -23,11 +23,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
+import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGestureLayout extends ViewGroup {
 
@@ -42,6 +53,7 @@ public class QuickGestureLayout extends ViewGroup {
     private int mInnerRadius, mOuterRadius;
     private int mRingCount;
     private float mCurrentRotateDegree;
+    private Context mContext;
 
     public QuickGestureLayout(Context context) {
         this(context, null);
@@ -49,6 +61,7 @@ public class QuickGestureLayout extends ViewGroup {
 
     public QuickGestureLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        mContext = context;
         init();
     }
 
@@ -303,6 +316,35 @@ public class QuickGestureLayout extends ViewGroup {
                         } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
                             QuickSwitchManager.getInstance(getContext()).goHome();
                         }
+                    } else if (info instanceof QuickGestureContactTipInfo) {
+                        // 短信提醒
+                        QuickGestureContactTipInfo bean = (QuickGestureContactTipInfo) info;
+                        if (QuickSwitchManager.SYS_NO_READ_MESSAGE_TIP
+                                .equals(((QuickGestureContactTipInfo) info).flag)) {
+                            Uri smsToUri = Uri.parse("smsto://" +
+                                    bean.phoneNumber);
+                            Intent mIntent = new
+                                    Intent(android.content.Intent.ACTION_SENDTO,
+                                            smsToUri);
+                            try {
+                                mContext.startActivity(mIntent);
+                            } catch (Exception e) {
+                            }
+                            // 电话提醒
+                        } else if (QuickSwitchManager.SYS_NO_READ_CALL_LOG_TIP
+                                .equals(((QuickGestureContactTipInfo) info).flag)) {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_CALL_BUTTON);
+                            mContext.startActivity(intent);
+                        } else if (QuickSwitchManager.PRIVACY_NO_READ_CONTACT_TIP
+                                .equals(((QuickGestureContactTipInfo) info).flag)) {
+                            Intent intent = new Intent();
+                            intent.setClass(mContext, PrivacyContactActivity.class);
+                            try {
+                                mContext.startActivity(intent);
+                            } catch (Exception e) {
+                            }
+                        }
                     }
                 }
             }
@@ -416,7 +458,6 @@ public class QuickGestureLayout extends ViewGroup {
 
         int from = fromLP.position;
         int to = toLP.position;
-
         toLP.position = from;
         fromLP.position = to;
 
