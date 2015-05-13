@@ -36,8 +36,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:maxLines="2"
+       android:ellipsize="end" 
         android:text="@string/lock_mode"
         android:textColor="@color/white"
-        android:textSize="14dp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>
