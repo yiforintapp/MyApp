@@ -9,13 +9,17 @@ import java.util.TreeSet;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.CallLog;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.privacycontact.ContactCallLog;
+import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
@@ -23,9 +27,13 @@ public class QuickGestureManager {
     private Context mContext;
     private static QuickGestureManager mInstance;
     private TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
+    private AppMasterPreference mSpSwitch;
+    public List<MessageBean> mMessages;
+    public List<ContactCallLog> mCallLogs;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
+        mSpSwitch = AppMasterPreference.getInstance(mContext);
         init();
     }
 
@@ -130,7 +138,11 @@ public class QuickGestureManager {
     }
 
     public void updateSwitcherData(List<QuickSwitcherInfo> infos) {
-        
+        String saveToSp = QuickSwitchManager.getInstance(mContext)
+                .ListToString(infos, infos.size());
+        LeoLog.d("updateSwitcherData", "saveToSp:" + saveToSp);
+        mSpSwitch.setSwitchList(saveToSp);
+        mSpSwitch.setSwitchListSize(infos.size());
     }
 
     public void onRunningPkgChanged(String pkg) {

@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class QuickGesturesAreaView extends View {
     public static int viewWidth;
     public static int viewHeight;
     private boolean mIsShowReadTip;
+    private int mDirectionFlag = -1;// 1:左边，2：右边
     private Paint mPaint;
     private float x, y;
     private int radius;
@@ -40,7 +42,6 @@ public class QuickGesturesAreaView extends View {
     public QuickGesturesAreaView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initUI(context);
-        initPain(context);
     }
 
     private void initPain(Context context) {
@@ -48,22 +49,23 @@ public class QuickGesturesAreaView extends View {
         mPaint.setColor(Color.RED);
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
-        radius = DipPixelUtil.px2dip(context, 4);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mIsShowReadTip) {
-            drawReadTip(canvas, mPaint);
+            if (mDirectionFlag > 0) {
+                drawReadTip(canvas, mPaint, mDirectionFlag);
+            }
         }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        x = getMeasuredHeight() * 0.8f;
-        y = getMeasuredWidth() * 0.4f;
+        y = getMeasuredHeight();
+        x = getMeasuredWidth();
 
     }
 
@@ -74,15 +76,24 @@ public class QuickGesturesAreaView extends View {
 //         setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
         setFocusable(true);
         setClickable(true);
+        radius = DipPixelUtil.dip2px(mContext, 5);
+        initPain(mContext);
     }
 
-    private void drawReadTip(Canvas canvas, Paint paint) {
-        canvas.drawCircle(x, y, radius, paint);
-
+    private void drawReadTip(Canvas canvas, Paint paint, int flag) {
+        if (flag == 1) {
+            // 左边View
+            canvas.drawCircle(0 + 2 * radius, y - 2 * radius, radius, paint);
+        } else if (flag == 2) {
+            // 右边View
+            canvas.drawCircle(x - 2 * radius, y - 2 * radius, radius, paint);
+        }
+        canvas.save();
     }
 
-    public void setIsShowReadTip(boolean flag) {
+    public void setIsShowReadTip(boolean flag, int directionFlag) {
         mIsShowReadTip = flag;
+        mDirectionFlag = directionFlag;
         invalidate();
     }
 }

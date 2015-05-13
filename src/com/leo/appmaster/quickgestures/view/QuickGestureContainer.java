@@ -2,7 +2,6 @@
 package com.leo.appmaster.quickgestures.view;
 
 import java.util.List;
-
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.BaseInfo;
@@ -11,7 +10,6 @@ import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -30,7 +28,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
-
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.privacycontact.ContactCallLog;
+import com.leo.appmaster.privacycontact.MessageBean;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+//import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
+import com.leo.appmaster.utils.LeoLog;
 public class QuickGestureContainer extends FrameLayout {
 
     public static final String TAG = "QuickGestureContainer";
@@ -549,13 +558,63 @@ public class QuickGestureContainer extends FrameLayout {
             // 快捷手势未读短信提醒
             boolean isShowMsmTip = AppMasterPreference.getInstance(getContext())
                     .getSwitchOpenNoReadMessageTip();
+            boolean isShowCallLogTip = AppMasterPreference.getInstance(getContext())
+                    .getSwitchOpenRecentlyContact();
+            boolean isShowPrivacyContactTip = AppMasterPreference.getInstance(getContext())
+                    .getSwitchOpenPrivacyContactMessageTip();
             if (isShowMsmTip) {
-                BaseInfo item = new BaseInfo();
-                item.icon = getContext().getResources().getDrawable(R.drawable.add_mode_icon);
-                item.label = getContext().getResources()
-                        .getString(R.string.privacy_contact_message);
-                item.eventNumber = 3;
-                infos.add(0, item);
+                if (QuickGestureManager.getInstance(mContext).mMessages.size() > 0
+                        && QuickGestureManager.getInstance(mContext).mMessages != null) {
+                    for (MessageBean message : QuickGestureManager.getInstance(mContext).mMessages) {
+                        QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
+                        item.icon = getContext().getResources().getDrawable(
+                                R.drawable.add_mode_icon);
+                        if (message.getMessageName() != null
+                                && !"".equals(message.getMessageName())) {
+                            item.label = message.getMessageName();
+                        } else {
+                            item.label = message.getPhoneNumber();
+                        }
+                        item.eventNumber = 3;
+                        item.flag = QuickSwitchManager.SYS_NO_READ_MESSAGE_TIP;
+                        item.phoneNumber = message.getPhoneNumber();
+                        infos.add(0, item);
+                    }
+                }
+            }
+            // 快捷手势未读通话提醒
+            if (isShowCallLogTip) {
+                if (QuickGestureManager.getInstance(mContext).mCallLogs != null
+                        && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
+                    for (ContactCallLog baseInfo : QuickGestureManager.getInstance(mContext).mCallLogs) {
+                        QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
+                        item.icon = getContext().getResources().getDrawable(
+                                R.drawable.add_mode_icon);
+                        if (baseInfo.getCallLogName() != null
+                                && !"".equals(baseInfo.getCallLogName())) {
+                            item.label = baseInfo.getCallLogName();
+                        } else {
+                            item.label = baseInfo.getCallLogNumber();
+                        }
+                        item.eventNumber = 3;
+                        item.flag = QuickSwitchManager.SYS_NO_READ_CALL_LOG_TIP;
+                        item.phoneNumber = baseInfo.getCallLogNumber();
+                        infos.add(0, item);
+                    }
+                }
+            }
+            // 快捷手势未读隐私短信提示
+            if (isShowPrivacyContactTip) {
+                if (FloatWindowHelper.isShowPrivacyCallLog || FloatWindowHelper.isShowPrivacyMsm) {
+                    QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
+                    item.icon = getContext().getResources().getDrawable(
+                            R.drawable.add_mode_icon);
+                    item.label = mContext.getResources().getString(
+                            R.string.pg_appmanager_quick_gesture_privacy_contact_tip_lable);
+                    item.eventNumber = 3;
+                    item.flag = QuickSwitchManager.PRIVACY_NO_READ_CONTACT_TIP;
+                    infos.add(0, item);
+                }
             }
             for (int i = 0; i < infos.size(); i++) {
                 if (i >= 9) {

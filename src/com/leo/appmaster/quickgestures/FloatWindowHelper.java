@@ -60,6 +60,9 @@ public class FloatWindowHelper {
 
     public static boolean mGestureShowing = false;
     public static boolean mEditQuickAreaFlag = false;
+    public static boolean isShowSysNoReadMessage = false;
+    public static boolean isShowPrivacyMsm=false;
+    public static boolean isShowPrivacyCallLog=false;
     private static float startX;
     private static float startY;
     // private static WindowManager windowManager;
@@ -193,6 +196,9 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
+            if (FloatWindowHelper.isShowSysNoReadMessage) {
+                mLeftBottomView.setIsShowReadTip(true, 1);
+            }
             mLeftBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -480,6 +486,9 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
+            // if (FloatWindowHelper.isShowSysNoReadMessage) {
+            // mRightBottomView.setIsShowReadTip(true, 2);
+            // }
             mRightBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -1152,6 +1161,7 @@ public class FloatWindowHelper {
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             AppMasterApplication.getInstance().startActivity(intent);
+
         } else if (flag == 1) {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
@@ -1160,5 +1170,4 @@ public class FloatWindowHelper {
 
         }
     }
-
 }

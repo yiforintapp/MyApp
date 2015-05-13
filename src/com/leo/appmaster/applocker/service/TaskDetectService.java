@@ -406,7 +406,6 @@ public class TaskDetectService extends Service {
                 public void run() {
                     // 屏幕改变
                     if (Utilities.isScreenChange(getApplicationContext())) {
-                        Log.e("#############", "发生改变");
                         FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                     }
                     int value = AppMasterPreference.getInstance(getApplicationContext())

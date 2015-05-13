@@ -54,6 +54,9 @@ public class QuickSwitchManager {
     public final static String ROTATION = "rotation";
     public final static String MOBILEDATA = "mobiledata";
     public final static String HOME = "home";
+    public final static String SYS_NO_READ_MESSAGE_TIP = "sys_no_read_message_tip";
+    public final static String SYS_NO_READ_CALL_LOG_TIP = "sys_no_read_call_log_tip";
+    public final static String PRIVACY_NO_READ_CONTACT_TIP = "privacy_no_read_contact_tip";
     private Context mContext;
     private static BluetoothAdapter mBluetoothAdapter;
     private WifiManager mWifimanager;

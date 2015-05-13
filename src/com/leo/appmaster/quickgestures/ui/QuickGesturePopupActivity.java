@@ -4,19 +4,21 @@ package com.leo.appmaster.quickgestures.ui;
 import java.util.AbstractList;
 import java.util.List;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 import com.leo.appmaster.utils.LeoLog;
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 
 public class QuickGesturePopupActivity extends Activity implements
@@ -45,26 +47,28 @@ public class QuickGesturePopupActivity extends Activity implements
 
         mSpSwitch = AppMasterPreference.getInstance(this);
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
-        mSwitchListFromSp = mSpSwitch.getSwitchList();
-        switchNum = mSpSwitch.getSwitchListSize();
-        LeoLog.d("testFirstInGet", "mSwitchListFromSp : " + mSwitchListFromSp);
-        if (mSwitchListFromSp.isEmpty()) {
-            mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
-            String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
-                    switchNum);
-            mSpSwitch.setSwitchList(saveToSp);
-            LeoLog.d("testFirstInGet", "saveToSp:" + saveToSp);
-        } else {
-            LeoLog.d("testFirstInGet", "get list from sp");
-            mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
+
+        if (mSwitchList == null) {
+            mSwitchListFromSp = mSpSwitch.getSwitchList();
+            switchNum = mSpSwitch.getSwitchListSize();
+            LeoLog.d("testFirstInGet", "mSwitchListFromSp : " + mSwitchListFromSp);
+            if (mSwitchListFromSp.isEmpty()) {
+                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
+                String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
+                        switchNum);
+                mSpSwitch.setSwitchList(saveToSp);
+                LeoLog.d("testFirstInGet", "saveToSp:" + saveToSp);
+            } else {
+                LeoLog.d("testFirstInGet", "get list from sp");
+                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
+            }
+
+            fillQg1();
+            fillQg2();
+            fillQg3();
+
+            mContainer.showOpenAnimation();
         }
-
-        fillQg1();
-        fillQg2();
-        fillQg3();
-
-        mContainer.showOpenAnimation();
-
         overridePendingTransition(-1, -1);
     }
 
@@ -77,6 +81,11 @@ public class QuickGesturePopupActivity extends Activity implements
     @Override
     protected void onStop() {
         LeoLog.e("xxxx", "onStop");
+        FloatWindowHelper.mGestureShowing = false;
+        // 去除系统短信未读提示
+        if (FloatWindowHelper.isShowSysNoReadMessage) {
+            FloatWindowHelper.isShowSysNoReadMessage = false;
+        }
         finish();
         super.onStop();
     }
@@ -95,6 +104,12 @@ public class QuickGesturePopupActivity extends Activity implements
 
     @Override
     protected void onDestroy() {
+        FloatWindowHelper.mGestureShowing = false;
+        Log.e("############", "" + FloatWindowHelper.isShowSysNoReadMessage);
+        // 去除系统短信未读提示
+        if (FloatWindowHelper.isShowSysNoReadMessage) {
+            FloatWindowHelper.isShowSysNoReadMessage = false;
+        }
         super.onDestroy();
     }
 
