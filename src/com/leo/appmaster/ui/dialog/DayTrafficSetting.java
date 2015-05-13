@@ -150,7 +150,7 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
             TrafficHolder mHolder;
             if (convertView == null) {
                 mHolder = new TrafficHolder();
-                convertView = mInflater.inflate(R.layout.traffic_day_list, null);
+                convertView = mInflater.inflate(R.layout.traffic_day_list, parent,false);
                 mHolder.tv_showday = (TextView) convertView.findViewById(R.id.tv_showday);
                 mHolder.iv_showday = (ImageView) convertView.findViewById(R.id.iv_showday);
                 convertView.setTag(mHolder);

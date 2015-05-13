@@ -16,13 +16,14 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.LeoSeekBar;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.DipPixelUtil;
 
 public class MonthTrafficSetting extends LEOBaseDialog {
     private Context mContext;
     private TextView seekbar_text, sure_button,seekbar_text_progress;
-    private SeekBar mSeekBar;
+    private LeoSeekBar mSeekBar;
     private AppMasterPreference sp_notice_flow;
     private int progressInt;
     private int progressTextWidth,progressTextHeight;
@@ -61,13 +62,13 @@ public class MonthTrafficSetting extends LEOBaseDialog {
                 progressTextHeight = seekbar_text_progress.getHeight();
                 
                 /**init the position of seekbar_text_progress **/
-                resetSeekbarTextMargin(mSeekBar.getThumb().getBounds().centerX());
+                    resetSeekbarTextMargin(mSeekBar.getSeekBarThumb().getBounds().centerX());
             }
         });
         
         sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
         
-        mSeekBar = (SeekBar) dlgView.findViewById(R.id.mSeekBar);
+        mSeekBar = (LeoSeekBar) dlgView.findViewById(R.id.mSeekBar);
         mSeekBar.setProgress(progressInt);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -77,7 +78,7 @@ public class MonthTrafficSetting extends LEOBaseDialog {
                 }else {
                     seekbar_text_progress.setText(progress+"%");
                 }
-                resetSeekbarTextMargin(seekBar.getThumb().getBounds().centerX());
+                resetSeekbarTextMargin(((LeoSeekBar) seekBar).getSeekBarThumb().getBounds().centerX());
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -126,7 +127,7 @@ public class MonthTrafficSetting extends LEOBaseDialog {
      * @param seekBarCenterX
      */
     private void resetSeekbarTextMargin(int seekBarCenterX){
-        int leftMargin = seekBarCenterX-progressTextWidth/2+DipPixelUtil.dip2px(mContext, 6.5f);
+        int leftMargin = seekBarCenterX-progressTextWidth/2+DipPixelUtil.dip2px(mContext, 6f);
         if(leftMargin<0){
             leftMargin = 0;
         }

@@ -34,7 +34,7 @@
                 android:text="50"
                 />
             
-            <SeekBar
+            <com.leo.appmaster.ui.LeoSeekBar
                 android:id="@+id/mSeekBar"
                 style="@style/Widget.SeekBar.Normal"
                 android:layout_width="@dimen/app_manager_hotactivity_list_item_text_des_width"
