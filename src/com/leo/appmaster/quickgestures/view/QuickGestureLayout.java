@@ -531,7 +531,7 @@ public class QuickGestureLayout extends ViewGroup {
 
             } else if (gType == GType.MostUsedLayout) {
                 // TODO update most used list
-
+                
             } else if (gType == GType.SwitcherLayout) {
                 // TODO update switcher list
 

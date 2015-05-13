@@ -67,7 +67,7 @@ public class QuickGestureManager {
         }
     }
 
-    public void recodeAppLaunch(String pkg) {
+    public void recordAppLaunch(String pkg) {
         if (TextUtils.isEmpty(pkg)) {
             return;
         }
