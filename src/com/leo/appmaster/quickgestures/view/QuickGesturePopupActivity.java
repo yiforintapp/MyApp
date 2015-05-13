@@ -12,7 +12,6 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
-import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.animation.Animator;
@@ -53,11 +52,11 @@ public class QuickGesturePopupActivity extends Activity {
         LeoLog.d("QuickGesturePopupActivity", "mSwitchListFromSp : " + mSwitchListFromSp);
             if(mSwitchListFromSp.isEmpty()){
                 mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
-                String saveToSp = AppUtil.ListToString(mSwitchList, switchNum);
+                String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList, switchNum);
                 mSpSwitch.setSwitchList(saveToSp);
                 LeoLog.d("QuickGesturePopupActivity", "saveToSp:"+saveToSp);
             }else {
-                mSwitchList = AppUtil.StringToList(mSwitchListFromSp);
+                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
 
         fillQg1();

@@ -119,29 +119,4 @@ public class AppUtil {
         return TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();
     }
 
-    public static String ListToString(List<QuickSwitcherInfo> mSwitchList, int mNum) {
-        String ListString = "";
-        for (int i = 0; i < mNum; i++) {
-            QuickSwitcherInfo switchInfo = mSwitchList.get(i);
-            String name = switchInfo.iDentiName;
-            int position = switchInfo.position;
-            LeoLog.d("AppUtil", "name : " + name + "--position" + position);
-            if (i == 0) {
-                ListString = name + ":" + position;
-            } else {
-                ListString = ListString + "," + name + ":" + position;
-            }
-        }
-        return ListString;
-    }
-
-    public static List<QuickSwitcherInfo> StringToList(String mSwitchListFromSp) {
-        List<QuickSwitcherInfo> mSwitcherList = new ArrayList<QuickSwitcherInfo>();
-        String[] mSwitchInfo = mSwitchListFromSp.split(",");
-        // LeoLog.d("AppUtil", "name : " + name + "--position" + position);
-        for (int i = 0; i < mSwitchInfo.length; i++) {
-            
-        }
-        return null;
-    }
 }
