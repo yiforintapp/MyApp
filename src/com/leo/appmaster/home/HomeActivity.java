@@ -338,6 +338,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             default:
                 break;
         }
+        int current = mViewPager.getCurrentItem();
+        if(current < mFragmentHolders.length) {
+            BaseFragment fragment = mFragmentHolders[current].fragment;
+            if(fragment instanceof Selectable) {
+                ((Selectable) fragment).onScrolling();
+            }
+        }  
     }
 
     private List<String> getRightMenuItems() {

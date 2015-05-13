@@ -341,6 +341,7 @@ public class PrivacyLevelView extends View {
             mScanAnimator.cancel();
             mScanAnimator = null;
         }
+        invalidate();
     }
 
     public void startScanning() {
