@@ -4,6 +4,11 @@ package com.leo.appmaster.quickgestures.ui;
 import java.util.AbstractList;
 import java.util.List;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -13,21 +18,11 @@ import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
-
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends Activity {
 
-    private static int switchNum = 9;
+    private static int switchNum;
     private QuickGestureContainer mContainer;
     private AbstractList<AppItemInfo> list;
     private List<QuickSwitcherInfo> mSwitchList;
@@ -38,37 +33,43 @@ public class QuickGesturePopupActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture_left);
+
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        decorView.setSystemUiVisibility(uiOptions);
+
         mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
         mSpSwitch = AppMasterPreference.getInstance(this);
-        mSwitchListFromSp = mSpSwitch.getSwitchList();
 
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
 
-        // Window window = getWindow();
-        // WindowManager.LayoutParams params = window.getAttributes();
-        // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        // window.setAttributes(params);
-
         if (mSwitchList == null) {
+            mSwitchListFromSp = mSpSwitch.getSwitchList();
+            switchNum = mSpSwitch.getSwitchListSize();
+            LeoLog.d("testFirstInGet", "mSwitchListFromSp : " + mSwitchListFromSp);
             if (mSwitchListFromSp.isEmpty()) {
                 mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
+                String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
+                        switchNum);
+                mSpSwitch.setSwitchList(saveToSp);
+                LeoLog.d("testFirstInGet", "saveToSp:" + saveToSp);
             } else {
-
+                LeoLog.d("testFirstInGet", "get list from sp");
+                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
 
+            fillQg1();
+            fillQg2();
+            fillQg3();
+
+            mContainer.showOpenAnimation();
         }
-
-        fillQg1();
-        fillQg2();
-        fillQg3();
-
-        mContainer.showOpenAnimation();
+        overridePendingTransition(-1, -1);
     }
 
     @Override
     protected void onStop() {
         FloatWindowHelper.mGestureShowing = false;
-        Log.e("############", "" + FloatWindowHelper.isShowSysNoReadMessage);
         // 去除系统短信未读提示
         if (FloatWindowHelper.isShowSysNoReadMessage) {
             FloatWindowHelper.isShowSysNoReadMessage = false;
@@ -102,7 +103,13 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        mContainer.showCloseAnimation();
+
+        if (mContainer.isEditing()) {
+            mContainer.leaveEditMode();
+        } else {
+            mContainer.showCloseAnimation();
+        }
+
         // super.onBackPressed();
     }
 

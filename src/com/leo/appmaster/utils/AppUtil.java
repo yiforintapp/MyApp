@@ -1,9 +1,11 @@
 
 package com.leo.appmaster.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 
 import android.app.Activity;
 import android.app.Service;
@@ -117,7 +119,4 @@ public class AppUtil {
         return TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();
     }
 
-    public static void ListToString(List switchList){
-        
-    }
 }

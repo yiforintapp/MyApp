@@ -3,6 +3,16 @@ package com.leo.appmaster.quickgestures.view;
 
 import java.util.ArrayList;
 
+import com.leo.appmaster.R;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
+import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
+import com.leo.appmaster.utils.LeoLog;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -14,7 +24,6 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,19 +41,17 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGestureLayout extends ViewGroup {
 
+    private static final int INNER_RING_MAX_COUNT = 4;
     private QuickGestureContainer mContainer;
-
+    private Orientation mOrientation = Orientation.Left;
+    private AnimatorSet mReorderAnimator;
+    private boolean mRecodering;
+    private boolean mAnimCanceled;
     private int mTotalWidth, mTotalHeight;
     private int mItemSize, mIconSize;
     private int mInnerRadius, mOuterRadius;
     private int mRingCount;
     private float mCurrentRotateDegree;
-
-    private Orientation mOrientation = Orientation.Left;
-    private AnimatorSet mReorderAnimator;
-    private boolean mAnimCanceled;
-
-    private static final int INNER_RING_MAX_COUNT = 4;
     private Context mContext;
 
     public QuickGestureLayout(Context context) {
@@ -224,6 +231,7 @@ public class QuickGestureLayout extends ViewGroup {
                 params.position--;
             }
         }
+        saveReorderPosition();
         super.removeView(view);
     }
 
@@ -237,6 +245,7 @@ public class QuickGestureLayout extends ViewGroup {
                 params.position++;
             }
         }
+        saveReorderPosition();
         super.addView(child);
     }
 
@@ -453,6 +462,10 @@ public class QuickGestureLayout extends ViewGroup {
 
     }
 
+    public boolean isReordering() {
+        return mRecodering;
+    }
+
     public void squeezeItems(GestureItemView fromView, GestureItemView toView) {
 
         if (mReorderAnimator != null && mReorderAnimator.isRunning()) {
@@ -469,12 +482,12 @@ public class QuickGestureLayout extends ViewGroup {
         QuickGestureLayout.LayoutParams hitLP;
         for (int i = 0; i < getChildCount(); i++) {
             hitView = (GestureItemView) getChildAt(i);
-            // hitView.setLeft((int) (hitView.getLeft() +
-            // hitView.getTranslationX()));
-            // hitView.setTop((int) (hitView.getTop() +
-            // hitView.getTranslationY()));
-            // hitView.setTranslationX(0);
-            // hitView.setTranslationY(0);
+            hitView.setLeft((int) (hitView.getLeft() +
+                    hitView.getTranslationX()));
+            hitView.setTop((int) (hitView.getTop() +
+                    hitView.getTranslationY()));
+            hitView.setTranslationX(0);
+            hitView.setTranslationY(0);
 
             hitLP = (LayoutParams) hitView.getLayoutParams();
             if (isForward) {
@@ -500,16 +513,19 @@ public class QuickGestureLayout extends ViewGroup {
             @Override
             public void onAnimationStart(Animator animation) {
                 mAnimCanceled = false;
+                mRecodering = true;
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 mAnimCanceled = true;
+                mRecodering = false;
                 super.onAnimationCancel(animation);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                mRecodering = false;
                 int lastPosition = ((QuickGestureLayout.LayoutParams) hitViews[hitViews.length - 1]
                         .getLayoutParams()).position;
                 int nextPosition;
@@ -523,14 +539,14 @@ public class QuickGestureLayout extends ViewGroup {
                     }
                 }
 
+                saveReorderPosition();
+
                 if (mAnimCanceled) {
                     for (GestureItemView gestureItemView : hitViews) {
-                        // gestureItemView.setLeft((int)
-                        // (gestureItemView.getLeft() + gestureItemView
-                        // .getTranslationX()));
-                        // gestureItemView.setTop((int)
-                        // (gestureItemView.getTop() + gestureItemView
-                        // .getTranslationY()));
+                        gestureItemView.setLeft((int) (gestureItemView.getLeft() + gestureItemView
+                                .getTranslationX()));
+                        gestureItemView.setTop((int) (gestureItemView.getTop() + gestureItemView
+                                .getTranslationY()));
                         gestureItemView.setTranslationX(0);
                         gestureItemView.setTranslationY(0);
                     }
@@ -543,9 +559,25 @@ public class QuickGestureLayout extends ViewGroup {
                     requestLayout();
                 }
             }
+
         });
         mReorderAnimator.start();
+    }
 
+    private void saveReorderPosition() {
+        if (mContainer != null) {
+            GType gType = mContainer.getCurrentGestureType();
+            if (gType == GType.DymicLayout) {
+                // TODO update dynamic list
+
+            } else if (gType == GType.MostUsedLayout) {
+                // TODO update most used list
+
+            } else if (gType == GType.SwitcherLayout) {
+                // TODO update switcher list
+
+            }
+        }
     }
 
     private AnimatorSet createTranslationAnimations(GestureItemView fromView, GestureItemView toView) {

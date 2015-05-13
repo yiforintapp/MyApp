@@ -2,7 +2,14 @@
 package com.leo.appmaster.quickgestures.view;
 
 import java.util.List;
-
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+//import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
+import com.leo.appmaster.utils.LeoLog;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -21,7 +28,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
-
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.BaseInfo;
@@ -34,7 +40,6 @@ import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
-
 public class QuickGestureContainer extends FrameLayout {
 
     public static final String TAG = "QuickGestureContainer";
@@ -172,7 +177,7 @@ public class QuickGestureContainer extends FrameLayout {
         }
     }
 
-    private void leaveEditMode() {
+    public void leaveEditMode() {
         mEditing = false;
         mDymicLayout.leaveEditMode();
         mMostUsedLayout.leaveEditMode();
@@ -914,10 +919,10 @@ public class QuickGestureContainer extends FrameLayout {
 
     public void showOpenAnimation() {
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(600);
-        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f, 1.15f,
+        set.setDuration(400);
+        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f, 1.1f,
                 1.0f);
-        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f, 1.15f,
+        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f, 1.1f,
                 1.0f);
         set.playTogether(animationx, animationy);
         set.start();
@@ -925,11 +930,11 @@ public class QuickGestureContainer extends FrameLayout {
 
     public void showCloseAnimation() {
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(600);
+        set.setDuration(400);
         Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 1.0f,
-                1.15f, 0.0f);
+                1.1f, 0.0f);
         Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 1.0f,
-                1.15f, 0.0f);
+                1.1f, 0.0f);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

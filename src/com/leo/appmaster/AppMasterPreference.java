@@ -161,6 +161,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME = "quick_gesture_free_disturb_app_package_name";
     public static final String PREF_QUICK_GESTURE_APP_LAUNCH_RECODER = "quick_gesture_app_launch_recoder";
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST = "quick_gesture_quickswitch_list";
+    public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE = "quick_gesture_quickswitch_list_size";
 
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -1497,6 +1498,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setSwitchList(String mSwitchList) {
         mPref.edit().putString(PREF_QUICK_GESTURE_QUICKSWITCH_LIST, mSwitchList)
+                .commit();
+    }
+
+    public int getSwitchListSize() {
+        return mPref.getInt(PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE,
+                9);
+    }
+
+    public void setSwitchListSize(int mSwitchListSize) {
+        mPref.edit().putInt(PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE, mSwitchListSize)
                 .commit();
     }
 
