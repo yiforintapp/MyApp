@@ -30,6 +30,9 @@ public class QuickGestureManager {
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
+    
+    public List<BaseInfo> mDynamicList;
+    public List<BaseInfo> mMostUsedList;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
@@ -45,7 +48,11 @@ public class QuickGestureManager {
     }
 
     private void init() {
-        loadAppLaunchReoder();
+        mDynamicList = new ArrayList<BaseInfo>();
+        mMostUsedList = new ArrayList<BaseInfo>();
+        
+        
+        loadAppLaunchReorder();
     }
 
     public void stopFloatWindow() {
@@ -56,7 +63,7 @@ public class QuickGestureManager {
         LockManager.getInstatnce().startFloatWindowService();
     }
 
-    public void loadAppLaunchReoder() {
+    public void loadAppLaunchReorder() {
         mAppLaunchRecorders = new TreeSet<QuickGestureManager.AppLauncherRecorder>();
         String recoders = AppMasterPreference.getInstance(mContext).getAppLaunchRecoder();
         AppLauncherRecorder temp = null;
@@ -147,6 +154,11 @@ public class QuickGestureManager {
 
     public void onRunningPkgChanged(String pkg) {
 
+    }
+    
+    
+    public void checkEventItemRemoved(BaseInfo info) {
+        
     }
 
     public List<String> getFreeDisturbAppName() {

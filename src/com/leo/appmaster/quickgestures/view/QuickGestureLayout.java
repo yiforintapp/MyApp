@@ -233,8 +233,8 @@ public class QuickGestureLayout extends ViewGroup {
                 params.position--;
             }
         }
-        saveReorderPosition();
         super.removeView(view);
+        saveReorderPosition();
     }
 
     /**
@@ -407,6 +407,11 @@ public class QuickGestureLayout extends ViewGroup {
                 int onnsetY = (int) (y - hitView.getTop());
                 if (rect.contains(offsetX, onnsetY)) {
                     removeView(hitView);
+                    GType type = mContainer.getCurrentGestureType();
+                    if (type == GType.DymicLayout) {
+                        QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+                                (BaseInfo) hitView.getTag());
+                    }
                 }
             } else {
                 animateItem(hitView);
@@ -502,6 +507,12 @@ public class QuickGestureLayout extends ViewGroup {
     }
 
     public void squeezeItems(GestureItemView fromView, GestureItemView toView) {
+
+        // dont need squeeze dynamic layout
+        GType type = mContainer.getCurrentGestureType();
+        if (type == GType.DymicLayout) {
+            return;
+        }
 
         if (mReorderAnimator != null && mReorderAnimator.isRunning()) {
             mReorderAnimator.cancel();
