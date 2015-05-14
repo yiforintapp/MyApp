@@ -43,7 +43,7 @@
         android:ellipsize="end"
         android:layout_marginBottom="@dimen/guide_content_margin_buttom"
         android:textColor="#acacac"
-                android:text="ddddddddddddvvvdddddddddddddddddddddddddddddddddddddddddvvvvvvvvvvdd"
+                android:text="ddddddvdddddvvvvvvvvvvdd"
         
         android:textSize="@dimen/guide_page_content_font_size" />
     
@@ -56,7 +56,7 @@
         android:gravity="center"
         android:layout_marginBottom="@dimen/guide_title_margin_buttom"
         android:textColor="#595757"
-        android:text="dddddddddddddddddddddd"
+        android:text="ddddddddddddddddddddddddddddddddddddddddddddddddddd"
         android:textSize="@dimen/guide_page_title_font_size" />
 	</RelativeLayout>
     
