@@ -407,15 +407,26 @@ public class QuickGestureLayout extends ViewGroup {
                 int onnsetY = (int) (y - hitView.getTop());
                 if (rect.contains(offsetX, onnsetY)) {
                     removeView(hitView);
-                    GType type = mContainer.getCurrentGestureType();
-                    if (type == GType.DymicLayout) {
-                        QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
-                                (BaseInfo) hitView.getTag());
-                    }
+                    itemRemoved(hitView);
                 }
             } else {
                 animateItem(hitView);
             }
+        }
+    }
+
+    private void itemRemoved(View hitView) {
+        GType type = mContainer.getCurrentGestureType();
+        if (type == GType.DymicLayout) {
+            QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+                    (BaseInfo) hitView.getTag());
+        } else if (type == GType.SwitcherLayout) {
+            //TODO show add new item icon
+            
+            
+            
+        } else if (type == GType.MostUsedLayout) {
+            
         }
     }
 
