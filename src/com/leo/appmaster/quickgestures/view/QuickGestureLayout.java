@@ -237,18 +237,29 @@ public class QuickGestureLayout extends ViewGroup {
         super.removeView(view);
     }
 
+    /**
+     * 在初始化添加view的時候，必須使用次方法
+     */
     @Override
     public void addView(View child) {
-        int addPosition = ((LayoutParams) child.getLayoutParams()).position;
-        LayoutParams params = null;
+        super.addView(child);
+    }
+
+    /**
+     * 在快捷手势界面点击添加按钮时，必须通过此方法添加
+     */
+    @Override
+    public void addView(View child, android.view.ViewGroup.LayoutParams params) {
+        int addPosition = ((LayoutParams) params).position;
+        LayoutParams lp = ((LayoutParams) params);
         for (int i = 0; i < getChildCount(); i++) {
-            params = (LayoutParams) getChildAt(i).getLayoutParams();
-            if (params.position >= addPosition) {
-                params.position++;
+            lp = (LayoutParams) getChildAt(i).getLayoutParams();
+            if (lp.position >= addPosition) {
+                lp.position++;
             }
         }
-        // saveReorderPosition();
-        super.addView(child);
+        saveReorderPosition();
+        super.addView(child, params);
     }
 
     private void animateItem(final View view) {

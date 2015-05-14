@@ -983,7 +983,7 @@ public class QuickSwitchManager {
             String name = switchInfo.iDentiName;
             int position = switchInfo.position;
 
-            LeoLog.d("QuickSwitchManager", "name : " + name + "--position" + position);
+            LeoLog.d("QuickSwitchManager", "name : " + name + "--position : " + position);
             if (i == 0) {
                 ListString = name + ":" + position;
             } else {
@@ -1000,13 +1000,15 @@ public class QuickSwitchManager {
             QuickSwitcherInfo mInfo = new QuickSwitcherInfo();
             String[] mEachOneInfo = mSwitchAllInfo[i].split(":");
             LeoLog.d("QuickSwitchManager",
-                    "name : " + mEachOneInfo[0] + "--position" + Integer.parseInt(mEachOneInfo[1]));
+                    "name : " + mEachOneInfo[0] + "--position : " + Integer.parseInt(mEachOneInfo[1]));
             mInfo.iDentiName = mEachOneInfo[0];
             mInfo.position = Integer.parseInt(mEachOneInfo[1]);
             mInfo.label = getLabelFromName(mEachOneInfo[0]);
             mInfo.switchIcon = getIconFromName(mEachOneInfo[0]);
             mSwitcherList.add(mInfo);
         }
+        LeoLog.d("QuickSwitchManager",
+                "List size is : " + mSwitcherList.size());
         return mSwitcherList;
     }
 

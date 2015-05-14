@@ -51,7 +51,6 @@ public class QuickGestureContainer extends FrameLayout {
         DymicLayout, MostUsedLayout, SwitcherLayout;
     }
 
-    private RightGesturePopupWindow mPopWindow;
     private QuickGestureLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
     private CornerTabs mCornerTabs;
     private GType mCurrentGestureType = GType.DymicLayout;
@@ -655,13 +654,14 @@ public class QuickGestureContainer extends FrameLayout {
                 if (i >= 9) {
                     break;
                 }
+                sInfo = (QuickSwitcherInfo) infos.get(i);
                 tv = new GestureItemView(getContext());
                 lp = new QuickGestureLayout.LayoutParams(
                         targetLayout.getItemSize(), targetLayout.getItemSize());
-                lp.position = i;
+//                lp.position = i;
+                lp.position = sInfo.position;
                 tv.setGravity(Gravity.CENTER_HORIZONTAL);
                 tv.setLayoutParams(lp);
-                sInfo = (QuickSwitcherInfo) infos.get(i);
                 tv.setText(sInfo.label);
                 tv.setTextSize(12);
                 if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
@@ -1009,10 +1009,6 @@ public class QuickGestureContainer extends FrameLayout {
             onTouchDown();
             snapToNext();
         }
-    }
-
-    public void setPopWindow(RightGesturePopupWindow rightGesturePopupWindow) {
-        mPopWindow = rightGesturePopupWindow;
     }
 
 }
