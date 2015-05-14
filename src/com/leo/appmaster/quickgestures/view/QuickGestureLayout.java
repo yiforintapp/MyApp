@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
@@ -330,6 +331,11 @@ public class QuickGestureLayout extends ViewGroup {
                                 mContext.startActivity(mIntent);
                             } catch (Exception e) {
                             }
+                            if (QuickGestureManager.getInstance(mContext).mMessages == null) {
+                                // 为空不做操作
+                            } else {
+                                QuickGestureManager.getInstance(mContext).mMessages = null;
+                            }
                             // 电话提醒
                         } else if (QuickSwitchManager.SYS_NO_READ_CALL_LOG_TIP
                                 .equals(((QuickGestureContactTipInfo) info).flag)) {
@@ -338,6 +344,11 @@ public class QuickGestureLayout extends ViewGroup {
                             mContext.startActivity(intent);
                             GestureItemView item = (GestureItemView) view;
                             item.cancelShowReadTip();
+                            if (QuickGestureManager.getInstance(mContext).mCallLogs == null) {
+                                // 为空不做操作
+                            } else {
+                                QuickGestureManager.getInstance(mContext).mCallLogs = null;
+                            }
                         } else if (QuickSwitchManager.PRIVACY_NO_READ_CONTACT_TIP
                                 .equals(((QuickGestureContactTipInfo) info).flag)) {
                             Intent intent = new Intent();
@@ -345,6 +356,12 @@ public class QuickGestureLayout extends ViewGroup {
                             try {
                                 mContext.startActivity(intent);
                             } catch (Exception e) {
+                            }
+                            if (LockManager.getInstatnce().isShowPrivacyCallLog) {
+                                LockManager.getInstatnce().isShowPrivacyCallLog = false;
+                            }
+                            if (LockManager.getInstatnce().isShowPrivacyMsm) {
+                                LockManager.getInstatnce().isShowPrivacyMsm = false;
                             }
                         }
                     }
