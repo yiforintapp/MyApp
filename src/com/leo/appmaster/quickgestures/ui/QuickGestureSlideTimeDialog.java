@@ -59,7 +59,7 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
                 R.layout.dialog_quick_gesture_slide_time_setting, null);
         Resources resources = AppMasterApplication.getInstance().getResources();
         title = (TextView) dlgView.findViewById(R.id.dialog_tilte);
-        sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
+        sure_button = (TextView) dlgView.findViewById(R.id.quick_slide_time_setting_dlg_right_btn);
         mRadioListView = (ListView) dlgView.findViewById(R.id.radioLV);
         mFreeDisturbTv = (TextView) dlgView.findViewById(R.id.free_disturbTV);
         mJustHomeCb = (CheckBox) dlgView.findViewById(R.id.dialog_radio_slide_time_just_home_cb);

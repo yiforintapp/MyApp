@@ -135,16 +135,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 R.string.pg_appmanager_quick_gesture_option_open_quick_gesture));
         gestureSettingOpenGesture.setCheck(mPre.getSwitchOpenQuickGesture());
         mQuickGestureSettingOption.add(gestureSettingOpenGesture);
-        // QuickGestureSettingBean gestureSettingSwitchSetting = new
-        // QuickGestureSettingBean();
-        // gestureSettingSwitchSetting.setName(this.getResources().getString(
-        // R.string.pg_appmanager_quick_gesture_option_switch_setting));
-        // mQuickGestureSettingOption.add(gestureSettingSwitchSetting);
-        // QuickGestureSettingBean gestureSettingGestureTheme = new
-        // QuickGestureSettingBean();
-        // gestureSettingGestureTheme.setName(this.getResources().getString(
-        // R.string.pg_appmanager_quick_gesture_option_gesture_theme_title));
-        // mQuickGestureSettingOption.add(gestureSettingGestureTheme);
         QuickGestureSettingBean gestureSettingSlidingAreaLocation = new QuickGestureSettingBean();
         gestureSettingSlidingAreaLocation.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_sliding_area_location_title));
@@ -611,9 +601,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     }
 
     private void showAllAppDialog() {
-        QuickGestureFreeDisturbAppDialog mFreeDisturbApp = new QuickGestureFreeDisturbAppDialog(
+       final QuickGestureFreeDisturbAppDialog mFreeDisturbApp = new QuickGestureFreeDisturbAppDialog(
                 this);
         mFreeDisturbApp.setTitle(R.string.pg_appmanager_quick_gesture_select_free_disturb_app_text);
+        mFreeDisturbApp.setRightBt(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                if (mFreeDisturbApp != null) {
+                    mFreeDisturbApp.cancel();
+                }
+            }
+        });
         mFreeDisturbApp.show();
     }
 
