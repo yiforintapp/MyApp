@@ -544,7 +544,8 @@ public class QuickGestureContainer extends FrameLayout {
         }
     }
 
-    public void fillDynamicItem(QuickGestureLayout targetLayout, List<? extends BaseInfo> itemInfos, int businessIndes) {
+    public void fillDynamicItem(QuickGestureLayout targetLayout,
+            List<? extends BaseInfo> itemInfos, int businessIndes) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView tv = null;
@@ -563,19 +564,17 @@ public class QuickGestureContainer extends FrameLayout {
                 if (QuickGestureManager.getInstance(mContext).mMessages != null
                         && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
                     for (MessageBean message : QuickGestureManager.getInstance(mContext).mMessages) {
-                        QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
-                        item.icon = getContext().getResources().getDrawable(
+                        message.icon = getContext().getResources().getDrawable(
                                 R.drawable.add_mode_icon);
                         if (message.getMessageName() != null
                                 && !"".equals(message.getMessageName())) {
-                            item.label = message.getMessageName();
+                            message.label = message.getMessageName();
                         } else {
-                            item.label = message.getPhoneNumber();
+                            message.label = message.getPhoneNumber();
                         }
-                        item.flag = QuickSwitchManager.SYS_NO_READ_MESSAGE_TIP;
-                        item.phoneNumber = message.getPhoneNumber();
-                        item.isShowReadTip = true;
-                        infos.add(businessIndes, item);
+                        message.flag = QuickSwitchManager.SYS_NO_READ_MESSAGE_TIP;
+                        message.isShowReadTip = true;
+                        infos.add(0, message);
                     }
                 }
             }
@@ -584,19 +583,17 @@ public class QuickGestureContainer extends FrameLayout {
                 if (QuickGestureManager.getInstance(mContext).mCallLogs != null
                         && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
                     for (ContactCallLog baseInfo : QuickGestureManager.getInstance(mContext).mCallLogs) {
-                        QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
-                        item.icon = getContext().getResources().getDrawable(
+                        baseInfo.icon = getContext().getResources().getDrawable(
                                 R.drawable.add_mode_icon);
                         if (baseInfo.getCallLogName() != null
                                 && !"".equals(baseInfo.getCallLogName())) {
-                            item.label = baseInfo.getCallLogName();
+                            baseInfo.label = baseInfo.getCallLogName();
                         } else {
-                            item.label = baseInfo.getCallLogNumber();
+                            baseInfo.label = baseInfo.getCallLogNumber();
                         }
-                        item.flag = QuickSwitchManager.SYS_NO_READ_CALL_LOG_TIP;
-                        item.phoneNumber = baseInfo.getCallLogNumber();
-                        item.isShowReadTip = true;
-                        infos.add(businessIndes, item);
+                        baseInfo.flag = QuickSwitchManager.SYS_NO_READ_CALL_LOG_TIP;
+                        baseInfo.isShowReadTip = true;
+                        infos.add(0, baseInfo);
                     }
                 }
             }

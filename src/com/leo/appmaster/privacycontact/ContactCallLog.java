@@ -3,9 +3,11 @@ package com.leo.appmaster.privacycontact;
 
 import java.io.Serializable;
 
+import com.leo.appmaster.model.BaseInfo;
+
 import android.graphics.Bitmap;
 
-public class ContactCallLog implements Serializable {
+public class ContactCallLog extends BaseInfo implements Serializable {
     private String callLogName;
     private String callLogNumber;
     private int clallLogType;
@@ -17,6 +19,9 @@ public class ContactCallLog implements Serializable {
     private int isRead;
     private String showDate;
     private Bitmap contactIcon;
+    public String phoneNumber;
+    public boolean isShowReadTip;
+    public String flag;
 
     public ContactCallLog(String callLogName, String callLogNumber, int clallLogType,
             String clallLogDate, int classLogId, int callLogCount, int callLogDuraction,

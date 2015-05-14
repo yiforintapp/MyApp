@@ -303,6 +303,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
             boolean isOtherLogs = false;
             ContentResolver cr = getContentResolver();
             if (PrivacyContactUtils.ADD_CONTACT_MODEL.equals(flag)) {
+            Log.e("#############", "导入记录");
                 boolean added = false;
                 PrivacyContactManager pcm = PrivacyContactManager
                         .getInstance(getApplicationContext());
@@ -415,7 +416,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 for (ContactBean contact : mAddPrivacyContact) {
                     addNumber.add(contact.getContactNumber());
                 }
-
+                Log.e("#############", "导入记录");
                 // 导入短信和通话记录
                 if (mAddMessages != null && mAddMessages.size() != 0) {
                     for (MessageBean message : mAddMessages) {
@@ -560,6 +561,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
             public void onClick(int which) {
                 if (which == 1) {
                     final int privacyTotal = mAddMessages.size() + mAddCallLogs.size();
+                Log.e("#############", "privacyTotal:"+privacyTotal);
                     if (mHandler == null) {
                         mHandler = new Handler() {
                             @Override
