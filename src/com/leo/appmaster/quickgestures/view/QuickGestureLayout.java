@@ -423,9 +423,12 @@ public class QuickGestureLayout extends ViewGroup {
                     (BaseInfo) hitView.getTag());
         } else if (type == GType.SwitcherLayout) {
             //TODO show add new item icon
-            
-            
-            
+            String switchListString = QuickSwitchManager.getInstance(mContext).getListStringFromSp();
+            List<QuickSwitcherInfo> mNowList = QuickSwitchManager.getInstance(mContext).StringToList(switchListString);
+            QuickSwitcherInfo mXuKuang = QuickSwitchManager.getInstance(mContext).getXuKuangInfo();
+            mXuKuang.position = mNowList.size();
+            mNowList.add(mXuKuang);
+            mContainer.fillSwitchItem(QuickGestureLayout.this,mNowList);
         } else if (type == GType.MostUsedLayout) {
             
         }

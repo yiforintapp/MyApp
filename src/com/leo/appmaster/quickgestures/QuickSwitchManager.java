@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
@@ -54,6 +55,7 @@ public class QuickSwitchManager {
     public final static String ROTATION = "rotation";
     public final static String MOBILEDATA = "mobiledata";
     public final static String HOME = "home";
+    public final static String XUKUANG = "xukuang";
     public final static String SYS_NO_READ_MESSAGE_TIP = "sys_no_read_message_tip";
     public final static String SYS_NO_READ_CALL_LOG_TIP = "sys_no_read_call_log_tip";
     public final static String PRIVACY_NO_READ_CONTACT_TIP = "privacy_no_read_contact_tip";
@@ -89,6 +91,7 @@ public class QuickSwitchManager {
     private int mRotateState;
     private ConnectivityManager mConnectivityManager;
     private Handler mHandler;
+    private AppMasterPreference switchPreference;
 
     public static synchronized QuickSwitchManager getInstance(Context context) {
         if (mInstance == null) {
@@ -100,6 +103,7 @@ public class QuickSwitchManager {
     private QuickSwitchManager(Context context) {
         mContext = context.getApplicationContext();
         vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
+        switchPreference = AppMasterPreference.getInstance(mContext);
 
         // 打开前判断每一个的状态
         blueTooth();
@@ -352,6 +356,9 @@ public class QuickSwitchManager {
                     R.drawable.switch_flightmode_pre);
             iCons[1] = mContext.getResources().getDrawable(
                     R.drawable.switch_flightmode);
+        } else if (IdentiName.equals(XUKUANG)) {
+            iCons = new Drawable[1];
+            iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_add);
         }
         return iCons;
     }
@@ -579,13 +586,13 @@ public class QuickSwitchManager {
                 return;
             }
         } else {
-            try{
-            isFlashLightOpen = false;
-            Parameters params = mCamera.getParameters();
-            params.setFlashMode(Parameters.FLASH_MODE_OFF);
-            mCamera.stopPreview();
-            mCamera.release();
-            }catch (Exception e) {
+            try {
+                isFlashLightOpen = false;
+                Parameters params = mCamera.getParameters();
+                params.setFlashMode(Parameters.FLASH_MODE_OFF);
+                mCamera.stopPreview();
+                mCamera.release();
+            } catch (Exception e) {
                 isFlashLightOpen = false;
                 return;
             }
@@ -1005,8 +1012,10 @@ public class QuickSwitchManager {
         for (int i = 0; i < mSwitchAllInfo.length; i++) {
             QuickSwitcherInfo mInfo = new QuickSwitcherInfo();
             String[] mEachOneInfo = mSwitchAllInfo[i].split(":");
-            LeoLog.d("QuickSwitchManager",
-                    "name : " + mEachOneInfo[0] + "--position : " + Integer.parseInt(mEachOneInfo[1]));
+            LeoLog.d(
+                    "QuickSwitchManager",
+                    "name : " + mEachOneInfo[0] + "--position : "
+                            + Integer.parseInt(mEachOneInfo[1]));
             mInfo.iDentiName = mEachOneInfo[0];
             mInfo.position = Integer.parseInt(mEachOneInfo[1]);
             mInfo.label = getLabelFromName(mEachOneInfo[0]);
@@ -1018,4 +1027,15 @@ public class QuickSwitchManager {
         return mSwitcherList;
     }
 
+    public String getListStringFromSp() {
+        return switchPreference.getSwitchList();
+    }
+
+    public QuickSwitcherInfo getXuKuangInfo() {
+        QuickSwitcherInfo mXuKuang = new QuickSwitcherInfo();
+        mXuKuang.label = "";
+        mXuKuang.iDentiName = XUKUANG;
+        mXuKuang.switchIcon = getIconFromName(XUKUANG);
+        return mXuKuang;
+    }
 }
