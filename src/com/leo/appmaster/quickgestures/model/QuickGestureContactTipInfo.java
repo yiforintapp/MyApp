@@ -6,4 +6,5 @@ import com.leo.appmaster.model.BaseInfo;
 public class QuickGestureContactTipInfo extends BaseInfo {
     public String flag;
     public String phoneNumber;
+    public boolean isShowReadTip;
 }

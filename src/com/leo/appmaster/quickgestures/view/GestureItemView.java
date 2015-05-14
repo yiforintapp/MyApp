@@ -25,6 +25,7 @@ public class GestureItemView extends TextView {
     private DecorateAction mDecorateAction;
     private boolean mEditing;
     private Drawable mCrossDrawable;
+    private boolean mIsShowReadTip;
 
     public GestureItemView(Context context) {
         super(context);
@@ -73,7 +74,9 @@ public class GestureItemView extends TextView {
             drawCross(canvas);
         } else {
             if (mDecorateAction != null) {
-                mDecorateAction.draw(canvas, this);
+                if (mIsShowReadTip) {
+                    mDecorateAction.draw(canvas, this);
+                }
             }
         }
     }
@@ -89,6 +92,16 @@ public class GestureItemView extends TextView {
 
     public void leaveEditMode() {
         mEditing = false;
+        invalidate();
+    }
+
+    public void showReadTip() {
+        mIsShowReadTip = true;
+        invalidate();
+    }
+
+    public void cancelShowReadTip() {
+        mIsShowReadTip = false;
         invalidate();
     }
 

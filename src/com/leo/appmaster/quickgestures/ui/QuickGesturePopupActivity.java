@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
@@ -83,8 +84,8 @@ public class QuickGesturePopupActivity extends Activity implements
         LeoLog.e("xxxx", "onStop");
         FloatWindowHelper.mGestureShowing = false;
         // 去除系统短信未读提示
-        if (FloatWindowHelper.isShowSysNoReadMessage) {
-            FloatWindowHelper.isShowSysNoReadMessage = false;
+        if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+            LockManager.getInstatnce().isShowSysNoReadMessage = false;
         }
         finish();
         super.onStop();
@@ -105,10 +106,9 @@ public class QuickGesturePopupActivity extends Activity implements
     @Override
     protected void onDestroy() {
         FloatWindowHelper.mGestureShowing = false;
-        Log.e("############", "" + FloatWindowHelper.isShowSysNoReadMessage);
         // 去除系统短信未读提示
-        if (FloatWindowHelper.isShowSysNoReadMessage) {
-            FloatWindowHelper.isShowSysNoReadMessage = false;
+        if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+            LockManager.getInstatnce().isShowSysNoReadMessage = false;
         }
         super.onDestroy();
     }

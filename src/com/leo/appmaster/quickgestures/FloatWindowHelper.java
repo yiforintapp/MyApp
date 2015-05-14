@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
@@ -60,9 +61,6 @@ public class FloatWindowHelper {
 
     public static boolean mGestureShowing = false;
     public static boolean mEditQuickAreaFlag = false;
-    public static boolean isShowSysNoReadMessage = false;
-    public static boolean isShowPrivacyMsm=false;
-    public static boolean isShowPrivacyCallLog=false;
     private static float startX;
     private static float startY;
     // private static WindowManager windowManager;
@@ -150,7 +148,6 @@ public class FloatWindowHelper {
                             float moveY = Math.abs(startY - event.getRawY());
                             if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.width / 4)
                                     && !isMoveIng) {
-                                LeoLog.e("xxxx", "launch quick gesture");
                                 isMoveIng = true;
                                 removeAllFloatWindow(mContext);
                                 mGestureShowing = true;
@@ -196,7 +193,8 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
-            if (FloatWindowHelper.isShowSysNoReadMessage) {
+            if (LockManager.getInstatnce().isShowSysNoReadMessage
+                    && LockManager.getInstatnce().onTuchGestureFlag == -1) {
                 mLeftBottomView.setIsShowReadTip(true, 1);
             }
             mLeftBottomView.setOnTouchListener(new OnTouchListener() {
@@ -342,6 +340,10 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
+            if (LockManager.getInstatnce().isShowSysNoReadMessage
+                    && LockManager.getInstatnce().onTuchGestureFlag == 1 && mLeftBottomView == null) {
+                mLeftCenterCenterView.setIsShowReadTip(true, 3);
+            }
             mLeftCenterCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -486,9 +488,10 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
-            // if (FloatWindowHelper.isShowSysNoReadMessage) {
-            // mRightBottomView.setIsShowReadTip(true, 2);
-            // }
+            if (LockManager.getInstatnce().isShowSysNoReadMessage
+                    && LockManager.getInstatnce().onTuchGestureFlag == 1) {
+                mRightBottomView.setIsShowReadTip(true, 2);
+            }
             mRightBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -627,6 +630,11 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
+            if (LockManager.getInstatnce().isShowSysNoReadMessage
+                    && LockManager.getInstatnce().onTuchGestureFlag == 1
+                    && mRightBottomView == null) {
+                mRightCenterCenterView.setIsShowReadTip(true, 4);
+            }
             mRightCenterCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -827,6 +835,14 @@ public class FloatWindowHelper {
         removeSwipWindow(context, -1);
         removeSwipWindow(context, -2);
         removeSwipWindow(context, -3);
+        removeSwipWindow(context, -4);
+    }
+
+    // 删除显示红点提示的悬浮窗
+    public static void removeShowReadTipWindow(Context context) {
+        removeSwipWindow(context, 1);
+        removeSwipWindow(context, 4);
+        removeSwipWindow(context, -1);
         removeSwipWindow(context, -4);
     }
 
@@ -1161,13 +1177,13 @@ public class FloatWindowHelper {
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             AppMasterApplication.getInstance().startActivity(intent);
-
+            LockManager.getInstatnce().onTuchGestureFlag = -1;
         } else if (flag == 1) {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             AppMasterApplication.getInstance().startActivity(intent);
-
+            LockManager.getInstatnce().onTuchGestureFlag = 1;
         }
     }
 }
