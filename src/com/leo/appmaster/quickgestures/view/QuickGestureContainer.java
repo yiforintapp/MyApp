@@ -533,7 +533,7 @@ public class QuickGestureContainer extends FrameLayout {
         QuickGestureLayout targetLayout = null;
         if (type == GType.DymicLayout) {
             targetLayout = mDymicLayout;
-            fillDynamicItem(targetLayout, infos);
+            fillDynamicItem(targetLayout, infos, 0);
         } else if (type == GType.MostUsedLayout) {
             targetLayout = mMostUsedLayout;
             fillItem(targetLayout, infos);
@@ -544,14 +544,15 @@ public class QuickGestureContainer extends FrameLayout {
         }
     }
 
-    public void fillDynamicItem(QuickGestureLayout targetLayout, List<? extends BaseInfo> itemInfo) {
+    public void fillDynamicItem(QuickGestureLayout targetLayout,
+            List<? extends BaseInfo> itemInfos, int businessIndes) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView tv = null;
             QuickGestureLayout.LayoutParams lp = null;
             BaseInfo info = null;
             int iconSize = targetLayout.getIconSize();
-            List<BaseInfo> infos = (List<BaseInfo>) itemInfo;
+            List<BaseInfo> infos = (List<BaseInfo>) itemInfos;
             // 快捷手势未读短信提醒
             boolean isShowMsmTip = AppMasterPreference.getInstance(getContext())
                     .getSwitchOpenNoReadMessageTip();
@@ -607,9 +608,14 @@ public class QuickGestureContainer extends FrameLayout {
                             R.string.pg_appmanager_quick_gesture_privacy_contact_tip_lable);
                     item.flag = QuickSwitchManager.PRIVACY_NO_READ_CONTACT_TIP;
                     item.isShowReadTip = true;
-                    infos.add(0, item);
+                    infos.add(businessIndes, item);
                 }
             }
+
+            if (infos.size() > 9) {
+                infos = infos.subList(0, 9);
+            }
+
             for (int i = 0; i < infos.size(); i++) {
                 if (i >= 9) {
                     break;
