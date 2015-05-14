@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
@@ -68,9 +69,8 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             "read=0 AND type=1", null, false);
             if (messages != null && messages.size() > 0) {
                 QuickGestureManager.getInstance(mContext).mMessages = messages;
-                FloatWindowHelper.isShowSysNoReadMessage = true;
-                FloatWindowHelper.removeSwipWindow(mContext, 1);
-                FloatWindowHelper.removeSwipWindow(mContext, -1);
+                LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                FloatWindowHelper.removeShowReadTipWindow(mContext);
             }
             /*
              * _________________________________________________
@@ -214,9 +214,8 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             selectionArgs);
             if (callLogs != null && callLogs.size() > 0) {
                 QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
-                FloatWindowHelper.isShowSysNoReadMessage = true;
-                FloatWindowHelper.removeSwipWindow(mContext, 1);
-                FloatWindowHelper.removeSwipWindow(mContext, -1);
+                LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                FloatWindowHelper.removeShowReadTipWindow(mContext);
             }
             /*
              * ------------------------------------------------------------------

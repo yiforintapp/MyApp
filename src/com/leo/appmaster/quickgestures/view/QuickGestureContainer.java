@@ -616,7 +616,7 @@ public class QuickGestureContainer extends FrameLayout {
                 }
             }
             for (int i = 0; i < infos.size(); i++) {
-                if (i >= 8) {
+                if (i >= 9) {
                     break;
                 }
                 tv = new GestureItemView(getContext());

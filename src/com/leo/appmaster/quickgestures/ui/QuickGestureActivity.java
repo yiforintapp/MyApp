@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.applocker.service.TaskDetectService.TaskDetectBinder;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -323,12 +324,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             if (!arg1) {
                 QuickGestureManager.getInstance(this).stopFloatWindow();
                 // 移除悬浮窗
-                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 1);
-                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 2);
-                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 3);
-                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -1);
-                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -2);
-                FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -3);
+                FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
             } else {
                 if (!mPre.getSwitchOpenQuickGesture()) {
                     QuickGestureManager.getInstance(this).startFloatWindow();
@@ -344,7 +340,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        // TODO
                         /**
                          * 首次打开，通知 显示短信提示，入口
                          */
@@ -355,9 +350,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         if (QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages != null
                                 && QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages
                                         .size() > 0) {
-                            FloatWindowHelper.isShowSysNoReadMessage = true;
-                            FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 1);
-                            FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -1);
+                            LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                            FloatWindowHelper.removeShowReadTipWindow(QuickGestureActivity.this);
                         }
                     }
                 }).start();
@@ -381,9 +375,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         if (QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs != null
                                 && QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs
                                         .size() > 0) {
-                            FloatWindowHelper.isShowSysNoReadMessage = true;
-                            FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, 1);
-                            FloatWindowHelper.removeSwipWindow(QuickGestureActivity.this, -1);
+                            LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                            FloatWindowHelper.removeShowReadTipWindow(QuickGestureActivity.this);
                         }
                     }
                 }).start();
@@ -392,7 +385,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         } else if (position == 6) {
             mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
-            FloatWindowHelper.isShowSysNoReadMessage = true;
         }
     }
 

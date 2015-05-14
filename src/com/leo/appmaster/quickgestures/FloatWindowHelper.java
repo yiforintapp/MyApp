@@ -61,7 +61,6 @@ public class FloatWindowHelper {
 
     public static boolean mGestureShowing = false;
     public static boolean mEditQuickAreaFlag = false;
-    public static boolean isShowSysNoReadMessage = false;
     private static float startX;
     private static float startY;
     // private static WindowManager windowManager;
@@ -194,7 +193,7 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
-            if (FloatWindowHelper.isShowSysNoReadMessage
+            if (LockManager.getInstatnce().isShowSysNoReadMessage
                     && LockManager.getInstatnce().onTuchGestureFlag == -1) {
                 mLeftBottomView.setIsShowReadTip(true, 1);
             }
@@ -341,7 +340,7 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
-            if (FloatWindowHelper.isShowSysNoReadMessage
+            if (LockManager.getInstatnce().isShowSysNoReadMessage
                     && LockManager.getInstatnce().onTuchGestureFlag == 1 && mLeftBottomView == null) {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
@@ -489,7 +488,7 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
-            if (FloatWindowHelper.isShowSysNoReadMessage
+            if (LockManager.getInstatnce().isShowSysNoReadMessage
                     && LockManager.getInstatnce().onTuchGestureFlag == 1) {
                 mRightBottomView.setIsShowReadTip(true, 2);
             }
@@ -631,7 +630,7 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
-            if (FloatWindowHelper.isShowSysNoReadMessage
+            if (LockManager.getInstatnce().isShowSysNoReadMessage
                     && LockManager.getInstatnce().onTuchGestureFlag == 1
                     && mRightBottomView == null) {
                 mRightCenterCenterView.setIsShowReadTip(true, 4);
@@ -836,6 +835,14 @@ public class FloatWindowHelper {
         removeSwipWindow(context, -1);
         removeSwipWindow(context, -2);
         removeSwipWindow(context, -3);
+        removeSwipWindow(context, -4);
+    }
+
+    // 删除显示红点提示的悬浮窗
+    public static void removeShowReadTipWindow(Context context) {
+        removeSwipWindow(context, 1);
+        removeSwipWindow(context, 4);
+        removeSwipWindow(context, -1);
         removeSwipWindow(context, -4);
     }
 

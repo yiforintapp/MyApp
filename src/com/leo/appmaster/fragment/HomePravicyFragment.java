@@ -150,10 +150,12 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
             view.showTip(true);
             if (flag == 1) {
                 LockManager.getInstatnce().isShowPrivacyCallLog = true;
-                FloatWindowHelper.isShowSysNoReadMessage = true;
+                LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                FloatWindowHelper.removeShowReadTipWindow(getActivity());
             } else if (flag == 0) {
                 LockManager.getInstatnce().isShowPrivacyMsm = true;
-                FloatWindowHelper.isShowSysNoReadMessage = true;
+                LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                FloatWindowHelper.removeShowReadTipWindow(getActivity());
             }
         } else {
             view.showTip(false);

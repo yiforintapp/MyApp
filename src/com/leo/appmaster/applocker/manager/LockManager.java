@@ -107,7 +107,8 @@ public class LockManager {
     public static final String EXTRA_LOCKED_APP_PKG = "locked_app_pkg";
     public boolean isShowPrivacyMsm = false;
     public boolean isShowPrivacyCallLog = false;
-    public int onTuchGestureFlag;
+    public boolean isShowSysNoReadMessage = false;
+    public int onTuchGestureFlag = -1;
     private ILockPolicy mLockPolicy;
     private static LockManager sInstance;
     private Context mContext;
