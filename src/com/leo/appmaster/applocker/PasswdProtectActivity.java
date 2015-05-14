@@ -109,7 +109,7 @@ public class PasswdProtectActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 if (mQuesDialog == null) {
-                    mQuesDialog = new LEOBaseDialog(PasswdProtectActivity.this);
+                    mQuesDialog = new LEOBaseDialog(PasswdProtectActivity.this,R.style.bt_dialog);
                     mQuesDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     mQuesDialog.setContentView(R.layout.dialog_common_list_select);
                     mQuesDialog.findViewById(R.id.no_list).setVisibility(View.GONE);

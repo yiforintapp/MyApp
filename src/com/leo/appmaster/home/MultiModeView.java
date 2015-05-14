@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -70,7 +71,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     }
 
     public void onEventMainThread(LockModeEvent event) {
-        fillUI();
+        fillUI(false);
         // mAdapter.notifyDataSetChanged();
     }
 
@@ -93,11 +94,11 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 // return false;
             }
         });
-        fillUI();
+        fillUI(true);
         super.onFinishInflate();
     }
 
-    private void fillUI() {
+    private void fillUI(boolean showAnimation) {
         mViews = new ArrayList<View>();
         LayoutInflater mInflater = LayoutInflater.from(getContext());
         List<LockMode> list = LockManager.getInstatnce().getLockMode();
@@ -122,7 +123,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             mHolder.setOnClickListener(this);
             mViews.add(view);
         }
-        mAdapter = new ModeAdapter(getContext());
+        mAdapter = new ModeAdapter(getContext(), showAnimation);
         mViewPager.setAdapter(mAdapter);
         mIndicator.setViewPager(mViewPager);
         moveToCurItem();
@@ -131,7 +132,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     public void show() {
         if (getVisibility() != View.VISIBLE) {
             setVisibility(View.VISIBLE);
-            fillUI();
+            fillUI(true);
         }
     }
 
@@ -163,6 +164,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
     @Override
     public void onClick(View v) {
+        int delayTime = 0;
         if (v.getId() == R.id.mode_holder) {
             LockMode mode = (LockMode) v.getTag();
             if (v != mSelected) {
@@ -172,26 +174,30 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 if (position == curPosition) {
                     LockMode lastSelectedMode = (LockMode) mSelected.getTag();
                     TextView modeIcon = (TextView) mSelected.findViewById(R.id.tv_lock_mode_icon);
-                    ImageView selectedImg = (ImageView) mSelected.findViewById(R.id.img_selected);
+                    final ImageView selectedImg = (ImageView) mSelected
+                            .findViewById(R.id.img_selected);
                     selectedImg.setVisibility(View.GONE);
                     modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
                             lastSelectedMode.modeIcon)));
 
                     modeIcon = (TextView) v.findViewById(R.id.tv_lock_mode_icon);
-                    selectedImg = (ImageView) v.findViewById(R.id.img_selected);
-                    selectedImg.setVisibility(View.VISIBLE);
                     modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(), BitmapUtils
                             .createGaryBitmap(mode.modeIcon))));
+                    selectedImg.setVisibility(View.VISIBLE);
+                    
+                    delayTime = 600;
+                    AnimatorSet scaleSet = new AnimatorSet();
+                    Animator animationx = ObjectAnimator.ofFloat(modeIcon, "scaleX", 0.9f,0.95f, 1.0f);
+                    Animator animationy = ObjectAnimator.ofFloat(modeIcon, "scaleY", 0.9f, 0.95f,1.0f);
+                    scaleSet.playTogether(animationx, animationy);
+                    Animator alphaAnimator = ObjectAnimator.ofFloat(selectedImg, "alpha", 0.9f, 1.0f);
+                    AnimatorSet set = new AnimatorSet();
+                    set.play(scaleSet).before(alphaAnimator);
+                    set.setDuration(200);
+                    scaleSet.start();
 
                     mSelected = v;
-
-                    // if (mode.defaultFlag == 1 && !mode.haveEverOpened) {
-                    // mode.haveEverOpened = true;
-                    // mLockManager.setCurrentLockMode(mode);
-                    // startRcommendLock();
-                    // } else {
                     mLockManager.setCurrentLockMode(mode, true);
-                    // }
                     SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "modeschage", "home");
                     new Thread(new Runnable() {
                         @Override
@@ -205,12 +211,11 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 }
             }
             postDelayed(new Runnable() {
-
                 @Override
                 public void run() {
                     hide();
                 }
-            }, 200);
+            }, delayTime);
 
         }
 
@@ -230,15 +235,21 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     class ModeAdapter extends PagerAdapter {
 
         LayoutInflater mInflater;
+        private boolean showAnimation;
 
         public ModeAdapter(Context ctx) {
+            mInflater = LayoutInflater.from(ctx);
+        }
+
+        public ModeAdapter(Context ctx, boolean showAnimation) {
+            this.showAnimation = showAnimation;
             mInflater = LayoutInflater.from(ctx);
         }
 
         @Override
         public int getCount() {
             return mViews.size();
-        }          
+        }
 
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {
@@ -253,12 +264,16 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View view = mViews.get(position);
-            AnimatorSet set = new AnimatorSet();
-            set.setDuration(600);
-            Animator animationx = ObjectAnimator.ofFloat(view, "scaleX", 0.7f,1.05f,0.95f,1.0f);
-            Animator animationy = ObjectAnimator.ofFloat(view, "scaleY", 0.7f,1.05f,0.95f,1.0f);
-            set.playTogether(animationx,animationy);
-            set.start();
+            if (showAnimation) {
+                AnimatorSet set = new AnimatorSet();
+                set.setDuration(600);
+                Animator animationx = ObjectAnimator.ofFloat(view, "scaleX", 0.7f, 1.05f, 0.95f,
+                        1.0f);
+                Animator animationy = ObjectAnimator.ofFloat(view, "scaleY", 0.7f, 1.05f, 0.95f,
+                        1.0f);
+                set.playTogether(animationx, animationy);
+                set.start();
+            }
             container.addView(view);
             return view;
         }

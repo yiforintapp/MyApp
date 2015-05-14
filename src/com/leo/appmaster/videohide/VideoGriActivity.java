@@ -49,7 +49,6 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;

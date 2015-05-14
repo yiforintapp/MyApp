@@ -86,8 +86,6 @@
     <dimen name="fragment_lock_password_setting_layout_passwd">10dp</dimen>
     <dimen name="fragment_lock_password_key_board">20dp</dimen>
     <dimen name="day_view_width">45dp</dimen>
-
-
     <dimen name="help_setting_page_margin">5dp</dimen>
     <dimen name="lock_help_item_pager_card_width">270dp</dimen>
     <dimen name="lock_help_item_pager_card_height">209dp</dimen>
@@ -102,19 +100,19 @@
     <integer name="help_setting_icon_bottom">25</integer>
 
     <dimen name="help_icon_width_parent">50dp</dimen>
-    <dimen name="locker_theme_guide_width">317dp</dimen>
-    <dimen name="locker_theme_guide_height">428dp</dimen>
+    <dimen name="locker_theme_guide_width">267dp</dimen>
+    <dimen name="locker_theme_guide_height">320dp</dimen>
     <dimen name="locker_theme_guide_tv_save_width">300dp</dimen>
     <dimen name="locker_theme_guide_tv_save_height">47dp</dimen>
-    <dimen name="locker_theme_guide_guideImageIV_marginTop">30dp</dimen>
-    <dimen name="locker_theme_guide_guideTitleTV_marginTop">41dp</dimen>
+    <dimen name="locker_theme_guide_guideImageIV_marginTop">20dp</dimen>
+    <dimen name="locker_theme_guide_guideTitleTV_marginTop">26dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_textsize">16dp</dimen>
     <dimen name="locker_theme_guide_tv_save_textsize">22sp</dimen>
     <dimen name="memery_dialog_button_width">100dp</dimen>
     <dimen name="memery_dialog_button_height">35dp</dimen>
     <dimen name="privacy_level_seprator_padding">10dp</dimen>
     <dimen name="privacy_level_padding">16dp</dimen>
-    <dimen name="privacy_suggest_padding">12dp</dimen>
+    <dimen name="privacy_suggest_padding">10dp</dimen>
     <dimen name="privacy_suggest_arrow_padding_right">12dp</dimen>
     <dimen name="privacy_suggest_arrow_padding_top">26dp</dimen>
     <dimen name="privacy_suggest_icon_text_margin">12dp</dimen>
@@ -122,7 +120,7 @@
     <dimen name="home_bottom_button_height">74dp</dimen>
     <dimen name="home_bottom_button_text_size">14dp</dimen>
     <dimen name="home_bottom_button_text_margin">10dp</dimen>
-    <dimen name="dlg_horizental_margin">242dp</dimen>
+    <dimen name="dlg_horizental_margin">232dp</dimen>
     <dimen name="dlg_three_button_text_size">12dp</dimen>
 
     <!-- privacyContact start -->
@@ -154,7 +152,7 @@
 
     <!-- guide pages begin -->
     <dimen name="guide_page_image_margin_top">0dp</dimen>
-    <dimen name="guide_page_image_height">312dp</dimen>
+    <dimen name="guide_page_image_height">294dp</dimen>
     <dimen name="guide_page_title_font_size">22dp</dimen>
     <dimen name="guide_page_content_font_size">12dp</dimen>
     <dimen name="guide_page_indicator_margin_buttom">30dp</dimen>
@@ -164,6 +162,7 @@
     <dimen name="guide_go_button_height">38dp</dimen>
     <dimen name="guide_go_button_width">138dp</dimen>
     <dimen name="guide_go_button_text_size">16dp</dimen>
+    <dimen name="guide_go_button_bottom">21dp</dimen>
     <!-- guide pages end -->
 
 
@@ -267,21 +266,42 @@
     <dimen name="weizhuang_zhiwen_icon_m_top">28dp</dimen>
     <!-- app weizhuang -->
 
-<!-- lock mode begin  -->
-     <dimen name="home_lock_mode_guide_image_width">120dp</dimen>
+
+    <!-- lock mode begin -->
+    <dimen name="home_lock_mode_guide_image_width">120dp</dimen>
     <dimen name="home_lock_mode_guide_image_height">120dp</dimen>
     <dimen name="home_lock_mode_guide_image_margin_top">50dp</dimen>
-     <dimen name="home_lock_mode_guide_text_margin_top">20dp</dimen>
-     <dimen name="home_lock_mode_guide_text_size">12dp</dimen>
-     <dimen name="home_lock_mode_guide_btn_width">80dp</dimen>
-     <dimen name="home_lock_mode_guide_btn_height">26dp</dimen>
-     <dimen name="home_lock_mode_guide_btn_margin_top">32dp</dimen>
-      
-     <dimen name="home_lock_mode_active_tip_width">170dp</dimen>
+    <dimen name="home_lock_mode_guide_text_margin_top">20dp</dimen>
+    <dimen name="home_lock_mode_guide_text_size">12dp</dimen>
+    <dimen name="home_lock_mode_guide_btn_width">80dp</dimen>
+    <dimen name="home_lock_mode_guide_btn_height">26dp</dimen>
+    <dimen name="home_lock_mode_guide_btn_margin_top">32dp</dimen>
+    <dimen name="home_lock_mode_active_tip_width">170dp</dimen>
     <dimen name="home_lock_mode_active_tip_image_width">52dp</dimen>
     <dimen name="home_lock_mode_active_tip_image_height">52dp</dimen>
     <dimen name="home_lock_mode_active_tip_image_margin_top">10dp</dimen>
     <dimen name="home_lock_mode_active_tip_text_margin_top">10dp</dimen>
     <dimen name="home_lock_mode_active_tip_text_margin_bottom">10dp</dimen>
-	<!-- lock mode end -->
+    <!-- lock mode end -->
+
+    <dimen name="privacy_proposal_padding">10dp</dimen>
+    <dimen name="privacy_proposal_seprator_padding">6dp</dimen>
+    <dimen name="privacy_proposal_small_text_size">10dp</dimen>
+    <dimen name="privacy_proposal_big_text_size">32dp</dimen>
+    <dimen name="privacy_scanning_offset">14dp</dimen>
+    <dimen name="privacy_proposal_top_height">226dp</dimen>
+    <dimen name="privacy_proposal_tip_padding">32dp</dimen>
+    <dimen name="privacy_proposal_tip_text_size">12dp</dimen>
+    <dimen name="privacy_proposal_status_width">170dp</dimen>
+    <dimen name="privacy_proposal_status_height">12dp</dimen>
+    <dimen name="privacy_proposal_status_padding_bottom">8dp</dimen>
+    <dimen name="privacy_suggest_height">100dp</dimen>
+
+  <!--  weizhuang -->
+    <dimen name="weizhaung_guide_image_margin_top">60dp</dimen>
+    
+     <dimen name="dialog_list_width">260dp</dimen>
+      <dimen name="dialog_list_btn_height">42dp</dimen>
+      <dimen name="dialog_list_item_height">50dp</dimen>
+      <dimen name="dialog_contact_item_height">56dp</dimen>
 </resources>

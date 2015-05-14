@@ -3,11 +3,11 @@ package com.leo.appmaster.ui.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.ViewGroup.LayoutParams;
 
 import com.leo.appmaster.R;
 
@@ -19,6 +19,7 @@ public class LEOMessageDialog extends LEOBaseDialog {
     private TextView mTitle;
     private TextView mContent;
     private TextView mBottomBtn;
+    private ImageView mIcon;
     private DialogInterface.OnClickListener mBottomBtnListener = null;
 
     public LEOMessageDialog(Context context) {
@@ -46,6 +47,18 @@ public class LEOMessageDialog extends LEOBaseDialog {
             mBottomBtn.setText(bottomStr);
     }
 
+    public void setDialogIcon(int resID){
+           mIcon.setImageResource(resID);
+    }
+    
+    public void setDialogIconLayout(LayoutParams params){
+        mIcon.setLayoutParams(params);
+    }
+    
+    public LayoutParams getDialogIcomLayout(){
+        return  mIcon.getLayoutParams();
+    }
+    
     public void setBottomBtnListener(DialogInterface.OnClickListener bListener) {
         if (bListener != null) {
             mBottomBtnListener = bListener;
@@ -74,13 +87,14 @@ public class LEOMessageDialog extends LEOBaseDialog {
     }
 
     private void initUI() {
-        View dlgView = LayoutInflater.from(mContext).inflate(R.layout.dialog_message, null);
+        View dlgView = LayoutInflater.from(mContext).inflate(R.layout.dialog_message_single_done, null);
 
 //        mLeftIcon = (ImageView) dlgView.findViewById(R.id.dlg_left_icon);
 //        mLeftIcon.setVisibility(View.GONE);
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
-
+        mIcon = (ImageView) dlgView.findViewById(R.id.dlg_icon);
+        
         mBottomBtn = (TextView) dlgView.findViewById(R.id.dlg_bottom_btn);
         mBottomBtn.setVisibility(View.VISIBLE);
         if (mBottomBtnListener == null) {

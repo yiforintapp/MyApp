@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="320dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dlag_rt"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_bg"
-    android:paddingBottom="15dp"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp" >
+    android:layout_gravity="center"
+    android:background="@drawable/bg"
+    android:orientation="vertical"
+     >
 
     <LinearLayout
         android:id="@+id/content_all_item"
         android:layout_width="@dimen/dlg_horizental_margin"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
+        android:layout_gravity="center"
+        android:orientation="vertical" 
+        android:layout_marginLeft="24dp"
+    android:layout_marginRight="24dp">
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,93 +33,67 @@
             android:layout_marginTop="15dp"
             android:text="@string/traff_first_page_small_set_low"
             android:textColor="@color/flow_item_small"
-            android:textSize="12dp" />
-
-        <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="vertical" >
-
-            <RelativeLayout
-                android:id="@+id/firstedit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" >
-
-                <TextView
-                    android:id="@+id/one_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/flow_settting_thrid_month_used_data"
-                    android:textColor="@color/flow_item_small"
-                    android:textSize="14dp" />
-
-                <EditText
-                    android:id="@+id/first_ed"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/reply_custom_message_edit_background"
-                    android:digits="1234567890"
-                    android:maxEms="5"
-                    android:maxLength="5"
-                    android:numeric="integer"
-                    android:padding="3dp"
-                    android:singleLine="true"
-                    android:textColor="@color/flow_setting_tv"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" >
-
-                <TextView
-                    android:id="@+id/two_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/flow_settting_thrid_second_tv"
-                    android:textColor="@color/flow_item_small"
-                    android:textSize="14dp" />
-
-                <EditText
-                    android:id="@+id/second_ed"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/reply_custom_message_edit_background"
-                    android:digits="1234567890"
-                    android:maxEms="5"
-                    android:maxLength="5"
-                    android:numeric="integer"
-                    android:padding="3dp"
-                    android:singleLine="true"
-                    android:textColor="@color/flow_setting_tv"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-        </LinearLayout>
+            android:textSize="12sp" />
 
         <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/flow_settting_thrid_month_used_data"
+                android:textColor="@color/flow_item_small"
+                android:textSize="14sp" /> 
+        
+       <EditText
+                    android:id="@+id/first_ed"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/reply_custom_message_edit_background"
+                    android:digits="1234567890"
+                    android:maxEms="5"
+                    android:maxLength="5"
+                    android:numeric="integer"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/flow_setting_tv"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+
+       <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/flow_settting_thrid_second_tv"
+                android:textColor="@color/flow_item_small"
+                android:textSize="14sp" />
+            <EditText
+                    android:id="@+id/second_ed"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/reply_custom_message_edit_background"
+                    android:digits="1234567890"
+                    android:maxEms="5"
+                    android:maxLength="5"
+                    android:numeric="integer"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/flow_setting_tv"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+
+    </LinearLayout>
+    
+    <TextView
             android:id="@+id/sure_button"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
-            android:background="@drawable/manager_backup_button_selecter"
+            android:background="@drawable/manager_done_single_button_selecter"
             android:gravity="center"
             android:text="@string/flow_settting_sure_bg"
-            android:textColor="@drawable/manager_backup_text_selecter"
+            android:textColor="@color/white"
             android:textSize="16dp" />
-    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

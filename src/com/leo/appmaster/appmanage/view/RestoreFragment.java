@@ -29,7 +29,6 @@ public class RestoreFragment extends BaseFragment implements AppBackupDataListen
     private View list_empty;
     private ListView list_restore;
 
-    private AppBackupAdapter mBackupAdapter;
     private AppRestoreAdapter mRestoreAdapter;
 
     private Handler mHandler = new Handler();

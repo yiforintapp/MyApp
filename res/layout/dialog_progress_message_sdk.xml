@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:background="@drawable/dialog_bg"
+    android:background="@drawable/bg"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -98,28 +96,19 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <!-- 双btn -->
-
-    <LinearLayout
+      <LinearLayout
         android:id="@+id/dlg_bottom_layout"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dlg_title_layout"
-        android:background="@color/dialog_btn_area_bg"
         android:gravity="center"
-        android:orientation="vertical"
-        android:paddingBottom="11dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="11dp" >
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/dlg_bottom_btn"
+            android:layout_width="match_parent"
             style="@style/dlg_single_button_txt_cancel"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:gravity="center"
             android:text="@string/cancel" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
