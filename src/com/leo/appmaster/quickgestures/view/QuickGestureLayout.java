@@ -34,6 +34,8 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.privacycontact.ContactCallLog;
+import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
@@ -284,6 +286,7 @@ public class QuickGestureLayout extends ViewGroup {
     }
 
     private void onItemClick(final View view) {
+        GestureItemView item = (GestureItemView) view;
         BaseInfo info = (BaseInfo) view.getTag();
         if (info instanceof AppItemInfo) {
             AppItemInfo appInfo = (AppItemInfo) info;
@@ -336,53 +339,51 @@ public class QuickGestureLayout extends ViewGroup {
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
                 QuickSwitchManager.getInstance(getContext()).goHome();
             }
-        } else if (info instanceof QuickGestureContactTipInfo) {
+        } else if (info instanceof MessageBean) {
             // 短信提醒
-            QuickGestureContactTipInfo bean = (QuickGestureContactTipInfo) info;
-            if (QuickSwitchManager.SYS_NO_READ_MESSAGE_TIP
-                    .equals(((QuickGestureContactTipInfo) info).flag)) {
-                Uri smsToUri = Uri.parse("smsto://" +
-                        bean.phoneNumber);
-                Intent mIntent = new
-                        Intent(android.content.Intent.ACTION_SENDTO,
-                                smsToUri);
-                try {
-                    mContext.startActivity(mIntent);
-                } catch (Exception e) {
+            item.cancelShowReadTip();
+            MessageBean bean = (MessageBean) info;
+            Uri smsToUri = Uri.parse("smsto://" +
+                    bean.getPhoneNumber());
+            Intent mIntent = new
+                    Intent(android.content.Intent.ACTION_SENDTO,
+                            smsToUri);
+            try {
+                mContext.startActivity(mIntent);
+                if (QuickGestureManager.getInstance(mContext).mMessages != null
+                        && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
+                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(bean);
                 }
-                if (QuickGestureManager.getInstance(mContext).mMessages == null) {
-                    // 为空不做操作
-                } else {
-                    QuickGestureManager.getInstance(mContext).mMessages = null;
-                }
-                // 电话提醒
-            } else if (QuickSwitchManager.SYS_NO_READ_CALL_LOG_TIP
-                    .equals(((QuickGestureContactTipInfo) info).flag)) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_CALL_BUTTON);
+            } catch (Exception e) {
+            }
+        } else if (info instanceof ContactCallLog) {
+            // 电话提醒
+            item.cancelShowReadTip();
+            ContactCallLog callLog = (ContactCallLog) info;
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_CALL_BUTTON);
+            mContext.startActivity(intent);
+            if (QuickGestureManager.getInstance(mContext).mCallLogs != null
+                    && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
+                QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(callLog);
+            }
+        } else if (info instanceof QuickGestureContactTipInfo) {
+            // 隐私联系人提示
+            item.cancelShowReadTip();
+            QuickGestureContactTipInfo privacyInfo = (QuickGestureContactTipInfo) info;
+            Intent intent = new Intent();
+            intent.setClass(mContext, PrivacyContactActivity.class);
+            try {
                 mContext.startActivity(intent);
-                GestureItemView item = (GestureItemView) view;
-                item.cancelShowReadTip();
-                if (QuickGestureManager.getInstance(mContext).mCallLogs == null) {
-                    // 为空不做操作
-                } else {
-                    QuickGestureManager.getInstance(mContext).mCallLogs = null;
-                }
-            } else if (QuickSwitchManager.PRIVACY_NO_READ_CONTACT_TIP
-                    .equals(((QuickGestureContactTipInfo) info).flag)) {
-                Intent intent = new Intent();
-                intent.setClass(mContext, PrivacyContactActivity.class);
-                try {
-                    mContext.startActivity(intent);
-                } catch (Exception e) {
-                }
                 if (LockManager.getInstatnce().isShowPrivacyCallLog) {
                     LockManager.getInstatnce().isShowPrivacyCallLog = false;
                 }
                 if (LockManager.getInstatnce().isShowPrivacyMsm) {
                     LockManager.getInstatnce().isShowPrivacyMsm = false;
                 }
+            } catch (Exception e) {
             }
+
         }
     }
 
@@ -440,6 +441,7 @@ public class QuickGestureLayout extends ViewGroup {
                 LeoLog.d("checkItemLongClick", "hitView");
                 break;
             }
+            // 不足9个icon，显示虚框 TODO
         }
 
         if (hitView != null) {
