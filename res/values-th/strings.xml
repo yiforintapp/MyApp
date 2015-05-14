@@ -40,7 +40,7 @@
     <string name="find_passwd">ลืมรหัสผ่านของคุฌ</string>
     <string name="please_wait">กรุณาโปรดลองน่อย</string>
     <string name="passwd_question">คำถาม:</string>
-    <string name="passwd_anwser">คำตอบ</string>
+    <string name="passwd_anwser">คำตอบ:</string>
     <string name="accelerate">เร่ง</string>
     <string name="used_mem">ได้ใช้หน่วยความจำ</string>
     <string name="passwd_tip">คำใบ้รหัสผ่าน</string>
@@ -624,5 +624,13 @@
     <string name="mode_missing">คุณยังไม่ได้สร้างรูปแบบสถานการณ์นี้กรุณาลบทางลัดนี้</string>
 
     <!-- version 2.1 end -->
+    
+       <!-- version 2.2 start -->
+    <string name="feedback_content_guide">ปัญหาที่ท่านพบ</string>
+    <string name="feedback_email_guide">อีเมล์</string>
+    <string name="feedback_category_guide">ประเภทปัญหา</string>
+     <string name="privacy_proposal_tip">ระดับลับ %1$s ทำดังนี้</string>
+     <string name="lock_mode_name_maxlength">30</string>
+    <!-- version 2.2 end -->
 
 </resources>

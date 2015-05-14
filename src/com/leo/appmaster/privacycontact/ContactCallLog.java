@@ -21,7 +21,6 @@ public class ContactCallLog extends BaseInfo implements Serializable {
     private Bitmap contactIcon;
     public String phoneNumber;
     public boolean isShowReadTip;
-    public String flag;
 
     public ContactCallLog(String callLogName, String callLogNumber, int clallLogType,
             String clallLogDate, int classLogId, int callLogCount, int callLogDuraction,

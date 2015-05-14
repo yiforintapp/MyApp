@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.sdk;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 
@@ -11,6 +12,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.push.PushManager;
+import com.tendcloud.tenddata.TCAgent;
 
 
 public class SDKWrapper {
@@ -31,6 +33,10 @@ public class SDKWrapper {
         /* try initiate BaiduMTJ in AndroidManifest.xml */
         // iniBaidu(ctx);
         iniPushSDK(ctx);
+        
+        // TalkingData
+        TCAgent.LOG_ON = AppMasterConfig.LOGGABLE;
+        TCAgent.init(ctx);
     }
     
     public static String getBestServerDomain(){
@@ -85,6 +91,8 @@ public class SDKWrapper {
         LeoAgent.addEvent(id, description);
         // baidu
         StatService.onEvent(ctx, id, description);
+        // TalkingData
+        TCAgent.onEvent(ctx, id, description);
     }
 
     public static void endSession(Context ctx) {
@@ -105,14 +113,16 @@ public class SDKWrapper {
                 true);
     }
     
-    public static void onResume(Context ctx){
+    public static void onResume(Activity ctx){
         StatService.onResume(ctx);
         LeoAgent.onResume();
+        TCAgent.onResume(ctx);
     }
     
-    public static void onPause(Context ctx){
+    public static void onPause(Activity ctx){
         StatService.onPause(ctx);
         LeoAgent.onPause();
+        TCAgent.onPause(ctx);
     }
 
     // private static void iniBaidu(Context ctx) {

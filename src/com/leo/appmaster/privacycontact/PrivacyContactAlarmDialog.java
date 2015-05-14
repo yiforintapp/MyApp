@@ -19,8 +19,8 @@ public class PrivacyContactAlarmDialog extends LEOBaseDialog {
     private Context mContext;
     private TextView mTitle, mContentOne, mContentTwo;
     private ImageView mTitleEditIcon, mTitleDeleteIcon;
-    private TextView mLeftBtn;
-    private TextView mRightBtn;
+    private View mLeftBtn;
+    private View mRightBtn;
     private Object mUserData;
     private CircleImageView mContactIcon;
 
@@ -116,8 +116,8 @@ public class PrivacyContactAlarmDialog extends LEOBaseDialog {
         mContentTwo = (TextView) dlgView.findViewById(R.id.dlg_content_answer_type);
         mTitleEditIcon = (ImageView) dlgView.findViewById(R.id.dlg_title_edit);
         mTitleDeleteIcon = (ImageView) dlgView.findViewById(R.id.dlg_title_delete);
-        mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
-        mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
+        mLeftBtn = dlgView.findViewById(R.id.dlg_left_btn);
+        mRightBtn = dlgView.findViewById(R.id.dlg_right_btn);
         mContactIcon = (CircleImageView) dlgView.findViewById(R.id.contactIV);
 
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {

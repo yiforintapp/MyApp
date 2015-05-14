@@ -9,7 +9,6 @@ import java.util.TreeSet;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.CallLog;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 
@@ -18,6 +17,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
+import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -30,7 +30,7 @@ public class QuickGestureManager {
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
-    
+
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
 
@@ -50,8 +50,7 @@ public class QuickGestureManager {
     private void init() {
         mDynamicList = new ArrayList<BaseInfo>();
         mMostUsedList = new ArrayList<BaseInfo>();
-        
-        
+
         loadAppLaunchReorder();
     }
 
@@ -155,10 +154,27 @@ public class QuickGestureManager {
     public void onRunningPkgChanged(String pkg) {
 
     }
-    
-    
+
     public void checkEventItemRemoved(BaseInfo info) {
-        
+        if (info instanceof MessageBean) {
+            MessageBean bean = (MessageBean) info;
+            if (mMessages != null && mMessages.size() > 0) {
+                mMessages.remove(bean);
+            }
+        } else if (info instanceof ContactCallLog) {
+            ContactCallLog callLog = (ContactCallLog) info;
+            if (mCallLogs != null && mCallLogs.size() > 0) {
+                mCallLogs.remove(callLog);
+            }
+        } else if (info instanceof QuickGestureContactTipInfo) {
+            if (LockManager.getInstatnce().isShowPrivacyCallLog) {
+                LockManager.getInstatnce().isShowPrivacyCallLog = false;
+            }
+            if (LockManager.getInstatnce().isShowPrivacyMsm) {
+                LockManager.getInstatnce().isShowPrivacyMsm = false;
+            }
+        }
+
     }
 
     public List<String> getFreeDisturbAppName() {

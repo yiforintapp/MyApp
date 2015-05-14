@@ -75,6 +75,7 @@
 
     <drawable name="transparent">#00000000</drawable>
 
+    <color name="privacy_proposal_bg">#f3f3f3</color>
     <color name="home_btn_lock_pressed">#e3edfd</color>
     <color name="home_btn_theme_pressed">#e8f7d9</color>
     <color name="home_btn_mode_pressed">#fff4d0</color>

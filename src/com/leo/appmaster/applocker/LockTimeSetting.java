@@ -3,23 +3,34 @@ package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.DipPixelUtil;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class LockTimeSetting extends BasePreferenceActivity implements OnPreferenceChangeListener,
         OnPreferenceClickListener {
@@ -27,7 +38,10 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
     private Preference mChangeLockTime;
     private CheckBoxPreference mAutoLock;
     private int mHelpSettingCurrent;
-
+    private Dialog mTimeSettingDialog;
+    private ListView mTimeListView;
+    private String[] mTimeValue;
+    
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,56 +96,52 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
     }
 
     private void onCreateChoiceDialog(int id) {
-        final String[] valueString = getResources().getStringArray(
+        mTimeValue = getResources().getStringArray(
                 R.array.lock_time_items);
         int index = 0;
-        for (index = 0; index < valueString.length; index++) {
-            if (valueString[index].equals(String.valueOf(id / 1000))) {
+        for (index = 0; index < mTimeValue.length; index++) {
+            if (mTimeValue[index].equals(String.valueOf(id / 1000))) {
                 break;
             }
         }
-        if (index >= valueString.length) {
+        if (index >= mTimeValue.length) {
             index = 0;
         }
 
-        AlertDialog scaleIconListDlg = new AlertDialog.Builder(this)
-                .setTitle(R.string.change_lock_time)
-                .setSingleChoiceItems(R.array.lock_time_entrys, index,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-                                AppMasterPreference.getInstance(
-                                        LockTimeSetting.this)
-                                        .setRelockTimeout(
-                                                valueString[whichButton]);
-                                SDKWrapper.addEvent(LockTimeSetting.this,
-                                        SDKWrapper.P1, "lock_setting",
-                                        valueString[whichButton]);
-                                dialog.dismiss();
-                            }
-                        })
-                .setNegativeButton(R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-                                /* User clicked No so do some stuff */
-                            }
-                        }).create();
-        // int divierId =
-        // scaleIconListDlg.getContext().getResources().getIdentifier("android:id/titleDivider",
-        // "id", "android");
-        // View divider = scaleIconListDlg.findViewById(divierId);
-        // divider.setBackgroundColor(getResources().getColor(R.color.transparent));
-        TextView title = new TextView(this);
-        title.setText(getString(R.string.change_lock_time));
-        title.setTextColor(Color.WHITE);
-        title.setTextSize(20);
-        title.setPadding(DipPixelUtil.dip2px(this, 20),
-                DipPixelUtil.dip2px(this, 10), 0, DipPixelUtil.dip2px(this, 10));
-        title.setBackgroundColor(getResources().getColor(
-                R.color.dialog_title_area_bg));
-        scaleIconListDlg.setCustomTitle(title);
-        scaleIconListDlg.show();
+        if(null == mTimeSettingDialog){
+            mTimeSettingDialog = new LEOBaseDialog(this, R.style.bt_dialog);
+            mTimeSettingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            mTimeSettingDialog.setContentView(R.layout.dialog_common_list_select);
+            mTimeSettingDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
+        }
+        mTimeListView = (ListView) mTimeSettingDialog.findViewById(R.id.item_list);
+        View parentView = (View) mTimeListView.getParent();
+        RelativeLayout.LayoutParams linearParams =(RelativeLayout.LayoutParams) parentView.getLayoutParams(); //取控件textView当前的布局参数 
+        linearParams.height = (int) (getResources().getDimension(R.dimen.dialog_list_item_height)*6);
+        Log.i("hasFocus",  "  "+ linearParams.height);
+        parentView.setLayoutParams(linearParams);
+        mTimeListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                    long id) {
+                AppMasterPreference.getInstance(LockTimeSetting.this).setRelockTimeout(mTimeValue[position]);
+                SDKWrapper.addEvent(LockTimeSetting.this,SDKWrapper.P1, "lock_setting",mTimeValue[position]);
+                mTimeSettingDialog.dismiss();
+            }
+        });
+        View cancel = mTimeSettingDialog.findViewById(R.id.dlg_bottom_btn);
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTimeSettingDialog.dismiss();
+            }
+        });
+        
+        TextView mTitle = (TextView) mTimeSettingDialog.findViewById(R.id.dlg_title);
+        mTitle.setText(getResources().getString(R.string.change_lock_time));
+        ListAdapter adapter = new TimeListAdapter(this);
+        mTimeListView.setAdapter(adapter);
+        mTimeSettingDialog.show();
     }
 
     @Override
@@ -154,11 +164,6 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
                         "cancel_auto");
             }
         }
-        // else if (AppMasterPreference.PREF_UNLOCK_ALL_APP.equals(key)) {
-        // mUnLockAllApp.setChecked((Boolean) newValue);
-        // AppMasterPreference.getInstance(this).setUnlockAllApp((Boolean)
-        // newValue);
-        // }
         return false;
     }
 
@@ -174,5 +179,56 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
         if (current != 10001) {
             mHelpSettingCurrent = current;
         }
+    }
+    
+    class TimeListAdapter extends BaseAdapter{
+
+        private LayoutInflater inflater;
+        private String[] mTimeStringValue =  getResources().getStringArray(R.array.lock_time_entrys);
+        String preTimeValue = AppMasterPreference.getInstance(LockTimeSetting.this).getRelockStringTime();
+        
+        public TimeListAdapter(Context ctx) {
+            inflater = LayoutInflater.from(ctx);
+        }
+        
+        @Override
+        public int getCount() {
+            return mTimeValue.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mTimeValue[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Holder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.item_checkbox_select, parent, false);
+                holder = new Holder();
+                holder.name = (TextView) convertView.findViewById(R.id.tv_item_content);
+                holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);
+                convertView.setTag(holder);
+            } else {
+                holder = (Holder) convertView.getTag();
+            }
+            holder.name.setText(mTimeStringValue[position]);
+            if(preTimeValue.equals( mTimeValue[position])){
+                    holder.selecte.setImageResource(R.drawable.radio_buttons);
+            }else{
+                holder.selecte.setImageResource(R.drawable.unradio_buttons);
+            }
+            return convertView;
+        }
+    }
+    public static class Holder {
+        TextView name;
+        ImageView selecte;
     }
 }

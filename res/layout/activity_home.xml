@@ -13,13 +13,13 @@
         <View
             android:id="@+id/bg_statusbar"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="@dimen/statusbar_height"
             android:background="#4285f4" />
 
         <com.leo.appmaster.home.HomeShadeView
             android:id="@+id/shadeview"
             android:layout_width="match_parent"
-            android:layout_height="112dp" />
+            android:layout_height="@dimen/home_shader_view_height" />
     </LinearLayout>
 
     <LinearLayout
@@ -79,5 +79,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout="@layout/multi_mode_view_wrapper" />
+
+    <include
+        android:id="@+id/privacy_proposal_layout"
+        layout="@layout/privacy_proposal_layout" />
 
 </FrameLayout>

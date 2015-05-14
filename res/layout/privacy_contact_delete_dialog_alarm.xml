@@ -1,67 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dlag_rt"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:paddingLeft="13dp"
-    android:paddingRight="13dp" >
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/dlg_title_layout"
-        android:layout_width="match_parent"
+        android:id="@+id/dlg_content"
+        android:layout_width="@dimen/dlg_horizental_margin"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/dlg_content"
+        <ImageView
+            android:id="@+id/dlg_icon"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/icon" />
+
+        <TextView
+            android:id="@+id/dlg_content_title_tv"
+            style="@style/dlg_title_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/contactIV"
-            android:orientation="vertical" >
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:text="@string/tips"
+            android:visibility="visible" />
 
-            <TextView
-                android:id="@+id/dlg_content_title_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:fadeScrollbars="false"
-                android:gravity="center_horizontal"
-                android:maxLines="1"
-                android:scrollbars="vertical"
-                android:text="联系人姓名"
-                android:textColor="#202020"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/dlg_content_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:fadeScrollbars="false"
-                android:gravity="center_horizontal"
-                android:lineSpacingExtra="7dp"
-                android:scrollbars="vertical"
-                android:text="联系人电话"
-                android:textColor="#585858"
-                android:textSize="14dp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/dlg_content_tv"
+            style="@style/dlg_content_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadeScrollbars="false"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:lineSpacingExtra="7dp"
+            android:maxLines="4"
+            android:scrollbars="vertical"
+            android:text="content" />
 
         <LinearLayout
             android:id="@+id/dlg_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal" >
 
             <CheckBox
                 android:id="@+id/dlg_check"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:layout_toLeftOf="@+id/dlg_title_edit"
                 android:button="@drawable/privacy_contact_delete_checkbox_dialog_selector"
                 android:checked="true" />
 
@@ -70,7 +67,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="11dp"
-                android:layout_toRightOf="@id/dlg_check"
                 android:text="理奥网络科技有限公司"
                 android:textColor="#8d8d8d"
                 android:textSize="12dp" />
@@ -81,29 +77,17 @@
         android:id="@+id/dlg_2btn_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dlg_title_layout"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/white"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="24dp"
-        android:weightSum="2" >
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/dlg_left_btn"
             style="@style/dlg_left_button_txt"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/cancel" />
-
-        <TextView
-            android:layout_width="24dp"
-            android:layout_height="42dp"
-            android:background="@color/transparent" >
-        </TextView>
 
         <TextView
             android:id="@+id/dlg_right_btn"
@@ -113,5 +97,4 @@
             android:gravity="center"
             android:text="@string/makesure" />
     </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

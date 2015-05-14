@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="35"
+    android:versionCode="36"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -187,6 +187,7 @@
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@android:style/Theme.Holo.NoActionBar" >
         </activity>
         <activity
@@ -194,6 +195,7 @@
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@android:style/Theme.Holo.NoActionBar" >
         </activity>
         <activity
@@ -306,7 +308,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
-            android:windowSoftInputMode="stateHidden|adjustPan" >
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name="com.leo.appmaster.lockertheme.LockerTheme"
@@ -594,6 +596,16 @@
             android:name="BaiduMobAd_EXCEPTION_LOG"
             android:value="true" />
         <!-- for Baidu MTJ end -->
+
+
+        <!-- for TalkingData start -->
+        <meta-data
+            android:name="TD_APP_ID"
+            android:value="FDFC3A6C0157D012BB647FD3CAE0245A" />
+        <meta-data
+            android:name="TD_CHANNEL_ID"
+            android:value="@string/channel_code" />
+        <!-- for TalkingData end -->
 
 
         <!-- for LEO push sdk -->
