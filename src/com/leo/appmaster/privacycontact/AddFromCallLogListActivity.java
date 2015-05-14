@@ -466,6 +466,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
                 String content = getResources().getString(
                         R.string.privacy_contact_add_log_dialog_dialog_content);
                 showAddCallLogDialog(title, content);
+                mHandler = null;
             } else {
                 if (mProgressDialog != null) {
                     mProgressDialog.cancel();

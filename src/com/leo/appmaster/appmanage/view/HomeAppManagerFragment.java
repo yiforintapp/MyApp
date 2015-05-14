@@ -148,6 +148,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             super.onPreExecute();
             InitFourButton();
             InitHeadView();
+            LeoLog.d("HomeAppManagerFragment", "加载前处理，initView");
         }
 
         @Override
@@ -160,6 +161,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         @Override
         protected void onPostExecute(Object result) {
             super.onPostExecute(result);
+            LeoLog.d("HomeAppManagerFragment", "加载完毕啦！！！！");
             pb_loading.setVisibility(View.GONE);
             list_delete.setVisibility(View.VISIBLE);
             fillData();
@@ -249,6 +251,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     public void fillData() {
+        LeoLog.d("HomeAppManagerFragment", "fillData！！！！");
         tv_installed_app.setText(installedAppsSpan);
         tv_ap_data.setText(allAppsSizeSpan);
         tv_backup_num.setText(backUpSpan);
@@ -260,6 +263,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     private void loadData() {
+        LeoLog.d("HomeAppManagerFragment", "loadData()");
         // bottom two TextView
         forTextList = DeleteDataList = (ArrayList<AppItemInfo>) mDeleteManager.getDeleteList()
                 .clone();
@@ -284,6 +288,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         // clean View
         cleanView();
         cleanMemory();
+        LeoLog.d("HomeAppManagerFragment", "loadData() finish");
     }
 
     private void cleanView() {
@@ -475,7 +480,9 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         mHandler.post(new Runnable() {
             @Override
             public void run() {
+                LeoLog.d("HomeAppManagerFragment", "onDataReady()");
                 updateDataList();
+                LeoLog.d("HomeAppManagerFragment", "onDataReady() finish");
             }
         });
 

@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -409,7 +410,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 PrivacyContactManager pm = PrivacyContactManager
                         .getInstance(AddFromContactListActivity.this);
                 ArrayList<ContactCallLog> callLogs = pm.getSysCallLog();
-//                ArrayList<MessageBean> messages = pm.getSysMessage();
+                // ArrayList<MessageBean> messages = pm.getSysMessage();
                 List<String> addNumber = new ArrayList<String>();
                 for (ContactBean contact : mAddPrivacyContact) {
                     addNumber.add(contact.getContactNumber());
@@ -450,7 +451,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             mHandler.sendMessage(messge);
                         }
                     }
-                    //更新隐私短信
+                    // 更新隐私短信
                     // for (MessageBean messageBean : messages) {
                     // String formateNumber =
                     // PrivacyContactUtils.formatePhoneNumber(messageBean
@@ -521,6 +522,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 String content = getResources().getString(
                         R.string.privacy_contact_add_log_dialog_dialog_content);
                 showAddContactDialog(title, content);
+                mHandler = null;
             } else {
                 // 通知更新隐私联系人列表
                 notificationUpdatePrivacyContactList();
@@ -617,7 +619,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 // mPhoneContact =
                 // PrivacyContactManager.getInstance(AddFromContactListActivity.this)
                 // .getSysContacts();
-
             }
             return null;
         }
