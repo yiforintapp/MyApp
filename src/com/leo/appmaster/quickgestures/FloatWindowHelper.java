@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
@@ -148,7 +149,6 @@ public class FloatWindowHelper {
                             float moveY = Math.abs(startY - event.getRawY());
                             if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.width / 4)
                                     && !isMoveIng) {
-                                LeoLog.e("xxxx", "launch quick gesture");
                                 isMoveIng = true;
                                 removeAllFloatWindow(mContext);
                                 mGestureShowing = true;
@@ -194,7 +194,8 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
-            if (FloatWindowHelper.isShowSysNoReadMessage) {
+            if (FloatWindowHelper.isShowSysNoReadMessage
+                    && LockManager.getInstatnce().onTuchGestureFlag == -1) {
                 mLeftBottomView.setIsShowReadTip(true, 1);
             }
             mLeftBottomView.setOnTouchListener(new OnTouchListener() {
@@ -340,6 +341,10 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
+            if (FloatWindowHelper.isShowSysNoReadMessage
+                    && LockManager.getInstatnce().onTuchGestureFlag == 1 && mLeftBottomView == null) {
+                mLeftCenterCenterView.setIsShowReadTip(true, 3);
+            }
             mLeftCenterCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -484,9 +489,10 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
-            // if (FloatWindowHelper.isShowSysNoReadMessage) {
-            // mRightBottomView.setIsShowReadTip(true, 2);
-            // }
+            if (FloatWindowHelper.isShowSysNoReadMessage
+                    && LockManager.getInstatnce().onTuchGestureFlag == 1) {
+                mRightBottomView.setIsShowReadTip(true, 2);
+            }
             mRightBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -625,6 +631,11 @@ public class FloatWindowHelper {
         final WindowManager windowManager = getWindowManager(mContext);
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
+            if (FloatWindowHelper.isShowSysNoReadMessage
+                    && LockManager.getInstatnce().onTuchGestureFlag == 1
+                    && mRightBottomView == null) {
+                mRightCenterCenterView.setIsShowReadTip(true, 4);
+            }
             mRightCenterCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -1159,13 +1170,13 @@ public class FloatWindowHelper {
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             AppMasterApplication.getInstance().startActivity(intent);
-
+            LockManager.getInstatnce().onTuchGestureFlag = -1;
         } else if (flag == 1) {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             AppMasterApplication.getInstance().startActivity(intent);
-
+            LockManager.getInstatnce().onTuchGestureFlag = 1;
         }
     }
 }

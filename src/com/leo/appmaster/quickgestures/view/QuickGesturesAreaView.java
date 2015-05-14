@@ -73,7 +73,7 @@ public class QuickGesturesAreaView extends View {
     private void initUI(Context mContext) {
         this.mContext = mContext;
         setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
-//         setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+        // setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
         setFocusable(true);
         setClickable(true);
         radius = DipPixelUtil.dip2px(mContext, 5);
@@ -83,10 +83,16 @@ public class QuickGesturesAreaView extends View {
     private void drawReadTip(Canvas canvas, Paint paint, int flag) {
         if (flag == 1) {
             // 左边View
-            canvas.drawCircle(0 + 2 * radius, y - 2 * radius, radius, paint);
+            canvas.drawCircle(2 * radius, y - 2 * radius, radius, paint);
         } else if (flag == 2) {
             // 右边View
             canvas.drawCircle(x - 2 * radius, y - 2 * radius, radius, paint);
+        } else if (flag == 3) {
+            // 左侧中部
+            canvas.drawCircle(2 * radius, y / 2, radius, paint);
+        } else if (flag == 4) {
+            // 右侧中部
+            canvas.drawCircle(x - 2 * radius, y / 2, radius, paint);
         }
         canvas.save();
     }
