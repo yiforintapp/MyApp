@@ -572,7 +572,6 @@ public class QuickGestureContainer extends FrameLayout {
                         } else {
                             message.label = message.getPhoneNumber();
                         }
-                        message.flag = QuickSwitchManager.SYS_NO_READ_MESSAGE_TIP;
                         message.isShowReadTip = true;
                         infos.add(0, message);
                     }
@@ -591,7 +590,6 @@ public class QuickGestureContainer extends FrameLayout {
                         } else {
                             baseInfo.label = baseInfo.getCallLogNumber();
                         }
-                        baseInfo.flag = QuickSwitchManager.SYS_NO_READ_CALL_LOG_TIP;
                         baseInfo.isShowReadTip = true;
                         infos.add(0, baseInfo);
                     }
@@ -606,7 +604,6 @@ public class QuickGestureContainer extends FrameLayout {
                             R.drawable.add_mode_icon);
                     item.label = mContext.getResources().getString(
                             R.string.pg_appmanager_quick_gesture_privacy_contact_tip_lable);
-                    item.flag = QuickSwitchManager.PRIVACY_NO_READ_CONTACT_TIP;
                     item.isShowReadTip = true;
                     infos.add(businessIndes, item);
                 }
@@ -617,9 +614,6 @@ public class QuickGestureContainer extends FrameLayout {
             }
 
             for (int i = 0; i < infos.size(); i++) {
-                if (i >= 9) {
-                    break;
-                }
                 tv = new GestureItemView(getContext());
                 lp = new QuickGestureLayout.LayoutParams(
                         targetLayout.getItemSize(), targetLayout.getItemSize());
@@ -629,6 +623,18 @@ public class QuickGestureContainer extends FrameLayout {
                 info = infos.get(i);
                 if (info instanceof QuickGestureContactTipInfo) {
                     if (((QuickGestureContactTipInfo) info).isShowReadTip) {
+                        tv.showReadTip();
+                    } else {
+                        tv.cancelShowReadTip();
+                    }
+                } else if (info instanceof MessageBean) {
+                    if (((MessageBean) info).isShowReadTip) {
+                        tv.showReadTip();
+                    } else {
+                        tv.cancelShowReadTip();
+                    }
+                } else if (info instanceof ContactCallLog) {
+                    if (((ContactCallLog) info).isShowReadTip) {
                         tv.showReadTip();
                     } else {
                         tv.cancelShowReadTip();
