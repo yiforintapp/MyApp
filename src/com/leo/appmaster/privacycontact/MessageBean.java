@@ -9,8 +9,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.model.BaseInfo;
 
-public class MessageBean implements Serializable {
+public class MessageBean extends BaseInfo implements Serializable {
     private String messageName;
     private String phoneNumber;
     private String messageTime;
@@ -26,6 +27,8 @@ public class MessageBean implements Serializable {
     private String showDate;
     private Bitmap contactIcon;
     private int contactId;
+    public String flag;
+    public boolean isShowReadTip;
 
     public MessageBean(String messageName, String phoneNumber, String messageTime,
             String messageProtocol, int messageIsRead, int messageStatus, int messageType,
