@@ -135,18 +135,24 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 R.string.pg_appmanager_quick_gesture_option_open_quick_gesture));
         gestureSettingOpenGesture.setCheck(mPre.getSwitchOpenQuickGesture());
         mQuickGestureSettingOption.add(gestureSettingOpenGesture);
-        QuickGestureSettingBean gestureSettingSwitchSetting = new QuickGestureSettingBean();
-        gestureSettingSwitchSetting.setName(this.getResources().getString(
-                R.string.pg_appmanager_quick_gesture_option_switch_setting));
-        mQuickGestureSettingOption.add(gestureSettingSwitchSetting);
-        QuickGestureSettingBean gestureSettingGestureTheme = new QuickGestureSettingBean();
-        gestureSettingGestureTheme.setName(this.getResources().getString(
-                R.string.pg_appmanager_quick_gesture_option_gesture_theme_title));
-        mQuickGestureSettingOption.add(gestureSettingGestureTheme);
+        // QuickGestureSettingBean gestureSettingSwitchSetting = new
+        // QuickGestureSettingBean();
+        // gestureSettingSwitchSetting.setName(this.getResources().getString(
+        // R.string.pg_appmanager_quick_gesture_option_switch_setting));
+        // mQuickGestureSettingOption.add(gestureSettingSwitchSetting);
+        // QuickGestureSettingBean gestureSettingGestureTheme = new
+        // QuickGestureSettingBean();
+        // gestureSettingGestureTheme.setName(this.getResources().getString(
+        // R.string.pg_appmanager_quick_gesture_option_gesture_theme_title));
+        // mQuickGestureSettingOption.add(gestureSettingGestureTheme);
         QuickGestureSettingBean gestureSettingSlidingAreaLocation = new QuickGestureSettingBean();
         gestureSettingSlidingAreaLocation.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_sliding_area_location_title));
         mQuickGestureSettingOption.add(gestureSettingSlidingAreaLocation);
+        QuickGestureSettingBean gestureSettingAbleSlidingTime = new QuickGestureSettingBean();
+        gestureSettingAbleSlidingTime.setName(this.getResources().getString(
+                R.string.pg_appmanager_quick_gesture_option_able_sliding_time));
+        mQuickGestureSettingOption.add(gestureSettingAbleSlidingTime);
         QuickGestureSettingBean gestureSettingNoReadMessage = new QuickGestureSettingBean();
         gestureSettingNoReadMessage.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_no_read_message_tip));
@@ -162,10 +168,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 R.string.pg_appmanager_quick_gesture_option_privacy_contact_message_tip));
         gestureSettingContactMessagTip.setCheck(mPre.getSwitchOpenPrivacyContactMessageTip());
         mQuickGestureSettingOption.add(gestureSettingContactMessagTip);
-        QuickGestureSettingBean gestureSettingAbleSlidingTime = new QuickGestureSettingBean();
-        gestureSettingAbleSlidingTime.setName(this.getResources().getString(
-                R.string.pg_appmanager_quick_gesture_option_able_sliding_time));
-        mQuickGestureSettingOption.add(gestureSettingAbleSlidingTime);
 
     }
 
@@ -198,7 +200,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         class ViewHolder {
             ImageView imageView;
             CheckBox switchView;
-            TextView title, content;
+            TextView title, content, segmentationTv;
         }
 
         @Override
@@ -211,6 +213,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 vh.switchView = (CheckBox) convertView.findViewById(R.id.quick_gesture_check);
                 vh.title = (TextView) convertView.findViewById(R.id.quick_gesture_item_nameTV);
                 vh.content = (TextView) convertView.findViewById(R.id.quick_gesture_item_cotentTV);
+                vh.segmentationTv = (TextView) convertView.findViewById(R.id.segmentation_tv);
                 convertView.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
@@ -218,30 +221,28 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             vh.switchView.setTag(position);
             QuickGestureSettingBean bean = mQuickGestureSettingOption.get(position);
             vh.title.setText(bean.getName());
-            if (position == 0 || position == 4
-                    || position == 5
-                    || position == 6) {
+            if (position == 0 || position == 3
+                    || position == 4
+                    || position == 5) {
                 vh.switchView.setVisibility(View.VISIBLE);
                 if (position == 0) {
+                    vh.switchView.setChecked(bean.isCheck());
+                } else if (position == 3) {
                     vh.switchView.setChecked(bean.isCheck());
                 } else if (position == 4) {
                     vh.switchView.setChecked(bean.isCheck());
                 } else if (position == 5) {
                     vh.switchView.setChecked(bean.isCheck());
-                } else if (position == 6) {
-                    vh.switchView.setChecked(bean.isCheck());
                 }
             } else {
                 vh.switchView.setVisibility(View.GONE);
             }
-            if (position == 1) {
-                convertView.setBackgroundColor(QuickGestureActivity.this.getResources().getColor(
-                        R.color.quick_gesture_switch_setting_show_color));
+            if (position == 0 || position == 2) {
+                vh.segmentationTv.setVisibility(View.VISIBLE);
             } else {
-                convertView.setBackgroundColor(QuickGestureActivity.this.getResources().getColor(
-                        R.color.white));
+                vh.segmentationTv.setVisibility(View.GONE);
             }
-            if (position == 7) {
+            if (position == 2) {
                 vh.content.setVisibility(View.VISIBLE);
                 if (mPre.getSlideTimeJustHome()) {
                     vh.content
@@ -263,9 +264,12 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         if (mPre.getSwitchOpenQuickGesture()) {
             if (arg2 == 1) {
-                Log.e("##########", "1:" + arg2);
+                Log.e("##########", "1:设置区域");
+                FloatWindowHelper.mEditQuickAreaFlag = true;
+                showSettingDialog(true);
             } else if (arg2 == 2) {
-                Log.e("##########", "2:" + arg2);
+                Log.e("##########", "2:选择免打扰应用");
+                showSlideShowTimeSettingDialog();
                 // boolean flag = BuildProperties.isMIUI();
                 // boolean isOpenWindow =
                 // BuildProperties.isMiuiFloatWindowOpAllowed(QuickGestureActivity.this);
@@ -307,11 +311,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 // } catch (Exception e) {
                 // }
                 // FloatWindowHelper.createMiuiTipWindow(QuickGestureActivity.this);
-            } else if (arg2 == 3) {
-                FloatWindowHelper.mEditQuickAreaFlag = true;
-                showSettingDialog(true);
-            } else if (arg2 == 7) {
-                showSlideShowTimeSettingDialog();
             }
         }
     }
@@ -331,7 +330,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             }
             mPre.setSwitchOpenQuickGesture(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
-        } else if (position == 4) {
+            Log.e("##########", "0：快捷手势开关");
+        } else if (position == 3) {
+            Log.e("##########", "3：打开短信提示");
             mPre.setSwitchOpenNoReadMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (arg1) {
@@ -355,7 +356,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                     }
                 }).start();
             }
-        } else if (position == 5) {
+        } else if (position == 4) {
+            Log.e("##########", "4：打开常用联系人提示");
             mPre.setSwitchOpenRecentlyContact(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (arg1) {
@@ -381,7 +383,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 }).start();
                 ;
             }
-        } else if (position == 6) {
+        } else if (position == 5) {
+            Log.e("##########", "5:打开隐私联系人提示");
             mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
         }
