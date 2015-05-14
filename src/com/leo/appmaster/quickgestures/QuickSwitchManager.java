@@ -10,6 +10,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.quickgestures.view.GestureItemView;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
@@ -37,6 +38,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuickSwitchManager {
@@ -1042,9 +1044,9 @@ public class QuickSwitchManager {
     // return mXuKuang;
     // }
 
-    public ImageView getXuKuang(View hitView) {
+    public GestureItemView getXuKuang(View hitView) {
         LayoutParams params = (LayoutParams) hitView.getLayoutParams();
-        ImageView mIvXuKuang = new ImageView(mContext);
+        GestureItemView mIvXuKuang = new GestureItemView(mContext);
         mIvXuKuang.setLayoutParams(params);
         mIvXuKuang.setBackground(mContext.getResources().getDrawable(R.drawable.switch_add));
         return mIvXuKuang;
