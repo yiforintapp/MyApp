@@ -1,12 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:paddingLeft="@dimen/activity_privacy_contact_item_paddingLeft" >
+    android:layout_height="wrap_content"
+    android:background="@color/white" >
 
     <RelativeLayout
-        android:id="@+id/message_content"
+        android:id="@+id/quick_gesture_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -51,8 +50,8 @@
                     android:layout_marginTop="10dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:visibility="gone"
-                    android:textColor="#DFDDDD" />
+                    android:textColor="#DFDDDD"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <CheckBox
@@ -62,10 +61,18 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="16dp"
-                android:focusable="false"
                 android:button="@drawable/quick_gesture_switch_selector"
+                android:focusable="false"
                 android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/segmentation_tv"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/quick_gesture_content"
+        android:background="@color/quick_gesture_switch_setting_show_color"
+        android:visibility="gone" />
 
 </RelativeLayout>
