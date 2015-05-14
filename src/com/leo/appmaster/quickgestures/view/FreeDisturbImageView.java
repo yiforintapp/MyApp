@@ -38,13 +38,12 @@ public class FreeDisturbImageView extends ImageView {
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
 
-        mLockX = getResources().getDimensionPixelSize(R.dimen.lock_icon_X);
-        mLockY = getResources().getDimensionPixelSize(R.dimen.lock_icon_Y);
+        mLockX = 0;
+        mLockY = 0;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // Add protect to avoid OutOfMemory error temply
         try {
             if (mSourceBitmap == null) {
                 Drawable d = this.getDrawable();
