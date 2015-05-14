@@ -321,14 +321,6 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
 
     /* add for Guide Screen begin */
     private void showGuide() {
-        
-        Display display = getWindowManager().getDefaultDisplay(); //Activity#getWindowManager()
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-        Log.i("hasFocus", width +" "+ height);
-        
         mPageColors[0] = getResources().getColor(R.color.guide_page1_background_color);
         mPageColors[1] = getResources().getColor(R.color.guide_page2_background_color);
         mPageColors[2] = getResources().getColor(R.color.guide_page3_background_color);
