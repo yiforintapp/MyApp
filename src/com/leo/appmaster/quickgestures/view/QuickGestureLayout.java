@@ -240,6 +240,7 @@ public class QuickGestureLayout extends ViewGroup {
     @Override
     public void addView(View child) {
         int addPosition = ((LayoutParams) child.getLayoutParams()).position;
+        LeoLog.d("testaddView", "addPosition : " + addPosition + "-----getChildCount : " + getChildCount());
         LayoutParams params = null;
         for (int i = 0; i < getChildCount(); i++) {
             params = (LayoutParams) getChildAt(i).getLayoutParams();

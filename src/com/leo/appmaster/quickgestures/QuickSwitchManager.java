@@ -983,7 +983,7 @@ public class QuickSwitchManager {
             String name = switchInfo.iDentiName;
             int position = switchInfo.position;
 
-            LeoLog.d("QuickSwitchManager", "name : " + name + "--position" + position);
+            LeoLog.d("QuickSwitchManager", "name : " + name + "--position : " + position);
             if (i == 0) {
                 ListString = name + ":" + position;
             } else {
