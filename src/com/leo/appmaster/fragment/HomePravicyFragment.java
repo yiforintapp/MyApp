@@ -3,12 +3,9 @@ package com.leo.appmaster.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-<<<<<<< HEAD
 import android.util.Log;
 import android.view.MotionEvent;
-=======
 import android.graphics.Rect;
->>>>>>> refs/heads/master
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -33,7 +30,8 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
-public class HomePravicyFragment extends BaseFragment implements OnClickListener, Selectable, PrivacyLevelView.ScanningListener {
+public class HomePravicyFragment extends BaseFragment implements OnClickListener, Selectable,
+        PrivacyLevelView.ScanningListener {
 
     private PrivacyLevelView mPrivacyLevel;
     private View mPrivacyMessage;
@@ -55,9 +53,10 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         LoadSysContactTask loadSysContactData = new LoadSysContactTask(mActivity);
         loadSysContactData.execute("home_pravicy_load_contact_date");
         mPreference = AppMasterPreference.getInstance(getActivity());
-        
-        if(mActivity != null) {
-            mProposalView =  (PrivacyProposalLayout) mActivity.findViewById(R.id.privacy_proposal_layout);
+
+        if (mActivity != null) {
+            mProposalView = (PrivacyProposalLayout) mActivity
+                    .findViewById(R.id.privacy_proposal_layout);
         }
     }
 
@@ -77,10 +76,10 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         super.onStop();
         onScrolling();
     }
-    
+
     @Override
     public boolean onBackPressed() {
-        if(mProposalView != null && mProposalView.isActive()) {
+        if (mProposalView != null && mProposalView.isActive()) {
             mProposalView.close(true);
             return true;
         }
@@ -116,7 +115,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
             mHideVideoIcon.setBackgroundColor(color);
             mPrivacyMessageIcon.setBackgroundColor(color);
             mPrivacyCallIcon.setBackgroundColor(color);
-            if(mProposalView != null && mProposalView.isActive()) {
+            if (mProposalView != null && mProposalView.isActive()) {
                 mProposalView.onLevelChange(color, false);
             }
         }
@@ -263,7 +262,8 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
 
     @Override
     public void onScanningFinish() {
-        if (mProposalView != null && mActivity instanceof HomeActivity && ((HomeActivity)mActivity).getCurrentPage() == 1) {
+        if (mProposalView != null && mActivity instanceof HomeActivity
+                && ((HomeActivity) mActivity).getCurrentPage() == 1) {
             Rect rect = new Rect();
             mPrivacyLevel.getLevelRectOnScreen(rect);
             mProposalView.show(rect);
