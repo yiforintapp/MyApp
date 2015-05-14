@@ -536,7 +536,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
     }
 
     private void showProgressDialog(int maxValue, int currentValue) {
-        Log.e("###############", "导入Progress");
         if (mProgressDialog == null) {
             mProgressDialog = new LEORoundProgressDialog(this);
         }
@@ -566,7 +565,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             @Override
                             public void handleMessage(Message msg) {
                                 int currentValue = msg.what;
-                                Log.e("###############", "进来");
                                 if (currentValue >= privacyTotal) {
                                     if (mProgressDialog != null) {
                                         mProgressDialog.cancel();
@@ -621,7 +619,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 // mPhoneContact =
                 // PrivacyContactManager.getInstance(AddFromContactListActivity.this)
                 // .getSysContacts();
-
             }
             return null;
         }
