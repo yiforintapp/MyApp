@@ -260,47 +260,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             } else if (arg2 == 2) {
                 Log.e("##########", "2:选择免打扰应用");
                 showSlideShowTimeSettingDialog();
-                // boolean flag = BuildProperties.isMIUI();
-                // boolean isOpenWindow =
-                // BuildProperties.isMiuiFloatWindowOpAllowed(QuickGestureActivity.this);
-                // Log.e("##########", "flag:" + flag + "isOpenWindow:" +
-                // isOpenWindow);
-                // if (flag && !isOpenWindow) {
-                // // miuiTip();
-                // Intent intent = new
-                // Intent("miui.intent.action.APP_PERM_EDITOR");
-                // intent.setClassName("com.miui.securitycenter",
-                // "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-                // intent.putExtra("extra_pkgname",
-                // QuickGestureActivity.this.getPackageName());
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // try {
-                // startActivity(intent);
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // Intent intent1 = new Intent(
-                // Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                // Uri uri = Uri.fromParts("package",
-                // QuickGestureActivity.this.getPackageName(), null);
-                // intent.setData(uri);
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // try {
-                // QuickGestureActivity.this.startActivity(intent);
-                // } catch (Exception e1) {
-                // e1.printStackTrace();
-                // }
-                // }
-                // FloatWindowHelper.createMiuiTipWindow(QuickGestureActivity.this);
-                // }
-                // Uri uri = Uri.parse("tel:" + "1008611");
-                // Intent intent = new Intent(Intent.ACTION_DIAL,
-                // uri);
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // try {
-                // startActivity(intent);
-                // } catch (Exception e) {
-                // }
-                // FloatWindowHelper.createMiuiTipWindow(QuickGestureActivity.this);
             }
         }
     }
@@ -601,7 +560,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     }
 
     private void showAllAppDialog() {
-       final QuickGestureFreeDisturbAppDialog mFreeDisturbApp = new QuickGestureFreeDisturbAppDialog(
+        final QuickGestureFreeDisturbAppDialog mFreeDisturbApp = new QuickGestureFreeDisturbAppDialog(
                 this);
         mFreeDisturbApp.setTitle(R.string.pg_appmanager_quick_gesture_select_free_disturb_app_text);
         mFreeDisturbApp.setRightBt(new OnClickListener() {

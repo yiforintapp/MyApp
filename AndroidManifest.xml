@@ -63,9 +63,13 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" />
+    <uses-permission
+        android:name="android.permission.WRITE_APN_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.USES_POLICY_FORCE_LOCK" />
-    <uses-permission android:name="android.permission.DEVICE_POWER" />
+    <uses-permission
+        android:name="android.permission.DEVICE_POWER"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -187,16 +191,16 @@
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@android:style/Theme.Holo.NoActionBar" >
+            android:theme="@android:style/Theme.Holo.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.LocationLockEditActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@android:style/Theme.Holo.NoActionBar" >
+            android:theme="@android:style/Theme.Holo.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.LockOptionActivity"
@@ -500,10 +504,11 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureMiuiOpenFloatWindwoTip"
+            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureFirstTipAcitvity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
+            android:theme="@android:style/Theme.Translucent" 
+            >
         </activity>
 
         <service

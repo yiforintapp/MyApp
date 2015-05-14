@@ -51,7 +51,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_UNLOCK_ALL_APP = "lock_setting_unlock_all";
     public static final String PREF_LOCK_SETTING = "lock_setting";
     public static final String PREF_LOCK_SETTING_CHANGE_PASSWORD = "lock_setting_chanage_password";
-    
+
     public static final String PREF_LAST_FILTER_SELF_TIME = "last_filter_self_time";
 
     // online theme
@@ -164,6 +164,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_APP_LAUNCH_RECODER = "quick_gesture_app_launch_recoder";
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST = "quick_gesture_quickswitch_list";
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE = "quick_gesture_quickswitch_list_size";
+    public static final String PREF_QUICK_FIRST_SLIDING_TIP = "quick_first_sliding_tip";
 
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -241,11 +242,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setUseThemeGuide(boolean flag) {
         mPref.edit().putBoolean(PREF_USE_LOCK_THEME_GUIDE, flag).commit();
     }
-    
-    public void  setLastFilterSelfTime(long time) {
+
+    public void setLastFilterSelfTime(long time) {
         mPref.edit().putLong(PREF_LAST_FILTER_SELF_TIME, time).commit();
     }
-    
+
     public long getLastFilterSelfTime() {
         return mPref.getLong(PREF_LAST_FILTER_SELF_TIME, 0);
     }
@@ -683,10 +684,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putString(PREF_RELOCK_TIME, timeout + "").commit();
     }
 
-    public String getRelockStringTime(){
-        return  mPref.getString(PREF_RELOCK_TIME, "0");
+    public String getRelockStringTime() {
+        return mPref.getString(PREF_RELOCK_TIME, "0");
     }
-    
+
     public void setUnlockAllApp(boolean flag) {
         mPref.edit().putBoolean(PREF_UNLOCK_ALL_APP, flag).commit();
     }
@@ -1379,7 +1380,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getSwitchOpenQuickGesture() {
-        return mPref.getBoolean(PREF_SWITCH_OPEN_QUICK_GESTURE, false);
+        return mPref.getBoolean(PREF_SWITCH_OPEN_QUICK_GESTURE, true);
     }
 
     public void setSwitchOpenNoReadMessageTip(boolean flag) {
@@ -1528,5 +1529,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setAppLaunchRecoder(String recoders) {
         mPref.edit().putString(PREF_QUICK_GESTURE_APP_LAUNCH_RECODER, recoders)
                 .commit();
+    }
+
+    public void setFristSlidingTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_FIRST_SLIDING_TIP, flag)
+                .commit();
+    }
+
+    public boolean getFristSlidingTip() {
+        return mPref.getBoolean(PREF_QUICK_FIRST_SLIDING_TIP, false);
     }
 }

@@ -198,7 +198,7 @@ public class LockManager {
         }
     };
 
-//    private ScheduledFuture<?> mFilterSelfTast;
+    // private ScheduledFuture<?> mFilterSelfTast;
 
     public void initFilterList() {
         mFilterPgks.put("WaitActivity", true);
@@ -1395,19 +1395,20 @@ public class LockManager {
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         long curTime = System.currentTimeMillis();
         amp.setLastFilterSelfTime(curTime);
-        
-//        if (mFilterSelfTast != null && !mFilterSelfTast.isDone() && !mFilterSelfTast.isCancelled()) {
-//            mFilterSelfTast.cancel(true);
-//            mFilterSelfTast = null;
-//        }
-//
-//        addFilterLockPackage(mContext.getPackageName(), true);
-//        mFilterSelfTast = mScheduler.schedule(new Runnable() {
-//            @Override
-//            public void run() {
-//                mFilterPgks.remove(mContext.getPackageName());
-//            }
-//        }, 1, TimeUnit.MINUTES);
+
+        // if (mFilterSelfTast != null && !mFilterSelfTast.isDone() &&
+        // !mFilterSelfTast.isCancelled()) {
+        // mFilterSelfTast.cancel(true);
+        // mFilterSelfTast = null;
+        // }
+        //
+        // addFilterLockPackage(mContext.getPackageName(), true);
+        // mFilterSelfTast = mScheduler.schedule(new Runnable() {
+        // @Override
+        // public void run() {
+        // mFilterPgks.remove(mContext.getPackageName());
+        // }
+        // }, 1, TimeUnit.MINUTES);
     }
 
     public void removeFilterLockPackage(String filterPackage) {
@@ -1518,18 +1519,18 @@ public class LockManager {
             AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
             long filterTime = amp.getLastFilterSelfTime();
             long curTime = System.currentTimeMillis();
-            if(filterTime != 0 && (curTime - filterTime) <= 60 * 1000) {
+            if (filterTime != 0 && (curTime - filterTime) <= 60 * 1000) {
                 amp.setLastFilterSelfTime(0);
                 return false;
             }
-            
-//            if (mFilterSelfTast != null && !mFilterSelfTast.isDone()
-//                    && !mFilterSelfTast.isCancelled()) {
-//                mFilterSelfTast.cancel(true);
-//                mFilterSelfTast = null;
-//                mFilterPgks.remove(lockedPkg);
-//                return false;
-//            }
+
+            // if (mFilterSelfTast != null && !mFilterSelfTast.isDone()
+            // && !mFilterSelfTast.isCancelled()) {
+            // mFilterSelfTast.cancel(true);
+            // mFilterSelfTast = null;
+            // mFilterPgks.remove(lockedPkg);
+            // return false;
+            // }
         }
 
         if (mFilterPgks.containsKey(lockedPkg)) {
