@@ -276,110 +276,114 @@ public class QuickGestureLayout extends ViewGroup {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (!mContainer.isEditing()) {
-                    BaseInfo info = (BaseInfo) view.getTag();
-                    if (info instanceof AppItemInfo) {
-                        AppItemInfo appInfo = (AppItemInfo) info;
-                        Intent intent = new Intent();
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setComponent(new ComponentName(appInfo.packageName,
-                                appInfo.activityName));
-                        getContext().startActivity(intent);
-                    } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
-                        QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
-                        // 蓝牙
-                        if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
-                            QuickSwitchManager.getInstance(getContext())
-                                    .toggleBluetooth(mContainer, mContainer.getSwitchList(),
-                                            QuickGestureLayout.this);
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
-                            QuickSwitchManager.getInstance(getContext())
-                                    .toggleFlashLight(mContainer, mContainer.getSwitchList(),
-                                            QuickGestureLayout.this);
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
-                            QuickSwitchManager.getInstance(getContext()).toggleWlan(mContainer,
-                                    mContainer.getSwitchList(), QuickGestureLayout.this);
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
-                            QuickSwitchManager.getInstance(getContext()).openCrame();
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
-                            QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,
-                                    mContainer.getSwitchList(), QuickGestureLayout.this);
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
-                            QuickSwitchManager.getInstance(getContext()).toggleLight(mContainer,
-                                    mContainer.getSwitchList(), QuickGestureLayout.this);
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
-                            QuickSwitchManager.getInstance(getContext()).speedUp();
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
-                            QuickSwitchManager.getInstance(getContext()).toggleMode();
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
-                            QuickSwitchManager.getInstance(getContext()).switchSet();
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
-                            QuickSwitchManager.getInstance(getContext()).goSetting();
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
-                            QuickSwitchManager.getInstance(getContext()).toggleGPS();
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
-                            QuickSwitchManager.getInstance(getContext()).toggleFlyMode();
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
-                            QuickSwitchManager.getInstance(getContext()).toggleRotation(mContainer,
-                                    mContainer.getSwitchList(), QuickGestureLayout.this);
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
-                            QuickSwitchManager.getInstance(getContext())
-                                    .toggleMobileData(mContainer, mContainer.getSwitchList(),
-                                            QuickGestureLayout.this);
-                        } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
-                            QuickSwitchManager.getInstance(getContext()).goHome();
-                        }
-                    } else if (info instanceof QuickGestureContactTipInfo) {
-                        // 短信提醒
-                        QuickGestureContactTipInfo bean = (QuickGestureContactTipInfo) info;
-                        if (QuickSwitchManager.SYS_NO_READ_MESSAGE_TIP
-                                .equals(((QuickGestureContactTipInfo) info).flag)) {
-                            Uri smsToUri = Uri.parse("smsto://" +
-                                    bean.phoneNumber);
-                            Intent mIntent = new
-                                    Intent(android.content.Intent.ACTION_SENDTO,
-                                            smsToUri);
-                            try {
-                                mContext.startActivity(mIntent);
-                            } catch (Exception e) {
-                            }
-                            if (QuickGestureManager.getInstance(mContext).mMessages == null) {
-                                // 为空不做操作
-                            } else {
-                                QuickGestureManager.getInstance(mContext).mMessages = null;
-                            }
-                            // 电话提醒
-                        } else if (QuickSwitchManager.SYS_NO_READ_CALL_LOG_TIP
-                                .equals(((QuickGestureContactTipInfo) info).flag)) {
-                            Intent intent = new Intent();
-                            intent.setAction(Intent.ACTION_CALL_BUTTON);
-                            mContext.startActivity(intent);
-                            GestureItemView item = (GestureItemView) view;
-                            item.cancelShowReadTip();
-                            if (QuickGestureManager.getInstance(mContext).mCallLogs == null) {
-                                // 为空不做操作
-                            } else {
-                                QuickGestureManager.getInstance(mContext).mCallLogs = null;
-                            }
-                        } else if (QuickSwitchManager.PRIVACY_NO_READ_CONTACT_TIP
-                                .equals(((QuickGestureContactTipInfo) info).flag)) {
-                            Intent intent = new Intent();
-                            intent.setClass(mContext, PrivacyContactActivity.class);
-                            try {
-                                mContext.startActivity(intent);
-                            } catch (Exception e) {
-                            }
-                            if (LockManager.getInstatnce().isShowPrivacyCallLog) {
-                                LockManager.getInstatnce().isShowPrivacyCallLog = false;
-                            }
-                            if (LockManager.getInstatnce().isShowPrivacyMsm) {
-                                LockManager.getInstatnce().isShowPrivacyMsm = false;
-                            }
-                        }
-                    }
+                    onItemClick(view);
                 }
             }
         });
         as.start();
+    }
+
+    private void onItemClick(final View view) {
+        BaseInfo info = (BaseInfo) view.getTag();
+        if (info instanceof AppItemInfo) {
+            AppItemInfo appInfo = (AppItemInfo) info;
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setComponent(new ComponentName(appInfo.packageName,
+                    appInfo.activityName));
+            getContext().startActivity(intent);
+        } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
+            QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
+            // 蓝牙
+            if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+                QuickSwitchManager.getInstance(getContext())
+                        .toggleBluetooth(mContainer, mContainer.getSwitchList(),
+                                QuickGestureLayout.this);
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+                QuickSwitchManager.getInstance(getContext())
+                        .toggleFlashLight(mContainer, mContainer.getSwitchList(),
+                                QuickGestureLayout.this);
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
+                QuickSwitchManager.getInstance(getContext()).toggleWlan(mContainer,
+                        mContainer.getSwitchList(), QuickGestureLayout.this);
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
+                QuickSwitchManager.getInstance(getContext()).openCrame();
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
+                QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,
+                        mContainer.getSwitchList(), QuickGestureLayout.this);
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+                QuickSwitchManager.getInstance(getContext()).toggleLight(mContainer,
+                        mContainer.getSwitchList(), QuickGestureLayout.this);
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
+                QuickSwitchManager.getInstance(getContext()).speedUp();
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
+                QuickSwitchManager.getInstance(getContext()).toggleMode();
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
+                QuickSwitchManager.getInstance(getContext()).switchSet();
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
+                QuickSwitchManager.getInstance(getContext()).goSetting();
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
+                QuickSwitchManager.getInstance(getContext()).toggleGPS();
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
+                QuickSwitchManager.getInstance(getContext()).toggleFlyMode();
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
+                QuickSwitchManager.getInstance(getContext()).toggleRotation(mContainer,
+                        mContainer.getSwitchList(), QuickGestureLayout.this);
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+                QuickSwitchManager.getInstance(getContext())
+                        .toggleMobileData(mContainer, mContainer.getSwitchList(),
+                                QuickGestureLayout.this);
+            } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
+                QuickSwitchManager.getInstance(getContext()).goHome();
+            }
+        } else if (info instanceof QuickGestureContactTipInfo) {
+            // 短信提醒
+            QuickGestureContactTipInfo bean = (QuickGestureContactTipInfo) info;
+            if (QuickSwitchManager.SYS_NO_READ_MESSAGE_TIP
+                    .equals(((QuickGestureContactTipInfo) info).flag)) {
+                Uri smsToUri = Uri.parse("smsto://" +
+                        bean.phoneNumber);
+                Intent mIntent = new
+                        Intent(android.content.Intent.ACTION_SENDTO,
+                                smsToUri);
+                try {
+                    mContext.startActivity(mIntent);
+                } catch (Exception e) {
+                }
+                if (QuickGestureManager.getInstance(mContext).mMessages == null) {
+                    // 为空不做操作
+                } else {
+                    QuickGestureManager.getInstance(mContext).mMessages = null;
+                }
+                // 电话提醒
+            } else if (QuickSwitchManager.SYS_NO_READ_CALL_LOG_TIP
+                    .equals(((QuickGestureContactTipInfo) info).flag)) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_CALL_BUTTON);
+                mContext.startActivity(intent);
+                GestureItemView item = (GestureItemView) view;
+                item.cancelShowReadTip();
+                if (QuickGestureManager.getInstance(mContext).mCallLogs == null) {
+                    // 为空不做操作
+                } else {
+                    QuickGestureManager.getInstance(mContext).mCallLogs = null;
+                }
+            } else if (QuickSwitchManager.PRIVACY_NO_READ_CONTACT_TIP
+                    .equals(((QuickGestureContactTipInfo) info).flag)) {
+                Intent intent = new Intent();
+                intent.setClass(mContext, PrivacyContactActivity.class);
+                try {
+                    mContext.startActivity(intent);
+                } catch (Exception e) {
+                }
+                if (LockManager.getInstatnce().isShowPrivacyCallLog) {
+                    LockManager.getInstatnce().isShowPrivacyCallLog = false;
+                }
+                if (LockManager.getInstatnce().isShowPrivacyMsm) {
+                    LockManager.getInstatnce().isShowPrivacyMsm = false;
+                }
+            }
+        }
     }
 
     public void checkItemClick(float x, float y) {
