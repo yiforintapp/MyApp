@@ -51,7 +51,6 @@ public class QuickGestureContainer extends FrameLayout {
         DymicLayout, MostUsedLayout, SwitcherLayout;
     }
 
-    private RightGesturePopupWindow mPopWindow;
     private QuickGestureLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
     private CornerTabs mCornerTabs;
     private GType mCurrentGestureType = GType.DymicLayout;
@@ -1010,10 +1009,6 @@ public class QuickGestureContainer extends FrameLayout {
             onTouchDown();
             snapToNext();
         }
-    }
-
-    public void setPopWindow(RightGesturePopupWindow rightGesturePopupWindow) {
-        mPopWindow = rightGesturePopupWindow;
     }
 
 }

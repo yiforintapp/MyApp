@@ -31,7 +31,6 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
-import com.leo.appmaster.quickgestures.view.RightGesturePopupWindow;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
