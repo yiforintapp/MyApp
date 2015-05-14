@@ -408,15 +408,29 @@ public class QuickGestureLayout extends ViewGroup {
                 int onnsetY = (int) (y - hitView.getTop());
                 if (rect.contains(offsetX, onnsetY)) {
                     removeView(hitView);
-                    GType type = mContainer.getCurrentGestureType();
-                    if (type == GType.DymicLayout) {
-                        QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
-                                (MessageBean) hitView.getTag());
-                    }
+                    itemRemoved(hitView);
                 }
             } else {
                 animateItem(hitView);
             }
+        }
+    }
+
+    private void itemRemoved(View hitView) {
+        GType type = mContainer.getCurrentGestureType();
+        if (type == GType.DymicLayout) {
+            QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+                    (BaseInfo) hitView.getTag());
+        } else if (type == GType.SwitcherLayout) {
+            //TODO show add new item icon
+            String switchListString = QuickSwitchManager.getInstance(mContext).getListStringFromSp();
+            List<QuickSwitcherInfo> mNowList = QuickSwitchManager.getInstance(mContext).StringToList(switchListString);
+            QuickSwitcherInfo mXuKuang = QuickSwitchManager.getInstance(mContext).getXuKuangInfo();
+            mXuKuang.position = mNowList.size();
+            mNowList.add(mXuKuang);
+            mContainer.fillSwitchItem(QuickGestureLayout.this,mNowList);
+        } else if (type == GType.MostUsedLayout) {
+            
         }
     }
 
@@ -430,6 +444,7 @@ public class QuickGestureLayout extends ViewGroup {
                 LeoLog.d("checkItemLongClick", "hitView");
                 break;
             }
+            // 不足9个icon，显示虚框 TODO
         }
 
         if (hitView != null) {
