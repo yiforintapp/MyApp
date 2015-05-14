@@ -44,6 +44,21 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         ContentResolver cr = mContext.getContentResolver();
         PrivacyContactManager pcm = PrivacyContactManager.getInstance(mContext);
         if (MESSAGE_MODEL.equals(mFlag)) {
+            MessageBean mb = pcm.getLastMessage();
+            if (mb != null) {
+                String number = mb.getPhoneNumber();
+                try {
+                    cr.delete(
+                            PrivacyContactUtils.SMS_INBOXS,
+                            "address =  " + "\"" + number + "\" and " + "body = \""
+                                    + mb.getMessageBody() + "\"", null);
+                } catch (Exception e) {
+                }
+            }
+            // 更新短信列表
+            // else {
+            // PrivacyContactManager.getInstance(mContext).updateSysMessage();
+            // }
 
             /*
              * 快捷手势未读短信提醒
@@ -60,42 +75,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             /*
              * _________________________________________________
              */
-            MessageBean mb = pcm.getLastMessage();
-            if (mb != null) {
-                String number = mb.getPhoneNumber();
-                try {
-                    cr.delete(
-                            PrivacyContactUtils.SMS_INBOXS,
-                            "address =  " + "\"" + number + "\" and " + "body = \""
-                                    + mb.getMessageBody() + "\"", null);
-                } catch (Exception e) {
-                }
-            }
-            // 更新短信列表
-            // else {
-            // PrivacyContactManager.getInstance(mContext).updateSysMessage();
-            // }
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
-            /*
-             * 快捷手势未读通话记录提醒
-             */
-            String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
-            String[] selectionArgs = new String[] {
-                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
-            };
-            List<ContactCallLog> callLogs = PrivacyContactUtils
-                    .getSysCallLog(mContext,
-                            mContext.getContentResolver(), selection,
-                            selectionArgs);
-            if (callLogs != null && callLogs.size() > 0) {
-                QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
-                FloatWindowHelper.isShowSysNoReadMessage = true;
-                FloatWindowHelper.removeSwipWindow(mContext, 1);
-                FloatWindowHelper.removeSwipWindow(mContext, -1);
-            }
-            /*
-             * ------------------------------------------------------------------
-             */
             ContactBean call = PrivacyContactManager.getInstance(mContext).getLastCall();
             if (call != null) {
                 Cursor cursor = null;
@@ -221,6 +201,26 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             } else {
                 PrivacyContactManager.getInstance(mContext).updateSysCallLog();
             }
+            /*
+             * 快捷手势未读通话记录提醒
+             */
+            String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
+            String[] selectionArgs = new String[] {
+                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
+            };
+            List<ContactCallLog> callLogs = PrivacyContactUtils
+                    .getSysCallLog(mContext,
+                            mContext.getContentResolver(), selection,
+                            selectionArgs);
+            if (callLogs != null && callLogs.size() > 0) {
+                QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
+                FloatWindowHelper.isShowSysNoReadMessage = true;
+                FloatWindowHelper.removeSwipWindow(mContext, 1);
+                FloatWindowHelper.removeSwipWindow(mContext, -1);
+            }
+            /*
+             * ------------------------------------------------------------------
+             */
         } else if (CONTACT_MODEL.equals(mFlag)) {
             // PrivacyContactManager.getInstance(mContext).updateSysContact();
         }
