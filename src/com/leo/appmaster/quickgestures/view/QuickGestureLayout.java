@@ -411,6 +411,8 @@ public class QuickGestureLayout extends ViewGroup {
                     if (type == GType.DymicLayout) {
                         QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
                                 (BaseInfo) hitView.getTag());
+                    }else if(type == GType.SwitcherLayout){
+                        //快捷开关显示虚框
                     }
                 }
             } else {
@@ -429,6 +431,7 @@ public class QuickGestureLayout extends ViewGroup {
                 LeoLog.d("checkItemLongClick", "hitView");
                 break;
             }
+            //不足9个icon，显示虚框 TODO
         }
 
         if (hitView != null) {

@@ -567,6 +567,7 @@ public class QuickSwitchManager {
                     mCamera.release();
                     mCamera = null;
                 }
+                isFlashLightOpen = false;
                 return;
             }
             try {
@@ -578,11 +579,16 @@ public class QuickSwitchManager {
                 return;
             }
         } else {
+            try{
             isFlashLightOpen = false;
             Parameters params = mCamera.getParameters();
             params.setFlashMode(Parameters.FLASH_MODE_OFF);
             mCamera.stopPreview();
             mCamera.release();
+            }catch (Exception e) {
+                isFlashLightOpen = false;
+                return;
+            }
         }
         mContainer.fillSwitchItem(quickGestureLayout, list);
     }
