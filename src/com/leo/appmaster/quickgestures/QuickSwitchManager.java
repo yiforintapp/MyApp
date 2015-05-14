@@ -12,6 +12,7 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureLayout;
+import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.R.integer;
@@ -34,6 +35,8 @@ import android.os.PowerManager;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class QuickSwitchManager {
@@ -1031,11 +1034,19 @@ public class QuickSwitchManager {
         return switchPreference.getSwitchList();
     }
 
-    public QuickSwitcherInfo getXuKuangInfo() {
-        QuickSwitcherInfo mXuKuang = new QuickSwitcherInfo();
-        mXuKuang.label = "";
-        mXuKuang.iDentiName = XUKUANG;
-        mXuKuang.switchIcon = getIconFromName(XUKUANG);
-        return mXuKuang;
+    // public QuickSwitcherInfo getXuKuangInfo() {
+    // QuickSwitcherInfo mXuKuang = new QuickSwitcherInfo();
+    // mXuKuang.label = "";
+    // mXuKuang.iDentiName = XUKUANG;
+    // mXuKuang.switchIcon = getIconFromName(XUKUANG);
+    // return mXuKuang;
+    // }
+
+    public ImageView getXuKuang(View hitView) {
+        LayoutParams params = (LayoutParams) hitView.getLayoutParams();
+        ImageView mIvXuKuang = new ImageView(mContext);
+        mIvXuKuang.setLayoutParams(params);
+        mIvXuKuang.setBackground(mContext.getResources().getDrawable(R.drawable.switch_add));
+        return mIvXuKuang;
     }
 }

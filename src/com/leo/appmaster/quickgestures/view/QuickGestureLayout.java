@@ -30,6 +30,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
@@ -422,15 +423,22 @@ public class QuickGestureLayout extends ViewGroup {
             QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
                     (BaseInfo) hitView.getTag());
         } else if (type == GType.SwitcherLayout) {
-            //TODO show add new item icon
-            String switchListString = QuickSwitchManager.getInstance(mContext).getListStringFromSp();
-            List<QuickSwitcherInfo> mNowList = QuickSwitchManager.getInstance(mContext).StringToList(switchListString);
-            QuickSwitcherInfo mXuKuang = QuickSwitchManager.getInstance(mContext).getXuKuangInfo();
-            mXuKuang.position = mNowList.size();
-            mNowList.add(mXuKuang);
-            mContainer.fillSwitchItem(QuickGestureLayout.this,mNowList);
+            // TODO show add new item icon
+            // 方案一，失败
+            // String switchListString =
+            // QuickSwitchManager.getInstance(mContext).getListStringFromSp();
+            // List<QuickSwitcherInfo> mNowList =
+            // QuickSwitchManager.getInstance(mContext).StringToList(switchListString);
+            // QuickSwitcherInfo mXuKuang =
+            // QuickSwitchManager.getInstance(mContext).getXuKuangInfo();
+            // mXuKuang.position = mNowList.size();
+            // mNowList.add(mXuKuang);
+            // mContainer.fillSwitchItem(QuickGestureLayout.this,mNowList);
+            // 方案二，直接加个view
+            ImageView mIvXuKuang = QuickSwitchManager.getInstance(mContext).getXuKuang(hitView);
+            addView(mIvXuKuang);
         } else if (type == GType.MostUsedLayout) {
-            
+
         }
     }
 
