@@ -20,6 +20,7 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
@@ -30,8 +31,9 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class PretendAppUnknowCallFragment5 extends PretendFragment implements OnTouchListener {
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
-            iv_duanxin_big, iv_jieting_big, finish_lock;
-    private LinearLayout activity_weizhuang_firstin;
+            iv_duanxin_big, iv_jieting_big, finish_lock,iv_test_icon;
+    private RelativeLayout activity_weizhuang_firstin;
+    private View text_content;
     private float mYuanX, mYuanY, mZhiJing, mBanJing;
     private int hold_width, hold_height, hold_left, hold_top, hold_right, hold_bottom;
     private int gua_yuan_x, gua_yuan_y, gua_left, gua_top, gua_right, gua_bottom;
@@ -83,6 +85,9 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
 
+                    
+                    mViewContent.mFilterLayout = true;
+                    
                     finish_lock.layout(finish_left, finish_top, finish_right, finish_bottom);
 
                     if (!isStop) {
@@ -92,6 +97,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                         // LeoLog.d("testFragment", "start 震动 ! ");
                     }
 
+                    mViewContent.isInit = true;
                     break;
                 case 2:
                     iv_dianhua_hold.setVisibility(View.INVISIBLE);
@@ -100,6 +106,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_jieting.setVisibility(View.INVISIBLE);
                     break;
                 case 3:
+                    text_content.setVisibility(View.INVISIBLE);
                     finish_lock.setVisibility(View.VISIBLE);
                     break;
                 case 4:
@@ -170,7 +177,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
     @Override
     protected void onInitUI() {
-        activity_weizhuang_firstin = (LinearLayout) findViewById(R.id.activity_weizhuang_firstin);
+        activity_weizhuang_firstin = (RelativeLayout) findViewById(R.id.activity_weizhuang_firstin);
 
         android.widget.LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -196,6 +203,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         iv_dianhua_hold = (ImageView) findViewById(R.id.iv_dianhua_hold);
         iv_dianhua_hold.setOnTouchListener(this);
 
+        text_content = findViewById(R.id.text_content);
+
         iv_guaduan = (ImageView) findViewById(R.id.iv_guaduan);
         iv_duanxin = (ImageView) findViewById(R.id.iv_duanxin);
         iv_jieting = (ImageView) findViewById(R.id.iv_jieting);
@@ -203,6 +212,11 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         iv_duanxin_big = (ImageView) findViewById(R.id.iv_duanxin_big);
         iv_jieting_big = (ImageView) findViewById(R.id.iv_jieting_big);
 
+//        iv_test_icon = new ImageView(mActivity);
+//        iv_test_icon.setBackground(mActivity.getResources().getDrawable(R.drawable.app_seekbar_btn));
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(25, 25);  
+//        iv_test_icon.setLayoutParams(params);
+        
         myself_circle = (CirCleDongHua) findViewById(R.id.myself_circle);
         finish_lock = (ImageView) findViewById(R.id.finish_lock);
     }
@@ -211,8 +225,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         new Thread() {
             public void run() {
                 try {
-                    mHandler.sendEmptyMessage(2);
-                    sleep(50);
+//                    mHandler.sendEmptyMessage(2);
+//                    sleep(50);
                     mHandler.sendEmptyMessage(1);
                     // LeoLog.d("testFragment", "setPlace ! ");
                 } catch (Exception e) {
@@ -414,10 +428,10 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                 // LeoLog.d("testUnknowCall", "mFinishLockWidth :" +
                 // mFinishLockWidth + "mFinishLockHeight :" +
                 // mFinishLockHeight);
-                finish_left = gua_left - gua_width/2 + 10;
-                finish_top = duan_top - duan_height/2;
-                finish_right = jie_right + jie_width/2 - 10;
-                finish_bottom = gua_bottom + gua_height/2;
+                finish_left = gua_left - gua_width / 2 + 10;
+                finish_top = duan_top - duan_height / 2;
+                finish_right = jie_right + jie_width / 2 - 10;
+                finish_bottom = gua_bottom + gua_height / 2;
 
                 if (mVersion > 16) {
                     mViewContent.getViewTreeObserver().removeOnGlobalLayoutListener(this);

@@ -40,7 +40,7 @@
     <string name="find_passwd">密码找回</string>
     <string name="please_wait">请稍候再试</string>
     <string name="passwd_question">问题：</string>
-    <string name="passwd_anwser">答案</string>
+    <string name="passwd_anwser">答案：</string>
     <string name="accelerate">加速</string>
     <string name="used_mem">使用内存</string>
     <string name="passwd_tip">请输入密码提示</string>
@@ -639,9 +639,11 @@
 
 
     <!-- version 2.2 start -->
-    <string name="feed_back_content_guide">您遇到的问题</string>
-    <string name="feed_back_email_guide">邮箱</string>
+    <string name="feedback_content_guide">您遇到的问题</string>
+    <string name="feedback_email_guide">邮箱</string>
     <string name="feedback_category_guide">问题类型</string>
+    <string name="privacy_proposal_tip">您的隐私等级为%1$s，建议您进行以下操作，以提高您的隐私等级</string>
+    <string name="lock_mode_name_maxlength">18</string>
     <!-- version 2.2 end -->
 
 
@@ -687,8 +689,6 @@
     <string name="quick_guesture_home">桌面</string>
     <string name="quick_guesture_lockscreen">锁屏</string>
     <!-- quick gesture -->
-
-
     <!-- version 2.3 end -->
 
 </resources>

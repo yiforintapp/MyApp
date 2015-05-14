@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.CallLog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +50,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
+import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 
 public class PrivacyCalllogFragment extends BaseFragment {
 
@@ -66,7 +65,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
     private List<ContactCallLog> mDeleteCallLog;
     private int mCallLogCount;
     private Handler mHandler;
-    private LEOProgressDialog mProgressDialog;
+    private LEORoundProgressDialog mProgressDialog;
     private SimpleDateFormat mSimpleDateFormate;
     private boolean mIsRead = false;
     private boolean mIsUpdate = true;
@@ -510,7 +509,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
 
     private void showProgressDialog(int maxValue, int currentValue) {
         if (mProgressDialog == null) {
-            mProgressDialog = new LEOProgressDialog(mContext);
+            mProgressDialog = new LEORoundProgressDialog(mContext);
         }
         String title = getResources().getString(R.string.privacy_contact_progress_dialog_title);
         String content = getResources().getString(R.string.privacy_contact_progress_dialog_content);
@@ -518,6 +517,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
         mProgressDialog.setMessage(content);
         mProgressDialog.setMax(maxValue);
         mProgressDialog.setProgress(currentValue);
+        mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();

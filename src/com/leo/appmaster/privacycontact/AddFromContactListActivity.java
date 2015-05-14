@@ -42,7 +42,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.ui.dialog.LEOProgressDialog;
+import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 
 public class AddFromContactListActivity extends BaseActivity implements OnItemClickListener {
     private ListView mListContact;
@@ -53,7 +53,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
     private CommonTitleBar mTtileBar;
     private List<ContactBean> mAddPrivacyContact;
     private Handler mHandler;
-    private LEOProgressDialog mProgressDialog;
+    private LEORoundProgressDialog mProgressDialog;
     private LEOAlarmDialog mAddContactDialog;
     private ProgressBar mProgressBar;
     private TextView mDialog;
@@ -523,6 +523,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 String content = getResources().getString(
                         R.string.privacy_contact_add_log_dialog_dialog_content);
                 showAddContactDialog(title, content);
+                mHandler = null;
             } else {
                 // 通知更新隐私联系人列表
                 notificationUpdatePrivacyContactList();
@@ -537,7 +538,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
 
     private void showProgressDialog(int maxValue, int currentValue) {
         if (mProgressDialog == null) {
-            mProgressDialog = new LEOProgressDialog(this);
+            mProgressDialog = new LEORoundProgressDialog(this);
         }
         String title = getResources().getString(R.string.privacy_contact_progress_dialog_title);
         String content = getResources().getString(R.string.privacy_contact_progress_dialog_content);
@@ -545,6 +546,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         mProgressDialog.setMessage(content);
         mProgressDialog.setMax(maxValue);
         mProgressDialog.setProgress(currentValue);
+        mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
@@ -619,7 +621,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 // mPhoneContact =
                 // PrivacyContactManager.getInstance(AddFromContactListActivity.this)
                 // .getSysContacts();
-
             }
             return null;
         }

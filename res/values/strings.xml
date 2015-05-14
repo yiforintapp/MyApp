@@ -41,7 +41,7 @@
     <string name="find_passwd">Forget passwd</string>
     <string name="please_wait">Please try again later</string>
     <string name="passwd_question">Question: </string>
-    <string name="passwd_anwser">Answer</string>
+    <string name="passwd_anwser">Answer:</string>
     <string name="accelerate">Boost</string>
     <string name="used_mem">Memory Used</string>
     <string name="passwd_tip">Please enter a password hint</string>
@@ -631,9 +631,11 @@
 
 
     <!-- version 2.2 start -->
-    <string name="feed_back_content_guide">您遇到的问题</string>
-    <string name="feed_back_email_guide">邮箱</string>
-    <string name="feedback_category_guide">问题类型</string>
+    <string name="feedback_content_guide">Hi, can I help you?</string>
+    <string name="feedback_email_guide">Your Email</string>
+    <string name="feedback_category_guide">Select A Question</string>
+    <string name="privacy_proposal_tip">Your privacy level is %1$s, please flowing the proposals to upgrade it.</string>
+    <string name="lock_mode_name_maxlength">30</string>
     <!-- version 2.2 end -->
 
 
@@ -658,7 +660,7 @@
     <string name="pg_appmanager_quick_gesture_option_dialog_radio_toast_text">请至少选择一个区域</string>
     <string name="pg_appmanager_quick_gesture_select_free_disturb_app_text">请选择免干扰应用</string>
     <string name="pg_appmanager_quick_gesture_miui_open_float_window_tip_text">请找到开启悬浮窗选项并开启，然后再次启动快捷XX</string>
-     <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">系统信息</string>
+    <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">系统信息</string>
     <string name="dynamic">动态</string>
     <string name="quick_switcher">快捷开关</string>
     <string name="most_used">最常使用</string>

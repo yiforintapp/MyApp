@@ -10,9 +10,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,9 +73,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
-
         initEmails();
-        
         initUi();
 
         // check if any data not submitted
@@ -101,6 +102,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         mEmailLayout = findViewById(R.id.feedback_email_layout);
         mEditEmail = (EditText) findViewById(R.id.feedback_email);
         mEditEmail.setOnFocusChangeListener(this);
+        
         mEmailImg =  (ImageView) findViewById(R.id.feedback_email_arrow);
         mEmailImg.setOnClickListener(this);
         mEmailImg.setVisibility(mEmails.size() > 1 ? View.VISIBLE : View.GONE);
@@ -128,7 +130,6 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         };
         mEditEmail.addTextChangedListener(textWatcher);
         mEditContent.addTextChangedListener(textWatcher);
-        mEditContent.requestFocus();
     }
 
     private void checkPendingData() {
@@ -260,7 +261,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
      */
     private void showQuesCategoryDialog(){
         if (mCategoryDialog == null) {
-            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this);
+            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this,R.style.bt_dialog);
             mCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mCategoryDialog.setContentView(R.layout.dialog_common_list_select);
             mCategoryDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
@@ -343,13 +344,13 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
      */
     private void showEmailListDialog(){
         if (mCategoryDialog == null) {
-            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this);
+            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this,R.style.bt_dialog);
             mCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mCategoryDialog.setContentView(R.layout.dialog_common_list_select);
             mCategoryDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
         }
         TextView mTitle = (TextView) mCategoryDialog.findViewById(R.id.dlg_title);
-        mTitle.setText(getResources().getString(R.string.feed_back_email_guide));
+        mTitle.setText(getResources().getString(R.string.feedback_email_guide));
         
         mCategoryListView = (ListView) mCategoryDialog.findViewById(R.id.item_list);
         mCategoryListView.setOnItemClickListener(new OnItemClickListener() {

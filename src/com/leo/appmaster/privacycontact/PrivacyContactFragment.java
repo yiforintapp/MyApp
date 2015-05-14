@@ -39,7 +39,7 @@ import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.dialog.LEOProgressDialog;
+import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 
 public class PrivacyContactFragment extends BaseFragment {
 
@@ -55,7 +55,7 @@ public class PrivacyContactFragment extends BaseFragment {
     private List<ContactBean> mDeleteContact;
     private int mDeleteCount = 0;
     private Handler mHandler;
-    private LEOProgressDialog mProgressDialog;
+    private LEORoundProgressDialog mProgressDialog;
     private boolean mIsChecked = true;
     private boolean mRestorMessagesFlag = false;
     private boolean mRestorCallLogsFlag = false;
@@ -441,9 +441,9 @@ public class PrivacyContactFragment extends BaseFragment {
             }
         });
         mPCDialog.setCanceledOnTouchOutside(true);
-        mPCDialog.getWindow().setLayout(
+       /* mPCDialog.getWindow().setLayout(
                 (int) getResources().getDimension(R.dimen.privacy_contact_edit_dialog_width),
-                (int) getResources().getDimension(R.dimen.privacy_contact_edit_dialog_height));
+                (int) getResources().getDimension(R.dimen.privacy_contact_edit_dialog_height));*/
         mPCDialog.show();
     }
 
@@ -690,7 +690,7 @@ public class PrivacyContactFragment extends BaseFragment {
 
     private void showProgressDialog(int maxValue, int currentValue) {
         if (mProgressDialog == null) {
-            mProgressDialog = new LEOProgressDialog(mContext);
+            mProgressDialog = new LEORoundProgressDialog(mContext);
         }
         String title = getResources().getString(R.string.privacy_contact_progress_dialog_title);
         String content = getResources().getString(R.string.privacy_contact_progress_dialog_content);
@@ -698,6 +698,7 @@ public class PrivacyContactFragment extends BaseFragment {
         mProgressDialog.setMessage(content);
         mProgressDialog.setMax(maxValue);
         mProgressDialog.setProgress(currentValue);
+        mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();

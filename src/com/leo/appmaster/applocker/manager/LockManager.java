@@ -198,7 +198,7 @@ public class LockManager {
         }
     };
 
-    private ScheduledFuture<?> mFilterSelfTast;
+//    private ScheduledFuture<?> mFilterSelfTast;
 
     public void initFilterList() {
         mFilterPgks.put("WaitActivity", true);
@@ -1249,7 +1249,7 @@ public class LockManager {
                 dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
                 dialog.setMiddleBtnStr(mContext.getString(R.string.lock_mode_time));
                 dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_location));
-                dialog.setRightBtnBackground(R.drawable.dlg_right_button_selector);
+                dialog.setRightBtnBackground(R.drawable.manager_mode_lock_third_button_selecter);
                 dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
                     @Override
                     public void onClick(int which) {
@@ -1284,6 +1284,7 @@ public class LockManager {
                     String tip = mContext.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
                     dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_time));
+                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
                     dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override
@@ -1313,6 +1314,7 @@ public class LockManager {
                     String tip = mContext.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
                     dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_location));
+                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
                     dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override
@@ -1390,18 +1392,22 @@ public class LockManager {
      * time filter self 1 minute
      */
     public void timeFilterSelf() {
-        if (mFilterSelfTast != null && !mFilterSelfTast.isDone() && !mFilterSelfTast.isCancelled()) {
-            mFilterSelfTast.cancel(true);
-            mFilterSelfTast = null;
-        }
-
-        addFilterLockPackage(mContext.getPackageName(), true);
-        mFilterSelfTast = mScheduler.schedule(new Runnable() {
-            @Override
-            public void run() {
-                mFilterPgks.remove(mContext.getPackageName());
-            }
-        }, 1, TimeUnit.MINUTES);
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        long curTime = System.currentTimeMillis();
+        amp.setLastFilterSelfTime(curTime);
+        
+//        if (mFilterSelfTast != null && !mFilterSelfTast.isDone() && !mFilterSelfTast.isCancelled()) {
+//            mFilterSelfTast.cancel(true);
+//            mFilterSelfTast = null;
+//        }
+//
+//        addFilterLockPackage(mContext.getPackageName(), true);
+//        mFilterSelfTast = mScheduler.schedule(new Runnable() {
+//            @Override
+//            public void run() {
+//                mFilterPgks.remove(mContext.getPackageName());
+//            }
+//        }, 1, TimeUnit.MINUTES);
     }
 
     public void removeFilterLockPackage(String filterPackage) {
@@ -1509,13 +1515,21 @@ public class LockManager {
             OnUnlockedListener listener) {
 
         if (TextUtils.equals(mContext.getPackageName(), lockedPkg)) {
-            if (mFilterSelfTast != null && !mFilterSelfTast.isDone()
-                    && !mFilterSelfTast.isCancelled()) {
-                mFilterSelfTast.cancel(true);
-                mFilterSelfTast = null;
-                mFilterPgks.remove(lockedPkg);
+            AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+            long filterTime = amp.getLastFilterSelfTime();
+            long curTime = System.currentTimeMillis();
+            if(filterTime != 0 && (curTime - filterTime) <= 60 * 1000) {
+                amp.setLastFilterSelfTime(0);
                 return false;
             }
+            
+//            if (mFilterSelfTast != null && !mFilterSelfTast.isDone()
+//                    && !mFilterSelfTast.isCancelled()) {
+//                mFilterSelfTast.cancel(true);
+//                mFilterSelfTast = null;
+//                mFilterPgks.remove(lockedPkg);
+//                return false;
+//            }
         }
 
         if (mFilterPgks.containsKey(lockedPkg)) {

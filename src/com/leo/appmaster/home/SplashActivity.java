@@ -15,7 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.NinePatch;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Point;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,7 +25,9 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.EdgeEffectCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -220,28 +222,22 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
                             showGuide();
                         }
                     } else {
-                        AppMasterPreference pre = AppMasterPreference
-                                .getInstance(SplashActivity.this);
-                        if (!pre.getAppVersionName().equals("default_version_name")) {
-                            // 存储的版本号
-                            String versionName = pre.getAppVersionName();
-                            // float version = Float.valueOf(versionName);
-                            // 获取当前的版本号
-                            String currentVersionName = SplashActivity.this
-                                    .getString(R.string.version_name);
-                            if (!versionName.equals(currentVersionName)) {
-                                boolean guidNotShown = mMain == null
-                                        || mMain.getVisibility() != View.VISIBLE;
-                                if (guidNotShown) {
-                                    showGuide();
-                                }
-                                pre.setAppVersionName(currentVersionName);
-                            } else {
-                                startHome();
-                            }
-                        } else {
-                            startHome();
-                        }
+//                        AppMasterPreference pre = AppMasterPreference
+//                                .getInstance(SplashActivity.this);
+//                        // 存储的版本号
+//                        String versionName = pre.getAppVersionName();
+//                        // 获取当前的版本号
+//                        String currentVersion = getString(R.string.version_name);
+//                        if (!versionName.equals(currentVersion)) {
+//                            boolean guidNotShown = mMain == null
+//                                    || mMain.getVisibility() != View.VISIBLE;
+//                            if (guidNotShown) {
+//                                showGuide();
+//                            }
+//                        } else {
+//                            startHome();
+//                        }
+                        startHome();
                     }
                     break;
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
+import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 public class BackUpFragment extends BaseFragment implements AppBackupDataListener, OnClickListener,
         OnItemClickListener {
@@ -43,7 +46,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
     private Handler mHandler = new Handler();
     private AppBackupRestoreManager mBackupManager;
     private AppBackupAdapter mBackupAdapter;
-    private LEOProgressDialog mProgressDialog;
+    private LEORoundProgressDialog mProgressDialog;
     private LEOAlarmDialog mAlarmDialog;
     private LEOMessageDialog mMessageDialog;
     private AppItemInfo mPendingDelApp;
@@ -318,7 +321,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
     private void showProgressDialog(String title, String message, int max,
             boolean indeterminate, boolean cancelable) {
         if (mProgressDialog == null) {
-            mProgressDialog = new LEOProgressDialog(getActivity());
+            mProgressDialog = new LEORoundProgressDialog(getActivity());
             mProgressDialog.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
@@ -333,9 +336,9 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
         mProgressDialog.setCancelable(cancelable);
         mProgressDialog.setButtonVisiable(cancelable);
         mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setIndeterminate(indeterminate);
         mProgressDialog.setMax(max);
         mProgressDialog.setProgress(0);
+        mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setMessage(message);
         mProgressDialog.setTitle(title);
         mProgressDialog.show();
@@ -424,6 +427,12 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
 
         mMessageDialog.setTitle(title);
         mMessageDialog.setContent(message);
+        mMessageDialog.setDialogIcon(R.drawable.done_icon);
+        LayoutParams params = (LayoutParams) mMessageDialog.getDialogIcomLayout();
+        params.width = DipPixelUtil.dip2px(getActivity(), 76);
+        params.height = DipPixelUtil.dip2px(getActivity(), 76);
+        params.topMargin = DipPixelUtil.dip2px(getActivity(), 22);
+        mMessageDialog.setDialogIconLayout(params);
         mMessageDialog.show();
     }
 

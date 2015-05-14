@@ -47,8 +47,8 @@ import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 
 public class PrivacyMessageFragment extends BaseFragment implements OnItemClickListener,
         OnItemLongClickListener {
@@ -67,7 +67,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     private static final String spaceString = "\u00A0";
     private List<MessageBean> mRestorMessages;
     private Handler mHandler;
-    private LEOProgressDialog mProgressDialog;
+    private LEORoundProgressDialog mProgressDialog;
     private LEOAlarmDialog mAddCallLogDialog;
     private int mRestoreCount;
     private String mEditModelOperaction;
@@ -413,7 +413,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
 
     private void showProgressDialog(int maxValue, int currentValue) {
         if (mProgressDialog == null) {
-            mProgressDialog = new LEOProgressDialog(mContext);
+            mProgressDialog = new LEORoundProgressDialog(mContext);
         }
         String title = getResources().getString(R.string.privacy_contact_progress_dialog_title);
         String content = getResources().getString(R.string.privacy_contact_progress_dialog_content);
@@ -421,6 +421,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         mProgressDialog.setMessage(content);
         mProgressDialog.setMax(maxValue);
         mProgressDialog.setProgress(currentValue);
+        mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();

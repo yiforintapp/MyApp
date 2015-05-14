@@ -3,7 +3,7 @@
 
     <item android:drawable="@drawable/app_delete_btn" android:state_pressed="true"/>
     <item android:drawable="@drawable/app_delete_btn" android:state_focused="true"/>
-    <item android:drawable="@drawable/app_done_bnt"/>
+    <item android:drawable="@drawable/app_done_btn"/>
     
 </selector>
 
