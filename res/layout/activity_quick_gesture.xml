@@ -32,7 +32,7 @@
     </com.leo.appmaster.quickgestures.view.QuickGesturesAreaView>
 
     <RelativeLayout
-        android:id="@+id/miui_tipRL"
+        android:id="@+id/quick_tipRL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/quick_gesture_miui_tip_color"
