@@ -1044,11 +1044,11 @@ public class QuickSwitchManager {
     // return mXuKuang;
     // }
 
-    public GestureItemView getXuKuang(View hitView) {
-        LayoutParams params = (LayoutParams) hitView.getLayoutParams();
-        GestureItemView mIvXuKuang = new GestureItemView(mContext);
-        mIvXuKuang.setLayoutParams(params);
-        mIvXuKuang.setBackground(mContext.getResources().getDrawable(R.drawable.switch_add));
-        return mIvXuKuang;
-    }
+//    public GestureItemView getXuKuang(View hitView) {
+//        LayoutParams params = (LayoutParams) hitView.getLayoutParams();
+//        GestureItemView mIvXuKuang = new GestureItemView(mContext);
+//        mIvXuKuang.setLayoutParams(params);
+//        mIvXuKuang.setBackground(mContext.getResources().getDrawable(R.drawable.switch_add));
+//        return mIvXuKuang;
+//    }
 }

@@ -26,6 +26,7 @@ public class GestureItemView extends TextView {
     private boolean mEditing;
     private Drawable mCrossDrawable;
     private boolean mIsShowReadTip;
+    private boolean mAddFlag = false;
 
     public GestureItemView(Context context) {
         super(context);
@@ -53,6 +54,14 @@ public class GestureItemView extends TextView {
 
     public DecorateAction getDecorateAction() {
         return mDecorateAction;
+    }
+
+    public boolean isAddItem() {
+        return mAddFlag;
+    }
+
+    public void setAddFlage(boolean add) {
+        mAddFlag = add;
     }
 
     public Rect getCrossRect() {
@@ -116,6 +125,7 @@ public class GestureItemView extends TextView {
                     QuickGestureContainer qgc = (QuickGestureContainer) mHolderLayout.getParent();
                     qgc.setEditing(true);
                     setVisibility(View.INVISIBLE);
+                    mHolderLayout.onEnterEditMode();
                 }
                 break;
             }

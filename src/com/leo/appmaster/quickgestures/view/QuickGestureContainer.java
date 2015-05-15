@@ -198,9 +198,9 @@ public class QuickGestureContainer extends FrameLayout {
 
     public void leaveEditMode() {
         mEditing = false;
-        mDymicLayout.leaveEditMode();
-        mMostUsedLayout.leaveEditMode();
-        mSwitcherLayout.leaveEditMode();
+        mDymicLayout.onLeaveEditMode();
+        mMostUsedLayout.onLeaveEditMode();
+        mSwitcherLayout.onLeaveEditMode();
     }
 
     public boolean isEditing() {

@@ -419,7 +419,7 @@ public class QuickGestureLayout extends ViewGroup {
                 int onnsetY = (int) (y - hitView.getTop() + 30);
                 if (rect.contains(offsetX, onnsetY)) {
                     removeView(hitView);
-                    itemRemoved(hitView);
+                    onItemRemoved(hitView);
                 }
             } else {
                 animateItem(hitView);
@@ -427,7 +427,7 @@ public class QuickGestureLayout extends ViewGroup {
         }
     }
 
-    private void itemRemoved(View hitView) {
+    private void onItemRemoved(View hitView) {
         GType type = mContainer.getCurrentGestureType();
         if (type == GType.DymicLayout) {
             QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
@@ -445,9 +445,13 @@ public class QuickGestureLayout extends ViewGroup {
             // mNowList.add(mXuKuang);
             // mContainer.fillSwitchItem(QuickGestureLayout.this,mNowList);
             // 方案二，直接加个view
-            GestureItemView mIvXuKuang = QuickSwitchManager.getInstance(mContext).getXuKuang(
-                    hitView);
-            addView(mIvXuKuang);
+            // GestureItemView mIvXuKuang =
+            // QuickSwitchManager.getInstance(mContext).getXuKuang(
+            // hitView);
+            // addView(mIvXuKuang);
+
+            showAddIcon(((LayoutParams) hitView.getLayoutParams()).position);
+
         } else if (type == GType.MostUsedLayout) {
 
         }
@@ -517,13 +521,6 @@ public class QuickGestureLayout extends ViewGroup {
             }
         }
         return -1;
-    }
-
-    public void leaveEditMode() {
-        for (int i = 0; i < getChildCount(); i++) {
-            GestureItemView item = (GestureItemView) getChildAt(i);
-            item.leaveEditMode();
-        }
     }
 
     public void replaceItems(GestureItemView fromView, GestureItemView toView) {
@@ -688,6 +685,35 @@ public class QuickGestureLayout extends ViewGroup {
 
         public LayoutParams(int width, int height) {
             super(width, height);
+        }
+    }
+
+    public void onLeaveEditMode() {
+        for (int i = 0; i < getChildCount(); i++) {
+            GestureItemView item = (GestureItemView) getChildAt(i);
+            item.leaveEditMode();
+        }
+    }
+
+    public void onEnterEditMode() {
+        if (mContainer.getCurrentGestureType() != GType.DymicLayout) {
+            int childCount = getChildCount();
+            if (childCount < 9) {
+                showAddIcon(9);
+            }
+        }
+    }
+
+    private void showAddIcon(int position) {
+        if (position >= 0) {
+            LayoutParams params = new LayoutParams(mItemSize, mItemSize);
+            params.position = position;
+            GestureItemView addItem = new GestureItemView(mContext);
+            addItem.setLayoutParams(params);
+            addItem.setBackgroundResource(R.drawable.switch_add);
+            addView(addItem);
+        } else {
+
         }
     }
 }
