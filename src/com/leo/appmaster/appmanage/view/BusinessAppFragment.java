@@ -41,12 +41,12 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LoadFailUtils;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.assist.LoadedFrom;
-import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.BitmapDisplayer;
+import com.leo.imageloader.core.ImageAware;
+import com.leo.imageloader.core.ImageScaleType;
+import com.leo.imageloader.core.LoadedFrom;
 
 public class BusinessAppFragment extends BaseFolderFragment implements
         OnItemClickListener, OnClickListener, OnRefreshListener2<GridView> {
@@ -129,8 +129,9 @@ public class BusinessAppFragment extends BaseFolderFragment implements
                 .showImageOnFail(R.drawable.recommend_loading_icon).cacheInMemory(true)
                 .cacheOnDisk(true).displayer(new BitmapDisplayer() {
                     @Override
-                    public void display(Bitmap arg0, ImageAware arg1, LoadedFrom arg2) {
-                        arg1.setImageBitmap(arg0);
+                    public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
+                        // TODO Auto-generated method stub
+                        imageAware.setImageBitmap(bitmap);
                         mRecommendAdapter.notifyDataSetChanged();
                     }
                 }).build();

@@ -13,21 +13,21 @@
         android:focusableInTouchMode="true"
         android:hapticFeedbackEnabled="true"
         android:layerType="hardware"
-        qiuckgesture:Direction="left" >
+        qiuckgesture:Direction="right" >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="left|bottom"
-            android:src="@drawable/outside_circle_two_left" />
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right|bottom"
+            android:src="@drawable/outside_circle_two_right" />
 
         <com.leo.appmaster.quickgestures.view.CornerTabs
             android:id="@+id/cornerTabs"
             android:layout_width="126dp"
             android:layout_height="126dp"
-            android:layout_gravity="left|bottom"
-            qiuckgesture:Direction="left" />
+            android:layout_gravity="right|bottom"
+            qiuckgesture:Direction="right" />
 
         <com.leo.appmaster.quickgestures.view.QuickGestureLayout
             android:id="@+id/qg_dymic_layout"
@@ -36,7 +36,7 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layerType="hardware"
-            qiuckgesture:Direction="left" />
+            qiuckgesture:Direction="right" />
 
         <com.leo.appmaster.quickgestures.view.QuickGestureLayout
             android:id="@+id/qg_mostused_layout"
@@ -46,7 +46,7 @@
             android:focusableInTouchMode="false"
             android:layerType="hardware"
             android:visibility="gone"
-            qiuckgesture:Direction="left" />
+            qiuckgesture:Direction="right" />
 
         <com.leo.appmaster.quickgestures.view.QuickGestureLayout
             android:id="@+id/qg_switcher_layout"
@@ -56,7 +56,7 @@
             android:focusableInTouchMode="false"
             android:layerType="hardware"
             android:visibility="gone"
-            qiuckgesture:Direction="left" />
+            qiuckgesture:Direction="right" />
     </com.leo.appmaster.quickgestures.view.QuickGestureContainer>
 
 </RelativeLayout>

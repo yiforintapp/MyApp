@@ -9,9 +9,11 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.DragEvent;
@@ -36,8 +38,7 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
 
-//import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
-
+@SuppressLint("Recycle")
 public class QuickGestureContainer extends FrameLayout {
 
     public static final String TAG = "QuickGestureContainer";
@@ -71,6 +72,15 @@ public class QuickGestureContainer extends FrameLayout {
 
     public QuickGestureContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
+
+        int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
+        if (derictor == 0) {
+            mOrientation = Orientation.Left;
+        } else {
+            mOrientation = Orientation.Right;
+        }
+        typedArray.recycle();
         init();
     }
 
@@ -80,9 +90,14 @@ public class QuickGestureContainer extends FrameLayout {
                     @Override
                     public boolean onSingleTapUp(MotionEvent e) {
                         LeoLog.d(TAG, "onSingleTapUp");
-
-                        double offset2CfC = (double) Math.sqrt(Math.pow((e.getX() - 0), 2)
-                                + Math.pow((e.getY() - mSelfHeight), 2));
+                        double offset2CfC;
+                        if (mOrientation == Orientation.Left) {
+                            offset2CfC = (double) Math.sqrt(Math.pow((e.getX() - 0), 2)
+                                    + Math.pow((e.getY() - mSelfHeight), 2));
+                        } else {
+                            offset2CfC = (double) Math.sqrt(Math.pow((mSelfWidth - e.getX()), 2)
+                                    + Math.pow((e.getY() - mSelfHeight), 2));
+                        }
 
                         if (offset2CfC > (mDymicLayout.getOuterRadius() + 200)) {
                             if (mEditing) {
@@ -90,10 +105,6 @@ public class QuickGestureContainer extends FrameLayout {
                                 leaveEditMode();
                             } else {
                                 // TODO close quick gesture
-                                // if (mPopWindow != null) {
-                                // // mPopWindow.dismiss();
-                                //
-                                // }
                                 Activity activity = (Activity) QuickGestureContainer.this
                                         .getContext();
                                 activity.onBackPressed();
@@ -134,6 +145,17 @@ public class QuickGestureContainer extends FrameLayout {
                                 }
                             } else {
                                 // TODO
+                                if (velocityX > 0 && velocityY < 0
+                                        && (velocityX > 300 || velocityY < -300)) {
+                                    snapToPrevious();
+                                    return true;
+                                }
+
+                                if (velocityX < 0 && velocityY > 0
+                                        && (velocityX < -300 || velocityY > 300)) {
+                                    snapToNext();
+                                    return true;
+                                }
                             }
                         }
 
@@ -185,42 +207,8 @@ public class QuickGestureContainer extends FrameLayout {
         return mEditing;
     }
 
-    @Override
-    public boolean onDragEvent(DragEvent event) {
-        ClipData data = event.getClipData();
-        mEditing = true;
-        switch (event.getAction()) {
-            case DragEvent.ACTION_DRAG_STARTED: {
-                LeoLog.i(TAG, "ACTION_DRAG_STARTED");
-                break;
-            }
-            case DragEvent.ACTION_DRAG_ENDED: {
-                LeoLog.i(TAG, "ACTION_DRAG_ENDED");
-                break;
-            }
-            case DragEvent.ACTION_DRAG_LOCATION: {
-                LeoLog.i(TAG, "ACTION_DRAG_LOCATION: x = " + event.getX() + "  y = " + event.getY());
-                break;
-            }
-            case DragEvent.ACTION_DROP: {
-                Log.i(TAG, "ACTION_DROP");
-                break;
-            }
-            case DragEvent.ACTION_DRAG_ENTERED: {
-                LeoLog.i(TAG, "ACTION_DRAG_ENTERED ");
-                break;
-            }
-
-            case DragEvent.ACTION_DRAG_EXITED: {
-                LeoLog.i(TAG, "ACTION_DRAG_EXITED ");
-                break;
-            }
-            default:
-                Log.i(TAG, "other drag event: " + event);
-                break;
-        }
-        return true;
-
+    public void setEditing(boolean editing) {
+        mEditing = editing;
     }
 
     @Override
@@ -291,7 +279,7 @@ public class QuickGestureContainer extends FrameLayout {
 
     private void onTouchUp() {
         LeoLog.d(TAG, "onTouchUp mRotateDegree = " + mRotateDegree);
-        // TODO Auto-generated method stub
+        // TODO Auto-generated method stub 
         if (mOrientation == Orientation.Left) {
             if (mRotateDegree < 0) {
                 if (mRotateDegree < -15) {
@@ -308,21 +296,49 @@ public class QuickGestureContainer extends FrameLayout {
             }
         } else {
             // TODO
+            if (mRotateDegree < 0) {
+                if (mRotateDegree < -15) {
+                    snapToPrevious();
+                } else {
+                    snapToCurrent();
+                }
+            } else if (mRotateDegree > 0) {
+                if (mRotateDegree > 15) {
+                    snapToNext();
+                } else {
+                    snapToCurrent();
+                }
+            }
         }
     }
 
     private void onTouchDown() {
         if (mCurrentGestureType == GType.DymicLayout) {
-            mMostUsedLayout.setCurrentRotateDegree(90);
-            mSwitcherLayout.setCurrentRotateDegree(-90);
+            if (mOrientation == Orientation.Left) {
+                mMostUsedLayout.setCurrentRotateDegree(90);
+                mSwitcherLayout.setCurrentRotateDegree(-90);
+            } else {
+                mMostUsedLayout.setCurrentRotateDegree(-90);
+                mSwitcherLayout.setCurrentRotateDegree(90);
+            }
             mDymicLayout.setCurrentRotateDegree(0);
         } else if (mCurrentGestureType == GType.MostUsedLayout) {
-            mSwitcherLayout.setCurrentRotateDegree(90);
-            mDymicLayout.setCurrentRotateDegree(-90);
+            if (mOrientation == Orientation.Left) {
+                mSwitcherLayout.setCurrentRotateDegree(90);
+                mDymicLayout.setCurrentRotateDegree(-90);
+            } else {
+                mSwitcherLayout.setCurrentRotateDegree(-90);
+                mDymicLayout.setCurrentRotateDegree(90);
+            }
             mMostUsedLayout.setCurrentRotateDegree(0);
         } else if (mCurrentGestureType == GType.SwitcherLayout) {
-            mDymicLayout.setCurrentRotateDegree(90);
-            mMostUsedLayout.setCurrentRotateDegree(-90);
+            if (mOrientation == Orientation.Left) {
+                mDymicLayout.setCurrentRotateDegree(90);
+                mMostUsedLayout.setCurrentRotateDegree(-90);
+            } else {
+                mDymicLayout.setCurrentRotateDegree(-90);
+                mMostUsedLayout.setCurrentRotateDegree(90);
+            }
             mSwitcherLayout.setCurrentRotateDegree(0);
         }
         mDymicLayout.setVisibility(View.VISIBLE);
@@ -340,42 +356,84 @@ public class QuickGestureContainer extends FrameLayout {
             return;
 
         if (mCurrentGestureType == GType.DymicLayout) {
-            if (mRotateDegree > 0) {
-                mSwitcherLayout.setCurrentRotateDegree(-90 + mRotateDegree);
-            } else if (mRotateDegree < 0) {
-                mMostUsedLayout.setCurrentRotateDegree(90 + mRotateDegree);
+            if (mOrientation == Orientation.Left) {
+                if (mRotateDegree > 0) {
+                    mSwitcherLayout.setCurrentRotateDegree(-90 + mRotateDegree);
+                } else if (mRotateDegree < 0) {
+                    mMostUsedLayout.setCurrentRotateDegree(90 + mRotateDegree);
+                }
+            } else {
+                if (mRotateDegree > 0) {
+                    mMostUsedLayout.setCurrentRotateDegree(-90 + mRotateDegree);
+                } else if (mRotateDegree < 0) {
+                    mSwitcherLayout.setCurrentRotateDegree(90 + mRotateDegree);
+                }
+
             }
             mDymicLayout.setCurrentRotateDegree(mRotateDegree);
         } else if (mCurrentGestureType == GType.MostUsedLayout) {
-            if (mRotateDegree > 0) {
-                mDymicLayout.setCurrentRotateDegree(-90 + mRotateDegree);
-            } else if (mRotateDegree < 0) {
-                mSwitcherLayout.setCurrentRotateDegree(90 + mRotateDegree);
+            if (mOrientation == Orientation.Left) {
+                if (mRotateDegree > 0) {
+                    mSwitcherLayout.setCurrentRotateDegree(-90 + mRotateDegree);
+                } else if (mRotateDegree < 0) {
+                    mDymicLayout.setCurrentRotateDegree(90 + mRotateDegree);
+                }
+            } else {
+                if (mRotateDegree > 0) {
+                    mSwitcherLayout.setCurrentRotateDegree(-90 + mRotateDegree);
+                } else if (mRotateDegree < 0) {
+                    mDymicLayout.setCurrentRotateDegree(90 + mRotateDegree);
+                }
             }
             mMostUsedLayout.setCurrentRotateDegree(mRotateDegree);
         } else if (mCurrentGestureType == GType.SwitcherLayout) {
-            if (mRotateDegree > 0) {
-                mMostUsedLayout.setCurrentRotateDegree(-90 + mRotateDegree);
-            } else if (mRotateDegree < 0) {
-                mDymicLayout.setCurrentRotateDegree(90 + mRotateDegree);
+            if (mOrientation == Orientation.Left) {
+                if (mRotateDegree > 0) {
+                    mMostUsedLayout.setCurrentRotateDegree(-90 + mRotateDegree);
+                } else if (mRotateDegree < 0) {
+                    mDymicLayout.setCurrentRotateDegree(90 + mRotateDegree);
+                }
+            } else {
+                if (mRotateDegree > 0) {
+                    mDymicLayout.setCurrentRotateDegree(-90 + mRotateDegree);
+                } else if (mRotateDegree < 0) {
+                    mMostUsedLayout.setCurrentRotateDegree(90 + mRotateDegree);
+                }
             }
-
             mSwitcherLayout.setCurrentRotateDegree(mRotateDegree);
         }
+
         mCornerTabs.updateCoverDegree(-mRotateDegree / 3);
+
     }
 
     private void computeRotateDegree(float firstX, float firstY, float secondX,
             float secondY) {
-        float firstOffsetX = firstX;
-        float firstOffsetY = mSelfHeight - firstY;
-        float secondOffsetX = secondX;
-        float secondOffsetY = mSelfHeight - secondY;
+
+        float firstOffsetX, firstOffsetY, secondOffsetX, secondOffsetY;
+        if (mOrientation == Orientation.Left) {
+            firstOffsetX = firstX;
+            firstOffsetY = mSelfHeight - firstY;
+            secondOffsetX = secondX;
+            secondOffsetY = mSelfHeight - secondY;
+        } else {
+            firstOffsetX = mSelfWidth - firstX;
+            firstOffsetY = mSelfHeight - firstY;
+            secondOffsetX = mSelfWidth - secondX;
+            secondOffsetY = mSelfHeight - secondY;
+        }
 
         float firstDegree = (float) (Math.atan(firstOffsetY / firstOffsetX) * 180f / Math.PI);
         float secondDegree = (float) (Math.atan(secondOffsetY / secondOffsetX) * 180f / Math.PI);
 
+//        if (mOrientation == Orientation.Left) {
+//            mRotateDegree = firstDegree - secondDegree;
+//        } else {
+//            mRotateDegree = -(firstDegree - secondDegree);
+//        }
+        
         mRotateDegree = firstDegree - secondDegree;
+
     }
 
     public void snapToCurrent() {
@@ -495,21 +553,46 @@ public class QuickGestureContainer extends FrameLayout {
                 super.onAnimationEnd(animation);
                 mSnaping = false;
                 if (mCurrentGestureType == GType.DymicLayout) {
-                    mCurrentGestureType = GType.MostUsedLayout;
-                    mMostUsedLayout.setVisibility(View.VISIBLE);
-                    mDymicLayout.setVisibility(View.GONE);
-                    mSwitcherLayout.setVisibility(View.GONE);
+                    if (mOrientation == Orientation.Left) {
+                        mCurrentGestureType = GType.MostUsedLayout;
+                        mMostUsedLayout.setVisibility(View.VISIBLE);
+                        mDymicLayout.setVisibility(View.GONE);
+                        mSwitcherLayout.setVisibility(View.GONE);
+                    } else {
+                        mCurrentGestureType = GType.MostUsedLayout;
+                        mMostUsedLayout.setVisibility(View.VISIBLE);
+                        mDymicLayout.setVisibility(View.GONE);
+                        mSwitcherLayout.setVisibility(View.GONE);
+                    }
+
                 } else if (mCurrentGestureType == GType.MostUsedLayout) {
-                    mCurrentGestureType = GType.SwitcherLayout;
-                    mSwitcherLayout.setVisibility(View.VISIBLE);
-                    mDymicLayout.setVisibility(View.GONE);
-                    mMostUsedLayout.setVisibility(View.GONE);
+                    if (mOrientation == Orientation.Left) {
+                        mCurrentGestureType = GType.SwitcherLayout;
+                        mSwitcherLayout.setVisibility(View.VISIBLE);
+                        mDymicLayout.setVisibility(View.GONE);
+                        mMostUsedLayout.setVisibility(View.GONE);
+                    } else {
+                        mCurrentGestureType = GType.SwitcherLayout;
+                        mSwitcherLayout.setVisibility(View.VISIBLE);
+                        mDymicLayout.setVisibility(View.GONE);
+                        mMostUsedLayout.setVisibility(View.GONE);
+                    }
+
                 } else if (mCurrentGestureType == GType.SwitcherLayout) {
-                    mCurrentGestureType = GType.DymicLayout;
-                    mDymicLayout.setVisibility(View.VISIBLE);
-                    mMostUsedLayout.setVisibility(View.GONE);
-                    mSwitcherLayout.setVisibility(View.GONE);
-                    mCornerTabs.snapSwitcher2Dynamic();
+                    if (mOrientation == Orientation.Left) {
+                        mCurrentGestureType = GType.DymicLayout;
+                        mDymicLayout.setVisibility(View.VISIBLE);
+                        mMostUsedLayout.setVisibility(View.GONE);
+                        mSwitcherLayout.setVisibility(View.GONE);
+                        mCornerTabs.snapSwitcher2Dynamic();
+                    } else {
+                        mCurrentGestureType = GType.DymicLayout;
+                        mDymicLayout.setVisibility(View.VISIBLE);
+                        mMostUsedLayout.setVisibility(View.GONE);
+                        mSwitcherLayout.setVisibility(View.GONE);
+                        mCornerTabs.snapSwitcher2Dynamic();
+                    }
+
                 }
                 mRotateDegree = 0;
             }

@@ -23,6 +23,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
@@ -67,6 +68,15 @@ public class QuickGestureLayout extends ViewGroup {
     public QuickGestureLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         mContext = context;
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
+        int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
+        if (derictor == 0) {
+            mOrientation = Orientation.Left;
+        } else {
+            mOrientation = Orientation.Right;
+        }
+        typedArray.recycle();
+
         init();
     }
 
@@ -77,7 +87,6 @@ public class QuickGestureLayout extends ViewGroup {
         mInnerRadius = res.getDimensionPixelSize(R.dimen.qg_layout_inner_radius);
         mOuterRadius = res.getDimensionPixelSize(R.dimen.qg_layout_outer_radius);
         mRingCount = 1;
-        mOrientation = Orientation.Left;
     }
 
     public QuickGestureLayout(Context context, AttributeSet attrs, int defStyle) {
@@ -183,7 +192,7 @@ public class QuickGestureLayout extends ViewGroup {
                     // TODO right
                     left = mTotalWidth - (int) (mInnerRadius
                             * Math.cos(Math.toRadians(innerStartAngle - params.position
-                                    * innertAngleInterval)) - halfItemSize);
+                                    * innertAngleInterval)) + halfItemSize);
                 }
 
                 top = (int) (mTotalHeight - mInnerRadius
@@ -200,7 +209,7 @@ public class QuickGestureLayout extends ViewGroup {
                     left = mTotalWidth - (int) (mOuterRadius
                             * Math.cos(Math.toRadians(outerStartAngle
                                     - (params.position - innerRingCount)
-                                    * outerAngleInterval)) - halfItemSize);
+                                    * outerAngleInterval)) + halfItemSize);
                 }
 
                 top = (int) (mTotalHeight

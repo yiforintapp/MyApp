@@ -5,6 +5,7 @@ import java.util.AbstractList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -18,6 +19,7 @@ import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
+import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.view.View.OnSystemUiVisibilityChangeListener;
@@ -32,10 +34,17 @@ public class QuickGesturePopupActivity extends Activity implements
     private AppMasterPreference mSpSwitch;
     private String mSwitchListFromSp;
 
+    private QuickGestureContainer.Orientation mOrientation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pop_quick_gesture_left);
+        handleIntent();
+        if (mOrientation == Orientation.Left) {
+            setContentView(R.layout.pop_quick_gesture_left);
+        } else {
+            setContentView(R.layout.pop_quick_gesture_right);
+        }
 
         // Window window = getWindow();
         // WindowManager.LayoutParams params = window.getAttributes();
@@ -71,6 +80,17 @@ public class QuickGesturePopupActivity extends Activity implements
             mContainer.showOpenAnimation();
         }
         overridePendingTransition(-1, -1);
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+        int orientation = intent.getIntExtra("orientation", 0);
+        if (orientation == 0) {
+            mOrientation = Orientation.Left;
+        } else {
+            mOrientation = Orientation.Right;
+        }
+
     }
 
     @Override

@@ -1174,12 +1174,14 @@ public class FloatWindowHelper {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("orientation", 0);
             AppMasterApplication.getInstance().startActivity(intent);
             LockManager.getInstatnce().onTuchGestureFlag = -1;
         } else if (flag == 1) {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("orientation", 1);
             AppMasterApplication.getInstance().startActivity(intent);
             LockManager.getInstatnce().onTuchGestureFlag = 1;
         }

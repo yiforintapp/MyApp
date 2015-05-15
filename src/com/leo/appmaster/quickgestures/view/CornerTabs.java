@@ -13,6 +13,7 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -53,6 +54,16 @@ public class CornerTabs extends View {
 
     public CornerTabs(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
+        int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
+        if (derictor == 0) {
+            mOrientation = Orientation.Left;
+        } else {
+            mOrientation = Orientation.Right;
+        }
+        typedArray.recycle();
+
         init(context);
     }
 
@@ -74,14 +85,29 @@ public class CornerTabs extends View {
                             LeoLog.e(TAG, "onCorner click");
                             onConerClick();
                         } else if (offset2CfC <= mTotalWidth) {
-                            double d = Math.atan2(mTotalHeight - y, x) * 180 / Math.PI;
-                            LeoLog.e(TAG, "d = " + d);
-                            if (d < 30) {
-                                mContainer.snapToSwitcher();
-                            } else if (d < 60) {
-                                mContainer.snapToMostUsed();
+
+                            if (mOrientation == Orientation.Left) {
+                                double d = Math.atan2(mTotalHeight - y, x) * 180 / Math.PI;
+                                LeoLog.e(TAG, "d = " + d);
+                                if (d < 30) {
+                                    mContainer.snapToSwitcher();
+                                } else if (d < 60) {
+                                    mContainer.snapToMostUsed();
+                                } else {
+                                    mContainer.snapToDynamic();
+                                }
+
                             } else {
-                                mContainer.snapToDynamic();
+                                double d = Math.atan2(mTotalHeight - y, mTotalWidth - x) * 180
+                                        / Math.PI;
+                                LeoLog.e(TAG, "d = " + d);
+                                if (d < 30) {
+                                    mContainer.snapToSwitcher();
+                                } else if (d < 60) {
+                                    mContainer.snapToMostUsed();
+                                } else {
+                                    mContainer.snapToDynamic();
+                                }
                             }
                         }
                         return super.onSingleTapUp(e);
@@ -105,13 +131,15 @@ public class CornerTabs extends View {
 
         if (mOrientation == Orientation.Left) {
             mCoverAngle = -mDymicTargetAngle;
+            mBackground = res.getDrawable(R.drawable.left_tab_bg);
+            mCorner = res.getDrawable(R.drawable.left_corner);
+            mCover = res.getDrawable(R.drawable.left_corver);
         } else {
             mCoverAngle = mDymicTargetAngle;
+            mBackground = res.getDrawable(R.drawable.right_tab_bg);
+            mCorner = res.getDrawable(R.drawable.right_corner);
+            mCover = res.getDrawable(R.drawable.right_corver);
         }
-
-        mBackground = res.getDrawable(R.drawable.tab_bg);
-        mCorner = res.getDrawable(R.drawable.corner);
-        mCover = res.getDrawable(R.drawable.corver);
 
         mCornerWidth = mCorner.getIntrinsicWidth();
         mCornerHeight = mCorner.getIntrinsicHeight();
@@ -179,7 +207,7 @@ public class CornerTabs extends View {
             // dynPath
             mDynPath = new Path();
             mDynPath.moveTo(
-                    (float) (mTotalWidth - mTotalHeight * Math.tan(15)), 0f);
+                    (float) (mTotalWidth - mTotalHeight * Math.tan(Math.toRadians(15))), 0f);
             mDynPath.lineTo(mTotalWidth, mTotalHeight);
 
             // mostPath
@@ -190,7 +218,7 @@ public class CornerTabs extends View {
             // quickPath
             mQuickPath = new Path();
             mQuickPath.moveTo(0f,
-                    (float) (mTotalHeight - mTotalWidth * Math.tan(15)));
+                    (float) (mTotalHeight - mTotalWidth * Math.tan(Math.toRadians(15))));
             mQuickPath.lineTo(mTotalWidth, mTotalHeight);
         } else {
             // dynPath
@@ -227,17 +255,36 @@ public class CornerTabs extends View {
 
         // second, draw Cover
         canvas.save();
-        canvas.rotate(mCoverAngle, 0, mTotalHeight);
+        if (mOrientation == Orientation.Left) {
+            canvas.rotate(mCoverAngle, 0, mTotalHeight);
+        } else {
+            canvas.rotate(mCoverAngle, mTotalWidth, mTotalHeight);
+        }
         mCover.setBounds(0, mTotalHeight - mCover.getIntrinsicHeight(), mCover.getIntrinsicWidth(),
                 mTotalHeight);
         mCover.draw(canvas);
         canvas.restore();
 
         // third, draw text
-        canvas.drawTextOnPath(mDynamic, mDynPath, mCornerWidth + 80, mTextSize / 2, mTextPaint);
-        canvas.drawTextOnPath(mMostUsed, mMostPath, mCornerWidth + 80, mTextSize / 2, mTextPaint);
-        canvas.drawTextOnPath(mQuickSwitcher, mQuickPath, mCornerWidth + 80, mTextSize / 2,
-                mTextPaint);
+        if (mOrientation == Orientation.Left) {
+            int offset = DipPixelUtil.dip2px(getContext(), 27);
+            canvas.drawTextOnPath(mDynamic, mDynPath,
+                    mCornerWidth + offset, mTextSize / 2, mTextPaint);
+            canvas.drawTextOnPath(mMostUsed, mMostPath, mCornerWidth + offset, mTextSize / 2,
+                    mTextPaint);
+            canvas.drawTextOnPath(mQuickSwitcher, mQuickPath, mCornerWidth + offset,
+                    mTextSize / 2,
+                    mTextPaint);
+        } else {
+            canvas.drawTextOnPath(mDynamic, mDynPath,
+                    mCornerWidth + DipPixelUtil.dip2px(getContext(), 20), mTextSize / 2, mTextPaint);
+            canvas.drawTextOnPath(mMostUsed, mMostPath,
+                    mCornerWidth + DipPixelUtil.dip2px(getContext(), 50), mTextSize / 2,
+                    mTextPaint);
+            canvas.drawTextOnPath(mQuickSwitcher, mQuickPath,
+                    mCornerWidth + DipPixelUtil.dip2px(getContext(), 10), mTextSize / 2,
+                    mTextPaint);
+        }
 
         super.onDraw(canvas);
     }

@@ -113,6 +113,8 @@ public class GestureItemView extends TextView {
                 LeoLog.i(TAG, "ACTION_DRAG_STARTED");
                 enterEditMode();
                 if (event.getLocalState() == this) {
+                    QuickGestureContainer qgc = (QuickGestureContainer) mHolderLayout.getParent();
+                    qgc.setEditing(true);
                     setVisibility(View.INVISIBLE);
                 }
                 break;

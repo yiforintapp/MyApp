@@ -75,7 +75,7 @@ import com.leo.appmaster.utils.PhoneInfoStateManager;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.leo.imageloader.ImageLoader;
 
 @SuppressLint("Override")
 public class AppListActivity extends BaseFragmentActivity implements
