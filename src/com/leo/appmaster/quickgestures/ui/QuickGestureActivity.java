@@ -21,6 +21,10 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -105,6 +109,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         if (!AppMasterPreference.getInstance(this)
                 .getFristSlidingTip()) {
             mTipRL.setVisibility(View.VISIBLE);
+            quickTipAnim(mTipRL);
             mLeftView.setOnTouchListener(this);
             mRightView.setOnTouchListener(this);
         }
@@ -717,5 +722,20 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 break;
         }
         return true;
+    }
+
+    private void quickTipAnim(View view) {
+        AlphaAnimation alpha = new AlphaAnimation(0, 1);
+        alpha.setDuration(1000);
+        ScaleAnimation scale = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
+        scale.setDuration(1000);
+        AnimationSet animation = new AnimationSet(true);
+        animation.addAnimation(alpha);
+        animation.addAnimation(scale);
+        animation.setFillAfter(true);
+        view.setAnimation(animation);
+        animation.startNow();
+
     }
 }
