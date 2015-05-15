@@ -69,7 +69,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.PackageChangedListener;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.leo.imageloader.ImageLoader;
 
 public class LockerTheme extends BaseActivity implements OnClickListener, ThemeChanageListener,
          OnRefreshListener2<ListView> {

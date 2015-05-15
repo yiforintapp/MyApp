@@ -33,8 +33,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
 
 public class ImageHideMainActivity extends BaseActivity implements OnClickListener {
 
@@ -67,11 +67,11 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle(R.string.app_image_hide);
         mTtileBar.openBackView();
-//        mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
-//        mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        // mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
+        // mTtileBar.setOptionImageVisibility(View.VISIBLE);
         // mTtileBar.setOptionText(getString(R.string.setting));
         // mTtileBar.setOptionTextVisibility(View.VISIBLE);
-//        mTtileBar.setOptionListener(this);
+        // mTtileBar.setOptionListener(this);
         mGridView = (GridView) findViewById(R.id.Image_hide_folder);
         mGridView.setAdapter(mHideAlbumAdapt);
         mAddButton = (Button) findViewById(R.id.add_hide_image);
@@ -96,10 +96,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mLoadTask != null) {
+        if (mLoadTask != null) {
             mLoadTask.cancel(true);
         }
-        if(mImageLoader != null) {
+        if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();
         }
@@ -107,7 +107,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
     @Override
     protected void onResume() {
-        if(mLoadTask != null) {
+        if (mLoadTask != null) {
             mLoadTask.cancel(false);
         }
         mLoadTask = new LoaderHideImageFolderTask(this);
@@ -125,14 +125,14 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         // TODO Auto-generated method stub
         super.onRestart();
     }
-    
+
     @Override
     public void finish() {
         super.finish();
-        if(mLoadTask != null) {
+        if (mLoadTask != null) {
             mLoadTask.cancel(false);
         }
-        if(mImageLoader != null) {
+        if (mImageLoader != null) {
             mImageLoader.stop();
         }
     }
@@ -145,11 +145,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                 intent = new Intent(this, ImageGalleryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
-//            case R.id.tv_option_image:
-//                intent = new Intent(this, LockOptionActivity.class);
-//                intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_IMAGEHIDE);
-//                startActivityForResult(intent, REQUEST_CODE_OPTION);
-//                break;
+            // case R.id.tv_option_image:
+            // intent = new Intent(this, LockOptionActivity.class);
+            // intent.putExtra(LockOptionActivity.TAG_COME_FROM,
+            // LockOptionActivity.FROM_IMAGEHIDE);
+            // startActivityForResult(intent, REQUEST_CODE_OPTION);
+            // break;
             default:
                 break;
         }
