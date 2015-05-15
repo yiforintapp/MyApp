@@ -139,7 +139,8 @@ public class GestureLockFragment extends LockFragment implements
     private void checkGesture(String gesture) {
         mInputCount++;
         AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
-        if (pref.getGesture().equals(gesture)) {
+        String savedGesture = pref.getGesture();
+        if (savedGesture != null && savedGesture.equals(gesture)) {
             ((LockScreenActivity) mActivity).onUnlockSucceed();
         } else {
             if (mInputCount >= mMaxInput) {
