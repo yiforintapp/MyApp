@@ -4,6 +4,7 @@ package com.leo.appmaster.quickgestures.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +15,11 @@ import android.os.IBinder;
 import android.provider.CallLog.Calls;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,9 +29,11 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -56,7 +61,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
  * @author run
  */
 public class QuickGestureActivity extends BaseActivity implements OnItemClickListener,
-        OnCheckedChangeListener {
+        OnCheckedChangeListener, OnTouchListener {
     private ListView mQuickGestureLV;
     private CommonTitleBar mTitleBar;
     private QuickGestureAdapter mAdapter;
@@ -72,6 +77,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private List<FreeDisturbAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
     private Handler mHandler = new Handler();
+    private ImageView mLeftView, mRightView;
+    private RelativeLayout mTipRL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +99,15 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mAreaView = (QuickGesturesAreaView) findViewById(R.id.quick_gesture_area);
         mTitleBar.openBackView();
         mQuickGestureLV.setOnItemClickListener(this);
+        mTipRL = (RelativeLayout) findViewById(R.id.miui_tipRL);
+        mLeftView = (ImageView) findViewById(R.id.quick_sliding_left_area);
+        mRightView = (ImageView) findViewById(R.id.quick_sliding_right_area);
+        if (!AppMasterPreference.getInstance(this)
+                .getFristSlidingTip()) {
+            mTipRL.setVisibility(View.VISIBLE);
+            mLeftView.setOnTouchListener(this);
+            mRightView.setOnTouchListener(this);
+        }
     }
 
     @Override
@@ -273,7 +289,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 // 移除悬浮窗
                 FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
             } else {
-                if (!mPre.getSwitchOpenQuickGesture()) {
+                if (mPre.getSwitchOpenQuickGesture()) {
                     QuickGestureManager.getInstance(this).startFloatWindow();
                 }
             }
@@ -665,5 +681,41 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             }
             return convertView;
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouch(View view, MotionEvent event) {
+        int width = view.getWidth();
+        int height = view.getHeight();
+        float downX = 0;
+        float downY = 0;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                downX = event.getX();
+                downY = event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float moveX = Math.abs(event.getX() - downX);
+                float moveY = Math.abs(event.getY() - downY);
+                if (moveX > width / 50 || moveY > width / 50) {
+                    mTipRL.setVisibility(View.GONE);
+                    Toast.makeText(this, "开启快捷之旅", Toast.LENGTH_SHORT)
+                            .show();
+                    AppMasterPreference.getInstance(getApplicationContext())
+                            .setFristSlidingTip(true);
+                    Intent intent;
+                    intent = new Intent(AppMasterApplication.getInstance(),
+                            QuickGesturePopupActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    AppMasterApplication.getInstance().startActivity(intent);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }

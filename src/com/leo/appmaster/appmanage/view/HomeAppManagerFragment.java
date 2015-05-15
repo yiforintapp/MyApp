@@ -45,8 +45,8 @@ import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
-import com.leo.appmaster.quickgestures.ui.QuickGestureFirstTipAcitvity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
 import com.leo.appmaster.utils.BuildProperties;
@@ -389,13 +389,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                             e1.printStackTrace();
                         }
                     }
-                    Intent intentTip = new Intent(AppMasterApplication.getInstance(),
-                            QuickGestureFirstTipAcitvity.class);
-                    intentTip.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        startActivity(intentTip);
-                    } catch (Exception e) {
-                    }
+                    FloatWindowHelper.createMiuiTipWindow(getActivity());
                 } else {
                     // 启动快捷手势设置界面
                     Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
@@ -403,18 +397,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         startActivity(quickIntent);
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
-                    if (!AppMasterPreference.getInstance(getActivity())
-                            .getFristSlidingTip()) {
-                        // 启动滑动提示界面
-                        Intent intentTip = new Intent(AppMasterApplication.getInstance(),
-                                QuickGestureFirstTipAcitvity.class);
-                        try {
-                            startActivity(intentTip);
-                            getActivity().overridePendingTransition(
-                                    R.anim.quick_gesture_slide_setting_tip, 0);
-                        } catch (Exception e) {
-                        }
                     }
                 }
                 break;
