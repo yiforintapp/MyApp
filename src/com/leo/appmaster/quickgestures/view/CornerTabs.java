@@ -77,8 +77,14 @@ public class CornerTabs extends View {
                         float x = e.getX();
                         float y = e.getY();
 
-                        double offset2CfC = (double) Math.sqrt(Math.pow((x - 0), 2)
-                                + Math.pow((y - mTotalHeight), 2));
+                        double offset2CfC;
+                        if (mOrientation == Orientation.Left) {
+                            offset2CfC = (double) Math.sqrt(Math.pow((x - 0), 2)
+                                    + Math.pow((y - mTotalHeight), 2));
+                        } else {
+                            offset2CfC = (double) Math.sqrt(Math.pow((mTotalWidth - x), 2)
+                                    + Math.pow((y - mTotalHeight), 2));
+                        }
 
                         if (offset2CfC <= mCornerWidth) {
                             // TODO
@@ -147,7 +153,11 @@ public class CornerTabs extends View {
 
     private void onConerClick() {
         // TODO Auto-generated method stub
-
+        if (mContainer.isEditing()) {
+            mContainer.leaveEditMode();
+        } else {
+            mContainer.showCloseAnimation();
+        }
     }
 
     @Override

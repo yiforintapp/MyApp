@@ -22,6 +22,8 @@ import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
 import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
 
+import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 
 public class QuickGesturePopupActivity extends Activity implements
@@ -54,6 +56,7 @@ public class QuickGesturePopupActivity extends Activity implements
         mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
         // mContainer.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         mContainer.setOnSystemUiVisibilityChangeListener(this);
+        
 
         mSpSwitch = AppMasterPreference.getInstance(this);
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
@@ -80,6 +83,13 @@ public class QuickGesturePopupActivity extends Activity implements
             mContainer.showOpenAnimation();
         }
         overridePendingTransition(-1, -1);
+        mContainer.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                LeoLog.e("xxxx", "onFocusChange");
+            }
+        });
     }
 
     private void handleIntent() {

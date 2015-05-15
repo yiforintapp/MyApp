@@ -147,13 +147,13 @@ public class QuickGestureContainer extends FrameLayout {
                                 // TODO
                                 if (velocityX > 0 && velocityY < 0
                                         && (velocityX > 300 || velocityY < -300)) {
-                                    snapToPrevious();
+                                    snapToNext();
                                     return true;
                                 }
 
                                 if (velocityX < 0 && velocityY > 0
                                         && (velocityX < -300 || velocityY > 300)) {
-                                    snapToNext();
+                                    snapToPrevious();
                                     return true;
                                 }
                             }
@@ -279,17 +279,17 @@ public class QuickGestureContainer extends FrameLayout {
 
     private void onTouchUp() {
         LeoLog.d(TAG, "onTouchUp mRotateDegree = " + mRotateDegree);
-        // TODO Auto-generated method stub 
+        // TODO Auto-generated method stub
         if (mOrientation == Orientation.Left) {
             if (mRotateDegree < 0) {
                 if (mRotateDegree < -15) {
-                    snapToNext();
+                    snapToPrevious();
                 } else {
                     snapToCurrent();
                 }
             } else if (mRotateDegree > 0) {
                 if (mRotateDegree > 15) {
-                    snapToPrevious();
+                    snapToNext();
                 } else {
                     snapToCurrent();
                 }
@@ -347,7 +347,6 @@ public class QuickGestureContainer extends FrameLayout {
     }
 
     private void onTouchMove() {
-        LeoLog.d(TAG, "mRotateDegree = " + mRotateDegree);
         rotateLayout();
     }
 
@@ -358,9 +357,9 @@ public class QuickGestureContainer extends FrameLayout {
         if (mCurrentGestureType == GType.DymicLayout) {
             if (mOrientation == Orientation.Left) {
                 if (mRotateDegree > 0) {
-                    mSwitcherLayout.setCurrentRotateDegree(-90 + mRotateDegree);
+                    mMostUsedLayout.setCurrentRotateDegree(90 - mRotateDegree);
                 } else if (mRotateDegree < 0) {
-                    mMostUsedLayout.setCurrentRotateDegree(90 + mRotateDegree);
+                    mSwitcherLayout.setCurrentRotateDegree(-90 - mRotateDegree);
                 }
             } else {
                 if (mRotateDegree > 0) {
@@ -368,15 +367,18 @@ public class QuickGestureContainer extends FrameLayout {
                 } else if (mRotateDegree < 0) {
                     mSwitcherLayout.setCurrentRotateDegree(90 + mRotateDegree);
                 }
-
             }
-            mDymicLayout.setCurrentRotateDegree(mRotateDegree);
+            if (mOrientation == Orientation.Left) {
+                mDymicLayout.setCurrentRotateDegree(-mRotateDegree);
+            } else {
+                mDymicLayout.setCurrentRotateDegree(mRotateDegree);
+            }
         } else if (mCurrentGestureType == GType.MostUsedLayout) {
             if (mOrientation == Orientation.Left) {
                 if (mRotateDegree > 0) {
-                    mSwitcherLayout.setCurrentRotateDegree(-90 + mRotateDegree);
+                    mSwitcherLayout.setCurrentRotateDegree(90 - mRotateDegree);
                 } else if (mRotateDegree < 0) {
-                    mDymicLayout.setCurrentRotateDegree(90 + mRotateDegree);
+                    mDymicLayout.setCurrentRotateDegree(-90 - mRotateDegree);
                 }
             } else {
                 if (mRotateDegree > 0) {
@@ -385,13 +387,17 @@ public class QuickGestureContainer extends FrameLayout {
                     mDymicLayout.setCurrentRotateDegree(90 + mRotateDegree);
                 }
             }
-            mMostUsedLayout.setCurrentRotateDegree(mRotateDegree);
+            if (mOrientation == Orientation.Left) {
+                mMostUsedLayout.setCurrentRotateDegree(-mRotateDegree);
+            } else {
+                mMostUsedLayout.setCurrentRotateDegree(mRotateDegree);
+            }
         } else if (mCurrentGestureType == GType.SwitcherLayout) {
             if (mOrientation == Orientation.Left) {
                 if (mRotateDegree > 0) {
-                    mMostUsedLayout.setCurrentRotateDegree(-90 + mRotateDegree);
+                    mDymicLayout.setCurrentRotateDegree(90 - mRotateDegree);
                 } else if (mRotateDegree < 0) {
-                    mDymicLayout.setCurrentRotateDegree(90 + mRotateDegree);
+                    mMostUsedLayout.setCurrentRotateDegree(-90 - mRotateDegree);
                 }
             } else {
                 if (mRotateDegree > 0) {
@@ -400,10 +406,18 @@ public class QuickGestureContainer extends FrameLayout {
                     mMostUsedLayout.setCurrentRotateDegree(90 + mRotateDegree);
                 }
             }
-            mSwitcherLayout.setCurrentRotateDegree(mRotateDegree);
+            if (mOrientation == Orientation.Left) {
+                mSwitcherLayout.setCurrentRotateDegree(-mRotateDegree);
+            } else {
+                mSwitcherLayout.setCurrentRotateDegree(mRotateDegree);
+            }
         }
 
-        mCornerTabs.updateCoverDegree(-mRotateDegree / 3);
+        if (mOrientation == Orientation.Left) {
+            mCornerTabs.updateCoverDegree(mRotateDegree / 3);
+        } else {
+            mCornerTabs.updateCoverDegree(-mRotateDegree / 3);
+        }
 
     }
 
@@ -426,14 +440,9 @@ public class QuickGestureContainer extends FrameLayout {
         float firstDegree = (float) (Math.atan(firstOffsetY / firstOffsetX) * 180f / Math.PI);
         float secondDegree = (float) (Math.atan(secondOffsetY / secondOffsetX) * 180f / Math.PI);
 
-//        if (mOrientation == Orientation.Left) {
-//            mRotateDegree = firstDegree - secondDegree;
-//        } else {
-//            mRotateDegree = -(firstDegree - secondDegree);
-//        }
-        
-        mRotateDegree = firstDegree - secondDegree;
-
+        mRotateDegree = secondDegree - firstDegree;
+        LeoLog.d(TAG, "mRotateDegree = " + mRotateDegree + "        firstDegree = " + firstDegree
+                + "        secondDegree = " + secondDegree);
     }
 
     public void snapToCurrent() {
@@ -486,9 +495,13 @@ public class QuickGestureContainer extends FrameLayout {
 
         if (mSnaping)
             return;
-
         float duration = Math.abs(90 - mRotateDegree) / 90 * mFullRotateDuration;
-        ValueAnimator va = ValueAnimator.ofFloat(mRotateDegree, mRotateDegree >= 0 ? 90 : -90);
+        ValueAnimator va = null;
+//        if (mOrientation == Orientation.Left) {
+//            va = ValueAnimator.ofFloat(mRotateDegree, 90);
+//        } else {
+            va = ValueAnimator.ofFloat(mRotateDegree, -90);
+//        }
         va.setDuration((long) duration);
         va.setInterpolator(new DecelerateInterpolator());
         va.addListener(new AnimatorListenerAdapter() {
@@ -537,7 +550,12 @@ public class QuickGestureContainer extends FrameLayout {
         if (mSnaping)
             return;
         float duration = Math.abs(90 - mRotateDegree) / 90 * mFullRotateDuration;
-        ValueAnimator va = ValueAnimator.ofFloat(mRotateDegree, mRotateDegree > 0 ? 90 : -90);
+        ValueAnimator va = null;
+//        if (mOrientation == Orientation.Left) {
+//            va = ValueAnimator.ofFloat(mRotateDegree, -90);
+//        } else {
+            va = ValueAnimator.ofFloat(mRotateDegree, 90);
+//        }
         va.setDuration((long) duration);
         va.setInterpolator(new DecelerateInterpolator());
         va.addListener(new AnimatorListenerAdapter() {
@@ -800,9 +818,9 @@ public class QuickGestureContainer extends FrameLayout {
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
                     // 桌面
                     checkHome(sInfo, iconSize, tv);
-                }else if(sInfo.iDentiName.equals(QuickSwitchManager.XUKUANG)){
-                    //虚框
-                    checkXuKuang(sInfo,iconSize,tv);
+                } else if (sInfo.iDentiName.equals(QuickSwitchManager.XUKUANG)) {
+                    // 虚框
+                    checkXuKuang(sInfo, iconSize, tv);
                 }
                 if (sInfo.eventNumber > 0) {
                     tv.setDecorateAction(new EventAction(getContext(), sInfo.eventNumber));
