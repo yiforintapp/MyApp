@@ -23,6 +23,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
@@ -103,12 +104,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mAreaView = (QuickGesturesAreaView) findViewById(R.id.quick_gesture_area);
         mTitleBar.openBackView();
         mQuickGestureLV.setOnItemClickListener(this);
-        mTipRL = (RelativeLayout) findViewById(R.id.miui_tipRL);
+        mTipRL = (RelativeLayout) findViewById(R.id.quick_tipRL);
         mLeftView = (ImageView) findViewById(R.id.quick_sliding_left_area);
         mRightView = (ImageView) findViewById(R.id.quick_sliding_right_area);
         if (!AppMasterPreference.getInstance(this)
                 .getFristSlidingTip()) {
             mTipRL.setVisibility(View.VISIBLE);
+            mTipRL.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    // quickTipCancelAnim(mTipRL);
+                }
+            });
             quickTipAnim(mTipRL);
             mLeftView.setOnTouchListener(this);
             mRightView.setOnTouchListener(this);
@@ -704,7 +711,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 float moveX = Math.abs(event.getX() - downX);
                 float moveY = Math.abs(event.getY() - downY);
                 if (moveX > width / 50 || moveY > width / 50) {
+                    mTipRL.clearAnimation();
                     mTipRL.setVisibility(View.GONE);
+                    // quickTipCancelAnim(mTipRL);
                     Toast.makeText(this, "开启快捷之旅", Toast.LENGTH_SHORT)
                             .show();
                     AppMasterPreference.getInstance(getApplicationContext())
@@ -713,7 +722,10 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                     intent = new Intent(AppMasterApplication.getInstance(),
                             QuickGesturePopupActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    AppMasterApplication.getInstance().startActivity(intent);
+                    try {
+                        AppMasterApplication.getInstance().startActivity(intent);
+                    } catch (Exception e) {
+                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -733,9 +745,36 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         AnimationSet animation = new AnimationSet(true);
         animation.addAnimation(alpha);
         animation.addAnimation(scale);
-        animation.setFillAfter(true);
         view.setAnimation(animation);
-        animation.startNow();
+        animation.start();
+    }
 
+    private void quickTipCancelAnim(View view) {
+        AlphaAnimation alpha = new AlphaAnimation(0, 1);
+        alpha.setDuration(1000);
+        view.setAnimation(alpha);
+        ScaleAnimation scale = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
+        AnimationSet animation = new AnimationSet(true);
+        animation.addAnimation(alpha);
+        animation.addAnimation(scale);
+        animation.start();
+        alpha.setAnimationListener(new AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                mTipRL.setVisibility(View.GONE);
+            }
+        });
     }
 }
