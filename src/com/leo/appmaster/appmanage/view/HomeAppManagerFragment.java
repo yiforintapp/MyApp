@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -43,10 +45,11 @@ import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
-import com.leo.appmaster.ui.RoundProgressBar;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 
@@ -360,11 +363,41 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 }
                 break;
             case R.id.bg_show_quick_gesture:
-                Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
-                try {
-                    startActivity(quickIntent);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                boolean flag = BuildProperties.isMIUI();
+                boolean isOpenWindow =
+                        BuildProperties.isMiuiFloatWindowOpAllowed(getActivity());
+                if (flag && !isOpenWindow) {
+                    // MIUI系统提示
+                    Intent intentv6 = new
+                            Intent("miui.intent.action.APP_PERM_EDITOR");
+                    intentv6.setClassName("com.miui.securitycenter",
+                            "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+                    intentv6.putExtra("extra_pkgname", getActivity().getPackageName());
+                    intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(intentv6);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Intent intentv5 = new Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                        intentv5.setData(uri);
+                        intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        try {
+                            getActivity().startActivity(intentv5);
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    FloatWindowHelper.createMiuiTipWindow(getActivity());
+                } else {
+                    // 启动快捷手势设置界面
+                    Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
+                    try {
+                        startActivity(quickIntent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
         }

@@ -35,7 +35,7 @@ import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private Context mContext;
     private FreeDisturbPagedGridView mGridView;
-    private TextView mTitle;
+    private TextView mTitle, mSureBt;
     private List<FreeDisturbAppInfo> mDisturbList = null;
     private List<FreeDisturbAppInfo> mFreeDisturbApp = null;
 
@@ -51,6 +51,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                 R.layout.dialog_free_disturb_app, null);
         Resources resources = AppMasterApplication.getInstance().getResources();
         mGridView = (FreeDisturbPagedGridView) dlgView.findViewById(R.id.free_disturb_gridview);
+        mSureBt = (TextView) dlgView.findViewById(R.id.quick_freed_disturb_dlg_right_btn);
         mGridView.setItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -83,6 +84,10 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         setCanceledOnTouchOutside(true);
     }
 
+    public void setRightBt(android.view.View.OnClickListener onClick) {
+        mSureBt.setOnClickListener(onClick);
+    }
+
     public void setTitle(int id) {
         mTitle.setText(id);
     }
@@ -100,7 +105,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                 .getFreeDisturbAppPackageName();
         if (AppMasterPreference.PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME
                 .equals(packageName)) {
-            Log.e("######################", "没有免干扰应用");
+            // Log.e("######################", "没有免干扰应用");
         } else {
             String[] names = packageName.split(";");
             packageNames = Arrays.asList(names);

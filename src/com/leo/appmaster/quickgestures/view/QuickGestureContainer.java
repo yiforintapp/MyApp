@@ -798,8 +798,11 @@ public class QuickGestureContainer extends FrameLayout {
                     // 移动数据
                     checkMobileData(sInfo, iconSize, tv);
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
-                    // 移动数据
+                    // 桌面
                     checkHome(sInfo, iconSize, tv);
+                }else if(sInfo.iDentiName.equals(QuickSwitchManager.XUKUANG)){
+                    //虚框
+                    checkXuKuang(sInfo,iconSize,tv);
                 }
                 if (sInfo.eventNumber > 0) {
                     tv.setDecorateAction(new EventAction(getContext(), sInfo.eventNumber));
@@ -808,6 +811,12 @@ public class QuickGestureContainer extends FrameLayout {
                 targetLayout.addView(tv);
             }
         }
+    }
+
+    private void checkXuKuang(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
+                null);
     }
 
     private void checkLockScreen(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {

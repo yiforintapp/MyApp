@@ -142,7 +142,6 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            LeoLog.e("xxxx", "ACTION_MOVE");
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.width / 4)

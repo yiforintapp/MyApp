@@ -4,6 +4,7 @@ package com.leo.appmaster.quickgestures.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +15,16 @@ import android.os.IBinder;
 import android.provider.CallLog.Calls;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -26,9 +33,11 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -56,7 +65,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
  * @author run
  */
 public class QuickGestureActivity extends BaseActivity implements OnItemClickListener,
-        OnCheckedChangeListener {
+        OnCheckedChangeListener, OnTouchListener {
     private ListView mQuickGestureLV;
     private CommonTitleBar mTitleBar;
     private QuickGestureAdapter mAdapter;
@@ -72,6 +81,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private List<FreeDisturbAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
     private Handler mHandler = new Handler();
+    private ImageView mLeftView, mRightView;
+    private RelativeLayout mTipRL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +103,16 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mAreaView = (QuickGesturesAreaView) findViewById(R.id.quick_gesture_area);
         mTitleBar.openBackView();
         mQuickGestureLV.setOnItemClickListener(this);
+        mTipRL = (RelativeLayout) findViewById(R.id.miui_tipRL);
+        mLeftView = (ImageView) findViewById(R.id.quick_sliding_left_area);
+        mRightView = (ImageView) findViewById(R.id.quick_sliding_right_area);
+        if (!AppMasterPreference.getInstance(this)
+                .getFristSlidingTip()) {
+            mTipRL.setVisibility(View.VISIBLE);
+            quickTipAnim(mTipRL);
+            mLeftView.setOnTouchListener(this);
+            mRightView.setOnTouchListener(this);
+        }
     }
 
     @Override
@@ -135,16 +156,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 R.string.pg_appmanager_quick_gesture_option_open_quick_gesture));
         gestureSettingOpenGesture.setCheck(mPre.getSwitchOpenQuickGesture());
         mQuickGestureSettingOption.add(gestureSettingOpenGesture);
-        // QuickGestureSettingBean gestureSettingSwitchSetting = new
-        // QuickGestureSettingBean();
-        // gestureSettingSwitchSetting.setName(this.getResources().getString(
-        // R.string.pg_appmanager_quick_gesture_option_switch_setting));
-        // mQuickGestureSettingOption.add(gestureSettingSwitchSetting);
-        // QuickGestureSettingBean gestureSettingGestureTheme = new
-        // QuickGestureSettingBean();
-        // gestureSettingGestureTheme.setName(this.getResources().getString(
-        // R.string.pg_appmanager_quick_gesture_option_gesture_theme_title));
-        // mQuickGestureSettingOption.add(gestureSettingGestureTheme);
         QuickGestureSettingBean gestureSettingSlidingAreaLocation = new QuickGestureSettingBean();
         gestureSettingSlidingAreaLocation.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_sliding_area_location_title));
@@ -270,47 +281,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             } else if (arg2 == 2) {
                 Log.e("##########", "2:选择免打扰应用");
                 showSlideShowTimeSettingDialog();
-                // boolean flag = BuildProperties.isMIUI();
-                // boolean isOpenWindow =
-                // BuildProperties.isMiuiFloatWindowOpAllowed(QuickGestureActivity.this);
-                // Log.e("##########", "flag:" + flag + "isOpenWindow:" +
-                // isOpenWindow);
-                // if (flag && !isOpenWindow) {
-                // // miuiTip();
-                // Intent intent = new
-                // Intent("miui.intent.action.APP_PERM_EDITOR");
-                // intent.setClassName("com.miui.securitycenter",
-                // "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-                // intent.putExtra("extra_pkgname",
-                // QuickGestureActivity.this.getPackageName());
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // try {
-                // startActivity(intent);
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // Intent intent1 = new Intent(
-                // Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                // Uri uri = Uri.fromParts("package",
-                // QuickGestureActivity.this.getPackageName(), null);
-                // intent.setData(uri);
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // try {
-                // QuickGestureActivity.this.startActivity(intent);
-                // } catch (Exception e1) {
-                // e1.printStackTrace();
-                // }
-                // }
-                // FloatWindowHelper.createMiuiTipWindow(QuickGestureActivity.this);
-                // }
-                // Uri uri = Uri.parse("tel:" + "1008611");
-                // Intent intent = new Intent(Intent.ACTION_DIAL,
-                // uri);
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // try {
-                // startActivity(intent);
-                // } catch (Exception e) {
-                // }
-                // FloatWindowHelper.createMiuiTipWindow(QuickGestureActivity.this);
             }
         }
     }
@@ -324,7 +294,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 // 移除悬浮窗
                 FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
             } else {
-                if (!mPre.getSwitchOpenQuickGesture()) {
+                if (mPre.getSwitchOpenQuickGesture()) {
                     QuickGestureManager.getInstance(this).startFloatWindow();
                 }
             }
@@ -611,9 +581,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     }
 
     private void showAllAppDialog() {
-        QuickGestureFreeDisturbAppDialog mFreeDisturbApp = new QuickGestureFreeDisturbAppDialog(
+        final QuickGestureFreeDisturbAppDialog mFreeDisturbApp = new QuickGestureFreeDisturbAppDialog(
                 this);
         mFreeDisturbApp.setTitle(R.string.pg_appmanager_quick_gesture_select_free_disturb_app_text);
+        mFreeDisturbApp.setRightBt(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                if (mFreeDisturbApp != null) {
+                    mFreeDisturbApp.cancel();
+                }
+            }
+        });
         mFreeDisturbApp.show();
     }
 
@@ -707,5 +686,56 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             }
             return convertView;
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouch(View view, MotionEvent event) {
+        int width = view.getWidth();
+        int height = view.getHeight();
+        float downX = 0;
+        float downY = 0;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                downX = event.getX();
+                downY = event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float moveX = Math.abs(event.getX() - downX);
+                float moveY = Math.abs(event.getY() - downY);
+                if (moveX > width / 50 || moveY > width / 50) {
+                    mTipRL.setVisibility(View.GONE);
+                    Toast.makeText(this, "开启快捷之旅", Toast.LENGTH_SHORT)
+                            .show();
+                    AppMasterPreference.getInstance(getApplicationContext())
+                            .setFristSlidingTip(true);
+                    Intent intent;
+                    intent = new Intent(AppMasterApplication.getInstance(),
+                            QuickGesturePopupActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    AppMasterApplication.getInstance().startActivity(intent);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    private void quickTipAnim(View view) {
+        AlphaAnimation alpha = new AlphaAnimation(0, 1);
+        alpha.setDuration(1000);
+        ScaleAnimation scale = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
+        scale.setDuration(1000);
+        AnimationSet animation = new AnimationSet(true);
+        animation.addAnimation(alpha);
+        animation.addAnimation(scale);
+        animation.setFillAfter(true);
+        view.setAnimation(animation);
+        animation.startNow();
+
     }
 }

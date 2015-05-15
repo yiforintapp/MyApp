@@ -51,7 +51,7 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         title = (TextView) dlgView.findViewById(R.id.dialog_tilte);
         seekbar_text = (TextView) dlgView.findViewById(R.id.seekbar_text);
         seekbar_text_progress = (TextView) dlgView.findViewById(R.id.seekbar_text_progress);
-        sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
+        sure_button = (TextView) dlgView.findViewById(R.id.quick_seekbar_setting_dlg_right_btn);
         seekbar_text.setText(resources.getString(R.string.flow_settting_dialog_remain));
         mSeekBar = (SeekBar) dlgView.findViewById(R.id.qucik_seekBar);
         mRadioListView = (ListView) dlgView.findViewById(R.id.radioLV);
