@@ -47,6 +47,8 @@ public class FloatWindowHelper {
     public static final int ONTUCH_LEFT_FLAG = -1;
     public static final int ONTUCH_RIGHT_FLAG = 1;
     public static final String QUICK_GESTURE_MSM_TIP = "quick_gesture_msm_tip";
+    public static final String QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION = "quick_gesture_add_free_disturb_notification";
+    
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,
             mLeftCenterCenterView;
     private static RelativeLayout mMiuiTipRl;

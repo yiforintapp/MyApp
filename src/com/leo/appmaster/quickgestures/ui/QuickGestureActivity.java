@@ -153,6 +153,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             mQuickGestureSettingOption.clear();
             fillSettingData();
             mAdapter.notifyDataSetChanged();
+        } else if (FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION.equals(flag)) {
+            showSlideShowTimeSettingDialog();
         }
 
     }
@@ -597,6 +599,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             public void onClick(View arg0) {
                 if (mFreeDisturbApp != null) {
                     mFreeDisturbApp.cancel();
+                    LeoEventBus.getDefaultBus().post(
+                            new QuickGestureFloatWindowEvent(
+                                    FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION));
                 }
             }
         });
