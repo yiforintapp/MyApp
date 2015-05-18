@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
@@ -406,24 +407,42 @@ public class QuickGestureLayout extends ViewGroup {
             if (x > tempView.getLeft() && x < tempView.getRight()
                     && y > tempView.getTop() && y < tempView.getBottom()) {
                 hitView = tempView;
-                LeoLog.d("checkItemClick", "hitView");
                 break;
             }
         }
 
+        LeoLog.d("checkItemClick", "hitView = " + hitView);
         if (hitView != null) {
+            GestureItemView giv = (GestureItemView) hitView;
             if (mContainer.isEditing()) {
-                GestureItemView giv = (GestureItemView) hitView;
-                Rect rect = giv.getCrossRect();
-                int offsetX = (int) (x - hitView.getLeft() + 30);
-                int onnsetY = (int) (y - hitView.getTop() + 30);
-                if (rect.contains(offsetX, onnsetY)) {
-                    removeView(hitView);
-                    onItemRemoved(hitView);
+                if (giv.hasAddFlag()) {
+                    // TODO show add item dialog
+                    GType type = mContainer.getCurrentGestureType();
+                    if (type == GType.MostUsedLayout || type == GType.SwitcherLayout) {
+                        showAddNewDiglog(type);
+                    }
+                } else {
+                    Rect rect = giv.getCrossRect();
+                    int offsetX = (int) (x - hitView.getLeft());
+                    int onnsetY = (int) (y - hitView.getTop());
+                    if (rect.contains(offsetX, onnsetY)) {
+                        removeView(hitView);
+                        onItemRemoved(hitView);
+                    }
                 }
+
             } else {
                 animateItem(hitView);
             }
+        }
+    }
+
+    private void showAddNewDiglog(GType type) {
+        // TODO Auto-generated method stub
+        if (type == GType.MostUsedLayout) {
+            Toast.makeText(getContext(), "添加最近使用item", 0).show();
+        } else if (type == GType.SwitcherLayout) {
+            Toast.makeText(getContext(), "添加快捷开关item", 0).show();
         }
     }
 
@@ -450,10 +469,18 @@ public class QuickGestureLayout extends ViewGroup {
             // hitView);
             // addView(mIvXuKuang);
 
-            showAddIcon(((LayoutParams) hitView.getLayoutParams()).position);
+            int childCount = getChildCount();
+            GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
+            if (childCount < 9 && !view.hasAddFlag()) {
+                showAddIcon(childCount);
+            }
 
         } else if (type == GType.MostUsedLayout) {
-
+            int childCount = getChildCount();
+            GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
+            if (childCount < 9 && !view.hasAddFlag()) {
+                showAddIcon(childCount);
+            }
         }
     }
 
@@ -485,7 +512,6 @@ public class QuickGestureLayout extends ViewGroup {
             if (x > tempView.getLeft() && x < tempView.getRight()
                     && y > tempView.getTop() && y < tempView.getBottom()) {
                 hitView = tempView;
-                LeoLog.d("checkItemClick", "hitView");
                 break;
             }
         }
@@ -495,7 +521,7 @@ public class QuickGestureLayout extends ViewGroup {
                 Rect rect = giv.getCrossRect();
                 int offsetX = (int) (x - hitView.getLeft());
                 int onnsetY = (int) (y - hitView.getTop());
-                if (!rect.contains(offsetX, onnsetY)) {
+                if (!rect.contains(offsetX, onnsetY) && !giv.hasAddFlag()) {
                     hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f), hitView, 0);
                     hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                 }
@@ -660,9 +686,12 @@ public class QuickGestureLayout extends ViewGroup {
                     params = (LayoutParams) getChildAt(i).getLayoutParams();
                     int position = params.position;
                     QuickSwitcherInfo sInfo = (QuickSwitcherInfo) getChildAt(i).getTag();
-                    sInfo.position = position;
-                    mSwitchList.add(sInfo);
-                    LeoLog.d("QuickGestureLayout", "名字：" + sInfo.label + "位置：" + position);
+                    if (sInfo != null) {
+                        sInfo.position = position;
+                        mSwitchList.add(sInfo);
+                        LeoLog.d("QuickGestureLayout", "名字：" + sInfo.label + "位置：" + position);
+                    }
+
                 }
                 QuickGestureManager.getInstance(getContext()).updateSwitcherData(mSwitchList);
             }
@@ -689,6 +718,12 @@ public class QuickGestureLayout extends ViewGroup {
     }
 
     public void onLeaveEditMode() {
+        if (mContainer.getCurrentGestureType() != GType.DymicLayout) {
+            GestureItemView lastChild = (GestureItemView) getChildAt(getChildCount() - 1);
+            if (lastChild.hasAddFlag()) {
+                removeView(lastChild);
+            }
+        }
         for (int i = 0; i < getChildCount(); i++) {
             GestureItemView item = (GestureItemView) getChildAt(i);
             item.leaveEditMode();
@@ -698,21 +733,33 @@ public class QuickGestureLayout extends ViewGroup {
     public void onEnterEditMode() {
         if (mContainer.getCurrentGestureType() != GType.DymicLayout) {
             int childCount = getChildCount();
-            if (childCount < 9) {
-                showAddIcon(9);
+            GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
+            if (childCount < 9 && !view.hasAddFlag()) {
+                showAddIcon(childCount);
             }
         }
     }
 
     private void showAddIcon(int position) {
-        if (position >= 0) {
+        if (position >= 0 && position < 9) {
             LayoutParams params = new LayoutParams(mItemSize, mItemSize);
             params.position = position;
             GestureItemView addItem = new GestureItemView(mContext);
             addItem.setLayoutParams(params);
             addItem.setBackgroundResource(R.drawable.switch_add);
+            addItem.setAddFlag(true);
             addView(addItem);
         } else {
+            int childCount = getChildCount();
+            if (childCount < 9) {
+                LayoutParams params = new LayoutParams(mItemSize, mItemSize);
+                params.position = childCount;
+                GestureItemView addItem = new GestureItemView(mContext);
+                addItem.setLayoutParams(params);
+                addItem.setAddFlag(true);
+                addItem.setBackgroundResource(R.drawable.switch_add);
+                addView(addItem);
+            }
 
         }
     }

@@ -35,6 +35,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.utils.DipPixelUtil;
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -99,7 +100,8 @@ public class QuickGestureContainer extends FrameLayout {
                                     + Math.pow((e.getY() - mSelfHeight), 2));
                         }
 
-                        if (offset2CfC > (mDymicLayout.getOuterRadius() + 200)) {
+                        if (offset2CfC > (mDymicLayout.getOuterRadius() + DipPixelUtil.dip2px(
+                                getContext(), 30))) {
                             if (mEditing) {
                                 // TODO leave edit mode
                                 leaveEditMode();
@@ -497,11 +499,7 @@ public class QuickGestureContainer extends FrameLayout {
             return;
         float duration = Math.abs(90 - mRotateDegree) / 90 * mFullRotateDuration;
         ValueAnimator va = null;
-//        if (mOrientation == Orientation.Left) {
-//            va = ValueAnimator.ofFloat(mRotateDegree, 90);
-//        } else {
-            va = ValueAnimator.ofFloat(mRotateDegree, -90);
-//        }
+        va = ValueAnimator.ofFloat(mRotateDegree, -90);
         va.setDuration((long) duration);
         va.setInterpolator(new DecelerateInterpolator());
         va.addListener(new AnimatorListenerAdapter() {
@@ -551,11 +549,11 @@ public class QuickGestureContainer extends FrameLayout {
             return;
         float duration = Math.abs(90 - mRotateDegree) / 90 * mFullRotateDuration;
         ValueAnimator va = null;
-//        if (mOrientation == Orientation.Left) {
-//            va = ValueAnimator.ofFloat(mRotateDegree, -90);
-//        } else {
-            va = ValueAnimator.ofFloat(mRotateDegree, 90);
-//        }
+        // if (mOrientation == Orientation.Left) {
+        // va = ValueAnimator.ofFloat(mRotateDegree, -90);
+        // } else {
+        va = ValueAnimator.ofFloat(mRotateDegree, 90);
+        // }
         va.setDuration((long) duration);
         va.setInterpolator(new DecelerateInterpolator());
         va.addListener(new AnimatorListenerAdapter() {

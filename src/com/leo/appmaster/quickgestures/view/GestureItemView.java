@@ -56,17 +56,17 @@ public class GestureItemView extends TextView {
         return mDecorateAction;
     }
 
-    public boolean isAddItem() {
+    public boolean hasAddFlag() {
         return mAddFlag;
     }
 
-    public void setAddFlage(boolean add) {
+    public void setAddFlag(boolean add) {
         mAddFlag = add;
     }
 
     public Rect getCrossRect() {
-        Rect rect = new Rect(0, 0, mCrossDrawable.getIntrinsicWidth(),
-                mCrossDrawable.getIntrinsicHeight());
+        Rect rect = new Rect(0, 0, mCrossDrawable.getIntrinsicWidth() * 2,
+                mCrossDrawable.getIntrinsicHeight() * 2);
         return rect;
     }
 
@@ -79,7 +79,7 @@ public class GestureItemView extends TextView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mEditing) {
+        if (mEditing && !mAddFlag) {
             drawCross(canvas);
         } else {
             if (mDecorateAction != null) {
@@ -116,7 +116,6 @@ public class GestureItemView extends TextView {
 
     @Override
     public boolean onDragEvent(DragEvent event) {
-        ClipData data = event.getClipData();
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED: {
                 LeoLog.i(TAG, "ACTION_DRAG_STARTED");
@@ -125,7 +124,6 @@ public class GestureItemView extends TextView {
                     QuickGestureContainer qgc = (QuickGestureContainer) mHolderLayout.getParent();
                     qgc.setEditing(true);
                     setVisibility(View.INVISIBLE);
-                    mHolderLayout.onEnterEditMode();
                 }
                 break;
             }
@@ -133,8 +131,8 @@ public class GestureItemView extends TextView {
                 LeoLog.i(TAG, "ACTION_DRAG_ENDED");
                 if (event.getLocalState() == this) {
                     setVisibility(View.VISIBLE);
+                    mHolderLayout.onEnterEditMode();
                 }
-                // leaveEditMode();
                 break;
             }
             case DragEvent.ACTION_DRAG_LOCATION: {
