@@ -148,6 +148,8 @@ public class QuickGestureLayout extends ViewGroup {
          */
         if (childCount > INNER_RING_MAX_COUNT) {
             mRingCount = 2;
+        } else {
+            mRingCount = 1;
         }
 
         int innerRingCount, outerRingCount;
@@ -172,6 +174,10 @@ public class QuickGestureLayout extends ViewGroup {
         outerStartAngle = 90 - outerAngleInterval / 2;
 
         float halfItemSize = mItemSize / 2.0f;
+
+        LeoLog.e("xxxx", " childCount = " + childCount + "innerStartAngle = " + innerStartAngle
+                + "       innertAngleInterval =  "
+                + innertAngleInterval);
 
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
