@@ -9,6 +9,7 @@ package com.leo.appmaster.sdk;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 
 import com.leo.appmaster.AppMasterApplication;
 
@@ -46,6 +47,24 @@ public class BaseActivity extends Activity {
     @Override
     protected void onRestart() {
         super.onRestart();
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (Exception e) {
+            
+        }
+    }
+    
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState, persistentState);
+        } catch (Exception e) {
+            
+        }
     }
 
 }
