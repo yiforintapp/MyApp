@@ -4,6 +4,7 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.AppItemInfo;
@@ -11,8 +12,8 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
+import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.GType;
+import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.animation.Animator;
@@ -27,46 +28,46 @@ import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
-import com.leo.appmaster.utils.LeoLog;
 
-public class QuickGestureLayout extends ViewGroup {
+public class AppleWatchLayout extends ViewGroup {
 
-    private static final int INNER_RING_MAX_COUNT = 4;
-    private QuickGestureContainer mContainer;
+    public static final String TAG = "AppleWatchLayout";
+
+    private static final int MAX_COUNT = 11;
+    private static final int INNER_RING_MAX_COUNT = 6;
+    private static final int OUTER_RING_MAXCOUNT = 4;
+
+    private SectorQuickGestureContainer mContainer;
     private Orientation mOrientation = Orientation.Left;
     private AnimatorSet mReorderAnimator;
     private boolean mRecodering;
     private boolean mAnimCanceled;
     private int mTotalWidth, mTotalHeight;
+    private int mCenterPointX, mCenterPointY;
     private int mItemSize, mIconSize;
     private int mInnerRadius, mOuterRadius;
+    private float mInnerScale, mOuterScale;
+
     private int mRingCount;
     private float mCurrentRotateDegree;
     private Context mContext;
 
-    public QuickGestureLayout(Context context) {
+    public AppleWatchLayout(Context context) {
         this(context, null);
     }
 
-    public QuickGestureLayout(Context context, AttributeSet attrs) {
+    public AppleWatchLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         mContext = context;
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
@@ -88,9 +89,11 @@ public class QuickGestureLayout extends ViewGroup {
         mInnerRadius = res.getDimensionPixelSize(R.dimen.qg_layout_inner_radius);
         mOuterRadius = res.getDimensionPixelSize(R.dimen.qg_layout_outer_radius);
         mRingCount = 1;
+        mInnerScale = 0.8f;
+        mOuterScale = 0.6f;
     }
 
-    public QuickGestureLayout(Context context, AttributeSet attrs, int defStyle) {
+    public AppleWatchLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -119,19 +122,27 @@ public class QuickGestureLayout extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final int count = getChildCount();
-        int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mItemSize, MeasureSpec.EXACTLY);
-        int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mItemSize, MeasureSpec.EXACTLY);
+        int childWidthMeasureSpec;
+        int childHeightMeasureSpec;
+        LayoutParams lp;
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
             if (child.getVisibility() == GONE) {
                 continue;
             }
+            lp = (LayoutParams) child.getLayoutParams();
+            lp.scale = getItemScale(lp.position);
+            childWidthMeasureSpec = MeasureSpec.makeMeasureSpec((int) (mItemSize * lp.scale),
+                    MeasureSpec.EXACTLY);
+            childHeightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (mItemSize * lp.scale),
+                    MeasureSpec.EXACTLY);
             child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
         }
 
         mTotalWidth = getMeasuredWidth();
         mTotalHeight = getMeasuredHeight();
-
+        mCenterPointX = mTotalWidth / 2;
+        mCenterPointY = mTotalHeight / 2;
     }
 
     @Override
@@ -152,32 +163,17 @@ public class QuickGestureLayout extends ViewGroup {
             mRingCount = 1;
         }
 
-        int innerRingCount, outerRingCount;
+        int innerRingCount = 6;
         float innertAngleInterval, outerAngleInterval;
+        innertAngleInterval = 60;
+        outerAngleInterval = 45;
+        float innerStartAngle, outerStartAngle;
+        innerStartAngle = 0;
+        outerStartAngle = outerAngleInterval;
 
-        if (mRingCount == 1) {
-            innerRingCount = childCount;
-            outerRingCount = 0;
-            innertAngleInterval = 90f / innerRingCount;
-            outerAngleInterval = 0;
-        } else {
-            innerRingCount = INNER_RING_MAX_COUNT;
-            outerRingCount = childCount - innerRingCount;
-            innertAngleInterval = 90f / innerRingCount;
-            outerAngleInterval = 90f / outerRingCount;
-        }
+        int halfItemSize;
 
         int left = 0, top = 0;
-
-        float innerStartAngle, outerStartAngle;
-        innerStartAngle = 90 - innertAngleInterval / 2;
-        outerStartAngle = 90 - outerAngleInterval / 2;
-
-        float halfItemSize = mItemSize / 2.0f;
-
-        LeoLog.e("xxxx", " childCount = " + childCount + "innerStartAngle = " + innerStartAngle
-                + "       innertAngleInterval =  "
-                + innertAngleInterval);
 
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
@@ -186,61 +182,46 @@ public class QuickGestureLayout extends ViewGroup {
             }
 
             LayoutParams params = (LayoutParams) child.getLayoutParams();
-
+            halfItemSize = child.getWidth() / 2;
             if (params.position < 0)
                 continue;
-
-            if (params.position < innerRingCount) { // match first ring
-                if (mOrientation == Orientation.Left) {
-                    left = (int) (mInnerRadius
-                            * Math.cos(Math.toRadians(innerStartAngle - params.position
-                                    * innertAngleInterval)) - halfItemSize);
-                } else {
-                    // TODO right
-                    left = mTotalWidth - (int) (mInnerRadius
-                            * Math.cos(Math.toRadians(innerStartAngle - params.position
-                                    * innertAngleInterval)) + halfItemSize);
-                }
-
-                top = (int) (mTotalHeight - mInnerRadius
-                        * Math.sin(Math.toRadians(innerStartAngle - params.position
+            if (params.position == 0) {
+                left = mCenterPointX - halfItemSize;
+                top = mCenterPointY - halfItemSize;
+            } else if (params.position <= 6) { // match first ring
+                left = (int) (mCenterPointX - mInnerRadius
+                        * Math.cos(Math.toRadians(innerStartAngle + (params.position - 1)
                                 * innertAngleInterval)) - halfItemSize);
-            } else { // match second ring
-                if (mOrientation == Orientation.Left) {
-                    left = (int) (mOuterRadius
-                            * Math.cos(Math.toRadians(outerStartAngle
-                                    - (params.position - innerRingCount)
-                                    * outerAngleInterval)) - halfItemSize);
-                } else {
-                    // TODO right
-                    left = mTotalWidth - (int) (mOuterRadius
-                            * Math.cos(Math.toRadians(outerStartAngle
-                                    - (params.position - innerRingCount)
-                                    * outerAngleInterval)) + halfItemSize);
-                }
 
-                top = (int) (mTotalHeight
+                top = (int) (mCenterPointY - mInnerRadius
+                        * Math.sin(Math.toRadians(innerStartAngle + (params.position - 1)
+                                * innertAngleInterval)) - halfItemSize);
+
+            } else if (params.position <= 10) { // match second ring
+
+                left = (int) (mCenterPointX - mOuterRadius
+                        * Math.cos(Math.toRadians(outerStartAngle
+                                + (params.position - innerRingCount - 1)
+                                * outerAngleInterval)) - halfItemSize);
+
+                top = (int) (mCenterPointY
                         - mOuterRadius
                         * Math.sin(Math.toRadians(outerStartAngle
-                                - (params.position - innerRingCount)
+                                + (params.position - innerRingCount - 1)
                                 * outerAngleInterval)) - halfItemSize);
+
             }
 
-            child.layout(left, top, left + mItemSize, top + mItemSize);
+            child.layout(left, top, left + child.getWidth(), top + child.getHeight());
         }
 
         /*
          * now set pivot
          */
-        if (mOrientation == Orientation.Left) {
-            setPivotX(0f);
-            setPivotY(mTotalHeight);
-        } else {
-            setPivotX(mTotalWidth);
-            setPivotY(mTotalHeight);
-        }
+        setPivotX(mTotalWidth / 2);
+        setPivotY(mTotalHeight);
 
-        mContainer = (QuickGestureContainer) getParent();
+        mContainer = (SectorQuickGestureContainer) getParent();
     }
 
     @Override
@@ -282,6 +263,19 @@ public class QuickGestureLayout extends ViewGroup {
         super.addView(child, params);
     }
 
+    public float getItemScale(int position) {
+        if (position <= 0) {
+            return 1f;
+        } else if (position <= 6) {
+            return mInnerScale;
+        } else if (position <= 10) {
+            return mOuterScale;
+        } else {
+            LeoLog.e(TAG, "position must be >=0 and <= 10");
+            return 0f;
+        }
+    }
+
     private void animateItem(final View view) {
 
         AnimatorSet as = new AnimatorSet();
@@ -319,22 +313,22 @@ public class QuickGestureLayout extends ViewGroup {
             if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleBluetooth(mContainer, mContainer.getSwitchList(),
-                                QuickGestureLayout.this);
+                                AppleWatchLayout.this);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleFlashLight(mContainer, mContainer.getSwitchList(),
-                                QuickGestureLayout.this);
+                                AppleWatchLayout.this);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
                 QuickSwitchManager.getInstance(getContext()).toggleWlan(mContainer,
-                        mContainer.getSwitchList(), QuickGestureLayout.this);
+                        mContainer.getSwitchList(), AppleWatchLayout.this);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
                 QuickSwitchManager.getInstance(getContext()).openCrame();
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
                 QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,
-                        mContainer.getSwitchList(), QuickGestureLayout.this);
+                        mContainer.getSwitchList(), AppleWatchLayout.this);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
                 QuickSwitchManager.getInstance(getContext()).toggleLight(mContainer,
-                        mContainer.getSwitchList(), QuickGestureLayout.this);
+                        mContainer.getSwitchList(), AppleWatchLayout.this);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
                 QuickSwitchManager.getInstance(getContext()).speedUp();
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
@@ -349,11 +343,11 @@ public class QuickGestureLayout extends ViewGroup {
                 QuickSwitchManager.getInstance(getContext()).toggleFlyMode();
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
                 QuickSwitchManager.getInstance(getContext()).toggleRotation(mContainer,
-                        mContainer.getSwitchList(), QuickGestureLayout.this);
+                        mContainer.getSwitchList(), AppleWatchLayout.this);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleMobileData(mContainer, mContainer.getSwitchList(),
-                                QuickGestureLayout.this);
+                                AppleWatchLayout.this);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
                 QuickSwitchManager.getInstance(getContext()).goHome();
             }
@@ -556,8 +550,8 @@ public class QuickGestureLayout extends ViewGroup {
     }
 
     public void replaceItems(GestureItemView fromView, GestureItemView toView) {
-        QuickGestureLayout.LayoutParams fromLP = (LayoutParams) fromView.getLayoutParams();
-        QuickGestureLayout.LayoutParams toLP = (LayoutParams) toView.getLayoutParams();
+        AppleWatchLayout.LayoutParams fromLP = (LayoutParams) fromView.getLayoutParams();
+        AppleWatchLayout.LayoutParams toLP = (LayoutParams) toView.getLayoutParams();
 
         int from = fromLP.position;
         int to = toLP.position;
@@ -582,14 +576,14 @@ public class QuickGestureLayout extends ViewGroup {
             mReorderAnimator.cancel();
         }
 
-        int from = ((QuickGestureLayout.LayoutParams) fromView.getLayoutParams()).position;
-        int to = ((QuickGestureLayout.LayoutParams) toView.getLayoutParams()).position;
+        int from = ((AppleWatchLayout.LayoutParams) fromView.getLayoutParams()).position;
+        int to = ((AppleWatchLayout.LayoutParams) toView.getLayoutParams()).position;
 
         boolean isForward = to > from;
         final GestureItemView[] hitViews = new GestureItemView[Math.abs(to - from) + 1];
         hitViews[0] = fromView;
         GestureItemView hitView;
-        QuickGestureLayout.LayoutParams hitLP;
+        AppleWatchLayout.LayoutParams hitLP;
         for (int i = 0; i < getChildCount(); i++) {
             hitView = (GestureItemView) getChildAt(i);
             hitView.setLeft((int) (hitView.getLeft() +
@@ -636,16 +630,16 @@ public class QuickGestureLayout extends ViewGroup {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mRecodering = false;
-                int lastPosition = ((QuickGestureLayout.LayoutParams) hitViews[hitViews.length - 1]
+                int lastPosition = ((AppleWatchLayout.LayoutParams) hitViews[hitViews.length - 1]
                         .getLayoutParams()).position;
                 int nextPosition;
                 for (int i = hitViews.length - 1; i >= 0; i--) {
                     if (i == 0) {
-                        ((QuickGestureLayout.LayoutParams) hitViews[i].getLayoutParams()).position = lastPosition;
+                        ((AppleWatchLayout.LayoutParams) hitViews[i].getLayoutParams()).position = lastPosition;
                     } else {
-                        nextPosition = ((QuickGestureLayout.LayoutParams) hitViews[i - 1]
+                        nextPosition = ((AppleWatchLayout.LayoutParams) hitViews[i - 1]
                                 .getLayoutParams()).position;
-                        ((QuickGestureLayout.LayoutParams) hitViews[i].getLayoutParams()).position = nextPosition;
+                        ((AppleWatchLayout.LayoutParams) hitViews[i].getLayoutParams()).position = nextPosition;
                     }
                 }
 
@@ -717,6 +711,7 @@ public class QuickGestureLayout extends ViewGroup {
     public static class LayoutParams extends ViewGroup.LayoutParams {
 
         public int position = -1;
+        public float scale = 1.0f;
 
         public LayoutParams(int width, int height) {
             super(width, height);
@@ -747,7 +742,7 @@ public class QuickGestureLayout extends ViewGroup {
     }
 
     private void showAddIcon(int position) {
-        if (position >= 0 && position < 9) {
+        if (position >= 0 && position <= 10) {
             LayoutParams params = new LayoutParams(mItemSize, mItemSize);
             params.position = position;
             GestureItemView addItem = new GestureItemView(mContext);
@@ -755,18 +750,10 @@ public class QuickGestureLayout extends ViewGroup {
             addItem.setBackgroundResource(R.drawable.switch_add);
             addItem.setAddFlag(true);
             addView(addItem);
-        } else {
-            int childCount = getChildCount();
-            if (childCount < 9) {
-                LayoutParams params = new LayoutParams(mItemSize, mItemSize);
-                params.position = childCount;
-                GestureItemView addItem = new GestureItemView(mContext);
-                addItem.setLayoutParams(params);
-                addItem.setAddFlag(true);
-                addItem.setBackgroundResource(R.drawable.switch_add);
-                addView(addItem);
-            }
-
         }
+    }
+
+    public void checkFull() {
+        
     }
 }

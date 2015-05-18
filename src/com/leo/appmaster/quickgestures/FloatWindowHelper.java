@@ -29,7 +29,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
+import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -1139,8 +1139,8 @@ public class FloatWindowHelper {
         }
     }
 
-    public static void closeQuickGesture(QuickGestureContainer.Orientation orientation) {
-        if (orientation == QuickGestureContainer.Orientation.Left) {
+    public static void closeQuickGesture(SectorQuickGestureContainer.Orientation orientation) {
+        if (orientation == SectorQuickGestureContainer.Orientation.Left) {
             // sLeftPopup.dismiss();
         } else {
             // sRightPopup.dismiss();s

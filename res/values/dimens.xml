@@ -203,6 +203,13 @@
     <dimen name="qg_item_icon_size">46dp</dimen>
     <dimen name="qg_layout_inner_radius">180dp</dimen>
     <dimen name="qg_layout_outer_radius">280dp</dimen>
+
+    <!-- apple watch -->
+    <dimen name="apple_watch_text_size">12dp</dimen>
+    <dimen name="apple_watch_item_size">65dp</dimen>
+    <dimen name="apple_watch_item_icon_size">50dp</dimen>
+    <dimen name="apple_watch_layout_inner_radius">180dp</dimen>
+    <dimen name="apple_watch_layout_outer_radius">280dp</dimen>
     <!-- quick guesture end -->
 
 </resources>
