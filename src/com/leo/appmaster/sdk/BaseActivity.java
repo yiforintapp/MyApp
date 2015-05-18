@@ -58,13 +58,13 @@ public class BaseActivity extends Activity {
         }
     }
     
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        try {
-            super.onRestoreInstanceState(savedInstanceState, persistentState);
-        } catch (Exception e) {
-            
-        }
-    }
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+//        try {
+//            super.onRestoreInstanceState(savedInstanceState, persistentState);
+//        } catch (Exception e) {
+//            
+//        }
+//    }
 
 }
