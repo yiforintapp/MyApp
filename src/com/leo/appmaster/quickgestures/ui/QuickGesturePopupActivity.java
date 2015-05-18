@@ -17,9 +17,9 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
+import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
+import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.GType;
+import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.view.View;
@@ -30,13 +30,13 @@ public class QuickGesturePopupActivity extends Activity implements
         OnSystemUiVisibilityChangeListener {
 
     private static int switchNum;
-    private QuickGestureContainer mContainer;
+    private SectorQuickGestureContainer mContainer;
     private AbstractList<AppItemInfo> list;
     private List<QuickSwitcherInfo> mSwitchList;
     private AppMasterPreference mSpSwitch;
     private String mSwitchListFromSp;
 
-    private QuickGestureContainer.Orientation mOrientation;
+    private SectorQuickGestureContainer.Orientation mOrientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class QuickGesturePopupActivity extends Activity implements
         // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         // window.setAttributes(params);
 
-        mContainer = (QuickGestureContainer) findViewById(R.id.gesture_container);
+        mContainer = (SectorQuickGestureContainer) findViewById(R.id.gesture_container);
         // mContainer.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         mContainer.setOnSystemUiVisibilityChangeListener(this);
         

@@ -56,7 +56,7 @@ import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
 import com.leo.appmaster.quickgestures.view.GestureItemView;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
+import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 

@@ -2,8 +2,8 @@
 package com.leo.appmaster.quickgestures.view;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer.GType;
-import com.leo.appmaster.quickgestures.view.QuickGestureContainer.Orientation;
+import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.GType;
+import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.Orientation;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -33,7 +33,7 @@ public class CornerTabs extends View {
 
     private int mOffset;
     private GestureDetector mGestureDetector;
-    private QuickGestureContainer mContainer;
+    private SectorQuickGestureContainer mContainer;
 
     private Orientation mOrientation = Orientation.Left;
     private int mTotalWidth, mTotalHeight;
@@ -181,7 +181,7 @@ public class CornerTabs extends View {
         mTotalHeight = getMeasuredHeight();
 
         makePath();
-        mContainer = (QuickGestureContainer) getParent();
+        mContainer = (SectorQuickGestureContainer) getParent();
     }
 
     public void updateCoverDegree(float degree) {

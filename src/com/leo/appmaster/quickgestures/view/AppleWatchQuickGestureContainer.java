@@ -40,9 +40,9 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 @SuppressLint("Recycle")
-public class QuickGestureContainer extends FrameLayout {
+public class AppleWatchQuickGestureContainer extends FrameLayout {
 
-    public static final String TAG = "QuickGestureContainer";
+    public static final String TAG = "AppleWatchQuickGestureContainer";
     private List<QuickSwitcherInfo> mSwitchList;
 
     public static enum Orientation {
@@ -53,7 +53,7 @@ public class QuickGestureContainer extends FrameLayout {
         DymicLayout, MostUsedLayout, SwitcherLayout;
     }
 
-    private QuickGestureLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
+    private AppleWatchLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
     private CornerTabs mCornerTabs;
     private GType mCurrentGestureType = GType.DymicLayout;
     private Orientation mOrientation = Orientation.Left;
@@ -67,11 +67,11 @@ public class QuickGestureContainer extends FrameLayout {
     private boolean mSnaping;
     private int mFullRotateDuration = 300;
 
-    public QuickGestureContainer(Context context) {
+    public AppleWatchQuickGestureContainer(Context context) {
         super(context);
     }
 
-    public QuickGestureContainer(Context context, AttributeSet attrs) {
+    public AppleWatchQuickGestureContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
 
@@ -107,14 +107,14 @@ public class QuickGestureContainer extends FrameLayout {
                                 leaveEditMode();
                             } else {
                                 // TODO close quick gesture
-                                Activity activity = (Activity) QuickGestureContainer.this
+                                Activity activity = (Activity) AppleWatchQuickGestureContainer.this
                                         .getContext();
                                 activity.onBackPressed();
                                 showCloseAnimation();
                             }
 
                         } else {
-                            QuickGestureLayout gestureLayout = null;
+                            AppleWatchLayout gestureLayout = null;
                             if (mCurrentGestureType == GType.DymicLayout) {
                                 gestureLayout = mDymicLayout;
                             } else if (mCurrentGestureType == GType.MostUsedLayout) {
@@ -168,7 +168,7 @@ public class QuickGestureContainer extends FrameLayout {
                     public void onLongPress(MotionEvent e) {
                         LeoLog.d(TAG, "onLongPress");
                         if (!mEditing) {
-                            QuickGestureLayout gestureLayout = null;
+                            AppleWatchLayout gestureLayout = null;
                             if (mCurrentGestureType == GType.DymicLayout) {
                                 gestureLayout = mDymicLayout;
                             } else if (mCurrentGestureType == GType.MostUsedLayout) {
@@ -223,9 +223,9 @@ public class QuickGestureContainer extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         mCornerTabs = (CornerTabs) findViewById(R.id.cornerTabs);
-        mDymicLayout = (QuickGestureLayout) findViewById(R.id.qg_dymic_layout);
-        mMostUsedLayout = (QuickGestureLayout) findViewById(R.id.qg_mostused_layout);
-        mSwitcherLayout = (QuickGestureLayout) findViewById(R.id.qg_switcher_layout);
+        mDymicLayout = (AppleWatchLayout) findViewById(R.id.qg_dymic_layout);
+        mMostUsedLayout = (AppleWatchLayout) findViewById(R.id.qg_mostused_layout);
+        mSwitcherLayout = (AppleWatchLayout) findViewById(R.id.qg_switcher_layout);
 
         super.onFinishInflate();
     }
@@ -241,7 +241,7 @@ public class QuickGestureContainer extends FrameLayout {
             case MotionEvent.ACTION_DOWN:
                 if (mEditing) {
                     LeoLog.d(TAG, "ACTION_DOWN in editing ");
-                    QuickGestureLayout gestureLayout = null;
+                    AppleWatchLayout gestureLayout = null;
                     if (mCurrentGestureType == GType.DymicLayout) {
                         gestureLayout = mDymicLayout;
                     } else if (mCurrentGestureType == GType.MostUsedLayout) {
@@ -629,7 +629,7 @@ public class QuickGestureContainer extends FrameLayout {
             LeoLog.e(TAG, "fillGestureItem, infos is null");
             return;
         }
-        QuickGestureLayout targetLayout = null;
+        AppleWatchLayout targetLayout = null;
         if (type == GType.DymicLayout) {
             targetLayout = mDymicLayout;
             fillDynamicItem(targetLayout, infos, 0);
@@ -643,12 +643,12 @@ public class QuickGestureContainer extends FrameLayout {
         }
     }
 
-    public void fillDynamicItem(QuickGestureLayout targetLayout,
+    public void fillDynamicItem(AppleWatchLayout targetLayout,
             List<? extends BaseInfo> itemInfos, int businessIndes) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView tv = null;
-            QuickGestureLayout.LayoutParams lp = null;
+            AppleWatchLayout.LayoutParams lp = null;
             BaseInfo info = null;
             int iconSize = targetLayout.getIconSize();
             List<BaseInfo> infos = (List<BaseInfo>) itemInfos;
@@ -714,7 +714,7 @@ public class QuickGestureContainer extends FrameLayout {
 
             for (int i = 0; i < infos.size(); i++) {
                 tv = new GestureItemView(getContext());
-                lp = new QuickGestureLayout.LayoutParams(
+                lp = new AppleWatchLayout.LayoutParams(
                         targetLayout.getItemSize(), targetLayout.getItemSize());
                 lp.position = i;
                 tv.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -750,11 +750,11 @@ public class QuickGestureContainer extends FrameLayout {
         }
     }
 
-    public void fillSwitchItem(QuickGestureLayout targetLayout, List<? extends BaseInfo> infos) {
+    public void fillSwitchItem(AppleWatchLayout targetLayout, List<? extends BaseInfo> infos) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView tv = null;
-            QuickGestureLayout.LayoutParams lp = null;
+            AppleWatchLayout.LayoutParams lp = null;
             QuickSwitcherInfo sInfo = null;
             int iconSize = targetLayout.getIconSize();
             for (int i = 0; i < infos.size(); i++) {
@@ -763,9 +763,8 @@ public class QuickGestureContainer extends FrameLayout {
                 }
                 sInfo = (QuickSwitcherInfo) infos.get(i);
                 tv = new GestureItemView(getContext());
-                lp = new QuickGestureLayout.LayoutParams(
+                lp = new AppleWatchLayout.LayoutParams(
                         targetLayout.getItemSize(), targetLayout.getItemSize());
-                // lp.position = i;
                 lp.position = sInfo.position;
                 tv.setGravity(Gravity.CENTER_HORIZONTAL);
                 tv.setLayoutParams(lp);
@@ -998,19 +997,19 @@ public class QuickGestureContainer extends FrameLayout {
         }
     }
 
-    public void fillItem(QuickGestureLayout targetLayout, List<? extends BaseInfo> infos) {
+    public void fillItem(AppleWatchLayout targetLayout, List<? extends BaseInfo> infos) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView tv = null;
-            QuickGestureLayout.LayoutParams lp = null;
+            AppleWatchLayout.LayoutParams lp = null;
             BaseInfo info = null;
             int iconSize = targetLayout.getIconSize();
             for (int i = 0; i < infos.size(); i++) {
-                if (i >= 9) {
+                if (i >= 11) {
                     break;
                 }
                 tv = new GestureItemView(getContext());
-                lp = new QuickGestureLayout.LayoutParams(
+                lp = new AppleWatchLayout.LayoutParams(
                         targetLayout.getItemSize(), targetLayout.getItemSize());
                 lp.position = i;
                 tv.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -1026,6 +1025,8 @@ public class QuickGestureContainer extends FrameLayout {
                 tv.setTag(info);
                 targetLayout.addView(tv);
             }
+
+            targetLayout.checkFull();
         }
     }
 
@@ -1058,7 +1059,7 @@ public class QuickGestureContainer extends FrameLayout {
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                Activity activity = (Activity) QuickGestureContainer.this.getContext();
+                Activity activity = (Activity) AppleWatchQuickGestureContainer.this.getContext();
                 FloatWindowHelper.mGestureShowing = false;
                 activity.finish();
                 super.onAnimationEnd(animation);
