@@ -95,7 +95,6 @@ public class FloatWindowHelper {
     private static float mRightTopHeight = 300;
     // 距离底部的距离
     private static float mMarginBottom = 200;
-
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
     private static final int LEFT_TOP_FLAG = 3;
@@ -138,35 +137,40 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
                         case MotionEvent.ACTION_DOWN:
+                            isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftBottomParams.width / 4 || moveY > mLeftBottomParams.width / 4)
-                                    && !isMoveIng) {
-                                isMoveIng = true;
-                                removeAllFloatWindow(mContext);
-                                mGestureShowing = true;
-                                onTouchAreaShowQuick(-1);
-                            }
+                            // if (((moveX > layoutParams.width / 7 || moveY >
+                            // layoutParams.height / 5)
+                            // && !isMoveIng)) {
+                            // isMoveIng = true;
+                            // removeAllFloatWindow(mContext);
+                            // mGestureShowing = true;
+                            // onTouchAreaShowQuick(-1);
+                            // }
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 5
-                                    || Math.abs(startY - event.getRawY()) < 5) {
+                            if (Math.abs(startX - event.getRawX()) < 10
+                                    || Math.abs(startY - event.getRawY()) < 10) {
                                 removeSwipWindow(mContext, 1);
                             }
+                            break;
+
+                        case MotionEvent.ACTION_CANCEL:
+                            isMoveIng = false;
                             break;
                     }
                     return false;
                 }
             });
-
+            int width = windowManager.getDefaultDisplay().getWidth();
+            int height = windowManager.getDefaultDisplay().getHeight();
             if (layoutParams == null) {
-                int width = windowManager.getDefaultDisplay().getWidth();
-                int height = windowManager.getDefaultDisplay().getHeight();
                 layoutParams = new LayoutParams();
                 layoutParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
                 layoutParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
@@ -176,8 +180,15 @@ public class FloatWindowHelper {
                 layoutParams.format = PixelFormat.RGBA_8888;
                 layoutParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
+            } else {
+                layoutParams.x = -(width / 2);
+                layoutParams.y = (height / 2) - value;
             }
-            windowManager.addView(view, layoutParams);
+            if (!mGestureShowing) {
+                windowManager.addView(view, layoutParams);
+            } else {
+                view = null;
+            }
         }
     }
 
