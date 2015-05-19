@@ -11,8 +11,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.GestureItemView;
-import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
@@ -519,7 +520,7 @@ public class QuickSwitchManager {
         return mSwitchList;
     }
 
-    public void toggleWlan(SectorQuickGestureContainer mContainer, List<QuickSwitcherInfo> list,
+    public void toggleWlan(AppleWatchContainer mContainer, List<QuickSwitcherInfo> list,
             AppleWatchLayout quickGestureLayout) {
         if (!mWifimanager.isWifiEnabled()) {
             mWifimanager.setWifiEnabled(true);
@@ -531,7 +532,7 @@ public class QuickSwitchManager {
         mContainer.fillSwitchItem(quickGestureLayout, list);
     }
 
-    public void toggleBluetooth(SectorQuickGestureContainer mContainer, List<QuickSwitcherInfo> list,
+    public void toggleBluetooth(AppleWatchContainer mContainer, List<QuickSwitcherInfo> list,
             AppleWatchLayout quickGestureLayout) {
         if (mBluetoothAdapter == null) {
             mBluetoothAdapter = BluetoothAdapter
@@ -547,7 +548,7 @@ public class QuickSwitchManager {
         mContainer.fillSwitchItem(quickGestureLayout, list);
     }
 
-    public void toggleSound(SectorQuickGestureContainer mContainer, List<QuickSwitcherInfo> switchList,
+    public void toggleSound(AppleWatchContainer mContainer, List<QuickSwitcherInfo> switchList,
             AppleWatchLayout quickGestureLayout) {
         if (mSoundManager == null) {
             mSoundManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
@@ -569,7 +570,7 @@ public class QuickSwitchManager {
         mContainer.fillSwitchItem(quickGestureLayout, switchList);
     }
 
-    public void toggleFlashLight(SectorQuickGestureContainer mContainer, List<QuickSwitcherInfo> list,
+    public void toggleFlashLight(AppleWatchContainer mContainer, List<QuickSwitcherInfo> list,
             AppleWatchLayout quickGestureLayout) {
         if (!isFlashLightOpen) {
             isFlashLightOpen = true;
@@ -660,7 +661,7 @@ public class QuickSwitchManager {
         mContext.startActivity(intent);
     }
 
-    public void toggleLight(SectorQuickGestureContainer mContainer, List<QuickSwitcherInfo> switchList,
+    public void toggleLight(AppleWatchContainer mContainer, List<QuickSwitcherInfo> switchList,
             AppleWatchLayout quickGestureLayout) {
         int light = 0;
         switch (getBrightStatus()) {
@@ -815,7 +816,7 @@ public class QuickSwitchManager {
         }
     }
 
-    public void toggleRotation(SectorQuickGestureContainer mContainer, List<QuickSwitcherInfo> list,
+    public void toggleRotation(AppleWatchContainer mContainer, List<QuickSwitcherInfo> list,
             AppleWatchLayout quickGestureLayout) {
         try {
             mRotateState = android.provider.Settings.System.getInt(mContext.getContentResolver(),
@@ -943,7 +944,7 @@ public class QuickSwitchManager {
         }
     }
 
-    public void toggleMobileData(SectorQuickGestureContainer mContainer,
+    public void toggleMobileData(AppleWatchContainer mContainer,
             List<QuickSwitcherInfo> switchList, AppleWatchLayout quickGestureLayout) {
         Object[] arg = null;
         try {

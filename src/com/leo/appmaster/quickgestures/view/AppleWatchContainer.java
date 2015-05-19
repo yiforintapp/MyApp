@@ -9,14 +9,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -36,11 +32,9 @@ import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.utils.DipPixelUtil;
-//import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
 
-@SuppressLint("Recycle")
-public class AppleWatchQuickGestureContainer extends FrameLayout {
+public class AppleWatchContainer extends FrameLayout {
 
     public static final String TAG = "AppleWatchQuickGestureContainer";
     private List<QuickSwitcherInfo> mSwitchList;
@@ -54,7 +48,7 @@ public class AppleWatchQuickGestureContainer extends FrameLayout {
     }
 
     private AppleWatchLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
-    private CornerTabs mCornerTabs;
+    private AppleWatchTabs mCornerTabs;
     private GType mCurrentGestureType = GType.DymicLayout;
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
@@ -67,11 +61,11 @@ public class AppleWatchQuickGestureContainer extends FrameLayout {
     private boolean mSnaping;
     private int mFullRotateDuration = 300;
 
-    public AppleWatchQuickGestureContainer(Context context) {
+    public AppleWatchContainer(Context context) {
         super(context);
     }
 
-    public AppleWatchQuickGestureContainer(Context context, AttributeSet attrs) {
+    public AppleWatchContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
 
@@ -103,11 +97,9 @@ public class AppleWatchQuickGestureContainer extends FrameLayout {
                         if (offset2CfC > (mDymicLayout.getOuterRadius() + DipPixelUtil.dip2px(
                                 getContext(), 30))) {
                             if (mEditing) {
-                                // TODO leave edit mode
                                 leaveEditMode();
                             } else {
-                                // TODO close quick gesture
-                                Activity activity = (Activity) AppleWatchQuickGestureContainer.this
+                                Activity activity = (Activity) AppleWatchContainer.this
                                         .getContext();
                                 activity.onBackPressed();
                                 showCloseAnimation();
@@ -146,7 +138,6 @@ public class AppleWatchQuickGestureContainer extends FrameLayout {
                                     return true;
                                 }
                             } else {
-                                // TODO
                                 if (velocityX > 0 && velocityY < 0
                                         && (velocityX > 300 || velocityY < -300)) {
                                     snapToNext();
@@ -222,7 +213,7 @@ public class AppleWatchQuickGestureContainer extends FrameLayout {
 
     @Override
     protected void onFinishInflate() {
-        mCornerTabs = (CornerTabs) findViewById(R.id.cornerTabs);
+        mCornerTabs = (AppleWatchTabs) findViewById(R.id.cornerTabs);
         mDymicLayout = (AppleWatchLayout) findViewById(R.id.qg_dymic_layout);
         mMostUsedLayout = (AppleWatchLayout) findViewById(R.id.qg_mostused_layout);
         mSwitcherLayout = (AppleWatchLayout) findViewById(R.id.qg_switcher_layout);
@@ -276,12 +267,10 @@ public class AppleWatchQuickGestureContainer extends FrameLayout {
         }
 
         return true;
-        // return super.onTouchEvent(event);
     }
 
     private void onTouchUp() {
         LeoLog.d(TAG, "onTouchUp mRotateDegree = " + mRotateDegree);
-        // TODO Auto-generated method stub
         if (mOrientation == Orientation.Left) {
             if (mRotateDegree < 0) {
                 if (mRotateDegree < -15) {
@@ -297,7 +286,6 @@ public class AppleWatchQuickGestureContainer extends FrameLayout {
                 }
             }
         } else {
-            // TODO
             if (mRotateDegree < 0) {
                 if (mRotateDegree < -15) {
                     snapToPrevious();
@@ -708,8 +696,8 @@ public class AppleWatchQuickGestureContainer extends FrameLayout {
                 }
             }
 
-            if (infos.size() > 9) {
-                infos = infos.subList(0, 9);
+            if (infos.size() > 11) {
+                infos = infos.subList(0, 11);
             }
 
             for (int i = 0; i < infos.size(); i++) {
@@ -758,7 +746,7 @@ public class AppleWatchQuickGestureContainer extends FrameLayout {
             QuickSwitcherInfo sInfo = null;
             int iconSize = targetLayout.getIconSize();
             for (int i = 0; i < infos.size(); i++) {
-                if (i >= 9) {
+                if (i >= 11) {
                     break;
                 }
                 sInfo = (QuickSwitcherInfo) infos.get(i);
@@ -1059,7 +1047,7 @@ public class AppleWatchQuickGestureContainer extends FrameLayout {
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                Activity activity = (Activity) AppleWatchQuickGestureContainer.this.getContext();
+                Activity activity = (Activity) AppleWatchContainer.this.getContext();
                 FloatWindowHelper.mGestureShowing = false;
                 activity.finish();
                 super.onAnimationEnd(animation);

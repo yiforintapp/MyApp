@@ -22,7 +22,7 @@
             android:layout_gravity="left|bottom"
             android:src="@drawable/outside_circle_two_left" />
 
-        <com.leo.appmaster.quickgestures.view.CornerTabs
+        <com.leo.appmaster.quickgestures.view.SectorTabs
             android:id="@+id/cornerTabs"
             android:layout_width="126dp"
             android:layout_height="126dp"

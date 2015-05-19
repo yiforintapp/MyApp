@@ -2,8 +2,8 @@
 package com.leo.appmaster.quickgestures.view;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.GType;
-import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.Orientation;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.Orientation;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -19,7 +19,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -28,12 +27,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
-public class CornerTabs extends View {
+public class SectorTabs extends View {
     private static final String TAG = "CornerTabs";
 
     private int mOffset;
     private GestureDetector mGestureDetector;
-    private SectorQuickGestureContainer mContainer;
+    private AppleWatchContainer mContainer;
 
     private Orientation mOrientation = Orientation.Left;
     private int mTotalWidth, mTotalHeight;
@@ -52,7 +51,7 @@ public class CornerTabs extends View {
 
     private int mSnapDuration = 100;
 
-    public CornerTabs(Context context, AttributeSet attrs) {
+    public SectorTabs(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
@@ -181,7 +180,7 @@ public class CornerTabs extends View {
         mTotalHeight = getMeasuredHeight();
 
         makePath();
-        mContainer = (SectorQuickGestureContainer) getParent();
+        mContainer = (AppleWatchContainer) getParent();
     }
 
     public void updateCoverDegree(float degree) {
