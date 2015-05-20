@@ -4,7 +4,6 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.AppItemInfo;
@@ -12,8 +11,8 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.GType;
-import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.Orientation;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.animation.Animator;
@@ -48,8 +47,7 @@ public class AppleWatchLayout extends ViewGroup {
     private static final int INNER_RING_MAX_COUNT = 6;
     private static final int OUTER_RING_MAXCOUNT = 4;
 
-    private SectorQuickGestureContainer mContainer;
-    private Orientation mOrientation = Orientation.Left;
+    private AppleWatchContainer mContainer;
     private AnimatorSet mReorderAnimator;
     private boolean mRecodering;
     private boolean mAnimCanceled;
@@ -70,25 +68,17 @@ public class AppleWatchLayout extends ViewGroup {
     public AppleWatchLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         mContext = context;
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
-        int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
-        if (derictor == 0) {
-            mOrientation = Orientation.Left;
-        } else {
-            mOrientation = Orientation.Right;
-        }
-        typedArray.recycle();
 
         init();
     }
 
     private void init() {
         Resources res = getContext().getResources();
-        mItemSize = res.getDimensionPixelSize(R.dimen.qg_item_size);
-        mIconSize = res.getDimensionPixelSize(R.dimen.qg_item_icon_size);
-        mInnerRadius = res.getDimensionPixelSize(R.dimen.qg_layout_inner_radius);
-        mOuterRadius = res.getDimensionPixelSize(R.dimen.qg_layout_outer_radius);
-        mRingCount = 1;
+        mItemSize = res.getDimensionPixelSize(R.dimen.apple_watch_item_size);
+        mIconSize = res.getDimensionPixelSize(R.dimen.apple_watch_item_icon_size);
+        mInnerRadius = res.getDimensionPixelSize(R.dimen.apple_watch_layout_inner_radius);
+        mOuterRadius = res.getDimensionPixelSize(R.dimen.apple_watch_layout_outer_radius);
+        mRingCount = 2;
         mInnerScale = 0.8f;
         mOuterScale = 0.6f;
     }
@@ -132,11 +122,13 @@ public class AppleWatchLayout extends ViewGroup {
             }
             lp = (LayoutParams) child.getLayoutParams();
             lp.scale = getItemScale(lp.position);
-            childWidthMeasureSpec = MeasureSpec.makeMeasureSpec((int) (mItemSize * lp.scale),
+            childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mItemSize,
                     MeasureSpec.EXACTLY);
-            childHeightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (mItemSize * lp.scale),
+            childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mItemSize,
                     MeasureSpec.EXACTLY);
             child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+            child.setScaleX(lp.scale);
+            child.setScaleY(lp.scale);
         }
 
         mTotalWidth = getMeasuredWidth();
@@ -166,14 +158,15 @@ public class AppleWatchLayout extends ViewGroup {
         int innerRingCount = 6;
         float innertAngleInterval, outerAngleInterval;
         innertAngleInterval = 60;
-        outerAngleInterval = 45;
+        outerAngleInterval = 120;
         float innerStartAngle, outerStartAngle;
         innerStartAngle = 0;
-        outerStartAngle = outerAngleInterval;
+        outerStartAngle = 30;
 
         int halfItemSize;
 
         int left = 0, top = 0;
+        double outerItemAngle = 30;
 
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
@@ -199,20 +192,27 @@ public class AppleWatchLayout extends ViewGroup {
 
             } else if (params.position <= 10) { // match second ring
 
+                if (params.position == 7) {
+                    outerItemAngle = 30;
+                } else if (params.position == 8) {
+                    outerItemAngle = 150;
+                } else if (params.position == 9) {
+                    outerItemAngle = 210;
+                } else if (params.position == 10) {
+                    outerItemAngle = 330;
+                }
+
                 left = (int) (mCenterPointX - mOuterRadius
-                        * Math.cos(Math.toRadians(outerStartAngle
-                                + (params.position - innerRingCount - 1)
-                                * outerAngleInterval)) - halfItemSize);
+                        * Math.cos(Math.toRadians(outerItemAngle)) - halfItemSize);
 
                 top = (int) (mCenterPointY
                         - mOuterRadius
-                        * Math.sin(Math.toRadians(outerStartAngle
-                                + (params.position - innerRingCount - 1)
-                                * outerAngleInterval)) - halfItemSize);
+                        * Math.sin(Math.toRadians(outerItemAngle)) - halfItemSize);
 
             }
 
-            child.layout(left, top, left + child.getWidth(), top + child.getHeight());
+            child.layout(left, top, left + child.getMeasuredWidth(),
+                    top + child.getMeasuredHeight());
         }
 
         /*
@@ -221,7 +221,7 @@ public class AppleWatchLayout extends ViewGroup {
         setPivotX(mTotalWidth / 2);
         setPivotY(mTotalHeight);
 
-        mContainer = (SectorQuickGestureContainer) getParent();
+        mContainer = (AppleWatchContainer) getParent();
     }
 
     @Override
@@ -754,6 +754,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     public void checkFull() {
-        
+
     }
 }

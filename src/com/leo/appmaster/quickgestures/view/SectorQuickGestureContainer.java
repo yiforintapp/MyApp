@@ -39,7 +39,6 @@ import com.leo.appmaster.utils.DipPixelUtil;
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
 
-@SuppressLint("Recycle")
 public class SectorQuickGestureContainer extends FrameLayout {
 
     public static final String TAG = "QuickGestureContainer";
@@ -53,8 +52,8 @@ public class SectorQuickGestureContainer extends FrameLayout {
         DymicLayout, MostUsedLayout, SwitcherLayout;
     }
 
-    private AppleWatchLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
-    private CornerTabs mCornerTabs;
+    private SectorLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
+    private SectorTabs mCornerTabs;
     private GType mCurrentGestureType = GType.DymicLayout;
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
@@ -114,7 +113,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
                             }
 
                         } else {
-                            AppleWatchLayout gestureLayout = null;
+                            SectorLayout gestureLayout = null;
                             if (mCurrentGestureType == GType.DymicLayout) {
                                 gestureLayout = mDymicLayout;
                             } else if (mCurrentGestureType == GType.MostUsedLayout) {
@@ -168,7 +167,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
                     public void onLongPress(MotionEvent e) {
                         LeoLog.d(TAG, "onLongPress");
                         if (!mEditing) {
-                            AppleWatchLayout gestureLayout = null;
+                            SectorLayout gestureLayout = null;
                             if (mCurrentGestureType == GType.DymicLayout) {
                                 gestureLayout = mDymicLayout;
                             } else if (mCurrentGestureType == GType.MostUsedLayout) {
@@ -222,10 +221,10 @@ public class SectorQuickGestureContainer extends FrameLayout {
 
     @Override
     protected void onFinishInflate() {
-        mCornerTabs = (CornerTabs) findViewById(R.id.cornerTabs);
-        mDymicLayout = (AppleWatchLayout) findViewById(R.id.qg_dymic_layout);
-        mMostUsedLayout = (AppleWatchLayout) findViewById(R.id.qg_mostused_layout);
-        mSwitcherLayout = (AppleWatchLayout) findViewById(R.id.qg_switcher_layout);
+        mCornerTabs = (SectorTabs) findViewById(R.id.cornerTabs);
+        mDymicLayout = (SectorLayout) findViewById(R.id.qg_dymic_layout);
+        mMostUsedLayout = (SectorLayout) findViewById(R.id.qg_mostused_layout);
+        mSwitcherLayout = (SectorLayout) findViewById(R.id.qg_switcher_layout);
 
         super.onFinishInflate();
     }
@@ -241,7 +240,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
             case MotionEvent.ACTION_DOWN:
                 if (mEditing) {
                     LeoLog.d(TAG, "ACTION_DOWN in editing ");
-                    AppleWatchLayout gestureLayout = null;
+                    SectorLayout gestureLayout = null;
                     if (mCurrentGestureType == GType.DymicLayout) {
                         gestureLayout = mDymicLayout;
                     } else if (mCurrentGestureType == GType.MostUsedLayout) {
@@ -629,7 +628,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
             LeoLog.e(TAG, "fillGestureItem, infos is null");
             return;
         }
-        AppleWatchLayout targetLayout = null;
+        SectorLayout targetLayout = null;
         if (type == GType.DymicLayout) {
             targetLayout = mDymicLayout;
             fillDynamicItem(targetLayout, infos, 0);
@@ -643,7 +642,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
         }
     }
 
-    public void fillDynamicItem(AppleWatchLayout targetLayout,
+    public void fillDynamicItem(SectorLayout targetLayout,
             List<? extends BaseInfo> itemInfos, int businessIndes) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
@@ -750,7 +749,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
         }
     }
 
-    public void fillSwitchItem(AppleWatchLayout targetLayout, List<? extends BaseInfo> infos) {
+    public void fillSwitchItem(SectorLayout targetLayout, List<? extends BaseInfo> infos) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView tv = null;
@@ -997,7 +996,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
         }
     }
 
-    public void fillItem(AppleWatchLayout targetLayout, List<? extends BaseInfo> infos) {
+    public void fillItem(SectorLayout targetLayout, List<? extends BaseInfo> infos) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView tv = null;
