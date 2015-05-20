@@ -7,17 +7,38 @@ public class QuickGestureSettingBean {
     private String content;
     private int type;
     private boolean isCheck;
+    private int checkIcon;
+    private int backageDraw;
 
     public QuickGestureSettingBean() {
     }
 
-    public QuickGestureSettingBean(int icon, String name, int type, String content, boolean isCheck) {
+    public QuickGestureSettingBean(int icon, String name, int type, String content,
+            boolean isCheck, int checkIcon,int backageDraw) {
         super();
         this.icon = icon;
         this.name = name;
         this.type = type;
         this.content = content;
         this.isCheck = isCheck;
+        this.checkIcon = checkIcon;
+        this.backageDraw=backageDraw;
+    }
+
+    public int getBackageDraw() {
+        return backageDraw;
+    }
+
+    public void setBackageDraw(int backageDraw) {
+        this.backageDraw = backageDraw;
+    }
+
+    public int getCheckIcon() {
+        return checkIcon;
+    }
+
+    public void setCheckIcon(int checkIcon) {
+        this.checkIcon = checkIcon;
     }
 
     public int getIcon() {

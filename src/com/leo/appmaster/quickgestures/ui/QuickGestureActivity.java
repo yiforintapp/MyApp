@@ -53,6 +53,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
+import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -170,28 +171,34 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         gestureSettingOpenGesture.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_open_quick_gesture));
         gestureSettingOpenGesture.setCheck(mPre.getSwitchOpenQuickGesture());
+        gestureSettingOpenGesture.setBackageDraw(R.drawable.bg);
         mQuickGestureSettingOption.add(gestureSettingOpenGesture);
         QuickGestureSettingBean gestureSettingSlidingAreaLocation = new QuickGestureSettingBean();
         gestureSettingSlidingAreaLocation.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_sliding_area_location_title));
+        gestureSettingSlidingAreaLocation.setBackageDraw(R.drawable.bg_upround);
         mQuickGestureSettingOption.add(gestureSettingSlidingAreaLocation);
         QuickGestureSettingBean gestureSettingAbleSlidingTime = new QuickGestureSettingBean();
         gestureSettingAbleSlidingTime.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_able_sliding_time));
+        gestureSettingAbleSlidingTime.setBackageDraw(R.drawable.bg_downround);
         mQuickGestureSettingOption.add(gestureSettingAbleSlidingTime);
         QuickGestureSettingBean gestureSettingNoReadMessage = new QuickGestureSettingBean();
         gestureSettingNoReadMessage.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_no_read_message_tip));
         gestureSettingNoReadMessage.setCheck(mPre.getSwitchOpenNoReadMessageTip());
+        gestureSettingNoReadMessage.setBackageDraw(R.drawable.bg_upround);
         mQuickGestureSettingOption.add(gestureSettingNoReadMessage);
         QuickGestureSettingBean gestureSettingRecentlyContact = new QuickGestureSettingBean();
         gestureSettingRecentlyContact.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_recently_contact));
         gestureSettingRecentlyContact.setCheck(mPre.getSwitchOpenRecentlyContact());
+        gestureSettingRecentlyContact.setBackageDraw(R.drawable.bg_zeroround);
         mQuickGestureSettingOption.add(gestureSettingRecentlyContact);
         QuickGestureSettingBean gestureSettingContactMessagTip = new QuickGestureSettingBean();
         gestureSettingContactMessagTip.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_privacy_contact_message_tip));
+        gestureSettingContactMessagTip.setBackageDraw(R.drawable.bg_downround);
         gestureSettingContactMessagTip.setCheck(mPre.getSwitchOpenPrivacyContactMessageTip());
         mQuickGestureSettingOption.add(gestureSettingContactMessagTip);
 
@@ -224,9 +231,10 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         }
 
         class ViewHolder {
-            ImageView imageView;
+            ImageView imageView, arrowImageVIew;
             CheckBox switchView;
-            TextView title, content, segmentationTv;
+            TextView title, content, segmentationTv, lineTextView;
+            RelativeLayout itemRL;
         }
 
         @Override
@@ -235,11 +243,14 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             if (convertView == null) {
                 vh = new ViewHolder();
                 convertView = layoutInflater.inflate(R.layout.activity_quick_gesture_item, null);
+                vh.itemRL = (RelativeLayout) convertView.findViewById(R.id.quick_gesture_content);
                 vh.imageView = (ImageView) convertView.findViewById(R.id.quick_gesture_option_IV);
                 vh.switchView = (CheckBox) convertView.findViewById(R.id.quick_gesture_check);
                 vh.title = (TextView) convertView.findViewById(R.id.quick_gesture_item_nameTV);
                 vh.content = (TextView) convertView.findViewById(R.id.quick_gesture_item_cotentTV);
                 vh.segmentationTv = (TextView) convertView.findViewById(R.id.segmentation_tv);
+                vh.lineTextView = (TextView) convertView.findViewById(R.id.quick_line_tv);
+                vh.arrowImageVIew = (ImageView) convertView.findViewById(R.id.quick_gesture_arrow);
                 convertView.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
@@ -247,6 +258,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             vh.switchView.setTag(position);
             QuickGestureSettingBean bean = mQuickGestureSettingOption.get(position);
             vh.title.setText(bean.getName());
+            // 设置背景
+            vh.itemRL.setBackgroundResource(bean.getBackageDraw());
+            // 设置复选框
             if (position == 0 || position == 3
                     || position == 4
                     || position == 5) {
@@ -263,11 +277,25 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             } else {
                 vh.switchView.setVisibility(View.GONE);
             }
+            // 显示下划线
+            if (position == 1 || position == 3 || position == 4) {
+                vh.lineTextView.setVisibility(View.VISIBLE);
+            } else {
+                vh.lineTextView.setVisibility(View.GONE);
+            }
+            // 显示间隔条
             if (position == 0 || position == 2) {
                 vh.segmentationTv.setVisibility(View.VISIBLE);
             } else {
                 vh.segmentationTv.setVisibility(View.GONE);
             }
+            // 显示箭头
+            if (position == 1 || position == 2) {
+                vh.arrowImageVIew.setVisibility(View.VISIBLE);
+            } else {
+                vh.arrowImageVIew.setVisibility(View.GONE);
+            }
+            // 显示划出时机
             if (position == 2) {
                 vh.content.setVisibility(View.VISIBLE);
                 if (mPre.getSlideTimeJustHome()) {
@@ -449,6 +477,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 }
             }
         });
+        mAlarmDialog.setLeftButtomClick(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                FloatWindowHelper.mEditQuickAreaFlag = false;
+                mAlarmDialogFlag = false;
+                updateFloatWindowBackGroudColor();
+                if (mAlarmDialog != null) {
+                    mAlarmDialog.dismiss();
+                }
+            }
+        });
         mAlarmDialog.setCancelable(false);
         mAlarmDialog.show();
         mAlarmDialogFlag = true;
@@ -562,7 +602,39 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mFreeApps = getFreeDisturbApps();
         mSlideTimeAdapter = new FreeDisturbSlideTimeAdapter(this,
                 mFreeApps);
+        if (mFreeApps != null && mFreeApps.size() > 1) {
+            mSlideTimeDialog.setFreeDisturbAppAddBtVisVisibility(false);
+            mSlideTimeDialog.setFreeDisturbAppHorizontalVisVisibility(true);
+        } else {
+            mSlideTimeDialog.setFreeDisturbAppAddBtVisVisibility(true);
+            mSlideTimeDialog.setFreeDisturbAppHorizontalVisVisibility(false);
+        }
         mSlideTimeDialog.setFreeDisturbAdapter(mSlideTimeAdapter);
+
+        mSlideTimeDialog.setRightBtnListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                AppMasterPreference.getInstance(QuickGestureActivity.this).setSlideTimeJustHome(
+                        mSlideTimeDialog.getJustHometCheckStatus());
+                AppMasterPreference.getInstance(QuickGestureActivity.this)
+                        .setSlideTimeAllAppAndHome(mSlideTimeDialog.getAppHomeCheckStatus());
+                Log.e("#############", "桌面：" + mSlideTimeDialog.getJustHometCheckStatus() + ":应用："
+                        + mSlideTimeDialog.getAppHomeCheckStatus());
+                mSlideTimeDialog.dismiss();
+                LeoEventBus
+                        .getDefaultBus()
+                        .post(new QuickGestureFloatWindowEvent(
+                                FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
+            }
+        });
+        mSlideTimeDialog.setFreeDisturbAppAddBtClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                showAllAppDialog();
+            }
+        });
         mSlideTimeDialog.setOnItemListenerFreeDisturb(new OnItemClickListener() {
 
             @Override
@@ -579,6 +651,13 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 getEditFreeDisturbAppInfo(true);
                 mSlideTimeAdapter.notifyDataSetChanged();
                 return false;
+            }
+        });
+        mSlideTimeDialog.setLeftButtonClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                mSlideTimeDialog.dismiss();
             }
         });
         mSlideTimeDialog.show();
@@ -602,13 +681,20 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         freeDisturbApp.setRightBt(new OnClickListener() {
 
             @Override
-            public void onClick(View arg0) {
+            public void onClick(View arg0) { 
                 if (freeDisturbApp != null) {
-                    freeDisturbApp.cancel();
+                    freeDisturbApp.dismiss();
                     LeoEventBus.getDefaultBus().post(
                             new QuickGestureFloatWindowEvent(
                                     FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION));
                 }
+            }
+        });
+        freeDisturbApp.setLeftBt(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                freeDisturbApp.dismiss();
             }
         });
         freeDisturbApp.show();
@@ -619,7 +705,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         List<FreeDisturbAppInfo> freeDisturbApp = new ArrayList<FreeDisturbAppInfo>();
         // 添加Item
         FreeDisturbAppInfo addImageInfo = new FreeDisturbAppInfo();
-        addImageInfo.icon = this.getResources().getDrawable(R.drawable.add_mode_icon_pressed);
+        addImageInfo.icon = this.getResources().getDrawable(R.drawable.switch_add_block);
         addImageInfo.packageName = "add_free_app";
         freeDisturbApp.add(addImageInfo);
         List<String> packageNames = null;
@@ -690,6 +776,12 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             AppMasterPreference.getInstance(QuickGestureActivity.this)
                                     .setFreeDisturbAppPackageNameRemove(infoTag.packageName);
                             mSlideTimeAdapter.notifyDataSetChanged();
+                        }
+                        if (mFreeApps == null || mFreeApps.size() <= 1) {
+                            if (mSlideTimeDialog != null) {
+                                mSlideTimeDialog.setFreeDisturbAppAddBtVisVisibility(true);
+                                mSlideTimeDialog.setFreeDisturbAppHorizontalVisVisibility(false);
+                            }
                         }
                     }
                 });

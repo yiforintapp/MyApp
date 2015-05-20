@@ -158,5 +158,7 @@
     <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_indicator_dialog_margin_top">18dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_pager_dialog_layout_height">340dp</dimen>
     <dimen name="quick_gesture_right_top_area_margin_left">45dp</dimen>
-
+    <dimen name="quick_gesture_free_distureb_app_select_icon_width">16dp</dimen>
+    <dimen name="quick_gesture_setting_item_height">56dp</dimen>
+    <dimen name="quick_seek_bar_width">250dp</dimen>
 </resources>

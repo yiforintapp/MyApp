@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="10dp" >
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
@@ -20,8 +20,8 @@
 
         <CheckBox
             android:id="@+id/dialog_radio_itme_normalRB"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:button="@drawable/quick_gesture_dialog_radio_selector" />
@@ -30,10 +30,10 @@
             android:id="@+id/dialog_radio_itme_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="28dp"
             android:text="@string/privacy_contact_activity_input_checkbox_normal"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textColor="#a7a7a7"
+            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>

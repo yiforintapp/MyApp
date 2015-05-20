@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/quick_gesture_switch_setting_show_color" >
+    android:background="#f3f3f3" >
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_quick_gesture_title_bar"
@@ -15,12 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_quick_gesture_title_bar"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/white_bg"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:divider="@null"
-        android:listSelector="@drawable/manager_backup_list_selecter"
+        android:listSelector="@android:color/transparent"
         android:scrollbars="none" />
 
     <com.leo.appmaster.quickgestures.view.QuickGesturesAreaView

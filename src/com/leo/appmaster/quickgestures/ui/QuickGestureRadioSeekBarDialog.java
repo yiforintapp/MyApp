@@ -25,7 +25,7 @@ import com.leo.appmaster.ui.dialog.LEOBaseDialog;
  */
 public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
     private Context mContext;
-    private TextView seekbar_text, sure_button, seekbar_text_progress, title;
+    private TextView seekbar_text, mCancelButtom, sure_button, seekbar_text_progress, title;
     private SeekBar mSeekBar;
     private AppMasterPreference sp_notice_flow;
     private int progressInt;
@@ -52,6 +52,7 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         seekbar_text = (TextView) dlgView.findViewById(R.id.seekbar_text);
         seekbar_text_progress = (TextView) dlgView.findViewById(R.id.seekbar_text_progress);
         sure_button = (TextView) dlgView.findViewById(R.id.quick_seekbar_setting_dlg_right_btn);
+        mCancelButtom = (TextView) dlgView.findViewById(R.id.quick_seekbar_setting_dlg_left_btn);
         seekbar_text.setText(resources.getString(R.string.flow_settting_dialog_remain));
         mSeekBar = (SeekBar) dlgView.findViewById(R.id.qucik_seekBar);
         mRadioListView = (ListView) dlgView.findViewById(R.id.radioLV);
@@ -152,5 +153,9 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
 
     public void setSeekBarProgressValue(int value) {
         mSeekBar.setProgress(value);
+    }
+
+    public void setLeftButtomClick(android.view.View.OnClickListener listener) {
+        mCancelButtom.setOnClickListener(listener);
     }
 }
