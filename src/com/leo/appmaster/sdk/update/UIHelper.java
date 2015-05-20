@@ -244,7 +244,8 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
             AppMasterApplication.getInstance().exitApplication();
         }
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
-                && !isAppOnTop(mContext)) {
+                && !isAppOnTop(mContext) ) {
+            //|| ui_type == IUIHelper.BACK_DOWNLOAD_DONE
             sendUpdateNotification();
         } else {
             showUI(ui_type, param);
