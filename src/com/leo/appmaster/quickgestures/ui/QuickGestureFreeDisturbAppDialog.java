@@ -133,8 +133,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         } else {
             mFreeDisturbApp = mDisturbList;
         }
-        int rowCount = mContext.getResources().getInteger(R.integer.gridview_row_count);
-        mGridView.setDatas(mFreeDisturbApp, 4, rowCount);
+        mGridView.setDatas(mFreeDisturbApp, 4, 4);
     }
 
     private void animateItem(View view) {

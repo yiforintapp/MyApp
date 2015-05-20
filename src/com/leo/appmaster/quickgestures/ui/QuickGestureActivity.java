@@ -4,14 +4,15 @@ package com.leo.appmaster.quickgestures.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.provider.CallLog.Calls;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,10 +22,11 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -38,12 +40,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.applocker.service.TaskDetectService.TaskDetectBinder;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
@@ -54,9 +53,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
-import com.leo.appmaster.quickgestures.view.GestureItemView;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
-import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
@@ -82,8 +79,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private List<FreeDisturbAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
     private Handler mHandler = new Handler();
-    private ImageView mLeftView, mRightView;
+    private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView;
     private RelativeLayout mTipRL;
+    private ImageView mHandImage, mArrowImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,20 +103,28 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mTitleBar.openBackView();
         mQuickGestureLV.setOnItemClickListener(this);
         mTipRL = (RelativeLayout) findViewById(R.id.quick_tipRL);
-        mLeftView = (ImageView) findViewById(R.id.quick_sliding_left_area);
-        mRightView = (ImageView) findViewById(R.id.quick_sliding_right_area);
+        mLeftTopView = (TextView) findViewById(R.id.gesture_left_tips_top_tv);
+        mLeftBottomView = (TextView) findViewById(R.id.gesture_left_tips_bottom);
+        mRightTopView = (TextView) findViewById(R.id.gesture_right_tips_top_tv);
+        mRightBottomView = (TextView) findViewById(R.id.gesture_right_tips_bottom);
+        mHandImage = (ImageView) findViewById(R.id.gesture_handIV);
+        mArrowImage = (ImageView) findViewById(R.id.gesture_arrowIV);
         if (!AppMasterPreference.getInstance(this)
                 .getFristSlidingTip()) {
+            // gestureTranslationAnim(mHandImage, mArrowImage);
             mTipRL.setVisibility(View.VISIBLE);
             mTipRL.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
-                    // quickTipCancelAnim(mTipRL);
+
                 }
             });
             quickTipAnim(mTipRL);
-            mLeftView.setOnTouchListener(this);
-            mRightView.setOnTouchListener(this);
+            mLeftTopView.setOnTouchListener(this);
+            mLeftBottomView.setOnTouchListener(this);
+            mRightTopView.setOnTouchListener(this);
+            mRightBottomView.setOnTouchListener(this);
+
         }
     }
 
@@ -590,22 +596,22 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     }
 
     private void showAllAppDialog() {
-        final QuickGestureFreeDisturbAppDialog mFreeDisturbApp = new QuickGestureFreeDisturbAppDialog(
+        final QuickGestureFreeDisturbAppDialog freeDisturbApp = new QuickGestureFreeDisturbAppDialog(
                 this);
-        mFreeDisturbApp.setTitle(R.string.pg_appmanager_quick_gesture_select_free_disturb_app_text);
-        mFreeDisturbApp.setRightBt(new OnClickListener() {
+        freeDisturbApp.setTitle(R.string.pg_appmanager_quick_gesture_select_free_disturb_app_text);
+        freeDisturbApp.setRightBt(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                if (mFreeDisturbApp != null) {
-                    mFreeDisturbApp.cancel();
+                if (freeDisturbApp != null) {
+                    freeDisturbApp.cancel();
                     LeoEventBus.getDefaultBus().post(
                             new QuickGestureFloatWindowEvent(
                                     FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION));
                 }
             }
         });
-        mFreeDisturbApp.show();
+        freeDisturbApp.show();
     }
 
     // 获取免干扰应用
@@ -721,16 +727,16 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                     // quickTipCancelAnim(mTipRL);
                     Toast.makeText(this, "开启快捷之旅", Toast.LENGTH_SHORT)
                             .show();
-                    AppMasterPreference.getInstance(getApplicationContext())
-                            .setFristSlidingTip(true);
-                    Intent intent;
-                    intent = new Intent(AppMasterApplication.getInstance(),
-                            QuickGesturePopupActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        AppMasterApplication.getInstance().startActivity(intent);
-                    } catch (Exception e) {
-                    }
+                    AppMasterPreference.getInstance(QuickGestureActivity.this).setFristSlidingTip(
+                            true);
+                    // Intent intent;
+                    // intent = new Intent(AppMasterApplication.getInstance(),
+                    // QuickGesturePopupActivity.class);
+                    // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    // try {
+                    // AppMasterApplication.getInstance().startActivity(intent);
+                    // } catch (Exception e) {
+                    // }
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -754,31 +760,40 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         animation.start();
     }
 
-    private void quickTipCancelAnim(View view) {
-        AlphaAnimation alpha = new AlphaAnimation(0, 1);
-        alpha.setDuration(1000);
-        view.setAnimation(alpha);
-        ScaleAnimation scale = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
-        AnimationSet animation = new AnimationSet(true);
-        animation.addAnimation(alpha);
-        animation.addAnimation(scale);
-        animation.start();
-        alpha.setAnimationListener(new AnimationListener() {
-
+    private void gestureTranslationAnim(final View view1, final View view2) {
+        AnimatorSet animatorSet = new AnimatorSet();
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(view1, "alpha", 1, 1, 0);
+        alpha.setDuration(2000);
+        PropertyValuesHolder valuesHolderX = PropertyValuesHolder
+                .ofFloat("translationX", 0, 300, 0);
+        PropertyValuesHolder valuesHolderY = PropertyValuesHolder
+                .ofFloat("translationY", 0, 300, 0);
+        ObjectAnimator translate = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(view1,
+                valuesHolderX, valuesHolderY);
+        translate.setDuration(2000);
+        translate.setInterpolator(new AccelerateDecelerateInterpolator());
+        animatorSet.playTogether(translate, alpha);
+        animatorSet.start();
+        translate.addUpdateListener(new AnimatorUpdateListener() {
             @Override
-            public void onAnimationStart(Animation arg0) {
+            public void onAnimationUpdate(ValueAnimator arg0) {
+                float value = (Float) arg0.getAnimatedValue();
+                if (value >= (float) Math.sqrt(180000)) {
+                    AnimatorSet animatorSetArrow = new AnimatorSet();
+                    ObjectAnimator alphaArrow = ObjectAnimator.ofFloat(view2, "alpha", 1, 0);
+                    alphaArrow.setDuration(1000);
+                    PropertyValuesHolder arrowHolderX = PropertyValuesHolder
+                            .ofFloat("translationX", 0, -200);
+                    PropertyValuesHolder arrowHolderY = PropertyValuesHolder
+                            .ofFloat("translationY", 0, -200);
+                    ObjectAnimator translateArrow = (ObjectAnimator) ObjectAnimator
+                            .ofPropertyValuesHolder(view2,
+                                    arrowHolderX, arrowHolderY);
+                    translateArrow.setDuration(1000);
+                    animatorSetArrow.playTogether(translateArrow, alphaArrow);
+                    animatorSetArrow.start();
+                }
 
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation arg0) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-                mTipRL.setVisibility(View.GONE);
             }
         });
     }
