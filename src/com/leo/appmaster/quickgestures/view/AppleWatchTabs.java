@@ -3,6 +3,7 @@ package com.leo.appmaster.quickgestures.view;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.animation.Animator;
@@ -23,7 +24,7 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
 
     private AppleWatchContainer mContainer;
 
-    private ImageView mIvDynamic, mIvMostUsed, mIvSwitcher;
+    private ImageView mIvDynamic, mIvMostUsed, mIvSwitcher, mIvSelected;
     private int mTotalWidth, mTotalHeight;
     private float mCoverAngle;
 
@@ -34,6 +35,7 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
     private int mSnapDuration = 100;
 
     private int mItemSize;
+    private int mSelectBarWidth, mSelectBarHeight;
 
     public AppleWatchTabs(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -44,19 +46,24 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
         Resources res = getResources();
         mCoverAngle = -mDymicTargetAngle;
         mItemSize = res.getDimensionPixelSize(R.dimen.apple_watch_tab_item_size);
+        mSelectBarWidth = res.getDimensionPixelSize(R.dimen.apple_watch_select_bar_width);
+        mSelectBarHeight = res.getDimensionPixelSize(R.dimen.apple_watch_select_bar_height);
         mIvDynamic = new ImageView(getContext());
-        mIvDynamic.setImageResource(R.drawable.contacts_icon);
+        mIvDynamic.setImageResource(R.drawable.gesture_recent);
         mIvDynamic.setOnClickListener(this);
         mIvMostUsed = new ImageView(getContext());
-        mIvMostUsed.setImageResource(R.drawable.call_records_icon);
+        mIvMostUsed.setImageResource(R.drawable.gesture_apps);
         mIvMostUsed.setOnClickListener(this);
         mIvSwitcher = new ImageView(getContext());
-        mIvSwitcher.setImageResource(R.drawable.call_info_sms_icon);
+        mIvSwitcher.setImageResource(R.drawable.gesture_switch);
         mIvSwitcher.setOnClickListener(this);
-
         addView(mIvDynamic);
         addView(mIvMostUsed);
         addView(mIvSwitcher);
+
+        mIvSelected = new ImageView(getContext());
+        mIvSelected.setImageResource(R.drawable.gesture_select_bar);
+        addView(mIvSelected);
     }
 
     @Override
@@ -70,7 +77,10 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
         final int count = getChildCount();
         int childWidthMeasureSpec;
         int childHeightMeasureSpec;
-        for (int i = 0; i < count; i++) {
+        /*
+         * measure three gesture icon
+         */
+        for (int i = 0; i < count - 1; i++) {
             final View child = getChildAt(i);
             if (child.getVisibility() == GONE) {
                 continue;
@@ -80,7 +90,17 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
             childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mItemSize,
                     MeasureSpec.EXACTLY);
             child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+            child.setPivotX(child.getMeasuredWidth() / 2);
+            child.setPivotY(child.getMeasuredHeight());
         }
+        /*
+         * measure gesture select bar
+         */
+        childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mSelectBarWidth,
+                MeasureSpec.EXACTLY);
+        childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mSelectBarHeight,
+                MeasureSpec.EXACTLY);
+        mIvSelected.measure(childWidthMeasureSpec, childHeightMeasureSpec);
     }
 
     @Override
@@ -90,6 +110,9 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
         mTotalWidth = getMeasuredWidth();
         mTotalHeight = getMeasuredHeight();
 
+        /*
+         * layout three gesture icon
+         */
         GType type = mContainer.getCurrentGestureType();
         if (type == GType.DymicLayout) {
             mIvDynamic.layout((mTotalWidth - mItemSize) / 2, 0, (mTotalWidth + mItemSize) / 2,
@@ -99,10 +122,10 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
             mIvMostUsed.layout(0, mTotalHeight - mItemSize, mItemSize, mTotalHeight);
             mIvSwitcher.layout(mTotalWidth - mItemSize, mTotalHeight - mItemSize, mTotalWidth,
                     mTotalHeight);
-            mIvMostUsed.setScaleX(0.8f);
-            mIvMostUsed.setScaleY(0.8f);
-            mIvSwitcher.setScaleX(0.8f);
-            mIvSwitcher.setScaleY(0.8f);
+            mIvMostUsed.setScaleX(0.68f);
+            mIvMostUsed.setScaleY(0.68f);
+            mIvSwitcher.setScaleX(0.68f);
+            mIvSwitcher.setScaleY(0.68f);
         } else if (type == GType.MostUsedLayout) {
             mIvMostUsed.layout((mTotalWidth - mItemSize) / 2, 0, (mTotalWidth + mItemSize) / 2,
                     mItemSize);
@@ -111,10 +134,10 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
             mIvSwitcher.layout(0, mTotalHeight - mItemSize, mItemSize, mTotalHeight);
             mIvDynamic.layout(mTotalWidth - mItemSize, mTotalHeight - mItemSize, mTotalWidth,
                     mTotalHeight);
-            mIvSwitcher.setScaleX(0.8f);
-            mIvSwitcher.setScaleY(0.8f);
-            mIvDynamic.setScaleX(0.8f);
-            mIvDynamic.setScaleY(0.8f);
+            mIvSwitcher.setScaleX(0.68f);
+            mIvSwitcher.setScaleY(0.68f);
+            mIvDynamic.setScaleX(0.68f);
+            mIvDynamic.setScaleY(0.68f);
         } else if (type == GType.SwitcherLayout) {
             mIvSwitcher.layout((mTotalWidth - mItemSize) / 2, 0, (mTotalWidth + mItemSize) / 2,
                     mItemSize);
@@ -123,12 +146,18 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
             mIvDynamic.layout(0, mTotalHeight - mItemSize, mItemSize, mTotalHeight);
             mIvMostUsed.layout(mTotalWidth - mItemSize, mTotalHeight - mItemSize, mTotalWidth,
                     mTotalHeight);
-            mIvDynamic.setScaleX(0.8f);
-            mIvDynamic.setScaleY(0.8f);
-            mIvMostUsed.setScaleX(0.8f);
-            mIvMostUsed.setScaleY(0.8f);
+            mIvDynamic.setScaleX(0.68f);
+            mIvDynamic.setScaleY(0.68f);
+            mIvMostUsed.setScaleX(0.68f);
+            mIvMostUsed.setScaleY(0.68f);
         }
 
+        /*
+         * layout gesture select bar
+         */
+        int offsetY = DipPixelUtil.dip2px(getContext(), 30);
+        mIvSelected.layout((mTotalWidth - mSelectBarWidth) / 2, offsetY,
+                (mTotalWidth + mSelectBarWidth) / 2, offsetY + mSelectBarHeight);
     }
 
     public void updateCoverDegree(float degree) {

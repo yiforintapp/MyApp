@@ -193,13 +193,17 @@ public class AppleWatchLayout extends ViewGroup {
             } else if (params.position <= 10) { // match second ring
 
                 if (params.position == 7) {
-                    outerItemAngle = 30;
-                } else if (params.position == 8) {
-                    outerItemAngle = 150;
-                } else if (params.position == 9) {
-                    outerItemAngle = 210;
-                } else if (params.position == 10) {
                     outerItemAngle = 330;
+                } else if (params.position == 8) {
+                    outerItemAngle = 0;
+                } else if (params.position == 9) {
+                    outerItemAngle = 30;
+                } else if (params.position == 10) {
+                    outerItemAngle = 150;
+                } else if (params.position == 11) {
+                    outerItemAngle = 180;
+                } else if (params.position == 12) {
+                    outerItemAngle = 210;
                 }
 
                 left = (int) (mCenterPointX - mOuterRadius
@@ -208,7 +212,6 @@ public class AppleWatchLayout extends ViewGroup {
                 top = (int) (mCenterPointY
                         - mOuterRadius
                         * Math.sin(Math.toRadians(outerItemAngle)) - halfItemSize);
-
             }
 
             child.layout(left, top, left + child.getMeasuredWidth(),
@@ -219,7 +222,7 @@ public class AppleWatchLayout extends ViewGroup {
          * now set pivot
          */
         setPivotX(mTotalWidth / 2);
-        setPivotY(mTotalHeight);
+        setPivotY(mTotalHeight * 3);
 
         mContainer = (AppleWatchContainer) getParent();
     }
@@ -699,12 +702,18 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private AnimatorSet createTranslationAnimations(GestureItemView fromView, GestureItemView toView) {
-        ObjectAnimator animX = ObjectAnimator.ofFloat(fromView, "translationX",
+        ObjectAnimator tranX = ObjectAnimator.ofFloat(fromView, "translationX",
                 fromView.getTranslationX(), toView.getLeft() - fromView.getLeft());
-        ObjectAnimator animY = ObjectAnimator.ofFloat(fromView, "translationY",
+        ObjectAnimator tranY = ObjectAnimator.ofFloat(fromView, "translationY",
                 fromView.getTranslationY(), toView.getTop() - fromView.getTop());
+
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(fromView, "scaleX",
+                fromView.getScaleX(), toView.getScaleX());
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(fromView, "scaleY",
+                fromView.getScaleY(), toView.getScaleY());
+
         AnimatorSet animSetXY = new AnimatorSet();
-        animSetXY.playTogether(animX, animY);
+        animSetXY.playTogether(tranX, tranY, scaleX, scaleY);
         return animSetXY;
     }
 

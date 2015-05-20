@@ -2,18 +2,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dd000000" >
+    android:background="#e6000000" >
 
     <com.leo.appmaster.quickgestures.view.AppleWatchContainer
         android:id="@+id/gesture_container"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="340dp"
         android:layout_alignParentBottom="true"
-        android:background="#77238823"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:hapticFeedbackEnabled="true"
         android:layerType="hardware" >
+
+        <TextView
+            android:id="@+id/tv_type_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:background="@drawable/gesture_title_bar"
+            android:padding="3dp"
+            android:text="Dynamic"
+            android:textSize="16sp" />
 
         <com.leo.appmaster.quickgestures.view.AppleWatchTabs
             android:id="@+id/applewatchtab"
@@ -25,8 +34,8 @@
             android:id="@+id/qg_dymic_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom=" 80dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginBottom=" 75dp"
+            android:layout_marginTop="40dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layerType="hardware" />
@@ -35,8 +44,8 @@
             android:id="@+id/qg_mostused_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom=" 110dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginBottom="75dp"
+            android:layout_marginTop="40dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layerType="hardware"
@@ -46,8 +55,8 @@
             android:id="@+id/qg_switcher_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom=" 110dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginBottom="75dp"
+            android:layout_marginTop="40dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layerType="hardware"

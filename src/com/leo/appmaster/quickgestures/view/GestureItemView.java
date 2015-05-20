@@ -4,18 +4,13 @@ package com.leo.appmaster.quickgestures.view;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.DragEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class GestureItemView extends TextView {
@@ -121,7 +116,7 @@ public class GestureItemView extends TextView {
                 LeoLog.i(TAG, "ACTION_DRAG_STARTED");
                 enterEditMode();
                 if (event.getLocalState() == this) {
-                    SectorQuickGestureContainer qgc = (SectorQuickGestureContainer) mHolderLayout
+                    AppleWatchContainer qgc = (AppleWatchContainer) mHolderLayout
                             .getParent();
                     qgc.setEditing(true);
                     setVisibility(View.INVISIBLE);

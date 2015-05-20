@@ -111,11 +111,11 @@ public class QuickGesturePopupActivity extends Activity implements
     }
 
     private void fillQg1() {
-        mContainer.fillGestureItem(GType.DymicLayout, list.subList(0, 11));
+        mContainer.fillGestureItem(GType.DymicLayout, list.subList(0, 13));
     }
 
     private void fillQg2() {
-        mContainer.fillGestureItem(GType.MostUsedLayout, list.subList(11, 22));
+        mContainer.fillGestureItem(GType.MostUsedLayout, list.subList(11, 24));
     }
 
     private void fillQg3() {
