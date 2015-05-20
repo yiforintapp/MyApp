@@ -2,31 +2,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/bg"
     android:gravity="center"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/free_disturb_dialog_title"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#B6AFAF"
+        android:layout_height="@dimen/dialog_free_disturb_app_dialog_title_height"
         android:gravity="center"
-        android:text="请选择免干扰应用" >
+        android:text="@string/pg_appmanager_quick_gesture_select_free_disturb_app_text"
+        android:textColor="#676767"
+        android:textSize="18sp" >
     </TextView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#eeeeee" />
 
     <com.leo.appmaster.quickgestures.view.FreeDisturbPagedGridView
         android:id="@+id/free_disturb_gridview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:paddingTop="@dimen/dialog_free_disturb_app_free_disturb_gridview_padding_top" />
 
     <LinearLayout
         android:id="@+id/dlg_2btn_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
         android:gravity="center"
         android:orientation="horizontal" >
 
@@ -43,6 +48,7 @@
             android:id="@+id/quick_freed_disturb_dlg_right_btn"
             style="@style/dlg_right_button_txt"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/makesure" />

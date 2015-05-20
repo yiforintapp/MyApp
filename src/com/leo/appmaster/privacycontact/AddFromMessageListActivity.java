@@ -564,11 +564,11 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                 // mMessageList =
                 // PrivacyContactManager.getInstance(AddFromMessageListActivity.this)
                 // .getSysMessage();
-                // mMessageList =
-                // PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this,
-                // AddFromMessageListActivity.this.getContentResolver(), null,
-                // null,
-                // false);
+//                 mMessageList =
+//                 PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this,
+//                 AddFromMessageListActivity.this.getContentResolver(), null,
+//                 null,
+//                 false);
                 if (mMessageList != null && mMessageList.size() > 0) {
                     Collections.sort(mMessageList,
                             PrivacyContactUtils.mMessageCamparator);
