@@ -44,8 +44,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="100dp"
-            android:src="@drawable/gesture_hand"
-            android:visibility="gone" />
+            android:src="@drawable/gesture_hand" />
 
         <ImageView
             android:id="@+id/gesture_arrowIV"
@@ -53,8 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/gesture_arrow_tips"
-            android:visibility="gone" />
+            android:src="@drawable/gesture_arrow_tips" />
 
         <TextView
             android:id="@+id/quick_title"

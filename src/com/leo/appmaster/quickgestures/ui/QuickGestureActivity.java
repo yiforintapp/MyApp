@@ -112,7 +112,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mArrowImage = (ImageView) findViewById(R.id.gesture_arrowIV);
         if (!AppMasterPreference.getInstance(this)
                 .getFristSlidingTip()) {
-            // gestureTranslationAnim(mHandImage, mArrowImage);
+            gestureTranslationAnim(mHandImage, mArrowImage);
             mTipRL.setVisibility(View.VISIBLE);
             mTipRL.setOnClickListener(new OnClickListener() {
                 @Override
@@ -681,7 +681,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         freeDisturbApp.setRightBt(new OnClickListener() {
 
             @Override
-            public void onClick(View arg0) { 
+            public void onClick(View arg0) {
                 if (freeDisturbApp != null) {
                     freeDisturbApp.dismiss();
                     LeoEventBus.getDefaultBus().post(
@@ -853,40 +853,35 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     }
 
     private void gestureTranslationAnim(final View view1, final View view2) {
+        view1.clearAnimation();
+        view2.clearAnimation();
         AnimatorSet animatorSet = new AnimatorSet();
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(view1, "alpha", 1, 1, 0);
+        // 箭头动画
+        ObjectAnimator alphaArrow = ObjectAnimator.ofFloat(view2, "alpha", 0, 0, 1);
+        alphaArrow.setDuration(2000);
+        alphaArrow.setRepeatCount(-1);
+        PropertyValuesHolder arrowHolderX = PropertyValuesHolder
+                .ofFloat("translationX", 0, 0, -200);
+        PropertyValuesHolder arrowHolderY = PropertyValuesHolder
+                .ofFloat("translationY", 0, 0, -200);
+        ObjectAnimator translateArrow = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(
+                view2, arrowHolderX, arrowHolderY);
+        translateArrow.setDuration(2000);
+        translateArrow.setRepeatCount(-1);
+        // 手势动画
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(view1, "alpha", 0, 1, 1);
         alpha.setDuration(2000);
+        alpha.setRepeatCount(-1);
         PropertyValuesHolder valuesHolderX = PropertyValuesHolder
-                .ofFloat("translationX", 0, 300, 0);
+                .ofFloat("translationX", 0, 270, 0);
         PropertyValuesHolder valuesHolderY = PropertyValuesHolder
                 .ofFloat("translationY", 0, 300, 0);
         ObjectAnimator translate = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(view1,
                 valuesHolderX, valuesHolderY);
-        translate.setDuration(2000);
+        translate.setRepeatCount(-1);
         translate.setInterpolator(new AccelerateDecelerateInterpolator());
-        animatorSet.playTogether(translate, alpha);
+        translate.setDuration(2000);
+        animatorSet.playTogether(translate, alpha, alphaArrow, translateArrow);
         animatorSet.start();
-        translate.addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator arg0) {
-                float value = (Float) arg0.getAnimatedValue();
-                if (value >= (float) Math.sqrt(180000)) {
-                    AnimatorSet animatorSetArrow = new AnimatorSet();
-                    ObjectAnimator alphaArrow = ObjectAnimator.ofFloat(view2, "alpha", 1, 0);
-                    alphaArrow.setDuration(1000);
-                    PropertyValuesHolder arrowHolderX = PropertyValuesHolder
-                            .ofFloat("translationX", 0, -200);
-                    PropertyValuesHolder arrowHolderY = PropertyValuesHolder
-                            .ofFloat("translationY", 0, -200);
-                    ObjectAnimator translateArrow = (ObjectAnimator) ObjectAnimator
-                            .ofPropertyValuesHolder(view2,
-                                    arrowHolderX, arrowHolderY);
-                    translateArrow.setDuration(1000);
-                    animatorSetArrow.playTogether(translateArrow, alphaArrow);
-                    animatorSetArrow.start();
-                }
-
-            }
-        });
     }
 }
