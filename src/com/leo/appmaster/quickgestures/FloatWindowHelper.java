@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.quickgestures;
 
+import java.util.List;
+
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -28,6 +30,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
@@ -127,6 +130,7 @@ public class FloatWindowHelper {
         }
     }
 
+    // TODO
     public static void initFloatWindwo(final Context mContext, int value, View view,
             LayoutParams layoutParams, int flag) {
         final WindowManager windowManager = getWindowManager(mContext);
@@ -1165,37 +1169,101 @@ public class FloatWindowHelper {
         }
     }
 
-    @SuppressWarnings("deprecation")
-    // MIUI系统提示层
-    public static void createMiuiTipWindow(final Context mContext) {
-        final WindowManager windowManager = getWindowManager(mContext);
-        if (mMiuiTipRl == null) {
-            mMiuiTipRl = (RelativeLayout) LayoutInflater.from(mContext).inflate(
-                    R.layout.activity_miui_open_float_window_tip, null);
-            mMiuiTipRl.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View arg0) {
-                    if (mMiuiTipRl != null) {
-                        windowManager.removeView(mMiuiTipRl);
-                        mMiuiTipRl = null;
+    // 常用应用列表对话框
+    public static void showCommontAppDialog(final Context context) {
+        final QuickGestureFreeDisturbAppDialog commonApp = new QuickGestureFreeDisturbAppDialog(
+                context, 3);
+        final AppMasterPreference pref = AppMasterPreference.getInstance(context);
+        commonApp.setIsShowCheckBox(true);
+        commonApp.setCheckBoxText(R.string.quick_gesture_change_common_app_dialog_checkbox_text);
+        // 设置是否选择习惯
+        commonApp.setCheckValue(pref.getQuickGestureCommonAppDialogCheckboxValue());
+        commonApp.setTitle(R.string.quick_gesture_change_common_app_dialog_title);
+        commonApp.setRightBt(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // 确认按钮
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 添加的应用包名
+                        List<String> addCommonApp = commonApp.getAddFreePackageName();
+                        // 移除的应用包名
+                        List<String> removeCommonApp = commonApp.getRemoveFreePackageName();
+                        // 是否选择使用习惯自动填充
+                        boolean flag = commonApp.getCheckValue();
+                        if (addCommonApp != null && addCommonApp.size() > 0) {
+                            for (String string : addCommonApp) {
+                                pref.setCommonAppPackageNameAdd(string);
+                            }
+                        }
+                        if (removeCommonApp != null && removeCommonApp.size() > 0) {
+                            for (String string : removeCommonApp) {
+                                pref.setCommonAppPackageNameRemove(string);
+                            }
+                        }
+                        if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
+                            pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
+                        }
                     }
-                }
-            });
-            if (mMiuiTipParams == null) {
-                int width = windowManager.getDefaultDisplay().getWidth();
-                int height = windowManager.getDefaultDisplay().getHeight();
-                mMiuiTipParams = new LayoutParams();
-                mMiuiTipParams.width = width;
-                mMiuiTipParams.height = height;
-                mMiuiTipParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
-                mMiuiTipParams.format = PixelFormat.RGBA_8888;
-                mMiuiTipParams.windowAnimations = R.anim.lock_mode_guide_in;
-                mMiuiTipParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | LayoutParams.FLAG_NOT_FOCUSABLE;
+                }).start();
+                commonApp.dismiss();
             }
-            windowManager.addView(mMiuiTipRl, mMiuiTipParams);
-        }
+        });
+        commonApp.setLeftBt(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // 取消按钮
+                commonApp.dismiss();
+            }
+        });
+        commonApp.show();
+    }
+
+    // 快捷开关对话框
+    public static void showQuickSwitchDialog(final Context context) {
+        final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
+                context, 2);
+        quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
+        quickSwitch.setRightBt(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // 确认按钮
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // 添加的应用包名
+                        List<String> addQuickSwitch = quickSwitch.getAddFreePackageName();
+                        // 移除的应用包名
+                        List<String> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
+                        if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
+                            for (String string : addQuickSwitch) {
+                                AppMasterPreference.getInstance(context)
+                                        .setQuickSwitchPackageNameAdd(string);
+                            }
+                        }
+                        if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
+                            for (String string : removeQuickSwitch) {
+                                AppMasterPreference.getInstance(context)
+                                        .setQuickSwitchPackageNameRemove(string);
+                            }
+                        }
+                    }
+                }).start();
+                quickSwitch.dismiss();
+            }
+        });
+        quickSwitch.setLeftBt(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // 取消按钮
+                quickSwitch.dismiss();
+            }
+        });
+        quickSwitch.show();
     }
 
     private static void onTouchAreaShowQuick(int flag) {

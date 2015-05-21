@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout;
@@ -1046,11 +1047,108 @@ public class QuickSwitchManager {
     // return mXuKuang;
     // }
 
-//    public GestureItemView getXuKuang(View hitView) {
-//        LayoutParams params = (LayoutParams) hitView.getLayoutParams();
-//        GestureItemView mIvXuKuang = new GestureItemView(mContext);
-//        mIvXuKuang.setLayoutParams(params);
-//        mIvXuKuang.setBackground(mContext.getResources().getDrawable(R.drawable.switch_add));
-//        return mIvXuKuang;
-//    }
+    // public GestureItemView getXuKuang(View hitView) {
+    // LayoutParams params = (LayoutParams) hitView.getLayoutParams();
+    // GestureItemView mIvXuKuang = new GestureItemView(mContext);
+    // mIvXuKuang.setLayoutParams(params);
+    // mIvXuKuang.setBackground(mContext.getResources().getDrawable(R.drawable.switch_add));
+    // return mIvXuKuang;
+    // }
+    // 加载快捷手势开关
+    public List<FreeDisturbAppInfo> loadQuickSwitchData() {
+        List<FreeDisturbAppInfo> allAppList = new ArrayList<FreeDisturbAppInfo>();
+        // 加速
+        FreeDisturbAppInfo speedUp = new FreeDisturbAppInfo();
+        speedUp.icon = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
+        speedUp.label = mContext.getResources().getString(R.string.quick_guesture_speedup);
+        speedUp.packageName = "speed_up";
+        speedUp.isFreeDisturb = false;
+        allAppList.add(speedUp);
+        // 手电
+        FreeDisturbAppInfo flashlight = new FreeDisturbAppInfo();
+        flashlight.icon = mContext.getResources().getDrawable(R.drawable.switch_flashlight);
+        flashlight.label = mContext.getResources().getString(R.string.quick_guesture_flashlight);
+        flashlight.packageName = "flashlight";
+        flashlight.isFreeDisturb = false;
+        allAppList.add(flashlight);
+        // wifi
+        FreeDisturbAppInfo wlan = new FreeDisturbAppInfo();
+        wlan.icon = mContext.getResources().getDrawable(R.drawable.switch_wifi);
+        wlan.label = mContext.getResources().getString(R.string.quick_guesture_wlan);
+        wlan.packageName = "wifi";
+        wlan.isFreeDisturb = false;
+        allAppList.add(wlan);
+        // 照相机
+        FreeDisturbAppInfo carme = new FreeDisturbAppInfo();
+        carme.icon = mContext.getResources().getDrawable(R.drawable.switch_camera);
+        carme.label = mContext.getResources().getString(R.string.quick_guesture_carme);
+        carme.packageName = "carme";
+        carme.isFreeDisturb = false;
+        allAppList.add(carme);
+        // 移动数据
+        FreeDisturbAppInfo moblieddata = new FreeDisturbAppInfo();
+        moblieddata.icon = mContext.getResources().getDrawable(R.drawable.switch_data);
+        moblieddata.label = mContext.getResources().getString(R.string.quick_guesture_mobliedata);
+        moblieddata.packageName = "moblieddata";
+        moblieddata.isFreeDisturb = false;
+        allAppList.add(moblieddata);
+        // 蓝牙
+        FreeDisturbAppInfo bluetooth = new FreeDisturbAppInfo();
+        bluetooth.icon = mContext.getResources().getDrawable(R.drawable.switch_bluetooth);
+        bluetooth.label = mContext.getResources().getString(R.string.quick_guesture_bluetooth);
+        bluetooth.packageName = "bluetooth";
+        bluetooth.isFreeDisturb = false;
+        allAppList.add(bluetooth);
+        // 屏幕亮度
+        FreeDisturbAppInfo light = new FreeDisturbAppInfo();
+        light.icon = mContext.getResources().getDrawable(R.drawable.switch_brightness_max);
+        light.label = mContext.getResources().getString(R.string.quick_guesture_light);
+        light.packageName = "light";
+        light.isFreeDisturb = false;
+        allAppList.add(light);
+        // 声音
+        FreeDisturbAppInfo sound = new FreeDisturbAppInfo();
+        sound.icon = mContext.getResources().getDrawable(R.drawable.switch_volume_min);
+        sound.label = mContext.getResources().getString(R.string.quick_guesture_sound);
+        sound.packageName = "sound";
+        sound.isFreeDisturb = false;
+        allAppList.add(sound);
+        // GPS
+        FreeDisturbAppInfo gps = new FreeDisturbAppInfo();
+        gps.icon = mContext.getResources().getDrawable(R.drawable.switch_gps);
+        gps.label = mContext.getResources().getString(R.string.quick_guesture_gps);
+        gps.packageName = "gps";
+        gps.isFreeDisturb = false;
+        allAppList.add(gps);
+        // 屏幕旋转
+        FreeDisturbAppInfo rotation = new FreeDisturbAppInfo();
+        rotation.icon = mContext.getResources().getDrawable(R.drawable.switch_rotation);
+        rotation.label = mContext.getResources().getString(R.string.quick_guesture_rotation);
+        rotation.packageName = "rotation";
+        rotation.isFreeDisturb = false;
+        allAppList.add(rotation);
+        // 飞行模式
+        FreeDisturbAppInfo flymode = new FreeDisturbAppInfo();
+        flymode.icon = mContext.getResources().getDrawable(R.drawable.switch_flightmode);
+        flymode.label = mContext.getResources().getString(R.string.quick_guesture_flymode);
+        flymode.packageName = "flymode";
+        flymode.isFreeDisturb = false;
+        allAppList.add(flymode);
+        // 锁屏情景模式
+        FreeDisturbAppInfo lock_screen_mode = new FreeDisturbAppInfo();
+        lock_screen_mode.icon = mContext.getResources().getDrawable(R.drawable.switch_mode);
+        lock_screen_mode.label = mContext.getResources().getString(
+                R.string.quick_guesture_changemode);
+        lock_screen_mode.packageName = "lock_screen_mode";
+        lock_screen_mode.isFreeDisturb = false;
+        allAppList.add(lock_screen_mode);
+        // 设置
+        FreeDisturbAppInfo sys_setting = new FreeDisturbAppInfo();
+        sys_setting.icon = mContext.getResources().getDrawable(R.drawable.switch_gestureset_pre);
+        sys_setting.label = mContext.getResources().getString(R.string.quick_guesture_setting);
+        sys_setting.packageName = "sys_setting";
+        sys_setting.isFreeDisturb = false;
+        allAppList.add(sys_setting);
+        return allAppList;
+    }
 }

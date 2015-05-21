@@ -318,12 +318,16 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         if (mPre.getSwitchOpenQuickGesture()) {
             if (arg2 == 1) {
-                Log.e("##########", "1:设置区域");
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);
+                // 常用应用选择调试
+                // TODO
+                // FloatWindowHelper.showCommontAppDialog(QuickGestureActivity.this);
             } else if (arg2 == 2) {
-                Log.e("##########", "2:选择免打扰应用");
                 showSlideShowTimeSettingDialog();
+                // 快捷开关调试
+                // TODO
+                // FloatWindowHelper.showQuickSwitchDialog(QuickGestureActivity.this);
             }
         }
     }
@@ -619,8 +623,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         mSlideTimeDialog.getJustHometCheckStatus());
                 AppMasterPreference.getInstance(QuickGestureActivity.this)
                         .setSlideTimeAllAppAndHome(mSlideTimeDialog.getAppHomeCheckStatus());
-                Log.e("#############", "桌面：" + mSlideTimeDialog.getJustHometCheckStatus() + ":应用："
-                        + mSlideTimeDialog.getAppHomeCheckStatus());
+                // Log.e("#############", "桌面：" +
+                // mSlideTimeDialog.getJustHometCheckStatus() + ":应用："
+                // + mSlideTimeDialog.getAppHomeCheckStatus());
                 mSlideTimeDialog.dismiss();
                 LeoEventBus
                         .getDefaultBus()
@@ -676,7 +681,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     private void showAllAppDialog() {
         final QuickGestureFreeDisturbAppDialog freeDisturbApp = new QuickGestureFreeDisturbAppDialog(
-                this);
+                this, 1);
         freeDisturbApp.setTitle(R.string.pg_appmanager_quick_gesture_select_free_disturb_app_text);
         freeDisturbApp.setRightBt(new OnClickListener() {
 

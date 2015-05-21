@@ -212,5 +212,15 @@
     <dimen name="apple_watch_layout_inner_radius">94dp</dimen>
     <dimen name="apple_watch_layout_outer_radius">144dp</dimen>
     <!-- quick guesture end -->
+    <!-- quick gesture start -->
+    <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
+    <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
+    <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_indicator_dialog_margin_top">18dp</dimen>
+    <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_pager_dialog_layout_height">340dp</dimen>
+    <dimen name="quick_gesture_right_top_area_margin_left">45dp</dimen>
+    <dimen name="quick_gesture_free_distureb_app_select_icon_width">16dp</dimen>
+    <dimen name="quick_gesture_setting_item_height">56dp</dimen>
+    <dimen name="quick_seek_bar_width">250dp</dimen>
+    <!-- quick gesutre end -->
 
 </resources>
