@@ -213,6 +213,7 @@ public class LockManager {
 
     public void init() {
         LeoLog.d(TAG, "init");
+        startLockService();
         mScreenListener = new ScreenOnOffListener() {
             @Override
             public void onScreenChanged(Intent intent) {
