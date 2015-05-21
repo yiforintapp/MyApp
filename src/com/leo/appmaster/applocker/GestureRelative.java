@@ -107,6 +107,11 @@ public class GestureRelative extends RelativeLayout {
                 isShowOrder(moveX, moveY);
                 break;
             case MotionEvent.ACTION_UP:
+                if(isFromActivity){
+                    mActivity.allTurnSmall();
+                }else {
+                    
+                }
                 isFirstRound = false;
                 isSecondRound = false;
                 isThridRound = false;
@@ -124,14 +129,31 @@ public class GestureRelative extends RelativeLayout {
                 // 首先进入挂断区域
                 isFirstRound = true;
                 // LeoLog.d("testfuck", "首先进入挂断区域");
+                
+                if(isFromActivity){
+                    mActivity.guaTurnBig();
+                }else {
+                    
+                }
+                
             } else {
                 if (!isFirstRound) {
+                    if(isFromActivity){
+                        mActivity.allTurnSmall();
+                    }else {
+                        
+                    }
                     // 进入了别的区域
                     // LeoLog.d("testfuck", "非首次进入挂断区域");
                     isFlaseControl = true;
                     isSecondRound = false;
                     isThridRound = false;
                 } else if (isSecondRound) {
+                    if(isFromActivity){
+                        mActivity.allTurnSmall();
+                    }else {
+                        
+                    }
                     isSecondRound = false;
                     isFlaseControl = true;
                 }
@@ -144,8 +166,20 @@ public class GestureRelative extends RelativeLayout {
                 isSecondRound = true;
                 // 顺利进入第二
                 // LeoLog.d("testfuck", "顺利进入第二");
+                
+                if(isFromActivity){
+                    mActivity.duanTurnBig();
+                }else {
+                    
+                }
+                
             } else {
                 if (!isSecondRound) {
+                    if(isFromActivity){
+                        mActivity.allTurnSmall();
+                    }else {
+                        
+                    }
                     // 非正确进入第二
                     // LeoLog.d("testfuck", "非正确进入第二");
                     isFlaseControl = true;
@@ -164,6 +198,7 @@ public class GestureRelative extends RelativeLayout {
                 // 触发成功
                 // LeoLog.d("testfuck", "触发成功");
                 if (isFromActivity) {
+                    mActivity.jieTurnBig();
                     mActivity.showAlarmDialog(
                             mContext.getString(R.string.open_weizhuang_dialog_title),
                             mContext.getString(R.string.open_weizhuang_dialog_content),
@@ -177,6 +212,11 @@ public class GestureRelative extends RelativeLayout {
                 }
             } else {
                 if (!isThridRound) {
+                    if(isFromActivity){
+                        mActivity.allTurnSmall();
+                    }else {
+                        
+                    }
                     // 非正确进入第三
                     // LeoLog.d("testfuck", "非正确进入第三");
                     isFlaseControl = true;

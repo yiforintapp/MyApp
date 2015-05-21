@@ -48,7 +48,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     private LEOAlarmDialog mAlarmDialog;
     private AppMasterPreference sp_unknowcall;
     private Vibrator vib;
-    
+
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -70,10 +70,10 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
                     iv_tips_right.layout(tip_right_left, tip_right_top, tip_right_right,
                             tip_right_bottom);
 
-                    if (!isShowing) {
-                        myself_circle.setVisibility(View.VISIBLE);
-                        showDonghua();
-                    }
+//                    if (!isShowing) {
+//                        myself_circle.setVisibility(View.VISIBLE);
+//                        showDonghua();
+//                    }
 
                     iv_tips_left.setVisibility(View.VISIBLE);
                     iv_tips_right.setVisibility(View.VISIBLE);
@@ -106,34 +106,34 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         init();
     }
 
-    protected void showDonghua() {
-        isShowing = true;
-        new Thread() {
-            public void run() {
-                int startInt = 0;
-                int mAplha = 0;
-                while (mBanJing > startInt) {
-                    try {
-                        Thread.sleep(15);
-                        startInt += 2;
-                        mAplha = 255 - (int) (startInt * 255 / mBanJing);
-                        if (mAplha < 0) {
-                            mAplha = 0;
-                        }
-                        myself_circle.setProgress(startInt, mAplha);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                showDonghua();
-            };
-        }.start();
-    }
+//    protected void showDonghua() {
+//        isShowing = true;
+//        new Thread() {
+//            public void run() {
+//                int startInt = 0;
+//                int mAplha = 0;
+//                while (mBanJing > startInt) {
+//                    try {
+//                        Thread.sleep(15);
+//                        startInt += 2;
+//                        mAplha = 255 - (int) (startInt * 255 / mBanJing);
+//                        if (mAplha < 0) {
+//                            mAplha = 0;
+//                        }
+//                        myself_circle.setProgress(startInt, mAplha);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                showDonghua();
+//            };
+//        }.start();
+//    }
 
     private void init() {
         sp_unknowcall = AppMasterPreference.getInstance(this);
         vib = (Vibrator) this.getSystemService(Service.VIBRATOR_SERVICE);
-        
+
         tv_use_tips = (TextView) findViewById(R.id.tv_use_tips);
         tv_use_tips.setVisibility(View.VISIBLE);
         tv_use_tips_content = (TextView) findViewById(R.id.tv_use_tips_content);
@@ -300,45 +300,47 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
                     int bottom = (int) (lc_bottom + newY);
                     int right = (int) (lc_right + newX);
 
-                    if (left < gua_right + 10 && top > gua_top - gua_top / 2
-                            && bottom < gua_bottom + gua_bottom / 2 && right > gua_left - 10) {
-                        iv_guaduan_big.setVisibility(View.VISIBLE);
-                        iv_guaduan.setVisibility(View.INVISIBLE);
-                        isControlGua = false;
-                    } else {
-                        if (!isControlGua) {
-                            iv_guaduan_big.setVisibility(View.INVISIBLE);
-                            iv_guaduan.setVisibility(View.VISIBLE);
-                        }
-                        isControlGua = true;
-                    }
-
-                    if (top < duan_bottom + 10 && bottom > duan_top - 10
-                            && left > duan_left - duan_left / 2
-                            && right < duan_right + duan_right / 2) {
-                        iv_duanxin.setVisibility(View.INVISIBLE);
-                        iv_duanxin_big.setVisibility(View.VISIBLE);
-                        isControlDuan = false;
-                    } else {
-                        if (!isControlDuan) {
-                            iv_duanxin.setVisibility(View.VISIBLE);
-                            iv_duanxin_big.setVisibility(View.INVISIBLE);
-                        }
-                        isControlDuan = true;
-                    }
-
-                    if (right > jie_left - 10 && top > jie_top - jie_top / 2
-                            && bottom < jie_bottom + jie_bottom / 2 && left < jie_right + 10) {
-                        iv_jieting_big.setVisibility(View.VISIBLE);
-                        iv_jieting.setVisibility(View.INVISIBLE);
-                        isControlJie = false;
-                    } else {
-                        if (!isControlJie) {
-                            iv_jieting_big.setVisibility(View.INVISIBLE);
-                            iv_jieting.setVisibility(View.VISIBLE);
-                        }
-                        isControlJie = true;
-                    }
+                    // if (left < gua_right + 10 && top > gua_top - gua_top / 2
+                    // && bottom < gua_bottom + gua_bottom / 2 && right >
+                    // gua_left - 10) {
+                    // iv_guaduan_big.setVisibility(View.VISIBLE);
+                    // iv_guaduan.setVisibility(View.INVISIBLE);
+                    // isControlGua = false;
+                    // } else {
+                    // if (!isControlGua) {
+                    // iv_guaduan_big.setVisibility(View.INVISIBLE);
+                    // iv_guaduan.setVisibility(View.VISIBLE);
+                    // }
+                    // isControlGua = true;
+                    // }
+                    //
+                    // if (top < duan_bottom + 10 && bottom > duan_top - 10
+                    // && left > duan_left - duan_left / 2
+                    // && right < duan_right + duan_right / 2) {
+                    // iv_duanxin.setVisibility(View.INVISIBLE);
+                    // iv_duanxin_big.setVisibility(View.VISIBLE);
+                    // isControlDuan = false;
+                    // } else {
+                    // if (!isControlDuan) {
+                    // iv_duanxin.setVisibility(View.VISIBLE);
+                    // iv_duanxin_big.setVisibility(View.INVISIBLE);
+                    // }
+                    // isControlDuan = true;
+                    // }
+                    //
+                    // if (right > jie_left - 10 && top > jie_top - jie_top / 2
+                    // && bottom < jie_bottom + jie_bottom / 2 && left <
+                    // jie_right + 10) {
+                    // iv_jieting_big.setVisibility(View.VISIBLE);
+                    // iv_jieting.setVisibility(View.INVISIBLE);
+                    // isControlJie = false;
+                    // } else {
+                    // if (!isControlJie) {
+                    // iv_jieting_big.setVisibility(View.INVISIBLE);
+                    // iv_jieting.setVisibility(View.VISIBLE);
+                    // }
+                    // isControlJie = true;
+                    // }
 
                     if (left < gua_left) {
                         left = gua_left;
@@ -368,12 +370,12 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
                     v.layout(hold_left, hold_top, hold_right, hold_bottom);
 
                     myself_circle.setVisibility(View.VISIBLE);
-                    iv_guaduan_big.setVisibility(View.INVISIBLE);
-                    iv_guaduan.setVisibility(View.VISIBLE);
-                    iv_duanxin_big.setVisibility(View.INVISIBLE);
-                    iv_duanxin.setVisibility(View.VISIBLE);
-                    iv_jieting_big.setVisibility(View.INVISIBLE);
-                    iv_jieting.setVisibility(View.VISIBLE);
+                    // iv_guaduan_big.setVisibility(View.INVISIBLE);
+                    // iv_guaduan.setVisibility(View.VISIBLE);
+                    // iv_duanxin_big.setVisibility(View.INVISIBLE);
+                    // iv_duanxin.setVisibility(View.VISIBLE);
+                    // iv_jieting_big.setVisibility(View.INVISIBLE);
+                    // iv_jieting.setVisibility(View.VISIBLE);
 
                     break;
                 default:
@@ -417,6 +419,30 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         mAlarmDialog.setTitle(title);
         mAlarmDialog.setContent(content);
         mAlarmDialog.show();
+    }
+
+    protected void allTurnSmall() {
+        iv_guaduan_big.setVisibility(View.INVISIBLE);
+        iv_guaduan.setVisibility(View.VISIBLE);
+        iv_duanxin_big.setVisibility(View.INVISIBLE);
+        iv_duanxin.setVisibility(View.VISIBLE);
+        iv_jieting_big.setVisibility(View.INVISIBLE);
+        iv_jieting.setVisibility(View.VISIBLE);
+    }
+
+    public void guaTurnBig() {
+        iv_guaduan_big.setVisibility(View.VISIBLE);
+        iv_guaduan.setVisibility(View.INVISIBLE);
+    }
+
+    public void duanTurnBig() {
+        iv_duanxin.setVisibility(View.INVISIBLE);
+        iv_duanxin_big.setVisibility(View.VISIBLE);
+    }
+
+    public void jieTurnBig() {
+        iv_jieting_big.setVisibility(View.VISIBLE);
+        iv_jieting.setVisibility(View.INVISIBLE);
     }
 
 }
