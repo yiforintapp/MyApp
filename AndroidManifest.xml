@@ -522,6 +522,12 @@
             <intent-filter android:priority="1000" >
             </intent-filter>
         </service>
+        
+        <service
+            android:name="com.leo.appmaster.applocker.service.PhantomService"
+            android:exported="true" >
+        </service>
+        
         <service
             android:name="com.leo.appmaster.applocker.service.StatusBarEventService"
             android:exported="true" >

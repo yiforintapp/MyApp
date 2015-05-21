@@ -147,6 +147,7 @@ public class AppMasterApplication extends Application {
         restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
+        startService(new Intent(this, StatusBarEventService.class));
     }
 
     private String getUserSerial() {
@@ -242,7 +243,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 checkUpdateFinish();
-                judgeLockService();
+//                judgeLockService();
                 // judgeStatictiUnlockCount();
                 initImageLoader();
                 mAppsEngine.preloadAllBaseInfo();

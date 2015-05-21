@@ -113,7 +113,6 @@ public class LockManager {
     private static LockManager sInstance;
     private Context mContext;
     private ScreenOnOffListener mScreenListener;
-    private TaskDetectService mDetectService;
     private Handler mHandler;
 
     /*
@@ -184,20 +183,6 @@ public class LockManager {
         return sInstance;
     }
 
-    private ServiceConnection mSc = new ServiceConnection() {
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            LeoLog.d(TAG, "onServiceDisconnected");
-            mDetectService = null;
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName arg0, IBinder binder) {
-            LeoLog.d(TAG, "onServiceConnected");
-            mDetectService = ((TaskDetectBinder) binder).getService();
-        }
-    };
-
     // private ScheduledFuture<?> mFilterSelfTast;
 
     public void initFilterList() {
@@ -228,7 +213,6 @@ public class LockManager {
 
     public void init() {
         LeoLog.d(TAG, "init");
-        bindService();
         mScreenListener = new ScreenOnOffListener() {
             @Override
             public void onScreenChanged(Intent intent) {
@@ -1361,15 +1345,6 @@ public class LockManager {
         return mLocationLockList;
     }
 
-    public void bindService() {
-        Intent intent = new Intent(mContext, TaskDetectService.class);
-        mContext.bindService(intent, mSc, 1001);
-    }
-
-    public boolean serviceBound() {
-        return mDetectService != null;
-    }
-
     public void addFilterLockPackage(String filterPackage, boolean persistent) {
         if (!TextUtils.isEmpty(filterPackage)) {
             mFilterPgks.put(filterPackage, persistent);
@@ -1436,9 +1411,6 @@ public class LockManager {
 
     public void unInit() {
         stopLockService();
-        mContext.unbindService(mSc);
-        mSc = null;
-        mDetectService = null;
         LeoGlobalBroadcast.unregisterBroadcastListener(mScreenListener);
         mContext.unregisterReceiver(mTimeChangeReceiver);
         mScreenListener = null;
@@ -1450,29 +1422,38 @@ public class LockManager {
     }
 
     public void stopFloatWindowService() {
-        mDetectService.stopFloatWindow();
+        TaskDetectService service = TaskDetectService.getService();
+        if(service != null) {
+            service.stopFloatWindow();
+        }
     }
 
     public void startFloatWindowService() {
-        mDetectService.startFloatWindow();
+        TaskDetectService service = TaskDetectService.getService();
+        if(service != null) {
+            service.startFloatWindow();
+        }
     }
 
     public void startLockService() {
         LeoLog.d(TAG, "startLockService");
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
-        if (mDetectService != null
-                && amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            mDetectService.startDetect();
-            amp.setDoubleCheck(null);
+        TaskDetectService service = TaskDetectService.getService();
+        if (service != null) {
+            if( amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                service.startDetect();
+                amp.setDoubleCheck(null);
+            }
         } else {
-            LeoLog.d(TAG, "mDetectService = null");
+           mContext.startService(new Intent(mContext, TaskDetectService.class));
         }
     }
 
     public void stopLockService() {
         LeoLog.d(TAG, "stopLockService");
-        if (mDetectService != null) {
-            mDetectService.stopDetect();
+        TaskDetectService service = TaskDetectService.getService();
+        if (service != null) {
+            service.stopDetect();
         } else {
             LeoLog.d(TAG, "mDetectService = null");
         }
@@ -1489,11 +1470,7 @@ public class LockManager {
             stopLockService();
 
         } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-            if (LockManager.getInstatnce().serviceBound()) {
-                LockManager.getInstatnce().startLockService();
-            } else {
-                LockManager.getInstatnce().bindService();
-            }
+            LockManager.getInstatnce().startLockService();
             mHandler.postDelayed(new Runnable() {
 
                 @Override
@@ -1584,7 +1561,11 @@ public class LockManager {
     }
 
     public String getLastActivity() {
-        return mDetectService.getLastRunningActivity();
+        TaskDetectService service = TaskDetectService.getService();
+        if(service != null) {
+            return service.getLastRunningActivity();
+        }
+        return null;
     }
 
     private void checkScreenOn() {
@@ -1597,7 +1578,8 @@ public class LockManager {
             LeoLog.d(TAG, "lockList = null");
             return;
         }
-        if (mDetectService == null) {
+        TaskDetectService service = TaskDetectService.getService();
+        if (service == null) {
             LeoLog.d(TAG, "mDetectService = null");
             return;
         }
@@ -1607,8 +1589,8 @@ public class LockManager {
             return;
         }
 
-        final String lastRunningPkg = mDetectService.getLastRunningPackage();
-        final String lastRunningActivity = mDetectService.getLastRunningActivity();
+        final String lastRunningPkg = service.getLastRunningPackage();
+        final String lastRunningActivity = service.getLastRunningActivity();
         if (list.contains(lastRunningPkg)
                 && !LockScreenActivity.class.getName().contains(lastRunningActivity)
                 && !WaitActivity.class
