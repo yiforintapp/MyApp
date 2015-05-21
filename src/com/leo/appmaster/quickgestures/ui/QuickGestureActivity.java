@@ -683,6 +683,28 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             @Override
             public void onClick(View arg0) {
                 if (freeDisturbApp != null) {
+                    // 添加确认免打扰应用
+                    final List<String> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
+                    final List<String> removeFreeAppNames = freeDisturbApp
+                            .getRemoveFreePackageName();
+                    new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            if (addFreeAppNames != null && addFreeAppNames.size() > 0) {
+                                for (String string : addFreeAppNames) {
+                                    AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                            .setFreeDisturbAppPackageNameAdd(string);
+                                }
+                            }
+                            if (removeFreeAppNames != null && removeFreeAppNames.size() > 0) {
+                                for (String string : removeFreeAppNames) {
+                                    AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                            .setFreeDisturbAppPackageNameRemove(string);
+                                }
+                            }
+                        }
+                    }).start();
                     freeDisturbApp.dismiss();
                     LeoEventBus.getDefaultBus().post(
                             new QuickGestureFloatWindowEvent(

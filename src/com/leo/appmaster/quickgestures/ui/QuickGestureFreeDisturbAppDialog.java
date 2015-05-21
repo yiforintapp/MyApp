@@ -38,10 +38,14 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private TextView mTitle, mSureBt, mLeftBt;
     private List<FreeDisturbAppInfo> mDisturbList = null;
     private List<FreeDisturbAppInfo> mFreeDisturbApp = null;
+    private List<String> mAddFreePackageName = null;
+    private List<String> mRemoveFreePackageName = null;
 
     public QuickGestureFreeDisturbAppDialog(Context context) {
         super(context, R.style.bt_dialog);
         mContext = context.getApplicationContext();
+        mAddFreePackageName = new ArrayList<String>();
+        mRemoveFreePackageName = new ArrayList<String>();
         initUI();
     }
 
@@ -63,16 +67,18 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     selectInfl.isFreeDisturb = false;
                     mDisturbList.add(selectInfl);
                     mFreeDisturbApp.remove(selectInfl);
-                    AppMasterPreference.getInstance(mContext).setFreeDisturbAppPackageNameRemove(
-                            selectInfl.packageName);
+                    // AppMasterPreference.getInstance(mContext).setFreeDisturbAppPackageNameRemove(
+                    // selectInfl.packageName);
+                    mRemoveFreePackageName.add(selectInfl.packageName);
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(false);
                 } else {
                     selectInfl.isFreeDisturb = true;
                     mFreeDisturbApp.add(selectInfl);
                     mDisturbList.remove(selectInfl);
-                    AppMasterPreference.getInstance(mContext).setFreeDisturbAppPackageNameAdd(
-                            selectInfl.packageName);
+                    // AppMasterPreference.getInstance(mContext).setFreeDisturbAppPackageNameAdd(
+                    // selectInfl.packageName);
+                    mAddFreePackageName.add(selectInfl.packageName);
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(true);
                 }
@@ -83,6 +89,13 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         loadData();
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
+    }
+
+    public List<String> getAddFreePackageName() {
+        return mAddFreePackageName;
+    }
+    public List<String> getRemoveFreePackageName() {
+        return mRemoveFreePackageName;
     }
 
     public void setRightBt(android.view.View.OnClickListener onClick) {
