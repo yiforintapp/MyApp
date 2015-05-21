@@ -116,13 +116,15 @@ public class AppleWatchContainer extends FrameLayout {
                         LeoLog.d(TAG, "onFling: velocityX = " + velocityX + "  velocityY = "
                                 + velocityY);
                         if (!mEditing) {
-                            if (velocityX > 300) {
-                                snapToPrevious();
-                                return true;
-                            }
-                            if (velocityX < -300) {
-                                snapToNext();
-                                return true;
+                            if (mTouchDownY > mDymicLayout.getBottom()) {
+                                if (velocityX > 300) {
+                                    snapToPrevious();
+                                    return true;
+                                }
+                                if (velocityX < -300) {
+                                    snapToNext();
+                                    return true;
+                                }
                             }
                         }
 
@@ -166,9 +168,15 @@ public class AppleWatchContainer extends FrameLayout {
 
     public void leaveEditMode() {
         mEditing = false;
-        mDymicLayout.onLeaveEditMode();
-        mMostUsedLayout.onLeaveEditMode();
-        mSwitcherLayout.onLeaveEditMode();
+        AppleWatchLayout gestureLayout = null;
+        if (mCurrentGestureType == GType.DymicLayout) {
+            gestureLayout = mDymicLayout;
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            gestureLayout = mMostUsedLayout;
+        } else {
+            gestureLayout = mSwitcherLayout;
+        }
+        gestureLayout.onLeaveEditMode();
     }
 
     public boolean isEditing() {
@@ -220,7 +228,9 @@ public class AppleWatchContainer extends FrameLayout {
                 } else {
                     mTouchDownX = event.getX();
                     mTouchDownY = event.getY();
-                    onTouchDown();
+                    if (mTouchDownY > mDymicLayout.getBottom()) {
+                        onTouchDown();
+                    }
                 }
                 break;
 
@@ -231,7 +241,15 @@ public class AppleWatchContainer extends FrameLayout {
                 } else {
                     moveX = event.getX();
                     moveY = event.getY();
-                    onTouchMove(moveX, moveY);
+
+                    if (mTouchDownY >= mDymicLayout.getTop()
+                            && mTouchDownY <= mDymicLayout.getBottom()) {
+                        onTouchMoveTranslate(moveX - mTouchDownX, moveY - mTouchDownY);
+                    }
+
+                    if (mTouchDownY > mDymicLayout.getBottom()) {
+                        onTouchMoveRotate(moveX, moveY);
+                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -296,9 +314,23 @@ public class AppleWatchContainer extends FrameLayout {
         mSwitcherLayout.setVisibility(View.VISIBLE);
     }
 
-    private void onTouchMove(float moveX, float moveY) {
+    private void onTouchMoveRotate(float moveX, float moveY) {
         computeRotateDegree(mTouchDownX, mTouchDownY, moveX, moveY);
         rotateLayout();
+    }
+
+    private void onTouchMoveTranslate(float moveX, float moveY) {
+        // TODO
+        AppleWatchLayout targetLayout;
+        if (mCurrentGestureType == GType.DymicLayout) {
+            targetLayout = mDymicLayout;
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            targetLayout = mMostUsedLayout;
+        } else {
+            targetLayout = mSwitcherLayout;
+        }
+        targetLayout.translateItem(moveX);
+
     }
 
     private void rotateLayout() {

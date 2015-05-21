@@ -12,7 +12,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.animation.Animator;
@@ -23,7 +22,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
@@ -43,10 +41,6 @@ public class AppleWatchLayout extends ViewGroup {
 
     public static final String TAG = "AppleWatchLayout";
 
-    private static final int MAX_COUNT = 11;
-    private static final int INNER_RING_MAX_COUNT = 6;
-    private static final int OUTER_RING_MAXCOUNT = 4;
-
     private AppleWatchContainer mContainer;
     private AnimatorSet mReorderAnimator;
     private boolean mRecodering;
@@ -55,11 +49,17 @@ public class AppleWatchLayout extends ViewGroup {
     private int mCenterPointX, mCenterPointY;
     private int mItemSize, mIconSize;
     private int mInnerRadius, mOuterRadius;
-    private float mInnerScale, mOuterScale;
-
-    private int mRingCount;
+    private float mInnerScale, mOuterScale, mThirdScale;
     private float mCurrentRotateDegree;
     private Context mContext;
+    private GestureItemView[][] mHoriChildren = new GestureItemView[3][];
+
+    private enum Direction {
+        Right, Left, None;
+    }
+
+    private Direction mLastTranslateDeirction = Direction.None;
+    private GestureItemView mExtraItemTop, mExtraItemMid, mExtraItemBottom;
 
     public AppleWatchLayout(Context context) {
         this(context, null);
@@ -67,9 +67,38 @@ public class AppleWatchLayout extends ViewGroup {
 
     public AppleWatchLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        mContext = context;
+    }
 
+    public AppleWatchLayout(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        mContext = context;
         init();
+        addThreeExtraItem();
+    }
+
+    private void addThreeExtraItem() {
+        LayoutParams lp = null;
+        mExtraItemTop = new GestureItemView(getContext());
+        lp = new LayoutParams(mItemSize, mItemSize);
+        lp.position = -1;
+        lp.scale = 0.0f;
+        mExtraItemTop.setLayoutParams(lp);
+
+        mExtraItemMid = new GestureItemView(getContext());
+        lp = new LayoutParams(mItemSize, mItemSize);
+        lp.position = -2;
+        lp.scale = 0.0f;
+        mExtraItemMid.setLayoutParams(lp);
+
+        mExtraItemBottom = new GestureItemView(getContext());
+        lp = new LayoutParams(mItemSize, mItemSize);
+        lp.position = -3;
+        lp.scale = 0.0f;
+        mExtraItemBottom.setLayoutParams(lp);
+
+        addView(mExtraItemTop);
+        addView(mExtraItemMid);
+        addView(mExtraItemBottom);
     }
 
     private void init() {
@@ -78,13 +107,9 @@ public class AppleWatchLayout extends ViewGroup {
         mIconSize = res.getDimensionPixelSize(R.dimen.apple_watch_item_icon_size);
         mInnerRadius = res.getDimensionPixelSize(R.dimen.apple_watch_layout_inner_radius);
         mOuterRadius = res.getDimensionPixelSize(R.dimen.apple_watch_layout_outer_radius);
-        mRingCount = 2;
         mInnerScale = 0.8f;
         mOuterScale = 0.6f;
-    }
-
-    public AppleWatchLayout(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        mThirdScale = 0.5f;
     }
 
     public int getItemSize() {
@@ -131,10 +156,26 @@ public class AppleWatchLayout extends ViewGroup {
             child.setScaleY(lp.scale);
         }
 
+        measureThreeExtraItem();
+
         mTotalWidth = getMeasuredWidth();
         mTotalHeight = getMeasuredHeight();
         mCenterPointX = mTotalWidth / 2;
         mCenterPointY = mTotalHeight / 2;
+    }
+
+    private void measureThreeExtraItem() {
+        // TODO Auto-generated method stub
+        int childWidthMeasureSpec;
+        int childHeightMeasureSpec;
+        childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mItemSize,
+                MeasureSpec.EXACTLY);
+        childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mItemSize,
+                MeasureSpec.EXACTLY);
+
+        mExtraItemTop.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+        mExtraItemMid.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+        mExtraItemBottom.measure(childWidthMeasureSpec, childHeightMeasureSpec);
     }
 
     @Override
@@ -146,28 +187,15 @@ public class AppleWatchLayout extends ViewGroup {
             return;
         }
 
-        /*
-         * first ring max count is 4
-         */
-        if (childCount > INNER_RING_MAX_COUNT) {
-            mRingCount = 2;
-        } else {
-            mRingCount = 1;
-        }
-
-        int innerRingCount = 6;
-        float innertAngleInterval, outerAngleInterval;
+        float innertAngleInterval;
         innertAngleInterval = 60;
-        outerAngleInterval = 120;
-        float innerStartAngle, outerStartAngle;
+        float innerStartAngle;
         innerStartAngle = 0;
-        outerStartAngle = 30;
-
         int halfItemSize;
-
-        int left = 0, top = 0;
         double outerItemAngle = 30;
+        int left = 0, top = 0;
 
+        // layout all position >= 0
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
             if (child.getVisibility() == GONE) {
@@ -190,7 +218,7 @@ public class AppleWatchLayout extends ViewGroup {
                         * Math.sin(Math.toRadians(innerStartAngle + (params.position - 1)
                                 * innertAngleInterval)) - halfItemSize);
 
-            } else if (params.position <= 10) { // match second ring
+            } else if (params.position <= 12) { // match second ring
 
                 if (params.position == 7) {
                     outerItemAngle = 330;
@@ -206,12 +234,20 @@ public class AppleWatchLayout extends ViewGroup {
                     outerItemAngle = 210;
                 }
 
-                left = (int) (mCenterPointX - mOuterRadius
-                        * Math.cos(Math.toRadians(outerItemAngle)) - halfItemSize);
+                if (params.position == 8 || params.position == 11) {
+                    left = (int) (mCenterPointX - mOuterRadius * 1.1f
+                            * Math.cos(Math.toRadians(outerItemAngle)) - halfItemSize);
 
-                top = (int) (mCenterPointY
-                        - mOuterRadius
-                        * Math.sin(Math.toRadians(outerItemAngle)) - halfItemSize);
+                    top = (int) (mCenterPointY
+                            - mOuterRadius * 1.1f * Math.sin(Math.toRadians(outerItemAngle)) - halfItemSize);
+                } else {
+                    left = (int) (mCenterPointX - mOuterRadius
+                            * Math.cos(Math.toRadians(outerItemAngle)) - halfItemSize);
+
+                    top = (int) (mCenterPointY
+                            - mOuterRadius
+                            * Math.sin(Math.toRadians(outerItemAngle)) - halfItemSize);
+                }
             }
 
             child.layout(left, top, left + child.getMeasuredWidth(),
@@ -227,6 +263,84 @@ public class AppleWatchLayout extends ViewGroup {
         mContainer = (AppleWatchContainer) getParent();
     }
 
+    private void layoutThreeExtraItem(Direction direction) {
+        LeoLog.e(TAG, "layoutThreeExtraItem");
+        if (mExtraItemTop == null) {
+            addThreeExtraItem();
+            measureThreeExtraItem();
+        }
+        GestureItemView temp;
+        LayoutParams lp;
+        if (direction == Direction.Left) {
+            for (int i = 0; i < getChildCount(); i++) {
+                temp = (GestureItemView) getChildAt(i);
+                lp = (LayoutParams) temp.getLayoutParams();
+                if (lp.position == 7) {
+                    mExtraItemBottom.layout(0, temp.getTop(), mItemSize, temp.getBottom());
+                    mExtraItemBottom.setPivotX(0);
+                    mExtraItemBottom.setPivotY(mExtraItemBottom.getMeasuredHeight() / 2);
+                } else if (lp.position == 8) {
+                    mExtraItemMid.layout(0, temp.getTop(), mItemSize, temp.getBottom());
+                    mExtraItemMid.setPivotX(0);
+                    mExtraItemMid.setPivotY(mExtraItemMid.getMeasuredHeight() / 2);
+                } else if (lp.position == 9) {
+                    mExtraItemTop.layout(0, temp.getTop(), mItemSize, temp.getBottom());
+                    mExtraItemTop.setPivotX(0);
+                    mExtraItemTop.setPivotY(mExtraItemTop.getMeasuredHeight() / 2);
+                } else if (lp.position == 10) {
+                    inflateItem(mExtraItemTop, (BaseInfo) temp.getTag());
+                } else if (lp.position == 11) {
+                    inflateItem(mExtraItemMid, (BaseInfo) temp.getTag());
+                } else if (lp.position == 12) {
+                    inflateItem(mExtraItemBottom, (BaseInfo) temp.getTag());
+                    break;
+                }
+            }
+        } else if (direction == Direction.Right) {
+            for (int i = 0; i < getChildCount(); i++) {
+                temp = (GestureItemView) getChildAt(i);
+                lp = (LayoutParams) temp.getLayoutParams();
+                if (lp.position == 7) {
+                    inflateItem(mExtraItemBottom, (BaseInfo) temp.getTag());
+                } else if (lp.position == 8) {
+                    inflateItem(mExtraItemMid, (BaseInfo) temp.getTag());
+                } else if (lp.position == 9) {
+                    inflateItem(mExtraItemTop, (BaseInfo) temp.getTag());
+                } else if (lp.position == 10) {
+                    mExtraItemTop.layout(mTotalWidth - mItemSize, temp.getTop(), mTotalWidth,
+                            temp.getBottom());
+                    mExtraItemTop.setPivotX(mExtraItemTop.getMeasuredWidth());
+                    mExtraItemTop.setPivotY(mExtraItemTop.getMeasuredHeight() / 2);
+                } else if (lp.position == 11) {
+                    mExtraItemMid.layout(mTotalWidth - mItemSize, temp.getTop(), mTotalWidth,
+                            temp.getBottom());
+                    mExtraItemMid.setPivotX(mExtraItemMid.getMeasuredWidth());
+                    mExtraItemMid.setPivotY(mExtraItemMid.getMeasuredHeight() / 2);
+                } else if (lp.position == 12) {
+                    mExtraItemBottom.layout(mTotalWidth - mItemSize, temp.getTop(), mTotalWidth,
+                            temp.getBottom());
+                    mExtraItemBottom.setPivotX(mExtraItemBottom.getMeasuredWidth());
+                    mExtraItemBottom.setPivotY(mExtraItemBottom.getMeasuredHeight() / 2);
+                    break;
+                }
+            }
+
+        }
+    }
+
+    private void inflateItem(GestureItemView item, BaseInfo info) {
+        if (item == null || info == null)
+            return;
+        item.setGravity(Gravity.CENTER_HORIZONTAL);
+        item.setText(info.label);
+        item.setTextSize(12);
+        item.setCompoundDrawables(null, info.icon, null, null);
+        if (info.eventNumber > 0) {
+            item.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+        }
+        item.setTag(info);
+    }
+
     @Override
     public void removeView(View view) {
         LayoutParams params = null;
@@ -239,6 +353,13 @@ public class AppleWatchLayout extends ViewGroup {
         }
         super.removeView(view);
         saveReorderPosition();
+    }
+
+    @Override
+    public void removeAllViews() {
+        // TODO Auto-generated method stub
+        super.removeAllViews();
+        addThreeExtraItem();
     }
 
     /**
@@ -267,14 +388,20 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     public float getItemScale(int position) {
-        if (position <= 0) {
+        if (position < 0) {
+            return 0.0f;
+        } else if (position == 0) {
             return 1f;
         } else if (position <= 6) {
             return mInnerScale;
-        } else if (position <= 10) {
-            return mOuterScale;
+        } else if (position <= 12) {
+            if (position == 8 || position == 11) {
+                return mThirdScale;
+            } else {
+                return mOuterScale;
+            }
         } else {
-            LeoLog.e(TAG, "position must be >=0 and <= 10");
+            LeoLog.e(TAG, "position must be >=0 and <= 12");
             return 0f;
         }
     }
@@ -455,22 +582,6 @@ public class AppleWatchLayout extends ViewGroup {
             QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
                     (BaseInfo) hitView.getTag());
         } else if (type == GType.SwitcherLayout) {
-            // TODO show add new item icon
-            // 方案一，失败
-            // String switchListString =
-            // QuickSwitchManager.getInstance(mContext).getListStringFromSp();
-            // List<QuickSwitcherInfo> mNowList =
-            // QuickSwitchManager.getInstance(mContext).StringToList(switchListString);
-            // QuickSwitcherInfo mXuKuang =
-            // QuickSwitchManager.getInstance(mContext).getXuKuangInfo();
-            // mXuKuang.position = mNowList.size();
-            // mNowList.add(mXuKuang);
-            // mContainer.fillSwitchItem(QuickGestureLayout.this,mNowList);
-            // 方案二，直接加个view
-            // GestureItemView mIvXuKuang =
-            // QuickSwitchManager.getInstance(mContext).getXuKuang(
-            // hitView);
-            // addView(mIvXuKuang);
 
             int childCount = getChildCount();
             GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
@@ -744,14 +855,14 @@ public class AppleWatchLayout extends ViewGroup {
         if (mContainer.getCurrentGestureType() != GType.DymicLayout) {
             int childCount = getChildCount();
             GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 9 && !view.hasAddFlag()) {
+            if (childCount < 13 && !view.hasAddFlag()) {
                 showAddIcon(childCount);
             }
         }
     }
 
     private void showAddIcon(int position) {
-        if (position >= 0 && position <= 10) {
+        if (position >= 0 && position <= 12) {
             LayoutParams params = new LayoutParams(mItemSize, mItemSize);
             params.position = position;
             GestureItemView addItem = new GestureItemView(mContext);
@@ -764,5 +875,263 @@ public class AppleWatchLayout extends ViewGroup {
 
     public void checkFull() {
 
+    }
+
+    public void translateItem(float moveX) {
+        LeoLog.e(TAG, "moveX = " + moveX);
+        if (moveX > 0) {
+            if (mLastTranslateDeirction != Direction.Left) {
+                mLastTranslateDeirction = Direction.Left;
+                LeoLog.e(TAG, "translateItem");
+                layoutThreeExtraItem(Direction.Left);
+                computeHoriChildren(Direction.Left);
+            }
+            computeTranslateScale(Direction.Left, moveX);
+        } else if (moveX < 0) {
+            if (mLastTranslateDeirction != Direction.Right) {
+                mLastTranslateDeirction = Direction.Right;
+                layoutThreeExtraItem(Direction.Right);
+                computeHoriChildren(Direction.Right);
+            }
+            computeTranslateScale(Direction.Right, moveX);
+        }
+    }
+
+    private void computeHoriChildren(Direction direction) {
+        GestureItemView item = null;
+        int position = 0;
+        if (direction == Direction.Left) {
+            mHoriChildren[0] = new GestureItemView[5];
+            mHoriChildren[1] = new GestureItemView[6];
+            mHoriChildren[2] = new GestureItemView[5];
+            for (int i = 0; i < getChildCount(); i++) {
+                item = (GestureItemView) getChildAt(i);
+                position = ((LayoutParams) item.getLayoutParams()).position;
+                if (position == -1) {
+                    mHoriChildren[0][0] = item;
+                } else if (position == 9) {
+                    mHoriChildren[0][1] = item;
+                } else if (position == 2) {
+                    mHoriChildren[0][2] = item;
+                } else if (position == 3) {
+                    mHoriChildren[0][3] = item;
+                } else if (position == 10) {
+                    mHoriChildren[0][4] = item;
+                } else if (position == -2) {
+                    mHoriChildren[1][0] = item;
+                } else if (position == 8) {
+                    mHoriChildren[1][1] = item;
+                } else if (position == 1) {
+                    mHoriChildren[1][2] = item;
+                } else if (position == 0) {
+                    mHoriChildren[1][3] = item;
+                } else if (position == 4) {
+                    mHoriChildren[1][4] = item;
+                } else if (position == 11) {
+                    mHoriChildren[1][5] = item;
+                } else if (position == -3) {
+                    mHoriChildren[2][0] = item;
+                } else if (position == 7) {
+                    mHoriChildren[2][1] = item;
+                } else if (position == 6) {
+                    mHoriChildren[2][2] = item;
+                } else if (position == 5) {
+                    mHoriChildren[2][3] = item;
+                } else if (position == 12) {
+                    mHoriChildren[2][4] = item;
+                }
+            }
+        } else if (direction == Direction.Right) {
+            mHoriChildren[0] = new GestureItemView[5];
+            mHoriChildren[1] = new GestureItemView[6];
+            mHoriChildren[2] = new GestureItemView[5];
+            for (int i = 0; i < getChildCount(); i++) {
+                item = (GestureItemView) getChildAt(i);
+                position = ((LayoutParams) item.getLayoutParams()).position;
+                if (position == -1) {
+                    mHoriChildren[0][4] = item;
+                } else if (position == 9) {
+                    mHoriChildren[0][0] = item;
+                } else if (position == 2) {
+                    mHoriChildren[0][1] = item;
+                } else if (position == 3) {
+                    mHoriChildren[0][2] = item;
+                } else if (position == 10) {
+                    mHoriChildren[0][3] = item;
+                } else if (position == -2) {
+                    mHoriChildren[1][5] = item;
+                } else if (position == 8) {
+                    mHoriChildren[1][0] = item;
+                } else if (position == 1) {
+                    mHoriChildren[1][1] = item;
+                } else if (position == 0) {
+                    mHoriChildren[1][2] = item;
+                } else if (position == 4) {
+                    mHoriChildren[1][3] = item;
+                } else if (position == 11) {
+                    mHoriChildren[1][4] = item;
+                } else if (position == -3) {
+                    mHoriChildren[2][4] = item;
+                } else if (position == 7) {
+                    mHoriChildren[2][0] = item;
+                } else if (position == 6) {
+                    mHoriChildren[2][1] = item;
+                } else if (position == 5) {
+                    mHoriChildren[2][2] = item;
+                } else if (position == 12) {
+                    mHoriChildren[2][3] = item;
+                }
+            }
+        }
+    }
+
+    private void computeTranslateScale(Direction direction, float moveX) {
+        int i;
+        float offset, moveY;
+        float rawScale1, rawScale2, targetScale;
+        if (direction == Direction.Left) {
+            for (i = 0; i < mHoriChildren[0].length; i++) {
+                rawScale1 = ((LayoutParams) mHoriChildren[0][i].getLayoutParams()).scale;
+                if (i == mHoriChildren[0].length - 1) {
+                    offset = mTotalWidth - mHoriChildren[0][i].getRight();
+                    targetScale = rawScale1 - moveX / offset * rawScale1;
+                    moveY = 0f;
+                } else {
+                    rawScale2 = ((LayoutParams) mHoriChildren[0][i + 1].getLayoutParams()).scale;
+                    offset = mHoriChildren[0][i + 1].getLeft() - mHoriChildren[0][i].getLeft();
+                    targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
+                    moveY = computeTranslateY(mHoriChildren[0][i], mHoriChildren[0][i + 1], moveX);
+                }
+                mHoriChildren[0][i].setScaleX(targetScale);
+                mHoriChildren[0][i].setScaleY(targetScale);
+                mHoriChildren[0][i].setTranslationX(moveX);
+                mHoriChildren[0][i].setTranslationY(moveY);
+            }
+            for (i = 0; i < mHoriChildren[1].length; i++) {
+                rawScale1 = ((LayoutParams) mHoriChildren[1][i].getLayoutParams()).scale;
+                if (i == mHoriChildren[1].length - 1) {
+                    offset = mTotalWidth
+                            - (mHoriChildren[1][i].getLeft() + mHoriChildren[1][i].getWidth() / 2
+                                    * (1 + rawScale1));
+                    targetScale = rawScale1 - moveX / offset * rawScale1;
+                    moveY = 0f;
+                } else {
+                    rawScale2 = ((LayoutParams) mHoriChildren[1][i + 1].getLayoutParams()).scale;
+                    if (i == 0) {
+                        offset = mHoriChildren[1][i + 1].getMeasuredWidth() / 2;
+                        targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
+                        moveY = 0f;
+                        LeoLog.e("====", "rawScale1 = " + rawScale1 + "      rawScale2 = "
+                                + rawScale2
+                                + "       targetScale = " + targetScale);
+                    } else {
+                        offset = mHoriChildren[1][i + 1].getLeft() - mHoriChildren[1][i].getLeft();
+                        targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
+                        moveY = computeTranslateY(mHoriChildren[1][i], mHoriChildren[1][i + 1],
+                                moveX);
+                    }
+                }
+
+                mHoriChildren[1][i].setScaleX(targetScale);
+                mHoriChildren[1][i].setScaleY(targetScale);
+                mHoriChildren[1][i].setTranslationX(moveX);
+                mHoriChildren[1][i].setTranslationY(moveY);
+            }
+            for (i = 0; i < mHoriChildren[2].length; i++) {
+                rawScale1 = ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).scale;
+                if (i == mHoriChildren[2].length - 1) {
+                    offset = mTotalWidth - mHoriChildren[2][i].getRight();
+                    targetScale = rawScale1 - moveX / offset * rawScale1;
+                    moveY = 0f;
+                } else {
+                    rawScale2 = ((LayoutParams) mHoriChildren[1][i + 1].getLayoutParams()).scale;
+                    offset = mHoriChildren[2][i + 1].getLeft() - mHoriChildren[2][i].getLeft();
+                    targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
+                    moveY = computeTranslateY(mHoriChildren[2][i], mHoriChildren[2][i + 1], moveX);
+                }
+                mHoriChildren[2][i].setScaleX(targetScale);
+                mHoriChildren[2][i].setScaleY(targetScale);
+                mHoriChildren[2][i].setTranslationX(moveX);
+                mHoriChildren[2][i].setTranslationY(moveY);
+            }
+        } else if (direction == Direction.Right) {
+            for (i = mHoriChildren[0].length - 1; i >= 0; i--) {
+                rawScale1 = ((LayoutParams) mHoriChildren[0][i].getLayoutParams()).scale;
+                if (i == 0) {
+                    offset = 0 - mHoriChildren[0][i].getLeft();
+                    targetScale = rawScale1 - moveX / offset * rawScale1;
+                    moveY = 0f;
+                } else {
+                    rawScale2 = ((LayoutParams) mHoriChildren[0][i - 1].getLayoutParams()).scale;
+                    offset = mHoriChildren[0][i - 1].getLeft() - mHoriChildren[0][i].getLeft();
+                    targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
+                    moveY = computeTranslateY(mHoriChildren[0][i], mHoriChildren[0][i - 1], moveX);
+                }
+                mHoriChildren[0][i].setScaleX(targetScale);
+                mHoriChildren[0][i].setScaleY(targetScale);
+                mHoriChildren[0][i].setTranslationX(moveX);
+                mHoriChildren[0][i].setTranslationY(moveY);
+            }
+            for (i = mHoriChildren[1].length - 1; i >= 0; i--) {
+                rawScale1 = ((LayoutParams) mHoriChildren[1][i].getLayoutParams()).scale;
+                if (i == 0) {
+                    offset = mHoriChildren[1][i].getRight() - mHoriChildren[1][i].getWidth() / 2
+                            * (1 + rawScale1);
+                    targetScale = rawScale1 + moveX / offset * rawScale1;
+                    moveY = 0f;
+                } else {
+                    rawScale2 = ((LayoutParams) mHoriChildren[1][i - 1].getLayoutParams()).scale;
+                    offset = mHoriChildren[1][i - 1].getLeft() - mHoriChildren[1][i].getLeft();
+                    targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
+                    if (i == 5) {
+                        offset = mHoriChildren[1][i - 1].getLeft()
+                                + mHoriChildren[1][i - 1].getMeasuredWidth() / 2 - mTotalWidth;
+                        targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
+                        moveY = 0f;
+                        LeoLog.e("====", "rawScale1 = " + rawScale1 + "      rawScale2 = "
+                                + rawScale2
+                                + "       targetScale = " + targetScale);
+                    } else {
+                        offset = mHoriChildren[1][i - 1].getLeft() - mHoriChildren[1][i].getLeft();
+                        targetScale = rawScale1 + moveX
+                                / offset * (rawScale2 - rawScale1);
+                        moveY = computeTranslateY(mHoriChildren[1][i], mHoriChildren[1][i - 1],
+                                moveX);
+                    }
+                }
+                mHoriChildren[1][i].setScaleX(targetScale);
+                mHoriChildren[1][i].setScaleY(targetScale);
+                mHoriChildren[1][i].setTranslationX(moveX);
+                mHoriChildren[1][i].setTranslationY(moveY);
+            }
+            for (i = mHoriChildren[2].length - 1; i >= 0; i--) {
+                rawScale1 = ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).scale;
+                if (i == 0) {
+                    offset = 0 - mHoriChildren[2][i].getLeft();
+                    targetScale = rawScale1 - moveX / offset * rawScale1;
+                    moveY = 0f;
+                } else {
+                    rawScale2 = ((LayoutParams) mHoriChildren[2][i - 1].getLayoutParams()).scale;
+                    offset = mHoriChildren[2][i - 1].getLeft() - mHoriChildren[2][i].getLeft();
+                    targetScale = rawScale1 + moveX
+                            / offset * (rawScale2 - rawScale1);
+                    moveY = computeTranslateY(mHoriChildren[2][i], mHoriChildren[2][i - 1], moveX);
+                }
+                mHoriChildren[2][i].setScaleX(targetScale);
+                mHoriChildren[2][i].setScaleY(targetScale);
+                mHoriChildren[2][i].setTranslationX(moveX);
+                mHoriChildren[2][i].setTranslationY(moveY);
+            }
+        }
+    }
+
+    private float computeTranslateY(GestureItemView from, GestureItemView to, float tranX) {
+        float dx = to.getLeft() - from.getLeft();
+        float dy = to.getTop() - from.getTop();
+
+        float resault;
+        resault = dy / dx * tranX;
+
+        return resault;
     }
 }

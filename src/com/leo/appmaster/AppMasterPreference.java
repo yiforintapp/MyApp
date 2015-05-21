@@ -1518,7 +1518,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getSwitchListSize() {
         return mPref.getInt(PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE,
-                9);
+                13);
     }
 
     public void setSwitchListSize(int mSwitchListSize) {

@@ -40,17 +40,11 @@ public class QuickGesturePopupActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handleIntent();
-        // if (mOrientation == Orientation.Left) {
         setContentView(R.layout.pop_quick_gesture_apple_watch);
-        // } else {
-        // setContentView(R.layout.pop_quick_gesture_right);
-        // }
-
         // Window window = getWindow();
         // WindowManager.LayoutParams params = window.getAttributes();
         // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         // window.setAttributes(params);
-
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         // mContainer.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
