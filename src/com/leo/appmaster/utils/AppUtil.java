@@ -4,7 +4,9 @@ package com.leo.appmaster.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 
 import android.app.Activity;
@@ -106,12 +108,13 @@ public class AppUtil {
     }
 
     public static Drawable getDrawable(PackageManager pm, String pkg) {
-        Drawable d = null;
-        try {
-            d = pm.getApplicationIcon(pkg);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        Drawable d = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppIcon(pkg);
+       if(d == null) {
+           try {
+               d = pm.getApplicationIcon(pkg);
+           } catch (NameNotFoundException e) {            
+           }
+       }
         return d;
     }
 
