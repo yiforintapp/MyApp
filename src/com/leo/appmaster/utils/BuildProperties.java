@@ -83,24 +83,21 @@ public class BuildProperties {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static boolean checkOp(Context context, int op) {
-        final int version = Build.VERSION.SDK_INT;
-        if (version >= 19) {
-            AppOpsManager manager = (AppOpsManager) context
-                    .getSystemService(Context.APP_OPS_SERVICE);
-            AppOpsManager method = null;
-            try {
-                method = (AppOpsManager) invokePrivateMethod(manager, "checkOp");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (AppOpsManager.MODE_ALLOWED == (Integer) manager.checkOp(op,
-                    Binder.getCallingUid(), context.getPackageName())) {
-                return true;
-            } else {
-                return false;
-            }
+        AppOpsManager manager = (AppOpsManager) context
+                .getSystemService(Context.APP_OPS_SERVICE);
+        @SuppressWarnings("unused")
+        AppOpsManager method = null;
+        try {
+            method = (AppOpsManager) invokePrivateMethod(manager, "checkOp");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return false;
+        if (AppOpsManager.MODE_ALLOWED == (Integer) manager.checkOp(op,
+                Binder.getCallingUid(), context.getPackageName())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static Object invokePrivateMethod(Object obj, String methodName) throws Exception {
@@ -122,7 +119,7 @@ public class BuildProperties {
     public static boolean isMiuiFloatWindowOpAllowed(Context context) {
         final int version = Build.VERSION.SDK_INT;
         boolean flag;
-        if (version >= 19) {
+        if (version >=19) {
             flag = checkOp(context, AppOpsManager.OP_SYSTEM_ALERT_WINDOW);
         } else {
             if ((context.getApplicationInfo().flags & 1 << 27) == 1) {
