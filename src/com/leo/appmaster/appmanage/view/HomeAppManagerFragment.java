@@ -80,7 +80,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private ListView list_delete;
     private AppBackupRestoreManager mDeleteManager;
     private AppDeleteAdapter mDeleteAdapter;
-    private ImageView iv_donghua, app_hot_tip_icon;
+    private ImageView iv_donghua, app_hot_tip_icon, mQuickGestureRedTip;
     private TextView tv_installed_app, tv_ap_data, tv_backup_num,
             tv_from_big_donghua;
     // private int InstalledApps = 0;
@@ -138,8 +138,13 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     @Override
     protected void onInitUI() {
-        LeoEventBus.getDefaultBus().register(this);
         sp_homeAppManager = AppMasterPreference.getInstance(mActivity);
+        LeoEventBus.getDefaultBus().register(this);
+        // 快捷手势红点
+        mQuickGestureRedTip = (ImageView) findViewById(R.id.quick_gesture_tip_icon);
+        if (sp_homeAppManager.getQuickGestureRedTip()) {
+            mQuickGestureRedTip.setVisibility(View.VISIBLE);
+        }
         DeleteDataList = new ArrayList<AppItemInfo>();
         homeAppManagerTask = new HomeAppAsyncTask();
         homeAppManagerTask.execute("");
@@ -354,13 +359,13 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 Intent dlIntent = new Intent(mActivity, EleActivity.class);
                 startActivity(dlIntent);
                 break;
-            case R.id.bg_show_hotapp:
-                app_hot_tip_icon.setVisibility(View.GONE);
-                sp_homeAppManager.setHomeFragmentRedTip(false);
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "hot");
-                Intent nIntent = new Intent(mActivity, HotAppActivity.class);
-                startActivity(nIntent);
-                break;
+            // case R.id.bg_show_hotapp:
+            // app_hot_tip_icon.setVisibility(View.GONE);
+            // sp_homeAppManager.setHomeFragmentRedTip(false);
+            // SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "hot");
+            // Intent nIntent = new Intent(mActivity, HotAppActivity.class);
+            // startActivity(nIntent);
+            // break;
             case R.id.iv_donghua:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "newboost");
                 if (!isCleanning) {
@@ -368,6 +373,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 }
                 break;
             case R.id.bg_show_quick_gesture:
+                if (sp_homeAppManager.getQuickGestureRedTip()) {
+                    sp_homeAppManager.setQuickGestureRedTip(false);
+                    mQuickGestureRedTip.setVisibility(View.GONE);
+                }
                 boolean flag = BuildProperties.isMIUI();
                 boolean isOpenWindow =
                         BuildProperties.isMiuiFloatWindowOpAllowed(getActivity());

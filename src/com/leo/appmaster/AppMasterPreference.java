@@ -165,6 +165,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST = "quick_gesture_quickswitch_list";
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE = "quick_gesture_quickswitch_list_size";
     public static final String PREF_QUICK_FIRST_SLIDING_TIP = "quick_first_sliding_tip";
+    public static final String PREF_QUICK_GESTURE_RED_TIP = "quick_gesture_red_tip";
 
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -1538,5 +1539,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getFristSlidingTip() {
         return mPref.getBoolean(PREF_QUICK_FIRST_SLIDING_TIP, false);
+    }
+
+    public void setQuickGestureRedTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_RED_TIP, flag).commit();
+    }
+
+    public boolean getQuickGestureRedTip() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_RED_TIP, true);
     }
 }

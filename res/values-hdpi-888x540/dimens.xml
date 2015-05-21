@@ -141,8 +141,8 @@
     <dimen name="privacy_message_item_message_itemLT_layout_marginRight">50dp</dimen>
     <dimen name="privacy_contact_list_item_layout_marginLeft">16dp</dimen>
     <dimen name="privacy_contact_list_item_layout_marginTop">8dp</dimen>
-    <dimen name="privacy_contact_red_tip_x">90dp</dimen>
-    <dimen name="privacy_contact_red_tip_y">10dp</dimen>
+    <dimen name="privacy_contact_red_tip_x">98dp</dimen>
+    <dimen name="privacy_contact_red_tip_y">12dp</dimen>
     <dimen name="privacy_contact_circleimage_red_tip_x">26dp</dimen>
     <dimen name="privacy_contact_circleimage_red_tip_y">4dp</dimen>
     <dimen name="privacy_default_image_width">150dp</dimen>

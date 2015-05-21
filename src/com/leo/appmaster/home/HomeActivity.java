@@ -51,6 +51,7 @@ import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
@@ -139,7 +140,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mLeftMenu.setOnClickListener(this);
         mLeftMenu.setImageDrawable(mDrawerArrowDrawable);
         mTtileBar.setOptionClickListener(this);
-
+        mTtileBar.setHotAppClickListener(this);
         mBgStatusbar = findViewById(R.id.bg_statusbar);
         mFgStatusbar = findViewById(R.id.fg_statusbar);
         mShadeView = (HomeShadeView) findViewById(R.id.shadeview);
@@ -194,6 +195,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         HomeAppManagerFragment appManagerFragment = new HomeAppManagerFragment();
         holder.fragment = appManagerFragment;
         holder.iconId = R.drawable.my_apps_active_icon;
+        if (AppMasterPreference.getInstance(this).getQuickGestureRedTip()) {
+            holder.isRedTip = true;
+        }
         mFragmentHolders[2] = holder;
 
         // AM-614, remove cached fragments
@@ -212,9 +216,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
 
     }
-    
+
     public int getCurrentPage() {
-        if(mViewPager != null) {
+        if (mViewPager != null) {
             return mViewPager.getCurrentItem();
         } else {
             return 0;
@@ -244,6 +248,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 }
             }
         }
+        if (mFragmentHolders != null) {
+            if (!AppMasterPreference.getInstance(this).getQuickGestureRedTip()) {
+                mFragmentHolders[2].isRedTip = false;
+                mPagerTab.notifyDataSetChanged();
+
+            }
+        }
         super.onResume();
     }
 
@@ -264,10 +275,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             showModePages(false/* , new int[]{1,1} */);
             return;
         }
-        
+
         // Whether the child consumed the event
         HomeFragmentHoler holder = mFragmentHolders[mViewPager.getCurrentItem()];
-        if(holder != null && holder.fragment != null && holder.fragment.onBackPressed()) {
+        if (holder != null && holder.fragment != null && holder.fragment.onBackPressed()) {
             return;
         }
 
@@ -284,16 +295,16 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_menu:
-//                if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
-//                    mDrawerLayout.closeDrawer(Gravity.START);
-//                } else {
-//                    mDrawerLayout.openDrawer(Gravity.START);
-//                    SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "menu");
-//                }
-                
+                // if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+                // mDrawerLayout.closeDrawer(Gravity.START);
+                // } else {
+                // mDrawerLayout.openDrawer(Gravity.START);
+                // SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "menu");
+                // }
+
                 Intent intent = new Intent(this, QuickGesturePopupActivity.class);
                 startActivity(intent);
-                
+
                 break;
             case R.id.iv_option_image:
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "password");
@@ -335,21 +346,28 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         mLeoPopMenu.dismissSnapshotList();
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(this,getRightMenuItems());
+                mLeoPopMenu.setPopMenuItems(this, getRightMenuItems());
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.iv_option_image), null, null);
                 break;
-
+            case R.id.bg_show_hotapp:
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "hot");
+                Intent nIntent = new Intent(HomeActivity.this, HotAppActivity.class);
+                try {
+                    startActivity(nIntent);
+                } catch (Exception e) {
+                }
+                break;
             default:
                 break;
         }
         int current = mViewPager.getCurrentItem();
-        if(current < mFragmentHolders.length) {
+        if (current < mFragmentHolders.length) {
             BaseFragment fragment = mFragmentHolders[current].fragment;
-            if(fragment instanceof Selectable) {
+            if (fragment instanceof Selectable) {
                 ((Selectable) fragment).onScrolling();
             }
-        }  
+        }
     }
 
     private List<String> getRightMenuItems() {
@@ -420,26 +438,32 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 }
                 boolean appwallFlag = prefernece.getBoolean("shortcut_appwall", false);
                 if (appwallFlag) {
-//                    Intent appWallShortIntent = new Intent(HomeActivity.this, AppWallActivity.class);
-//                    appWallShortIntent.putExtra("from_appwall_shortcut", true);
-//                    appWallShortIntent.setAction(Intent.ACTION_MAIN);
-//                    appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
-//                    appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    Intent appWallShortcut = new Intent(
-//                            "com.android.launcher.action.UNINSTALL_SHORTCUT");
-//                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-//                            getString(R.string.appwall_name));
-//                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
-//                    appWallShortcut.putExtra("duplicate", true);
-//                    sendBroadcast(appWallShortcut);
-//                    prefernece.edit().putBoolean("shortcut_appwall", false);
+                    // Intent appWallShortIntent = new Intent(HomeActivity.this,
+                    // AppWallActivity.class);
+                    // appWallShortIntent.putExtra("from_appwall_shortcut",
+                    // true);
+                    // appWallShortIntent.setAction(Intent.ACTION_MAIN);
+                    // appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                    // appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    // Intent appWallShortcut = new Intent(
+                    // "com.android.launcher.action.UNINSTALL_SHORTCUT");
+                    // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                    // getString(R.string.appwall_name));
+                    // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT,
+                    // appWallShortIntent);
+                    // appWallShortcut.putExtra("duplicate", true);
+                    // sendBroadcast(appWallShortcut);
+                    // prefernece.edit().putBoolean("shortcut_appwall", false);
                 } else {
                     Intent appWallShortIntent = new Intent(HomeActivity.this, ProxyActivity.class);
                     appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
                             StatusBarEventService.EVENT_BUSINESS_GAME);
-                    Intent appWallShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.appwall_name));
-                    ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(HomeActivity.this,
+                    Intent appWallShortcut = new Intent(
+                            "com.android.launcher.action.INSTALL_SHORTCUT");
+                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                            getString(R.string.appwall_name));
+                    ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(
+                            HomeActivity.this,
                             R.drawable.game);
                     appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
                     appWallShortcut.putExtra("duplicate", false);
@@ -663,6 +687,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     class HomeFragmentHoler {
         String title;
         int iconId;
+        boolean isRedTip;
         BaseFragment fragment;
     }
 
@@ -693,7 +718,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
         @Override
         public boolean getRedTip(int index) {
-            return false;
+            return mFragmentHolders[index].isRedTip;
         }
     }
 

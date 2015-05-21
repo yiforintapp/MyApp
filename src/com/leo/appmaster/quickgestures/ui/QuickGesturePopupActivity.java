@@ -102,10 +102,6 @@ public class QuickGesturePopupActivity extends Activity implements
     protected void onStop() {
         LeoLog.e("xxxx", "onStop");
         FloatWindowHelper.mGestureShowing = false;
-        // 去除系统短信未读提示
-        if (LockManager.getInstatnce().isShowSysNoReadMessage) {
-            LockManager.getInstatnce().isShowSysNoReadMessage = false;
-        }
         finish();
         super.onStop();
     }
@@ -125,10 +121,6 @@ public class QuickGesturePopupActivity extends Activity implements
     @Override
     protected void onDestroy() {
         FloatWindowHelper.mGestureShowing = false;
-        // 去除系统短信未读提示
-        if (LockManager.getInstatnce().isShowSysNoReadMessage) {
-            LockManager.getInstatnce().isShowSysNoReadMessage = false;
-        }
         super.onDestroy();
     }
 

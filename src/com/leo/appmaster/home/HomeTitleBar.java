@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
 
@@ -17,6 +18,7 @@ public class HomeTitleBar extends FrameLayout implements OnClickListener {
     private ImageView mMenuImgView;
     private ImageView mTvOptionImage;
     private ImageView mIvLogo;
+    private RelativeLayout mIvHotApp;
 
     public HomeTitleBar(Context context) {
         this(context, null);
@@ -37,6 +39,7 @@ public class HomeTitleBar extends FrameLayout implements OnClickListener {
         mMenuImgView = (ImageView) findViewById(R.id.iv_menu);
         mTvOptionImage = (ImageView) findViewById(R.id.iv_option_image);
         mIvLogo = (ImageView) findViewById(R.id.iv_logo);
+        mIvHotApp = (RelativeLayout) findViewById(R.id.bg_show_hotapp);
         super.onFinishInflate();
     }
 
@@ -48,6 +51,10 @@ public class HomeTitleBar extends FrameLayout implements OnClickListener {
         mTvOptionImage.setOnClickListener(listener);
     }
 
+    public void setHotAppClickListener(OnClickListener listener) {
+        mIvHotApp.setOnClickListener(listener);
+    }
+
     public ImageView getLogoImgView() {
         return mIvLogo;
     }
@@ -56,13 +63,13 @@ public class HomeTitleBar extends FrameLayout implements OnClickListener {
     public void onClick(View v) {
 
     }
-    
+
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         try {
             super.onRestoreInstanceState(state);
         } catch (Exception e) {
-            
+
         }
     }
 
