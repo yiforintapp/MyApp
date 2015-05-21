@@ -1,13 +1,23 @@
 
 package com.leo.appmaster.applocker;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,15 +28,21 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CirCleDongHua;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.utils.LeoLog;
 
 public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener {
     private final static int UnknowCallMode = 2;
+    private final static int SHOWGUABIG = 3;
+    private final static int SHOWDUANBIG = 4;
+    private final static int SHOWJIEBIG = 5;
+    private final static int SHOWNORMAL = 6;
     private TextView tv_use_tips, tv_use_tips_content;
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
-            iv_duanxin_big, iv_jieting_big, iv_tips_left, iv_tips_right;
+            iv_duanxin_big, iv_jieting_big, iv_tips_left, iv_tips_right, iv_hands;
     private GestureRelative mViewContent;
     private CirCleDongHua myself_circle;
-
+    private boolean isShowing = false;
+    private boolean isLunXun = false;
     private int hold_width, hold_height, hold_left, hold_top, hold_right, hold_bottom;
     private float mYuanX, mYuanY, mZhiJing, mBanJing;
     private int startX, startY;
@@ -41,13 +57,11 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
             tip_left_bottom;
     private int tip_right_x, tip_right_y, tip_right_left, tip_right_top, tip_right_right,
             tip_right_bottom;
-    private boolean isControlGua = false;
-    private boolean isControlDuan = false;
-    private boolean isControlJie = false;
-    private boolean isShowing = false;
+    private int hand_x, hand_y, hand_left, hand_top, hand_right, hand_bottom;
     private LEOAlarmDialog mAlarmDialog;
     private AppMasterPreference sp_unknowcall;
     private Vibrator vib;
+    private Timer mTimer;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -74,15 +88,50 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
                     // myself_circle.setVisibility(View.VISIBLE);
                     // showDonghua();
                     // }
-
                     iv_tips_left.setVisibility(View.VISIBLE);
                     iv_tips_right.setVisibility(View.VISIBLE);
                     iv_dianhua_hold.setVisibility(View.VISIBLE);
                     iv_guaduan.setVisibility(View.VISIBLE);
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
+
+                    if (!isShowing) {
+                        iv_hands.setVisibility(View.VISIBLE);
+                        iv_hands.layout(hand_left, hand_top, hand_right, hand_bottom);
+                        showTransDonghua();
+                    }
                     break;
-                default:
+                case SHOWGUABIG:
+                    iv_guaduan_big.setVisibility(View.VISIBLE);
+                    iv_guaduan.setVisibility(View.INVISIBLE);
+                    iv_duanxin_big.setVisibility(View.INVISIBLE);
+                    iv_duanxin.setVisibility(View.VISIBLE);
+                    iv_jieting_big.setVisibility(View.INVISIBLE);
+                    iv_jieting.setVisibility(View.VISIBLE);
+                    break;
+                case SHOWDUANBIG:
+                    iv_guaduan_big.setVisibility(View.INVISIBLE);
+                    iv_guaduan.setVisibility(View.VISIBLE);
+                    iv_duanxin_big.setVisibility(View.VISIBLE);
+                    iv_duanxin.setVisibility(View.INVISIBLE);
+                    iv_jieting_big.setVisibility(View.INVISIBLE);
+                    iv_jieting.setVisibility(View.VISIBLE);
+                    break;
+                case SHOWJIEBIG:
+                    iv_guaduan_big.setVisibility(View.INVISIBLE);
+                    iv_guaduan.setVisibility(View.VISIBLE);
+                    iv_duanxin_big.setVisibility(View.INVISIBLE);
+                    iv_duanxin.setVisibility(View.VISIBLE);
+                    iv_jieting_big.setVisibility(View.VISIBLE);
+                    iv_jieting.setVisibility(View.INVISIBLE);
+                    break;
+                case SHOWNORMAL:
+                    iv_guaduan_big.setVisibility(View.INVISIBLE);
+                    iv_guaduan.setVisibility(View.VISIBLE);
+                    iv_duanxin_big.setVisibility(View.INVISIBLE);
+                    iv_duanxin.setVisibility(View.VISIBLE);
+                    iv_jieting_big.setVisibility(View.INVISIBLE);
+                    iv_jieting.setVisibility(View.VISIBLE);
                     break;
             }
         };
@@ -104,6 +153,86 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unknowcall_five);
         init();
+    }
+
+    protected void showTransDonghua() {
+        isShowing = true;
+        // TranslateAnimation transup = new TranslateAnimation(0,
+        // mBanJing, 0, -mBanJing);
+        // transup.setDuration(1500);
+        // transup.setAnimationListener(new AnimationListener() {
+        // @Override
+        // public void onAnimationStart(Animation animation) {
+        //
+        // }
+        // @Override
+        // public void onAnimationRepeat(Animation animation) {
+        // TranslateAnimation trandown = new TranslateAnimation(0,
+        // mBanJing, 0, -mBanJing);
+        // trandown.setDuration(1500);
+        // }
+        // @Override
+        // public void onAnimationEnd(Animation animation) {
+        //
+        // }
+        // });
+        // iv_hands.setAnimation(transup);
+
+        if (!isLunXun) {
+            setTimerTask();
+        }
+        ObjectAnimator moveX = ObjectAnimator.ofFloat(iv_hands, "translationX", 0, mBanJing,
+                mBanJing, mZhiJing);
+        moveX.setDuration(2500);
+
+        ObjectAnimator moveY = ObjectAnimator.ofFloat(iv_hands, "translationY", 0, -mBanJing,
+                -mBanJing, 0);
+        moveY.setDuration(2500);
+
+        moveX.start();
+        moveY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                showTransDonghua();
+            }
+        });
+        moveY.start();
+    }
+
+    private void setTimerTask() {
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                isLunXun = true;
+                LeoLog.d("testunknow",
+                        "hand_x : " + iv_hands.getX() + " ; hand_y : " + iv_hands.getY());
+                int handX = (int) iv_hands.getX();
+                int handY = (int) iv_hands.getY();
+                int handWidth = iv_hands.getWidth();
+                int handHeight = iv_hands.getHeight();
+                int handLeft = handX - handWidth / 2;
+                int handTop = handY - handHeight / 2;
+                int handRight = handX + handWidth / 2;
+                int handBottom = handY + handHeight / 2;
+                if (handLeft < gua_right + 10 && handTop < gua_top - 10) {
+                    Message message = new Message();
+                    message.what = SHOWGUABIG;
+                    handler.sendMessage(message);
+                } else if (handTop < duan_bottom + 10 && handLeft > duan_left - 10) {
+                    Message message = new Message();
+                    message.what = SHOWDUANBIG;
+                    handler.sendMessage(message);
+                } else if (handLeft > jie_left - 20) {
+                    Message message = new Message();
+                    message.what = SHOWJIEBIG;
+                    handler.sendMessage(message);
+                } else {
+                    Message message = new Message();
+                    message.what = SHOWNORMAL;
+                    handler.sendMessage(message);
+                }
+            }
+        }, 100, 100);
     }
 
     // protected void showDonghua() {
@@ -156,6 +285,16 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         iv_tips_left = (ImageView) findViewById(R.id.iv_tips_left);
         iv_tips_right = (ImageView) findViewById(R.id.iv_tips_right);
 
+        iv_hands = (ImageView) findViewById(R.id.iv_hands);
+        mTimer = new Timer();
+
+        iv_hands.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return false;
+            }
+        });
         myself_circle = (CirCleDongHua) findViewById(R.id.myself_circle);
     }
 
@@ -262,6 +401,15 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         tip_right_top = tip_right_y - (tip_right_height / 2);
         tip_right_right = tip_right_x + (tip_right_width / 2);
         tip_right_bottom = tip_right_y + (tip_right_height / 2);
+
+        int hand_width = iv_hands.getWidth();
+        int hand_height = iv_hands.getHeight();
+        hand_x = gua_yuan_x + hand_width / 2;
+        hand_y = gua_yuan_y + hand_height / 2;
+        hand_left = hand_x - (hand_width / 2);
+        hand_top = hand_y - (hand_height / 2);
+        hand_right = hand_x + (hand_width / 2);
+        hand_bottom = hand_y + (hand_height / 2);
     }
 
     private void setHold() {
@@ -396,6 +544,9 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
             mAlarmDialog.dismiss();
             mAlarmDialog = null;
         }
+        if (mTimer != null) {
+            mTimer.cancel();
+        }
         super.onDestroy();
     }
 
@@ -458,6 +609,11 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     public void jieTurnSmall() {
         iv_jieting_big.setVisibility(View.INVISIBLE);
         iv_jieting.setVisibility(View.VISIBLE);
+    }
+
+    public void hideHands() {
+        iv_hands.setVisibility(View.INVISIBLE);
+        mTimer.cancel();
     }
 
 }

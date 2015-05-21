@@ -104,6 +104,9 @@ public class GestureRelative extends RelativeLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                if(isFromActivity){
+                    mActivity.hideHands();
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 float moveX = event.getX();
