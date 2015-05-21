@@ -100,6 +100,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             case 2:
                 //快捷开关
                 loadQuickSwitchData();
+                break;
             case 3:
                 // 常用应用
                 loadData(2);
