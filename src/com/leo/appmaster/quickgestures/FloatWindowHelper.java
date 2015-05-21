@@ -79,7 +79,7 @@ public class FloatWindowHelper {
     // 左中高度
     private static float mLeftCenterHeight = 200;
     // 左侧中部高度
-    private static float mLeftCenterCenterHeight = 800;
+    private static float mLeftCenterCenterHeight = 600;
     // 左上宽度
     private static float mLeftTopWidth = 50;
     // 左上高度
@@ -93,7 +93,7 @@ public class FloatWindowHelper {
     // 右中高度
     private static float mRightCenterHeight = 200;
     // 右侧中部高度
-    private static float mRightCenterCenterHeight = 800;
+    private static float mRightCenterCenterHeight = 600;
     // 右上宽度
     private static float mRightTopWidth = 50;
     // 右上高度
@@ -260,16 +260,16 @@ public class FloatWindowHelper {
                 mLeftBottomParams = new LayoutParams();
                 mLeftBottomParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
                 mLeftBottomParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
-                mLeftBottomParams.x = -(width / 2);
-                mLeftBottomParams.y = (height / 2) - value;
+                mLeftBottomParams.x = (int) (-(width / 2) + (mLeftBottomParams.width / 2));
+                mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
                 mLeftBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftBottomParams.format = PixelFormat.RGBA_8888;
                 mLeftBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
 
             } else {
-                mLeftBottomParams.x = -(width / 2);
-                mLeftBottomParams.y = (height / 2) - value;
+                mLeftBottomParams.x = -(width / 2) + (mLeftBottomParams.width / 2);
+                mLeftBottomParams.y = (height / 2) - (mLeftBottomParams.height / 2);
             }
             if (!mGestureShowing) {
                 windowManager.addView(mLeftBottomView, mLeftBottomParams);
@@ -326,19 +326,17 @@ public class FloatWindowHelper {
             int height = windowManager.getDefaultDisplay().getHeight();
             if (mLeftCenterParams == null) {
                 mLeftCenterParams = new LayoutParams();
-                mLeftCenterParams.x = (int) -(width / 2);
-                mLeftCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
                 mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
                 mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+                mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
+                mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height);
                 mLeftCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mLeftCenterParams.x = (int) -(width / 2);
-                mLeftCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
+                mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
+                mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height);
             }
 
             if (!mGestureShowing) {
@@ -403,24 +401,32 @@ public class FloatWindowHelper {
             });
             int width = windowManager.getDefaultDisplay().getWidth();
             int height = windowManager.getDefaultDisplay().getHeight();
-            int leftBottomHeight = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
             if (mLeftCenterCenterParams == null) {
                 mLeftCenterCenterParams = new LayoutParams();
-                mLeftCenterCenterParams.x = (int) -(width / 2);
-                mLeftCenterCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + leftBottomHeight) - 10) - value;
                 mLeftCenterCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
                 mLeftCenterCenterParams.height = (int) ((mLeftCenterCenterHeight / 2) + (value)) * 2;
+                mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
+                if (mLeftBottomView != null) {
+                    mLeftCenterCenterParams.y = (int) ((height / 2)
+                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height);
+                } else {
+                    mLeftCenterCenterParams.y = (int) ((height / 2)
+                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomHeight);
+                }
                 mLeftCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mLeftCenterCenterParams.x = (int) -(width / 2);
-                mLeftCenterCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + leftBottomHeight) - 10) - value;
+                mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
+                if (mLeftBottomView != null) {
+                    mLeftCenterCenterParams.y = (int) ((height / 2)
+                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height);
+                } else {
+                    mLeftCenterCenterParams.y = (int) ((height / 2)
+                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomHeight);
+                }
             }
-
             if (!mGestureShowing) {
                 windowManager.addView(mLeftCenterCenterView, mLeftCenterCenterParams);
             } else {
@@ -476,21 +482,19 @@ public class FloatWindowHelper {
             int height = windowManager.getDefaultDisplay().getHeight();
             if (mLeftTopParams == null) {
                 mLeftTopParams = new LayoutParams();
-                mLeftTopParams.x = -(width / 2);
-                mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2)
-                        + mLeftBottomParams.height + mLeftCenterParams.height))
-                        - value;
                 mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
                 mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
+                mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
+                mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
+                        - mLeftBottomParams.height - mLeftCenterParams.height);
                 mLeftTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftTopParams.format = PixelFormat.RGBA_8888;
                 mLeftTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mLeftTopParams.x = -(width / 2);
-                mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2)
-                        + mLeftBottomParams.height + mLeftCenterParams.height))
-                        - value;
+                mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
+                mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
+                        - mLeftBottomParams.height - mLeftCenterParams.height);
             }
 
             if (!mGestureShowing) {
@@ -558,15 +562,15 @@ public class FloatWindowHelper {
                 mRightBottomParams = new LayoutParams();
                 mRightBottomParams.width = (int) ((mRightBottomWidth / 2) + (value / 2)) * 2;
                 mRightBottomParams.height = (int) ((mRightBottomHeight / 2) + (value)) * 2;
-                mRightBottomParams.x = +(width / 2);
-                mRightBottomParams.y = (height / 2) - value;
+                mRightBottomParams.x = (int) ((width / 2) + (mRightBottomParams.width / 2));
+                mRightBottomParams.y = (int) ((height / 2) - (mRightBottomParams.height / 2));
                 mRightBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightBottomParams.format = PixelFormat.RGBA_8888;
                 mRightBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mRightBottomParams.x = +(width / 2);
-                mRightBottomParams.y = (height / 2) - value;
+                mRightBottomParams.x = (int) ((width / 2) + (mRightBottomParams.width / 2));
+                mRightBottomParams.y = (int) ((height / 2) - (mRightBottomParams.height / 2));
             }
 
             if (!mGestureShowing) {
@@ -626,17 +630,15 @@ public class FloatWindowHelper {
                 mRightCenterParams = new LayoutParams();
                 mRightCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
                 mRightCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
-                mRightCenterParams.x = (int) (width / 2);
-                mRightCenterParams.y = (int) ((height / 2)
-                        - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
+                mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
+                mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height);
                 mRightCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mRightCenterParams.x = (int) (width / 2);
-                mRightCenterParams.y = (int) ((height / 2)
-                        - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
+                mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
+                mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height);
             }
 
             if (!mGestureShowing) {
@@ -706,17 +708,27 @@ public class FloatWindowHelper {
                 mRightCenterCenterParams = new LayoutParams();
                 mRightCenterCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
                 mRightCenterCenterParams.height = (int) ((mRightCenterCenterHeight / 2) + (value)) * 2;
-                mRightCenterCenterParams.x = (int) (width / 2);
-                mRightCenterCenterParams.y = (int) ((height / 2)
-                        - ((mRightCenterHeight / 2) + rightBottomHeight) - 10) - value;
+                mRightCenterCenterParams.x = (int) ((width / 2) + (mLeftCenterCenterParams.width / 2));
+                if (mRightBottomView != null) {
+                    mRightCenterCenterParams.y = (int) ((height / 2)
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height);
+                } else {
+                    mRightCenterCenterParams.y = (int) ((height / 2)
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomHeight);
+                }
                 mRightCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mRightCenterCenterParams.x = (int) (width / 2);
-                mRightCenterCenterParams.y = (int) ((height / 2)
-                        - ((mRightCenterHeight / 2) + rightBottomHeight) - 10) - value;
+                if (mRightBottomView != null) {
+                    mRightCenterCenterParams.y = (int) ((height / 2)
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height);
+                } else {
+                    mRightCenterCenterParams.y = (int) ((height / 2)
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomHeight);
+                }
+
             }
 
             if (!mGestureShowing) {
@@ -776,19 +788,17 @@ public class FloatWindowHelper {
                 mRightTopParams = new LayoutParams();
                 mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
                 mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
-                mRightTopParams.x = (width / 2);
-                mRightTopParams.y = (int) ((height / 2) - ((mRightTopHeight / 2)
-                        + mRightBottomParams.height + mRightCenterParams.height))
-                        - value;
+                mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
+                mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
+                        - mRightBottomParams.height - mRightCenterParams.height);
                 mRightTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightTopParams.format = PixelFormat.RGBA_8888;
                 mRightTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mRightTopParams.x = (width / 2);
-                mRightTopParams.y = (int) ((height / 2) - ((mRightTopHeight / 2)
-                        + mRightBottomParams.height + mRightCenterParams.height))
-                        - value;
+                mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
+                mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
+                        - mRightBottomParams.height - mRightCenterParams.height);
             }
 
             if (!mGestureShowing) {
@@ -893,33 +903,36 @@ public class FloatWindowHelper {
         if (mLeftBottomParams != null) {
             mLeftBottomParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
             mLeftBottomParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
-            mLeftBottomParams.x = -(width / 2);
-            mLeftBottomParams.y = (height / 2) - value;
+            mLeftBottomParams.x = (int) (-(width / 2) + (mLeftBottomParams.width / 2));
+            mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
         }
         // 左中
         if (mLeftCenterParams != null) {
-            mLeftCenterParams.x = (int) -(width / 2);
-            mLeftCenterParams.y = (int) ((height / 2)
-                    - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
             mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
             mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+            mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
+            mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height);
         }
         // 左边中部
         if (mLeftCenterCenterParams != null) {
-            mLeftCenterCenterParams.x = (int) -(width / 2);
-            mLeftCenterCenterParams.y = (int) ((height / 2)
-                    - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
             mLeftCenterCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
             mLeftCenterCenterParams.height = (int) ((mLeftCenterCenterHeight / 2) + (value)) * 2;
+            mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
+            if (mLeftBottomView != null) {
+                mLeftCenterCenterParams.y = (int) ((height / 2)
+                        - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height);
+            } else {
+                mLeftCenterCenterParams.y = (int) ((height / 2)
+                        - (mLeftCenterCenterParams.height / 2) - mLeftBottomHeight);
+            }
         }
         // 左上
         if (mLeftTopParams != null) {
-            mLeftTopParams.x = -(width / 2);
-            mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2)
-                    + mLeftBottomParams.height + mLeftCenterParams.height))
-                    - value;
             mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
             mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
+            mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
+            mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
+                    - mLeftBottomParams.height - mLeftCenterParams.height);
         }
         // 右下
         if (mRightBottomParams != null) {
@@ -930,28 +943,31 @@ public class FloatWindowHelper {
         }
         // 右中
         if (mRightCenterParams != null) {
-            mRightCenterParams.x = (int) (width / 2);
-            mRightCenterParams.y = (int) ((height / 2)
-                    - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
             mRightCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
             mRightCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
+            mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
+            mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height);
         }
         // 右上
         if (mRightTopParams != null) {
-            mRightTopParams.x = (width / 2);
-            mRightTopParams.y = (int) ((height / 2) - ((mRightTopHeight / 2)
-                    + mRightBottomParams.height + mRightCenterParams.height))
-                    - value;
             mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
             mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
+            mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
+            mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
+                    - mRightBottomParams.height - mRightCenterParams.height);
         }
         // 右侧中部
         if (mRightCenterCenterParams != null) {
-            mRightCenterCenterParams.x = (int) (width / 2);
-            mRightCenterCenterParams.y = (int) ((height / 2)
-                    - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
             mRightCenterCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
             mRightCenterCenterParams.height = (int) ((mRightCenterCenterHeight / 2) + (value)) * 2;
+            if (mRightBottomView != null) {
+                mRightCenterCenterParams.y = (int) ((height / 2)
+                        - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height);
+            } else {
+                mRightCenterCenterParams.y = (int) ((height / 2)
+                        - (mRightCenterCenterParams.height / 2) - mRightBottomHeight);
+            }
+
         }
         // 更新左边
         if (mLeftBottomView != null) {
