@@ -384,11 +384,7 @@ public class PasswdSettingFragment extends BaseFragment implements
         iv_delete.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (LockManager.getInstatnce().serviceBound()) {
-                    LockManager.getInstatnce().startLockService();
-                } else {
-                    LockManager.getInstatnce().bindService();
-                }
+                LockManager.getInstatnce().startLockService();
             }
         }, 2000);
 

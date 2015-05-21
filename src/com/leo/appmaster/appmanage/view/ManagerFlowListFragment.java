@@ -44,7 +44,7 @@ public class ManagerFlowListFragment extends BaseFragment {
 
     private void fillData() {
 
-        readytosort = new TrafficInfoPackage(mActivity).getRunningProcess();
+        readytosort = new TrafficInfoPackage(mActivity).getRunningProcess(true);
         for (int i = 0; i < readytosort.size(); i++) {
             if (readytosort.get(i).getApp_all_traffic().equals("0KB")
                     || (readytosort.get(i).getRx().equals("0KB") && readytosort.get(i).getTx()
