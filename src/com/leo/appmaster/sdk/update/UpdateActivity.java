@@ -123,9 +123,9 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             case IUIHelper.TYPE_DOWNLOAD_FAILED:
                 showDownloadFailed();
                 break;
-            case IUIHelper.BACK_DOWNLOAD_DONE:
-                showNeedUpdate();
-                break;
+//            case IUIHelper.BACK_DOWNLOAD_DONE:
+//                showNeedUpdate();
+//                break;
         }
     }
 
