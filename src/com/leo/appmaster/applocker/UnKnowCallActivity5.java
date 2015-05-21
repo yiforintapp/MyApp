@@ -70,10 +70,10 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
                     iv_tips_right.layout(tip_right_left, tip_right_top, tip_right_right,
                             tip_right_bottom);
 
-//                    if (!isShowing) {
-//                        myself_circle.setVisibility(View.VISIBLE);
-//                        showDonghua();
-//                    }
+                    // if (!isShowing) {
+                    // myself_circle.setVisibility(View.VISIBLE);
+                    // showDonghua();
+                    // }
 
                     iv_tips_left.setVisibility(View.VISIBLE);
                     iv_tips_right.setVisibility(View.VISIBLE);
@@ -106,29 +106,29 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         init();
     }
 
-//    protected void showDonghua() {
-//        isShowing = true;
-//        new Thread() {
-//            public void run() {
-//                int startInt = 0;
-//                int mAplha = 0;
-//                while (mBanJing > startInt) {
-//                    try {
-//                        Thread.sleep(15);
-//                        startInt += 2;
-//                        mAplha = 255 - (int) (startInt * 255 / mBanJing);
-//                        if (mAplha < 0) {
-//                            mAplha = 0;
-//                        }
-//                        myself_circle.setProgress(startInt, mAplha);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                showDonghua();
-//            };
-//        }.start();
-//    }
+    // protected void showDonghua() {
+    // isShowing = true;
+    // new Thread() {
+    // public void run() {
+    // int startInt = 0;
+    // int mAplha = 0;
+    // while (mBanJing > startInt) {
+    // try {
+    // Thread.sleep(15);
+    // startInt += 2;
+    // mAplha = 255 - (int) (startInt * 255 / mBanJing);
+    // if (mAplha < 0) {
+    // mAplha = 0;
+    // }
+    // myself_circle.setProgress(startInt, mAplha);
+    // } catch (InterruptedException e) {
+    // e.printStackTrace();
+    // }
+    // }
+    // showDonghua();
+    // };
+    // }.start();
+    // }
 
     private void init() {
         sp_unknowcall = AppMasterPreference.getInstance(this);
@@ -443,6 +443,21 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     public void jieTurnBig() {
         iv_jieting_big.setVisibility(View.VISIBLE);
         iv_jieting.setVisibility(View.INVISIBLE);
+    }
+
+    public void guaTurnSmall() {
+        iv_guaduan_big.setVisibility(View.INVISIBLE);
+        iv_guaduan.setVisibility(View.VISIBLE);
+    }
+
+    public void duanTurnSmall() {
+        iv_duanxin_big.setVisibility(View.INVISIBLE);
+        iv_duanxin.setVisibility(View.VISIBLE);
+    }
+
+    public void jieTurnSmall() {
+        iv_jieting_big.setVisibility(View.INVISIBLE);
+        iv_jieting.setVisibility(View.VISIBLE);
     }
 
 }

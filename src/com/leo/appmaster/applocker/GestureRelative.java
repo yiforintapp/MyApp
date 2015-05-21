@@ -17,6 +17,7 @@ import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 public class GestureRelative extends RelativeLayout {
@@ -30,6 +31,9 @@ public class GestureRelative extends RelativeLayout {
     private boolean isThridRound = false;
     private boolean isFlaseControl = false;
     public static boolean isInit = false;
+    private boolean isControlGua = false;
+    private boolean isControlDuan = false;
+    private boolean isControlJie = false;
     private int gua_left, gua_top, gua_right, gua_bottom;
     private int duan_left, duan_top, duan_right, duan_bottom;
     private int jie_left, jie_top, jie_right, jie_bottom;
@@ -107,10 +111,10 @@ public class GestureRelative extends RelativeLayout {
                 isShowOrder(moveX, moveY);
                 break;
             case MotionEvent.ACTION_UP:
-                if(isFromActivity){
+                if (isFromActivity) {
                     mActivity.allTurnSmall();
-                }else {
-                    
+                } else {
+
                 }
                 isFirstRound = false;
                 isSecondRound = false;
@@ -122,64 +126,62 @@ public class GestureRelative extends RelativeLayout {
     }
 
     private void isShowOrder(float x, float y) {
+        int gua_width = gua_right - gua_left;
+        int gua_height = gua_bottom - gua_top;
         // 挂断?
-        if (x < gua_right && y > gua_top && y < gua_bottom && x > gua_left) {
+        if (x < gua_right + gua_width / 2 && y > gua_top - gua_height / 2
+                && y < gua_bottom + gua_height / 2 && x > gua_left - gua_width / 2) {
+            isControlGua = false;
+            if (isFromActivity) {
+                mActivity.guaTurnBig();
+            } else {
+
+            }
             // 进入挂断区域，先判断是否从别处进入
             if (!isFirstRound && !isSecondRound && !isThridRound && !isFlaseControl) {
                 // 首先进入挂断区域
                 isFirstRound = true;
                 // LeoLog.d("testfuck", "首先进入挂断区域");
-                
-                if(isFromActivity){
-                    mActivity.guaTurnBig();
-                }else {
-                    
-                }
-                
             } else {
                 if (!isFirstRound) {
-                    if(isFromActivity){
-                        mActivity.allTurnSmall();
-                    }else {
-                        
-                    }
                     // 进入了别的区域
                     // LeoLog.d("testfuck", "非首次进入挂断区域");
                     isFlaseControl = true;
                     isSecondRound = false;
                     isThridRound = false;
                 } else if (isSecondRound) {
-                    if(isFromActivity){
-                        mActivity.allTurnSmall();
-                    }else {
-                        
-                    }
                     isSecondRound = false;
                     isFlaseControl = true;
                 }
             }
+        }else {
+            if (!isControlGua) {
+                if (isFromActivity) {
+                    mActivity.guaTurnSmall();
+                } else {
+
+                }
+            }
+            isControlGua = true;
         }
 
+        int duan_width = duan_right - duan_left;
+        int duan_height = duan_bottom - duan_top;
         // 短信?
-        if (x > duan_left && x < duan_right && y < duan_bottom && y > duan_top) {
+        if (x > duan_left - duan_width / 2 && x < duan_right + duan_width / 2
+                && y < duan_bottom + duan_height / 2 && y > duan_top - duan_height / 2) {
+            isControlDuan = false;
+            if (isFromActivity) {
+                mActivity.duanTurnBig();
+            } else {
+
+            }
             if (isFirstRound && !isSecondRound && !isThridRound && !isFlaseControl) {
                 isSecondRound = true;
                 // 顺利进入第二
                 // LeoLog.d("testfuck", "顺利进入第二");
-                
-                if(isFromActivity){
-                    mActivity.duanTurnBig();
-                }else {
-                    
-                }
-                
             } else {
                 if (!isSecondRound) {
-                    if(isFromActivity){
-                        mActivity.allTurnSmall();
-                    }else {
-                        
-                    }
                     // 非正确进入第二
                     // LeoLog.d("testfuck", "非正确进入第二");
                     isFlaseControl = true;
@@ -187,10 +189,28 @@ public class GestureRelative extends RelativeLayout {
                     isThridRound = false;
                 }
             }
+        }else {
+            if (!isControlDuan) {
+                if (isFromActivity) {
+                    mActivity.duanTurnSmall();
+                } else {
+
+                }
+            }
+            isControlDuan = true;
         }
 
+        int jie_width = jie_right - jie_left;
+        int jie_height = jie_bottom - jie_top;
         // 接听?
-        if (x > jie_left && y > jie_top && y < jie_bottom && x < jie_right) {
+        if (x > jie_left - jie_width / 2 && y > jie_top - jie_height / 2
+                && y < jie_bottom + jie_height / 2 && x < jie_right + jie_width / 2) {
+            isControlJie = false;
+            if (isFromActivity) {
+                mActivity.jieTurnBig();
+            } else {
+
+            }
             if (isFirstRound && isSecondRound && !isThridRound && !isFlaseControl) {
                 isThridRound = true;
                 // 顺利进入第三
@@ -198,7 +218,6 @@ public class GestureRelative extends RelativeLayout {
                 // 触发成功
                 // LeoLog.d("testfuck", "触发成功");
                 if (isFromActivity) {
-                    mActivity.jieTurnBig();
                     mActivity.showAlarmDialog(
                             mContext.getString(R.string.open_weizhuang_dialog_title),
                             mContext.getString(R.string.open_weizhuang_dialog_content),
@@ -212,11 +231,6 @@ public class GestureRelative extends RelativeLayout {
                 }
             } else {
                 if (!isThridRound) {
-                    if(isFromActivity){
-                        mActivity.allTurnSmall();
-                    }else {
-                        
-                    }
                     // 非正确进入第三
                     // LeoLog.d("testfuck", "非正确进入第三");
                     isFlaseControl = true;
@@ -224,6 +238,15 @@ public class GestureRelative extends RelativeLayout {
                     isSecondRound = false;
                 }
             }
+        }else {
+            if (!isControlJie) {
+                if (isFromActivity) {
+                    mActivity.jieTurnSmall();
+                } else {
+
+                }
+            }
+            isControlJie = true;
         }
     }
 
