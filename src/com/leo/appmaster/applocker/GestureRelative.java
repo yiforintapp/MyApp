@@ -114,7 +114,7 @@ public class GestureRelative extends RelativeLayout {
                 if (isFromActivity) {
                     mActivity.allTurnSmall();
                 } else {
-
+                    unknowFragment.allTurnSmall();
                 }
                 isFirstRound = false;
                 isSecondRound = false;
@@ -135,7 +135,7 @@ public class GestureRelative extends RelativeLayout {
             if (isFromActivity) {
                 mActivity.guaTurnBig();
             } else {
-
+                unknowFragment.guaTurnBig();
             }
             // 进入挂断区域，先判断是否从别处进入
             if (!isFirstRound && !isSecondRound && !isThridRound && !isFlaseControl) {
@@ -159,7 +159,7 @@ public class GestureRelative extends RelativeLayout {
                 if (isFromActivity) {
                     mActivity.guaTurnSmall();
                 } else {
-
+                    unknowFragment.guaTurnSmall();
                 }
             }
             isControlGua = true;
@@ -174,7 +174,7 @@ public class GestureRelative extends RelativeLayout {
             if (isFromActivity) {
                 mActivity.duanTurnBig();
             } else {
-
+                unknowFragment.duanTurnBig();
             }
             if (isFirstRound && !isSecondRound && !isThridRound && !isFlaseControl) {
                 isSecondRound = true;
@@ -194,7 +194,7 @@ public class GestureRelative extends RelativeLayout {
                 if (isFromActivity) {
                     mActivity.duanTurnSmall();
                 } else {
-
+                    unknowFragment.duanTurnSmall();
                 }
             }
             isControlDuan = true;
@@ -209,7 +209,7 @@ public class GestureRelative extends RelativeLayout {
             if (isFromActivity) {
                 mActivity.jieTurnBig();
             } else {
-
+                unknowFragment.jieTurnBig();
             }
             if (isFirstRound && isSecondRound && !isThridRound && !isFlaseControl) {
                 isThridRound = true;
@@ -223,6 +223,7 @@ public class GestureRelative extends RelativeLayout {
                             mContext.getString(R.string.open_weizhuang_dialog_content),
                             mContext.getString(R.string.open_weizhuang_dialog_sure));
                 } else {
+                    unknowFragment.allTurnSmall();
                     unknowFragment.setFinishView();
                     unknowFragment.setCanCel();
                     // mPf.onUnlockPretendSuccessfully();
@@ -243,7 +244,7 @@ public class GestureRelative extends RelativeLayout {
                 if (isFromActivity) {
                     mActivity.jieTurnSmall();
                 } else {
-
+                    unknowFragment.jieTurnSmall();
                 }
             }
             isControlJie = true;
