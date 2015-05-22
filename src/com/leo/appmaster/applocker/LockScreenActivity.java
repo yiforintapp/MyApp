@@ -3,18 +3,11 @@ package com.leo.appmaster.applocker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import android.R.integer;
 import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.ActivityManager;
@@ -30,13 +23,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Outline;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
-import android.renderscript.Sampler.Value;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -49,7 +38,6 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -656,7 +644,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         }
                     });
                 }
-                mLeoPopMenu.setPopMenuItems(this,getPopMenuItems());
+                mLeoPopMenu.setPopMenuItems(this,getPopMenuItems(),false);
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.tv_option_image), null, null);
                 break;
@@ -935,7 +923,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         downAnimator.setStartDelay(in_anim_time);
             
        AnimatorSet set = new AnimatorSet();
-       set.setStartDelay(200);
+       set.setStartDelay(400);
        set.playTogether(colorAnim,outAnimator,inAnimator,downAnimator);
        set.start();
     }

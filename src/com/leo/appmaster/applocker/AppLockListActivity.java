@@ -313,7 +313,7 @@ public class AppLockListActivity extends BaseActivity implements
                         }
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(this,getSortMenuItems());
+                mLeoPopMenu.setPopMenuItems(this,getSortMenuItems(),false);
                 mLeoPopMenu.showPopMenu(this,
                         mIvSortSelected, null, null);
                 break;
@@ -368,7 +368,7 @@ public class AppLockListActivity extends BaseActivity implements
                         }
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(this,getLockModeMenuItems());
+                mLeoPopMenu.setPopMenuItems(this,getLockModeMenuItems(),false);
                 mLeoPopMenu.showPopMenu(this, mIvBack, null, null);
                 break;
             case R.id.mask_layer:
