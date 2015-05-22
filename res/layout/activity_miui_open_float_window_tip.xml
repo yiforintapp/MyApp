@@ -9,25 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:gravity="center"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="@string/pg_appmanager_quick_gesture_miui_open_float_window_tip_text"
         android:textColor="@color/white" />
-
-    <ImageView
-        android:id="@+id/quick_sliding_left_area"
-        android:layout_width="50dp"
-        android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="#6e000000" />
-
-    <ImageView
-          android:id="@+id/quick_sliding_right_area"
-        android:layout_width="50dp"
-        android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="#6e000000" />
 
 </RelativeLayout>

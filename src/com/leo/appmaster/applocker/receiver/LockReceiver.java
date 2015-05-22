@@ -64,11 +64,7 @@ public class LockReceiver extends BroadcastReceiver {
                 // action);
                 // context.startService(serviceIntent);
 
-                if(LockManager.getInstatnce().serviceBound()) {
-                    LockManager.getInstatnce().startLockService();
-                } else {
-                    LockManager.getInstatnce().bindService();
-                }
+                LockManager.getInstatnce().startLockService();
             }
         }
     }

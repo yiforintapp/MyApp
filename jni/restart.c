@@ -22,7 +22,7 @@ JNIEXPORT void JNICALL Java_com_leo_appmaster_AppMasterApplication_restartApploc
 	} else if (pid == 0) {
 		pid_t ppid = getppid();
 		while (1) {
-			sleep(3);
+			sleep(5);
 
 			if(getppid() != ppid) {
 				if (sdk_version >= 17) {

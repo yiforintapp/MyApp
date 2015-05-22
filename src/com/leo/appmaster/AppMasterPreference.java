@@ -165,7 +165,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST = "quick_gesture_quickswitch_list";
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE = "quick_gesture_quickswitch_list_size";
     public static final String PREF_QUICK_FIRST_SLIDING_TIP = "quick_first_sliding_tip";
-
+    public static final String PREF_QUICK_GESTURE_RED_TIP = "quick_gesture_red_tip";
+    public static final String PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME = "quick_gesture_quick_switch_package_name";
+    public static final String PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME = "quick_gesture_common_app_package_name";
+    public static final String PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG = "quick_gesture_common_app_dialog_checkbox_flag";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1538,5 +1541,84 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getFristSlidingTip() {
         return mPref.getBoolean(PREF_QUICK_FIRST_SLIDING_TIP, false);
+    }
+
+    public void setQuickGestureRedTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_RED_TIP, flag).commit();
+    }
+
+    public boolean getQuickGestureRedTip() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_RED_TIP, true);
+    }
+
+    public void setQuickSwitchPackageNameAdd(String name) {
+        String string = getQuickSwitchPackageName();
+        StringBuffer sb = null;
+        String packageNames = null;
+        if (!PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME.equals(string)) {
+            sb = new StringBuffer(string);
+            sb.append(name);
+            packageNames = sb.toString() + ";";
+        } else {
+            packageNames = name + ";";
+        }
+        mPref.edit().putString(PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME, packageNames)
+                .commit();
+    }
+
+    public void setQuickSwitchPackageNameRemove(String name) {
+        String string = getQuickSwitchPackageName();
+        String packageNames = null;
+        if (!PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME.equals(string)) {
+            packageNames = string.replace(name + ";", "");
+        }
+        mPref.edit().putString(PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME,
+                packageNames)
+                .commit();
+    }
+//获取添加到快捷手势中的快捷开关
+    public String getQuickSwitchPackageName() {
+        return mPref.getString(PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME,
+                PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME);
+    }
+
+    public void setCommonAppPackageNameAdd(String name) {
+        String string = getCommonAppPackageName();
+        StringBuffer sb = null;
+        String packageNames = null;
+        if (!PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME.equals(string)) {
+            sb = new StringBuffer(string);
+            sb.append(name);
+            packageNames = sb.toString() + ";";
+        } else {
+            packageNames = name + ";";
+        }
+        mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME, packageNames)
+                .commit();
+    }
+
+    public void setCommonAppPackageNameRemove(String name) {
+        String string = getCommonAppPackageName();
+        String packageNames = null;
+        if (!PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME.equals(string)) {
+            packageNames = string.replace(name + ";", "");
+        }
+        mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
+                packageNames)
+                .commit();
+    }
+
+    //获取添加到快捷手势中的快捷常用应用包名
+    public String getCommonAppPackageName() {
+        return mPref.getString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
+                PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME);
+    }
+
+    public void setQuickGestureCommonAppDialogCheckboxValue(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG, flag).commit();
+    }
+//获取常用应用是否开启了习惯记录
+    public boolean getQuickGestureCommonAppDialogCheckboxValue() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG, true);
     }
 }

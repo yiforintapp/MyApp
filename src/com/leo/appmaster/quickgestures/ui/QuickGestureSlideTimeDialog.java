@@ -37,12 +37,10 @@ import com.leo.appmaster.ui.dialog.LEOBaseDialog;
  */
 public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
     private Context mContext;
-    private TextView sure_button, title, mFreeDisturbTv;
+    private TextView sure_button, mLeftBt, title, mFreeDisturbTv;
     private ListView mRadioListView;
-    // private OnDiaogClickListener mListener;
-    private LinearLayout mFreeDisturbAppHs;
+    private LinearLayout mFreeDisturbAppHs, mFreeDisturbAppAddBt;
     private CheckBox mJustHomeCb, mAppHomeCb;
-    // private ImageView mAddFreeDisturbAppIv;
     private LeoHorizontalListView mHorizontalLV;
 
     public interface OnDiaogClickListener {
@@ -62,11 +60,13 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
         Resources resources = AppMasterApplication.getInstance().getResources();
         title = (TextView) dlgView.findViewById(R.id.dialog_tilte);
         sure_button = (TextView) dlgView.findViewById(R.id.quick_slide_time_setting_dlg_right_btn);
+        mLeftBt = (TextView) dlgView.findViewById(R.id.quick_slide_time_setting_dlg_left_btn);
         mRadioListView = (ListView) dlgView.findViewById(R.id.radioLV);
         mFreeDisturbTv = (TextView) dlgView.findViewById(R.id.free_disturbTV);
         mJustHomeCb = (CheckBox) dlgView.findViewById(R.id.dialog_radio_slide_time_just_home_cb);
         mAppHomeCb = (CheckBox) dlgView
                 .findViewById(R.id.dialog_radio_slide_time_all_app_and_home_cb);
+        mFreeDisturbAppAddBt = (LinearLayout) dlgView.findViewById(R.id.no_free_app_bt);
         mHorizontalLV = (LeoHorizontalListView) dlgView
                 .findViewById(R.id.quick_gesture_horizontalLV);
         mJustHomeCb.setSelected(AppMasterPreference.getInstance(mContext).getSlideTimeJustHome());
@@ -78,13 +78,13 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
                 mJustHomeCb.setSelected(true);
                 mAppHomeCb.setSelected(false);
-                AppMasterPreference.getInstance(mContext).setSlideTimeJustHome(true);
-                AppMasterPreference.getInstance(mContext).setSlideTimeAllAppAndHome(false);
-                dismiss();
-                LeoEventBus
-                        .getDefaultBus()
-                        .post(new QuickGestureFloatWindowEvent(
-                                FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
+                // AppMasterPreference.getInstance(mContext).setSlideTimeJustHome(true);
+                // AppMasterPreference.getInstance(mContext).setSlideTimeAllAppAndHome(false);
+                // dismiss();
+                // LeoEventBus
+                // .getDefaultBus()
+                // .post(new QuickGestureFloatWindowEvent(
+                // FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
             }
         });
         mAppHomeCb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -93,39 +93,29 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
                 mJustHomeCb.setSelected(false);
                 mAppHomeCb.setSelected(true);
-                AppMasterPreference.getInstance(mContext).setSlideTimeJustHome(false);
-                AppMasterPreference.getInstance(mContext).setSlideTimeAllAppAndHome(true);
-                dismiss();
-                LeoEventBus
-                        .getDefaultBus()
-                        .post(new QuickGestureFloatWindowEvent(
-                                FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
+                // AppMasterPreference.getInstance(mContext).setSlideTimeJustHome(false);
+                // AppMasterPreference.getInstance(mContext).setSlideTimeAllAppAndHome(true);
+                // dismiss();
+                // LeoEventBus
+                // .getDefaultBus()
+                // .post(new QuickGestureFloatWindowEvent(
+                // FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
             }
         });
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int arg1) {
-
-                dialog.dismiss();
-            }
-        };
-
-        setRightBtnListener(listener);
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
     }
 
-    public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
-        sure_button.setTag(rListener);
-        sure_button.setOnClickListener(new View.OnClickListener() {
+    public boolean getJustHometCheckStatus() {
+        return mJustHomeCb.isSelected();
+    }
 
-            @Override
-            public void onClick(View arg0) {
-                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) sure_button
-                        .getTag();
-                lListener.onClick(QuickGestureSlideTimeDialog.this, 1);
-            }
-        });
+    public boolean getAppHomeCheckStatus() {
+        return mAppHomeCb.isSelected();
+    }
+
+    public void setRightBtnListener(android.view.View.OnClickListener rListener) {
+        sure_button.setOnClickListener(rListener);
     }
 
     public void setShowRadioListView(boolean flag) {
@@ -168,7 +158,6 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
                 }
             }
         }
-        int count = mFreeDisturbAppHs.getChildCount();
     }
 
     public void setFreeDisturbAdapter(BaseAdapter adapter) {
@@ -181,5 +170,31 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
 
     public void setOnLongClickListenerFreeDisturb(OnLongClickListener listener) {
         mHorizontalLV.setOnLongClickListener(listener);
+    }
+
+    public void setFreeDisturbAppHorizontalVisVisibility(boolean flag) {
+        if (flag == true) {
+            mHorizontalLV.setVisibility(View.VISIBLE);
+        } else if (flag == false) {
+            mHorizontalLV.setVisibility(View.GONE);
+        }
+    }
+
+    public void setFreeDisturbAppAddBtVisVisibility(boolean flag) {
+        if (flag == true) {
+            mFreeDisturbAppAddBt.setVisibility(View.VISIBLE);
+        } else if (flag == false) {
+            mFreeDisturbAppAddBt.setVisibility(View.GONE);
+        }
+    }
+
+    public void setFreeDisturbAppAddBtClickListener(
+            android.view.View.OnClickListener onClickListener) {
+        mFreeDisturbAppAddBt
+                .setOnClickListener((android.view.View.OnClickListener) onClickListener);
+    }
+
+    public void setLeftButtonClickListener(android.view.View.OnClickListener listener) {
+        mLeftBt.setOnClickListener(listener);
     }
 }

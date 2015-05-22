@@ -28,6 +28,33 @@
         android:paddingTop="@dimen/dialog_free_disturb_app_free_disturb_gridview_padding_top" />
 
     <LinearLayout
+        android:id="@+id/checkboxLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <CheckBox
+            android:id="@+id/dialog_all_app_itme_normalRB"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:button="@drawable/quick_gesture_dialog_radio_selector" />
+
+        <TextView
+            android:id="@+id/dialog_all_app_itme_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/privacy_contact_activity_input_checkbox_normal"
+            android:textColor="#a7a7a7"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/dlg_2btn_layout"
         android:layout_width="match_parent"
         android:layout_height="48dp"

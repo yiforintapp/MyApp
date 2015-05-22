@@ -105,7 +105,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/manager_small_hotapp_selecter" >
+                    android:background="@drawable/manager_small_hotapp_selecter"
+                    android:visibility="gone" >
 
                     <ImageView
                         android:id="@+id/app_hot_tip_icon"

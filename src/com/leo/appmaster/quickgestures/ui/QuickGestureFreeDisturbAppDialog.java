@@ -10,11 +10,12 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -22,6 +23,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
 import com.leo.appmaster.quickgestures.view.FreeDisturbPagedGridView;
@@ -35,13 +37,22 @@ import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private Context mContext;
     private FreeDisturbPagedGridView mGridView;
-    private TextView mTitle, mSureBt;
+    private TextView mTitle, mSureBt, mLeftBt;
     private List<FreeDisturbAppInfo> mDisturbList = null;
     private List<FreeDisturbAppInfo> mFreeDisturbApp = null;
+    private List<String> mAddFreePackageName = null;
+    private List<String> mRemoveFreePackageName = null;
+    private LinearLayout mCheckBoxLL;
+    private TextView mCheckBoxTv;
+    private CheckBox mCheckBox;
+    private int mFlag;
 
-    public QuickGestureFreeDisturbAppDialog(Context context) {
+    public QuickGestureFreeDisturbAppDialog(Context context, int flag) {
         super(context, R.style.bt_dialog);
         mContext = context.getApplicationContext();
+        mAddFreePackageName = new ArrayList<String>();
+        mRemoveFreePackageName = new ArrayList<String>();
+        this.mFlag = flag;
         initUI();
     }
 
@@ -52,6 +63,10 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         Resources resources = AppMasterApplication.getInstance().getResources();
         mGridView = (FreeDisturbPagedGridView) dlgView.findViewById(R.id.free_disturb_gridview);
         mSureBt = (TextView) dlgView.findViewById(R.id.quick_freed_disturb_dlg_right_btn);
+        mLeftBt = (TextView) dlgView.findViewById(R.id.quick_freed_disturb_dlg_left_btn);
+        mCheckBoxLL = (LinearLayout) dlgView.findViewById(R.id.checkboxLL);
+        mCheckBoxTv = (TextView) dlgView.findViewById(R.id.dialog_all_app_itme_tv);
+        mCheckBox = (CheckBox) dlgView.findViewById(R.id.dialog_all_app_itme_normalRB);
         mGridView.setItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -62,16 +77,14 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     selectInfl.isFreeDisturb = false;
                     mDisturbList.add(selectInfl);
                     mFreeDisturbApp.remove(selectInfl);
-                    AppMasterPreference.getInstance(mContext).setFreeDisturbAppPackageNameRemove(
-                            selectInfl.packageName);
+                    mRemoveFreePackageName.add(selectInfl.packageName);
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(false);
                 } else {
                     selectInfl.isFreeDisturb = true;
                     mFreeDisturbApp.add(selectInfl);
                     mDisturbList.remove(selectInfl);
-                    AppMasterPreference.getInstance(mContext).setFreeDisturbAppPackageNameAdd(
-                            selectInfl.packageName);
+                    mAddFreePackageName.add(selectInfl.packageName);
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(true);
                 }
@@ -79,20 +92,68 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             }
         });
         mTitle = (TextView) dlgView.findViewById(R.id.free_disturb_dialog_title);
-        loadData();
+        switch (mFlag) {
+            case 1:
+                // 免打扰应用
+                loadData(1);
+                break;
+            case 2:
+                //快捷开关
+                loadQuickSwitchData();
+                break;
+            case 3:
+                // 常用应用
+                loadData(2);
+                break;
+            default:
+                break;
+        }
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
+    }
+
+    public List<String> getAddFreePackageName() {
+        return mAddFreePackageName;
+    }
+
+    public List<String> getRemoveFreePackageName() {
+        return mRemoveFreePackageName;
     }
 
     public void setRightBt(android.view.View.OnClickListener onClick) {
         mSureBt.setOnClickListener(onClick);
     }
 
+    public void setLeftBt(android.view.View.OnClickListener onClick) {
+        mLeftBt.setOnClickListener(onClick);
+    }
+
+    public void setIsShowCheckBox(boolean flag) {
+        if (flag) {
+            mCheckBoxLL.setVisibility(View.VISIBLE);
+        } else {
+            mCheckBoxLL.setVisibility(View.GONE);
+        }
+    }
+
+    public void setCheckBoxText(int string) {
+        mCheckBoxTv.setText(string);
+    }
+
+    public void setCheckValue(boolean flag) {
+        mCheckBox.setChecked(flag);
+    }
+
+    public boolean getCheckValue() {
+        return mCheckBox.isChecked();
+    }
+
     public void setTitle(int id) {
         mTitle.setText(id);
     }
 
-    private void loadData() {
+    // 加载系统应用数据
+    private void loadData(int flag) {
         List<String> packageNames = null;
         // 所有应用
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(mContext)
@@ -101,8 +162,19 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         mDisturbList = new ArrayList<FreeDisturbAppInfo>();
         // 免打扰的应用
         mFreeDisturbApp = new ArrayList<FreeDisturbAppInfo>();
-        String packageName = AppMasterPreference.getInstance(mContext)
-                .getFreeDisturbAppPackageName();
+        String packageName = null;
+        switch (flag) {
+            case 1:
+                packageName = AppMasterPreference.getInstance(mContext)
+                        .getFreeDisturbAppPackageName();
+                break;
+            case 2:
+                packageName = AppMasterPreference.getInstance(mContext)
+                        .getCommonAppPackageName();
+                break;
+            default:
+                break;
+        }
         if (AppMasterPreference.PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME
                 .equals(packageName)) {
             // Log.e("######################", "没有免干扰应用");
@@ -126,6 +198,48 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             } else {
                 appInfo.isFreeDisturb = false;
                 mDisturbList.add(appInfo);
+            }
+        }
+        if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
+            mFreeDisturbApp.addAll(mDisturbList);
+        } else {
+            mFreeDisturbApp = mDisturbList;
+        }
+        mGridView.setDatas(mFreeDisturbApp, 4, 4);
+    }
+
+    // 加载快捷开关数据
+    private void loadQuickSwitchData() {
+        List<String> packageNames = null;
+        // 所有常用应用
+        mDisturbList = new ArrayList<FreeDisturbAppInfo>();
+        // 设置为快捷常用应用
+        mFreeDisturbApp = new ArrayList<FreeDisturbAppInfo>();
+        List<FreeDisturbAppInfo> allList = QuickSwitchManager.getInstance(mContext)
+                .loadQuickSwitchData();
+        // 设置为快捷手势的开关
+        String quickGestureSwitchPackageNames = AppMasterPreference.getInstance(mContext)
+                .getQuickSwitchPackageName();
+        if (AppMasterPreference.PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME
+                .equals(quickGestureSwitchPackageNames)) {
+            // 没有设置快捷手机开关
+        } else {
+            String[] names = quickGestureSwitchPackageNames.split(";");
+            packageNames = Arrays.asList(names);
+        }
+        if (allList != null) {
+            for (FreeDisturbAppInfo freeDisturbAppInfo : allList) {
+                if (packageNames != null) {
+                    if (packageNames.contains(freeDisturbAppInfo.packageName)) {
+                        freeDisturbAppInfo.isFreeDisturb = true;
+                        mFreeDisturbApp.add(freeDisturbAppInfo);
+                    } else {
+                        freeDisturbAppInfo.isFreeDisturb = false;
+                        mDisturbList.add(freeDisturbAppInfo);
+                    }
+                } else {
+                    mDisturbList.add(freeDisturbAppInfo);
+                }
             }
         }
         if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {

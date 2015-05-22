@@ -660,6 +660,9 @@
     <string name="pg_appmanager_quick_gesture_option_dialog_radio_toast_text">请至少选择一个区域</string>
     <string name="pg_appmanager_quick_gesture_select_free_disturb_app_text">请选择免干扰应用</string>
     <string name="pg_appmanager_quick_gesture_miui_open_float_window_tip_text">请找到开启悬浮窗选项并开启，然后再次启动快捷XX</string>
+    <string name="pg_appmanager_quick_switch_dialog_title">请选择快捷开关</string>
+    <string name="quick_gesture_change_common_app_dialog_title">请选择应用</string>
+    <string name="quick_gesture_change_common_app_dialog_checkbox_text">根据使用习惯，自动填充/更换应用</string>
     <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">系统信息</string>
     <string name="dynamic">动态</string>
     <string name="quick_switcher">快捷开关</string>

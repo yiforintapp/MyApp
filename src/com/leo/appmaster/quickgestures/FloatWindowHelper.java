@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.quickgestures;
 
+import java.util.List;
+
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -28,6 +30,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
@@ -48,7 +51,7 @@ public class FloatWindowHelper {
     public static final int ONTUCH_RIGHT_FLAG = 1;
     public static final String QUICK_GESTURE_MSM_TIP = "quick_gesture_msm_tip";
     public static final String QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION = "quick_gesture_add_free_disturb_notification";
-    
+
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,
             mLeftCenterCenterView;
     private static RelativeLayout mMiuiTipRl;
@@ -76,7 +79,7 @@ public class FloatWindowHelper {
     // 左中高度
     private static float mLeftCenterHeight = 200;
     // 左侧中部高度
-    private static float mLeftCenterCenterHeight = 800;
+    private static float mLeftCenterCenterHeight = 600;
     // 左上宽度
     private static float mLeftTopWidth = 50;
     // 左上高度
@@ -90,7 +93,7 @@ public class FloatWindowHelper {
     // 右中高度
     private static float mRightCenterHeight = 200;
     // 右侧中部高度
-    private static float mRightCenterCenterHeight = 800;
+    private static float mRightCenterCenterHeight = 600;
     // 右上宽度
     private static float mRightTopWidth = 50;
     // 右上高度
@@ -127,6 +130,7 @@ public class FloatWindowHelper {
         }
     }
 
+    // TODO
     public static void initFloatWindwo(final Context mContext, int value, View view,
             LayoutParams layoutParams, int flag) {
         final WindowManager windowManager = getWindowManager(mContext);
@@ -234,6 +238,10 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
+                                // 去除系统短信未读提示
+                                if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                                    LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                }
                                 removeSwipWindow(mContext, 1);
                             }
                             break;
@@ -252,16 +260,16 @@ public class FloatWindowHelper {
                 mLeftBottomParams = new LayoutParams();
                 mLeftBottomParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
                 mLeftBottomParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
-                mLeftBottomParams.x = -(width / 2);
-                mLeftBottomParams.y = (height / 2) - value;
+                mLeftBottomParams.x = (int) (-(width / 2) + (mLeftBottomParams.width / 2));
+                mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
                 mLeftBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftBottomParams.format = PixelFormat.RGBA_8888;
                 mLeftBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
 
             } else {
-                mLeftBottomParams.x = -(width / 2);
-                mLeftBottomParams.y = (height / 2) - value;
+                mLeftBottomParams.x = -(width / 2) + (mLeftBottomParams.width / 2);
+                mLeftBottomParams.y = (height / 2) - (mLeftBottomParams.height / 2);
             }
             if (!mGestureShowing) {
                 windowManager.addView(mLeftBottomView, mLeftBottomParams);
@@ -318,19 +326,17 @@ public class FloatWindowHelper {
             int height = windowManager.getDefaultDisplay().getHeight();
             if (mLeftCenterParams == null) {
                 mLeftCenterParams = new LayoutParams();
-                mLeftCenterParams.x = (int) -(width / 2);
-                mLeftCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
                 mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
                 mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+                mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
+                mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height);
                 mLeftCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mLeftCenterParams.x = (int) -(width / 2);
-                mLeftCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
+                mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
+                mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height);
             }
 
             if (!mGestureShowing) {
@@ -352,7 +358,7 @@ public class FloatWindowHelper {
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             if (LockManager.getInstatnce().isShowSysNoReadMessage
-                    && LockManager.getInstatnce().onTuchGestureFlag == 1 && mLeftBottomView == null) {
+                    && LockManager.getInstatnce().onTuchGestureFlag == -1 && mLeftBottomView == null) {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
             mLeftCenterCenterView.setOnTouchListener(new OnTouchListener() {
@@ -382,6 +388,10 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
+                                // 去除系统短信未读提示
+                                if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                                    LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                }
                                 removeSwipWindow(mContext, 4);
                             }
                             break;
@@ -391,24 +401,32 @@ public class FloatWindowHelper {
             });
             int width = windowManager.getDefaultDisplay().getWidth();
             int height = windowManager.getDefaultDisplay().getHeight();
-            int leftBottomHeight = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
             if (mLeftCenterCenterParams == null) {
                 mLeftCenterCenterParams = new LayoutParams();
-                mLeftCenterCenterParams.x = (int) -(width / 2);
-                mLeftCenterCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + leftBottomHeight) - 10) - value;
                 mLeftCenterCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
                 mLeftCenterCenterParams.height = (int) ((mLeftCenterCenterHeight / 2) + (value)) * 2;
+                mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
+                if (mLeftBottomView != null) {
+                    mLeftCenterCenterParams.y = (int) ((height / 2)
+                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height);
+                } else {
+                    mLeftCenterCenterParams.y = (int) ((height / 2)
+                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomHeight);
+                }
                 mLeftCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mLeftCenterCenterParams.x = (int) -(width / 2);
-                mLeftCenterCenterParams.y = (int) ((height / 2)
-                        - ((mLeftCenterHeight / 2) + leftBottomHeight) - 10) - value;
+                mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
+                if (mLeftBottomView != null) {
+                    mLeftCenterCenterParams.y = (int) ((height / 2)
+                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height);
+                } else {
+                    mLeftCenterCenterParams.y = (int) ((height / 2)
+                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomHeight);
+                }
             }
-
             if (!mGestureShowing) {
                 windowManager.addView(mLeftCenterCenterView, mLeftCenterCenterParams);
             } else {
@@ -464,21 +482,19 @@ public class FloatWindowHelper {
             int height = windowManager.getDefaultDisplay().getHeight();
             if (mLeftTopParams == null) {
                 mLeftTopParams = new LayoutParams();
-                mLeftTopParams.x = -(width / 2);
-                mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2)
-                        + mLeftBottomParams.height + mLeftCenterParams.height))
-                        - value;
                 mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
                 mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
+                mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
+                mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
+                        - mLeftBottomParams.height - mLeftCenterParams.height);
                 mLeftTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftTopParams.format = PixelFormat.RGBA_8888;
                 mLeftTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mLeftTopParams.x = -(width / 2);
-                mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2)
-                        + mLeftBottomParams.height + mLeftCenterParams.height))
-                        - value;
+                mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
+                mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
+                        - mLeftBottomParams.height - mLeftCenterParams.height);
             }
 
             if (!mGestureShowing) {
@@ -529,6 +545,10 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
+                                // 去除系统短信未读提示
+                                if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                                    LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                }
                                 removeSwipWindow(mContext, -1);
                             }
                             break;
@@ -542,15 +562,15 @@ public class FloatWindowHelper {
                 mRightBottomParams = new LayoutParams();
                 mRightBottomParams.width = (int) ((mRightBottomWidth / 2) + (value / 2)) * 2;
                 mRightBottomParams.height = (int) ((mRightBottomHeight / 2) + (value)) * 2;
-                mRightBottomParams.x = +(width / 2);
-                mRightBottomParams.y = (height / 2) - value;
+                mRightBottomParams.x = (int) ((width / 2) + (mRightBottomParams.width / 2));
+                mRightBottomParams.y = (int) ((height / 2) - (mRightBottomParams.height / 2));
                 mRightBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightBottomParams.format = PixelFormat.RGBA_8888;
                 mRightBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mRightBottomParams.x = +(width / 2);
-                mRightBottomParams.y = (height / 2) - value;
+                mRightBottomParams.x = (int) ((width / 2) + (mRightBottomParams.width / 2));
+                mRightBottomParams.y = (int) ((height / 2) - (mRightBottomParams.height / 2));
             }
 
             if (!mGestureShowing) {
@@ -610,17 +630,15 @@ public class FloatWindowHelper {
                 mRightCenterParams = new LayoutParams();
                 mRightCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
                 mRightCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
-                mRightCenterParams.x = (int) (width / 2);
-                mRightCenterParams.y = (int) ((height / 2)
-                        - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
+                mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
+                mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height);
                 mRightCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mRightCenterParams.x = (int) (width / 2);
-                mRightCenterParams.y = (int) ((height / 2)
-                        - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
+                mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
+                mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height);
             }
 
             if (!mGestureShowing) {
@@ -672,6 +690,10 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
+                                // 去除系统短信未读提示
+                                if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                                    LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                }
                                 removeSwipWindow(mContext, -4);
                             }
                             break;
@@ -686,17 +708,27 @@ public class FloatWindowHelper {
                 mRightCenterCenterParams = new LayoutParams();
                 mRightCenterCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
                 mRightCenterCenterParams.height = (int) ((mRightCenterCenterHeight / 2) + (value)) * 2;
-                mRightCenterCenterParams.x = (int) (width / 2);
-                mRightCenterCenterParams.y = (int) ((height / 2)
-                        - ((mRightCenterHeight / 2) + rightBottomHeight) - 10) - value;
+                mRightCenterCenterParams.x = (int) ((width / 2) + (mLeftCenterCenterParams.width / 2));
+                if (mRightBottomView != null) {
+                    mRightCenterCenterParams.y = (int) ((height / 2)
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height);
+                } else {
+                    mRightCenterCenterParams.y = (int) ((height / 2)
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomHeight);
+                }
                 mRightCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mRightCenterCenterParams.x = (int) (width / 2);
-                mRightCenterCenterParams.y = (int) ((height / 2)
-                        - ((mRightCenterHeight / 2) + rightBottomHeight) - 10) - value;
+                if (mRightBottomView != null) {
+                    mRightCenterCenterParams.y = (int) ((height / 2)
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height);
+                } else {
+                    mRightCenterCenterParams.y = (int) ((height / 2)
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomHeight);
+                }
+
             }
 
             if (!mGestureShowing) {
@@ -756,19 +788,17 @@ public class FloatWindowHelper {
                 mRightTopParams = new LayoutParams();
                 mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
                 mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
-                mRightTopParams.x = (width / 2);
-                mRightTopParams.y = (int) ((height / 2) - ((mRightTopHeight / 2)
-                        + mRightBottomParams.height + mRightCenterParams.height))
-                        - value;
+                mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
+                mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
+                        - mRightBottomParams.height - mRightCenterParams.height);
                 mRightTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightTopParams.format = PixelFormat.RGBA_8888;
                 mRightTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                mRightTopParams.x = (width / 2);
-                mRightTopParams.y = (int) ((height / 2) - ((mRightTopHeight / 2)
-                        + mRightBottomParams.height + mRightCenterParams.height))
-                        - value;
+                mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
+                mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
+                        - mRightBottomParams.height - mRightCenterParams.height);
             }
 
             if (!mGestureShowing) {
@@ -873,33 +903,36 @@ public class FloatWindowHelper {
         if (mLeftBottomParams != null) {
             mLeftBottomParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
             mLeftBottomParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
-            mLeftBottomParams.x = -(width / 2);
-            mLeftBottomParams.y = (height / 2) - value;
+            mLeftBottomParams.x = (int) (-(width / 2) + (mLeftBottomParams.width / 2));
+            mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
         }
         // 左中
         if (mLeftCenterParams != null) {
-            mLeftCenterParams.x = (int) -(width / 2);
-            mLeftCenterParams.y = (int) ((height / 2)
-                    - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
             mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
             mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+            mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
+            mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height);
         }
         // 左边中部
         if (mLeftCenterCenterParams != null) {
-            mLeftCenterCenterParams.x = (int) -(width / 2);
-            mLeftCenterCenterParams.y = (int) ((height / 2)
-                    - ((mLeftCenterHeight / 2) + mLeftBottomParams.height) - 10) - value;
             mLeftCenterCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
             mLeftCenterCenterParams.height = (int) ((mLeftCenterCenterHeight / 2) + (value)) * 2;
+            mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
+            if (mLeftBottomView != null) {
+                mLeftCenterCenterParams.y = (int) ((height / 2)
+                        - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height);
+            } else {
+                mLeftCenterCenterParams.y = (int) ((height / 2)
+                        - (mLeftCenterCenterParams.height / 2) - mLeftBottomHeight);
+            }
         }
         // 左上
         if (mLeftTopParams != null) {
-            mLeftTopParams.x = -(width / 2);
-            mLeftTopParams.y = (int) ((height / 2) - ((mLeftTopHeight / 2)
-                    + mLeftBottomParams.height + mLeftCenterParams.height))
-                    - value;
             mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
             mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
+            mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
+            mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
+                    - mLeftBottomParams.height - mLeftCenterParams.height);
         }
         // 右下
         if (mRightBottomParams != null) {
@@ -910,28 +943,31 @@ public class FloatWindowHelper {
         }
         // 右中
         if (mRightCenterParams != null) {
-            mRightCenterParams.x = (int) (width / 2);
-            mRightCenterParams.y = (int) ((height / 2)
-                    - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
             mRightCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
             mRightCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
+            mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
+            mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height);
         }
         // 右上
         if (mRightTopParams != null) {
-            mRightTopParams.x = (width / 2);
-            mRightTopParams.y = (int) ((height / 2) - ((mRightTopHeight / 2)
-                    + mRightBottomParams.height + mRightCenterParams.height))
-                    - value;
             mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
             mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
+            mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
+            mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
+                    - mRightBottomParams.height - mRightCenterParams.height);
         }
         // 右侧中部
         if (mRightCenterCenterParams != null) {
-            mRightCenterCenterParams.x = (int) (width / 2);
-            mRightCenterCenterParams.y = (int) ((height / 2)
-                    - ((mRightCenterHeight / 2) + mRightBottomParams.height) - 10) - value;
             mRightCenterCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
             mRightCenterCenterParams.height = (int) ((mRightCenterCenterHeight / 2) + (value)) * 2;
+            if (mRightBottomView != null) {
+                mRightCenterCenterParams.y = (int) ((height / 2)
+                        - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height);
+            } else {
+                mRightCenterCenterParams.y = (int) ((height / 2)
+                        - (mRightCenterCenterParams.height / 2) - mRightBottomHeight);
+            }
+
         }
         // 更新左边
         if (mLeftBottomView != null) {
@@ -1149,37 +1185,101 @@ public class FloatWindowHelper {
         }
     }
 
-    @SuppressWarnings("deprecation")
-    // MIUI系统提示层
-    public static void createMiuiTipWindow(final Context mContext) {
-        final WindowManager windowManager = getWindowManager(mContext);
-        if (mMiuiTipRl == null) {
-            mMiuiTipRl = (RelativeLayout) LayoutInflater.from(mContext).inflate(
-                    R.layout.activity_miui_open_float_window_tip, null);
-            mMiuiTipRl.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View arg0) {
-                    if (mMiuiTipRl != null) {
-                        windowManager.removeView(mMiuiTipRl);
-                        mMiuiTipRl = null;
+    // 常用应用列表对话框
+    public static void showCommontAppDialog(final Context context) {
+        final QuickGestureFreeDisturbAppDialog commonApp = new QuickGestureFreeDisturbAppDialog(
+                context, 3);
+        final AppMasterPreference pref = AppMasterPreference.getInstance(context);
+        commonApp.setIsShowCheckBox(true);
+        commonApp.setCheckBoxText(R.string.quick_gesture_change_common_app_dialog_checkbox_text);
+        // 设置是否选择习惯
+        commonApp.setCheckValue(pref.getQuickGestureCommonAppDialogCheckboxValue());
+        commonApp.setTitle(R.string.quick_gesture_change_common_app_dialog_title);
+        commonApp.setRightBt(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // 确认按钮
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 添加的应用包名
+                        List<String> addCommonApp = commonApp.getAddFreePackageName();
+                        // 移除的应用包名
+                        List<String> removeCommonApp = commonApp.getRemoveFreePackageName();
+                        // 是否选择使用习惯自动填充
+                        boolean flag = commonApp.getCheckValue();
+                        if (addCommonApp != null && addCommonApp.size() > 0) {
+                            for (String string : addCommonApp) {
+                                pref.setCommonAppPackageNameAdd(string);
+                            }
+                        }
+                        if (removeCommonApp != null && removeCommonApp.size() > 0) {
+                            for (String string : removeCommonApp) {
+                                pref.setCommonAppPackageNameRemove(string);
+                            }
+                        }
+                        if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
+                            pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
+                        }
                     }
-                }
-            });
-            if (mMiuiTipParams == null) {
-                int width = windowManager.getDefaultDisplay().getWidth();
-                int height = windowManager.getDefaultDisplay().getHeight();
-                mMiuiTipParams = new LayoutParams();
-                mMiuiTipParams.width = width;
-                mMiuiTipParams.height = height;
-                mMiuiTipParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
-                mMiuiTipParams.format = PixelFormat.RGBA_8888;
-                mMiuiTipParams.windowAnimations = R.anim.lock_mode_guide_in;
-                mMiuiTipParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | LayoutParams.FLAG_NOT_FOCUSABLE;
+                }).start();
+                commonApp.dismiss();
             }
-            windowManager.addView(mMiuiTipRl, mMiuiTipParams);
-        }
+        });
+        commonApp.setLeftBt(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // 取消按钮
+                commonApp.dismiss();
+            }
+        });
+        commonApp.show();
+    }
+
+    // 快捷开关对话框
+    public static void showQuickSwitchDialog(final Context context) {
+        final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
+                context, 2);
+        quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
+        quickSwitch.setRightBt(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // 确认按钮
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // 添加的应用包名
+                        List<String> addQuickSwitch = quickSwitch.getAddFreePackageName();
+                        // 移除的应用包名
+                        List<String> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
+                        if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
+                            for (String string : addQuickSwitch) {
+                                AppMasterPreference.getInstance(context)
+                                        .setQuickSwitchPackageNameAdd(string);
+                            }
+                        }
+                        if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
+                            for (String string : removeQuickSwitch) {
+                                AppMasterPreference.getInstance(context)
+                                        .setQuickSwitchPackageNameRemove(string);
+                            }
+                        }
+                    }
+                }).start();
+                quickSwitch.dismiss();
+            }
+        });
+        quickSwitch.setLeftBt(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // 取消按钮
+                quickSwitch.dismiss();
+            }
+        });
+        quickSwitch.show();
     }
 
     private static void onTouchAreaShowQuick(int flag) {
@@ -1190,6 +1290,10 @@ public class FloatWindowHelper {
             intent.putExtra("orientation", 0);
             AppMasterApplication.getInstance().startActivity(intent);
             LockManager.getInstatnce().onTuchGestureFlag = -1;
+            // 去除系统短信未读提示
+            if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                LockManager.getInstatnce().isShowSysNoReadMessage = false;
+            }
         } else if (flag == 1) {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
@@ -1197,6 +1301,10 @@ public class FloatWindowHelper {
             intent.putExtra("orientation", 1);
             AppMasterApplication.getInstance().startActivity(intent);
             LockManager.getInstatnce().onTuchGestureFlag = 1;
+            // 去除系统短信未读提示
+            if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                LockManager.getInstatnce().isShowSysNoReadMessage = false;
+            }
         }
     }
 }
