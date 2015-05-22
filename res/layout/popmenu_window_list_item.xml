@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textColor="@color/setting_menu_text_color"
-        android:textSize="15dp" />
+        android:textColor="#969696"
+        android:textSize="14sp"  />
 
 </LinearLayout>
