@@ -59,7 +59,7 @@
             android:id="@+id/hot_app_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/app_what_hot_icon" />
+            android:src="@drawable/what_hot_icon" />
     </RelativeLayout>
 
 </RelativeLayout>

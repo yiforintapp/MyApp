@@ -83,5 +83,6 @@
     <color name="quick_gesture_switch_setting_show_color">#D3D1D1</color>
     <color name="quick_gesture_switch_setting_hidden_color">#00000000</color>
     <color name="quick_gesture_miui_tip_color">#CC000000</color>
+    <color name="manage_quick_gesture_text_color">#f5e5d5</color>
 
 </resources>

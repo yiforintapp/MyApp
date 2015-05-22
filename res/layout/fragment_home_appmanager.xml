@@ -125,7 +125,7 @@
                         android:layout_height="@dimen/app_manager_four_icon_width_height"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/app_manager_four_icon_margin_top"
-                        android:src="@drawable/app_what_hot_icon" />
+                        android:src="@drawable/what_hot_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -143,7 +143,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/manager_small_hotapp_selecter" >
+                    android:background="@color/manager_quick_gesture" >
 
                     <ImageView
                         android:id="@+id/quick_gesture_tip_icon"
@@ -162,7 +162,7 @@
                         android:layout_height="@dimen/app_manager_four_icon_width_height"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/app_manager_four_icon_margin_top"
-                        android:src="@drawable/quick_launcher_widget" />
+                        android:src="@drawable/gesture_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -171,7 +171,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/app_manager_four_icon_margin_bottom_text"
                         android:text="@string/pg_appmanager_quick_gesture_name"
-                        android:textColor="#36D0CB"
+                        android:textColor="#f59c3d"
                         android:textSize="12dp" />
                 </RelativeLayout>
             </LinearLayout>
