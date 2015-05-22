@@ -1106,7 +1106,7 @@ public class AppleWatchContainer extends FrameLayout {
         if (info.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
             // sInfo.switchIcon =
             // QuickSwitchManager.getInstance(mContext).getIconFromName(sInfo.iDentiName);
-            tv = (GestureItemView) mSwitcherLayout.getChildAt(info.position);
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.position);
             checkBlueToothStatus(sInfo, iconSize, tv);
         }
     }
