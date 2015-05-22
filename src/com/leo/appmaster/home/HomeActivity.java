@@ -95,6 +95,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private Handler mHandler = new Handler();
     private DrawerArrowDrawable mDrawerArrowDrawable;
     private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
+    private ImageView app_hot_tip_icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +147,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mShadeView = (HomeShadeView) findViewById(R.id.shadeview);
         mShadeView.setPosition(0);
         mShadeView.setColorChangedListener(this);
+        app_hot_tip_icon = (ImageView) findViewById(R.id.app_hot_tip_icon);
+        if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
+            app_hot_tip_icon.setVisibility(View.VISIBLE);
+        } else {
+            app_hot_tip_icon.setVisibility(View.GONE);
+        }
     }
 
     public void showModePages(boolean show/* , int[] center */) {
@@ -255,6 +262,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
             }
         }
+        if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
+            app_hot_tip_icon.setVisibility(View.VISIBLE);
+        } else {
+            app_hot_tip_icon.setVisibility(View.GONE);
+        }
         super.onResume();
     }
 
@@ -351,6 +363,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         mTtileBar.findViewById(R.id.iv_option_image), null, null);
                 break;
             case R.id.bg_show_hotapp:
+                app_hot_tip_icon.setVisibility(View.GONE);
+                AppMasterPreference.getInstance(this).setHomeFragmentRedTip(false);
                 SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "hot");
                 Intent nIntent = new Intent(HomeActivity.this, HotAppActivity.class);
                 try {

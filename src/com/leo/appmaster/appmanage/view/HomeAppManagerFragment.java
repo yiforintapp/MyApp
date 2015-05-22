@@ -361,13 +361,13 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 Intent dlIntent = new Intent(mActivity, EleActivity.class);
                 startActivity(dlIntent);
                 break;
-            // case R.id.bg_show_hotapp:
-            // app_hot_tip_icon.setVisibility(View.GONE);
-            // sp_homeAppManager.setHomeFragmentRedTip(false);
-            // SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "hot");
-            // Intent nIntent = new Intent(mActivity, HotAppActivity.class);
-            // startActivity(nIntent);
-            // break;
+             case R.id.bg_show_hotapp:
+             app_hot_tip_icon.setVisibility(View.GONE);
+             sp_homeAppManager.setHomeFragmentRedTip(false);
+             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "hot");
+             Intent nIntent = new Intent(mActivity, HotAppActivity.class);
+             startActivity(nIntent);
+             break;
             case R.id.iv_donghua:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "newboost");
                 if (!isCleanning) {
