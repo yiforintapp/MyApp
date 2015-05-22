@@ -56,8 +56,6 @@ public class FreeDisturbPagedGridView extends LinearLayout {
         mCellX = cellX;
         mCellY = cellY;
         mPageItemCount = mCellX * mCellY;
-        // Log.e("################", "mCellX=" + mCellX + "mCellY=" + mCellY +
-        // "=" + mPageItemCount);
         updateUI(data);
     }
 

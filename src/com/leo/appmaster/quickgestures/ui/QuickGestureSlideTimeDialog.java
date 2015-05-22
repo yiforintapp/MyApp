@@ -78,13 +78,6 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
                 mJustHomeCb.setSelected(true);
                 mAppHomeCb.setSelected(false);
-                // AppMasterPreference.getInstance(mContext).setSlideTimeJustHome(true);
-                // AppMasterPreference.getInstance(mContext).setSlideTimeAllAppAndHome(false);
-                // dismiss();
-                // LeoEventBus
-                // .getDefaultBus()
-                // .post(new QuickGestureFloatWindowEvent(
-                // FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
             }
         });
         mAppHomeCb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -93,13 +86,6 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
                 mJustHomeCb.setSelected(false);
                 mAppHomeCb.setSelected(true);
-                // AppMasterPreference.getInstance(mContext).setSlideTimeJustHome(false);
-                // AppMasterPreference.getInstance(mContext).setSlideTimeAllAppAndHome(true);
-                // dismiss();
-                // LeoEventBus
-                // .getDefaultBus()
-                // .post(new QuickGestureFloatWindowEvent(
-                // FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
             }
         });
         setContentView(dlgView);

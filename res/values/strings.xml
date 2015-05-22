@@ -664,6 +664,7 @@
     <string name="quick_gesture_change_common_app_dialog_title">请选择应用</string>
     <string name="quick_gesture_change_common_app_dialog_checkbox_text">根据使用习惯，自动填充/更换应用</string>
     <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">系统信息</string>
+    <string name="quick_gesture_first_open_sliding_toast">开启快捷之旅</string>
     <string name="dynamic">动态</string>
     <string name="quick_switcher">快捷开关</string>
     <string name="most_used">最常使用</string>

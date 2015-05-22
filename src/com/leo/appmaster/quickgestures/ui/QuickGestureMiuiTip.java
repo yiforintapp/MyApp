@@ -9,6 +9,11 @@ import android.widget.RelativeLayout;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 
+/**
+ * QuickGestureMiuiTip
+ * 
+ * @author run
+ */
 public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener {
     private RelativeLayout mMiuiTipRL;
 
