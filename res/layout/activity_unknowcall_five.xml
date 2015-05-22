@@ -136,6 +136,13 @@
             android:visibility="invisible" />
 
         <ImageView
+            android:id="@+id/iv_hands"
+            android:layout_width="@dimen/weizhuang_unknowcall_icon_tips_left_width"
+            android:layout_height="@dimen/weizhuang_unknowcall_icon_tips_left_height"
+            android:background="@drawable/hands"
+            android:visibility="invisible" />
+
+        <ImageView
             android:id="@+id/iv_dianhua_hold"
             android:layout_width="@dimen/weizhuang_unknowcall_icon_hold"
             android:layout_height="@dimen/weizhuang_unknowcall_icon_hold"
