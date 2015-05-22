@@ -112,6 +112,17 @@ public class AppleWatchLayout extends ViewGroup {
         mThirdScale = 0.4f;
     }
 
+    public GestureItemView getChildAtPosition(int position) {
+        GestureItemView child = null;
+        for (int i = 0; i < getChildCount(); i++) {
+            child = (GestureItemView) getChildAt(i);
+            if (position == ((LayoutParams) child.getLayoutParams()).position) {
+                return child;
+            }
+        }
+        return null;
+    }
+
     public int getItemSize() {
         return mItemSize;
     }
@@ -443,7 +454,7 @@ public class AppleWatchLayout extends ViewGroup {
             if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleBluetooth(mContainer, mContainer.getSwitchList(),
-                                AppleWatchLayout.this,sInfo);
+                                AppleWatchLayout.this, sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleFlashLight(mContainer, mContainer.getSwitchList(),
