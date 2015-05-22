@@ -153,12 +153,13 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             BitmapFactory.Options option = new BitmapFactory.Options();
             option.inDensity = 480;
             option.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
-            if(option.inTargetDensity < 130) {
-                option.inTargetDensity = option.inTargetDensity - 30;
-            } else if(option.inTargetDensity < 170) {
-                option.inTargetDensity = option.inTargetDensity - 20;
-            } else  if(option.inTargetDensity < 250) {
-                option.inTargetDensity = option.inTargetDensity - 10;
+            // scale for hdpi, mdpi and ldpi
+            if(option.inTargetDensity < 125) {
+                option.inTargetDensity = option.inTargetDensity - 40;
+            } else if(option.inTargetDensity < 165) {
+                option.inTargetDensity = option.inTargetDensity - 40;
+            } else  if(option.inTargetDensity < 245) {
+                option.inTargetDensity = option.inTargetDensity - 40;
             }
             option.inScaled = true;
             splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
