@@ -10,18 +10,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
-import android.R.integer;
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningTaskInfo;
-import android.app.PackageDeleteObserver;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -31,12 +25,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PackageStats;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteException;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -44,20 +37,12 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.appmanage.BusinessAppInstallTracker;
-import com.leo.appmaster.backup.AppBackupRestoreManager;
-import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
-import com.leo.appmaster.fragment.LockFragment;
-import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.extra.CacheInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -65,7 +50,6 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.PackageChangedListener;
 
@@ -266,6 +250,15 @@ public class AppLoadEngine extends BroadcastReceiver {
             return info.label;
         } else {
             return "";
+        }
+    }
+    
+    public Drawable getAppIcon(String pkg) {
+        AppItemInfo info = mAppDetails.get(pkg);
+        if (info != null) {
+            return info.icon;
+        } else {
+            return null;
         }
     }
 
