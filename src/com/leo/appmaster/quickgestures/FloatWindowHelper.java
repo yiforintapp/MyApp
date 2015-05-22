@@ -358,7 +358,7 @@ public class FloatWindowHelper {
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             if (LockManager.getInstatnce().isShowSysNoReadMessage
-                    && LockManager.getInstatnce().onTuchGestureFlag == 1 && mLeftBottomView == null) {
+                    && LockManager.getInstatnce().onTuchGestureFlag == -1 && mLeftBottomView == null) {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
             mLeftCenterCenterView.setOnTouchListener(new OnTouchListener() {

@@ -347,9 +347,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             }
             mPre.setSwitchOpenQuickGesture(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
-            Log.e("##########", "0：快捷手势开关");
         } else if (position == 3) {
-            Log.e("##########", "3：打开短信提示");
             mPre.setSwitchOpenNoReadMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (arg1) {
@@ -374,7 +372,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 }).start();
             }
         } else if (position == 4) {
-            Log.e("##########", "4：打开常用联系人提示");
             mPre.setSwitchOpenRecentlyContact(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (arg1) {
@@ -401,7 +398,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 ;
             }
         } else if (position == 5) {
-            Log.e("##########", "5:打开隐私联系人提示");
             mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
         }

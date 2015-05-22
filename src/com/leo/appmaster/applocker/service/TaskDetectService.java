@@ -65,11 +65,11 @@ public class TaskDetectService extends Service {
     private TimerTask mDetectTask;
 
     private TaskChangeHandler mLockHandler;
-//    private TaskDetectBinder mBinder = new TaskDetectBinder();
+    // private TaskDetectBinder mBinder = new TaskDetectBinder();
     private AppMasterPreference sp_traffic;
     private FloatWindowTask mFloatWindowTask;
     private Handler mHandler;
-    
+
     private static TaskDetectService sService;
     private static Notification sNotification;
 
@@ -101,7 +101,7 @@ public class TaskDetectService extends Service {
         startPhantomService();
         super.onCreate();
     }
-    
+
     private void startPhantomService() {
         startService(new Intent(this, PhantomService.class));
     }
@@ -111,12 +111,10 @@ public class TaskDetectService extends Service {
         if (!mServiceStarted) {
             startDetect();
         }
-        Log.e("##############", "是否开启："
-                + AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture());
         if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
             startFloatWindow();
         }
-        
+
         return START_STICKY;
     }
 
@@ -538,13 +536,13 @@ public class TaskDetectService extends Service {
         }
 
     }
-    
+
     public static TaskDetectService getService() {
         return sService;
     }
-    
+
     public static synchronized Notification getNotification(Context context) {
-        if(sNotification == null) {
+        if (sNotification == null) {
             PendingIntent pi = PendingIntent.getActivity(context, 0,
                     new Intent(context, HomeActivity.class),
                     PendingIntent.FLAG_UPDATE_CURRENT);
@@ -556,5 +554,5 @@ public class TaskDetectService extends Service {
         }
         return sNotification;
     }
-    
+
 }

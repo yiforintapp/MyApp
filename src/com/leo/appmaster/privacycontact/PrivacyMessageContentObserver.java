@@ -64,13 +64,15 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             /*
              * 快捷手势未读短信提醒
              */
-            List<MessageBean> messages = PrivacyContactUtils
-                    .getSysMessage(mContext, cr,
-                            "read=0 AND type=1", null, false);
-            if (messages != null && messages.size() > 0) {
-                QuickGestureManager.getInstance(mContext).mMessages = messages;
-                LockManager.getInstatnce().isShowSysNoReadMessage = true;
-                FloatWindowHelper.removeShowReadTipWindow(mContext);
+            if (AppMasterPreference.getInstance(mContext).getSwitchOpenNoReadMessageTip()) {
+                List<MessageBean> messages = PrivacyContactUtils
+                        .getSysMessage(mContext, cr,
+                                "read=0 AND type=1", null, false);
+                if (messages != null && messages.size() > 0) {
+                    QuickGestureManager.getInstance(mContext).mMessages = messages;
+                    LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                    FloatWindowHelper.removeShowReadTipWindow(mContext);
+                }
             }
             /*
              * _________________________________________________
@@ -201,25 +203,23 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             } else {
                 PrivacyContactManager.getInstance(mContext).updateSysCallLog();
             }
-            /*
-             * 快捷手势未读通话记录提醒
-             */
-            String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
-            String[] selectionArgs = new String[] {
-                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
-            };
-            List<ContactCallLog> callLogs = PrivacyContactUtils
-                    .getSysCallLog(mContext,
-                            mContext.getContentResolver(), selection,
-                            selectionArgs);
-            if (callLogs != null && callLogs.size() > 0) {
-                QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
-                LockManager.getInstatnce().isShowSysNoReadMessage = true;
-                FloatWindowHelper.removeShowReadTipWindow(mContext);
+            // ------快捷手势未读通话记录提醒
+            if (AppMasterPreference.getInstance(mContext).getSwitchOpenRecentlyContact()) {
+                String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
+                String[] selectionArgs = new String[] {
+                        String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
+                };
+                List<ContactCallLog> callLogs = PrivacyContactUtils
+                        .getSysCallLog(mContext,
+                                mContext.getContentResolver(), selection,
+                                selectionArgs);
+                if (callLogs != null && callLogs.size() > 0) {
+                    QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
+                    LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                    FloatWindowHelper.removeShowReadTipWindow(mContext);
+                }
             }
-            /*
-             * ------------------------------------------------------------------
-             */
+            // ------------------------------------------------------------------
         } else if (CONTACT_MODEL.equals(mFlag)) {
             // PrivacyContactManager.getInstance(mContext).updateSysContact();
         }
