@@ -53,102 +53,7 @@ public class FreeDisturbImageView extends ImageView {
                 Canvas c = new Canvas(mSourceBitmap);
                 d.draw(c);
             }
-            if (mLocked) {
-                if (mRect == null) {
-                    mRect = new RectF();
-                    int width = this.getMeasuredWidth();
-                    int height = this.getMeasuredHeight();
-                    mRect.left = 0;
-                    mRect.top = 0;
-                    mRect.right = width;
-                    mRect.bottom = height;
-                }
-                if (mDrawFilter == null) {
-                    mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG
-                            | Paint.FILTER_BITMAP_FLAG);
-                    canvas.setDrawFilter(mDrawFilter);
-                }
-
-                if (mGaryBitmap == null) {
-                    mGaryBitmap = mSourceBitmap.copy(mSourceBitmap.getConfig(),
-                            true);
-                    int red, green, blue, alpha, agr;
-                    int pixel;
-                    for (int i = 0; i < mGaryBitmap.getWidth(); i++) {
-                        for (int j = 0; j < mGaryBitmap.getHeight(); j++) {
-                            pixel = mGaryBitmap.getPixel(i, j);
-                            agr = (Color.red(pixel) + Color.green(pixel) + Color
-                                    .blue(pixel)) / 3;
-
-                            alpha = (int) (Color.alpha(pixel));
-                            red = (int) (Color.red(pixel) * 0.5);
-                            green = (int) (Color.green(pixel) * 0.5);
-                            blue = (int) (Color.blue(pixel) * 0.5);
-
-                            pixel = Color.argb(alpha, red, green, blue);
-                            mGaryBitmap.setPixel(i, j, pixel);
-                        }
-                    }
-                }
-                this.setImageBitmap(mGaryBitmap);
-                super.onDraw(canvas);
-                canvas.save();
-                canvas.translate(mLockX, mLockY);
-                Bitmap lockBitmap = BitmapHolder.getLockBitmap(getContext());
-                if (mMatrix == null) {
-                    int lockWidth = getResources().getDimensionPixelSize(
-                            R.dimen.lock_icon_width);
-                    int lockHeight = getResources().getDimensionPixelSize(
-                            R.dimen.lock_icon_height);
-
-                    float scaleX = (float) lockWidth / lockBitmap.getWidth();
-                    float scaleY = (float) lockHeight / lockBitmap.getHeight();
-
-                    mMatrix = new Matrix();
-                    mMatrix.setScale(scaleX, scaleY, lockBitmap.getWidth() / 2,
-                            lockBitmap.getHeight() / 2);
-                }
-                canvas.drawBitmap(lockBitmap, mMatrix, mPaint);
-                canvas.restore();
-            } else if (mRecommend) {
-                if (mRect == null) {
-                    mRect = new RectF();
-                    int width = this.getMeasuredWidth();
-                    int height = this.getMeasuredHeight();
-                    mRect.left = 0;
-                    mRect.top = 0;
-                    mRect.right = width;
-                    mRect.bottom = height;
-                }
-                if (mDrawFilter == null) {
-                    mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG
-                            | Paint.FILTER_BITMAP_FLAG);
-                    canvas.setDrawFilter(mDrawFilter);
-                }
-
-                this.setImageBitmap(mSourceBitmap);
-                super.onDraw(canvas);
-                canvas.save();
-                canvas.translate(mLockX, mLockY);
-                Bitmap recommendBitmap = BitmapHolder
-                        .getRecommendBitmap(getContext());
-                if (mMatrix == null) {
-                    int lockWidth = getResources().getDimensionPixelSize(
-                            R.dimen.lock_icon_width);
-                    int lockHeight = getResources().getDimensionPixelSize(
-                            R.dimen.lock_icon_height);
-
-                    float scaleX = (float) lockWidth / recommendBitmap.getWidth();
-                    float scaleY = (float) lockHeight / recommendBitmap.getHeight();
-
-                    mMatrix = new Matrix();
-                    mMatrix.setScale(scaleX, scaleY,
-                            recommendBitmap.getWidth() / 2,
-                            recommendBitmap.getHeight() / 2);
-                }
-                canvas.drawBitmap(recommendBitmap, mMatrix, mPaint);
-                canvas.restore();
-            } else if (mDefaultRecommend) {
+            if (mDefaultRecommend) {
                 if (mRect == null) {
                     mRect = new RectF();
                     int width = this.getMeasuredWidth();
@@ -215,40 +120,13 @@ public class FreeDisturbImageView extends ImageView {
         }
     }
 
-    public void setLocked(boolean locked) {
-        mLocked = locked;
-        invalidate();
-    }
-
-    public void setRecommend(boolean recommend) {
-        mRecommend = recommend;
-    }
-
     public void setDefaultRecommendApp(boolean defaultApp) {
         mDefaultRecommend = defaultApp;
         invalidate();
     }
 
     private static class BitmapHolder {
-        private static Bitmap mLockBitmap, mRecommendBitmap, mDefaultRecommend;
-
-        public static Bitmap getLockBitmap(Context ctx) {
-            if (mLockBitmap == null) {
-                mLockBitmap = BitmapFactory.decodeResource(ctx.getResources(),
-                        R.drawable.lock_icon);
-            }
-
-            return mLockBitmap;
-        }
-
-        public static Bitmap getRecommendBitmap(Context ctx) {
-            if (mRecommendBitmap == null) {
-                mRecommendBitmap = BitmapFactory.decodeResource(
-                        ctx.getResources(), R.drawable.star_icon);
-            }
-
-            return mRecommendBitmap;
-        }
+        private static Bitmap mDefaultRecommend;
 
         public static Bitmap getDefaultBitmap(Context ctx) {
             if (mDefaultRecommend == null) {
@@ -259,14 +137,4 @@ public class FreeDisturbImageView extends ImageView {
         }
 
     }
-
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        try {
-            super.onRestoreInstanceState(state);
-        } catch (Exception e) {
-
-        }
-    }
-
 }

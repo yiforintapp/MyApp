@@ -1059,10 +1059,6 @@ public class FloatWindowHelper {
                         .createFloatLeftCenterWindow(context, value);
                 FloatWindowHelper
                         .createFloatLeftTopWindow(context, value);
-            } else {
-                // FloatWindowHelper.removeSwipWindow(context, 1);
-                // FloatWindowHelper.removeSwipWindow(context, 2);
-                // FloatWindowHelper.removeSwipWindow(context, 3);
             }
             // 右侧底部
             if (pre.getDialogRadioRightBottom()) {
@@ -1072,10 +1068,6 @@ public class FloatWindowHelper {
                         .createFloatRightCenterWindow(context, value);
                 FloatWindowHelper
                         .createFloatRightTopWindow(context, value);
-            } else {
-                // FloatWindowHelper.removeSwipWindow(context, -1);
-                // FloatWindowHelper.removeSwipWindow(context, -2);
-                // FloatWindowHelper.removeSwipWindow(context, -3);
             }
             // 左侧中部
             if (pre.getDialogRadioLeftCenter()) {
@@ -1102,9 +1094,11 @@ public class FloatWindowHelper {
     }
 
     /**
+     * updateFloatWindowBackgroudColor
+     * 
      * must call in UI thread
      * 
-     * @param context
+     * @param flag
      */
     public static void updateFloatWindowBackgroudColor(boolean flag) {
         if (flag) {
@@ -1183,7 +1177,10 @@ public class FloatWindowHelper {
         }
     }
 
-    // 常用应用列表对话框
+    /**
+     * Common App Dialog
+     * @param context
+     */
     public static void showCommontAppDialog(final Context context) {
         final QuickGestureFreeDisturbAppDialog commonApp = new QuickGestureFreeDisturbAppDialog(
                 context, 3);
@@ -1235,7 +1232,10 @@ public class FloatWindowHelper {
         commonApp.show();
     }
 
-    // 快捷开关对话框
+    /**
+     * Quick Switch Dialog
+     * @param context
+     */
     public static void showQuickSwitchDialog(final Context context) {
         final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
                 context, 2);

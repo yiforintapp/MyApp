@@ -163,6 +163,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     }
 
+    // 构建列表数据
     private void fillSettingData() {
         QuickGestureSettingBean gestureSettingOpenGesture = new QuickGestureSettingBean();
         gestureSettingOpenGesture.setName(this.getResources().getString(
@@ -203,12 +204,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     private class QuickGestureAdapter extends BaseAdapter {
         private LayoutInflater layoutInflater;
-        private Context mContext;
-        private int count = 0;
 
         public QuickGestureAdapter(Context context, List<QuickGestureSettingBean> beans) {
             layoutInflater = LayoutInflater.from(context);
-            mContext = context;
             mQuickGestureSettingOption = beans;
         }
 
@@ -318,14 +316,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             if (arg2 == 1) {
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);
-                // 常用应用选择调试
-                // TODO
-                // FloatWindowHelper.showCommontAppDialog(QuickGestureActivity.this);
             } else if (arg2 == 2) {
                 showSlideShowTimeSettingDialog();
-                // 快捷开关调试
-                // TODO
-                // FloatWindowHelper.showQuickSwitchDialog(QuickGestureActivity.this);
             }
         }
     }
@@ -353,9 +345,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        /**
-                         * 首次打开，通知 显示短信提示，入口
-                         */
                         QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages = PrivacyContactUtils
                                 .getSysMessage(QuickGestureActivity.this,
                                         QuickGestureActivity.this.getContentResolver(),
@@ -401,6 +390,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         }
     }
 
+    // 构建滑动区域设置列表数据
     private List<DialogRadioBean> initDialogRadioTextData() {
         List<DialogRadioBean> datas = new ArrayList<DialogRadioBean>();
         DialogRadioBean bean1 = new DialogRadioBean();
@@ -434,6 +424,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         boolean isCheck;
     }
 
+    // 滑动区域设置
     private void showSettingDialog(boolean flag) {
         if (mAlarmDialog == null) {
             mAlarmDialog = new QuickGestureRadioSeekBarDialog(this);
@@ -495,12 +486,12 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     // 更新背景
     private void updateFloatWindowBackGroudColor() {
-        FloatWindowHelper.updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
+        FloatWindowHelper
+                .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
         FloatWindowHelper.createFloatWindow(QuickGestureActivity.this, AppMasterPreference
                 .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
     }
 
-    // 弹出框的Adapter
     class RadioListViewAdapter extends BaseAdapter {
         private Context mContext;
         private LayoutInflater mLayoutInflater;
@@ -589,6 +580,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         }
     }
 
+    // 滑动时机
     private void showSlideShowTimeSettingDialog() {
         if (mSlideTimeDialog == null) {
             mSlideTimeDialog = new QuickGestureSlideTimeDialog(this);
@@ -617,9 +609,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         mSlideTimeDialog.getJustHometCheckStatus());
                 AppMasterPreference.getInstance(QuickGestureActivity.this)
                         .setSlideTimeAllAppAndHome(mSlideTimeDialog.getAppHomeCheckStatus());
-                // Log.e("#############", "桌面：" +
-                // mSlideTimeDialog.getJustHometCheckStatus() + ":应用："
-                // + mSlideTimeDialog.getAppHomeCheckStatus());
                 mSlideTimeDialog.dismiss();
                 LeoEventBus
                         .getDefaultBus()
@@ -673,6 +662,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         }
     }
 
+    // 免打扰应用列表
     private void showAllAppDialog() {
         final QuickGestureFreeDisturbAppDialog freeDisturbApp = new QuickGestureFreeDisturbAppDialog(
                 this, 1);
@@ -750,12 +740,10 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     private class FreeDisturbSlideTimeAdapter extends BaseAdapter {
         List<FreeDisturbAppInfo> mFreeDisturbApps = null;
-        Context mContext;
         LayoutInflater mInflater;
 
         public FreeDisturbSlideTimeAdapter(Context context, List<FreeDisturbAppInfo> mApps) {
             mFreeDisturbApps = mApps;
-            mContext = context;
             mInflater = LayoutInflater.from(context);
         }
 
@@ -837,8 +825,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 if (moveX > width / 50 || moveY > width / 50) {
                     mTipRL.clearAnimation();
                     mTipRL.setVisibility(View.GONE);
-                    // quickTipCancelAnim(mTipRL);
-                    Toast.makeText(this, "开启快捷之旅", Toast.LENGTH_SHORT)
+                    String toastText = QuickGestureActivity.this.getResources().getString(
+                            R.string.quick_gesture_first_open_sliding_toast);
+                    Toast.makeText(this, toastText, Toast.LENGTH_SHORT)
                             .show();
                     AppMasterPreference.getInstance(QuickGestureActivity.this).setFristSlidingTip(
                             true);
