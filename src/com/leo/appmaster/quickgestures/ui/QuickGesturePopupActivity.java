@@ -13,6 +13,9 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.BackupEvent;
+import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
@@ -41,6 +44,10 @@ public class QuickGesturePopupActivity extends Activity implements
         super.onCreate(savedInstanceState);
         handleIntent();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
+        
+        //注册eventBus
+        LeoEventBus.getDefaultBus().register(this);
+        
         // Window window = getWindow();
         // WindowManager.LayoutParams params = window.getAttributes();
         // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
@@ -86,6 +93,14 @@ public class QuickGesturePopupActivity extends Activity implements
 
     }
 
+    
+    public void onEventMainThread(ClickQuickItemEvent event) {
+        if (QuickSwitchManager.BLUETOOTH_EVENT.equals(event.eventMsg)) {
+            LeoLog.e("testEventMain", "接受到消息啦！！idName is : " + event.info.iDentiName + " ; position is : " + event.info.position);
+            mContainer.checkStatus(event.info);
+        } 
+    }
+    
     @Override
     protected void onPause() {
         LeoLog.e("xxxx", "onPause");
@@ -115,6 +130,8 @@ public class QuickGesturePopupActivity extends Activity implements
     @Override
     protected void onDestroy() {
         FloatWindowHelper.mGestureShowing = false;
+        //反注册
+        LeoEventBus.getDefaultBus().unregister(this);
         super.onDestroy();
     }
 
@@ -126,7 +143,6 @@ public class QuickGesturePopupActivity extends Activity implements
         } else {
             mContainer.showCloseAnimation();
         }
-
         // super.onBackPressed();
     }
 

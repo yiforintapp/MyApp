@@ -23,6 +23,7 @@ import android.widget.FrameLayout;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
@@ -1069,6 +1070,20 @@ public class AppleWatchContainer extends FrameLayout {
         } else if (mCurrentGestureType == GType.SwitcherLayout) {
             onTouchDown();
             snapToNext();
+        }
+    }
+
+    public void checkStatus(QuickSwitcherInfo info) {
+        GestureItemView tv = null;
+        AppleWatchLayout.LayoutParams lp = null;
+        QuickSwitcherInfo sInfo = info;
+        int iconSize = mSwitcherLayout.getIconSize();
+        if (info.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+//            sInfo.switchIcon = QuickSwitchManager.getInstance(mContext).getIconFromName(sInfo.iDentiName);
+            tv = (GestureItemView) mSwitcherLayout.getChildAt(info.position);
+            checkBlueToothStatus(sInfo, iconSize, tv);
+            
+//            mSwitcherLayout.invalidate();
         }
     }
 
