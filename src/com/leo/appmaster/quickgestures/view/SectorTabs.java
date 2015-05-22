@@ -126,9 +126,9 @@ public class SectorTabs extends View {
         mTextPaint.setStyle(Style.FILL);
 
         Resources res = getResources();
-        mDynamic = res.getString(R.string.dynamic);
-        mMostUsed = res.getString(R.string.most_used);
-        mQuickSwitcher = res.getString(R.string.quick_switcher);
+        mDynamic = res.getString(R.string.quick_gesture_dynamic);
+        mMostUsed = res.getString(R.string.quick_gesture_most_used);
+        mQuickSwitcher = res.getString(R.string.quick_gesture_switcher);
 
         mTextSize = res.getDimensionPixelSize(R.dimen.qg_conner_tab_text_size);
         mTextPaint.setTextSize(mTextSize);

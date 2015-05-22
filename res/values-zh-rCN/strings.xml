@@ -673,9 +673,9 @@
     <string name="pg_appmanager_quick_switch_dialog_title">请选择快捷开关</string>
     <string name="quick_gesture_change_common_app_dialog_title">请选择应用</string>
     <string name="quick_gesture_change_common_app_dialog_checkbox_text">根据使用习惯，自动填充/更换应用</string>
-    <string name="dynamic">动态</string>
-    <string name="quick_switcher">快捷开关</string>
-    <string name="most_used">最常使用</string>
+    <string name="quick_gesture_dynamic">动态</string>
+    <string name="quick_gesture_switcher">快捷开关</string>
+    <string name="quick_gesture_most_used">最常使用</string>
     <string name="quick_guesture_bluetooth">蓝牙</string>
     <string name="quick_guesture_flashlight">手电筒</string>
     <string name="quick_guesture_wlan">WLAN</string>

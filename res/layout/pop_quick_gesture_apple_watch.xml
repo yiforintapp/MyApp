@@ -7,7 +7,7 @@
     <com.leo.appmaster.quickgestures.view.AppleWatchContainer
         android:id="@+id/gesture_container"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="360dp"
         android:layout_alignParentBottom="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
             android:background="@drawable/gesture_title_bar"
+            android:gravity="center"
             android:padding="3dp"
             android:text="Dynamic"
             android:textSize="16sp" />
