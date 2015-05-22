@@ -519,8 +519,7 @@ public class QuickSwitchManager {
         return mSwitchList;
     }
 
-    public void toggleWlan(AppleWatchContainer mContainer, List<QuickSwitcherInfo> list,
-            AppleWatchLayout quickGestureLayout) {
+    public void toggleWlan(QuickSwitcherInfo mInfo) {
         if (!mWifimanager.isWifiEnabled()) {
             mWifimanager.setWifiEnabled(true);
             isWlantOpen = true;
@@ -528,11 +527,11 @@ public class QuickSwitchManager {
             mWifimanager.setWifiEnabled(false);
             isWlantOpen = false;
         }
-        mContainer.fillSwitchItem(quickGestureLayout, list);
+        LeoEventBus.getDefaultBus().post(
+                new ClickQuickItemEvent(WLAN,mInfo));
     }
 
-    public void toggleBluetooth(AppleWatchContainer mContainer, List<QuickSwitcherInfo> list,
-            AppleWatchLayout quickGestureLayout, QuickSwitcherInfo mInfo) {
+    public void toggleBluetooth(QuickSwitcherInfo mInfo) {
         if (mBluetoothAdapter == null) {
             mBluetoothAdapter = BluetoothAdapter
                     .getDefaultAdapter();
@@ -547,11 +546,9 @@ public class QuickSwitchManager {
 //        mContainer.fillSwitchItem(quickGestureLayout, list);
         LeoEventBus.getDefaultBus().post(
                 new ClickQuickItemEvent(BLUETOOTH_EVENT,mInfo));
-        LeoLog.e("testEventTwo", "发出消息啦！！点击蓝牙！");
     }
 
-    public void toggleSound(AppleWatchContainer mContainer, List<QuickSwitcherInfo> switchList,
-            AppleWatchLayout quickGestureLayout) {
+    public void toggleSound(QuickSwitcherInfo mInfo) {
         if (mSoundManager == null) {
             mSoundManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         }
@@ -569,11 +566,11 @@ public class QuickSwitchManager {
             mSoundManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
             mSoundStatus = mSound;
         }
-        mContainer.fillSwitchItem(quickGestureLayout, switchList);
+        LeoEventBus.getDefaultBus().post(
+                new ClickQuickItemEvent(SOUND,mInfo));
     }
 
-    public void toggleFlashLight(AppleWatchContainer mContainer, List<QuickSwitcherInfo> list,
-            AppleWatchLayout quickGestureLayout) {
+    public void toggleFlashLight(QuickSwitcherInfo mInfo) {
         if (!isFlashLightOpen) {
             isFlashLightOpen = true;
             try {
@@ -606,7 +603,8 @@ public class QuickSwitchManager {
                 return;
             }
         }
-        mContainer.fillSwitchItem(quickGestureLayout, list);
+        LeoEventBus.getDefaultBus().post(
+                new ClickQuickItemEvent(FLASHLIGHT,mInfo));
     }
 
     public static boolean checkBlueTooth() {
@@ -663,8 +661,7 @@ public class QuickSwitchManager {
         mContext.startActivity(intent);
     }
 
-    public void toggleLight(AppleWatchContainer mContainer, List<QuickSwitcherInfo> switchList,
-            AppleWatchLayout quickGestureLayout) {
+    public void toggleLight(QuickSwitcherInfo mInfo) {
         int light = 0;
         switch (getBrightStatus()) {
             case LIGHT_AUTO:
@@ -690,7 +687,8 @@ public class QuickSwitchManager {
         }
         setLight(light);
         setScreenLightValue(mContext.getContentResolver(), light);
-        mContainer.fillSwitchItem(quickGestureLayout, switchList);
+        LeoEventBus.getDefaultBus().post(
+                new ClickQuickItemEvent(LIGHT,mInfo));
     }
 
     /*
@@ -818,8 +816,7 @@ public class QuickSwitchManager {
         }
     }
 
-    public void toggleRotation(AppleWatchContainer mContainer, List<QuickSwitcherInfo> list,
-            AppleWatchLayout quickGestureLayout) {
+    public void toggleRotation(QuickSwitcherInfo mInfo) {
         try {
             mRotateState = android.provider.Settings.System.getInt(mContext.getContentResolver(),
                     android.provider.Settings.System.ACCELEROMETER_ROTATION);
@@ -847,7 +844,8 @@ public class QuickSwitchManager {
             mContext.getContentResolver().notifyChange(uri, null);
             isRotationOpen = true;
         }
-        mContainer.fillSwitchItem(quickGestureLayout, list);
+        LeoEventBus.getDefaultBus().post(
+                new ClickQuickItemEvent(ROTATION,mInfo));
     }
 
     // 观察屏幕旋转设置变化
@@ -946,8 +944,7 @@ public class QuickSwitchManager {
         }
     }
 
-    public void toggleMobileData(AppleWatchContainer mContainer,
-            List<QuickSwitcherInfo> switchList, AppleWatchLayout quickGestureLayout) {
+    public void toggleMobileData(QuickSwitcherInfo mInfo) {
         Object[] arg = null;
         try {
             boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
@@ -959,7 +956,8 @@ public class QuickSwitchManager {
                 invokeBooleanArgMethod("setMobileDataEnabled", true);
                 isMobileDataOpen = true;
             }
-            mContainer.fillSwitchItem(quickGestureLayout, switchList);
+            LeoEventBus.getDefaultBus().post(
+                    new ClickQuickItemEvent(MOBILEDATA,mInfo));
         } catch (Exception e) {
             e.printStackTrace();
         }
