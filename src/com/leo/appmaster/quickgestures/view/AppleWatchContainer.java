@@ -752,7 +752,7 @@ public class AppleWatchContainer extends FrameLayout {
                     // 飞行模式
                     checkFlyMode(sInfo, iconSize, tv);
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
-                    // 飞行模式
+                    // 屏幕旋转
                     checkRotation(sInfo, iconSize, tv);
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
                     // 移动数据
@@ -935,10 +935,14 @@ public class AppleWatchContainer extends FrameLayout {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                     null);
+            tv.setText("蓝牙开");
+            LeoLog.d("testContainer", "蓝牙开");
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
             tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
                     null);
+            tv.setText("蓝牙关");
+            LeoLog.d("testContainer", "蓝牙关");
         }
     }
 
@@ -1079,11 +1083,10 @@ public class AppleWatchContainer extends FrameLayout {
         QuickSwitcherInfo sInfo = info;
         int iconSize = mSwitcherLayout.getIconSize();
         if (info.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
-//            sInfo.switchIcon = QuickSwitchManager.getInstance(mContext).getIconFromName(sInfo.iDentiName);
+            // sInfo.switchIcon =
+            // QuickSwitchManager.getInstance(mContext).getIconFromName(sInfo.iDentiName);
             tv = (GestureItemView) mSwitcherLayout.getChildAt(info.position);
             checkBlueToothStatus(sInfo, iconSize, tv);
-            
-//            mSwitcherLayout.invalidate();
         }
     }
 
