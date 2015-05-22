@@ -1139,10 +1139,8 @@ public class AppleWatchLayout extends ViewGroup {
     private float computeTranslateY(GestureItemView from, GestureItemView to, float tranX) {
         float dx = to.getLeft() - from.getLeft();
         float dy = to.getTop() - from.getTop();
-
         float resault;
         resault = dy / dx * tranX;
-
         return resault;
     }
 }
