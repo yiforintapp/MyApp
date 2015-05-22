@@ -4,6 +4,8 @@ package com.leo.appmaster.applocker;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,6 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -65,6 +68,9 @@ public class LockModeView extends View {
 
     private int mMoveIconHeight;
 
+    private boolean pressLockFlag;
+    private boolean pressModeNameFlag;
+    
     public LockModeView(Context context) {
         this(context, null);
     }
@@ -234,8 +240,28 @@ public class LockModeView extends View {
             canvas.drawText(mModeText, mBgIconDrawBount.left + (drawW - textWidth) / 2,
                     mBgIconDrawBount.top + (int) (drawH * LOCK_MODE_TEXT_POS_PERCENT), mPaint);
         }
+        
+        if(pressLockFlag){
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.mode_press_lock_bg);
+            canvas.drawBitmap(bitmap, mBgIconDrawBount.left + (drawW - bitmap.getWidth()) / 2, mBgIconDrawBount.top + ((int) (drawH * 0.15f)), null);
+            Log.i("Rect", "drawH ="+drawH);
+        }
+        if(pressModeNameFlag){
+            Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.mode_press_bg);
+            Rect src = new Rect();
+            src.left = src.top =0;
+            src.right = bitmap2.getWidth();
+            src.bottom = src.top + bitmap2.getHeight();
+            Rect dst = new Rect();
+            dst.left = mBgIconDrawBount.left + (drawW - bitmap2.getWidth()) / 2;
+            dst.top = mBgIconDrawBount.top + (int) (drawH * 0.65);
+            dst.right = dst.left +bitmap2.getWidth();
+            dst.bottom = dst.top +DipPixelUtil.dip2px(mContext, 75);
+            canvas.drawBitmap(bitmap2, src, dst, null);
+        }
     }
 
+    
     private int computeTextSize(String text, int maxTextSize, int maxWidth, Paint paint) {
         int textSize = maxTextSize;
         paint.setTextSize(textSize);
@@ -257,19 +283,41 @@ public class LockModeView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
+        int upX = (int) event.getX();
+        int upY = (int) event.getY();
+
+        int dy = mBgIconDrawBount.top +  (mBgIconDrawBount.bottom - mBgIconDrawBount.top)
+                * 2 / 3;
+
+        Rect top = new Rect(mBgIconDrawBount.left, mBgIconDrawBount.top,
+                mBgIconDrawBount.right, dy);
+        Rect bottom = new Rect(mBgIconDrawBount.left, dy,
+                mBgIconDrawBount.right, mBgIconDrawBount.bottom);
+        
         switch (action & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                    this.setScaleX(0.95f);
+                    this.setScaleY(0.95f);
+                    if (top.contains(upX, upY)) {
+                        pressLockFlag = true;
+                    }else{
+                        pressModeNameFlag = true;
+                    }
+                    invalidate();
+                    break;
+            case MotionEvent.ACTION_CANCEL:
+                this.setScaleX(1.0f);
+                this.setScaleY(1.0f);
+                pressLockFlag = false;
+                pressModeNameFlag = false;
+                invalidate();
+                break;
             case MotionEvent.ACTION_UP:
-                int upX = (int) event.getX();
-                int upY = (int) event.getY();
-
-                int dy = mBgIconDrawBount.top +  (mBgIconDrawBount.bottom - mBgIconDrawBount.top)
-                        * 2 / 3;
-
-                Rect top = new Rect(mBgIconDrawBount.left, mBgIconDrawBount.top,
-                        mBgIconDrawBount.right, dy);
-                Rect bottom = new Rect(mBgIconDrawBount.left, dy,
-                        mBgIconDrawBount.right, mBgIconDrawBount.bottom);
-                
+                this.setScaleX(1.0f);
+                this.setScaleY(1.0f);
+                pressLockFlag = false;
+                pressModeNameFlag = false;
+                invalidate();
                 Context ctx = getContext();
                 if (top.contains(upX, upY)) {
                     // to lock list

@@ -406,6 +406,9 @@ public class TaskDetectService extends Service {
 
     }
 
+    /*
+     * FloatWindowTask 
+     */
     private class FloatWindowTask implements Runnable {
         ActivityManager mActivityManager;
 
@@ -483,8 +486,14 @@ public class TaskDetectService extends Service {
                 .equals(flag)) {
             // 设置背景
             if (FloatWindowHelper.mEditQuickAreaFlag) {
-                FloatWindowHelper
-                        .updateFloatWindowBackgroudColor(true);
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        FloatWindowHelper
+                                .updateFloatWindowBackgroudColor(true);
+                    }
+                }).start();
             }
             // 左侧底部
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {

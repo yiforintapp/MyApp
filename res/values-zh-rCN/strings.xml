@@ -676,6 +676,7 @@
     <string name="quick_gesture_dynamic">动态</string>
     <string name="quick_gesture_switcher">快捷开关</string>
     <string name="quick_gesture_most_used">最常使用</string>
+    <string name="quick_gesture_first_open_sliding_toast">开启快捷之旅</string>
     <string name="quick_guesture_bluetooth">蓝牙</string>
     <string name="quick_guesture_flashlight">手电筒</string>
     <string name="quick_guesture_wlan">WLAN</string>

@@ -99,7 +99,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 } else if (param == UpdateManager.FORCE_UPDATE) {
                     showForceUpdate();
                     mForce = true;
-                } /*normal or force update */
+                } /* normal or force update */
                 break;
             case IUIHelper.TYPE_CHECK_NO_UPDATE:
                 showNoUpdate();
@@ -123,7 +123,10 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             case IUIHelper.TYPE_DOWNLOAD_FAILED:
                 showDownloadFailed();
                 break;
-       }
+//            case IUIHelper.BACK_DOWNLOAD_DONE:
+//                showNeedUpdate();
+//                break;
+        }
     }
 
     private void showDownloadFailed() {

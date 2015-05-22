@@ -8,15 +8,13 @@ import java.util.List;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
-import com.leo.appmaster.quickgestures.view.GestureItemView;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
-import com.leo.appmaster.quickgestures.view.AppleWatchLayout;
-import com.leo.appmaster.quickgestures.view.AppleWatchLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.R.integer;
@@ -39,9 +37,6 @@ import android.os.PowerManager;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuickSwitchManager {
@@ -67,6 +62,7 @@ public class QuickSwitchManager {
     public final static String SYS_NO_READ_MESSAGE_TIP = "sys_no_read_message_tip";
     public final static String SYS_NO_READ_CALL_LOG_TIP = "sys_no_read_call_log_tip";
     public final static String PRIVACY_NO_READ_CONTACT_TIP = "privacy_no_read_contact_tip";
+    public final static String BLUETOOTH_EVENT = "bluetooth_event";
     private Context mContext;
     private static BluetoothAdapter mBluetoothAdapter;
     private WifiManager mWifimanager;
@@ -328,9 +324,11 @@ public class QuickSwitchManager {
             iCons = new Drawable[1];
             iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
         } else if (IdentiName.equals(SWITCHSET)) {
-            iCons = new Drawable[1];
+            iCons = new Drawable[2];
             iCons[0] = mContext.getResources().getDrawable(
-                    R.drawable.switch_gestureset_pre);
+                    R.drawable.switch_set);
+            iCons[1] = mContext.getResources().getDrawable(
+                    R.drawable.switch_set_dis);
         } else if (IdentiName.equals(CHANGEMODE)) {
             iCons = new Drawable[1];
             iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_mode);
@@ -534,7 +532,7 @@ public class QuickSwitchManager {
     }
 
     public void toggleBluetooth(AppleWatchContainer mContainer, List<QuickSwitcherInfo> list,
-            AppleWatchLayout quickGestureLayout) {
+            AppleWatchLayout quickGestureLayout, QuickSwitcherInfo mInfo) {
         if (mBluetoothAdapter == null) {
             mBluetoothAdapter = BluetoothAdapter
                     .getDefaultAdapter();
@@ -546,7 +544,10 @@ public class QuickSwitchManager {
             mBluetoothAdapter.disable();
             isBlueToothOpen = false;
         }
-        mContainer.fillSwitchItem(quickGestureLayout, list);
+//        mContainer.fillSwitchItem(quickGestureLayout, list);
+        LeoEventBus.getDefaultBus().post(
+                new ClickQuickItemEvent(BLUETOOTH_EVENT,mInfo));
+        LeoLog.e("testEventTwo", "发出消息啦！！点击蓝牙！");
     }
 
     public void toggleSound(AppleWatchContainer mContainer, List<QuickSwitcherInfo> switchList,

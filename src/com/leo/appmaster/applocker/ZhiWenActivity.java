@@ -4,6 +4,7 @@ package com.leo.appmaster.applocker;
 import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.view.View;
@@ -24,27 +25,28 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 
 public class ZhiWenActivity extends BaseActivity implements OnClickListener {
     private final static int ZHIWENWEIZHUANG = 3;
+    private final static int SHOWALPHA = 1;
+    private final static int SHOWTRANS = 2;
     private TextView tv_zhiwen_title, tv_zhiwen_jieshao;
     private ImageView iv_zhiwen_tips, zhiwen_bang, show_slowly_iv, iv_zhiwen_click;
     private AppMasterPreference sp_zhiwen_weizhuang;
     private float iv_zhiwen_click_height;
     private Vibrator vib;
+    private boolean isClick = false;
     // three click
     long[] mHits = new long[3];
     private LEOAlarmDialog mAlarmDialog;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
+            
             switch (msg.what) {
-                case 1:
+                case SHOWALPHA:
                     showDongHuaAlpha(1f, 0f);
-                case 2:
+                case SHOWTRANS:
                     showDongHuaTrans(iv_zhiwen_click_height - 30, 0);
                     break;
-                default:
-                    break;
             }
-
         };
     };
 
@@ -97,7 +99,10 @@ public class ZhiWenActivity extends BaseActivity implements OnClickListener {
             @Override
             public void onAnimationEnd(Animation animation) {
                 if (i < j) {
-                    handler.sendEmptyMessage(1);
+                    Message ms = new Message();
+                    ms.what = SHOWALPHA;
+                    handler.sendMessage(ms);
+//                    handler.sendEmptyMessage(1);
                 } else {
                     showDongHuaAlpha(0f, 1f);
                 }
@@ -124,7 +129,9 @@ public class ZhiWenActivity extends BaseActivity implements OnClickListener {
             @Override
             public void onAnimationEnd(Animation animation) {
                 if (k < z) {
-                    handler.sendEmptyMessage(2);
+                    Message ms = new Message();
+                    ms.what = SHOWTRANS;
+                    handler.sendMessage(ms);
                 } else {
                     showDongHuaTrans(0, iv_zhiwen_click_height - 30);
                 }
@@ -137,6 +144,12 @@ public class ZhiWenActivity extends BaseActivity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_zhiwen_click:
+                
+                if(!isClick){
+                    zhiwen_bang.setVisibility(View.VISIBLE);
+                }
+                isClick = true;
+                
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
                 if (mHits[0] >= (SystemClock.uptimeMillis() - 800)) {

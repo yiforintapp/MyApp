@@ -16,6 +16,11 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.Scroller;
 
+/**
+ * LeoHorizontalListView
+ * 
+ * @author run
+ */
 public class LeoHorizontalListView extends AdapterView<ListAdapter> {
 
     public boolean mAlwaysOverrideTouch = true;
@@ -122,7 +127,6 @@ public class LeoHorizontalListView extends AdapterView<ListAdapter> {
         if (params == null) {
             params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         }
-
         addViewInLayout(child, viewPos, params, true);
         child.measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.AT_MOST),
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.AT_MOST));
@@ -314,8 +318,9 @@ public class LeoHorizontalListView extends AdapterView<ListAdapter> {
                 View child = getChildAt(i);
                 if (isEventWithinView(e, child)) {
                     if (mOnItemClicked != null) {
-                        mOnItemClicked.onItemClick(LeoHorizontalListView.this, child, mLeftViewIndex
-                                + 1 + i, mAdapter.getItemId(mLeftViewIndex + 1 + i));
+                        mOnItemClicked.onItemClick(LeoHorizontalListView.this, child,
+                                mLeftViewIndex
+                                        + 1 + i, mAdapter.getItemId(mLeftViewIndex + 1 + i));
                     }
                     if (mOnItemSelected != null) {
                         mOnItemSelected.onItemSelected(LeoHorizontalListView.this, child,

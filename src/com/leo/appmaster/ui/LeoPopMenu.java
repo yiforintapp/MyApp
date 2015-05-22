@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -39,6 +40,7 @@ public class LeoPopMenu {
 
     private static float newSmallWidth;
     private static float newLongWidth;
+    private boolean isShowIcon = false;
     
     public static class LayoutStyles {
         public int width;
@@ -75,10 +77,16 @@ public class LeoPopMenu {
         if (styles == null) {
             float popWidth = 0;
             if (!isOverWidth) {
+                if(isShowIcon){
+                    newSmallWidth +=DipPixelUtil.dip2px(activity, 10f);
+                }
                 popWidth = newSmallWidth;
             } else {
                 popWidth = newLongWidth;
             }
+            
+                Log.i("tag","popWidth="+popWidth);
+            
             LeoLog.d("LeoPopMenu", "popWidth is : " + popWidth);
             mStyles.width = DipPixelUtil.dip2px((Context) activity, popWidth);
             // LeoLog.d("LeoPopMenu", "dip2px popWidth is : " + mStyles.width);
@@ -154,9 +162,10 @@ public class LeoPopMenu {
         return convertView;
     }
 
-    public void setPopMenuItems(Context mContext, List<String> items) {
+    public void setPopMenuItems(Context mContext, List<String> items,boolean isShowicon) {
         mItems = items;
-
+        isShowIcon = isShowicon;
+        
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
         int W = mDisplay.getWidth();
         int H = mDisplay.getHeight();
@@ -185,7 +194,6 @@ public class LeoPopMenu {
                 }else {
                     newLongWidth = mMaxLength - 100;
                 }
-
                 if(newLongWidth > 210){
                     newLongWidth = 210;
                 }
@@ -199,7 +207,7 @@ public class LeoPopMenu {
                     newSmallWidth = mMaxLength - 60;
                 }
             }
-        } else if(W == 720){
+        } else if(W >= 720){
             if (mMaxLength > OVERPX) {
                 isOverWidth = true;
                 newLongWidth = LongWidth - 20;
@@ -214,7 +222,7 @@ public class LeoPopMenu {
                     newSmallWidth = mMaxLength - 20;
                 }
             }
-        } else{
+        } else if(W >= 480){
             if (mMaxLength > OVERPX) {
                 isOverWidth = true;
                 newLongWidth = LongWidth + 30;
@@ -223,12 +231,18 @@ public class LeoPopMenu {
                 }
             } else {
                 isOverWidth = false;
-//                if (mMaxLength < SMALLWidth) {
-                    newSmallWidth = mMaxLength + 40;
-//                }
-//                else {
-//                    newSmallWidth = mMaxLength ;
-//                }
+                newSmallWidth = mMaxLength + 40;
+            }
+        }else{
+            if (mMaxLength > OVERPX) {
+                isOverWidth = true;
+                newLongWidth = LongWidth + 50;
+                if(newLongWidth > 210){
+                    newLongWidth = 210;
+                }
+            } else {
+                isOverWidth = false;
+                newSmallWidth = mMaxLength + 60;
             }
         }
     }
@@ -247,6 +261,7 @@ public class LeoPopMenu {
 
     static class Holder {
         public TextView mItemName;
+        public ImageView mItemIcon;
     }
 
     private class MenuListAdapter extends BaseAdapter {
@@ -288,10 +303,13 @@ public class LeoPopMenu {
                 mHolder = (Holder) convertView.getTag();
             } else {
                 mHolder = new Holder();
-                convertView = inflater.inflate(
-                        R.layout.popmenu_window_list_item, null);
-                mHolder.mItemName = (TextView) convertView
-                        .findViewById(R.id.menu_text);
+                if(isShowIcon){
+                    convertView = inflater.inflate(R.layout.popmenu_window_home_list_item, null);
+                    mHolder.mItemIcon = (ImageView) convertView.findViewById(R.id.menu_icon);
+                }else{
+                    convertView = inflater.inflate(R.layout.popmenu_window_list_item, null);
+                }
+                mHolder.mItemName = (TextView) convertView .findViewById(R.id.menu_text);
                 convertView.setTag(mHolder);
             }
 
@@ -300,11 +318,35 @@ public class LeoPopMenu {
                 mHolder.mItemName.setText(itemText);
             } else {
                 mHolder.mItemName.setText(mListItems.get(position));
+                if(isShowIcon){
+                    mHolder.mItemIcon.setImageResource(switchIcon(position));
+                }
             }
             return convertView;
         }
     }
 
+    private int switchIcon(int position){
+        int resId =R.drawable.reset_pasword_icon ;
+        switch (position) {
+            case 0:
+                resId = R.drawable.reset_pasword_icon;
+                break;
+            case 1:
+                resId = R.drawable.question_icon;
+                break;
+            case 2:
+                resId = R.drawable.pasword_icon;
+                break;
+            case 3:
+                resId = R.drawable.settings;
+                break;
+            default:
+                break;
+        }
+        return resId;
+    }
+    
     public static float getTextViewLength(TextView textView, String text) {
         TextPaint paint = textView.getPaint();
         // 得到使用该paint写上text的时候,像素为多少

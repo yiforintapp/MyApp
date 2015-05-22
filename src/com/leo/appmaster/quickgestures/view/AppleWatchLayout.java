@@ -443,7 +443,7 @@ public class AppleWatchLayout extends ViewGroup {
             if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleBluetooth(mContainer, mContainer.getSwitchList(),
-                                AppleWatchLayout.this);
+                                AppleWatchLayout.this,sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleFlashLight(mContainer, mContainer.getSwitchList(),
