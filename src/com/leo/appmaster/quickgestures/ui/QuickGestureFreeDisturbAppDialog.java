@@ -46,6 +46,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private TextView mCheckBoxTv;
     private CheckBox mCheckBox;
     private int mFlag;
+    private static final String TAG = "QuickGestureFreeDisturbAppDialog";
 
     public QuickGestureFreeDisturbAppDialog(Context context, int flag) {
         super(context, R.style.bt_dialog);
@@ -98,7 +99,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                 loadData(1);
                 break;
             case 2:
-                //快捷开关
+                // 快捷开关
                 loadQuickSwitchData();
                 break;
             case 3:
@@ -177,7 +178,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         }
         if (AppMasterPreference.PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME
                 .equals(packageName)) {
-            // Log.e("######################", "没有免干扰应用");
+            // Log.e(TAG, "NoFreeApp!");
         } else {
             String[] names = packageName.split(";");
             packageNames = Arrays.asList(names);
