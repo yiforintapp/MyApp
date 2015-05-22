@@ -406,6 +406,9 @@ public class TaskDetectService extends Service {
 
     }
 
+    /*
+     * FloatWindowTask 
+     */
     private class FloatWindowTask implements Runnable {
         ActivityManager mActivityManager;
 
