@@ -169,13 +169,16 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         }
         if (cunt > 0) {
             view.showTip(true);
+            // TODO(快捷手势隐私联系人提醒)
             if (flag == 1) {
+                // 隐私通话
                 if (mPreference.getSwitchOpenPrivacyContactMessageTip()) {
                     LockManager.getInstatnce().isShowPrivacyCallLog = true;
                     LockManager.getInstatnce().isShowSysNoReadMessage = true;
                     FloatWindowHelper.removeShowReadTipWindow(getActivity());
                 }
             } else if (flag == 0) {
+                // 隐私短信
                 if (mPreference.getSwitchOpenPrivacyContactMessageTip()) {
                     LockManager.getInstatnce().isShowPrivacyMsm = true;
                     LockManager.getInstatnce().isShowSysNoReadMessage = true;

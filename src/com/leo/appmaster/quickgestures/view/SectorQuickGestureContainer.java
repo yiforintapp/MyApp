@@ -663,7 +663,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
                         && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
                     for (MessageBean message : QuickGestureManager.getInstance(mContext).mMessages) {
                         message.icon = getContext().getResources().getDrawable(
-                                R.drawable.add_mode_icon);
+                                R.drawable.gesture_message);
                         if (message.getMessageName() != null
                                 && !"".equals(message.getMessageName())) {
                             message.label = message.getMessageName();
@@ -681,7 +681,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
                         && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
                     for (ContactCallLog baseInfo : QuickGestureManager.getInstance(mContext).mCallLogs) {
                         baseInfo.icon = getContext().getResources().getDrawable(
-                                R.drawable.add_mode_icon);
+                                R.drawable.gesture_call);
                         if (baseInfo.getCallLogName() != null
                                 && !"".equals(baseInfo.getCallLogName())) {
                             baseInfo.label = baseInfo.getCallLogName();
@@ -699,14 +699,13 @@ public class SectorQuickGestureContainer extends FrameLayout {
                         || LockManager.getInstatnce().isShowPrivacyMsm) {
                     QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
                     item.icon = getContext().getResources().getDrawable(
-                            R.drawable.add_mode_icon);
+                            R.drawable.gesture_system);
                     item.label = mContext.getResources().getString(
                             R.string.pg_appmanager_quick_gesture_privacy_contact_tip_lable);
                     item.isShowReadTip = true;
                     infos.add(businessIndes, item);
                 }
             }
-
             if (infos.size() > 9) {
                 infos = infos.subList(0, 9);
             }
