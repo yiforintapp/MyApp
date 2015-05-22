@@ -33,4 +33,6 @@ public interface EventId {
     /* Quick gesture floatWindow eventId */
     public static final int EVENT_QUICK_GESTURE_FLOAT_WINDOW = 1013;
     /* Quick gesture floatWindow end */
+
+    public static final int EVENT_CLICKQUICKITEM = 1014;
 }
