@@ -28,6 +28,7 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
     private ImageView iv_zhiwen_tips, zhiwen_bang, show_slowly_iv, iv_zhiwen_click, finger_lock,
             finger_unlock;
     private float iv_zhiwen_click_height;
+    private boolean isClick = false;
     private int mVersion;
     // three click
     long[] mHits = new long[3];
@@ -58,15 +59,6 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
     @Override
     protected void onInitUI() {
         zhiwen_content = findViewById(R.id.zhiwen_content);
-
-        // make content match the screen
-        // Display display = mActivity.getWindowManager().getDefaultDisplay();
-        // Window window = mActivity.getWindow();
-        // LayoutParams windowLayoutParams = window.getAttributes(); //
-        // 获取对话框当前的参数值
-        // windowLayoutParams.width = (int) (display.getWidth());
-        // windowLayoutParams.height = (int) (display.getHeight());
-        // zhiwen_content.setLayoutParams(windowLayoutParams);
 
         android.widget.LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -162,6 +154,12 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_zhiwen_click:
+
+                if (!isClick) {
+                    zhiwen_bang.setVisibility(View.VISIBLE);
+                }
+                isClick = true;
+
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
                 if (mHits[0] >= (SystemClock.uptimeMillis() - 800)) {

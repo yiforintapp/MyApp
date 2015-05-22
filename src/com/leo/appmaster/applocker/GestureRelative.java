@@ -17,6 +17,7 @@ import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 public class GestureRelative extends RelativeLayout {
@@ -30,6 +31,9 @@ public class GestureRelative extends RelativeLayout {
     private boolean isThridRound = false;
     private boolean isFlaseControl = false;
     public static boolean isInit = false;
+    private boolean isControlGua = false;
+    private boolean isControlDuan = false;
+    private boolean isControlJie = false;
     private int gua_left, gua_top, gua_right, gua_bottom;
     private int duan_left, duan_top, duan_right, duan_bottom;
     private int jie_left, jie_top, jie_right, jie_bottom;
@@ -100,6 +104,9 @@ public class GestureRelative extends RelativeLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                if(isFromActivity){
+                    mActivity.hideHands();
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 float moveX = event.getX();
@@ -107,6 +114,11 @@ public class GestureRelative extends RelativeLayout {
                 isShowOrder(moveX, moveY);
                 break;
             case MotionEvent.ACTION_UP:
+                if (isFromActivity) {
+                    mActivity.allTurnSmall();
+                } else {
+                    unknowFragment.allTurnSmall();
+                }
                 isFirstRound = false;
                 isSecondRound = false;
                 isThridRound = false;
@@ -117,8 +129,17 @@ public class GestureRelative extends RelativeLayout {
     }
 
     private void isShowOrder(float x, float y) {
+        int gua_width = gua_right - gua_left;
+        int gua_height = gua_bottom - gua_top;
         // 挂断?
-        if (x < gua_right && y > gua_top && y < gua_bottom && x > gua_left) {
+        if (x < gua_right + gua_width / 2 && y > gua_top - gua_height / 2
+                && y < gua_bottom + gua_height / 2 && x > gua_left - gua_width / 2) {
+            isControlGua = false;
+            if (isFromActivity) {
+                mActivity.guaTurnBig();
+            } else {
+                unknowFragment.guaTurnBig();
+            }
             // 进入挂断区域，先判断是否从别处进入
             if (!isFirstRound && !isSecondRound && !isThridRound && !isFlaseControl) {
                 // 首先进入挂断区域
@@ -136,10 +157,28 @@ public class GestureRelative extends RelativeLayout {
                     isFlaseControl = true;
                 }
             }
+        }else {
+            if (!isControlGua) {
+                if (isFromActivity) {
+                    mActivity.guaTurnSmall();
+                } else {
+                    unknowFragment.guaTurnSmall();
+                }
+            }
+            isControlGua = true;
         }
 
+        int duan_width = duan_right - duan_left;
+        int duan_height = duan_bottom - duan_top;
         // 短信?
-        if (x > duan_left && x < duan_right && y < duan_bottom && y > duan_top) {
+        if (x > duan_left - duan_width / 2 && x < duan_right + duan_width / 2
+                && y < duan_bottom + duan_height / 2 && y > duan_top - duan_height / 2) {
+            isControlDuan = false;
+            if (isFromActivity) {
+                mActivity.duanTurnBig();
+            } else {
+                unknowFragment.duanTurnBig();
+            }
             if (isFirstRound && !isSecondRound && !isThridRound && !isFlaseControl) {
                 isSecondRound = true;
                 // 顺利进入第二
@@ -153,10 +192,28 @@ public class GestureRelative extends RelativeLayout {
                     isThridRound = false;
                 }
             }
+        }else {
+            if (!isControlDuan) {
+                if (isFromActivity) {
+                    mActivity.duanTurnSmall();
+                } else {
+                    unknowFragment.duanTurnSmall();
+                }
+            }
+            isControlDuan = true;
         }
 
+        int jie_width = jie_right - jie_left;
+        int jie_height = jie_bottom - jie_top;
         // 接听?
-        if (x > jie_left && y > jie_top && y < jie_bottom && x < jie_right) {
+        if (x > jie_left - jie_width / 2 && y > jie_top - jie_height / 2
+                && y < jie_bottom + jie_height / 2 && x < jie_right + jie_width / 2) {
+            isControlJie = false;
+            if (isFromActivity) {
+                mActivity.jieTurnBig();
+            } else {
+                unknowFragment.jieTurnBig();
+            }
             if (isFirstRound && isSecondRound && !isThridRound && !isFlaseControl) {
                 isThridRound = true;
                 // 顺利进入第三
@@ -169,6 +226,7 @@ public class GestureRelative extends RelativeLayout {
                             mContext.getString(R.string.open_weizhuang_dialog_content),
                             mContext.getString(R.string.open_weizhuang_dialog_sure));
                 } else {
+                    unknowFragment.allTurnSmall();
                     unknowFragment.setFinishView();
                     unknowFragment.setCanCel();
                     // mPf.onUnlockPretendSuccessfully();
@@ -184,6 +242,15 @@ public class GestureRelative extends RelativeLayout {
                     isSecondRound = false;
                 }
             }
+        }else {
+            if (!isControlJie) {
+                if (isFromActivity) {
+                    mActivity.jieTurnSmall();
+                } else {
+                    unknowFragment.jieTurnSmall();
+                }
+            }
+            isControlJie = true;
         }
     }
 
