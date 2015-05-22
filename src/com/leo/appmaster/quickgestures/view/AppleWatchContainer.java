@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -50,6 +51,7 @@ public class AppleWatchContainer extends FrameLayout {
 
     private AppleWatchLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
     private AppleWatchTabs mCornerTabs;
+    private TextView mTvCurName;
     private GType mCurrentGestureType = GType.DymicLayout;
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
@@ -88,7 +90,10 @@ public class AppleWatchContainer extends FrameLayout {
                     public boolean onSingleTapUp(MotionEvent e) {
                         LeoLog.d(TAG, "onSingleTapUp");
                         float tapY = e.getY();
-                        if (tapY < mDymicLayout.getTop() || tapY >= mDymicLayout.getBottom()) {
+                        float tapX = e.getX();
+                        if (tapY < mDymicLayout.getTop()
+                                || (tapY >= mDymicLayout.getBottom() && (tapX < mCornerTabs
+                                        .getLeft() || tapX > mCornerTabs.getRight()))) {
                             if (mEditing) {
                                 leaveEditMode();
                             } else {
@@ -188,6 +193,10 @@ public class AppleWatchContainer extends FrameLayout {
         mEditing = editing;
     }
 
+    public float getStartAngle() {
+        return mRotateDegree;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -197,11 +206,12 @@ public class AppleWatchContainer extends FrameLayout {
 
     @Override
     protected void onFinishInflate() {
+        mTvCurName = (TextView) findViewById(R.id.tv_type_name);
         mCornerTabs = (AppleWatchTabs) findViewById(R.id.applewatchtab);
         mDymicLayout = (AppleWatchLayout) findViewById(R.id.qg_dymic_layout);
         mMostUsedLayout = (AppleWatchLayout) findViewById(R.id.qg_mostused_layout);
         mSwitcherLayout = (AppleWatchLayout) findViewById(R.id.qg_switcher_layout);
-
+        mTvCurName.setText(R.string.quick_gesture_dynamic);
         super.onFinishInflate();
     }
 
@@ -372,7 +382,7 @@ public class AppleWatchContainer extends FrameLayout {
             }
             mSwitcherLayout.setCurrentRotateDegree(-mRotateDegree);
         }
-        mCornerTabs.updateCoverDegree(mRotateDegree / 3);
+        mCornerTabs.updateCoverDegree(mRotateDegree);
 
     }
 
@@ -429,6 +439,7 @@ public class AppleWatchContainer extends FrameLayout {
                     mMostUsedLayout.setVisibility(View.GONE);
                 }
                 mRotateDegree = 0;
+                mCornerTabs.resetLayout();
             }
         });
         va.addUpdateListener(new AnimatorUpdateListener() {
@@ -468,18 +479,22 @@ public class AppleWatchContainer extends FrameLayout {
                     mDymicLayout.setVisibility(View.GONE);
                     mMostUsedLayout.setVisibility(View.GONE);
                     mCornerTabs.snapDynamic2Switcher();
+                    mTvCurName.setText(R.string.quick_gesture_switcher);
                 } else if (mCurrentGestureType == GType.MostUsedLayout) {
                     mCurrentGestureType = GType.DymicLayout;
                     mDymicLayout.setVisibility(View.VISIBLE);
                     mSwitcherLayout.setVisibility(View.GONE);
                     mMostUsedLayout.setVisibility(View.GONE);
+                    mTvCurName.setText(R.string.quick_gesture_dynamic);
                 } else if (mCurrentGestureType == GType.SwitcherLayout) {
                     mCurrentGestureType = GType.MostUsedLayout;
                     mMostUsedLayout.setVisibility(View.VISIBLE);
                     mDymicLayout.setVisibility(View.GONE);
                     mSwitcherLayout.setVisibility(View.GONE);
+                    mTvCurName.setText(R.string.quick_gesture_most_used);
                 }
                 mRotateDegree = 0;
+                mCornerTabs.resetLayout();
             }
         });
         va.addUpdateListener(new AnimatorUpdateListener() {
@@ -519,11 +534,13 @@ public class AppleWatchContainer extends FrameLayout {
                         mMostUsedLayout.setVisibility(View.VISIBLE);
                         mDymicLayout.setVisibility(View.GONE);
                         mSwitcherLayout.setVisibility(View.GONE);
+                        mTvCurName.setText(R.string.quick_gesture_most_used);
                     } else {
                         mCurrentGestureType = GType.MostUsedLayout;
                         mMostUsedLayout.setVisibility(View.VISIBLE);
                         mDymicLayout.setVisibility(View.GONE);
                         mSwitcherLayout.setVisibility(View.GONE);
+                        mTvCurName.setText(R.string.quick_gesture_most_used);
                     }
 
                 } else if (mCurrentGestureType == GType.MostUsedLayout) {
@@ -532,11 +549,13 @@ public class AppleWatchContainer extends FrameLayout {
                         mSwitcherLayout.setVisibility(View.VISIBLE);
                         mDymicLayout.setVisibility(View.GONE);
                         mMostUsedLayout.setVisibility(View.GONE);
+                        mTvCurName.setText(R.string.quick_gesture_switcher);
                     } else {
                         mCurrentGestureType = GType.SwitcherLayout;
                         mSwitcherLayout.setVisibility(View.VISIBLE);
                         mDymicLayout.setVisibility(View.GONE);
                         mMostUsedLayout.setVisibility(View.GONE);
+                        mTvCurName.setText(R.string.quick_gesture_switcher);
                     }
 
                 } else if (mCurrentGestureType == GType.SwitcherLayout) {
@@ -546,16 +565,18 @@ public class AppleWatchContainer extends FrameLayout {
                         mMostUsedLayout.setVisibility(View.GONE);
                         mSwitcherLayout.setVisibility(View.GONE);
                         mCornerTabs.snapSwitcher2Dynamic();
+                        mTvCurName.setText(R.string.quick_gesture_dynamic);
                     } else {
                         mCurrentGestureType = GType.DymicLayout;
                         mDymicLayout.setVisibility(View.VISIBLE);
                         mMostUsedLayout.setVisibility(View.GONE);
                         mSwitcherLayout.setVisibility(View.GONE);
                         mCornerTabs.snapSwitcher2Dynamic();
+                        mTvCurName.setText(R.string.quick_gesture_dynamic);
                     }
-
                 }
                 mRotateDegree = 0;
+                mCornerTabs.resetLayout();
             }
         });
         va.addUpdateListener(new AnimatorUpdateListener() {
@@ -752,7 +773,7 @@ public class AppleWatchContainer extends FrameLayout {
                     // 飞行模式
                     checkFlyMode(sInfo, iconSize, tv);
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
-                    // 飞行模式
+                    // 屏幕旋转
                     checkRotation(sInfo, iconSize, tv);
                 } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
                     // 移动数据
@@ -935,10 +956,14 @@ public class AppleWatchContainer extends FrameLayout {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                     null);
+            tv.setText("蓝牙开");
+            LeoLog.d("testContainer", "蓝牙开");
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
             tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
                     null);
+            tv.setText("蓝牙关");
+            LeoLog.d("testContainer", "蓝牙关");
         }
     }
 
@@ -1079,11 +1104,10 @@ public class AppleWatchContainer extends FrameLayout {
         QuickSwitcherInfo sInfo = info;
         int iconSize = mSwitcherLayout.getIconSize();
         if (info.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
-//            sInfo.switchIcon = QuickSwitchManager.getInstance(mContext).getIconFromName(sInfo.iDentiName);
-            tv = (GestureItemView) mSwitcherLayout.getChildAt(info.position);
+            // sInfo.switchIcon =
+            // QuickSwitchManager.getInstance(mContext).getIconFromName(sInfo.iDentiName);
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.position);
             checkBlueToothStatus(sInfo, iconSize, tv);
-            
-//            mSwitcherLayout.invalidate();
         }
     }
 

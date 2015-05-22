@@ -107,9 +107,20 @@ public class AppleWatchLayout extends ViewGroup {
         mIconSize = res.getDimensionPixelSize(R.dimen.apple_watch_item_icon_size);
         mInnerRadius = res.getDimensionPixelSize(R.dimen.apple_watch_layout_inner_radius);
         mOuterRadius = res.getDimensionPixelSize(R.dimen.apple_watch_layout_outer_radius);
-        mInnerScale = 0.8f;
-        mOuterScale = 0.6f;
-        mThirdScale = 0.5f;
+        mInnerScale = 0.77f;
+        mOuterScale = 0.66f;
+        mThirdScale = 0.4f;
+    }
+
+    public GestureItemView getChildAtPosition(int position) {
+        GestureItemView child = null;
+        for (int i = 0; i < getChildCount(); i++) {
+            child = (GestureItemView) getChildAt(i);
+            if (position == ((LayoutParams) child.getLayoutParams()).position) {
+                return child;
+            }
+        }
+        return null;
     }
 
     public int getItemSize() {
@@ -410,10 +421,10 @@ public class AppleWatchLayout extends ViewGroup {
 
         AnimatorSet as = new AnimatorSet();
         as.setDuration(300);
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f,
-                0.8f, 1f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f,
-                0.8f, 1f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f * view.getScaleX(),
+                0.8f * view.getScaleX(), 1f * view.getScaleX());
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f * view.getScaleY(),
+                0.8f * view.getScaleY(), 1f * view.getScaleY());
         as.playTogether(scaleX, scaleY);
         as.addListener(new AnimatorListenerAdapter() {
 
@@ -443,7 +454,7 @@ public class AppleWatchLayout extends ViewGroup {
             if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleBluetooth(mContainer, mContainer.getSwitchList(),
-                                AppleWatchLayout.this,sInfo);
+                                AppleWatchLayout.this, sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleFlashLight(mContainer, mContainer.getSwitchList(),

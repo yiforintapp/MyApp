@@ -26,10 +26,8 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
 
     private ImageView mIvDynamic, mIvMostUsed, mIvSwitcher, mIvSelected;
     private int mTotalWidth, mTotalHeight;
-    private float mCoverAngle;
 
     private float mDymicTargetAngle = 58;
-    private float mMostUsedTargetAngle = 30;
     private float mSwitcherTargetAngle = 0;
 
     private int mSnapDuration = 100;
@@ -44,7 +42,6 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
 
     private void init(Context context) {
         Resources res = getResources();
-        mCoverAngle = -mDymicTargetAngle;
         mItemSize = res.getDimensionPixelSize(R.dimen.apple_watch_tab_item_size);
         mSelectBarWidth = res.getDimensionPixelSize(R.dimen.apple_watch_select_bar_width);
         mSelectBarHeight = res.getDimensionPixelSize(R.dimen.apple_watch_select_bar_height);
@@ -64,6 +61,23 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
         mIvSelected = new ImageView(getContext());
         mIvSelected.setImageResource(R.drawable.gesture_select_bar);
         addView(mIvSelected);
+    }
+
+    private void resetItemScale() {
+        GType type = mContainer.getCurrentGestureType();
+        if (type == GType.DymicLayout) {
+            mIvDynamic.setTag(1f);
+            mIvMostUsed.setTag(0.68f);
+            mIvSwitcher.setTag(0.68f);
+        } else if (type == GType.MostUsedLayout) {
+            mIvDynamic.setTag(0.68f);
+            mIvMostUsed.setTag(1f);
+            mIvSwitcher.setTag(0.68f);
+        } else {
+            mIvDynamic.setTag(0.68f);
+            mIvMostUsed.setTag(0.68f);
+            mIvSwitcher.setTag(1f);
+        }
     }
 
     @Override
@@ -106,7 +120,10 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right,
             int bottom) {
-        mContainer = (AppleWatchContainer) getParent();
+        if (mContainer == null) {
+            mContainer = (AppleWatchContainer) getParent();
+            resetItemScale();
+        }
         mTotalWidth = getMeasuredWidth();
         mTotalHeight = getMeasuredHeight();
 
@@ -119,8 +136,8 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
                     mItemSize);
             mIvDynamic.setScaleX(1);
             mIvDynamic.setScaleY(1);
-            mIvMostUsed.layout(0, mTotalHeight - mItemSize, mItemSize, mTotalHeight);
-            mIvSwitcher.layout(mTotalWidth - mItemSize, mTotalHeight - mItemSize, mTotalWidth,
+            mIvSwitcher.layout(0, mTotalHeight - mItemSize, mItemSize, mTotalHeight);
+            mIvMostUsed.layout(mTotalWidth - mItemSize, mTotalHeight - mItemSize, mTotalWidth,
                     mTotalHeight);
             mIvMostUsed.setScaleX(0.68f);
             mIvMostUsed.setScaleY(0.68f);
@@ -131,8 +148,8 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
                     mItemSize);
             mIvMostUsed.setScaleX(1);
             mIvMostUsed.setScaleY(1);
-            mIvSwitcher.layout(0, mTotalHeight - mItemSize, mItemSize, mTotalHeight);
-            mIvDynamic.layout(mTotalWidth - mItemSize, mTotalHeight - mItemSize, mTotalWidth,
+            mIvDynamic.layout(0, mTotalHeight - mItemSize, mItemSize, mTotalHeight);
+            mIvSwitcher.layout(mTotalWidth - mItemSize, mTotalHeight - mItemSize, mTotalWidth,
                     mTotalHeight);
             mIvSwitcher.setScaleX(0.68f);
             mIvSwitcher.setScaleY(0.68f);
@@ -143,8 +160,8 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
                     mItemSize);
             mIvSwitcher.setScaleX(1);
             mIvSwitcher.setScaleY(1);
-            mIvDynamic.layout(0, mTotalHeight - mItemSize, mItemSize, mTotalHeight);
-            mIvMostUsed.layout(mTotalWidth - mItemSize, mTotalHeight - mItemSize, mTotalWidth,
+            mIvMostUsed.layout(0, mTotalHeight - mItemSize, mItemSize, mTotalHeight);
+            mIvDynamic.layout(mTotalWidth - mItemSize, mTotalHeight - mItemSize, mTotalWidth,
                     mTotalHeight);
             mIvDynamic.setScaleX(0.68f);
             mIvDynamic.setScaleY(0.68f);
@@ -160,20 +177,189 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
                 (mTotalWidth + mSelectBarWidth) / 2, offsetY + mSelectBarHeight);
     }
 
+    /**
+     * @param degree if degree > 0, rotate to left; if degree < 0, rotate to
+     *            right
+     */
     public void updateCoverDegree(float degree) {
         LeoLog.e(TAG, "degree = " + degree);
+        float allAngle = 40;
+        float percent = degree / allAngle;
+        translateDynamic(percent);
+        translateSwitcher(percent);
+        translateMostUsed(percent);
+    }
+
+    private void translateMostUsed(float percent) {
+        float transX;
+        float transY;
+        float scale;
         GType type = mContainer.getCurrentGestureType();
         if (type == GType.DymicLayout) {
-            mCoverAngle = mDymicTargetAngle + degree;
+            if (percent > 0) {
+                transX = (mIvDynamic.getLeft() - mIvMostUsed.getLeft()) * percent;
+                transY = (mIvDynamic.getTop() - mIvMostUsed.getTop()) * percent;
+                scale = (Float) mIvMostUsed.getTag()
+                        + ((Float) mIvDynamic.getTag() - (Float) mIvMostUsed.getTag())
+                        * percent;
+            } else {
+                percent = -percent;
+                transX = (mIvSwitcher.getLeft() - mIvMostUsed.getLeft()) * percent;
+                transY = (mIvSwitcher.getTop() - mIvMostUsed.getTop()) * percent;
+                scale = (Float) mIvMostUsed.getTag()
+                        + ((Float) mIvSwitcher.getTag() - (Float) mIvMostUsed.getTag())
+                        * percent;
+            }
         } else if (type == GType.MostUsedLayout) {
-            mCoverAngle = mMostUsedTargetAngle + degree;
+            if (percent > 0) {
+                transX = (mIvDynamic.getLeft() - mIvMostUsed.getLeft()) * percent;
+                transY = (mIvDynamic.getTop() - mIvMostUsed.getTop()) * percent;
+                scale = (Float) mIvMostUsed.getTag()
+                        + ((Float) mIvDynamic.getTag() - (Float) mIvMostUsed.getTag())
+                        * percent;
+            } else {
+                percent = -percent;
+                transX = (mIvSwitcher.getLeft() - mIvMostUsed.getLeft()) * percent;
+                transY = (mIvSwitcher.getTop() - mIvMostUsed.getTop()) * percent;
+                scale = (Float) mIvMostUsed.getTag()
+                        + ((Float) mIvSwitcher.getTag() - (Float) mIvMostUsed.getTag())
+                        * percent;
+            }
         } else {
-            mCoverAngle = mSwitcherTargetAngle + degree;
+            if (percent > 0) {
+                transX = (mIvDynamic.getLeft() - mIvMostUsed.getLeft()) * percent;
+                transY = (mIvDynamic.getTop() - mIvMostUsed.getTop()) * percent;
+                scale = (Float) mIvMostUsed.getTag()
+                        + ((Float) mIvDynamic.getTag() - (Float) mIvMostUsed.getTag())
+                        * percent;
+            } else {
+                percent = -percent;
+                transX = (mIvSwitcher.getLeft() - mIvMostUsed.getLeft()) * percent;
+                transY = (mIvSwitcher.getTop() - mIvMostUsed.getTop()) * percent;
+                scale = (Float) mIvMostUsed.getTag()
+                        + ((Float) mIvSwitcher.getTag() - (Float) mIvMostUsed.getTag())
+                        * percent;
+            }
         }
+        mIvMostUsed.setTranslationX(transX);
+        mIvMostUsed.setTranslationY(transY);
+        mIvMostUsed.setScaleX(scale);
+        mIvMostUsed.setScaleY(scale);
+    }
 
-        LeoLog.e(TAG, "mCoverAngle = " + mCoverAngle);
+    private void translateSwitcher(float percent) {
+        float transX;
+        float transY;
+        float scale;
+        GType type = mContainer.getCurrentGestureType();
+        if (type == GType.DymicLayout) {
+            if (percent > 0) {
+                transX = (mIvMostUsed.getLeft() - mIvSwitcher.getLeft()) * percent;
+                transY = (mIvMostUsed.getTop() - mIvSwitcher.getTop()) * percent;
+                scale = (Float) mIvSwitcher.getTag()
+                        + ((Float) mIvMostUsed.getTag() - (Float) mIvSwitcher.getTag())
+                        * percent;
+            } else {
+                percent = -percent;
+                transX = (mIvDynamic.getLeft() - mIvSwitcher.getLeft()) * percent;
+                transY = (mIvDynamic.getTop() - mIvSwitcher.getTop()) * percent;
+                scale = (Float) mIvSwitcher.getTag()
+                        + ((Float) mIvDynamic.getTag() - (Float) mIvSwitcher.getTag())
+                        * percent;
+            }
+        } else if (type == GType.MostUsedLayout) {
+            if (percent > 0) {
+                transX = (mIvMostUsed.getLeft() - mIvSwitcher.getLeft()) * percent;
+                transY = (mIvMostUsed.getTop() - mIvSwitcher.getTop()) * percent;
+                scale = (Float) mIvSwitcher.getTag()
+                        + ((Float) mIvMostUsed.getTag() - (Float) mIvSwitcher.getTag())
+                        * percent;
+            } else {
+                percent = -percent;
+                transX = (mIvDynamic.getLeft() - mIvSwitcher.getLeft()) * percent;
+                transY = (mIvDynamic.getTop() - mIvSwitcher.getTop()) * percent;
+                scale = (Float) mIvSwitcher.getTag()
+                        + ((Float) mIvDynamic.getTag() - (Float) mIvSwitcher.getTag())
+                        * percent;
+            }
+        } else {
+            if (percent > 0) {
+                transX = (mIvMostUsed.getLeft() - mIvSwitcher.getLeft()) * percent;
+                transY = (mIvMostUsed.getTop() - mIvSwitcher.getTop()) * percent;
+                scale = (Float) mIvSwitcher.getTag()
+                        + ((Float) mIvMostUsed.getTag() - (Float) mIvSwitcher.getTag())
+                        * percent;
+            } else {
+                percent = -percent;
+                transX = (mIvDynamic.getLeft() - mIvSwitcher.getLeft()) * percent;
+                transY = (mIvDynamic.getTop() - mIvSwitcher.getTop()) * percent;
+                scale = (Float) mIvSwitcher.getTag()
+                        + ((Float) mIvDynamic.getTag() - (Float) mIvSwitcher.getTag())
+                        * percent;
+            }
+        }
+        mIvSwitcher.setTranslationX(transX);
+        mIvSwitcher.setTranslationY(transY);
+        mIvSwitcher.setScaleX(scale);
+        mIvSwitcher.setScaleY(scale);
 
-        invalidate();
+    }
+
+    private void translateDynamic(float percent) {
+        float transX;
+        float transY;
+        float scale;
+        GType type = mContainer.getCurrentGestureType();
+        if (type == GType.DymicLayout) {
+            if (percent > 0) {
+                transX = (mIvSwitcher.getLeft() - mIvDynamic.getLeft()) * percent;
+                transY = (mIvSwitcher.getTop() - mIvDynamic.getTop()) * percent;
+                scale = (Float) mIvDynamic.getTag()
+                        + ((Float) mIvSwitcher.getTag() - (Float) mIvDynamic.getTag())
+                        * percent;
+            } else {
+                percent = -percent;
+                transX = (mIvMostUsed.getLeft() - mIvDynamic.getLeft()) * percent;
+                transY = (mIvMostUsed.getTop() - mIvDynamic.getTop()) * percent;
+                scale = (Float) mIvDynamic.getTag()
+                        + ((Float) mIvMostUsed.getTag() - (Float) mIvDynamic.getTag())
+                        * percent;
+            }
+        } else if (type == GType.MostUsedLayout) {
+            if (percent > 0) {
+                transX = (mIvSwitcher.getLeft() - mIvDynamic.getLeft()) * percent;
+                transY = (mIvSwitcher.getTop() - mIvDynamic.getTop()) * percent;
+                scale = (Float) mIvDynamic.getTag()
+                        + ((Float) mIvSwitcher.getTag() - (Float) mIvDynamic.getTag())
+                        * percent;
+            } else {
+                percent = -percent;
+                transX = (mIvMostUsed.getLeft() - mIvDynamic.getLeft()) * percent;
+                transY = (mIvMostUsed.getTop() - mIvDynamic.getTop()) * percent;
+                scale = (Float) mIvDynamic.getTag()
+                        + ((Float) mIvMostUsed.getTag() - (Float) mIvDynamic.getTag())
+                        * percent;
+            }
+        } else {
+            if (percent > 0) {
+                transX = (mIvSwitcher.getLeft() - mIvDynamic.getLeft()) * percent;
+                transY = (mIvSwitcher.getTop() - mIvDynamic.getTop()) * percent;
+                scale = (Float) mIvDynamic.getTag()
+                        + ((Float) mIvSwitcher.getTag() - (Float) mIvDynamic.getTag())
+                        * percent;
+            } else {
+                percent = -percent;
+                transX = (mIvMostUsed.getLeft() - mIvDynamic.getLeft()) * percent;
+                transY = (mIvMostUsed.getTop() - mIvDynamic.getTop()) * percent;
+                scale = (Float) mIvDynamic.getTag()
+                        + ((Float) mIvMostUsed.getTag() - (Float) mIvDynamic.getTag())
+                        * percent;
+            }
+        }
+        mIvDynamic.setTranslationX(transX);
+        mIvDynamic.setTranslationY(transY);
+        mIvDynamic.setScaleX(scale);
+        mIvDynamic.setScaleY(scale);
     }
 
     public void snapDynamic2Switcher() {
@@ -195,7 +381,7 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
         va.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mCoverAngle = (Float) animation.getAnimatedValue();
+                // mCoverAngle = (Float) animation.getAnimatedValue();
                 invalidate();
             }
         });
@@ -221,28 +407,41 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
         va.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mCoverAngle = (Float) animation.getAnimatedValue();
+                // mCoverAngle = (Float) animation.getAnimatedValue();
                 invalidate();
             }
         });
         va.start();
     }
 
-    public void setAlpha(int mAlpha) {
-    }
-
-    public void setStartAngleFromTab(int tab) {
-    }
-
     @Override
     public void onClick(View v) {
+        LeoLog.d(TAG, "onClick");
+        GType type = mContainer.getCurrentGestureType();
         if (v == mIvDynamic) {
-
+            if (type != GType.DymicLayout) {
+                mContainer.snapToDynamic();
+            }
         } else if (v == mIvMostUsed) {
-
+            if (type != GType.MostUsedLayout) {
+                mContainer.snapToMostUsed();
+            }
         } else if (v == mIvSwitcher) {
-
+            if (type != GType.SwitcherLayout) {
+                mContainer.snapToSwitcher();
+            }
         }
+    }
+
+    public void resetLayout() {
+        mIvDynamic.setTranslationX(0);
+        mIvDynamic.setTranslationY(0);
+        mIvMostUsed.setTranslationX(0);
+        mIvMostUsed.setTranslationY(0);
+        mIvSwitcher.setTranslationX(0);
+        mIvSwitcher.setTranslationY(0);
+        resetItemScale();
+        requestLayout();
     }
 
 }
