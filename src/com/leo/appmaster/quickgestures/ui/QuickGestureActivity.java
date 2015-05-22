@@ -7,14 +7,12 @@ import java.util.List;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.CallLog.Calls;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +24,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -40,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -53,7 +51,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
-import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -231,6 +228,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         }
 
         class ViewHolder {
+            @SuppressWarnings("unused")
             ImageView imageView, arrowImageVIew;
             CheckBox switchView;
             TextView title, content, segmentationTv, lineTextView;
@@ -844,14 +842,14 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             .show();
                     AppMasterPreference.getInstance(QuickGestureActivity.this).setFristSlidingTip(
                             true);
-                    // Intent intent;
-                    // intent = new Intent(AppMasterApplication.getInstance(),
-                    // QuickGesturePopupActivity.class);
-                    // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    // try {
-                    // AppMasterApplication.getInstance().startActivity(intent);
-                    // } catch (Exception e) {
-                    // }
+                    Intent intent;
+                    intent = new Intent(AppMasterApplication.getInstance(),
+                            QuickGesturePopupActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        AppMasterApplication.getInstance().startActivity(intent);
+                    } catch (Exception e) {
+                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
