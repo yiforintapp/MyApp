@@ -154,7 +154,7 @@
     <dimen name="home_lock_mode_guide_btn_width">84dp</dimen>
     <dimen name="home_lock_mode_guide_btn_height">26dp</dimen>
     <dimen name="home_lock_mode_guide_btn_margin_top">24dp</dimen>
-    <dimen name="home_lock_mode_active_tip_width">180dp</dimen>
+    <dimen name="home_lock_mode_active_tip_width">212dp</dimen>
     <dimen name="home_lock_mode_active_tip_image_width">56dp</dimen>
     <dimen name="home_lock_mode_active_tip_image_height">56dp</dimen>
     <dimen name="home_lock_mode_active_tip_image_margin_top">8dp</dimen>

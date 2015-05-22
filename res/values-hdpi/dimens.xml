@@ -276,12 +276,12 @@
     <dimen name="home_lock_mode_guide_btn_width">80dp</dimen>
     <dimen name="home_lock_mode_guide_btn_height">26dp</dimen>
     <dimen name="home_lock_mode_guide_btn_margin_top">32dp</dimen>
-    <dimen name="home_lock_mode_active_tip_width">170dp</dimen>
+    <dimen name="home_lock_mode_active_tip_width">212dp</dimen>
     <dimen name="home_lock_mode_active_tip_image_width">52dp</dimen>
     <dimen name="home_lock_mode_active_tip_image_height">52dp</dimen>
-    <dimen name="home_lock_mode_active_tip_image_margin_top">10dp</dimen>
-    <dimen name="home_lock_mode_active_tip_text_margin_top">10dp</dimen>
-    <dimen name="home_lock_mode_active_tip_text_margin_bottom">10dp</dimen>
+    <dimen name="home_lock_mode_active_tip_image_margin_top">24dp</dimen>
+    <dimen name="home_lock_mode_active_tip_text_margin_top">16dp</dimen>
+    <dimen name="home_lock_mode_active_tip_text_margin_bottom">24dp</dimen>
     <!-- lock mode end -->
 
     <dimen name="privacy_proposal_padding">10dp</dimen>

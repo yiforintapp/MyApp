@@ -234,22 +234,23 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             if (mSelected == holder) {
                 modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
                 selectedImg = (ImageView) view.findViewById(R.id.img_selected);
+                selectedImg.setVisibility(View.VISIBLE);
+                selectedImg.setAlpha(0f);
             }
             if (showAnimation) {
                 myHandler = new Handler();
-                ValueAnimator ballAnim = ValueAnimator.ofFloat(0.5f, 1.05f, 0.98f, 1.0f);
+                ValueAnimator ballAnim = ValueAnimator.ofFloat(0.5f, 1.05f, 0.95f, 1.0f);
                 ballAnim.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         float currentValue = (Float) animation.getAnimatedValue();
                         view.setScaleX(currentValue);
                         view.setScaleY(currentValue);
-                        if (flag && mSelected == holder && animation.getCurrentPlayTime() > 300) {
+                        if (flag && mSelected == holder && animation.getCurrentPlayTime() > 400) {
                             // add gray shadow
                             myHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    selectedImg.setVisibility(View.VISIBLE);
                                     modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(), BitmapUtils
                                                     .createGaryBitmap(((LockMode) mSelected.getTag()).modeIcon))));
                                 }
@@ -376,8 +377,8 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 mModeNameTv.setAlpha(value);
             }
         });
-        ObjectAnimator thisViewAlpha = ObjectAnimator.ofFloat(MultiModeView.this, "alpha", 0f).setDuration(500);
-        ObjectAnimator selectImgAlpha = ObjectAnimator.ofFloat(selectedImg, "alpha",0f).setDuration(500);
+        ObjectAnimator thisViewAlpha = ObjectAnimator.ofFloat(MultiModeView.this, "alpha", 0f).setDuration(400);
+        ObjectAnimator selectImgAlpha = ObjectAnimator.ofFloat(selectedImg, "alpha",0f).setDuration(400);
         AnimatorSet set = new AnimatorSet();
         set.addListener(new AnimatorListenerAdapter(){
             @Override

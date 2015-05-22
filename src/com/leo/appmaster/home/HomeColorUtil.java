@@ -19,7 +19,7 @@ public class HomeColorUtil {
     // 蓝色
     public static int DEFAULT_COLOR_BLUE = 0x4285F4;
     public static ColorHolder sColorBlue = new ColorHolder(0x42, 0x85, 0xf4);
-
+    
     public static class ColorHolder {
         public int red;
         public int green;

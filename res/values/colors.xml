@@ -84,4 +84,7 @@
     <color name="quick_gesture_switch_setting_hidden_color">#00000000</color>
     <color name="quick_gesture_miui_tip_color">#CC000000</color>
 
+    <color name="mode_familg_bg">#ffa71c</color>
+    <color name="mode_visitor_bg">#5653b4</color>
+    <color name="mode_default_bg">#44c4f5</color>
 </resources>

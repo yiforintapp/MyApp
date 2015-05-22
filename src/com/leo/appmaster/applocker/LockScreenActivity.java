@@ -2,8 +2,21 @@
 package com.leo.appmaster.applocker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import android.R.integer;
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
@@ -17,18 +30,26 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Outline;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
+import android.renderscript.Sampler.Value;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -40,6 +61,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -59,6 +81,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.LeoCircleView;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
@@ -498,6 +521,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             for (LockMode lockMode : modeList) {
                 if (mQuiclModeId == lockMode.modeId) {
                     willLaunch = lockMode;
+                    Log.i("tag","falg =="+ lockMode.defaultFlag);
                     break;
                 }
             }
@@ -513,9 +537,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 willLaunch = homeMode;
             }
             if (willLaunch != null) {
+                int currentModeFlag = LockManager.getInstatnce().getCurLockMode().defaultFlag;
                 lm.setCurrentLockMode(willLaunch, true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
-                showModeActiveTip();
+                showModeActiveTip(willLaunch.defaultFlag,currentModeFlag);
             } else {
                 // Toast.makeText(this, mQuickModeName + "模式不存在, 请重试",
                 // 0).show();
@@ -785,17 +810,155 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mLockLayout.setVisibility(View.VISIBLE);
     }
 
+   private float top,width,height;
+   private LeoCircleView bgView;
+   private ImageView modeIconOut;
+   private ImageView modeIconIn;
+   private ImageView modeIconDown;
+   private TextView mActiveText;
+   private int bg_anim_time = 300;
+   private int in_anim_time = 400;
+   private int out_anim_time=300;
+   private Map<String, Object> currModeIconMap;
+   private Map<String, Object> willModeIconMap;
     /**
      * show the tip when mode success activating
      */
-    private void showModeActiveTip() {
+    private void showModeActiveTip(int willModeFlag,int currentModeFlag) {
+       currModeIconMap = modeIconSwitch(currentModeFlag);
+       willModeIconMap = modeIconSwitch(willModeFlag);
+        
         View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
-        TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
-        mActiveText.setText(this.getString(R.string.mode_change, mQuickModeName));
+        mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
+       mActiveText.setText(this.getString(R.string.mode_change, mQuickModeName));
+       bgView = (LeoCircleView) mTipView.findViewById(R.id.mode_active_bg);
+       modeIconIn = (ImageView)mTipView.findViewById(R.id.mode_active_in);
+       modeIconOut = (ImageView)mTipView.findViewById(R.id.mode_active_out);
+       modeIconDown = (ImageView)mTipView.findViewById(R.id.mode_active_down);
+        modeIconIn.setImageResource((Integer)willModeIconMap.get("modeIcon"));
+        modeIconOut.setImageResource((Integer)currModeIconMap.get("modeIcon"));
+        modeIconDown.setImageResource((Integer)willModeIconMap.get("modeDown"));
+        bgView.setColor(Color.parseColor(currModeIconMap.get("bgColor").toString()));
+        
+        ViewTreeObserver vto =  modeIconOut.getViewTreeObserver(); 
+        vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { 
+            @SuppressWarnings("deprecation") 
+            @Override 
+            public void onGlobalLayout() { 
+                modeIconOut.getViewTreeObserver().removeGlobalOnLayoutListener(this); 
+                width = modeIconOut.getWidth(); 
+                top = modeIconOut.getTop();
+                height = modeIconOut.getHeight();
+                Log.i("tag"," in   top="+top+" width="+width +"  height="+height);
+                activeAnimation();
+            } 
+        }); 
+        
         Toast toast = new Toast(this);
         toast.setView(mTipView);
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setDuration(1500);
         toast.show();
+    }
+    
+    private void  activeAnimation(){
+        ValueAnimator colorAnim = ValueAnimator.ofObject(new ColorEvaluator(), currModeIconMap.get("bgColor"),willModeIconMap.get("bgColor"));
+        colorAnim.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int color = (Integer) animation.getAnimatedValue();
+                bgView.setColor(color);
+            }
+        });
+        colorAnim.setDuration(bg_anim_time);
+        
+        final float outLength = top + height;
+        ValueAnimator outAnimator = ValueAnimator.ofFloat(0, outLength).setDuration(out_anim_time);
+        outAnimator.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float curr = (Float) animation.getAnimatedValue();
+                float percent = 1.0f-curr / outLength;
+                //Log.i("tag", "curr=" + curr + " outIconPercent== " + percent);
+                modeIconOut.setTranslationY(curr);
+                if(percent>=0.6f){
+                    modeIconOut.setAlpha(percent);
+                    modeIconOut.setScaleX(percent);
+                    modeIconOut.setScaleY(percent);
+                }
+            }
+        });
+        
+        final float maxLength = 2 * top ;
+        final float upLength = top + height/2;
+        ValueAnimator inAnimator = ValueAnimator.ofFloat(-(upLength), top, 0f).setDuration(in_anim_time);
+        inAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                modeIconIn.setVisibility(View.VISIBLE);
+            }
+        });
+        inAnimator.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float curr = (Float) animation.getAnimatedValue();
+                modeIconIn.setTranslationY(curr);
+                curr = curr + upLength;
+                float percent = curr / maxLength;
+                if(percent>1.0f){
+                    percent = 1.0f;
+                }
+                Log.i("tag", "curr=" + curr + " percent== " + percent);
+                modeIconIn.setAlpha(0.6f * percent + 0.4f);
+                modeIconIn.setScaleX(0.3f * percent + 0.7f);
+                modeIconIn.setScaleY(0.3f * percent + 0.7f);
+            }
+        });
+        
+        ValueAnimator downAnimator = ValueAnimator.ofFloat(0,1.2f,0.9f,1.0f).setDuration(300);
+        downAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                modeIconDown.setVisibility(View.VISIBLE);
+            }
+        });
+        downAnimator.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float curr = (Float)animation.getAnimatedValue();
+                modeIconDown.setScaleX(curr);
+                modeIconDown.setScaleY(curr);
+            }
+        });
+        downAnimator.setStartDelay(in_anim_time);
+            
+       AnimatorSet set = new AnimatorSet();
+       set.setStartDelay(200);
+       set.playTogether(colorAnim,outAnimator,inAnimator,downAnimator);
+       set.start();
+    }
+    
+    private Map<String, Object> modeIconSwitch(int modeFlag){
+        Map<String, Object> iconMap = new HashMap<String, Object>();
+        switch (modeFlag) {
+            case 1:
+                iconMap.put("bgColor", "#5653b4");
+                iconMap.put("modeIcon", R.drawable.visitor_mode);
+                iconMap.put("modeDown", R.drawable.visitor_mode_done);
+                break;
+            case 3:
+                iconMap.put("bgColor","#ffa71c");
+                iconMap.put("modeIcon", R.drawable.family_mode);
+                iconMap.put("modeDown", R.drawable.family_mode_done);
+                break;
+            default:
+                iconMap.put("bgColor", "#44c4f5");
+                iconMap.put("modeIcon", R.drawable.default_mode);
+                iconMap.put("modeDown", R.drawable.default_mode_done);
+                break;
+        }
+        return iconMap;
     }
 }
