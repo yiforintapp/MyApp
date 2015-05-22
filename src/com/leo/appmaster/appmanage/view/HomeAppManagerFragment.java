@@ -77,12 +77,12 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private View mHeadView;
     private MulticolorRoundProgressBar roundProgressBar;
     private ProgressBar pb_loading;
-    private View bg_show_xz_bf, bg_show_ll, bg_show_dl, bg_show_hotapp, two_text_content,
+    private View bg_show_xz_bf, bg_show_ll, bg_show_dl, two_text_content,
             content_donghua_ok, mQuickGesture;
     private ListView list_delete;
     private AppBackupRestoreManager mDeleteManager;
     private AppDeleteAdapter mDeleteAdapter;
-    private ImageView iv_donghua, app_hot_tip_icon, mQuickGestureRedTip;
+    private ImageView iv_donghua, mQuickGestureRedTip;
     private TextView tv_installed_app, tv_ap_data, tv_backup_num,
             tv_from_big_donghua;
     // private int InstalledApps = 0;
@@ -125,11 +125,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        if (sp_homeAppManager.getHomeFragmentRedTip()) {
-            app_hot_tip_icon.setVisibility(View.VISIBLE);
-        } else {
-            app_hot_tip_icon.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -233,12 +228,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     private void InitHeadView() {
         pb_loading = (ProgressBar) findViewById(R.id.pb_loading);
-        app_hot_tip_icon = (ImageView) findViewById(R.id.app_hot_tip_icon);
-        if (sp_homeAppManager.getHomeFragmentRedTip()) {
-            app_hot_tip_icon.setVisibility(View.VISIBLE);
-        } else {
-            app_hot_tip_icon.setVisibility(View.GONE);
-        }
         list_delete = (ListView) findViewById(R.id.list_backup_home_fragment);
         LayoutInflater mFactory = LayoutInflater.from(mActivity);
         mHeadView = mFactory.inflate(R.layout.app_manager_first_page_logo, null);
@@ -328,12 +317,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         bg_show_xz_bf = findViewById(R.id.bg_show_xz_bf);
         bg_show_ll = findViewById(R.id.bg_show_ll);
         bg_show_dl = findViewById(R.id.bg_show_dl);
-        bg_show_hotapp = findViewById(R.id.bg_show_hotapp);
 
         bg_show_xz_bf.setOnClickListener(this);
         bg_show_ll.setOnClickListener(this);
         bg_show_dl.setOnClickListener(this);
-        bg_show_hotapp.setOnClickListener(this);
     }
 
     @Override
@@ -361,13 +348,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 Intent dlIntent = new Intent(mActivity, EleActivity.class);
                 startActivity(dlIntent);
                 break;
-             case R.id.bg_show_hotapp:
-             app_hot_tip_icon.setVisibility(View.GONE);
-             sp_homeAppManager.setHomeFragmentRedTip(false);
-             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "hot");
-             Intent nIntent = new Intent(mActivity, HotAppActivity.class);
-             startActivity(nIntent);
-             break;
             case R.id.iv_donghua:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "newboost");
                 if (!isCleanning) {

@@ -54,11 +54,10 @@ public class FloatWindowHelper {
 
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,
             mLeftCenterCenterView;
-    private static RelativeLayout mMiuiTipRl;
     private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView,
             mRightCenterCenterView;
     private static LayoutParams mLeftBottomParams, mLeftCenterParams, mLeftTopParams,
-            mLeftCenterCenterParams, mMiuiTipParams;
+            mLeftCenterCenterParams;
     private static LayoutParams mRightBottomParams, mRightCenterParams, mRightTopParams,
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
@@ -67,7 +66,6 @@ public class FloatWindowHelper {
     public static boolean mEditQuickAreaFlag = false;
     private static float startX;
     private static float startY;
-    // private static WindowManager windowManager;
     private static boolean isMoveIng = false;
     public static boolean isFanShowing = false;
     // 左下宽度
@@ -130,8 +128,7 @@ public class FloatWindowHelper {
         }
     }
 
-    // TODO
-    public static void initFloatWindwo(final Context mContext, int value, View view,
+    public static void initFloatWindow(final Context mContext, int value, View view,
             LayoutParams layoutParams, int flag) {
         final WindowManager windowManager = getWindowManager(mContext);
         if (view == null) {
@@ -358,7 +355,8 @@ public class FloatWindowHelper {
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             if (LockManager.getInstatnce().isShowSysNoReadMessage
-                    && LockManager.getInstatnce().onTuchGestureFlag == -1 && mLeftBottomView == null) {
+                    && LockManager.getInstatnce().onTuchGestureFlag == -1
+                    && mLeftBottomView == null) {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
             mLeftCenterCenterView.setOnTouchListener(new OnTouchListener() {
