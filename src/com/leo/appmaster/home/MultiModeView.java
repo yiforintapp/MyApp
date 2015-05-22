@@ -234,8 +234,6 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             if (mSelected == holder) {
                 modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
                 selectedImg = (ImageView) view.findViewById(R.id.img_selected);
-                selectedImg.setVisibility(View.VISIBLE);
-                selectedImg.setAlpha(0f);
             }
             if (showAnimation) {
                 myHandler = new Handler();
@@ -261,14 +259,21 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 });
 
                 ValueAnimator alphaAnimator = ValueAnimator.ofFloat(0f, 1.0f);
+                alphaAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        mModeNameTv.setVisibility(View.VISIBLE);
+                        mIvAdd.setVisibility(View.VISIBLE);
+                        selectedImg.setVisibility(View.VISIBLE);
+                    }
+                });
                 alphaAnimator.setStartDelay(320);
                 alphaAnimator.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         float currValue = (Float) animation.getAnimatedValue();
                         selectedImg.setAlpha(currValue);
-                        mModeNameTv.setVisibility(View.VISIBLE);
-                        mIvAdd.setVisibility(View.VISIBLE);
                         mModeNameTv.setAlpha(currValue);
                         mIvAdd.setAlpha(currValue);
                         modeName.setAlpha(currValue);
