@@ -44,6 +44,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/multi_mode_title_margin_top"
         android:text="@string/choose_mode"
+        android:visibility="invisible"
         android:textColor="@color/white" />
 
     <com.leo.appmaster.ui.CirclePageIndicator

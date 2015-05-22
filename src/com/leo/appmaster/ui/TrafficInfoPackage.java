@@ -43,7 +43,7 @@ public class TrafficInfoPackage {
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
-    public List<TrafficsInfo> getRunningProcess() {
+    public List<TrafficsInfo> getRunningProcess(boolean loadIcon) {
         List<TrafficsInfo> trafficInfos = new ArrayList<TrafficsInfo>();
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -79,19 +79,21 @@ public class TrafficInfoPackage {
 
             TrafficsInfo trafficInfo = new TrafficsInfo();
             // 获取应用的应用名、图标等信息
-            String mPackageName = packInfo.packageName;
-            Drawable mIconDrawable = packInfo.applicationInfo
-                    .loadIcon(mPm);
-            String mLabelName = packInfo.applicationInfo
-                    .loadLabel(mPm).toString();
-            
-            trafficInfo.setPackName(mPackageName.isEmpty()?"":mLabelName);
-            try {
-                trafficInfo.setIcon(mIconDrawable);
-            } catch (Exception e) {
-                trafficInfo.setIcon(mContext.getResources().getDrawable(R.drawable.ic_launcher));
+            if(loadIcon) {
+                String mPackageName = packInfo.packageName;
+                Drawable mIconDrawable = packInfo.applicationInfo
+                        .loadIcon(mPm);
+                String mLabelName = packInfo.applicationInfo
+                        .loadLabel(mPm).toString();
+                
+                trafficInfo.setPackName(mPackageName.isEmpty()?"":mLabelName);
+                try {
+                    trafficInfo.setIcon(mIconDrawable);
+                } catch (Exception e) {
+                    trafficInfo.setIcon(mContext.getResources().getDrawable(R.drawable.ic_launcher));
+                }
+                trafficInfo.setAppName(mLabelName.isEmpty()?"":mLabelName);
             }
-            trafficInfo.setAppName(mLabelName.isEmpty()?"":mLabelName);
 
             long mAppBaseSend = sp_app_flow.getAppBaseSend(uid);
             long mAppBaseRev = sp_app_flow.getAppBaseRev(uid);

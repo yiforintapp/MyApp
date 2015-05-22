@@ -192,9 +192,9 @@ public class FreeDisturbImageView extends ImageView {
                 Bitmap lockBitmap = BitmapHolder.getDefaultBitmap(getContext());
                 if (mMatrix == null) {
                     int lockWidth = getResources().getDimensionPixelSize(
-                            R.dimen.default_lock_icon_width);
+                            R.dimen.quick_gesture_free_distureb_app_select_icon_width);
                     int lockHeight = getResources().getDimensionPixelSize(
-                            R.dimen.lock_icon_height);
+                            R.dimen.quick_gesture_free_distureb_app_select_icon_width);
 
                     float scaleX = (float) lockWidth / lockBitmap.getWidth();
                     float scaleY = (float) lockHeight / lockBitmap.getHeight();
@@ -253,7 +253,7 @@ public class FreeDisturbImageView extends ImageView {
         public static Bitmap getDefaultBitmap(Context ctx) {
             if (mDefaultRecommend == null) {
                 mDefaultRecommend = BitmapFactory.decodeResource(ctx.getResources(),
-                        R.drawable.select_icon);
+                        R.drawable.switch_select);
             }
             return mDefaultRecommend;
         }

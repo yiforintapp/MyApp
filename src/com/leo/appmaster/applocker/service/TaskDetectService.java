@@ -12,6 +12,8 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -25,14 +27,15 @@ import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
+import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 //import android.app.ActivityManager.AppTask;
@@ -62,10 +65,13 @@ public class TaskDetectService extends Service {
     private TimerTask mDetectTask;
 
     private TaskChangeHandler mLockHandler;
-    private TaskDetectBinder mBinder = new TaskDetectBinder();
+    // private TaskDetectBinder mBinder = new TaskDetectBinder();
     private AppMasterPreference sp_traffic;
     private FloatWindowTask mFloatWindowTask;
     private Handler mHandler;
+
+    private static TaskDetectService sService;
+    private static Notification sNotification;
 
     public class TaskDetectBinder extends Binder {
         public TaskDetectService getService() {
@@ -75,7 +81,7 @@ public class TaskDetectService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return mBinder;
+        return null;
     }
 
     @Override
@@ -90,7 +96,14 @@ public class TaskDetectService extends Service {
         LeoEventBus
                 .getDefaultBus().register(this);
         mHandler = new Handler();
+        sService = this;
+        startForeground(1, getNotification(getApplicationContext()));
+        startPhantomService();
         super.onCreate();
+    }
+
+    private void startPhantomService() {
+        startService(new Intent(this, PhantomService.class));
     }
 
     @Override
@@ -98,11 +111,10 @@ public class TaskDetectService extends Service {
         if (!mServiceStarted) {
             startDetect();
         }
-        Log.e("##############", "是否开启："
-                + AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture());
         if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
             startFloatWindow();
         }
+
         return START_STICKY;
     }
 
@@ -180,6 +192,7 @@ public class TaskDetectService extends Service {
         stopFlowTask();
         stopFloatWindow();
         sendBroadcast(new Intent("com.leo.appmaster.restart"));
+        sService = null;
         super.onDestroy();
     }
 
@@ -193,7 +206,7 @@ public class TaskDetectService extends Service {
             if (!network_state.equals(STATE_NO_NETWORK)) {
                 Traffic traffic = Traffic.getInstance(getApplicationContext());
                 tra[0] = traffic.getAllgprs(mVersion, network_state)[2];
-                new TrafficInfoPackage(getApplicationContext()).getRunningProcess();
+                new TrafficInfoPackage(getApplicationContext()).getRunningProcess(false);
             }
 
             if (network_state.equals(STATE_NORMAL)) {
@@ -523,4 +536,23 @@ public class TaskDetectService extends Service {
         }
 
     }
+
+    public static TaskDetectService getService() {
+        return sService;
+    }
+
+    public static synchronized Notification getNotification(Context context) {
+        if (sNotification == null) {
+            PendingIntent pi = PendingIntent.getActivity(context, 0,
+                    new Intent(context, HomeActivity.class),
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            sNotification = new Notification();
+            sNotification.icon = R.drawable.ic_launcher;
+            sNotification.flags |= Notification.FLAG_ONGOING_EVENT;
+            String title = context.getString(R.string.app_name);
+            sNotification.setLatestEventInfo(context, title, title, pi);
+        }
+        return sNotification;
+    }
+
 }

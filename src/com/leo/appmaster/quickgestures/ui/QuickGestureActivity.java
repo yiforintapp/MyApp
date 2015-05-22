@@ -53,6 +53,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
+import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -111,7 +112,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mArrowImage = (ImageView) findViewById(R.id.gesture_arrowIV);
         if (!AppMasterPreference.getInstance(this)
                 .getFristSlidingTip()) {
-            // gestureTranslationAnim(mHandImage, mArrowImage);
+            gestureTranslationAnim(mHandImage, mArrowImage);
             mTipRL.setVisibility(View.VISIBLE);
             mTipRL.setOnClickListener(new OnClickListener() {
                 @Override
@@ -170,28 +171,34 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         gestureSettingOpenGesture.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_open_quick_gesture));
         gestureSettingOpenGesture.setCheck(mPre.getSwitchOpenQuickGesture());
+        gestureSettingOpenGesture.setBackageDraw(R.drawable.bg);
         mQuickGestureSettingOption.add(gestureSettingOpenGesture);
         QuickGestureSettingBean gestureSettingSlidingAreaLocation = new QuickGestureSettingBean();
         gestureSettingSlidingAreaLocation.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_sliding_area_location_title));
+        gestureSettingSlidingAreaLocation.setBackageDraw(R.drawable.bg_upround);
         mQuickGestureSettingOption.add(gestureSettingSlidingAreaLocation);
         QuickGestureSettingBean gestureSettingAbleSlidingTime = new QuickGestureSettingBean();
         gestureSettingAbleSlidingTime.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_able_sliding_time));
+        gestureSettingAbleSlidingTime.setBackageDraw(R.drawable.bg_downround);
         mQuickGestureSettingOption.add(gestureSettingAbleSlidingTime);
         QuickGestureSettingBean gestureSettingNoReadMessage = new QuickGestureSettingBean();
         gestureSettingNoReadMessage.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_no_read_message_tip));
         gestureSettingNoReadMessage.setCheck(mPre.getSwitchOpenNoReadMessageTip());
+        gestureSettingNoReadMessage.setBackageDraw(R.drawable.bg_upround);
         mQuickGestureSettingOption.add(gestureSettingNoReadMessage);
         QuickGestureSettingBean gestureSettingRecentlyContact = new QuickGestureSettingBean();
         gestureSettingRecentlyContact.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_recently_contact));
         gestureSettingRecentlyContact.setCheck(mPre.getSwitchOpenRecentlyContact());
+        gestureSettingRecentlyContact.setBackageDraw(R.drawable.bg_zeroround);
         mQuickGestureSettingOption.add(gestureSettingRecentlyContact);
         QuickGestureSettingBean gestureSettingContactMessagTip = new QuickGestureSettingBean();
         gestureSettingContactMessagTip.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_privacy_contact_message_tip));
+        gestureSettingContactMessagTip.setBackageDraw(R.drawable.bg_downround);
         gestureSettingContactMessagTip.setCheck(mPre.getSwitchOpenPrivacyContactMessageTip());
         mQuickGestureSettingOption.add(gestureSettingContactMessagTip);
 
@@ -224,9 +231,10 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         }
 
         class ViewHolder {
-            ImageView imageView;
+            ImageView imageView, arrowImageVIew;
             CheckBox switchView;
-            TextView title, content, segmentationTv;
+            TextView title, content, segmentationTv, lineTextView;
+            RelativeLayout itemRL;
         }
 
         @Override
@@ -235,11 +243,14 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             if (convertView == null) {
                 vh = new ViewHolder();
                 convertView = layoutInflater.inflate(R.layout.activity_quick_gesture_item, null);
+                vh.itemRL = (RelativeLayout) convertView.findViewById(R.id.quick_gesture_content);
                 vh.imageView = (ImageView) convertView.findViewById(R.id.quick_gesture_option_IV);
                 vh.switchView = (CheckBox) convertView.findViewById(R.id.quick_gesture_check);
                 vh.title = (TextView) convertView.findViewById(R.id.quick_gesture_item_nameTV);
                 vh.content = (TextView) convertView.findViewById(R.id.quick_gesture_item_cotentTV);
                 vh.segmentationTv = (TextView) convertView.findViewById(R.id.segmentation_tv);
+                vh.lineTextView = (TextView) convertView.findViewById(R.id.quick_line_tv);
+                vh.arrowImageVIew = (ImageView) convertView.findViewById(R.id.quick_gesture_arrow);
                 convertView.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
@@ -247,6 +258,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             vh.switchView.setTag(position);
             QuickGestureSettingBean bean = mQuickGestureSettingOption.get(position);
             vh.title.setText(bean.getName());
+            // 设置背景
+            vh.itemRL.setBackgroundResource(bean.getBackageDraw());
+            // 设置复选框
             if (position == 0 || position == 3
                     || position == 4
                     || position == 5) {
@@ -263,11 +277,25 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             } else {
                 vh.switchView.setVisibility(View.GONE);
             }
+            // 显示下划线
+            if (position == 1 || position == 3 || position == 4) {
+                vh.lineTextView.setVisibility(View.VISIBLE);
+            } else {
+                vh.lineTextView.setVisibility(View.GONE);
+            }
+            // 显示间隔条
             if (position == 0 || position == 2) {
                 vh.segmentationTv.setVisibility(View.VISIBLE);
             } else {
                 vh.segmentationTv.setVisibility(View.GONE);
             }
+            // 显示箭头
+            if (position == 1 || position == 2) {
+                vh.arrowImageVIew.setVisibility(View.VISIBLE);
+            } else {
+                vh.arrowImageVIew.setVisibility(View.GONE);
+            }
+            // 显示划出时机
             if (position == 2) {
                 vh.content.setVisibility(View.VISIBLE);
                 if (mPre.getSlideTimeJustHome()) {
@@ -290,12 +318,16 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         if (mPre.getSwitchOpenQuickGesture()) {
             if (arg2 == 1) {
-                Log.e("##########", "1:设置区域");
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);
+                // 常用应用选择调试
+                // TODO
+                // FloatWindowHelper.showCommontAppDialog(QuickGestureActivity.this);
             } else if (arg2 == 2) {
-                Log.e("##########", "2:选择免打扰应用");
                 showSlideShowTimeSettingDialog();
+                // 快捷开关调试
+                // TODO
+                // FloatWindowHelper.showQuickSwitchDialog(QuickGestureActivity.this);
             }
         }
     }
@@ -315,9 +347,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             }
             mPre.setSwitchOpenQuickGesture(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
-            Log.e("##########", "0：快捷手势开关");
         } else if (position == 3) {
-            Log.e("##########", "3：打开短信提示");
             mPre.setSwitchOpenNoReadMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (arg1) {
@@ -342,7 +372,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 }).start();
             }
         } else if (position == 4) {
-            Log.e("##########", "4：打开常用联系人提示");
             mPre.setSwitchOpenRecentlyContact(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (arg1) {
@@ -369,7 +398,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 ;
             }
         } else if (position == 5) {
-            Log.e("##########", "5:打开隐私联系人提示");
             mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
         }
@@ -446,6 +474,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                                     .getString(
                                             R.string.pg_appmanager_quick_gesture_option_dialog_radio_toast_text),
                             Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        mAlarmDialog.setLeftButtomClick(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                FloatWindowHelper.mEditQuickAreaFlag = false;
+                mAlarmDialogFlag = false;
+                updateFloatWindowBackGroudColor();
+                if (mAlarmDialog != null) {
+                    mAlarmDialog.dismiss();
                 }
             }
         });
@@ -562,7 +602,40 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mFreeApps = getFreeDisturbApps();
         mSlideTimeAdapter = new FreeDisturbSlideTimeAdapter(this,
                 mFreeApps);
+        if (mFreeApps != null && mFreeApps.size() > 1) {
+            mSlideTimeDialog.setFreeDisturbAppAddBtVisVisibility(false);
+            mSlideTimeDialog.setFreeDisturbAppHorizontalVisVisibility(true);
+        } else {
+            mSlideTimeDialog.setFreeDisturbAppAddBtVisVisibility(true);
+            mSlideTimeDialog.setFreeDisturbAppHorizontalVisVisibility(false);
+        }
         mSlideTimeDialog.setFreeDisturbAdapter(mSlideTimeAdapter);
+
+        mSlideTimeDialog.setRightBtnListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                AppMasterPreference.getInstance(QuickGestureActivity.this).setSlideTimeJustHome(
+                        mSlideTimeDialog.getJustHometCheckStatus());
+                AppMasterPreference.getInstance(QuickGestureActivity.this)
+                        .setSlideTimeAllAppAndHome(mSlideTimeDialog.getAppHomeCheckStatus());
+                // Log.e("#############", "桌面：" +
+                // mSlideTimeDialog.getJustHometCheckStatus() + ":应用："
+                // + mSlideTimeDialog.getAppHomeCheckStatus());
+                mSlideTimeDialog.dismiss();
+                LeoEventBus
+                        .getDefaultBus()
+                        .post(new QuickGestureFloatWindowEvent(
+                                FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
+            }
+        });
+        mSlideTimeDialog.setFreeDisturbAppAddBtClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                showAllAppDialog();
+            }
+        });
         mSlideTimeDialog.setOnItemListenerFreeDisturb(new OnItemClickListener() {
 
             @Override
@@ -581,6 +654,13 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 return false;
             }
         });
+        mSlideTimeDialog.setLeftButtonClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                mSlideTimeDialog.dismiss();
+            }
+        });
         mSlideTimeDialog.show();
     }
 
@@ -597,18 +677,47 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     private void showAllAppDialog() {
         final QuickGestureFreeDisturbAppDialog freeDisturbApp = new QuickGestureFreeDisturbAppDialog(
-                this);
+                this, 1);
         freeDisturbApp.setTitle(R.string.pg_appmanager_quick_gesture_select_free_disturb_app_text);
         freeDisturbApp.setRightBt(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 if (freeDisturbApp != null) {
-                    freeDisturbApp.cancel();
+                    // 添加确认免打扰应用
+                    final List<String> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
+                    final List<String> removeFreeAppNames = freeDisturbApp
+                            .getRemoveFreePackageName();
+                    new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            if (addFreeAppNames != null && addFreeAppNames.size() > 0) {
+                                for (String string : addFreeAppNames) {
+                                    AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                            .setFreeDisturbAppPackageNameAdd(string);
+                                }
+                            }
+                            if (removeFreeAppNames != null && removeFreeAppNames.size() > 0) {
+                                for (String string : removeFreeAppNames) {
+                                    AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                            .setFreeDisturbAppPackageNameRemove(string);
+                                }
+                            }
+                        }
+                    }).start();
+                    freeDisturbApp.dismiss();
                     LeoEventBus.getDefaultBus().post(
                             new QuickGestureFloatWindowEvent(
                                     FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION));
                 }
+            }
+        });
+        freeDisturbApp.setLeftBt(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                freeDisturbApp.dismiss();
             }
         });
         freeDisturbApp.show();
@@ -619,7 +728,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         List<FreeDisturbAppInfo> freeDisturbApp = new ArrayList<FreeDisturbAppInfo>();
         // 添加Item
         FreeDisturbAppInfo addImageInfo = new FreeDisturbAppInfo();
-        addImageInfo.icon = this.getResources().getDrawable(R.drawable.add_mode_icon_pressed);
+        addImageInfo.icon = this.getResources().getDrawable(R.drawable.switch_add_block);
         addImageInfo.packageName = "add_free_app";
         freeDisturbApp.add(addImageInfo);
         List<String> packageNames = null;
@@ -691,6 +800,12 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                                     .setFreeDisturbAppPackageNameRemove(infoTag.packageName);
                             mSlideTimeAdapter.notifyDataSetChanged();
                         }
+                        if (mFreeApps == null || mFreeApps.size() <= 1) {
+                            if (mSlideTimeDialog != null) {
+                                mSlideTimeDialog.setFreeDisturbAppAddBtVisVisibility(true);
+                                mSlideTimeDialog.setFreeDisturbAppHorizontalVisVisibility(false);
+                            }
+                        }
                     }
                 });
             }
@@ -761,40 +876,35 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     }
 
     private void gestureTranslationAnim(final View view1, final View view2) {
+        view1.clearAnimation();
+        view2.clearAnimation();
         AnimatorSet animatorSet = new AnimatorSet();
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(view1, "alpha", 1, 1, 0);
+        // 箭头动画
+        ObjectAnimator alphaArrow = ObjectAnimator.ofFloat(view2, "alpha", 0, 0, 1);
+        alphaArrow.setDuration(2000);
+        alphaArrow.setRepeatCount(-1);
+        PropertyValuesHolder arrowHolderX = PropertyValuesHolder
+                .ofFloat("translationX", 0, 0, -200);
+        PropertyValuesHolder arrowHolderY = PropertyValuesHolder
+                .ofFloat("translationY", 0, 0, -200);
+        ObjectAnimator translateArrow = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(
+                view2, arrowHolderX, arrowHolderY);
+        translateArrow.setDuration(2000);
+        translateArrow.setRepeatCount(-1);
+        // 手势动画
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(view1, "alpha", 0, 1, 1);
         alpha.setDuration(2000);
+        alpha.setRepeatCount(-1);
         PropertyValuesHolder valuesHolderX = PropertyValuesHolder
-                .ofFloat("translationX", 0, 300, 0);
+                .ofFloat("translationX", 0, 270, 0);
         PropertyValuesHolder valuesHolderY = PropertyValuesHolder
                 .ofFloat("translationY", 0, 300, 0);
         ObjectAnimator translate = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(view1,
                 valuesHolderX, valuesHolderY);
-        translate.setDuration(2000);
+        translate.setRepeatCount(-1);
         translate.setInterpolator(new AccelerateDecelerateInterpolator());
-        animatorSet.playTogether(translate, alpha);
+        translate.setDuration(2000);
+        animatorSet.playTogether(translate, alpha, alphaArrow, translateArrow);
         animatorSet.start();
-        translate.addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator arg0) {
-                float value = (Float) arg0.getAnimatedValue();
-                if (value >= (float) Math.sqrt(180000)) {
-                    AnimatorSet animatorSetArrow = new AnimatorSet();
-                    ObjectAnimator alphaArrow = ObjectAnimator.ofFloat(view2, "alpha", 1, 0);
-                    alphaArrow.setDuration(1000);
-                    PropertyValuesHolder arrowHolderX = PropertyValuesHolder
-                            .ofFloat("translationX", 0, -200);
-                    PropertyValuesHolder arrowHolderY = PropertyValuesHolder
-                            .ofFloat("translationY", 0, -200);
-                    ObjectAnimator translateArrow = (ObjectAnimator) ObjectAnimator
-                            .ofPropertyValuesHolder(view2,
-                                    arrowHolderX, arrowHolderY);
-                    translateArrow.setDuration(1000);
-                    animatorSetArrow.playTogether(translateArrow, alphaArrow);
-                    animatorSetArrow.start();
-                }
-
-            }
-        });
     }
 }

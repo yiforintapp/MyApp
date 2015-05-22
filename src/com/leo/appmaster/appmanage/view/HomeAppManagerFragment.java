@@ -16,6 +16,7 @@ import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,6 +48,7 @@ import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
 import com.leo.appmaster.utils.BuildProperties;
@@ -80,7 +82,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private ListView list_delete;
     private AppBackupRestoreManager mDeleteManager;
     private AppDeleteAdapter mDeleteAdapter;
-    private ImageView iv_donghua, app_hot_tip_icon;
+    private ImageView iv_donghua, app_hot_tip_icon, mQuickGestureRedTip;
     private TextView tv_installed_app, tv_ap_data, tv_backup_num,
             tv_from_big_donghua;
     // private int InstalledApps = 0;
@@ -138,8 +140,13 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     @Override
     protected void onInitUI() {
-        LeoEventBus.getDefaultBus().register(this);
         sp_homeAppManager = AppMasterPreference.getInstance(mActivity);
+        LeoEventBus.getDefaultBus().register(this);
+        // 快捷手势红点
+        mQuickGestureRedTip = (ImageView) findViewById(R.id.quick_gesture_tip_icon);
+        if (sp_homeAppManager.getQuickGestureRedTip()) {
+            mQuickGestureRedTip.setVisibility(View.VISIBLE);
+        }
         DeleteDataList = new ArrayList<AppItemInfo>();
         homeAppManagerTask = new HomeAppAsyncTask();
         homeAppManagerTask.execute("");
@@ -354,13 +361,13 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 Intent dlIntent = new Intent(mActivity, EleActivity.class);
                 startActivity(dlIntent);
                 break;
-            case R.id.bg_show_hotapp:
-                app_hot_tip_icon.setVisibility(View.GONE);
-                sp_homeAppManager.setHomeFragmentRedTip(false);
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "hot");
-                Intent nIntent = new Intent(mActivity, HotAppActivity.class);
-                startActivity(nIntent);
-                break;
+             case R.id.bg_show_hotapp:
+             app_hot_tip_icon.setVisibility(View.GONE);
+             sp_homeAppManager.setHomeFragmentRedTip(false);
+             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "hot");
+             Intent nIntent = new Intent(mActivity, HotAppActivity.class);
+             startActivity(nIntent);
+             break;
             case R.id.iv_donghua:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "newboost");
                 if (!isCleanning) {
@@ -368,9 +375,15 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 }
                 break;
             case R.id.bg_show_quick_gesture:
+                if (sp_homeAppManager.getQuickGestureRedTip()) {
+                    sp_homeAppManager.setQuickGestureRedTip(false);
+                    mQuickGestureRedTip.setVisibility(View.GONE);
+                }
                 boolean flag = BuildProperties.isMIUI();
                 boolean isOpenWindow =
                         BuildProperties.isMiuiFloatWindowOpAllowed(getActivity());
+                // Log.e("#############",
+                // "是否为MIUI："+flag+"; 是否开启悬浮窗权限："+isOpenWindow);
                 if (flag && !isOpenWindow) {
                     // MIUI系统提示
                     Intent intentv6 = new
@@ -389,12 +402,18 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         intentv5.setData(uri);
                         intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         try {
-                            getActivity().startActivity(intentv5);
+                            startActivity(intentv5);
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
                     }
-                    FloatWindowHelper.createMiuiTipWindow(getActivity());
+                    Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
+                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(quickIntent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     // 启动快捷手势设置界面
                     Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);

@@ -278,11 +278,7 @@ public class GestureSettingFragment extends BaseFragment implements
         mTvGestureTip.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (LockManager.getInstatnce().serviceBound()) {
-                    LockManager.getInstatnce().startLockService();
-                } else {
-                    LockManager.getInstatnce().bindService();
-                }
+                LockManager.getInstatnce().startLockService();
             }
         }, 2000);
         mActivity.finish();

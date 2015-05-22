@@ -242,7 +242,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 checkUpdateFinish();
-                judgeLockService();
+//                judgeLockService();
                 // judgeStatictiUnlockCount();
                 initImageLoader();
                 mAppsEngine.preloadAllBaseInfo();

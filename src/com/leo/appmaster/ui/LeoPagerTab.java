@@ -152,16 +152,16 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
             removeCallbacks(mTabSelector);
         }
     }
-    
+
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         try {
             super.onRestoreInstanceState(state);
         } catch (Exception e) {
-            
+
         }
     }
-    
+
     private void addTab(int index, CharSequence text, int iconResId, boolean isRedTip) {
         final TabView tabView = new TabView(getContext());
         tabView.mIndex = index;
@@ -333,7 +333,6 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             if (mIsRedTip) {
-                canvas.save();
                 canvas.translate(getResources().getDimension(R.dimen.privacy_contact_red_tip_x),
                         getResources().getDimension(R.dimen.privacy_contact_red_tip_y));
                 Paint paint = new Paint();
@@ -350,6 +349,7 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
                 matrix.setScale(scaleX, scaleY, redTip.getWidth() / 2,
                         redTip.getHeight() / 2);
                 canvas.drawBitmap(redTip, matrix, paint);
+                canvas.save();
             }
         }
 

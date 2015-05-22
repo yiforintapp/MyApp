@@ -34,4 +34,32 @@
         android:layout_centerVertical="true"
         android:src="@drawable/pl_logo" />
 
+    <RelativeLayout
+        android:id="@+id/bg_show_hotapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/iv_option_image"
+        android:background="@drawable/title_bar_option_selector"
+        android:gravity="center"
+        android:padding="10dp" >
+
+        <ImageView
+            android:id="@+id/app_hot_tip_icon"
+            android:layout_width="@dimen/app_manager_hotapp_rep_tip_width_height"
+            android:layout_height="@dimen/app_manager_hotapp_rep_tip_width_height"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="@dimen/app_manager_hotapp_rep_tip_margin_right"
+            android:layout_marginTop="@dimen/app_manager_hotapp_rep_tip_margin"
+            android:src="@drawable/red_tip"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/hot_app_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/what_hot_icon" />
+    </RelativeLayout>
+
 </RelativeLayout>
