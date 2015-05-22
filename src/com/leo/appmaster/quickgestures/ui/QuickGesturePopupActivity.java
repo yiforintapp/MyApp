@@ -95,10 +95,7 @@ public class QuickGesturePopupActivity extends Activity implements
 
     
     public void onEventMainThread(ClickQuickItemEvent event) {
-        if (QuickSwitchManager.BLUETOOTH_EVENT.equals(event.eventMsg)) {
-            LeoLog.e("testEventMain", "接受到消息啦！！idName is : " + event.info.iDentiName + " ; position is : " + event.info.position);
             mContainer.checkStatus(event.info);
-        } 
     }
     
     @Override

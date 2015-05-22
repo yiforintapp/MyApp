@@ -226,9 +226,11 @@ public class FloatWindowHelper {
                             if (((moveX > mLeftBottomParams.width / 7 || moveY > mLeftBottomParams.height / 5)
                             && !isMoveIng)) {
                                 isMoveIng = true;
-                                removeAllFloatWindow(mContext);
-                                mGestureShowing = true;
-                                onTouchAreaShowQuick(-1);
+                                if (!mEditQuickAreaFlag) {
+                                    removeAllFloatWindow(mContext);
+                                    mGestureShowing = true;
+                                    onTouchAreaShowQuick(-1);
+                                }
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -303,9 +305,11 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftCenterParams.width / 5 || moveY > mLeftCenterParams.width / 5)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeAllFloatWindow(mContext);
-                                mGestureShowing = true;
-                                onTouchAreaShowQuick(-1);
+                                if (!mEditQuickAreaFlag) {
+                                    removeAllFloatWindow(mContext);
+                                    mGestureShowing = true;
+                                    onTouchAreaShowQuick(-1);
+                                }
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -376,10 +380,11 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftCenterCenterParams.width / 5 || moveY > mLeftCenterCenterParams.width / 5)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeAllFloatWindow(mContext);
-                                mGestureShowing = true;
-                                onTouchAreaShowQuick(-1);
-
+                                if (!mEditQuickAreaFlag) {
+                                    removeAllFloatWindow(mContext);
+                                    mGestureShowing = true;
+                                    onTouchAreaShowQuick(-1);
+                                }
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -460,9 +465,11 @@ public class FloatWindowHelper {
                             if ((moveX > mLeftTopParams.width / 5 || moveY > mLeftTopParams.width / 5)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeAllFloatWindow(mContext);
-                                mGestureShowing = true;
-                                onTouchAreaShowQuick(-1);
+                                if (!mEditQuickAreaFlag) {
+                                    removeAllFloatWindow(mContext);
+                                    mGestureShowing = true;
+                                    onTouchAreaShowQuick(-1);
+                                }
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -534,9 +541,11 @@ public class FloatWindowHelper {
                             if ((moveX > mRightBottomParams.width / 7 || moveY > mRightBottomParams.height / 5)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeAllFloatWindow(mContext);
-                                mGestureShowing = true;
-                                onTouchAreaShowQuick(1);
+                                if (!mEditQuickAreaFlag) {
+                                    removeAllFloatWindow(mContext);
+                                    mGestureShowing = true;
+                                    onTouchAreaShowQuick(1);
+                                }
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -606,9 +615,11 @@ public class FloatWindowHelper {
                             if ((moveX > mRightCenterParams.width / 5 || moveY > mRightCenterParams.width / 5)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeAllFloatWindow(mContext);
-                                mGestureShowing = true;
-                                onTouchAreaShowQuick(1);
+                                if (!mEditQuickAreaFlag) {
+                                    removeAllFloatWindow(mContext);
+                                    mGestureShowing = true;
+                                    onTouchAreaShowQuick(1);
+                                }
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -679,9 +690,11 @@ public class FloatWindowHelper {
                             if ((moveX > mRightCenterCenterParams.width / 5 || moveY > mRightCenterCenterParams.width / 5)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeAllFloatWindow(mContext);
-                                mGestureShowing = true;
-                                onTouchAreaShowQuick(1);
+                                if (!mEditQuickAreaFlag) {
+                                    removeAllFloatWindow(mContext);
+                                    mGestureShowing = true;
+                                    onTouchAreaShowQuick(1);
+                                }
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -764,9 +777,11 @@ public class FloatWindowHelper {
                             if ((moveX > mRightTopParams.width / 5 || moveY > mRightTopParams.width / 5)
                                     && !isMoveIng) {
                                 isMoveIng = true;
-                                removeAllFloatWindow(mContext);
-                                mGestureShowing = true;
-                                onTouchAreaShowQuick(1);
+                                if (!mEditQuickAreaFlag) {
+                                    removeAllFloatWindow(mContext);
+                                    mGestureShowing = true;
+                                    onTouchAreaShowQuick(1);
+                                }
                             }
                             break;
                         case MotionEvent.ACTION_UP:
@@ -1094,9 +1109,7 @@ public class FloatWindowHelper {
     }
 
     /**
-     * updateFloatWindowBackgroudColor
-     * 
-     * must call in UI thread
+     * updateFloatWindowBackgroudColor must call in UI thread
      * 
      * @param flag
      */
@@ -1179,6 +1192,7 @@ public class FloatWindowHelper {
 
     /**
      * Common App Dialog
+     * 
      * @param context
      */
     public static void showCommontAppDialog(final Context context) {
@@ -1234,6 +1248,7 @@ public class FloatWindowHelper {
 
     /**
      * Quick Switch Dialog
+     * 
      * @param context
      */
     public static void showQuickSwitchDialog(final Context context) {
