@@ -31,7 +31,7 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class PretendAppUnknowCallFragment5 extends PretendFragment implements OnTouchListener {
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
-            iv_duanxin_big, iv_jieting_big, finish_lock,iv_test_icon;
+            iv_duanxin_big, iv_jieting_big, finish_lock, iv_test_icon;
     private RelativeLayout activity_weizhuang_firstin;
     private View text_content;
     private float mYuanX, mYuanY, mZhiJing, mBanJing;
@@ -45,9 +45,9 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     private int finish_left, finish_top, finish_right, finish_bottom;
     private int startX, startY;
     private float lc_left, lc_top, lc_right, lc_bottom;
-    private boolean isControlGua = false;
-    private boolean isControlDuan = false;
-    private boolean isControlJie = false;
+    private boolean isControlGua = true;
+    private boolean isControlDuan = true;
+    private boolean isControlJie = true;
     private boolean isStartDong = false;
     private boolean isStop = false;
     private boolean isScreenOff = false;
@@ -85,9 +85,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
 
-                    
                     mViewContent.mFilterLayout = true;
-                    
+
                     finish_lock.layout(finish_left, finish_top, finish_right, finish_bottom);
 
                     if (!isStop) {
@@ -212,11 +211,12 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         iv_duanxin_big = (ImageView) findViewById(R.id.iv_duanxin_big);
         iv_jieting_big = (ImageView) findViewById(R.id.iv_jieting_big);
 
-//        iv_test_icon = new ImageView(mActivity);
-//        iv_test_icon.setBackground(mActivity.getResources().getDrawable(R.drawable.app_seekbar_btn));
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(25, 25);  
-//        iv_test_icon.setLayoutParams(params);
-        
+        // iv_test_icon = new ImageView(mActivity);
+        // iv_test_icon.setBackground(mActivity.getResources().getDrawable(R.drawable.app_seekbar_btn));
+        // RelativeLayout.LayoutParams params = new
+        // RelativeLayout.LayoutParams(25, 25);
+        // iv_test_icon.setLayoutParams(params);
+
         myself_circle = (CirCleDongHua) findViewById(R.id.myself_circle);
         finish_lock = (ImageView) findViewById(R.id.finish_lock);
     }
@@ -225,8 +225,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         new Thread() {
             public void run() {
                 try {
-//                    mHandler.sendEmptyMessage(2);
-//                    sleep(50);
+                    // mHandler.sendEmptyMessage(2);
+                    // sleep(50);
                     mHandler.sendEmptyMessage(1);
                     // LeoLog.d("testFragment", "setPlace ! ");
                 } catch (Exception e) {
@@ -260,14 +260,15 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     int right = (int) (lc_right + newX);
 
                     if (left < gua_right + 10 && top > gua_top - gua_top / 2
-                            && bottom < gua_bottom + gua_bottom / 2 && right > gua_left - 10) {
-                        iv_guaduan_big.setVisibility(View.VISIBLE);
-                        iv_guaduan.setVisibility(View.INVISIBLE);
+                            && bottom < gua_bottom + gua_bottom / 2 && right >
+                            gua_left - 10) {
+                        // iv_guaduan_big.setVisibility(View.VISIBLE);
+                        // iv_guaduan.setVisibility(View.INVISIBLE);
                         isControlGua = false;
                     } else {
                         if (!isControlGua) {
-                            iv_guaduan_big.setVisibility(View.INVISIBLE);
-                            iv_guaduan.setVisibility(View.VISIBLE);
+                            // iv_guaduan_big.setVisibility(View.INVISIBLE);
+                            // iv_guaduan.setVisibility(View.VISIBLE);
                         }
                         isControlGua = true;
                     }
@@ -275,26 +276,27 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     if (top < duan_bottom + 10 && bottom > duan_top - 10
                             && left > duan_left - duan_left / 2
                             && right < duan_right + duan_right / 2) {
-                        iv_duanxin.setVisibility(View.INVISIBLE);
-                        iv_duanxin_big.setVisibility(View.VISIBLE);
+                        // iv_duanxin.setVisibility(View.INVISIBLE);
+                        // iv_duanxin_big.setVisibility(View.VISIBLE);
                         isControlDuan = false;
                     } else {
                         if (!isControlDuan) {
-                            iv_duanxin.setVisibility(View.VISIBLE);
-                            iv_duanxin_big.setVisibility(View.INVISIBLE);
+                            // iv_duanxin.setVisibility(View.VISIBLE);
+                            // iv_duanxin_big.setVisibility(View.INVISIBLE);
                         }
                         isControlDuan = true;
                     }
 
                     if (right > jie_left - 10 && top > jie_top - jie_top / 2
-                            && bottom < jie_bottom + jie_bottom / 2 && left < jie_right + 10) {
-                        iv_jieting_big.setVisibility(View.VISIBLE);
-                        iv_jieting.setVisibility(View.INVISIBLE);
+                            && bottom < jie_bottom + jie_bottom / 2 && left <
+                            jie_right + 10) {
+                        // iv_jieting_big.setVisibility(View.VISIBLE);
+                        // iv_jieting.setVisibility(View.INVISIBLE);
                         isControlJie = false;
                     } else {
                         if (!isControlJie) {
-                            iv_jieting_big.setVisibility(View.INVISIBLE);
-                            iv_jieting.setVisibility(View.VISIBLE);
+                            // iv_jieting_big.setVisibility(View.INVISIBLE);
+                            // iv_jieting.setVisibility(View.VISIBLE);
                         }
                         isControlJie = true;
                     }
@@ -324,9 +326,12 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     startY = (int) event.getRawY();
                     break;
                 case MotionEvent.ACTION_UP:
-                    if (iv_guaduan_big.getVisibility() == View.VISIBLE
-                            || iv_duanxin_big.getVisibility() == View.VISIBLE
-                            || iv_jieting_big.getVisibility() == View.VISIBLE) {
+                    // if (iv_guaduan_big.getVisibility() == View.VISIBLE
+                    // || iv_duanxin_big.getVisibility() == View.VISIBLE
+                    // || iv_jieting_big.getVisibility() == View.VISIBLE) {
+                    // onUnlockPretendFailed();
+                    // vib.cancel();
+                    if (!isControlDuan || !isControlGua || !isControlJie) {
                         onUnlockPretendFailed();
                         vib.cancel();
                     } else {
@@ -334,8 +339,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                         myself_circle.setVisibility(View.VISIBLE);
                     }
 
-                    break;
-                default:
+                    
+                    
                     break;
             }
         }
@@ -487,4 +492,42 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         }.start();
     }
 
+    public void guaTurnBig() {
+        iv_guaduan_big.setVisibility(View.VISIBLE);
+        iv_guaduan.setVisibility(View.INVISIBLE);
+    }
+
+    public void guaTurnSmall() {
+        iv_guaduan_big.setVisibility(View.INVISIBLE);
+        iv_guaduan.setVisibility(View.VISIBLE);
+    }
+
+    public void duanTurnBig() {
+        iv_duanxin.setVisibility(View.INVISIBLE);
+        iv_duanxin_big.setVisibility(View.VISIBLE);
+    }
+
+    public void duanTurnSmall() {
+        iv_duanxin_big.setVisibility(View.INVISIBLE);
+        iv_duanxin.setVisibility(View.VISIBLE);
+    }
+
+    public void jieTurnBig() {
+        iv_jieting_big.setVisibility(View.VISIBLE);
+        iv_jieting.setVisibility(View.INVISIBLE);
+    }
+
+    public void jieTurnSmall() {
+        iv_jieting_big.setVisibility(View.INVISIBLE);
+        iv_jieting.setVisibility(View.VISIBLE);
+    }
+
+    public void allTurnSmall() {
+        iv_guaduan_big.setVisibility(View.INVISIBLE);
+        iv_guaduan.setVisibility(View.VISIBLE);
+        iv_duanxin_big.setVisibility(View.INVISIBLE);
+        iv_duanxin.setVisibility(View.VISIBLE);
+        iv_jieting_big.setVisibility(View.INVISIBLE);
+        iv_jieting.setVisibility(View.VISIBLE);
+    }
 }
