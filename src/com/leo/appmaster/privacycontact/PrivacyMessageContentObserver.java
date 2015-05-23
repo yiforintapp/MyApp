@@ -15,7 +15,6 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -45,8 +44,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     @Override
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
-        int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivateContacts()
-                .size();
+        int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivacyContactsCount();
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         boolean isOpenNoReadMessageTip = pref.getSwitchOpenNoReadMessageTip();
         boolean isOpenNoReadCallLogTip = pref.getSwitchOpenRecentlyContact();
@@ -259,6 +257,5 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 cursor.close();
             }
         }
-
     }
 }

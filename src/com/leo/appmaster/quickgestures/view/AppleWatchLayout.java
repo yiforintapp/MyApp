@@ -453,23 +453,18 @@ public class AppleWatchLayout extends ViewGroup {
             // 蓝牙
             if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
                 QuickSwitchManager.getInstance(getContext())
-                        .toggleBluetooth(mContainer, mContainer.getSwitchList(),
-                                AppleWatchLayout.this, sInfo);
+                        .toggleBluetooth(sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
                 QuickSwitchManager.getInstance(getContext())
-                        .toggleFlashLight(mContainer, mContainer.getSwitchList(),
-                                AppleWatchLayout.this);
+                        .toggleFlashLight(sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
-                QuickSwitchManager.getInstance(getContext()).toggleWlan(mContainer,
-                        mContainer.getSwitchList(), AppleWatchLayout.this);
+                QuickSwitchManager.getInstance(getContext()).toggleWlan(sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
                 QuickSwitchManager.getInstance(getContext()).openCrame();
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
-                QuickSwitchManager.getInstance(getContext()).toggleSound(mContainer,
-                        mContainer.getSwitchList(), AppleWatchLayout.this);
+                QuickSwitchManager.getInstance(getContext()).toggleSound(sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
-                QuickSwitchManager.getInstance(getContext()).toggleLight(mContainer,
-                        mContainer.getSwitchList(), AppleWatchLayout.this);
+                QuickSwitchManager.getInstance(getContext()).toggleLight(sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
                 QuickSwitchManager.getInstance(getContext()).speedUp();
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
@@ -483,12 +478,9 @@ public class AppleWatchLayout extends ViewGroup {
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
                 QuickSwitchManager.getInstance(getContext()).toggleFlyMode();
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
-                QuickSwitchManager.getInstance(getContext()).toggleRotation(mContainer,
-                        mContainer.getSwitchList(), AppleWatchLayout.this);
+                QuickSwitchManager.getInstance(getContext()).toggleRotation(sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
-                QuickSwitchManager.getInstance(getContext())
-                        .toggleMobileData(mContainer, mContainer.getSwitchList(),
-                                AppleWatchLayout.this);
+                QuickSwitchManager.getInstance(getContext()).toggleMobileData(sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
                 QuickSwitchManager.getInstance(getContext()).goHome();
             }
@@ -1139,10 +1131,8 @@ public class AppleWatchLayout extends ViewGroup {
     private float computeTranslateY(GestureItemView from, GestureItemView to, float tranX) {
         float dx = to.getLeft() - from.getLeft();
         float dy = to.getTop() - from.getTop();
-
         float resault;
         resault = dy / dx * tranX;
-
         return resault;
     }
 }

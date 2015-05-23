@@ -20,7 +20,9 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.TrafficsInfo;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.ManagerFlowUtils;
+import com.leo.appmaster.utils.Utilities;
 
 public class TrafficInfoPackage {
 
@@ -81,18 +83,16 @@ public class TrafficInfoPackage {
             // 获取应用的应用名、图标等信息
             if(loadIcon) {
                 String mPackageName = packInfo.packageName;
-                Drawable mIconDrawable = packInfo.applicationInfo
-                        .loadIcon(mPm);
+                Drawable mIconDrawable = AppUtil.getDrawable(mPm, mPackageName);
                 String mLabelName = packInfo.applicationInfo
                         .loadLabel(mPm).toString();
                 
-                trafficInfo.setPackName(mPackageName.isEmpty()?"":mLabelName);
-                try {
-                    trafficInfo.setIcon(mIconDrawable);
-                } catch (Exception e) {
-                    trafficInfo.setIcon(mContext.getResources().getDrawable(R.drawable.ic_launcher));
+                trafficInfo.setPackName(Utilities.isEmpty(mPackageName) ? "" : mLabelName);
+                if(mIconDrawable == null) {
+                    mIconDrawable = mContext.getResources().getDrawable(R.drawable.ic_launcher);
                 }
-                trafficInfo.setAppName(mLabelName.isEmpty()?"":mLabelName);
+                trafficInfo.setIcon(mIconDrawable);
+                trafficInfo.setAppName(Utilities.isEmpty(mLabelName) ? "" : mLabelName);
             }
 
             long mAppBaseSend = sp_app_flow.getAppBaseSend(uid);

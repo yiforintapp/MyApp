@@ -59,6 +59,7 @@ import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
+import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
@@ -104,7 +105,10 @@ public class AppMasterApplication extends Application {
     public static String densityString;
     public static int MAX_OUTER_BLUR_RADIUS;
     static {
-        System.loadLibrary("leo_service");
+        // For android L and above, daemon service is not work, so disable it
+        if (PhoneInfo.getAndroidVersion() < 20) {
+            System.loadLibrary("leo_service");
+        }
     }
 
     private native void restartApplocker(int sdk, String userSerial);
@@ -144,7 +148,10 @@ public class AppMasterApplication extends Application {
             SplashActivity.deleteImage();
             AppMasterPreference.getInstance(getApplicationContext()).setIsFirstInstallApp(false);
         }
-        restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
+        // For android L and above, daemon service is not work, so disable it
+        if (PhoneInfo.getAndroidVersion() < 20) {
+            restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
+        }     
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
     }
@@ -248,6 +255,7 @@ public class AppMasterApplication extends Application {
                 mAppsEngine.preloadAllBaseInfo();
                 // AppBusinessManager.getInstance(mInstance).init();
                 mBackupManager.getBackupList();
+                PrivacyContactManager.getInstance(ctx).getPrivateContacts();
                 // GP check
                 if (!AppUtil.appInstalled(AppMasterApplication.this, Constants.GP_PACKAGE)) {
                     SDKWrapper.addEvent(AppMasterApplication.this, SDKWrapper.P1, "gp_check",
