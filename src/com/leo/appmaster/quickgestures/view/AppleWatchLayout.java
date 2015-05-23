@@ -287,17 +287,14 @@ public class AppleWatchLayout extends ViewGroup {
                 temp = (GestureItemView) getChildAt(i);
                 lp = (LayoutParams) temp.getLayoutParams();
                 if (lp.position == 7) {
-                    mExtraItemBottom.layout(0, temp.getTop(), mItemSize, temp.getBottom());
-                    mExtraItemBottom.setPivotX(0);
-                    mExtraItemBottom.setPivotY(mExtraItemBottom.getMeasuredHeight() / 2);
+                    mExtraItemBottom.layout(-mItemSize / 2, temp.getTop(), mItemSize / 2,
+                            temp.getBottom());
                 } else if (lp.position == 8) {
-                    mExtraItemMid.layout(0, temp.getTop(), mItemSize, temp.getBottom());
-                    mExtraItemMid.setPivotX(0);
-                    mExtraItemMid.setPivotY(mExtraItemMid.getMeasuredHeight() / 2);
+                    mExtraItemMid.layout(-mItemSize / 2, temp.getTop(), mItemSize / 2,
+                            temp.getBottom());
                 } else if (lp.position == 9) {
-                    mExtraItemTop.layout(0, temp.getTop(), mItemSize, temp.getBottom());
-                    mExtraItemTop.setPivotX(0);
-                    mExtraItemTop.setPivotY(mExtraItemTop.getMeasuredHeight() / 2);
+                    mExtraItemTop.layout(-mItemSize / 2, temp.getTop(), mItemSize / 2,
+                            temp.getBottom());
                 } else if (lp.position == 10) {
                     inflateItem(mExtraItemTop, (BaseInfo) temp.getTag());
                 } else if (lp.position == 11) {
@@ -318,20 +315,17 @@ public class AppleWatchLayout extends ViewGroup {
                 } else if (lp.position == 9) {
                     inflateItem(mExtraItemTop, (BaseInfo) temp.getTag());
                 } else if (lp.position == 10) {
-                    mExtraItemTop.layout(mTotalWidth - mItemSize, temp.getTop(), mTotalWidth,
+                    mExtraItemTop.layout(mTotalWidth - mItemSize / 2, temp.getTop(), mTotalWidth
+                            + mItemSize / 2,
                             temp.getBottom());
-                    mExtraItemTop.setPivotX(mExtraItemTop.getMeasuredWidth());
-                    mExtraItemTop.setPivotY(mExtraItemTop.getMeasuredHeight() / 2);
                 } else if (lp.position == 11) {
-                    mExtraItemMid.layout(mTotalWidth - mItemSize, temp.getTop(), mTotalWidth,
+                    mExtraItemMid.layout(mTotalWidth - mItemSize / 2, temp.getTop(), mTotalWidth
+                            + mItemSize / 2,
                             temp.getBottom());
-                    mExtraItemMid.setPivotX(mExtraItemMid.getMeasuredWidth());
-                    mExtraItemMid.setPivotY(mExtraItemMid.getMeasuredHeight() / 2);
                 } else if (lp.position == 12) {
-                    mExtraItemBottom.layout(mTotalWidth - mItemSize, temp.getTop(), mTotalWidth,
+                    mExtraItemBottom.layout(mTotalWidth - mItemSize / 2, temp.getTop(), mTotalWidth
+                            + mItemSize / 2,
                             temp.getBottom());
-                    mExtraItemBottom.setPivotX(mExtraItemBottom.getMeasuredWidth());
-                    mExtraItemBottom.setPivotY(mExtraItemBottom.getMeasuredHeight() / 2);
                     break;
                 }
             }
@@ -988,141 +982,224 @@ public class AppleWatchLayout extends ViewGroup {
         }
     }
 
+    private float getOffset(GestureItemView from, GestureItemView to, Direction direction) {
+        float offset = 0.0f;
+        if (direction == Direction.Left) {
+            if (from != null && to != null) {
+                offset = to.getLeft() - from.getLeft();
+            } else if (from != null) {
+                offset = mTotalWidth - from.getLeft() - from.getMeasuredWidth() / 2;
+            } else if (to != null) {
+                offset = to.getRight() - to.getMeasuredWidth() / 2;
+            }
+        } else if (direction == Direction.Right) {
+            if (from != null && to != null) {
+                offset = to.getLeft() - from.getLeft();
+            } else if (from != null) {
+                offset = from.getMeasuredWidth() / 2 - from.getRight();
+            } else if (to != null) {
+                offset = mTotalWidth - to.getLeft() - to.getMeasuredWidth() / 2;
+            }
+        }
+
+        return offset;
+    }
+
+    /**
+     * @param direction is new show location, not be scolle direction
+     * @param moveX
+     */
     private void computeTranslateScale(Direction direction, float moveX) {
         int i;
+        float minuOffset, adjustMoveX;
         float offset, moveY;
         float rawScale1, rawScale2, targetScale;
         if (direction == Direction.Left) {
+            minuOffset = mTotalWidth - mHoriChildren[1][5].getLeft()
+                    - mHoriChildren[1][5].getMeasuredWidth() / 2;
             for (i = 0; i < mHoriChildren[0].length; i++) {
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i].getLayoutParams()).scale;
                 if (i == mHoriChildren[0].length - 1) {
-                    offset = mTotalWidth - mHoriChildren[0][i].getRight();
-                    targetScale = rawScale1 - moveX / offset * rawScale1;
+                    offset = getOffset(mHoriChildren[0][i], null, Direction.Left);
+                    adjustMoveX = offset / minuOffset * moveX;
+                    targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
                     rawScale2 = ((LayoutParams) mHoriChildren[0][i + 1].getLayoutParams()).scale;
-                    offset = mHoriChildren[0][i + 1].getLeft() - mHoriChildren[0][i].getLeft();
-                    targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
-                    moveY = computeTranslateY(mHoriChildren[0][i], mHoriChildren[0][i + 1], moveX);
+                    if (i == 0) {
+                        offset = getOffset(mHoriChildren[0][i], mHoriChildren[0][i + 1],
+                                Direction.Left);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                        moveY = 0f;
+                    } else {
+                        offset = getOffset(mHoriChildren[0][i], mHoriChildren[0][i + 1],
+                                Direction.Left);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                        moveY = computeTranslateY(mHoriChildren[0][i], mHoriChildren[0][i + 1],
+                                adjustMoveX);
+                    }
                 }
                 mHoriChildren[0][i].setScaleX(targetScale);
                 mHoriChildren[0][i].setScaleY(targetScale);
-                mHoriChildren[0][i].setTranslationX(moveX);
+                mHoriChildren[0][i].setTranslationX(adjustMoveX);
                 mHoriChildren[0][i].setTranslationY(moveY);
             }
             for (i = 0; i < mHoriChildren[1].length; i++) {
                 rawScale1 = ((LayoutParams) mHoriChildren[1][i].getLayoutParams()).scale;
                 if (i == mHoriChildren[1].length - 1) {
-                    offset = mTotalWidth
-                            - (mHoriChildren[1][i].getLeft() + mHoriChildren[1][i].getWidth() / 2
-                                    * (1 + rawScale1));
-                    targetScale = rawScale1 - moveX / offset * rawScale1;
+                    offset = getOffset(mHoriChildren[1][i], null, Direction.Left);
+                    adjustMoveX = offset / minuOffset * moveX;
+                    targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
                     rawScale2 = ((LayoutParams) mHoriChildren[1][i + 1].getLayoutParams()).scale;
                     if (i == 0) {
-                        offset = mHoriChildren[1][i + 1].getMeasuredWidth() / 2;
-                        targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
+                        offset = getOffset(mHoriChildren[1][i], mHoriChildren[1][i + 1],
+                                Direction.Left);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                         moveY = 0f;
                         LeoLog.e("====", "rawScale1 = " + rawScale1 + "      rawScale2 = "
                                 + rawScale2
                                 + "       targetScale = " + targetScale);
                     } else {
-                        offset = mHoriChildren[1][i + 1].getLeft() - mHoriChildren[1][i].getLeft();
-                        targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
+                        offset = getOffset(mHoriChildren[1][i], mHoriChildren[1][i + 1],
+                                Direction.Left);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                         moveY = computeTranslateY(mHoriChildren[1][i], mHoriChildren[1][i + 1],
-                                moveX);
+                                adjustMoveX);
                     }
                 }
 
                 mHoriChildren[1][i].setScaleX(targetScale);
                 mHoriChildren[1][i].setScaleY(targetScale);
-                mHoriChildren[1][i].setTranslationX(moveX);
+                mHoriChildren[1][i].setTranslationX(adjustMoveX);
                 mHoriChildren[1][i].setTranslationY(moveY);
             }
             for (i = 0; i < mHoriChildren[2].length; i++) {
                 rawScale1 = ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).scale;
                 if (i == mHoriChildren[2].length - 1) {
-                    offset = mTotalWidth - mHoriChildren[2][i].getRight();
-                    targetScale = rawScale1 - moveX / offset * rawScale1;
+                    offset = getOffset(mHoriChildren[2][i], null, Direction.Left);
+                    adjustMoveX = offset / minuOffset * moveX;
+                    targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
-                    rawScale2 = ((LayoutParams) mHoriChildren[1][i + 1].getLayoutParams()).scale;
-                    offset = mHoriChildren[2][i + 1].getLeft() - mHoriChildren[2][i].getLeft();
-                    targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
-                    moveY = computeTranslateY(mHoriChildren[2][i], mHoriChildren[2][i + 1], moveX);
+                    rawScale2 = ((LayoutParams) mHoriChildren[2][i + 1].getLayoutParams()).scale;
+                    if (i == 0) {
+                        offset = getOffset(mHoriChildren[2][i], mHoriChildren[2][i + 1],
+                                Direction.Left);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                        moveY = 0f;
+                    } else {
+                        offset = getOffset(mHoriChildren[2][i], mHoriChildren[2][i + 1],
+                                Direction.Left);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                        moveY = computeTranslateY(mHoriChildren[2][i], mHoriChildren[2][i + 1],
+                                adjustMoveX);
+                    }
                 }
                 mHoriChildren[2][i].setScaleX(targetScale);
                 mHoriChildren[2][i].setScaleY(targetScale);
-                mHoriChildren[2][i].setTranslationX(moveX);
+                mHoriChildren[2][i].setTranslationX(adjustMoveX);
                 mHoriChildren[2][i].setTranslationY(moveY);
             }
         } else if (direction == Direction.Right) {
+            minuOffset = mHoriChildren[1][0].getMeasuredWidth() / 2
+                    - mHoriChildren[1][0].getRight();
             for (i = mHoriChildren[0].length - 1; i >= 0; i--) {
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i].getLayoutParams()).scale;
                 if (i == 0) {
-                    offset = 0 - mHoriChildren[0][i].getLeft();
-                    targetScale = rawScale1 - moveX / offset * rawScale1;
+                    offset = getOffset(mHoriChildren[0][i], null, Direction.Right);
+                    adjustMoveX = offset / minuOffset * moveX;
+                    targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
                     rawScale2 = ((LayoutParams) mHoriChildren[0][i - 1].getLayoutParams()).scale;
-                    offset = mHoriChildren[0][i - 1].getLeft() - mHoriChildren[0][i].getLeft();
-                    targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
-                    moveY = computeTranslateY(mHoriChildren[0][i], mHoriChildren[0][i - 1], moveX);
+                    if (i == mHoriChildren[0].length - 1) {
+                        offset = getOffset(mHoriChildren[0][i], mHoriChildren[0][i - 1],
+                                Direction.Right);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                        moveY = 0f;
+                    } else {
+                        offset = getOffset(mHoriChildren[0][i], mHoriChildren[0][i - 1],
+                                Direction.Right);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                        moveY = computeTranslateY(mHoriChildren[0][i], mHoriChildren[0][i - 1],
+                                adjustMoveX);
+                    }
                 }
                 mHoriChildren[0][i].setScaleX(targetScale);
                 mHoriChildren[0][i].setScaleY(targetScale);
-                mHoriChildren[0][i].setTranslationX(moveX);
+                mHoriChildren[0][i].setTranslationX(adjustMoveX);
                 mHoriChildren[0][i].setTranslationY(moveY);
             }
             for (i = mHoriChildren[1].length - 1; i >= 0; i--) {
                 rawScale1 = ((LayoutParams) mHoriChildren[1][i].getLayoutParams()).scale;
                 if (i == 0) {
-                    offset = mHoriChildren[1][i].getRight() - mHoriChildren[1][i].getWidth() / 2
-                            * (1 + rawScale1);
-                    targetScale = rawScale1 + moveX / offset * rawScale1;
+                    offset = getOffset(mHoriChildren[1][i], null, Direction.Right);
+                    adjustMoveX = offset / minuOffset * moveX;
+                    targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
                     rawScale2 = ((LayoutParams) mHoriChildren[1][i - 1].getLayoutParams()).scale;
-                    offset = mHoriChildren[1][i - 1].getLeft() - mHoriChildren[1][i].getLeft();
-                    targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
-                    if (i == 5) {
-                        offset = mHoriChildren[1][i - 1].getLeft()
-                                + mHoriChildren[1][i - 1].getMeasuredWidth() / 2 - mTotalWidth;
-                        targetScale = rawScale1 + moveX / offset * (rawScale2 - rawScale1);
+                    if (i == mHoriChildren[1].length - 1) {
+                        offset = getOffset(mHoriChildren[1][i], mHoriChildren[1][i - 1],
+                                Direction.Right);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                         moveY = 0f;
                         LeoLog.e("====", "rawScale1 = " + rawScale1 + "      rawScale2 = "
                                 + rawScale2
                                 + "       targetScale = " + targetScale);
                     } else {
-                        offset = mHoriChildren[1][i - 1].getLeft() - mHoriChildren[1][i].getLeft();
-                        targetScale = rawScale1 + moveX
-                                / offset * (rawScale2 - rawScale1);
+                        offset = getOffset(mHoriChildren[1][i], mHoriChildren[1][i - 1],
+                                Direction.Right);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                         moveY = computeTranslateY(mHoriChildren[1][i], mHoriChildren[1][i - 1],
                                 moveX);
                     }
                 }
                 mHoriChildren[1][i].setScaleX(targetScale);
                 mHoriChildren[1][i].setScaleY(targetScale);
-                mHoriChildren[1][i].setTranslationX(moveX);
+                mHoriChildren[1][i].setTranslationX(adjustMoveX);
                 mHoriChildren[1][i].setTranslationY(moveY);
             }
             for (i = mHoriChildren[2].length - 1; i >= 0; i--) {
                 rawScale1 = ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).scale;
                 if (i == 0) {
-                    offset = 0 - mHoriChildren[2][i].getLeft();
-                    targetScale = rawScale1 - moveX / offset * rawScale1;
+                    offset = getOffset(mHoriChildren[2][i], null, Direction.Right);
+                    adjustMoveX = offset / minuOffset * moveX;
+                    targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
                     rawScale2 = ((LayoutParams) mHoriChildren[2][i - 1].getLayoutParams()).scale;
-                    offset = mHoriChildren[2][i - 1].getLeft() - mHoriChildren[2][i].getLeft();
-                    targetScale = rawScale1 + moveX
-                            / offset * (rawScale2 - rawScale1);
-                    moveY = computeTranslateY(mHoriChildren[2][i], mHoriChildren[2][i - 1], moveX);
+                    if (i == mHoriChildren[0].length - 1) {
+                        offset = getOffset(mHoriChildren[2][i], mHoriChildren[2][i - 1],
+                                Direction.Right);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                        moveY = 0f;
+                    } else {
+                        offset = getOffset(mHoriChildren[2][i], mHoriChildren[2][i - 1],
+                                Direction.Right);
+                        adjustMoveX = offset / minuOffset * moveX;
+                        targetScale = rawScale1 + adjustMoveX
+                                / offset * (rawScale2 - rawScale1);
+                        moveY = computeTranslateY(mHoriChildren[2][i], mHoriChildren[2][i - 1],
+                                moveX);
+                    }
                 }
                 mHoriChildren[2][i].setScaleX(targetScale);
                 mHoriChildren[2][i].setScaleY(targetScale);
-                mHoriChildren[2][i].setTranslationX(moveX);
+                mHoriChildren[2][i].setTranslationX(adjustMoveX);
                 mHoriChildren[2][i].setTranslationY(moveY);
             }
         }
