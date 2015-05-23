@@ -880,7 +880,7 @@ public class FloatWindowHelper {
         }
     }
 
-    // 删除底部所有悬浮窗
+    // 删除所有悬浮窗
     public static void removeAllFloatWindow(Context context) {
         removeSwipWindow(context, 1);
         removeSwipWindow(context, 2);
@@ -1109,7 +1109,9 @@ public class FloatWindowHelper {
     }
 
     /**
-     * updateFloatWindowBackgroudColor must call in UI thread
+     * updateFloatWindowBackgroudColor
+     * 
+     *  must call in UI thread
      * 
      * @param flag
      */
