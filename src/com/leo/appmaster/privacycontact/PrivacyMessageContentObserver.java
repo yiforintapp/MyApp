@@ -14,7 +14,6 @@ import android.database.Cursor;
 import android.os.Handler;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -221,7 +220,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
             // ------------------------------------------------------------------
         } else if (CONTACT_MODEL.equals(mFlag)) {
-            // PrivacyContactManager.getInstance(mContext).updateSysContact();
+          
         }
     }
 }
