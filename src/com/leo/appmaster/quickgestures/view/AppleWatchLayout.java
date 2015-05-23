@@ -460,7 +460,7 @@ public class AppleWatchLayout extends ViewGroup {
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
                 QuickSwitchManager.getInstance(getContext()).toggleLight(sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
-                QuickSwitchManager.getInstance(getContext()).speedUp();
+                QuickSwitchManager.getInstance(getContext()).speedUp(sInfo);
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
                 QuickSwitchManager.getInstance(getContext()).toggleMode();
             } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {

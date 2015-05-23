@@ -321,8 +321,10 @@ public class QuickSwitchManager {
             iCons[3] = mContext.getResources().getDrawable(
                     R.drawable.switch_brightness_max);
         } else if (IdentiName.equals(SPEEDUP)) {
-            iCons = new Drawable[1];
+            iCons = new Drawable[2];
             iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
+            iCons[1] = mContext.getResources().getDrawable(
+                    R.drawable.gesture_rocket_bg);
         } else if (IdentiName.equals(SWITCHSET)) {
             iCons = new Drawable[2];
             iCons[0] = mContext.getResources().getDrawable(
@@ -528,7 +530,7 @@ public class QuickSwitchManager {
             isWlantOpen = false;
         }
         LeoEventBus.getDefaultBus().post(
-                new ClickQuickItemEvent(WLAN,mInfo));
+                new ClickQuickItemEvent(WLAN, mInfo));
     }
 
     public void toggleBluetooth(QuickSwitcherInfo mInfo) {
@@ -543,9 +545,9 @@ public class QuickSwitchManager {
             mBluetoothAdapter.disable();
             isBlueToothOpen = false;
         }
-//        mContainer.fillSwitchItem(quickGestureLayout, list);
+        // mContainer.fillSwitchItem(quickGestureLayout, list);
         LeoEventBus.getDefaultBus().post(
-                new ClickQuickItemEvent(BLUETOOTH_EVENT,mInfo));
+                new ClickQuickItemEvent(BLUETOOTH_EVENT, mInfo));
     }
 
     public void toggleSound(QuickSwitcherInfo mInfo) {
@@ -567,7 +569,7 @@ public class QuickSwitchManager {
             mSoundStatus = mSound;
         }
         LeoEventBus.getDefaultBus().post(
-                new ClickQuickItemEvent(SOUND,mInfo));
+                new ClickQuickItemEvent(SOUND, mInfo));
     }
 
     public void toggleFlashLight(QuickSwitcherInfo mInfo) {
@@ -604,7 +606,7 @@ public class QuickSwitchManager {
             }
         }
         LeoEventBus.getDefaultBus().post(
-                new ClickQuickItemEvent(FLASHLIGHT,mInfo));
+                new ClickQuickItemEvent(FLASHLIGHT, mInfo));
     }
 
     public static boolean checkBlueTooth() {
@@ -688,7 +690,7 @@ public class QuickSwitchManager {
         setLight(light);
         setScreenLightValue(mContext.getContentResolver(), light);
         LeoEventBus.getDefaultBus().post(
-                new ClickQuickItemEvent(LIGHT,mInfo));
+                new ClickQuickItemEvent(LIGHT, mInfo));
     }
 
     /*
@@ -750,8 +752,10 @@ public class QuickSwitchManager {
                 value);
     }
 
-    public void speedUp() {
-        Toast.makeText(mContext, "加你的头～方案还没出！", 0).show();
+    public void speedUp(QuickSwitcherInfo mInfo) {
+//        Toast.makeText(mContext, "加你的头～方案还没出！", 0).show();
+        LeoEventBus.getDefaultBus().post(
+                new ClickQuickItemEvent(ROTATION, mInfo));
     }
 
     public void toggleMode() {
@@ -845,7 +849,7 @@ public class QuickSwitchManager {
             isRotationOpen = true;
         }
         LeoEventBus.getDefaultBus().post(
-                new ClickQuickItemEvent(ROTATION,mInfo));
+                new ClickQuickItemEvent(ROTATION, mInfo));
     }
 
     // 观察屏幕旋转设置变化
@@ -957,7 +961,7 @@ public class QuickSwitchManager {
                 isMobileDataOpen = true;
             }
             LeoEventBus.getDefaultBus().post(
-                    new ClickQuickItemEvent(MOBILEDATA,mInfo));
+                    new ClickQuickItemEvent(MOBILEDATA, mInfo));
         } catch (Exception e) {
             e.printStackTrace();
         }

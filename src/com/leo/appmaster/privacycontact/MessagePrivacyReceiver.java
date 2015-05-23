@@ -52,6 +52,9 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, final Intent intent) {
+        if(PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
+            return;
+        }
         String action = intent.getAction();
         mContext = context;
         if (mSimpleDateFormate == null) {
