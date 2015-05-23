@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -52,6 +53,7 @@ public class AppleWatchContainer extends FrameLayout {
     private AppleWatchLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
     private AppleWatchTabs mCornerTabs;
     private TextView mTvCurName;
+    private ImageView iv_rocket;
     private GType mCurrentGestureType = GType.DymicLayout;
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
@@ -1163,7 +1165,47 @@ public class AppleWatchContainer extends FrameLayout {
         tv.setCompoundDrawables(null, info.switchIcon[1], null,
                 null);
         // second - show roket int icon place
+        
+        // LeoLog.d("testsp",
+        // "Container_top : " + this.getTop() + " ; Container_left : " +
+        // this.getLeft()
+        // + " ; Container_right : " + this.getRight() +
+        // " ; Container_bottom : "
+        // + this.getBottom());
+        // LeoLog.d("testsp", "layout_top : " + mSwitcherLayout.getTop() +
+        // " ; layout_left : "
+        // + mSwitcherLayout.getLeft() + " ; layout_right : " +
+        // mSwitcherLayout.getRight()
+        // + " ; layout_bottom : " + mSwitcherLayout.getBottom());
+        // LeoLog.d("testsp", "tv_top : " + tv.getTop() + " ; tv_left : " +
+        // tv.getLeft()
+        // + " ; tv_right : " + tv.getRight() + " ; tv_bottom : " +
+        // tv.getBottom());
 
+        // int mContainerTop = getTop();
+        // int mContainerBottom = getBottom();
+        int mLayoutTop = mSwitcherLayout.getTop();
+        // int mLayoutBottom = mSwitcherLayout.getBottom();
+        // int mRocketLeft = tv.getLeft();
+        // int mRocketTop = tv.getTop();
+        // int mRocketRight = tv.getRight();
+        // int mRocketBottom = tv.getBottom();
+
+        int mRocketWidth = tv.getWidth();
+        int mRocketHeight = tv.getHeight();
+        int mRocketX = (int) tv.getX() + mRocketWidth / 2;
+        int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
+
+        iv_rocket.setVisibility(View.VISIBLE);
+        iv_rocket.setX(mRocketX - iv_rocket.getWidth() / 2);
+        iv_rocket.setY(mRocketY - iv_rocket.getHeight() / 2);
+        
+        
+        
+    }
+
+    public void setRocket(ImageView iv_roket) {
+        this.iv_rocket = iv_roket;
     }
 
 }
