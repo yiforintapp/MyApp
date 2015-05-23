@@ -28,6 +28,7 @@ import com.leo.appmaster.utils.LeoLog;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
+import android.widget.ImageView;
 
 public class QuickGesturePopupActivity extends Activity implements
         OnSystemUiVisibilityChangeListener {
@@ -38,6 +39,7 @@ public class QuickGesturePopupActivity extends Activity implements
     private List<QuickSwitcherInfo> mSwitchList;
     private AppMasterPreference mSpSwitch;
     private String mSwitchListFromSp;
+    private ImageView iv_roket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,8 @@ public class QuickGesturePopupActivity extends Activity implements
         // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         // window.setAttributes(params);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
-        // mContainer.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        iv_roket = (ImageView) findViewById(R.id.iv_rocket);
+        mContainer.setRocket(iv_roket);
 
         mSpSwitch = AppMasterPreference.getInstance(this);
         list = AppLoadEngine.getInstance(this).getAllPkgInfo();
