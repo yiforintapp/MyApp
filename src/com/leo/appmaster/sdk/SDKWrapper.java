@@ -88,7 +88,7 @@ public class SDKWrapper {
         // AM-727
 //        LeoLog.d(TAG, "addEvent: id=" + id + ";   desc=" + description);
         // leo
-        LeoAgent.addEvent(id, description);
+//        LeoAgent.addEvent(id, description);
         // baidu
         StatService.onEvent(ctx, id, description);
         // TalkingData
