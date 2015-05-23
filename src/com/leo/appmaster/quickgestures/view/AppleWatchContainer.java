@@ -796,6 +796,7 @@ public class AppleWatchContainer extends FrameLayout {
 
     private void checkXuKuang(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        sInfo.icon = sInfo.switchIcon[0];
         tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                 null);
     }
@@ -808,6 +809,7 @@ public class AppleWatchContainer extends FrameLayout {
 
     private void checkHome(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        sInfo.icon = sInfo.switchIcon[0];
         tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                 null);
     }
@@ -843,10 +845,12 @@ public class AppleWatchContainer extends FrameLayout {
     private void checkFlyMode(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkFlyMode()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            sInfo.icon = sInfo.switchIcon[0];
             tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                     null);
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            sInfo.icon = sInfo.switchIcon[1];
             tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
                     null);
         }
@@ -855,10 +859,12 @@ public class AppleWatchContainer extends FrameLayout {
     private void checkGPS(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkGps()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            sInfo.icon = sInfo.switchIcon[0];
             tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                     null);
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+            sInfo.icon = sInfo.switchIcon[1];
             tv.setCompoundDrawables(null, sInfo.switchIcon[1], null,
                     null);
         }
@@ -866,24 +872,28 @@ public class AppleWatchContainer extends FrameLayout {
 
     private void checkSetting(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        sInfo.icon = sInfo.switchIcon[0];
         tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                 null);
     }
 
     private void checkSwitchSet(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        sInfo.icon = sInfo.switchIcon[0];
         tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                 null);
     }
 
     private void checkChangeMode(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        sInfo.icon = sInfo.switchIcon[0];
         tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                 null);
     }
 
     private void checkSpeedUpStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        sInfo.icon = sInfo.switchIcon[0];
         tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                 null);
     }
@@ -939,6 +949,7 @@ public class AppleWatchContainer extends FrameLayout {
 
     private void checkCrameStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        sInfo.icon = sInfo.switchIcon[0];
         tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                 null);
     }
