@@ -20,7 +20,7 @@
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
-            android:layout_width="127dp"
+            android:layout_width="132dp"
             android:layout_height="165dp"
             android:clipChildren="false"
             android:overScrollMode="never" >
@@ -34,7 +34,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/multi_mode_add_margin_bottom"
-        android:src="@drawable/add_mode_selector" />
+        android:src="@drawable/add_mode_selector"
+        android:visibility="invisible"
+        />
 
     <TextView
         android:id="@+id/mode_name_tv"

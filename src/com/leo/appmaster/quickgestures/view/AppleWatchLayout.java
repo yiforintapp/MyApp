@@ -12,7 +12,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.animation.Animator;
@@ -32,6 +31,7 @@ import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
@@ -67,11 +67,7 @@ public class AppleWatchLayout extends ViewGroup {
         Right, Left, None;
     }
 
-    private Direction mLastTranslateDeirction = Direction.None;
-
     private boolean mNeedRelayoutExtraItem;
-
-    // private GestureItemView mExtraItemTop, mExtraItemMid, mExtraItemBottom;
 
     public AppleWatchLayout(Context context) {
         this(context, null);
@@ -84,7 +80,6 @@ public class AppleWatchLayout extends ViewGroup {
     public AppleWatchLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
-
     }
 
     public void fillItems(List<Object> infos) {
@@ -345,7 +340,6 @@ public class AppleWatchLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
         // Laying out the child views
         final int childCount = getChildCount();
         if (childCount == 0) {
@@ -359,7 +353,6 @@ public class AppleWatchLayout extends ViewGroup {
         int halfItemSize;
         double outerItemAngle = 30;
         int left = 0, top = 0;
-
         // layout all position >= 0
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
@@ -414,7 +407,6 @@ public class AppleWatchLayout extends ViewGroup {
                             * Math.sin(Math.toRadians(outerItemAngle)) - halfItemSize);
                 }
             }
-
             child.layout(left, top, left + child.getMeasuredWidth(),
                     top + child.getMeasuredHeight());
             params.scale = getItemScale(params.position);

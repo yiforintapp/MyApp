@@ -7,7 +7,9 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.utils.BuildProperties;
 
 /**
  * QuickGestureMiuiTip

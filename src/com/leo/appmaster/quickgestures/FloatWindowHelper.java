@@ -1109,9 +1109,7 @@ public class FloatWindowHelper {
     }
 
     /**
-     * updateFloatWindowBackgroudColor
-     * 
-     *  must call in UI thread
+     * updateFloatWindowBackgroudColor must call in UI thread
      * 
      * @param flag
      */

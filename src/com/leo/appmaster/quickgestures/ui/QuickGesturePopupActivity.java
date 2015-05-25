@@ -53,7 +53,7 @@ public class QuickGesturePopupActivity extends Activity implements
     private List<Object> mSwitchList;
     private AppMasterPreference mSpSwitch;
     private String mSwitchListFromSp;
-    private ImageView iv_roket, iv_pingtai;
+    private ImageView iv_roket, iv_pingtai, iv_yun;
     private WindowManager wm;
 
     @Override
@@ -64,10 +64,8 @@ public class QuickGesturePopupActivity extends Activity implements
 
         // 注册eventBus
         LeoEventBus.getDefaultBus().register(this);
-
         wm = (WindowManager) this
                 .getSystemService(Context.WINDOW_SERVICE);
-
         // Window window = getWindow();
         // WindowManager.LayoutParams params = window.getAttributes();
         // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
@@ -75,35 +73,33 @@ public class QuickGesturePopupActivity extends Activity implements
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
         iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
+        iv_yun = (ImageView) findViewById(R.id.iv_yun);
         mContainer.setRocket(this);
 
         mSpSwitch = AppMasterPreference.getInstance(this);
-//        list = AppLoadEngine.getInstance(this).getAllPkgInfo();
+        // list = AppLoadEngine.getInstance(this).getAllPkgInfo();
         list = new ArrayList<Object>();
         list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
-        fillQg1();
-        fillQg2();
-//        if (mSwitchList == null) {
-//            mSwitchListFromSp = mSpSwitch.getSwitchList();
-//            switchNum = mSpSwitch.getSwitchListSize();
-//            LeoLog.d("testFirstInGet", "mSwitchListFromSp : " + mSwitchListFromSp);
-//            if (mSwitchListFromSp.isEmpty()) {
-////                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
-//                mSwitchList = new ArrayList<Object>();
-//                mSwitchList.add(QuickSwitchManager.getInstance(this).getSwitchList(switchNum));
-//                String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
-//                        switchNum);
-//                mSpSwitch.setSwitchList(saveToSp);
-//                LeoLog.d("testFirstInGet", "saveToSp:" + saveToSp);
-//            } else {
-//                LeoLog.d("testFirstInGet", "get list from sp");
-////                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
-//                mSwitchList = new ArrayList<Object>();
-//                mSwitchList.add(QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp));
-//            }
-////            fillQg3();
-//        }
-        mContainer.showOpenAnimation();
+
+        if (mSwitchList == null) {
+            mSwitchListFromSp = mSpSwitch.getSwitchList();
+            switchNum = mSpSwitch.getSwitchListSize();
+            if (mSwitchListFromSp.isEmpty()) {
+                mSwitchList = new ArrayList<Object>();
+                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
+                String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
+                        switchNum);
+                mSpSwitch.setSwitchList(saveToSp);
+            } else {
+                mSwitchList = new ArrayList<Object>();
+                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
+            }
+
+            fillQg1();
+            fillQg2();
+            fillQg3();
+            mContainer.showOpenAnimation();
+        }
         overridePendingTransition(-1, -1);
         mContainer.setOnFocusChangeListener(new OnFocusChangeListener() {
 
@@ -170,16 +166,9 @@ public class QuickGesturePopupActivity extends Activity implements
     @Override
     public void onSystemUiVisibilityChange(int visibility) {
         LeoLog.e("xxxx", "visibility = " + visibility);
-
     }
 
-    public void RockeyAnimation(int mLayoutTop, int mRocketX, int mRocketY) {
-
-        // iv_roket.setX(mRocketX - iv_roket.getWidth() / 2);
-        // iv_roket.setY(mRocketY - iv_roket.getHeight() / 2);
-        // iv_roket.layout(mRocketX, mRocketY, mRocketX + iv_roket.getWidth() ,
-        // mRocketY + iv_roket.getHeight());
-
+    public void RockeyAnimation(final int mLayoutBottom, int mRocketX, int mRocketY) {
         int smallRockeyX = mRocketX - iv_roket.getWidth() / 2;
         int smallRockeyY = mRocketY - iv_roket.getHeight() / 2;
         MarginLayoutParams margin = new MarginLayoutParams(iv_roket.getLayoutParams());
@@ -193,75 +182,51 @@ public class QuickGesturePopupActivity extends Activity implements
         ObjectAnimator turnBig2 = ObjectAnimator.ofFloat(iv_roket, "scaleY", 1f, 1.5f);
         AnimatorSet animSet = new AnimatorSet();
         animSet.play(turnBig).with(turnBig2);
-        animSet.setDuration(1000);
+        animSet.setDuration(500);
         animSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 iv_pingtai.setVisibility(View.VISIBLE);
-                int mScreenHeight = wm.getDefaultDisplay().getHeight();
+                final int mScreenHeight = wm.getDefaultDisplay().getHeight();
                 int mScreenWidth = wm.getDefaultDisplay().getWidth();
                 int transY = (int) iv_pingtai.getTranslationY();
-
+                int mRockeyMoveX = mScreenWidth / 2
+                        - (iv_roket.getLeft() + iv_roket.getWidth() / 2);
+                int mRockeyMoveY = mLayoutBottom - iv_roket.getHeight() - iv_roket.getTop();
                 ObjectAnimator moveToX = ObjectAnimator.ofFloat(iv_roket, "translationX",
-                        iv_roket.getTranslationX(), 100f);
+                        iv_roket.getTranslationX(), mRockeyMoveX);
                 ObjectAnimator moveToY = ObjectAnimator.ofFloat(iv_roket, "translationY",
-                        iv_roket.getTranslationY(), 100f);
+                        iv_roket.getTranslationY(), mRockeyMoveY);
                 ObjectAnimator pingtaiMoveToY = ObjectAnimator
                         .ofFloat(iv_pingtai, "translationY", mScreenHeight, transY);
                 AnimatorSet animMoveSet = new AnimatorSet();
                 animMoveSet.play(moveToX).with(moveToY).with(pingtaiMoveToY);
-                animMoveSet.setDuration(1000);
+                animMoveSet.setDuration(800);
+                animMoveSet.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        iv_yun.setVisibility(View.VISIBLE);
+                        ObjectAnimator mRocketmoveToY = ObjectAnimator.ofFloat(iv_roket,
+                                "translationY",
+                                iv_roket.getTranslationY(), -mScreenHeight + iv_roket.getHeight()
+                                        * 2);
+                        ObjectAnimator pingtaiMoveDownToY = ObjectAnimator
+                                .ofFloat(iv_pingtai, "translationY", iv_pingtai.getTranslationY(),
+                                        mScreenHeight);
+                        ObjectAnimator yunComeOut = ObjectAnimator.ofFloat(iv_yun, "alpha", 0.0f,
+                                1f);
+                        ObjectAnimator yunLeave = ObjectAnimator.ofFloat(iv_yun, "alpha", 1.0f,
+                                0.0f);
+                        AnimatorSet animMoveGoSet = new AnimatorSet();
+                        animMoveGoSet.play(mRocketmoveToY).with(pingtaiMoveDownToY)
+                                .with(yunComeOut).before(yunLeave);
+                        animMoveGoSet.setDuration(800);
+                        animMoveGoSet.start();
+                    }
+                });
                 animMoveSet.start();
-
             }
         });
         animSet.start();
-
-        // ScaleAnimation showScale = new ScaleAnimation(1.0f, 1.5f, 1.0f,
-        // 1.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
-        // ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-        // showScale.setDuration(500);
-        // showScale.setFillAfter(true);
-        // showScale.setAnimationListener(new AnimationListener() {
-        // @Override
-        // public void onAnimationStart(Animation animation) {
-        //
-        // }
-        //
-        // @Override
-        // public void onAnimationRepeat(Animation animation) {
-        //
-        // }
-        //
-        // @Override
-        // public void onAnimationEnd(Animation animation) {
-        // // 平台show
-        // showPingTai();
-        // }
-        // });
-        // iv_roket.setAnimation(showScale);
     }
-
-    protected void showPingTai() {
-        iv_pingtai.setVisibility(View.VISIBLE);
-        int mScreenHeight = wm.getDefaultDisplay().getHeight();
-        int mScreenWidth = wm.getDefaultDisplay().getWidth();
-        int transY = (int) iv_pingtai.getTranslationY();
-
-        ObjectAnimator
-                .ofFloat(iv_pingtai, "translationY", mScreenHeight, transY)
-                .setDuration(800)
-                .start();
-
-        Animation translateAnimation = new
-                TranslateAnimation(iv_roket.getX(), mScreenWidth / 2 - iv_roket.getWidth() / 2,
-                        iv_roket.getTranslationY(), iv_roket.getTranslationY());
-        translateAnimation.setDuration(1000);
-        translateAnimation.setFillAfter(true);
-        iv_roket.setAnimation(translateAnimation);
-
-        LeoLog.d("testFirstInGet",
-                "iv_roket.getX(): " + iv_roket.getX() + " ; mScreenWidth/2 : " + mScreenWidth / 2);
-    }
-
 }
