@@ -89,19 +89,19 @@ public class QuickGesturePopupActivity extends Activity implements
             if (mSwitchListFromSp.isEmpty()) {
 //                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
                 mSwitchList = new ArrayList<Object>();
-                mSwitchList.add(QuickSwitchManager.getInstance(this).getSwitchList(switchNum));
+                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
                 String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
                         switchNum);
                 mSpSwitch.setSwitchList(saveToSp);
             } else {
 //                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
                 mSwitchList = new ArrayList<Object>();
-                mSwitchList.add(QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp));
+                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
 
             fillQg1();
             fillQg2();
-//            fillQg3();
+            fillQg3();
 
             mContainer.showOpenAnimation();
         }
