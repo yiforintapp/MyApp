@@ -822,7 +822,7 @@ public class AppleWatchContainer extends FrameLayout {
                 tv = new GestureItemView(getContext());
                 lp = new AppleWatchLayout.LayoutParams(
                         targetLayout.getItemSize(), targetLayout.getItemSize());
-                lp.position = sInfo.position;
+                lp.position = sInfo.gesturePosition;
                 tv.setGravity(Gravity.CENTER_HORIZONTAL);
                 tv.setLayoutParams(lp);
                 tv.setText(sInfo.label);
@@ -1329,28 +1329,28 @@ public class AppleWatchContainer extends FrameLayout {
         GestureItemView tv = null;
         int iconSize = mSwitcherLayout.getIconSize();
         if (info.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.position);
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkBlueToothStatus(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.position);
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkFlashLightStatus(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.WLAN)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.position);
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkWlanStatus(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.SOUND)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.position);
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkSoundStatus(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.LIGHT)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.position);
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkLightStatus(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.ROTATION)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.position);
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkRotation(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.position);
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkMobileData(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.position);
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             speedUp(info, iconSize, tv);
         }
     }

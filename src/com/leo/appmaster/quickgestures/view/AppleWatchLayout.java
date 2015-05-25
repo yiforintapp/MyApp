@@ -528,7 +528,9 @@ public class AppleWatchLayout extends ViewGroup {
 
     private void onItemClick(final View view) {
         GestureItemView item = (GestureItemView) view;
+        int position = ((LayoutParams)item.getLayoutParams()).position;
         BaseInfo info = (BaseInfo) view.getTag();
+        info.gesturePosition = position;
         if (info instanceof AppItemInfo) {
             AppItemInfo appInfo = (AppItemInfo) info;
             Intent intent = new Intent();
@@ -892,7 +894,7 @@ public class AppleWatchLayout extends ViewGroup {
                     int position = params.position;
                     QuickSwitcherInfo sInfo = (QuickSwitcherInfo) getChildAt(i).getTag();
                     if (sInfo != null) {
-                        sInfo.position = position;
+                        sInfo.gesturePosition = position;
                         mSwitchList.add(sInfo);
                         LeoLog.d("QuickGestureLayout", "名字：" + sInfo.label + "位置：" + position);
                     }
