@@ -177,11 +177,17 @@
 
   <!--  weizhuang -->
     <dimen name="weizhaung_guide_image_margin_top">30dp</dimen>
-    
      <dimen name="dialog_list_width">260dp</dimen>
       <dimen name="dialog_list_btn_height">35dp</dimen>
       <dimen name="dialog_list_item_height">40dp</dimen>
       <dimen name="dialog_contact_item_height">45dp</dimen>
+      <dimen name="weizhuang_unknowcall_icon_hold">30dp</dimen>
+      <dimen name="weizhuang_unknowcall_first_content">136dp</dimen>
+      <dimen name="weizhuang_unknowcall_text_phone_m_top">25dp</dimen>
+      <dimen name="weizhuang_unknowcall_tips_text_content_m_top">2dp</dimen>
+      <dimen name="weizhuang_instruction_margin_top">4dp</dimen>
+          <dimen name="weizhuang_tip_content_padding">20dp</dimen>
+      
       <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>

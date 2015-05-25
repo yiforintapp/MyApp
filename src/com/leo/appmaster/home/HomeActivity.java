@@ -354,16 +354,22 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             intent.putExtra("reset_passwd", true);
                             startActivity(intent);
                         } else if (position == 1) {
+                            /*SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
+                                    "changepwd");*/
+                            Intent intent = new Intent(HomeActivity.this, LockSettingActivity.class);
+                            intent.putExtra("reset_passwd", true);
+                            startActivity(intent);
+                        } else if (position == 2) {
                             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "mibao");
                             Intent intent = new Intent(HomeActivity.this,
                                     PasswdProtectActivity.class);
                             startActivity(intent);
-                        } else if (position == 2) {
+                        } else if (position == 3) {
                             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                     "passwdtip");
                             Intent intent = new Intent(HomeActivity.this, PasswdTipActivity.class);
                             startActivity(intent);
-                        } else if (position == 3) {
+                        }else if(position == 4){
                             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                     "locksetting");
                             Intent intent = new Intent(HomeActivity.this, LockOptionActivity.class);
@@ -374,7 +380,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         mLeoPopMenu.dismissSnapshotList();
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(this, getRightMenuItems(), true);
+                mLeoPopMenu.setPopMenuItems(this, getRightMenuItems(),getRightMenuIcons(),true);
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.iv_option_image), null, null);
                 break;
@@ -403,12 +409,23 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private List<String> getRightMenuItems() {
         List<String> listItems = new ArrayList<String>();
         listItems.add(getString(R.string.reset_passwd));
+        listItems.add(getString(R.string.pass_gesture_change));
         listItems.add(getString(R.string.set_protect_or_not));
         listItems.add(getString(R.string.passwd_notify));
         listItems.add(getString(R.string.lock_setting));
         return listItems;
     }
 
+    private List<Integer> getRightMenuIcons(){
+        List<Integer> icons = new ArrayList<Integer>();
+        icons.add(R.drawable.reset_pasword_icon);
+        icons.add(R.drawable.reset_pasword_icon);
+        icons.add(R.drawable.question_icon);
+        icons.add(R.drawable.pasword_icon);
+        icons.add(R.drawable.settings);
+        return icons;
+    }
+    
     private List<MenuItem> getMenuItems() {
         List<MenuItem> listItems = new ArrayList<MenuItem>();
         Resources resources = AppMasterApplication.getInstance().getResources();
