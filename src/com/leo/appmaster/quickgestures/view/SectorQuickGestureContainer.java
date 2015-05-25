@@ -763,7 +763,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
                 tv = new GestureItemView(getContext());
                 lp = new AppleWatchLayout.LayoutParams(
                         targetLayout.getItemSize(), targetLayout.getItemSize());
-                lp.position = sInfo.position;
+                lp.position = sInfo.gesturePosition;
                 tv.setGravity(Gravity.CENTER_HORIZONTAL);
                 tv.setLayoutParams(lp);
                 tv.setText(sInfo.label);
