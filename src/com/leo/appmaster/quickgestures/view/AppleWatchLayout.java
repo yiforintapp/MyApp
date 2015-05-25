@@ -99,12 +99,12 @@ public class AppleWatchLayout extends ViewGroup {
                 }
                 hit[info.gesturePosition] = 1;
             }
-            for (int i : hit) {
+
+            for (int i = 0; i < hit.length; i++) {
                 if (hit[i] != 1) {
                     info = new GestureEmptyItemInfo();
                     info.gesturePosition = i;
                     infos.add(info);
-
                 }
             }
         }
@@ -199,6 +199,7 @@ public class AppleWatchLayout extends ViewGroup {
         for (int i = 0; i < 10; i++) {
             if (i < 5) {
                 tempView = mHoriChildren[1][i + 5];
+                LeoLog.e("xxxx", "i = " + i + "    tempView " + tempView);
                 info = (BaseInfo) tempView.getTag();
                 addView = makeGestureItem();
                 temp = (LayoutParams) tempView.getLayoutParams();
