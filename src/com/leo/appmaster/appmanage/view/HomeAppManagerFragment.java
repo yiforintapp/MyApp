@@ -390,10 +390,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         }
                     }
                     Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     try {
                         startActivity(quickIntent);
-                        getActivity().finish();
+//                        getActivity().finish();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
