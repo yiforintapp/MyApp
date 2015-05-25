@@ -1149,7 +1149,7 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (direction == Direction.Right) {
             lastPosition = ((LayoutParams) mHoriChildren[0][mHoriChildren[0].length - 1]
                     .getLayoutParams()).position;
-            for (i = 0; i < mHoriChildren[0].length; i++) {
+            for (i = mHoriChildren[0].length - 1; i >= 0; i--) {
                 if (i == 0) {
                     ((LayoutParams) mHoriChildren[0][i].getLayoutParams()).position = lastPosition;
                 } else {
@@ -1170,7 +1170,7 @@ public class AppleWatchLayout extends ViewGroup {
 
             lastPosition = ((LayoutParams) mHoriChildren[1][mHoriChildren[1].length - 1]
                     .getLayoutParams()).position;
-            for (i = 0; i < mHoriChildren[1].length; i++) {
+            for (i = mHoriChildren[1].length - 1; i >= 0; i--) {
                 if (i == 0) {
                     ((LayoutParams) mHoriChildren[1][i].getLayoutParams()).position = lastPosition;
                 } else {
@@ -1191,7 +1191,7 @@ public class AppleWatchLayout extends ViewGroup {
 
             lastPosition = ((LayoutParams) mHoriChildren[2][mHoriChildren[2].length - 1]
                     .getLayoutParams()).position;
-            for (i = 0; i < mHoriChildren[2].length; i++) {
+            for (i = mHoriChildren[2].length - 1; i >= 0; i--) {
                 if (i == 0) {
                     ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).position = lastPosition;
                 } else {
@@ -1394,11 +1394,11 @@ public class AppleWatchLayout extends ViewGroup {
 
             int shouldAdjustCount = (int) (moveX / minuOffset);
             if (mAdjustCount < shouldAdjustCount) {
-                adjustIconPosition(Direction.Left);
+                adjustIconPosition(Direction.Right);
                 // adjustIconScale(Direction.Right);
                 mAdjustCount++;
             } else if (mAdjustCount > shouldAdjustCount) {
-                adjustIconPosition(Direction.Right);
+                adjustIconPosition(Direction.Left);
                 // adjustIconScale(Direction.Left);
                 mAdjustCount--;
             }
