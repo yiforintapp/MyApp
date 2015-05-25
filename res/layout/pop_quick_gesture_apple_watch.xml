@@ -65,8 +65,8 @@
 
         <ImageView
             android:id="@+id/iv_rocket"
-            android:layout_width="30dp"
-            android:layout_height="53dp"
+            android:layout_width="37dp"
+            android:layout_height="72dp"
             android:background="@drawable/gesture_rocket"
             android:visibility="invisible" />
 

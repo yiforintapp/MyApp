@@ -528,7 +528,7 @@ public class AppleWatchLayout extends ViewGroup {
 
     private void onItemClick(final View view) {
         GestureItemView item = (GestureItemView) view;
-        int position = ((LayoutParams)item.getLayoutParams()).position;
+        int position = ((LayoutParams) item.getLayoutParams()).position;
         BaseInfo info = (BaseInfo) view.getTag();
         info.gesturePosition = position;
         if (info instanceof AppItemInfo) {
