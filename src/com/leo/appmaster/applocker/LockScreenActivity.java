@@ -804,9 +804,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
    private ImageView modeIconIn;
    private ImageView modeIconDown;
    private TextView mActiveText;
-   private int bg_anim_time = 300;
-   private int in_anim_time = 400;
-   private int out_anim_time=300;
    private Map<String, Object> currModeIconMap;
    private Map<String, Object> willModeIconMap;
     /**
@@ -837,7 +834,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 width = modeIconOut.getWidth(); 
                 top = modeIconOut.getTop();
                 height = modeIconOut.getHeight();
-                Log.i("tag"," in   top="+top+" width="+width +"  height="+height);
                 activeAnimation();
             } 
         }); 
@@ -845,11 +841,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         Toast toast = new Toast(this);
         toast.setView(mTipView);
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(1500);
+        toast.setDuration(1000);
         toast.show();
     }
     
     private void  activeAnimation(){
+         int bg_anim_time = 300;
+         int in_anim_time = 400;
+         int out_anim_time=300;
+        
         ValueAnimator colorAnim = ValueAnimator.ofObject(new ColorEvaluator(), currModeIconMap.get("bgColor"),willModeIconMap.get("bgColor"));
         colorAnim.addUpdateListener(new AnimatorUpdateListener() {
             @Override
@@ -867,7 +867,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             public void onAnimationUpdate(ValueAnimator animation) {
                 float curr = (Float) animation.getAnimatedValue();
                 float percent = 1.0f-curr / outLength;
-                //Log.i("tag", "curr=" + curr + " outIconPercent== " + percent);
                 modeIconOut.setTranslationY(curr);
                 if(percent>=0.6f){
                     modeIconOut.setAlpha(percent);
@@ -897,7 +896,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 if(percent>1.0f){
                     percent = 1.0f;
                 }
-                Log.i("tag", "curr=" + curr + " percent== " + percent);
                 modeIconIn.setAlpha(0.6f * percent + 0.4f);
                 modeIconIn.setScaleX(0.3f * percent + 0.7f);
                 modeIconIn.setScaleY(0.3f * percent + 0.7f);

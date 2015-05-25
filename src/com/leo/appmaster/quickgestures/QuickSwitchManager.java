@@ -321,8 +321,10 @@ public class QuickSwitchManager {
             iCons[3] = mContext.getResources().getDrawable(
                     R.drawable.switch_brightness_max);
         } else if (IdentiName.equals(SPEEDUP)) {
-            iCons = new Drawable[1];
+            iCons = new Drawable[2];
             iCons[0] = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
+            iCons[1] = mContext.getResources().getDrawable(
+                    R.drawable.gesture_rocket_bg);
         } else if (IdentiName.equals(SWITCHSET)) {
             iCons = new Drawable[2];
             iCons[0] = mContext.getResources().getDrawable(
@@ -409,8 +411,8 @@ public class QuickSwitchManager {
         return mLabel;
     }
 
-    public List<QuickSwitcherInfo> getSwitchList(int switchNum) {
-        List<QuickSwitcherInfo> mSwitchList = new ArrayList<QuickSwitcherInfo>();
+    public List<Object> getSwitchList(int switchNum) {
+        List<Object> mSwitchList = new ArrayList<Object>();
         // 蓝牙开关
         QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
         lanyaInfo.iDentiName = BLUETOOTH;
@@ -750,8 +752,10 @@ public class QuickSwitchManager {
                 value);
     }
 
-    public void speedUp() {
-        Toast.makeText(mContext, "加你的头～方案还没出！", 0).show();
+    public void speedUp(QuickSwitcherInfo mInfo) {
+//        Toast.makeText(mContext, "加你的头～方案还没出！", 0).show();
+        LeoEventBus.getDefaultBus().post(
+                new ClickQuickItemEvent(ROTATION, mInfo));
     }
 
     public void toggleMode() {
@@ -996,13 +1000,12 @@ public class QuickSwitchManager {
         mContext.startActivity(intent);
     }
 
-    public String ListToString(List<QuickSwitcherInfo> mSwitchList, int mNum) {
+    public String ListToString(List<Object> mSwitchList, int mNum) {
         String ListString = "";
         for (int i = 0; i < mNum; i++) {
-            QuickSwitcherInfo switchInfo = mSwitchList.get(i);
+            QuickSwitcherInfo switchInfo = (QuickSwitcherInfo) mSwitchList.get(i);
             String name = switchInfo.iDentiName;
             int position = switchInfo.position;
-
             LeoLog.d("QuickSwitchManager", "name : " + name + "--position : " + position);
             if (i == 0) {
                 ListString = name + ":" + position;
@@ -1013,8 +1016,8 @@ public class QuickSwitchManager {
         return ListString;
     }
 
-    public List<QuickSwitcherInfo> StringToList(String mSwitchListFromSp) {
-        List<QuickSwitcherInfo> mSwitcherList = new ArrayList<QuickSwitcherInfo>();
+    public List<Object> StringToList(String mSwitchListFromSp) {
+        List<Object> mSwitcherList = new ArrayList<Object>();
         String[] mSwitchAllInfo = mSwitchListFromSp.split(",");
         for (int i = 0; i < mSwitchAllInfo.length; i++) {
             QuickSwitcherInfo mInfo = new QuickSwitcherInfo();

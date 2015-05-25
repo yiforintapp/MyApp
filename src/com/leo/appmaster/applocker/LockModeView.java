@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.applocker;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -81,7 +83,6 @@ public class LockModeView extends View {
 
     public LockModeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         Resources res = getResources();
 
         mDrawPadding = res.getDimensionPixelSize(R.dimen.privacy_level_padding);
@@ -153,7 +154,7 @@ public class LockModeView extends View {
         mBgIconDrawBount.right = mBgIconDrawBount.left + drawW;
         mBgIconDrawBount.top = centerY - drawH / 2;
         mBgIconDrawBount.bottom = mBgIconDrawBount.top + drawH;
-
+        
         // cpmpute move icon rect
         mMoveIconY = centerY + drawH / 2;
         iconW = mMoveIcon.getIntrinsicWidth();
@@ -217,6 +218,11 @@ public class LockModeView extends View {
             canvas.drawText(mCountText, mBgIconDrawBount.left + (drawW - textWidth) / 2,
                     countBottom,
                     mPaint);
+            if(pressLockFlag){
+                //draw the press img
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.mode_press_lock_bg);
+                canvas.drawBitmap(bitmap, mBgIconDrawBount.left + (drawW - bitmap.getWidth()) / 2, mBgIconDrawBount.top + ((int) (drawH * LOCK_COUNT_TEXT_POS_PERCENT))-(bitmap.getWidth()-offset)/2, null);
+            }
         }
 
         // tip text
@@ -237,27 +243,25 @@ public class LockModeView extends View {
             mPaint.setTextSize(realSize);
             mPaint.setStyle(Style.FILL);
             mPaint.setColor(Color.WHITE);
+            mPaint.getFontMetrics(mFontMetrics);
+            int textHeight = (int) Math.ceil(mFontMetrics.descent - mFontMetrics.ascent);
             canvas.drawText(mModeText, mBgIconDrawBount.left + (drawW - textWidth) / 2,
                     mBgIconDrawBount.top + (int) (drawH * LOCK_MODE_TEXT_POS_PERCENT), mPaint);
-        }
-        
-        if(pressLockFlag){
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.mode_press_lock_bg);
-            canvas.drawBitmap(bitmap, mBgIconDrawBount.left + (drawW - bitmap.getWidth()) / 2, mBgIconDrawBount.top + ((int) (drawH * 0.15f)), null);
-            Log.i("Rect", "drawH ="+drawH);
-        }
-        if(pressModeNameFlag){
-            Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.mode_press_bg);
-            Rect src = new Rect();
-            src.left = src.top =0;
-            src.right = bitmap2.getWidth();
-            src.bottom = src.top + bitmap2.getHeight();
-            Rect dst = new Rect();
-            dst.left = mBgIconDrawBount.left + (drawW - bitmap2.getWidth()) / 2;
-            dst.top = mBgIconDrawBount.top + (int) (drawH * 0.65);
-            dst.right = dst.left +bitmap2.getWidth();
-            dst.bottom = dst.top +DipPixelUtil.dip2px(mContext, 75);
-            canvas.drawBitmap(bitmap2, src, dst, null);
+            
+            if(pressModeNameFlag){
+              //draw the press img
+                Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.mode_press_bg);
+                Rect src = new Rect();
+                src.left = src.top =0;
+                src.right = bitmap2.getWidth();
+                src.bottom = src.top + bitmap2.getHeight();
+                Rect dst = new Rect();
+                dst.left = mBgIconDrawBount.left + (drawW - bitmap2.getWidth()) / 2;
+                dst.top = mBgIconDrawBount.top + (int) (drawH * LOCK_MODE_TEXT_POS_PERCENT)-(DipPixelUtil.dip2px(mContext, 70) - textHeight)/2-DipPixelUtil.dip2px(mContext, 10);
+                dst.right = dst.left +bitmap2.getWidth();
+                dst.bottom = dst.top +DipPixelUtil.dip2px(mContext, 70);
+                canvas.drawBitmap(bitmap2, src, dst, null);
+            }
         }
     }
 
@@ -288,7 +292,6 @@ public class LockModeView extends View {
 
         int dy = mBgIconDrawBount.top +  (mBgIconDrawBount.bottom - mBgIconDrawBount.top)
                 * 2 / 3;
-
         Rect top = new Rect(mBgIconDrawBount.left, mBgIconDrawBount.top,
                 mBgIconDrawBount.right, dy);
         Rect bottom = new Rect(mBgIconDrawBount.left, dy,
@@ -296,21 +299,24 @@ public class LockModeView extends View {
         
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-                    this.setScaleX(0.95f);
-                    this.setScaleY(0.95f);
                     if (top.contains(upX, upY)) {
+                        this.setScaleX(0.98f);
+                        this.setScaleY(0.98f);
                         pressLockFlag = true;
-                    }else{
+                        invalidate();
+                    }else if(bottom.contains(upX, upY)){
+                        this.setScaleX(0.98f);
+                        this.setScaleY(0.98f);
                         pressModeNameFlag = true;
+                        invalidate();
                     }
-                    invalidate();
                     break;
             case MotionEvent.ACTION_CANCEL:
-                this.setScaleX(1.0f);
-                this.setScaleY(1.0f);
-                pressLockFlag = false;
-                pressModeNameFlag = false;
-                invalidate();
+                    this.setScaleX(1.0f);
+                    this.setScaleY(1.0f);
+                    pressLockFlag = false;
+                    pressModeNameFlag = false;
+                    invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 this.setScaleX(1.0f);

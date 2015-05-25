@@ -666,7 +666,7 @@ public class SectorLayout extends ViewGroup {
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;
-                List<QuickSwitcherInfo> mSwitchList = new ArrayList<QuickSwitcherInfo>();
+                List<Object> mSwitchList = new ArrayList<Object>();
                 LeoLog.d("QuickGestureLayout", "总孩子数：" + mNum);
                 for (int i = 0; i < mNum; i++) {
                     params = (LayoutParams) getChildAt(i).getLayoutParams();
