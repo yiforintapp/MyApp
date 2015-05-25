@@ -9,6 +9,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences;
@@ -63,6 +64,7 @@ import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -70,7 +72,10 @@ import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.IconPagerAdapter;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.ui.LeoPopMenu;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.RootChecker;
 
 public class HomeActivity extends BaseFragmentActivity implements OnClickListener,
@@ -90,6 +95,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private View mBgStatusbar, mFgStatusbar;
     private HomeShadeView mShadeView;
     private LeoPopMenu mLeoPopMenu;
+    private LEOAlarmDialog mQuickGestureSettingDialog;
 
     private float mDrawerOffset;
     private Handler mHandler = new Handler();
@@ -107,6 +113,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
+        AppMasterPreference pre = AppMasterPreference.getInstance(this);
+        boolean setMiuiFist = pre.getQuickGestureMiuiSettingFirstDialogTip();
+        boolean flag = BuildProperties.isMIUI();
+        boolean isOpenWindow = BuildProperties.isMiuiFloatWindowOpAllowed(this);
+        if (setMiuiFist && flag && isOpenWindow) {
+            showQuickGestureSettingDialog();
+        }
     }
 
     private void initUI() {
@@ -358,7 +371,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         mLeoPopMenu.dismissSnapshotList();
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(this, getRightMenuItems(),true);
+                mLeoPopMenu.setPopMenuItems(this, getRightMenuItems(), true);
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.iv_option_image), null, null);
                 break;
@@ -824,4 +837,37 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     }
 
+    private void showQuickGestureSettingDialog() {
+        if (mQuickGestureSettingDialog == null) {
+            mQuickGestureSettingDialog = new LEOAlarmDialog(this);
+        }
+        mQuickGestureSettingDialog.setDialogIconVisibility(false);
+        mQuickGestureSettingDialog.setCanceledOnTouchOutside(false);
+        mQuickGestureSettingDialog.setTitle(this.getResources().getString(
+                R.string.quick_gesture_dialog_tip_contniue_title));
+        mQuickGestureSettingDialog.setContent(this.getResources().getString(
+                R.string.quick_gesture_dialog_tip_contniue_cotent));
+        mQuickGestureSettingDialog.setLeftBtnStr(this.getResources().getString(
+                R.string.quick_gesture_dialog_tip_contniue_right_bt));
+        mQuickGestureSettingDialog.setRightBtnStr(this.getResources().getString(
+                R.string.quick_gesture_dialog_tip_contniue_left_bt));
+        mQuickGestureSettingDialog.setOnClickListener(new OnDiaogClickListener() {
+
+            @Override
+            public void onClick(int which) {
+                if (which == 0) {
+                    if (mQuickGestureSettingDialog != null) {
+                        mQuickGestureSettingDialog.dismiss();
+                    }
+                } else if (which == 1) {
+                    Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
+                    try {
+                        startActivity(inten);
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        });
+        mQuickGestureSettingDialog.show();
+    }
 }

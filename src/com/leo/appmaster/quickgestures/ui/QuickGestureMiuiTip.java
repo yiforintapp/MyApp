@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -30,6 +32,15 @@ public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener
     @Override
     public void onClick(View arg0) {
         QuickGestureMiuiTip.this.finish();
+        mMiuiTipRL.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                System.exit((int) (0));
+            }
+        }, 3000);
+        AppMasterPreference.getInstance(QuickGestureMiuiTip.this)
+                .setQuickGestureMiuiSettingFirstDialogTip(true);
     }
 
 }
