@@ -38,5 +38,5 @@ public class BaseInfo {
      * just for unread sms and call
      */
     public int eventNumber = 0;
-    public int gesturePosition;
+    public int gesturePosition = -1000;
 }
