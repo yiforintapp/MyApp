@@ -4,7 +4,7 @@
     <dimen name="splash_width">206dp</dimen>
     <dimen name="multi_mode_indicator_margin_top">15dp</dimen>
     <dimen name="multi_mode_title_margin_top">80dp</dimen>
-    <dimen name="pager_margin_top">35dp</dimen>
+    <dimen name="pager_margin_top">32dp</dimen>
     <dimen name="lock_pattern_button_width">50dp</dimen>
     <dimen name="gesture_setting_margintop">5dp</dimen>
     <dimen name="hide_album_frame_width">167dp</dimen>
