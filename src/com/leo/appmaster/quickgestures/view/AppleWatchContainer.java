@@ -592,7 +592,7 @@ public class AppleWatchContainer extends FrameLayout {
         va.start();
     }
 
-    public void fillGestureItem(GType type, List<? extends BaseInfo> infos) {
+    public void fillGestureItem(GType type, List<Object> infos) {
         if (infos == null) {
             LeoLog.e(TAG, "fillGestureItem, infos is null");
             return;
@@ -600,15 +600,16 @@ public class AppleWatchContainer extends FrameLayout {
         AppleWatchLayout targetLayout = null;
         if (type == GType.DymicLayout) {
             targetLayout = mDymicLayout;
-            fillDynamicItem(targetLayout, infos, 0);
+//            fillDynamicItem(targetLayout, infos, 0);
         } else if (type == GType.MostUsedLayout) {
             targetLayout = mMostUsedLayout;
-            fillItem(targetLayout, infos);
+//            fillItem(targetLayout, infos);
         } else if (type == GType.SwitcherLayout) {
             targetLayout = mSwitcherLayout;
-            setSwitchList((List<QuickSwitcherInfo>) infos);
-            fillSwitchItem(targetLayout, infos);
+//            setSwitchList((List<QuickSwitcherInfo>) infos);
+//            fillSwitchItem(targetLayout, infos);
         }
+        targetLayout.fillItems(infos);
     }
 
     public void fillDynamicItem(AppleWatchLayout targetLayout,
@@ -1026,8 +1027,6 @@ public class AppleWatchContainer extends FrameLayout {
                 tv.setTag(info);
                 targetLayout.addView(tv);
             }
-
-            targetLayout.checkFull();
         }
     }
 
