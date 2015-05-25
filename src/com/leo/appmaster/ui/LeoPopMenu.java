@@ -52,6 +52,7 @@ public class LeoPopMenu {
     private PopupWindow mLeoPopMenu;
 
     private List<String> mItems;
+    private List<Integer> mIcons;
 
     private OnItemClickListener mPopItemClickListener;
 
@@ -78,7 +79,7 @@ public class LeoPopMenu {
             float popWidth = 0;
             if (!isOverWidth) {
                 if(isShowIcon){
-                    newSmallWidth +=DipPixelUtil.dip2px(activity, 10f);
+                    newSmallWidth +=DipPixelUtil.dip2px(activity, 12f);
                 }
                 popWidth = newSmallWidth;
             } else {
@@ -161,10 +162,15 @@ public class LeoPopMenu {
         listView.setAdapter(mAdapter);
         return convertView;
     }
+    
+    public void setPopMenuItems(Context mContext, List<String> items,List<Integer> icons,boolean isShowicon){
+        this.isShowIcon = isShowicon;
+        mIcons = icons;
+        setPopMenuItems(mContext,items);
+    }
 
-    public void setPopMenuItems(Context mContext, List<String> items,boolean isShowicon) {
+    public void setPopMenuItems(Context mContext, List<String> items) {
         mItems = items;
-        isShowIcon = isShowicon;
         
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
         int W = mDisplay.getWidth();
@@ -319,34 +325,13 @@ public class LeoPopMenu {
             } else {
                 mHolder.mItemName.setText(mListItems.get(position));
                 if(isShowIcon){
-                    mHolder.mItemIcon.setImageResource(switchIcon(position));
+                    mHolder.mItemIcon.setImageResource(mIcons.get(position));
                 }
             }
             return convertView;
         }
     }
 
-    private int switchIcon(int position){
-        int resId =R.drawable.reset_pasword_icon ;
-        switch (position) {
-            case 0:
-                resId = R.drawable.reset_pasword_icon;
-                break;
-            case 1:
-                resId = R.drawable.question_icon;
-                break;
-            case 2:
-                resId = R.drawable.pasword_icon;
-                break;
-            case 3:
-                resId = R.drawable.settings;
-                break;
-            default:
-                break;
-        }
-        return resId;
-    }
-    
     public static float getTextViewLength(TextView textView, String text) {
         TextPaint paint = textView.getPaint();
         // 得到使用该paint写上text的时候,像素为多少

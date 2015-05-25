@@ -685,5 +685,5 @@
     <string name="quick_guesture_home">桌面</string>
     <string name="quick_guesture_lockscreen">锁屏</string>
     <!-- version 2.3 end -->
-
+	<string name="pass_gesture_change">切换密码方式</string>
 </resources>

@@ -6,16 +6,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import android.R.integer;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.filterfw.core.FinalPort;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -23,19 +23,16 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
-import android.webkit.WebView.PrivateAccess;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.baidu.mobstat.p;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockModeEditActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
@@ -48,7 +45,6 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.DipPixelUtil;
-import com.tendcloud.tenddata.al;
 
 public class MultiModeView extends RelativeLayout implements OnClickListener {
 
@@ -63,6 +59,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     private View mHolder;
     private LockManager mLockManager;
     private int currModePosition;
+    private Bitmap grayBitmap ;
 
     public MultiModeView(Context context) {
         super(context);
@@ -128,6 +125,12 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             if (lockMode.isCurrentUsed) {
                 mSelected = mHolder;
                 currModePosition = list.indexOf(lockMode);
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        grayBitmap =  BitmapUtils.createGaryBitmap(((LockMode) mSelected.getTag()).modeIcon);
+                    }
+                });
             }
             selectedImg.setVisibility(View.GONE);
             modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
@@ -148,18 +151,8 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
         
         mModeNameTv.setVisibility(View.INVISIBLE);
         mIvAdd.setVisibility(View.INVISIBLE);
-        
-        /*Set<Integer> poSet = new HashSet<Integer>();
-        int currNextPostion = currModePosition +1>mViews.size()?mViews.size():currModePosition+1;
-        int currPrePosition = currModePosition -1<0?0:currModePosition-1;
-        poSet.add(currNextPostion);
-        poSet.add(currPrePosition);
-        poSet.add(currModePosition);
-        for(int i = 0;i<poSet.size();i++){
-            
-        }*/
-        
         backgroundAnimtion();
+        
         if (getVisibility() != View.VISIBLE) {
             setVisibility(View.VISIBLE);
             fillUI(true);
@@ -177,7 +170,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 mIvAdd.setVisibility(View.VISIBLE);
             }
         });
-        alphaAnimator.setStartDelay(300);
+        alphaAnimator.setStartDelay(400);
         alphaAnimator.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -248,7 +241,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
         public ModeAdapter(Context ctx, boolean showAnimation) {
             this.showAnimation = showAnimation;
-            int currNextPostion = currModePosition +1>mViews.size()?mViews.size():currModePosition+1;
+            int currNextPostion = currModePosition +1>=mViews.size()?currModePosition:currModePosition+1;
             int currPrePosition = currModePosition -1<0?0:currModePosition-1;
             poSet.add(currNextPostion);
             poSet.add(currPrePosition);
@@ -307,15 +300,9 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 float currentValue = (Float) animation.getAnimatedValue();
                 holder.setScaleX(currentValue);
                 holder.setScaleY(currentValue);
-                if (flag && mSelected == holder && animation.getCurrentPlayTime()>50) {
-                    // add gray shadow
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(), BitmapUtils
-                                            .createGaryBitmap(((LockMode) mSelected.getTag()).modeIcon))));
-                        }
-                    });
+                if (flag && mSelected == holder && animation.getCurrentPlayTime() > 200
+                        && grayBitmap != null) {
+                    modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(), grayBitmap)));
                     flag = false;
                 }
             }
