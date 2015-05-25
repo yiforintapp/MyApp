@@ -73,7 +73,7 @@
             android:gravity="center"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
-            android:text="@string/pg_appmanager_quick_gesture_miui_open_float_window_tip_text"
+            android:text="@string/pg_appmanager_quick_gesture_first_tip_text"
             android:textColor="@color/white"
             android:textSize="14dp" />
 

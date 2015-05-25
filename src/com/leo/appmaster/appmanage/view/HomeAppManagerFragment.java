@@ -364,8 +364,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 boolean flag = BuildProperties.isMIUI();
                 boolean isOpenWindow =
                         BuildProperties.isMiuiFloatWindowOpAllowed(getActivity());
-                Log.e("#############",
-                        "是否为MIUI：" + flag + "; 是否开启悬浮窗权限：" + isOpenWindow);
+                // Log.e("#############",
+                // "是否为MIUI：" + flag + "; 是否开启悬浮窗权限：" + isOpenWindow);
                 if (flag && !isOpenWindow) {
                     // MIUI系统提示
                     Intent intentv6 = new

@@ -38,7 +38,7 @@ public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener
             public void run() {
                 System.exit((int) (0));
             }
-        }, 3000);
+        }, 2500);
         AppMasterPreference.getInstance(QuickGestureMiuiTip.this)
                 .setQuickGestureMiuiSettingFirstDialogTip(true);
     }

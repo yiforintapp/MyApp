@@ -114,11 +114,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         shortcutAndRoot();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         AppMasterPreference pre = AppMasterPreference.getInstance(this);
-        boolean setMiuiFist = pre.getQuickGestureMiuiSettingFirstDialogTip();
-        boolean flag = BuildProperties.isMIUI();
-        boolean isOpenWindow = BuildProperties.isMiuiFloatWindowOpAllowed(this);
-        if (setMiuiFist && flag && isOpenWindow) {
-            showQuickGestureSettingDialog();
+        boolean isFirstSlidingOpenQuick = pre.getFristSlidingTip();
+        if (!isFirstSlidingOpenQuick) {
+            boolean setMiuiFist = pre.getQuickGestureMiuiSettingFirstDialogTip();
+            boolean flag = BuildProperties.isMIUI();
+            boolean isOpenWindow = BuildProperties.isMiuiFloatWindowOpAllowed(this);
+            if (setMiuiFist && flag && isOpenWindow && !isFirstSlidingOpenQuick) {
+                showQuickGestureSettingDialog();
+            }
         }
     }
 
