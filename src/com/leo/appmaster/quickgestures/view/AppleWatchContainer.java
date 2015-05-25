@@ -1015,9 +1015,11 @@ public class AppleWatchContainer extends FrameLayout {
     public void showOpenAnimation() {
         AnimatorSet set = new AnimatorSet();
         set.setDuration(400);
-        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f, 1.1f,
+        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f,
+                1.1f,
                 1.0f);
-        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f, 1.1f,
+        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f,
+                1.1f,
                 1.0f);
         set.playTogether(animationx, animationy);
         set.start();
@@ -1042,6 +1044,7 @@ public class AppleWatchContainer extends FrameLayout {
         set.playTogether(animationx, animationy);
         set.start();
     }
+
 
     public void hideGestureLayout(GType type) {
         if (type == GType.DymicLayout) {
@@ -1128,5 +1131,4 @@ public class AppleWatchContainer extends FrameLayout {
             checkMobileData(info, iconSize, tv);
         }
     }
-
 }

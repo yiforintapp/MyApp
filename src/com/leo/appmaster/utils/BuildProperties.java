@@ -117,18 +117,17 @@ public class BuildProperties {
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static boolean isMiuiFloatWindowOpAllowed(Context context) {
-        final int version = Build.VERSION.SDK_INT;
-        boolean flag;
-        if (version >=19) {
-            flag = checkOp(context, AppOpsManager.OP_SYSTEM_ALERT_WINDOW);
-        } else {
-            if ((context.getApplicationInfo().flags & 1 << 27) == 1) {
-                return true;
-            } else {
-                return false;
-            }
+        String string;
+        int n;
+        if (Build.VERSION.SDK_INT >= 19) {
+            return checkOp(context, AppOpsManager.OP_SYSTEM_ALERT_WINDOW);
         }
-        return flag;
+        if (((n = (-28 + (string = Integer
+                .toBinaryString((int) (context.getApplicationInfo().flags))).length())) < 0)
+                || (string.charAt(n) != '1'))
+            return false;
+        return true;
+
     }
 
     public static boolean isMIUI() {

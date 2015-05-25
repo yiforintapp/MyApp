@@ -44,10 +44,10 @@ public class QuickGesturePopupActivity extends Activity implements
         super.onCreate(savedInstanceState);
         handleIntent();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
-        
-        //注册eventBus
+
+        // 注册eventBus
         LeoEventBus.getDefaultBus().register(this);
-        
+
         // Window window = getWindow();
         // WindowManager.LayoutParams params = window.getAttributes();
         // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
@@ -76,7 +76,6 @@ public class QuickGesturePopupActivity extends Activity implements
             fillQg1();
             fillQg2();
             fillQg3();
-
             mContainer.showOpenAnimation();
         }
         overridePendingTransition(-1, -1);
@@ -93,11 +92,10 @@ public class QuickGesturePopupActivity extends Activity implements
 
     }
 
-    
     public void onEventMainThread(ClickQuickItemEvent event) {
-            mContainer.checkStatus(event.info);
+        mContainer.checkStatus(event.info);
     }
-    
+
     @Override
     protected void onPause() {
         LeoLog.e("xxxx", "onPause");
@@ -127,7 +125,7 @@ public class QuickGesturePopupActivity extends Activity implements
     @Override
     protected void onDestroy() {
         FloatWindowHelper.mGestureShowing = false;
-        //反注册
+        // 反注册
         LeoEventBus.getDefaultBus().unregister(this);
         super.onDestroy();
     }

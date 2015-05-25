@@ -4,20 +4,11 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -25,17 +16,32 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AppleWatchLayout extends ViewGroup {
 
@@ -52,6 +58,7 @@ public class AppleWatchLayout extends ViewGroup {
     private float mInnerScale, mOuterScale, mThirdScale;
     private float mCurrentRotateDegree;
     private Context mContext;
+    private WindowManager mWindowManager;
     private GestureItemView[][] mHoriChildren = new GestureItemView[3][];
 
     private enum Direction {
@@ -74,6 +81,8 @@ public class AppleWatchLayout extends ViewGroup {
         mContext = context;
         init();
         addThreeExtraItem();
+        mWindowManager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
     }
 
     private void addThreeExtraItem() {
@@ -191,7 +200,6 @@ public class AppleWatchLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
         // Laying out the child views
         final int childCount = getChildCount();
         if (childCount == 0) {
@@ -205,7 +213,6 @@ public class AppleWatchLayout extends ViewGroup {
         int halfItemSize;
         double outerItemAngle = 30;
         int left = 0, top = 0;
-
         // layout all position >= 0
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
@@ -260,7 +267,6 @@ public class AppleWatchLayout extends ViewGroup {
                             * Math.sin(Math.toRadians(outerItemAngle)) - halfItemSize);
                 }
             }
-
             child.layout(left, top, left + child.getMeasuredWidth(),
                     top + child.getMeasuredHeight());
         }
@@ -270,7 +276,6 @@ public class AppleWatchLayout extends ViewGroup {
          */
         setPivotX(mTotalWidth / 2);
         setPivotY(mTotalHeight * 3);
-
         mContainer = (AppleWatchContainer) getParent();
     }
 
@@ -1134,5 +1139,24 @@ public class AppleWatchLayout extends ViewGroup {
         float resault;
         resault = dy / dx * tranX;
         return resault;
+    }
+
+    // all item open animation
+    public void playAppleWatchAllAnim() {
+        int count = getChildCount();
+        AnimatorSet animSet = new AnimatorSet();
+        ObjectAnimator[] translateList = new ObjectAnimator[count];
+        ObjectAnimator transe = null;
+        for (int i = 0; i < count; i++) {
+            View view = getChildAt(i);
+            float x = view.getLeft();
+            float y = view.getTop();
+            transe = ObjectAnimator.ofFloat(view, "translationX", view.getLeft(), 0);
+            translateList[i] = transe;
+        }
+        animSet.setDuration(1000);
+        animSet.playTogether(translateList);
+        animSet.start();
+
     }
 }

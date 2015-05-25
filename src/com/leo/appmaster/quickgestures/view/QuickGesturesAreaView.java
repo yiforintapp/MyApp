@@ -69,6 +69,11 @@ public class QuickGesturesAreaView extends View {
 
     }
 
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+    }
+
     @SuppressLint("ResourceAsColor")
     private void initUI(Context mContext) {
         this.mContext = mContext;

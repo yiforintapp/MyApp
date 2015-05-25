@@ -56,7 +56,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         if (MESSAGE_MODEL.equals(mFlag)) {
             mLastMessage = pcm.getLastMessage();
             if (mLastMessage != null) {
-                String number = mLastMessage.getPhoneNumber();
                 try {
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 

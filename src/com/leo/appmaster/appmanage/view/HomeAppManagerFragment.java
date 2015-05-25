@@ -47,6 +47,7 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -362,8 +363,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 boolean flag = BuildProperties.isMIUI();
                 boolean isOpenWindow =
                         BuildProperties.isMiuiFloatWindowOpAllowed(getActivity());
-                // Log.e("#############",
-                // "是否为MIUI："+flag+"; 是否开启悬浮窗权限："+isOpenWindow);
+                Log.e("#############",
+                        "是否为MIUI：" + flag + "; 是否开启悬浮窗权限：" + isOpenWindow);
                 if (flag && !isOpenWindow) {
                     // MIUI系统提示
                     Intent intentv6 = new
@@ -378,7 +379,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         e.printStackTrace();
                         Intent intentv5 = new Intent(
                                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                        Uri uri = Uri
+                                .fromParts("package", getActivity().getPackageName(), null);
                         intentv5.setData(uri);
                         intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         try {
@@ -391,6 +393,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
                         startActivity(quickIntent);
+                        getActivity().finish();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
