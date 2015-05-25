@@ -1544,6 +1544,7 @@ public class AppleWatchLayout extends ViewGroup {
                         super.onAnimationEnd(animation);
                         mSnapping = false;
                         mAdjustCount = 0;
+                        mLastMovex = 0;
                     }
                 });
                 transAnima.start();
@@ -1568,6 +1569,7 @@ public class AppleWatchLayout extends ViewGroup {
                         super.onAnimationEnd(animation);
                         mSnapping = false;
                         mAdjustCount = 0;
+                        mLastMovex = 0;
                     }
                 });
                 transAnima.start();
@@ -1608,6 +1610,7 @@ public class AppleWatchLayout extends ViewGroup {
                         super.onAnimationEnd(animation);
                         mSnapping = false;
                         mAdjustCount = 0;
+                        mLastMovex = 0;
                     }
                 });
                 transAnima.start();
@@ -1638,6 +1641,7 @@ public class AppleWatchLayout extends ViewGroup {
                         super.onAnimationEnd(animation);
                         mSnapping = false;
                         mAdjustCount = 0;
+                        mLastMovex = 0;
                     }
                 });
                 transAnima.start();
