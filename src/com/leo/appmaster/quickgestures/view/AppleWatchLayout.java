@@ -111,7 +111,11 @@ public class AppleWatchLayout extends ViewGroup {
             gestureItem = makeGestureItem();
             lp = new AppleWatchLayout.LayoutParams(
                     mItemSize, mItemSize);
-            lp.position = i;
+            if (info.gesturePosition == -1000) {
+                lp.position = i;
+            } else {
+                lp.position = info.gesturePosition;
+            }
             gestureItem.setGravity(Gravity.CENTER);
             gestureItem.setLayoutParams(lp);
             gestureItem.setItemName(info.label);
@@ -886,17 +890,16 @@ public class AppleWatchLayout extends ViewGroup {
                 int mNum = getChildCount();
                 LayoutParams params = null;
                 List<Object> mSwitchList = new ArrayList<Object>();
-                LeoLog.d("QuickGestureLayout", "总孩子数：" + mNum);
                 for (int i = 0; i < mNum; i++) {
                     params = (LayoutParams) getChildAt(i).getLayoutParams();
                     int position = params.position;
-                    QuickSwitcherInfo sInfo = (QuickSwitcherInfo) getChildAt(i).getTag();
-                    if (sInfo != null) {
-                        sInfo.gesturePosition = position;
-                        mSwitchList.add(sInfo);
-                        LeoLog.d("QuickGestureLayout", "名字：" + sInfo.label + "位置：" + position);
+                    if (position > -1) {
+                        QuickSwitcherInfo sInfo = (QuickSwitcherInfo) getChildAt(i).getTag();
+                        if (sInfo != null) {
+                            sInfo.gesturePosition = position;
+                            mSwitchList.add(sInfo);
+                        }
                     }
-
                 }
                 QuickGestureManager.getInstance(getContext()).updateSwitcherData(mSwitchList);
             }
