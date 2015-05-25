@@ -2,8 +2,11 @@
 package com.leo.appmaster.home;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import android.R.integer;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -12,6 +15,7 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.Intent;
+import android.filterfw.core.FinalPort;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -24,10 +28,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.webkit.WebView.PrivateAccess;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.mobstat.p;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockModeEditActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
@@ -40,6 +48,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.tendcloud.tenddata.al;
 
 public class MultiModeView extends RelativeLayout implements OnClickListener {
 
@@ -53,6 +62,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     private View mSelected;
     private View mHolder;
     private LockManager mLockManager;
+    private int currModePosition;
 
     public MultiModeView(Context context) {
         super(context);
@@ -117,6 +127,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             
             if (lockMode.isCurrentUsed) {
                 mSelected = mHolder;
+                currModePosition = list.indexOf(lockMode);
             }
             selectedImg.setVisibility(View.GONE);
             modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
@@ -134,17 +145,51 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     }
 
     public void show() {
+        
+        mModeNameTv.setVisibility(View.INVISIBLE);
+        mIvAdd.setVisibility(View.INVISIBLE);
+        
+        /*Set<Integer> poSet = new HashSet<Integer>();
+        int currNextPostion = currModePosition +1>mViews.size()?mViews.size():currModePosition+1;
+        int currPrePosition = currModePosition -1<0?0:currModePosition-1;
+        poSet.add(currNextPostion);
+        poSet.add(currPrePosition);
+        poSet.add(currModePosition);
+        for(int i = 0;i<poSet.size();i++){
+            
+        }*/
+        
+        backgroundAnimtion();
         if (getVisibility() != View.VISIBLE) {
             setVisibility(View.VISIBLE);
-            
-            mModeNameTv.setVisibility(View.INVISIBLE);
-            mIvAdd.setVisibility(View.INVISIBLE);
-            ValueAnimator colorAnim = ObjectAnimator.ofFloat(this, "alpha", 0, 1.0f);
-            colorAnim.setDuration(300);
-            colorAnim.start();
-            
             fillUI(true);
         }
+    }
+    
+    private void backgroundAnimtion(){
+        ValueAnimator bgAnim = ObjectAnimator.ofFloat(this, "alpha", 0, 1.0f);
+        ValueAnimator alphaAnimator = ValueAnimator.ofFloat(0f, 1.0f);
+        alphaAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mModeNameTv.setVisibility(View.VISIBLE);
+                mIvAdd.setVisibility(View.VISIBLE);
+            }
+        });
+        alphaAnimator.setStartDelay(300);
+        alphaAnimator.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float currValue = (Float) animation.getAnimatedValue();
+                mModeNameTv.setAlpha(currValue);
+                mIvAdd.setAlpha(currValue);
+            }
+        });
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(bgAnim, alphaAnimator);
+        set.setDuration(300);
+        set.start();
     }
 
     private void addLockMode() {
@@ -195,17 +240,19 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
         private LayoutInflater mInflater;
         private boolean showAnimation;
-        private TextView modeIcon;
-        private ImageView selectedImg;
-        private boolean flag = true;
-        private Handler myHandler;
-
+        Set<Integer> poSet = new HashSet<Integer>();
+        
         public ModeAdapter(Context ctx) {
             mInflater = LayoutInflater.from(ctx);
         }
 
         public ModeAdapter(Context ctx, boolean showAnimation) {
             this.showAnimation = showAnimation;
+            int currNextPostion = currModePosition +1>mViews.size()?mViews.size():currModePosition+1;
+            int currPrePosition = currModePosition -1<0?0:currModePosition-1;
+            poSet.add(currNextPostion);
+            poSet.add(currPrePosition);
+            poSet.add(currModePosition);
             mInflater = LayoutInflater.from(ctx);
         }
 
@@ -226,69 +273,83 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            final View view = mViews.get(position);
-            final View holder = view.findViewById(R.id.mode_holder);
-            final TextView modeName = (TextView) view.findViewById(R.id.tv_mode_name);
-            modeName.setAlpha(0);
-
-            if (mSelected == holder) {
-                modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
-                selectedImg = (ImageView) view.findViewById(R.id.img_selected);
-            }
-            if (showAnimation) {
-                myHandler = new Handler();
-                ValueAnimator ballAnim = ValueAnimator.ofFloat(0.5f, 1.05f, 0.95f, 1.0f);
-                ballAnim.addUpdateListener(new AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        float currentValue = (Float) animation.getAnimatedValue();
-                        view.setScaleX(currentValue);
-                        view.setScaleY(currentValue);
-                        if (flag && mSelected == holder && animation.getCurrentPlayTime() > 400) {
-                            // add gray shadow
-                            myHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(), BitmapUtils
-                                                    .createGaryBitmap(((LockMode) mSelected.getTag()).modeIcon))));
-                                }
-                            });
-                            flag = false;
-                        }
-                    }
-                });
-
-                ValueAnimator alphaAnimator = ValueAnimator.ofFloat(0f, 1.0f);
-                alphaAnimator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        super.onAnimationStart(animation);
-                        mModeNameTv.setVisibility(View.VISIBLE);
-                        mIvAdd.setVisibility(View.VISIBLE);
-                        selectedImg.setVisibility(View.VISIBLE);
-                    }
-                });
-                alphaAnimator.setStartDelay(320);
-                alphaAnimator.addUpdateListener(new AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        float currValue = (Float) animation.getAnimatedValue();
-                        selectedImg.setAlpha(currValue);
-                        mModeNameTv.setAlpha(currValue);
-                        mIvAdd.setAlpha(currValue);
-                        modeName.setAlpha(currValue);
-                    }
-                });
-                AnimatorSet set = new AnimatorSet();
-                set.playTogether(ballAnim, alphaAnimator);
-                set.setDuration(700);
-                set.start();
+             View view = mViews.get(position);
+          
+            if (showAnimation && poSet.contains(position) ) {
+                ballAnimtion(view).start();
             }
             container.addView(view);
             return view;
         }
     }
 
+    private AnimatorSet ballAnimtion(final View view){
+        final View holder = view.findViewById(R.id.mode_holder);
+         final TextView  modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
+         final ImageView selectedImg =  (ImageView) view.findViewById(R.id.img_selected);
+         final TextView modeName = (TextView) view.findViewById(R.id.tv_mode_name);
+         modeName.setAlpha(0);
+         
+        ValueAnimator ballAnim1 = ValueAnimator.ofFloat(0.5f, 1.05f).setDuration(300);
+        ballAnim1.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float currentValue = (Float) animation.getAnimatedValue();
+                holder.setScaleX(currentValue);
+                holder.setScaleY(currentValue);
+            }
+        });
+        ValueAnimator ballAnim2 = ValueAnimator.ofFloat(1.0f,0.95f,1.0f).setDuration(300);
+        ballAnim2.addUpdateListener(new AnimatorUpdateListener() {
+            boolean flag = true;
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float currentValue = (Float) animation.getAnimatedValue();
+                holder.setScaleX(currentValue);
+                holder.setScaleY(currentValue);
+                if (flag && mSelected == holder && animation.getCurrentPlayTime()>50) {
+                    // add gray shadow
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(), BitmapUtils
+                                            .createGaryBitmap(((LockMode) mSelected.getTag()).modeIcon))));
+                        }
+                    });
+                    flag = false;
+                }
+            }
+        });
+        
+        ValueAnimator alphaAnimator = ValueAnimator.ofFloat(0f, 1.0f).setDuration(300);
+        alphaAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                if (mSelected == holder) {
+                    selectedImg.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        alphaAnimator.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float currValue = (Float) animation.getAnimatedValue();
+                if (mSelected == holder) {
+                    selectedImg.setAlpha(currValue);
+                }
+                modeName.setAlpha(currValue);
+            }
+        });
+        
+        AnimatorSet part = new AnimatorSet();
+        part.playTogether(ballAnim2,alphaAnimator);
+        AnimatorSet set = new AnimatorSet();
+        set.play(ballAnim1).before(part);
+        return  set;
+    }
+    
+    
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         try {
@@ -392,7 +453,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             }
         });
         set.playTogether(thisViewAlpha,selectImgAlpha,textAnim);
-        set.setStartDelay(300);
+        set.setStartDelay(400);
         set.start();
     }
 
