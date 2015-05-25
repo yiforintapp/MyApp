@@ -300,13 +300,13 @@ public class LockModeView extends View {
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                     if (top.contains(upX, upY)) {
-                        this.setScaleX(0.95f);
-                        this.setScaleY(0.95f);
+                        this.setScaleX(0.98f);
+                        this.setScaleY(0.98f);
                         pressLockFlag = true;
                         invalidate();
                     }else if(bottom.contains(upX, upY)){
-                        this.setScaleX(0.95f);
-                        this.setScaleY(0.95f);
+                        this.setScaleX(0.98f);
+                        this.setScaleY(0.98f);
                         pressModeNameFlag = true;
                         invalidate();
                     }
