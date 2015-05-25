@@ -40,6 +40,7 @@ import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
+import com.leo.appmaster.quickgestures.view.AppleWatchLayout.Direction;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -140,6 +141,23 @@ public class AppleWatchContainer extends FrameLayout {
                                     snapToNext();
                                     return true;
                                 }
+                            } else if(mTouchDownY >  mDymicLayout.getTop()) {
+                                AppleWatchLayout gestureLayout = null;
+                                if (mCurrentGestureType == GType.DymicLayout) {
+                                    gestureLayout = mDymicLayout;
+                                } else if (mCurrentGestureType == GType.MostUsedLayout) {
+                                    gestureLayout = mMostUsedLayout;
+                                } else {
+                                    gestureLayout = mSwitcherLayout;
+                                }
+                                if(velocityX > 300) {
+                                    gestureLayout.snapLong(Direction.Left);
+                                    return true;
+                                } 
+                                if(velocityX < -300) {
+                                    gestureLayout.snapLong(Direction.Right);
+                                    return true;
+                                } 
                             }
                         }
 
@@ -284,33 +302,43 @@ public class AppleWatchContainer extends FrameLayout {
 
     private void onTouchUp() {
         LeoLog.d(TAG, "onTouchUp mRotateDegree = " + mRotateDegree);
-        if (mOrientation == Orientation.Left) {
-            if (mRotateDegree < 0) {
-                if (mRotateDegree < -15) {
-                    snapToPrevious();
-                } else {
-                    snapToCurrent();
+        if(mTouchDownY > mDymicLayout.getBottom()) {
+            if (mOrientation == Orientation.Left) {
+                if (mRotateDegree < 0) {
+                    if (mRotateDegree < -15) {
+                        snapToPrevious();
+                    } else {
+                        snapToCurrent();
+                    }
+                } else if (mRotateDegree > 0) {
+                    if (mRotateDegree > 15) {
+                        snapToNext();
+                    } else {
+                        snapToCurrent();
+                    }
                 }
-            } else if (mRotateDegree > 0) {
-                if (mRotateDegree > 15) {
-                    snapToNext();
-                } else {
-                    snapToCurrent();
+            } else if(mOrientation == Orientation.Right){
+                if (mRotateDegree < 0) {
+                    if (mRotateDegree < -15) {
+                        snapToPrevious();
+                    } else {
+                        snapToCurrent();
+                    }
+                } else if (mRotateDegree > 0) {
+                    if (mRotateDegree > 15) {
+                        snapToNext();
+                    } else {
+                        snapToCurrent();
+                    }
                 }
             }
-        } else {
-            if (mRotateDegree < 0) {
-                if (mRotateDegree < -15) {
-                    snapToPrevious();
-                } else {
-                    snapToCurrent();
-                }
-            } else if (mRotateDegree > 0) {
-                if (mRotateDegree > 15) {
-                    snapToNext();
-                } else {
-                    snapToCurrent();
-                }
+        } else if(mTouchDownY > mDymicLayout.getTop()){
+            if (mCurrentGestureType == GType.DymicLayout) {
+                mDymicLayout.onTouchUp();
+            } else if (mCurrentGestureType == GType.MostUsedLayout) {
+                mMostUsedLayout.onTouchUp();
+            } else if (mCurrentGestureType == GType.SwitcherLayout) {
+                mSwitcherLayout.onTouchUp();
             }
         }
     }
@@ -615,6 +643,7 @@ public class AppleWatchContainer extends FrameLayout {
             targetLayout = mSwitcherLayout;
 //            setSwitchList((List<QuickSwitcherInfo>) infos);
 //            fillSwitchItem(targetLayout, infos);
+            
         }
         targetLayout.fillItems(infos);
     }

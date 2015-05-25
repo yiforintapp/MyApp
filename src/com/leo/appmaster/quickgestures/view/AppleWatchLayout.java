@@ -12,12 +12,15 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.Orientation;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +33,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
 
 import com.leo.appmaster.privacycontact.ContactCallLog;
@@ -54,9 +58,12 @@ public class AppleWatchLayout extends ViewGroup {
     private Context mContext;
     private GestureItemView[][] mHoriChildren = new GestureItemView[3][];
     private float mLastMovex;
+    private float mMinuOffset;
     private int mAdjustCount = 0;
+    private int mSnapDuration = 800;
+    private boolean mSnapping;
 
-    private enum Direction {
+    public static enum Direction {
         Right, Left, None;
     }
 
@@ -256,7 +263,6 @@ public class AppleWatchLayout extends ViewGroup {
                 addView.setScaleY(lp.scale);
             }
         }
-        printChildren();
     }
 
     private void init() {
@@ -420,7 +426,6 @@ public class AppleWatchLayout extends ViewGroup {
             relayoutExtraChildren();
             mNeedRelayoutExtraItem = false;
             LeoLog.e("children", "onLayout");
-            printChildren();
         }
 
         /*
@@ -1211,7 +1216,6 @@ public class AppleWatchLayout extends ViewGroup {
             }
         }
 
-        printChildren();
         requestLayout();
         mNeedRelayoutExtraItem = true;
     }
@@ -1301,26 +1305,26 @@ public class AppleWatchLayout extends ViewGroup {
         float minuOffset, adjustMoveX;
         float offset, moveY;
         float rawScale1, rawScale2, targetScale;
+        mLastMovex = moveX;
         if (direction == Direction.Left) {
             minuOffset = mHoriChildren[1][10].getLeft()
                     - mHoriChildren[1][9].getLeft();
+            mMinuOffset = minuOffset;
             int shouldAdjustCount = (int) (moveX / minuOffset);
             if (mAdjustCount < shouldAdjustCount) {
                 adjustIconPosition(Direction.Left);
-                // adjustIconScale(Direction.Left);
                 mAdjustCount++;
             } else if (mAdjustCount > shouldAdjustCount) {
                 adjustIconPosition(Direction.Right);
-                // adjustIconScale(Direction.Right);
                 mAdjustCount--;
             }
-            mLastMovex = moveX;
-            for (i = 0; i < mHoriChildren[0].length - 4; i++) {
+            for (i = 0; i < mHoriChildren[0].length - 1; i++) {
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;
-                if (i == mHoriChildren[0].length - 5) {
-                    offset = getOffset(mHoriChildren[0][i], null,
-                            Direction.Left);
+                if (i == mHoriChildren[0].length - 1) {
+                    // offset = getOffset(mHoriChildren[0][i], null,
+                    // Direction.Left);
+                    offset = moveX;
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
@@ -1340,12 +1344,13 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[0][i].setTranslationX(adjustMoveX);
                 mHoriChildren[0][i].setTranslationY(moveY);
             }
-            for (i = 0; i < mHoriChildren[1].length - 5; i++) {
+            for (i = 0; i < mHoriChildren[1].length - 1; i++) {
                 rawScale1 = ((LayoutParams) mHoriChildren[1][i]
                         .getLayoutParams()).scale;
-                if (i == mHoriChildren[1].length - 6) {
-                    offset = getOffset(mHoriChildren[1][i], null,
-                            Direction.Left);
+                if (i == mHoriChildren[1].length - 1) {
+                    offset = moveX;
+                    // offset = getOffset(mHoriChildren[1][i], null,
+                    // Direction.Left);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
@@ -1367,10 +1372,12 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[1][i].setTranslationX(adjustMoveX);
                 mHoriChildren[1][i].setTranslationY(moveY);
             }
-            for (i = 0; i < mHoriChildren[2].length - 4; i++) {
+            for (i = 0; i < mHoriChildren[2].length - 1; i++) {
                 rawScale1 = ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).scale;
-                if (i == mHoriChildren[2].length - 5) {
-                    offset = getOffset(mHoriChildren[2][i], null, Direction.Left);
+                if (i == mHoriChildren[1].length - 1) {
+                    offset = moveX;
+                    // offset = getOffset(mHoriChildren[2][i], null,
+                    // Direction.Left);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
@@ -1391,23 +1398,22 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (direction == Direction.Right) {
             minuOffset = mHoriChildren[1][4].getRight()
                     - mHoriChildren[1][5].getRight();
-
+            mMinuOffset = minuOffset;
             int shouldAdjustCount = (int) (moveX / minuOffset);
             if (mAdjustCount < shouldAdjustCount) {
                 adjustIconPosition(Direction.Right);
-                // adjustIconScale(Direction.Right);
                 mAdjustCount++;
             } else if (mAdjustCount > shouldAdjustCount) {
                 adjustIconPosition(Direction.Left);
-                // adjustIconScale(Direction.Left);
                 mAdjustCount--;
             }
-            for (i = mHoriChildren[0].length - 1; i >= 4; i--) {
+            for (i = mHoriChildren[0].length - 1; i >= 0; i--) {
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;
-                if (i == 4) {
-                    offset = getOffset(mHoriChildren[0][i], null,
-                            Direction.Right);
+                if (i == 0) {
+                    offset = moveX;
+                    // offset = getOffset(mHoriChildren[0][i], null,
+                    // Direction.Right);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
@@ -1428,12 +1434,13 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[0][i].setTranslationX(adjustMoveX);
                 mHoriChildren[0][i].setTranslationY(moveY);
             }
-            for (i = mHoriChildren[1].length - 1; i >= 5; i--) {
+            for (i = mHoriChildren[1].length - 1; i >= 0; i--) {
                 rawScale1 = ((LayoutParams) mHoriChildren[1][i]
                         .getLayoutParams()).scale;
-                if (i == 5) {
-                    offset = getOffset(mHoriChildren[1][i], null,
-                            Direction.Right);
+                if (i == 0) {
+                    offset = moveX;
+                    // offset = getOffset(mHoriChildren[1][i], null,
+                    // Direction.Right);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
@@ -1454,12 +1461,13 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[1][i].setTranslationX(adjustMoveX);
                 mHoriChildren[1][i].setTranslationY(moveY);
             }
-            for (i = mHoriChildren[2].length - 1; i >= 4; i--) {
+            for (i = mHoriChildren[2].length - 1; i >= 0; i--) {
                 rawScale1 = ((LayoutParams) mHoriChildren[2][i]
                         .getLayoutParams()).scale;
-                if (i == 4) {
-                    offset = getOffset(mHoriChildren[2][i], null,
-                            Direction.Right);
+                if (i == 0) {
+                    offset = moveX;
+                    // offset = getOffset(mHoriChildren[2][i], null,
+                    // Direction.Right);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
@@ -1482,307 +1490,6 @@ public class AppleWatchLayout extends ViewGroup {
             }
         }
     }
-
-    private void adjustIconScale(Direction direction) {
-        // TODO Auto-generated method stub
-        if (direction == Direction.Left) {
-            LayoutParams lp = null;
-            float firstScale;
-            firstScale = ((LayoutParams) ((GestureItemView) mHoriChildren[0][0]).getLayoutParams()).scale;
-            for (int i = 0; i < mHoriChildren[0].length; i++) {
-                if (i == mHoriChildren[0].length - 1) {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[0][i]).getLayoutParams();
-                    lp.scale = firstScale;
-                } else {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[0][i + 1])
-                            .getLayoutParams();
-                    ((LayoutParams) ((GestureItemView) mHoriChildren[0][i]).getLayoutParams()).scale = lp.scale;
-                }
-            }
-
-            firstScale = ((LayoutParams) ((GestureItemView) mHoriChildren[1][0]).getLayoutParams()).scale;
-            for (int i = 0; i < mHoriChildren[1].length; i++) {
-                if (i == mHoriChildren[1].length - 1) {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[1][i]).getLayoutParams();
-                    lp.scale = firstScale;
-                } else {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[1][i + 1])
-                            .getLayoutParams();
-                    ((LayoutParams) ((GestureItemView) mHoriChildren[1][i]).getLayoutParams()).scale = lp.scale;
-                }
-            }
-
-            firstScale = ((LayoutParams) ((GestureItemView) mHoriChildren[2][0]).getLayoutParams()).scale;
-            for (int i = 0; i < mHoriChildren[2].length; i++) {
-                if (i == mHoriChildren[2].length - 1) {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[2][i]).getLayoutParams();
-                    lp.scale = firstScale;
-                } else {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[2][i + 1])
-                            .getLayoutParams();
-                    ((LayoutParams) ((GestureItemView) mHoriChildren[2][i]).getLayoutParams()).scale = lp.scale;
-                }
-            }
-        } else if (direction == Direction.Right) {
-            LayoutParams lp = null;
-            float lastScale = ((LayoutParams) ((GestureItemView) mHoriChildren[0][mHoriChildren[0].length - 1])
-                    .getLayoutParams()).scale;
-            for (int i = 0; i < mHoriChildren[0].length; i++) {
-                if (i == mHoriChildren[0].length - 1) {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[0][i]).getLayoutParams();
-                    lp.scale = lastScale;
-                } else {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[0][i + 1])
-                            .getLayoutParams();
-                    ((LayoutParams) ((GestureItemView) mHoriChildren[0][i]).getLayoutParams()).scale = lp.scale;
-                }
-            }
-            lastScale = ((LayoutParams) ((GestureItemView) mHoriChildren[1][mHoriChildren[1].length - 1])
-                    .getLayoutParams()).scale;
-            for (int i = 0; i < mHoriChildren[1].length; i++) {
-                if (i == mHoriChildren[1].length - 1) {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[1][i]).getLayoutParams();
-                    lp.scale = lastScale;
-                } else {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[1][i + 1])
-                            .getLayoutParams();
-                    ((LayoutParams) ((GestureItemView) mHoriChildren[1][i]).getLayoutParams()).scale = lp.scale;
-                }
-            }
-            lastScale = ((LayoutParams) ((GestureItemView) mHoriChildren[2][mHoriChildren[2].length - 1])
-                    .getLayoutParams()).scale;
-            for (int i = 0; i < mHoriChildren[2].length; i++) {
-                if (i == mHoriChildren[2].length - 1) {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[2][i]).getLayoutParams();
-                    lp.scale = lastScale;
-                } else {
-                    lp = (LayoutParams) ((GestureItemView) mHoriChildren[2][i + 1])
-                            .getLayoutParams();
-                    ((LayoutParams) ((GestureItemView) mHoriChildren[2][i]).getLayoutParams()).scale = lp.scale;
-                }
-            }
-        }
-
-    }
-
-    // /**
-    // * @param direction is new show location, not be scolle direction
-    // * @param moveX
-    // */
-    // private void computeTranslateScale(Direction direction, float moveX) {
-    // int i;
-    // float minuOffset, adjustMoveX;
-    // float offset, moveY;
-    // float rawScale1, rawScale2, targetScale;
-    // if (direction == Direction.Left) {
-    // minuOffset = mTotalWidth - mHoriChildren[1][9].getLeft()
-    // - mHoriChildren[1][5].getMeasuredWidth() / 2;
-    // int shouldAdjustCount = (int) (moveX / minuOffset);
-    // if (mAdjustCount < shouldAdjustCount) {
-    // adjustIconPosition(Direction.Left);
-    // mAdjustCount++;
-    // } else if (mAdjustCount > shouldAdjustCount) {
-    // adjustIconPosition(Direction.Right);
-    // mAdjustCount--;
-    // }
-    // mLastMovex = moveX;
-    // for (i = 0; i < mHoriChildren[0].length; i++) {
-    // rawScale1 = ((LayoutParams) mHoriChildren[0][i].getLayoutParams()).scale;
-    // if (i == mHoriChildren[0].length - 1) {
-    // offset = getOffset(mHoriChildren[0][i], null, Direction.Left);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
-    // moveY = 0f;
-    // } else {
-    // rawScale2 = ((LayoutParams) mHoriChildren[0][i +
-    // 1].getLayoutParams()).scale;
-    // if (i == 0) {
-    // offset = getOffset(mHoriChildren[0][i], mHoriChildren[0][i + 1],
-    // Direction.Left);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = 0f;
-    // } else {
-    // offset = getOffset(mHoriChildren[0][i], mHoriChildren[0][i + 1],
-    // Direction.Left);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = computeTranslateY(mHoriChildren[0][i], mHoriChildren[0][i + 1],
-    // adjustMoveX);
-    // }
-    // }
-    // mHoriChildren[0][i].setScaleX(targetScale);
-    // mHoriChildren[0][i].setScaleY(targetScale);
-    // mHoriChildren[0][i].setTranslationX(adjustMoveX);
-    // mHoriChildren[0][i].setTranslationY(moveY);
-    // }
-    // for (i = 0; i < mHoriChildren[1].length; i++) {
-    // rawScale1 = ((LayoutParams) mHoriChildren[1][i].getLayoutParams()).scale;
-    // if (i == mHoriChildren[1].length - 1) {
-    // offset = getOffset(mHoriChildren[1][i], null, Direction.Left);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
-    // moveY = 0f;
-    // } else {
-    // rawScale2 = ((LayoutParams) mHoriChildren[1][i +
-    // 1].getLayoutParams()).scale;
-    // if (i == 0) {
-    // offset = getOffset(mHoriChildren[1][i], mHoriChildren[1][i + 1],
-    // Direction.Left);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = 0f;
-    // LeoLog.e("====", "rawScale1 = " + rawScale1 + "      rawScale2 = "
-    // + rawScale2
-    // + "       targetScale = " + targetScale);
-    // } else {
-    // offset = getOffset(mHoriChildren[1][i], mHoriChildren[1][i + 1],
-    // Direction.Left);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = computeTranslateY(mHoriChildren[1][i], mHoriChildren[1][i + 1],
-    // adjustMoveX);
-    // }
-    // }
-    //
-    // mHoriChildren[1][i].setScaleX(targetScale);
-    // mHoriChildren[1][i].setScaleY(targetScale);
-    // mHoriChildren[1][i].setTranslationX(adjustMoveX);
-    // mHoriChildren[1][i].setTranslationY(moveY);
-    // }
-    // for (i = 0; i < mHoriChildren[2].length; i++) {
-    // rawScale1 = ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).scale;
-    // if (i == mHoriChildren[2].length - 1) {
-    // offset = getOffset(mHoriChildren[2][i], null, Direction.Left);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
-    // moveY = 0f;
-    // } else {
-    // rawScale2 = ((LayoutParams) mHoriChildren[2][i +
-    // 1].getLayoutParams()).scale;
-    // if (i == 0) {
-    // offset = getOffset(mHoriChildren[2][i], mHoriChildren[2][i + 1],
-    // Direction.Left);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = 0f;
-    // } else {
-    // offset = getOffset(mHoriChildren[2][i], mHoriChildren[2][i + 1],
-    // Direction.Left);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = computeTranslateY(mHoriChildren[2][i], mHoriChildren[2][i + 1],
-    // adjustMoveX);
-    // }
-    // }
-    // mHoriChildren[2][i].setScaleX(targetScale);
-    // mHoriChildren[2][i].setScaleY(targetScale);
-    // mHoriChildren[2][i].setTranslationX(adjustMoveX);
-    // mHoriChildren[2][i].setTranslationY(moveY);
-    // }
-    // } else if (direction == Direction.Right) {
-    // minuOffset = mHoriChildren[1][5].getMeasuredWidth() / 2
-    // - mHoriChildren[1][5].getRight();
-    // if (moveX < minuOffset) {
-    // moveX = moveX - minuOffset;
-    // adjustIconPosition(Direction.Right);
-    // }
-    // for (i = mHoriChildren[0].length - 1; i >= 0; i--) {
-    // rawScale1 = ((LayoutParams) mHoriChildren[0][i].getLayoutParams()).scale;
-    // if (i == 0) {
-    // offset = getOffset(mHoriChildren[0][i], null, Direction.Right);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
-    // moveY = 0f;
-    // } else {
-    // rawScale2 = ((LayoutParams) mHoriChildren[0][i -
-    // 1].getLayoutParams()).scale;
-    // if (i == mHoriChildren[0].length - 1) {
-    // offset = getOffset(mHoriChildren[0][i], mHoriChildren[0][i - 1],
-    // Direction.Right);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = 0f;
-    // } else {
-    // offset = getOffset(mHoriChildren[0][i], mHoriChildren[0][i - 1],
-    // Direction.Right);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = computeTranslateY(mHoriChildren[0][i], mHoriChildren[0][i - 1],
-    // adjustMoveX);
-    // }
-    // }
-    // mHoriChildren[0][i].setScaleX(targetScale);
-    // mHoriChildren[0][i].setScaleY(targetScale);
-    // mHoriChildren[0][i].setTranslationX(adjustMoveX);
-    // mHoriChildren[0][i].setTranslationY(moveY);
-    // }
-    // for (i = mHoriChildren[1].length - 1; i >= 0; i--) {
-    // rawScale1 = ((LayoutParams) mHoriChildren[1][i].getLayoutParams()).scale;
-    // if (i == 0) {
-    // offset = getOffset(mHoriChildren[1][i], null, Direction.Right);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
-    // moveY = 0f;
-    // } else {
-    // rawScale2 = ((LayoutParams) mHoriChildren[1][i -
-    // 1].getLayoutParams()).scale;
-    // if (i == mHoriChildren[1].length - 1) {
-    // offset = getOffset(mHoriChildren[1][i], mHoriChildren[1][i - 1],
-    // Direction.Right);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = 0f;
-    // LeoLog.e("====", "rawScale1 = " + rawScale1 + "      rawScale2 = "
-    // + rawScale2
-    // + "       targetScale = " + targetScale);
-    // } else {
-    // offset = getOffset(mHoriChildren[1][i], mHoriChildren[1][i - 1],
-    // Direction.Right);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = computeTranslateY(mHoriChildren[1][i], mHoriChildren[1][i - 1],
-    // moveX);
-    // }
-    // }
-    // mHoriChildren[1][i].setScaleX(targetScale);
-    // mHoriChildren[1][i].setScaleY(targetScale);
-    // mHoriChildren[1][i].setTranslationX(adjustMoveX);
-    // mHoriChildren[1][i].setTranslationY(moveY);
-    // }
-    // for (i = mHoriChildren[2].length - 1; i >= 0; i--) {
-    // rawScale1 = ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).scale;
-    // if (i == 0) {
-    // offset = getOffset(mHoriChildren[2][i], null, Direction.Right);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
-    // moveY = 0f;
-    // } else {
-    // rawScale2 = ((LayoutParams) mHoriChildren[2][i -
-    // 1].getLayoutParams()).scale;
-    // if (i == mHoriChildren[0].length - 1) {
-    // offset = getOffset(mHoriChildren[2][i], mHoriChildren[2][i - 1],
-    // Direction.Right);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
-    // moveY = 0f;
-    // } else {
-    // offset = getOffset(mHoriChildren[2][i], mHoriChildren[2][i - 1],
-    // Direction.Right);
-    // adjustMoveX = offset / minuOffset * moveX;
-    // targetScale = rawScale1 + adjustMoveX
-    // / offset * (rawScale2 - rawScale1);
-    // moveY = computeTranslateY(mHoriChildren[2][i], mHoriChildren[2][i - 1],
-    // moveX);
-    // }
-    // }
-    // mHoriChildren[2][i].setScaleX(targetScale);
-    // mHoriChildren[2][i].setScaleY(targetScale);
-    // mHoriChildren[2][i].setTranslationX(adjustMoveX);
-    // mHoriChildren[2][i].setTranslationY(moveY);
-    // }
-    // }
-    // }
 
     private float computeTranslateY(GestureItemView from, GestureItemView to, float tranX) {
         float dx = to.getLeft() - from.getLeft();
@@ -1819,5 +1526,139 @@ public class AppleWatchLayout extends ViewGroup {
                     + targetView.getTranslationX() + "; ";
         }
         LeoLog.e("children", resault);
+    }
+
+    public void snapLong(Direction direction) {
+        float distance;
+        int duration;
+        if (!mSnapping) {
+            if (direction == Direction.Left) {
+                distance = mMinuOffset * 3 - mLastMovex;
+                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 3);
+                duration = (int) ((distance / mMinuOffset * 3) * mSnapDuration);
+                transAnima.setInterpolator(new DecelerateInterpolator());
+                transAnima.addUpdateListener(new AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        mLastMovex = (Float) animation.getAnimatedValue();
+                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
+                        computeTranslateScale(Direction.Left, mLastMovex);
+                    }
+                });
+                transAnima.addListener(new AnimatorListenerAdapter() {
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        mSnapping = false;
+                        mAdjustCount = 0;
+                    }
+                });
+                transAnima.start();
+                mSnapping = true;
+            } else if (direction == Direction.Right) {
+                distance = mMinuOffset * 3 - mLastMovex;
+                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 3);
+                duration = (int) ((distance / mMinuOffset * 3) * mSnapDuration);
+                transAnima.setInterpolator(new DecelerateInterpolator());
+                transAnima.addUpdateListener(new AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        mLastMovex = (Float) animation.getAnimatedValue();
+                        computeTranslateScale(Direction.Right, mLastMovex);
+                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
+                    }
+                });
+                transAnima.addListener(new AnimatorListenerAdapter() {
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        mSnapping = false;
+                        mAdjustCount = 0;
+                    }
+                });
+                transAnima.start();
+                mSnapping = true;
+            }
+        }
+    }
+
+    private void snapShort(Direction direction) {
+        float distance, offset;
+        int duration;
+        int temp;
+        if (!mSnapping) {
+            if (direction == Direction.Left) {
+                temp = (int) (mLastMovex / mMinuOffset);
+                offset = mLastMovex - temp * mMinuOffset;
+                ValueAnimator transAnima;
+                if (offset > mMinuOffset / 2) {
+                    distance = (temp + 1) * mMinuOffset;
+                } else {
+                    distance = temp * mMinuOffset;
+                }
+                transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
+                duration = (int) (((distance - mLastMovex) / mMinuOffset * 3) * mSnapDuration);
+                transAnima.setInterpolator(new DecelerateInterpolator());
+                transAnima.addUpdateListener(new AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        mLastMovex = (Float) animation.getAnimatedValue();
+                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
+                        computeTranslateScale(Direction.Left, mLastMovex);
+                    }
+                });
+                transAnima.addListener(new AnimatorListenerAdapter() {
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        mSnapping = false;
+                        mAdjustCount = 0;
+                    }
+                });
+                transAnima.start();
+                mSnapping = true;
+            } else if (direction == Direction.Right) {
+                temp = (int) (mLastMovex / mMinuOffset);
+                offset = mLastMovex - temp * mMinuOffset;
+                ValueAnimator transAnima;
+                if (offset < mMinuOffset / 2) {
+                    distance = (temp + 1) * mMinuOffset;
+                } else {
+                    distance = temp * mMinuOffset;
+                }
+                transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
+                duration = (int) (((distance - mLastMovex) / mMinuOffset * 3) * mSnapDuration);
+                transAnima.addUpdateListener(new AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        mLastMovex = (Float) animation.getAnimatedValue();
+                        computeTranslateScale(Direction.Right, mLastMovex);
+                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
+                    }
+                });
+                transAnima.addListener(new AnimatorListenerAdapter() {
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        mSnapping = false;
+                        mAdjustCount = 0;
+                    }
+                });
+                transAnima.start();
+                mSnapping = true;
+            }
+        }
+    }
+
+    public void onTouchUp() {
+        if (mLastMovex > 0) { // Left
+            snapShort(Direction.Left);
+        } else if (mLastMovex < 0) { // Right
+            snapShort(Direction.Right);
+        }
     }
 }

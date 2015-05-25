@@ -81,32 +81,29 @@ public class QuickGesturePopupActivity extends Activity implements
 //        list = AppLoadEngine.getInstance(this).getAllPkgInfo();
         list = new ArrayList<Object>();
         list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
-
-        if (mSwitchList == null) {
-            mSwitchListFromSp = mSpSwitch.getSwitchList();
-            switchNum = mSpSwitch.getSwitchListSize();
-            LeoLog.d("testFirstInGet", "mSwitchListFromSp : " + mSwitchListFromSp);
-            if (mSwitchListFromSp.isEmpty()) {
-//                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
-                mSwitchList = new ArrayList<Object>();
-                mSwitchList.add(QuickSwitchManager.getInstance(this).getSwitchList(switchNum));
-                String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
-                        switchNum);
-                mSpSwitch.setSwitchList(saveToSp);
-                LeoLog.d("testFirstInGet", "saveToSp:" + saveToSp);
-            } else {
-                LeoLog.d("testFirstInGet", "get list from sp");
-//                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
-                mSwitchList = new ArrayList<Object>();
-                mSwitchList.add(QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp));
-            }
-
-            fillQg1();
-            fillQg2();
-//            fillQg3();
-
-            mContainer.showOpenAnimation();
-        }
+        fillQg1();
+        fillQg2();
+//        if (mSwitchList == null) {
+//            mSwitchListFromSp = mSpSwitch.getSwitchList();
+//            switchNum = mSpSwitch.getSwitchListSize();
+//            LeoLog.d("testFirstInGet", "mSwitchListFromSp : " + mSwitchListFromSp);
+//            if (mSwitchListFromSp.isEmpty()) {
+////                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
+//                mSwitchList = new ArrayList<Object>();
+//                mSwitchList.add(QuickSwitchManager.getInstance(this).getSwitchList(switchNum));
+//                String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
+//                        switchNum);
+//                mSpSwitch.setSwitchList(saveToSp);
+//                LeoLog.d("testFirstInGet", "saveToSp:" + saveToSp);
+//            } else {
+//                LeoLog.d("testFirstInGet", "get list from sp");
+////                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
+//                mSwitchList = new ArrayList<Object>();
+//                mSwitchList.add(QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp));
+//            }
+////            fillQg3();
+//        }
+        mContainer.showOpenAnimation();
         overridePendingTransition(-1, -1);
         mContainer.setOnFocusChangeListener(new OnFocusChangeListener() {
 
