@@ -1340,7 +1340,6 @@ public class AppleWatchContainer extends FrameLayout {
         int mRocketX = (int) tv.getX() + mRocketWidth / 2;
         int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
         mPopupActivity.RockeyAnimation(mLayoutBottom, mRocketX, mRocketY);
-
     }
 
     public void setRocket(QuickGesturePopupActivity quickGesturePopupActivity) {
