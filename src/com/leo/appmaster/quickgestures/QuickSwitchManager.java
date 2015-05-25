@@ -411,8 +411,8 @@ public class QuickSwitchManager {
         return mLabel;
     }
 
-    public List<QuickSwitcherInfo> getSwitchList(int switchNum) {
-        List<QuickSwitcherInfo> mSwitchList = new ArrayList<QuickSwitcherInfo>();
+    public List<Object> getSwitchList(int switchNum) {
+        List<Object> mSwitchList = new ArrayList<Object>();
         // 蓝牙开关
         QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
         lanyaInfo.iDentiName = BLUETOOTH;
@@ -1000,10 +1000,10 @@ public class QuickSwitchManager {
         mContext.startActivity(intent);
     }
 
-    public String ListToString(List<QuickSwitcherInfo> mSwitchList, int mNum) {
+    public String ListToString(List<Object> mSwitchList, int mNum) {
         String ListString = "";
         for (int i = 0; i < mNum; i++) {
-            QuickSwitcherInfo switchInfo = mSwitchList.get(i);
+            QuickSwitcherInfo switchInfo = (QuickSwitcherInfo) mSwitchList.get(i);
             String name = switchInfo.iDentiName;
             int position = switchInfo.position;
 
@@ -1017,8 +1017,8 @@ public class QuickSwitchManager {
         return ListString;
     }
 
-    public List<QuickSwitcherInfo> StringToList(String mSwitchListFromSp) {
-        List<QuickSwitcherInfo> mSwitcherList = new ArrayList<QuickSwitcherInfo>();
+    public List<Object> StringToList(String mSwitchListFromSp) {
+        List<Object> mSwitcherList = new ArrayList<Object>();
         String[] mSwitchAllInfo = mSwitchListFromSp.split(",");
         for (int i = 0; i < mSwitchAllInfo.length; i++) {
             QuickSwitcherInfo mInfo = new QuickSwitcherInfo();

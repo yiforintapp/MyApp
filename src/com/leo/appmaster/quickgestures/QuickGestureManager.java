@@ -143,7 +143,7 @@ public class QuickGestureManager {
         return null;
     }
 
-    public void updateSwitcherData(List<QuickSwitcherInfo> infos) {
+    public void updateSwitcherData(List<Object> infos) {
         String saveToSp = QuickSwitchManager.getInstance(mContext)
                 .ListToString(infos, infos.size());
         LeoLog.d("updateSwitcherData", "saveToSp:" + saveToSp);
