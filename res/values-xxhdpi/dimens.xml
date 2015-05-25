@@ -293,6 +293,9 @@
     <dimen name="weizhuang_zhiwen_icon_tips_width">41dp</dimen>
     <dimen name="weizhuang_zhiwen_icon_tips_height">63dp</dimen>
     <dimen name="weizhuang_zhiwen_icon_m_top">35dp</dimen>
+    <dimen name="weizhuang_instruction_margin_top">4dp</dimen>
+        <dimen name="weizhuang_tip_content_padding">30dp</dimen>
+    
     <!-- app weizhuang -->
 
     <dimen name="mode_name_max_width">220dp</dimen>

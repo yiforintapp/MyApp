@@ -549,7 +549,6 @@ public class TaskDetectService extends Service {
     public static TaskDetectService getService() {
         return sService;
     }
-
     public static synchronized Notification getNotification(Context context) {
         if (sNotification == null) {
             PendingIntent pi = PendingIntent.getActivity(context, 0,

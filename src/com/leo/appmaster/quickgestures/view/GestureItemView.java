@@ -4,16 +4,21 @@ package com.leo.appmaster.quickgestures.view;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.DragEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class GestureItemView extends TextView {
+@SuppressLint("CutPasteId")
+public class GestureItemView extends LinearLayout {
 
     private static final String TAG = "GestureTextView";
     private AppleWatchLayout mHolderLayout;
@@ -22,25 +27,41 @@ public class GestureItemView extends TextView {
     private Drawable mCrossDrawable;
     private boolean mIsShowReadTip;
     private boolean mAddFlag = false;
+    private TextView mTextView;
+    private ImageView mImageView;
 
     public GestureItemView(Context context) {
         super(context);
-        init();
     }
 
     public GestureItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     @Override
     protected void onFinishInflate() {
+        mTextView = (TextView) findViewById(R.id.tv_app_name);
+        mImageView = (ImageView) findViewById(R.id.iv_app_icon);
         super.onFinishInflate();
     }
 
     private void init() {
-        mCrossDrawable = getContext().getResources().getDrawable(R.drawable.gesture_item_delete);
+        mCrossDrawable = getContext().getResources().getDrawable(R.drawable.app_stop_btn);
         mCrossDrawable.setBounds(0, 0, mCrossDrawable.getIntrinsicWidth(),
                 mCrossDrawable.getIntrinsicWidth());
+    }
+
+    public void setItemName(String name) {
+        mTextView.setText(name);
+    }
+    
+    public String getItemName() {
+        return mTextView.getText().toString();
+    }
+
+    public void setItemIcon(Drawable icon) {
+        mImageView.setImageDrawable(icon);
     }
 
     public void setDecorateAction(DecorateAction action) {
@@ -72,8 +93,9 @@ public class GestureItemView extends TextView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+        LeoLog.e("xxxx", "dispatchDraw");
         if (mEditing && !mAddFlag) {
             drawCross(canvas);
         } else {
@@ -90,6 +112,7 @@ public class GestureItemView extends TextView {
     }
 
     public void enterEditMode() {
+        LeoLog.e("xxxx", "enterEditMode");
         mEditing = true;
         invalidate();
     }

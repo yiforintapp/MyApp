@@ -169,6 +169,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME = "quick_gesture_quick_switch_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME = "quick_gesture_common_app_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG = "quick_gesture_common_app_dialog_checkbox_flag";
+    public static final String PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP = "quick_gesture_miui_setting_open_float_window_first_dialog_tip";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1576,7 +1577,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
                 packageNames)
                 .commit();
     }
-//获取添加到快捷手势中的快捷开关
+
+    // 获取添加到快捷手势中的快捷开关
     public String getQuickSwitchPackageName() {
         return mPref.getString(PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME,
                 PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME);
@@ -1608,7 +1610,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
                 .commit();
     }
 
-    //获取添加到快捷手势中的快捷常用应用包名
+    // 获取添加到快捷手势中的快捷常用应用包名
     public String getCommonAppPackageName() {
         return mPref.getString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
                 PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME);
@@ -1617,8 +1619,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setQuickGestureCommonAppDialogCheckboxValue(boolean flag) {
         mPref.edit().putBoolean(PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG, flag).commit();
     }
-//获取常用应用是否开启了习惯记录
+
+    // 获取常用应用是否开启了习惯记录
     public boolean getQuickGestureCommonAppDialogCheckboxValue() {
         return mPref.getBoolean(PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG, true);
+    }
+
+    public void setQuickGestureMiuiSettingFirstDialogTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP,
+                flag).commit();
+    }
+
+    public boolean getQuickGestureMiuiSettingFirstDialogTip() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP,
+                false);
     }
 }

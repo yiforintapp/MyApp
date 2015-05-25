@@ -1,27 +1,25 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<com.leo.appmaster.quickgestures.view.GestureItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/apple_watch_item_size"
+    android:layout_height="@dimen/apple_watch_item_size"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/app_item_linearlayout_padding" >
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/iv_app_icon"
-        android:layout_width="@dimen/app_item_iv_app_icon_width"
-        android:layout_height="@dimen/app_item_iv_app_icon_height"
-        android:padding="@dimen/app_item_iv_app_icon_padding"
+        android:layout_width="@dimen/apple_watch_item_icon_size"
+        android:layout_height="@dimen/apple_watch_item_icon_size"
         android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/tv_app_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="1dp"
         android:ellipsize="marquee"
         android:gravity="center"
         android:singleLine="true"
-        android:text="xxxxxxxx"
-        android:textColor="#686868"
-        android:textSize="12dp" />
+        android:text="wechat"
+        android:textColor="#f1f1f1"
+        android:textSize="12sp" />
 
-</LinearLayout>
+</com.leo.appmaster.quickgestures.view.GestureItemView>

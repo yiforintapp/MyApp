@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
@@ -363,8 +364,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 boolean flag = BuildProperties.isMIUI();
                 boolean isOpenWindow =
                         BuildProperties.isMiuiFloatWindowOpAllowed(getActivity());
-                Log.e("#############",
-                        "是否为MIUI：" + flag + "; 是否开启悬浮窗权限：" + isOpenWindow);
+                // Log.e("#############",
+                // "是否为MIUI：" + flag + "; 是否开启悬浮窗权限：" + isOpenWindow);
                 if (flag && !isOpenWindow) {
                     // MIUI系统提示
                     Intent intentv6 = new
@@ -385,6 +386,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         try {
                             startActivity(intentv5);
+                            getActivity().finish();
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
@@ -393,7 +395,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
                         startActivity(quickIntent);
-                        getActivity().finish();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
