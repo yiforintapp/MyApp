@@ -1173,25 +1173,17 @@ public class AppleWatchContainer extends FrameLayout {
                 null);
         // second - show roket int icon place
         int mLayoutTop = mSwitcherLayout.getTop();
+        int mLayoutBottom = mSwitcherLayout.getBottom();
         int mRocketWidth = tv.getWidth();
         int mRocketHeight = tv.getHeight();
         int mRocketX = (int) tv.getX() + mRocketWidth / 2;
         int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
-        mPopupActivity.RockeyAnimation(mLayoutTop,mRocketX,mRocketY);
+        mPopupActivity.RockeyAnimation(mLayoutBottom,mRocketX,mRocketY);
 
-//        iv_rocket.setVisibility(View.VISIBLE);
-//        iv_rocket.setX(mRocketX - iv_rocket.getWidth() / 2);
-//        iv_rocket.setY(mRocketY - iv_rocket.getHeight() / 2);
-
-        // thrid - show animation
     }
 
     public void setRocket(QuickGesturePopupActivity quickGesturePopupActivity) {
         this.mPopupActivity = quickGesturePopupActivity;
     }
-
-//    public void setRocket(ImageView iv_roket) {
-//        this.iv_rocket = iv_roket;
-//    }
 
 }

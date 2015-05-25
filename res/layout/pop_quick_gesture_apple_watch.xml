@@ -77,6 +77,14 @@
             android:layout_gravity="center|bottom"
             android:background="@drawable/gesture_launcher"
             android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_yun"
+            android:layout_width="230dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/rocket_cloud"
+            android:visibility="invisible" />
     </com.leo.appmaster.quickgestures.view.AppleWatchContainer>
 
 </RelativeLayout>
