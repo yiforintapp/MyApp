@@ -24,6 +24,7 @@ public class LEOAlarmDialog extends LEOBaseDialog {
     private TextView mLeftBtn;
     private TextView mRightBtn;
     private Object mUserData;
+    private ImageView mDialogIcon;
 
     private OnDiaogClickListener mListener;
 
@@ -136,7 +137,7 @@ public class LEOAlarmDialog extends LEOBaseDialog {
 
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
-
+        mDialogIcon = (ImageView) dlgView.findViewById(R.id.dlg_icon);
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
             @Override
@@ -179,5 +180,13 @@ public class LEOAlarmDialog extends LEOBaseDialog {
         linearParams.height = (int) height;
         linearParams.width = (int) width;
         mRightBtn.setLayoutParams(linearParams);
+    }
+
+    public void setDialogIconVisibility(boolean flag) {
+        if (flag) {
+            mDialogIcon.setVisibility(View.VISIBLE);
+        } else {
+            mDialogIcon.setVisibility(View.GONE);
+        }
     }
 }

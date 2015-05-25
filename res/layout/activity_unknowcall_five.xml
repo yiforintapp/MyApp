@@ -44,10 +44,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="@dimen/weizhuang_instruction_margin_top"
             android:text="@string/unknow_call_thrid_first_title"
             android:textColor="@color/white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:visibility="invisible" />
 
         <TextView
@@ -56,12 +56,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_use_tips"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:paddingLeft="@dimen/weizhuang_tip_content_padding"
+            android:paddingRight="@dimen/weizhuang_tip_content_padding"
             android:layout_marginTop="@dimen/weizhuang_unknowcall_tips_text_content_m_top"
             android:text="@string/unknow_call_all_content"
             android:textColor="@color/white"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:visibility="invisible" />
     </RelativeLayout>
 
@@ -72,7 +72,7 @@
         android:layout_below="@id/text_content"
         android:background="@drawable/disguise_call_person"
         android:longClickable="true" >
-
+        
         <com.leo.appmaster.ui.CirCleDongHua
             android:id="@+id/myself_circle"
             android:layout_width="wrap_content"
