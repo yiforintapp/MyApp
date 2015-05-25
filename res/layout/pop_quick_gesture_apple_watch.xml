@@ -68,8 +68,15 @@
             android:layout_width="30dp"
             android:layout_height="53dp"
             android:background="@drawable/gesture_rocket"
-            android:visibility="invisible"
-             />
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_pingtai"
+            android:layout_width="145dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/gesture_launcher"
+            android:visibility="invisible" />
     </com.leo.appmaster.quickgestures.view.AppleWatchContainer>
 
 </RelativeLayout>

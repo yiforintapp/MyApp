@@ -17,10 +17,15 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -34,6 +39,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -53,7 +59,8 @@ public class AppleWatchContainer extends FrameLayout {
     private AppleWatchLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
     private AppleWatchTabs mCornerTabs;
     private TextView mTvCurName;
-    private ImageView iv_rocket;
+    private QuickGesturePopupActivity mPopupActivity;
+//    private ImageView iv_rocket;
     private GType mCurrentGestureType = GType.DymicLayout;
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
@@ -1165,47 +1172,26 @@ public class AppleWatchContainer extends FrameLayout {
         tv.setCompoundDrawables(null, info.switchIcon[1], null,
                 null);
         // second - show roket int icon place
-        
-        // LeoLog.d("testsp",
-        // "Container_top : " + this.getTop() + " ; Container_left : " +
-        // this.getLeft()
-        // + " ; Container_right : " + this.getRight() +
-        // " ; Container_bottom : "
-        // + this.getBottom());
-        // LeoLog.d("testsp", "layout_top : " + mSwitcherLayout.getTop() +
-        // " ; layout_left : "
-        // + mSwitcherLayout.getLeft() + " ; layout_right : " +
-        // mSwitcherLayout.getRight()
-        // + " ; layout_bottom : " + mSwitcherLayout.getBottom());
-        // LeoLog.d("testsp", "tv_top : " + tv.getTop() + " ; tv_left : " +
-        // tv.getLeft()
-        // + " ; tv_right : " + tv.getRight() + " ; tv_bottom : " +
-        // tv.getBottom());
-
-        // int mContainerTop = getTop();
-        // int mContainerBottom = getBottom();
         int mLayoutTop = mSwitcherLayout.getTop();
-        // int mLayoutBottom = mSwitcherLayout.getBottom();
-        // int mRocketLeft = tv.getLeft();
-        // int mRocketTop = tv.getTop();
-        // int mRocketRight = tv.getRight();
-        // int mRocketBottom = tv.getBottom();
-
         int mRocketWidth = tv.getWidth();
         int mRocketHeight = tv.getHeight();
         int mRocketX = (int) tv.getX() + mRocketWidth / 2;
         int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
+        mPopupActivity.RockeyAnimation(mLayoutTop,mRocketX,mRocketY);
 
-        iv_rocket.setVisibility(View.VISIBLE);
-        iv_rocket.setX(mRocketX - iv_rocket.getWidth() / 2);
-        iv_rocket.setY(mRocketY - iv_rocket.getHeight() / 2);
-        
-        
-        
+//        iv_rocket.setVisibility(View.VISIBLE);
+//        iv_rocket.setX(mRocketX - iv_rocket.getWidth() / 2);
+//        iv_rocket.setY(mRocketY - iv_rocket.getHeight() / 2);
+
+        // thrid - show animation
     }
 
-    public void setRocket(ImageView iv_roket) {
-        this.iv_rocket = iv_roket;
+    public void setRocket(QuickGesturePopupActivity quickGesturePopupActivity) {
+        this.mPopupActivity = quickGesturePopupActivity;
     }
+
+//    public void setRocket(ImageView iv_roket) {
+//        this.iv_rocket = iv_roket;
+//    }
 
 }
