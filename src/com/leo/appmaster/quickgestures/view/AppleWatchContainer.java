@@ -1318,6 +1318,9 @@ public class AppleWatchContainer extends FrameLayout {
         int mRocketHeight = tv.getHeight();
         int mRocketX = (int) tv.getX() + mRocketWidth / 2;
         int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
+        
+        LeoLog.d("AppleWatchContainer", " mRocketX : " + mRocketX
+                + " ;  mRocketY : " + mRocketY);
         mPopupActivity.RockeyAnimation(tv,mLayoutBottom, mRocketX, mRocketY);
     }
 

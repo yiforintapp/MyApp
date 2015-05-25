@@ -176,7 +176,9 @@ public class QuickGesturePopupActivity extends Activity implements
             int mRocketY) {
         int smallRockeyX = mRocketX - iv_roket.getWidth() / 2;
         int smallRockeyY = mRocketY - iv_roket.getHeight() / 2;
-
+        LeoLog.d("AppleWatchContainer", " smallRockeyX : " + smallRockeyX
+                + " ;  smallRockeyY : " + smallRockeyY);
+        
         float iv_roketScaleX = iv_roket.getScaleX();
         float iv_width = iv_roket.getWidth() * iv_roketScaleX;
         float iv_height = iv_roket.getHeight() * iv_roketScaleX;
@@ -186,12 +188,8 @@ public class QuickGesturePopupActivity extends Activity implements
         MarginLayoutParams margin = new MarginLayoutParams(iv_roket.getLayoutParams());
         margin.width = (int) iv_width;
         margin.height = (int) iv_height;
-        margin.setMargins(smallRockeyX, smallRockeyY, smallRockeyX + (int) iv_width,
-                smallRockeyY + (int) iv_height);
-        
-//        LeoLog.d("AppleWatchContainer", "roc_x: " + roc_x
-//                + " ; roc_y : " + roc_y);
-
+        margin.setMargins(smallRockeyX, smallRockeyY, smallRockeyX +  iv_roket.getWidth(),
+                smallRockeyY + iv_roket.getHeight());
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         iv_roket.setLayoutParams(layoutParams);
         iv_roket.setVisibility(View.VISIBLE);
@@ -257,7 +255,7 @@ public class QuickGesturePopupActivity extends Activity implements
                                 AnimatorSet returnAnimation = new AnimatorSet();
                                 returnAnimation.play(turnSmall).with(turnSmall2).with(returnX)
                                         .with(returnY).with(pingtai_returnY);
-                                returnAnimation.setDuration(2000);
+                                returnAnimation.setDuration(200);
                                 returnAnimation.start();
                                 //make normal iCon
                                 //TODO
