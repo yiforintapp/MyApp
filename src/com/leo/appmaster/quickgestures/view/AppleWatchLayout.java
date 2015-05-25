@@ -29,6 +29,7 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -103,26 +104,24 @@ public class AppleWatchLayout extends ViewGroup {
         }
 
         removeAllViews();
-        GestureItemView tv = null;
+        GestureItemView gestureItem = null;
         AppleWatchLayout.LayoutParams lp = null;
         for (int i = 0; i < infos.size(); i++) {
             info = (BaseInfo) infos.get(i);
-            tv = new GestureItemView(getContext());
+            gestureItem = makeGestureItem();
             lp = new AppleWatchLayout.LayoutParams(
                     mItemSize, mItemSize);
             lp.position = i;
-            tv.setGravity(Gravity.CENTER);
-            tv.setLayoutParams(lp);
-            tv.setText(info.label);
-            tv.setTextSize(12);
-            info.icon.setBounds(0, 0, mIconSize, mIconSize);
-            tv.setCompoundDrawables(null, info.icon, null, null);
+            gestureItem.setGravity(Gravity.CENTER);
+            gestureItem.setLayoutParams(lp);
+            gestureItem.setItemName(info.label);
+            gestureItem.setItemIcon(info.icon);
             if (info.eventNumber > 0) {
-                tv.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+                gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
             }
-            tv.setTag(info);
-            addView(tv);
-            computeCenterChildren(tv, lp.position, false);
+            gestureItem.setTag(info);
+            addView(gestureItem);
+            computeCenterChildren(gestureItem, lp.position, false);
         }
         requestLayout();
         postDelayed(new Runnable() {
@@ -149,7 +148,7 @@ public class AppleWatchLayout extends ViewGroup {
             if (i < 4) {
                 tempView = mHoriChildren[0][i + 4];
                 info = (BaseInfo) tempView.getTag();
-                addView = new GestureItemView(getContext());
+                addView = makeGestureItem();
                 temp = (LayoutParams) tempView.getLayoutParams();
                 lp = new LayoutParams(temp.width, temp.height);
                 lp.position = -1;
@@ -166,7 +165,7 @@ public class AppleWatchLayout extends ViewGroup {
             } else {
                 tempView = mHoriChildren[0][i];
                 info = (BaseInfo) tempView.getTag();
-                addView = new GestureItemView(getContext());
+                addView = makeGestureItem();
                 temp = (LayoutParams) tempView.getLayoutParams();
                 lp = new LayoutParams(temp.width, temp.height);
                 lp.position = -1;
@@ -188,7 +187,7 @@ public class AppleWatchLayout extends ViewGroup {
             if (i < 5) {
                 tempView = mHoriChildren[1][i + 5];
                 info = (BaseInfo) tempView.getTag();
-                addView = new GestureItemView(getContext());
+                addView = makeGestureItem();
                 temp = (LayoutParams) tempView.getLayoutParams();
                 lp = new LayoutParams(temp.width, temp.height);
                 lp.position = -1;
@@ -205,7 +204,7 @@ public class AppleWatchLayout extends ViewGroup {
             } else {
                 tempView = mHoriChildren[1][i];
                 info = (BaseInfo) mHoriChildren[1][i].getTag();
-                addView = new GestureItemView(getContext());
+                addView = makeGestureItem();
                 temp = (LayoutParams) tempView.getLayoutParams();
                 lp = new LayoutParams(temp.width, temp.height);
                 lp.position = -1;
@@ -225,7 +224,7 @@ public class AppleWatchLayout extends ViewGroup {
             if (i < 4) {
                 tempView = mHoriChildren[2][i + 4];
                 info = (BaseInfo) tempView.getTag();
-                addView = new GestureItemView(getContext());
+                addView = makeGestureItem();
                 temp = (LayoutParams) tempView.getLayoutParams();
                 lp = new LayoutParams(temp.width, temp.height);
                 lp.position = -1;
@@ -242,7 +241,7 @@ public class AppleWatchLayout extends ViewGroup {
             } else {
                 tempView = mHoriChildren[2][i];
                 info = (BaseInfo) tempView.getTag();
-                addView = new GestureItemView(getContext());
+                addView = makeGestureItem();
                 temp = (LayoutParams) tempView.getLayoutParams();
                 lp = new LayoutParams(temp.width, temp.height);
                 lp.position = -1;
@@ -434,9 +433,8 @@ public class AppleWatchLayout extends ViewGroup {
         if (item == null || info == null)
             return;
         item.setGravity(Gravity.CENTER_HORIZONTAL);
-        item.setText(info.label);
-        item.setTextSize(12);
-        item.setCompoundDrawables(null, info.icon, null, null);
+        item.setItemName(info.label);
+        item.setItemIcon(info.icon);
         if (info.eventNumber > 0) {
             item.setDecorateAction(new EventAction(getContext(), info.eventNumber));
         }
@@ -528,7 +526,7 @@ public class AppleWatchLayout extends ViewGroup {
 
     private void onItemClick(final View view) {
         GestureItemView item = (GestureItemView) view;
-        int position = ((LayoutParams)item.getLayoutParams()).position;
+        int position = ((LayoutParams) item.getLayoutParams()).position;
         BaseInfo info = (BaseInfo) view.getTag();
         info.gesturePosition = position;
         if (info instanceof AppItemInfo) {
@@ -958,7 +956,7 @@ public class AppleWatchLayout extends ViewGroup {
         if (position >= 0 && position <= 12) {
             LayoutParams params = new LayoutParams(mItemSize, mItemSize);
             params.position = position;
-            GestureItemView addItem = new GestureItemView(mContext);
+            GestureItemView addItem = makeGestureItem();
             addItem.setLayoutParams(params);
             addItem.setBackgroundResource(R.drawable.switch_add);
             addItem.setAddFlag(true);
@@ -1500,7 +1498,7 @@ public class AppleWatchLayout extends ViewGroup {
         for (int i = 0; i < 12; i++) {
             targetView = mHoriChildren[0][i];
             targetLp = (LayoutParams) targetView.getLayoutParams();
-            resault += targetView.getText().toString() + targetLp.position + "    "
+            resault += targetView.getItemName().toString() + targetLp.position + "    "
                     + targetView.getTranslationX() + "; ";
         }
         LeoLog.e("children", resault);
@@ -1508,7 +1506,7 @@ public class AppleWatchLayout extends ViewGroup {
         for (int i = 0; i < 15; i++) {
             targetView = mHoriChildren[1][i];
             targetLp = (LayoutParams) targetView.getLayoutParams();
-            resault += targetView.getText().toString() + targetLp.position + "    "
+            resault += targetView.getItemName().toString() + targetLp.position + "    "
                     + targetView.getTranslationX() + "; ";
         }
         LeoLog.e("children", resault);
@@ -1516,7 +1514,7 @@ public class AppleWatchLayout extends ViewGroup {
         for (int i = 0; i < 12; i++) {
             targetView = mHoriChildren[2][i];
             targetLp = (LayoutParams) targetView.getLayoutParams();
-            resault += targetView.getText().toString() + targetLp.position + "    "
+            resault += targetView.getItemName().toString() + targetLp.position + "    "
                     + targetView.getTranslationX() + "; ";
         }
         LeoLog.e("children", resault);
@@ -1658,5 +1656,11 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (mLastMovex < 0) { // Right
             snapShort(Direction.Right);
         }
+    }
+
+    public GestureItemView makeGestureItem() {
+        LayoutInflater inflate = LayoutInflater.from(getContext());
+        GestureItemView item = (GestureItemView) inflate.inflate(R.layout.gesture_item, null);
+        return item;
     }
 }
