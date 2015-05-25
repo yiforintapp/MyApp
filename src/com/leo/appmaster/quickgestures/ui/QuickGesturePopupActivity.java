@@ -29,6 +29,7 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.Orientation;
+import com.leo.appmaster.quickgestures.view.GestureItemView;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.view.View;
@@ -55,7 +56,9 @@ public class QuickGesturePopupActivity extends Activity implements
     private String mSwitchListFromSp;
     private ImageView iv_roket, iv_pingtai, iv_yun;
     private WindowManager wm;
-
+    private int pingtai_left,pingtai_top,pingtai_right,pingtai_bottom;
+    private int roc_left,roc_top,roc_right,roc_bottom;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,21 +171,34 @@ public class QuickGesturePopupActivity extends Activity implements
         LeoLog.e("xxxx", "visibility = " + visibility);
     }
 
-    public void RockeyAnimation(final int mLayoutBottom, int mRocketX, int mRocketY) {
+    public void RockeyAnimation(GestureItemView tv, final int mLayoutBottom, int mRocketX, int mRocketY) {
         int smallRockeyX = mRocketX - iv_roket.getWidth() / 2;
         int smallRockeyY = mRocketY - iv_roket.getHeight() / 2;
+
+        float iv_roketScaleX = iv_roket.getScaleX();
+        float iv_width = iv_roket.getWidth() * iv_roketScaleX;
+        float iv_height = iv_roket.getHeight() * iv_roketScaleX;
+        LeoLog.d("AppleWatchContainer", " iv_roket.getScaleX: " + iv_roketScaleX
+                + " ;  iv_roket.getWidth : " + iv_width);
+
         MarginLayoutParams margin = new MarginLayoutParams(iv_roket.getLayoutParams());
-        margin.setMargins(smallRockeyX, smallRockeyY, smallRockeyX + iv_roket.getWidth(),
-                smallRockeyY + iv_roket.getHeight());
+        margin.width = (int) iv_width;
+        margin.height = (int) iv_height;
+        margin.setMargins(smallRockeyX, smallRockeyY, smallRockeyX + (int) iv_width,
+                smallRockeyY + (int) iv_height);
+        roc_left = smallRockeyX;
+        roc_top = smallRockeyY;
+        roc_right = smallRockeyX + (int) iv_width;
+        roc_bottom = smallRockeyY + (int) iv_height;
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         iv_roket.setLayoutParams(layoutParams);
         iv_roket.setVisibility(View.VISIBLE);
 
-        ObjectAnimator turnBig = ObjectAnimator.ofFloat(iv_roket, "scaleX", 1f, 1.5f);
-        ObjectAnimator turnBig2 = ObjectAnimator.ofFloat(iv_roket, "scaleY", 1f, 1.5f);
+        ObjectAnimator turnBig = ObjectAnimator.ofFloat(iv_roket, "scaleX", 1f, 1.3f);
+        ObjectAnimator turnBig2 = ObjectAnimator.ofFloat(iv_roket, "scaleY", 1f, 1.3f);
         AnimatorSet animSet = new AnimatorSet();
         animSet.play(turnBig).with(turnBig2);
-        animSet.setDuration(500);
+        animSet.setDuration(400);
         animSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -190,6 +206,10 @@ public class QuickGesturePopupActivity extends Activity implements
                 final int mScreenHeight = wm.getDefaultDisplay().getHeight();
                 int mScreenWidth = wm.getDefaultDisplay().getWidth();
                 int transY = (int) iv_pingtai.getTranslationY();
+                pingtai_left = iv_pingtai.getLeft();
+                pingtai_top = iv_pingtai.getTop();
+                pingtai_right = iv_pingtai.getRight();
+                pingtai_bottom = iv_pingtai.getBottom();
                 int mRockeyMoveX = mScreenWidth / 2
                         - (iv_roket.getLeft() + iv_roket.getWidth() / 2);
                 int mRockeyMoveY = mLayoutBottom - iv_roket.getHeight() - iv_roket.getTop();
@@ -221,6 +241,9 @@ public class QuickGesturePopupActivity extends Activity implements
                         animMoveGoSet.play(mRocketmoveToY).with(pingtaiMoveDownToY)
                                 .with(yunComeOut).before(yunLeave);
                         animMoveGoSet.setDuration(800);
+                        animMoveGoSet.addListener(new AnimatorListenerAdapter() {
+                            
+                        });
                         animMoveGoSet.start();
                     }
                 });

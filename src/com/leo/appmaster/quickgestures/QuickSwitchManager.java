@@ -753,7 +753,6 @@ public class QuickSwitchManager {
     }
 
     public void speedUp(QuickSwitcherInfo mInfo) {
-//        Toast.makeText(mContext, "加你的头～方案还没出！", 0).show();
         LeoEventBus.getDefaultBus().post(
                 new ClickQuickItemEvent(ROTATION, mInfo));
     }

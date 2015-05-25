@@ -1276,6 +1276,8 @@ public class AppleWatchContainer extends FrameLayout {
         int iconSize = mSwitcherLayout.getIconSize();
         if (info.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//             LeoLog.d("AppleWatchContainer", "BLUETOOTH tv.getScaleX: " + tv.getScaleX()
+//             + " ; BLUETOOTH tv.getScaleY : " + tv.getScaleY());
             checkBlueToothStatus(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
@@ -1294,9 +1296,13 @@ public class AppleWatchContainer extends FrameLayout {
             checkRotation(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//            LeoLog.d("AppleWatchContainer", "MOBILEDATA tv.getScaleX: " + tv.getScaleX()
+//            + " ; MOBILEDATA tv.getScaleY : " + tv.getScaleY());
             checkMobileData(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//            LeoLog.d("AppleWatchContainer", "iDentiName tv.getScaleX: " + tv.getScaleX()
+//            + " ; iDentiName tv.getScaleY : " + tv.getScaleY());
             speedUp(info, iconSize, tv);
         }
     }
@@ -1312,7 +1318,7 @@ public class AppleWatchContainer extends FrameLayout {
         int mRocketHeight = tv.getHeight();
         int mRocketX = (int) tv.getX() + mRocketWidth / 2;
         int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
-        mPopupActivity.RockeyAnimation(mLayoutBottom, mRocketX, mRocketY);
+        mPopupActivity.RockeyAnimation(tv,mLayoutBottom, mRocketX, mRocketY);
     }
 
     public void setRocket(QuickGesturePopupActivity quickGesturePopupActivity) {
