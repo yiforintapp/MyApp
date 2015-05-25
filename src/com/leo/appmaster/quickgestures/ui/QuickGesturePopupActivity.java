@@ -86,7 +86,6 @@ public class QuickGesturePopupActivity extends Activity implements
         if (mSwitchList == null) {
             mSwitchListFromSp = mSpSwitch.getSwitchList();
             switchNum = mSpSwitch.getSwitchListSize();
-            LeoLog.d("testFirstInGet", "mSwitchListFromSp : " + mSwitchListFromSp);
             if (mSwitchListFromSp.isEmpty()) {
 //                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
                 mSwitchList = new ArrayList<Object>();
@@ -94,9 +93,7 @@ public class QuickGesturePopupActivity extends Activity implements
                 String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
                         switchNum);
                 mSpSwitch.setSwitchList(saveToSp);
-                LeoLog.d("testFirstInGet", "saveToSp:" + saveToSp);
             } else {
-                LeoLog.d("testFirstInGet", "get list from sp");
 //                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
                 mSwitchList = new ArrayList<Object>();
                 mSwitchList.add(QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp));
@@ -233,29 +230,5 @@ public class QuickGesturePopupActivity extends Activity implements
             }
         });
         animSet.start();
-
     }
-
-    protected void showPingTai() {
-        iv_pingtai.setVisibility(View.VISIBLE);
-        int mScreenHeight = wm.getDefaultDisplay().getHeight();
-        int mScreenWidth = wm.getDefaultDisplay().getWidth();
-        int transY = (int) iv_pingtai.getTranslationY();
-
-        ObjectAnimator
-                .ofFloat(iv_pingtai, "translationY", mScreenHeight, transY)
-                .setDuration(800)
-                .start();
-
-        Animation translateAnimation = new
-                TranslateAnimation(iv_roket.getX(), mScreenWidth / 2 - iv_roket.getWidth() / 2,
-                        iv_roket.getTranslationY(), iv_roket.getTranslationY());
-        translateAnimation.setDuration(1000);
-        translateAnimation.setFillAfter(true);
-        iv_roket.setAnimation(translateAnimation);
-
-        LeoLog.d("testFirstInGet",
-                "iv_roket.getX(): " + iv_roket.getX() + " ; mScreenWidth/2 : " + mScreenWidth / 2);
-    }
-
 }
