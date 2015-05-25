@@ -10,6 +10,7 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.utils.LeoLog;
@@ -25,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -63,6 +65,7 @@ public class AppleWatchLayout extends ViewGroup {
     private int mAdjustCount = 0;
     private int mSnapDuration = 800;
     private boolean mSnapping;
+    private int[] mEmptyIconResid;
 
     public static enum Direction {
         Right, Left, None;
@@ -89,13 +92,16 @@ public class AppleWatchLayout extends ViewGroup {
             infos = infos.subList(0, 13);
         } else if (infos.size() < 13) {
             int[] hit = new int[13];
-            for (Object obj : infos) {
-                info = (BaseInfo) obj;
+            for (int i = 0; i < infos.size(); i++) {
+                info = (BaseInfo) infos.get(i);
+                if (info.gesturePosition < 0 || info.gesturePosition > 13) {
+                    info.gesturePosition = i;
+                }
                 hit[info.gesturePosition] = 1;
             }
             for (int i : hit) {
                 if (hit[i] != 1) {
-                    info = new AppItemInfo();
+                    info = new GestureEmptyItemInfo();
                     info.gesturePosition = i;
                     infos.add(info);
 
@@ -119,6 +125,9 @@ public class AppleWatchLayout extends ViewGroup {
             gestureItem.setGravity(Gravity.CENTER);
             gestureItem.setLayoutParams(lp);
             gestureItem.setItemName(info.label);
+            if (info instanceof GestureEmptyItemInfo) {
+                info.icon = applyEmptyIcon();
+            }
             gestureItem.setItemIcon(info.icon);
             if (info.eventNumber > 0) {
                 gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
@@ -134,7 +143,7 @@ public class AppleWatchLayout extends ViewGroup {
             public void run() {
                 fillExtraChildren();
             }
-        }, 200);
+        }, 500);
 
     }
 
@@ -275,6 +284,13 @@ public class AppleWatchLayout extends ViewGroup {
         mHoriChildren[0] = new GestureItemView[12];
         mHoriChildren[1] = new GestureItemView[15];
         mHoriChildren[2] = new GestureItemView[12];
+        mEmptyIconResid = new int[5];
+        mEmptyIconResid[0] = R.drawable.seitch_purple;
+        mEmptyIconResid[1] = R.drawable.switch_green;
+        mEmptyIconResid[2] = R.drawable.switch_orange;
+        mEmptyIconResid[3] = R.drawable.switch_red;
+        mEmptyIconResid[4] = R.drawable.switch_blue;
+
     }
 
     public GestureItemView getChildAtPosition(int position) {
@@ -1665,5 +1681,12 @@ public class AppleWatchLayout extends ViewGroup {
         LayoutInflater inflate = LayoutInflater.from(getContext());
         GestureItemView item = (GestureItemView) inflate.inflate(R.layout.gesture_item, null);
         return item;
+    }
+
+    private Drawable applyEmptyIcon() {
+        Drawable icon = null;
+        int index = (int) (Math.random() * 4);
+        icon = getResources().getDrawable(mEmptyIconResid[index]);
+        return icon;
     }
 }

@@ -17,7 +17,7 @@ public class BaseInfo {
     /**
      * label
      */
-    public String label;
+    public String label = "";
 
     /**
      * icon
