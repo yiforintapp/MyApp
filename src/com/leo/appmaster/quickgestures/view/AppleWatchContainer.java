@@ -34,6 +34,7 @@ import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
+import com.leo.appmaster.quickgestures.view.AppleWatchLayout.Direction;
 import com.leo.appmaster.utils.LeoLog;
 
 public class AppleWatchContainer extends FrameLayout {
@@ -132,6 +133,23 @@ public class AppleWatchContainer extends FrameLayout {
                                 }
                                 if (velocityX < -300) {
                                     snapToNext();
+                                    return true;
+                                }
+                            } else if (mTouchDownY > mDymicLayout.getTop()) {
+                                AppleWatchLayout gestureLayout = null;
+                                if (mCurrentGestureType == GType.DymicLayout) {
+                                    gestureLayout = mDymicLayout;
+                                } else if (mCurrentGestureType == GType.MostUsedLayout) {
+                                    gestureLayout = mMostUsedLayout;
+                                } else {
+                                    gestureLayout = mSwitcherLayout;
+                                }
+                                if (velocityX > 300) {
+                                    gestureLayout.snapLong(Direction.Left);
+                                    return true;
+                                }
+                                if (velocityX < -300) {
+                                    gestureLayout.snapLong(Direction.Right);
                                     return true;
                                 }
                             }
@@ -278,33 +296,43 @@ public class AppleWatchContainer extends FrameLayout {
 
     private void onTouchUp() {
         LeoLog.d(TAG, "onTouchUp mRotateDegree = " + mRotateDegree);
-        if (mOrientation == Orientation.Left) {
-            if (mRotateDegree < 0) {
-                if (mRotateDegree < -15) {
-                    snapToPrevious();
-                } else {
-                    snapToCurrent();
+        if (mTouchDownY > mDymicLayout.getBottom()) {
+            if (mOrientation == Orientation.Left) {
+                if (mRotateDegree < 0) {
+                    if (mRotateDegree < -15) {
+                        snapToPrevious();
+                    } else {
+                        snapToCurrent();
+                    }
+                } else if (mRotateDegree > 0) {
+                    if (mRotateDegree > 15) {
+                        snapToNext();
+                    } else {
+                        snapToCurrent();
+                    }
                 }
-            } else if (mRotateDegree > 0) {
-                if (mRotateDegree > 15) {
-                    snapToNext();
-                } else {
-                    snapToCurrent();
+            } else if (mOrientation == Orientation.Right) {
+                if (mRotateDegree < 0) {
+                    if (mRotateDegree < -15) {
+                        snapToPrevious();
+                    } else {
+                        snapToCurrent();
+                    }
+                } else if (mRotateDegree > 0) {
+                    if (mRotateDegree > 15) {
+                        snapToNext();
+                    } else {
+                        snapToCurrent();
+                    }
                 }
             }
-        } else {
-            if (mRotateDegree < 0) {
-                if (mRotateDegree < -15) {
-                    snapToPrevious();
-                } else {
-                    snapToCurrent();
-                }
-            } else if (mRotateDegree > 0) {
-                if (mRotateDegree > 15) {
-                    snapToNext();
-                } else {
-                    snapToCurrent();
-                }
+        } else if (mTouchDownY > mDymicLayout.getTop()) {
+            if (mCurrentGestureType == GType.DymicLayout) {
+                mDymicLayout.onTouchUp();
+            } else if (mCurrentGestureType == GType.MostUsedLayout) {
+                mMostUsedLayout.onTouchUp();
+            } else if (mCurrentGestureType == GType.SwitcherLayout) {
+                mSwitcherLayout.onTouchUp();
             }
         }
     }
@@ -608,8 +636,6 @@ public class AppleWatchContainer extends FrameLayout {
         } else if (type == GType.SwitcherLayout) {
             targetLayout = mSwitcherLayout;
             infos = fixInfoRight(infos);
-            // setSwitchList((List<QuickSwitcherInfo>) infos);
-            // fillSwitchItem(targetLayout, infos);
         }
         targetLayout.fillItems(infos);
     }
@@ -860,23 +886,23 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void checkXuKuang(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
-        if(iconSize != mGetIcon){
+        if (iconSize != mGetIcon) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             sInfo.icon = sInfo.switchIcon[0];
             tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                     null);
-        }else {
+        } else {
             sInfo.icon = sInfo.switchIcon[0];
         }
     }
 
     private void checkHome(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
-        if(iconSize != mGetIcon){
+        if (iconSize != mGetIcon) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             sInfo.icon = sInfo.switchIcon[0];
             tv.setCompoundDrawables(null, sInfo.switchIcon[0], null,
                     null);
-        }else {
+        } else {
             sInfo.icon = sInfo.switchIcon[0];
         }
     }
@@ -1240,7 +1266,6 @@ public class AppleWatchContainer extends FrameLayout {
         set.start();
     }
 
-
     public void hideGestureLayout(GType type) {
         if (type == GType.DymicLayout) {
             mDymicLayout.setVisibility(View.GONE);
@@ -1329,6 +1354,7 @@ public class AppleWatchContainer extends FrameLayout {
             speedUp(info, iconSize, tv);
         }
     }
+
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
         // first - change to no roket icon
         info.switchIcon[1].setBounds(0, 0, iconSize, iconSize);

@@ -77,7 +77,7 @@ public class QuickGesturePopupActivity extends Activity implements
         mContainer.setRocket(this);
 
         mSpSwitch = AppMasterPreference.getInstance(this);
-//        list = AppLoadEngine.getInstance(this).getAllPkgInfo();
+        // list = AppLoadEngine.getInstance(this).getAllPkgInfo();
         list = new ArrayList<Object>();
         list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
 
@@ -85,14 +85,12 @@ public class QuickGesturePopupActivity extends Activity implements
             mSwitchListFromSp = mSpSwitch.getSwitchList();
             switchNum = mSpSwitch.getSwitchListSize();
             if (mSwitchListFromSp.isEmpty()) {
-//                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
                 mSwitchList = new ArrayList<Object>();
                 mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
                 String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
                         switchNum);
                 mSpSwitch.setSwitchList(saveToSp);
             } else {
-//                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
                 mSwitchList = new ArrayList<Object>();
                 mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
@@ -215,10 +213,13 @@ public class QuickGesturePopupActivity extends Activity implements
                         ObjectAnimator pingtaiMoveDownToY = ObjectAnimator
                                 .ofFloat(iv_pingtai, "translationY", iv_pingtai.getTranslationY(),
                                         mScreenHeight);
-                        ObjectAnimator yunComeOut = ObjectAnimator.ofFloat(iv_yun, "alpha", 0.0f, 1f);
-                        ObjectAnimator yunLeave= ObjectAnimator.ofFloat(iv_yun, "alpha", 1.0f, 0.0f);
+                        ObjectAnimator yunComeOut = ObjectAnimator.ofFloat(iv_yun, "alpha", 0.0f,
+                                1f);
+                        ObjectAnimator yunLeave = ObjectAnimator.ofFloat(iv_yun, "alpha", 1.0f,
+                                0.0f);
                         AnimatorSet animMoveGoSet = new AnimatorSet();
-                        animMoveGoSet.play(mRocketmoveToY).with(pingtaiMoveDownToY).with(yunComeOut).before(yunLeave);
+                        animMoveGoSet.play(mRocketmoveToY).with(pingtaiMoveDownToY)
+                                .with(yunComeOut).before(yunLeave);
                         animMoveGoSet.setDuration(800);
                         animMoveGoSet.start();
                     }
