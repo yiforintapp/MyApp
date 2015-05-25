@@ -673,7 +673,7 @@ public class SectorLayout extends ViewGroup {
                     int position = params.position;
                     QuickSwitcherInfo sInfo = (QuickSwitcherInfo) getChildAt(i).getTag();
                     if (sInfo != null) {
-                        sInfo.position = position;
+                        sInfo.gesturePosition = position;
                         mSwitchList.add(sInfo);
                         LeoLog.d("QuickGestureLayout", "名字：" + sInfo.label + "位置：" + position);
                     }
