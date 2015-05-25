@@ -168,7 +168,6 @@ public class QuickGesturePopupActivity extends Activity implements
     @Override
     public void onSystemUiVisibilityChange(int visibility) {
         LeoLog.e("xxxx", "visibility = " + visibility);
-
     }
 
     public void RockeyAnimation(final int mLayoutBottom, int mRocketX, int mRocketY) {
@@ -217,8 +216,9 @@ public class QuickGesturePopupActivity extends Activity implements
                                 .ofFloat(iv_pingtai, "translationY", iv_pingtai.getTranslationY(),
                                         mScreenHeight);
                         ObjectAnimator yunComeOut = ObjectAnimator.ofFloat(iv_yun, "alpha", 0.0f, 1f);
+                        ObjectAnimator yunLeave= ObjectAnimator.ofFloat(iv_yun, "alpha", 1.0f, 0.0f);
                         AnimatorSet animMoveGoSet = new AnimatorSet();
-                        animMoveGoSet.play(mRocketmoveToY).with(pingtaiMoveDownToY).with(yunComeOut);
+                        animMoveGoSet.play(mRocketmoveToY).with(pingtaiMoveDownToY).with(yunComeOut).before(yunLeave);
                         animMoveGoSet.setDuration(800);
                         animMoveGoSet.start();
                     }
