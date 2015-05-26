@@ -65,7 +65,6 @@ public class AppleWatchLayout extends ViewGroup {
     private int mAdjustCount = 0;
     private int mSnapDuration = 800;
     private boolean mSnapping;
-    private int[] mEmptyIconResid;
 
     public static enum Direction {
         Right, Left, None;
@@ -86,7 +85,7 @@ public class AppleWatchLayout extends ViewGroup {
         mContext = context;
     }
 
-    public void fillItems(List<Object> infos) {
+    public void fillItems(List<BaseInfo> infos) {
         BaseInfo info = null;
         if (infos.size() > 13) {
             infos = infos.subList(0, 13);
@@ -105,6 +104,13 @@ public class AppleWatchLayout extends ViewGroup {
                     info = new GestureEmptyItemInfo();
                     info.gesturePosition = i;
                     infos.add(info);
+                }
+            }
+        } else {
+            for (int i = 0; i < infos.size(); i++) {
+                info = (BaseInfo) infos.get(i);
+                if (info.gesturePosition < 0 || info.gesturePosition > 13) {
+                    info.gesturePosition = i;
                 }
             }
         }
@@ -126,7 +132,7 @@ public class AppleWatchLayout extends ViewGroup {
             gestureItem.setLayoutParams(lp);
             gestureItem.setItemName(info.label);
             if (info instanceof GestureEmptyItemInfo) {
-                info.icon = applyEmptyIcon();
+                info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
             }
             gestureItem.setItemIcon(info.icon);
             if (info.eventNumber > 0) {
@@ -285,13 +291,6 @@ public class AppleWatchLayout extends ViewGroup {
         mHoriChildren[0] = new GestureItemView[12];
         mHoriChildren[1] = new GestureItemView[15];
         mHoriChildren[2] = new GestureItemView[12];
-        mEmptyIconResid = new int[5];
-        mEmptyIconResid[0] = R.drawable.seitch_purple;
-        mEmptyIconResid[1] = R.drawable.switch_green;
-        mEmptyIconResid[2] = R.drawable.switch_orange;
-        mEmptyIconResid[3] = R.drawable.switch_red;
-        mEmptyIconResid[4] = R.drawable.switch_blue;
-
     }
 
     public GestureItemView getChildAtPosition(int position) {
@@ -906,7 +905,7 @@ public class AppleWatchLayout extends ViewGroup {
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;
-                List<Object> mSwitchList = new ArrayList<Object>();
+                List<BaseInfo> mSwitchList = new ArrayList<BaseInfo>();
                 for (int i = 0; i < mNum; i++) {
                     params = (LayoutParams) getChildAt(i).getLayoutParams();
                     int position = params.position;
@@ -1682,12 +1681,5 @@ public class AppleWatchLayout extends ViewGroup {
         LayoutInflater inflate = LayoutInflater.from(getContext());
         GestureItemView item = (GestureItemView) inflate.inflate(R.layout.gesture_item, null);
         return item;
-    }
-
-    private Drawable applyEmptyIcon() {
-        Drawable icon = null;
-        int index = (int) (Math.random() * 4);
-        icon = getResources().getDrawable(mEmptyIconResid[index]);
-        return icon;
     }
 }

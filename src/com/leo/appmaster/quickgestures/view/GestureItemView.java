@@ -2,6 +2,7 @@
 package com.leo.appmaster.quickgestures.view;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.annotation.SuppressLint;
@@ -55,13 +56,13 @@ public class GestureItemView extends LinearLayout {
     public void setItemName(String name) {
         mTextView.setText(name);
     }
-    
+
     public String getItemName() {
         return mTextView.getText().toString();
     }
 
     public void setItemIcon(Drawable icon) {
-        mImageView.setImageDrawable(icon);
+        mImageView.setBackgroundDrawable(icon);
     }
 
     public void setDecorateAction(DecorateAction action) {
@@ -96,7 +97,7 @@ public class GestureItemView extends LinearLayout {
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
         LeoLog.e("xxxx", "dispatchDraw");
-        if (mEditing && !mAddFlag) {
+        if (mEditing && !mAddFlag && !(getTag() instanceof GestureEmptyItemInfo)) {
             drawCross(canvas);
         } else {
             if (mDecorateAction != null) {
@@ -112,13 +113,20 @@ public class GestureItemView extends LinearLayout {
     }
 
     public void enterEditMode() {
-        LeoLog.e("xxxx", "enterEditMode");
         mEditing = true;
+        Object tag = getTag();
+        if (tag instanceof GestureEmptyItemInfo) {
+            mImageView.setImageResource(R.drawable.switch_color_add);
+        }
         invalidate();
     }
 
     public void leaveEditMode() {
         mEditing = false;
+        Object tag = getTag();
+        if (tag instanceof GestureEmptyItemInfo) {
+            mImageView.setImageDrawable(null);
+        }
         invalidate();
     }
 

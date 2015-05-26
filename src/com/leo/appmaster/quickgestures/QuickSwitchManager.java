@@ -10,6 +10,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
@@ -411,8 +412,8 @@ public class QuickSwitchManager {
         return mLabel;
     }
 
-    public List<Object> getSwitchList(int switchNum) {
-        List<Object> mSwitchList = new ArrayList<Object>();
+    public List<BaseInfo> getSwitchList(int switchNum) {
+        List<BaseInfo> mSwitchList = new ArrayList<BaseInfo>();
         // 蓝牙开关
         QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
         lanyaInfo.iDentiName = BLUETOOTH;
@@ -999,7 +1000,7 @@ public class QuickSwitchManager {
         mContext.startActivity(intent);
     }
 
-    public String ListToString(List<Object> mSwitchList, int mNum) {
+    public String ListToString(List<BaseInfo> mSwitchList, int mNum) {
         String ListString = "";
         for (int i = 0; i < mNum; i++) {
             QuickSwitcherInfo switchInfo = (QuickSwitcherInfo) mSwitchList.get(i);
@@ -1015,8 +1016,8 @@ public class QuickSwitchManager {
         return ListString;
     }
 
-    public List<Object> StringToList(String mSwitchListFromSp) {
-        List<Object> mSwitcherList = new ArrayList<Object>();
+    public List<BaseInfo> StringToList(String mSwitchListFromSp) {
+        List<BaseInfo> mSwitcherList = new ArrayList<BaseInfo>();
         String[] mSwitchAllInfo = mSwitchListFromSp.split(",");
         for (int i = 0; i < mSwitchAllInfo.length; i++) {
             QuickSwitcherInfo mInfo = new QuickSwitcherInfo();

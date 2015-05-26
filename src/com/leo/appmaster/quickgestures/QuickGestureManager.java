@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.TreeSet;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
@@ -33,11 +37,11 @@ public class QuickGestureManager {
 
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
+    private Drawable[] mEmptyIcon;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
         mSpSwitch = AppMasterPreference.getInstance(mContext);
-        init();
     }
 
     public static synchronized QuickGestureManager getInstance(Context ctx) {
@@ -47,11 +51,21 @@ public class QuickGestureManager {
         return mInstance;
     }
 
-    private void init() {
+    public void init() {
         mDynamicList = new ArrayList<BaseInfo>();
         mMostUsedList = new ArrayList<BaseInfo>();
-
         loadAppLaunchReorder();
+        preloadEmptyIcon();
+    }
+
+    private void preloadEmptyIcon() {
+        Resources res = mContext.getResources();
+        mEmptyIcon = new Drawable[5];
+        mEmptyIcon[0] = res.getDrawable(R.drawable.switch_orange);
+        mEmptyIcon[1] = res.getDrawable(R.drawable.switch_green);
+        mEmptyIcon[2] = res.getDrawable(R.drawable.seitch_purple);
+        mEmptyIcon[3] = res.getDrawable(R.drawable.switch_red);
+        mEmptyIcon[4] = res.getDrawable(R.drawable.switch_blue);
     }
 
     public void stopFloatWindow() {
@@ -143,7 +157,7 @@ public class QuickGestureManager {
         return null;
     }
 
-    public void updateSwitcherData(List<Object> infos) {
+    public void updateSwitcherData(List<BaseInfo> infos) {
         String saveToSp = QuickSwitchManager.getInstance(mContext)
                 .ListToString(infos, infos.size());
         LeoLog.d("updateSwitcherData", "saveToSp:" + saveToSp);
@@ -247,6 +261,13 @@ public class QuickGestureManager {
         }
 
         return missedCallCount;
+    }
+
+    public Drawable applyEmptyIcon() {
+        Drawable icon = null;
+        int index = (int) (Math.random() * 4);
+        icon = mEmptyIcon[index];
+        return icon;
     }
 
     class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {

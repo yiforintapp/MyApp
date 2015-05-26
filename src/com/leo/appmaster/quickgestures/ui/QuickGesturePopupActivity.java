@@ -23,6 +23,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
@@ -50,8 +51,8 @@ public class QuickGesturePopupActivity extends Activity implements
 
     private static int switchNum;
     private AppleWatchContainer mContainer;
-    private AbstractList<Object> list;
-    private List<Object> mSwitchList;
+    private List<BaseInfo> list;
+    private List<BaseInfo> mSwitchList;
     private AppMasterPreference mSpSwitch;
     private String mSwitchListFromSp;
     private ImageView iv_roket, iv_pingtai, iv_yun;
@@ -82,20 +83,20 @@ public class QuickGesturePopupActivity extends Activity implements
 
         mSpSwitch = AppMasterPreference.getInstance(this);
         // list = AppLoadEngine.getInstance(this).getAllPkgInfo();
-        list = new ArrayList<Object>();
+        list = new ArrayList<BaseInfo>();
         list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
 
         if (mSwitchList == null) {
             mSwitchListFromSp = mSpSwitch.getSwitchList();
             switchNum = mSpSwitch.getSwitchListSize();
             if (mSwitchListFromSp.isEmpty()) {
-                mSwitchList = new ArrayList<Object>();
+                mSwitchList = new ArrayList<BaseInfo>();
                 mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
                 String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
                         switchNum);
                 mSpSwitch.setSwitchList(saveToSp);
             } else {
-                mSwitchList = new ArrayList<Object>();
+                mSwitchList = new ArrayList<BaseInfo>();
                 mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
 
@@ -137,11 +138,13 @@ public class QuickGesturePopupActivity extends Activity implements
     }
 
     private void fillQg1() {
-        mContainer.fillGestureItem(GType.DymicLayout, list.subList(0, 13));
+        ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(0, 12));
+        mContainer.fillGestureItem(GType.DymicLayout, items);
     }
 
     private void fillQg2() {
-        mContainer.fillGestureItem(GType.MostUsedLayout, list.subList(11, 24));
+        ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(13, 20));
+        mContainer.fillGestureItem(GType.MostUsedLayout, items);
     }
 
     private void fillQg3() {
@@ -178,7 +181,7 @@ public class QuickGesturePopupActivity extends Activity implements
         int smallRockeyY = mRocketY - iv_roket.getHeight() / 2;
         LeoLog.d("AppleWatchContainer", " smallRockeyX : " + smallRockeyX
                 + " ;  smallRockeyY : " + smallRockeyY);
-        
+
         float iv_roketScaleX = iv_roket.getScaleX();
         float iv_width = iv_roket.getWidth() * iv_roketScaleX;
         float iv_height = iv_roket.getHeight() * iv_roketScaleX;
@@ -188,7 +191,7 @@ public class QuickGesturePopupActivity extends Activity implements
         MarginLayoutParams margin = new MarginLayoutParams(iv_roket.getLayoutParams());
         margin.width = (int) iv_width;
         margin.height = (int) iv_height;
-        margin.setMargins(smallRockeyX, smallRockeyY, smallRockeyX +  iv_roket.getWidth(),
+        margin.setMargins(smallRockeyX, smallRockeyY, smallRockeyX + iv_roket.getWidth(),
                 smallRockeyY + iv_roket.getHeight());
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         iv_roket.setLayoutParams(layoutParams);
@@ -240,8 +243,8 @@ public class QuickGesturePopupActivity extends Activity implements
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 // all return
-                                 iv_roket.setVisibility(View.INVISIBLE);
-                                 iv_pingtai.setVisibility(View.INVISIBLE);
+                                iv_roket.setVisibility(View.INVISIBLE);
+                                iv_pingtai.setVisibility(View.INVISIBLE);
                                 ObjectAnimator turnSmall = ObjectAnimator.ofFloat(iv_roket,
                                         "scaleX", 1.3f, 1.0f);
                                 ObjectAnimator turnSmall2 = ObjectAnimator.ofFloat(iv_roket,
@@ -257,8 +260,8 @@ public class QuickGesturePopupActivity extends Activity implements
                                         .with(returnY).with(pingtai_returnY);
                                 returnAnimation.setDuration(200);
                                 returnAnimation.start();
-                                //make normal iCon
-                                //TODO
+                                // make normal iCon
+                                // TODO
                             }
                         });
                         animMoveGoSet.start();

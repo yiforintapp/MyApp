@@ -624,7 +624,7 @@ public class AppleWatchContainer extends FrameLayout {
         va.start();
     }
 
-    public void fillGestureItem(GType type, List<Object> infos) {
+    public void fillGestureItem(GType type, List<BaseInfo> infos) {
         if (infos == null) {
             LeoLog.e(TAG, "fillGestureItem, infos is null");
             return;
@@ -643,9 +643,9 @@ public class AppleWatchContainer extends FrameLayout {
         targetLayout.fillItems(infos);
     }
 
-    private List<Object> fixInfoRight(List<Object> infos) {
+    private List<BaseInfo> fixInfoRight(List<BaseInfo> infos) {
         QuickSwitcherInfo sInfo = null;
-        List<Object> mSwitchList = new ArrayList<Object>();
+        List<BaseInfo> mSwitchList = new ArrayList<BaseInfo>();
         GestureItemView tv = makeGestureItem();
         for (int i = 0; i < infos.size(); i++) {
             sInfo = (QuickSwitcherInfo) infos.get(i);
