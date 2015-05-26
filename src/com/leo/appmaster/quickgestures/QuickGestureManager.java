@@ -17,6 +17,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.utils.LeoLog;
@@ -26,7 +27,7 @@ public class QuickGestureManager {
 
     private Context mContext;
     private static QuickGestureManager mInstance;
-    private TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
+    public TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
@@ -249,7 +250,7 @@ public class QuickGestureManager {
         return missedCallCount;
     }
 
-    class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {
+    public class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {
         String pkg;
         int launchCount;
 

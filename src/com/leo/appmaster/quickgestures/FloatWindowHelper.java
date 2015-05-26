@@ -3,39 +3,28 @@ package com.leo.appmaster.quickgestures;
 
 import java.util.List;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
-import android.graphics.drawable.ColorDrawable;
 import android.view.Display;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-import android.widget.PopupWindow.OnDismissListener;
-import android.widget.RelativeLayout;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
-import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
 import com.leo.appmaster.utils.Utilities;
 
 /**
@@ -106,94 +95,6 @@ public class FloatWindowHelper {
     private static final int RIGHT_CENTER_FLAG = -2;
     private static final int RIGHT_CENTER_CENTER_FLAG = -3;
     private static final int RIGHT_TOP_FLAG = -4;
-
-    // TODO
-    private void slidRemoveArea(int flag) {
-        if (LEFT_BOTTOM_FLAG == flag) {
-
-        } else if (LEFT_CENTER_FLAG == flag) {
-
-        } else if (LEFT_TOP_FLAG == flag) {
-
-        } else if (LEFT_CENTER_CENTER_FLAG == flag) {
-
-        } else if (RIGHT_BOTTOM_FLAG == flag) {
-
-        } else if (RIGHT_CENTER_FLAG == flag) {
-
-        } else if (RIGHT_CENTER_CENTER_FLAG == flag) {
-
-        } else if (RIGHT_TOP_FLAG == flag) {
-
-        }
-    }
-
-    public static void initFloatWindow(final Context mContext, int value, View view,
-            LayoutParams layoutParams, int flag) {
-        final WindowManager windowManager = getWindowManager(mContext);
-        if (view == null) {
-            view = new QuickGesturesAreaView(mContext);
-            view.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_OUTSIDE:
-                            break;
-                        case MotionEvent.ACTION_DOWN:
-                            isMoveIng = false;
-                            startX = event.getRawX();
-                            startY = event.getRawY();
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            float moveX = Math.abs(startX - event.getRawX());
-                            float moveY = Math.abs(startY - event.getRawY());
-                            // if (((moveX > layoutParams.width / 7 || moveY >
-                            // layoutParams.height / 5)
-                            // && !isMoveIng)) {
-                            // isMoveIng = true;
-                            // removeAllFloatWindow(mContext);
-                            // mGestureShowing = true;
-                            // onTouchAreaShowQuick(-1);
-                            // }
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 10
-                                    || Math.abs(startY - event.getRawY()) < 10) {
-                                removeSwipWindow(mContext, 1);
-                            }
-                            break;
-
-                        case MotionEvent.ACTION_CANCEL:
-                            isMoveIng = false;
-                            break;
-                    }
-                    return false;
-                }
-            });
-            int width = windowManager.getDefaultDisplay().getWidth();
-            int height = windowManager.getDefaultDisplay().getHeight();
-            if (layoutParams == null) {
-                layoutParams = new LayoutParams();
-                layoutParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
-                layoutParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
-                layoutParams.x = -(width / 2);
-                layoutParams.y = (height / 2) - value;
-                layoutParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
-                layoutParams.format = PixelFormat.RGBA_8888;
-                layoutParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | LayoutParams.FLAG_NOT_FOCUSABLE;
-            } else {
-                layoutParams.x = -(width / 2);
-                layoutParams.y = (height / 2) - value;
-            }
-            if (!mGestureShowing) {
-                windowManager.addView(view, layoutParams);
-            } else {
-                view = null;
-            }
-        }
-    }
 
     // 左下
     /**
@@ -1208,23 +1109,26 @@ public class FloatWindowHelper {
             @Override
             public void onClick(View arg0) {
                 // 确认按钮
-               AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                     @Override
                     public void run() {
                         // 添加的应用包名
-                        List<String> addCommonApp = commonApp.getAddFreePackageName();
+                        List<Object> addCommonApp = commonApp.getAddFreePackageName();
                         // 移除的应用包名
-                        List<String> removeCommonApp = commonApp.getRemoveFreePackageName();
+                        List<Object> removeCommonApp = commonApp
+                                .getRemoveFreePackageName();
                         // 是否选择使用习惯自动填充
                         boolean flag = commonApp.getCheckValue();
                         if (addCommonApp != null && addCommonApp.size() > 0) {
-                            for (String string : addCommonApp) {
-                                pref.setCommonAppPackageNameAdd(string);
+                            for (Object object : addCommonApp) {
+                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
+                                pref.setCommonAppPackageNameAdd(string.packageName);
                             }
                         }
                         if (removeCommonApp != null && removeCommonApp.size() > 0) {
-                            for (String string : removeCommonApp) {
-                                pref.setCommonAppPackageNameRemove(string);
+                            for (Object object : removeCommonApp) {
+                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
+                                pref.setCommonAppPackageNameRemove(string.packageName);
                             }
                         }
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
@@ -1264,20 +1168,25 @@ public class FloatWindowHelper {
                     @Override
                     public void run() {
                         // 添加的应用包名
-                        List<String> addQuickSwitch = quickSwitch.getAddFreePackageName();
+                        List<Object> addQuickSwitch = quickSwitch.getAddFreePackageName();
                         // 移除的应用包名
-                        List<String> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
+                        List<Object> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
                         if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
-                            for (String string : addQuickSwitch) {
-                                AppMasterPreference.getInstance(context)
-                                        .setQuickSwitchPackageNameAdd(string);
-                            }
+//                            String saveToSp = QuickSwitchManager.getInstance(context).ListToString(
+//                                    addQuickSwitch, addQuickSwitch.size());
+//                            AppMasterPreference.getInstance(context).setSwitchList(saveToSp);
+//                            AppMasterPreference.getInstance(context).setSwitchListSize(
+//                                    AppMasterPreference.getInstance(context).getSwitchListSize()
+//                                            + addQuickSwitch.size());
                         }
                         if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
-                            for (String string : removeQuickSwitch) {
-                                AppMasterPreference.getInstance(context)
-                                        .setQuickSwitchPackageNameRemove(string);
-                            }
+//                            String removeToSp = QuickSwitchManager.getInstance(context)
+//                                    .ListToString(removeQuickSwitch, removeQuickSwitch.size());
+//                            AppMasterPreference.getInstance(context)
+//                                    .setQuickSwitchPackageNameRemove(removeToSp);
+//                            AppMasterPreference.getInstance(context).setSwitchListSize(
+//                                    AppMasterPreference.getInstance(context).getSwitchListSize()
+//                                            - removeQuickSwitch.size());
                         }
                     }
                 });

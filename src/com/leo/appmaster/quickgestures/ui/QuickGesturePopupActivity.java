@@ -3,7 +3,9 @@ package com.leo.appmaster.quickgestures.ui;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -11,39 +13,30 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.BackupEvent;
-import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.Orientation;
-import com.leo.appmaster.quickgestures.view.GestureItemView;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.quickgestures.view.GestureItemView;
+import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends Activity implements
         OnSystemUiVisibilityChangeListener {
@@ -59,13 +52,14 @@ public class QuickGesturePopupActivity extends Activity implements
     private int pingtai_left, pingtai_top, pingtai_right, pingtai_bottom;
     private int roc_left, roc_top, roc_right, roc_bottom;
     private float pingtai_x, pingtai_y;
+    private List<QuickGsturebAppInfo> mCommonApps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handleIntent();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
-
+        mCommonApps = new ArrayList<QuickGsturebAppInfo>();
         // 注册eventBus
         LeoEventBus.getDefaultBus().register(this);
         wm = (WindowManager) this
@@ -98,7 +92,9 @@ public class QuickGesturePopupActivity extends Activity implements
                 mSwitchList = new ArrayList<Object>();
                 mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
-
+            if (!mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
+                loadCommonAppInfo();
+            }
             fillQg1();
             fillQg2();
             fillQg3();
@@ -112,6 +108,28 @@ public class QuickGesturePopupActivity extends Activity implements
                 LeoLog.e("xxxx", "onFocusChange");
             }
         });
+
+    }
+
+    private void loadCommonAppInfo() {
+        ArrayList<AppItemInfo> lists = AppLoadEngine.getInstance(this).getAllPkgInfo();
+        String commonAppString = mSpSwitch.getCommonAppPackageName();
+        if (!mSpSwitch.PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME.equals(commonAppString)) {
+            String[] names = commonAppString.split(";");
+            List<String> packageNames = Arrays.asList(names);
+            if (packageNames != null) {
+                for (AppItemInfo info : lists) {
+                    QuickGsturebAppInfo appInfo = new QuickGsturebAppInfo();
+                    appInfo.icon = info.icon;
+                    appInfo.packageName = info.packageName;
+                    appInfo.label = info.label;
+                    if (packageNames.contains(info.packageName)) {
+                        appInfo.isFreeDisturb = true;
+                        mCommonApps.add(appInfo);
+                    }
+                }
+            }
+        }
     }
 
     private void handleIntent() {
@@ -141,6 +159,17 @@ public class QuickGesturePopupActivity extends Activity implements
     }
 
     private void fillQg2() {
+//        List<QuickGsturebAppInfo> appList;
+//        if (mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
+//            TreeSet<QuickGestureManager.AppLauncherRecorder> mAppLaunchRecorders = QuickGestureManager
+//                    .getInstance(this).mAppLaunchRecorders;
+//        } else {
+//            if(mCommonApps!=null && mCommonApps.size()>0){
+//                if(mCommonApps.size()){
+//                appList=mCommonApps;
+//            }
+//            }
+//        }
         mContainer.fillGestureItem(GType.MostUsedLayout, list.subList(11, 24));
     }
 
@@ -164,6 +193,7 @@ public class QuickGesturePopupActivity extends Activity implements
         } else {
             mContainer.showCloseAnimation();
         }
+        FloatWindowHelper.mGestureShowing = false;
         // super.onBackPressed();
     }
 
@@ -178,7 +208,7 @@ public class QuickGesturePopupActivity extends Activity implements
         int smallRockeyY = mRocketY - iv_roket.getHeight() / 2;
         LeoLog.d("AppleWatchContainer", " smallRockeyX : " + smallRockeyX
                 + " ;  smallRockeyY : " + smallRockeyY);
-        
+
         float iv_roketScaleX = iv_roket.getScaleX();
         float iv_width = iv_roket.getWidth() * iv_roketScaleX;
         float iv_height = iv_roket.getHeight() * iv_roketScaleX;
@@ -188,7 +218,7 @@ public class QuickGesturePopupActivity extends Activity implements
         MarginLayoutParams margin = new MarginLayoutParams(iv_roket.getLayoutParams());
         margin.width = (int) iv_width;
         margin.height = (int) iv_height;
-        margin.setMargins(smallRockeyX, smallRockeyY, smallRockeyX +  iv_roket.getWidth(),
+        margin.setMargins(smallRockeyX, smallRockeyY, smallRockeyX + iv_roket.getWidth(),
                 smallRockeyY + iv_roket.getHeight());
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         iv_roket.setLayoutParams(layoutParams);
@@ -240,8 +270,8 @@ public class QuickGesturePopupActivity extends Activity implements
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 // all return
-                                 iv_roket.setVisibility(View.INVISIBLE);
-                                 iv_pingtai.setVisibility(View.INVISIBLE);
+                                iv_roket.setVisibility(View.INVISIBLE);
+                                iv_pingtai.setVisibility(View.INVISIBLE);
                                 ObjectAnimator turnSmall = ObjectAnimator.ofFloat(iv_roket,
                                         "scaleX", 1.3f, 1.0f);
                                 ObjectAnimator turnSmall2 = ObjectAnimator.ofFloat(iv_roket,
@@ -257,8 +287,8 @@ public class QuickGesturePopupActivity extends Activity implements
                                         .with(returnY).with(pingtai_returnY);
                                 returnAnimation.setDuration(200);
                                 returnAnimation.start();
-                                //make normal iCon
-                                //TODO
+                                // make normal iCon
+                                // TODO
                             }
                         });
                         animMoveGoSet.start();
