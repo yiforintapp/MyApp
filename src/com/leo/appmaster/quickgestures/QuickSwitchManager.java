@@ -1059,11 +1059,11 @@ public class QuickSwitchManager {
             String name = switchInfo.label;
             int position = switchInfo.gesturePosition;
             LeoLog.d("QuickSwitchManager", "name : " + name + "--position : " + position);
-//            if (i == 0) {
-                ListString = name + ":" + position+",";
-//            } else {
-//                ListString = ListString + "," + name + ":" + position;
-//            }
+            if (i == 0) {
+                ListString = name + ":" + position;
+            } else {
+                ListString = ListString + "," + name + ":" + position;
+            }
         }
         return ListString;
     }
@@ -1071,9 +1071,9 @@ public class QuickSwitchManager {
     public List<BaseInfo> StringToList(String mSwitchListFromSp) {
         List<BaseInfo> mSwitcherList = new ArrayList<BaseInfo>();
         String[] mSwitchAllInfo = mSwitchListFromSp.split(",");
-//        LeoLog.d(
-//                "QuickSwitchManager",
-//                "listSize : " + mSwitchAllInfo.length);
+        LeoLog.d(
+                "QuickSwitchManager",
+                "listSize : " + mSwitchAllInfo.length);
         for (int i = 0; i < mSwitchAllInfo.length; i++) {
             QuickSwitcherInfo mInfo = new QuickSwitcherInfo();
             String[] mEachOneInfo = mSwitchAllInfo[i].split(":");
@@ -1108,101 +1108,4 @@ public class QuickSwitchManager {
     // mIvXuKuang.setBackground(mContext.getResources().getDrawable(R.drawable.switch_add));
     // return mIvXuKuang;
     // }
-    // 加载快捷手势开关
-    public List<QuickGsturebAppInfo> loadQuickSwitchData() {
-        List<QuickGsturebAppInfo> allAppList = new ArrayList<QuickGsturebAppInfo>();
-        // 加速
-        QuickGsturebAppInfo speedUp = new QuickGsturebAppInfo();
-        speedUp.icon = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
-        speedUp.label = mContext.getResources().getString(R.string.quick_guesture_speedup);
-        speedUp.packageName = "speed_up";
-        speedUp.isFreeDisturb = false;
-        allAppList.add(speedUp);
-        // 手电
-        QuickGsturebAppInfo flashlight = new QuickGsturebAppInfo();
-        flashlight.icon = mContext.getResources().getDrawable(R.drawable.switch_flashlight);
-        flashlight.label = mContext.getResources().getString(R.string.quick_guesture_flashlight);
-        flashlight.packageName = "flashlight";
-        flashlight.isFreeDisturb = false;
-        allAppList.add(flashlight);
-        // wifi
-        QuickGsturebAppInfo wlan = new QuickGsturebAppInfo();
-        wlan.icon = mContext.getResources().getDrawable(R.drawable.switch_wifi);
-        wlan.label = mContext.getResources().getString(R.string.quick_guesture_wlan);
-        wlan.packageName = "wifi";
-        wlan.isFreeDisturb = false;
-        allAppList.add(wlan);
-        // 照相机
-        QuickGsturebAppInfo carme = new QuickGsturebAppInfo();
-        carme.icon = mContext.getResources().getDrawable(R.drawable.switch_camera);
-        carme.label = mContext.getResources().getString(R.string.quick_guesture_carme);
-        carme.packageName = "carme";
-        carme.isFreeDisturb = false;
-        allAppList.add(carme);
-        // 移动数据
-        QuickGsturebAppInfo moblieddata = new QuickGsturebAppInfo();
-        moblieddata.icon = mContext.getResources().getDrawable(R.drawable.switch_data);
-        moblieddata.label = mContext.getResources().getString(R.string.quick_guesture_mobliedata);
-        moblieddata.packageName = "moblieddata";
-        moblieddata.isFreeDisturb = false;
-        allAppList.add(moblieddata);
-        // 蓝牙
-        QuickGsturebAppInfo bluetooth = new QuickGsturebAppInfo();
-        bluetooth.icon = mContext.getResources().getDrawable(R.drawable.switch_bluetooth);
-        bluetooth.label = mContext.getResources().getString(R.string.quick_guesture_bluetooth);
-        bluetooth.packageName = "bluetooth";
-        bluetooth.isFreeDisturb = false;
-        allAppList.add(bluetooth);
-        // 屏幕亮度
-        QuickGsturebAppInfo light = new QuickGsturebAppInfo();
-        light.icon = mContext.getResources().getDrawable(R.drawable.switch_brightness_max);
-        light.label = mContext.getResources().getString(R.string.quick_guesture_light);
-        light.packageName = "light";
-        light.isFreeDisturb = false;
-        allAppList.add(light);
-        // 声音
-        QuickGsturebAppInfo sound = new QuickGsturebAppInfo();
-        sound.icon = mContext.getResources().getDrawable(R.drawable.switch_volume_min);
-        sound.label = mContext.getResources().getString(R.string.quick_guesture_sound);
-        sound.packageName = "sound";
-        sound.isFreeDisturb = false;
-        allAppList.add(sound);
-        // GPS
-        QuickGsturebAppInfo gps = new QuickGsturebAppInfo();
-        gps.icon = mContext.getResources().getDrawable(R.drawable.switch_gps);
-        gps.label = mContext.getResources().getString(R.string.quick_guesture_gps);
-        gps.packageName = "gps";
-        gps.isFreeDisturb = false;
-        allAppList.add(gps);
-        // 屏幕旋转
-        QuickGsturebAppInfo rotation = new QuickGsturebAppInfo();
-        rotation.icon = mContext.getResources().getDrawable(R.drawable.switch_rotation);
-        rotation.label = mContext.getResources().getString(R.string.quick_guesture_rotation);
-        rotation.packageName = "rotation";
-        rotation.isFreeDisturb = false;
-        allAppList.add(rotation);
-        // 飞行模式
-        QuickGsturebAppInfo flymode = new QuickGsturebAppInfo();
-        flymode.icon = mContext.getResources().getDrawable(R.drawable.switch_flightmode);
-        flymode.label = mContext.getResources().getString(R.string.quick_guesture_flymode);
-        flymode.packageName = "flymode";
-        flymode.isFreeDisturb = false;
-        allAppList.add(flymode);
-        // 锁屏情景模式
-        QuickGsturebAppInfo lock_screen_mode = new QuickGsturebAppInfo();
-        lock_screen_mode.icon = mContext.getResources().getDrawable(R.drawable.switch_mode);
-        lock_screen_mode.label = mContext.getResources().getString(
-                R.string.quick_guesture_changemode);
-        lock_screen_mode.packageName = "lock_screen_mode";
-        lock_screen_mode.isFreeDisturb = false;
-        allAppList.add(lock_screen_mode);
-        // 设置
-        QuickGsturebAppInfo sys_setting = new QuickGsturebAppInfo();
-        sys_setting.icon = mContext.getResources().getDrawable(R.drawable.switch_gestureset_pre);
-        sys_setting.label = mContext.getResources().getString(R.string.quick_guesture_setting);
-        sys_setting.packageName = "sys_setting";
-        sys_setting.isFreeDisturb = false;
-        allAppList.add(sys_setting);
-        return allAppList;
-    }
 }

@@ -4,6 +4,7 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.AppItemInfo;
@@ -26,7 +27,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -34,7 +34,6 @@ import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
@@ -65,7 +64,7 @@ public class AppleWatchLayout extends ViewGroup {
     private int mAdjustCount = 0;
     private int mSnapDuration = 800;
     private boolean mSnapping;
-    private int[] mEmptyIconResid;
+    private AppMasterPreference mSpSwitch;
 
     public static enum Direction {
         Right, Left, None;
@@ -84,6 +83,7 @@ public class AppleWatchLayout extends ViewGroup {
     public AppleWatchLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
+        mSpSwitch = AppMasterPreference.getInstance(mContext);
     }
 
     public void fillItems(List<BaseInfo> infos) {
@@ -99,12 +99,19 @@ public class AppleWatchLayout extends ViewGroup {
                 }
                 hit[info.gesturePosition] = 1;
             }
-            for (int i : hit) {
+
+            for (int i = 0; i < hit.length; i++) {
                 if (hit[i] != 1) {
                     info = new GestureEmptyItemInfo();
                     info.gesturePosition = i;
                     infos.add(info);
-
+                }
+            }
+        } else {
+            for (int i = 0; i < infos.size(); i++) {
+                info = (BaseInfo) infos.get(i);
+                if (info.gesturePosition < 0 || info.gesturePosition > 13) {
+                    info.gesturePosition = i;
                 }
             }
         }
@@ -126,7 +133,7 @@ public class AppleWatchLayout extends ViewGroup {
             gestureItem.setLayoutParams(lp);
             gestureItem.setItemName(info.label);
             if (info instanceof GestureEmptyItemInfo) {
-                info.icon = applyEmptyIcon();
+                info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
             }
             gestureItem.setItemIcon(info.icon);
             if (info.eventNumber > 0) {
@@ -134,7 +141,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
             gestureItem.setTag(info);
             addView(gestureItem);
-            computeCenterChildren(gestureItem, lp.position, false);
+            computeCenterItem(gestureItem, lp.position, false);
         }
         requestLayout();
         postDelayed(new Runnable() {
@@ -284,13 +291,6 @@ public class AppleWatchLayout extends ViewGroup {
         mHoriChildren[0] = new GestureItemView[12];
         mHoriChildren[1] = new GestureItemView[15];
         mHoriChildren[2] = new GestureItemView[12];
-        mEmptyIconResid = new int[5];
-        mEmptyIconResid[0] = R.drawable.seitch_purple;
-        mEmptyIconResid[1] = R.drawable.switch_green;
-        mEmptyIconResid[2] = R.drawable.switch_orange;
-        mEmptyIconResid[3] = R.drawable.switch_red;
-        mEmptyIconResid[4] = R.drawable.switch_blue;
-
     }
 
     public GestureItemView getChildAtPosition(int position) {
@@ -318,6 +318,10 @@ public class AppleWatchLayout extends ViewGroup {
 
     public int getInnerRadius() {
         return mInnerRadius;
+    }
+
+    public AppleWatchContainer getContainer() {
+        return mContainer;
     }
 
     @Override
@@ -436,7 +440,6 @@ public class AppleWatchLayout extends ViewGroup {
         if (mNeedRelayoutExtraItem) {
             relayoutExtraChildren();
             mNeedRelayoutExtraItem = false;
-            LeoLog.e("children", "onLayout");
         }
 
         /*
@@ -463,16 +466,7 @@ public class AppleWatchLayout extends ViewGroup {
 
     @Override
     public void removeView(View view) {
-        LayoutParams params = null;
-        int removePosition = ((LayoutParams) view.getLayoutParams()).position;
-        for (int i = 0; i < getChildCount(); i++) {
-            params = (LayoutParams) getChildAt(i).getLayoutParams();
-            if (params.position > removePosition) {
-                params.position--;
-            }
-        }
         super.removeView(view);
-        saveReorderPosition();
     }
 
     @Override
@@ -492,7 +486,7 @@ public class AppleWatchLayout extends ViewGroup {
      * 在快捷手势界面点击添加按钮时，必须通过此方法添加
      */
     @Override
-    public void addView(View child, android.view.ViewGroup.LayoutParams params) {
+    public void addView(View child, ViewGroup.LayoutParams params) {
         int addPosition = ((LayoutParams) params).position;
         LayoutParams lp = ((LayoutParams) params);
         for (int i = 0; i < getChildCount(); i++) {
@@ -502,7 +496,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
         }
         saveReorderPosition();
-        computeCenterChildren((GestureItemView) child, addPosition, true);
+        computeCenterItem((GestureItemView) child, addPosition, true);
         super.addView(child, params);
     }
 
@@ -559,37 +553,66 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
             QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
             // 蓝牙
-            if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+            if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                    QuickSwitchManager.BLUETOOTH))) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleBluetooth(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.FLASHLIGHT))) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleFlashLight(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.WLAN))) {
                 QuickSwitchManager.getInstance(getContext()).toggleWlan(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.CRAME))) {
                 QuickSwitchManager.getInstance(getContext()).openCrame();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.SOUND))) {
                 QuickSwitchManager.getInstance(getContext()).toggleSound(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.LIGHT))) {
                 QuickSwitchManager.getInstance(getContext()).toggleLight(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.SPEEDUP))) {
                 QuickSwitchManager.getInstance(getContext()).speedUp(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.CHANGEMODE))) {
                 QuickSwitchManager.getInstance(getContext()).toggleMode();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.SWITCHSET))) {
                 QuickSwitchManager.getInstance(getContext()).switchSet();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.SETTING))) {
                 QuickSwitchManager.getInstance(getContext()).goSetting();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.GPS))) {
                 QuickSwitchManager.getInstance(getContext()).toggleGPS();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.FLYMODE))) {
                 QuickSwitchManager.getInstance(getContext()).toggleFlyMode();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.ROTATION))) {
                 QuickSwitchManager.getInstance(getContext()).toggleRotation(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.MOBILEDATA))) {
                 QuickSwitchManager.getInstance(getContext()).toggleMobileData(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.HOME))) {
                 QuickSwitchManager.getInstance(getContext()).goHome();
             }
         } else if (info instanceof MessageBean) {
@@ -656,8 +679,7 @@ public class AppleWatchLayout extends ViewGroup {
         if (hitView != null) {
             GestureItemView giv = (GestureItemView) hitView;
             if (mContainer.isEditing()) {
-                if (giv.hasAddFlag()) {
-                    // TODO show add item dialog
+                if (giv.isEmptyIcon()) {
                     GType type = mContainer.getCurrentGestureType();
                     if (type == GType.MostUsedLayout || type == GType.SwitcherLayout) {
                         showAddNewDiglog(type);
@@ -667,11 +689,9 @@ public class AppleWatchLayout extends ViewGroup {
                     int offsetX = (int) (x - hitView.getLeft());
                     int onnsetY = (int) (y - hitView.getTop());
                     if (rect.contains(offsetX, onnsetY)) {
-                        removeView(hitView);
-                        onItemRemoved(hitView);
+                        replaceEmptyIcon(giv);
                     }
                 }
-
             } else {
                 animateItem(hitView);
             }
@@ -680,33 +700,39 @@ public class AppleWatchLayout extends ViewGroup {
 
     private void showAddNewDiglog(GType type) {
         // TODO Auto-generated method stub
+        QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.MostUsedLayout) {
-            Toast.makeText(getContext(), "添加最近使用item", 0).show();
+            qgm.showCommontAppDialog(getContext());
         } else if (type == GType.SwitcherLayout) {
-            Toast.makeText(getContext(), "添加快捷开关item", 0).show();
+            //get list from sp
+            String mListString = mSpSwitch.getSwitchList();
+            List<BaseInfo> mSwitchList = QuickSwitchManager.getInstance(mContext).StringToList(mListString);
+            qgm.showQuickSwitchDialog(getContext(),mSwitchList);
         }
     }
 
-    private void onItemRemoved(View hitView) {
+    private void replaceEmptyIcon(GestureItemView hitView) {
         GType type = mContainer.getCurrentGestureType();
         if (type == GType.DymicLayout) {
             QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
                     (BaseInfo) hitView.getTag());
         } else if (type == GType.SwitcherLayout) {
-
-            int childCount = getChildCount();
-            GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 9 && !view.hasAddFlag()) {
-                showAddIcon(childCount);
-            }
-
         } else if (type == GType.MostUsedLayout) {
-            int childCount = getChildCount();
-            GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 9 && !view.hasAddFlag()) {
-                showAddIcon(childCount);
-            }
+            //TODO 
+            
         }
+
+        BaseInfo baseInfo = (BaseInfo) hitView.getTag();
+        GestureEmptyItemInfo info = new GestureEmptyItemInfo();
+        info.gesturePosition = baseInfo.gesturePosition;
+        info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
+        hitView.setItemIcon(info.icon);
+        hitView.setItemName(info.label);
+        hitView.setDecorateAction(null);
+        hitView.setTag(info);
+        hitView.enterEditMode();
+        saveReorderPosition();
+        refillExtraItems();
     }
 
     public void checkItemLongClick(float x, float y) {
@@ -719,18 +745,15 @@ public class AppleWatchLayout extends ViewGroup {
                 LeoLog.d("checkItemLongClick", "hitView");
                 break;
             }
-            // 不足9个icon，显示虚框 TODO
         }
 
         if (hitView != null) {
-            // animateItem(hitView);
             hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f), hitView, 0);
             hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         }
     }
 
     public void checkActionDownInEditing(float x, float y) {
-        // TODO
         View hitView = null, tempView = null;
         for (int i = 0; i < getChildCount(); i++) {
             tempView = getChildAt(i);
@@ -746,8 +769,9 @@ public class AppleWatchLayout extends ViewGroup {
                 Rect rect = giv.getCrossRect();
                 int offsetX = (int) (x - hitView.getLeft());
                 int onnsetY = (int) (y - hitView.getTop());
-                if (!rect.contains(offsetX, onnsetY) && !giv.hasAddFlag()) {
-                    hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f), hitView, 0);
+                if (!rect.contains(offsetX, onnsetY) && !giv.isEmptyIcon()) {
+                    hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f),
+                            hitView, 0);
                     hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                 }
             }
@@ -790,7 +814,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     public void squeezeItems(GestureItemView fromView, GestureItemView toView) {
-
         // dont need squeeze dynamic layout
         GType type = mContainer.getCurrentGestureType();
         if (type == GType.DymicLayout) {
@@ -861,15 +884,14 @@ public class AppleWatchLayout extends ViewGroup {
                 for (int i = hitViews.length - 1; i >= 0; i--) {
                     if (i == 0) {
                         ((AppleWatchLayout.LayoutParams) hitViews[i].getLayoutParams()).position = lastPosition;
+                        computeCenterItem(hitViews[i], lastPosition, false);
                     } else {
                         nextPosition = ((AppleWatchLayout.LayoutParams) hitViews[i - 1]
                                 .getLayoutParams()).position;
                         ((AppleWatchLayout.LayoutParams) hitViews[i].getLayoutParams()).position = nextPosition;
+                        computeCenterItem(hitViews[i], nextPosition, false);
                     }
                 }
-
-                saveReorderPosition();
-
                 if (mAnimCanceled) {
                     for (GestureItemView gestureItemView : hitViews) {
                         gestureItemView.setLeft((int) (gestureItemView.getLeft() + gestureItemView
@@ -884,13 +906,44 @@ public class AppleWatchLayout extends ViewGroup {
                         gestureItemView.setTranslationX(0);
                         gestureItemView.setTranslationY(0);
                     }
-
                     requestLayout();
                 }
+
+                saveReorderPosition();
+                refillExtraItems();
             }
 
         });
         mReorderAnimator.start();
+    }
+
+    private void refillExtraItems() {
+        GestureItemView tempView;
+        for (int i = 0; i < 8; i++) {
+            if (i < 4) {
+                tempView = mHoriChildren[0][i];
+            } else {
+                tempView = mHoriChildren[0][i + 4];
+            }
+            removeView(tempView);
+        }
+        for (int i = 0; i < 10; i++) {
+            if (i < 5) {
+                tempView = mHoriChildren[1][i];
+            } else {
+                tempView = mHoriChildren[1][i + 5];
+            }
+            removeView(tempView);
+        }
+        for (int i = 0; i < 8; i++) {
+            if (i < 4) {
+                tempView = mHoriChildren[2][i];
+            } else {
+                tempView = mHoriChildren[2][i + 4];
+            }
+            removeView(tempView);
+        }
+        fillExtraChildren();
     }
 
     private void saveReorderPosition() {
@@ -905,13 +958,13 @@ public class AppleWatchLayout extends ViewGroup {
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;
-                List<Object> mSwitchList = new ArrayList<Object>();
+                List<BaseInfo> mSwitchList = new ArrayList<BaseInfo>();
                 for (int i = 0; i < mNum; i++) {
                     params = (LayoutParams) getChildAt(i).getLayoutParams();
                     int position = params.position;
                     if (position > -1) {
-                        QuickSwitcherInfo sInfo = (QuickSwitcherInfo) getChildAt(i).getTag();
-                        if (sInfo != null) {
+                        BaseInfo sInfo = (BaseInfo) getChildAt(i).getTag();
+                        if (sInfo != null && !sInfo.label.isEmpty()) {
                             sInfo.gesturePosition = position;
                             mSwitchList.add(sInfo);
                         }
@@ -949,12 +1002,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     public void onLeaveEditMode() {
-        if (mContainer.getCurrentGestureType() != GType.DymicLayout) {
-            GestureItemView lastChild = (GestureItemView) getChildAt(getChildCount() - 1);
-            if (lastChild.hasAddFlag()) {
-                removeView(lastChild);
-            }
-        }
         for (int i = 0; i < getChildCount(); i++) {
             GestureItemView item = (GestureItemView) getChildAt(i);
             item.leaveEditMode();
@@ -965,7 +1012,7 @@ public class AppleWatchLayout extends ViewGroup {
         if (mContainer.getCurrentGestureType() != GType.DymicLayout) {
             int childCount = getChildCount();
             GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 13 && !view.hasAddFlag()) {
+            if (childCount < 13 && !view.isEmptyIcon()) {
                 showAddIcon(childCount);
             }
         }
@@ -978,13 +1025,14 @@ public class AppleWatchLayout extends ViewGroup {
             GestureItemView addItem = makeGestureItem();
             addItem.setLayoutParams(params);
             addItem.setBackgroundResource(R.drawable.switch_add);
-            addItem.setAddFlag(true);
+            GestureEmptyItemInfo info = new GestureEmptyItemInfo();
+            info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
+            addItem.setTag(info);
             addView(addItem);
         }
     }
 
     public void translateItem(float moveX) {
-        LeoLog.e(TAG, "moveX = " + moveX);
         if (moveX > 0) {
             computeTranslateScale(Direction.Left, moveX);
         } else if (moveX < 0) {
@@ -992,7 +1040,7 @@ public class AppleWatchLayout extends ViewGroup {
         }
     }
 
-    private void computeCenterChildren(GestureItemView view, int position, boolean newAdd) {
+    private void computeCenterItem(GestureItemView view, int position, boolean newAdd) {
         if (position == 9) {
             mHoriChildren[0][4] = view;
             if (newAdd) {
@@ -1098,7 +1146,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private void adjustIconPosition(Direction direction) {
-        LeoLog.e("xxxx", "adjustIconPosition");
         int i, firstPosition, lastPosition;
         GestureItemView tempView;
         if (direction == Direction.Left) {
@@ -1520,7 +1567,7 @@ public class AppleWatchLayout extends ViewGroup {
             resault += targetView.getItemName().toString() + targetLp.position + "    "
                     + targetView.getTranslationX() + "; ";
         }
-        LeoLog.e("children", resault);
+        LeoLog.d("children", resault);
         resault = "";
         for (int i = 0; i < 15; i++) {
             targetView = mHoriChildren[1][i];
@@ -1528,7 +1575,7 @@ public class AppleWatchLayout extends ViewGroup {
             resault += targetView.getItemName().toString() + targetLp.position + "    "
                     + targetView.getTranslationX() + "; ";
         }
-        LeoLog.e("children", resault);
+        LeoLog.d("children", resault);
         resault = "";
         for (int i = 0; i < 12; i++) {
             targetView = mHoriChildren[2][i];
@@ -1536,7 +1583,7 @@ public class AppleWatchLayout extends ViewGroup {
             resault += targetView.getItemName().toString() + targetLp.position + "    "
                     + targetView.getTranslationX() + "; ";
         }
-        LeoLog.e("children", resault);
+        LeoLog.d("children", resault);
     }
 
     public void snapLong(Direction direction) {
@@ -1544,15 +1591,14 @@ public class AppleWatchLayout extends ViewGroup {
         int duration;
         if (!mSnapping) {
             if (direction == Direction.Left) {
-                distance = mMinuOffset * 3 - mLastMovex;
-                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 3);
-                duration = (int) ((distance / mMinuOffset * 3) * mSnapDuration);
+                distance = mMinuOffset * 2 - mLastMovex;
+                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 2);
+                duration = (int) ((distance / mMinuOffset * 2) * mSnapDuration);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         mLastMovex = (Float) animation.getAnimatedValue();
-                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
                         computeTranslateScale(Direction.Left, mLastMovex);
                     }
                 });
@@ -1569,16 +1615,15 @@ public class AppleWatchLayout extends ViewGroup {
                 transAnima.start();
                 mSnapping = true;
             } else if (direction == Direction.Right) {
-                distance = mMinuOffset * 3 - mLastMovex;
-                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 3);
-                duration = (int) ((distance / mMinuOffset * 3) * mSnapDuration);
+                distance = mMinuOffset * 2 - mLastMovex;
+                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 2);
+                duration = (int) ((distance / mMinuOffset * 2) * mSnapDuration);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         mLastMovex = (Float) animation.getAnimatedValue();
                         computeTranslateScale(Direction.Right, mLastMovex);
-                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
                     }
                 });
                 transAnima.addListener(new AnimatorListenerAdapter() {
@@ -1612,13 +1657,12 @@ public class AppleWatchLayout extends ViewGroup {
                     distance = temp * mMinuOffset;
                 }
                 transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
-                duration = (int) (((distance - mLastMovex) / mMinuOffset * 3) * mSnapDuration);
+                duration = (int) (((distance - mLastMovex) / mMinuOffset * 2) * mSnapDuration);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         mLastMovex = (Float) animation.getAnimatedValue();
-                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
                         computeTranslateScale(Direction.Left, mLastMovex);
                     }
                 });
@@ -1644,13 +1688,12 @@ public class AppleWatchLayout extends ViewGroup {
                     distance = temp * mMinuOffset;
                 }
                 transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
-                duration = (int) (((distance - mLastMovex) / mMinuOffset * 3) * mSnapDuration);
+                duration = (int) (((distance - mLastMovex) / mMinuOffset * 2) * mSnapDuration);
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         mLastMovex = (Float) animation.getAnimatedValue();
                         computeTranslateScale(Direction.Right, mLastMovex);
-                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
                     }
                 });
                 transAnima.addListener(new AnimatorListenerAdapter() {
@@ -1681,12 +1724,5 @@ public class AppleWatchLayout extends ViewGroup {
         LayoutInflater inflate = LayoutInflater.from(getContext());
         GestureItemView item = (GestureItemView) inflate.inflate(R.layout.gesture_item, null);
         return item;
-    }
-
-    private Drawable applyEmptyIcon() {
-        Drawable icon = null;
-        int index = (int) (Math.random() * 4);
-        icon = getResources().getDrawable(mEmptyIconResid[index]);
-        return icon;
     }
 }
