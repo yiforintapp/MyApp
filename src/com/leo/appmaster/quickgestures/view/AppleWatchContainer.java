@@ -96,7 +96,6 @@ public class AppleWatchContainer extends FrameLayout {
         mCleaner.tryClean(mContext);
         long curUsedMem = mCleaner.getUsedMem();
         mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-        
 
         int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
         if (derictor == 0) {
@@ -261,20 +260,22 @@ public class AppleWatchContainer extends FrameLayout {
     public boolean onTouchEvent(MotionEvent event) {
         if (mSnaping)
             return false;
+        AppleWatchLayout gestureLayout = null;
+        if (mCurrentGestureType == GType.DymicLayout) {
+            gestureLayout = mDymicLayout;
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            gestureLayout = mMostUsedLayout;
+        } else {
+            gestureLayout = mSwitcherLayout;
+        }
+        if (gestureLayout.isSnapping())
+            return false;
         mGesDetector.onTouchEvent(event);
         float moveX, moveY;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mEditing) {
                     LeoLog.d(TAG, "ACTION_DOWN in editing ");
-                    AppleWatchLayout gestureLayout = null;
-                    if (mCurrentGestureType == GType.DymicLayout) {
-                        gestureLayout = mDymicLayout;
-                    } else if (mCurrentGestureType == GType.MostUsedLayout) {
-                        gestureLayout = mMostUsedLayout;
-                    } else {
-                        gestureLayout = mSwitcherLayout;
-                    }
                     gestureLayout.checkActionDownInEditing(event.getX(), event.getY()
                             - gestureLayout.getTop());
                 } else {
@@ -1208,9 +1209,32 @@ public class AppleWatchContainer extends FrameLayout {
         return mRotateDegree;
     }
 
+    public void showOpenAnimation(int direction) {
+        // show from left-center
+        if (direction == 0) {
+            
+        } else if (direction == 1) {// show from left-bottom
+
+        } else if (direction == 2) {// show from right-center
+
+        } else if (direction == 3) {// show from right-bottom
+
+        }
+//        AnimatorSet set = new AnimatorSet();
+//        set.setDuration(600);
+//        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f,
+//                1.1f,
+//                1.0f);
+//        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f,
+//                1.1f,
+//                1.0f);
+//        set.playTogether(animationx, animationy);
+//        set.start();
+    }
+
     public void showOpenAnimation() {
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(400);
+        set.setDuration(600);
         Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f,
                 1.1f,
                 1.0f);

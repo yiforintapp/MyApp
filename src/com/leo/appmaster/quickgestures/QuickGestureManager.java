@@ -85,7 +85,7 @@ public class QuickGestureManager {
                 ActivityManager.RECENT_WITH_EXCLUDED);
         String pkg;
         Drawable icon;
-        BaseInfo baseInfo;
+        AppItemInfo appInfo;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
         List<String> pkgs = new ArrayList<String>();
         for (RecentTaskInfo recentTaskInfo : recentTasks) {
@@ -96,10 +96,12 @@ public class QuickGestureManager {
                 pkgs.add(pkg);
                 icon = engine.getAppIcon(pkg);
                 if (icon != null) {
-                    baseInfo = new BaseInfo();
-                    baseInfo.icon = icon;
-                    baseInfo.label = engine.getAppName(pkg);
-                    dynamicList.add(baseInfo);
+                    appInfo = new AppItemInfo();
+                    appInfo.packageName = pkg;
+                    appInfo.activityName = engine.getActivityName(pkg);
+                    appInfo.icon = icon;
+                    appInfo.label = engine.getAppName(pkg);
+                    dynamicList.add(appInfo);
                 }
             }
         }
