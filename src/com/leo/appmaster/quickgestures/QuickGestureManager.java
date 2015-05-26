@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.Vector;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RecentTaskInfo;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -21,7 +24,11 @@ import android.view.View.OnClickListener;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
@@ -60,6 +67,41 @@ public class QuickGestureManager {
         mMostUsedList = new ArrayList<BaseInfo>();
         loadAppLaunchReorder();
         preloadEmptyIcon();
+    }
+
+    public List<BaseInfo> getDynamicList() {
+        Vector<BusinessItemInfo> businessDatas = AppBusinessManager.getInstance(mContext)
+                .getBusinessData();
+        List<BaseInfo> dynamicList = new ArrayList<BaseInfo>();
+        BusinessItemInfo businessItem = null;
+        if (businessDatas != null && businessDatas.size() > 0) {
+            businessItem = businessDatas.get(0);
+            dynamicList.add(businessItem);
+        }
+        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        List<RecentTaskInfo> recentTasks = am.getRecentTasks(50,
+                ActivityManager.RECENT_WITH_EXCLUDED);
+        String pkg;
+        Drawable icon;
+        BaseInfo baseInfo;
+        AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
+        List<String> pkgs = new ArrayList<String>();
+        for (RecentTaskInfo recentTaskInfo : recentTasks) {
+            if (dynamicList.size() > 12)
+                break;
+            pkg = recentTaskInfo.baseIntent.getComponent().getPackageName();
+            if (!pkgs.contains(pkg)) {
+                pkgs.add(pkg);
+                icon = engine.getAppIcon(pkg);
+                if (icon != null) {
+                    baseInfo = new BaseInfo();
+                    baseInfo.icon = icon;
+                    baseInfo.label = engine.getAppName(pkg);
+                    dynamicList.add(baseInfo);
+                }
+            }
+        }
+        return dynamicList;
     }
 
     private void preloadEmptyIcon() {
@@ -144,11 +186,6 @@ public class QuickGestureManager {
             }
             AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
         }
-    }
-
-    public List<BaseInfo> getDynamicList() {
-
-        return null;
     }
 
     public List<BaseInfo> getMostUsedList() {

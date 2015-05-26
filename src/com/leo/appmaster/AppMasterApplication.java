@@ -50,6 +50,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -255,7 +256,7 @@ public class AppMasterApplication extends Application {
                 // judgeStatictiUnlockCount();
                 initImageLoader();
                 mAppsEngine.preloadAllBaseInfo();
-                // AppBusinessManager.getInstance(mInstance).init();
+                 AppBusinessManager.getInstance(mInstance).init();
                 mBackupManager.getBackupList();
                 PrivacyContactManager.getInstance(ctx).getPrivateContacts();
                 // GP check
