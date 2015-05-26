@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -1276,8 +1277,6 @@ public class AppleWatchContainer extends FrameLayout {
         int iconSize = mSwitcherLayout.getIconSize();
         if (info.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-//             LeoLog.d("AppleWatchContainer", "BLUETOOTH tv.getScaleX: " + tv.getScaleX()
-//             + " ; BLUETOOTH tv.getScaleY : " + tv.getScaleY());
             checkBlueToothStatus(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
@@ -1296,13 +1295,9 @@ public class AppleWatchContainer extends FrameLayout {
             checkRotation(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-//            LeoLog.d("AppleWatchContainer", "MOBILEDATA tv.getScaleX: " + tv.getScaleX()
-//            + " ; MOBILEDATA tv.getScaleY : " + tv.getScaleY());
             checkMobileData(info, iconSize, tv);
         } else if (info.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-//            LeoLog.d("AppleWatchContainer", "iDentiName tv.getScaleX: " + tv.getScaleX()
-//            + " ; iDentiName tv.getScaleY : " + tv.getScaleY());
             speedUp(info, iconSize, tv);
         }
     }
@@ -1321,11 +1316,30 @@ public class AppleWatchContainer extends FrameLayout {
         
         LeoLog.d("AppleWatchContainer", " mRocketX : " + mRocketX
                 + " ;  mRocketY : " + mRocketY);
-        mPopupActivity.RockeyAnimation(tv,mLayoutBottom, mRocketX, mRocketY);
+        mPopupActivity.RockeyAnimation(tv,mLayoutBottom, mRocketX, mRocketY,info);
     }
 
     public void setRocket(QuickGesturePopupActivity quickGesturePopupActivity) {
         this.mPopupActivity = quickGesturePopupActivity;
+    }
+
+    public void makeNormalIcon(QuickSwitcherInfo info) {
+        //show Toast
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View view = inflater.inflate(R.layout.toast_self_make, null);
+        Toast toast = new Toast(mContext);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.show();
+        
+        //make Normal Icon
+        GestureItemView tv = null;
+        int iconSize = mSwitcherLayout.getIconSize();
+        if (info.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
+            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+            info.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            tv.setItemIcon(info.switchIcon[0]);
+        }
     }
 
 }
