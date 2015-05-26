@@ -41,8 +41,7 @@ import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.quickgestures.view.GestureItemView;
 import com.leo.appmaster.utils.LeoLog;
 
-public class QuickGesturePopupActivity extends Activity implements
-        OnSystemUiVisibilityChangeListener {
+public class QuickGesturePopupActivity extends Activity {
 
     private static int switchNum;
     private AppleWatchContainer mContainer;
@@ -57,18 +56,11 @@ public class QuickGesturePopupActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handleIntent();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         QuickSwitchManager.getInstance(this).setActivity(this);
         mCommonApps = new ArrayList<BaseInfo>();
         // 注册eventBus
         LeoEventBus.getDefaultBus().register(this);
-        wm = (WindowManager) this
-                .getSystemService(Context.WINDOW_SERVICE);
-        // Window window = getWindow();
-        // WindowManager.LayoutParams params = window.getAttributes();
-        // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        // window.setAttributes(params);
 
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
@@ -76,10 +68,53 @@ public class QuickGesturePopupActivity extends Activity implements
         iv_yun = (ImageView) findViewById(R.id.iv_yun);
         mContainer.setRocket(this);
 
-        mSpSwitch = AppMasterPreference.getInstance(this);
+        fillDynamicLayout();
+        mContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                fillMostUsedLayout();
+                fillSwitcherLayout();
+            }
+        });
+        overridePendingTransition(-1, -1);
+    }
+
+    public void onEventMainThread(ClickQuickItemEvent event) {
+        mContainer.checkStatus(event.info);
+    }
+
+    @Override
+    protected void onResume() {
+        mContainer.showOpenAnimation();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        finish();
+        super.onStop();
+    }
+
+    private void fillDynamicLayout() {
+        List<BaseInfo> items = QuickGestureManager.getInstance(this).getDynamicList();
+        mContainer.fillGestureItem(GType.DymicLayout, items);
+    }
+
+    private void fillMostUsedLayout() {
+        //TODO
         list = new ArrayList<BaseInfo>();
         list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
+        ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(13, 20));
+        mContainer.fillGestureItem(GType.MostUsedLayout, items);
+    }
 
+    private void fillSwitcherLayout() {
+        mSpSwitch = AppMasterPreference.getInstance(this);
         if (mSwitchList == null) {
             mSwitchListFromSp = mSpSwitch.getSwitchList();
             switchNum = mSpSwitch.getSwitchListSize();
@@ -99,53 +134,10 @@ public class QuickGesturePopupActivity extends Activity implements
             // } else {
             // loadRecorderAppInfo();
             // }
-            fillQg1();
-            fillQg2();
-            fillQg3();
-            mContainer.showOpenAnimation();
         }
-        overridePendingTransition(-1, -1);
-        mContainer.setOnFocusChangeListener(new OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-            }
-        });
     }
 
-    private void handleIntent() {
 
-    }
-
-    public void onEventMainThread(ClickQuickItemEvent event) {
-        mContainer.checkStatus(event.info);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    private void fillQg1() {
-        // ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(0,
-        // 12));
-        List<BaseInfo> items = QuickGestureManager.getInstance(this).getDynamicList();
-        mContainer.fillGestureItem(GType.DymicLayout, items);
-    }
-
-    private void fillQg2() {
-        loadRecorderAppInfo();
-        mContainer.fillGestureItem(GType.MostUsedLayout, mCommonApps);
-    }
-
-    private void fillQg3() {
-        mContainer.fillGestureItem(GType.SwitcherLayout, mSwitchList);
-    }
 
     @Override
     protected void onDestroy() {
@@ -162,11 +154,6 @@ public class QuickGesturePopupActivity extends Activity implements
         } else {
             mContainer.showCloseAnimation();
         }
-        // super.onBackPressed();
-    }
-
-    @Override
-    public void onSystemUiVisibilityChange(int visibility) {
     }
 
     public void rockeyAnimation(GestureItemView tv, final int mLayoutBottom, int mRocketX,
@@ -200,8 +187,8 @@ public class QuickGesturePopupActivity extends Activity implements
             @Override
             public void onAnimationEnd(Animator animation) {
                 iv_pingtai.setVisibility(View.VISIBLE);
-                final int mScreenHeight = wm.getDefaultDisplay().getHeight();
-                int mScreenWidth = wm.getDefaultDisplay().getWidth();
+                final int mScreenHeight = mContainer.getHeight();
+                int mScreenWidth = mContainer.getWidth();
                 int transY = (int) iv_pingtai.getTranslationY();
                 int mRockeyMoveX = mScreenWidth / 2
                         - (iv_roket.getLeft() + iv_roket.getWidth() / 2);

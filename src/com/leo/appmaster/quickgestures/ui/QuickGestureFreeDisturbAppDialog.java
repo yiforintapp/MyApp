@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.mobstat.o;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -30,6 +31,7 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
 import com.leo.appmaster.quickgestures.view.FreeDisturbPagedGridView;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 /**
  * QuickGestureSlideTimeDialog
@@ -48,6 +50,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private TextView mCheckBoxTv;
     private CheckBox mCheckBox;
     private int mFlag;
+    private static int mSwitchListSize = 0;
     private static final String TAG = "QuickGestureFreeDisturbAppDialog";
 
     public QuickGestureFreeDisturbAppDialog(Context context, int flag) {
@@ -83,13 +86,17 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     mRemoveFreePackageName.add(selectInfl);
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(false);
+                    mSwitchListSize -= 1;
                 } else {
-                    selectInfl.isFreeDisturb = true;
-                    mFreeDisturbApp.add(selectInfl);
-                    mDisturbList.remove(selectInfl);
-                    mAddFreePackageName.add(selectInfl);
-                    ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                            .setDefaultRecommendApp(true);
+                    if (mSwitchListSize <= 12) {
+                        selectInfl.isFreeDisturb = true;
+                        mFreeDisturbApp.add(selectInfl);
+                        mDisturbList.remove(selectInfl);
+                        mAddFreePackageName.add(selectInfl);
+                        ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                                .setDefaultRecommendApp(true);
+                        mSwitchListSize += 1;
+                    }
                 }
 
             }
@@ -213,8 +220,8 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
 
     // 加载快捷开关数据
     private void loadQuickSwitchData() {
-        List<String> packageNames = null;
-        // 为设置的快捷开关
+        // List<String> packageNames = null;
+        // 未设置的快捷开关
         mDisturbList = new ArrayList<QuickGsturebAppInfo>();
         // 设置为快捷开关
         mFreeDisturbApp = new ArrayList<QuickGsturebAppInfo>();
@@ -222,33 +229,45 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         List<BaseInfo> allList = qsm.getSwitchList(AppMasterPreference.getInstance(mContext)
                 .getSwitchListSize());
         // 设置为快捷手势的开关
-        String quickGestureSwitchPackageNames = AppMasterPreference.getInstance(mContext)
+        String packageNames = AppMasterPreference.getInstance(mContext)
                 .getSwitchList();
-        List<BaseInfo> quickSwitch = qsm.StringToList(quickGestureSwitchPackageNames);
-        if (allList != null) {
-            for (Object object : allList) {
-                if (packageNames != null) {
-                    if (quickSwitch.contains(object)) {
-                        QuickSwitcherInfo switchInfo = (QuickSwitcherInfo) object;
-                        switchInfo.isFreeDisturb = true;
-                        mFreeDisturbApp.add(switchInfo);
-                    } else {
-                        QuickSwitcherInfo switchInfo = (QuickSwitcherInfo) object;
-                        switchInfo.isFreeDisturb = false;
-                        mDisturbList.add(switchInfo);
+        List<BaseInfo> quickSwitch = qsm.StringToList(packageNames);
+        LeoLog.d("QuickGestureFreeDisturbAppDialog", "dialog String is : " + packageNames);
+        if (quickSwitch == null) {
+            // 不可能的情况
+            for (int i = 0; i < allList.size(); i++) {
+                Object object = allList.get(i);
+                QuickSwitcherInfo switchInfo = (QuickSwitcherInfo) object;
+                mFreeDisturbApp.add(switchInfo);
+            }
+        } else {
+            mSwitchListSize = quickSwitch.size();
+            for (int i = 0; i < allList.size(); i++) {
+                boolean hasSame = false;
+                Object objectNormal = allList.get(i);
+                QuickSwitcherInfo switchInfoN = (QuickSwitcherInfo) objectNormal;
+                for (int j = 0; j < quickSwitch.size(); j++) {
+                    Object objectSp = quickSwitch.get(j);
+                    QuickSwitcherInfo switchInfoS = (QuickSwitcherInfo) objectSp;
+                    if (switchInfoN.label.equals(switchInfoS.label)) {
+                        hasSame = true;
                     }
+                }
+                if (hasSame) {
+                    switchInfoN.isFreeDisturb = true;
+                    mFreeDisturbApp.add(switchInfoN);
                 } else {
-                    QuickSwitcherInfo switchInfo = (QuickSwitcherInfo) object;
-                    mDisturbList.add(switchInfo);
+                    switchInfoN.isFreeDisturb = false;
+                    mDisturbList.add(switchInfoN);
                 }
             }
+
+            if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
+                mFreeDisturbApp.addAll(mDisturbList);
+            } else {
+                mFreeDisturbApp = mDisturbList;
+            }
         }
-        if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
-            mFreeDisturbApp.addAll(mDisturbList);
-        } else {
-            mFreeDisturbApp = mDisturbList;
-        }
-        
         mGridView.setDatas(mFreeDisturbApp, 4, 4);
     }
 
