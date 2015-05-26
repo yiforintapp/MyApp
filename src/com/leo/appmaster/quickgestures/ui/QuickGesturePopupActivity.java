@@ -52,7 +52,8 @@ public class QuickGesturePopupActivity extends Activity implements
         super.onCreate(savedInstanceState);
         handleIntent();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
-
+        QuickSwitchManager.getInstance(this).setActivity(this);
+        
         // 注册eventBus
         LeoEventBus.getDefaultBus().register(this);
         wm = (WindowManager) this

@@ -8,12 +8,14 @@ import java.util.List;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockModeActivity;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.utils.LeoLog;
@@ -97,7 +99,8 @@ public class QuickSwitchManager {
     private ConnectivityManager mConnectivityManager;
     private Handler mHandler;
     private AppMasterPreference switchPreference;
-
+    private static QuickGesturePopupActivity mActivity;
+    
     public static synchronized QuickSwitchManager getInstance(Context context) {
         if (mInstance == null) {
             mInstance = new QuickSwitchManager(context);
@@ -105,6 +108,10 @@ public class QuickSwitchManager {
         return mInstance;
     }
 
+    public void setActivity(QuickGesturePopupActivity quickGesturePopupActivity){
+        this.mActivity = quickGesturePopupActivity;
+    }
+    
     private QuickSwitchManager(Context context) {
         mContext = context.getApplicationContext();
         vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
@@ -662,6 +669,7 @@ public class QuickSwitchManager {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
+        mActivity.finish();
     }
 
     public void toggleLight(QuickSwitcherInfo mInfo) {
@@ -759,19 +767,24 @@ public class QuickSwitchManager {
     }
 
     public void toggleMode() {
-        Toast.makeText(mContext, "切你的头～方案还没出！", 0).show();
+        Intent intent = new Intent(mContext, LockModeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+        mActivity.finish();
     }
 
     public void switchSet() {
         Intent intent = new Intent(mContext, QuickGestureActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
+        mActivity.finish();
     }
 
     public void goSetting() {
         Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
+        mActivity.finish();
     }
 
     public static boolean checkGps() {
