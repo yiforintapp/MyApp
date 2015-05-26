@@ -1516,14 +1516,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSwitchList(String mSwitchList) {
-        String temp = getSwitchList();
-        if (!"".equals(temp)) {
-            mPref.edit().putString(PREF_QUICK_GESTURE_QUICKSWITCH_LIST,temp+mSwitchList)
-                    .commit();
-        } else {
-            mPref.edit().putString(PREF_QUICK_GESTURE_QUICKSWITCH_LIST, mSwitchList)
-                    .commit();
-        }
+        mPref.edit().putString(PREF_QUICK_GESTURE_QUICKSWITCH_LIST, mSwitchList)
+                .commit();
     }
 
     public int getSwitchListSize() {
