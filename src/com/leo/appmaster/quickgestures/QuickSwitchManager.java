@@ -428,7 +428,7 @@ public class QuickSwitchManager {
         lanyaInfo.icon = mContext.getResources().getDrawable(R.drawable.switch_bluetooth);
         lanyaInfo.switchIcon = getIconFromName(lanyaInfo.label);
         lanyaInfo.gesturePosition = 0;
-        lanyaInfo.isFreeDisturb = false;
+        lanyaInfo.isFreeDisturb = true;
         mSwitchList.add(lanyaInfo);
         // 手电筒
         QuickSwitcherInfo flashlightInfo = new QuickSwitcherInfo();
@@ -436,7 +436,7 @@ public class QuickSwitchManager {
         flashlightInfo.label = getLabelFromName(FLASHLIGHT);
         flashlightInfo.switchIcon = getIconFromName(flashlightInfo.label);
         flashlightInfo.gesturePosition = 1;
-        flashlightInfo.isFreeDisturb = false;
+        flashlightInfo.isFreeDisturb = true;
         flashlightInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_flashlight);
         mSwitchList.add(flashlightInfo);
@@ -446,7 +446,7 @@ public class QuickSwitchManager {
         wlanInfo.label = getLabelFromName(WLAN);
         wlanInfo.switchIcon = getIconFromName(wlanInfo.label);
         wlanInfo.gesturePosition = 2;
-        wlanInfo.isFreeDisturb = false;
+        wlanInfo.isFreeDisturb = true;
         wlanInfo.icon = mContext.getResources().getDrawable(R.drawable.switch_wifi);
         mSwitchList.add(wlanInfo);
         // 相机
@@ -455,7 +455,7 @@ public class QuickSwitchManager {
         carmeInfo.label = getLabelFromName(CRAME);
         carmeInfo.switchIcon = getIconFromName(carmeInfo.label);
         carmeInfo.gesturePosition = 3;
-        carmeInfo.isFreeDisturb = false;
+        carmeInfo.isFreeDisturb = true;
         carmeInfo.icon = mContext.getResources().getDrawable(R.drawable.switch_camera);
         mSwitchList.add(carmeInfo);
         // 声音
@@ -464,7 +464,7 @@ public class QuickSwitchManager {
         soundInfo.label = getLabelFromName(SOUND);
         soundInfo.switchIcon = getIconFromName(soundInfo.label);
         soundInfo.gesturePosition = 4;
-        soundInfo.isFreeDisturb = false;
+        soundInfo.isFreeDisturb = true;
         soundInfo.icon = mContext.getResources().getDrawable(R.drawable.switch_volume_min);
         mSwitchList.add(soundInfo);
         // 亮度
@@ -473,7 +473,7 @@ public class QuickSwitchManager {
         lightInfo.label = getLabelFromName(LIGHT);
         lightInfo.switchIcon = getIconFromName(lightInfo.label);
         lightInfo.gesturePosition = 5;
-        lightInfo.isFreeDisturb = false;
+        lightInfo.isFreeDisturb = true;
         lightInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_brightness_automatic);
         mSwitchList.add(lightInfo);
@@ -483,7 +483,7 @@ public class QuickSwitchManager {
         speedUpInfo.label = getLabelFromName(SPEEDUP);
         speedUpInfo.switchIcon = getIconFromName(speedUpInfo.label);
         speedUpInfo.gesturePosition = 6;
-        speedUpInfo.isFreeDisturb = false;
+        speedUpInfo.isFreeDisturb = true;
         speedUpInfo.icon = mContext.getResources().getDrawable(R.drawable.switch_speed_up);
         mSwitchList.add(speedUpInfo);
         // 手势设置
@@ -492,7 +492,7 @@ public class QuickSwitchManager {
         switchSetInfo.label = getLabelFromName(SWITCHSET);
         switchSetInfo.switchIcon = getIconFromName(switchSetInfo.label);
         switchSetInfo.gesturePosition = 7;
-        switchSetInfo.isFreeDisturb = false;
+        switchSetInfo.isFreeDisturb = true;
         switchSetInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_set);
         mSwitchList.add(switchSetInfo);
@@ -502,7 +502,7 @@ public class QuickSwitchManager {
         changeModeInfo.label = getLabelFromName(CHANGEMODE);
         changeModeInfo.switchIcon = getIconFromName(changeModeInfo.label);
         changeModeInfo.gesturePosition = 8;
-        changeModeInfo.isFreeDisturb = false;
+        changeModeInfo.isFreeDisturb = true;
         changeModeInfo.icon = mContext.getResources().getDrawable(R.drawable.switch_mode);
         mSwitchList.add(changeModeInfo);
         // 移动数据
@@ -511,7 +511,7 @@ public class QuickSwitchManager {
         mobileDataInfo.label = getLabelFromName(MOBILEDATA);
         mobileDataInfo.switchIcon = getIconFromName(mobileDataInfo.label);
         mobileDataInfo.gesturePosition = 9;
-        mobileDataInfo.isFreeDisturb = false;
+        mobileDataInfo.isFreeDisturb = true;
         mobileDataInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_data);
         mSwitchList.add(mobileDataInfo);
@@ -521,7 +521,7 @@ public class QuickSwitchManager {
         settingInfo.label = getLabelFromName(SETTING);
         settingInfo.switchIcon = getIconFromName(settingInfo.label);
         settingInfo.gesturePosition = 10;
-        settingInfo.isFreeDisturb = false;
+        settingInfo.isFreeDisturb = true;
         settingInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_gestureset_pre);
         mSwitchList.add(settingInfo);
@@ -531,7 +531,7 @@ public class QuickSwitchManager {
         gpsInfo.label = getLabelFromName(GPS);
         gpsInfo.switchIcon = getIconFromName(gpsInfo.label);
         gpsInfo.gesturePosition = 11;
-        gpsInfo.isFreeDisturb = false;
+        gpsInfo.isFreeDisturb = true;
         gpsInfo.icon = mContext.getResources().getDrawable(R.drawable.switch_gps);
         mSwitchList.add(gpsInfo);
         // 屏幕旋转

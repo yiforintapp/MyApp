@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -378,15 +379,15 @@ public class QuickGestureManager {
      * 
      * @param context
      */
-    public void showQuickSwitchDialog(final Context activity, List<BaseInfo> mSwitchList) {
+    public static void showQuickSwitchDialog(final Context context) {
         final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
-                activity, 2);
+                context, 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
         quickSwitch.setRightBt(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // 确认按钮
-                new Thread(new Runnable() {
+                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                     @Override
                     public void run() {
@@ -395,21 +396,24 @@ public class QuickGestureManager {
                         // 移除的应用包名
                         List<BaseInfo> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
                         if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
-                            for (BaseInfo info : addQuickSwitch) {
-                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                AppMasterPreference.getInstance(activity)
-                                        .setQuickSwitchPackageNameAdd(string.packageName);
-                            }
+//                            String saveToSp = QuickSwitchManager.getInstance(context).ListToString(
+//                                    addQuickSwitch, addQuickSwitch.size());
+//                            AppMasterPreference.getInstance(context).setSwitchList(saveToSp);
+//                            AppMasterPreference.getInstance(context).setSwitchListSize(
+//                                    AppMasterPreference.getInstance(context).getSwitchListSize()
+//                                            + addQuickSwitch.size());
                         }
                         if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
-                            for (BaseInfo info : removeQuickSwitch) {
-                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                AppMasterPreference.getInstance(activity)
-                                        .setQuickSwitchPackageNameRemove(string.packageName);
-                            }
+//                            String removeToSp = QuickSwitchManager.getInstance(context)
+//                                    .ListToString(removeQuickSwitch, removeQuickSwitch.size());
+//                            AppMasterPreference.getInstance(context)
+//                                    .setQuickSwitchPackageNameRemove(removeToSp);
+//                            AppMasterPreference.getInstance(context).setSwitchListSize(
+//                                    AppMasterPreference.getInstance(context).getSwitchListSize()
+//                                            - removeQuickSwitch.size());
                         }
                     }
-                }).start();
+                });
                 quickSwitch.dismiss();
             }
         });
