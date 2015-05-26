@@ -23,7 +23,6 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
@@ -407,7 +406,7 @@ public class TaskDetectService extends Service {
     }
 
     /*
-     * FloatWindowTask 
+     * FloatWindowTask
      */
     private class FloatWindowTask implements Runnable {
         ActivityManager mActivityManager;
@@ -549,6 +548,7 @@ public class TaskDetectService extends Service {
     public static TaskDetectService getService() {
         return sService;
     }
+
     public static synchronized Notification getNotification(Context context) {
         if (sNotification == null) {
             PendingIntent pi = PendingIntent.getActivity(context, 0,

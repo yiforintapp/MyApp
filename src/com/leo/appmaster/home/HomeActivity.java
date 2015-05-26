@@ -9,7 +9,6 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences;
@@ -877,12 +876,16 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             public void onClick(int which) {
                 if (which == 0) {
                     if (mQuickGestureSettingDialog != null) {
+                        AppMasterPreference.getInstance(HomeActivity.this)
+                        .setQuickGestureMiuiSettingFirstDialogTip(true);
                         mQuickGestureSettingDialog.dismiss();
                     }
                 } else if (which == 1) {
                     Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
                     try {
                         startActivity(inten);
+                        AppMasterPreference.getInstance(HomeActivity.this)
+                        .setQuickGestureMiuiSettingFirstDialogTip(true);
                     } catch (Exception e) {
                     }
                 }
