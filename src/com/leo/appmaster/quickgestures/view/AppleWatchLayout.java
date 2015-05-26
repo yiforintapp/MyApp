@@ -138,7 +138,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
             gestureItem.setTag(info);
             addView(gestureItem);
-            computeCenterChildren(gestureItem, lp.position, false);
+            computeCenterItem(gestureItem, lp.position, false);
         }
         requestLayout();
         postDelayed(new Runnable() {
@@ -483,7 +483,7 @@ public class AppleWatchLayout extends ViewGroup {
      * 在快捷手势界面点击添加按钮时，必须通过此方法添加
      */
     @Override
-    public void addView(View child, android.view.ViewGroup.LayoutParams params) {
+    public void addView(View child, ViewGroup.LayoutParams params) {
         int addPosition = ((LayoutParams) params).position;
         LayoutParams lp = ((LayoutParams) params);
         for (int i = 0; i < getChildCount(); i++) {
@@ -493,7 +493,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
         }
         saveReorderPosition();
-        computeCenterChildren((GestureItemView) child, addPosition, true);
+        computeCenterItem((GestureItemView) child, addPosition, true);
         super.addView(child, params);
     }
 
@@ -726,6 +726,7 @@ public class AppleWatchLayout extends ViewGroup {
         hitView.setTag(info);
         hitView.enterEditMode();
         saveReorderPosition();
+        refillExtraItems();
     }
 
     public void checkItemLongClick(float x, float y) {
@@ -747,7 +748,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     public void checkActionDownInEditing(float x, float y) {
-        // TODO
         View hitView = null, tempView = null;
         for (int i = 0; i < getChildCount(); i++) {
             tempView = getChildAt(i);
@@ -763,19 +763,10 @@ public class AppleWatchLayout extends ViewGroup {
                 Rect rect = giv.getCrossRect();
                 int offsetX = (int) (x - hitView.getLeft());
                 int onnsetY = (int) (y - hitView.getTop());
-                if (!rect.contains(offsetX, onnsetY)) {
-                    GType type = mContainer.getCurrentGestureType();
-                    if (type == GType.DymicLayout) {
-                        if (!giv.isEmptyIcon()) {
-                            hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f),
-                                    hitView, 0);
-                            hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                        }
-                    } else {
-                        hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f),
-                                hitView, 0);
-                        hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                    }
+                if (!rect.contains(offsetX, onnsetY) && !giv.isEmptyIcon()) {
+                    hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f),
+                            hitView, 0);
+                    hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                 }
             }
         }
@@ -817,7 +808,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     public void squeezeItems(GestureItemView fromView, GestureItemView toView) {
-
         // dont need squeeze dynamic layout
         GType type = mContainer.getCurrentGestureType();
         if (type == GType.DymicLayout) {
@@ -888,15 +878,14 @@ public class AppleWatchLayout extends ViewGroup {
                 for (int i = hitViews.length - 1; i >= 0; i--) {
                     if (i == 0) {
                         ((AppleWatchLayout.LayoutParams) hitViews[i].getLayoutParams()).position = lastPosition;
+                        computeCenterItem(hitViews[i], lastPosition, false);
                     } else {
                         nextPosition = ((AppleWatchLayout.LayoutParams) hitViews[i - 1]
                                 .getLayoutParams()).position;
                         ((AppleWatchLayout.LayoutParams) hitViews[i].getLayoutParams()).position = nextPosition;
+                        computeCenterItem(hitViews[i], nextPosition, false);
                     }
                 }
-
-                saveReorderPosition();
-
                 if (mAnimCanceled) {
                     for (GestureItemView gestureItemView : hitViews) {
                         gestureItemView.setLeft((int) (gestureItemView.getLeft() + gestureItemView
@@ -911,13 +900,44 @@ public class AppleWatchLayout extends ViewGroup {
                         gestureItemView.setTranslationX(0);
                         gestureItemView.setTranslationY(0);
                     }
-
                     requestLayout();
                 }
+
+                saveReorderPosition();
+                refillExtraItems();
             }
 
         });
         mReorderAnimator.start();
+    }
+
+    private void refillExtraItems() {
+        GestureItemView tempView;
+        for (int i = 0; i < 8; i++) {
+            if (i < 4) {
+                tempView = mHoriChildren[0][i];
+            } else {
+                tempView = mHoriChildren[0][i + 4];
+            }
+            removeView(tempView);
+        }
+        for (int i = 0; i < 10; i++) {
+            if (i < 5) {
+                tempView = mHoriChildren[1][i];
+            } else {
+                tempView = mHoriChildren[1][i + 5];
+            }
+            removeView(tempView);
+        }
+        for (int i = 0; i < 8; i++) {
+            if (i < 4) {
+                tempView = mHoriChildren[2][i];
+            } else {
+                tempView = mHoriChildren[2][i + 4];
+            }
+            removeView(tempView);
+        }
+        fillExtraChildren();
     }
 
     private void saveReorderPosition() {
@@ -1014,7 +1034,7 @@ public class AppleWatchLayout extends ViewGroup {
         }
     }
 
-    private void computeCenterChildren(GestureItemView view, int position, boolean newAdd) {
+    private void computeCenterItem(GestureItemView view, int position, boolean newAdd) {
         if (position == 9) {
             mHoriChildren[0][4] = view;
             if (newAdd) {
@@ -1565,9 +1585,9 @@ public class AppleWatchLayout extends ViewGroup {
         int duration;
         if (!mSnapping) {
             if (direction == Direction.Left) {
-                distance = mMinuOffset * 3 - mLastMovex;
-                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 3);
-                duration = (int) ((distance / mMinuOffset * 3) * mSnapDuration);
+                distance = mMinuOffset * 2 - mLastMovex;
+                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 2);
+                duration = (int) ((distance / mMinuOffset * 2) * mSnapDuration);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
@@ -1589,9 +1609,9 @@ public class AppleWatchLayout extends ViewGroup {
                 transAnima.start();
                 mSnapping = true;
             } else if (direction == Direction.Right) {
-                distance = mMinuOffset * 3 - mLastMovex;
-                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 3);
-                duration = (int) ((distance / mMinuOffset * 3) * mSnapDuration);
+                distance = mMinuOffset * 2 - mLastMovex;
+                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 2);
+                duration = (int) ((distance / mMinuOffset * 2) * mSnapDuration);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
@@ -1631,7 +1651,7 @@ public class AppleWatchLayout extends ViewGroup {
                     distance = temp * mMinuOffset;
                 }
                 transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
-                duration = (int) (((distance - mLastMovex) / mMinuOffset * 3) * mSnapDuration);
+                duration = (int) (((distance - mLastMovex) / mMinuOffset * 2) * mSnapDuration);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
@@ -1662,7 +1682,7 @@ public class AppleWatchLayout extends ViewGroup {
                     distance = temp * mMinuOffset;
                 }
                 transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
-                duration = (int) (((distance - mLastMovex) / mMinuOffset * 3) * mSnapDuration);
+                duration = (int) (((distance - mLastMovex) / mMinuOffset * 2) * mSnapDuration);
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
