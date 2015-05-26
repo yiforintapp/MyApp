@@ -1209,9 +1209,32 @@ public class AppleWatchContainer extends FrameLayout {
         return mRotateDegree;
     }
 
+    public void showOpenAnimation(int direction) {
+        // show from left-center
+        if (direction == 0) {
+            
+        } else if (direction == 1) {// show from left-bottom
+
+        } else if (direction == 2) {// show from right-center
+
+        } else if (direction == 3) {// show from right-bottom
+
+        }
+//        AnimatorSet set = new AnimatorSet();
+//        set.setDuration(600);
+//        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f,
+//                1.1f,
+//                1.0f);
+//        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f,
+//                1.1f,
+//                1.0f);
+//        set.playTogether(animationx, animationy);
+//        set.start();
+    }
+
     public void showOpenAnimation() {
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(400);
+        set.setDuration(600);
         Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f,
                 1.1f,
                 1.0f);

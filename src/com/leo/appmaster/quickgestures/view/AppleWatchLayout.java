@@ -699,7 +699,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private void showAddNewDiglog(GType type) {
-        // TODO Auto-generated method stub
         QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.MostUsedLayout) {
             qgm.showCommontAppDialog(getContext());
@@ -1374,7 +1373,7 @@ public class AppleWatchLayout extends ViewGroup {
                 adjustIconPosition(Direction.Left);
                 mAdjustCount++;
             } else if (mAdjustCount > shouldAdjustCount) {
-                adjustIconPosition(Direction.Right);
+//                adjustIconPosition(Direction.Right);
                 mAdjustCount--;
             }
             for (i = 0; i < mHoriChildren[0].length - 1; i++) {
