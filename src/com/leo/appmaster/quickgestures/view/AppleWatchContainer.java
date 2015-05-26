@@ -39,6 +39,7 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout.Direction;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.TextFormater;
 
 @SuppressLint("InflateParams")
 public class AppleWatchContainer extends FrameLayout {
@@ -70,6 +71,7 @@ public class AppleWatchContainer extends FrameLayout {
 
     private volatile boolean mEditing;
     private boolean mSnaping;
+    private boolean isClean = false;
     private int mFullRotateDuration = 300;
     private int mStartAngle = 40;
 
@@ -1338,7 +1340,6 @@ public class AppleWatchContainer extends FrameLayout {
         int mRocketHeight = tv.getHeight();
         int mRocketX = (int) tv.getX() + mRocketWidth / 2;
         int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
-
         LeoLog.d("AppleWatchContainer", " mRocketX : " + mRocketX
                 + " ;  mRocketY : " + mRocketY);
         mPopupActivity.rockeyAnimation(tv, mLayoutBottom, mRocketX, mRocketY, info);
@@ -1352,11 +1353,21 @@ public class AppleWatchContainer extends FrameLayout {
         // show Toast
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.toast_self_make, null);
+        TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
+        String mToast;
+        if (!isClean) {
+            mToast = mContext.getString(R.string.home_app_manager_mem_clean,
+                    TextFormater.dataSizeFormat(1024 * 1024 * 1024));
+        } else {
+            mToast = mContext.getString(R.string.the_best_status_toast);
+        }
+        tv_clean_rocket.setText(mToast);
         Toast toast = new Toast(mContext);
         toast.setView(view);
-        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setDuration(0);
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 150);
         toast.show();
+        isClean = true;
 
         // make Normal Icon
         GestureItemView tv = null;

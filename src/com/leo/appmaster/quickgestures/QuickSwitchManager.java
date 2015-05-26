@@ -1018,20 +1018,23 @@ public class QuickSwitchManager {
     public List<BaseInfo> StringToList(String mSwitchListFromSp) {
         List<BaseInfo> mSwitcherList = new ArrayList<BaseInfo>();
         String[] mSwitchAllInfo = mSwitchListFromSp.split(",");
+        LeoLog.d(
+                "QuickSwitchManager",
+                "listSize : " + mSwitchAllInfo.length);
         for (int i = 0; i < mSwitchAllInfo.length; i++) {
             QuickSwitcherInfo mInfo = new QuickSwitcherInfo();
             String[] mEachOneInfo = mSwitchAllInfo[i].split(":");
-//            LeoLog.d(
-//                    "QuickSwitchManager",
-//                    "name : " + mEachOneInfo[0] + "--position : "
-//                            + Integer.parseInt(mEachOneInfo[1]));
+            LeoLog.d(
+                    "QuickSwitchManager",
+                    "name : " + mEachOneInfo[0] + "--position : "
+                            + Integer.parseInt(mEachOneInfo[1]));
             mInfo.gesturePosition = Integer.parseInt(mEachOneInfo[1]);
             mInfo.label = mEachOneInfo[0];
             mInfo.switchIcon = getIconFromName(mInfo.label);
-//            LeoLog.d(
-//                    "QuickSwitchManager",
-//                    "label : " + mInfo.label + "--switchIcon : "
-//                            + mInfo.switchIcon);
+            // LeoLog.d(
+            // "QuickSwitchManager",
+            // "label : " + mInfo.label + "--switchIcon : "
+            // + mInfo.switchIcon);
             mSwitcherList.add(mInfo);
         }
         return mSwitcherList;

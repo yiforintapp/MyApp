@@ -938,7 +938,7 @@ public class AppleWatchLayout extends ViewGroup {
                     int position = params.position;
                     if (position > -1) {
                         BaseInfo sInfo = (BaseInfo) getChildAt(i).getTag();
-                        if (sInfo != null) {
+                        if (sInfo != null && !sInfo.label.isEmpty()) {
                             sInfo.gesturePosition = position;
                             mSwitchList.add(sInfo);
                         }

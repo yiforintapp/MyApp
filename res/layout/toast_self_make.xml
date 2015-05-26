@@ -16,11 +16,12 @@
         android:background="@drawable/ic_launcher" />
 
     <TextView
+        android:id="@+id/tv_clean_rocket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/iv_icon"
-        android:layout_marginLeft="35dp"
+        android:layout_marginLeft="30dp"
         android:text="Freed 74MB Ram!"
         android:textColor="@color/black"
         android:textSize="14dp" />
