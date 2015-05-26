@@ -20,6 +20,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
@@ -120,7 +121,9 @@ public class QuickGesturePopupActivity extends Activity implements
     }
 
     private void fillQg1() {
-        ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(0, 12));
+        // ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(0,
+        // 12));
+        List<BaseInfo> items = QuickGestureManager.getInstance(this).getDynamicList();
         mContainer.fillGestureItem(GType.DymicLayout, items);
     }
 
