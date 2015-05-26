@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
@@ -74,6 +75,10 @@ public class AppleWatchContainer extends FrameLayout {
     private boolean isClean = false;
     private int mFullRotateDuration = 300;
     private int mStartAngle = 40;
+    private ProcessCleaner mCleaner;
+    private long mLastUsedMem;
+    private long mTotalMem;
+    private long mCleanMem;
 
     public AppleWatchContainer(Context context) {
         super(context);
@@ -82,6 +87,16 @@ public class AppleWatchContainer extends FrameLayout {
     public AppleWatchContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
+
+        // 清理内存
+        mCleaner = ProcessCleaner.getInstance(context);
+        mLastUsedMem = mCleaner.getUsedMem();
+        mTotalMem = mCleaner.getTotalMem();
+        // clean
+        mCleaner.tryClean(mContext);
+        long curUsedMem = mCleaner.getUsedMem();
+        mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+        
 
         int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
         if (derictor == 0) {
@@ -1356,8 +1371,12 @@ public class AppleWatchContainer extends FrameLayout {
         TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
         String mToast;
         if (!isClean) {
-            mToast = mContext.getString(R.string.home_app_manager_mem_clean,
-                    TextFormater.dataSizeFormat(1024 * 1024 * 1024));
+            if (mCleanMem == 0) {
+                mToast = mContext.getString(R.string.home_app_manager_mem_clean_one);
+            } else {
+                mToast = mContext.getString(R.string.home_app_manager_mem_clean,
+                        TextFormater.dataSizeFormat(mCleanMem));
+            }
         } else {
             mToast = mContext.getString(R.string.the_best_status_toast);
         }

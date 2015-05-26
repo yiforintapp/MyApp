@@ -14,6 +14,7 @@ import android.os.Bundle;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
@@ -60,6 +61,7 @@ public class QuickGesturePopupActivity extends Activity implements
         // WindowManager.LayoutParams params = window.getAttributes();
         // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         // window.setAttributes(params);
+        
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
         iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
