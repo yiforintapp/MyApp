@@ -15,9 +15,7 @@ import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +26,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CirCleDongHua;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener {
@@ -38,7 +37,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     private final static int SHOWNORMAL = 6;
     private TextView tv_use_tips, tv_use_tips_content;
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
-            iv_duanxin_big, iv_jieting_big, iv_tips_left, iv_tips_right, iv_hands;
+            iv_duanxin_big, iv_jieting_big, iv_hands,iv_topguide;
     private GestureRelative mViewContent;
     private CirCleDongHua myself_circle;
     private boolean isShowing = false;
@@ -49,14 +48,11 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     private float lc_left, lc_top, lc_right, lc_bottom;
     private int gua_yuan_x, gua_yuan_y, gua_left, gua_top, gua_right, gua_bottom;
     private int duan_yuan_x, duan_yuan_y, duan_left, duan_top, duan_right, duan_bottom;
+    private int top_guide_left,top_guide_top,top_guide_right,top_guide_bottom;
     private int jie_yuan_x, jie_yuan_y, jie_left, jie_top, jie_right, jie_bottom;
     private int gua_left_big, gua_top_big, gua_right_big, gua_bottom_big;
     private int duan_left_big, duan_top_big, duan_right_big, duan_bottom_big;
     private int jie_left_big, jie_top_big, jie_right_big, jie_bottom_big;
-    private int tip_left_x, tip_left_y, tip_left_left, tip_left_top, tip_left_right,
-            tip_left_bottom;
-    private int tip_right_x, tip_right_y, tip_right_left, tip_right_top, tip_right_right,
-            tip_right_bottom;
     private int hand_x, hand_y, hand_left, hand_top, hand_right, hand_bottom;
     private LEOAlarmDialog mAlarmDialog;
     private AppMasterPreference sp_unknowcall;
@@ -78,22 +74,18 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
 
                     iv_jieting.layout(jie_left, jie_top, jie_right, jie_bottom);
                     iv_jieting_big.layout(jie_left_big, jie_top_big, jie_right_big, jie_bottom_big);
-
-                    iv_tips_left.layout(tip_left_left, tip_left_top, tip_left_right,
-                            tip_left_bottom);
-                    iv_tips_right.layout(tip_right_left, tip_right_top, tip_right_right,
-                            tip_right_bottom);
+                    
+                    iv_topguide.layout(top_guide_left, top_guide_top, top_guide_right, top_guide_bottom);
 
                     // if (!isShowing) {
                     // myself_circle.setVisibility(View.VISIBLE);
                     // showDonghua();
                     // }
-                    iv_tips_left.setVisibility(View.VISIBLE);
-                    iv_tips_right.setVisibility(View.VISIBLE);
                     iv_dianhua_hold.setVisibility(View.VISIBLE);
                     iv_guaduan.setVisibility(View.VISIBLE);
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
+                    iv_topguide.setVisibility(View.VISIBLE);
 
                     if (!isShowing) {
                         iv_hands.setVisibility(View.VISIBLE);
@@ -139,8 +131,6 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
 
     @Override
     protected void onStop() {
-        iv_tips_left.setVisibility(View.INVISIBLE);
-        iv_tips_right.setVisibility(View.INVISIBLE);
         iv_dianhua_hold.setVisibility(View.INVISIBLE);
         iv_guaduan.setVisibility(View.INVISIBLE);
         iv_duanxin.setVisibility(View.INVISIBLE);
@@ -212,8 +202,6 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
                 int handHeight = iv_hands.getHeight();
                 int handLeft = handX - handWidth / 2;
                 int handTop = handY - handHeight / 2;
-                int handRight = handX + handWidth / 2;
-                int handBottom = handY + handHeight / 2;
                 if (handLeft < gua_right + 10 && handTop < gua_top - 10) {
                     Message message = new Message();
                     message.what = SHOWGUABIG;
@@ -282,10 +270,8 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         iv_duanxin_big = (ImageView) findViewById(R.id.iv_duanxin_big);
         iv_jieting_big = (ImageView) findViewById(R.id.iv_jieting_big);
 
-        iv_tips_left = (ImageView) findViewById(R.id.iv_tips_left);
-        iv_tips_right = (ImageView) findViewById(R.id.iv_tips_right);
-
         iv_hands = (ImageView) findViewById(R.id.iv_hands);
+        iv_topguide = (ImageView) findViewById(R.id.iv_topguide);
         mTimer = new Timer();
 
         iv_hands.setOnTouchListener(new OnTouchListener() {
@@ -382,25 +368,6 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         jie_right_big = jie_yuan_x + (jie_big_width / 2);
         jie_bottom_big = jie_yuan_y + (jie_big_height / 2);
 
-        // left tip
-        tip_left_x = (gua_yuan_x + duan_yuan_x) / 2;
-        tip_left_y = (gua_yuan_y + duan_yuan_y) / 2;
-        int tip_left_width = iv_tips_left.getWidth();
-        int tip_left_height = iv_tips_left.getHeight();
-        tip_left_left = tip_left_x - (tip_left_width / 2);
-        tip_left_top = tip_left_y - (tip_left_height / 2);
-        tip_left_right = tip_left_x + (tip_left_width / 2);
-        tip_left_bottom = tip_left_y + (tip_left_height / 2);
-
-        // right tip
-        tip_right_x = (jie_yuan_x + duan_yuan_x) / 2;
-        tip_right_y = (jie_yuan_y + duan_yuan_y) / 2;
-        int tip_right_width = iv_tips_right.getWidth();
-        int tip_right_height = iv_tips_right.getHeight();
-        tip_right_left = tip_right_x - (tip_right_width / 2);
-        tip_right_top = tip_right_y - (tip_right_height / 2);
-        tip_right_right = tip_right_x + (tip_right_width / 2);
-        tip_right_bottom = tip_right_y + (tip_right_height / 2);
 
         int hand_width = iv_hands.getWidth();
         int hand_height = iv_hands.getHeight();
@@ -410,6 +377,12 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         hand_top = hand_y - (hand_height / 2);
         hand_right = hand_x + (hand_width / 2);
         hand_bottom = hand_y + (hand_height / 2);
+        
+        //top guide
+        top_guide_left = (int) (mYuanX-mBanJing);
+        top_guide_top = (int) (mYuanY-mBanJing)- 4;
+        top_guide_right = (int) (mYuanX+mBanJing)+DipPixelUtil.dip2px(this, 5);
+        top_guide_bottom = (int)(mYuanY);
     }
 
     private void setHold() {
@@ -534,7 +507,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     }
 
     protected void makeText() {
-        Toast.makeText(this, getString(R.string.weizhuang_setting_ok), 0)
+        Toast.makeText(this, getString(R.string.weizhuang_setting_ok), Toast.LENGTH_SHORT)
                 .show();
     }
 
