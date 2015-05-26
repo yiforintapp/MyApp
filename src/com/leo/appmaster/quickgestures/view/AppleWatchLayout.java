@@ -699,10 +699,8 @@ public class AppleWatchLayout extends ViewGroup {
         // TODO Auto-generated method stub
         QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.MostUsedLayout) {
-            Toast.makeText(getContext(), "添加最近使用item", 0).show();
             qgm.showCommontAppDialog(getContext());
         } else if (type == GType.SwitcherLayout) {
-            Toast.makeText(getContext(), "添加快捷开关item", 0).show();
             qgm.showQuickSwitchDialog(getContext());
         }
     }
@@ -714,6 +712,8 @@ public class AppleWatchLayout extends ViewGroup {
                     (BaseInfo) hitView.getTag());
         } else if (type == GType.SwitcherLayout) {
         } else if (type == GType.MostUsedLayout) {
+            //TODO 
+            
         }
 
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();
