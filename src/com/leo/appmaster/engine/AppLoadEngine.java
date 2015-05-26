@@ -286,6 +286,11 @@ public class AppLoadEngine extends BroadcastReceiver {
         }
         return dataList.size();
     }
+    
+    
+    public AppItemInfo getAppInfo(String pkg) {
+        return mAppDetails.get(pkg);
+    }
 
     public ArrayList<AppItemInfo> getAppPkgInfo_delete() {
         loadAllPkgInfo();

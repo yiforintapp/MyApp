@@ -4,18 +4,6 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
-import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -29,6 +17,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -36,12 +25,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AppleWatchLayout extends ViewGroup {
 
@@ -704,10 +705,11 @@ public class AppleWatchLayout extends ViewGroup {
         if (type == GType.MostUsedLayout) {
             qgm.showCommontAppDialog(getContext());
         } else if (type == GType.SwitcherLayout) {
-            //get list from sp
+            // get list from sp
             String mListString = mSpSwitch.getSwitchList();
-            List<BaseInfo> mSwitchList = QuickSwitchManager.getInstance(mContext).StringToList(mListString);
-            qgm.showQuickSwitchDialog(getContext(),mSwitchList);
+            List<BaseInfo> mSwitchList = QuickSwitchManager.getInstance(mContext).StringToList(
+                    mListString);
+            qgm.showQuickSwitchDialog(getContext(), mSwitchList);
         }
     }
 
@@ -718,8 +720,13 @@ public class AppleWatchLayout extends ViewGroup {
                     (BaseInfo) hitView.getTag());
         } else if (type == GType.SwitcherLayout) {
         } else if (type == GType.MostUsedLayout) {
-            //TODO 
-            
+            // TODO
+            BaseInfo info = (BaseInfo) hitView.getTag();
+            if (info instanceof QuickGsturebAppInfo) {
+                QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
+                Log.e("##############", "QuickGsturebAppInfo:" + appInfo.packageName);
+            } 
+            // Log.e("##############", "" + info.packageName);
         }
 
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();

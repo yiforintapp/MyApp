@@ -1622,7 +1622,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     // 获取常用应用是否开启了习惯记录
     public boolean getQuickGestureCommonAppDialogCheckboxValue() {
-        return mPref.getBoolean(PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG, true);
+        return mPref.getBoolean(PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG, false);
     }
 
     public void setQuickGestureMiuiSettingFirstDialogTip(boolean flag) {
