@@ -650,54 +650,70 @@ public class AppleWatchContainer extends FrameLayout {
         GestureItemView tv = makeGestureItem();
         for (int i = 0; i < infos.size(); i++) {
             sInfo = (QuickSwitcherInfo) infos.get(i);
-            if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+            if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                    QuickSwitchManager.BLUETOOTH))) {
                 // check 蓝牙状态
                 checkBlueToothStatus(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.FLASHLIGHT))) {
                 // 手电筒状态
                 checkFlashLightStatus(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.WLAN))) {
                 // Wifi状态
                 checkWlanStatus(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.CRAME))) {
                 // Crame状态
                 checkCrameStatus(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.SOUND))) {
                 // Sound状态
                 checkSoundStatus(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.LIGHT))) {
                 // 亮度状态
                 checkLightStatus(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.SPEEDUP))) {
                 // 加速
                 checkSpeedUpStatus(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.CHANGEMODE))) {
                 // 情景模式切换
                 checkChangeMode(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.SWITCHSET))) {
                 // 手势设置
                 checkSwitchSet(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.SETTING))) {
                 // 系统设置
                 checkSetting(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.GPS))) {
                 // GPS
                 checkGPS(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.FLYMODE))) {
                 // 飞行模式
                 checkFlyMode(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.ROTATION))) {
                 // 屏幕旋转
                 checkRotation(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.MOBILEDATA))) {
                 // 移动数据
                 checkMobileData(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.HOME))) {
                 // 桌面
                 checkHome(sInfo, mGetIcon, tv);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.XUKUANG)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(QuickSwitchManager.XUKUANG))) {
                 // 虚框
-                checkXuKuang(sInfo, mGetIcon, tv);
+                // checkXuKuang(sInfo, mGetIcon, tv);
             }
             mSwitchList.add(sInfo);
         }
@@ -810,82 +826,84 @@ public class AppleWatchContainer extends FrameLayout {
         }
     }
 
-    public void fillSwitchItem(AppleWatchLayout targetLayout, List<? extends BaseInfo> infos) {
-        if (targetLayout != null) {
-            targetLayout.removeAllViews();
-            GestureItemView gestureItem = null;
-            AppleWatchLayout.LayoutParams lp = null;
-            QuickSwitcherInfo sInfo = null;
-            int iconSize = targetLayout.getIconSize();
-            for (int i = 0; i < infos.size(); i++) {
-                if (i >= 13) {
-                    break;
-                }
-                sInfo = (QuickSwitcherInfo) infos.get(i);
-                gestureItem = makeGestureItem();
-                lp = new AppleWatchLayout.LayoutParams(
-                        targetLayout.getItemSize(), targetLayout.getItemSize());
-                lp.position = sInfo.gesturePosition;
-                gestureItem.setGravity(Gravity.CENTER_HORIZONTAL);
-                gestureItem.setLayoutParams(lp);
-                gestureItem.setItemName(sInfo.label);
-                if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
-                    // check 蓝牙状态
-                    checkBlueToothStatus(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
-                    // 手电筒状态
-                    checkFlashLightStatus(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
-                    // Wifi状态
-                    checkWlanStatus(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
-                    // Crame状态
-                    checkCrameStatus(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
-                    // Sound状态
-                    checkSoundStatus(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
-                    // 亮度状态
-                    checkLightStatus(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
-                    // 加速
-                    checkSpeedUpStatus(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
-                    // 情景模式切换
-                    checkChangeMode(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
-                    // 手势设置
-                    checkSwitchSet(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
-                    // 系统设置
-                    checkSetting(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
-                    // GPS
-                    checkGPS(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
-                    // 飞行模式
-                    checkFlyMode(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
-                    // 屏幕旋转
-                    checkRotation(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
-                    // 移动数据
-                    checkMobileData(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
-                    // 桌面
-                    checkHome(sInfo, iconSize, gestureItem);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.XUKUANG)) {
-                    // 虚框
-                    checkXuKuang(sInfo, iconSize, gestureItem);
-                }
-                if (sInfo.eventNumber > 0) {
-                    gestureItem.setDecorateAction(new EventAction(getContext(), sInfo.eventNumber));
-                }
-                gestureItem.setTag(sInfo);
-                targetLayout.addView(gestureItem);
-            }
-        }
-    }
+    // public void fillSwitchItem(AppleWatchLayout targetLayout, List<? extends
+    // BaseInfo> infos) {
+    // if (targetLayout != null) {
+    // targetLayout.removeAllViews();
+    // GestureItemView gestureItem = null;
+    // AppleWatchLayout.LayoutParams lp = null;
+    // QuickSwitcherInfo sInfo = null;
+    // int iconSize = targetLayout.getIconSize();
+    // for (int i = 0; i < infos.size(); i++) {
+    // if (i >= 13) {
+    // break;
+    // }
+    // sInfo = (QuickSwitcherInfo) infos.get(i);
+    // gestureItem = makeGestureItem();
+    // lp = new AppleWatchLayout.LayoutParams(
+    // targetLayout.getItemSize(), targetLayout.getItemSize());
+    // lp.position = sInfo.gesturePosition;
+    // gestureItem.setGravity(Gravity.CENTER_HORIZONTAL);
+    // gestureItem.setLayoutParams(lp);
+    // gestureItem.setItemName(sInfo.label);
+    // if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+    // // check 蓝牙状态
+    // checkBlueToothStatus(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+    // // 手电筒状态
+    // checkFlashLightStatus(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
+    // // Wifi状态
+    // checkWlanStatus(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
+    // // Crame状态
+    // checkCrameStatus(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
+    // // Sound状态
+    // checkSoundStatus(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+    // // 亮度状态
+    // checkLightStatus(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
+    // // 加速
+    // checkSpeedUpStatus(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
+    // // 情景模式切换
+    // checkChangeMode(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
+    // // 手势设置
+    // checkSwitchSet(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
+    // // 系统设置
+    // checkSetting(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
+    // // GPS
+    // checkGPS(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
+    // // 飞行模式
+    // checkFlyMode(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
+    // // 屏幕旋转
+    // checkRotation(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+    // // 移动数据
+    // checkMobileData(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
+    // // 桌面
+    // checkHome(sInfo, iconSize, gestureItem);
+    // } else if (sInfo.iDentiName.equals(QuickSwitchManager.XUKUANG)) {
+    // // 虚框
+    // checkXuKuang(sInfo, iconSize, gestureItem);
+    // }
+    // if (sInfo.eventNumber > 0) {
+    // gestureItem.setDecorateAction(new EventAction(getContext(),
+    // sInfo.eventNumber));
+    // }
+    // gestureItem.setTag(sInfo);
+    // targetLayout.addView(gestureItem);
+    // }
+    // }
+    // }
 
     private void checkXuKuang(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (iconSize != mGetIcon) {
@@ -1275,28 +1293,36 @@ public class AppleWatchContainer extends FrameLayout {
     public void checkStatus(QuickSwitcherInfo info) {
         GestureItemView tv = null;
         int iconSize = mSwitcherLayout.getIconSize();
-        if (info.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+        if (info.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                QuickSwitchManager.BLUETOOTH))) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkBlueToothStatus(info, iconSize, tv);
-        } else if (info.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+        } else if (info.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                QuickSwitchManager.FLASHLIGHT))) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkFlashLightStatus(info, iconSize, tv);
-        } else if (info.iDentiName.equals(QuickSwitchManager.WLAN)) {
+        } else if (info.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                QuickSwitchManager.WLAN))) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkWlanStatus(info, iconSize, tv);
-        } else if (info.iDentiName.equals(QuickSwitchManager.SOUND)) {
+        } else if (info.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                QuickSwitchManager.SOUND))) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkSoundStatus(info, iconSize, tv);
-        } else if (info.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+        } else if (info.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                QuickSwitchManager.LIGHT))) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkLightStatus(info, iconSize, tv);
-        } else if (info.iDentiName.equals(QuickSwitchManager.ROTATION)) {
+        } else if (info.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                QuickSwitchManager.ROTATION))) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkRotation(info, iconSize, tv);
-        } else if (info.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+        } else if (info.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                QuickSwitchManager.MOBILEDATA))) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             checkMobileData(info, iconSize, tv);
-        } else if (info.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
+        } else if (info.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                QuickSwitchManager.SPEEDUP))) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             speedUp(info, iconSize, tv);
         }
@@ -1313,10 +1339,10 @@ public class AppleWatchContainer extends FrameLayout {
         int mRocketHeight = tv.getHeight();
         int mRocketX = (int) tv.getX() + mRocketWidth / 2;
         int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
-        
+
         LeoLog.d("AppleWatchContainer", " mRocketX : " + mRocketX
                 + " ;  mRocketY : " + mRocketY);
-        mPopupActivity.rockeyAnimation(tv,mLayoutBottom, mRocketX, mRocketY,info);
+        mPopupActivity.rockeyAnimation(tv, mLayoutBottom, mRocketX, mRocketY, info);
     }
 
     public void setRocket(QuickGesturePopupActivity quickGesturePopupActivity) {
@@ -1324,18 +1350,20 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     public void makeNormalIcon(QuickSwitcherInfo info) {
-        //show Toast
+        // show Toast
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.toast_self_make, null);
         Toast toast = new Toast(mContext);
         toast.setView(view);
         toast.setDuration(Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 150);
         toast.show();
-        
-        //make Normal Icon
+
+        // make Normal Icon
         GestureItemView tv = null;
         int iconSize = mSwitcherLayout.getIconSize();
-        if (info.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
+        if (info.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                QuickSwitchManager.SPEEDUP))) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             info.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             tv.setItemIcon(info.switchIcon[0]);

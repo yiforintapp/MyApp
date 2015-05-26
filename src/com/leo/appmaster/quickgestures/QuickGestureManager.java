@@ -163,7 +163,7 @@ public class QuickGestureManager {
 
     public void updateSwitcherData(List<BaseInfo> infos) {
         String saveToSp = QuickSwitchManager.getInstance(mContext)
-                .istToString(infos, infos.size());
+                .listToString(infos, infos.size());
         LeoLog.d("updateSwitcherData", "saveToSp:" + saveToSp);
         mSpSwitch.setSwitchList(saveToSp);
         mSpSwitch.setSwitchListSize(infos.size());

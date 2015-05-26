@@ -7,5 +7,4 @@ import com.leo.appmaster.model.BaseInfo;
 
 public class QuickSwitcherInfo extends BaseInfo {
     public Drawable[] switchIcon;
-    public String iDentiName;
 }

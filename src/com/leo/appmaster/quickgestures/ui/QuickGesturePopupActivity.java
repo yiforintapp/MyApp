@@ -67,7 +67,6 @@ public class QuickGesturePopupActivity extends Activity implements
         mContainer.setRocket(this);
 
         mSpSwitch = AppMasterPreference.getInstance(this);
-        // list = AppLoadEngine.getInstance(this).getAllPkgInfo();
         list = new ArrayList<BaseInfo>();
         list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
 
@@ -77,7 +76,7 @@ public class QuickGesturePopupActivity extends Activity implements
             if (mSwitchListFromSp.isEmpty()) {
                 mSwitchList = new ArrayList<BaseInfo>();
                 mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
-                String saveToSp = QuickSwitchManager.getInstance(this).istToString(mSwitchList,
+                String saveToSp = QuickSwitchManager.getInstance(this).listToString(mSwitchList,
                         switchNum);
                 mSpSwitch.setSwitchList(saveToSp);
             } else {
