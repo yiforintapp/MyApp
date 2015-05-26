@@ -203,7 +203,6 @@ public class AppleWatchLayout extends ViewGroup {
         for (int i = 0; i < 10; i++) {
             if (i < 5) {
                 tempView = mHoriChildren[1][i + 5];
-                LeoLog.e("xxxx", "i = " + i + "    tempView " + tempView);
                 info = (BaseInfo) tempView.getTag();
                 addView = makeGestureItem();
                 temp = (LayoutParams) tempView.getLayoutParams();
@@ -438,7 +437,6 @@ public class AppleWatchLayout extends ViewGroup {
         if (mNeedRelayoutExtraItem) {
             relayoutExtraChildren();
             mNeedRelayoutExtraItem = false;
-            LeoLog.e("children", "onLayout");
         }
 
         /*
@@ -736,9 +734,19 @@ public class AppleWatchLayout extends ViewGroup {
                 Rect rect = giv.getCrossRect();
                 int offsetX = (int) (x - hitView.getLeft());
                 int onnsetY = (int) (y - hitView.getTop());
-                if (!rect.contains(offsetX, onnsetY) && !giv.isEmptyIcon()) {
-                    hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f), hitView, 0);
-                    hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                if (!rect.contains(offsetX, onnsetY)) {
+                    GType type = mContainer.getCurrentGestureType();
+                    if (type == GType.DymicLayout) {
+                        if (!giv.isEmptyIcon()) {
+                            hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f),
+                                    hitView, 0);
+                            hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                        }
+                    } else {
+                        hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f),
+                                hitView, 0);
+                        hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                    }
                 }
             }
         }
@@ -970,7 +978,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     public void translateItem(float moveX) {
-        LeoLog.e(TAG, "moveX = " + moveX);
         if (moveX > 0) {
             computeTranslateScale(Direction.Left, moveX);
         } else if (moveX < 0) {
@@ -1084,7 +1091,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private void adjustIconPosition(Direction direction) {
-        LeoLog.e("xxxx", "adjustIconPosition");
         int i, firstPosition, lastPosition;
         GestureItemView tempView;
         if (direction == Direction.Left) {
@@ -1506,7 +1512,7 @@ public class AppleWatchLayout extends ViewGroup {
             resault += targetView.getItemName().toString() + targetLp.position + "    "
                     + targetView.getTranslationX() + "; ";
         }
-        LeoLog.e("children", resault);
+        LeoLog.d("children", resault);
         resault = "";
         for (int i = 0; i < 15; i++) {
             targetView = mHoriChildren[1][i];
@@ -1514,7 +1520,7 @@ public class AppleWatchLayout extends ViewGroup {
             resault += targetView.getItemName().toString() + targetLp.position + "    "
                     + targetView.getTranslationX() + "; ";
         }
-        LeoLog.e("children", resault);
+        LeoLog.d("children", resault);
         resault = "";
         for (int i = 0; i < 12; i++) {
             targetView = mHoriChildren[2][i];
@@ -1522,7 +1528,7 @@ public class AppleWatchLayout extends ViewGroup {
             resault += targetView.getItemName().toString() + targetLp.position + "    "
                     + targetView.getTranslationX() + "; ";
         }
-        LeoLog.e("children", resault);
+        LeoLog.d("children", resault);
     }
 
     public void snapLong(Direction direction) {
@@ -1538,7 +1544,6 @@ public class AppleWatchLayout extends ViewGroup {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         mLastMovex = (Float) animation.getAnimatedValue();
-                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
                         computeTranslateScale(Direction.Left, mLastMovex);
                     }
                 });
@@ -1564,7 +1569,6 @@ public class AppleWatchLayout extends ViewGroup {
                     public void onAnimationUpdate(ValueAnimator animation) {
                         mLastMovex = (Float) animation.getAnimatedValue();
                         computeTranslateScale(Direction.Right, mLastMovex);
-                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
                     }
                 });
                 transAnima.addListener(new AnimatorListenerAdapter() {
@@ -1604,7 +1608,6 @@ public class AppleWatchLayout extends ViewGroup {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         mLastMovex = (Float) animation.getAnimatedValue();
-                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
                         computeTranslateScale(Direction.Left, mLastMovex);
                     }
                 });
@@ -1636,7 +1639,6 @@ public class AppleWatchLayout extends ViewGroup {
                     public void onAnimationUpdate(ValueAnimator animation) {
                         mLastMovex = (Float) animation.getAnimatedValue();
                         computeTranslateScale(Direction.Right, mLastMovex);
-                        LeoLog.e("xxxx", "mLastMovex = " + mLastMovex);
                     }
                 });
                 transAnima.addListener(new AnimatorListenerAdapter() {

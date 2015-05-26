@@ -182,7 +182,6 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
      *            right
      */
     public void updateCoverDegree(float degree) {
-        LeoLog.e(TAG, "degree = " + degree);
         float allAngle = 40;
         float percent = degree / allAngle;
         translateDynamic(percent);

@@ -93,7 +93,6 @@ public class GestureItemView extends LinearLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        LeoLog.e("xxxx", "dispatchDraw");
         if (mEditing && !(getTag() instanceof GestureEmptyItemInfo)) {
             drawCross(canvas);
         } else {
