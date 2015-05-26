@@ -77,7 +77,7 @@ public class QuickGesturePopupActivity extends Activity implements
             if (mSwitchListFromSp.isEmpty()) {
                 mSwitchList = new ArrayList<BaseInfo>();
                 mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
-                String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
+                String saveToSp = QuickSwitchManager.getInstance(this).istToString(mSwitchList,
                         switchNum);
                 mSpSwitch.setSwitchList(saveToSp);
             } else {
@@ -110,15 +110,11 @@ public class QuickGesturePopupActivity extends Activity implements
 
     @Override
     protected void onPause() {
-        LeoLog.e("xxxx", "onPause");
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        LeoLog.e("xxxx", "onStop");
-        FloatWindowHelper.mGestureShowing = false;
-        finish();
         super.onStop();
     }
 
@@ -139,7 +135,6 @@ public class QuickGesturePopupActivity extends Activity implements
     @Override
     protected void onDestroy() {
         FloatWindowHelper.mGestureShowing = false;
-        // 反注册
         LeoEventBus.getDefaultBus().unregister(this);
         super.onDestroy();
     }
@@ -157,10 +152,8 @@ public class QuickGesturePopupActivity extends Activity implements
 
     @Override
     public void onSystemUiVisibilityChange(int visibility) {
-        LeoLog.e("xxxx", "visibility = " + visibility);
     }
 
-    
     public void rockeyAnimation(GestureItemView tv, final int mLayoutBottom, int mRocketX,
             int mRocketY, final QuickSwitcherInfo info) {
         int smallRockeyX = mRocketX - iv_roket.getWidth() / 2;

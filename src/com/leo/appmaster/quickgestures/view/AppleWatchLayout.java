@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -34,7 +33,6 @@ import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
@@ -318,6 +316,10 @@ public class AppleWatchLayout extends ViewGroup {
 
     public int getInnerRadius() {
         return mInnerRadius;
+    }
+
+    public AppleWatchContainer getContainer() {
+        return mContainer;
     }
 
     @Override
@@ -656,8 +658,7 @@ public class AppleWatchLayout extends ViewGroup {
         if (hitView != null) {
             GestureItemView giv = (GestureItemView) hitView;
             if (mContainer.isEditing()) {
-                if (giv.hasAddFlag()) {
-                    // TODO show add item dialog
+                if (giv.isEmptyIcon()) {
                     GType type = mContainer.getCurrentGestureType();
                     if (type == GType.MostUsedLayout || type == GType.SwitcherLayout) {
                         showAddNewDiglog(type);
@@ -680,10 +681,13 @@ public class AppleWatchLayout extends ViewGroup {
 
     private void showAddNewDiglog(GType type) {
         // TODO Auto-generated method stub
+        QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.MostUsedLayout) {
             Toast.makeText(getContext(), "添加最近使用item", 0).show();
+            qgm.showCommontAppDialog(getContext());
         } else if (type == GType.SwitcherLayout) {
             Toast.makeText(getContext(), "添加快捷开关item", 0).show();
+            qgm.showQuickSwitchDialog(getContext());
         }
     }
 
@@ -696,14 +700,14 @@ public class AppleWatchLayout extends ViewGroup {
 
             int childCount = getChildCount();
             GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 9 && !view.hasAddFlag()) {
+            if (childCount < 9 && !view.isEmptyIcon()) {
                 showAddIcon(childCount);
             }
 
         } else if (type == GType.MostUsedLayout) {
             int childCount = getChildCount();
             GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 9 && !view.hasAddFlag()) {
+            if (childCount < 9 && !view.isEmptyIcon()) {
                 showAddIcon(childCount);
             }
         }
@@ -746,7 +750,7 @@ public class AppleWatchLayout extends ViewGroup {
                 Rect rect = giv.getCrossRect();
                 int offsetX = (int) (x - hitView.getLeft());
                 int onnsetY = (int) (y - hitView.getTop());
-                if (!rect.contains(offsetX, onnsetY) && !giv.hasAddFlag()) {
+                if (!rect.contains(offsetX, onnsetY) && !giv.isEmptyIcon()) {
                     hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f), hitView, 0);
                     hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                 }
@@ -910,7 +914,7 @@ public class AppleWatchLayout extends ViewGroup {
                     params = (LayoutParams) getChildAt(i).getLayoutParams();
                     int position = params.position;
                     if (position > -1) {
-                        QuickSwitcherInfo sInfo = (QuickSwitcherInfo) getChildAt(i).getTag();
+                        BaseInfo sInfo = (BaseInfo) getChildAt(i).getTag();
                         if (sInfo != null) {
                             sInfo.gesturePosition = position;
                             mSwitchList.add(sInfo);
@@ -949,12 +953,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     public void onLeaveEditMode() {
-        if (mContainer.getCurrentGestureType() != GType.DymicLayout) {
-            GestureItemView lastChild = (GestureItemView) getChildAt(getChildCount() - 1);
-            if (lastChild.hasAddFlag()) {
-                removeView(lastChild);
-            }
-        }
         for (int i = 0; i < getChildCount(); i++) {
             GestureItemView item = (GestureItemView) getChildAt(i);
             item.leaveEditMode();
@@ -965,7 +963,7 @@ public class AppleWatchLayout extends ViewGroup {
         if (mContainer.getCurrentGestureType() != GType.DymicLayout) {
             int childCount = getChildCount();
             GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 13 && !view.hasAddFlag()) {
+            if (childCount < 13 && !view.isEmptyIcon()) {
                 showAddIcon(childCount);
             }
         }
@@ -978,7 +976,9 @@ public class AppleWatchLayout extends ViewGroup {
             GestureItemView addItem = makeGestureItem();
             addItem.setLayoutParams(params);
             addItem.setBackgroundResource(R.drawable.switch_add);
-            addItem.setAddFlag(true);
+            GestureEmptyItemInfo info = new GestureEmptyItemInfo();
+            info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
+            addItem.setTag(info);
             addView(addItem);
         }
     }

@@ -3,6 +3,7 @@ package com.leo.appmaster.quickgestures.view;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.annotation.SuppressLint;
@@ -27,7 +28,6 @@ public class GestureItemView extends LinearLayout {
     private boolean mEditing;
     private Drawable mCrossDrawable;
     private boolean mIsShowReadTip;
-    private boolean mAddFlag = false;
     private TextView mTextView;
     private ImageView mImageView;
 
@@ -38,6 +38,10 @@ public class GestureItemView extends LinearLayout {
     public GestureItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+    }
+
+    public boolean isEmptyIcon() {
+        return getTag() instanceof GestureEmptyItemInfo;
     }
 
     @Override
@@ -73,14 +77,6 @@ public class GestureItemView extends LinearLayout {
         return mDecorateAction;
     }
 
-    public boolean hasAddFlag() {
-        return mAddFlag;
-    }
-
-    public void setAddFlag(boolean add) {
-        mAddFlag = add;
-    }
-
     public Rect getCrossRect() {
         Rect rect = new Rect(0, 0, mCrossDrawable.getIntrinsicWidth() * 2,
                 mCrossDrawable.getIntrinsicHeight() * 2);
@@ -97,7 +93,7 @@ public class GestureItemView extends LinearLayout {
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
         LeoLog.e("xxxx", "dispatchDraw");
-        if (mEditing && !mAddFlag && !(getTag() instanceof GestureEmptyItemInfo)) {
+        if (mEditing && !(getTag() instanceof GestureEmptyItemInfo)) {
             drawCross(canvas);
         } else {
             if (mDecorateAction != null) {
@@ -115,7 +111,7 @@ public class GestureItemView extends LinearLayout {
     public void enterEditMode() {
         mEditing = true;
         Object tag = getTag();
-        if (tag instanceof GestureEmptyItemInfo) {
+        if (tag instanceof GestureEmptyItemInfo && !isDynamicItem()) {
             mImageView.setImageResource(R.drawable.switch_color_add);
         }
         invalidate();
@@ -124,10 +120,20 @@ public class GestureItemView extends LinearLayout {
     public void leaveEditMode() {
         mEditing = false;
         Object tag = getTag();
-        if (tag instanceof GestureEmptyItemInfo) {
+        if (tag instanceof GestureEmptyItemInfo && !isDynamicItem()) {
+
             mImageView.setImageDrawable(null);
         }
         invalidate();
+    }
+
+    private boolean isDynamicItem() {
+        GType type = mHolderLayout.getContainer().getCurrentGestureType();
+        if (type == GType.DymicLayout) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void showReadTip() {

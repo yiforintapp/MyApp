@@ -1000,13 +1000,12 @@ public class QuickSwitchManager {
         mContext.startActivity(intent);
     }
 
-    public String ListToString(List<BaseInfo> mSwitchList, int mNum) {
+    public String istToString(List<BaseInfo> mSwitchList, int mNum) {
         String ListString = "";
         for (int i = 0; i < mNum; i++) {
-            QuickSwitcherInfo switchInfo = (QuickSwitcherInfo) mSwitchList.get(i);
-            String name = switchInfo.iDentiName;
+            BaseInfo switchInfo = (BaseInfo) mSwitchList.get(i);
+            String name = switchInfo.label;
             int position = switchInfo.gesturePosition;
-            LeoLog.d("QuickSwitchManager", "name : " + name + "--position : " + position);
             if (i == 0) {
                 ListString = name + ":" + position;
             } else {
