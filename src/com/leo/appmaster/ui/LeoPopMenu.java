@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -56,10 +57,11 @@ public class LeoPopMenu {
 
     private OnItemClickListener mPopItemClickListener;
 
+    private ListView listView;
     private MenuListAdapter mAdapter;
     private LayoutStyles mStyles = new LayoutStyles();
     private boolean mIsItemHTMLFormatted = false;
-
+    
     private int mAnimaStyle = -1;
 
     /**
@@ -154,7 +156,7 @@ public class LeoPopMenu {
                 .getInstance());
         LinearLayout convertView = (LinearLayout) inflater.inflate(
                 R.layout.popmenu_window_list_layout, null);
-        ListView listView = (ListView) convertView.findViewById(R.id.menu_list);
+        listView = (ListView) convertView.findViewById(R.id.menu_list);
 
         listView.setOnItemClickListener(mPopItemClickListener);
 
@@ -339,4 +341,9 @@ public class LeoPopMenu {
         return textLength;
     }
 
+    public void setListViewDivider(Drawable divider){
+        if(null != listView){
+            listView.setDivider(divider);
+        }
+    }
 }
