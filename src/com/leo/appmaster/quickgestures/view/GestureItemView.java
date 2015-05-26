@@ -71,6 +71,7 @@ public class GestureItemView extends LinearLayout {
 
     public void setDecorateAction(DecorateAction action) {
         mDecorateAction = action;
+        invalidate();
     }
 
     public DecorateAction getDecorateAction() {
@@ -78,8 +79,8 @@ public class GestureItemView extends LinearLayout {
     }
 
     public Rect getCrossRect() {
-        Rect rect = new Rect(0, 0, mCrossDrawable.getIntrinsicWidth() * 2,
-                mCrossDrawable.getIntrinsicHeight() * 2);
+        Rect rect = new Rect(0, 0, mCrossDrawable.getIntrinsicWidth(),
+                mCrossDrawable.getIntrinsicHeight());
         return rect;
     }
 
@@ -92,7 +93,6 @@ public class GestureItemView extends LinearLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        LeoLog.e("xxxx", "dispatchDraw");
         if (mEditing && !(getTag() instanceof GestureEmptyItemInfo)) {
             drawCross(canvas);
         } else {

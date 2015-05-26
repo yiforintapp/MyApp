@@ -242,7 +242,6 @@ public class AppleWatchContainer extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        LeoLog.e(TAG, "onTouchEvent");
         if (mSnaping)
             return false;
         mGesDetector.onTouchEvent(event);

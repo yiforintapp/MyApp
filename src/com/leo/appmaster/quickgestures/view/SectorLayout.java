@@ -173,12 +173,7 @@ public class SectorLayout extends ViewGroup {
         float innerStartAngle, outerStartAngle;
         innerStartAngle = 90 - innertAngleInterval / 2;
         outerStartAngle = 90 - outerAngleInterval / 2;
-
         float halfItemSize = mItemSize / 2.0f;
-
-        LeoLog.e("xxxx", " childCount = " + childCount + "innerStartAngle = " + innerStartAngle
-                + "       innertAngleInterval =  "
-                + innertAngleInterval);
 
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);

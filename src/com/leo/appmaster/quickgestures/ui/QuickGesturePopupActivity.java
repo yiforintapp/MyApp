@@ -94,7 +94,6 @@ public class QuickGesturePopupActivity extends Activity implements
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                LeoLog.e("xxxx", "onFocusChange");
             }
         });
     }
