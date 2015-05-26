@@ -876,16 +876,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             public void onClick(int which) {
                 if (which == 0) {
                     if (mQuickGestureSettingDialog != null) {
-                        AppMasterPreference.getInstance(HomeActivity.this)
-                        .setQuickGestureMiuiSettingFirstDialogTip(true);
                         mQuickGestureSettingDialog.dismiss();
                     }
                 } else if (which == 1) {
                     Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
                     try {
                         startActivity(inten);
-                        AppMasterPreference.getInstance(HomeActivity.this)
-                        .setQuickGestureMiuiSettingFirstDialogTip(true);
                     } catch (Exception e) {
                     }
                 }
