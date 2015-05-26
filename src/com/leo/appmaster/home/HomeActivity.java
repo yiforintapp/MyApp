@@ -380,8 +380,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     }
                 });
                 mLeoPopMenu.setPopMenuItems(this, getRightMenuItems(),getRightMenuIcons(),true);
-                mLeoPopMenu.showPopMenu(this,
-                        mTtileBar.findViewById(R.id.iv_option_image), null, null);
+                mLeoPopMenu.showPopMenu(this,mTtileBar.findViewById(R.id.iv_option_image), null, null);
+                mLeoPopMenu.setListViewDivider(null);
                 break;
             case R.id.bg_show_hotapp:
                 app_hot_tip_icon.setVisibility(View.GONE);
@@ -418,7 +418,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private List<Integer> getRightMenuIcons(){
         List<Integer> icons = new ArrayList<Integer>();
         icons.add(R.drawable.reset_pasword_icon);
-        icons.add(R.drawable.reset_pasword_icon);
+        icons.add(R.drawable.switch_pasword_icon);
         icons.add(R.drawable.question_icon);
         icons.add(R.drawable.pasword_icon);
         icons.add(R.drawable.settings);

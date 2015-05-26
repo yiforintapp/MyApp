@@ -5,21 +5,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.Vector;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RecentTaskInfo;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGestureManager {
@@ -34,11 +49,11 @@ public class QuickGestureManager {
 
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
+    private Drawable[] mEmptyIcon;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
         mSpSwitch = AppMasterPreference.getInstance(mContext);
-        init();
     }
 
     public static synchronized QuickGestureManager getInstance(Context ctx) {
@@ -48,11 +63,56 @@ public class QuickGestureManager {
         return mInstance;
     }
 
-    private void init() {
+    public void init() {
         mDynamicList = new ArrayList<BaseInfo>();
         mMostUsedList = new ArrayList<BaseInfo>();
-
         loadAppLaunchReorder();
+        preloadEmptyIcon();
+    }
+
+    public List<BaseInfo> getDynamicList() {
+        Vector<BusinessItemInfo> businessDatas = AppBusinessManager.getInstance(mContext)
+                .getBusinessData();
+        List<BaseInfo> dynamicList = new ArrayList<BaseInfo>();
+        BusinessItemInfo businessItem = null;
+        if (businessDatas != null && businessDatas.size() > 0) {
+            businessItem = businessDatas.get(0);
+            dynamicList.add(businessItem);
+        }
+        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        List<RecentTaskInfo> recentTasks = am.getRecentTasks(50,
+                ActivityManager.RECENT_WITH_EXCLUDED);
+        String pkg;
+        Drawable icon;
+        BaseInfo baseInfo;
+        AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
+        List<String> pkgs = new ArrayList<String>();
+        for (RecentTaskInfo recentTaskInfo : recentTasks) {
+            if (dynamicList.size() > 12)
+                break;
+            pkg = recentTaskInfo.baseIntent.getComponent().getPackageName();
+            if (!pkgs.contains(pkg)) {
+                pkgs.add(pkg);
+                icon = engine.getAppIcon(pkg);
+                if (icon != null) {
+                    baseInfo = new BaseInfo();
+                    baseInfo.icon = icon;
+                    baseInfo.label = engine.getAppName(pkg);
+                    dynamicList.add(baseInfo);
+                }
+            }
+        }
+        return dynamicList;
+    }
+
+    private void preloadEmptyIcon() {
+        Resources res = mContext.getResources();
+        mEmptyIcon = new Drawable[5];
+        mEmptyIcon[0] = res.getDrawable(R.drawable.switch_orange);
+        mEmptyIcon[1] = res.getDrawable(R.drawable.switch_green);
+        mEmptyIcon[2] = res.getDrawable(R.drawable.seitch_purple);
+        mEmptyIcon[3] = res.getDrawable(R.drawable.switch_red);
+        mEmptyIcon[4] = res.getDrawable(R.drawable.switch_blue);
     }
 
     public void stopFloatWindow() {
@@ -129,11 +189,6 @@ public class QuickGestureManager {
         }
     }
 
-    public List<BaseInfo> getDynamicList() {
-
-        return null;
-    }
-
     public List<BaseInfo> getMostUsedList() {
 
         return null;
@@ -144,9 +199,9 @@ public class QuickGestureManager {
         return null;
     }
 
-    public void updateSwitcherData(List<Object> infos) {
+    public void updateSwitcherData(List<BaseInfo> infos) {
         String saveToSp = QuickSwitchManager.getInstance(mContext)
-                .ListToString(infos, infos.size());
+                .listToString(infos, infos.size());
         LeoLog.d("updateSwitcherData", "saveToSp:" + saveToSp);
         mSpSwitch.setSwitchList(saveToSp);
         mSpSwitch.setSwitchListSize(infos.size());
@@ -250,7 +305,124 @@ public class QuickGestureManager {
         return missedCallCount;
     }
 
-    public class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {
+    public Drawable applyEmptyIcon() {
+        Drawable icon = null;
+        int index = (int) (Math.random() * 4);
+        icon = mEmptyIcon[index];
+        return icon;
+    }
+
+    /**
+     * Common App Dialog
+     * 
+     * @param context
+     */
+    public void showCommontAppDialog(final Context activity) {
+        final QuickGestureFreeDisturbAppDialog commonApp = new QuickGestureFreeDisturbAppDialog(
+                activity, 3);
+        final AppMasterPreference pref = AppMasterPreference.getInstance(activity);
+        commonApp.setIsShowCheckBox(true);
+        commonApp.setCheckBoxText(R.string.quick_gesture_change_common_app_dialog_checkbox_text);
+        // 设置是否选择习惯
+        commonApp.setCheckValue(pref.getQuickGestureCommonAppDialogCheckboxValue());
+        commonApp.setTitle(R.string.quick_gesture_change_common_app_dialog_title);
+        commonApp.setRightBt(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // 确认按钮
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 添加的应用包名
+                        List<BaseInfo> addCommonApp = commonApp.getAddFreePackageName();
+                        // 移除的应用包名
+                        List<BaseInfo> removeCommonApp = commonApp.getRemoveFreePackageName();
+                        // 是否选择使用习惯自动填充
+                        boolean flag = commonApp.getCheckValue();
+                        if (addCommonApp != null && addCommonApp.size() > 0) {
+                            for (BaseInfo info : addCommonApp) {
+                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
+                                pref.setCommonAppPackageNameAdd(string.packageName);
+                            }
+                        }
+                        if (removeCommonApp != null && removeCommonApp.size() > 0) {
+                            for (BaseInfo info : removeCommonApp) {
+                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
+                                pref.setCommonAppPackageNameRemove(string.packageName);
+                            }
+                        }
+                        if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
+                            pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
+                        }
+                    }
+                }).start();
+                commonApp.dismiss();
+            }
+        });
+        commonApp.setLeftBt(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // 取消按钮
+                commonApp.dismiss();
+            }
+        });
+        commonApp.show();
+    }
+
+    /**
+     * Quick Switch Dialog
+     * @param mSwitchList 
+     * 
+     * @param context
+     */
+    public void showQuickSwitchDialog(final Context activity, List<BaseInfo> mSwitchList) {
+        final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
+                activity, 2);
+        quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
+        quickSwitch.setRightBt(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // 确认按钮
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // 添加的应用包名
+                        List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
+                        // 移除的应用包名
+                        List<BaseInfo> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
+                        if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
+                            for (BaseInfo info : addQuickSwitch) {
+                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
+                                AppMasterPreference.getInstance(activity)
+                                        .setQuickSwitchPackageNameAdd(string.packageName);
+                            }
+                        }
+                        if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
+                            for (BaseInfo info : removeQuickSwitch) {
+                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
+                                AppMasterPreference.getInstance(activity)
+                                        .setQuickSwitchPackageNameRemove(string.packageName);
+                            }
+                        }
+                    }
+                }).start();
+                quickSwitch.dismiss();
+            }
+        });
+        quickSwitch.setLeftBt(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // 取消按钮
+                quickSwitch.dismiss();
+            }
+        });
+        quickSwitch.show();
+    }
+
+    class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {
         String pkg;
         int launchCount;
 
@@ -264,7 +436,6 @@ public class QuickGestureManager {
                 return -1;
             }
         }
-
     }
 
 }

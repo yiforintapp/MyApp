@@ -86,7 +86,7 @@ public class AppleWatchLayout extends ViewGroup {
         mContext = context;
     }
 
-    public void fillItems(List<Object> infos) {
+    public void fillItems(List<BaseInfo> infos) {
         BaseInfo info = null;
         if (infos.size() > 13) {
             infos = infos.subList(0, 13);

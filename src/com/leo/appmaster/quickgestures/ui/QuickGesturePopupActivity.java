@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +13,22 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.cleanmemory.ProcessCleaner;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.quickgestures.view.GestureItemView;
+import com.leo.appmaster.utils.LeoLog;
+
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
@@ -21,30 +36,16 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
-import com.leo.appmaster.quickgestures.view.GestureItemView;
-import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends Activity implements
         OnSystemUiVisibilityChangeListener {
 
     private static int switchNum;
     private AppleWatchContainer mContainer;
-    private AbstractList<Object> list;
-    private List<Object> mSwitchList;
+    private List<BaseInfo> list;
+    private List<BaseInfo> mSwitchList;
     private AppMasterPreference mSpSwitch;
     private String mSwitchListFromSp;
     private ImageView iv_roket, iv_pingtai, iv_yun;
@@ -60,6 +61,7 @@ public class QuickGesturePopupActivity extends Activity implements
         handleIntent();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         mCommonApps = new ArrayList<QuickGsturebAppInfo>();
+        QuickSwitchManager.getInstance(this).setActivity(this);
         // 注册eventBus
         LeoEventBus.getDefaultBus().register(this);
         wm = (WindowManager) this
@@ -68,6 +70,7 @@ public class QuickGesturePopupActivity extends Activity implements
         // WindowManager.LayoutParams params = window.getAttributes();
         // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         // window.setAttributes(params);
+        
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
         iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
@@ -75,21 +78,20 @@ public class QuickGesturePopupActivity extends Activity implements
         mContainer.setRocket(this);
 
         mSpSwitch = AppMasterPreference.getInstance(this);
-        // list = AppLoadEngine.getInstance(this).getAllPkgInfo();
-        list = new ArrayList<Object>();
+        list = new ArrayList<BaseInfo>();
         list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
 
         if (mSwitchList == null) {
             mSwitchListFromSp = mSpSwitch.getSwitchList();
             switchNum = mSpSwitch.getSwitchListSize();
             if (mSwitchListFromSp.isEmpty()) {
-                mSwitchList = new ArrayList<Object>();
+                mSwitchList = new ArrayList<BaseInfo>();
                 mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
-                String saveToSp = QuickSwitchManager.getInstance(this).ListToString(mSwitchList,
+                String saveToSp = QuickSwitchManager.getInstance(this).listToString(mSwitchList,
                         switchNum);
                 mSpSwitch.setSwitchList(saveToSp);
             } else {
-                mSwitchList = new ArrayList<Object>();
+                mSwitchList = new ArrayList<BaseInfo>();
                 mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
             if (!mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
@@ -105,7 +107,6 @@ public class QuickGesturePopupActivity extends Activity implements
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                LeoLog.e("xxxx", "onFocusChange");
             }
         });
 
@@ -142,20 +143,19 @@ public class QuickGesturePopupActivity extends Activity implements
 
     @Override
     protected void onPause() {
-        LeoLog.e("xxxx", "onPause");
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        LeoLog.e("xxxx", "onStop");
-        FloatWindowHelper.mGestureShowing = false;
-        finish();
         super.onStop();
     }
 
     private void fillQg1() {
-        mContainer.fillGestureItem(GType.DymicLayout, list.subList(0, 13));
+        // ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(0,
+        // 12));
+        List<BaseInfo> items = QuickGestureManager.getInstance(this).getDynamicList();
+        mContainer.fillGestureItem(GType.DymicLayout, items);
     }
 
     private void fillQg2() {
@@ -170,7 +170,8 @@ public class QuickGesturePopupActivity extends Activity implements
 //            }
 //            }
 //        }
-        mContainer.fillGestureItem(GType.MostUsedLayout, list.subList(11, 24));
+        ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(13, 20));
+        mContainer.fillGestureItem(GType.MostUsedLayout, items);
     }
 
     private void fillQg3() {
@@ -180,7 +181,6 @@ public class QuickGesturePopupActivity extends Activity implements
     @Override
     protected void onDestroy() {
         FloatWindowHelper.mGestureShowing = false;
-        // 反注册
         LeoEventBus.getDefaultBus().unregister(this);
         super.onDestroy();
     }
@@ -199,11 +199,10 @@ public class QuickGesturePopupActivity extends Activity implements
 
     @Override
     public void onSystemUiVisibilityChange(int visibility) {
-        LeoLog.e("xxxx", "visibility = " + visibility);
     }
 
-    public void RockeyAnimation(GestureItemView tv, final int mLayoutBottom, int mRocketX,
-            int mRocketY) {
+    public void rockeyAnimation(GestureItemView tv, final int mLayoutBottom, int mRocketX,
+            int mRocketY, final QuickSwitcherInfo info) {
         int smallRockeyX = mRocketX - iv_roket.getWidth() / 2;
         int smallRockeyY = mRocketY - iv_roket.getHeight() / 2;
         LeoLog.d("AppleWatchContainer", " smallRockeyX : " + smallRockeyX
@@ -288,7 +287,7 @@ public class QuickGesturePopupActivity extends Activity implements
                                 returnAnimation.setDuration(200);
                                 returnAnimation.start();
                                 // make normal iCon
-                                // TODO
+                                mContainer.makeNormalIcon(info);
                             }
                         });
                         animMoveGoSet.start();

@@ -42,6 +42,7 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer.Orientation;
@@ -172,12 +173,7 @@ public class SectorLayout extends ViewGroup {
         float innerStartAngle, outerStartAngle;
         innerStartAngle = 90 - innertAngleInterval / 2;
         outerStartAngle = 90 - outerAngleInterval / 2;
-
         float halfItemSize = mItemSize / 2.0f;
-
-        LeoLog.e("xxxx", " childCount = " + childCount + "innerStartAngle = " + innerStartAngle
-                + "       innertAngleInterval =  "
-                + innertAngleInterval);
 
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
@@ -401,7 +397,7 @@ public class SectorLayout extends ViewGroup {
         if (hitView != null) {
             GestureItemView giv = (GestureItemView) hitView;
             if (mContainer.isEditing()) {
-                if (giv.hasAddFlag()) {
+                if (giv.isEmptyIcon()) {
                     // TODO show add item dialog
                     GType type = mContainer.getCurrentGestureType();
                     if (type == GType.MostUsedLayout || type == GType.SwitcherLayout) {
@@ -457,14 +453,14 @@ public class SectorLayout extends ViewGroup {
 
             int childCount = getChildCount();
             GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 9 && !view.hasAddFlag()) {
+            if (childCount < 9 && !view.isEmptyIcon()) {
                 showAddIcon(childCount);
             }
 
         } else if (type == GType.MostUsedLayout) {
             int childCount = getChildCount();
             GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 9 && !view.hasAddFlag()) {
+            if (childCount < 9 && !view.isEmptyIcon()) {
                 showAddIcon(childCount);
             }
         }
@@ -507,7 +503,7 @@ public class SectorLayout extends ViewGroup {
                 Rect rect = giv.getCrossRect();
                 int offsetX = (int) (x - hitView.getLeft());
                 int onnsetY = (int) (y - hitView.getTop());
-                if (!rect.contains(offsetX, onnsetY) && !giv.hasAddFlag()) {
+                if (!rect.contains(offsetX, onnsetY) && !giv.isEmptyIcon()) {
                     hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f), hitView, 0);
                     hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                 }
@@ -666,7 +662,7 @@ public class SectorLayout extends ViewGroup {
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;
-                List<Object> mSwitchList = new ArrayList<Object>();
+                List<BaseInfo> mSwitchList = new ArrayList<BaseInfo>();
                 LeoLog.d("QuickGestureLayout", "总孩子数：" + mNum);
                 for (int i = 0; i < mNum; i++) {
                     params = (LayoutParams) getChildAt(i).getLayoutParams();
@@ -706,7 +702,7 @@ public class SectorLayout extends ViewGroup {
     public void onLeaveEditMode() {
         if (mContainer.getCurrentGestureType() != GType.DymicLayout) {
             GestureItemView lastChild = (GestureItemView) getChildAt(getChildCount() - 1);
-            if (lastChild.hasAddFlag()) {
+            if (lastChild.isEmptyIcon()) {
                 removeView(lastChild);
             }
         }
@@ -720,7 +716,7 @@ public class SectorLayout extends ViewGroup {
         if (mContainer.getCurrentGestureType() != GType.DymicLayout) {
             int childCount = getChildCount();
             GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 9 && !view.hasAddFlag()) {
+            if (childCount < 9 && !view.isEmptyIcon()) {
                 showAddIcon(childCount);
             }
         }
@@ -732,8 +728,9 @@ public class SectorLayout extends ViewGroup {
             params.position = position;
             GestureItemView addItem = new GestureItemView(mContext);
             addItem.setLayoutParams(params);
-            addItem.setBackgroundResource(R.drawable.switch_add);
-            addItem.setAddFlag(true);
+            GestureEmptyItemInfo info = new GestureEmptyItemInfo();
+            info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
+            addItem.setTag(info);
             addView(addItem);
         } else {
             int childCount = getChildCount();
@@ -742,8 +739,9 @@ public class SectorLayout extends ViewGroup {
                 params.position = childCount;
                 GestureItemView addItem = new GestureItemView(mContext);
                 addItem.setLayoutParams(params);
-                addItem.setAddFlag(true);
-                addItem.setBackgroundResource(R.drawable.switch_add);
+                GestureEmptyItemInfo info = new GestureEmptyItemInfo();
+                info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
+                addItem.setTag(info);
                 addView(addItem);
             }
 

@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +19,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
@@ -1090,7 +1090,6 @@ public class FloatWindowHelper {
             // sRightPopup.dismiss();s
         }
     }
-
     /**
      * Common App Dialog
      * 
@@ -1113,20 +1112,20 @@ public class FloatWindowHelper {
                     @Override
                     public void run() {
                         // 添加的应用包名
-                        List<Object> addCommonApp = commonApp.getAddFreePackageName();
+                        List<BaseInfo> addCommonApp = commonApp.getAddFreePackageName();
                         // 移除的应用包名
-                        List<Object> removeCommonApp = commonApp
+                        List<BaseInfo> removeCommonApp = commonApp
                                 .getRemoveFreePackageName();
                         // 是否选择使用习惯自动填充
                         boolean flag = commonApp.getCheckValue();
                         if (addCommonApp != null && addCommonApp.size() > 0) {
-                            for (Object object : addCommonApp) {
+                            for (BaseInfo object : addCommonApp) {
                                 QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
                                 pref.setCommonAppPackageNameAdd(string.packageName);
                             }
                         }
                         if (removeCommonApp != null && removeCommonApp.size() > 0) {
-                            for (Object object : removeCommonApp) {
+                            for (BaseInfo object : removeCommonApp) {
                                 QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
                                 pref.setCommonAppPackageNameRemove(string.packageName);
                             }
@@ -1168,9 +1167,9 @@ public class FloatWindowHelper {
                     @Override
                     public void run() {
                         // 添加的应用包名
-                        List<Object> addQuickSwitch = quickSwitch.getAddFreePackageName();
+                        List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
                         // 移除的应用包名
-                        List<Object> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
+                        List<BaseInfo> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
                         if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
 //                            String saveToSp = QuickSwitchManager.getInstance(context).ListToString(
 //                                    addQuickSwitch, addQuickSwitch.size());
@@ -1203,7 +1202,6 @@ public class FloatWindowHelper {
         });
         quickSwitch.show();
     }
-
     private static void onTouchAreaShowQuick(int flag) {
         if (flag == -1) {
             Intent intent;

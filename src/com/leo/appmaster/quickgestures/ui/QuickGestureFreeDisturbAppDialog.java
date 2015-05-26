@@ -23,6 +23,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
@@ -41,8 +42,8 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private TextView mTitle, mSureBt, mLeftBt;
     private List<QuickGsturebAppInfo> mDisturbList = null;
     private List<QuickGsturebAppInfo> mFreeDisturbApp = null;
-    private List<Object> mAddFreePackageName = null;
-    private List<Object> mRemoveFreePackageName = null;
+    private List<BaseInfo> mAddFreePackageName = null;
+    private List<BaseInfo> mRemoveFreePackageName = null;
     private LinearLayout mCheckBoxLL;
     private TextView mCheckBoxTv;
     private CheckBox mCheckBox;
@@ -52,8 +53,8 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     public QuickGestureFreeDisturbAppDialog(Context context, int flag) {
         super(context, R.style.bt_dialog);
         mContext = context.getApplicationContext();
-        mAddFreePackageName = new ArrayList<Object>();
-        mRemoveFreePackageName = new ArrayList<Object>();
+        mAddFreePackageName = new ArrayList<BaseInfo>();
+        mRemoveFreePackageName = new ArrayList<BaseInfo>();
         this.mFlag = flag;
         initUI();
     }
@@ -114,11 +115,11 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         setCanceledOnTouchOutside(true);
     }
 
-    public List<Object> getAddFreePackageName() {
+    public List<BaseInfo> getAddFreePackageName() {
         return mAddFreePackageName;
     }
 
-    public List<Object> getRemoveFreePackageName() {
+    public List<BaseInfo> getRemoveFreePackageName() {
         return mRemoveFreePackageName;
     }
 
@@ -212,20 +213,21 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
 
     // 加载快捷开关数据
     private void loadQuickSwitchData() {
+        List<String> packageNames = null;
         // 为设置的快捷开关
         mDisturbList = new ArrayList<QuickGsturebAppInfo>();
         // 设置为快捷开关
         mFreeDisturbApp = new ArrayList<QuickGsturebAppInfo>();
         QuickSwitchManager qsm = QuickSwitchManager.getInstance(mContext);
-        List<Object> allList = qsm.getSwitchList(AppMasterPreference.getInstance(mContext)
+        List<BaseInfo> allList = qsm.getSwitchList(AppMasterPreference.getInstance(mContext)
                 .getSwitchListSize());
         // 设置为快捷手势的开关
         String quickGestureSwitchPackageNames = AppMasterPreference.getInstance(mContext)
                 .getSwitchList();
-        List<Object> quickSwitch = qsm.StringToList(quickGestureSwitchPackageNames);
+        List<BaseInfo> quickSwitch = qsm.StringToList(quickGestureSwitchPackageNames);
         if (allList != null) {
             for (Object object : allList) {
-                if (quickSwitch != null) {
+                if (packageNames != null) {
                     if (quickSwitch.contains(object)) {
                         QuickSwitcherInfo switchInfo = (QuickSwitcherInfo) object;
                         switchInfo.isFreeDisturb = true;

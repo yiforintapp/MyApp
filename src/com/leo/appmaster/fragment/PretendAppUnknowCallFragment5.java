@@ -27,11 +27,12 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.GestureRelative;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CirCleDongHua;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 public class PretendAppUnknowCallFragment5 extends PretendFragment implements OnTouchListener {
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
-            iv_duanxin_big, iv_jieting_big, finish_lock, iv_test_icon;
+            iv_duanxin_big, iv_jieting_big, finish_lock, iv_test_icon,iv_topguide;
     private RelativeLayout activity_weizhuang_firstin;
     private View text_content;
     private float mYuanX, mYuanY, mZhiJing, mBanJing;
@@ -43,6 +44,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     private int duan_left_big, duan_top_big, duan_right_big, duan_bottom_big;
     private int jie_left_big, jie_top_big, jie_right_big, jie_bottom_big;
     private int finish_left, finish_top, finish_right, finish_bottom;
+    private int top_guide_left,top_guide_top,top_guide_right,top_guide_bottom;
     private int startX, startY;
     private float lc_left, lc_top, lc_right, lc_bottom;
     private boolean isControlGua = true;
@@ -74,6 +76,9 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
                     iv_jieting.layout(jie_left, jie_top, jie_right, jie_bottom);
                     iv_jieting_big.layout(jie_left_big, jie_top_big, jie_right_big, jie_bottom_big);
+                    
+                    iv_topguide.layout(top_guide_left, top_guide_top, top_guide_right, top_guide_bottom);
+                    iv_topguide.setVisibility(View.VISIBLE);
 
                     if (!isStartDong) {
                         myself_circle.setVisibility(View.VISIBLE);
@@ -210,7 +215,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         iv_guaduan_big = (ImageView) findViewById(R.id.iv_guaduan_big);
         iv_duanxin_big = (ImageView) findViewById(R.id.iv_duanxin_big);
         iv_jieting_big = (ImageView) findViewById(R.id.iv_jieting_big);
-
+        iv_topguide = (ImageView) findViewById(R.id.iv_topguide);
+        
         // iv_test_icon = new ImageView(mActivity);
         // iv_test_icon.setBackground(mActivity.getResources().getDrawable(R.drawable.app_seekbar_btn));
         // RelativeLayout.LayoutParams params = new
@@ -437,6 +443,12 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                 finish_top = duan_top - duan_height / 2;
                 finish_right = jie_right + jie_width / 2 - 10;
                 finish_bottom = gua_bottom + gua_height / 2;
+                
+              //top guide
+                top_guide_left = (int) (mYuanX-mBanJing);
+                top_guide_top = (int) (mYuanY-mBanJing)- 4;
+                top_guide_right = (int) (mYuanX+mBanJing)+DipPixelUtil.dip2px(getActivity(), 5);
+                top_guide_bottom = (int)(mYuanY);
 
                 if (mVersion > 16) {
                     mViewContent.getViewTreeObserver().removeOnGlobalLayoutListener(this);

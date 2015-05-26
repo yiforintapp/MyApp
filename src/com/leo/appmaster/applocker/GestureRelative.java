@@ -15,9 +15,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public class GestureRelative extends RelativeLayout {
@@ -66,7 +68,9 @@ public class GestureRelative extends RelativeLayout {
             CirPointY = (b - t) / 2 + 30;
         } else if (screenH == 800) {
             CirPointY = (b - t) / 2 + 20;
-        } else {
+        } else if(screenH == 320){
+            CirPointY = (b - t) / 2 + 5;
+        }else{
             CirPointY = (b - t) / 2 + 10;
         }
         CirPointX = (r - l) / 2;
@@ -258,6 +262,7 @@ public class GestureRelative extends RelativeLayout {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         CirPanint.setStyle(Paint.Style.STROKE);
+        CirPanint.setStrokeWidth(0.5f);
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         canvas.drawCircle(CirPointX, CirPointY, mBanJing, CirPanint);

@@ -45,11 +45,12 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -691,15 +692,15 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             public void onClick(View arg0) {
                 if (freeDisturbApp != null) {
                     // 添加确认免打扰应用
-                    final List<Object> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
-                    final List<Object> removeFreeAppNames = freeDisturbApp
+                    final List<BaseInfo> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
+                    final List<BaseInfo> removeFreeAppNames = freeDisturbApp
                             .getRemoveFreePackageName();
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                         @Override
                         public void run() {
                             if (addFreeAppNames != null && addFreeAppNames.size() > 0) {
-                                for (Object object : addFreeAppNames) {
+                                for (BaseInfo object : addFreeAppNames) {
                                     QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
                                     AppMasterPreference.getInstance(QuickGestureActivity.this)
                                             .setFreeDisturbAppPackageNameAdd(string.packageName);

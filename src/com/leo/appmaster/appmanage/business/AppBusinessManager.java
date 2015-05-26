@@ -66,14 +66,14 @@ public class AppBusinessManager {
         mContext = ctx.getApplicationContext();
         mBusinessListeners = new ArrayList<AppBusinessManager.BusinessListener>();
         mBusinessList = new Vector<BusinessItemInfo>();
-        // init();
+//         init();
     }
 
     public void init() {
         loadInitData();
         syncServerGestureData();
-        syncOtherRecommend(BusinessItemInfo.CONTAIN_FLOW_SORT);
-        syncOtherRecommend(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
+//        syncOtherRecommend(BusinessItemInfo.CONTAIN_FLOW_SORT);
+//        syncOtherRecommend(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
     }
 
     private void loadInitData() {
