@@ -1585,9 +1585,9 @@ public class AppleWatchLayout extends ViewGroup {
         int duration;
         if (!mSnapping) {
             if (direction == Direction.Left) {
-                distance = mMinuOffset * 3 - mLastMovex;
-                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 3);
-                duration = (int) ((distance / mMinuOffset * 3) * mSnapDuration);
+                distance = mMinuOffset * 2 - mLastMovex;
+                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 2);
+                duration = (int) ((distance / mMinuOffset * 2) * mSnapDuration);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
@@ -1609,9 +1609,9 @@ public class AppleWatchLayout extends ViewGroup {
                 transAnima.start();
                 mSnapping = true;
             } else if (direction == Direction.Right) {
-                distance = mMinuOffset * 3 - mLastMovex;
-                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 3);
-                duration = (int) ((distance / mMinuOffset * 3) * mSnapDuration);
+                distance = mMinuOffset * 2 - mLastMovex;
+                ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, mMinuOffset * 2);
+                duration = (int) ((distance / mMinuOffset * 2) * mSnapDuration);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
@@ -1651,7 +1651,7 @@ public class AppleWatchLayout extends ViewGroup {
                     distance = temp * mMinuOffset;
                 }
                 transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
-                duration = (int) (((distance - mLastMovex) / mMinuOffset * 3) * mSnapDuration);
+                duration = (int) (((distance - mLastMovex) / mMinuOffset * 2) * mSnapDuration);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
@@ -1682,7 +1682,7 @@ public class AppleWatchLayout extends ViewGroup {
                     distance = temp * mMinuOffset;
                 }
                 transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
-                duration = (int) (((distance - mLastMovex) / mMinuOffset * 3) * mSnapDuration);
+                duration = (int) (((distance - mLastMovex) / mMinuOffset * 2) * mSnapDuration);
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
