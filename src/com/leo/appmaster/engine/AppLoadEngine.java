@@ -252,7 +252,7 @@ public class AppLoadEngine extends BroadcastReceiver {
             return "";
         }
     }
-    
+
     public Drawable getAppIcon(String pkg) {
         AppItemInfo info = mAppDetails.get(pkg);
         if (info != null) {
@@ -955,5 +955,14 @@ public class AppLoadEngine extends BroadcastReceiver {
             sSize = size + sUnitB;
         }
         return sSize;
+    }
+
+    public String getActivityName(String pkg) {
+        AppItemInfo appInfo = mAppDetails.get(pkg);
+        if (appInfo != null) {
+            return appInfo.activityName;
+        } else {
+            return "";
+        }
     }
 }

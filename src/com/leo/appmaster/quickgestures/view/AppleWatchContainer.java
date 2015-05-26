@@ -96,7 +96,6 @@ public class AppleWatchContainer extends FrameLayout {
         mCleaner.tryClean(mContext);
         long curUsedMem = mCleaner.getUsedMem();
         mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-        
 
         int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
         if (derictor == 0) {
@@ -261,20 +260,22 @@ public class AppleWatchContainer extends FrameLayout {
     public boolean onTouchEvent(MotionEvent event) {
         if (mSnaping)
             return false;
+        AppleWatchLayout gestureLayout = null;
+        if (mCurrentGestureType == GType.DymicLayout) {
+            gestureLayout = mDymicLayout;
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            gestureLayout = mMostUsedLayout;
+        } else {
+            gestureLayout = mSwitcherLayout;
+        }
+        if (gestureLayout.isSnapping())
+            return false;
         mGesDetector.onTouchEvent(event);
         float moveX, moveY;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mEditing) {
                     LeoLog.d(TAG, "ACTION_DOWN in editing ");
-                    AppleWatchLayout gestureLayout = null;
-                    if (mCurrentGestureType == GType.DymicLayout) {
-                        gestureLayout = mDymicLayout;
-                    } else if (mCurrentGestureType == GType.MostUsedLayout) {
-                        gestureLayout = mMostUsedLayout;
-                    } else {
-                        gestureLayout = mSwitcherLayout;
-                    }
                     gestureLayout.checkActionDownInEditing(event.getX(), event.getY()
                             - gestureLayout.getTop());
                 } else {
