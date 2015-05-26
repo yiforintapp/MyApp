@@ -465,16 +465,7 @@ public class AppleWatchLayout extends ViewGroup {
 
     @Override
     public void removeView(View view) {
-        LayoutParams params = null;
-        int removePosition = ((LayoutParams) view.getLayoutParams()).position;
-        for (int i = 0; i < getChildCount(); i++) {
-            params = (LayoutParams) getChildAt(i).getLayoutParams();
-            if (params.position > removePosition) {
-                params.position--;
-            }
-        }
         super.removeView(view);
-        saveReorderPosition();
     }
 
     @Override
@@ -668,11 +659,9 @@ public class AppleWatchLayout extends ViewGroup {
                     int offsetX = (int) (x - hitView.getLeft());
                     int onnsetY = (int) (y - hitView.getTop());
                     if (rect.contains(offsetX, onnsetY)) {
-                        removeView(hitView);
-                        onItemRemoved(hitView);
+                        replaceEmptyIcon(giv);
                     }
                 }
-
             } else {
                 animateItem(hitView);
             }
@@ -691,26 +680,25 @@ public class AppleWatchLayout extends ViewGroup {
         }
     }
 
-    private void onItemRemoved(View hitView) {
+    private void replaceEmptyIcon(GestureItemView hitView) {
         GType type = mContainer.getCurrentGestureType();
         if (type == GType.DymicLayout) {
             QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
                     (BaseInfo) hitView.getTag());
         } else if (type == GType.SwitcherLayout) {
-
-            int childCount = getChildCount();
-            GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 9 && !view.isEmptyIcon()) {
-                showAddIcon(childCount);
-            }
-
         } else if (type == GType.MostUsedLayout) {
-            int childCount = getChildCount();
-            GestureItemView view = (GestureItemView) getChildAt(childCount - 1);
-            if (childCount < 9 && !view.isEmptyIcon()) {
-                showAddIcon(childCount);
-            }
         }
+
+        BaseInfo baseInfo = (BaseInfo) hitView.getTag();
+        GestureEmptyItemInfo info = new GestureEmptyItemInfo();
+        info.gesturePosition = baseInfo.gesturePosition;
+        info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
+        hitView.setItemIcon(info.icon);
+        hitView.setItemName(info.label);
+        hitView.setDecorateAction(null);
+        hitView.setTag(info);
+        hitView.enterEditMode();
+        saveReorderPosition();
     }
 
     public void checkItemLongClick(float x, float y) {
@@ -723,11 +711,9 @@ public class AppleWatchLayout extends ViewGroup {
                 LeoLog.d("checkItemLongClick", "hitView");
                 break;
             }
-            // 不足9个icon，显示虚框 TODO
         }
 
         if (hitView != null) {
-            // animateItem(hitView);
             hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f), hitView, 0);
             hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         }
