@@ -1146,6 +1146,7 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private void adjustIconPosition(Direction direction) {
+        LeoLog.e("xxxx", "adjustIconPosition   direction = " + direction);
         int i, firstPosition, lastPosition;
         GestureItemView tempView;
         if (direction == Direction.Left) {
@@ -1373,7 +1374,7 @@ public class AppleWatchLayout extends ViewGroup {
                 adjustIconPosition(Direction.Left);
                 mAdjustCount++;
             } else if (mAdjustCount > shouldAdjustCount) {
-//                adjustIconPosition(Direction.Right);
+                adjustIconPosition(Direction.Right);
                 mAdjustCount--;
             }
             for (i = 0; i < mHoriChildren[0].length - 1; i++) {
@@ -1512,8 +1513,6 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    // targetScale = rawScale1 + adjustMoveX / offset *
-                    // (rawScale2 - rawScale1);
                     moveY = computeTranslateY(mHoriChildren[0][i],
                             mHoriChildren[0][i - 1],
                             adjustMoveX);
@@ -1528,8 +1527,6 @@ public class AppleWatchLayout extends ViewGroup {
                         .getLayoutParams()).scale;
                 if (i == 0) {
                     offset = moveX;
-                    // offset = getOffset(mHoriChildren[1][i], null,
-                    // Direction.Right);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
@@ -1549,8 +1546,6 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    // targetScale = rawScale1 + adjustMoveX / offset *
-                    // (rawScale2 - rawScale1);
                     moveY = computeTranslateY(mHoriChildren[1][i],
                             mHoriChildren[1][i - 1],
                             adjustMoveX - mAdjustCount * minuOffset);
@@ -1565,8 +1560,6 @@ public class AppleWatchLayout extends ViewGroup {
                         .getLayoutParams()).scale;
                 if (i == 0) {
                     offset = moveX;
-                    // offset = getOffset(mHoriChildren[2][i], null,
-                    // Direction.Right);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
@@ -1577,8 +1570,6 @@ public class AppleWatchLayout extends ViewGroup {
                             - 1],
                             Direction.Right);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
-                    // targetScale = rawScale1 + adjustMoveX
-                    // / offset * (rawScale2 - rawScale1);
                     if (i == 4 || i == 8) {
                         if (adjustMoveX <= offset / 2) {
                             targetScale = -(offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
