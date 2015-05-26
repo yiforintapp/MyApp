@@ -4,6 +4,7 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.AppItemInfo;
@@ -63,6 +64,7 @@ public class AppleWatchLayout extends ViewGroup {
     private int mAdjustCount = 0;
     private int mSnapDuration = 800;
     private boolean mSnapping;
+    private AppMasterPreference mSpSwitch;
 
     public static enum Direction {
         Right, Left, None;
@@ -81,6 +83,7 @@ public class AppleWatchLayout extends ViewGroup {
     public AppleWatchLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
+        mSpSwitch = AppMasterPreference.getInstance(mContext);
     }
 
     public void fillItems(List<BaseInfo> infos) {
@@ -701,7 +704,10 @@ public class AppleWatchLayout extends ViewGroup {
         if (type == GType.MostUsedLayout) {
             qgm.showCommontAppDialog(getContext());
         } else if (type == GType.SwitcherLayout) {
-            qgm.showQuickSwitchDialog(getContext());
+            //get list from sp
+            String mListString = mSpSwitch.getSwitchList();
+            List<BaseInfo> mSwitchList = QuickSwitchManager.getInstance(mContext).StringToList(mListString);
+            qgm.showQuickSwitchDialog(getContext(),mSwitchList);
         }
     }
 

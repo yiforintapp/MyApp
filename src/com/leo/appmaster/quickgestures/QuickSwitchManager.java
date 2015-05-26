@@ -801,6 +801,7 @@ public class QuickSwitchManager {
                     android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             callGPSSettingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(callGPSSettingIntent);
+            mActivity.finish();
         } catch (Exception e) {
             Toast.makeText(mContext, "GPS is not available!", 0).show();
         }

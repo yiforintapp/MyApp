@@ -369,10 +369,11 @@ public class QuickGestureManager {
 
     /**
      * Quick Switch Dialog
+     * @param mSwitchList 
      * 
      * @param context
      */
-    public void showQuickSwitchDialog(final Context activity) {
+    public void showQuickSwitchDialog(final Context activity, List<BaseInfo> mSwitchList) {
         final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
                 activity, 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
