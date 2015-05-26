@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
@@ -485,14 +486,14 @@ public class TaskDetectService extends Service {
                 .equals(flag)) {
             // 设置背景
             if (FloatWindowHelper.mEditQuickAreaFlag) {
-                new Thread(new Runnable() {
+                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                     @Override
                     public void run() {
                         FloatWindowHelper
                                 .updateFloatWindowBackgroudColor(true);
                     }
-                }).start();
+                });
             }
             // 左侧底部
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {

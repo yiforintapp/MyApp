@@ -342,7 +342,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (arg1) {
                 // 查看短信数据库未读短信数量
-                new Thread(new Runnable() {
+                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                     @Override
                     public void run() {
                         QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages = PrivacyContactUtils
@@ -356,13 +356,13 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             FloatWindowHelper.removeShowReadTipWindow(QuickGestureActivity.this);
                         }
                     }
-                }).start();
+                });
             }
         } else if (position == 4) {
             mPre.setSwitchOpenRecentlyContact(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (arg1) {
-                new Thread(new Runnable() {
+                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                     @Override
                     public void run() {
@@ -381,8 +381,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             FloatWindowHelper.removeShowReadTipWindow(QuickGestureActivity.this);
                         }
                     }
-                }).start();
-                ;
+                });
             }
         } else if (position == 5) {
             mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
@@ -676,7 +675,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                     final List<String> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
                     final List<String> removeFreeAppNames = freeDisturbApp
                             .getRemoveFreePackageName();
-                    new Thread(new Runnable() {
+                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                         @Override
                         public void run() {
@@ -693,7 +692,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                                 }
                             }
                         }
-                    }).start();
+                    });
                     freeDisturbApp.dismiss();
                     LeoEventBus.getDefaultBus().post(
                             new QuickGestureFloatWindowEvent(

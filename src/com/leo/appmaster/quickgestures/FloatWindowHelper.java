@@ -1208,7 +1208,7 @@ public class FloatWindowHelper {
             @Override
             public void onClick(View arg0) {
                 // 确认按钮
-                new Thread(new Runnable() {
+               AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                     @Override
                     public void run() {
                         // 添加的应用包名
@@ -1231,7 +1231,7 @@ public class FloatWindowHelper {
                             pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
                         }
                     }
-                }).start();
+                });
                 commonApp.dismiss();
             }
         });
@@ -1259,7 +1259,7 @@ public class FloatWindowHelper {
             @Override
             public void onClick(View arg0) {
                 // 确认按钮
-                new Thread(new Runnable() {
+                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                     @Override
                     public void run() {
@@ -1280,7 +1280,7 @@ public class FloatWindowHelper {
                             }
                         }
                     }
-                }).start();
+                });
                 quickSwitch.dismiss();
             }
         });
