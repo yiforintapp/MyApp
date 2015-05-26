@@ -766,52 +766,83 @@ public class SectorQuickGestureContainer extends FrameLayout {
                 tv.setLayoutParams(lp);
                 tv.setItemName(sInfo.label);
                 // tv.setTextSize(12);
-                if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+                if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                        QuickSwitchManager.BLUETOOTH))) {
                     // check 蓝牙状态
                     checkBlueToothStatus(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.FLASHLIGHT))) {
                     // 手电筒状态
                     checkFlashLightStatus(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.WLAN))) {
                     // Wifi状态
                     checkWlanStatus(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.CRAME))) {
                     // Crame状态
                     checkCrameStatus(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.SOUND))) {
                     // Sound状态
                     checkSoundStatus(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.LIGHT))) {
                     // 亮度状态
                     checkLightStatus(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.SPEEDUP))) {
                     // 加速
                     checkSpeedUpStatus(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.CHANGEMODE))) {
                     // 情景模式切换
                     checkChangeMode(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.SWITCHSET))) {
                     // 手势设置
                     checkSwitchSet(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.SETTING))) {
                     // 系统设置
                     checkSetting(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.GPS))) {
                     // GPS
                     checkGPS(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.FLYMODE))) {
                     // 飞行模式
                     checkFlyMode(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.ROTATION))) {
                     // 飞行模式
                     checkRotation(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.MOBILEDATA))) {
                     // 移动数据
                     checkMobileData(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.HOME))) {
                     // 桌面
                     checkHome(sInfo, iconSize, tv);
-                } else if (sInfo.iDentiName.equals(QuickSwitchManager.XUKUANG)) {
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.XUKUANG))) {
                     // 虚框
                     checkXuKuang(sInfo, iconSize, tv);
                 }

@@ -550,37 +550,66 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
             QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
             // 蓝牙
-            if (sInfo.iDentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+            if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
+                    QuickSwitchManager.BLUETOOTH))) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleBluetooth(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.FLASHLIGHT))) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleFlashLight(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.WLAN)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.WLAN))) {
                 QuickSwitchManager.getInstance(getContext()).toggleWlan(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.CRAME)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.CRAME))) {
                 QuickSwitchManager.getInstance(getContext()).openCrame();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SOUND)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.SOUND))) {
                 QuickSwitchManager.getInstance(getContext()).toggleSound(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.LIGHT)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.LIGHT))) {
                 QuickSwitchManager.getInstance(getContext()).toggleLight(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SPEEDUP)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.SPEEDUP))) {
                 QuickSwitchManager.getInstance(getContext()).speedUp(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.CHANGEMODE)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.CHANGEMODE))) {
                 QuickSwitchManager.getInstance(getContext()).toggleMode();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SWITCHSET)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.SWITCHSET))) {
                 QuickSwitchManager.getInstance(getContext()).switchSet();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.SETTING)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.SETTING))) {
                 QuickSwitchManager.getInstance(getContext()).goSetting();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.GPS)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.GPS))) {
                 QuickSwitchManager.getInstance(getContext()).toggleGPS();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.FLYMODE)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.FLYMODE))) {
                 QuickSwitchManager.getInstance(getContext()).toggleFlyMode();
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.ROTATION)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.ROTATION))) {
                 QuickSwitchManager.getInstance(getContext()).toggleRotation(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.MOBILEDATA))) {
                 QuickSwitchManager.getInstance(getContext()).toggleMobileData(sInfo);
-            } else if (sInfo.iDentiName.equals(QuickSwitchManager.HOME)) {
+            } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                    .getLabelFromName(
+                            QuickSwitchManager.HOME))) {
                 QuickSwitchManager.getInstance(getContext()).goHome();
             }
         } else if (info instanceof MessageBean) {
