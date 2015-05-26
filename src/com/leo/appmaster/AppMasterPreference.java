@@ -1571,11 +1571,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         String string = getQuickSwitchPackageName();
         String packageNames = null;
         if (!PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME.equals(string)) {
-            packageNames = string.replace(name + ";", "");
+            packageNames = string.replace(name, "");
+            mPref.edit().putString(PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME,
+                    packageNames)
+                    .commit();
         }
-        mPref.edit().putString(PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME,
-                packageNames)
-                .commit();
     }
 
     // 获取添加到快捷手势中的快捷开关

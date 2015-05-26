@@ -4,6 +4,18 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.utils.LeoLog;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -24,21 +36,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
-import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
-import com.leo.appmaster.utils.LeoLog;
 
 public class AppleWatchLayout extends ViewGroup {
 
@@ -59,8 +60,8 @@ public class AppleWatchLayout extends ViewGroup {
     private float mLastMovex;
     private float mMinuOffset;
     private int mAdjustCount = 0;
-    private int mSnapDuration = 800;
     private boolean mSnapping;
+    private AppMasterPreference mSpSwitch;
 
     public static enum Direction {
         Right, Left, None;
@@ -79,6 +80,7 @@ public class AppleWatchLayout extends ViewGroup {
     public AppleWatchLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
+        mSpSwitch = AppMasterPreference.getInstance(mContext);
     }
 
     public boolean isSnapping() {
@@ -663,7 +665,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     public void checkItemClick(float x, float y) {
-        // TODO
         View hitView = null, tempView = null;
         for (int i = 0; i < getChildCount(); i++) {
             tempView = getChildAt(i);
@@ -703,7 +704,11 @@ public class AppleWatchLayout extends ViewGroup {
         if (type == GType.MostUsedLayout) {
             qgm.showCommontAppDialog(getContext());
         } else if (type == GType.SwitcherLayout) {
-            qgm.showQuickSwitchDialog(getContext());
+            // get list from sp
+            String mListString = mSpSwitch.getSwitchList();
+            List<BaseInfo> mSwitchList = QuickSwitchManager.getInstance(mContext).StringToList(
+                    mListString);
+            qgm.showQuickSwitchDialog(getContext(), mSwitchList);
         }
     }
 

@@ -31,6 +31,7 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
@@ -41,7 +42,7 @@ public class QuickGestureManager {
 
     private Context mContext;
     private static QuickGestureManager mInstance;
-    private TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
+    public TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
@@ -335,19 +336,21 @@ public class QuickGestureManager {
                     @Override
                     public void run() {
                         // 添加的应用包名
-                        List<String> addCommonApp = commonApp.getAddFreePackageName();
+                        List<BaseInfo> addCommonApp = commonApp.getAddFreePackageName();
                         // 移除的应用包名
-                        List<String> removeCommonApp = commonApp.getRemoveFreePackageName();
+                        List<BaseInfo> removeCommonApp = commonApp.getRemoveFreePackageName();
                         // 是否选择使用习惯自动填充
                         boolean flag = commonApp.getCheckValue();
                         if (addCommonApp != null && addCommonApp.size() > 0) {
-                            for (String string : addCommonApp) {
-                                pref.setCommonAppPackageNameAdd(string);
+                            for (BaseInfo info : addCommonApp) {
+                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
+                                pref.setCommonAppPackageNameAdd(string.packageName);
                             }
                         }
                         if (removeCommonApp != null && removeCommonApp.size() > 0) {
-                            for (String string : removeCommonApp) {
-                                pref.setCommonAppPackageNameRemove(string);
+                            for (BaseInfo info : removeCommonApp) {
+                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
+                                pref.setCommonAppPackageNameRemove(string.packageName);
                             }
                         }
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
@@ -371,10 +374,11 @@ public class QuickGestureManager {
 
     /**
      * Quick Switch Dialog
+     * @param mSwitchList 
      * 
      * @param context
      */
-    public void showQuickSwitchDialog(final Context activity) {
+    public void showQuickSwitchDialog(final Context activity, List<BaseInfo> mSwitchList) {
         final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
                 activity, 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
@@ -387,19 +391,21 @@ public class QuickGestureManager {
                     @Override
                     public void run() {
                         // 添加的应用包名
-                        List<String> addQuickSwitch = quickSwitch.getAddFreePackageName();
+                        List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
                         // 移除的应用包名
-                        List<String> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
+                        List<BaseInfo> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
                         if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
-                            for (String string : addQuickSwitch) {
+                            for (BaseInfo info : addQuickSwitch) {
+                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
                                 AppMasterPreference.getInstance(activity)
-                                        .setQuickSwitchPackageNameAdd(string);
+                                        .setQuickSwitchPackageNameAdd(string.packageName);
                             }
                         }
                         if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
-                            for (String string : removeQuickSwitch) {
+                            for (BaseInfo info : removeQuickSwitch) {
+                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
                                 AppMasterPreference.getInstance(activity)
-                                        .setQuickSwitchPackageNameRemove(string);
+                                        .setQuickSwitchPackageNameRemove(string.packageName);
                             }
                         }
                     }

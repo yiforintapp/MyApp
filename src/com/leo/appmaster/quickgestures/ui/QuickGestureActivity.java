@@ -45,11 +45,12 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.model.FreeDisturbAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -74,7 +75,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private AppMasterPreference sp_notice_flow;
     private boolean mAlarmDialogFlag = false;
     private boolean mLeftBottom, mRightBottm, mRightCenter, mLeftCenter;
-    private List<FreeDisturbAppInfo> mFreeApps;
+    private List<QuickGsturebAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
     private Handler mHandler = new Handler();
     private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView;
@@ -317,7 +318,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);
             } else if (arg2 == 2) {
-                showSlideShowTimeSettingDialog();
+                // showSlideShowTimeSettingDialog();
+                FloatWindowHelper.showQuickSwitchDialog(QuickGestureActivity.this);
             }
         }
     }
@@ -332,7 +334,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
             } else {
                 if (mPre.getSwitchOpenQuickGesture()) {
-                    QuickGestureManager.getInstance(this).startFloatWindow();
+                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            FloatWindowHelper.createFloatWindow(QuickGestureActivity.this,
+                                    AppMasterPreference
+                                            .getInstance(getApplicationContext())
+                                            .getQuickGestureDialogSeekBarValue());
+                            QuickGestureManager.getInstance(QuickGestureActivity.this)
+                                    .startFloatWindow();
+                        }
+                    });
                 }
             }
             mPre.setSwitchOpenQuickGesture(arg1);
@@ -342,7 +355,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (arg1) {
                 // 查看短信数据库未读短信数量
-                new Thread(new Runnable() {
+                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                     @Override
                     public void run() {
                         QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages = PrivacyContactUtils
@@ -356,13 +369,13 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             FloatWindowHelper.removeShowReadTipWindow(QuickGestureActivity.this);
                         }
                     }
-                }).start();
+                });
             }
         } else if (position == 4) {
             mPre.setSwitchOpenRecentlyContact(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (arg1) {
-                new Thread(new Runnable() {
+                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                     @Override
                     public void run() {
@@ -381,8 +394,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             FloatWindowHelper.removeShowReadTipWindow(QuickGestureActivity.this);
                         }
                     }
-                }).start();
-                ;
+                });
             }
         } else if (position == 5) {
             mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
@@ -446,11 +458,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 mAlarmDialogFlag = false;
                 // 保存设置的值
                 if (mLeftBottom || mRightBottm || mLeftCenter || mRightCenter) {
-                    mPre.setDialogRadioLeftBottom(mLeftBottom);
-                    mPre.setDialogRadioRightBottom(mRightBottm);
-                    mPre.setDialogRadioLeftCenter(mLeftCenter);
-                    mPre.setDialogRadioRightCenter(mRightCenter);
-                    mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog.getSeekBarProgressValue());
+                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            mPre.setDialogRadioLeftBottom(mLeftBottom);
+                            mPre.setDialogRadioRightBottom(mRightBottm);
+                            mPre.setDialogRadioLeftCenter(mLeftCenter);
+                            mPre.setDialogRadioRightCenter(mRightCenter);
+                            mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog
+                                    .getSeekBarProgressValue());
+                        }
+                    });
                     updateFloatWindowBackGroudColor();
                     if (mAlarmDialog != null) {
                         mAlarmDialog.dismiss();
@@ -580,7 +599,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         }
     }
 
-    // 滑动时机
+    // 滑动时机对话框
     private void showSlideShowTimeSettingDialog() {
         if (mSlideTimeDialog == null) {
             mSlideTimeDialog = new QuickGestureSlideTimeDialog(this);
@@ -653,7 +672,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     private void getEditFreeDisturbAppInfo(boolean flag) {
         if (mFreeApps != null && mFreeApps.size() > 0) {
-            for (FreeDisturbAppInfo freeDisturbAppInfo : mFreeApps) {
+            for (QuickGsturebAppInfo freeDisturbAppInfo : mFreeApps) {
                 String pageName = freeDisturbAppInfo.packageName;
                 if (!"add_free_app".equals(pageName)) {
                     freeDisturbAppInfo.isEditFreeDisturb = flag;
@@ -673,27 +692,29 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             public void onClick(View arg0) {
                 if (freeDisturbApp != null) {
                     // 添加确认免打扰应用
-                    final List<String> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
-                    final List<String> removeFreeAppNames = freeDisturbApp
+                    final List<BaseInfo> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
+                    final List<BaseInfo> removeFreeAppNames = freeDisturbApp
                             .getRemoveFreePackageName();
-                    new Thread(new Runnable() {
+                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                         @Override
                         public void run() {
                             if (addFreeAppNames != null && addFreeAppNames.size() > 0) {
-                                for (String string : addFreeAppNames) {
+                                for (BaseInfo object : addFreeAppNames) {
+                                    QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
                                     AppMasterPreference.getInstance(QuickGestureActivity.this)
-                                            .setFreeDisturbAppPackageNameAdd(string);
+                                            .setFreeDisturbAppPackageNameAdd(string.packageName);
                                 }
                             }
                             if (removeFreeAppNames != null && removeFreeAppNames.size() > 0) {
-                                for (String string : removeFreeAppNames) {
+                                for (Object object : removeFreeAppNames) {
+                                    QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
                                     AppMasterPreference.getInstance(QuickGestureActivity.this)
-                                            .setFreeDisturbAppPackageNameRemove(string);
+                                            .setFreeDisturbAppPackageNameRemove(string.packageName);
                                 }
                             }
                         }
-                    }).start();
+                    });
                     freeDisturbApp.dismiss();
                     LeoEventBus.getDefaultBus().post(
                             new QuickGestureFloatWindowEvent(
@@ -712,10 +733,10 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     }
 
     // 获取免干扰应用
-    private List<FreeDisturbAppInfo> getFreeDisturbApps() {
-        List<FreeDisturbAppInfo> freeDisturbApp = new ArrayList<FreeDisturbAppInfo>();
+    private List<QuickGsturebAppInfo> getFreeDisturbApps() {
+        List<QuickGsturebAppInfo> freeDisturbApp = new ArrayList<QuickGsturebAppInfo>();
         // 添加Item
-        FreeDisturbAppInfo addImageInfo = new FreeDisturbAppInfo();
+        QuickGsturebAppInfo addImageInfo = new QuickGsturebAppInfo();
         addImageInfo.icon = this.getResources().getDrawable(R.drawable.switch_add_block);
         addImageInfo.packageName = "add_free_app";
         freeDisturbApp.add(addImageInfo);
@@ -724,7 +745,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 .getAllPkgInfo();
         packageNames = QuickGestureManager.getInstance(this).getFreeDisturbAppName();
         for (AppItemInfo appDetailInfo : list) {
-            FreeDisturbAppInfo appInfo = new FreeDisturbAppInfo();
+            QuickGsturebAppInfo appInfo = new QuickGsturebAppInfo();
             appInfo.icon = appDetailInfo.icon;
             appInfo.packageName = appDetailInfo.packageName;
             appInfo.label = appDetailInfo.label;
@@ -739,10 +760,10 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     }
 
     private class FreeDisturbSlideTimeAdapter extends BaseAdapter {
-        List<FreeDisturbAppInfo> mFreeDisturbApps = null;
+        List<QuickGsturebAppInfo> mFreeDisturbApps = null;
         LayoutInflater mInflater;
 
-        public FreeDisturbSlideTimeAdapter(Context context, List<FreeDisturbAppInfo> mApps) {
+        public FreeDisturbSlideTimeAdapter(Context context, List<QuickGsturebAppInfo> mApps) {
             mFreeDisturbApps = mApps;
             mInflater = LayoutInflater.from(context);
         }
@@ -779,7 +800,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
                     @Override
                     public void onClick(View arg0) {
-                        FreeDisturbAppInfo infoTag = (FreeDisturbAppInfo) arg0.getTag();
+                        QuickGsturebAppInfo infoTag = (QuickGsturebAppInfo) arg0.getTag();
                         if (mFreeApps != null && mFreeApps.size() > 0) {
                             mFreeApps.remove(infoTag);
                             AppMasterPreference.getInstance(QuickGestureActivity.this)
@@ -795,7 +816,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                     }
                 });
             }
-            FreeDisturbAppInfo info = mFreeDisturbApps.get(position);
+            QuickGsturebAppInfo info = mFreeDisturbApps.get(position);
             vh.imageView.setImageDrawable(info.icon);
             if (info.isEditFreeDisturb) {
                 vh.deleteImageView.setVisibility(View.VISIBLE);

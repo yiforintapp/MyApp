@@ -2,7 +2,6 @@
 package com.leo.appmaster.quickgestures.ui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.animation.Animator;
@@ -12,6 +11,23 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.cleanmemory.ProcessCleaner;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.quickgestures.view.GestureItemView;
+import com.leo.appmaster.utils.LeoLog;
+
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
@@ -19,23 +35,6 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
-import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
-import com.leo.appmaster.quickgestures.view.GestureItemView;
-import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends Activity implements
         OnSystemUiVisibilityChangeListener {
@@ -48,7 +47,6 @@ public class QuickGesturePopupActivity extends Activity implements
     private String mSwitchListFromSp;
     private ImageView iv_roket, iv_pingtai, iv_yun;
     private WindowManager wm;
-    private List<QuickGsturebAppInfo> mCommonApps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +54,7 @@ public class QuickGesturePopupActivity extends Activity implements
         handleIntent();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         QuickSwitchManager.getInstance(this).setActivity(this);
-
+        
         // 注册eventBus
         LeoEventBus.getDefaultBus().register(this);
         wm = (WindowManager) this
@@ -65,7 +63,7 @@ public class QuickGesturePopupActivity extends Activity implements
         // WindowManager.LayoutParams params = window.getAttributes();
         // params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         // window.setAttributes(params);
-
+        
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
         iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
@@ -256,27 +254,5 @@ public class QuickGesturePopupActivity extends Activity implements
             }
         });
         animSet.start();
-    }
-
-    private void loadCommonAppInfo() {
-        mCommonApps = new ArrayList<QuickGsturebAppInfo>();
-        ArrayList<AppItemInfo> lists = AppLoadEngine.getInstance(this).getAllPkgInfo();
-        String commonAppString = mSpSwitch.getCommonAppPackageName();
-        if (!mSpSwitch.PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME.equals(commonAppString)) {
-            String[] names = commonAppString.split(";");
-            List<String> packageNames = Arrays.asList(names);
-            if (packageNames != null) {
-                for (AppItemInfo info : lists) {
-                    QuickGsturebAppInfo appInfo = new QuickGsturebAppInfo();
-                    appInfo.icon = info.icon;
-                    appInfo.packageName = info.packageName;
-                    appInfo.label = info.label;
-                    if (packageNames.contains(info.packageName)) {
-                        appInfo.isFreeDisturb = true;
-                        mCommonApps.add(appInfo);
-                    }
-                }
-            }
-        }
     }
 }

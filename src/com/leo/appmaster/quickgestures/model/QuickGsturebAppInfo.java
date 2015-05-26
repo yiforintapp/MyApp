@@ -3,7 +3,7 @@ package com.leo.appmaster.quickgestures.model;
 
 import com.leo.appmaster.model.BaseInfo;
 
-public class FreeDisturbAppInfo extends BaseInfo {
+public class QuickGsturebAppInfo extends BaseInfo {
     /*
      * packageName
      */

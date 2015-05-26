@@ -5,6 +5,6 @@ import android.graphics.drawable.Drawable;
 
 import com.leo.appmaster.model.BaseInfo;
 
-public class QuickSwitcherInfo extends BaseInfo {
+public class QuickSwitcherInfo extends QuickGsturebAppInfo {
     public Drawable[] switchIcon;
 }
