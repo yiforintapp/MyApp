@@ -81,6 +81,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView;
     private RelativeLayout mTipRL;
     private ImageView mHandImage, mArrowImage;
+    private boolean mFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -842,22 +843,27 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             case MotionEvent.ACTION_MOVE:
                 float moveX = Math.abs(event.getX() - downX);
                 float moveY = Math.abs(event.getY() - downY);
+
                 if (moveX > width / 50 || moveY > width / 50) {
-                    mTipRL.clearAnimation();
-                    mTipRL.setVisibility(View.GONE);
-                    String toastText = QuickGestureActivity.this.getResources().getString(
-                            R.string.quick_gesture_first_open_sliding_toast);
-                    Toast.makeText(this, toastText, Toast.LENGTH_SHORT)
-                            .show();
-                    AppMasterPreference.getInstance(QuickGestureActivity.this).setFristSlidingTip(
-                            true);
-                    Intent intent;
-                    intent = new Intent(AppMasterApplication.getInstance(),
-                            QuickGesturePopupActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        AppMasterApplication.getInstance().startActivity(intent);
-                    } catch (Exception e) {
+                    if (!mFlag) {
+                        mTipRL.clearAnimation();
+                        mTipRL.setVisibility(View.GONE);
+                        String toastText = QuickGestureActivity.this.getResources().getString(
+                                R.string.quick_gesture_first_open_sliding_toast);
+                        Toast.makeText(this, toastText, Toast.LENGTH_SHORT)
+                                .show();
+                        AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                .setFristSlidingTip(
+                                        true);
+                        Intent intent;
+                        intent = new Intent(AppMasterApplication.getInstance(),
+                                QuickGesturePopupActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        try {
+                            AppMasterApplication.getInstance().startActivity(intent);
+                            mFlag = true;
+                        } catch (Exception e) {
+                        }
                     }
                 }
                 break;

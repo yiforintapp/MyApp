@@ -68,6 +68,7 @@ public class AppleWatchLayout extends ViewGroup {
     private boolean mSnapping;
     private AppMasterPreference mSpSwitch;
     public GType mMyType;
+    public boolean mHasFillExtraItems;
 
     public static enum Direction {
         Right, Left, None;
@@ -290,6 +291,8 @@ public class AppleWatchLayout extends ViewGroup {
                 addView.setScaleY(lp.scale);
             }
         }
+        
+        mHasFillExtraItems = true;
     }
 
     private void init() {
@@ -556,14 +559,7 @@ public class AppleWatchLayout extends ViewGroup {
         int position = ((LayoutParams) item.getLayoutParams()).position;
         BaseInfo info = (BaseInfo) view.getTag();
         info.gesturePosition = position;
-        if (info instanceof AppItemInfo) {
-            AppItemInfo appInfo = (AppItemInfo) info;
-            Intent intent = new Intent();
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setComponent(new ComponentName(appInfo.packageName,
-                    appInfo.activityName));
-            getContext().startActivity(intent);
-        } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
+        if (info instanceof QuickSwitcherInfo) {// 快捷开关
             QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
             // 蓝牙
             if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext).getLabelFromName(
@@ -628,6 +624,13 @@ public class AppleWatchLayout extends ViewGroup {
                             QuickSwitchManager.HOME))) {
                 QuickSwitchManager.getInstance(getContext()).goHome();
             }
+        } else if (info instanceof AppItemInfo) {
+            AppItemInfo appInfo = (AppItemInfo) info;
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setComponent(new ComponentName(appInfo.packageName,
+                    appInfo.activityName));
+            getContext().startActivity(intent);
         } else if (info instanceof MessageBean) {
             // 短信提醒
             item.cancelShowReadTip();
@@ -734,6 +737,7 @@ public class AppleWatchLayout extends ViewGroup {
             boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
                     .getQuickGestureCommonAppDialogCheckboxValue();
             if (isRecorderFlag) {
+                Log.e("#############",  "自动：");
                 if (hitView.getTag() instanceof AppLauncherRecorder) {
                     AppLauncherRecorder info = (AppLauncherRecorder) hitView.getTag();
                     TreeSet<AppLauncherRecorder> mRecorderApp = QuickGestureManager
@@ -747,11 +751,13 @@ public class AppleWatchLayout extends ViewGroup {
                     }
                 }
             } else {
+                Log.e("#############",  "非自动：");
                 if (hitView.getTag() instanceof QuickGsturebAppInfo) {
                     QuickGsturebAppInfo info = (QuickGsturebAppInfo) hitView.getTag();
                     QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
                     AppMasterPreference.getInstance(mContext).setCommonAppPackageNameRemove(
                             string.packageName + ":" + string.gesturePosition);
+                    Log.e("#############",  ":"+string.packageName + ":" + string.gesturePosition);
                 }
             }
         }
@@ -1330,7 +1336,7 @@ public class AppleWatchLayout extends ViewGroup {
         mNeedRelayoutExtraItem = true;
     }
 
-    private void relayoutExtraChildren() {
+    public void relayoutExtraChildren() {
         GestureItemView tempView, targetView;
         LayoutParams tempLp, targetLp;
         for (int i = 0; i < 8; i++) {
