@@ -302,6 +302,9 @@ public class QuickGesturePopupActivity extends Activity {
         int i = 0;
         while (recorder.hasNext()) {
             AppLauncherRecorder recorderAppInfo = recorder.next();
+            if (recorderAppInfo.launchCount == 0) {
+                continue;
+            }
             AppItemInfo info = engin.getAppInfo(recorderAppInfo.pkg);
             if (i >= 13) {
                 break;

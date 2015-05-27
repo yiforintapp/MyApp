@@ -1439,6 +1439,10 @@ public class AppleWatchContainer extends FrameLayout {
     public void setRocket(QuickGesturePopupActivity quickGesturePopupActivity) {
         this.mPopupActivity = quickGesturePopupActivity;
     }
+    
+    public QuickGesturePopupActivity getActivity(){
+        return mPopupActivity;
+    }
 
     public void makeNormalIcon(QuickSwitcherInfo info) {
         // show Toast

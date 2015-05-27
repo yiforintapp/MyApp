@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import android.R.integer;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.net.Uri;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -39,10 +41,10 @@ import com.leo.appmaster.utils.LeoLog;
 public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
 
-    private Context mContext;
+    private static Context mContext;
     private static QuickGestureManager mInstance;
     public TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
-    private AppMasterPreference mSpSwitch;
+    private static AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
 
@@ -168,16 +170,15 @@ public class QuickGestureManager {
             recoder.launchCount = 1;
             mAppLaunchRecorders.add(recoder);
         }
+        saveAppLaunchRecoder();
+    }
 
+    public void saveAppLaunchRecoder() {
         StringBuilder resault = new StringBuilder();
         for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
             resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
         }
         AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
-    }
-
-    public void updateMostUseApp() {
-
     }
 
     public void removeAppLaunchRecoder(String pkg) {
@@ -354,13 +355,15 @@ public class QuickGestureManager {
                         if (addCommonApp != null && addCommonApp.size() > 0) {
                             for (BaseInfo info : addCommonApp) {
                                 QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                pref.setCommonAppPackageNameAdd(string.packageName+":"+string.gesturePosition);
+                                pref.setCommonAppPackageNameAdd(string.packageName + ":"
+                                        + string.gesturePosition);
                             }
                         }
                         if (removeCommonApp != null && removeCommonApp.size() > 0) {
                             for (BaseInfo info : removeCommonApp) {
                                 QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                pref.setCommonAppPackageNameRemove(string.packageName);
+                                pref.setCommonAppPackageNameRemove(string.packageName + ":"
+                                        + string.gesturePosition);
                             }
                         }
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
@@ -389,72 +392,68 @@ public class QuickGestureManager {
      * @param context
      * @param mContainer
      */
-    public  void showQuickSwitchDialog(final Context context,
+    public void showQuickSwitchDialog(final Context context,
             final AppleWatchContainer mContainer) {
         final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
-                context, 2);
+                context.getApplicationContext(), 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
         quickSwitch.setRightBt(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // 确认按钮
-                // AppMasterApplication.getInstance().postInAppThreadPool(new
-                // Runnable() {
-                // @Override
-                // public void run() {
-                // 添加的应用包名
-                List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
-                // 移除的应用包名
-                List<BaseInfo> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
-                // 正确添加或删除的list
-                List<BaseInfo> rightQuickSwitch = new ArrayList<BaseInfo>();
+                AppMasterApplication.getInstance().postInAppThreadPool(new
+                        Runnable() {
+                            @Override
+                            public void run() {
+                                // 添加的应用包名
+                                boolean addSwitch = false;
+                                List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
+                                // 移除的应用包名
+                                List<BaseInfo> removeQuickSwitch = quickSwitch
+                                        .getRemoveFreePackageName();
+                                // 正确添加或删除的list
+                                String mListString = mSpSwitch.getSwitchList();
+                                List<BaseInfo> rightQuickSwitch =
+                                        QuickSwitchManager.getInstance(mContext).StringToList(
+                                                mListString);
+                                List<BaseInfo> mDefineList = new ArrayList<BaseInfo>();
+                                LeoLog.d("QuickGestureManager", "rightQuickSwitch.size is : "
+                                        + rightQuickSwitch.size());
+                                if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
+                                    String saveToSp = QuickSwitchManager.getInstance(context)
+                                            .listToString(
+                                                    addQuickSwitch, addQuickSwitch.size());
+                                    LeoLog.d("QuickGestureManager", "saveToSp is : " + saveToSp);
+                                    addSwitch = true;
+                                }
+                                if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
+                                    String removeToSp = QuickSwitchManager.getInstance(context)
+                                            .listToString(removeQuickSwitch,
+                                                    removeQuickSwitch.size());
+                                    LeoLog.d("QuickGestureManager", "removeToSp is : " + removeToSp);
 
-                if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
-                    String saveToSp = QuickSwitchManager.getInstance(context).listToString(
-                            addQuickSwitch, addQuickSwitch.size());
-                    LeoLog.d("QuickGestureManager", "saveToSp is : " + saveToSp);
-                    rightQuickSwitch = addQuickSwitch;
-                    // AppMasterPreference.getInstance(context).setSwitchList(saveToSp);
-                    // AppMasterPreference.getInstance(context).setSwitchListSize(
-                    // AppMasterPreference.getInstance(context).getSwitchListSize()
-                    // + addQuickSwitch.size());
-                }
-                if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
-                    String removeToSp = QuickSwitchManager.getInstance(context)
-                            .listToString(removeQuickSwitch, removeQuickSwitch.size());
-                    LeoLog.d("QuickGestureManager", "removeToSp is : " + removeToSp);
+                                    for (int i = 0; i < rightQuickSwitch.size(); i++) {
+                                        boolean isHasSameName = false;
+                                        BaseInfo nInfo = rightQuickSwitch.get(i);
+                                        String rightName = nInfo.label;
+                                        for (int j = 0; j < removeQuickSwitch.size(); j++) {
+                                            BaseInfo mInfo = removeQuickSwitch.get(j);
+                                            String removeName = mInfo.label;
+                                            if (rightName.equals(removeName)) {
+                                                isHasSameName = true;
+                                            }
+                                        }
+                                        if(!isHasSameName){
+                                            mDefineList.add(nInfo);
+                                        }
+                                    }
 
-                    // if(rightQuickSwitch.size() > removeQuickSwitch.size()){
-                    //
-                    // }else {
-                    //
-                    // }
-
-                    for (int i = 0; i < removeQuickSwitch.size(); i++) {
-                        boolean isHasSameName = false;
-                        QuickSwitcherInfo mInfo = (QuickSwitcherInfo) removeQuickSwitch.get(i);
-                        String removeName = mInfo.label;
-                        for (int j = 0; j < rightQuickSwitch.size(); i++) {
-                            QuickSwitcherInfo nInfo = (QuickSwitcherInfo) rightQuickSwitch.get(i);
-                            String rightName = nInfo.label;
-                            if (rightName.equals(removeName)) {
-                                isHasSameName = true;
-                                break;
+                                }
+                                String mChangeList = QuickSwitchManager.getInstance(mContext)
+                                        .listToString(mDefineList, mDefineList.size());
+                                mSpSwitch.setSwitchList(mChangeList);
                             }
-                        }
-
-                    }
-
-                    // AppMasterPreference.getInstance(context)
-                    // .setQuickSwitchPackageNameRemove(removeToSp);
-                    // AppMasterPreference.getInstance(context).setSwitchListSize(
-                    // AppMasterPreference.getInstance(context).getSwitchListSize()
-                    // - removeQuickSwitch.size());
-                }
-
-                // mContainer.fillGestureItem(GType.SwitcherLayout, infos);
-                // }
-                // });
+                        });
                 quickSwitch.dismiss();
             }
         });
@@ -466,7 +465,10 @@ public class QuickGestureManager {
                 quickSwitch.dismiss();
             }
         });
+        quickSwitch.getWindow().setType(
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         quickSwitch.show();
+        mContainer.getActivity().finish();
     }
 
     public class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {
