@@ -19,6 +19,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -290,7 +291,7 @@ public class AppleWatchLayout extends ViewGroup {
                 addView.setScaleY(lp.scale);
             }
         }
-        
+
         mHasFillExtraItems = true;
     }
 
@@ -733,27 +734,27 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.SwitcherLayout) {
         } else if (type == GType.MostUsedLayout) {
             // TODO
-            boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
-                    .getQuickGestureCommonAppDialogCheckboxValue();
-            if (isRecorderFlag) {
-                if (hitView.getTag() instanceof AppLauncherRecorder) {
-                    AppLauncherRecorder info = (AppLauncherRecorder) hitView.getTag();
+            if (!(hitView.getTag() instanceof GestureEmptyItemInfo)) {
+                AppItemInfo info = (AppItemInfo) hitView.getTag();
+                boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
+                        .getQuickGestureCommonAppDialogCheckboxValue();
+                if (isRecorderFlag) {
                     TreeSet<AppLauncherRecorder> mRecorderApp = QuickGestureManager
                             .getInstance(mContext).mAppLaunchRecorders;
                     Iterator<AppLauncherRecorder> recorder = mRecorderApp.descendingIterator();
                     int i = 0;
                     while (recorder.hasNext()) {
                         AppLauncherRecorder recorderAppInfo = recorder.next();
-                        recorderAppInfo.launchCount = 0;
-                        QuickGestureManager.getInstance(mContext).saveAppLaunchRecoder();
+                        if (info != null) {
+                            if (info.packageName.equals(recorderAppInfo.pkg)) {
+                                recorderAppInfo.launchCount = 0;
+                                QuickGestureManager.getInstance(mContext).saveAppLaunchRecoder();
+                            }
+                        }
                     }
-                }
-            } else {
-                if (hitView.getTag() instanceof QuickGsturebAppInfo) {
-                    QuickGsturebAppInfo info = (QuickGsturebAppInfo) hitView.getTag();
-                    QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
+                } else {
                     AppMasterPreference.getInstance(mContext).setCommonAppPackageNameRemove(
-                            string.packageName + ":" + string.gesturePosition);
+                            info.packageName + ":" + info.gesturePosition);
                 }
             }
         }

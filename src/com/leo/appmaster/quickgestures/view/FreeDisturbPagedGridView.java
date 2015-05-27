@@ -128,6 +128,7 @@ public class FreeDisturbPagedGridView extends LinearLayout {
                 item.icon = info.icon;
                 item.label = info.label;
                 item.isFreeDisturb = info.isFreeDisturb;
+                item.gesturePosition=info.gesturePosition;
                 list.add(item);
             }
         }

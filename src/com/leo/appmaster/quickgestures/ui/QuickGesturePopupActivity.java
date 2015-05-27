@@ -14,6 +14,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
@@ -98,6 +99,7 @@ public class QuickGesturePopupActivity extends Activity {
     protected void onStop() {
         FloatWindowHelper.mGestureShowing = false;
         finish();
+        FloatWindowHelper.mGestureShowing = false;
         super.onStop();
     }
 
@@ -239,12 +241,11 @@ public class QuickGesturePopupActivity extends Activity {
             ArrayList<AppItemInfo> lists = AppLoadEngine.getInstance(this).getAllPkgInfo();
             String commonAppString = mSpSwitch.getCommonAppPackageName();
             List<String> allNames = new ArrayList<String>();
-            int i = 0;
             if (!TextUtils.isEmpty(commonAppString)) {
                 String[] names = commonAppString.split(";");
                 QuickGsturebAppInfo temp = null;
                 int sIndex = -1;
-                commonAppString = commonAppString.substring(0, commonAppString.length() - 1);
+//                commonAppString = commonAppString.substring(0, commonAppString.length() - 1);
                 for (String recoder : names) {
                     sIndex = recoder.indexOf(':');
                     if (sIndex != -1) {
@@ -254,6 +255,7 @@ public class QuickGesturePopupActivity extends Activity {
                         packageNames.add(temp);
                     }
                 }
+                int i = 0;
                 if (packageNames != null && packageNames.size() > 0) {
                     for (QuickGsturebAppInfo appItemInfo : packageNames) {
                         allNames.add(appItemInfo.packageName);
@@ -282,23 +284,26 @@ public class QuickGesturePopupActivity extends Activity {
 
     // Recorder App
     private void loadRecorderAppInfo() {
-        TreeSet<AppLauncherRecorder> recorderApp = QuickGestureManager
-                .getInstance(this).mAppLaunchRecorders;
-        AppLoadEngine engin = AppLoadEngine.getInstance(this);
-        Iterator<AppLauncherRecorder> recorder = recorderApp.descendingIterator();
-        int i = 0;
-        while (recorder.hasNext()) {
-            AppLauncherRecorder recorderAppInfo = recorder.next();
-            if (recorderAppInfo.launchCount == 0) {
-                continue;
-            }
-            AppItemInfo info = engin.getAppInfo(recorderAppInfo.pkg);
-            if (i >= 13) {
-                break;
-            }
-            if (info != null) {
-                mCommonApps.add(info);
-                i++;
+        if (mCommonApps != null) {
+            mCommonApps.clear();
+            TreeSet<AppLauncherRecorder> recorderApp = QuickGestureManager
+                    .getInstance(this).mAppLaunchRecorders;
+            AppLoadEngine engin = AppLoadEngine.getInstance(this);
+            Iterator<AppLauncherRecorder> recorder = recorderApp.descendingIterator();
+            int i = 0;
+            while (recorder.hasNext()) {
+                AppLauncherRecorder recorderAppInfo = recorder.next();
+                // if (recorderAppInfo.launchCount == 0) {
+                // continue;
+                // }
+                AppItemInfo info = engin.getAppInfo(recorderAppInfo.pkg);
+                if (i >= 13) {
+                    break;
+                }
+                if (info != null) {
+                    mCommonApps.add(info);
+                    i++;
+                }
             }
         }
     }

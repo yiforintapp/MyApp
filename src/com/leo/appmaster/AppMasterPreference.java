@@ -178,7 +178,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private String mLockPolicy;
     private List<String> mRecommentAppList;
     // private boolean mLockerScreenThemeGuide = false;
-    public static final String PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME = "com.whatsapp;com.android.mms;com.facebook.katana;com.tencent.qq;com.android.contacts";
+    public static final String PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME = "quick_gesture_default_common";
     public static final int LOCK_TYPE_NONE = -1;
     public static final int LOCK_TYPE_PASSWD = 0;
     public static final int LOCK_TYPE_GESTURE = 1;
@@ -1603,6 +1603,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         String string = getCommonAppPackageName();
         String packageNames = null;
         if (!PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME.equals(string)) {
+            Log.e("##################", "packageNames:"+name);
             packageNames = string.replace(name + ";", "");
         }
         mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
