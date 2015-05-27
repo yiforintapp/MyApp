@@ -7,13 +7,11 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.CallLog.Calls;
@@ -27,13 +25,14 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
-import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
 import com.leo.appmaster.utils.LeoLog;
@@ -428,9 +427,9 @@ public class QuickGestureManager {
         quickSwitch.show();
     }
 
-    class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {
-        String pkg;
-        int launchCount;
+    public class AppLauncherRecorder  implements Comparable<AppLauncherRecorder> {
+        public String pkg;
+        public int launchCount;
 
         @Override
         public int compareTo(AppLauncherRecorder another) {

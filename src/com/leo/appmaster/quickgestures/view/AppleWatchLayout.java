@@ -4,18 +4,6 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
-import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -29,6 +17,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -36,10 +25,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AppleWatchLayout extends ViewGroup {
 
@@ -718,7 +720,6 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.SwitcherLayout) {
         } else if (type == GType.MostUsedLayout) {
             // TODO
-
         }
 
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();
@@ -1145,6 +1146,7 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private void adjustIconPosition(Direction direction) {
+        LeoLog.e("xxxx", "adjustIconPosition   direction = " + direction);
         int i, firstPosition, lastPosition;
         GestureItemView tempView;
         if (direction == Direction.Left) {
@@ -1372,7 +1374,7 @@ public class AppleWatchLayout extends ViewGroup {
                 adjustIconPosition(Direction.Left);
                 mAdjustCount++;
             } else if (mAdjustCount > shouldAdjustCount) {
-//                adjustIconPosition(Direction.Right);
+                adjustIconPosition(Direction.Right);
                 mAdjustCount--;
             }
             for (i = 0; i < mHoriChildren[0].length - 1; i++) {
@@ -1511,8 +1513,6 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    // targetScale = rawScale1 + adjustMoveX / offset *
-                    // (rawScale2 - rawScale1);
                     moveY = computeTranslateY(mHoriChildren[0][i],
                             mHoriChildren[0][i - 1],
                             adjustMoveX);
@@ -1527,8 +1527,6 @@ public class AppleWatchLayout extends ViewGroup {
                         .getLayoutParams()).scale;
                 if (i == 0) {
                     offset = moveX;
-                    // offset = getOffset(mHoriChildren[1][i], null,
-                    // Direction.Right);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
@@ -1548,8 +1546,6 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    // targetScale = rawScale1 + adjustMoveX / offset *
-                    // (rawScale2 - rawScale1);
                     moveY = computeTranslateY(mHoriChildren[1][i],
                             mHoriChildren[1][i - 1],
                             adjustMoveX - mAdjustCount * minuOffset);
@@ -1564,8 +1560,6 @@ public class AppleWatchLayout extends ViewGroup {
                         .getLayoutParams()).scale;
                 if (i == 0) {
                     offset = moveX;
-                    // offset = getOffset(mHoriChildren[2][i], null,
-                    // Direction.Right);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
@@ -1576,8 +1570,6 @@ public class AppleWatchLayout extends ViewGroup {
                             - 1],
                             Direction.Right);
                     adjustMoveX = offset / minuOffset * (moveX - mAdjustCount * minuOffset);
-                    // targetScale = rawScale1 + adjustMoveX
-                    // / offset * (rawScale2 - rawScale1);
                     if (i == 4 || i == 8) {
                         if (adjustMoveX <= offset / 2) {
                             targetScale = -(offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;

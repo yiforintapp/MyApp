@@ -3,7 +3,9 @@ package com.leo.appmaster.quickgestures.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -12,6 +14,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
@@ -29,6 +32,7 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
@@ -46,21 +50,23 @@ public class QuickGesturePopupActivity extends Activity {
     private AppMasterPreference mSpSwitch;
     private String mSwitchListFromSp;
     private ImageView iv_roket, iv_pingtai, iv_yun;
-    private List<QuickGsturebAppInfo> mCommonApps;
+    private WindowManager wm;
+    private List<BaseInfo> mCommonApps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         QuickSwitchManager.getInstance(this).setActivity(this);
+        mCommonApps = new ArrayList<BaseInfo>();
+        mSpSwitch = AppMasterPreference.getInstance(this);
+        // 注册eventBus
         LeoEventBus.getDefaultBus().register(this);
-
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
         iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
         iv_yun = (ImageView) findViewById(R.id.iv_yun);
         mContainer.setRocket(this);
-
         fillDynamicLayout();
         mContainer.post(new Runnable() {
             @Override
@@ -99,14 +105,16 @@ public class QuickGesturePopupActivity extends Activity {
     }
 
     private void fillMostUsedLayout() {
-        list = new ArrayList<BaseInfo>();
-        list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
-        ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(13, 20));
-        mContainer.fillGestureItem(GType.MostUsedLayout, items);
+        // TODO
+        // list = new ArrayList<BaseInfo>();
+        // list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
+        // ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(13,
+        // 20));
+        loadMostUseApp();
+        mContainer.fillGestureItem(GType.MostUsedLayout, mCommonApps);
     }
 
     private void fillSwitcherLayout() {
-        mSpSwitch = AppMasterPreference.getInstance(this);
         if (mSwitchList == null) {
             mSwitchListFromSp = mSpSwitch.getSwitchList();
             switchNum = mSpSwitch.getSwitchListSize();
@@ -120,8 +128,13 @@ public class QuickGesturePopupActivity extends Activity {
                 mSwitchList = new ArrayList<BaseInfo>();
                 mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
+            // The most commont use app
+            // if (!mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
+            // loadCommonAppInfo();
+            // } else {
+            // loadRecorderAppInfo();
+            // }
         }
-        mContainer.fillGestureItem(GType.SwitcherLayout, mSwitchList);
     }
 
     @Override
@@ -239,25 +252,68 @@ public class QuickGesturePopupActivity extends Activity {
         animSet.start();
     }
 
+    // Customize common app
     private void loadCommonAppInfo() {
-        mCommonApps = new ArrayList<QuickGsturebAppInfo>();
-        ArrayList<AppItemInfo> lists = AppLoadEngine.getInstance(this).getAllPkgInfo();
-        String commonAppString = mSpSwitch.getCommonAppPackageName();
-        if (!mSpSwitch.PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME.equals(commonAppString)) {
-            String[] names = commonAppString.split(";");
-            List<String> packageNames = Arrays.asList(names);
-            if (packageNames != null) {
-                for (AppItemInfo info : lists) {
-                    QuickGsturebAppInfo appInfo = new QuickGsturebAppInfo();
-                    appInfo.icon = info.icon;
-                    appInfo.packageName = info.packageName;
-                    appInfo.label = info.label;
-                    if (packageNames.contains(info.packageName)) {
-                        appInfo.isFreeDisturb = true;
-                        mCommonApps.add(appInfo);
+        if (mCommonApps != null) {
+            mCommonApps.clear();
+            ArrayList<AppItemInfo> lists = AppLoadEngine.getInstance(this).getAllPkgInfo();
+            String commonAppString = mSpSwitch.getCommonAppPackageName();
+            // if
+            // (!mSpSwitch.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME.equals(commonAppString))
+            // {
+            if (!"".equals(commonAppString)) {
+                String[] names = commonAppString.split(";");
+                List<String> packageNames = Arrays.asList(names);
+                if (packageNames != null) {
+                    int i = 0;
+                    for (AppItemInfo info : lists) {
+                        QuickGsturebAppInfo appInfo = new QuickGsturebAppInfo();
+                        appInfo.icon = info.icon;
+                        appInfo.packageName = info.packageName;
+                        appInfo.label = info.label;
+                        if (packageNames.contains(info.packageName)) {
+                            if (i >= 13) {
+                                break;
+                            }
+                            if (appInfo != null) {
+                                appInfo.isFreeDisturb = true;
+                                mCommonApps.add(appInfo);
+                                i++;
+                            }
+                        }
                     }
                 }
             }
+        }
+    }
+
+    // Recorder App
+    private void loadRecorderAppInfo() {
+        TreeSet<AppLauncherRecorder> recorderApp = QuickGestureManager
+                .getInstance(this).mAppLaunchRecorders;
+        AppLoadEngine engin = AppLoadEngine.getInstance(this);
+        Iterator<AppLauncherRecorder> recorder = recorderApp.descendingIterator();
+        int i = 0;
+        while (recorder.hasNext()) {
+            AppLauncherRecorder recorderAppInfo = recorder.next();
+            // Log.e("###############", "最近使用：" + recorderAppInfo.pkg);
+            AppItemInfo info = engin.getAppInfo(recorderAppInfo.pkg);
+            if (i >= 13) {
+                break;
+            }
+            if (info != null) {
+                mCommonApps.add(info);
+                i++;
+            }
+        }
+    }
+
+    // Most use app
+    private void loadMostUseApp() {
+        if (mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
+            loadRecorderAppInfo();
+        } else {
+            loadCommonAppInfo();
         }
     }
 }
