@@ -126,19 +126,19 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (mAlarmDialogFlag) {
-            FloatWindowHelper.mEditQuickAreaFlag = true;
-            updateFloatWindowBackGroudColor();
-        }
+         if (mAlarmDialogFlag) {
+         FloatWindowHelper.mEditQuickAreaFlag = true;
+         updateFloatWindowBackGroudColor();
+         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (FloatWindowHelper.mEditQuickAreaFlag == true) {
-            FloatWindowHelper.mEditQuickAreaFlag = false;
-            updateFloatWindowBackGroudColor();
-        }
+         if (FloatWindowHelper.mEditQuickAreaFlag == true) {
+         FloatWindowHelper.mEditQuickAreaFlag = false;
+         updateFloatWindowBackGroudColor();
+         }
     }
 
     @Override
@@ -847,18 +847,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                                 R.string.quick_gesture_first_open_sliding_toast);
                         Toast.makeText(this, toastText, Toast.LENGTH_SHORT)
                                 .show();
-                        AppMasterPreference.getInstance(QuickGestureActivity.this)
-                                .setFristSlidingTip(
-                                        true);
                         Intent intent;
                         intent = new Intent(AppMasterApplication.getInstance(),
                                 QuickGesturePopupActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("show_orientation", 2);
                         try {
                             AppMasterApplication.getInstance().startActivity(intent);
-                            mFlag = true;
+                            FloatWindowHelper.mGestureShowing = true;
+                            AppMasterPreference.getInstance(this).setFristSlidingTip(true);
                         } catch (Exception e) {
                         }
+                        mFlag = true;
                     }
                 }
                 break;

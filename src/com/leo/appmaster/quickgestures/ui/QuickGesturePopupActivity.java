@@ -97,10 +97,9 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     protected void onStop() {
-        FloatWindowHelper.mGestureShowing = false;
         finish();
-        FloatWindowHelper.mGestureShowing = false;
         super.onStop();
+        FloatWindowHelper.mGestureShowing = false;
     }
 
     private void fillDynamicLayout() {
