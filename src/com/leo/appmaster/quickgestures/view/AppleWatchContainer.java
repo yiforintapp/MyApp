@@ -1565,7 +1565,6 @@ public class AppleWatchContainer extends FrameLayout {
             tv.setItemIcon(info.switchIcon[0]);
         }
         isAnimating = false;
-        
     }
 
     public AppleWatchLayout getCurrentLayout() {
@@ -1583,5 +1582,7 @@ public class AppleWatchContainer extends FrameLayout {
         this.mPIngtai = iv_pingtai;
         this.mYun = iv_yun;
     }
+    
+    
 
 }

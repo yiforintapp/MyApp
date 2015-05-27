@@ -723,7 +723,7 @@ public class AppleWatchLayout extends ViewGroup {
             // String mListString = mSpSwitch.getSwitchList();
             // List<BaseInfo> mSwitchList =
             // QuickSwitchManager.getInstance(mContext).StringToList(mListString);
-            qgm.showQuickSwitchDialog(getContext(), mContainer);
+            qgm.showQuickSwitchDialog(getContext(), (Activity)getContext());
         }
     }
 

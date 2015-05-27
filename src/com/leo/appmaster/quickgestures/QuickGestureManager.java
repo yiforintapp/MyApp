@@ -214,7 +214,6 @@ public class QuickGestureManager {
         }
     }
 
-    
     // Recorder App
     private List<BaseInfo> loadRecorderAppInfo() {
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
@@ -228,7 +227,8 @@ public class QuickGestureManager {
         while (recorder.hasNext()) {
             AppLauncherRecorder recorderAppInfo = recorder.next();
             info = engin.getAppInfo(recorderAppInfo.pkg);
-            if(info == null) continue;
+            if (info == null)
+                continue;
             if (i >= 13) {
                 break;
             } else {
@@ -247,7 +247,7 @@ public class QuickGestureManager {
 
     // Customize common app
     private List<BaseInfo> loadCommonAppInfo() {
-        
+
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         List<QuickGsturebAppInfo> packageNames = new ArrayList<QuickGsturebAppInfo>();
         AppLoadEngine engin = AppLoadEngine.getInstance(mContext);
@@ -473,10 +473,10 @@ public class QuickGestureManager {
      * 
      * @param mSwitchList
      * @param context
-     * @param mContainer
+     * @param activity
      */
     public void showQuickSwitchDialog(final Context context,
-            final AppleWatchContainer mContainer) {
+            Activity activity) {
         final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
                 context.getApplicationContext(), 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
@@ -599,6 +599,7 @@ public class QuickGestureManager {
         quickSwitch.getWindow().setType(
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         quickSwitch.show();
+        activity.finish();
     }
 
     public class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {
