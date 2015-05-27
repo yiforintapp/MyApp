@@ -707,7 +707,8 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.SwitcherLayout) {
             // get list from sp
             String mListString = mSpSwitch.getSwitchList();
-            List<BaseInfo> mSwitchList = QuickSwitchManager.getInstance(mContext).StringToList(mListString);
+            List<BaseInfo> mSwitchList = QuickSwitchManager.getInstance(mContext).StringToList(
+                    mListString);
             qgm.showQuickSwitchDialog(getContext());
         }
     }
@@ -720,12 +721,6 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.SwitcherLayout) {
         } else if (type == GType.MostUsedLayout) {
             // TODO
-            BaseInfo info = (BaseInfo) hitView.getTag();
-            if (info instanceof QuickGsturebAppInfo) {
-                QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
-                Log.e("##############", "QuickGsturebAppInfo:" + appInfo.packageName);
-            } 
-            // Log.e("##############", "" + info.packageName);
         }
 
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();

@@ -185,10 +185,8 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             default:
                 break;
         }
-        if (AppMasterPreference.PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME
+        if (!AppMasterPreference.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME
                 .equals(packageName)) {
-            // Log.e(TAG, "NoFreeApp!");
-        } else {
             String[] names = packageName.split(";");
             packageNames = Arrays.asList(names);
         }
