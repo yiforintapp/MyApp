@@ -109,8 +109,8 @@ public class QuickGesturePopupActivity extends Activity {
     }
 
     private void fillMostUsedLayout() {
-        loadMostUseApp();
-        mContainer.fillGestureItem(GType.MostUsedLayout, mCommonApps);
+        List<BaseInfo> items = QuickGestureManager.getInstance(this).getMostUsedList();
+        mContainer.fillGestureItem(GType.MostUsedLayout, items);
     }
 
     private void fillSwitcherLayout() {
@@ -231,89 +231,5 @@ public class QuickGesturePopupActivity extends Activity {
             }
         });
         animSet.start();
-    }
-
-    // Customize common app
-    private void loadCommonAppInfo() {
-        if (mCommonApps != null) {
-            mCommonApps.clear();
-            List<QuickGsturebAppInfo> packageNames = new ArrayList<QuickGsturebAppInfo>();
-            ArrayList<AppItemInfo> lists = AppLoadEngine.getInstance(this).getAllPkgInfo();
-            String commonAppString = mSpSwitch.getCommonAppPackageName();
-            List<String> allNames = new ArrayList<String>();
-            if (!TextUtils.isEmpty(commonAppString)) {
-                String[] names = commonAppString.split(";");
-                QuickGsturebAppInfo temp = null;
-                int sIndex = -1;
-//                commonAppString = commonAppString.substring(0, commonAppString.length() - 1);
-                for (String recoder : names) {
-                    sIndex = recoder.indexOf(':');
-                    if (sIndex != -1) {
-                        temp = new QuickGsturebAppInfo();
-                        temp.packageName = recoder.substring(0, sIndex);
-                        temp.gesturePosition = Integer.parseInt(recoder.substring(sIndex + 1));
-                        packageNames.add(temp);
-                    }
-                }
-                int i = 0;
-                if (packageNames != null && packageNames.size() > 0) {
-                    for (QuickGsturebAppInfo appItemInfo : packageNames) {
-                        allNames.add(appItemInfo.packageName);
-                    }
-                    for (AppItemInfo info : lists) {
-                        QuickGsturebAppInfo app = new QuickGsturebAppInfo();
-                        if (allNames != null) {
-                            app.packageName = info.packageName;
-                            app.label = info.label;
-                            app.icon = info.icon;
-                            if (allNames.contains(info.packageName)) {
-                                if (i >= 13) {
-                                    break;
-                                }
-                                if (info != null) {
-                                    mCommonApps.add(info);
-                                    i++;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Recorder App
-    private void loadRecorderAppInfo() {
-        if (mCommonApps != null) {
-            mCommonApps.clear();
-            TreeSet<AppLauncherRecorder> recorderApp = QuickGestureManager
-                    .getInstance(this).mAppLaunchRecorders;
-            AppLoadEngine engin = AppLoadEngine.getInstance(this);
-            Iterator<AppLauncherRecorder> recorder = recorderApp.descendingIterator();
-            int i = 0;
-            while (recorder.hasNext()) {
-                AppLauncherRecorder recorderAppInfo = recorder.next();
-                // if (recorderAppInfo.launchCount == 0) {
-                // continue;
-                // }
-                AppItemInfo info = engin.getAppInfo(recorderAppInfo.pkg);
-                if (i >= 13) {
-                    break;
-                }
-                if (info != null) {
-                    mCommonApps.add(info);
-                    i++;
-                }
-            }
-        }
-    }
-
-    // Most use app
-    private void loadMostUseApp() {
-        if (mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
-            loadRecorderAppInfo();
-        } else {
-            loadCommonAppInfo();
-        }
     }
 }
