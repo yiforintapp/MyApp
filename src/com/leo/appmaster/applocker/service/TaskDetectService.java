@@ -442,8 +442,7 @@ public class TaskDetectService extends Service {
                                     .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
                         }
                         if (isAppsAndHome) {
-                            if (!isRuningFreeDisturbApp(mActivityManager)
-                                    || FloatWindowHelper.mEditQuickAreaFlag) {
+                            if (!isRuningFreeDisturbApp(mActivityManager)) {
                                 FloatWindowHelper.createFloatWindow(getApplicationContext(), value);
                             } else {
                                 FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
