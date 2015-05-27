@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -34,6 +35,7 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
@@ -708,7 +710,7 @@ public class AppleWatchLayout extends ViewGroup {
             // String mListString = mSpSwitch.getSwitchList();
             // List<BaseInfo> mSwitchList =
             // QuickSwitchManager.getInstance(mContext).StringToList(mListString);
-            qgm.showQuickSwitchDialog(getContext(),mContainer);
+            qgm.showQuickSwitchDialog(getContext(), mContainer);
         }
     }
 
@@ -720,14 +722,9 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.SwitcherLayout) {
         } else if (type == GType.MostUsedLayout) {
             // TODO
-            BaseInfo info = (BaseInfo) hitView.getTag();
-            if (info instanceof QuickGsturebAppInfo) {
-                QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
-                Log.e("##############", "QuickGsturebAppInfo:" + appInfo.packageName);
-            }
-            // Log.e("##############", "" + info.packageName);
+            // BaseInfo info = (BaseInfo) hitView.getTag();
+            // Log.e("##############", info)
         }
-
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();
         GestureEmptyItemInfo info = new GestureEmptyItemInfo();
         info.gesturePosition = baseInfo.gesturePosition;
@@ -960,7 +957,25 @@ public class AppleWatchLayout extends ViewGroup {
 
             } else if (gType == GType.MostUsedLayout) {
                 // TODO update most used list
-
+                int mNum = getChildCount();
+                LayoutParams params = null;
+                // List<QuickGsturebAppInfo> mostUseApp = new
+                // ArrayList<QuickGsturebAppInfo>();
+                for (int i = 0; i < mNum; i++) {
+                    params = (LayoutParams) getChildAt(i).getLayoutParams();
+                    int position = params.position;
+                    if (position > -1) {
+                        if (getChildAt(i).getTag() instanceof AppItemInfo) {
+                            AppItemInfo sInfo = (AppItemInfo) getChildAt(i).getTag();
+                            if (sInfo != null && !sInfo.label.isEmpty()) {
+                                sInfo.gesturePosition = position;
+                                AppMasterPreference.getInstance(mContext)
+                                        .setCommonAppPackageNameAdd(
+                                                sInfo.packageName + ":" + sInfo.gesturePosition);
+                            }
+                        }
+                    }
+                }
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;

@@ -173,6 +173,10 @@ public class QuickGestureManager {
         AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
     }
 
+    public void updateMostUseApp() {
+
+    }
+
     public void removeAppLaunchRecoder(String pkg) {
         if (TextUtils.isEmpty(pkg)) {
             return;
@@ -347,7 +351,7 @@ public class QuickGestureManager {
                         if (addCommonApp != null && addCommonApp.size() > 0) {
                             for (BaseInfo info : addCommonApp) {
                                 QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                pref.setCommonAppPackageNameAdd(string.packageName);
+                                pref.setCommonAppPackageNameAdd(string.packageName+":"+string.gesturePosition);
                             }
                         }
                         if (removeCommonApp != null && removeCommonApp.size() > 0) {
