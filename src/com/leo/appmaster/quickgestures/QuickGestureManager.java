@@ -16,17 +16,14 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
@@ -37,7 +34,6 @@ import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGestureManager {
@@ -112,12 +108,19 @@ public class QuickGestureManager {
 
     private void preloadEmptyIcon() {
         Resources res = mContext.getResources();
-        mEmptyIcon = new Drawable[5];
+        mEmptyIcon = new Drawable[12];
         mEmptyIcon[0] = res.getDrawable(R.drawable.switch_orange);
         mEmptyIcon[1] = res.getDrawable(R.drawable.switch_green);
         mEmptyIcon[2] = res.getDrawable(R.drawable.seitch_purple);
         mEmptyIcon[3] = res.getDrawable(R.drawable.switch_red);
         mEmptyIcon[4] = res.getDrawable(R.drawable.switch_blue);
+        mEmptyIcon[5] = res.getDrawable(R.drawable.switch_blue_2);
+        mEmptyIcon[6] = res.getDrawable(R.drawable.switch_blue_3);
+        mEmptyIcon[7] = res.getDrawable(R.drawable.switch_green_2);
+        mEmptyIcon[8] = res.getDrawable(R.drawable.switch_orange_2);
+        mEmptyIcon[9] = res.getDrawable(R.drawable.switch_purple_2);
+        mEmptyIcon[10] = res.getDrawable(R.drawable.switch_red_2);
+        mEmptyIcon[11] = res.getDrawable(R.drawable.switch_red_3);
     }
 
     public void stopFloatWindow() {
@@ -316,7 +319,7 @@ public class QuickGestureManager {
 
     public Drawable applyEmptyIcon() {
         Drawable icon = null;
-        int index = (int) (Math.random() * 4);
+        int index = (int) (Math.random() * 12);
         icon = mEmptyIcon[index];
         return icon;
     }
