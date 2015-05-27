@@ -20,8 +20,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,11 +63,11 @@ public class AppleWatchContainer extends FrameLayout {
     private AppleWatchLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
     private AppleWatchTabs mCornerTabs;
     private TextView mTvCurName;
-    private QuickGesturePopupActivity mPopupActivity;
     private GType mCurrentGestureType = GType.DymicLayout;
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
     private Orientation mShowOrientation = Orientation.Left;
+   private  ImageView mRockey,mPIngtai,mYun;
 
     private float mSelfWidth, mSelfHeight;
     private float mTouchDownX, mTouchDownY;
@@ -305,7 +307,7 @@ public class AppleWatchContainer extends FrameLayout {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-//                LeoLog.d(TAG, "ACTION_MOVE  getX " + getX());
+                LeoLog.d(TAG, "ACTION_MOVE  getX " + getX());
                 if (mEditing) {
                     LeoLog.d(TAG, "ACTION_MOVE in editing ");
 
@@ -1421,6 +1423,7 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
+        isAnimating = true;
         // first - change to no roket icon
         info.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
         tv.setItemIcon(info.switchIcon[1]);
@@ -1431,19 +1434,103 @@ public class AppleWatchContainer extends FrameLayout {
         int mRocketHeight = tv.getHeight();
         int mRocketX = (int) tv.getX() + mRocketWidth / 2;
         int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
-        LeoLog.d("AppleWatchContainer", " mRocketX : " + mRocketX
-                + " ;  mRocketY : " + mRocketY);
-        mPopupActivity.rockeyAnimation(tv, mLayoutBottom, mRocketX, mRocketY, info);
+        rockeyAnimation(tv, mLayoutBottom, mRocketX, mRocketY, info);
     }
 
-    public void setRocket(QuickGesturePopupActivity quickGesturePopupActivity) {
-        this.mPopupActivity = quickGesturePopupActivity;
+    public void rockeyAnimation(GestureItemView tv, final int mLayoutBottom, int mRocketX,
+            int mRocketY, final QuickSwitcherInfo info) {
+        int smallRockeyX = mRocketX - mRockey.getWidth() / 2;
+        int smallRockeyY = mRocketY - mRockey.getHeight() / 2;
+
+        float iv_roketScaleX = mRockey.getScaleX();
+        float iv_width = mRockey.getWidth() * iv_roketScaleX;
+        float iv_height = mRockey.getHeight() * iv_roketScaleX;
+
+        MarginLayoutParams margin = new MarginLayoutParams(mRockey.getLayoutParams());
+        margin.width = (int) iv_width;
+        margin.height = (int) iv_height;
+        margin.setMargins(smallRockeyX, smallRockeyY, smallRockeyX + mRockey.getWidth(),
+                smallRockeyY + mRockey.getHeight());
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
+        mRockey.setLayoutParams(layoutParams);
+        mRockey.setVisibility(View.VISIBLE);
+
+        ObjectAnimator turnBig = ObjectAnimator.ofFloat(mRockey, "scaleX", 1f, 1.3f);
+        ObjectAnimator turnBig2 = ObjectAnimator.ofFloat(mRockey, "scaleY", 1f, 1.3f);
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.play(turnBig).with(turnBig2);
+        animSet.setDuration(400);
+        animSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mPIngtai.setVisibility(View.VISIBLE);
+                final int mScreenHeight = AppleWatchContainer.this.getHeight();
+                int mScreenWidth = AppleWatchContainer.this.getWidth();
+                int transY = (int) mPIngtai.getTranslationY();
+                int mRockeyMoveX = mScreenWidth / 2
+                        - (mRockey.getLeft() + mRockey.getWidth() / 2);
+                int mRockeyMoveY = mLayoutBottom - mRockey.getHeight() - mRockey.getTop();
+                ObjectAnimator moveToX = ObjectAnimator.ofFloat(mRockey, "translationX",
+                        mRockey.getTranslationX(), mRockeyMoveX);
+                ObjectAnimator moveToY = ObjectAnimator.ofFloat(mRockey, "translationY",
+                        mRockey.getTranslationY(), mRockeyMoveY);
+                ObjectAnimator pingtaiMoveToY = ObjectAnimator
+                        .ofFloat(mPIngtai, "translationY", mScreenHeight, transY);
+                AnimatorSet animMoveSet = new AnimatorSet();
+                animMoveSet.play(moveToX).with(moveToY).with(pingtaiMoveToY);
+                animMoveSet.setDuration(800);
+                animMoveSet.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mYun.setVisibility(View.VISIBLE);
+                        ObjectAnimator mRocketmoveToY = ObjectAnimator.ofFloat(mRockey,
+                                "translationY",
+                                mRockey.getTranslationY(), -mScreenHeight);
+                        ObjectAnimator pingtaiMoveDownToY = ObjectAnimator
+                                .ofFloat(mPIngtai, "translationY", mPIngtai.getTranslationY(),
+                                        mScreenHeight);
+                        ObjectAnimator yunComeOut = ObjectAnimator.ofFloat(mYun, "alpha", 0.0f,
+                                1f);
+                        ObjectAnimator yunLeave = ObjectAnimator.ofFloat(mYun, "alpha", 1.0f,
+                                0.0f);
+                        AnimatorSet animMoveGoSet = new AnimatorSet();
+                        animMoveGoSet.play(mRocketmoveToY).with(pingtaiMoveDownToY)
+                                .with(yunComeOut).before(yunLeave);
+                        animMoveGoSet.setDuration(800);
+                        animMoveGoSet.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                // all return
+                                mRockey.setVisibility(View.INVISIBLE);
+                                mPIngtai.setVisibility(View.INVISIBLE);
+                                ObjectAnimator turnSmall = ObjectAnimator.ofFloat(mRockey,
+                                        "scaleX", 1.3f, 1.0f);
+                                ObjectAnimator turnSmall2 = ObjectAnimator.ofFloat(mRockey,
+                                        "scaleY", 1.3f, 1.0f);
+                                ObjectAnimator returnX = ObjectAnimator.ofFloat(mRockey,
+                                        "translationX", mRockey.getTranslationX(), 0);
+                                ObjectAnimator returnY = ObjectAnimator.ofFloat(mRockey,
+                                        "translationY", mRockey.getTranslationY(), 0);
+                                ObjectAnimator pingtai_returnY = ObjectAnimator.ofFloat(mPIngtai,
+                                        "translationY", mPIngtai.getTranslationY(), 0);
+                                AnimatorSet returnAnimation = new AnimatorSet();
+                                returnAnimation.play(turnSmall).with(turnSmall2).with(returnX)
+                                        .with(returnY).with(pingtai_returnY);
+                                returnAnimation.setDuration(200);
+                                returnAnimation.start();
+                                // make normal iCon
+                                makeNormalIcon(info);
+                            }
+                        });
+                        animMoveGoSet.start();
+                    }
+                });
+                animMoveSet.start();
+            }
+        });
+        animSet.start();
     }
     
-    public QuickGesturePopupActivity getActivity(){
-        return mPopupActivity;
-    }
-
     public void makeNormalIcon(QuickSwitcherInfo info) {
         // show Toast
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -1477,6 +1564,8 @@ public class AppleWatchContainer extends FrameLayout {
             info.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             tv.setItemIcon(info.switchIcon[0]);
         }
+        isAnimating = false;
+        
     }
 
     public AppleWatchLayout getCurrentLayout() {
@@ -1487,6 +1576,12 @@ public class AppleWatchContainer extends FrameLayout {
         } else {
             return mSwitcherLayout;
         }
+    }
+
+    public void setRockey(ImageView iv_roket, ImageView iv_pingtai, ImageView iv_yun) {
+        this.mRockey = iv_roket;
+        this.mPIngtai = iv_pingtai;
+        this.mYun = iv_yun;
     }
 
 }

@@ -598,7 +598,6 @@ public class QuickGestureManager {
         quickSwitch.getWindow().setType(
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         quickSwitch.show();
-        mContainer.getActivity().finish();
     }
 
     public class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {

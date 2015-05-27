@@ -111,10 +111,6 @@ public class QuickSwitchManager {
         return mInstance;
     }
 
-    public void setActivity(QuickGesturePopupActivity quickGesturePopupActivity) {
-        this.mActivity = quickGesturePopupActivity;
-    }
-
     private QuickSwitchManager(Context context) {
         mContext = context.getApplicationContext();
         vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
