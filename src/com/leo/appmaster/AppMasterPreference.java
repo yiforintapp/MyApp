@@ -178,7 +178,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private String mLockPolicy;
     private List<String> mRecommentAppList;
     // private boolean mLockerScreenThemeGuide = false;
-
+    public static final String PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME = "com.whatsapp;com.android.mms;com.facebook.katana;com.tencent.qq;com.android.contacts";
     public static final int LOCK_TYPE_NONE = -1;
     public static final int LOCK_TYPE_PASSWD = 0;
     public static final int LOCK_TYPE_GESTURE = 1;
@@ -1588,7 +1588,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         String string = getCommonAppPackageName();
         StringBuffer sb = null;
         String packageNames = null;
-        if (!PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME.equals(string)) {
+        if (!PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME.equals(string)) {
             sb = new StringBuffer(string);
             sb.append(name);
             packageNames = sb.toString() + ";";
@@ -1602,7 +1602,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setCommonAppPackageNameRemove(String name) {
         String string = getCommonAppPackageName();
         String packageNames = null;
-        if (!PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME.equals(string)) {
+        if (!PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME.equals(string)) {
             packageNames = string.replace(name + ";", "");
         }
         mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
@@ -1613,7 +1613,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // 获取添加到快捷手势中的快捷常用应用包名
     public String getCommonAppPackageName() {
         return mPref.getString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
-                PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME);
+                PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME);
     }
 
     public void setQuickGestureCommonAppDialogCheckboxValue(boolean flag) {

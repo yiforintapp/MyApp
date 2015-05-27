@@ -59,15 +59,14 @@ public class QuickGesturePopupActivity extends Activity {
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         QuickSwitchManager.getInstance(this).setActivity(this);
         mCommonApps = new ArrayList<BaseInfo>();
+        mSpSwitch = AppMasterPreference.getInstance(this);
         // 注册eventBus
         LeoEventBus.getDefaultBus().register(this);
-
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
         iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
         iv_yun = (ImageView) findViewById(R.id.iv_yun);
         mContainer.setRocket(this);
-
         fillDynamicLayout();
         mContainer.post(new Runnable() {
             @Override
@@ -106,15 +105,16 @@ public class QuickGesturePopupActivity extends Activity {
     }
 
     private void fillMostUsedLayout() {
-        //TODO
-        list = new ArrayList<BaseInfo>();
-        list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
-        ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(13, 20));
-        mContainer.fillGestureItem(GType.MostUsedLayout, items);
+        // TODO
+        // list = new ArrayList<BaseInfo>();
+        // list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
+        // ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(13,
+        // 20));
+        loadMostUseApp();
+        mContainer.fillGestureItem(GType.MostUsedLayout, mCommonApps);
     }
 
     private void fillSwitcherLayout() {
-        mSpSwitch = AppMasterPreference.getInstance(this);
         if (mSwitchList == null) {
             mSwitchListFromSp = mSpSwitch.getSwitchList();
             switchNum = mSpSwitch.getSwitchListSize();
@@ -136,8 +136,6 @@ public class QuickGesturePopupActivity extends Activity {
             // }
         }
     }
-
-
 
     @Override
     protected void onDestroy() {
@@ -260,18 +258,28 @@ public class QuickGesturePopupActivity extends Activity {
             mCommonApps.clear();
             ArrayList<AppItemInfo> lists = AppLoadEngine.getInstance(this).getAllPkgInfo();
             String commonAppString = mSpSwitch.getCommonAppPackageName();
-            if (!mSpSwitch.PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME.equals(commonAppString)) {
+            // if
+            // (!mSpSwitch.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME.equals(commonAppString))
+            // {
+            if (!"".equals(commonAppString)) {
                 String[] names = commonAppString.split(";");
                 List<String> packageNames = Arrays.asList(names);
                 if (packageNames != null) {
+                    int i = 0;
                     for (AppItemInfo info : lists) {
                         QuickGsturebAppInfo appInfo = new QuickGsturebAppInfo();
                         appInfo.icon = info.icon;
                         appInfo.packageName = info.packageName;
                         appInfo.label = info.label;
                         if (packageNames.contains(info.packageName)) {
-                            appInfo.isFreeDisturb = true;
-                            mCommonApps.add(appInfo);
+                            if (i >= 13) {
+                                break;
+                            }
+                            if (appInfo != null) {
+                                appInfo.isFreeDisturb = true;
+                                mCommonApps.add(appInfo);
+                                i++;
+                            }
                         }
                     }
                 }
@@ -281,7 +289,6 @@ public class QuickGesturePopupActivity extends Activity {
 
     // Recorder App
     private void loadRecorderAppInfo() {
-        // TODO
         TreeSet<AppLauncherRecorder> recorderApp = QuickGestureManager
                 .getInstance(this).mAppLaunchRecorders;
         AppLoadEngine engin = AppLoadEngine.getInstance(this);
@@ -289,7 +296,7 @@ public class QuickGesturePopupActivity extends Activity {
         int i = 0;
         while (recorder.hasNext()) {
             AppLauncherRecorder recorderAppInfo = recorder.next();
-//            Log.e("###############", "最近使用：" + recorderAppInfo.pkg);
+            // Log.e("###############", "最近使用：" + recorderAppInfo.pkg);
             AppItemInfo info = engin.getAppInfo(recorderAppInfo.pkg);
             if (i >= 13) {
                 break;
@@ -301,4 +308,12 @@ public class QuickGesturePopupActivity extends Activity {
         }
     }
 
+    // Most use app
+    private void loadMostUseApp() {
+        if (mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
+            loadRecorderAppInfo();
+        } else {
+            loadCommonAppInfo();
+        }
+    }
 }
