@@ -3,7 +3,6 @@ package com.leo.appmaster.privacycontact;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import android.content.ContentResolver;
@@ -15,7 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.CallLog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -357,9 +355,6 @@ public class AddFromCallLogListActivity extends BaseActivity {
                     }
                 }
             } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {
-                // 更新SysMessage和SysCallLog数据
-                PrivacyContactManager pm = PrivacyContactManager
-                        .getInstance(AddFromCallLogListActivity.this);
                 // 导入通话记录
                 if (mAddCallLogs != null) {
                     for (ContactCallLog calllog : mAddCallLogs) {
@@ -382,9 +377,6 @@ public class AddFromCallLogListActivity extends BaseActivity {
                             messge.what = count;
                             mHandler.sendMessage(messge);
                         }
-                    }
-                    for (ContactCallLog contactCallLog : mAddPrivacyCallLog) {
-                        pm.removeSysCallLog(contactCallLog);
                     }
 
                 }
@@ -550,8 +542,8 @@ public class AddFromCallLogListActivity extends BaseActivity {
             // mCallLogList =
             // PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this,
             // getContentResolver(), null, null);
-            mCallLogList = PrivacyContactManager.getInstance(AddFromCallLogListActivity.this)
-                    .getSysCallLog();
+            mCallLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this,
+                    getContentResolver(), null, null);
             if (mCallLogList != null && mCallLogList.size() > 0) {
                 Collections.sort(mCallLogList, PrivacyContactUtils.mCallLogCamparator);
             }

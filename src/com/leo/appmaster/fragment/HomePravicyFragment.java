@@ -3,8 +3,6 @@ package com.leo.appmaster.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,11 +20,9 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacy.PrivacyHelper.Level;
 import com.leo.appmaster.privacy.PrivacyLevelView;
 import com.leo.appmaster.privacy.PrivacyProposalLayout;
-import com.leo.appmaster.privacycontact.LoadSysContactTask;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
@@ -50,8 +46,6 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         LeoEventBus.getDefaultBus().register(this);
-        LoadSysContactTask loadSysContactData = new LoadSysContactTask(mActivity);
-        loadSysContactData.execute("home_pravicy_load_contact_date");
         mPreference = AppMasterPreference.getInstance(getActivity());
 
         if (mActivity != null) {
