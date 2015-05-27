@@ -3,7 +3,12 @@ package com.leo.appmaster.quickgestures.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -28,6 +33,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
@@ -276,77 +282,78 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
 
     // 加载常用应用
     private void loadMostUseData() {
-        List<QuickGsturebAppInfo> packageNames = new ArrayList<QuickGsturebAppInfo>();
-        List<String> allNames = new ArrayList<String>();
-        // 所有应用
+        mSwitchListSize = 0;
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(mContext)
                 .getAllPkgInfo();
-        // 打扰的应用
         mDisturbList = new ArrayList<QuickGsturebAppInfo>();
-        // 免打扰的应用
         mFreeDisturbApp = new ArrayList<QuickGsturebAppInfo>();
         String packageName = null;
         packageName = AppMasterPreference.getInstance(mContext)
                 .getCommonAppPackageName();
-        // int i = 0;
-        if (!AppMasterPreference.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME
-                .equals(packageName)) {
-            String[] names = packageName.split(";");
-            QuickGsturebAppInfo temp = null;
-            int sIndex = -1;
-            // packageName = packageName.substring(0, packageName.length() - 1);
-            for (String recoder : names) {
-                sIndex = recoder.indexOf(':');
-                if (sIndex != -1) {
-                    temp = new QuickGsturebAppInfo();
-                    temp.packageName = recoder.substring(0, sIndex);
-                    temp.gesturePosition = Integer.parseInt(recoder.substring(sIndex + 1));
-                    packageNames.add(temp);
-                }
+        int i = 0;
+
+        HashMap<String, Integer> packagePosition = new HashMap<String, Integer>();
+        boolean isCheck = AppMasterPreference.getInstance(mContext)
+                .getQuickGestureCommonAppDialogCheckboxValue();
+        List<QuickGsturebAppInfo> resault = new ArrayList<QuickGsturebAppInfo>();
+        QuickGsturebAppInfo qgInfo;
+
+        if (isCheck) {
+            ArrayList<AppLauncherRecorder> records = QuickGestureManager.getInstance(mContext).mAppLaunchRecorders;
+            Iterator<AppLauncherRecorder> iterator = records.iterator();
+            AppLauncherRecorder record;
+            i = 0;
+            while (iterator.hasNext()) {
+                if (i > 13)
+                    break;
+                record = iterator.next();
+                packagePosition.put(record.pkg, i);
+                mSwitchListSize++;
+                i++;
             }
-        }
-        if (packageNames != null && packageNames.size() > 0) {
-            for (QuickGsturebAppInfo appItemInfo : packageNames) {
-                allNames.add(appItemInfo.packageName);
-            }
+
             for (AppItemInfo info : list) {
-                QuickGsturebAppInfo app = new QuickGsturebAppInfo();
-                if (allNames != null) {
-                    app.packageName = info.packageName;
-                    app.label = info.label;
-                    app.icon = info.icon;
-                    // app.gesturePosition = i++;
-                    if (allNames.contains(info.packageName)) {
-                        app.isFreeDisturb = true;
-                        mFreeDisturbApp.add(app);
-                    } else {
-                        app.isFreeDisturb = false;
-                        mDisturbList.add(app);
+                qgInfo = new QuickGsturebAppInfo();
+                qgInfo.label = info.label;
+                qgInfo.icon = info.icon;
+                qgInfo.packageName = info.packageName;
+                qgInfo.activityName = info.activityName;
+                if (packagePosition.get(qgInfo.packageName) != null) {
+                    qgInfo.gesturePosition = packagePosition.get(qgInfo.packageName);
+                    qgInfo.isFreeDisturb = true;
+                }
+                resault.add(qgInfo);
+            }
+        } else {
+            if (!AppMasterPreference.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME
+                    .equals(packageName)) {
+                String[] names = packageName.split(";");
+                int sIndex = -1;
+                for (String recoder : names) {
+                    sIndex = recoder.indexOf(':');
+                    if (sIndex != -1) {
+                        packagePosition.put(recoder.substring(0, sIndex),
+                                Integer.parseInt(recoder.substring(sIndex + 1)));
                     }
-                } else {
-                    app.isFreeDisturb = false;
-                    mDisturbList.add(app);
                 }
             }
-            mCommonAppTemp = mFreeDisturbApp;
-        } else {
             for (AppItemInfo info : list) {
-                if (packageNames == null || packageNames.size() <= 0) {
-                    QuickGsturebAppInfo app = new QuickGsturebAppInfo();
-                    app.packageName = info.packageName;
-                    app.label = info.label;
-                    app.icon = info.icon;
-                    app.isFreeDisturb = false;
-                    // app.gesturePosition = i++;
-                    mDisturbList.add(app);
+                qgInfo = new QuickGsturebAppInfo();
+                qgInfo.label = info.label;
+                qgInfo.icon = info.icon;
+                qgInfo.packageName = info.packageName;
+                qgInfo.activityName = info.activityName;
+                if (packagePosition.get(qgInfo.packageName) != null && mSwitchListSize < 13) {
+                    qgInfo.gesturePosition = packagePosition.get(qgInfo.packageName);
+                    mSwitchListSize++;
+                    qgInfo.isFreeDisturb = true;
                 }
+
+                resault.add(qgInfo);
             }
         }
-        if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
-            mFreeDisturbApp.addAll(mDisturbList);
-        } else {
-            mFreeDisturbApp = mDisturbList;
-        }
+        Collections.sort(resault, new PositionComparator());
+        mFreeDisturbApp = resault;
         mGridView.setDatas(mFreeDisturbApp, 4, 4);
     }
 
@@ -411,4 +418,19 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         animate.playTogether(scaleX, scaleY);
         animate.start();
     }
+
+    public static class PositionComparator implements Comparator<QuickGsturebAppInfo> {
+
+        @Override
+        public int compare(QuickGsturebAppInfo lhs, QuickGsturebAppInfo rhs) {
+            if (lhs.gesturePosition < rhs.gesturePosition) {
+                return 1;
+            } else if (lhs.gesturePosition > rhs.gesturePosition) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
 }

@@ -34,16 +34,16 @@ public class PrivacyContactManager {
     private MessageBean mMessage;
     private MessageBean mLastMessage;
     private ContactBean mLastCallContact;
-    private ArrayList<ContactCallLog> mSysCallLogs;
+//    private ArrayList<ContactCallLog> mSysCallLogs;
     private boolean mContactLoaded = false;
-    private boolean mSysMessageLoaded = false;
-    private boolean mSysContactsLoaded = false;
-    private boolean mSysCallLogLoaded = false;
+//    private boolean mSysMessageLoaded = false;
+//    private boolean mSysContactsLoaded = false;
+//    private boolean mSysCallLogLoaded = false;
 
     private PrivacyContactManager(Context context) {
         this.mContext = context;
         mContacts = new ArrayList<ContactBean>();
-        mSysCallLogs = new ArrayList<ContactCallLog>();
+//        mSysCallLogs = new ArrayList<ContactCallLog>();
 
     }
 
@@ -178,9 +178,9 @@ public class PrivacyContactManager {
                 int threadId = PrivacyContactUtils.queryContactId(mContext,
                         message.getPhoneNumber());
                 values.put(Constants.COLUMN_MESSAGE_THREAD_ID, threadId);
-                String number = PrivacyContactUtils.formatePhoneNumber(message.getPhoneNumber());
+//                String number = PrivacyContactUtils.formatePhoneNumber(message.getPhoneNumber());
                 ContentResolver mCr = mContext.getContentResolver();
-                Uri messageFlag = mCr.insert(Constants.PRIVACY_MESSAGE_URI, values);
+                mCr.insert(Constants.PRIVACY_MESSAGE_URI, values);
                 if (count > 0) {
                     pre.setMessageNoReadCount(count + 1);
                 } else {
@@ -232,13 +232,10 @@ public class PrivacyContactManager {
             values.put(Constants.COLUMN_MESSAGE_DATE, message.getMessageTime());
             values.put(Constants.COLUMN_MESSAGE_IS_READ, message.isMessageIsRead());
             values.put(Constants.COLUMN_MESSAGE_TYPE, message.getMessageType());
-            String formateNumber = PrivacyContactUtils.formatePhoneNumber(message
-                    .getPhoneNumber());
             int threadId = PrivacyContactUtils.queryContactId(mContext, message.getPhoneNumber());
             values.put(Constants.COLUMN_MESSAGE_THREAD_ID, threadId);
-            String number = PrivacyContactUtils.formatePhoneNumber(message.getPhoneNumber());
             ContentResolver mCr = mContext.getContentResolver();
-            Uri messageFlag = mCr.insert(Constants.PRIVACY_MESSAGE_URI, values);
+            mCr.insert(Constants.PRIVACY_MESSAGE_URI, values);
             if (count > 0) {
                 pre.setMessageNoReadCount(count + 1);
             } else {
@@ -287,31 +284,5 @@ public class PrivacyContactManager {
         message.setMessageTime(dateFrom);
         mMessage = message;
         mLastMessage = message;
-    }
-
-    // loadSysCallLog
-    public synchronized void loadSysCallLog() {
-        if (!mSysCallLogLoaded) {
-            mSysCallLogs.clear();
-            mSysCallLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext,
-                    mContext.getContentResolver(), null, null);
-            mSysCallLogLoaded = true;
-        }
-    }
-
-    public ArrayList<ContactCallLog> getSysCallLog() {
-        loadSysCallLog();
-        return (ArrayList<ContactCallLog>) mSysCallLogs.clone();
-    }
-
-    public void removeSysCallLog(ContactCallLog callLog) {
-        loadSysCallLog();
-        mSysCallLogs.remove(callLog);
-    }
-
-    public void updateSysCallLog() {
-        mSysCallLogs.clear();
-        mSysCallLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext,
-                mContext.getContentResolver(), null, null);
     }
 }

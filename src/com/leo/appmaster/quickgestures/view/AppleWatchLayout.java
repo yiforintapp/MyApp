@@ -160,7 +160,7 @@ public class AppleWatchLayout extends ViewGroup {
                 public void run() {
                     fillExtraChildren();
                 }
-            }, 1000);
+            }, 500);
         }
 
     }
@@ -723,7 +723,7 @@ public class AppleWatchLayout extends ViewGroup {
             // String mListString = mSpSwitch.getSwitchList();
             // List<BaseInfo> mSwitchList =
             // QuickSwitchManager.getInstance(mContext).StringToList(mListString);
-            qgm.showQuickSwitchDialog(getContext(), mContainer);
+            qgm.showQuickSwitchDialog(getContext(), (Activity)getContext());
         }
     }
 
@@ -740,9 +740,9 @@ public class AppleWatchLayout extends ViewGroup {
                 boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
                         .getQuickGestureCommonAppDialogCheckboxValue();
                 if (isRecorderFlag) {
-                    TreeSet<AppLauncherRecorder> mRecorderApp = QuickGestureManager
+                    ArrayList<AppLauncherRecorder> mRecorderApp = QuickGestureManager
                             .getInstance(mContext).mAppLaunchRecorders;
-                    Iterator<AppLauncherRecorder> recorder = mRecorderApp.descendingIterator();
+                    Iterator<AppLauncherRecorder> recorder = mRecorderApp.iterator();
                     while (recorder.hasNext()) {
                         AppLauncherRecorder recorderAppInfo = recorder.next();
                         if (info != null) {

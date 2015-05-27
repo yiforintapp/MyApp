@@ -6,21 +6,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockModeActivity;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
-import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
-import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
-import com.leo.appmaster.quickgestures.view.AppleWatchLayout;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
-import com.leo.appmaster.utils.LeoLog;
-
-import android.R.integer;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
@@ -41,6 +26,17 @@ import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.widget.Toast;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockModeActivity;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
+import com.leo.appmaster.utils.LeoLog;
 
 public class QuickSwitchManager {
 
@@ -109,10 +105,6 @@ public class QuickSwitchManager {
             mInstance = new QuickSwitchManager(context);
         }
         return mInstance;
-    }
-
-    public void setActivity(QuickGesturePopupActivity quickGesturePopupActivity) {
-        this.mActivity = quickGesturePopupActivity;
     }
 
     private QuickSwitchManager(Context context) {
