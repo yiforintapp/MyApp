@@ -94,13 +94,13 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 CallLogTask task = new CallLogTask();
                 task.execute(call);
             } else {
-                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        PrivacyContactManager.getInstance(mContext).updateSysCallLog();
-                    }
-                });
+//                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        PrivacyContactManager.getInstance(mContext).updateSysCallLog();
+//                    }
+//                });
             }
             // 快捷手势未读通话记录提醒
             AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {

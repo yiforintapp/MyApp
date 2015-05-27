@@ -19,8 +19,8 @@ import android.net.Uri;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -36,7 +36,6 @@ import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGestureManager {
@@ -559,10 +558,10 @@ public class QuickGestureManager {
      * 
      * @param mSwitchList
      * @param context
-     * @param mContainer
+     * @param activity
      */
     public void showQuickSwitchDialog(final Context context,
-            final AppleWatchContainer mContainer) {
+            Activity activity) {
         final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
                 context.getApplicationContext(), 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
@@ -685,7 +684,7 @@ public class QuickGestureManager {
         quickSwitch.getWindow().setType(
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         quickSwitch.show();
-        mContainer.getActivity().finish();
+        activity.finish();
     }
 
     public class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {

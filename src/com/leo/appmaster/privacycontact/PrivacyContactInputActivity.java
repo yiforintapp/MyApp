@@ -308,10 +308,6 @@ public class PrivacyContactInputActivity extends BaseActivity {
             int count = 0;
             ContentResolver cr = getContentResolver();
             if (flag) {
-                // 更新SysMessage和SysCallLog数据
-                PrivacyContactManager pm = PrivacyContactManager
-                        .getInstance(PrivacyContactInputActivity.this);
-                ArrayList<ContactCallLog> callLogs = pm.getSysCallLog();
 //                ArrayList<MessageBean> messages = pm.getSysMessage();
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
 
@@ -391,11 +387,6 @@ public class PrivacyContactInputActivity extends BaseActivity {
                             count = count + 1;
                             messge.what = count;
                             mHandler.sendMessage(messge);
-                        }
-                    }
-                    for (ContactCallLog callLog : callLogs) {
-                        if (callLog.getCallLogNumber().contains(formateNumber)) {
-                            pm.removeSysCallLog(callLog);
                         }
                     }
                 }

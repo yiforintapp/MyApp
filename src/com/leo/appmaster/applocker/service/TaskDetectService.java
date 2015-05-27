@@ -111,9 +111,7 @@ public class TaskDetectService extends Service {
         if (!mServiceStarted) {
             startDetect();
         }
-        if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
-            startFloatWindow();
-        }
+        startFloatWindow();
 
         return START_STICKY;
     }
@@ -164,7 +162,11 @@ public class TaskDetectService extends Service {
     }
 
     public void startFloatWindow() {
-        startFloatWindowTask();
+        if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
+            startFloatWindowTask();
+        } else {
+            stopFloatWindowTask();
+        }
     }
 
     private void startFloatWindowTask() {
@@ -411,14 +413,11 @@ public class TaskDetectService extends Service {
      */
     private class FloatWindowTask implements Runnable {
         ActivityManager mActivityManager;
+        private Runnable mRunnable;
 
         public FloatWindowTask() {
             mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        }
-
-        @Override
-        public void run() {
-            mHandler.post(new Runnable() {
+            mRunnable = new Runnable() {
                 @Override
                 public void run() {
                     // 屏幕改变
@@ -458,7 +457,12 @@ public class TaskDetectService extends Service {
                         }
                     }
                 }
-            });
+            };
+        }
+
+        @Override
+        public void run() {
+            mHandler.post(mRunnable);
         }
     }
 
