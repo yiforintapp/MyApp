@@ -734,35 +734,28 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.SwitcherLayout) {
         } else if (type == GType.MostUsedLayout) {
             // TODO
-            boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
-                    .getQuickGestureCommonAppDialogCheckboxValue();
-            if (isRecorderFlag) {
-                Log.e("#############", "自动：");
-                if (hitView.getTag() instanceof AppLauncherRecorder) {
-                    AppLauncherRecorder info = (AppLauncherRecorder) hitView.getTag();
+            if (!(hitView.getTag() instanceof GestureEmptyItemInfo)) {
+                AppItemInfo info = (AppItemInfo) hitView.getTag();
+                boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
+                        .getQuickGestureCommonAppDialogCheckboxValue();
+                if (isRecorderFlag) {
                     TreeSet<AppLauncherRecorder> mRecorderApp = QuickGestureManager
                             .getInstance(mContext).mAppLaunchRecorders;
                     Iterator<AppLauncherRecorder> recorder = mRecorderApp.descendingIterator();
                     int i = 0;
                     while (recorder.hasNext()) {
                         AppLauncherRecorder recorderAppInfo = recorder.next();
-                        recorderAppInfo.launchCount = 0;
-                        QuickGestureManager.getInstance(mContext).saveAppLaunchRecoder();
+                        if (info != null) {
+                            if (info.packageName.equals(recorderAppInfo.pkg)) {
+                                recorderAppInfo.launchCount = 0;
+                                QuickGestureManager.getInstance(mContext).saveAppLaunchRecoder();
+                            }
+                        }
                     }
+                } else {
+                    AppMasterPreference.getInstance(mContext).setCommonAppPackageNameRemove(
+                            info.packageName + ":" + info.gesturePosition);
                 }
-            } else {
-                Log.e("#############", "非自动：");
-                /*
-                 * if (hitView.getTag() instanceof QuickGsturebAppInfo) {
-                 * QuickGsturebAppInfo info = (QuickGsturebAppInfo)
-                 * hitView.getTag(); QuickGsturebAppInfo string =
-                 * (QuickGsturebAppInfo) info;
-                 */
-                AppItemInfo info = (AppItemInfo) hitView.getTag();
-                AppMasterPreference.getInstance(mContext).setCommonAppPackageNameRemove(
-                        info.packageName + ":" + info.gesturePosition);
-                Log.e("#############", ":" + info.packageName + ":" + info.gesturePosition);
-                // }
             }
         }
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();
