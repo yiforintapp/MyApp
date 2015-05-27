@@ -2,7 +2,9 @@
 package com.leo.appmaster.quickgestures.view;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -729,8 +731,29 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.SwitcherLayout) {
         } else if (type == GType.MostUsedLayout) {
             // TODO
-            // BaseInfo info = (BaseInfo) hitView.getTag();
-            // Log.e("##############", info)
+            boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
+                    .getQuickGestureCommonAppDialogCheckboxValue();
+            if (isRecorderFlag) {
+                if (hitView.getTag() instanceof AppLauncherRecorder) {
+                    AppLauncherRecorder info = (AppLauncherRecorder) hitView.getTag();
+                    TreeSet<AppLauncherRecorder> mRecorderApp = QuickGestureManager
+                            .getInstance(mContext).mAppLaunchRecorders;
+                    Iterator<AppLauncherRecorder> recorder = mRecorderApp.descendingIterator();
+                    int i = 0;
+                    while (recorder.hasNext()) {
+                        AppLauncherRecorder recorderAppInfo = recorder.next();
+                        recorderAppInfo.launchCount = 0;
+                        QuickGestureManager.getInstance(mContext).saveAppLaunchRecoder();
+                    }
+                }
+            } else {
+                if (hitView.getTag() instanceof QuickGsturebAppInfo) {
+                    QuickGsturebAppInfo info = (QuickGsturebAppInfo) hitView.getTag();
+                    QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
+                    AppMasterPreference.getInstance(mContext).setCommonAppPackageNameRemove(
+                            string.packageName + ":" + string.gesturePosition);
+                }
+            }
         }
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();
         GestureEmptyItemInfo info = new GestureEmptyItemInfo();

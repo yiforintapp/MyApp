@@ -165,16 +165,15 @@ public class QuickGestureManager {
             recoder.launchCount = 1;
             mAppLaunchRecorders.add(recoder);
         }
+        saveAppLaunchRecoder();
+    }
 
+    public void saveAppLaunchRecoder() {
         StringBuilder resault = new StringBuilder();
         for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
             resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
         }
         AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
-    }
-
-    public void updateMostUseApp() {
-
     }
 
     public void removeAppLaunchRecoder(String pkg) {
@@ -351,13 +350,15 @@ public class QuickGestureManager {
                         if (addCommonApp != null && addCommonApp.size() > 0) {
                             for (BaseInfo info : addCommonApp) {
                                 QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                pref.setCommonAppPackageNameAdd(string.packageName+":"+string.gesturePosition);
+                                pref.setCommonAppPackageNameAdd(string.packageName + ":"
+                                        + string.gesturePosition);
                             }
                         }
                         if (removeCommonApp != null && removeCommonApp.size() > 0) {
                             for (BaseInfo info : removeCommonApp) {
                                 QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                pref.setCommonAppPackageNameRemove(string.packageName);
+                                pref.setCommonAppPackageNameRemove(string.packageName + ":"
+                                        + string.gesturePosition);
                             }
                         }
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
@@ -386,7 +387,7 @@ public class QuickGestureManager {
      * @param context
      * @param mContainer
      */
-    public  void showQuickSwitchDialog(final Context context,
+    public void showQuickSwitchDialog(final Context context,
             final AppleWatchContainer mContainer) {
         final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
                 context, 2);
