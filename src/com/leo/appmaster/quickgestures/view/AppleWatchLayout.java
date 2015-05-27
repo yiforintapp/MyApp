@@ -19,6 +19,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
