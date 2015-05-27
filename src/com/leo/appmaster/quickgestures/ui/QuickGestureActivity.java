@@ -70,14 +70,10 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private AppMasterPreference mPre;
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
     private QuickGestureSlideTimeDialog mSlideTimeDialog;
-    private QuickGesturesAreaView mAreaView;
-    private TextView second_tv_setting;
-    private AppMasterPreference sp_notice_flow;
     private boolean mAlarmDialogFlag = false;
     private boolean mLeftBottom, mRightBottm, mRightCenter, mLeftCenter;
     private List<QuickGsturebAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
-    private Handler mHandler = new Handler();
     private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView;
     private RelativeLayout mTipRL;
     private ImageView mHandImage, mArrowImage;
@@ -99,7 +95,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private void initUi() {
         mQuickGestureLV = (ListView) findViewById(R.id.quick_gesture_lv);
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
-        mAreaView = (QuickGesturesAreaView) findViewById(R.id.quick_gesture_area);
         mTitleBar.openBackView();
         mQuickGestureLV.setOnItemClickListener(this);
         mTipRL = (RelativeLayout) findViewById(R.id.quick_tipRL);
