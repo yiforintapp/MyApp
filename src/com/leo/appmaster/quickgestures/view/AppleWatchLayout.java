@@ -160,7 +160,7 @@ public class AppleWatchLayout extends ViewGroup {
                 public void run() {
                     fillExtraChildren();
                 }
-            }, 1000);
+            }, 500);
         }
 
     }
