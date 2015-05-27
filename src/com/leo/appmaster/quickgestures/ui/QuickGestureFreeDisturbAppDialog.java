@@ -350,8 +350,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         // 设置为快捷开关
         mFreeDisturbApp = new ArrayList<QuickGsturebAppInfo>();
         QuickSwitchManager qsm = QuickSwitchManager.getInstance(mContext);
-        List<BaseInfo> allList = qsm.getSwitchList(AppMasterPreference.getInstance(mContext)
-                .getSwitchListSize());
+        List<BaseInfo> allList = qsm.getAllList();
         // 设置为快捷手势的开关
         String packageNames = AppMasterPreference.getInstance(mContext)
                 .getSwitchList();
