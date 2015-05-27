@@ -70,6 +70,7 @@ public class QuickGestureManager {
         mMostUsedList = new ArrayList<BaseInfo>();
         loadAppLaunchReorder();
         preloadEmptyIcon();
+        getSwitcherList();
     }
 
     public List<BaseInfo> getDynamicList() {
@@ -208,9 +209,8 @@ public class QuickGestureManager {
         return null;
     }
 
-    public List<QuickSwitcherInfo> getSwitcherList() {
-
-        return null;
+    public List<BaseInfo> getSwitcherList() {
+        return QuickSwitchManager.getInstance(mContext).getSwitchList(13);
     }
 
     public void updateSwitcherData(List<BaseInfo> infos) {
@@ -219,6 +219,7 @@ public class QuickGestureManager {
         LeoLog.d("updateSwitcherData", "saveToSp:" + saveToSp);
         mSpSwitch.setSwitchList(saveToSp);
         mSpSwitch.setSwitchListSize(infos.size());
+        QuickSwitchManager.getInstance(mContext).onDataChange(saveToSp);
     }
 
     public void onRunningPkgChanged(String pkg) {

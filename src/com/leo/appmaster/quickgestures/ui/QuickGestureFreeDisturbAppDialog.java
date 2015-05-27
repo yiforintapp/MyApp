@@ -88,31 +88,12 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 animateItem(arg1);
                 QuickGsturebAppInfo selectInfl = (QuickGsturebAppInfo) arg1.getTag();
-                Log.e("################","app.gesturePosition:"+selectInfl.gesturePosition);
                 if (mFlag == 2) {
                     // 快捷开关的方式
                     if (quickSwitchSaveList != null) {
                         mFirstStatus = getFirstStatusFromName(quickSwitchSaveList, selectInfl.label);
                     }
-                } else if (mFlag == 3) {
-                    if (mCommonAppTemp != null) {
-                        mFirstStatus = getFirstStatusFromName(mCommonAppTemp, selectInfl.label);
-                    }
                 }
-                // else {
-                // LeoLog.d("QuickGestureManager", "selectInfl.label is : " +
-                // selectInfl.label);
-                // if (!selectInfl.label.equals(mLastName)) {
-                // isFirstClick = true;
-                // mLastName = selectInfl.label;
-                // if (isFirstClick) {
-                // mFirstStatus = selectInfl.isFreeDisturb;
-                // isFirstClick = false;
-                // LeoLog.d("QuickGestureManager", "isFirstClick.");
-                // }
-                // }
-                // }
-
                 if (selectInfl.isFreeDisturb) {
                     selectInfl.isFreeDisturb = false;
                     mDisturbList.add(selectInfl);
@@ -303,10 +284,10 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         if (!AppMasterPreference.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME
                 .equals(packageName)) {
             String[] names = packageName.split(";");
-            Log.e("#############", "names:"+names.length);
+            Log.e("#############", "names:" + names.length);
             QuickGsturebAppInfo temp = null;
             int sIndex = -1;
-//            packageName = packageName.substring(0, packageName.length() - 1);
+            // packageName = packageName.substring(0, packageName.length() - 1);
             for (String recoder : names) {
                 sIndex = recoder.indexOf(':');
                 if (sIndex != -1) {
