@@ -291,7 +291,7 @@ public class AppleWatchLayout extends ViewGroup {
                 addView.setScaleY(lp.scale);
             }
         }
-        
+
         mHasFillExtraItems = true;
     }
 
@@ -737,7 +737,7 @@ public class AppleWatchLayout extends ViewGroup {
             boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
                     .getQuickGestureCommonAppDialogCheckboxValue();
             if (isRecorderFlag) {
-                Log.e("#############",  "自动：");
+                Log.e("#############", "自动：");
                 if (hitView.getTag() instanceof AppLauncherRecorder) {
                     AppLauncherRecorder info = (AppLauncherRecorder) hitView.getTag();
                     TreeSet<AppLauncherRecorder> mRecorderApp = QuickGestureManager
@@ -751,14 +751,18 @@ public class AppleWatchLayout extends ViewGroup {
                     }
                 }
             } else {
-                Log.e("#############",  "非自动：");
-                if (hitView.getTag() instanceof QuickGsturebAppInfo) {
-                    QuickGsturebAppInfo info = (QuickGsturebAppInfo) hitView.getTag();
-                    QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                    AppMasterPreference.getInstance(mContext).setCommonAppPackageNameRemove(
-                            string.packageName + ":" + string.gesturePosition);
-                    Log.e("#############",  ":"+string.packageName + ":" + string.gesturePosition);
-                }
+                Log.e("#############", "非自动：");
+                /*
+                 * if (hitView.getTag() instanceof QuickGsturebAppInfo) {
+                 * QuickGsturebAppInfo info = (QuickGsturebAppInfo)
+                 * hitView.getTag(); QuickGsturebAppInfo string =
+                 * (QuickGsturebAppInfo) info;
+                 */
+                AppItemInfo info = (AppItemInfo) hitView.getTag();
+                AppMasterPreference.getInstance(mContext).setCommonAppPackageNameRemove(
+                        info.packageName + ":" + info.gesturePosition);
+                Log.e("#############", ":" + info.packageName + ":" + info.gesturePosition);
+                // }
             }
         }
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();

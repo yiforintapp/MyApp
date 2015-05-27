@@ -258,7 +258,7 @@ public class QuickGesturePopupActivity extends Activity {
                 String[] names = commonAppString.split(";");
                 QuickGsturebAppInfo temp = null;
                 int sIndex = -1;
-                commonAppString = commonAppString.substring(0, commonAppString.length() - 1);
+//                commonAppString = commonAppString.substring(0, commonAppString.length() - 1);
                 for (String recoder : names) {
                     sIndex = recoder.indexOf(':');
                     if (sIndex != -1) {
