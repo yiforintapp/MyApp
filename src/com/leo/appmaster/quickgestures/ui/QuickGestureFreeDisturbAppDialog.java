@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.mobstat.l;
 import com.baidu.mobstat.o;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -52,6 +53,10 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private int mFlag;
     private static int mSwitchListSize = 0;
     private static final String TAG = "QuickGestureFreeDisturbAppDialog";
+    private boolean isFirstClick = true;
+    private boolean mFirstStatus = false;
+    private String mLastName = "";
+    private List<BaseInfo> quickSwitchSaveList;
 
     public QuickGestureFreeDisturbAppDialog(Context context, int flag) {
         super(context, R.style.bt_dialog);
@@ -79,7 +84,24 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 animateItem(arg1);
                 QuickGsturebAppInfo selectInfl = (QuickGsturebAppInfo) arg1.getTag();
-                boolean isCheck = selectInfl.isFreeDisturb;
+
+                if (mFlag == 2) {
+                    // 快捷开关的方式
+                    if (quickSwitchSaveList != null) {
+                        mFirstStatus = getFirstStatusFromName(quickSwitchSaveList, selectInfl.label);
+                    }
+                } else {
+                    LeoLog.d("QuickGestureManager", "selectInfl.label is : " + selectInfl.label);
+                    if (!selectInfl.label.equals(mLastName)) {
+                        isFirstClick = true;
+                        mLastName = selectInfl.label;
+                        if (isFirstClick) {
+                            mFirstStatus = selectInfl.isFreeDisturb;
+                            isFirstClick = false;
+                            LeoLog.d("QuickGestureManager", "isFirstClick.");
+                        }
+                    }
+                }
 
                 if (selectInfl.isFreeDisturb) {
                     selectInfl.isFreeDisturb = false;
@@ -88,27 +110,42 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     if (mAddFreePackageName != null && mAddFreePackageName.size() > 0) {
                         mAddFreePackageName.remove(selectInfl);
                     }
-                    if (!isCheck) {
+                    if (mFirstStatus) {
                         mRemoveFreePackageName.add(selectInfl);
                     }
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(false);
                     mSwitchListSize -= 1;
                 } else {
-                    // if (mSwitchListSize <= 12) {
-                    selectInfl.isFreeDisturb = true;
-                    mFreeDisturbApp.add(selectInfl);
-                    mDisturbList.remove(selectInfl);
-                    if (!isCheck) {
-                        mAddFreePackageName.add(selectInfl);
+                    if (mFlag == 2) {
+                        if (mSwitchListSize <= 12) {
+                            selectInfl.isFreeDisturb = true;
+                            mFreeDisturbApp.add(selectInfl);
+                            mDisturbList.remove(selectInfl);
+                            if (!mFirstStatus) {
+                                mAddFreePackageName.add(selectInfl);
+                            }
+                            if (mRemoveFreePackageName != null && mRemoveFreePackageName.size() > 0) {
+                                mRemoveFreePackageName.remove(selectInfl);
+                            }
+                            ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                                    .setDefaultRecommendApp(true);
+                            mSwitchListSize += 1;
+                        }
+                    } else {
+                        selectInfl.isFreeDisturb = true;
+                        mFreeDisturbApp.add(selectInfl);
+                        mDisturbList.remove(selectInfl);
+                        if (!mFirstStatus) {
+                            mAddFreePackageName.add(selectInfl);
+                        }
+                        if (mRemoveFreePackageName != null && mRemoveFreePackageName.size() > 0) {
+                            mRemoveFreePackageName.remove(selectInfl);
+                        }
+                        ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                                .setDefaultRecommendApp(true);
                     }
-                    if (mRemoveFreePackageName != null && mRemoveFreePackageName.size() > 0) {
-                        mRemoveFreePackageName.remove(selectInfl);
-                    }
-                    ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                            .setDefaultRecommendApp(true);
-                    mSwitchListSize += 1;
-                    // }
+
                 }
 
             }
@@ -132,6 +169,16 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         }
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
+    }
+
+    protected boolean getFirstStatusFromName(List<BaseInfo> mSaveList, String label) {
+        boolean isCheck = false;
+        for (int i = 0; i < mSaveList.size(); i++) {
+            if (mSaveList.get(i).label.equals(label)) {
+                isCheck = true;
+            }
+        }
+        return isCheck;
     }
 
     public List<BaseInfo> getAddFreePackageName() {
@@ -230,7 +277,6 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
 
     // 加载快捷开关数据
     private void loadQuickSwitchData() {
-        // List<String> packageNames = null;
         // 未设置的快捷开关
         mDisturbList = new ArrayList<QuickGsturebAppInfo>();
         // 设置为快捷开关
@@ -242,7 +288,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         String packageNames = AppMasterPreference.getInstance(mContext)
                 .getSwitchList();
         List<BaseInfo> quickSwitch = qsm.StringToList(packageNames);
-        LeoLog.d("QuickGestureFreeDisturbAppDialog", "dialog String is : " + packageNames);
+        quickSwitchSaveList = quickSwitch;
         if (quickSwitch == null) {
             // 不可能的情况
             for (int i = 0; i < allList.size(); i++) {
