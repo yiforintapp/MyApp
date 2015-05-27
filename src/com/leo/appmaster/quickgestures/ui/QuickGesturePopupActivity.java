@@ -128,6 +128,7 @@ public class QuickGesturePopupActivity extends Activity {
                 mSwitchList = new ArrayList<BaseInfo>();
                 mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
+            mContainer.fillGestureItem(GType.SwitcherLayout, mSwitchList);
             // The most commont use app
             // if (!mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
             // loadCommonAppInfo();
