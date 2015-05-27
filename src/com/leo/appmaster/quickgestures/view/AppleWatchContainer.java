@@ -79,6 +79,7 @@ public class AppleWatchContainer extends FrameLayout {
     private long mLastUsedMem;
     private long mTotalMem;
     private long mCleanMem;
+    private boolean isAnimating;
 
     public AppleWatchContainer(Context context) {
         super(context);
@@ -268,7 +269,7 @@ public class AppleWatchContainer extends FrameLayout {
         } else {
             gestureLayout = mSwitcherLayout;
         }
-        if (gestureLayout.isSnapping())
+        if (isAnimating || gestureLayout.isSnapping())
             return false;
         mGesDetector.onTouchEvent(event);
         float moveX, moveY;
@@ -1212,7 +1213,7 @@ public class AppleWatchContainer extends FrameLayout {
     public void showOpenAnimation(int direction) {
         // show from left-center
         if (direction == 0) {
-            
+
         } else if (direction == 1) {// show from left-bottom
 
         } else if (direction == 2) {// show from right-center
@@ -1220,16 +1221,16 @@ public class AppleWatchContainer extends FrameLayout {
         } else if (direction == 3) {// show from right-bottom
 
         }
-//        AnimatorSet set = new AnimatorSet();
-//        set.setDuration(600);
-//        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f,
-//                1.1f,
-//                1.0f);
-//        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f,
-//                1.1f,
-//                1.0f);
-//        set.playTogether(animationx, animationy);
-//        set.start();
+        // AnimatorSet set = new AnimatorSet();
+        // set.setDuration(600);
+        // Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f,
+        // 1.1f,
+        // 1.0f);
+        // Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f,
+        // 1.1f,
+        // 1.0f);
+        // set.playTogether(animationx, animationy);
+        // set.start();
     }
 
     public void showOpenAnimation() {
@@ -1241,6 +1242,17 @@ public class AppleWatchContainer extends FrameLayout {
         Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f,
                 1.1f,
                 1.0f);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                isAnimating = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isAnimating = false;
+            }
+        });
         set.playTogether(animationx, animationy);
         set.start();
     }
@@ -1259,6 +1271,17 @@ public class AppleWatchContainer extends FrameLayout {
                 FloatWindowHelper.mGestureShowing = false;
                 activity.finish();
                 super.onAnimationEnd(animation);
+            }
+        });
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                isAnimating = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isAnimating = false;
             }
         });
         set.playTogether(animationx, animationy);
