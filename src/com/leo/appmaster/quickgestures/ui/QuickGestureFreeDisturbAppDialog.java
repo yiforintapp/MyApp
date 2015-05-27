@@ -61,6 +61,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private String mLastName = "";
     private List<BaseInfo> quickSwitchSaveList;
     private List<QuickGsturebAppInfo> mCommonAppTemp;
+    private static int mMostAppConunt = 0;
 
     public QuickGestureFreeDisturbAppDialog(Context context, int flag) {
         super(context, R.style.bt_dialog);
@@ -88,6 +89,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 animateItem(arg1);
                 QuickGsturebAppInfo selectInfl = (QuickGsturebAppInfo) arg1.getTag();
+
                 if (mFlag == 2) {
                     // 快捷开关的方式
                     if (quickSwitchSaveList != null) {
@@ -109,6 +111,13 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     mSwitchListSize -= 1;
                 } else {
                     if (mFlag == 2 || mFlag == 3) {
+
+                        if (mFlag == 3) {
+                            if (mMostAppConunt <= 12) {
+                                selectInfl.gesturePosition = mMostAppConunt;
+                                mMostAppConunt += 1;
+                            }
+                        }
                         if (mSwitchListSize <= 12) {
                             selectInfl.isFreeDisturb = true;
                             mFreeDisturbApp.add(selectInfl);
@@ -138,7 +147,6 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     }
 
                 }
-
             }
         });
         mTitle = (TextView) dlgView.findViewById(R.id.free_disturb_dialog_title);
@@ -280,11 +288,10 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         String packageName = null;
         packageName = AppMasterPreference.getInstance(mContext)
                 .getCommonAppPackageName();
-        int i = 0;
+        // int i = 0;
         if (!AppMasterPreference.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME
                 .equals(packageName)) {
             String[] names = packageName.split(";");
-            Log.e("#############", "names:" + names.length);
             QuickGsturebAppInfo temp = null;
             int sIndex = -1;
             // packageName = packageName.substring(0, packageName.length() - 1);
@@ -308,7 +315,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     app.packageName = info.packageName;
                     app.label = info.label;
                     app.icon = info.icon;
-                    app.gesturePosition = i++;
+                    // app.gesturePosition = i++;
                     if (allNames.contains(info.packageName)) {
                         app.isFreeDisturb = true;
                         mFreeDisturbApp.add(app);
@@ -330,7 +337,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     app.label = info.label;
                     app.icon = info.icon;
                     app.isFreeDisturb = false;
-                    app.gesturePosition = i++;
+                    // app.gesturePosition = i++;
                     mDisturbList.add(app);
                 }
             }
