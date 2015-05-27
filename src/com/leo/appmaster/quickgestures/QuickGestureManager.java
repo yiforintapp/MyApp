@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import android.R.integer;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
@@ -20,8 +19,8 @@ import android.net.Uri;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -36,9 +35,7 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGestureManager {
