@@ -268,7 +268,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockFragment.onLockPackageChanged(mLockedPackage);
             LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
 
-            if (mPretendFragment != null) {
+            
+            if(mPretendFragment != null){
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction tans;
+                mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
+                mPretendFragment = getPretendFragment();
+                    mLockLayout.setVisibility(View.GONE);
+                    mPretendLayout.setVisibility(View.VISIBLE);
+                    tans = fm.beginTransaction();
+                    tans.replace(R.id.pretend_layout, mPretendFragment);
+                    tans.commitAllowingStateLoss();
+            }
+           if(mPretendFragment != null) {
                 mLockLayout.setVisibility(View.GONE);
                 mPretendLayout.setVisibility(View.VISIBLE);
                 if (mPretendFragment instanceof PretendAppErrorFragment) {
@@ -501,7 +513,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     public void onUnlockSucceed() {
-
         if (mQuickLockMode) {
             LockManager lm = LockManager.getInstatnce();
             List<LockMode> modeList = lm.getLockMode();
