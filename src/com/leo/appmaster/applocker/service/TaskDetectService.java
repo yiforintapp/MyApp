@@ -162,6 +162,7 @@ public class TaskDetectService extends Service {
     }
 
     public void startFloatWindow() {
+
         if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
             startFloatWindowTask();
         } else {
@@ -170,6 +171,10 @@ public class TaskDetectService extends Service {
     }
 
     private void startFloatWindowTask() {
+        if (AppMasterPreference.getInstance(getApplicationContext())
+                .getFristSlidingTip()) {
+            FloatWindowHelper.mGestureShowing = true;
+        }
         stopFloatWindowTask();
         mFloatWindowTask = new FloatWindowTask();
         mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1500,

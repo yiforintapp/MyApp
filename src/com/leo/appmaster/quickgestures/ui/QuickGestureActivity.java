@@ -333,10 +333,10 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
                         @Override
                         public void run() {
-                            FloatWindowHelper.createFloatWindow(QuickGestureActivity.this,
-                                    AppMasterPreference
-                                            .getInstance(getApplicationContext())
-                                            .getQuickGestureDialogSeekBarValue());
+//                            FloatWindowHelper.createFloatWindow(QuickGestureActivity.this,
+//                                    AppMasterPreference
+//                                            .getInstance(getApplicationContext())
+//                                            .getQuickGestureDialogSeekBarValue());
                             QuickGestureManager.getInstance(QuickGestureActivity.this)
                                     .startFloatWindow();
                         }
