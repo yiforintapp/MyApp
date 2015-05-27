@@ -1,22 +1,15 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.TreeSet;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.StatusBarManager;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
@@ -24,16 +17,12 @@ import android.widget.ImageView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
-import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
@@ -111,8 +100,8 @@ public class QuickGesturePopupActivity extends Activity {
     }
 
     private void fillMostUsedLayout() {
-        loadMostUseApp();
-        mContainer.fillGestureItem(GType.MostUsedLayout, mCommonApps);
+        List<BaseInfo> items = QuickGestureManager.getInstance(this).getMostUsedList();
+        mContainer.fillGestureItem(GType.MostUsedLayout, items);
     }
 
     private void fillSwitcherLayout() {
@@ -233,102 +222,5 @@ public class QuickGesturePopupActivity extends Activity {
             }
         });
         animSet.start();
-    }
-
-    // Customize common app
-    private void loadCommonAppInfo() {
-        if (mCommonApps != null) {
-            mCommonApps.clear();
-            List<QuickGsturebAppInfo> packageNames = new ArrayList<QuickGsturebAppInfo>();
-            ArrayList<AppItemInfo> lists = AppLoadEngine.getInstance(this).getAllPkgInfo();
-            String commonAppString = mSpSwitch.getCommonAppPackageName();
-            List<String> allNames = new ArrayList<String>();
-            if (!TextUtils.isEmpty(commonAppString)) {
-                String[] names = commonAppString.split(";");
-                QuickGsturebAppInfo temp = null;
-                int sIndex = -1;
-//                commonAppString = commonAppString.substring(0, commonAppString.length() - 1);
-                for (String recoder : names) {
-                    sIndex = recoder.indexOf(':');
-                    if (sIndex != -1) {
-                        temp = new QuickGsturebAppInfo();
-                        temp.packageName = recoder.substring(0, sIndex);
-                        temp.gesturePosition = Integer.parseInt(recoder.substring(sIndex + 1));
-                        packageNames.add(temp);
-                    }
-                }
-                int i = 0;
-                if (packageNames != null && packageNames.size() > 0) {
-                    for (QuickGsturebAppInfo appItemInfo : packageNames) {
-                        allNames.add(appItemInfo.packageName);
-                    }
-                    for (AppItemInfo info : lists) {
-                        QuickGsturebAppInfo app = new QuickGsturebAppInfo();
-                        if (allNames != null) {
-                            app.packageName = info.packageName;
-                            app.label = info.label;
-                            app.icon = info.icon;
-                            if (allNames.contains(info.packageName)) {
-                                if (i >= 13) {
-                                    break;
-                                }
-                                if (info != null) {
-                                    mCommonApps.add(info);
-                                    i++;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Recorder App
-    private void loadRecorderAppInfo() {
-        if (mCommonApps != null) {
-            mCommonApps.clear();
-            TreeSet<AppLauncherRecorder> recorderApp = QuickGestureManager
-                    .getInstance(this).mAppLaunchRecorders;
-            AppLoadEngine engin = AppLoadEngine.getInstance(this);
-            Iterator<AppLauncherRecorder> recorder = recorderApp.descendingIterator();
-            int i = 0;
-            while (recorder.hasNext()) {
-                AppLauncherRecorder recorderAppInfo = recorder.next();
-                // if (recorderAppInfo.launchCount == 0) {
-                // continue;
-                // }
-                AppItemInfo info = engin.getAppInfo(recorderAppInfo.pkg);
-                if (i >= 13) {
-                    break;
-                }
-                if (info != null) {
-                    mCommonApps.add(info);
-                    i++;
-                }
-            }
-        }
-    }
-
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        super.onWindowFocusChanged(hasFocus);
-//        try {
-//            Object service = getSystemService("statusbar");
-//            Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-//            Method test = statusbarManager.getMethod("collapse");
-//            test.invoke(service);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
-
-    
-    // Most use app
-    private void loadMostUseApp() {
-        if (mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
-            loadRecorderAppInfo();
-        } else {
-            loadCommonAppInfo();
-        }
     }
 }

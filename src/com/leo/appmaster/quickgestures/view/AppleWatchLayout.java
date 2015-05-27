@@ -12,6 +12,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -716,7 +717,7 @@ public class AppleWatchLayout extends ViewGroup {
     private void showAddNewDiglog(GType type) {
         QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.MostUsedLayout) {
-            qgm.showCommontAppDialog(getContext());
+            qgm.showCommontAppDialog((Activity)getContext());
         } else if (type == GType.SwitcherLayout) {
             // get list from sp
             // String mListString = mSpSwitch.getSwitchList();
@@ -742,7 +743,6 @@ public class AppleWatchLayout extends ViewGroup {
                     TreeSet<AppLauncherRecorder> mRecorderApp = QuickGestureManager
                             .getInstance(mContext).mAppLaunchRecorders;
                     Iterator<AppLauncherRecorder> recorder = mRecorderApp.descendingIterator();
-                    int i = 0;
                     while (recorder.hasNext()) {
                         AppLauncherRecorder recorderAppInfo = recorder.next();
                         if (info != null) {

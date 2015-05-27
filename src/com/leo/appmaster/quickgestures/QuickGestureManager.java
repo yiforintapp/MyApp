@@ -3,11 +3,13 @@ package com.leo.appmaster.quickgestures;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
 
 import android.R.integer;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.content.Context;
@@ -205,8 +207,81 @@ public class QuickGestureManager {
     }
 
     public List<BaseInfo> getMostUsedList() {
+        if (mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
+            return loadRecorderAppInfo();
+        } else {
+            return loadCommonAppInfo();
+        }
+    }
 
-        return null;
+    
+    // Recorder App
+    private List<BaseInfo> loadRecorderAppInfo() {
+        List<BaseInfo> resault = new ArrayList<BaseInfo>();
+        TreeSet<AppLauncherRecorder> recorderApp = QuickGestureManager
+                .getInstance(mContext).mAppLaunchRecorders;
+        AppLoadEngine engin = AppLoadEngine.getInstance(mContext);
+        Iterator<AppLauncherRecorder> recorder = recorderApp.descendingIterator();
+        int i = 0;
+        AppItemInfo info;
+        QuickGsturebAppInfo temp = null;
+        while (recorder.hasNext()) {
+            AppLauncherRecorder recorderAppInfo = recorder.next();
+            info = engin.getAppInfo(recorderAppInfo.pkg);
+            if (i >= 13) {
+                break;
+            } else {
+                temp = new QuickGsturebAppInfo();
+                temp.packageName = info.packageName;
+                temp.activityName = info.activityName;
+                temp.label = info.label;
+                temp.icon = info.icon;
+                temp.gesturePosition = i;
+                resault.add(temp);
+            }
+        }
+
+        return resault;
+    }
+
+    // Customize common app
+    private List<BaseInfo> loadCommonAppInfo() {
+        
+        List<BaseInfo> resault = new ArrayList<BaseInfo>();
+        List<QuickGsturebAppInfo> packageNames = new ArrayList<QuickGsturebAppInfo>();
+        AppLoadEngine engin = AppLoadEngine.getInstance(mContext);
+        String commonAppString = mSpSwitch.getCommonAppPackageName();
+        if (!TextUtils.isEmpty(commonAppString)) {
+            String[] names = commonAppString.split(";");
+            QuickGsturebAppInfo temp = null;
+            int sIndex = -1;
+            for (String recoder : names) {
+                sIndex = recoder.indexOf(':');
+                if (sIndex != -1) {
+                    temp = new QuickGsturebAppInfo();
+                    temp.packageName = recoder.substring(0, sIndex);
+                    temp.gesturePosition = Integer.parseInt(recoder.substring(sIndex + 1));
+                    packageNames.add(temp);
+                }
+            }
+
+            AppItemInfo info;
+            for (QuickGsturebAppInfo appItemInfo : packageNames) {
+                if (resault.size() >= 13) {
+                    break;
+                }
+                info = engin.getAppInfo(appItemInfo.packageName);
+                if (info != null) {
+                    appItemInfo.packageName = info.packageName;
+                    appItemInfo.activityName = info.activityName;
+                    appItemInfo.label = info.label;
+                    appItemInfo.icon = info.icon;
+                    resault.add(appItemInfo);
+                }
+            }
+        }
+
+        return resault;
     }
 
     public List<BaseInfo> getSwitcherList() {
@@ -333,9 +408,9 @@ public class QuickGestureManager {
      * 
      * @param context
      */
-    public void showCommontAppDialog(final Context activity) {
+    public void showCommontAppDialog(final Activity activity) {
         final QuickGestureFreeDisturbAppDialog commonApp = new QuickGestureFreeDisturbAppDialog(
-                activity, 3);
+                activity.getApplicationContext(), 3);
         final AppMasterPreference pref = AppMasterPreference.getInstance(activity);
         commonApp.setIsShowCheckBox(true);
         commonApp.setCheckBoxText(R.string.quick_gesture_change_common_app_dialog_checkbox_text);
@@ -385,7 +460,11 @@ public class QuickGestureManager {
                 commonApp.dismiss();
             }
         });
+
+        commonApp.getWindow().setType(
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         commonApp.show();
+        activity.finish();
     }
 
     /**
@@ -446,59 +525,62 @@ public class QuickGestureManager {
                                                 isHasSameName = true;
                                             }
                                         }
-                                        if(!isHasSameName){
+                                        if (!isHasSameName) {
                                             mDefineList.add(nInfo);
                                         }
                                     }
                                     removeSwitch = true;
                                 }
-                                
-                                if(addSwitch){
-                                    if(!removeSwitch){
+
+                                if (addSwitch) {
+                                    if (!removeSwitch) {
                                         mDefineList = rightQuickSwitch;
                                     }
-                                    //记录现有的Icon位置
+                                    // 记录现有的Icon位置
                                     LeoLog.d("QuickGestureManager", "有货要加");
                                     List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
                                     List<Integer> sPosition = new ArrayList<Integer>();
-                                    for(int i = 0;i < mDefineList.size();i++){
+                                    for (int i = 0; i < mDefineList.size(); i++) {
                                         sPosition.add(mDefineList.get(i).gesturePosition);
-                                        LeoLog.d("QuickGestureManager", "货的位置 :" + mDefineList.get(i).gesturePosition);
+                                        LeoLog.d("QuickGestureManager",
+                                                "货的位置 :" + mDefineList.get(i).gesturePosition);
                                     }
-                                    
+
                                     int k = 0;
-                                    for(int i = 0;i<13;i++){
+                                    for (int i = 0; i < 13; i++) {
                                         boolean isHasIcon = false;
-                                        for(int j = 0;j<mDefineList.size();j++){
-                                            if(i == mDefineList.get(j).gesturePosition){
+                                        for (int j = 0; j < mDefineList.size(); j++) {
+                                            if (i == mDefineList.get(j).gesturePosition) {
                                                 isHasIcon = true;
                                             }
                                         }
-                                        
-                                        if(!isHasIcon && addQuickSwitch.size() > k){
-                                            LeoLog.d("QuickGestureManager",  i + "号位没人坐，收藏起来");
+
+                                        if (!isHasIcon && addQuickSwitch.size() > k) {
+                                            LeoLog.d("QuickGestureManager", i + "号位没人坐，收藏起来");
                                             BaseInfo mInfo = addQuickSwitch.get(k);
                                             mInfo.gesturePosition = i;
                                             mfixPostionList.add(mInfo);
-                                            k ++;
+                                            k++;
                                         }
                                     }
-                                    
-                                    LeoLog.d("QuickGestureManager",  "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
-                                    for(int i = 0; i< mfixPostionList.size();i++){
+
+                                    LeoLog.d("QuickGestureManager",
+                                            "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
+                                    for (int i = 0; i < mfixPostionList.size(); i++) {
                                         BaseInfo mInfo = mfixPostionList.get(i);
                                         mDefineList.add(mInfo);
-                                        LeoLog.d("QuickGestureManager",  "霸占了 " + mInfo.gesturePosition + "号位");
+                                        LeoLog.d("QuickGestureManager", "霸占了 "
+                                                + mInfo.gesturePosition + "号位");
                                     }
                                 }
-                                
-                                if(!addSwitch && !removeSwitch){
+
+                                if (!addSwitch && !removeSwitch) {
                                     mDefineList = rightQuickSwitch;
                                 }
-                                
+
                                 String mChangeList = QuickSwitchManager.getInstance(mContext)
                                         .listToString(mDefineList, mDefineList.size());
-                                LeoLog.d("QuickGestureManager",  "mChangeList ： " + mChangeList);
+                                LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
                                 mSpSwitch.setSwitchList(mChangeList);
                             }
                         });
