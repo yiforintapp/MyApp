@@ -250,13 +250,13 @@ public class AppMasterApplication extends Application {
         postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
+                AppBusinessManager.getInstance(mInstance).init();
                 QuickGestureManager.getInstance(AppMasterApplication.this).init();
                 checkUpdateFinish();
                 // judgeLockService();
                 // judgeStatictiUnlockCount();
                 initImageLoader();
                 mAppsEngine.preloadAllBaseInfo();
-                 AppBusinessManager.getInstance(mInstance).init();
                 mBackupManager.getBackupList();
                 PrivacyContactManager.getInstance(ctx).getPrivateContacts();
                 // GP check

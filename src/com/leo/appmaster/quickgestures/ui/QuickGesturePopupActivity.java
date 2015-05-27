@@ -112,21 +112,8 @@ public class QuickGesturePopupActivity extends Activity {
     }
 
     private void fillSwitcherLayout() {
-        if (mSwitchList == null) {
-            mSwitchListFromSp = mSpSwitch.getSwitchList();
-            switchNum = mSpSwitch.getSwitchListSize();
-            if (mSwitchListFromSp.isEmpty()) {
-                mSwitchList = new ArrayList<BaseInfo>();
-                mSwitchList = QuickSwitchManager.getInstance(this).getSwitchList(switchNum);
-                String saveToSp = QuickSwitchManager.getInstance(this).listToString(mSwitchList,
-                        switchNum);
-                mSpSwitch.setSwitchList(saveToSp);
-            } else {
-                mSwitchList = new ArrayList<BaseInfo>();
-                mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
-            }
-            mContainer.fillGestureItem(GType.SwitcherLayout, mSwitchList);
-        }
+        List<BaseInfo> items = QuickGestureManager.getInstance(this).getSwitcherList();
+        mContainer.fillGestureItem(GType.SwitcherLayout, items);
     }
 
     @Override
