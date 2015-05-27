@@ -307,13 +307,20 @@ public class AppleWatchContainer extends FrameLayout {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                LeoLog.d(TAG, "ACTION_MOVE  getX " + getX());
                 if (mEditing) {
                     LeoLog.d(TAG, "ACTION_MOVE in editing ");
-
                 } else {
                     moveX = event.getX();
                     moveY = event.getY();
+                    
+                    //下拉通知栏，finish
+                    if(mTouchDownY > 0 && mTouchDownY < 70){
+                        if(moveY - mTouchDownY > 70){
+                            Activity activity = (Activity) AppleWatchContainer.this.getContext();
+                            activity.finish();
+                        }
+                    }
+                    
                     if (Math.abs(moveX - mTouchDownX) > DipPixelUtil.dip2px(getContext(), 10)) {
                         mMoving = true;
                         if (mTouchDownY >= mDymicLayout.getTop()
