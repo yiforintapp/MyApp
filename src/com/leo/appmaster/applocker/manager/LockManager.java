@@ -108,7 +108,7 @@ public class LockManager {
     public boolean isShowPrivacyMsm = false;
     public boolean isShowPrivacyCallLog = false;
     public boolean isShowSysNoReadMessage = false;
-    public int onTuchGestureFlag = -1;
+    public int onTuchGestureFlag = -1;// -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
     private ILockPolicy mLockPolicy;
     private static LockManager sInstance;
     private Context mContext;
@@ -1424,14 +1424,14 @@ public class LockManager {
 
     public void stopFloatWindowService() {
         TaskDetectService service = TaskDetectService.getService();
-        if(service != null) {
+        if (service != null) {
             service.stopFloatWindow();
         }
     }
 
     public void startFloatWindowService() {
         TaskDetectService service = TaskDetectService.getService();
-        if(service != null) {
+        if (service != null) {
             service.startFloatWindow();
         }
     }
@@ -1441,12 +1441,12 @@ public class LockManager {
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         TaskDetectService service = TaskDetectService.getService();
         if (service != null) {
-            if( amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 service.startDetect();
                 amp.setDoubleCheck(null);
             }
         } else {
-           mContext.startService(new Intent(mContext, TaskDetectService.class));
+            mContext.startService(new Intent(mContext, TaskDetectService.class));
         }
     }
 
@@ -1563,7 +1563,7 @@ public class LockManager {
 
     public String getLastActivity() {
         TaskDetectService service = TaskDetectService.getService();
-        if(service != null) {
+        if (service != null) {
             return service.getLastRunningActivity();
         }
         return null;
