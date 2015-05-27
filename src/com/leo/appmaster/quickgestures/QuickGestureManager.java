@@ -386,7 +386,7 @@ public class QuickGestureManager {
      * @param context
      * @param mContainer
      */
-    public static void showQuickSwitchDialog(final Context context,
+    public  void showQuickSwitchDialog(final Context context,
             final AppleWatchContainer mContainer) {
         final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
                 context, 2);
