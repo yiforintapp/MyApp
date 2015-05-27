@@ -13,6 +13,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
@@ -247,29 +248,43 @@ public class QuickGesturePopupActivity extends Activity {
     private void loadCommonAppInfo() {
         if (mCommonApps != null) {
             mCommonApps.clear();
+            List<QuickGsturebAppInfo> packageNames = new ArrayList<QuickGsturebAppInfo>();
             ArrayList<AppItemInfo> lists = AppLoadEngine.getInstance(this).getAllPkgInfo();
             String commonAppString = mSpSwitch.getCommonAppPackageName();
-            // if
-            // (!mSpSwitch.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME.equals(commonAppString))
-            // {
-            if (!"".equals(commonAppString)) {
+            List<String> allNames = new ArrayList<String>();
+            int i = 0;
+            if (!TextUtils.isEmpty(commonAppString)) {
                 String[] names = commonAppString.split(";");
-                List<String> packageNames = Arrays.asList(names);
-                if (packageNames != null) {
-                    int i = 0;
+                QuickGsturebAppInfo temp = null;
+                int sIndex = -1;
+                commonAppString = commonAppString.substring(0, commonAppString.length() - 1);
+                for (String recoder : names) {
+                    sIndex = recoder.indexOf(':');
+                    if (sIndex != -1) {
+                        temp = new QuickGsturebAppInfo();
+                        temp.packageName = recoder.substring(0, sIndex);
+                        temp.gesturePosition = Integer.parseInt(recoder.substring(sIndex + 1));
+                        packageNames.add(temp);
+                    }
+                }
+                if (packageNames != null && packageNames.size() > 0) {
+                    for (QuickGsturebAppInfo appItemInfo : packageNames) {
+                        allNames.add(appItemInfo.packageName);
+                    }
                     for (AppItemInfo info : lists) {
-                        QuickGsturebAppInfo appInfo = new QuickGsturebAppInfo();
-                        appInfo.icon = info.icon;
-                        appInfo.packageName = info.packageName;
-                        appInfo.label = info.label;
-                        if (packageNames.contains(info.packageName)) {
-                            if (i >= 13) {
-                                break;
-                            }
-                            if (appInfo != null) {
-                                appInfo.isFreeDisturb = true;
-                                mCommonApps.add(appInfo);
-                                i++;
+                        QuickGsturebAppInfo app = new QuickGsturebAppInfo();
+                        if (allNames != null) {
+                            app.packageName = info.packageName;
+                            app.label = info.label;
+                            app.icon = info.icon;
+                            if (allNames.contains(info.packageName)) {
+                                if (i >= 13) {
+                                    break;
+                                }
+                                if (info != null) {
+                                    mCommonApps.add(info);
+                                    i++;
+                                }
                             }
                         }
                     }
@@ -287,7 +302,6 @@ public class QuickGesturePopupActivity extends Activity {
         int i = 0;
         while (recorder.hasNext()) {
             AppLauncherRecorder recorderAppInfo = recorder.next();
-            // Log.e("###############", "最近使用：" + recorderAppInfo.pkg);
             AppItemInfo info = engin.getAppInfo(recorderAppInfo.pkg);
             if (i >= 13) {
                 break;
