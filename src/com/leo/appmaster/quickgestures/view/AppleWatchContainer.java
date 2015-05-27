@@ -1252,7 +1252,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
         AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(300);
+        set.setDuration(200);
         set.setInterpolator(new DecelerateInterpolator());
         set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
@@ -1296,7 +1296,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
         AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(300);
+        set.setDuration(200);
         set.setInterpolator(new DecelerateInterpolator());
         set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
