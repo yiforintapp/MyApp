@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.StatusBarManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -308,6 +310,19 @@ public class QuickGesturePopupActivity extends Activity {
         }
     }
 
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//        try {
+//            Object service = getSystemService("statusbar");
+//            Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+//            Method test = statusbarManager.getMethod("collapse");
+//            test.invoke(service);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
+
+    
     // Most use app
     private void loadMostUseApp() {
         if (mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {

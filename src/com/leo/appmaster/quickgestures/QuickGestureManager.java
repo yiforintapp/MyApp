@@ -210,6 +210,7 @@ public class QuickGestureManager {
     }
 
     public List<BaseInfo> getSwitcherList() {
+        QuickSwitchManager.getInstance(mContext).getAllList();
         return QuickSwitchManager.getInstance(mContext).getSwitchList(13);
     }
 

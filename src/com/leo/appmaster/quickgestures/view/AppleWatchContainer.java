@@ -293,7 +293,6 @@ public class AppleWatchContainer extends FrameLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mEditing) {
-                    LeoLog.d(TAG, "ACTION_DOWN in editing ");
                     gestureLayout.checkActionDownInEditing(event.getX(), event.getY()
                             - gestureLayout.getTop());
                 } else {
@@ -306,6 +305,7 @@ public class AppleWatchContainer extends FrameLayout {
                 break;
 
             case MotionEvent.ACTION_MOVE:
+//                LeoLog.d(TAG, "ACTION_MOVE  getX " + getX());
                 if (mEditing) {
                     LeoLog.d(TAG, "ACTION_MOVE in editing ");
 
