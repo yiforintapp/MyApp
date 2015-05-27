@@ -10,6 +10,8 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +28,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
@@ -125,7 +128,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                 break;
             case 3:
                 // 常用应用
-                loadData(2);
+                loadMostUseData();
                 break;
             default:
                 break;
@@ -174,7 +177,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         mTitle.setText(id);
     }
 
-    // 加载系统应用数据
+    // 加载免打扰应用数据
     private void loadData(int flag) {
         List<String> packageNames = null;
         // 所有应用
@@ -218,6 +221,78 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             } else {
                 appInfo.isFreeDisturb = false;
                 mDisturbList.add(appInfo);
+            }
+        }
+        if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
+            mFreeDisturbApp.addAll(mDisturbList);
+        } else {
+            mFreeDisturbApp = mDisturbList;
+        }
+        mGridView.setDatas(mFreeDisturbApp, 4, 4);
+    }
+
+    // 加载常用应用
+    private void loadMostUseData() {
+        List<QuickGsturebAppInfo> packageNames = new ArrayList<QuickGsturebAppInfo>();
+        List<String> allNames = new ArrayList<String>();
+        // 所有应用
+        ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(mContext)
+                .getAllPkgInfo();
+        // 打扰的应用
+        mDisturbList = new ArrayList<QuickGsturebAppInfo>();
+        // 免打扰的应用
+        mFreeDisturbApp = new ArrayList<QuickGsturebAppInfo>();
+        String packageName = null;
+        packageName = AppMasterPreference.getInstance(mContext)
+                .getCommonAppPackageName();
+        if (!AppMasterPreference.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME
+                .equals(packageName)) {
+            String[] names = packageName.split(";");
+            QuickGsturebAppInfo temp = null;
+            int sIndex = -1;
+            packageName = packageName.substring(0, packageName.length() - 1);
+            for (String recoder : names) {
+                sIndex = recoder.indexOf(':');
+                if (sIndex != -1) {
+                    temp = new QuickGsturebAppInfo();
+                    temp.packageName = recoder.substring(0, sIndex);
+                    temp.gesturePosition = Integer.parseInt(recoder.substring(sIndex + 1));
+                    packageNames.add(temp);
+                }
+            }
+        }
+        if (packageNames != null && packageNames.size() > 0) {
+            for (QuickGsturebAppInfo appItemInfo : packageNames) {
+                allNames.add(appItemInfo.packageName);
+            }
+            for (AppItemInfo info : list) {
+                QuickGsturebAppInfo app = new QuickGsturebAppInfo();
+                if (allNames != null) {
+                    app.packageName = info.packageName;
+                    app.label = info.label;
+                    app.icon = info.icon;
+                    if (allNames.contains(info.packageName)) {
+                        app.isFreeDisturb = true;
+                        mFreeDisturbApp.add(app);
+                    } else {
+                        app.isFreeDisturb = false;
+                        mDisturbList.add(app);
+                    }
+                } else {
+                    app.isFreeDisturb = false;
+                    mDisturbList.add(app);
+                }
+            }
+        } else {
+            for (AppItemInfo info : list) {
+                if (packageNames == null || packageNames.size() <= 0) {
+                    QuickGsturebAppInfo app = new QuickGsturebAppInfo();
+                    app.packageName = info.packageName;
+                    app.label = info.label;
+                    app.icon = info.icon;
+                    app.isFreeDisturb = false;
+                    mDisturbList.add(app);
+                }
             }
         }
         if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
