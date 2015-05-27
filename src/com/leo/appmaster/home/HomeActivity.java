@@ -64,7 +64,6 @@ import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
-import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
@@ -544,7 +543,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             HomeActivity.this).getUnlockCount();
                     boolean haveTip = AppMasterPreference.getInstance(
                             HomeActivity.this).getGoogleTipShowed();
-                    if (count >= 50 && !haveTip) {
+                    if (count >= 25 && !haveTip) {
                         LockManager.getInstatnce().timeFilterSelf();
                         Intent intent = new Intent(HomeActivity.this,
                                 GradeTipActivity.class);
