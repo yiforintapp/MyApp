@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import android.R.integer;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
@@ -36,7 +35,6 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.utils.LeoLog;
@@ -44,9 +42,11 @@ import com.leo.appmaster.utils.LeoLog;
 public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
 
+    protected static final String AppLauncherRecorder = null;
+
     private static Context mContext;
     private static QuickGestureManager mInstance;
-    public TreeSet<AppLauncherRecorder> mAppLaunchRecorders;
+    public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
     private static AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
@@ -138,7 +138,7 @@ public class QuickGestureManager {
     }
 
     public void loadAppLaunchReorder() {
-        mAppLaunchRecorders = new TreeSet<QuickGestureManager.AppLauncherRecorder>();
+        mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
         String recoders = AppMasterPreference.getInstance(mContext).getAppLaunchRecoder();
         AppLauncherRecorder temp = null;
         int sIndex = -1;
@@ -151,6 +151,7 @@ public class QuickGestureManager {
                     temp = new AppLauncherRecorder();
                     temp.pkg = recoder.substring(0, sIndex);
                     temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
+                    mAppLaunchRecorders.add(temp);
                 }
             }
         }
@@ -214,21 +215,21 @@ public class QuickGestureManager {
         }
     }
 
-    
     // Recorder App
     private List<BaseInfo> loadRecorderAppInfo() {
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
-        TreeSet<AppLauncherRecorder> recorderApp = QuickGestureManager
+        ArrayList<AppLauncherRecorder> recorderApp = QuickGestureManager
                 .getInstance(mContext).mAppLaunchRecorders;
         AppLoadEngine engin = AppLoadEngine.getInstance(mContext);
-        Iterator<AppLauncherRecorder> recorder = recorderApp.descendingIterator();
+        Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
         int i = 0;
         AppItemInfo info;
         QuickGsturebAppInfo temp = null;
         while (recorder.hasNext()) {
             AppLauncherRecorder recorderAppInfo = recorder.next();
             info = engin.getAppInfo(recorderAppInfo.pkg);
-            if(info == null) continue;
+            if (info == null)
+                continue;
             if (i >= 13) {
                 break;
             } else {
@@ -239,6 +240,7 @@ public class QuickGestureManager {
                 temp.icon = info.icon;
                 temp.gesturePosition = i;
                 resault.add(temp);
+                i++;
             }
         }
 
@@ -247,7 +249,7 @@ public class QuickGestureManager {
 
     // Customize common app
     private List<BaseInfo> loadCommonAppInfo() {
-        
+
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         List<QuickGsturebAppInfo> packageNames = new ArrayList<QuickGsturebAppInfo>();
         AppLoadEngine engin = AppLoadEngine.getInstance(mContext);
@@ -431,20 +433,103 @@ public class QuickGestureManager {
                         List<BaseInfo> removeCommonApp = commonApp.getRemoveFreePackageName();
                         // 是否选择使用习惯自动填充
                         boolean flag = commonApp.getCheckValue();
-                        if (addCommonApp != null && addCommonApp.size() > 0) {
+                        if (!flag) {
+                            List<BaseInfo> comList = loadCommonAppInfo();
+                            List<BaseInfo> tempList = new ArrayList<BaseInfo>();
+
+                            if (removeCommonApp != null && removeCommonApp.size() > 0) {
+                                for (BaseInfo info : removeCommonApp) {
+                                    for (BaseInfo baseInfo : comList) {
+                                        if (baseInfo.label.equals(info.label)) {
+                                            tempList.add(baseInfo);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            comList.remove(tempList);
+
+                            int[] position = new int[13];
+                            int i;
+                            for (i = 0; i < comList.size(); i++) {
+                                position[comList.get(i).gesturePosition] = 1;
+                            }
+                            List<Integer> levelPosition = new ArrayList<Integer>();
+                            for (i = 0; i < position.length; i++) {
+                                if (position[i] == 0) {
+                                    levelPosition.add(i);
+                                }
+                            }
+
+                            String resault = "";
+                            for (BaseInfo info : comList) {
+                                QuickGsturebAppInfo appItemInfo = (QuickGsturebAppInfo) info;
+                                resault += appItemInfo.packageName + ":"
+                                        + appItemInfo.gesturePosition + ";";
+                            }
+
+                            i = 0;
+                            String addResault = "";
                             for (BaseInfo info : addCommonApp) {
-                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                pref.setCommonAppPackageNameAdd(string.packageName + ":"
-                                        + string.gesturePosition);
+                                if (i <= levelPosition.size()) {
+                                    QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
+                                    addResault += appInfo.packageName + ":" + levelPosition.get(i)
+                                            + ";";
+                                    i++;
+                                } else {
+                                    break;
+                                }
                             }
-                        }
-                        if (removeCommonApp != null && removeCommonApp.size() > 0) {
-                            for (BaseInfo info : removeCommonApp) {
-                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                pref.setCommonAppPackageNameRemove(string.packageName + ":"
-                                        + string.gesturePosition);
+                            resault += addResault;
+                            pref.setCommonAppPackageName(resault);
+
+                        } else {
+                            List<AppLauncherRecorder> removeList = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
+                            ArrayList<AppLauncherRecorder> record = QuickGestureManager
+                                    .getInstance(mContext).mAppLaunchRecorders;
+                            for (AppLauncherRecorder appLauncherRecorder : record) {
+                                for (BaseInfo removeInfo : removeCommonApp) {
+                                    QuickGsturebAppInfo info = (QuickGsturebAppInfo) removeInfo;
+                                    if (appLauncherRecorder.pkg.equals(info.packageName)) {
+                                        removeList.add(appLauncherRecorder);
+                                        break;
+                                    }
+                                }
                             }
+                            if (removeList.size() > 0) {
+                                record.removeAll(removeList);
+                            }
+                            AppLauncherRecorder addRecord;
+                            
+                            int maxCount = 0;
+                            for (AppLauncherRecorder appLauncherRecorder : record) {
+                                if(appLauncherRecorder.launchCount > maxCount) {
+                                    maxCount = appLauncherRecorder.launchCount;
+                                }
+                            }
+                            
+                            for (BaseInfo removeInfo : addCommonApp) {
+                                addRecord = new AppLauncherRecorder();
+                                QuickGsturebAppInfo info = (QuickGsturebAppInfo) removeInfo;
+                                addRecord.pkg = info.packageName;
+                                LeoLog.e("xxxx", addRecord.pkg + ":"
+                                        + info.gesturePosition);
+                                if (record.size() > 0) {
+                                    addRecord.launchCount = maxCount + 1;
+                                } else {
+                                    addRecord.launchCount = 1;
+                                }
+                                record.add(addRecord);
+                            }
+                            
+                            LeoLog.e("xxxx", "record size = " + record.size());
+                            for (AppLauncherRecorder appLauncherRecorder : record) {
+                                LeoLog.e("xxxx", appLauncherRecorder.pkg + ":"
+                                        + appLauncherRecorder.launchCount);
+                            }
+                            saveAppLaunchRecoder();
                         }
+
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
                             pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
                         }
@@ -468,6 +553,7 @@ public class QuickGestureManager {
         activity.finish();
     }
 
+    
     /**
      * Quick Switch Dialog
      * 
