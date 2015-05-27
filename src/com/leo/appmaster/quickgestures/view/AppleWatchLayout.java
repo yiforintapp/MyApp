@@ -34,7 +34,6 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
@@ -720,6 +719,12 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.SwitcherLayout) {
         } else if (type == GType.MostUsedLayout) {
             // TODO
+            BaseInfo info = (BaseInfo) hitView.getTag();
+            if (info instanceof QuickGsturebAppInfo) {
+                QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
+                Log.e("##############", "QuickGsturebAppInfo:" + appInfo.packageName);
+            }
+            // Log.e("##############", "" + info.packageName);
         }
 
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();
