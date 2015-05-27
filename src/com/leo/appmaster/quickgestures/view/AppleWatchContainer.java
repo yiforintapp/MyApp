@@ -282,7 +282,7 @@ public class AppleWatchContainer extends FrameLayout {
             return false;
 
         long curTime = System.currentTimeMillis();
-        if ((curTime - mStartShowingTime) < 1000) {
+        if ((curTime - mStartShowingTime) < 700) {
             return false;
         }
 
