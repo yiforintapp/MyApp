@@ -705,8 +705,9 @@ public class AppleWatchLayout extends ViewGroup {
             qgm.showCommontAppDialog(getContext());
         } else if (type == GType.SwitcherLayout) {
             // get list from sp
-//            String mListString = mSpSwitch.getSwitchList();
-//            List<BaseInfo> mSwitchList = QuickSwitchManager.getInstance(mContext).StringToList(mListString);
+            // String mListString = mSpSwitch.getSwitchList();
+            // List<BaseInfo> mSwitchList =
+            // QuickSwitchManager.getInstance(mContext).StringToList(mListString);
             qgm.showQuickSwitchDialog(getContext());
         }
     }
@@ -1407,7 +1408,7 @@ public class AppleWatchLayout extends ViewGroup {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
 
-                    moveY = computeTranslateY(mHoriChildren[0][i],
+                    moveY = computetranslationY(mHoriChildren[0][i],
                             mHoriChildren[0][i + 1],
                             adjustMoveX);
                 }
@@ -1442,7 +1443,7 @@ public class AppleWatchLayout extends ViewGroup {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
 
-                    moveY = computeTranslateY(mHoriChildren[1][i],
+                    moveY = computetranslationY(mHoriChildren[1][i],
                             mHoriChildren[1][i + 1],
                             adjustMoveX);
                 }
@@ -1473,7 +1474,7 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    moveY = computeTranslateY(mHoriChildren[2][i], mHoriChildren[2][i + 1],
+                    moveY = computetranslationY(mHoriChildren[2][i], mHoriChildren[2][i + 1],
                             adjustMoveX);
                 }
                 mHoriChildren[2][i].setScaleX(targetScale);
@@ -1518,7 +1519,7 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    moveY = computeTranslateY(mHoriChildren[0][i],
+                    moveY = computetranslationY(mHoriChildren[0][i],
                             mHoriChildren[0][i - 1],
                             adjustMoveX);
                 }
@@ -1551,7 +1552,7 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    moveY = computeTranslateY(mHoriChildren[1][i],
+                    moveY = computetranslationY(mHoriChildren[1][i],
                             mHoriChildren[1][i - 1],
                             adjustMoveX - mAdjustCount * minuOffset);
                 }
@@ -1584,7 +1585,7 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    moveY = computeTranslateY(mHoriChildren[2][i],
+                    moveY = computetranslationY(mHoriChildren[2][i],
                             mHoriChildren[2][i - 1], adjustMoveX);
                 }
                 mHoriChildren[2][i].setScaleX(targetScale);
@@ -1595,7 +1596,7 @@ public class AppleWatchLayout extends ViewGroup {
         }
     }
 
-    private float computeTranslateY(GestureItemView from, GestureItemView to, float tranX) {
+    private float computetranslationY(GestureItemView from, GestureItemView to, float tranX) {
         float dx = to.getLeft() - from.getLeft();
         float dy = to.getTop() - from.getTop();
         float resault;
@@ -1776,5 +1777,177 @@ public class AppleWatchLayout extends ViewGroup {
         LayoutInflater inflate = LayoutInflater.from(getContext());
         GestureItemView item = (GestureItemView) inflate.inflate(R.layout.gesture_item, null);
         return item;
+    }
+
+    public AnimatorSet makeIconShowAnimator(int direction) {
+        Animator[] iconAnimators = new Animator[13];
+        AnimatorSet iconSet;
+        ObjectAnimator tranAnimaX, tranAnimaY;
+        GestureItemView targetItem;
+        for (int i = 0; i < 13; i++) {
+            if (i < 4) {
+                if (direction == 0) {// show from left-center
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = tranAnimaX;
+                }
+            } else if (i < 9) {
+                if (direction == 0) {// show from left-center
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                }
+            } else {
+                if (direction == 0) {
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                }
+            }
+        }
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(iconAnimators);
+        return set;
+    }
+
+    public AnimatorSet makeIconCloseAnimator(int direction) {
+        Animator[] iconAnimators = new Animator[13];
+        AnimatorSet iconSet;
+        ObjectAnimator tranAnimaX, tranAnimaY;
+        GestureItemView targetItem;
+        for (int i = 0; i < 13; i++) {
+            if (i < 4) {
+                if (direction == 0) {// show from left-center
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = tranAnimaX;
+                }
+            } else if (i < 9) {
+                if (direction == 0) {// show from left-center
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                }
+            } else {
+                if (direction == 0) {
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                }
+            }
+        }
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(iconAnimators);
+        return set;
     }
 }

@@ -66,15 +66,18 @@ public class QuickGesturePopupActivity extends Activity {
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
         iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
         iv_yun = (ImageView) findViewById(R.id.iv_yun);
+
+        int showOrientation = getIntent().getIntExtra("show_orientation", 0);
+        mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
+                : AppleWatchContainer.Orientation.Right);
         mContainer.setRocket(this);
         fillDynamicLayout();
-        mContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                fillMostUsedLayout();
-                fillSwitcherLayout();
-            }
-        });
+        // mContainer.post(new Runnable() {
+        // @Override
+        // public void run() {
+        //
+        // }
+        // });
         overridePendingTransition(-1, -1);
     }
 
@@ -84,7 +87,18 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     protected void onResume() {
-        mContainer.showOpenAnimation();
+        mContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                mContainer.showOpenAnimation(new Runnable() {
+                    @Override
+                    public void run() {
+                        fillMostUsedLayout();
+                        fillSwitcherLayout();
+                    }
+                });
+            }
+        });
         super.onResume();
     }
 

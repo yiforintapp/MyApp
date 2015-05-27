@@ -65,6 +65,7 @@ public class AppleWatchContainer extends FrameLayout {
     private GType mCurrentGestureType = GType.DymicLayout;
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
+    private Orientation mShowOrientation = Orientation.Left;
 
     private float mSelfWidth, mSelfHeight;
     private float mTouchDownX, mTouchDownY;
@@ -199,6 +200,10 @@ public class AppleWatchContainer extends FrameLayout {
 
                 });
 
+    }
+
+    public void setShowOrientation(Orientation o) {
+        mShowOrientation = o;
     }
 
     @Override
@@ -1210,38 +1215,24 @@ public class AppleWatchContainer extends FrameLayout {
         return mRotateDegree;
     }
 
-    public void showOpenAnimation(int direction) {
-        // show from left-center
-        if (direction == 0) {
-
-        } else if (direction == 1) {// show from left-bottom
-
-        } else if (direction == 2) {// show from right-center
-
-        } else if (direction == 3) {// show from right-bottom
-
+    public void showOpenAnimation(final Runnable runnable) {
+        int direction = mShowOrientation == Orientation.Left ? 0 : 2;
+        ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
+                mCornerTabs.getHeight(), 0);
+        ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 0, 1);
+        AppleWatchLayout targetLayout;
+        if (mCurrentGestureType == GType.DymicLayout) {
+            targetLayout = mDymicLayout;
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            targetLayout = mMostUsedLayout;
+        } else {
+            targetLayout = mSwitcherLayout;
         }
-        // AnimatorSet set = new AnimatorSet();
-        // set.setDuration(600);
-        // Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f,
-        // 1.1f,
-        // 1.0f);
-        // Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f,
-        // 1.1f,
-        // 1.0f);
-        // set.playTogether(animationx, animationy);
-        // set.start();
-    }
-
-    public void showOpenAnimation() {
+        AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(600);
-        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 0.0f,
-                1.1f,
-                1.0f);
-        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 0.0f,
-                1.1f,
-                1.0f);
+        set.setDuration(300);
+        set.setInterpolator(new DecelerateInterpolator());
+        set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -1251,40 +1242,45 @@ public class AppleWatchContainer extends FrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 isAnimating = false;
+                runnable.run();
             }
         });
-        set.playTogether(animationx, animationy);
         set.start();
     }
 
     public void showCloseAnimation() {
+        int direction = mShowOrientation == Orientation.Left ? 0 : 2;
+        ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
+                0, mCornerTabs.getHeight());
+        ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 1, 0);
+        AppleWatchLayout targetLayout;
+        if (mCurrentGestureType == GType.DymicLayout) {
+            targetLayout = mDymicLayout;
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            targetLayout = mMostUsedLayout;
+        } else {
+            targetLayout = mSwitcherLayout;
+        }
+        AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(400);
-        Animator animationx = ObjectAnimator.ofFloat(this, "scaleX", 1.0f,
-                1.1f, 0.0f);
-        Animator animationy = ObjectAnimator.ofFloat(this, "scaleY", 1.0f,
-                1.1f, 0.0f);
+        set.setDuration(300);
+        set.setInterpolator(new DecelerateInterpolator());
+        set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                isAnimating = true;
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 Activity activity = (Activity) AppleWatchContainer.this.getContext();
                 FloatWindowHelper.mGestureShowing = false;
                 activity.finish();
+                isAnimating = false;
                 super.onAnimationEnd(animation);
             }
         });
-        set.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                isAnimating = true;
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                isAnimating = false;
-            }
-        });
-        set.playTogether(animationx, animationy);
         set.start();
     }
 

@@ -1207,7 +1207,7 @@ public class FloatWindowHelper {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("orientation", 0);
+            intent.putExtra("show_orientation", 0);
             AppMasterApplication.getInstance().startActivity(intent);
             LockManager.getInstatnce().onTuchGestureFlag = -1;
             // 去除系统短信未读提示
@@ -1218,7 +1218,7 @@ public class FloatWindowHelper {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("orientation", 1);
+            intent.putExtra("show_orientation", 2);
             AppMasterApplication.getInstance().startActivity(intent);
             LockManager.getInstatnce().onTuchGestureFlag = 1;
             // 去除系统短信未读提示
