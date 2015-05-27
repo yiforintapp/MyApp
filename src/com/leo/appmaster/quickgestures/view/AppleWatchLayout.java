@@ -63,6 +63,7 @@ public class AppleWatchLayout extends ViewGroup {
     private int mAdjustCount = 0;
     private boolean mSnapping;
     private AppMasterPreference mSpSwitch;
+    public GType mMyType;
 
     public static enum Direction {
         Right, Left, None;
@@ -146,17 +147,23 @@ public class AppleWatchLayout extends ViewGroup {
             computeCenterItem(gestureItem, lp.position, false);
         }
         requestLayout();
-        postDelayed(new Runnable() {
 
-            @Override
-            public void run() {
-                fillExtraChildren();
-            }
-        }, 500);
+        if (!isCurrentLayout()) {
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fillExtraChildren();
+                }
+            }, 500);
+        }
 
     }
 
-    private void fillExtraChildren() {
+    private boolean isCurrentLayout() {
+        return mMyType == GType.DymicLayout;
+    }
+
+    public void fillExtraChildren() {
         GestureItemView addView, tempView;
         BaseInfo info = null;
         LayoutParams lp, temp;

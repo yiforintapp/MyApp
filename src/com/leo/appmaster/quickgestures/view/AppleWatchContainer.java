@@ -81,6 +81,7 @@ public class AppleWatchContainer extends FrameLayout {
     private long mTotalMem;
     private long mCleanMem;
     private boolean isAnimating;
+    protected long mStartShowingTime;
 
     public AppleWatchContainer(Context context) {
         super(context);
@@ -256,8 +257,11 @@ public class AppleWatchContainer extends FrameLayout {
         mTvCurName = (TextView) findViewById(R.id.tv_type_name);
         mCornerTabs = (AppleWatchTabs) findViewById(R.id.applewatchtab);
         mDymicLayout = (AppleWatchLayout) findViewById(R.id.qg_dymic_layout);
+        mDymicLayout.mMyType = GType.DymicLayout;
         mMostUsedLayout = (AppleWatchLayout) findViewById(R.id.qg_mostused_layout);
+        mMostUsedLayout.mMyType = GType.MostUsedLayout;
         mSwitcherLayout = (AppleWatchLayout) findViewById(R.id.qg_switcher_layout);
+        mSwitcherLayout.mMyType = GType.SwitcherLayout;
         mTvCurName.setText(R.string.quick_gesture_dynamic);
         super.onFinishInflate();
     }
@@ -276,6 +280,12 @@ public class AppleWatchContainer extends FrameLayout {
         }
         if (isAnimating || gestureLayout.isSnapping())
             return false;
+
+        long curTime = System.currentTimeMillis();
+        if ((curTime - mStartShowingTime) < 1000) {
+            return false;
+        }
+
         mGesDetector.onTouchEvent(event);
         float moveX, moveY;
         switch (event.getAction()) {
@@ -381,6 +391,9 @@ public class AppleWatchContainer extends FrameLayout {
         mDymicLayout.setVisibility(View.VISIBLE);
         mMostUsedLayout.setVisibility(View.VISIBLE);
         mSwitcherLayout.setVisibility(View.VISIBLE);
+        mDymicLayout.requestLayout();
+        mMostUsedLayout.requestLayout();
+        mSwitcherLayout.requestLayout();
     }
 
     private void onTouchMoveRotate(float moveX, float moveY) {
@@ -389,7 +402,6 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void onTouchMoveTranslate(float moveX, float moveY) {
-        // TODO
         AppleWatchLayout targetLayout;
         if (mCurrentGestureType == GType.DymicLayout) {
             targetLayout = mDymicLayout;
@@ -446,22 +458,16 @@ public class AppleWatchContainer extends FrameLayout {
 
     private void computeRotateDegree(float firstX, float firstY, float secondX,
             float secondY) {
-
         float py = mDymicLayout.getPivotY() - mDymicLayout.getMeasuredHeight()
                 - mCornerTabs.getMeasuredHeight();
-
         float firstOffsetX, firstOffsetY, secondOffsetX, secondOffsetY;
         firstOffsetX = firstX;
         firstOffsetY = mSelfHeight - firstY + py;
         secondOffsetX = secondX;
         secondOffsetY = mSelfHeight - secondY + py;
-
         float firstDegree = (float) (Math.atan(firstOffsetY / firstOffsetX) * 180f / Math.PI);
         float secondDegree = (float) (Math.atan(secondOffsetY / secondOffsetX) * 180f / Math.PI);
-
         mRotateDegree = secondDegree - firstDegree;
-        LeoLog.d(TAG, "mRotateDegree = " + mRotateDegree + "        firstDegree = " + firstDegree
-                + "        secondDegree = " + secondDegree);
     }
 
     public void snapToCurrent() {
@@ -1234,14 +1240,25 @@ public class AppleWatchContainer extends FrameLayout {
         set.setInterpolator(new DecelerateInterpolator());
         set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
+
             @Override
             public void onAnimationStart(Animator animation) {
+                mStartShowingTime = System.currentTimeMillis();
                 isAnimating = true;
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 isAnimating = false;
+                AppleWatchLayout layout;
+                if (mCurrentGestureType == GType.DymicLayout) {
+                    layout = mDymicLayout;
+                } else if (mCurrentGestureType == GType.MostUsedLayout) {
+                    layout = mMostUsedLayout;
+                } else {
+                    layout = mSwitcherLayout;
+                }
+                layout.fillExtraChildren();
                 runnable.run();
             }
         });
@@ -1439,6 +1456,16 @@ public class AppleWatchContainer extends FrameLayout {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
             info.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             tv.setItemIcon(info.switchIcon[0]);
+        }
+    }
+
+    public AppleWatchLayout getCurrentLayout() {
+        if (mCurrentGestureType == GType.DymicLayout) {
+            return mDymicLayout;
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            return mMostUsedLayout;
+        } else {
+            return mSwitcherLayout;
         }
     }
 

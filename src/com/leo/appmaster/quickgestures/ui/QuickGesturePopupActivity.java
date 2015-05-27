@@ -12,14 +12,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
-import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.ViewGroup.MarginLayoutParams;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -45,12 +40,10 @@ public class QuickGesturePopupActivity extends Activity {
 
     private static int switchNum;
     private AppleWatchContainer mContainer;
-    private List<BaseInfo> list;
     private List<BaseInfo> mSwitchList;
     private AppMasterPreference mSpSwitch;
     private String mSwitchListFromSp;
     private ImageView iv_roket, iv_pingtai, iv_yun;
-    private WindowManager wm;
     private List<BaseInfo> mCommonApps;
 
     @Override
@@ -60,7 +53,6 @@ public class QuickGesturePopupActivity extends Activity {
         QuickSwitchManager.getInstance(this).setActivity(this);
         mCommonApps = new ArrayList<BaseInfo>();
         mSpSwitch = AppMasterPreference.getInstance(this);
-        // 注册eventBus
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
@@ -72,12 +64,6 @@ public class QuickGesturePopupActivity extends Activity {
                 : AppleWatchContainer.Orientation.Right);
         mContainer.setRocket(this);
         fillDynamicLayout();
-        // mContainer.post(new Runnable() {
-        // @Override
-        // public void run() {
-        //
-        // }
-        // });
         overridePendingTransition(-1, -1);
     }
 
@@ -87,6 +73,7 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     protected void onResume() {
+        FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
             public void run() {
