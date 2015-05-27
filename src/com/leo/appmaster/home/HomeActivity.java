@@ -322,16 +322,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_menu:
-                // if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
-                // mDrawerLayout.closeDrawer(Gravity.START);
-                // } else {
-                // mDrawerLayout.openDrawer(Gravity.START);
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "menu");
-                // }
-
-                Intent intent = new Intent(this, QuickGesturePopupActivity.class);
-                startActivity(intent);
-
+                if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+                    mDrawerLayout.closeDrawer(Gravity.START);
+                } else {
+                    mDrawerLayout.openDrawer(Gravity.START);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "menu");
+                }
                 break;
             case R.id.iv_option_image:
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "password");

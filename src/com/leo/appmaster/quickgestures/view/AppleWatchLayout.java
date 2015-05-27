@@ -2,7 +2,9 @@
 package com.leo.appmaster.quickgestures.view;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -25,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -34,6 +37,7 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
@@ -63,6 +67,7 @@ public class AppleWatchLayout extends ViewGroup {
     private int mAdjustCount = 0;
     private boolean mSnapping;
     private AppMasterPreference mSpSwitch;
+    public GType mMyType;
 
     public static enum Direction {
         Right, Left, None;
@@ -146,17 +151,23 @@ public class AppleWatchLayout extends ViewGroup {
             computeCenterItem(gestureItem, lp.position, false);
         }
         requestLayout();
-        postDelayed(new Runnable() {
 
-            @Override
-            public void run() {
-                fillExtraChildren();
-            }
-        }, 500);
+        if (!isCurrentLayout()) {
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fillExtraChildren();
+                }
+            }, 500);
+        }
 
     }
 
-    private void fillExtraChildren() {
+    private boolean isCurrentLayout() {
+        return mMyType == GType.DymicLayout;
+    }
+
+    public void fillExtraChildren() {
         GestureItemView addView, tempView;
         BaseInfo info = null;
         LayoutParams lp, temp;
@@ -708,7 +719,7 @@ public class AppleWatchLayout extends ViewGroup {
             // String mListString = mSpSwitch.getSwitchList();
             // List<BaseInfo> mSwitchList =
             // QuickSwitchManager.getInstance(mContext).StringToList(mListString);
-            qgm.showQuickSwitchDialog(getContext(),mContainer);
+            qgm.showQuickSwitchDialog(getContext(), mContainer);
         }
     }
 
@@ -720,14 +731,30 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.SwitcherLayout) {
         } else if (type == GType.MostUsedLayout) {
             // TODO
-            BaseInfo info = (BaseInfo) hitView.getTag();
-            if (info instanceof QuickGsturebAppInfo) {
-                QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
-                Log.e("##############", "QuickGsturebAppInfo:" + appInfo.packageName);
+            boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
+                    .getQuickGestureCommonAppDialogCheckboxValue();
+            if (isRecorderFlag) {
+                if (hitView.getTag() instanceof AppLauncherRecorder) {
+                    AppLauncherRecorder info = (AppLauncherRecorder) hitView.getTag();
+                    TreeSet<AppLauncherRecorder> mRecorderApp = QuickGestureManager
+                            .getInstance(mContext).mAppLaunchRecorders;
+                    Iterator<AppLauncherRecorder> recorder = mRecorderApp.descendingIterator();
+                    int i = 0;
+                    while (recorder.hasNext()) {
+                        AppLauncherRecorder recorderAppInfo = recorder.next();
+                        recorderAppInfo.launchCount = 0;
+                        QuickGestureManager.getInstance(mContext).saveAppLaunchRecoder();
+                    }
+                }
+            } else {
+                if (hitView.getTag() instanceof QuickGsturebAppInfo) {
+                    QuickGsturebAppInfo info = (QuickGsturebAppInfo) hitView.getTag();
+                    QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
+                    AppMasterPreference.getInstance(mContext).setCommonAppPackageNameRemove(
+                            string.packageName + ":" + string.gesturePosition);
+                }
             }
-            // Log.e("##############", "" + info.packageName);
         }
-
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();
         GestureEmptyItemInfo info = new GestureEmptyItemInfo();
         info.gesturePosition = baseInfo.gesturePosition;
@@ -960,7 +987,25 @@ public class AppleWatchLayout extends ViewGroup {
 
             } else if (gType == GType.MostUsedLayout) {
                 // TODO update most used list
-
+                int mNum = getChildCount();
+                LayoutParams params = null;
+                // List<QuickGsturebAppInfo> mostUseApp = new
+                // ArrayList<QuickGsturebAppInfo>();
+                for (int i = 0; i < mNum; i++) {
+                    params = (LayoutParams) getChildAt(i).getLayoutParams();
+                    int position = params.position;
+                    if (position > -1) {
+                        if (getChildAt(i).getTag() instanceof AppItemInfo) {
+                            AppItemInfo sInfo = (AppItemInfo) getChildAt(i).getTag();
+                            if (sInfo != null && !sInfo.label.isEmpty()) {
+                                sInfo.gesturePosition = position;
+                                AppMasterPreference.getInstance(mContext)
+                                        .setCommonAppPackageNameAdd(
+                                                sInfo.packageName + ":" + sInfo.gesturePosition);
+                            }
+                        }
+                    }
+                }
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;
@@ -1408,7 +1453,7 @@ public class AppleWatchLayout extends ViewGroup {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
 
-                    moveY = computeTranslateY(mHoriChildren[0][i],
+                    moveY = computetranslationY(mHoriChildren[0][i],
                             mHoriChildren[0][i + 1],
                             adjustMoveX);
                 }
@@ -1443,7 +1488,7 @@ public class AppleWatchLayout extends ViewGroup {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
 
-                    moveY = computeTranslateY(mHoriChildren[1][i],
+                    moveY = computetranslationY(mHoriChildren[1][i],
                             mHoriChildren[1][i + 1],
                             adjustMoveX);
                 }
@@ -1474,7 +1519,7 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    moveY = computeTranslateY(mHoriChildren[2][i], mHoriChildren[2][i + 1],
+                    moveY = computetranslationY(mHoriChildren[2][i], mHoriChildren[2][i + 1],
                             adjustMoveX);
                 }
                 mHoriChildren[2][i].setScaleX(targetScale);
@@ -1519,7 +1564,7 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    moveY = computeTranslateY(mHoriChildren[0][i],
+                    moveY = computetranslationY(mHoriChildren[0][i],
                             mHoriChildren[0][i - 1],
                             adjustMoveX);
                 }
@@ -1552,7 +1597,7 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    moveY = computeTranslateY(mHoriChildren[1][i],
+                    moveY = computetranslationY(mHoriChildren[1][i],
                             mHoriChildren[1][i - 1],
                             adjustMoveX - mAdjustCount * minuOffset);
                 }
@@ -1585,7 +1630,7 @@ public class AppleWatchLayout extends ViewGroup {
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
                     }
-                    moveY = computeTranslateY(mHoriChildren[2][i],
+                    moveY = computetranslationY(mHoriChildren[2][i],
                             mHoriChildren[2][i - 1], adjustMoveX);
                 }
                 mHoriChildren[2][i].setScaleX(targetScale);
@@ -1596,7 +1641,7 @@ public class AppleWatchLayout extends ViewGroup {
         }
     }
 
-    private float computeTranslateY(GestureItemView from, GestureItemView to, float tranX) {
+    private float computetranslationY(GestureItemView from, GestureItemView to, float tranX) {
         float dx = to.getLeft() - from.getLeft();
         float dy = to.getTop() - from.getTop();
         float resault;
@@ -1777,5 +1822,201 @@ public class AppleWatchLayout extends ViewGroup {
         LayoutInflater inflate = LayoutInflater.from(getContext());
         GestureItemView item = (GestureItemView) inflate.inflate(R.layout.gesture_item, null);
         return item;
+    }
+
+    public AnimatorSet makeIconShowAnimator(int direction) {
+        Animator[] iconAnimators = new Animator[13];
+        AnimatorSet iconSet;
+        ObjectAnimator tranAnimaX, tranAnimaY;
+        GestureItemView targetItem;
+        for (int i = 0; i < 13; i++) {
+            if (i < 4) {
+                if (direction == 0) {// show from left-center
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = tranAnimaX;
+                }
+            } else if (i < 9) {
+                if (direction == 0) {// show from left-center
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                }
+            } else {
+                if (direction == 0) {
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                }
+            }
+        }
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(iconAnimators);
+        return set;
+    }
+
+    public AnimatorSet makeIconCloseAnimator(int direction) {
+        Animator[] iconAnimators = new Animator[13];
+        AnimatorSet iconSet;
+        ObjectAnimator tranAnimaX, tranAnimaY;
+        GestureItemView targetItem;
+        for (int i = 0; i < 13; i++) {
+            if (i < 4) {
+                if (direction == 0) {// show from left-center
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[0][i + 4];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = tranAnimaX;
+                }
+            } else if (i < 9) {
+                if (direction == 0) {// show from left-center
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[1][i + 1];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                }
+            } else {
+                if (direction == 0) {
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 1) {// show from left-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                } else if (direction == 2) {// show from right-center
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    iconAnimators[i] = tranAnimaX;
+                } else if (direction == 3) {// show from right-bottom
+                    iconSet = new AnimatorSet();
+                    targetItem = mHoriChildren[2][i - 5];
+                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    iconSet.playTogether(tranAnimaX, tranAnimaY);
+                    iconAnimators[i] = iconSet;
+                }
+            }
+        }
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(iconAnimators);
+        return set;
     }
 }

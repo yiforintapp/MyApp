@@ -167,7 +167,10 @@ public class QuickGestureManager {
             recoder.launchCount = 1;
             mAppLaunchRecorders.add(recoder);
         }
+        saveAppLaunchRecoder();
+    }
 
+    public void saveAppLaunchRecoder() {
         StringBuilder resault = new StringBuilder();
         for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
             resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
@@ -349,13 +352,15 @@ public class QuickGestureManager {
                         if (addCommonApp != null && addCommonApp.size() > 0) {
                             for (BaseInfo info : addCommonApp) {
                                 QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                pref.setCommonAppPackageNameAdd(string.packageName);
+                                pref.setCommonAppPackageNameAdd(string.packageName + ":"
+                                        + string.gesturePosition);
                             }
                         }
                         if (removeCommonApp != null && removeCommonApp.size() > 0) {
                             for (BaseInfo info : removeCommonApp) {
                                 QuickGsturebAppInfo string = (QuickGsturebAppInfo) info;
-                                pref.setCommonAppPackageNameRemove(string.packageName);
+                                pref.setCommonAppPackageNameRemove(string.packageName + ":"
+                                        + string.gesturePosition);
                             }
                         }
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
