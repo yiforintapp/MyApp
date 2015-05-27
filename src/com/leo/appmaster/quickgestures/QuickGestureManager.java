@@ -408,6 +408,7 @@ public class QuickGestureManager {
                             public void run() {
                                 // 添加的应用包名
                                 boolean addSwitch = false;
+                                boolean removeSwitch = false;
                                 List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
                                 // 移除的应用包名
                                 List<BaseInfo> removeQuickSwitch = quickSwitch
@@ -432,7 +433,6 @@ public class QuickGestureManager {
                                             .listToString(removeQuickSwitch,
                                                     removeQuickSwitch.size());
                                     LeoLog.d("QuickGestureManager", "removeToSp is : " + removeToSp);
-
                                     for (int i = 0; i < rightQuickSwitch.size(); i++) {
                                         boolean isHasSameName = false;
                                         BaseInfo nInfo = rightQuickSwitch.get(i);
@@ -448,10 +448,55 @@ public class QuickGestureManager {
                                             mDefineList.add(nInfo);
                                         }
                                     }
-
+                                    removeSwitch = true;
                                 }
+                                
+                                if(addSwitch){
+                                    if(!removeSwitch){
+                                        mDefineList = rightQuickSwitch;
+                                    }
+                                    //记录现有的Icon位置
+                                    LeoLog.d("QuickGestureManager", "有货要加");
+                                    List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
+                                    List<Integer> sPosition = new ArrayList<Integer>();
+                                    for(int i = 0;i < mDefineList.size();i++){
+                                        sPosition.add(mDefineList.get(i).gesturePosition);
+                                        LeoLog.d("QuickGestureManager", "货的位置 :" + mDefineList.get(i).gesturePosition);
+                                    }
+                                    
+                                    int k = 0;
+                                    for(int i = 0;i<13;i++){
+                                        boolean isHasIcon = false;
+                                        for(int j = 0;j<mDefineList.size();j++){
+                                            if(i == mDefineList.get(j).gesturePosition){
+                                                isHasIcon = true;
+                                            }
+                                        }
+                                        
+                                        if(!isHasIcon && addQuickSwitch.size() > k){
+                                            LeoLog.d("QuickGestureManager",  i + "号位没人坐，收藏起来");
+                                            BaseInfo mInfo = addQuickSwitch.get(k);
+                                            mInfo.gesturePosition = i;
+                                            mfixPostionList.add(mInfo);
+                                            k ++;
+                                        }
+                                    }
+                                    
+                                    LeoLog.d("QuickGestureManager",  "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
+                                    for(int i = 0; i< mfixPostionList.size();i++){
+                                        BaseInfo mInfo = mfixPostionList.get(i);
+                                        mDefineList.add(mInfo);
+                                        LeoLog.d("QuickGestureManager",  "霸占了 " + mInfo.gesturePosition + "号位");
+                                    }
+                                }
+                                
+                                if(!addSwitch && !removeSwitch){
+                                    mDefineList = rightQuickSwitch;
+                                }
+                                
                                 String mChangeList = QuickSwitchManager.getInstance(mContext)
                                         .listToString(mDefineList, mDefineList.size());
+                                LeoLog.d("QuickGestureManager",  "mChangeList ： " + mChangeList);
                                 mSpSwitch.setSwitchList(mChangeList);
                             }
                         });
