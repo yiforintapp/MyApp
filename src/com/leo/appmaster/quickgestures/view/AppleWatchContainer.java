@@ -39,6 +39,7 @@ import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout.Direction;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 
@@ -61,7 +62,6 @@ public class AppleWatchContainer extends FrameLayout {
     private AppleWatchTabs mCornerTabs;
     private TextView mTvCurName;
     private QuickGesturePopupActivity mPopupActivity;
-    // private ImageView iv_rocket;
     private GType mCurrentGestureType = GType.DymicLayout;
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
@@ -81,6 +81,8 @@ public class AppleWatchContainer extends FrameLayout {
     private long mTotalMem;
     private long mCleanMem;
     private boolean isAnimating;
+    private boolean mHasRelayout;
+    private boolean mMoving;
     protected long mStartShowingTime;
 
     public AppleWatchContainer(Context context) {
@@ -184,7 +186,7 @@ public class AppleWatchContainer extends FrameLayout {
                     @Override
                     public void onLongPress(MotionEvent e) {
                         LeoLog.d(TAG, "onLongPress");
-                        if (!mEditing) {
+                        if (!mEditing && !mMoving) {
                             AppleWatchLayout gestureLayout = null;
                             if (mCurrentGestureType == GType.DymicLayout) {
                                 gestureLayout = mDymicLayout;
@@ -282,7 +284,7 @@ public class AppleWatchContainer extends FrameLayout {
             return false;
 
         long curTime = System.currentTimeMillis();
-        if ((curTime - mStartShowingTime) < 700) {
+        if ((curTime - mStartShowingTime) < 750) {
             return false;
         }
 
@@ -310,18 +312,25 @@ public class AppleWatchContainer extends FrameLayout {
                 } else {
                     moveX = event.getX();
                     moveY = event.getY();
+                    if (Math.abs(moveX - mTouchDownX) > DipPixelUtil.dip2px(getContext(), 10)) {
+                        mMoving = true;
+                        if (mTouchDownY >= mDymicLayout.getTop()
+                                && mTouchDownY <= mDymicLayout.getBottom()) {
+                            onTouchMoveTranslate(moveX - mTouchDownX, moveY - mTouchDownY);
+                        }
 
-                    if (mTouchDownY >= mDymicLayout.getTop()
-                            && mTouchDownY <= mDymicLayout.getBottom()) {
-                        onTouchMoveTranslate(moveX - mTouchDownX, moveY - mTouchDownY);
-                    }
-
-                    if (mTouchDownY > mDymicLayout.getBottom()) {
-                        onTouchMoveRotate(moveX, moveY);
+                        if (mTouchDownY > mDymicLayout.getBottom()) {
+                            if (mDymicLayout.mHasFillExtraItems
+                                    && mMostUsedLayout.mHasFillExtraItems
+                                    && mSwitcherLayout.mHasFillExtraItems) {
+                                onTouchMoveRotate(moveX, moveY);
+                            }
+                        }
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                mMoving = false;
                 onTouchUp();
                 break;
             default:
@@ -391,9 +400,16 @@ public class AppleWatchContainer extends FrameLayout {
         mDymicLayout.setVisibility(View.VISIBLE);
         mMostUsedLayout.setVisibility(View.VISIBLE);
         mSwitcherLayout.setVisibility(View.VISIBLE);
-        mDymicLayout.requestLayout();
-        mMostUsedLayout.requestLayout();
-        mSwitcherLayout.requestLayout();
+
+        if (!mHasRelayout) {
+            if (mDymicLayout.mHasFillExtraItems && mMostUsedLayout.mHasFillExtraItems
+                    && mSwitcherLayout.mHasFillExtraItems) {
+                mDymicLayout.relayoutExtraChildren();
+                mMostUsedLayout.relayoutExtraChildren();
+                mSwitcherLayout.relayoutExtraChildren();
+//                mHasRelayout = true;
+            }
+        }
     }
 
     private void onTouchMoveRotate(float moveX, float moveY) {
