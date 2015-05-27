@@ -79,24 +79,36 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 animateItem(arg1);
                 QuickGsturebAppInfo selectInfl = (QuickGsturebAppInfo) arg1.getTag();
+                boolean isCheck = selectInfl.isFreeDisturb;
+
                 if (selectInfl.isFreeDisturb) {
                     selectInfl.isFreeDisturb = false;
                     mDisturbList.add(selectInfl);
                     mFreeDisturbApp.remove(selectInfl);
-                    mRemoveFreePackageName.add(selectInfl);
+                    if (mAddFreePackageName != null && mAddFreePackageName.size() > 0) {
+                        mAddFreePackageName.remove(selectInfl);
+                    }
+                    if (!isCheck) {
+                        mRemoveFreePackageName.add(selectInfl);
+                    }
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(false);
                     mSwitchListSize -= 1;
                 } else {
-                    if (mSwitchListSize <= 12) {
-                        selectInfl.isFreeDisturb = true;
-                        mFreeDisturbApp.add(selectInfl);
-                        mDisturbList.remove(selectInfl);
+                    // if (mSwitchListSize <= 12) {
+                    selectInfl.isFreeDisturb = true;
+                    mFreeDisturbApp.add(selectInfl);
+                    mDisturbList.remove(selectInfl);
+                    if (!isCheck) {
                         mAddFreePackageName.add(selectInfl);
-                        ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                                .setDefaultRecommendApp(true);
-                        mSwitchListSize += 1;
                     }
+                    if (mRemoveFreePackageName != null && mRemoveFreePackageName.size() > 0) {
+                        mRemoveFreePackageName.remove(selectInfl);
+                    }
+                    ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                            .setDefaultRecommendApp(true);
+                    mSwitchListSize += 1;
+                    // }
                 }
 
             }

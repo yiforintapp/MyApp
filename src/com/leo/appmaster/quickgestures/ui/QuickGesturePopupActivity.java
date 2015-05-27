@@ -119,11 +119,6 @@ public class QuickGesturePopupActivity extends Activity {
     }
 
     private void fillMostUsedLayout() {
-        // TODO
-        // list = new ArrayList<BaseInfo>();
-        // list.addAll(AppLoadEngine.getInstance(this).getAllPkgInfo());
-        // ArrayList<BaseInfo> items = new ArrayList<BaseInfo>(list.subList(13,
-        // 20));
         loadMostUseApp();
         mContainer.fillGestureItem(GType.MostUsedLayout, mCommonApps);
     }
@@ -142,12 +137,7 @@ public class QuickGesturePopupActivity extends Activity {
                 mSwitchList = new ArrayList<BaseInfo>();
                 mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
-            // The most commont use app
-            // if (!mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
-            // loadCommonAppInfo();
-            // } else {
-            // loadRecorderAppInfo();
-            // }
+            mContainer.fillGestureItem(GType.SwitcherLayout, mSwitchList);
         }
     }
 

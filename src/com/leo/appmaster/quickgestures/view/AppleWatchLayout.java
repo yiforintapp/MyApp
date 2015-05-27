@@ -708,7 +708,7 @@ public class AppleWatchLayout extends ViewGroup {
             // String mListString = mSpSwitch.getSwitchList();
             // List<BaseInfo> mSwitchList =
             // QuickSwitchManager.getInstance(mContext).StringToList(mListString);
-            qgm.showQuickSwitchDialog(getContext());
+            qgm.showQuickSwitchDialog(getContext(), mContainer);
         }
     }
 
@@ -1788,13 +1788,16 @@ public class AppleWatchLayout extends ViewGroup {
             if (i < 4) {
                 if (direction == 0) {// show from left-center
                     targetItem = mHoriChildren[0][i + 4];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
                     iconAnimators[i] = tranAnimaX;
                 } else if (direction == 1) {// show from left-bottom
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[0][i + 4];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = iconSet;
                 } else if (direction == 2) {// show from right-center
@@ -1805,20 +1808,24 @@ public class AppleWatchLayout extends ViewGroup {
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[0][i + 4];
                     tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = tranAnimaX;
                 }
             } else if (i < 9) {
                 if (direction == 0) {// show from left-center
                     targetItem = mHoriChildren[1][i + 1];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
                     iconAnimators[i] = tranAnimaX;
                 } else if (direction == 1) {// show from left-bottom
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[1][i + 1];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = iconSet;
                 } else if (direction == 2) {// show from right-center
@@ -1829,20 +1836,24 @@ public class AppleWatchLayout extends ViewGroup {
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[1][i + 1];
                     tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = iconSet;
                 }
             } else {
                 if (direction == 0) {
                     targetItem = mHoriChildren[2][i - 5];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
                     iconAnimators[i] = tranAnimaX;
                 } else if (direction == 1) {// show from left-bottom
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[2][i - 5];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", -mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = iconSet;
                 } else if (direction == 2) {// show from right-center
@@ -1853,7 +1864,8 @@ public class AppleWatchLayout extends ViewGroup {
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[2][i - 5];
                     tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", mTotalHeight, 0);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = iconSet;
                 }
@@ -1874,13 +1886,16 @@ public class AppleWatchLayout extends ViewGroup {
             if (i < 4) {
                 if (direction == 0) {// show from left-center
                     targetItem = mHoriChildren[0][i + 4];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
                     iconAnimators[i] = tranAnimaX;
                 } else if (direction == 1) {// show from left-bottom
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[0][i + 4];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = iconSet;
                 } else if (direction == 2) {// show from right-center
@@ -1891,20 +1906,24 @@ public class AppleWatchLayout extends ViewGroup {
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[0][i + 4];
                     tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = tranAnimaX;
                 }
             } else if (i < 9) {
                 if (direction == 0) {// show from left-center
                     targetItem = mHoriChildren[1][i + 1];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
                     iconAnimators[i] = tranAnimaX;
                 } else if (direction == 1) {// show from left-bottom
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[1][i + 1];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = iconSet;
                 } else if (direction == 2) {// show from right-center
@@ -1915,20 +1934,24 @@ public class AppleWatchLayout extends ViewGroup {
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[1][i + 1];
                     tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = iconSet;
                 }
             } else {
                 if (direction == 0) {
                     targetItem = mHoriChildren[2][i - 5];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
                     iconAnimators[i] = tranAnimaX;
                 } else if (direction == 1) {// show from left-bottom
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[2][i - 5];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, -mTotalWidth);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    tranAnimaX = ObjectAnimator
+                            .ofFloat(targetItem, "translationX", 0, -mTotalWidth);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = iconSet;
                 } else if (direction == 2) {// show from right-center
@@ -1939,7 +1962,8 @@ public class AppleWatchLayout extends ViewGroup {
                     iconSet = new AnimatorSet();
                     targetItem = mHoriChildren[2][i - 5];
                     tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", 0, mTotalWidth);
-                    tranAnimaY = ObjectAnimator.ofFloat(targetItem, "translationY", 0, mTotalHeight);
+                    tranAnimaY = ObjectAnimator
+                            .ofFloat(targetItem, "translationY", 0, mTotalHeight);
                     iconSet.playTogether(tranAnimaX, tranAnimaY);
                     iconAnimators[i] = iconSet;
                 }

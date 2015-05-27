@@ -318,8 +318,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);
             } else if (arg2 == 2) {
-                // showSlideShowTimeSettingDialog();
-                FloatWindowHelper.showQuickSwitchDialog(QuickGestureActivity.this);
+                showSlideShowTimeSettingDialog();
             }
         }
     }

@@ -284,7 +284,7 @@ public class FloatWindowHelper {
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     mGestureShowing = true;
-                                    onTouchAreaShowQuick(-1);
+                                    onTouchAreaShowQuick(-2);
                                 }
                             }
                             break;
@@ -594,7 +594,7 @@ public class FloatWindowHelper {
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     mGestureShowing = true;
-                                    onTouchAreaShowQuick(1);
+                                    onTouchAreaShowQuick(2);
                                 }
                             }
                             break;
@@ -1090,137 +1090,34 @@ public class FloatWindowHelper {
             // sRightPopup.dismiss();s
         }
     }
-    /**
-     * Common App Dialog
-     * 
-     * @param context
-     */
-    public static void showCommontAppDialog(final Context context) {
-        final QuickGestureFreeDisturbAppDialog commonApp = new QuickGestureFreeDisturbAppDialog(
-                context, 3);
-        final AppMasterPreference pref = AppMasterPreference.getInstance(context);
-        commonApp.setIsShowCheckBox(true);
-        commonApp.setCheckBoxText(R.string.quick_gesture_change_common_app_dialog_checkbox_text);
-        // 设置是否选择习惯
-        commonApp.setCheckValue(pref.getQuickGestureCommonAppDialogCheckboxValue());
-        commonApp.setTitle(R.string.quick_gesture_change_common_app_dialog_title);
-        commonApp.setRightBt(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // 确认按钮
-                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 添加的应用包名
-                        List<BaseInfo> addCommonApp = commonApp.getAddFreePackageName();
-                        // 移除的应用包名
-                        List<BaseInfo> removeCommonApp = commonApp
-                                .getRemoveFreePackageName();
-                        // 是否选择使用习惯自动填充
-                        boolean flag = commonApp.getCheckValue();
-                        if (addCommonApp != null && addCommonApp.size() > 0) {
-                            for (BaseInfo object : addCommonApp) {
-                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
-                                pref.setCommonAppPackageNameAdd(string.packageName);
-                            }
-                        }
-                        if (removeCommonApp != null && removeCommonApp.size() > 0) {
-                            for (BaseInfo object : removeCommonApp) {
-                                QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
-                                pref.setCommonAppPackageNameRemove(string.packageName);
-                            }
-                        }
-                        if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
-                            pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
-                        }
-                    }
-                });
-                commonApp.dismiss();
-            }
-        });
-        commonApp.setLeftBt(new OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                // 取消按钮
-                commonApp.dismiss();
-            }
-        });
-        commonApp.show();
-    }
-
-    /**
-     * Quick Switch Dialog
-     * 
-     * @param context
-     */
-    public static void showQuickSwitchDialog(final Context context) {
-        final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
-                context, 2);
-        quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
-        quickSwitch.setRightBt(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // 确认按钮
-                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        // 添加的应用包名
-                        List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
-                        // 移除的应用包名
-                        List<BaseInfo> removeQuickSwitch = quickSwitch.getRemoveFreePackageName();
-                        if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
-//                            String saveToSp = QuickSwitchManager.getInstance(context).ListToString(
-//                                    addQuickSwitch, addQuickSwitch.size());
-//                            AppMasterPreference.getInstance(context).setSwitchList(saveToSp);
-//                            AppMasterPreference.getInstance(context).setSwitchListSize(
-//                                    AppMasterPreference.getInstance(context).getSwitchListSize()
-//                                            + addQuickSwitch.size());
-                        }
-                        if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
-//                            String removeToSp = QuickSwitchManager.getInstance(context)
-//                                    .ListToString(removeQuickSwitch, removeQuickSwitch.size());
-//                            AppMasterPreference.getInstance(context)
-//                                    .setQuickSwitchPackageNameRemove(removeToSp);
-//                            AppMasterPreference.getInstance(context).setSwitchListSize(
-//                                    AppMasterPreference.getInstance(context).getSwitchListSize()
-//                                            - removeQuickSwitch.size());
-                        }
-                    }
-                });
-                quickSwitch.dismiss();
-            }
-        });
-        quickSwitch.setLeftBt(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                // 取消按钮
-                quickSwitch.dismiss();
-            }
-        });
-        quickSwitch.show();
-    }
     private static void onTouchAreaShowQuick(int flag) {
-        if (flag == -1) {
+        if (flag == -1 || flag == -2) {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("show_orientation", 0);
             AppMasterApplication.getInstance().startActivity(intent);
-            LockManager.getInstatnce().onTuchGestureFlag = -1;
+            if (flag == -1) {
+                LockManager.getInstatnce().onTuchGestureFlag = -1;
+            } else if (flag == -2) {
+                LockManager.getInstatnce().onTuchGestureFlag = -2;
+            }
             // 去除系统短信未读提示
             if (LockManager.getInstatnce().isShowSysNoReadMessage) {
                 LockManager.getInstatnce().isShowSysNoReadMessage = false;
             }
-        } else if (flag == 1) {
+        } else if (flag == 1 || flag == 2) {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("show_orientation", 2);
             AppMasterApplication.getInstance().startActivity(intent);
-            LockManager.getInstatnce().onTuchGestureFlag = 1;
+            if (flag == 1) {
+                LockManager.getInstatnce().onTuchGestureFlag = 1;
+            } else if (flag == 2) {
+                LockManager.getInstatnce().onTuchGestureFlag = 2;
+            }
             // 去除系统短信未读提示
             if (LockManager.getInstatnce().isShowSysNoReadMessage) {
                 LockManager.getInstatnce().isShowSysNoReadMessage = false;
