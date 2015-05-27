@@ -228,6 +228,7 @@ public class QuickGestureManager {
         while (recorder.hasNext()) {
             AppLauncherRecorder recorderAppInfo = recorder.next();
             info = engin.getAppInfo(recorderAppInfo.pkg);
+            if(info == null) continue;
             if (i >= 13) {
                 break;
             } else {

@@ -404,10 +404,6 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                     }
                 }
             } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {
-                // 更新SysMessage和SysCallLog数据
-                PrivacyContactManager pm = PrivacyContactManager
-                        .getInstance(AddFromMessageListActivity.this);
-                ArrayList<ContactCallLog> callLogs = pm.getSysCallLog();
                 // 导入短信和通话记录
                 if (mAddMessages != null) {
                     for (MessageBean message : mAddMessages) {
@@ -483,17 +479,6 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                     List<String> addNumbers = new ArrayList<String>();
                     for (MessageBean messageBean : mAddPrivacyMessage) {
                         addNumbers.add(messageBean.getPhoneNumber());
-                    }
-                    Iterator it = callLogs.iterator();
-                    while (it.hasNext()) {
-                        ContactCallLog calllog = (ContactCallLog) it.next();
-                        String formateNumber = PrivacyContactUtils.formatePhoneNumber(calllog
-                                .getCallLogNumber());
-                        for (String string : addNumbers) {
-                            if (string.contains(formateNumber)) {
-                                pm.removeSysCallLog(calllog);
-                            }
-                        }
                     }
                 }
 
