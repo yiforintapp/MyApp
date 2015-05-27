@@ -22,7 +22,6 @@ public abstract class PretendFragment extends BaseFragment {
 
     public void setSelector() {
         // TODO Auto-generated method stub
-        
     }
 
 }

@@ -123,6 +123,7 @@ public class QuickGesturePopupActivity extends Activity {
                 mSwitchList = new ArrayList<BaseInfo>();
                 mSwitchList = QuickSwitchManager.getInstance(this).StringToList(mSwitchListFromSp);
             }
+            mContainer.fillGestureItem(GType.SwitcherLayout, mSwitchList);
         }
     }
 
