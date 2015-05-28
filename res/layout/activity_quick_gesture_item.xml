@@ -25,7 +25,7 @@
         <RelativeLayout
             android:id="@+id/message_itemLT"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/privacy_call_log_item_calllog_list_message_itemLT_layout_height"
+            android:layout_height="56dp"
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@id/contactIV" >
 

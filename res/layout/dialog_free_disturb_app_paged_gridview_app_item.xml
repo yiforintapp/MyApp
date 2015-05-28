@@ -9,8 +9,7 @@
     <com.leo.appmaster.quickgestures.view.FreeDisturbImageView
         android:id="@+id/iv_app_icon_free"
         android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:padding="@dimen/app_item_iv_app_icon_padding" />
+        android:layout_height="46dp" />
 
     <TextView
         android:id="@+id/tv_app_name_free"
@@ -22,6 +21,6 @@
         android:gravity="center"
         android:singleLine="true"
         android:textColor="#666666"
-        android:textSize="10dp" />
+        android:textSize="10sp" />
 
 </LinearLayout>
