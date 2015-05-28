@@ -19,6 +19,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.Utilities;
 
 /**
@@ -28,7 +29,8 @@ import com.leo.appmaster.utils.Utilities;
  */
 @SuppressLint("InflateParams")
 public class FloatWindowHelper {
-    public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_finish_notification";
+    public static final String QUICK_GESTURE_SETTING_DIALOG_LEFT_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_left_radio_finish_notification";
+    public static final String QUICK_GESTURE_SETTING_DIALOG_RIGHT_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_right_radio_finish_notification";
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_slide_time_setting_finish_notification";
     public static final int ONTUCH_LEFT_FLAG = -1;
     public static final int ONTUCH_RIGHT_FLAG = 1;
@@ -52,33 +54,33 @@ public class FloatWindowHelper {
     private static boolean isMoveIng = false;
     public static boolean isFanShowing = false;
     // 左下宽度
-    private static float mLeftBottomWidth = 200;
+    private static float mLeftBottomWidth = 50;
     // 左下高度
-    private static float mLeftBottomHeight = 100;
+    private static float mLeftBottomHeight = 25;
     // 左中宽度
-    private static float mLeftCenterWidth = 100;
+    private static float mLeftCenterWidth = 25;
     // 左中高度
-    private static float mLeftCenterHeight = 200;
+    private static float mLeftCenterHeight = 50;
     // 左侧中部高度
-    private static float mLeftCenterCenterHeight = 600;
+    private static float mLeftCenterCenterHeight = 150;
     // 左上宽度
-    private static float mLeftTopWidth = 50;
+    private static float mLeftTopWidth = 13;
     // 左上高度
-    private static float mLeftTopHeight = 300;
+    private static float mLeftTopHeight = 75;
     // 右下宽度
-    private static float mRightBottomWidth = 200;
+    private static float mRightBottomWidth = 50;
     // 右下高度
-    private static float mRightBottomHeight = 100;
+    private static float mRightBottomHeight = 25;
     // 右中宽度
-    private static float mRightCenterWidth = 100;
+    private static float mRightCenterWidth = 25;
     // 右中高度
-    private static float mRightCenterHeight = 200;
+    private static float mRightCenterHeight = 50;
     // 右侧中部高度
-    private static float mRightCenterCenterHeight = 600;
+    private static float mRightCenterCenterHeight = 150;
     // 右上宽度
-    private static float mRightTopWidth = 50;
+    private static float mRightTopWidth = 13;
     // 右上高度
-    private static float mRightTopHeight = 300;
+    private static float mRightTopHeight = 75;
     // 距离底部的距离
     private static float mMarginBottom = 200;
     private static final int LEFT_BOTTOM_FLAG = 1;
@@ -152,8 +154,8 @@ public class FloatWindowHelper {
             int flag = Utilities.isScreenType(mContext);
             if (mLeftBottomParams == null) {
                 mLeftBottomParams = new LayoutParams();
-                mLeftBottomParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
-                mLeftBottomParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
+                mLeftBottomParams.width = (int) ((DipPixelUtil.dip2px(mContext,mLeftBottomWidth) / 2) + (value / 2)) * 2;
+                mLeftBottomParams.height = (int) ((DipPixelUtil.dip2px(mContext,mLeftBottomHeight) / 2) + (value)) * 2;
                 mLeftBottomParams.x = (int) (-(width / 2) + (mLeftBottomParams.width / 2));
                 mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
                 mLeftBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
@@ -222,17 +224,17 @@ public class FloatWindowHelper {
             int height = windowManager.getDefaultDisplay().getHeight();
             if (mLeftCenterParams == null) {
                 mLeftCenterParams = new LayoutParams();
-                mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
-                mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+                mLeftCenterParams.width = (int) ((DipPixelUtil.dip2px(mContext,mLeftCenterWidth) / 2) + (value / 2)) * 2;
+                mLeftCenterParams.height = (int) ((DipPixelUtil.dip2px(mContext,mLeftCenterHeight) / 2) + (value)) * 2;
                 mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
-                mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height);
+                mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height-DipPixelUtil.dip2px(mContext,12));
                 mLeftCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
                 mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
-                mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height);
+                mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height-DipPixelUtil.dip2px(mContext,12));
             }
 
             if (!mGestureShowing) {
@@ -301,15 +303,15 @@ public class FloatWindowHelper {
             int height = windowManager.getDefaultDisplay().getHeight();
             if (mLeftCenterCenterParams == null) {
                 mLeftCenterCenterParams = new LayoutParams();
-                mLeftCenterCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
-                mLeftCenterCenterParams.height = (int) ((mLeftCenterCenterHeight / 2) + (value)) * 2;
+                mLeftCenterCenterParams.width = (int) ((DipPixelUtil.dip2px(mContext,mLeftCenterWidth) / 2) + (value / 2)) * 2;
+                mLeftCenterCenterParams.height = (int) ((DipPixelUtil.dip2px(mContext,mLeftCenterCenterHeight) / 2) + (value)) * 2;
                 mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
                 if (mLeftBottomView != null) {
                     mLeftCenterCenterParams.y = (int) ((height / 2)
-                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height);
+                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height-DipPixelUtil.dip2px(mContext,12));
                 } else {
                     mLeftCenterCenterParams.y = (int) ((height / 2)
-                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomHeight);
+                            - (mLeftCenterCenterParams.height / 2) - DipPixelUtil.dip2px(mContext,mLeftBottomHeight)-DipPixelUtil.dip2px(mContext,40));
                 }
                 mLeftCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterCenterParams.format = PixelFormat.RGBA_8888;
@@ -319,10 +321,10 @@ public class FloatWindowHelper {
                 mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
                 if (mLeftBottomView != null) {
                     mLeftCenterCenterParams.y = (int) ((height / 2)
-                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height);
+                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height-DipPixelUtil.dip2px(mContext,12));
                 } else {
                     mLeftCenterCenterParams.y = (int) ((height / 2)
-                            - (mLeftCenterCenterParams.height / 2) - mLeftBottomHeight);
+                            - (mLeftCenterCenterParams.height / 2) - DipPixelUtil.dip2px(mContext,mLeftBottomHeight)-DipPixelUtil.dip2px(mContext,40));
                 }
             }
             if (!mGestureShowing) {
@@ -382,11 +384,11 @@ public class FloatWindowHelper {
             int height = windowManager.getDefaultDisplay().getHeight();
             if (mLeftTopParams == null) {
                 mLeftTopParams = new LayoutParams();
-                mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
-                mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
+                mLeftTopParams.width = (int) ((DipPixelUtil.dip2px(mContext,mLeftTopWidth) / 2) + (value / 2)) * 2;
+                mLeftTopParams.height = (int) ((DipPixelUtil.dip2px(mContext,mLeftTopHeight) / 2) + (value)) * 2;
                 mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
                 mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
-                        - mLeftBottomParams.height - mLeftCenterParams.height);
+                        - mLeftBottomParams.height - mLeftCenterParams.height-DipPixelUtil.dip2px(mContext,12));
                 mLeftTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftTopParams.format = PixelFormat.RGBA_8888;
                 mLeftTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -394,7 +396,7 @@ public class FloatWindowHelper {
             } else {
                 mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
                 mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
-                        - mLeftBottomParams.height - mLeftCenterParams.height);
+                        - mLeftBottomParams.height - mLeftCenterParams.height-DipPixelUtil.dip2px(mContext,12));
             }
 
             if (!mGestureShowing) {
@@ -462,8 +464,8 @@ public class FloatWindowHelper {
             int height = windowManager.getDefaultDisplay().getHeight();
             if (mRightBottomParams == null) {
                 mRightBottomParams = new LayoutParams();
-                mRightBottomParams.width = (int) ((mRightBottomWidth / 2) + (value / 2)) * 2;
-                mRightBottomParams.height = (int) ((mRightBottomHeight / 2) + (value)) * 2;
+                mRightBottomParams.width = (int) ((DipPixelUtil.dip2px(mContext,mRightBottomWidth) / 2) + (value / 2)) * 2;
+                mRightBottomParams.height = (int) ((DipPixelUtil.dip2px(mContext,mRightBottomHeight) / 2) + (value)) * 2;
                 mRightBottomParams.x = (int) ((width / 2) + (mRightBottomParams.width / 2));
                 mRightBottomParams.y = (int) ((height / 2) - (mRightBottomParams.height / 2));
                 mRightBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
@@ -532,17 +534,17 @@ public class FloatWindowHelper {
             int height = windowManager.getDefaultDisplay().getHeight();
             if (mRightCenterParams == null) {
                 mRightCenterParams = new LayoutParams();
-                mRightCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
-                mRightCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
+                mRightCenterParams.width = (int) ((DipPixelUtil.dip2px(mContext,mRightCenterWidth) / 2) + (value / 2)) * 2;
+                mRightCenterParams.height = (int) ((DipPixelUtil.dip2px(mContext,mRightCenterHeight) / 2) + (value)) * 2;
                 mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
-                mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height);
+                mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height-DipPixelUtil.dip2px(mContext,12));
                 mRightCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
                 mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
-                mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height);
+                mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height-DipPixelUtil.dip2px(mContext,12));
             }
 
             if (!mGestureShowing) {
@@ -612,15 +614,15 @@ public class FloatWindowHelper {
             int rightBottomHeight = (int) ((mRightBottomHeight / 2) + (value)) * 2;
             if (mRightCenterCenterParams == null) {
                 mRightCenterCenterParams = new LayoutParams();
-                mRightCenterCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
-                mRightCenterCenterParams.height = (int) ((mRightCenterCenterHeight / 2) + (value)) * 2;
+                mRightCenterCenterParams.width = (int) ((DipPixelUtil.dip2px(mContext,mRightCenterWidth) / 2) + (value / 2)) * 2;
+                mRightCenterCenterParams.height = (int) ((DipPixelUtil.dip2px(mContext,mRightCenterCenterHeight) / 2) + (value)) * 2;
                 mRightCenterCenterParams.x = (int) ((width / 2) + (mLeftCenterCenterParams.width / 2));
                 if (mRightBottomView != null) {
                     mRightCenterCenterParams.y = (int) ((height / 2)
-                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height);
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height-DipPixelUtil.dip2px(mContext,12));
                 } else {
                     mRightCenterCenterParams.y = (int) ((height / 2)
-                            - (mRightCenterCenterParams.height / 2) - mRightBottomHeight);
+                            - (mRightCenterCenterParams.height / 2) - DipPixelUtil.dip2px(mContext,mRightBottomHeight)-DipPixelUtil.dip2px(mContext,40));
                 }
                 mRightCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterCenterParams.format = PixelFormat.RGBA_8888;
@@ -629,10 +631,10 @@ public class FloatWindowHelper {
             } else {
                 if (mRightBottomView != null) {
                     mRightCenterCenterParams.y = (int) ((height / 2)
-                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height);
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height-DipPixelUtil.dip2px(mContext,12));
                 } else {
                     mRightCenterCenterParams.y = (int) ((height / 2)
-                            - (mRightCenterCenterParams.height / 2) - mRightBottomHeight);
+                            - (mRightCenterCenterParams.height / 2) - DipPixelUtil.dip2px(mContext,mRightBottomHeight)-DipPixelUtil.dip2px(mContext,40));
                 }
 
             }
@@ -694,11 +696,11 @@ public class FloatWindowHelper {
             int height = windowManager.getDefaultDisplay().getHeight();
             if (mRightTopParams == null) {
                 mRightTopParams = new LayoutParams();
-                mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
-                mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
+                mRightTopParams.width = (int) ((DipPixelUtil.dip2px(mContext,mRightTopWidth) / 2) + (value / 2)) * 2;
+                mRightTopParams.height = (int) ((DipPixelUtil.dip2px(mContext,mRightTopHeight) / 2) + (value)) * 2;
                 mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
                 mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
-                        - mRightBottomParams.height - mRightCenterParams.height);
+                        - mRightBottomParams.height - mRightCenterParams.height-DipPixelUtil.dip2px(mContext,12));
                 mRightTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightTopParams.format = PixelFormat.RGBA_8888;
                 mRightTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -706,7 +708,7 @@ public class FloatWindowHelper {
             } else {
                 mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
                 mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
-                        - mRightBottomParams.height - mRightCenterParams.height);
+                        - mRightBottomParams.height - mRightCenterParams.height-DipPixelUtil.dip2px(mContext,12));
             }
 
             if (!mGestureShowing) {
@@ -809,71 +811,71 @@ public class FloatWindowHelper {
         int width = display.getWidth();
         // 左下
         if (mLeftBottomParams != null) {
-            mLeftBottomParams.width = (int) ((mLeftBottomWidth / 2) + (value / 2)) * 2;
-            mLeftBottomParams.height = (int) ((mLeftBottomHeight / 2) + (value)) * 2;
+            mLeftBottomParams.width = (int) ((DipPixelUtil.dip2px(context,mLeftBottomWidth) / 2) + (value / 2)) * 2;
+            mLeftBottomParams.height = (int) ((DipPixelUtil.dip2px(context,mLeftBottomHeight) / 2) + (value)) * 2;
             mLeftBottomParams.x = (int) (-(width / 2) + (mLeftBottomParams.width / 2));
             mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
         }
         // 左中
         if (mLeftCenterParams != null) {
-            mLeftCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
-            mLeftCenterParams.height = (int) ((mLeftCenterHeight / 2) + (value)) * 2;
+            mLeftCenterParams.width = (int) ((DipPixelUtil.dip2px(context,mLeftCenterWidth) / 2) + (value / 2)) * 2;
+            mLeftCenterParams.height = (int) ((DipPixelUtil.dip2px(context,mLeftCenterHeight )/ 2) + (value)) * 2;
             mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
-            mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height);
+            mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2) - mLeftBottomParams.height-DipPixelUtil.dip2px(context,12));
         }
         // 左边中部
         if (mLeftCenterCenterParams != null) {
-            mLeftCenterCenterParams.width = (int) ((mLeftCenterWidth / 2) + (value / 2)) * 2;
-            mLeftCenterCenterParams.height = (int) ((mLeftCenterCenterHeight / 2) + (value)) * 2;
+            mLeftCenterCenterParams.width = (int) ((DipPixelUtil.dip2px(context,mLeftCenterWidth) / 2) + (value / 2)) * 2;
+            mLeftCenterCenterParams.height = (int) ((DipPixelUtil.dip2px(context,mLeftCenterCenterHeight) / 2) + (value)) * 2;
             mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
             if (mLeftBottomView != null) {
                 mLeftCenterCenterParams.y = (int) ((height / 2)
-                        - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height);
+                        - (mLeftCenterCenterParams.height / 2) - mLeftBottomParams.height-DipPixelUtil.dip2px(context,12));
             } else {
                 mLeftCenterCenterParams.y = (int) ((height / 2)
-                        - (mLeftCenterCenterParams.height / 2) - mLeftBottomHeight);
+                        - (mLeftCenterCenterParams.height / 2) - DipPixelUtil.dip2px(context,mLeftBottomHeight)-DipPixelUtil.dip2px(context,40));
             }
         }
         // 左上
         if (mLeftTopParams != null) {
-            mLeftTopParams.width = (int) ((mLeftTopWidth / 2) + (value / 2)) * 2;
-            mLeftTopParams.height = (int) ((mLeftTopHeight / 2) + (value)) * 2;
+            mLeftTopParams.width = (int) ((DipPixelUtil.dip2px(context,mLeftTopWidth) / 2) + (value / 2)) * 2;
+            mLeftTopParams.height = (int) ((DipPixelUtil.dip2px(context,mLeftTopHeight) / 2) + (value)) * 2;
             mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
             mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
-                    - mLeftBottomParams.height - mLeftCenterParams.height);
+                    - mLeftBottomParams.height - mLeftCenterParams.height-DipPixelUtil.dip2px(context,12));
         }
         // 右下
         if (mRightBottomParams != null) {
-            mRightBottomParams.width = (int) ((mRightBottomWidth / 2) + (value / 2)) * 2;
-            mRightBottomParams.height = (int) ((mRightBottomHeight / 2) + (value)) * 2;
+            mRightBottomParams.width = (int) ((DipPixelUtil.dip2px(context,mRightBottomWidth) / 2) + (value / 2)) * 2;
+            mRightBottomParams.height = (int) ((DipPixelUtil.dip2px(context,mRightBottomHeight) / 2) + (value)) * 2;
             mRightBottomParams.x = +(width / 2);
             mRightBottomParams.y = (height / 2) - value;
         }
         // 右中
         if (mRightCenterParams != null) {
-            mRightCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
-            mRightCenterParams.height = (int) ((mRightCenterHeight / 2) + (value)) * 2;
+            mRightCenterParams.width = (int) ((DipPixelUtil.dip2px(context,mRightCenterWidth) / 2) + (value / 2)) * 2;
+            mRightCenterParams.height = (int) ((DipPixelUtil.dip2px(context,mRightCenterHeight) / 2) + (value)) * 2;
             mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
-            mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height);
+            mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2) - mRightBottomParams.height-DipPixelUtil.dip2px(context,12));
         }
         // 右上
         if (mRightTopParams != null) {
-            mRightTopParams.width = (int) ((mRightTopWidth / 2) + (value / 2)) * 2;
-            mRightTopParams.height = (int) ((mRightTopHeight / 2) + (value)) * 2;
+            mRightTopParams.width = (int) ((DipPixelUtil.dip2px(context,mRightTopWidth) / 2) + (value / 2)) * 2;
+            mRightTopParams.height = (int) ((DipPixelUtil.dip2px(context,mRightTopHeight) / 2) + (value)) * 2;
             mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
             mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
-                    - mRightBottomParams.height - mRightCenterParams.height);
+                    - mRightBottomParams.height - mRightCenterParams.height-DipPixelUtil.dip2px(context,12));
         }
         // 右侧中部
         if (mRightCenterCenterParams != null) {
-            mRightCenterCenterParams.width = (int) ((mRightCenterWidth / 2) + (value / 2)) * 2;
-            mRightCenterCenterParams.height = (int) ((mRightCenterCenterHeight / 2) + (value)) * 2;
+            mRightCenterCenterParams.width = (int) ((DipPixelUtil.dip2px(context,mRightCenterWidth) / 2) + (value / 2)) * 2;
+            mRightCenterCenterParams.height = (int) ((DipPixelUtil.dip2px(context,mRightCenterCenterHeight) / 2) + (value)) * 2;
             if (mRightBottomView != null) {
                 mRightCenterCenterParams.y = (int) ((height / 2)
-                        - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height);
+                        - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height-DipPixelUtil.dip2px(context,12));
             } else {
                 mRightCenterCenterParams.y = (int) ((height / 2)
-                        - (mRightCenterCenterParams.height / 2) - mRightBottomHeight);
+                        - (mRightCenterCenterParams.height / 2) - DipPixelUtil.dip2px(context,mRightBottomHeight)-DipPixelUtil.dip2px(context,40));
             }
 
         }

@@ -442,7 +442,8 @@ public class TaskDetectService extends Service {
                                     .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
                         }
                         if (isAppsAndHome) {
-                            if (!isRuningFreeDisturbApp(mActivityManager) || FloatWindowHelper.mEditQuickAreaFlag) {
+                            if (!isRuningFreeDisturbApp(mActivityManager)
+                                    || FloatWindowHelper.mEditQuickAreaFlag) {
                                 FloatWindowHelper.createFloatWindow(getApplicationContext(), value);
                             } else {
                                 FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
@@ -486,64 +487,71 @@ public class TaskDetectService extends Service {
         String flag = event.editModel;
         int value = AppMasterPreference.getInstance(getApplicationContext())
                 .getQuickGestureDialogSeekBarValue();
-        if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION
+        if (FloatWindowHelper.mEditQuickAreaFlag) {
+            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                @Override
+                public void run() {
+                    FloatWindowHelper
+                            .updateFloatWindowBackgroudColor(true);
+                }
+            });
+        }
+        if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_LEFT_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
-            // 设置背景
-            if (FloatWindowHelper.mEditQuickAreaFlag) {
-                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        FloatWindowHelper
-                                .updateFloatWindowBackgroudColor(true);
-                    }
-                });
-            }
-            // 左侧底部
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
+                if (!AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
+                    FloatWindowHelper.removeSwipWindow(this, 4);
+                } else {
+                    FloatWindowHelper
+                            .createFloatLeftCenterCenterWindow(this, value);
+                }
                 FloatWindowHelper.removeSwipWindow(this, 1);
                 FloatWindowHelper.removeSwipWindow(this, 2);
                 FloatWindowHelper.removeSwipWindow(this, 3);
             } else {
-                FloatWindowHelper
-                        .createFloatLeftBottomWindow(this, value);
-                FloatWindowHelper
-                        .createFloatLeftCenterWindow(this, value);
-                FloatWindowHelper
-                        .createFloatLeftTopWindow(this, value);
+                if (AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
+                    FloatWindowHelper.removeSwipWindow(this, 4);
+                    FloatWindowHelper
+                            .createFloatLeftBottomWindow(this, value);
+                    FloatWindowHelper
+                            .createFloatLeftCenterCenterWindow(this, value);
+                } else {
+                    FloatWindowHelper.removeSwipWindow(this, 4);
+                    FloatWindowHelper
+                            .createFloatLeftBottomWindow(this, value);
+                    FloatWindowHelper
+                            .createFloatLeftCenterWindow(this, value);
+                    FloatWindowHelper
+                            .createFloatLeftTopWindow(this, value);
+                }
             }
-            // 右侧底部
+        } else if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RIGHT_RADIO_FINISH_NOTIFICATION
+                .equals(flag)) {
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
+                if (!AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
+                    FloatWindowHelper.removeSwipWindow(this, -4);
+                } else {
+                    FloatWindowHelper
+                            .createFloatRightCenterCenterWindow(this, value);
+                }
                 FloatWindowHelper.removeSwipWindow(this, -1);
                 FloatWindowHelper.removeSwipWindow(this, -2);
                 FloatWindowHelper.removeSwipWindow(this, -3);
             } else {
-                FloatWindowHelper
-                        .createFloatRightBottomWindow(this, value);
-                FloatWindowHelper
-                        .createFloatRightCenterWindow(this, value);
-                FloatWindowHelper
-                        .createFloatRightTopWindow(this, value);
-            }
-            // 左侧中部
-            if (!AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
-                FloatWindowHelper.removeSwipWindow(this, 4);
-            } else {
-                FloatWindowHelper
-                        .createFloatLeftCenterCenterWindow(this, value);
-                if (AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
-                    FloatWindowHelper.removeSwipWindow(this, 2);
-                    FloatWindowHelper.removeSwipWindow(this, 3);
-                }
-            }
-            // 右侧中部
-            if (!AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
-                FloatWindowHelper.removeSwipWindow(this, -4);
-            } else {
-                FloatWindowHelper.createFloatRightCenterCenterWindow(this, value);
-                if (AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
-                    FloatWindowHelper.removeSwipWindow(this, -2);
-                    FloatWindowHelper.removeSwipWindow(this, -3);
+                if (AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
+                    FloatWindowHelper.removeSwipWindow(this, -4);
+                    FloatWindowHelper
+                            .createFloatRightBottomWindow(this, value);
+                    FloatWindowHelper
+                            .createFloatRightCenterCenterWindow(this, value);
+                } else {
+                    FloatWindowHelper.removeSwipWindow(this, -4);
+                    FloatWindowHelper
+                            .createFloatRightBottomWindow(this, value);
+                    FloatWindowHelper
+                            .createFloatRightCenterWindow(this, value);
+                    FloatWindowHelper
+                            .createFloatRightTopWindow(this, value);
                 }
             }
         }
