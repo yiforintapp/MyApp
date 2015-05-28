@@ -321,24 +321,16 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
         int position = (Integer) arg0.getTag();
         if (position == 0) {
+            mPre.setSwitchOpenQuickGesture(arg1);
+            mQuickGestureSettingOption.get(position).setCheck(arg1);
             if (!arg1) {
                 QuickGestureManager.getInstance(this).stopFloatWindow();
                 // 移除悬浮窗
                 FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
             } else {
-                if (mPre.getSwitchOpenQuickGesture()) {
-                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            QuickGestureManager.getInstance(QuickGestureActivity.this)
-                                    .startFloatWindow();
-                        }
-                    });
-                }
+                QuickGestureManager.getInstance(QuickGestureActivity.this)
+                        .startFloatWindow();
             }
-            mPre.setSwitchOpenQuickGesture(arg1);
-            mQuickGestureSettingOption.get(position).setCheck(arg1);
         } else if (position == 3) {
             mPre.setSwitchOpenNoReadMessageTip(arg1);
             mQuickGestureSettingOption.get(position).setCheck(arg1);
