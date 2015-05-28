@@ -136,6 +136,26 @@ public class HttpRequestAgent {
         request.setShouldCache(true);
         mRequestQueue.add(request);
     }
+    
+    /**
+     * get gesture recommend apps
+     * 
+     * @param listener
+     * @param eListener
+     */
+    public void loadGestureRecomApp(int type, Listener<JSONObject> listener,
+            ErrorListener eListener) {
+        
+        String url = Utilities.getURL(AppMasterConfig.GESTURE_RECOMMEND_URL
+                + mContext.getString(R.string.version_name) + "/"
+                + Utilities.getCountryID(mContext) + "/" + AppwallHttpUtil.getLanguage() +"/"
+                + mContext.getString(R.string.channel_code) + ".html");
+        
+        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+                "", listener, eListener);
+        request.setShouldCache(true);
+        mRequestQueue.add(request);
+    }
 
     /**
      * get business page recommend apps
