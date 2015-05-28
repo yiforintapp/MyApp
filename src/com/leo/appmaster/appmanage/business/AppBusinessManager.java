@@ -37,6 +37,8 @@ import com.leo.appmaster.utils.LeoLog;
  */
 public class AppBusinessManager {
 
+    public static final String TAG = "AppBusinessManager";
+    
     private static final int DELAY_2_HOUR = 2 * 60 * 60 * 1000;
     public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
 
@@ -77,6 +79,8 @@ public class AppBusinessManager {
     }
 
     private void loadInitData() {
+        
+        LeoLog.d("xxxx", "loadInitData");
         mLoadInitDataTask = new FutureTask<Vector<BusinessItemInfo>>(
                 new Callable<Vector<BusinessItemInfo>>() {
                     @Override
@@ -192,6 +196,7 @@ public class AppBusinessManager {
     }
 
     private void syncServerGestureData() {
+        LeoLog.d(TAG, "syncServerGestureData");
         final AppMasterPreference pref = AppMasterPreference
                 .getInstance(mContext);
         long curTime = System.currentTimeMillis();
@@ -199,7 +204,6 @@ public class AppBusinessManager {
         long lastSyncTime = pref.getLastSyncBusinessTime();
         if (lastSyncTime == 0
                 || (curTime - pref.getLastSyncBusinessTime()) > DELAY_12_HOUR) {
-
             HttpRequestAgent.getInstance(mContext).loadGestureRecomApp(
                     BusinessItemInfo.CONTAIN_APPLIST,
                     new Listener<JSONObject>() {

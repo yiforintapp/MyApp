@@ -845,7 +845,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         intent.putExtra("show_orientation", 2);
                         try {
                             AppMasterApplication.getInstance().startActivity(intent);
-                            FloatWindowHelper.mGestureShowing = true;
                             AppMasterPreference.getInstance(this).setFristSlidingTip(true);
                         } catch (Exception e) {
                         }

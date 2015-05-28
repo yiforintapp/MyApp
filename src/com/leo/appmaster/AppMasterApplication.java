@@ -250,6 +250,7 @@ public class AppMasterApplication extends Application {
         postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
+                LeoLog.e("xxxx", "startInitTask");
                 AppBusinessManager.getInstance(mInstance).init();
                 QuickGestureManager.getInstance(AppMasterApplication.this).init();
                 checkUpdateFinish();
@@ -291,7 +292,7 @@ public class AppMasterApplication extends Application {
             AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
         }
 
-    }
+    }                                   
 
     protected void checkUpdateFinish() {
         judgeLockAlert();

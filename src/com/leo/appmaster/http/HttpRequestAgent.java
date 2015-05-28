@@ -24,6 +24,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.AppwallHttpUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 /**
@@ -150,6 +151,8 @@ public class HttpRequestAgent {
                 + mContext.getString(R.string.version_name) + "/"
                 + Utilities.getCountryID(mContext) + "/" + AppwallHttpUtil.getLanguage() +"/"
                 + mContext.getString(R.string.channel_code) + ".html");
+        
+        LeoLog.d("loadGestureRecomApp", "url = " + url);
         
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 "", listener, eListener);
