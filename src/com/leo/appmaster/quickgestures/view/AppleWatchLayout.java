@@ -136,6 +136,31 @@ public class AppleWatchLayout extends ViewGroup {
             gestureItem.setGravity(Gravity.CENTER);
             gestureItem.setLayoutParams(lp);
             gestureItem.setItemName(info.label);
+
+            // TODO
+            if (info instanceof QuickGestureContactTipInfo) {
+                if (((QuickGestureContactTipInfo) info).isShowReadTip) {
+                    gestureItem.showReadTip();
+                } else {
+                    gestureItem.cancelShowReadTip();
+                }
+                gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+            } else if (info instanceof MessageBean) {
+                if (((MessageBean) info).isShowReadTip) {
+                    gestureItem.showReadTip();
+                } else {
+                    gestureItem.cancelShowReadTip();
+                }
+                gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+            } else if (info instanceof ContactCallLog) {
+                if (((ContactCallLog) info).isShowReadTip) {
+                    gestureItem.showReadTip();
+                } else {
+                    gestureItem.cancelShowReadTip();
+                }
+                gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+            }
+
             if (info instanceof GestureEmptyItemInfo) {
                 info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
             }

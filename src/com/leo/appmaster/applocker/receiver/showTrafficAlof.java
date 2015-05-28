@@ -3,19 +3,18 @@ package com.leo.appmaster.applocker.receiver;
 
 import java.lang.reflect.Method;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
+import android.view.WindowManager;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.showTrafficTip;
 import com.leo.appmaster.ui.showTrafficTip.OnDiaogClickListener;
-import com.leo.appmaster.utils.LeoLog;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.NetworkInfo.State;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.view.WindowManager;
 
 public class showTrafficAlof extends BroadcastReceiver {
     private Context mContext;
@@ -26,7 +25,7 @@ public class showTrafficAlof extends BroadcastReceiver {
     boolean isSwtich;
     @Override
     public void onReceive(Context context, Intent intent) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         sp_broadcast = AppMasterPreference.getInstance(mContext);
         isSwtich = sp_broadcast.getFlowSetting(); 
         firstIn = sp_broadcast.getFirstTime();
@@ -54,9 +53,7 @@ public class showTrafficAlof extends BroadcastReceiver {
                     && State.CONNECTED != wifiState
                     && State.CONNECTED == mobileState) {
                 // 手机网络连接成功
-                
-                boolean isUsedData = checkIsUseData();
-                
+                                
 //                LeoLog.d("ServiceTraffic", "2G/3G/4G");
                 boolean haveNotice = sp_broadcast.getAlotNotice();
                 boolean mFinishNotice = sp_broadcast.getFinishNotice();
@@ -93,11 +90,6 @@ public class showTrafficAlof extends BroadcastReceiver {
         }
     }
 
-    private  boolean checkIsUseData() {
-        
-        
-        return false;
-    }
 
     private void showAlarmDialog(String action) {
         showTrafficTip dialog = new showTrafficTip(

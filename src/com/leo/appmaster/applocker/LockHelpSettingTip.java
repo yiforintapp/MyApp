@@ -140,8 +140,6 @@ public class LockHelpSettingTip extends BaseActivity {
         String[] lockHelpSettingTitle = getResources().getStringArray(
                 R.array.lock_help_setting_title);
         mHelpSettingPager = Arrays.asList(lockHelpSettingTitle);
-        int right = getResources().getInteger(R.integer.help_setting_icon_right);
-        int bottom = getResources().getInteger(R.integer.help_setting_icon_bottom);
         int mType = AppMasterPreference.getInstance(this).getLockType();
         // boolean flag =
         // AppMasterPreference.getInstance(this).getIsHelpSettingChangeSucess();

@@ -37,6 +37,8 @@ import com.leo.appmaster.utils.LeoLog;
  */
 public class AppBusinessManager {
 
+    public static final String TAG = "AppBusinessManager";
+    
     private static final int DELAY_2_HOUR = 2 * 60 * 60 * 1000;
     public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
 
@@ -77,17 +79,14 @@ public class AppBusinessManager {
     }
 
     private void loadInitData() {
+        
+        LeoLog.d("xxxx", "loadInitData");
         mLoadInitDataTask = new FutureTask<Vector<BusinessItemInfo>>(
                 new Callable<Vector<BusinessItemInfo>>() {
                     @Override
                     public Vector<BusinessItemInfo> call() {
                         final ContentResolver resolver = mContext
                                 .getContentResolver();
-                        String[] projection = {
-                                "lebal", "package_name",
-                                "app_size", "icon_status", "gp_priority",
-                                "gp_url",
-                        };
                         Cursor c = resolver.query(
                                 Constants.APPLIST_BUSINESS_URI, null, null,
                                 null, Constants.ID);
@@ -192,6 +191,7 @@ public class AppBusinessManager {
     }
 
     private void syncServerGestureData() {
+        LeoLog.d(TAG, "syncServerGestureData");
         final AppMasterPreference pref = AppMasterPreference
                 .getInstance(mContext);
         long curTime = System.currentTimeMillis();
@@ -199,8 +199,7 @@ public class AppBusinessManager {
         long lastSyncTime = pref.getLastSyncBusinessTime();
         if (lastSyncTime == 0
                 || (curTime - pref.getLastSyncBusinessTime()) > DELAY_12_HOUR) {
-
-            HttpRequestAgent.getInstance(mContext).loadRecomApp(
+            HttpRequestAgent.getInstance(mContext).loadGestureRecomApp(
                     BusinessItemInfo.CONTAIN_APPLIST,
                     new Listener<JSONObject>() {
 
@@ -227,9 +226,8 @@ public class AppBusinessManager {
                                         }
                                     }
                                 } catch (Exception e) {
-                                    // e.printStackTrace();
-                                    // LeoLog.e("syncServerData",
-                                    // e.getMessage());
+                                    e.printStackTrace();
+                                    LeoLog.e("syncServerData", e.getMessage());
                                     // TimerTask recheckTask = new TimerTask() {
                                     // @Override
                                     // public void run() {

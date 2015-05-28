@@ -1,10 +1,8 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -16,8 +14,9 @@ import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.sdk.BaseActivity;
 
-public class QuickGesturePopupActivity extends Activity {
+public class QuickGesturePopupActivity extends BaseActivity {
 
     private AppleWatchContainer mContainer;
     private ImageView iv_roket, iv_pingtai, iv_yun;
@@ -46,6 +45,7 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     protected void onResume() {
+        FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
             public void run() {
@@ -70,7 +70,6 @@ public class QuickGesturePopupActivity extends Activity {
     protected void onStop() {
         FloatWindowHelper.mGestureShowing = false;
         finish();
-        FloatWindowHelper.mGestureShowing = false;
         super.onStop();
     }
 

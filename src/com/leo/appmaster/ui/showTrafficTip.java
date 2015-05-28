@@ -7,13 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 public class showTrafficTip extends LEOBaseDialog {
     private Context mContext;
-    private AppMasterPreference sp_notice_flow;
     private TextView mTitle;
     private TextView mContent;
     private TextView mLeftBtn;
@@ -22,7 +20,6 @@ public class showTrafficTip extends LEOBaseDialog {
     public showTrafficTip(Context context) {
         super(context, R.style.bt_dialog);
         mContext = context.getApplicationContext();
-        sp_notice_flow = AppMasterPreference.getInstance(mContext);
         initUI();
     }
 

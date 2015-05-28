@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.util.Log;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -24,6 +23,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.AppwallHttpUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 /**
@@ -35,7 +35,6 @@ import com.leo.appmaster.utils.Utilities;
  */
 public class HttpRequestAgent {
 
-    private static final String Tag = "HttpRequestAgent";
     private Context mContext;
     private RequestQueue mRequestQueue;
     private static HttpRequestAgent mInstance;
@@ -133,6 +132,28 @@ public class HttpRequestAgent {
                 + "&language=" + AppwallHttpUtil.getLanguage();
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 body, listener, eListener);
+        request.setShouldCache(true);
+        mRequestQueue.add(request);
+    }
+    
+    /**
+     * get gesture recommend apps
+     * 
+     * @param listener
+     * @param eListener
+     */
+    public void loadGestureRecomApp(int type, Listener<JSONObject> listener,
+            ErrorListener eListener) {
+        
+        String url = Utilities.getURL(AppMasterConfig.GESTURE_RECOMMEND_URL
+                + mContext.getString(R.string.version_name) + "/"
+                + Utilities.getCountryID(mContext) + "/" + AppwallHttpUtil.getLanguage() +"/"
+                + mContext.getString(R.string.channel_code) + ".html");
+        
+        LeoLog.d("loadGestureRecomApp", "url = " + url);
+        
+        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+                "", listener, eListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);
     }

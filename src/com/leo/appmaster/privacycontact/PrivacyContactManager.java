@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -41,7 +40,7 @@ public class PrivacyContactManager {
 //    private boolean mSysCallLogLoaded = false;
 
     private PrivacyContactManager(Context context) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         mContacts = new ArrayList<ContactBean>();
 //        mSysCallLogs = new ArrayList<ContactCallLog>();
 

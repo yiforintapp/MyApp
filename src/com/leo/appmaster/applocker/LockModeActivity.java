@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -86,7 +85,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
                 showTitleBarOption(mEditIndex);
            }
         } else {
-            super.onBackPressed();
+            finish();
         }
     }
 
