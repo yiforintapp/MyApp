@@ -1242,7 +1242,7 @@ public class AppleWatchContainer extends FrameLayout {
         return mRotateDegree;
     }
 
-    public void showOpenAnimation() {
+    public void showOpenAnimation(final Runnable run) {
         int direction = mShowOrientation == Orientation.Left ? 0 : 2;
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 mCornerTabs.getHeight(), 0);
@@ -1280,9 +1280,7 @@ public class AppleWatchContainer extends FrameLayout {
                     layout = mSwitcherLayout;
                 }
                 layout.fillExtraChildren();
-                fillMostUsedLayout();
-//                fillDynamicLayout();
-                fillSwitcherLayout();
+                run.run();
             }
         });
         set.start();
@@ -1586,20 +1584,5 @@ public class AppleWatchContainer extends FrameLayout {
         this.mRockey = iv_roket;
         this.mPIngtai = iv_pingtai;
         this.mYun = iv_yun;
-    }
-
-    public void fillDynamicLayout() {
-        List<BaseInfo> items = QuickGestureManager.getInstance(getContext()).getDynamicList();
-        fillGestureItem(GType.DymicLayout, items);
-    }
-
-    public void fillMostUsedLayout() {
-        List<BaseInfo> items = QuickGestureManager.getInstance(getContext()).getMostUsedList();
-        fillGestureItem(GType.MostUsedLayout, items);
-    }
-    
-    public void fillSwitcherLayout() {
-        List<BaseInfo> items = QuickGestureManager.getInstance(getContext()).getSwitcherList();
-        fillGestureItem(GType.SwitcherLayout, items);
     }
 }

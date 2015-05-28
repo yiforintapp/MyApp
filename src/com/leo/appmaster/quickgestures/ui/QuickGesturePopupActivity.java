@@ -1,20 +1,33 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.quickgestures.view.GestureItemView;
+import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends Activity {
 
@@ -30,8 +43,8 @@ public class QuickGesturePopupActivity extends Activity {
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
         iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
         iv_yun = (ImageView) findViewById(R.id.iv_yun);
-        mContainer.setRockey(iv_roket, iv_pingtai, iv_yun);
-
+        mContainer.setRockey(iv_roket,iv_pingtai,iv_yun);
+        
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
@@ -48,7 +61,13 @@ public class QuickGesturePopupActivity extends Activity {
         mContainer.post(new Runnable() {
             @Override
             public void run() {
-                mContainer.showOpenAnimation();
+                mContainer.showOpenAnimation(new Runnable() {
+                    @Override
+                    public void run() {
+                        fillMostUsedLayout();
+                        fillSwitcherLayout();
+                    }
+                });
             }
         });
         super.onResume();
@@ -61,13 +80,25 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     protected void onStop() {
-        finish();
-        super.onStop();
         FloatWindowHelper.mGestureShowing = false;
+        finish();
+        FloatWindowHelper.mGestureShowing = false;
+        super.onStop();
     }
 
     private void fillDynamicLayout() {
-        mContainer.fillDynamicLayout();
+        List<BaseInfo> items = QuickGestureManager.getInstance(this).getDynamicList();
+        mContainer.fillGestureItem(GType.DymicLayout, items);
+    }
+
+    private void fillMostUsedLayout() {
+        List<BaseInfo> items = QuickGestureManager.getInstance(this).getMostUsedList();
+        mContainer.fillGestureItem(GType.MostUsedLayout, items);
+    }
+
+    private void fillSwitcherLayout() {
+        List<BaseInfo> items = QuickGestureManager.getInstance(this).getSwitcherList();
+        mContainer.fillGestureItem(GType.SwitcherLayout, items);
     }
 
     @Override
@@ -79,10 +110,12 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
             mContainer.showCloseAnimation();
         }
     }
+
 }
