@@ -434,7 +434,7 @@ public class QuickSwitchManager {
         } else {
             AppMasterPreference apf = AppMasterPreference.getInstance(mContext);
             String restoredData = apf.getSwitchList();
-            if (restoredData.isEmpty()) {
+            if (restoredData.isEmpty() && !apf.getLoadedSwitchList()) {
                 mSaveList = new ArrayList<BaseInfo>();
                 // 蓝牙开关
                 QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
@@ -588,6 +588,7 @@ public class QuickSwitchManager {
                         mSaveList.subList(0, 13),
                         switchNum);
                 apf.setSwitchList(saveToSp);
+                apf.setLoadedSwitchList(true);
             } else {
                 mSaveList = QuickSwitchManager.getInstance(mContext).StringToList(
                         restoredData);
@@ -1206,10 +1207,6 @@ public class QuickSwitchManager {
         for (int i = 0; i < mSwitchAllInfo.length; i++) {
             QuickSwitcherInfo mInfo = new QuickSwitcherInfo();
             String[] mEachOneInfo = mSwitchAllInfo[i].split(":");
-            // LeoLog.d(
-            // "QuickSwitchManager",
-            // "name : " + mEachOneInfo[0] + "--position : "
-            // + Integer.parseInt(mEachOneInfo[1]));
             mInfo.gesturePosition = Integer.parseInt(mEachOneInfo[1]);
             mInfo.label = mEachOneInfo[0];
             mInfo.switchIcon = getIconFromName(mInfo.label);
@@ -1222,19 +1219,4 @@ public class QuickSwitchManager {
         return switchPreference.getSwitchList();
     }
 
-    // public QuickSwitcherInfo getXuKuangInfo() {
-    // QuickSwitcherInfo mXuKuang = new QuickSwitcherInfo();
-    // mXuKuang.label = "";
-    // mXuKuang.iDentiName = XUKUANG;
-    // mXuKuang.switchIcon = getIconFromName(XUKUANG);
-    // return mXuKuang;
-    // }
-
-    // public GestureItemView getXuKuang(View hitView) {
-    // LayoutParams params = (LayoutParams) hitView.getLayoutParams();
-    // GestureItemView mIvXuKuang = new GestureItemView(mContext);
-    // mIvXuKuang.setLayoutParams(params);
-    // mIvXuKuang.setBackground(mContext.getResources().getDrawable(R.drawable.switch_add));
-    // return mIvXuKuang;
-    // }
 }

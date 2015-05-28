@@ -163,6 +163,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME = "quick_gesture_free_disturb_app_package_name";
     public static final String PREF_QUICK_GESTURE_APP_LAUNCH_RECODER = "quick_gesture_app_launch_recoder";
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST = "quick_gesture_quickswitch_list";
+    public static final String PREF_QUICK_GESTURE_LOADED_QUICKSWITCH_LIST = "quick_gesture_loaded_quickswitch_list";
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE = "quick_gesture_quickswitch_list_size";
     public static final String PREF_QUICK_FIRST_SLIDING_TIP = "quick_first_sliding_tip";
     public static final String PREF_QUICK_GESTURE_RED_TIP = "quick_gesture_red_tip";
@@ -1519,7 +1520,17 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putString(PREF_QUICK_GESTURE_QUICKSWITCH_LIST, mSwitchList)
                 .commit();
     }
+    
+    public boolean getLoadedSwitchList() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_LOADED_QUICKSWITCH_LIST,
+                false);
+    }
 
+    public void setLoadedSwitchList(boolean isLoaded) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_LOADED_QUICKSWITCH_LIST, isLoaded)
+                .commit();
+    }
+    
     public int getSwitchListSize() {
         return mPref.getInt(PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE,
                 13);
