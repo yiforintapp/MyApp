@@ -3,7 +3,6 @@ package com.leo.appmaster.quickgestures.view;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.view.MotionEvent;
 import android.view.View;
 
 public interface DecorateAction {

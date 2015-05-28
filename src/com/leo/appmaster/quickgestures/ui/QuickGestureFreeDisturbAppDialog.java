@@ -8,15 +8,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TreeSet;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,8 +22,6 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.baidu.mobstat.l;
-import com.baidu.mobstat.o;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -34,14 +29,13 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
 import com.leo.appmaster.quickgestures.view.FreeDisturbPagedGridView;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
-import com.leo.appmaster.utils.LeoLog;
 
 /**
  * QuickGestureSlideTimeDialog
@@ -61,12 +55,8 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private CheckBox mCheckBox;
     private int mFlag;
     private static int mSwitchListSize = 0;
-    private static final String TAG = "QuickGestureFreeDisturbAppDialog";
-    private boolean isFirstClick = true;
     private boolean mFirstStatus = false;
-    private String mLastName = "";
     private List<BaseInfo> quickSwitchSaveList;
-    private List<QuickGsturebAppInfo> mCommonAppTemp;
     private static int mMostAppConunt = 0;
 
     public QuickGestureFreeDisturbAppDialog(Context context, int flag) {

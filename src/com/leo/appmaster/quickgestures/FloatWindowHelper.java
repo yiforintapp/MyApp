@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.quickgestures;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +19,6 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 /**
@@ -48,7 +45,7 @@ public class FloatWindowHelper {
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
 
-    public static boolean mGestureShowing = true;
+    public static boolean mGestureShowing = false;
     public static boolean mEditQuickAreaFlag = false;
     private static float startX;
     private static float startY;

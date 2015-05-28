@@ -174,6 +174,8 @@ public class TaskDetectService extends Service {
         if (AppMasterPreference.getInstance(getApplicationContext())
                 .getFristSlidingTip()) {
             FloatWindowHelper.mGestureShowing = true;
+        } else {
+            FloatWindowHelper.mGestureShowing = false;
         }
         stopFloatWindowTask();
         mFloatWindowTask = new FloatWindowTask();

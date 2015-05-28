@@ -18,7 +18,6 @@ import android.view.View;
  * @author zhangwenyang
  */
 public class EventAction implements DecorateAction {
-    private static final String TAG = "EventAction";
     private int mAlpha = 255;
     private Paint mNumberPaint;
     private int mNumber;

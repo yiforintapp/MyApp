@@ -9,14 +9,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -36,8 +32,8 @@ import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.utils.DipPixelUtil;
-//import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 import com.leo.appmaster.utils.LeoLog;
+//import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 
 public class SectorQuickGestureContainer extends FrameLayout {
 
@@ -649,7 +645,6 @@ public class SectorQuickGestureContainer extends FrameLayout {
             GestureItemView tv = null;
             AppleWatchLayout.LayoutParams lp = null;
             BaseInfo info = null;
-            int iconSize = targetLayout.getIconSize();
             List<BaseInfo> infos = (List<BaseInfo>) itemInfos;
             // 快捷手势未读短信提醒
             boolean isShowMsmTip = AppMasterPreference.getInstance(getContext())
@@ -1001,7 +996,6 @@ public class SectorQuickGestureContainer extends FrameLayout {
             GestureItemView tv = null;
             AppleWatchLayout.LayoutParams lp = null;
             BaseInfo info = null;
-            int iconSize = targetLayout.getIconSize();
             for (int i = 0; i < infos.size(); i++) {
                 if (i >= 11) {
                     break;

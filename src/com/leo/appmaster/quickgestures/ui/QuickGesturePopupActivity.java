@@ -21,14 +21,11 @@ public class QuickGesturePopupActivity extends Activity {
 
     private AppleWatchContainer mContainer;
     private ImageView iv_roket, iv_pingtai, iv_yun;
-    private List<BaseInfo> mCommonApps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture_apple_watch);
-//        QuickSwitchManager.getInstance(this).setActivity(this);
-        mCommonApps = new ArrayList<BaseInfo>();
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
@@ -39,7 +36,6 @@ public class QuickGesturePopupActivity extends Activity {
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
-//        mContainer.setRocket(this);
         fillDynamicLayout();
         overridePendingTransition(-1, -1);
     }
@@ -72,9 +68,10 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     protected void onStop() {
-        finish();
-        super.onStop();
         FloatWindowHelper.mGestureShowing = false;
+        finish();
+        FloatWindowHelper.mGestureShowing = false;
+        super.onStop();
     }
 
     private void fillDynamicLayout() {

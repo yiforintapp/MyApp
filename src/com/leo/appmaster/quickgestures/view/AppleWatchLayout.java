@@ -4,7 +4,6 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TreeSet;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -20,7 +19,6 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -42,7 +40,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
-import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.utils.LeoLog;
@@ -67,7 +64,6 @@ public class AppleWatchLayout extends ViewGroup {
     private float mMinuOffset;
     private int mAdjustCount = 0;
     private boolean mSnapping;
-    private AppMasterPreference mSpSwitch;
     public GType mMyType;
     public boolean mHasFillExtraItems;
 
@@ -88,7 +84,6 @@ public class AppleWatchLayout extends ViewGroup {
     public AppleWatchLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
-        mSpSwitch = AppMasterPreference.getInstance(mContext);
     }
 
     public boolean isSnapping() {
@@ -663,7 +658,6 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (info instanceof QuickGestureContactTipInfo) {
             // 隐私联系人提示
             item.cancelShowReadTip();
-            QuickGestureContactTipInfo privacyInfo = (QuickGestureContactTipInfo) info;
             Intent intent = new Intent();
             intent.setClass(mContext, PrivacyContactActivity.class);
             try {
@@ -1687,7 +1681,7 @@ public class AppleWatchLayout extends ViewGroup {
                 target = (temp + 3) * mMinuOffset;
                 ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, target);
                 transAnima.setInterpolator(new DecelerateInterpolator());
-                transAnima.setDuration(800);
+                transAnima.setDuration(500);
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
@@ -1712,7 +1706,7 @@ public class AppleWatchLayout extends ViewGroup {
                 temp = (int) (mLastMovex / mMinuOffset);
                 target = (temp + 3) * mMinuOffset;
                 ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, target);
-                transAnima.setDuration(800);
+                transAnima.setDuration(500);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
@@ -1740,7 +1734,6 @@ public class AppleWatchLayout extends ViewGroup {
 
     private void snapShort(Direction direction) {
         float distance, offset;
-        int duration;
         int temp;
         if (!mSnapping) {
             if (direction == Direction.Left) {
@@ -1753,7 +1746,7 @@ public class AppleWatchLayout extends ViewGroup {
                     distance = temp * mMinuOffset;
                 }
                 transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
-                transAnima.setDuration(300);
+                transAnima.setDuration(200);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
@@ -1785,7 +1778,7 @@ public class AppleWatchLayout extends ViewGroup {
                     distance = temp * mMinuOffset;
                 }
                 transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
-                transAnima.setDuration(300);
+                transAnima.setDuration(200);
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {

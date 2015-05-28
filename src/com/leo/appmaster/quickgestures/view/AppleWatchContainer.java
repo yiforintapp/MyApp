@@ -67,9 +67,9 @@ public class AppleWatchContainer extends FrameLayout {
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
     private Orientation mShowOrientation = Orientation.Left;
-   private  ImageView mRockey,mPIngtai,mYun;
+    private ImageView mRockey, mPIngtai, mYun;
 
-    private float mSelfWidth, mSelfHeight;
+    private float mSelfHeight;
     private float mTouchDownX, mTouchDownY;
     private float mRotateDegree;
 
@@ -80,7 +80,6 @@ public class AppleWatchContainer extends FrameLayout {
     private int mStartAngle = 40;
     private ProcessCleaner mCleaner;
     private long mLastUsedMem;
-    private long mTotalMem;
     private long mCleanMem;
     private boolean isAnimating;
     private boolean mHasRelayout;
@@ -98,7 +97,6 @@ public class AppleWatchContainer extends FrameLayout {
         // 清理内存
         mCleaner = ProcessCleaner.getInstance(context);
         mLastUsedMem = mCleaner.getUsedMem();
-        mTotalMem = mCleaner.getTotalMem();
         // clean
         mCleaner.tryClean(mContext);
         long curUsedMem = mCleaner.getUsedMem();
@@ -252,7 +250,6 @@ public class AppleWatchContainer extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mSelfWidth = getMeasuredWidth();
         mSelfHeight = getMeasuredHeight();
     }
 
@@ -312,15 +309,15 @@ public class AppleWatchContainer extends FrameLayout {
                 } else {
                     moveX = event.getX();
                     moveY = event.getY();
-                    
-                    //下拉通知栏，finish
-                    if(mTouchDownY >= 0 && mTouchDownY < 70){
-                        if(moveY - mTouchDownY > 70){
+
+                    // 下拉通知栏，finish
+                    if (mTouchDownY >= 0 && mTouchDownY < 70) {
+                        if (moveY - mTouchDownY > 70) {
                             Activity activity = (Activity) AppleWatchContainer.this.getContext();
                             activity.finish();
                         }
                     }
-                    
+
                     if (Math.abs(moveX - mTouchDownX) > DipPixelUtil.dip2px(getContext(), 10)) {
                         mMoving = true;
                         if (mTouchDownY >= mDymicLayout.getTop()
@@ -416,7 +413,7 @@ public class AppleWatchContainer extends FrameLayout {
                 mDymicLayout.relayoutExtraChildren();
                 mMostUsedLayout.relayoutExtraChildren();
                 mSwitcherLayout.relayoutExtraChildren();
-//                mHasRelayout = true;
+                // mHasRelayout = true;
             }
         }
     }
@@ -775,14 +772,13 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     public void fillDynamicItem(AppleWatchLayout targetLayout,
-            List<? extends BaseInfo> itemInfos, int businessIndes) {
+            List<BaseInfo> itemInfos, int businessIndes) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView gestureItem = null;
             AppleWatchLayout.LayoutParams lp = null;
             BaseInfo info = null;
-            int iconSize = targetLayout.getIconSize();
-            List<BaseInfo> infos = (List<BaseInfo>) itemInfos;
+            List<BaseInfo> infos = itemInfos;
             // 快捷手势未读短信提醒
             boolean isShowMsmTip = AppMasterPreference.getInstance(getContext())
                     .getSwitchOpenNoReadMessageTip();
@@ -959,14 +955,15 @@ public class AppleWatchContainer extends FrameLayout {
     // }
     // }
 
-//    private void checkXuKuang(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
-//        if (iconSize != mGetIcon) {
-//            sInfo.icon = sInfo.switchIcon[0];
-//            tv.setItemIcon(sInfo.switchIcon[0]);
-//        } else {
-//            sInfo.icon = sInfo.switchIcon[0];
-//        }
-//    }
+    // private void checkXuKuang(QuickSwitcherInfo sInfo, int iconSize,
+    // GestureItemView tv) {
+    // if (iconSize != mGetIcon) {
+    // sInfo.icon = sInfo.switchIcon[0];
+    // tv.setItemIcon(sInfo.switchIcon[0]);
+    // } else {
+    // sInfo.icon = sInfo.switchIcon[0];
+    // }
+    // }
 
     private void checkHome(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (iconSize != mGetIcon) {
@@ -1255,7 +1252,7 @@ public class AppleWatchContainer extends FrameLayout {
         return mRotateDegree;
     }
 
-    public void showOpenAnimation(final Runnable runnable) {
+    public void showOpenAnimation(final Runnable run) {
         int direction = mShowOrientation == Orientation.Left ? 0 : 2;
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 mCornerTabs.getHeight(), 0);
@@ -1293,7 +1290,7 @@ public class AppleWatchContainer extends FrameLayout {
                     layout = mSwitcherLayout;
                 }
                 layout.fillExtraChildren();
-                runnable.run();
+                run.run();
             }
         });
         set.start();
@@ -1546,7 +1543,7 @@ public class AppleWatchContainer extends FrameLayout {
         });
         animSet.start();
     }
-    
+
     public void makeNormalIcon(QuickSwitcherInfo info) {
         // show Toast
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -1598,5 +1595,4 @@ public class AppleWatchContainer extends FrameLayout {
         this.mPIngtai = iv_pingtai;
         this.mYun = iv_yun;
     }
-
 }

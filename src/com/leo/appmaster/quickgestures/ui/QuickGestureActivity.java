@@ -11,7 +11,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.CallLog.Calls;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -52,7 +51,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
-import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
@@ -126,19 +124,19 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     @Override
     protected void onRestart() {
         super.onRestart();
-         if (mAlarmDialogFlag) {
-         FloatWindowHelper.mEditQuickAreaFlag = true;
-         updateFloatWindowBackGroudColor();
-         }
+        if (mAlarmDialogFlag) {
+            FloatWindowHelper.mEditQuickAreaFlag = true;
+            updateFloatWindowBackGroudColor();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-         if (FloatWindowHelper.mEditQuickAreaFlag == true) {
-         FloatWindowHelper.mEditQuickAreaFlag = false;
-         updateFloatWindowBackGroudColor();
-         }
+        if (FloatWindowHelper.mEditQuickAreaFlag == true) {
+            FloatWindowHelper.mEditQuickAreaFlag = false;
+            updateFloatWindowBackGroudColor();
+        }
     }
 
     @Override
@@ -333,10 +331,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
                         @Override
                         public void run() {
-//                            FloatWindowHelper.createFloatWindow(QuickGestureActivity.this,
-//                                    AppMasterPreference
-//                                            .getInstance(getApplicationContext())
-//                                            .getQuickGestureDialogSeekBarValue());
                             QuickGestureManager.getInstance(QuickGestureActivity.this)
                                     .startFloatWindow();
                         }
@@ -507,12 +501,10 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     }
 
     class RadioListViewAdapter extends BaseAdapter {
-        private Context mContext;
         private LayoutInflater mLayoutInflater;
         private List<DialogRadioBean> mData;
 
         public RadioListViewAdapter(Context context, List<DialogRadioBean> data) {
-            mContext = context;
             mLayoutInflater = LayoutInflater.from(context);
             mData = data;
         }
@@ -827,7 +819,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     @Override
     public boolean onTouch(View view, MotionEvent event) {
         int width = view.getWidth();
-        int height = view.getHeight();
         float downX = 0;
         float downY = 0;
         switch (event.getAction()) {

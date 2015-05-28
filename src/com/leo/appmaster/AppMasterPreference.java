@@ -1621,7 +1621,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         String string = getCommonAppPackageName();
         String packageNames = null;
         if (!PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME.equals(string)) {
-            Log.e("##################", "packageNames:"+name);
             packageNames = string.replace(name + ";", "");
         }
         mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,

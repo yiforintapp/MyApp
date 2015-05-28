@@ -223,6 +223,17 @@
     <dimen name="quick_gesture_free_distureb_app_select_icon_width">16dp</dimen>
     <dimen name="quick_gesture_setting_item_height">56dp</dimen>
     <dimen name="quick_seek_bar_width">250dp</dimen>
+
+    <!--
+         <dimen name="quick_sliding_area_left_bottom"></dimen>
+     <dimen name="quick_sliding_area_left_center"></dimen>
+      <dimen name="quick_sliding_area_left_center_center"></dimen>
+       <dimen name="quick_sliding_area_left_"></dimen>
+        <dimen name="quick_sliding_area_left_bottom"></dimen>
+         <dimen name="quick_sliding_area_left_bottom"></dimen>
+          <dimen name="quick_sliding_area_left_bottom"></dimen>
+           <dimen name="quick_sliding_area_left_bottom"></dimen>
+    -->
     <!-- quick gesutre end -->
 
 </resources>
