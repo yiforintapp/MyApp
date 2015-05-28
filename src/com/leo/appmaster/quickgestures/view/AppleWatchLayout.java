@@ -1690,7 +1690,7 @@ public class AppleWatchLayout extends ViewGroup {
                 target = (temp + 3) * mMinuOffset;
                 ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, target);
                 transAnima.setInterpolator(new DecelerateInterpolator());
-                transAnima.setDuration(800);
+                transAnima.setDuration(500);
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
@@ -1715,7 +1715,7 @@ public class AppleWatchLayout extends ViewGroup {
                 temp = (int) (mLastMovex / mMinuOffset);
                 target = (temp + 3) * mMinuOffset;
                 ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, target);
-                transAnima.setDuration(800);
+                transAnima.setDuration(500);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
@@ -1756,7 +1756,7 @@ public class AppleWatchLayout extends ViewGroup {
                     distance = temp * mMinuOffset;
                 }
                 transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
-                transAnima.setDuration(300);
+                transAnima.setDuration(200);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
@@ -1788,7 +1788,7 @@ public class AppleWatchLayout extends ViewGroup {
                     distance = temp * mMinuOffset;
                 }
                 transAnima = ValueAnimator.ofFloat(mLastMovex, distance);
-                transAnima.setDuration(300);
+                transAnima.setDuration(200);
                 transAnima.addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
