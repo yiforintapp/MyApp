@@ -501,15 +501,15 @@ public class TaskDetectService extends Service {
         if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_LEFT_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
             if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
+                FloatWindowHelper.removeSwipWindow(this, 1);
+                FloatWindowHelper.removeSwipWindow(this, 2);
+                FloatWindowHelper.removeSwipWindow(this, 3);
                 if (!AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
                     FloatWindowHelper.removeSwipWindow(this, 4);
                 } else {
                     FloatWindowHelper
                             .createFloatLeftCenterCenterWindow(this, value);
                 }
-                FloatWindowHelper.removeSwipWindow(this, 1);
-                FloatWindowHelper.removeSwipWindow(this, 2);
-                FloatWindowHelper.removeSwipWindow(this, 3);
             } else {
                 if (AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
                     FloatWindowHelper.removeSwipWindow(this, 4);
@@ -530,15 +530,15 @@ public class TaskDetectService extends Service {
         } else if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RIGHT_RADIO_FINISH_NOTIFICATION
                 .equals(flag)) {
             if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
+                FloatWindowHelper.removeSwipWindow(this, -1);
+                FloatWindowHelper.removeSwipWindow(this, -2);
+                FloatWindowHelper.removeSwipWindow(this, -3);
                 if (!AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
                     FloatWindowHelper.removeSwipWindow(this, -4);
                 } else {
                     FloatWindowHelper
                             .createFloatRightCenterCenterWindow(this, value);
                 }
-                FloatWindowHelper.removeSwipWindow(this, -1);
-                FloatWindowHelper.removeSwipWindow(this, -2);
-                FloatWindowHelper.removeSwipWindow(this, -3);
             } else {
                 if (AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
                     FloatWindowHelper.removeSwipWindow(this, -4);

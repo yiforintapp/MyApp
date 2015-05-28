@@ -609,7 +609,7 @@ public class FloatWindowHelper {
                 mRightCenterCenterParams = new LayoutParams();
                 mRightCenterCenterParams.width = (int) ((DipPixelUtil.dip2px(mContext,mRightCenterWidth) / 2) + (value / 2)) * 2;
                 mRightCenterCenterParams.height = (int) ((DipPixelUtil.dip2px(mContext,mRightCenterCenterHeight) / 2) + (value)) * 2;
-                mRightCenterCenterParams.x = (int) ((width / 2) + (mLeftCenterCenterParams.width / 2));
+                mRightCenterCenterParams.x = (int) ((width / 2) + (mRightCenterCenterParams.width / 2));
                 if (mRightBottomView != null) {
                     mRightCenterCenterParams.y = (int) ((height / 2)
                             - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height-DipPixelUtil.dip2px(mContext,12));
