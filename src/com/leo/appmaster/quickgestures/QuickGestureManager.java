@@ -588,17 +588,17 @@ public class QuickGestureManager {
                                 LeoLog.d("QuickGestureManager", "rightQuickSwitch.size is : "
                                         + rightQuickSwitch.size());
                                 if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
-                                    String saveToSp = QuickSwitchManager.getInstance(context)
-                                            .listToString(
-                                                    addQuickSwitch, addQuickSwitch.size());
-                                    LeoLog.d("QuickGestureManager", "saveToSp is : " + saveToSp);
+//                                    String saveToSp = QuickSwitchManager.getInstance(context)
+//                                            .listToString(
+//                                                    addQuickSwitch, addQuickSwitch.size());
+//                                    LeoLog.d("QuickGestureManager", "saveToSp is : " + saveToSp);
                                     addSwitch = true;
                                 }
                                 if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
-                                    String removeToSp = QuickSwitchManager.getInstance(context)
-                                            .listToString(removeQuickSwitch,
-                                                    removeQuickSwitch.size());
-                                    LeoLog.d("QuickGestureManager", "removeToSp is : " + removeToSp);
+//                                    String removeToSp = QuickSwitchManager.getInstance(context)
+//                                            .listToString(removeQuickSwitch,
+//                                                    removeQuickSwitch.size());
+//                                    LeoLog.d("QuickGestureManager", "removeToSp is : " + removeToSp);
                                     for (int i = 0; i < rightQuickSwitch.size(); i++) {
                                         boolean isHasSameName = false;
                                         BaseInfo nInfo = rightQuickSwitch.get(i);
@@ -628,7 +628,7 @@ public class QuickGestureManager {
                                     for (int i = 0; i < mDefineList.size(); i++) {
                                         sPosition.add(mDefineList.get(i).gesturePosition);
                                         LeoLog.d("QuickGestureManager",
-                                                "货的位置 :" + mDefineList.get(i).gesturePosition);
+                                                "已有货的位置 :" + mDefineList.get(i).gesturePosition);
                                     }
 
                                     int k = 0;

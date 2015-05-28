@@ -311,7 +311,7 @@ public class AppleWatchContainer extends FrameLayout {
                     moveY = event.getY();
                     
                     //下拉通知栏，finish
-                    if(mTouchDownY > 0 && mTouchDownY < 70){
+                    if(mTouchDownY >= 0 && mTouchDownY < 70){
                         if(moveY - mTouchDownY > 70){
                             Activity activity = (Activity) AppleWatchContainer.this.getContext();
                             activity.finish();
