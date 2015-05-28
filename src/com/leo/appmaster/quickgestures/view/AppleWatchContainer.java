@@ -264,6 +264,11 @@ public class AppleWatchContainer extends FrameLayout {
         mMostUsedLayout.mMyType = GType.MostUsedLayout;
         mSwitcherLayout = (AppleWatchLayout) findViewById(R.id.qg_switcher_layout);
         mSwitcherLayout.mMyType = GType.SwitcherLayout;
+        
+        mRockey = (ImageView) findViewById(R.id.iv_rocket);
+        mPIngtai = (ImageView) findViewById(R.id.iv_pingtai);
+        mYun = (ImageView) findViewById(R.id.iv_yun);
+        
         mTvCurName.setText(R.string.quick_gesture_dynamic);
         super.onFinishInflate();
     }
@@ -1566,9 +1571,4 @@ public class AppleWatchContainer extends FrameLayout {
         }
     }
 
-    public void setRockey(ImageView iv_roket, ImageView iv_pingtai, ImageView iv_yun) {
-        this.mRockey = iv_roket;
-        this.mPIngtai = iv_pingtai;
-        this.mYun = iv_yun;
-    }
 }
