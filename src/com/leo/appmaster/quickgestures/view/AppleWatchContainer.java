@@ -69,7 +69,7 @@ public class AppleWatchContainer extends FrameLayout {
     private Orientation mShowOrientation = Orientation.Left;
    private  ImageView mRockey,mPIngtai,mYun;
 
-    private float mSelfWidth, mSelfHeight;
+    private float mSelfHeight;
     private float mTouchDownX, mTouchDownY;
     private float mRotateDegree;
 
@@ -80,7 +80,6 @@ public class AppleWatchContainer extends FrameLayout {
     private int mStartAngle = 40;
     private ProcessCleaner mCleaner;
     private long mLastUsedMem;
-    private long mTotalMem;
     private long mCleanMem;
     private boolean isAnimating;
     private boolean mHasRelayout;
@@ -98,7 +97,6 @@ public class AppleWatchContainer extends FrameLayout {
         // 清理内存
         mCleaner = ProcessCleaner.getInstance(context);
         mLastUsedMem = mCleaner.getUsedMem();
-        mTotalMem = mCleaner.getTotalMem();
         // clean
         mCleaner.tryClean(mContext);
         long curUsedMem = mCleaner.getUsedMem();
@@ -252,7 +250,6 @@ public class AppleWatchContainer extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mSelfWidth = getMeasuredWidth();
         mSelfHeight = getMeasuredHeight();
     }
 
@@ -781,7 +778,6 @@ public class AppleWatchContainer extends FrameLayout {
             GestureItemView gestureItem = null;
             AppleWatchLayout.LayoutParams lp = null;
             BaseInfo info = null;
-            int iconSize = targetLayout.getIconSize();
             List<BaseInfo> infos = (List<BaseInfo>) itemInfos;
             // 快捷手势未读短信提醒
             boolean isShowMsmTip = AppMasterPreference.getInstance(getContext())

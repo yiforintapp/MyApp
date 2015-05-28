@@ -8,11 +8,9 @@ import android.view.View.DragShadowBuilder;
 
 public class GestureDragShadowBuilder extends DragShadowBuilder {
 
-    private float mShadowScale = 1.2f;
 
     public GestureDragShadowBuilder(View arg0, float scale) {
         super(arg0);
-        mShadowScale = scale;
     }
 
     @Override

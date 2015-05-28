@@ -11,7 +11,6 @@ import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -19,8 +18,6 @@ import com.leo.appmaster.R;
 
 public class FreeDisturbImageView extends ImageView {
     private RectF mRect;
-    private boolean mLocked;
-    private boolean mRecommend;
     private boolean mDefaultRecommend;
     private Paint mPaint;
     private Matrix mMatrix;
@@ -72,13 +69,11 @@ public class FreeDisturbImageView extends ImageView {
                 if (mGaryBitmap == null) {
                     mGaryBitmap = mSourceBitmap.copy(mSourceBitmap.getConfig(),
                             true);
-                    int red, green, blue, alpha, agr;
+                    int red, green, blue, alpha;
                     int pixel;
                     for (int i = 0; i < mGaryBitmap.getWidth(); i++) {
                         for (int j = 0; j < mGaryBitmap.getHeight(); j++) {
                             pixel = mGaryBitmap.getPixel(i, j);
-                            agr = (Color.red(pixel) + Color.green(pixel) + Color
-                                    .blue(pixel)) / 3;
 
                             alpha = (int) (Color.alpha(pixel));
                             red = (int) (Color.red(pixel) * 0.5);

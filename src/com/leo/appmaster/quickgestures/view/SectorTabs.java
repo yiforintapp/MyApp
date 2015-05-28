@@ -30,7 +30,6 @@ import android.view.animation.DecelerateInterpolator;
 public class SectorTabs extends View {
     private static final String TAG = "CornerTabs";
 
-    private int mOffset;
     private GestureDetector mGestureDetector;
     private AppleWatchContainer mContainer;
 
