@@ -25,18 +25,16 @@ public class QuickGesturePopupActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture_apple_watch);
-//        QuickSwitchManager.getInstance(this).setActivity(this);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         iv_roket = (ImageView) findViewById(R.id.iv_rocket);
         iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
         iv_yun = (ImageView) findViewById(R.id.iv_yun);
-        mContainer.setRockey(iv_roket,iv_pingtai,iv_yun);
-        
+        mContainer.setRockey(iv_roket, iv_pingtai, iv_yun);
+
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
-//        mContainer.setRocket(this);
         fillDynamicLayout();
         overridePendingTransition(-1, -1);
     }
@@ -50,13 +48,7 @@ public class QuickGesturePopupActivity extends Activity {
         mContainer.post(new Runnable() {
             @Override
             public void run() {
-                mContainer.showOpenAnimation(new Runnable() {
-                    @Override
-                    public void run() {
-                        fillMostUsedLayout();
-                        fillSwitcherLayout();
-                    }
-                });
+                mContainer.showOpenAnimation();
             }
         });
         super.onResume();
@@ -75,18 +67,7 @@ public class QuickGesturePopupActivity extends Activity {
     }
 
     private void fillDynamicLayout() {
-        List<BaseInfo> items = QuickGestureManager.getInstance(this).getDynamicList();
-        mContainer.fillGestureItem(GType.DymicLayout, items);
-    }
-
-    private void fillMostUsedLayout() {
-        List<BaseInfo> items = QuickGestureManager.getInstance(this).getMostUsedList();
-        mContainer.fillGestureItem(GType.MostUsedLayout, items);
-    }
-
-    private void fillSwitcherLayout() {
-        List<BaseInfo> items = QuickGestureManager.getInstance(this).getSwitcherList();
-        mContainer.fillGestureItem(GType.SwitcherLayout, items);
+        mContainer.fillDynamicLayout();
     }
 
     @Override
@@ -98,12 +79,10 @@ public class QuickGesturePopupActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
             mContainer.showCloseAnimation();
         }
     }
-
 }

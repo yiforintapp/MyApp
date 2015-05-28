@@ -67,7 +67,7 @@ public class AppleWatchContainer extends FrameLayout {
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
     private Orientation mShowOrientation = Orientation.Left;
-   private  ImageView mRockey,mPIngtai,mYun;
+    private ImageView mRockey, mPIngtai, mYun;
 
     private float mSelfHeight;
     private float mTouchDownX, mTouchDownY;
@@ -309,15 +309,15 @@ public class AppleWatchContainer extends FrameLayout {
                 } else {
                     moveX = event.getX();
                     moveY = event.getY();
-                    
-                    //下拉通知栏，finish
-                    if(mTouchDownY >= 0 && mTouchDownY < 70){
-                        if(moveY - mTouchDownY > 70){
+
+                    // 下拉通知栏，finish
+                    if (mTouchDownY >= 0 && mTouchDownY < 70) {
+                        if (moveY - mTouchDownY > 70) {
                             Activity activity = (Activity) AppleWatchContainer.this.getContext();
                             activity.finish();
                         }
                     }
-                    
+
                     if (Math.abs(moveX - mTouchDownX) > DipPixelUtil.dip2px(getContext(), 10)) {
                         mMoving = true;
                         if (mTouchDownY >= mDymicLayout.getTop()
@@ -413,7 +413,7 @@ public class AppleWatchContainer extends FrameLayout {
                 mDymicLayout.relayoutExtraChildren();
                 mMostUsedLayout.relayoutExtraChildren();
                 mSwitcherLayout.relayoutExtraChildren();
-//                mHasRelayout = true;
+                // mHasRelayout = true;
             }
         }
     }
@@ -772,13 +772,13 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     public void fillDynamicItem(AppleWatchLayout targetLayout,
-            List<? extends BaseInfo> itemInfos, int businessIndes) {
+            List<BaseInfo> itemInfos, int businessIndes) {
         if (targetLayout != null) {
             targetLayout.removeAllViews();
             GestureItemView gestureItem = null;
             AppleWatchLayout.LayoutParams lp = null;
             BaseInfo info = null;
-            List<BaseInfo> infos = (List<BaseInfo>) itemInfos;
+            List<BaseInfo> infos = itemInfos;
             // 快捷手势未读短信提醒
             boolean isShowMsmTip = AppMasterPreference.getInstance(getContext())
                     .getSwitchOpenNoReadMessageTip();
@@ -1242,7 +1242,7 @@ public class AppleWatchContainer extends FrameLayout {
         return mRotateDegree;
     }
 
-    public void showOpenAnimation(final Runnable runnable) {
+    public void showOpenAnimation() {
         int direction = mShowOrientation == Orientation.Left ? 0 : 2;
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 mCornerTabs.getHeight(), 0);
@@ -1280,7 +1280,9 @@ public class AppleWatchContainer extends FrameLayout {
                     layout = mSwitcherLayout;
                 }
                 layout.fillExtraChildren();
-                runnable.run();
+                fillMostUsedLayout();
+//                fillDynamicLayout();
+                fillSwitcherLayout();
             }
         });
         set.start();
@@ -1533,7 +1535,7 @@ public class AppleWatchContainer extends FrameLayout {
         });
         animSet.start();
     }
-    
+
     public void makeNormalIcon(QuickSwitcherInfo info) {
         // show Toast
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -1585,7 +1587,19 @@ public class AppleWatchContainer extends FrameLayout {
         this.mPIngtai = iv_pingtai;
         this.mYun = iv_yun;
     }
-    
-    
 
+    public void fillDynamicLayout() {
+        List<BaseInfo> items = QuickGestureManager.getInstance(getContext()).getDynamicList();
+        fillGestureItem(GType.DymicLayout, items);
+    }
+
+    public void fillMostUsedLayout() {
+        List<BaseInfo> items = QuickGestureManager.getInstance(getContext()).getMostUsedList();
+        fillGestureItem(GType.MostUsedLayout, items);
+    }
+    
+    public void fillSwitcherLayout() {
+        List<BaseInfo> items = QuickGestureManager.getInstance(getContext()).getSwitcherList();
+        fillGestureItem(GType.SwitcherLayout, items);
+    }
 }

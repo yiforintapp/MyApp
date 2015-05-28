@@ -802,6 +802,8 @@ public class AppMasterApplication extends Application {
                                         long failStrategy = pref.getThemeFailStrategy();
                                         pref.setThemeStrategy(successStrategy, successStrategy,
                                                 failStrategy);
+                                        pref.setLoadSplashStrategy(successStrategy,
+                                                successStrategy, failStrategy);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

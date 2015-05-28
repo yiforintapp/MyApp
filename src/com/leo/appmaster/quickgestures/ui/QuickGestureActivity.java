@@ -124,19 +124,19 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     @Override
     protected void onRestart() {
         super.onRestart();
-         if (mAlarmDialogFlag) {
-         FloatWindowHelper.mEditQuickAreaFlag = true;
-         updateFloatWindowBackGroudColor();
-         }
+        if (mAlarmDialogFlag) {
+            FloatWindowHelper.mEditQuickAreaFlag = true;
+            updateFloatWindowBackGroudColor();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-         if (FloatWindowHelper.mEditQuickAreaFlag == true) {
-         FloatWindowHelper.mEditQuickAreaFlag = false;
-         updateFloatWindowBackGroudColor();
-         }
+        if (FloatWindowHelper.mEditQuickAreaFlag == true) {
+            FloatWindowHelper.mEditQuickAreaFlag = false;
+            updateFloatWindowBackGroudColor();
+        }
     }
 
     @Override
@@ -331,10 +331,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
                         @Override
                         public void run() {
-//                            FloatWindowHelper.createFloatWindow(QuickGestureActivity.this,
-//                                    AppMasterPreference
-//                                            .getInstance(getApplicationContext())
-//                                            .getQuickGestureDialogSeekBarValue());
                             QuickGestureManager.getInstance(QuickGestureActivity.this)
                                     .startFloatWindow();
                         }
