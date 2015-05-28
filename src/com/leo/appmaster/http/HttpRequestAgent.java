@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.util.Log;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -35,7 +34,6 @@ import com.leo.appmaster.utils.Utilities;
  */
 public class HttpRequestAgent {
 
-    private static final String Tag = "HttpRequestAgent";
     private Context mContext;
     private RequestQueue mRequestQueue;
     private static HttpRequestAgent mInstance;

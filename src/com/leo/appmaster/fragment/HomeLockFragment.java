@@ -12,10 +12,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockModeActivity;
 import com.leo.appmaster.applocker.LockModeView;
-import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.WeiZhuangActivity;
-import com.leo.appmaster.applocker.WeiZhuangFirstIn;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -32,7 +30,6 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private TipTextView mLockThemeBtn;
     private TextView mLockModeBtn;
     private TextView mLockSettingBtn;
-    private AppMasterPreference sp_weizhuang;
 
     @Override
     protected int layoutResourceId() {
@@ -41,7 +38,6 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
 
     @Override
     protected void onInitUI() {
-        sp_weizhuang = sp_weizhuang.getInstance(mActivity);
         mLockModeCircle = (LockModeView) findViewById(R.id.lock_mode_circle);
         // mLockModeCircle.setOnClickListener(this);
         mAppLockBtn = (TextView) findViewById(R.id.app_lock);
@@ -175,11 +171,11 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
         mActivity.startActivity(intent);
     }
 
-    private void enterLockSetting() {
-        Intent intent = new Intent(mActivity, LockOptionActivity.class);
-        intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_HOME);
-        mActivity.startActivity(intent);
-    }
+//    private void enterLockSetting() {
+//        Intent intent = new Intent(mActivity, LockOptionActivity.class);
+//        intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_HOME);
+//        mActivity.startActivity(intent);
+//    }
 
     private void enterLockMode() {
         Intent intent = new Intent(mActivity, LockModeActivity.class);

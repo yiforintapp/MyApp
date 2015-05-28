@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.privacycontact;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,7 +20,7 @@ import android.widget.TextView;
  */
 
 public class ContactSideBar extends View {
-    private Context context;
+    
     // 触摸事件
     private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
 
@@ -49,17 +48,14 @@ public class ContactSideBar extends View {
 
     public ContactSideBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
     }
 
     public ContactSideBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
     }
 
     public ContactSideBar(Context context) {
         super(context);
-        this.context = context;
     }
 
     /**

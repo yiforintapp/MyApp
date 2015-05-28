@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.ref.WeakReference;
 import java.sql.Timestamp;
 
 import android.content.Context;
@@ -15,6 +14,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Environment;
 import android.util.Log;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 
 /**
@@ -58,11 +58,6 @@ public class LeoLog {
 	 */
 //	public static final int BATCH_SIZE = 20;
 
-	/**
-	 * The Android context to get the application information, like versionCode
-	 * and versionName.
-	 */
-	private static WeakReference<Context> sContext;
 
 //	private static BlockingQueue<LogEntry> sLogEntryQueue = new LinkedBlockingQueue<LogEntry>();
 
@@ -96,7 +91,7 @@ public class LeoLog {
 	}
 
 	public static void init(Context aContext) {
-		sContext = new WeakReference<Context>(aContext);
+
 	}
 
 	public static void v(String aTag, String aMsg) {
@@ -385,10 +380,7 @@ public class LeoLog {
 	}
 
 	public static String getAppInfo() {
-		if (sContext == null)
-			return null;
-
-		Context ct = sContext.get();
+		Context ct = AppMasterApplication.getInstance();;
 		if (ct != null) {
 			PackageManager pm = ct.getPackageManager();
 			PackageInfo info;

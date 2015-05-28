@@ -6,17 +6,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.TrafficStats;
 import android.text.format.Time;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class Traffic {
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-    private static final String Tag = "TrafficAll";
     private Context mContext;
     private static Traffic mTraffic;
     private static AppMasterPreference s_preferences;

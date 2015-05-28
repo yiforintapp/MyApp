@@ -1,26 +1,21 @@
 
 package com.leo.appmaster.applocker;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.util.AttributeSet;
+import android.view.Display;
+import android.view.MotionEvent;
+import android.widget.RelativeLayout;
+
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-
-import android.app.Activity;
-import android.app.Service;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.os.Vibrator;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Display;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 public class GestureRelative extends RelativeLayout {
     private Paint CirPanint;
@@ -40,9 +35,7 @@ public class GestureRelative extends RelativeLayout {
     private int duan_left, duan_top, duan_right, duan_bottom;
     private int jie_left, jie_top, jie_right, jie_bottom;
     private UnKnowCallActivity5 mActivity;
-    private PretendFragment mPf;
     private PretendAppUnknowCallFragment5 unknowFragment;
-    private int screenW;
     private int screenH;
 
     public boolean mFilterLayout;
@@ -87,7 +80,6 @@ public class GestureRelative extends RelativeLayout {
         this.mContext = context;
         CirPanint = new Paint();
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
-        screenW = mDisplay.getWidth();
         screenH = mDisplay.getHeight();
         LeoLog.d("testGElayout", "喔操走init了");
     }
@@ -299,7 +291,7 @@ public class GestureRelative extends RelativeLayout {
     }
 
     public void setPretendFragment(PretendFragment pf) {
-        mPf = pf;
+     
     }
 
     public void setFragment(PretendAppUnknowCallFragment5 fragment) {

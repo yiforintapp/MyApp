@@ -36,8 +36,8 @@ public class TaskChangeHandler {
 
     private boolean mIsFirstDetect;
 
-    public TaskChangeHandler(Context mContext) {
-        this.mContext = mContext.getApplicationContext();
+    public TaskChangeHandler(Context context) {
+        mContext = context.getApplicationContext();
         mAm = (ActivityManager) mContext
                 .getSystemService(Context.ACTIVITY_SERVICE);
         mLastRunningPkg = getRunningPkg();

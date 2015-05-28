@@ -61,7 +61,7 @@ public class DownloadNotifManager {
     }
 
     private DownloadNotifManager(Context ctx) {
-        mContext = ctx;
+        mContext = ctx.getApplicationContext();
         mProgressNotifMap = null;
         mSuccessNotifMap = null;
         mFailNotifMap = null;

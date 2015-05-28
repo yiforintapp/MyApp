@@ -67,9 +67,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
     private Handler mHandler;
     private LEORoundProgressDialog mProgressDialog;
     private SimpleDateFormat mSimpleDateFormate;
-    private boolean mIsRead = false;
-    private boolean mIsUpdate = true;
-    private boolean mIsShow = false;
 
     @Override
     protected int layoutResourceId() {

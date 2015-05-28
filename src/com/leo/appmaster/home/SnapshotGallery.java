@@ -35,10 +35,8 @@ public class SnapshotGallery extends ViewGroup {
         REST, SCROLLING
     };
 
-    private Context mContext;
-
-    /** 弹性比，基于单屏宽度 */
-    private static final float ELASTIC_RATIO = 0.3f;
+//    /** 弹性比，基于单屏宽度 */
+//    private static final float ELASTIC_RATIO = 0.3f;
     /** 速度阈值 */
     private int mSnapVelocity = 300; // SUPPRESS CHECKSTYLE
     /** 当前所在屏幕index */
@@ -65,10 +63,10 @@ public class SnapshotGallery extends ViewGroup {
     private int mTotalWidth;
     /** 单片宽度 */
     private int mSingleWidth;
-    /** 左边距，因有弹性 */
-    private int mLeftEdge = 0;
-    /** 右边距，因有弹性 */
-    private int mRightRdge = 0;
+//    /** 左边距，因有弹性 */
+//    private int mLeftEdge = 0;
+//    /** 右边距，因有弹性 */
+//    private int mRightRdge = 0;
 
     /** 交叉线颜色 */
     public static final int COLOR_CROSS_LINE = 0x12000000;
@@ -232,8 +230,8 @@ public class SnapshotGallery extends ViewGroup {
         mTotalWidth = MeasureSpec.getSize(widthMeasureSpec);// count * (width +
                                                             // mSpace);
         mSingleWidth = (width + mSpace);
-        mLeftEdge = (int) (-width * ELASTIC_RATIO);
-        mRightRdge = (int) ((count - 1 + ELASTIC_RATIO) * width);
+//        mLeftEdge = (int) (-width * ELASTIC_RATIO);
+//        mRightRdge = (int) ((count - 1 + ELASTIC_RATIO) * width);
 
         this.setMeasuredDimension(mTotalWidth, MeasureSpec.getSize(heightMeasureSpec));
 
@@ -589,7 +587,6 @@ public class SnapshotGallery extends ViewGroup {
                     mListener.onXChange(deltaX);
                 }
 
-                final int dst = getScrollX() + deltaX;
                 // deltaX = dst < mLeftEdge ? 0 : dst > mRightRdge ? 0 : deltaX;
                 scrollBy(deltaX, 0);
                 break;
