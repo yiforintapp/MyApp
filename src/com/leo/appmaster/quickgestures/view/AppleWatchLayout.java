@@ -740,9 +740,9 @@ public class AppleWatchLayout extends ViewGroup {
                 boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
                         .getQuickGestureCommonAppDialogCheckboxValue();
                 if (isRecorderFlag) {
-                    TreeSet<AppLauncherRecorder> mRecorderApp = QuickGestureManager
+                    ArrayList<AppLauncherRecorder> mRecorderApp = QuickGestureManager
                             .getInstance(mContext).mAppLaunchRecorders;
-                    Iterator<AppLauncherRecorder> recorder = mRecorderApp.descendingIterator();
+                    Iterator<AppLauncherRecorder> recorder = mRecorderApp.iterator();
                     while (recorder.hasNext()) {
                         AppLauncherRecorder recorderAppInfo = recorder.next();
                         if (info != null) {

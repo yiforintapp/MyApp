@@ -111,9 +111,7 @@ public class TaskDetectService extends Service {
         if (!mServiceStarted) {
             startDetect();
         }
-        if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
-            startFloatWindow();
-        }
+        startFloatWindow();
 
         return START_STICKY;
     }
@@ -164,10 +162,19 @@ public class TaskDetectService extends Service {
     }
 
     public void startFloatWindow() {
-        startFloatWindowTask();
+
+        if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
+            startFloatWindowTask();
+        } else {
+            stopFloatWindowTask();
+        }
     }
 
     private void startFloatWindowTask() {
+        if (AppMasterPreference.getInstance(getApplicationContext())
+                .getFristSlidingTip()) {
+            FloatWindowHelper.mGestureShowing = true;
+        }
         stopFloatWindowTask();
         mFloatWindowTask = new FloatWindowTask();
         mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1500,
@@ -411,14 +418,11 @@ public class TaskDetectService extends Service {
      */
     private class FloatWindowTask implements Runnable {
         ActivityManager mActivityManager;
+        private Runnable mRunnable;
 
         public FloatWindowTask() {
             mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        }
-
-        @Override
-        public void run() {
-            mHandler.post(new Runnable() {
+            mRunnable = new Runnable() {
                 @Override
                 public void run() {
                     // 屏幕改变
@@ -442,8 +446,7 @@ public class TaskDetectService extends Service {
                                     .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
                         }
                         if (isAppsAndHome) {
-                            if (!isRuningFreeDisturbApp(mActivityManager)
-                                    || FloatWindowHelper.mEditQuickAreaFlag) {
+                            if (!isRuningFreeDisturbApp(mActivityManager) || FloatWindowHelper.mEditQuickAreaFlag) {
                                 FloatWindowHelper.createFloatWindow(getApplicationContext(), value);
                             } else {
                                 FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
@@ -458,7 +461,12 @@ public class TaskDetectService extends Service {
                         }
                     }
                 }
-            });
+            };
+        }
+
+        @Override
+        public void run() {
+            mHandler.post(mRunnable);
         }
     }
 

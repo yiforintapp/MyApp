@@ -1609,6 +1609,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME, packageNames)
                 .commit();
     }
+    
+    public void setCommonAppPackageName(String name) {
+        mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME, name)
+                .commit();
+    }
+    
+    
 
     public void setCommonAppPackageNameRemove(String name) {
         String string = getCommonAppPackageName();
