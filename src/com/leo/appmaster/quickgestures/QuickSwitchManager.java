@@ -35,7 +35,6 @@ import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
-import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickSwitchManager {
@@ -95,9 +94,7 @@ public class QuickSwitchManager {
     private ConnectivityManager mConnectivityManager;
     private Handler mHandler;
     private AppMasterPreference switchPreference;
-    private static QuickGesturePopupActivity mActivity;
     private List<BaseInfo> mSaveList = null;
-    private boolean mSwitcherLoaded;
     private List<BaseInfo> mAllList;
 
     public static synchronized QuickSwitchManager getInstance(Context context) {
@@ -578,7 +575,6 @@ public class QuickSwitchManager {
             flyModeInfo.icon = mContext.getResources().getDrawable(
                     R.drawable.switch_flightmode);
             mSaveList.add(flyModeInfo);
-            mSwitcherLoaded = true;
             String saveToSp = QuickSwitchManager.getInstance(mContext).listToString(
                     mSaveList.subList(0, 13),
                     switchNum);
@@ -832,7 +828,6 @@ public class QuickSwitchManager {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
-        mActivity.finish();
     }
 
     public void toggleLight(QuickSwitcherInfo mInfo) {
@@ -933,21 +928,18 @@ public class QuickSwitchManager {
         Intent intent = new Intent(mContext, LockModeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
-        mActivity.finish();
     }
 
     public void switchSet() {
         Intent intent = new Intent(mContext, QuickGestureActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
-        mActivity.finish();
     }
 
     public void goSetting() {
         Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
-        mActivity.finish();
     }
 
     public static boolean checkGps() {
@@ -964,7 +956,6 @@ public class QuickSwitchManager {
                     android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             callGPSSettingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(callGPSSettingIntent);
-            mActivity.finish();
         } catch (Exception e) {
             Toast.makeText(mContext, "GPS is not available!", 0).show();
         }
