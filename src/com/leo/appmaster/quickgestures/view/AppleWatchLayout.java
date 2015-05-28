@@ -136,6 +136,31 @@ public class AppleWatchLayout extends ViewGroup {
             gestureItem.setGravity(Gravity.CENTER);
             gestureItem.setLayoutParams(lp);
             gestureItem.setItemName(info.label);
+
+            // TODO
+            if (info instanceof QuickGestureContactTipInfo) {
+                if (((QuickGestureContactTipInfo) info).isShowReadTip) {
+                    gestureItem.showReadTip();
+                } else {
+                    gestureItem.cancelShowReadTip();
+                }
+                gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+            } else if (info instanceof MessageBean) {
+                if (((MessageBean) info).isShowReadTip) {
+                    gestureItem.showReadTip();
+                } else {
+                    gestureItem.cancelShowReadTip();
+                }
+                gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+            } else if (info instanceof ContactCallLog) {
+                if (((ContactCallLog) info).isShowReadTip) {
+                    gestureItem.showReadTip();
+                } else {
+                    gestureItem.cancelShowReadTip();
+                }
+                gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+            }
+
             if (info instanceof GestureEmptyItemInfo) {
                 info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
             }
@@ -711,10 +736,10 @@ public class AppleWatchLayout extends ViewGroup {
     private void showAddNewDiglog(GType type) {
         QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.MostUsedLayout) {
-            qgm.showCommontAppDialog((Activity)getContext());
+            qgm.showCommontAppDialog((Activity) getContext());
         } else if (type == GType.SwitcherLayout) {
             // get list from sp
-            qgm.showQuickSwitchDialog(getContext(), (Activity)getContext());
+            qgm.showQuickSwitchDialog(getContext(), (Activity) getContext());
         }
     }
 

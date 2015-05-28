@@ -426,7 +426,7 @@ public class QuickSwitchManager {
         // } else {
         AppMasterPreference apf = AppMasterPreference.getInstance(mContext);
         String restoredData = apf.getSwitchList();
-        if (restoredData.isEmpty()) {
+        if (restoredData.isEmpty() && !apf.getLoadedSwitchList()) {
             mSaveList = new ArrayList<BaseInfo>();
             // 蓝牙开关
             QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
@@ -579,6 +579,7 @@ public class QuickSwitchManager {
                     mSaveList.subList(0, 13),
                     switchNum);
             apf.setSwitchList(saveToSp);
+            apf.setLoadedSwitchList(true);
         } else {
             mSaveList = QuickSwitchManager.getInstance(mContext).StringToList(
                     restoredData);
@@ -1186,17 +1187,19 @@ public class QuickSwitchManager {
 
     public List<BaseInfo> StringToList(String mSwitchListFromSp) {
         List<BaseInfo> mSwitcherList = new ArrayList<BaseInfo>();
-        String[] mSwitchAllInfo = mSwitchListFromSp.split(",");
-        LeoLog.d(
-                "QuickSwitchManager",
-                "listSize : " + mSwitchAllInfo.length);
-        for (int i = 0; i < mSwitchAllInfo.length; i++) {
-            QuickSwitcherInfo mInfo = new QuickSwitcherInfo();
-            String[] mEachOneInfo = mSwitchAllInfo[i].split(":");
-            mInfo.gesturePosition = Integer.parseInt(mEachOneInfo[1]);
-            mInfo.label = mEachOneInfo[0];
-            mInfo.switchIcon = getIconFromName(mInfo.label);
-            mSwitcherList.add(mInfo);
+        if(!mSwitchListFromSp.isEmpty()){
+            String[] mSwitchAllInfo = mSwitchListFromSp.split(",");
+            LeoLog.d(
+                    "QuickSwitchManager",
+                    "listSize : " + mSwitchAllInfo.length);
+            for (int i = 0; i < mSwitchAllInfo.length; i++) {
+                QuickSwitcherInfo mInfo = new QuickSwitcherInfo();
+                String[] mEachOneInfo = mSwitchAllInfo[i].split(":");
+                mInfo.gesturePosition = Integer.parseInt(mEachOneInfo[1]);
+                mInfo.label = mEachOneInfo[0];
+                mInfo.switchIcon = getIconFromName(mInfo.label);
+                mSwitcherList.add(mInfo);
+            }
         }
         return mSwitcherList;
     }

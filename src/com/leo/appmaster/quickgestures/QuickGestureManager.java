@@ -82,6 +82,79 @@ public class QuickGestureManager {
             businessItem = businessDatas.get(0);
             dynamicList.add(businessItem);
         }
+        // no read sys_message
+        boolean isShowMsmTip = AppMasterPreference.getInstance(mContext)
+                .getSwitchOpenNoReadMessageTip();
+        boolean isShowCallLogTip = AppMasterPreference.getInstance(mContext)
+                .getSwitchOpenRecentlyContact();
+        boolean isShowPrivacyContactTip = AppMasterPreference.getInstance(mContext)
+                .getSwitchOpenPrivacyContactMessageTip();
+        if (isShowMsmTip) {
+            if (QuickGestureManager.getInstance(mContext).mMessages != null) {
+                List<MessageBean> messages = QuickGestureManager.getInstance(mContext).mMessages;
+                for (MessageBean message : messages) {
+                    if (dynamicList.size() > 12)
+                        break;
+                    message.icon = mContext.getResources().getDrawable(
+                            R.drawable.gesture_message);
+                    if (message.getMessageName() != null
+                            && !"".equals(message.getMessageName())) {
+                        message.label = message.getMessageName();
+                    } else {
+                        message.label = message.getPhoneNumber();
+                    }
+                    message.isShowReadTip = true;
+                    if (businessDatas != null) {
+                        dynamicList.add(businessDatas.size(), message);
+                    } else {
+                        dynamicList.add(0, message);
+                    }
+                }
+            }
+        }
+        // // no read sys_call
+        if (isShowCallLogTip) {
+            if (QuickGestureManager.getInstance(mContext).mCallLogs != null) {
+                List<ContactCallLog> baseInfos = QuickGestureManager.getInstance(mContext).mCallLogs;
+                for (ContactCallLog baseInfo : baseInfos) {
+                    if (dynamicList.size() > 12)
+                        break;
+                    baseInfo.icon = mContext.getResources().getDrawable(
+                            R.drawable.gesture_call);
+                    if (baseInfo.getCallLogName() != null
+                            && !"".equals(baseInfo.getCallLogName())) {
+                        baseInfo.label = baseInfo.getCallLogName();
+                    } else {
+                        baseInfo.label = baseInfo.getCallLogNumber();
+                    }
+                    baseInfo.isShowReadTip = true;
+                    if (businessDatas != null) {
+                        dynamicList.add(businessDatas.size(), baseInfo);
+                    } else {
+                        dynamicList.add(0, baseInfo);
+                    }
+                }
+            }
+        }
+        // no privacy contact
+        if (isShowPrivacyContactTip) {
+            if (LockManager.getInstatnce().isShowPrivacyCallLog
+                    || LockManager.getInstatnce().isShowPrivacyMsm) {
+                if (dynamicList.size() <= 12) {
+                    QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
+                    item.icon = mContext.getResources().getDrawable(
+                            R.drawable.gesture_system);
+                    item.label = mContext.getResources().getString(
+                            R.string.pg_appmanager_quick_gesture_privacy_contact_tip_lable);
+                    item.isShowReadTip = true;
+                    if (businessDatas != null) {
+                        dynamicList.add(businessDatas.size(), item);
+                    } else {
+                        dynamicList.add(0, item);
+                    }
+                }
+            }
+        }
         ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
         List<RecentTaskInfo> recentTasks = am.getRecentTasks(50,
                 ActivityManager.RECENT_WITH_EXCLUDED);
@@ -498,14 +571,14 @@ public class QuickGestureManager {
                                 record.removeAll(removeList);
                             }
                             AppLauncherRecorder addRecord;
-                            
+
                             int maxCount = 0;
                             for (AppLauncherRecorder appLauncherRecorder : record) {
-                                if(appLauncherRecorder.launchCount > maxCount) {
+                                if (appLauncherRecorder.launchCount > maxCount) {
                                     maxCount = appLauncherRecorder.launchCount;
                                 }
                             }
-                            
+
                             for (BaseInfo removeInfo : addCommonApp) {
                                 addRecord = new AppLauncherRecorder();
                                 QuickGsturebAppInfo info = (QuickGsturebAppInfo) removeInfo;
@@ -519,7 +592,7 @@ public class QuickGestureManager {
                                 }
                                 record.add(addRecord);
                             }
-                            
+
                             LeoLog.e("xxxx", "record size = " + record.size());
                             for (AppLauncherRecorder appLauncherRecorder : record) {
                                 LeoLog.e("xxxx", appLauncherRecorder.pkg + ":"
@@ -551,7 +624,6 @@ public class QuickGestureManager {
         activity.finish();
     }
 
-    
     /**
      * Quick Switch Dialog
      * 
@@ -588,17 +660,21 @@ public class QuickGestureManager {
                                 LeoLog.d("QuickGestureManager", "rightQuickSwitch.size is : "
                                         + rightQuickSwitch.size());
                                 if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
-//                                    String saveToSp = QuickSwitchManager.getInstance(context)
-//                                            .listToString(
-//                                                    addQuickSwitch, addQuickSwitch.size());
-//                                    LeoLog.d("QuickGestureManager", "saveToSp is : " + saveToSp);
+                                    // String saveToSp =
+                                    // QuickSwitchManager.getInstance(context)
+                                    // .listToString(
+                                    // addQuickSwitch, addQuickSwitch.size());
+                                    // LeoLog.d("QuickGestureManager",
+                                    // "saveToSp is : " + saveToSp);
                                     addSwitch = true;
                                 }
                                 if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
-//                                    String removeToSp = QuickSwitchManager.getInstance(context)
-//                                            .listToString(removeQuickSwitch,
-//                                                    removeQuickSwitch.size());
-//                                    LeoLog.d("QuickGestureManager", "removeToSp is : " + removeToSp);
+                                    // String removeToSp =
+                                    // QuickSwitchManager.getInstance(context)
+                                    // .listToString(removeQuickSwitch,
+                                    // removeQuickSwitch.size());
+                                    // LeoLog.d("QuickGestureManager",
+                                    // "removeToSp is : " + removeToSp);
                                     for (int i = 0; i < rightQuickSwitch.size(); i++) {
                                         boolean isHasSameName = false;
                                         BaseInfo nInfo = rightQuickSwitch.get(i);

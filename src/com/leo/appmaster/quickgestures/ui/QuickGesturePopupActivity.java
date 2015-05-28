@@ -45,6 +45,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+        FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
             public void run() {
@@ -69,7 +70,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onStop() {
         FloatWindowHelper.mGestureShowing = false;
         finish();
-        FloatWindowHelper.mGestureShowing = false;
         super.onStop();
     }
 
