@@ -388,6 +388,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     QuickSwitcherInfo switchInfoS = (QuickSwitcherInfo) objectSp;
                     if (switchInfoN.label.equals(switchInfoS.label)) {
                         hasSame = true;
+                        break;
                     }
                 }
                 if (hasSame) {
