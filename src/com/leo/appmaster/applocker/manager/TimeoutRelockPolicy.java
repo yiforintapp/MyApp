@@ -18,7 +18,7 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 
     public TimeoutRelockPolicy(Context mContext) {
         super();
-        this.mContext = mContext;
+        this.mContext = mContext.getApplicationContext();
 
     }
 

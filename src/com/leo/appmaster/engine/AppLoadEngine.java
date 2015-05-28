@@ -4,7 +4,6 @@ package com.leo.appmaster.engine;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.text.Collator;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -58,15 +57,15 @@ public class AppLoadEngine extends BroadcastReceiver {
         public void loadTheme();
     }
 
-    private static final DecimalFormat sFormat = new DecimalFormat("#.0");
-    private static final long sKB = 1024;
-    private static final long sMB = sKB * sKB;
-    private static final long sGB = sMB * sKB;
-
-    private static final String sUnitB = "B";
-    private static final String sUnitKB = "KB";
-    private static final String sUnitMB = "MB";
-    private static final String sUnitGB = "GB";
+//    private static final DecimalFormat sFormat = new DecimalFormat("#.0");
+//    private static final long sKB = 1024;
+//    private static final long sMB = sKB * sKB;
+//    private static final long sGB = sMB * sKB;
+//
+//    private static final String sUnitB = "B";
+//    private static final String sUnitKB = "KB";
+//    private static final String sUnitMB = "MB";
+//    private static final String sUnitGB = "GB";
 
     /**
      * Resister this listener to receive application changed events
@@ -120,7 +119,6 @@ public class AppLoadEngine extends BroadcastReceiver {
     private Context mContext;
     private PackageManager mPm;
     private CountDownLatch mLatch;
-    private boolean mInit;
     private boolean mAppsLoaded = false;
     private ThemeChanageListener mThemeListener;
     private BusinessAppInstallTracker mTracker;
@@ -334,7 +332,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                         0);
 
                 // check first load, and save hide theme
-                boolean isFirstLoadApp = checkFirstLoad();
+                 checkFirstLoad();
                 List<String> themeList = new ArrayList<String>(
                         pre.getHideThemeList());
                 for (ResolveInfo resolveInfo : apps) {
@@ -439,17 +437,17 @@ public class AppLoadEngine extends BroadcastReceiver {
         appInfo.topPos = mRecommendLocklist.indexOf(packageName);
     }
 
-    private void loadPowerComsuInfo() {
-        BatteryInfoProvider provider = new BatteryInfoProvider(mContext);
-        List<BatteryComsuption> list = provider.getBatteryStats();
-        for (BatteryComsuption batterySipper : list) {
-            String packageName = batterySipper.getDefaultPackageName();
-            if (packageName != null && mAppDetails.containsKey(packageName)) {
-                mAppDetails.get(packageName).powerComsuPercent = batterySipper
-                        .getPercentOfTotal();
-            }
-        }
-    }
+//    private void loadPowerComsuInfo() {
+//        BatteryInfoProvider provider = new BatteryInfoProvider(mContext);
+//        List<BatteryComsuption> list = provider.getBatteryStats();
+//        for (BatteryComsuption batterySipper : list) {
+//            String packageName = batterySipper.getDefaultPackageName();
+//            if (packageName != null && mAppDetails.containsKey(packageName)) {
+//                mAppDetails.get(packageName).powerComsuPercent = batterySipper
+//                        .getPercentOfTotal();
+//            }
+//        }
+//    }
 
     private void loadCacheInfo(String pkgName) {
         AppItemInfo info = mAppDetails.get(pkgName);
@@ -948,19 +946,19 @@ public class AppLoadEngine extends BroadcastReceiver {
         return 0;
     }
 
-    private static String convertToSizeString(long size) {
-        String sSize = null;
-        if (size > sGB) {
-            sSize = sFormat.format((float) size / sGB) + sUnitGB;
-        } else if (size > sMB) {
-            sSize = sFormat.format((float) size / sMB) + sUnitMB;
-        } else if (size > sKB) {
-            sSize = sFormat.format((float) size / sKB) + sUnitKB;
-        } else {
-            sSize = size + sUnitB;
-        }
-        return sSize;
-    }
+//    private static String convertToSizeString(long size) {
+//        String sSize = null;
+//        if (size > sGB) {
+//            sSize = sFormat.format((float) size / sGB) + sUnitGB;
+//        } else if (size > sMB) {
+//            sSize = sFormat.format((float) size / sMB) + sUnitMB;
+//        } else if (size > sKB) {
+//            sSize = sFormat.format((float) size / sKB) + sUnitKB;
+//        } else {
+//            sSize = size + sUnitB;
+//        }
+//        return sSize;
+//    }
 
     public String getActivityName(String pkg) {
         AppItemInfo appInfo = mAppDetails.get(pkg);

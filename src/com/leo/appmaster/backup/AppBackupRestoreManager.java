@@ -109,14 +109,14 @@ public class AppBackupRestoreManager implements AppChangeListener {
     private PackageManager mPackageManager;
 
     public AppBackupRestoreManager(Context context) {
-        mPackageManager = context.getPackageManager();
+        mContext = context.getApplicationContext();
+        mPackageManager = mContext.getPackageManager();
         mBackupListeners = new ArrayList<AppBackupRestoreManager.AppBackupDataListener>();
         mSavedList = new ArrayList<AppItemInfo>();
         mBackupList = new ArrayList<AppItemInfo>();
         mDeleteList = new ArrayList<AppItemInfo>();
         AppLoadEngine.getInstance(context).registerAppChangeListener(this);
 
-        this.mContext = context;
         
         mSDReceiver = new SDCardReceiver();
         IntentFilter intentFilter = new IntentFilter(

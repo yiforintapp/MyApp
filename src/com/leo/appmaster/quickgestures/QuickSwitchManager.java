@@ -430,7 +430,7 @@ public class QuickSwitchManager {
             mSaveList = new ArrayList<BaseInfo>();
             // 蓝牙开关
             QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
-            // lanyaInfo.iDentiName = BLUETOOTH;
+            lanyaInfo.swtichIdentiName = BLUETOOTH;
             lanyaInfo.label = getLabelFromName(BLUETOOTH);
             lanyaInfo.icon = mContext.getResources().getDrawable(
                     R.drawable.switch_bluetooth);
@@ -440,7 +440,7 @@ public class QuickSwitchManager {
             mSaveList.add(lanyaInfo);
             // 手电筒
             QuickSwitcherInfo flashlightInfo = new QuickSwitcherInfo();
-            // flashlightInfo.iDentiName = FLASHLIGHT;
+            flashlightInfo.swtichIdentiName = FLASHLIGHT;
             flashlightInfo.label = getLabelFromName(FLASHLIGHT);
             flashlightInfo.switchIcon = getIconFromName(flashlightInfo.label);
             flashlightInfo.gesturePosition = 1;
@@ -450,7 +450,7 @@ public class QuickSwitchManager {
             mSaveList.add(flashlightInfo);
             // WLAN
             QuickSwitcherInfo wlanInfo = new QuickSwitcherInfo();
-            // wlanInfo.iDentiName = WLAN;
+            wlanInfo.swtichIdentiName = WLAN;
             wlanInfo.label = getLabelFromName(WLAN);
             wlanInfo.switchIcon = getIconFromName(wlanInfo.label);
             wlanInfo.gesturePosition = 2;
@@ -459,7 +459,7 @@ public class QuickSwitchManager {
             mSaveList.add(wlanInfo);
             // 相机
             QuickSwitcherInfo carmeInfo = new QuickSwitcherInfo();
-            // carmeInfo.iDentiName = CRAME;
+            carmeInfo.swtichIdentiName = CRAME;
             carmeInfo.label = getLabelFromName(CRAME);
             carmeInfo.switchIcon = getIconFromName(carmeInfo.label);
             carmeInfo.gesturePosition = 3;
@@ -468,7 +468,7 @@ public class QuickSwitchManager {
             mSaveList.add(carmeInfo);
             // 声音
             QuickSwitcherInfo soundInfo = new QuickSwitcherInfo();
-            // soundInfo.iDentiName = SOUND;
+            soundInfo.swtichIdentiName = SOUND;
             soundInfo.label = getLabelFromName(SOUND);
             soundInfo.switchIcon = getIconFromName(soundInfo.label);
             soundInfo.gesturePosition = 4;
@@ -478,7 +478,7 @@ public class QuickSwitchManager {
             mSaveList.add(soundInfo);
             // 亮度
             QuickSwitcherInfo lightInfo = new QuickSwitcherInfo();
-            // lightInfo.iDentiName = LIGHT;
+            lightInfo.swtichIdentiName = LIGHT;
             lightInfo.label = getLabelFromName(LIGHT);
             lightInfo.switchIcon = getIconFromName(lightInfo.label);
             lightInfo.gesturePosition = 5;
@@ -488,7 +488,7 @@ public class QuickSwitchManager {
             mSaveList.add(lightInfo);
             // 加速
             QuickSwitcherInfo speedUpInfo = new QuickSwitcherInfo();
-            // speedUpInfo.iDentiName = SPEEDUP;
+            speedUpInfo.swtichIdentiName = SPEEDUP;
             speedUpInfo.label = getLabelFromName(SPEEDUP);
             speedUpInfo.switchIcon = getIconFromName(speedUpInfo.label);
             speedUpInfo.gesturePosition = 6;
@@ -498,7 +498,7 @@ public class QuickSwitchManager {
             mSaveList.add(speedUpInfo);
             // 手势设置
             QuickSwitcherInfo switchSetInfo = new QuickSwitcherInfo();
-            // switchSetInfo.iDentiName = SWITCHSET;
+            switchSetInfo.swtichIdentiName = SWITCHSET;
             switchSetInfo.label = getLabelFromName(SWITCHSET);
             switchSetInfo.switchIcon = getIconFromName(switchSetInfo.label);
             switchSetInfo.gesturePosition = 7;
@@ -508,7 +508,7 @@ public class QuickSwitchManager {
             mSaveList.add(switchSetInfo);
             // 情景模式切换
             QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
-            // changeModeInfo.iDentiName = CHANGEMODE;
+            changeModeInfo.swtichIdentiName = CHANGEMODE;
             changeModeInfo.label = getLabelFromName(CHANGEMODE);
             changeModeInfo.switchIcon = getIconFromName(changeModeInfo.label);
             changeModeInfo.gesturePosition = 8;
@@ -518,7 +518,7 @@ public class QuickSwitchManager {
             mSaveList.add(changeModeInfo);
             // 移动数据
             QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
-            // mobileDataInfo.iDentiName = MOBILEDATA;
+            mobileDataInfo.swtichIdentiName = MOBILEDATA;
             mobileDataInfo.label = getLabelFromName(MOBILEDATA);
             mobileDataInfo.switchIcon = getIconFromName(mobileDataInfo.label);
             mobileDataInfo.gesturePosition = 9;
@@ -528,7 +528,7 @@ public class QuickSwitchManager {
             mSaveList.add(mobileDataInfo);
             // 系统设置
             QuickSwitcherInfo settingInfo = new QuickSwitcherInfo();
-            // settingInfo.iDentiName = SETTING;
+            settingInfo.swtichIdentiName = SETTING;
             settingInfo.label = getLabelFromName(SETTING);
             settingInfo.switchIcon = getIconFromName(settingInfo.label);
             settingInfo.gesturePosition = 10;
@@ -538,7 +538,7 @@ public class QuickSwitchManager {
             mSaveList.add(settingInfo);
             // GPS
             QuickSwitcherInfo gpsInfo = new QuickSwitcherInfo();
-            // gpsInfo.iDentiName = GPS;
+            gpsInfo.swtichIdentiName = GPS;
             gpsInfo.label = getLabelFromName(GPS);
             gpsInfo.switchIcon = getIconFromName(gpsInfo.label);
             gpsInfo.gesturePosition = 11;
@@ -547,7 +547,7 @@ public class QuickSwitchManager {
             mSaveList.add(gpsInfo);
             // 屏幕旋转
             QuickSwitcherInfo rotationInfo = new QuickSwitcherInfo();
-            // rotationInfo.iDentiName = ROTATION;
+            rotationInfo.swtichIdentiName = ROTATION;
             rotationInfo.label = getLabelFromName(ROTATION);
             rotationInfo.switchIcon = getIconFromName(rotationInfo.label);
             rotationInfo.gesturePosition = 12;
@@ -557,7 +557,7 @@ public class QuickSwitchManager {
             mSaveList.add(rotationInfo);
             // Home
             QuickSwitcherInfo homeInfo = new QuickSwitcherInfo();
-            // homeInfo.iDentiName = HOME;
+            homeInfo.swtichIdentiName = HOME;
             homeInfo.label = getLabelFromName(HOME);
             homeInfo.switchIcon = getIconFromName(homeInfo.label);
             homeInfo.gesturePosition = 13;
@@ -567,7 +567,7 @@ public class QuickSwitchManager {
             mSaveList.add(homeInfo);
             // 飞行模式
             QuickSwitcherInfo flyModeInfo = new QuickSwitcherInfo();
-            // flyModeInfo.iDentiName = FLYMODE;
+            flyModeInfo.swtichIdentiName = FLYMODE;
             flyModeInfo.label = getLabelFromName(FLYMODE);
             flyModeInfo.switchIcon = getIconFromName(flyModeInfo.label);
             flyModeInfo.gesturePosition = 14;
@@ -601,87 +601,102 @@ public class QuickSwitchManager {
         }
         // 蓝牙开关
         QuickSwitcherInfo lanyaInfo = new QuickSwitcherInfo();
+        lanyaInfo.swtichIdentiName = BLUETOOTH;
         lanyaInfo.label = getLabelFromName(BLUETOOTH);
         lanyaInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_bluetooth);
         mAllList.add(lanyaInfo);
         // 手电筒
         QuickSwitcherInfo flashlightInfo = new QuickSwitcherInfo();
+        flashlightInfo.swtichIdentiName = FLASHLIGHT;
         flashlightInfo.label = getLabelFromName(FLASHLIGHT);
         flashlightInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_flashlight);
         mAllList.add(flashlightInfo);
         // WLAN
         QuickSwitcherInfo wlanInfo = new QuickSwitcherInfo();
+        wlanInfo.swtichIdentiName = WLAN;
         wlanInfo.label = getLabelFromName(WLAN);
         wlanInfo.icon = mContext.getResources().getDrawable(R.drawable.switch_wifi);
         mAllList.add(wlanInfo);
         // 相机
         QuickSwitcherInfo carmeInfo = new QuickSwitcherInfo();
+        carmeInfo.swtichIdentiName = CRAME;
         carmeInfo.label = getLabelFromName(CRAME);
         carmeInfo.icon = mContext.getResources().getDrawable(R.drawable.switch_camera);
         mAllList.add(carmeInfo);
         // 声音
         QuickSwitcherInfo soundInfo = new QuickSwitcherInfo();
+        soundInfo.swtichIdentiName = SOUND;
         soundInfo.label = getLabelFromName(SOUND);
         soundInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_volume_min);
         mAllList.add(soundInfo);
         // 亮度
         QuickSwitcherInfo lightInfo = new QuickSwitcherInfo();
+        lightInfo.swtichIdentiName = LIGHT;
         lightInfo.label = getLabelFromName(LIGHT);
         lightInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_brightness_automatic);
         mAllList.add(lightInfo);
         // 加速
         QuickSwitcherInfo speedUpInfo = new QuickSwitcherInfo();
+        speedUpInfo.swtichIdentiName = SPEEDUP;
         speedUpInfo.label = getLabelFromName(SPEEDUP);
         speedUpInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_speed_up);
         mAllList.add(speedUpInfo);
         // 手势设置
         QuickSwitcherInfo switchSetInfo = new QuickSwitcherInfo();
+        switchSetInfo.swtichIdentiName = SWITCHSET;
         switchSetInfo.label = getLabelFromName(SWITCHSET);
         switchSetInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_set);
         mAllList.add(switchSetInfo);
         // 情景模式切换
         QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
+        changeModeInfo.swtichIdentiName = CHANGEMODE;
         changeModeInfo.label = getLabelFromName(CHANGEMODE);
         changeModeInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_mode);
         mAllList.add(changeModeInfo);
         // 移动数据
         QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
+        mobileDataInfo.swtichIdentiName = MOBILEDATA;
         mobileDataInfo.label = getLabelFromName(MOBILEDATA);
         mobileDataInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_data);
         mAllList.add(mobileDataInfo);
         // 系统设置
         QuickSwitcherInfo settingInfo = new QuickSwitcherInfo();
+        settingInfo.swtichIdentiName = SETTING;
         settingInfo.label = getLabelFromName(SETTING);
         settingInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_gestureset_pre);
         mAllList.add(settingInfo);
         // GPS
         QuickSwitcherInfo gpsInfo = new QuickSwitcherInfo();
+        gpsInfo.swtichIdentiName = GPS;
         gpsInfo.label = getLabelFromName(GPS);
         gpsInfo.icon = mContext.getResources().getDrawable(R.drawable.switch_gps);
         mAllList.add(gpsInfo);
         // 屏幕旋转
         QuickSwitcherInfo rotationInfo = new QuickSwitcherInfo();
+        rotationInfo.swtichIdentiName = ROTATION;
         rotationInfo.label = getLabelFromName(ROTATION);
         rotationInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_rotation);
         mAllList.add(rotationInfo);
         // Home
         QuickSwitcherInfo homeInfo = new QuickSwitcherInfo();
+        homeInfo.swtichIdentiName = HOME;
         homeInfo.label = getLabelFromName(HOME);
         homeInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_home);
         mAllList.add(homeInfo);
         // 飞行模式
         QuickSwitcherInfo flyModeInfo = new QuickSwitcherInfo();
+        flyModeInfo.swtichIdentiName = FLYMODE;
         flyModeInfo.label = getLabelFromName(FLYMODE);
         flyModeInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_flightmode);
@@ -1173,7 +1188,8 @@ public class QuickSwitchManager {
         String ListString = "";
         for (int i = 0; i < mNum; i++) {
             BaseInfo switchInfo = (BaseInfo) mSwitchList.get(i);
-            String name = switchInfo.label;
+            // String name = switchInfo.label;
+            String name = switchInfo.swtichIdentiName;
             int position = switchInfo.gesturePosition;
             LeoLog.d("QuickSwitchManager", "name : " + name + "--position : " + position);
             if (i == 0) {
@@ -1187,7 +1203,7 @@ public class QuickSwitchManager {
 
     public List<BaseInfo> StringToList(String mSwitchListFromSp) {
         List<BaseInfo> mSwitcherList = new ArrayList<BaseInfo>();
-        if(!mSwitchListFromSp.isEmpty()){
+        if (!mSwitchListFromSp.isEmpty()) {
             String[] mSwitchAllInfo = mSwitchListFromSp.split(",");
             LeoLog.d(
                     "QuickSwitchManager",
@@ -1195,8 +1211,9 @@ public class QuickSwitchManager {
             for (int i = 0; i < mSwitchAllInfo.length; i++) {
                 QuickSwitcherInfo mInfo = new QuickSwitcherInfo();
                 String[] mEachOneInfo = mSwitchAllInfo[i].split(":");
+                mInfo.swtichIdentiName = mEachOneInfo[0];
                 mInfo.gesturePosition = Integer.parseInt(mEachOneInfo[1]);
-                mInfo.label = mEachOneInfo[0];
+                mInfo.label = getLabelFromName(mEachOneInfo[0]);
                 mInfo.switchIcon = getIconFromName(mInfo.label);
                 mSwitcherList.add(mInfo);
             }

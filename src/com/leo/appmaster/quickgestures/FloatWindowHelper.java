@@ -124,7 +124,6 @@ public class FloatWindowHelper {
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
-                                    mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
                                 }
@@ -203,7 +202,6 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
-                                    mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
                                 }
@@ -278,7 +276,6 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
-                                    mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-2);
                                 }
@@ -363,7 +360,6 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
-                                    mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
                                 }
@@ -439,7 +435,6 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
-                                    mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
                                 }
@@ -513,7 +508,6 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
-                                    mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
                                 }
@@ -588,7 +582,6 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
-                                    mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(2);
                                 }
@@ -675,7 +668,6 @@ public class FloatWindowHelper {
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
-                                    mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
                                 }

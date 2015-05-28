@@ -22,7 +22,6 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.ui.LineView;
 import com.leo.appmaster.ui.LineView.BackUpCallBack;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
-import com.leo.appmaster.ui.RoundProgressBar;
 import com.leo.appmaster.ui.dialog.MonthDaySetting;
 import com.leo.appmaster.ui.dialog.MonthDaySetting.OnTrafficDialogClickListener;
 import com.leo.appmaster.utils.AppwallHttpUtil;
@@ -93,6 +92,9 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
 
     @Override
     public void onDestroy() {
+        if(flowAsyncTask != null) {
+            flowAsyncTask.cancel(false);
+        }
         super.onDestroy();
     }
 

@@ -456,6 +456,8 @@ public class TaskDetectService extends Service {
                                 FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                             }
                         }
+                    } else {
+                        FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                     }
                 }
             };

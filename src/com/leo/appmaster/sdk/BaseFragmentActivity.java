@@ -5,10 +5,10 @@ package com.leo.appmaster.sdk;
  * Brief: all FragmentActivity should extends this class for SDK event track
  * */
 
-import com.leo.appmaster.AppMasterApplication;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+
+import com.leo.appmaster.AppMasterApplication;
 
 public class BaseFragmentActivity extends FragmentActivity {
 

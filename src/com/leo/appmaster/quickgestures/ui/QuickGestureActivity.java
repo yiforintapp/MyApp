@@ -847,7 +847,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         }
                         try {
                             AppMasterApplication.getInstance().startActivity(intent);
-                            FloatWindowHelper.mGestureShowing = true;
                             AppMasterPreference.getInstance(this).setFristSlidingTip(true);
                         } catch (Exception e) {
                         }
