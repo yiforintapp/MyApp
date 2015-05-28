@@ -27,10 +27,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
-        iv_roket = (ImageView) findViewById(R.id.iv_rocket);
-        iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
-        iv_yun = (ImageView) findViewById(R.id.iv_yun);
-        mContainer.setRockey(iv_roket,iv_pingtai,iv_yun);
         
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
