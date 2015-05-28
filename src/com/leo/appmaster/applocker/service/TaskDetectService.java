@@ -171,12 +171,6 @@ public class TaskDetectService extends Service {
     }
 
     private void startFloatWindowTask() {
-        if (AppMasterPreference.getInstance(getApplicationContext())
-                .getFristSlidingTip()) {
-            FloatWindowHelper.mGestureShowing = true;
-        } else {
-            FloatWindowHelper.mGestureShowing = false;
-        }
         stopFloatWindowTask();
         mFloatWindowTask = new FloatWindowTask();
         mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1500,

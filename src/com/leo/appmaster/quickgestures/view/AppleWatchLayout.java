@@ -714,9 +714,6 @@ public class AppleWatchLayout extends ViewGroup {
             qgm.showCommontAppDialog((Activity)getContext());
         } else if (type == GType.SwitcherLayout) {
             // get list from sp
-            // String mListString = mSpSwitch.getSwitchList();
-            // List<BaseInfo> mSwitchList =
-            // QuickSwitchManager.getInstance(mContext).StringToList(mListString);
             qgm.showQuickSwitchDialog(getContext(), (Activity)getContext());
         }
     }
