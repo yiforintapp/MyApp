@@ -5,9 +5,6 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -21,13 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
-import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 /**
@@ -57,7 +49,6 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_quick_gesture_slide_time_setting, null);
-        Resources resources = AppMasterApplication.getInstance().getResources();
         title = (TextView) dlgView.findViewById(R.id.dialog_tilte);
         sure_button = (TextView) dlgView.findViewById(R.id.quick_slide_time_setting_dlg_right_btn);
         mLeftBt = (TextView) dlgView.findViewById(R.id.quick_slide_time_setting_dlg_left_btn);

@@ -12,10 +12,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 /**
@@ -27,7 +25,6 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
     private Context mContext;
     private TextView seekbar_text, mCancelButtom, sure_button, seekbar_text_progress, title;
     private SeekBar mSeekBar;
-    private AppMasterPreference sp_notice_flow;
     private int progressInt;
     private ListView mRadioListView;
 
@@ -40,7 +37,6 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
     public QuickGestureRadioSeekBarDialog(Context context) {
         super(context, R.style.bt_dialog);
         mContext = context.getApplicationContext();
-        sp_notice_flow = AppMasterPreference.getInstance(mContext);
         initUI();
     }
 
@@ -59,7 +55,6 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Resources resources = AppMasterApplication.getInstance().getResources();
                 if (progress == 0) {
                     seekbar_text_progress.setText(1 + "%");
                 } else {

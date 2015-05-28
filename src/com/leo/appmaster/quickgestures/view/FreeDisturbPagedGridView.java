@@ -4,30 +4,25 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.model.AppInfo;
-import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.ui.LeoAppViewPager;
-import com.leo.appmaster.ui.LeoApplistCirclePageIndicator;
-import com.leo.appmaster.ui.LockImageView;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
+import com.leo.appmaster.ui.LeoAppViewPager;
+import com.leo.appmaster.ui.LeoApplistCirclePageIndicator;
 
 public class FreeDisturbPagedGridView extends LinearLayout {
 
@@ -44,7 +39,6 @@ public class FreeDisturbPagedGridView extends LinearLayout {
     private OnItemClickListener mClickListener;
     private OnTouchListener mTouchListener;
     private int mPageCount;
-    private String mFlag;
 
     public FreeDisturbPagedGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -59,9 +53,6 @@ public class FreeDisturbPagedGridView extends LinearLayout {
         updateUI(data);
     }
 
-    public void setFlag(String flag) {
-        mFlag = flag;
-    }
 
     private void updateUI(List<? extends QuickGsturebAppInfo> data) {
         mPageCount = (int) Math
@@ -185,11 +176,8 @@ public class FreeDisturbPagedGridView extends LinearLayout {
     private class GridviewAdapter extends BaseAdapter {
         List<QuickGsturebAppInfo> mList;
 
-        private int mPageIndex;
-
         public GridviewAdapter(List<QuickGsturebAppInfo> list, int page) {
             super();
-            mPageIndex = page;
             initData(list);
         }
 
