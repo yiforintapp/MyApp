@@ -1,24 +1,16 @@
 
 package com.leo.appmaster.quickgestures.view;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.utils.DipPixelUtil;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 /**
  * QuickGesturesAreaView

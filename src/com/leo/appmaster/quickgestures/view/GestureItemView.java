@@ -1,11 +1,6 @@
 
 package com.leo.appmaster.quickgestures.view;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
-import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,11 +8,15 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.DragEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
+import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.utils.LeoLog;
 
 @SuppressLint("CutPasteId")
 public class GestureItemView extends LinearLayout {
