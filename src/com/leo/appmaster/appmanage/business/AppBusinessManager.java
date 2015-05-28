@@ -200,7 +200,7 @@ public class AppBusinessManager {
         if (lastSyncTime == 0
                 || (curTime - pref.getLastSyncBusinessTime()) > DELAY_12_HOUR) {
 
-            HttpRequestAgent.getInstance(mContext).loadRecomApp(
+            HttpRequestAgent.getInstance(mContext).loadGestureRecomApp(
                     BusinessItemInfo.CONTAIN_APPLIST,
                     new Listener<JSONObject>() {
 
@@ -227,9 +227,8 @@ public class AppBusinessManager {
                                         }
                                     }
                                 } catch (Exception e) {
-                                    // e.printStackTrace();
-                                    // LeoLog.e("syncServerData",
-                                    // e.getMessage());
+                                    e.printStackTrace();
+                                    LeoLog.e("syncServerData", e.getMessage());
                                     // TimerTask recheckTask = new TimerTask() {
                                     // @Override
                                     // public void run() {
