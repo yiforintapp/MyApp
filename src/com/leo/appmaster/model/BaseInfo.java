@@ -39,4 +39,5 @@ public class BaseInfo {
      */
     public int eventNumber = 0;
     public int gesturePosition = -1000;
+    public String swtichIdentiName;
 }
