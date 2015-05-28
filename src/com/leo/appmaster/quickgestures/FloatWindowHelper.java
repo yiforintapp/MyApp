@@ -48,7 +48,7 @@ public class FloatWindowHelper {
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
 
-    public static boolean mGestureShowing = true;
+    public static boolean mGestureShowing = false;
     public static boolean mEditQuickAreaFlag = false;
     private static float startX;
     private static float startY;
