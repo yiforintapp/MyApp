@@ -66,10 +66,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:paddingRight="16dp"
                 android:button="@drawable/quick_gesture_switch_selector"
                 android:focusable="false"
-                android:visibility="gone" />
+                android:visibility="gone"
+               />
 
             <ImageView
                 android:id="@+id/quick_gesture_arrow"
@@ -77,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:paddingRight="25dp"
                 android:src="@drawable/privacy_proposals_arrow"
                 android:visibility="gone" />
         </RelativeLayout>

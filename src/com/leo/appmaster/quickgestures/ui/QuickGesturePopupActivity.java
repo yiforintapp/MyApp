@@ -4,8 +4,8 @@ package com.leo.appmaster.quickgestures.ui;
 import java.util.List;
 
 import android.os.Bundle;
-import android.widget.ImageView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
@@ -15,11 +15,13 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends BaseActivity {
 
     private AppleWatchContainer mContainer;
-    private ImageView iv_roket, iv_pingtai, iv_yun;
+    private AppMasterPreference mPref;
+    private int mNowLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +29,27 @@ public class QuickGesturePopupActivity extends BaseActivity {
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
-        
+
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
-        fillDynamicLayout();
+        mPref = AppMasterPreference.getInstance(this);
+        mNowLayout = mContainer.getNowLayout();
+        LeoLog.d("AppleWatchContainer", "刚来Activity！show 出的是：" + mNowLayout);
+
+        fillWhichLayoutFitst(mNowLayout);
+        
         overridePendingTransition(-1, -1);
+    }
+
+    private void fillWhichLayoutFitst(int mNowLayout) {
+        if (mNowLayout == 1) {
+            fillDynamicLayout(false);
+        } else if (mNowLayout == 2) {
+            fillMostUsedLayout(false);
+        } else {
+            fillSwitcherLayout(false);
+        }
     }
 
     public void onEventMainThread(ClickQuickItemEvent event) {
@@ -48,13 +65,26 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 mContainer.showOpenAnimation(new Runnable() {
                     @Override
                     public void run() {
-                        fillMostUsedLayout();
-                        fillSwitcherLayout();
+                        fillTwoLayout(mNowLayout);
                     }
+
                 });
             }
         });
         super.onResume();
+    }
+
+    private void fillTwoLayout(int mNowLayout) {
+        if (mNowLayout == 1) {
+            fillMostUsedLayout(true);
+            fillSwitcherLayout(true);
+        } else if (mNowLayout == 2) {
+            fillDynamicLayout(true);
+            fillSwitcherLayout(true);
+        } else {
+            fillDynamicLayout(true);
+            fillMostUsedLayout(true);
+        }
     }
 
     @Override
@@ -69,19 +99,19 @@ public class QuickGesturePopupActivity extends BaseActivity {
         super.onStop();
     }
 
-    private void fillDynamicLayout() {
+    private void fillDynamicLayout(boolean loadExtra) {
         List<BaseInfo> items = QuickGestureManager.getInstance(this).getDynamicList();
-        mContainer.fillGestureItem(GType.DymicLayout, items);
+        mContainer.fillGestureItem(GType.DymicLayout, items, loadExtra);
     }
 
-    private void fillMostUsedLayout() {
+    private void fillMostUsedLayout(boolean loadExtra) {
         List<BaseInfo> items = QuickGestureManager.getInstance(this).getMostUsedList();
-        mContainer.fillGestureItem(GType.MostUsedLayout, items);
+        mContainer.fillGestureItem(GType.MostUsedLayout, items, loadExtra);
     }
 
-    private void fillSwitcherLayout() {
+    private void fillSwitcherLayout(boolean loadExtra) {
         List<BaseInfo> items = QuickGestureManager.getInstance(this).getSwitcherList();
-        mContainer.fillGestureItem(GType.SwitcherLayout, items);
+        mContainer.fillGestureItem(GType.SwitcherLayout, items, loadExtra);
     }
 
     @Override

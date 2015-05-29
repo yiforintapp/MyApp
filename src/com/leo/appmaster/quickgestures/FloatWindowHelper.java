@@ -161,7 +161,7 @@ public class FloatWindowHelper {
                 mLeftBottomParams.height = (int) ((DipPixelUtil.dip2px(mContext, mLeftBottomHeight) / 2) + (value)) * 2;
                 mLeftBottomParams.x = (int) (-(width / 2) + (mLeftBottomParams.width / 2));
                 mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
-                mLeftBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mLeftBottomParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
                 mLeftBottomParams.format = PixelFormat.RGBA_8888;
                 mLeftBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -231,7 +231,7 @@ public class FloatWindowHelper {
                 mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
                 mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2)
                         - mLeftBottomParams.height - DipPixelUtil.dip2px(mContext, 12));
-                mLeftCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mLeftCenterParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
                 mLeftCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -321,7 +321,7 @@ public class FloatWindowHelper {
                             - DipPixelUtil.dip2px(mContext, mLeftBottomHeight) - DipPixelUtil
                             .dip2px(mContext, 40));
                 }
-                mLeftCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mLeftCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
                 mLeftCenterCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -400,7 +400,7 @@ public class FloatWindowHelper {
                 mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
                         - mLeftBottomParams.height - mLeftCenterParams.height - DipPixelUtil
                         .dip2px(mContext, 12));
-                mLeftTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mLeftTopParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
                 mLeftTopParams.format = PixelFormat.RGBA_8888;
                 mLeftTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -480,7 +480,7 @@ public class FloatWindowHelper {
                         mRightBottomHeight) / 2) + (value)) * 2;
                 mRightBottomParams.x = (int) ((width / 2) + (mRightBottomParams.width / 2));
                 mRightBottomParams.y = (int) ((height / 2) - (mRightBottomParams.height / 2));
-                mRightBottomParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mRightBottomParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
                 mRightBottomParams.format = PixelFormat.RGBA_8888;
                 mRightBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -551,7 +551,7 @@ public class FloatWindowHelper {
                 mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
                 mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2)
                         - mRightBottomParams.height - DipPixelUtil.dip2px(mContext, 12));
-                mRightCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mRightCenterParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
                 mRightCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -642,7 +642,7 @@ public class FloatWindowHelper {
                             - DipPixelUtil.dip2px(mContext, mRightBottomHeight) - DipPixelUtil
                             .dip2px(mContext, 40));
                 }
-                mRightCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mRightCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
                 mRightCenterCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -722,7 +722,7 @@ public class FloatWindowHelper {
                 mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
                         - mRightBottomParams.height - mRightCenterParams.height - DipPixelUtil
                         .dip2px(mContext, 12));
-                mRightTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+                mRightTopParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
                 mRightTopParams.format = PixelFormat.RGBA_8888;
                 mRightTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;

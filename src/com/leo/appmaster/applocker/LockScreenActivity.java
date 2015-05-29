@@ -536,10 +536,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 willLaunch = homeMode;
             }
             if (willLaunch != null) {
-                int currentModeFlag = LockManager.getInstatnce().getCurLockMode().defaultFlag;
+                LockMode lockMode = LockManager.getInstatnce().getCurLockMode();
                 lm.setCurrentLockMode(willLaunch, true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
-                showModeActiveTip(willLaunch.defaultFlag,currentModeFlag);
+                /**mode change tip**/
+                if(null != lockMode){
+                    int currentModeFlag = lockMode.defaultFlag;
+                    showModeActiveTip(willLaunch.defaultFlag,currentModeFlag);
+                }else{
+                    showModeActiveTip(willLaunch);
+                }
             } else {
                 // Toast.makeText(this, mQuickModeName + "模式不存在, 请重试",
                 // 0).show();
@@ -957,5 +963,29 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 break;
         }
         return iconMap;
+    }
+    
+    /**
+     * show the defalut toast tip when mode success activating
+     */
+    private void showModeActiveTip(LockMode mode) {
+        Map<String, Object> willLaunchMap = modeIconSwitch(mode.defaultFlag);
+        View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
+        mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
+        bgView = (LeoCircleView) mTipView.findViewById(R.id.mode_active_bg);
+        modeIconOut = (ImageView) mTipView.findViewById(R.id.mode_active_out);
+        modeIconDown = (ImageView) mTipView.findViewById(R.id.mode_active_down);
+
+        modeIconOut.setImageResource((Integer) willLaunchMap.get("modeIcon"));
+        modeIconDown.setImageResource((Integer) willLaunchMap.get("modeDown"));
+        modeIconDown.setVisibility(View.VISIBLE);
+        bgView.setColor(Color.parseColor(willLaunchMap.get("bgColor").toString()));
+        mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
+
+        Toast toast = new Toast(this);
+        toast.setView(mTipView);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

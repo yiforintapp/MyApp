@@ -20,7 +20,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -39,7 +38,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout.Direction;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -50,6 +48,11 @@ public class AppleWatchContainer extends FrameLayout {
 
     public static final String TAG = "AppleWatchQuickGestureContainer";
     private static final int mGetIcon = -1;
+    public static final int mLastTimeDymic = 1;
+    public static final int mLastTimeMost = 2;
+    public static final int mLastTimeSwitch = 3;
+    private AppMasterPreference mPref;
+    private int mCurrentLayout = 1;
     private List<QuickSwitcherInfo> mSwitchList;
 
     public static enum Orientation {
@@ -72,7 +75,6 @@ public class AppleWatchContainer extends FrameLayout {
     private float mSelfHeight;
     private float mTouchDownX, mTouchDownY;
     private float mRotateDegree;
-
     private volatile boolean mEditing;
     private boolean mSnaping;
     private boolean isClean = false;
@@ -94,6 +96,11 @@ public class AppleWatchContainer extends FrameLayout {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
 
+        mPref = AppMasterPreference.getInstance(context);
+        mCurrentLayout = mPref.getLastTimeLayout();
+        LeoLog.d("AppleWatchContainer", "刚来！show 出的是：" + mCurrentLayout);
+        makeNowLayout();
+
         // 清理内存
         mCleaner = ProcessCleaner.getInstance(context);
         mLastUsedMem = mCleaner.getUsedMem();
@@ -111,6 +118,17 @@ public class AppleWatchContainer extends FrameLayout {
         }
         typedArray.recycle();
         init();
+    }
+
+    private void makeNowLayout() {
+        if (mCurrentLayout == mLastTimeDymic) {
+            mCurrentGestureType = GType.DymicLayout;
+        } else if (mCurrentLayout == mLastTimeMost) {
+            mCurrentGestureType = GType.MostUsedLayout;
+        } else {
+            // Switch
+            mCurrentGestureType = GType.SwitcherLayout;
+        }
     }
 
     private void init() {
@@ -264,12 +282,20 @@ public class AppleWatchContainer extends FrameLayout {
         mMostUsedLayout.mMyType = GType.MostUsedLayout;
         mSwitcherLayout = (AppleWatchLayout) findViewById(R.id.qg_switcher_layout);
         mSwitcherLayout.mMyType = GType.SwitcherLayout;
-        
+
         mRockey = (ImageView) findViewById(R.id.iv_rocket);
         mPIngtai = (ImageView) findViewById(R.id.iv_pingtai);
         mYun = (ImageView) findViewById(R.id.iv_yun);
-        
-        mTvCurName.setText(R.string.quick_gesture_dynamic);
+
+        if (mCurrentGestureType == GType.DymicLayout) {
+            mTvCurName.setText(R.string.quick_gesture_dynamic);
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            mTvCurName.setText(R.string.quick_gesture_most_used);
+        } else {
+            mTvCurName.setText(R.string.quick_gesture_switcher);
+        }
+
+        showGestureLayout(mCurrentGestureType);
         super.onFinishInflate();
     }
 
@@ -682,7 +708,7 @@ public class AppleWatchContainer extends FrameLayout {
         va.start();
     }
 
-    public void fillGestureItem(GType type, List<BaseInfo> infos) {
+    public void fillGestureItem(GType type, List<BaseInfo> infos, boolean loadExtra) {
         if (infos == null) {
             LeoLog.e(TAG, "fillGestureItem, infos is null");
             return;
@@ -698,7 +724,7 @@ public class AppleWatchContainer extends FrameLayout {
             targetLayout = mSwitcherLayout;
             infos = fixInfoRight(infos);
         }
-        targetLayout.fillItems(infos);
+        targetLayout.fillItems(infos, loadExtra);
     }
 
     private List<BaseInfo> fixInfoRight(List<BaseInfo> infos) {
@@ -1294,10 +1320,16 @@ public class AppleWatchContainer extends FrameLayout {
         AppleWatchLayout targetLayout;
         if (mCurrentGestureType == GType.DymicLayout) {
             targetLayout = mDymicLayout;
+            LeoLog.d("AppleWatchContainer", "关闭是 : mDymicLayout");
+            mPref.setLastTimeLayout(mLastTimeDymic);
         } else if (mCurrentGestureType == GType.MostUsedLayout) {
             targetLayout = mMostUsedLayout;
+            LeoLog.d("AppleWatchContainer", "关闭是 : mLastTimeMost");
+            mPref.setLastTimeLayout(mLastTimeMost);
         } else {
             targetLayout = mSwitcherLayout;
+            LeoLog.d("AppleWatchContainer", "关闭是 : mLastTimeSwitch");
+            mPref.setLastTimeLayout(mLastTimeSwitch);
         }
         AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
         AnimatorSet set = new AnimatorSet();
@@ -1335,10 +1367,16 @@ public class AppleWatchContainer extends FrameLayout {
     public void showGestureLayout(GType type) {
         if (type == GType.DymicLayout) {
             mDymicLayout.setVisibility(View.VISIBLE);
+            mSwitcherLayout.setVisibility(View.INVISIBLE);
+            mMostUsedLayout.setVisibility(View.INVISIBLE);
         } else if (type == GType.MostUsedLayout) {
+            mDymicLayout.setVisibility(View.INVISIBLE);
             mMostUsedLayout.setVisibility(View.VISIBLE);
+            mSwitcherLayout.setVisibility(View.INVISIBLE);
         } else if (type == GType.SwitcherLayout) {
             mSwitcherLayout.setVisibility(View.VISIBLE);
+            mDymicLayout.setVisibility(View.INVISIBLE);
+            mMostUsedLayout.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -1569,6 +1607,10 @@ public class AppleWatchContainer extends FrameLayout {
         } else {
             return mSwitcherLayout;
         }
+    }
+
+    public int getNowLayout() {
+        return mCurrentLayout;
     }
 
 }

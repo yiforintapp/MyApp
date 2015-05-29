@@ -66,6 +66,7 @@ public class AppleWatchLayout extends ViewGroup {
     private boolean mSnapping;
     public GType mMyType;
     public boolean mHasFillExtraItems;
+    private boolean mFingerDirection;
 
     public static enum Direction {
         Right, Left, None;
@@ -90,7 +91,7 @@ public class AppleWatchLayout extends ViewGroup {
         return mSnapping;
     }
 
-    public void fillItems(List<BaseInfo> infos) {
+    public void fillItems(List<BaseInfo> infos, boolean loadExtra) {
         BaseInfo info = null;
         if (infos.size() > 13) {
             infos = infos.subList(0, 13);
@@ -174,7 +175,7 @@ public class AppleWatchLayout extends ViewGroup {
         }
         requestLayout();
 
-        if (!isCurrentLayout()) {
+        if (loadExtra) {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -185,8 +186,8 @@ public class AppleWatchLayout extends ViewGroup {
 
     }
 
-    private boolean isCurrentLayout() {
-        return mMyType == GType.DymicLayout;
+    public boolean isCurrentLayout() {
+        return mMyType == mContainer.getCurrentGestureType();
     }
 
     public void fillExtraChildren() {
@@ -400,6 +401,7 @@ public class AppleWatchLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        LeoLog.e(TAG, "onLayout");
         // Laying out the child views
         final int childCount = getChildCount();
         if (childCount == 0) {
@@ -1411,13 +1413,17 @@ public class AppleWatchLayout extends ViewGroup {
                     - mHoriChildren[1][9].getLeft();
             mMinuOffset = minuOffset;
             int shouldAdjustCount = (int) (moveX / minuOffset);
+            
             if (mAdjustCount < shouldAdjustCount) {
                 adjustIconPosition(Direction.Left);
                 mAdjustCount++;
+                LeoLog.e("xxxx", "++ mAdjustCount =    " + mAdjustCount);
             } else if (mAdjustCount > shouldAdjustCount) {
                 adjustIconPosition(Direction.Right);
                 mAdjustCount--;
+                LeoLog.e("xxxx", "-- mAdjustCount =    " + mAdjustCount);
             }
+            
             for (i = 0; i < mHoriChildren[0].length - 1; i++) {
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;

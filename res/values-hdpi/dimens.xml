@@ -299,14 +299,32 @@
     <dimen name="privacy_proposal_status_padding_bottom">8dp</dimen>
     <dimen name="privacy_suggest_height">100dp</dimen>
 
-  <!--  weizhuang -->
+    <!-- weizhuang -->
     <dimen name="weizhaung_guide_image_margin_top">60dp</dimen>
+    <dimen name="dialog_list_width">260dp</dimen>
+    <dimen name="dialog_list_btn_height">42dp</dimen>
+    <dimen name="dialog_list_item_height">50dp</dimen>
+    <dimen name="dialog_contact_item_height">56dp</dimen>
+    <!-- quick gesture start -->
+
+
+    <!-- quick guesture begin -->
+    <dimen name="qg_conner_tab_text_size">12dp</dimen>
+    <dimen name="qg_item_size">65dp</dimen>
+    <dimen name="qg_item_icon_size">50dp</dimen>
+    <dimen name="qg_layout_inner_radius">180dp</dimen>
+    <dimen name="qg_layout_outer_radius">280dp</dimen>
+
+    <!-- apple watch -->
+    <dimen name="apple_watch_text_size">12dp</dimen>
+    <dimen name="apple_watch_item_size">78dp</dimen>
+    <dimen name="apple_watch_tab_item_size">38dp</dimen>
+    <dimen name="apple_watch_select_bar_width">40dp</dimen>
+    <dimen name="apple_watch_select_bar_height">15dp</dimen>
+    <dimen name="apple_watch_item_icon_size">62dp</dimen>
+    <dimen name="apple_watch_layout_inner_radius">84dp</dimen>
+    <dimen name="apple_watch_layout_outer_radius">128dp</dimen>
     
-     <dimen name="dialog_list_width">260dp</dimen>
-      <dimen name="dialog_list_btn_height">42dp</dimen>
-      <dimen name="dialog_list_item_height">50dp</dimen>
-      <dimen name="dialog_contact_item_height">56dp</dimen>
-      <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_indicator_dialog_margin_top">18dp</dimen>
@@ -316,4 +334,5 @@
     <dimen name="quick_gesture_setting_item_height">56dp</dimen>
     <dimen name="quick_seek_bar_width">250dp</dimen>
     <!-- quick gesutre end -->
+
 </resources>
