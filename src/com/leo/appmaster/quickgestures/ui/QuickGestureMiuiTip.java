@@ -57,4 +57,10 @@ public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener
     public void onBackPressed() {
         // super.onBackPressed();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        QuickGestureMiuiTip.this.finish();
+    }
 }
