@@ -1283,7 +1283,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
         AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(200);
+        set.setDuration(300);
         set.setInterpolator(new DecelerateInterpolator());
         set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
@@ -1298,7 +1298,7 @@ public class AppleWatchContainer extends FrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 isAnimating = false;
-                AppleWatchLayout layout;
+                final AppleWatchLayout layout;
                 if (mCurrentGestureType == GType.DymicLayout) {
                     layout = mDymicLayout;
                 } else if (mCurrentGestureType == GType.MostUsedLayout) {
@@ -1306,7 +1306,15 @@ public class AppleWatchContainer extends FrameLayout {
                 } else {
                     layout = mSwitcherLayout;
                 }
-                layout.fillExtraChildren();
+                layout.post(new Runnable() {
+                    
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        layout.fillExtraChildren();
+                    }
+                });
+                
                 run.run();
             }
         });
@@ -1334,7 +1342,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
         AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(200);
+        set.setDuration(300);
         set.setInterpolator(new DecelerateInterpolator());
         set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
