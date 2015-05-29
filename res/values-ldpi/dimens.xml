@@ -189,6 +189,25 @@
           <dimen name="weizhuang_tip_content_padding">20dp</dimen>
       
       <!-- quick gesture start -->
+          <!-- quick gesture start -->
+    <dimen name="qg_conner_tab_text_size">12dp</dimen>
+    <dimen name="qg_item_size">65dp</dimen>
+    <dimen name="qg_item_icon_size">50dp</dimen>
+    <dimen name="qg_layout_inner_radius">180dp</dimen>
+    <dimen name="qg_layout_outer_radius">280dp</dimen>
+
+    <!-- apple watch -->
+    <dimen name="apple_watch_text_size">12dp</dimen>
+    <dimen name="apple_watch_item_size">76dp</dimen>
+    <dimen name="apple_watch_tab_item_size">38dp</dimen>
+    <dimen name="apple_watch_select_bar_width">40dp</dimen>
+    <dimen name="apple_watch_select_bar_height">15dp</dimen>
+    <dimen name="apple_watch_item_icon_size">60dp</dimen>
+    <dimen name="apple_watch_layout_inner_radius">84dp</dimen>
+    <dimen name="apple_watch_layout_outer_radius">124dp</dimen>
+    <!-- quick guesture end -->
+      
+      
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_indicator_dialog_margin_top">18dp</dimen>
