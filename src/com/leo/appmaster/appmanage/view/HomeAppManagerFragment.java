@@ -361,13 +361,14 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     sp_homeAppManager.setQuickGestureRedTip(false);
                     mQuickGestureRedTip.setVisibility(View.GONE);
                 }
-                boolean flag = BuildProperties.isMIUI();
+
+                boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(getActivity());
+                boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(getActivity());
+                boolean checkMiui = BuildProperties.isMIUI();
                 boolean isOpenWindow =
-                        BuildProperties.isMiuiFloatWindowOpAllowed(getActivity());
-                // Log.e("#############",
-                // "是否为MIUI：" + flag + "; 是否开启悬浮窗权限：" + isOpenWindow);
-                if (flag && !isOpenWindow) {
-                    // MIUI系统提示
+                        BuildProperties.isFloatWindowOpAllowed(getActivity());
+                if (checkMiui && !isOpenWindow) {
+                    // MIUI
                     Intent intentv6 = new
                             Intent("miui.intent.action.APP_PERM_EDITOR");
                     intentv6.setClassName("com.miui.securitycenter",
@@ -392,14 +393,23 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         }
                     }
                     Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-                    // quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(quickIntent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (checkHuaWei && !checkFloatWindow) {
+                    BuildProperties.isToHuaWeiSystemManager(getActivity());
+                    Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
+                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    quickIntent.putExtra("sys_name", "huawei");
                     try {
                         startActivity(quickIntent);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    // 启动快捷手势设置界面
                     Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
                     try {
                         startActivity(quickIntent);
