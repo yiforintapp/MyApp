@@ -66,6 +66,7 @@ public class AppleWatchLayout extends ViewGroup {
     private boolean mSnapping;
     public GType mMyType;
     public boolean mHasFillExtraItems;
+    private boolean mFingerDirection;
 
     public static enum Direction {
         Right, Left, None;
@@ -400,6 +401,7 @@ public class AppleWatchLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        LeoLog.e(TAG, "onLayout");
         // Laying out the child views
         final int childCount = getChildCount();
         if (childCount == 0) {
@@ -1440,13 +1442,17 @@ public class AppleWatchLayout extends ViewGroup {
                     - mHoriChildren[1][9].getLeft();
             mMinuOffset = minuOffset;
             int shouldAdjustCount = (int) (moveX / minuOffset);
+            
             if (mAdjustCount < shouldAdjustCount) {
                 adjustIconPosition(Direction.Left);
                 mAdjustCount++;
+                LeoLog.e("xxxx", "++ mAdjustCount =    " + mAdjustCount);
             } else if (mAdjustCount > shouldAdjustCount) {
                 adjustIconPosition(Direction.Right);
                 mAdjustCount--;
+                LeoLog.e("xxxx", "-- mAdjustCount =    " + mAdjustCount);
             }
+            
             for (i = 0; i < mHoriChildren[0].length - 1; i++) {
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;
