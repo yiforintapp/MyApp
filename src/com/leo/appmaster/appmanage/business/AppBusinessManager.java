@@ -72,6 +72,7 @@ public class AppBusinessManager {
     }
 
     public void init() {
+        LeoLog.e("xxxx", "business init");
         loadInitData();
         syncServerGestureData();
 //        syncOtherRecommend(BusinessItemInfo.CONTAIN_FLOW_SORT);

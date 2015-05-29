@@ -28,10 +28,13 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.appmanage.AppListActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
@@ -42,6 +45,7 @@ import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 public class AppleWatchLayout extends ViewGroup {
@@ -582,7 +586,27 @@ public class AppleWatchLayout extends ViewGroup {
         int position = ((LayoutParams) item.getLayoutParams()).position;
         BaseInfo info = (BaseInfo) view.getTag();
         info.gesturePosition = position;
-        if (info instanceof QuickSwitcherInfo) {// 快捷开关
+        if (info instanceof BusinessItemInfo) {// 运营app
+            BusinessItemInfo bif = (BusinessItemInfo) info;
+            if (bif.gpPriority == 1) {
+                if (AppUtil.appInstalled(getContext(),
+                        Constants.GP_PACKAGE)) {
+                    try {
+                        AppUtil.downloadFromGp(getContext(),
+                                bif.packageName);
+                    } catch (Exception e) {
+                        AppUtil.downloadFromBrowser(getContext(),
+                                bif.appDownloadUrl);
+                    }
+                } else {
+                    AppUtil.downloadFromBrowser(getContext(),
+                            bif.appDownloadUrl);
+                }
+            } else {
+                AppUtil.downloadFromBrowser(getContext(),
+                        bif.appDownloadUrl);
+            }
+        } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
             QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
             // 蓝牙
             if (sInfo.swtichIdentiName.equals(QuickSwitchManager.BLUETOOTH)) {
@@ -1413,7 +1437,7 @@ public class AppleWatchLayout extends ViewGroup {
                     - mHoriChildren[1][9].getLeft();
             mMinuOffset = minuOffset;
             int shouldAdjustCount = (int) (moveX / minuOffset);
-            
+
             if (mAdjustCount < shouldAdjustCount) {
                 adjustIconPosition(Direction.Left);
                 mAdjustCount++;
@@ -1423,7 +1447,7 @@ public class AppleWatchLayout extends ViewGroup {
                 mAdjustCount--;
                 LeoLog.e("xxxx", "-- mAdjustCount =    " + mAdjustCount);
             }
-            
+
             for (i = 0; i < mHoriChildren[0].length - 1; i++) {
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;
