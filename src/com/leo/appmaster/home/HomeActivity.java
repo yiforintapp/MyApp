@@ -162,7 +162,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mShadeView = (HomeShadeView) findViewById(R.id.shadeview);
         mShadeView.setPosition(0);
         mShadeView.setColorChangedListener(this);
-        app_hot_tip_icon = (ImageView) findViewById(R.id.app_hot_tip_icon);
+        app_hot_tip_icon = (ImageView) mTtileBar.findViewById(R.id.app_hot_tip_icon_);
+
         if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
             app_hot_tip_icon.setVisibility(View.VISIBLE);
         } else {
@@ -277,11 +278,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
             }
         }
+
         if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
             app_hot_tip_icon.setVisibility(View.VISIBLE);
         } else {
             app_hot_tip_icon.setVisibility(View.GONE);
         }
+
         super.onResume();
     }
 
