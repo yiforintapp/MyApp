@@ -843,6 +843,7 @@ public class QuickSwitchManager {
     public void openCrame() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.addCategory("android.intent.category.DEFAULT");
+        intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }

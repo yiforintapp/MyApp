@@ -159,34 +159,40 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     }
 
     private void fillSettingData() {
+        // 开启快捷手势
         QuickGestureSettingBean gestureSettingOpenGesture = new QuickGestureSettingBean();
         gestureSettingOpenGesture.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_open_quick_gesture));
         gestureSettingOpenGesture.setCheck(mPre.getSwitchOpenQuickGesture());
         gestureSettingOpenGesture.setBackageDraw(R.drawable.bg);
         mQuickGestureSettingOption.add(gestureSettingOpenGesture);
+        // 划出区域设置
         QuickGestureSettingBean gestureSettingSlidingAreaLocation = new QuickGestureSettingBean();
         gestureSettingSlidingAreaLocation.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_sliding_area_location_title));
         gestureSettingSlidingAreaLocation.setBackageDraw(R.drawable.bg_upround);
         mQuickGestureSettingOption.add(gestureSettingSlidingAreaLocation);
+        // 可划出时机
         QuickGestureSettingBean gestureSettingAbleSlidingTime = new QuickGestureSettingBean();
         gestureSettingAbleSlidingTime.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_able_sliding_time));
         gestureSettingAbleSlidingTime.setBackageDraw(R.drawable.bg_downround);
         mQuickGestureSettingOption.add(gestureSettingAbleSlidingTime);
+        // 未读短信提示
         QuickGestureSettingBean gestureSettingNoReadMessage = new QuickGestureSettingBean();
         gestureSettingNoReadMessage.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_no_read_message_tip));
         gestureSettingNoReadMessage.setCheck(mPre.getSwitchOpenNoReadMessageTip());
         gestureSettingNoReadMessage.setBackageDraw(R.drawable.bg_upround);
         mQuickGestureSettingOption.add(gestureSettingNoReadMessage);
+        // 最近联系人
         QuickGestureSettingBean gestureSettingRecentlyContact = new QuickGestureSettingBean();
         gestureSettingRecentlyContact.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_recently_contact));
         gestureSettingRecentlyContact.setCheck(mPre.getSwitchOpenRecentlyContact());
         gestureSettingRecentlyContact.setBackageDraw(R.drawable.bg_zeroround);
         mQuickGestureSettingOption.add(gestureSettingRecentlyContact);
+        // 隐私联系人信息提示
         QuickGestureSettingBean gestureSettingContactMessagTip = new QuickGestureSettingBean();
         gestureSettingContactMessagTip.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_privacy_contact_message_tip));
@@ -330,54 +336,63 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         .startFloatWindow();
             }
         } else if (position == 3) {
-            mPre.setSwitchOpenNoReadMessageTip(arg1);
-            mQuickGestureSettingOption.get(position).setCheck(arg1);
-            if (arg1) {
-                // 查看短信数据库未读短信数量
-                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-                    @Override
-                    public void run() {
-                        QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages = PrivacyContactUtils
-                                .getSysMessage(QuickGestureActivity.this,
-                                        QuickGestureActivity.this.getContentResolver(),
-                                        "read=0 AND type=1", null, false);
-                        if (QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages != null
-                                && QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages
-                                        .size() > 0) {
-                            LockManager.getInstatnce().isShowSysNoReadMessage = true;
-                            FloatWindowHelper.removeShowReadTipWindow(QuickGestureActivity.this);
+            if (mPre.getSwitchOpenQuickGesture()) {
+                mPre.setSwitchOpenNoReadMessageTip(arg1);
+                mQuickGestureSettingOption.get(position).setCheck(arg1);
+                if (arg1) {
+                    // 查看短信数据库未读短信数量
+                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                        @Override
+                        public void run() {
+                            QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages = PrivacyContactUtils
+                                    .getSysMessage(QuickGestureActivity.this,
+                                            QuickGestureActivity.this.getContentResolver(),
+                                            "read=0 AND type=1", null, false);
+                            if (QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages != null
+                                    && QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages
+                                            .size() > 0) {
+                                LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                                FloatWindowHelper
+                                        .removeShowReadTipWindow(QuickGestureActivity.this);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         } else if (position == 4) {
-            mPre.setSwitchOpenRecentlyContact(arg1);
-            mQuickGestureSettingOption.get(position).setCheck(arg1);
-            if (arg1) {
-                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            if (mPre.getSwitchOpenQuickGesture()) {
+                mPre.setSwitchOpenRecentlyContact(arg1);
+                mQuickGestureSettingOption.get(position).setCheck(arg1);
+                if (arg1) {
+                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
-                    @Override
-                    public void run() {
-                        String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
-                        String[] selectionArgs = new String[] {
-                                String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
-                        };
-                        QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs = PrivacyContactUtils
-                                .getSysCallLog(QuickGestureActivity.this,
-                                        QuickGestureActivity.this.getContentResolver(), selection,
-                                        selectionArgs);
-                        if (QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs != null
-                                && QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs
-                                        .size() > 0) {
-                            LockManager.getInstatnce().isShowSysNoReadMessage = true;
-                            FloatWindowHelper.removeShowReadTipWindow(QuickGestureActivity.this);
+                        @Override
+                        public void run() {
+                            String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
+                            String[] selectionArgs = new String[] {
+                                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
+                            };
+                            QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs = PrivacyContactUtils
+                                    .getSysCallLog(QuickGestureActivity.this,
+                                            QuickGestureActivity.this.getContentResolver(),
+                                            selection,
+                                            selectionArgs);
+                            if (QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs != null
+                                    && QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs
+                                            .size() > 0) {
+                                LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                                FloatWindowHelper
+                                        .removeShowReadTipWindow(QuickGestureActivity.this);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         } else if (position == 5) {
-            mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
-            mQuickGestureSettingOption.get(position).setCheck(arg1);
+            if (mPre.getSwitchOpenQuickGesture()) {
+                mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
+                mQuickGestureSettingOption.get(position).setCheck(arg1);
+            }
         }
     }
 
@@ -542,7 +557,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             mRightBottm = arg1;
                             mPre.setDialogRadioRightBottom(arg1);
                             LeoEventBus
-                            .getDefaultBus()
+                                    .getDefaultBus()
                                     .post(new QuickGestureFloatWindowEvent(
                                             FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RIGHT_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 2) {
