@@ -45,7 +45,7 @@
             android:layout_width="43dp"
             android:layout_height="43dp"
             android:layout_gravity="center"
-            android:src="@drawable/default_mode" />
+            />
 
          <ImageView
              android:id="@+id/mode_active_down"

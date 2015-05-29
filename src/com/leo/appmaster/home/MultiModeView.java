@@ -125,7 +125,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             if (lockMode.isCurrentUsed) {
                 mSelected = mHolder;
                 currModePosition = list.indexOf(lockMode);
-                new Handler().post(new Runnable() {
+                mIvAdd.post(new Runnable() {
                     @Override
                     public void run() {
                         grayBitmap =  BitmapUtils.createGaryBitmap(((LockMode) mSelected.getTag()).modeIcon);
@@ -276,6 +276,11 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
         }
     }
 
+    /**
+     * get the mode ball appear  animation
+     * @param view
+     * @return
+     */
     private AnimatorSet ballAnimtion(final View view){
         final View holder = view.findViewById(R.id.mode_holder);
          final TextView  modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
@@ -411,6 +416,11 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
         }
     }
     
+    /**
+     * this mode ball disapper animation
+     * @param curPosition
+     * @param selectedImg
+     */
     private void disappearAnim(int curPosition,View selectedImg){
         View prePage = mViews.get(curPosition==0?0:curPosition-1);
         View nextPage = mViews.get(curPosition==mViews.size()-1?curPosition:curPosition+1); 

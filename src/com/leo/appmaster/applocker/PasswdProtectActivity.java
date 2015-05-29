@@ -272,7 +272,7 @@ public class PasswdProtectActivity extends BaseActivity implements
             Intent intent = new Intent(this,
                     AppLockListActivity.class);
             this.startActivity(intent);
-        } else if (quickMode) {
+        } /*else if (quickMode) {
             LockManager lm = LockManager.getInstatnce();
             List<LockMode> modeList = lm.getLockMode();
             for (LockMode lockMode : modeList) {
@@ -281,14 +281,14 @@ public class PasswdProtectActivity extends BaseActivity implements
                     break;
                 }
             }
-        }
+        }*/
         super.onBackPressed();
     }
 
     /**
      * show the tip when mode success activating
      */
-    private void showModeActiveTip(LockMode mode) {
+    /*private void showModeActiveTip(LockMode mode) {
         View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
         TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
         mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
@@ -297,7 +297,7 @@ public class PasswdProtectActivity extends BaseActivity implements
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.show();
-    }
+    }*/
     
     class QuesListAdapter extends BaseAdapter{
 
