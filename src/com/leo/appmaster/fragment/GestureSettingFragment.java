@@ -258,7 +258,7 @@ public class GestureSettingFragment extends BaseFragment implements
                 startActivity(intent);
             } else if (((LockSettingActivity) mActivity).mJustFinish) {
                 // do nothing
-                if (((LockSettingActivity) mActivity).mFromQuickMode) {
+               /* if (((LockSettingActivity) mActivity).mFromQuickMode) {
                     int modeId = ((LockSettingActivity) mActivity).mModeId;
                     LockManager lm = LockManager.getInstatnce();
                     List<LockMode> modeList = lm.getLockMode();
@@ -268,7 +268,7 @@ public class GestureSettingFragment extends BaseFragment implements
                             break;
                         }
                     }
-                }
+                }*/
             } else {
                 LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
                 intent = new Intent(mActivity, HomeActivity.class);
@@ -287,7 +287,7 @@ public class GestureSettingFragment extends BaseFragment implements
     /**
      * show the tip when mode success activating
      */
-    private void showModeActiveTip(LockMode mode) {
+  /*  private void showModeActiveTip(LockMode mode) {
         View mTipView = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_active_tip, null);
         TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
         mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
@@ -296,7 +296,7 @@ public class GestureSettingFragment extends BaseFragment implements
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.show();
-    }
+    }*/
 
     @Override
     public void onClick(int which) {
