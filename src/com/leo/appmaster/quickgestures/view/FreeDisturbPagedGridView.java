@@ -120,6 +120,7 @@ public class FreeDisturbPagedGridView extends LinearLayout {
                 item.label = info.label;
                 item.isFreeDisturb = info.isFreeDisturb;
                 item.gesturePosition=info.gesturePosition;
+                item.swtichIdentiName = info.swtichIdentiName;
                 list.add(item);
             }
         }

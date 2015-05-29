@@ -1489,6 +1489,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME, packageNames)
                 .commit();
     }
+//TODO
+    public void setFreeDisturbAppPackageName(String packageNames) {
+        mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME, packageNames)
+                .commit();
+    }
 
     public void setFreeDisturbAppPackageNameRemove(String name) {
         String string = getFreeDisturbAppPackageName();
@@ -1520,7 +1525,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putString(PREF_QUICK_GESTURE_QUICKSWITCH_LIST, mSwitchList)
                 .commit();
     }
-    
+
     public boolean getLoadedSwitchList() {
         return mPref.getBoolean(PREF_QUICK_GESTURE_LOADED_QUICKSWITCH_LIST,
                 false);
@@ -1530,7 +1535,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_QUICK_GESTURE_LOADED_QUICKSWITCH_LIST, isLoaded)
                 .commit();
     }
-    
+
     public int getSwitchListSize() {
         return mPref.getInt(PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE,
                 13);
@@ -1609,13 +1614,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME, packageNames)
                 .commit();
     }
-    
+
     public void setCommonAppPackageName(String name) {
         mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME, name)
                 .commit();
     }
-    
-    
 
     public void setCommonAppPackageNameRemove(String name) {
         String string = getCommonAppPackageName();

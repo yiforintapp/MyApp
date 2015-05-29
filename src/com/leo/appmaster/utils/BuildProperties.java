@@ -11,14 +11,15 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
-import com.android.internal.app.IAppOpsCallback;
-
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 
 /**
  * 判断小米系统工具类
@@ -29,6 +30,9 @@ public class BuildProperties {
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
+    private static final String sMake = Build.MANUFACTURER.toLowerCase();
+    private static final String mModel = Build.MODEL.toLowerCase();
+
     private final Properties properties;
 
     private BuildProperties() throws IOException {
@@ -116,7 +120,7 @@ public class BuildProperties {
      * @return
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static boolean isMiuiFloatWindowOpAllowed(Context context) {
+    public static boolean isFloatWindowOpAllowed(Context context) {
         String string;
         int n;
         if (Build.VERSION.SDK_INT >= 19) {
@@ -139,5 +143,103 @@ public class BuildProperties {
         } catch (final IOException e) {
             return false;
         }
+    }
+
+    /**
+     * 本机品牌名称识别
+     * 
+     * @param brandName品牌名称
+     * @return
+     */
+    public static boolean checkPhoneBrand(String brandName) {
+        return sMake.equalsIgnoreCase(brandName);
+    }
+
+    /**
+     * 详细机型识别
+     * 
+     * @param brandName(品牌：那个厂家的手机)
+     * @param phone(机型)
+     * @return
+     */
+    public static boolean detailMdelDistinguish(String brandName, String phone) {
+        if ((!(sMake.equalsIgnoreCase(brandName)))
+                || (!(mModel.contains((CharSequence) (phone))))) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean checkIsAppointPhone(Object object, Object object2) {
+        if (object != null)
+            return object.equals(object2);
+        if (object2 != null)
+            return false;
+        return true;
+    }
+
+    public static String getSystemProperty(String string) {
+        try {
+            String string2 = (String) (Class.forName((String) ("android.os.SystemProperties"))
+                    .getMethod("get", new Class[] {
+                            String.class
+                    }).invoke((Object) (null), new Object[] {
+                    string
+            }));
+            return string2;
+        } catch (Exception var1_2) {
+            return null;
+        }
+    }
+
+    public static boolean isPackageInfo(Context context, String string) {
+        if (checkPackgeInfo(context, string) == null)
+            return false;
+        return true;
+    }
+
+    public static PackageInfo checkPackgeInfo(Context context, String string) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(string, 0);
+            return packageInfo;
+        } catch (Exception exception) {
+            return null;
+        }
+    }
+
+    // HUAWEI
+
+    public static boolean checkIsHuaWeiPhone() {
+        if ((!(checkIsAppointPhone((Object) (getSystemProperty("ro.build.version.emui")),
+                (Object) ("EmotionUI_2.3")))) && (!(Build.DISPLAY.startsWith("EMUI2.3"))))
+            return false;
+        return true;
+    }
+
+    public static boolean isHuaWeiTipPhone(Context context) {
+        return isPackageInfo(context, "com.huawei.systemmanager");
+    }
+
+    public static void startHuaWeiSysManageIntent(Context context) {
+        try {
+            Intent intent = new Intent();
+            String string = (checkIsHuaWeiPhone()) ? ("com.huawei.systemmanager.SystemManagerMainActivity")
+                    : ("com.huawei.notificationmanager.ui.NotificationManagmentActivity");
+            intent.setClassName("com.huawei.systemmanager", string);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                context.startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    public static void isToHuaWeiSystemManager(Context context) {
+            startHuaWeiSysManageIntent(context);
     }
 }

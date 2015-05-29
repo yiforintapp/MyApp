@@ -22,7 +22,6 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.ui.LineView;
 import com.leo.appmaster.ui.LineView.BackUpCallBack;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
-import com.leo.appmaster.ui.RoundProgressBar;
 import com.leo.appmaster.ui.dialog.MonthDaySetting;
 import com.leo.appmaster.ui.dialog.MonthDaySetting.OnTrafficDialogClickListener;
 import com.leo.appmaster.utils.AppwallHttpUtil;
@@ -32,6 +31,7 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
     private static final int CHANGE_TEXT = 0;
     private ProgressBar pb_loading;
     private int progress = 0;
+    private int bili = 0;
     private MulticolorRoundProgressBar roundProgressBar;
     private HorizontalScrollView horizontalScroll;
     private TextView tv_total_ll, tv_normal_ll, tv_remainder_ll, tv_from_donghua;
@@ -51,11 +51,11 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case CHANGE_TEXT:
-                    int mProgress = (Integer) msg.obj;
-                    tv_from_donghua.setText(mProgress + "%");
-                    break;
+            if(msg.what == CHANGE_TEXT) {
+                int mProgress = (Integer) msg.obj;
+                tv_from_donghua.setText(mProgress + "%");
+                roundProgressBar.setProgress(mProgress);
+                updateProgress();
             }
         };
     };
@@ -93,6 +93,13 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
 
     @Override
     public void onDestroy() {
+        if(flowAsyncTask != null) {
+            flowAsyncTask.cancel(false);
+        }
+        if(handler != null) {
+            handler.removeMessages(CHANGE_TEXT);
+            handler = null;
+        }
         super.onDestroy();
     }
 
@@ -122,62 +129,48 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        show_donghua();
         getListViewData();
     }
 
     public void show_donghua() {
-        new Thread() {
-            public void run() {
+        progress = 0;
 
-                progress = 0;
-
-                long TaoCanTraffic = preferences.getTotalTraffic();
-                long TaoCanTrafficKb = preferences.getTotalTraffic() * 1024;
-                long MonthUsedItSelf = preferences.getItselfMonthTraffic();
-                long MonthUsedRecord = preferences.getMonthGprsAll() / 1024;
-                
-                int bili = 0;
-//                LeoLog.d("testfuckflow", "TaoCanTraffic : " + TaoCanTraffic);
-//                LeoLog.d("testfuckflow", "MonthUsedItSelf : " + MonthUsedItSelf);
-                
-                if (TaoCanTraffic < 1) {
-                    bili = 0;
-                } else {
-                    if(MonthUsedItSelf > 0){
-                        bili = (int) (MonthUsedItSelf * 100 / TaoCanTrafficKb);
-//                        LeoLog.d("testfuckflow", "MonthUsedItSelf > 0 : " + bili);
-                    }else {
-                        bili = (int) (MonthUsedRecord * 100 / TaoCanTrafficKb);
-//                        LeoLog.d("testfuckflow", "else : " + bili);
-                    }
-                }
-                while (progress <= bili) {
-                    progress += 1;
-
-                    if (bili == 0) {
-                        progress = 0;
-                    }
-
-                    if(progress > 100){
-                        progress = 100;
-                        break;
-                    }
-                    
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    roundProgressBar.setProgress(progress);
-                    Message msg = Message.obtain();
-                    msg.what = CHANGE_TEXT;
-                    msg.obj = progress;
-                    handler.sendMessage(msg);
-                }
-            };
-        }.start();
+        long TaoCanTraffic = preferences.getTotalTraffic();
+        long TaoCanTrafficKb = preferences.getTotalTraffic() * 1024;
+        long MonthUsedItSelf = preferences.getItselfMonthTraffic();
+        long MonthUsedRecord = preferences.getMonthGprsAll() / 1024;
+//        LeoLog.d("testfuckflow", "TaoCanTraffic : " + TaoCanTraffic);
+//        LeoLog.d("testfuckflow", "MonthUsedItSelf : " + MonthUsedItSelf);
+        
+        if (TaoCanTraffic < 1) {
+            bili = 0;
+        } else {
+            if(MonthUsedItSelf > 0){
+                bili = (int) (MonthUsedItSelf * 100 / TaoCanTrafficKb);
+//                LeoLog.d("testfuckflow", "MonthUsedItSelf > 0 : " + bili);
+            }else {
+                bili = (int) (MonthUsedRecord * 100 / TaoCanTrafficKb);
+//                LeoLog.d("testfuckflow", "else : " + bili);
+            }
+        }
+        updateProgress();
+    }
+    
+    private void updateProgress() {
+        if(progress > bili) {
+            return;
+        }
+        progress++;
+        if (bili == 0) {
+            progress = 0;
+        }
+        if(progress > 100){
+            return;
+        }
+        Message msg = Message.obtain();
+        msg.what = CHANGE_TEXT;
+        msg.obj = progress;
+        handler.sendMessageDelayed(msg, 10);
     }
 
     protected void initDate() {

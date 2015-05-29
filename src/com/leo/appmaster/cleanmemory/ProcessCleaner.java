@@ -32,10 +32,7 @@ public class ProcessCleaner {
 	
 	public static synchronized ProcessCleaner getInstance(Context ctx) {
 		if (mInstance == null) {
-			mInstance = new ProcessCleaner(
-					(ActivityManager) ctx
-							.getSystemService(Context.ACTIVITY_SERVICE),
-					ctx);
+			mInstance = new ProcessCleaner(ctx);
 		}
 
 		return mInstance;
@@ -69,9 +66,9 @@ public class ProcessCleaner {
 		return (curTime - mLastCleanTime) > CLEAN_INTERVAL;
 	}
 
-	public ProcessCleaner(ActivityManager mAm, Context ctx) {
-		this.mAm = mAm;
+	public ProcessCleaner(Context ctx) {
 		this.mContext = ctx.getApplicationContext();
+	    this.mAm = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
 	}
 
 	public long tryClean(Context ctx) {

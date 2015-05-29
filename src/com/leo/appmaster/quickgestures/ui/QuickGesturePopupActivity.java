@@ -1,10 +1,8 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -16,8 +14,9 @@ import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.sdk.BaseActivity;
 
-public class QuickGesturePopupActivity extends Activity {
+public class QuickGesturePopupActivity extends BaseActivity {
 
     private AppleWatchContainer mContainer;
     private ImageView iv_roket, iv_pingtai, iv_yun;
@@ -28,10 +27,6 @@ public class QuickGesturePopupActivity extends Activity {
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
-        iv_roket = (ImageView) findViewById(R.id.iv_rocket);
-        iv_pingtai = (ImageView) findViewById(R.id.iv_pingtai);
-        iv_yun = (ImageView) findViewById(R.id.iv_yun);
-        mContainer.setRockey(iv_roket,iv_pingtai,iv_yun);
         
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left

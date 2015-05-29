@@ -1,22 +1,19 @@
 
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.fragment.PretendAppErrorFragment;
-import com.leo.appmaster.fragment.PretendFragment;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
+
+import com.leo.appmaster.fragment.PretendAppErrorFragment;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 
 public class GestureTextView extends TextView implements OnClickListener {
     private int top, right, bottom, left;

@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.appmanage.view.ManagerElecFragment;
 import com.leo.appmaster.appmanage.view.ManagerFlowFragment;
 import com.leo.appmaster.appmanage.view.ManagerFlowListFragment;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -31,7 +30,6 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     private ViewPager mViewPager;
     private CommonTitleBar mTtileBar;
     private View trffic_setting_iv;
-    private ManagerElecFragment elecFragment;
     private ManagerFlowListFragment trifficListFragment;
     private ManagerFlowFragment trifficFragment;
     

@@ -158,7 +158,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
 
     }
 
-    // 构建列表数据
     private void fillSettingData() {
         QuickGestureSettingBean gestureSettingOpenGesture = new QuickGestureSettingBean();
         gestureSettingOpenGesture.setName(this.getResources().getString(
@@ -194,7 +193,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         gestureSettingContactMessagTip.setBackageDraw(R.drawable.bg_downround);
         gestureSettingContactMessagTip.setCheck(mPre.getSwitchOpenPrivacyContactMessageTip());
         mQuickGestureSettingOption.add(gestureSettingContactMessagTip);
-
     }
 
     private class QuickGestureAdapter extends BaseAdapter {
@@ -383,7 +381,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         }
     }
 
-    // 构建滑动区域设置列表数据
     private List<DialogRadioBean> initDialogRadioTextData() {
         List<DialogRadioBean> datas = new ArrayList<DialogRadioBean>();
         DialogRadioBean bean1 = new DialogRadioBean();
@@ -437,7 +434,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             public void onClick(int progress) {
                 FloatWindowHelper.mEditQuickAreaFlag = false;
                 mAlarmDialogFlag = false;
-                // 保存设置的值
                 if (mLeftBottom || mRightBottm || mLeftCenter || mRightCenter) {
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
@@ -484,7 +480,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         updateFloatWindowBackGroudColor();
     }
 
-    // 更新背景
+    // update backgroud color
     private void updateFloatWindowBackGroudColor() {
         FloatWindowHelper
                 .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
@@ -541,28 +537,28 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(new QuickGestureFloatWindowEvent(
-                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
+                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_LEFT_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 1) {
                             mRightBottm = arg1;
                             mPre.setDialogRadioRightBottom(arg1);
                             LeoEventBus
-                                    .getDefaultBus()
+                            .getDefaultBus()
                                     .post(new QuickGestureFloatWindowEvent(
-                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
+                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RIGHT_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 2) {
                             mLeftCenter = arg1;
                             mPre.setDialogRadioLeftCenter(arg1);
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(new QuickGestureFloatWindowEvent(
-                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
+                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_LEFT_RADIO_FINISH_NOTIFICATION));
                         } else if (flag == 3) {
                             mRightCenter = arg1;
                             mPre.setDialogRadioRightCenter(arg1);
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(new QuickGestureFloatWindowEvent(
-                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_FINISH_NOTIFICATION));
+                                            FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RIGHT_RADIO_FINISH_NOTIFICATION));
                         }
                     }
                 });
@@ -810,6 +806,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+        int viewId = view.getId();
         int width = view.getWidth();
         float downX = 0;
         float downY = 0;
@@ -834,7 +831,20 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         intent = new Intent(AppMasterApplication.getInstance(),
                                 QuickGesturePopupActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("show_orientation", 2);
+                        switch (viewId) {
+                            case R.id.gesture_left_tips_top_tv:
+                                intent.putExtra("show_orientation", 0);
+                                break;
+                            case R.id.gesture_left_tips_bottom:
+                                intent.putExtra("show_orientation", 0);
+                                break;
+                            case R.id.gesture_right_tips_top_tv:
+                                intent.putExtra("show_orientation", 2);
+                                break;
+                            case R.id.gesture_right_tips_bottom:
+                                intent.putExtra("show_orientation", 2);
+                                break;
+                        }
                         try {
                             AppMasterApplication.getInstance().startActivity(intent);
                             AppMasterPreference.getInstance(this).setFristSlidingTip(true);
@@ -869,7 +879,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         view1.clearAnimation();
         view2.clearAnimation();
         AnimatorSet animatorSet = new AnimatorSet();
-        // 箭头动画
         ObjectAnimator alphaArrow = ObjectAnimator.ofFloat(view2, "alpha", 0, 0, 1);
         alphaArrow.setDuration(2000);
         alphaArrow.setRepeatCount(-1);
@@ -881,7 +890,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 view2, arrowHolderX, arrowHolderY);
         translateArrow.setDuration(2000);
         translateArrow.setRepeatCount(-1);
-        // 手势动画
         ObjectAnimator alpha = ObjectAnimator.ofFloat(view1, "alpha", 0, 1, 1);
         alpha.setDuration(2000);
         alpha.setRepeatCount(-1);

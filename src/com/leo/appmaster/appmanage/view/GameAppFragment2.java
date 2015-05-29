@@ -71,7 +71,6 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     private List<AppWallBean> all;
     private List<AppWallBean> temp;
     private PullToRefreshListView mPullRefreshListView;
-    private static Context mContext;
 
     private static class GameHandler extends Handler {
         WeakReference<GameAppFragment2> fragmemtHolder;
@@ -99,7 +98,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                 case MSG_LOAD_MORE_SUCCESSED:
                     if (fragmemtHolder.get() != null) {
                         fragmemtHolder.get().mPullRefreshListView.onRefreshComplete();
-                        Toast.makeText(mContext, R.string.no_more_business_app, 0)
+                        Toast.makeText(AppMasterApplication.getInstance(), R.string.no_more_business_app, 0)
                                 .show();
                     }
 
@@ -227,7 +226,6 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     }
 
     private void initUI() {
-        mContext = mActivity;
         all = new ArrayList<AppWallBean>();
         temp = new ArrayList<AppWallBean>();
         mHandler = new GameHandler(this);
@@ -260,12 +258,10 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     }
 
     public class GameAppAdapter2 extends BaseAdapter implements OnClickListener {
-        private Context context;
         private List<AppWallBean> apps;
         private LayoutInflater layoutInflater;
 
         public GameAppAdapter2(Context context, List<AppWallBean> apps) {
-            this.context = context;
             this.apps = apps;
             this.layoutInflater = LayoutInflater.from(context);
         }

@@ -36,6 +36,7 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
 import com.leo.appmaster.quickgestures.view.FreeDisturbPagedGridView;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 /**
  * QuickGestureSlideTimeDialog
@@ -85,7 +86,8 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 animateItem(arg1);
                 QuickGsturebAppInfo selectInfl = (QuickGsturebAppInfo) arg1.getTag();
-
+                LeoLog.d("QuickGestureManager", "name : " + selectInfl.label + " ; iName : " + selectInfl.swtichIdentiName);
+                
                 if (mFlag == 2) {
                     // 快捷开关的方式
                     if (quickSwitchSaveList != null) {

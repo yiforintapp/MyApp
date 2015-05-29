@@ -41,7 +41,7 @@ public class BatteryComsuption implements Comparable<BatteryComsuption> {
 	}
 
 	public BatteryComsuption(Context context, String pkgName, double time) {
-		mContext = context;
+		mContext = context.getApplicationContext();
 		value = time;
 		drainType = DrainType.APP;
 		getQuickNameIcon(pkgName);

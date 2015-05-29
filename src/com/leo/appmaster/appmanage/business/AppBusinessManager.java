@@ -87,11 +87,6 @@ public class AppBusinessManager {
                     public Vector<BusinessItemInfo> call() {
                         final ContentResolver resolver = mContext
                                 .getContentResolver();
-                        String[] projection = {
-                                "lebal", "package_name",
-                                "app_size", "icon_status", "gp_priority",
-                                "gp_url",
-                        };
                         Cursor c = resolver.query(
                                 Constants.APPLIST_BUSINESS_URI, null, null,
                                 null, Constants.ID);
