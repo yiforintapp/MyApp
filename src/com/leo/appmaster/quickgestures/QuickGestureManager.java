@@ -299,20 +299,22 @@ public class QuickGestureManager {
         QuickGsturebAppInfo temp = null;
         while (recorder.hasNext()) {
             AppLauncherRecorder recorderAppInfo = recorder.next();
-            info = engin.getAppInfo(recorderAppInfo.pkg);
-            if (info == null)
-                continue;
-            if (i >= 13) {
-                break;
-            } else {
-                temp = new QuickGsturebAppInfo();
-                temp.packageName = info.packageName;
-                temp.activityName = info.activityName;
-                temp.label = info.label;
-                temp.icon = info.icon;
-                temp.gesturePosition = i;
-                resault.add(temp);
-                i++;
+            if (recorderAppInfo.launchCount > 0) {
+                info = engin.getAppInfo(recorderAppInfo.pkg);
+                if (info == null)
+                    continue;
+                if (i >= 13) {
+                    break;
+                } else {
+                    temp = new QuickGsturebAppInfo();
+                    temp.packageName = info.packageName;
+                    temp.activityName = info.activityName;
+                    temp.label = info.label;
+                    temp.icon = info.icon;
+                    temp.gesturePosition = i;
+                    resault.add(temp);
+                    i++;
+                }
             }
         }
 
@@ -360,7 +362,7 @@ public class QuickGestureManager {
     }
 
     public List<BaseInfo> getSwitcherList() {
-//        QuickSwitchManager.getInstance(mContext).getAllList();
+        // QuickSwitchManager.getInstance(mContext).getAllList();
         return QuickSwitchManager.getInstance(mContext).getSwitchList(13);
     }
 
