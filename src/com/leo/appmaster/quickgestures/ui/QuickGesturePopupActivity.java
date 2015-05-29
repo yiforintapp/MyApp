@@ -38,7 +38,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         LeoLog.d("AppleWatchContainer", "刚来Activity！show 出的是：" + mNowLayout);
 
         fillWhichLayoutFitst(mNowLayout);
-        
+        fillTwoLayout(mNowLayout);
         overridePendingTransition(-1, -1);
     }
 
@@ -65,7 +65,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 mContainer.showOpenAnimation(new Runnable() {
                     @Override
                     public void run() {
-                        fillTwoLayout(mNowLayout);
+//                        fillTwoLayout(mNowLayout);
                     }
 
                 });

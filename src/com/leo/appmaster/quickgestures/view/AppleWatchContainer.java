@@ -315,7 +315,7 @@ public class AppleWatchContainer extends FrameLayout {
             return false;
 
         long curTime = System.currentTimeMillis();
-        if ((curTime - mStartShowingTime) < 750) {
+        if ((curTime - mStartShowingTime) < 500) {
             return false;
         }
 
@@ -439,15 +439,15 @@ public class AppleWatchContainer extends FrameLayout {
         mMostUsedLayout.setVisibility(View.VISIBLE);
         mSwitcherLayout.setVisibility(View.VISIBLE);
 
-        if (!mHasRelayout) {
-            if (mDymicLayout.mHasFillExtraItems && mMostUsedLayout.mHasFillExtraItems
-                    && mSwitcherLayout.mHasFillExtraItems) {
-                mDymicLayout.relayoutExtraChildren();
-                mMostUsedLayout.relayoutExtraChildren();
-                mSwitcherLayout.relayoutExtraChildren();
-                // mHasRelayout = true;
-            }
-        }
+//        if (!mHasRelayout) {
+//            if (mDymicLayout.mHasFillExtraItems && mMostUsedLayout.mHasFillExtraItems
+//                    && mSwitcherLayout.mHasFillExtraItems) {
+//                mDymicLayout.relayoutExtraChildren();
+//                mMostUsedLayout.relayoutExtraChildren();
+//                mSwitcherLayout.relayoutExtraChildren();
+//                // mHasRelayout = true;
+//            }
+//        }
     }
 
     private void onTouchMoveRotate(float moveX, float moveY) {
@@ -1273,7 +1273,7 @@ public class AppleWatchContainer extends FrameLayout {
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 mCornerTabs.getHeight(), 0);
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 0, 1);
-        AppleWatchLayout targetLayout;
+        final AppleWatchLayout targetLayout;
         if (mCurrentGestureType == GType.DymicLayout) {
             targetLayout = mDymicLayout;
         } else if (mCurrentGestureType == GType.MostUsedLayout) {
@@ -1292,6 +1292,7 @@ public class AppleWatchContainer extends FrameLayout {
             public void onAnimationStart(Animator animation) {
                 mStartShowingTime = System.currentTimeMillis();
                 isAnimating = true;
+                targetLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
