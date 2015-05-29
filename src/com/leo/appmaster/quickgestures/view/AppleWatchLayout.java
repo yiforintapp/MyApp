@@ -91,7 +91,7 @@ public class AppleWatchLayout extends ViewGroup {
         return mSnapping;
     }
 
-    public void fillItems(List<BaseInfo> infos) {
+    public void fillItems(List<BaseInfo> infos, boolean loadExtra) {
         BaseInfo info = null;
         if (infos.size() > 13) {
             infos = infos.subList(0, 13);
@@ -175,7 +175,7 @@ public class AppleWatchLayout extends ViewGroup {
         }
         requestLayout();
 
-        if (!isCurrentLayout()) {
+        if (loadExtra) {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -186,8 +186,8 @@ public class AppleWatchLayout extends ViewGroup {
 
     }
 
-    private boolean isCurrentLayout() {
-        return mMyType == GType.DymicLayout;
+    public boolean isCurrentLayout() {
+        return mMyType == mContainer.getCurrentGestureType();
     }
 
     public void fillExtraChildren() {
