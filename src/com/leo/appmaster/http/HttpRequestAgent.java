@@ -145,7 +145,7 @@ public class HttpRequestAgent {
     public void loadGestureRecomApp(int type, Listener<JSONObject> listener,
             ErrorListener eListener) {
         
-        String url = Utilities.getURL(AppMasterConfig.GESTURE_RECOMMEND_URL
+        String url = Utilities.getURL(AppMasterConfig.GESTURE_RECOMMEND_URL+"/"
                 + mContext.getString(R.string.version_name) + "/"
                 + Utilities.getCountryID(mContext) + "/" + AppwallHttpUtil.getLanguage() +"/"
                 + mContext.getString(R.string.channel_code) + ".html");
