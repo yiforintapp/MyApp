@@ -296,6 +296,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     public void onBackPressed() {
+        if (mQuickGestureSettingDialog != null) {
+            AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
+                    true);
+        }
         if (mDrawerLayout.isDrawerOpen(mMenuList)) {
             mDrawerLayout.closeDrawer(mMenuList);
             return;
