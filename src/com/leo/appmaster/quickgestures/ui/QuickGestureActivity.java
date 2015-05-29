@@ -519,18 +519,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 mLeftCenter=mPre.getDialogRadioLeftCenter();
                 mRightCenter=mPre.getDialogRadioRightCenter();
                 if (mLeftBottom || mRightBottm || mLeftCenter || mRightCenter) {
-//                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            mPre.setDialogRadioLeftBottom(mLeftBottom);
-//                            mPre.setDialogRadioRightBottom(mRightBottm);
-//                            mPre.setDialogRadioLeftCenter(mLeftCenter);
-//                            mPre.setDialogRadioRightCenter(mRightCenter);
                             mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog
                                     .getSeekBarProgressValue());
-//                        }
-//                    });
                     updateFloatWindowBackGroudColor();
                     if (mAlarmDialog != null) {
                         mAlarmDialog.dismiss();

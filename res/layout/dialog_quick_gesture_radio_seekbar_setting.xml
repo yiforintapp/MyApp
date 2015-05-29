@@ -76,8 +76,8 @@
         <LinearLayout
             android:id="@+id/left_bottom_lt"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="28dp"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
@@ -108,8 +108,8 @@
         <LinearLayout
             android:id="@+id/right_bottom_lt"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
@@ -130,8 +130,8 @@
             <TextView
                 android:id="@+id/dialog_radio_right_bottom_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="28dp"
+                android:layout_height="28dp"
+                android:layout_marginLeft="24dp"
                 android:text="@string/pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text"
                 android:textColor="#a7a7a7"
                 android:textSize="18sp" />
@@ -140,8 +140,8 @@
         <LinearLayout
             android:id="@+id/left_center_lt"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
@@ -172,8 +172,8 @@
         <LinearLayout
             android:id="@+id/right_center_lt"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
