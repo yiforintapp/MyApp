@@ -170,7 +170,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME = "quick_gesture_quick_switch_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME = "quick_gesture_common_app_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG = "quick_gesture_common_app_dialog_checkbox_flag";
-    public static final String PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP = "quick_gesture_miui_setting_open_float_window_first_dialog_tip";
+    public static final String PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP = "quick_gesture_setting_first_dialog_tip";
+    public static final String PREF_QUICK_GESTURE_FIRST_DIALOG_SHOW = "quick_gesture_first_set_dialog_show";
     public static final String PREF_QUICK_GESTURE_LAST_TIME_LAYOUT = "quick_gesture_last_time_layout";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -1664,6 +1665,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getQuickGestureMiuiSettingFirstDialogTip() {
         return mPref.getBoolean(PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP,
+                false);
+    }
+
+    public void setQGSettingFirstDialogTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_FIRST_DIALOG_SHOW,
+                flag).commit();
+    }
+
+    public boolean getQGSettingFirstDialogTip() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_FIRST_DIALOG_SHOW,
                 false);
     }
 }

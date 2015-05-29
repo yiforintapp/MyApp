@@ -93,8 +93,8 @@ public class TaskDetectService extends Service {
         flowDetecTask = new FlowTask();
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
-        LeoEventBus
-                .getDefaultBus().register(this);
+        // LeoEventBus
+        // .getDefaultBus().register(this);
         mHandler = new Handler();
         sService = this;
         startForeground(1, getNotification(getApplicationContext()));
@@ -421,40 +421,43 @@ public class TaskDetectService extends Service {
             mRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    // 屏幕改变
-                    if (Utilities.isScreenChange(getApplicationContext())) {
-                        FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                    }
-                    int value = AppMasterPreference.getInstance(getApplicationContext())
-                            .getQuickGestureDialogSeekBarValue();
-                    if (!FloatWindowHelper.mGestureShowing
-                            && AppMasterPreference.getInstance(getApplicationContext())
-                                    .getFristSlidingTip()) {
-                        boolean isJustHome = AppMasterPreference.getInstance(
-                                getApplicationContext())
-                                .getSlideTimeJustHome();
-                        boolean isAppsAndHome = AppMasterPreference
-                                .getInstance(getApplicationContext())
-                                .getSlideTimeAllAppAndHome();
-                        // 设置背景
-                        if (FloatWindowHelper.mEditQuickAreaFlag) {
-                            FloatWindowHelper
-                                    .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
-                        }
-                        if (isAppsAndHome) {
-                            if (!isRuningFreeDisturbApp(mActivityManager)
-                                    || FloatWindowHelper.mEditQuickAreaFlag) {
-                                FloatWindowHelper.createFloatWindow(getApplicationContext(), value);
-                            } else {
-                                FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                    int screenStatus = Utilities.isScreenType(getApplicationContext());
+                    if (screenStatus != -1) {
+                        int value = AppMasterPreference.getInstance(getApplicationContext())
+                                .getQuickGestureDialogSeekBarValue();
+                        if (!FloatWindowHelper.mGestureShowing
+                                && AppMasterPreference.getInstance(getApplicationContext())
+                                        .getFristSlidingTip()) {
+                            boolean isJustHome = AppMasterPreference.getInstance(
+                                    getApplicationContext())
+                                    .getSlideTimeJustHome();
+                            boolean isAppsAndHome = AppMasterPreference
+                                    .getInstance(getApplicationContext())
+                                    .getSlideTimeAllAppAndHome();
+                            // 设置背景
+                            if (FloatWindowHelper.mEditQuickAreaFlag) {
+                                FloatWindowHelper
+                                        .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
                             }
-                        } else if (isJustHome) {
-                            boolean isHomeFlag = Utilities.isHome(getApplicationContext());
-                            if (isHomeFlag) {
-                                FloatWindowHelper.createFloatWindow(getApplicationContext(), value);
-                            } else {
-                                FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                            if (isAppsAndHome) {
+                                if (!isRuningFreeDisturbApp(mActivityManager)
+                                        || FloatWindowHelper.mEditQuickAreaFlag) {
+                                    FloatWindowHelper.createFloatWindow(getApplicationContext(),
+                                            value);
+                                } else {
+                                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                                }
+                            } else if (isJustHome) {
+                                boolean isHomeFlag = Utilities.isHome(getApplicationContext());
+                                if (isHomeFlag) {
+                                    FloatWindowHelper.createFloatWindow(getApplicationContext(),
+                                            value);
+                                } else {
+                                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                                }
                             }
+                        } else {
+                            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                         }
                     } else {
                         FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
@@ -485,80 +488,82 @@ public class TaskDetectService extends Service {
         return flag;
     }
 
-    public void onEventMainThread(QuickGestureFloatWindowEvent event) {
-        String flag = event.editModel;
-        int value = AppMasterPreference.getInstance(getApplicationContext())
-                .getQuickGestureDialogSeekBarValue();
-        if (FloatWindowHelper.mEditQuickAreaFlag) {
-            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-                @Override
-                public void run() {
-                    FloatWindowHelper
-                            .updateFloatWindowBackgroudColor(true);
-                }
-            });
-        }
-        if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_LEFT_RADIO_FINISH_NOTIFICATION
-                .equals(flag)) {
-            if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
-                FloatWindowHelper.removeSwipWindow(this, 1);
-                FloatWindowHelper.removeSwipWindow(this, 2);
-                FloatWindowHelper.removeSwipWindow(this, 3);
-                if (!AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
-                    FloatWindowHelper.removeSwipWindow(this, 4);
-                } else {
-                    FloatWindowHelper
-                            .createFloatLeftCenterCenterWindow(this, value);
-                }
-            } else {
-                if (AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
-                    FloatWindowHelper.removeSwipWindow(this, 4);
-                    FloatWindowHelper
-                            .createFloatLeftBottomWindow(this, value);
-                    FloatWindowHelper
-                            .createFloatLeftCenterCenterWindow(this, value);
-                } else {
-                    FloatWindowHelper.removeSwipWindow(this, 4);
-                    FloatWindowHelper
-                            .createFloatLeftBottomWindow(this, value);
-                    FloatWindowHelper
-                            .createFloatLeftCenterWindow(this, value);
-                    FloatWindowHelper
-                            .createFloatLeftTopWindow(this, value);
-                }
-            }
-        } else if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RIGHT_RADIO_FINISH_NOTIFICATION
-                .equals(flag)) {
-            if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
-                FloatWindowHelper.removeSwipWindow(this, -1);
-                FloatWindowHelper.removeSwipWindow(this, -2);
-                FloatWindowHelper.removeSwipWindow(this, -3);
-                if (!AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
-                    FloatWindowHelper.removeSwipWindow(this, -4);
-                } else {
-                    FloatWindowHelper
-                            .createFloatRightCenterCenterWindow(this, value);
-                }
-            } else {
-                if (AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
-                    FloatWindowHelper.removeSwipWindow(this, -4);
-                    FloatWindowHelper
-                            .createFloatRightBottomWindow(this, value);
-                    FloatWindowHelper
-                            .createFloatRightCenterCenterWindow(this, value);
-                } else {
-                    FloatWindowHelper.removeSwipWindow(this, -4);
-                    FloatWindowHelper
-                            .createFloatRightBottomWindow(this, value);
-                    FloatWindowHelper
-                            .createFloatRightCenterWindow(this, value);
-                    FloatWindowHelper
-                            .createFloatRightTopWindow(this, value);
-                }
-            }
-        }
-
-    }
+    // public void onEventMainThread(QuickGestureFloatWindowEvent event) {
+    // String flag = event.editModel;
+    // int value = AppMasterPreference.getInstance(getApplicationContext())
+    // .getQuickGestureDialogSeekBarValue();
+    // if (FloatWindowHelper.mEditQuickAreaFlag) {
+    // AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+    // @Override
+    // public void run() {
+    // FloatWindowHelper
+    // .updateFloatWindowBackgroudColor(true);
+    // }
+    // });
+    // }
+    // if
+    // (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_LEFT_RADIO_FINISH_NOTIFICATION
+    // .equals(flag)) {
+    // if (!AppMasterPreference.getInstance(this).getDialogRadioLeftBottom()) {
+    // FloatWindowHelper.removeSwipWindow(this, 1);
+    // FloatWindowHelper.removeSwipWindow(this, 2);
+    // FloatWindowHelper.removeSwipWindow(this, 3);
+    // if (!AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
+    // FloatWindowHelper.removeSwipWindow(this, 4);
+    // } else {
+    // FloatWindowHelper
+    // .createFloatLeftCenterCenterWindow(this, value);
+    // }
+    // } else {
+    // if (AppMasterPreference.getInstance(this).getDialogRadioLeftCenter()) {
+    // FloatWindowHelper.removeSwipWindow(this, 4);
+    // FloatWindowHelper
+    // .createFloatLeftBottomWindow(this, value);
+    // FloatWindowHelper
+    // .createFloatLeftCenterCenterWindow(this, value);
+    // } else {
+    // FloatWindowHelper.removeSwipWindow(this, 4);
+    // FloatWindowHelper
+    // .createFloatLeftBottomWindow(this, value);
+    // FloatWindowHelper
+    // .createFloatLeftCenterWindow(this, value);
+    // FloatWindowHelper
+    // .createFloatLeftTopWindow(this, value);
+    // }
+    // }
+    // } else if
+    // (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RIGHT_RADIO_FINISH_NOTIFICATION
+    // .equals(flag)) {
+    // if (!AppMasterPreference.getInstance(this).getDialogRadioRightBottom()) {
+    // FloatWindowHelper.removeSwipWindow(this, -1);
+    // FloatWindowHelper.removeSwipWindow(this, -2);
+    // FloatWindowHelper.removeSwipWindow(this, -3);
+    // if (!AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
+    // FloatWindowHelper.removeSwipWindow(this, -4);
+    // } else {
+    // FloatWindowHelper
+    // .createFloatRightCenterCenterWindow(this, value);
+    // }
+    // } else {
+    // if (AppMasterPreference.getInstance(this).getDialogRadioRightCenter()) {
+    // FloatWindowHelper.removeSwipWindow(this, -4);
+    // FloatWindowHelper
+    // .createFloatRightBottomWindow(this, value);
+    // FloatWindowHelper
+    // .createFloatRightCenterCenterWindow(this, value);
+    // } else {
+    // FloatWindowHelper.removeSwipWindow(this, -4);
+    // FloatWindowHelper
+    // .createFloatRightBottomWindow(this, value);
+    // FloatWindowHelper
+    // .createFloatRightCenterWindow(this, value);
+    // FloatWindowHelper
+    // .createFloatRightTopWindow(this, value);
+    // }
+    // }
+    // }
+    //
+    // }
 
     public static TaskDetectService getService() {
         return sService;
