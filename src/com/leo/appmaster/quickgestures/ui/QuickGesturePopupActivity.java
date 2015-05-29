@@ -33,7 +33,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
-        mContainer.showGestureLayout(mContainer.getCurrentGestureType());
         mPref = AppMasterPreference.getInstance(this);
         mNowLayout = mContainer.getNowLayout();
         LeoLog.d("AppleWatchContainer", "刚来Activity！show 出的是：" + mNowLayout);
@@ -45,11 +44,11 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     private void fillWhichLayoutFitst(int mNowLayout) {
         if (mNowLayout == 1) {
-            fillDynamicLayout();
+            fillDynamicLayout(false);
         } else if (mNowLayout == 2) {
-            fillMostUsedLayout();
+            fillMostUsedLayout(false);
         } else {
-            fillSwitcherLayout();
+            fillSwitcherLayout(false);
         }
     }
 
@@ -77,14 +76,14 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     private void fillTwoLayout(int mNowLayout) {
         if (mNowLayout == 1) {
-            fillMostUsedLayout();
-            fillSwitcherLayout();
+            fillMostUsedLayout(true);
+            fillSwitcherLayout(true);
         } else if (mNowLayout == 2) {
-            fillDynamicLayout();
-            fillSwitcherLayout();
+            fillDynamicLayout(true);
+            fillSwitcherLayout(true);
         } else {
-            fillDynamicLayout();
-            fillMostUsedLayout();
+            fillDynamicLayout(true);
+            fillMostUsedLayout(true);
         }
     }
 
@@ -100,19 +99,19 @@ public class QuickGesturePopupActivity extends BaseActivity {
         super.onStop();
     }
 
-    private void fillDynamicLayout() {
+    private void fillDynamicLayout(boolean loadExtra) {
         List<BaseInfo> items = QuickGestureManager.getInstance(this).getDynamicList();
-        mContainer.fillGestureItem(GType.DymicLayout, items);
+        mContainer.fillGestureItem(GType.DymicLayout, items, loadExtra);
     }
 
-    private void fillMostUsedLayout() {
+    private void fillMostUsedLayout(boolean loadExtra) {
         List<BaseInfo> items = QuickGestureManager.getInstance(this).getMostUsedList();
-        mContainer.fillGestureItem(GType.MostUsedLayout, items);
+        mContainer.fillGestureItem(GType.MostUsedLayout, items, loadExtra);
     }
 
-    private void fillSwitcherLayout() {
+    private void fillSwitcherLayout(boolean loadExtra) {
         List<BaseInfo> items = QuickGestureManager.getInstance(this).getSwitcherList();
-        mContainer.fillGestureItem(GType.SwitcherLayout, items);
+        mContainer.fillGestureItem(GType.SwitcherLayout, items, loadExtra);
     }
 
     @Override

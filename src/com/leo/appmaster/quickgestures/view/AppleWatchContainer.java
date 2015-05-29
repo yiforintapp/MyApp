@@ -20,7 +20,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -39,7 +38,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout.Direction;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -102,7 +100,7 @@ public class AppleWatchContainer extends FrameLayout {
         mCurrentLayout = mPref.getLastTimeLayout();
         LeoLog.d("AppleWatchContainer", "刚来！show 出的是：" + mCurrentLayout);
         makeNowLayout();
-        
+
         // 清理内存
         mCleaner = ProcessCleaner.getInstance(context);
         mLastUsedMem = mCleaner.getUsedMem();
@@ -289,7 +287,15 @@ public class AppleWatchContainer extends FrameLayout {
         mPIngtai = (ImageView) findViewById(R.id.iv_pingtai);
         mYun = (ImageView) findViewById(R.id.iv_yun);
 
-        mTvCurName.setText(R.string.quick_gesture_dynamic);
+        if (mCurrentGestureType == GType.DymicLayout) {
+            mTvCurName.setText(R.string.quick_gesture_dynamic);
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            mTvCurName.setText(R.string.quick_gesture_most_used);
+        } else {
+            mTvCurName.setText(R.string.quick_gesture_switcher);
+        }
+
+        showGestureLayout(mCurrentGestureType);
         super.onFinishInflate();
     }
 
@@ -702,7 +708,7 @@ public class AppleWatchContainer extends FrameLayout {
         va.start();
     }
 
-    public void fillGestureItem(GType type, List<BaseInfo> infos) {
+    public void fillGestureItem(GType type, List<BaseInfo> infos, boolean loadExtra) {
         if (infos == null) {
             LeoLog.e(TAG, "fillGestureItem, infos is null");
             return;
@@ -718,7 +724,7 @@ public class AppleWatchContainer extends FrameLayout {
             targetLayout = mSwitcherLayout;
             infos = fixInfoRight(infos);
         }
-        targetLayout.fillItems(infos);
+        targetLayout.fillItems(infos, loadExtra);
     }
 
     private List<BaseInfo> fixInfoRight(List<BaseInfo> infos) {
@@ -1361,10 +1367,16 @@ public class AppleWatchContainer extends FrameLayout {
     public void showGestureLayout(GType type) {
         if (type == GType.DymicLayout) {
             mDymicLayout.setVisibility(View.VISIBLE);
+            mSwitcherLayout.setVisibility(View.INVISIBLE);
+            mMostUsedLayout.setVisibility(View.INVISIBLE);
         } else if (type == GType.MostUsedLayout) {
+            mDymicLayout.setVisibility(View.INVISIBLE);
             mMostUsedLayout.setVisibility(View.VISIBLE);
+            mSwitcherLayout.setVisibility(View.INVISIBLE);
         } else if (type == GType.SwitcherLayout) {
             mSwitcherLayout.setVisibility(View.VISIBLE);
+            mDymicLayout.setVisibility(View.INVISIBLE);
+            mMostUsedLayout.setVisibility(View.INVISIBLE);
         }
     }
 
