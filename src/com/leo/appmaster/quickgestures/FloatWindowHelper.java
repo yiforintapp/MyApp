@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
@@ -31,7 +33,9 @@ import com.leo.appmaster.utils.Utilities;
 public class FloatWindowHelper {
     public static final String QUICK_GESTURE_SETTING_DIALOG_LEFT_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_left_radio_finish_notification";
     public static final String QUICK_GESTURE_SETTING_DIALOG_RIGHT_RADIO_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_right_radio_finish_notification";
-    public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION = "quick_gesture_setting_dialog_radio_slide_time_setting_finish_notification";
+    public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION = "quick_gesture_setting_finish_notification";
+    public static final String QUICK_GESTURE_LEFT_SLIDE_AREA = "left_slide_area";
+    public static final String QUICK_GESTURE_RIGHT_SLIDE_AREA = "right_slide_area";
     public static final int ONTUCH_LEFT_FLAG = -1;
     public static final int ONTUCH_RIGHT_FLAG = 1;
     public static final String QUICK_GESTURE_MSM_TIP = "quick_gesture_msm_tip";
@@ -120,7 +124,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if (((moveX > mLeftBottomParams.width / 7 || moveY > mLeftBottomParams.height / 5)
+                            if (((moveX > mLeftBottomParams.width / 8|| moveY > mLeftBottomParams.height / 6)
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -198,7 +202,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftCenterParams.width / 5 || moveY > mLeftCenterParams.width / 5)
+                            if ((moveX > mLeftCenterParams.width / 6 || moveY > mLeftCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -274,7 +278,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftCenterCenterParams.width / 5 || moveY > mLeftCenterCenterParams.width / 5)
+                            if ((moveX > mLeftCenterCenterParams.width / 6 || moveY > mLeftCenterCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -366,7 +370,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftTopParams.width / 5 || moveY > mLeftTopParams.width / 5)
+                            if ((moveX > mLeftTopParams.width / 6 || moveY > mLeftTopParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -443,7 +447,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightBottomParams.width / 7 || moveY > mRightBottomParams.height / 5)
+                            if ((moveX > mRightBottomParams.width / 8 || moveY > mRightBottomParams.height / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -517,7 +521,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightCenterParams.width / 5 || moveY > mRightCenterParams.width / 5)
+                            if ((moveX > mRightCenterParams.width / 6 || moveY > mRightCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -594,7 +598,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightCenterCenterParams.width / 5 || moveY > mRightCenterCenterParams.width / 5)
+                            if ((moveX > mRightCenterCenterParams.width / 6 || moveY > mRightCenterCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -688,7 +692,7 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightTopParams.width / 5 || moveY > mRightTopParams.width / 5)
+                            if ((moveX > mRightTopParams.width / 6 || moveY > mRightTopParams.width /6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -1106,6 +1110,72 @@ public class FloatWindowHelper {
             if (mRightTopView != null) {
                 mRightTopView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+            }
+        }
+    }
+
+    public static void setShowSlideArea(Context context, String flag) {
+        int value = AppMasterPreference.getInstance(context).getQuickGestureDialogSeekBarValue();
+        if (FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA.equals(flag)) {
+            if (!AppMasterPreference.getInstance(context).getDialogRadioLeftBottom()) {
+                FloatWindowHelper.removeSwipWindow(context, 1);
+                FloatWindowHelper.removeSwipWindow(context, 2);
+                FloatWindowHelper.removeSwipWindow(context, 3);
+                if (!AppMasterPreference.getInstance(context).getDialogRadioLeftCenter()) {
+                    FloatWindowHelper.removeSwipWindow(context, 4);
+                } else {
+                    FloatWindowHelper
+                            .createFloatLeftCenterCenterWindow(context, value);
+                }
+            } else {
+                if (AppMasterPreference.getInstance(context).getDialogRadioLeftCenter()) {
+                    FloatWindowHelper.removeSwipWindow(context, 4);
+                    FloatWindowHelper
+                            .createFloatLeftBottomWindow(context, value);
+                    FloatWindowHelper
+                            .createFloatLeftCenterCenterWindow(context, value);
+                } else {
+                    FloatWindowHelper.removeSwipWindow(context, 4);
+                    FloatWindowHelper
+                            .createFloatLeftBottomWindow(context, value);
+                    FloatWindowHelper
+                            .createFloatLeftCenterWindow(context, value);
+                    FloatWindowHelper
+                            .createFloatLeftTopWindow(context, value);
+                }
+            }
+        }
+        if (FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA.equals(flag)) {
+            if (!AppMasterPreference.getInstance(context).getDialogRadioRightBottom()) {
+                FloatWindowHelper.removeSwipWindow(context, -1);
+                FloatWindowHelper.removeSwipWindow(context, -2);
+                FloatWindowHelper.removeSwipWindow(context, -3);
+                if (!AppMasterPreference.getInstance(context).getDialogRadioRightCenter()) {
+                    FloatWindowHelper.removeSwipWindow(context, -4);
+                } else {
+                    FloatWindowHelper
+                            .createFloatRightCenterCenterWindow(context, value);
+                }
+            } else {
+                if (AppMasterPreference.getInstance(context).getDialogRadioRightCenter()) {
+                    FloatWindowHelper.removeSwipWindow(context, -4);
+                    FloatWindowHelper
+                            .createFloatRightBottomWindow(context, value);
+                    FloatWindowHelper
+                            .createFloatRightCenterCenterWindow(context, value);
+                } else {
+                    FloatWindowHelper.removeSwipWindow(context, -4);
+                    FloatWindowHelper
+                            .createFloatRightBottomWindow(context, value);
+                    FloatWindowHelper
+                            .createFloatRightCenterWindow(context, value);
+                    FloatWindowHelper
+                            .createFloatRightTopWindow(context, value);
+                }
+            }
+            if (FloatWindowHelper.mEditQuickAreaFlag) {
+                FloatWindowHelper
+                        .updateFloatWindowBackgroudColor(true);
             }
         }
     }

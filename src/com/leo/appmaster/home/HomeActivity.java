@@ -117,7 +117,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             boolean setMiuiFist = pre.getQuickGestureMiuiSettingFirstDialogTip();
             boolean flag = BuildProperties.isMIUI();
             boolean isOpenWindow = BuildProperties.isFloatWindowOpAllowed(this);
-            if (setMiuiFist && flag && isOpenWindow && !isFirstSlidingOpenQuick) {
+            boolean dialogShow = pre.getQGSettingFirstDialogTip();
+            if (flag && setMiuiFist && !dialogShow && isOpenWindow && !isFirstSlidingOpenQuick) {
                 showQuickGestureSettingDialog();
             }
         }
@@ -348,8 +349,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             intent.putExtra("reset_passwd", true);
                             startActivity(intent);
                         } else if (position == 1) {
-                            /*SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                    "changepwd");*/
+                            /*
+                             * SDKWrapper.addEvent(HomeActivity.this,
+                             * SDKWrapper.P1, "home", "changepwd");
+                             */
                             Intent intent = new Intent(HomeActivity.this, LockSettingActivity.class);
                             intent.putExtra("reset_passwd", true);
                             startActivity(intent);
@@ -363,7 +366,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                     "passwdtip");
                             Intent intent = new Intent(HomeActivity.this, PasswdTipActivity.class);
                             startActivity(intent);
-                        }else if(position == 4){
+                        } else if (position == 4) {
                             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                     "locksetting");
                             Intent intent = new Intent(HomeActivity.this, LockOptionActivity.class);
@@ -374,8 +377,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         mLeoPopMenu.dismissSnapshotList();
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(this, getRightMenuItems(),getRightMenuIcons(),true);
-                mLeoPopMenu.showPopMenu(this,mTtileBar.findViewById(R.id.iv_option_image), null, null);
+                mLeoPopMenu.setPopMenuItems(this, getRightMenuItems(), getRightMenuIcons(), true);
+                mLeoPopMenu.showPopMenu(this, mTtileBar.findViewById(R.id.iv_option_image), null,
+                        null);
                 mLeoPopMenu.setListViewDivider(null);
                 break;
             case R.id.bg_show_hotapp:
@@ -410,7 +414,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         return listItems;
     }
 
-    private List<Integer> getRightMenuIcons(){
+    private List<Integer> getRightMenuIcons() {
         List<Integer> icons = new ArrayList<Integer>();
         icons.add(R.drawable.reset_pasword_icon);
         icons.add(R.drawable.switch_pasword_icon);
@@ -419,7 +423,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         icons.add(R.drawable.settings);
         return icons;
     }
-    
+
     private List<MenuItem> getMenuItems() {
         List<MenuItem> listItems = new ArrayList<MenuItem>();
         Resources resources = AppMasterApplication.getInstance().getResources();
@@ -870,10 +874,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             @Override
             public void onClick(int which) {
                 if (which == 0) {
+                    AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
+                            true);
                     if (mQuickGestureSettingDialog != null) {
                         mQuickGestureSettingDialog.dismiss();
                     }
                 } else if (which == 1) {
+                    AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
+                            true);
                     Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
                     try {
                         startActivity(inten);
