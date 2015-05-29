@@ -4,14 +4,19 @@ package com.leo.appmaster.quickgestures.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
@@ -27,6 +32,8 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
     private SeekBar mSeekBar;
     private int progressInt;
     private ListView mRadioListView;
+    private ImageView mLeftBottom, mRightBottom, mLeftCenter, mRightCenter;
+    private LinearLayout mLeftBottomLt, mRightBottomLt, mLeftCenterLt, mRightCenterLt;
 
     private OnDiaogClickListener mListener;
 
@@ -51,7 +58,35 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         mCancelButtom = (TextView) dlgView.findViewById(R.id.quick_seekbar_setting_dlg_left_btn);
         seekbar_text.setText(resources.getString(R.string.flow_settting_dialog_remain));
         mSeekBar = (SeekBar) dlgView.findViewById(R.id.qucik_seekBar);
+        mLeftBottom = (ImageView) dlgView.findViewById(R.id.dialog_radio_left_bottomRB);
+        if (AppMasterPreference.getInstance(mContext).getDialogRadioLeftBottom()) {
+            mLeftBottom.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.select));
+        }else{
+            mLeftBottom.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.unselect));
+        }
+        mRightBottom = (ImageView) dlgView.findViewById(R.id.dialog_radio_right_bottomRB);
+        if (AppMasterPreference.getInstance(mContext).getDialogRadioRightBottom()) {
+            mRightBottom.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.select));
+        }else{
+            mRightBottom.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.unselect));
+        }
+        mLeftCenter = (ImageView) dlgView.findViewById(R.id.dialog_radio_left_centerRB);
+        if (AppMasterPreference.getInstance(mContext).getDialogRadioLeftCenter()) {
+            mLeftCenter.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.select));
+        }else{
+            mLeftCenter.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.unselect));
+        }
+        mRightCenter = (ImageView) dlgView.findViewById(R.id.dialog_radio_right_center_normalRB);
+        if (AppMasterPreference.getInstance(mContext).getDialogRadioRightCenter()) {
+            mRightCenter.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.select));
+        }else{
+            mRightCenter.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.unselect));
+        }
         mRadioListView = (ListView) dlgView.findViewById(R.id.radioLV);
+        mLeftBottomLt = (LinearLayout) dlgView.findViewById(R.id.left_bottom_lt);
+        mRightBottomLt = (LinearLayout) dlgView.findViewById(R.id.right_bottom_lt);
+        mLeftCenterLt = (LinearLayout) dlgView.findViewById(R.id.left_center_lt);
+        mRightCenterLt = (LinearLayout) dlgView.findViewById(R.id.right_center_lt);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -152,5 +187,41 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
 
     public void setLeftButtomClick(android.view.View.OnClickListener listener) {
         mCancelButtom.setOnClickListener(listener);
+    }
+
+    public void setRadioOnItemClickListener(OnItemClickListener listener) {
+        mRadioListView.setOnItemClickListener(listener);
+    }
+
+    public void setLeftBottomBackgroud(Drawable drawable) {
+        mLeftBottom.setBackgroundDrawable(drawable);
+    }
+
+    public void setRightBottomBackgroud(Drawable drawable) {
+        mRightBottom.setBackgroundDrawable(drawable);
+    }
+
+    public void setLeftCenterBackgroud(Drawable drawable) {
+        mLeftCenter.setBackgroundDrawable(drawable);
+    }
+
+    public void setRightCenterBackgroud(Drawable drawable) {
+        mRightCenter.setBackgroundDrawable(drawable);
+    }
+
+    public void setLeftBottomOnClickListener(android.view.View.OnClickListener listener) {
+        mLeftBottomLt.setOnClickListener(listener);
+    }
+
+    public void setRightBottomOnClickListener(android.view.View.OnClickListener listener) {
+        mRightBottomLt.setOnClickListener(listener);
+    }
+
+    public void setLeftCenterOnClickListener(android.view.View.OnClickListener listener) {
+        mLeftCenterLt.setOnClickListener(listener);
+    }
+
+    public void setRightCenterOnClickListener(android.view.View.OnClickListener listener) {
+        mRightCenterLt.setOnClickListener(listener);
     }
 }

@@ -28,7 +28,6 @@ public class MonthTrafficSetting extends LEOBaseDialog {
     private LeoSeekBar mSeekBar;
     private AppMasterPreference sp_notice_flow;
     private int progressInt;
-    private ListView mRadioListView;
     private int progressTextWidth, progressTextHeight;
     private OnDiaogClickListener mListener;
 
@@ -72,7 +71,6 @@ public class MonthTrafficSetting extends LEOBaseDialog {
 
         mSeekBar = (LeoSeekBar) dlgView.findViewById(R.id.mSeekBar);
         mSeekBar.setProgress(progressInt);
-        mRadioListView = (ListView) dlgView.findViewById(R.id.radioLV);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

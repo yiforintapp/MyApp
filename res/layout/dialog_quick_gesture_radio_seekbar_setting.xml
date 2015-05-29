@@ -65,9 +65,141 @@
 
         <ListView
             android:id="@+id/radioLV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:dividerHeight="34dp"
+            android:listSelector="@drawable/manager_backup_list_selecter"
+            android:visibility="gone" >
         </ListView>
+
+        <LinearLayout
+            android:id="@+id/left_bottom_lt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/answer_icon"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/dialog_radio_left_bottomRB"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/quick_gesture_dialog_radio_selector" />
+
+            <TextView
+                android:id="@+id/dialog_radio_left_bottom_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="28dp"
+                android:text="@string/pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text"
+                android:textColor="#a7a7a7"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/right_bottom_lt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/answer_icon"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/dialog_radio_right_bottomRB"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/quick_gesture_dialog_radio_selector" />
+
+            <TextView
+                android:id="@+id/dialog_radio_right_bottom_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="28dp"
+                android:text="@string/pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text"
+                android:textColor="#a7a7a7"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/left_center_lt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/answer_icon"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/dialog_radio_left_centerRB"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/quick_gesture_dialog_radio_selector" />
+
+            <TextView
+                android:id="@+id/dialog_radio_left_center_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="28dp"
+                android:text="@string/pg_appmanager_quick_gesture_option_dialog_radio_left_center_text"
+                android:textColor="#a7a7a7"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/right_center_lt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/answer_icon"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/dialog_radio_right_center_normalRB"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/quick_gesture_dialog_radio_selector" />
+
+            <TextView
+                android:id="@+id/dialog_radio_right_center_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="28dp"
+                android:text="@string/pg_appmanager_quick_gesture_option_dialog_radio_right_center_text"
+                android:textColor="#a7a7a7"
+                android:textSize="18sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
