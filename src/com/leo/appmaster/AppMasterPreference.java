@@ -171,6 +171,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME = "quick_gesture_common_app_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG = "quick_gesture_common_app_dialog_checkbox_flag";
     public static final String PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP = "quick_gesture_miui_setting_open_float_window_first_dialog_tip";
+    public static final String PREF_QUICK_GESTURE_LAST_TIME_LAYOUT = "quick_gesture_last_time_layout";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1489,7 +1490,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME, packageNames)
                 .commit();
     }
-//TODO
+
+    // TODO
     public void setFreeDisturbAppPackageName(String packageNames) {
         mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME, packageNames)
                 .commit();
@@ -1649,6 +1651,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setQuickGestureMiuiSettingFirstDialogTip(boolean flag) {
         mPref.edit().putBoolean(PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP,
                 flag).commit();
+    }
+
+    public int getLastTimeLayout() {
+        return mPref.getInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT, 1);
+    }
+
+    public void setLastTimeLayout(int mLayoutNum) {
+        mPref.edit().putInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT,
+                mLayoutNum).commit();
     }
 
     public boolean getQuickGestureMiuiSettingFirstDialogTip() {

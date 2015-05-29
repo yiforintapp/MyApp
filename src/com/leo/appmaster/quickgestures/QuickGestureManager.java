@@ -42,10 +42,10 @@ public class QuickGestureManager {
 
     protected static final String AppLauncherRecorder = null;
 
-    private static Context mContext;
+    private Context mContext;
     private static QuickGestureManager mInstance;
     public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
-    private static AppMasterPreference mSpSwitch;
+    private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
 
