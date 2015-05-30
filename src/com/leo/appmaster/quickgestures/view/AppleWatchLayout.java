@@ -1704,7 +1704,7 @@ public class AppleWatchLayout extends ViewGroup {
         if (!mSnapping) {
             if (direction == Direction.Left) {
                 temp = (int) (mLastMovex / mMinuOffset);
-                target = (temp + 3) * mMinuOffset;
+                target = (temp + 2) * mMinuOffset;
                 ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, target);
                 transAnima.setInterpolator(new DecelerateInterpolator());
                 transAnima.setDuration(500);
@@ -1730,7 +1730,7 @@ public class AppleWatchLayout extends ViewGroup {
                 mSnapping = true;
             } else if (direction == Direction.Right) {
                 temp = (int) (mLastMovex / mMinuOffset);
-                target = (temp + 3) * mMinuOffset;
+                target = (temp + 2) * mMinuOffset;
                 ValueAnimator transAnima = ValueAnimator.ofFloat(mLastMovex, target);
                 transAnima.setDuration(500);
                 transAnima.setInterpolator(new DecelerateInterpolator());
