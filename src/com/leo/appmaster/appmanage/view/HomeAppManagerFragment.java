@@ -375,8 +375,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     intentv6.setClassName("com.miui.securitycenter",
                             "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
                     intentv6.putExtra("extra_pkgname", getActivity().getPackageName());
-                    intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     try {
+                        LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
+                                false);
                         startActivity(intentv6);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -385,9 +388,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         Uri uri = Uri
                                 .fromParts("package", getActivity().getPackageName(), null);
                         intentv5.setData(uri);
-                        intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         try {
-                            LockManager.getInstatnce().addFilterLockPackage("com.android.settings", false);
+                            LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
+                                    false);
                             startActivity(intentv5);
                             getActivity().finish();
                         } catch (Exception e1) {
@@ -395,8 +400,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         }
                     }
                     Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP );
+                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     try {
+                        LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
                         startActivity(quickIntent);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -404,9 +411,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 } else if (checkHuaWei && !checkFloatWindow) {
                     BuildProperties.isToHuaWeiSystemManager(getActivity());
                     Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     quickIntent.putExtra("sys_name", "huawei");
                     try {
+                        LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
                         startActivity(quickIntent);
                     } catch (Exception e) {
                         e.printStackTrace();
