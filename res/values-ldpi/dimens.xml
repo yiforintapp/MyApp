@@ -217,4 +217,10 @@
     <dimen name="quick_gesture_setting_item_height">56dp</dimen>
     <dimen name="quick_seek_bar_width">250dp</dimen>
     <!-- quick gesutre end -->
+    
+    <integer name="privacy_contact_red_tip_tabTextwdth">10</integer>
+    <integer name="privacy_contact_red_tip_tabTexteight">10</integer>
+    <dimen name="privacy_contact_red_tip_x">94dp</dimen>
+    <dimen name="privacy_contact_red_tip_y">12dp</dimen>
+    <dimen name="text_icon_margin">3dp</dimen>
 </resources>

@@ -552,18 +552,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 }
             }
         });
-        mAlarmDialog.setLeftButtomClick(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                FloatWindowHelper.mEditQuickAreaFlag = false;
-                mAlarmDialogFlag = false;
-                updateFloatWindowBackGroudColor();
-                if (mAlarmDialog != null) {
-                    mAlarmDialog.dismiss();
-                }
-            }
-        });
+//        mAlarmDialog.setLeftButtomClick(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View arg0) {
+//                FloatWindowHelper.mEditQuickAreaFlag = false;
+//                mAlarmDialogFlag = false;
+//                updateFloatWindowBackGroudColor();
+//                if (mAlarmDialog != null) {
+//                    mAlarmDialog.dismiss();
+//                }
+//            }
+//        });
         mAlarmDialog.setCancelable(false);
         mAlarmDialog.show();
         mAlarmDialogFlag = true;

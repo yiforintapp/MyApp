@@ -25,7 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/dialog_tilte"
-        android:layout_margin="34dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="34dp"
+        android:layout_marginRight="34dp"
+        android:layout_marginTop="28dp"
         android:orientation="vertical" >
 
         <TextView
@@ -60,14 +63,14 @@
                 android:layout_toRightOf="@id/qucik_seekBar"
                 android:text="50%"
                 android:textColor="@color/flow_item_small"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <ListView
             android:id="@+id/radioLV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
             android:dividerHeight="34dp"
             android:listSelector="@drawable/manager_backup_list_selecter"
             android:visibility="gone" >
@@ -208,9 +211,9 @@
         android:layout_height="48dp"
         android:layout_below="@id/content_all_item"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
         android:gravity="center" >
 
+        <!--
         <TextView
             android:id="@+id/quick_seekbar_setting_dlg_left_btn"
             style="@style/dlg_left_button_txt"
@@ -219,13 +222,15 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/cancel" />
+        -->
 
         <TextView
             android:id="@+id/quick_seekbar_setting_dlg_right_btn"
             style="@style/dlg_right_button_txt"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/manager_done_single_button_selecter"
             android:gravity="center"
             android:text="@string/makesure" />
     </LinearLayout>
