@@ -167,33 +167,33 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         gestureSettingOpenGesture.setCheck(mPre.getSwitchOpenQuickGesture());
         gestureSettingOpenGesture.setBackageDraw(R.drawable.bg);
         mQuickGestureSettingOption.add(gestureSettingOpenGesture);
-        
+
         QuickGestureSettingBean gestureSettingSlidingAreaLocation = new QuickGestureSettingBean();
         gestureSettingSlidingAreaLocation.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_sliding_area_location_title));
         gestureSettingSlidingAreaLocation.setBackageDraw(R.drawable.bg_upround);
         mQuickGestureSettingOption.add(gestureSettingSlidingAreaLocation);
-        
+
         QuickGestureSettingBean gestureSettingAbleSlidingTime = new QuickGestureSettingBean();
         gestureSettingAbleSlidingTime.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_able_sliding_time));
         gestureSettingAbleSlidingTime.setBackageDraw(R.drawable.bg_downround);
         mQuickGestureSettingOption.add(gestureSettingAbleSlidingTime);
-        
+
         QuickGestureSettingBean gestureSettingNoReadMessage = new QuickGestureSettingBean();
         gestureSettingNoReadMessage.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_no_read_message_tip));
         gestureSettingNoReadMessage.setCheck(mPre.getSwitchOpenNoReadMessageTip());
         gestureSettingNoReadMessage.setBackageDraw(R.drawable.bg_upround);
         mQuickGestureSettingOption.add(gestureSettingNoReadMessage);
-        
+
         QuickGestureSettingBean gestureSettingRecentlyContact = new QuickGestureSettingBean();
         gestureSettingRecentlyContact.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_recently_contact));
         gestureSettingRecentlyContact.setCheck(mPre.getSwitchOpenRecentlyContact());
         gestureSettingRecentlyContact.setBackageDraw(R.drawable.bg_zeroround);
         mQuickGestureSettingOption.add(gestureSettingRecentlyContact);
-        
+
         QuickGestureSettingBean gestureSettingContactMessagTip = new QuickGestureSettingBean();
         gestureSettingContactMessagTip.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_privacy_contact_message_tip));
@@ -292,26 +292,26 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 vh.arrowImageVIew.setVisibility(View.GONE);
             }
             // 显示划出时机
-            if (position == 2 || position ==1) {
+            if (position == 2 || position == 1) {
                 vh.content.setVisibility(View.VISIBLE);
-                if(position == 2){
-                if (mPre.getSlideTimeJustHome()) {
-                    vh.content
-                            .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
-                }
-                if (mPre.getSlideTimeAllAppAndHome()) {
-                    vh.content
-                            .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
-                }
-                }else if(position ==1){
-//                    if (mPre.getSlideTimeJustHome()) {
-//                        vh.content
-//                                .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
-//                    }
-//                    if (mPre.getSlideTimeAllAppAndHome()) {
-//                        vh.content
-//                                .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
-//                    }
+                if (position == 2) {
+                    if (mPre.getSlideTimeJustHome()) {
+                        vh.content
+                                .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
+                    }
+                    if (mPre.getSlideTimeAllAppAndHome()) {
+                        vh.content
+                                .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
+                    }
+                } else if (position == 1) {
+                    // if (mPre.getSlideTimeJustHome()) {
+                    // vh.content
+                    // .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
+                    // }
+                    // if (mPre.getSlideTimeAllAppAndHome()) {
+                    // vh.content
+                    // .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
+                    // }
                 }
             } else {
                 vh.content.setVisibility(View.GONE);
@@ -399,33 +399,33 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         }
     }
 
-//    private List<DialogRadioBean> initDialogRadioTextData() {
-//        List<DialogRadioBean> datas = new ArrayList<DialogRadioBean>();
-//        DialogRadioBean bean1 = new DialogRadioBean();
-//        bean1.name = this.getResources().getString(
-//                R.string.pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text);
-//        bean1.isCheck = mPre.getDialogRadioLeftBottom();
-//        datas.add(bean1);
-//
-//        DialogRadioBean bean2 = new DialogRadioBean();
-//        bean2.name = this.getResources().getString(
-//                R.string.pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text);
-//        bean2.isCheck = mPre.getDialogRadioRightBottom();
-//        datas.add(bean2);
-//
-//        DialogRadioBean bean3 = new DialogRadioBean();
-//        bean3.name = this.getResources().getString(
-//                R.string.pg_appmanager_quick_gesture_option_dialog_radio_left_center_text);
-//        bean3.isCheck = mPre.getDialogRadioLeftCenter();
-//        datas.add(bean3);
-//
-//        DialogRadioBean bean4 = new DialogRadioBean();
-//        bean4.name = this.getResources().getString(
-//                R.string.pg_appmanager_quick_gesture_option_dialog_radio_right_center_text);
-//        bean4.isCheck = mPre.getDialogRadioRightCenter();
-//        datas.add(bean4);
-//        return datas;
-//    }
+    // private List<DialogRadioBean> initDialogRadioTextData() {
+    // List<DialogRadioBean> datas = new ArrayList<DialogRadioBean>();
+    // DialogRadioBean bean1 = new DialogRadioBean();
+    // bean1.name = this.getResources().getString(
+    // R.string.pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text);
+    // bean1.isCheck = mPre.getDialogRadioLeftBottom();
+    // datas.add(bean1);
+    //
+    // DialogRadioBean bean2 = new DialogRadioBean();
+    // bean2.name = this.getResources().getString(
+    // R.string.pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text);
+    // bean2.isCheck = mPre.getDialogRadioRightBottom();
+    // datas.add(bean2);
+    //
+    // DialogRadioBean bean3 = new DialogRadioBean();
+    // bean3.name = this.getResources().getString(
+    // R.string.pg_appmanager_quick_gesture_option_dialog_radio_left_center_text);
+    // bean3.isCheck = mPre.getDialogRadioLeftCenter();
+    // datas.add(bean3);
+    //
+    // DialogRadioBean bean4 = new DialogRadioBean();
+    // bean4.name = this.getResources().getString(
+    // R.string.pg_appmanager_quick_gesture_option_dialog_radio_right_center_text);
+    // bean4.isCheck = mPre.getDialogRadioRightCenter();
+    // datas.add(bean4);
+    // return datas;
+    // }
 
     class DialogRadioBean {
         String name;
@@ -438,7 +438,7 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             mAlarmDialog = new QuickGestureRadioSeekBarDialog(this);
         }
         mAlarmDialog.setShowRadioListView(flag);
-//        List<DialogRadioBean> data = initDialogRadioTextData();
+        // List<DialogRadioBean> data = initDialogRadioTextData();
         // RadioListViewAdapter adapter = new RadioListViewAdapter(this, data);
         // mAlarmDialog.setRadioListViewAdapter(adapter);
         mAlarmDialog
@@ -530,13 +530,14 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             public void onClick(int progress) {
                 FloatWindowHelper.mEditQuickAreaFlag = false;
                 mAlarmDialogFlag = false;
-                mLeftBottom=mPre.getDialogRadioLeftBottom();
-                mRightBottm=mPre.getDialogRadioRightBottom();
-                mLeftCenter=mPre.getDialogRadioLeftCenter();
-                mRightCenter=mPre.getDialogRadioRightCenter();
+                mLeftBottom = mPre.getDialogRadioLeftBottom();
+                mRightBottm = mPre.getDialogRadioRightBottom();
+                mLeftCenter = mPre.getDialogRadioLeftCenter();
+                mRightCenter = mPre.getDialogRadioRightCenter();
                 if (mLeftBottom || mRightBottm || mLeftCenter || mRightCenter) {
-                            mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog
-                                    .getSeekBarProgressValue());
+                    mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog
+                            .getSeekBarProgressValue());
+                    QuickGestureManager.getInstance(QuickGestureActivity.this).resetSlidAreaSize();
                     updateFloatWindowBackGroudColor();
                     if (mAlarmDialog != null) {
                         mAlarmDialog.dismiss();
@@ -552,18 +553,18 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 }
             }
         });
-//        mAlarmDialog.setLeftButtomClick(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                FloatWindowHelper.mEditQuickAreaFlag = false;
-//                mAlarmDialogFlag = false;
-//                updateFloatWindowBackGroudColor();
-//                if (mAlarmDialog != null) {
-//                    mAlarmDialog.dismiss();
-//                }
-//            }
-//        });
+        // mAlarmDialog.setLeftButtomClick(new OnClickListener() {
+        //
+        // @Override
+        // public void onClick(View arg0) {
+        // FloatWindowHelper.mEditQuickAreaFlag = false;
+        // mAlarmDialogFlag = false;
+        // updateFloatWindowBackGroudColor();
+        // if (mAlarmDialog != null) {
+        // mAlarmDialog.dismiss();
+        // }
+        // }
+        // });
         mAlarmDialog.setCancelable(false);
         mAlarmDialog.show();
         mAlarmDialogFlag = true;
@@ -578,84 +579,88 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
     }
 
-//    class RadioListViewAdapter extends BaseAdapter {
-//        private LayoutInflater mLayoutInflater;
-//        private List<DialogRadioBean> mData;
-//
-//        public RadioListViewAdapter(Context context, List<DialogRadioBean> data) {
-//            mLayoutInflater = LayoutInflater.from(context);
-//            mData = data;
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return mData.size();
-//        }
-//
-//        @Override
-//        public Object getItem(int arg0) {
-//            return mData.get(arg0);
-//        }
-//
-//        @Override
-//        public long getItemId(int arg0) {
-//            return arg0;
-//        }
-//
-//        class ViewHolder {
-//            TextView textView;
-//            CheckBox checkBox;
-//        }
-//
-//        @SuppressWarnings("unused")
-//        @Override
-//        public View getView(int arg0, View convertView, ViewGroup arg2) {
-//            ViewHolder vh = null;
-//            if (vh == null) {
-//                vh = new ViewHolder();
-//                convertView = mLayoutInflater.inflate(R.layout.activity_dialog_radio_listview_item,
-//                        null);
-//                vh.textView = (TextView) convertView.findViewById(R.id.dialog_radio_itme_tv);
-//                vh.checkBox = (CheckBox) convertView.findViewById(R.id.dialog_radio_itme_normalRB);
-//                vh.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-//
-//                    @Override
-//                    public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-//                        int flag = (Integer) arg0.getTag();
-//                        if (flag == 0) {
-//                            mLeftBottom = arg1;
-//                            mPre.setDialogRadioLeftBottom(arg1);
-//                            FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
-//                                    FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA);
-//                        } else if (flag == 1) {
-//                            mRightBottm = arg1;
-//                            mPre.setDialogRadioRightBottom(arg1);
-//                            FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
-//                                    FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
-//                        } else if (flag == 2) {
-//                            mLeftCenter = arg1;
-//                            mPre.setDialogRadioLeftCenter(arg1);
-//                            FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
-//                                    FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA);
-//                        } else if (flag == 3) {
-//                            mRightCenter = arg1;
-//                            mPre.setDialogRadioRightCenter(arg1);
-//                            FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
-//                                    FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
-//                        }
-//                    }
-//                });
-//                convertView.setTag(vh);
-//            } else {
-//                vh = (ViewHolder) convertView.getTag();
-//            }
-//            DialogRadioBean bean = mData.get(arg0);
-//            vh.textView.setText(bean.name);
-//            vh.checkBox.setTag(arg0);
-//            vh.checkBox.setChecked(bean.isCheck);
-//            return convertView;
-//        }
-//    }
+    // class RadioListViewAdapter extends BaseAdapter {
+    // private LayoutInflater mLayoutInflater;
+    // private List<DialogRadioBean> mData;
+    //
+    // public RadioListViewAdapter(Context context, List<DialogRadioBean> data)
+    // {
+    // mLayoutInflater = LayoutInflater.from(context);
+    // mData = data;
+    // }
+    //
+    // @Override
+    // public int getCount() {
+    // return mData.size();
+    // }
+    //
+    // @Override
+    // public Object getItem(int arg0) {
+    // return mData.get(arg0);
+    // }
+    //
+    // @Override
+    // public long getItemId(int arg0) {
+    // return arg0;
+    // }
+    //
+    // class ViewHolder {
+    // TextView textView;
+    // CheckBox checkBox;
+    // }
+    //
+    // @SuppressWarnings("unused")
+    // @Override
+    // public View getView(int arg0, View convertView, ViewGroup arg2) {
+    // ViewHolder vh = null;
+    // if (vh == null) {
+    // vh = new ViewHolder();
+    // convertView =
+    // mLayoutInflater.inflate(R.layout.activity_dialog_radio_listview_item,
+    // null);
+    // vh.textView = (TextView)
+    // convertView.findViewById(R.id.dialog_radio_itme_tv);
+    // vh.checkBox = (CheckBox)
+    // convertView.findViewById(R.id.dialog_radio_itme_normalRB);
+    // vh.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+    //
+    // @Override
+    // public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+    // int flag = (Integer) arg0.getTag();
+    // if (flag == 0) {
+    // mLeftBottom = arg1;
+    // mPre.setDialogRadioLeftBottom(arg1);
+    // FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
+    // FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA);
+    // } else if (flag == 1) {
+    // mRightBottm = arg1;
+    // mPre.setDialogRadioRightBottom(arg1);
+    // FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
+    // FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
+    // } else if (flag == 2) {
+    // mLeftCenter = arg1;
+    // mPre.setDialogRadioLeftCenter(arg1);
+    // FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
+    // FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA);
+    // } else if (flag == 3) {
+    // mRightCenter = arg1;
+    // mPre.setDialogRadioRightCenter(arg1);
+    // FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
+    // FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
+    // }
+    // }
+    // });
+    // convertView.setTag(vh);
+    // } else {
+    // vh = (ViewHolder) convertView.getTag();
+    // }
+    // DialogRadioBean bean = mData.get(arg0);
+    // vh.textView.setText(bean.name);
+    // vh.checkBox.setTag(arg0);
+    // vh.checkBox.setChecked(bean.isCheck);
+    // return convertView;
+    // }
+    // }
 
     // 滑动时机对话框
     private void showSlideShowTimeSettingDialog() {

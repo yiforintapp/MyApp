@@ -423,8 +423,9 @@ public class TaskDetectService extends Service {
                 public void run() {
                     int screenStatus = Utilities.isScreenType(getApplicationContext());
                     if (screenStatus != -1) {
-                        int value = AppMasterPreference.getInstance(getApplicationContext())
-                                .getQuickGestureDialogSeekBarValue();
+//                        int value = AppMasterPreference.getInstance(getApplicationContext())
+//                                .getQuickGestureDialogSeekBarValue();
+                        int value=QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize;
                         if (!FloatWindowHelper.mGestureShowing
                                 && AppMasterPreference.getInstance(getApplicationContext())
                                         .getFristSlidingTip()) {
