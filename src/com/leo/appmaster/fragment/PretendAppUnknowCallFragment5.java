@@ -32,7 +32,7 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class PretendAppUnknowCallFragment5 extends PretendFragment implements OnTouchListener {
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
-            iv_duanxin_big, iv_jieting_big, finish_lock, iv_test_icon,iv_topguide;
+            iv_duanxin_big, iv_jieting_big, finish_lock, iv_test_icon;
     private RelativeLayout activity_weizhuang_firstin;
     private View text_content;
     private float mYuanX, mYuanY, mZhiJing, mBanJing;
@@ -76,9 +76,6 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
                     iv_jieting.layout(jie_left, jie_top, jie_right, jie_bottom);
                     iv_jieting_big.layout(jie_left_big, jie_top_big, jie_right_big, jie_bottom_big);
-                    
-                    iv_topguide.layout(top_guide_left, top_guide_top, top_guide_right, top_guide_bottom);
-                    iv_topguide.setVisibility(View.VISIBLE);
 
                     if (!isStartDong) {
                         myself_circle.setVisibility(View.VISIBLE);
@@ -215,7 +212,6 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         iv_guaduan_big = (ImageView) findViewById(R.id.iv_guaduan_big);
         iv_duanxin_big = (ImageView) findViewById(R.id.iv_duanxin_big);
         iv_jieting_big = (ImageView) findViewById(R.id.iv_jieting_big);
-        iv_topguide = (ImageView) findViewById(R.id.iv_topguide);
         
         // iv_test_icon = new ImageView(mActivity);
         // iv_test_icon.setBackground(mActivity.getResources().getDrawable(R.drawable.app_seekbar_btn));
