@@ -335,4 +335,7 @@
     <dimen name="quick_seek_bar_width">250dp</dimen>
     <!-- quick gesutre end -->
 
+	<dimen name="privacy_contact_red_tip_x">94dp</dimen>
+    <dimen name="privacy_contact_red_tip_y">12dp</dimen>
+
 </resources>
