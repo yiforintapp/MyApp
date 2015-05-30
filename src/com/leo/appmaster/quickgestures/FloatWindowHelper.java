@@ -139,7 +139,14 @@ public class FloatWindowHelper {
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
                                 if (LockManager.getInstatnce().isShowSysNoReadMessage) {
-                                    LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                    Intent intent = new Intent(mContext,
+                                            QuickGesturePopupActivity.class);
+                                    try {
+                                        mContext.startActivity(intent);
+                                        LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                                 removeSwipWindow(mContext, 1);
                             }
@@ -293,7 +300,14 @@ public class FloatWindowHelper {
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
                                 if (LockManager.getInstatnce().isShowSysNoReadMessage) {
-                                    LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                    Intent intent = new Intent(mContext,
+                                            QuickGesturePopupActivity.class);
+                                    try {
+                                        mContext.startActivity(intent);
+                                        LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                                 removeSwipWindow(mContext, 4);
                             }
@@ -465,7 +479,14 @@ public class FloatWindowHelper {
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
                                 if (LockManager.getInstatnce().isShowSysNoReadMessage) {
-                                    LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                    Intent intent = new Intent(mContext,
+                                            QuickGesturePopupActivity.class);
+                                    try {
+                                        mContext.startActivity(intent);
+                                        LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                                 removeSwipWindow(mContext, -1);
                             }
@@ -616,7 +637,14 @@ public class FloatWindowHelper {
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
                                 if (LockManager.getInstatnce().isShowSysNoReadMessage) {
-                                    LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                    Intent intent = new Intent(mContext,
+                                            QuickGesturePopupActivity.class);
+                                    try {
+                                        mContext.startActivity(intent);
+                                        LockManager.getInstatnce().isShowSysNoReadMessage = false;
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                                 removeSwipWindow(mContext, -4);
                             }
@@ -640,11 +668,12 @@ public class FloatWindowHelper {
                 mRightCenterCenterParams.x = (int) ((width / 2) + (mRightCenterCenterParams.width / 2));
                 if (mRightBottomView != null) {
                     mRightCenterCenterParams.y = (int) ((height / 2)
-                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height - mRightCenterParams.height - DipPixelUtil
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height
+                            - mRightCenterParams.height - DipPixelUtil
                             .dip2px(mContext, 12));
                 } else {
                     mRightCenterCenterParams.y = (int) ((height / 2)
-                            - (mRightCenterCenterParams.height / 2)- rightBottom
+                            - (mRightCenterCenterParams.height / 2) - rightBottom
                             - rightCenter - DipPixelUtil
                             .dip2px(mContext, 12));
                 }
@@ -655,7 +684,8 @@ public class FloatWindowHelper {
             } else {
                 if (mRightBottomView != null) {
                     mRightCenterCenterParams.y = (int) ((height / 2)
-                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height - mRightCenterParams.height - DipPixelUtil
+                            - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height
+                            - mRightCenterParams.height - DipPixelUtil
                             .dip2px(mContext, 12));
                 } else {
                     mRightCenterCenterParams.y = (int) ((height / 2)
@@ -916,11 +946,12 @@ public class FloatWindowHelper {
                     mRightCenterCenterHeight) / 2) + (value)) * 2;
             if (mRightBottomView != null) {
                 mRightCenterCenterParams.y = (int) ((height / 2)
-                        - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height - mRightCenterParams.height - DipPixelUtil
+                        - (mRightCenterCenterParams.height / 2) - mRightBottomParams.height
+                        - mRightCenterParams.height - DipPixelUtil
                         .dip2px(context, 12));
             } else {
                 mRightCenterCenterParams.y = (int) ((height / 2)
-                        - (mRightCenterCenterParams.height / 2)- rightBottom
+                        - (mRightCenterCenterParams.height / 2) - rightBottom
                         - rightCenter - DipPixelUtil.dip2px(
                         context, 12));
             }
