@@ -131,6 +131,7 @@ public class LockManager {
     private LockMode mCurrentMode;
     private boolean mLockModeLoaded;
     private boolean mPauseScreenonLock;
+    private boolean mFilterAll;
 
     /*
      * record ortcount unlock
@@ -1351,6 +1352,10 @@ public class LockManager {
             mFilterPgks.put(filterPackage, persistent);
         }
     }
+    
+    public void filterAllOneTime() {
+        mFilterAll = true;
+    }
 
     public void timeFilter(final String packageName, long outtime) {
         addFilterLockPackage(packageName, true);
@@ -1361,7 +1366,6 @@ public class LockManager {
                 mFilterPgks.remove(packageName);
             }
         }, outtime);
-
     }
 
     /**
@@ -1493,6 +1497,11 @@ public class LockManager {
     public boolean applyLock(int lockMode, String lockedPkg, boolean restart,
             OnUnlockedListener listener) {
 
+        if(mFilterAll) {
+            mFilterAll = false;
+            return false;
+        }
+        
         if (TextUtils.equals(mContext.getPackageName(), lockedPkg)) {
             AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
             long filterTime = amp.getLastFilterSelfTime();
