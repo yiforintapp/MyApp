@@ -953,12 +953,12 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private void quickTipAnim(View view) {
         AlphaAnimation alpha = new AlphaAnimation(0, 1);
         alpha.setDuration(1000);
-        ScaleAnimation scale = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
-        scale.setDuration(1000);
+//        ScaleAnimation scale = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+//                Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
+//        scale.setDuration(1000);
         AnimationSet animation = new AnimationSet(true);
         animation.addAnimation(alpha);
-        animation.addAnimation(scale);
+//        animation.addAnimation(scale);
         view.setAnimation(animation);
         animation.start();
     }
