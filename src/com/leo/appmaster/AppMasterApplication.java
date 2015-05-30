@@ -135,6 +135,7 @@ public class AppMasterApplication extends Application {
 
         registerPackageChangedBroadcast();
         SDKWrapper.iniSDK(this);
+        AppBusinessManager.getInstance(mInstance).init();
         startInitTask(this);
 
         // init lock manager
@@ -253,7 +254,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 LeoLog.e("xxxx", "startInitTask");
-                AppBusinessManager.getInstance(mInstance).init();
+//                AppBusinessManager.getInstance(mInstance).init();
                 QuickGestureManager.getInstance(AppMasterApplication.this).init();
                 checkUpdateFinish();
                 // judgeLockService();

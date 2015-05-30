@@ -66,7 +66,7 @@ public class FloatWindowHelper {
     // 左中高度
     private static float mLeftCenterHeight = 50;
     // 左侧中部高度
-    private static float mLeftCenterCenterHeight = 150;
+    private static float mLeftCenterCenterHeight = 300;
     // 左上宽度
     private static float mLeftTopWidth = 13;
     // 左上高度
@@ -80,7 +80,7 @@ public class FloatWindowHelper {
     // 右中高度
     private static float mRightCenterHeight = 50;
     // 右侧中部高度
-    private static float mRightCenterCenterHeight = 150;
+    private static float mRightCenterCenterHeight = 300;
     // 右上宽度
     private static float mRightTopWidth = 13;
     // 右上高度
@@ -319,7 +319,7 @@ public class FloatWindowHelper {
                     mLeftCenterCenterParams.y = (int) ((height / 2)
                             - (mLeftCenterCenterParams.height / 2)
                             - DipPixelUtil.dip2px(mContext, mLeftBottomHeight) - DipPixelUtil
-                            .dip2px(mContext, 40));
+                            .dip2px(mContext, 150));
                 }
                 mLeftCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
                 mLeftCenterCenterParams.format = PixelFormat.RGBA_8888;
@@ -335,7 +335,7 @@ public class FloatWindowHelper {
                     mLeftCenterCenterParams.y = (int) ((height / 2)
                             - (mLeftCenterCenterParams.height / 2)
                             - DipPixelUtil.dip2px(mContext, mLeftBottomHeight) - DipPixelUtil
-                            .dip2px(mContext, 40));
+                            .dip2px(mContext, 150));
                 }
             }
             if (!mGestureShowing) {
@@ -640,7 +640,7 @@ public class FloatWindowHelper {
                     mRightCenterCenterParams.y = (int) ((height / 2)
                             - (mRightCenterCenterParams.height / 2)
                             - DipPixelUtil.dip2px(mContext, mRightBottomHeight) - DipPixelUtil
-                            .dip2px(mContext, 40));
+                            .dip2px(mContext, 150));
                 }
                 mRightCenterCenterParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
                 mRightCenterCenterParams.format = PixelFormat.RGBA_8888;
@@ -655,7 +655,7 @@ public class FloatWindowHelper {
                     mRightCenterCenterParams.y = (int) ((height / 2)
                             - (mRightCenterCenterParams.height / 2)
                             - DipPixelUtil.dip2px(mContext, mRightBottomHeight) - DipPixelUtil
-                            .dip2px(mContext, 40));
+                            .dip2px(mContext, 150));
                 }
 
             }
@@ -860,7 +860,7 @@ public class FloatWindowHelper {
                 mLeftCenterCenterParams.y = (int) ((height / 2)
                         - (mLeftCenterCenterParams.height / 2)
                         - DipPixelUtil.dip2px(context, mLeftBottomHeight) - DipPixelUtil.dip2px(
-                        context, 40));
+                        context, 150));
             }
         }
         // 左上
@@ -910,7 +910,7 @@ public class FloatWindowHelper {
                 mRightCenterCenterParams.y = (int) ((height / 2)
                         - (mRightCenterCenterParams.height / 2)
                         - DipPixelUtil.dip2px(context, mRightBottomHeight) - DipPixelUtil.dip2px(
-                        context, 40));
+                        context, 150));
             }
 
         }
@@ -1124,6 +1124,7 @@ public class FloatWindowHelper {
                 if (!AppMasterPreference.getInstance(context).getDialogRadioLeftCenter()) {
                     FloatWindowHelper.removeSwipWindow(context, 4);
                 } else {
+                    FloatWindowHelper.removeSwipWindow(context, 4);
                     FloatWindowHelper
                             .createFloatLeftCenterCenterWindow(context, value);
                 }
@@ -1153,6 +1154,7 @@ public class FloatWindowHelper {
                 if (!AppMasterPreference.getInstance(context).getDialogRadioRightCenter()) {
                     FloatWindowHelper.removeSwipWindow(context, -4);
                 } else {
+                    FloatWindowHelper.removeSwipWindow(context, -4);
                     FloatWindowHelper
                             .createFloatRightCenterCenterWindow(context, value);
                 }
