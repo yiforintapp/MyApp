@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import com.leo.appmaster.applocker.manager.LockManager;
+
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Context;
@@ -228,6 +230,7 @@ public class BuildProperties {
             intent.setClassName("com.huawei.systemmanager", string);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
+                LockManager.getInstatnce().addFilterLockPackage("com.huawei.systemmanager", false);
                 context.startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();

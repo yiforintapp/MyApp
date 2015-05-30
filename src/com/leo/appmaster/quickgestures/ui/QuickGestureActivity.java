@@ -167,28 +167,33 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         gestureSettingOpenGesture.setCheck(mPre.getSwitchOpenQuickGesture());
         gestureSettingOpenGesture.setBackageDraw(R.drawable.bg);
         mQuickGestureSettingOption.add(gestureSettingOpenGesture);
+        
         QuickGestureSettingBean gestureSettingSlidingAreaLocation = new QuickGestureSettingBean();
         gestureSettingSlidingAreaLocation.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_sliding_area_location_title));
         gestureSettingSlidingAreaLocation.setBackageDraw(R.drawable.bg_upround);
         mQuickGestureSettingOption.add(gestureSettingSlidingAreaLocation);
+        
         QuickGestureSettingBean gestureSettingAbleSlidingTime = new QuickGestureSettingBean();
         gestureSettingAbleSlidingTime.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_able_sliding_time));
         gestureSettingAbleSlidingTime.setBackageDraw(R.drawable.bg_downround);
         mQuickGestureSettingOption.add(gestureSettingAbleSlidingTime);
+        
         QuickGestureSettingBean gestureSettingNoReadMessage = new QuickGestureSettingBean();
         gestureSettingNoReadMessage.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_no_read_message_tip));
         gestureSettingNoReadMessage.setCheck(mPre.getSwitchOpenNoReadMessageTip());
         gestureSettingNoReadMessage.setBackageDraw(R.drawable.bg_upround);
         mQuickGestureSettingOption.add(gestureSettingNoReadMessage);
+        
         QuickGestureSettingBean gestureSettingRecentlyContact = new QuickGestureSettingBean();
         gestureSettingRecentlyContact.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_recently_contact));
         gestureSettingRecentlyContact.setCheck(mPre.getSwitchOpenRecentlyContact());
         gestureSettingRecentlyContact.setBackageDraw(R.drawable.bg_zeroround);
         mQuickGestureSettingOption.add(gestureSettingRecentlyContact);
+        
         QuickGestureSettingBean gestureSettingContactMessagTip = new QuickGestureSettingBean();
         gestureSettingContactMessagTip.setName(this.getResources().getString(
                 R.string.pg_appmanager_quick_gesture_option_privacy_contact_message_tip));
@@ -287,8 +292,9 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 vh.arrowImageVIew.setVisibility(View.GONE);
             }
             // 显示划出时机
-            if (position == 2) {
+            if (position == 2 || position ==1) {
                 vh.content.setVisibility(View.VISIBLE);
+                if(position == 2){
                 if (mPre.getSlideTimeJustHome()) {
                     vh.content
                             .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
@@ -296,6 +302,16 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 if (mPre.getSlideTimeAllAppAndHome()) {
                     vh.content
                             .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
+                }
+                }else if(position ==1){
+//                    if (mPre.getSlideTimeJustHome()) {
+//                        vh.content
+//                                .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
+//                    }
+//                    if (mPre.getSlideTimeAllAppAndHome()) {
+//                        vh.content
+//                                .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
+//                    }
                 }
             } else {
                 vh.content.setVisibility(View.GONE);
