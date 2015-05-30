@@ -53,6 +53,7 @@ public class QuickGestureManager {
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
     private Drawable[] mEmptyIcon;
+    public  int mSlidAreaSize;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
@@ -768,4 +769,13 @@ public class QuickGestureManager {
             }
         }
     }
+
+    public void resetSlidAreaSize() {
+        mSlidAreaSize = mSpSwitch.getQuickGestureDialogSeekBarValue();
+    }
+
+    public void setSlidAreaSize(int value) {
+        mSlidAreaSize = value;
+    }
+
 }
