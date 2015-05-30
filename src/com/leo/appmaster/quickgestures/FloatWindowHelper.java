@@ -139,6 +139,7 @@ public class FloatWindowHelper {
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
                                 if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                                    AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
                                     try {
@@ -299,7 +300,9 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
-                                if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                                if (LockManager.getInstatnce().isShowSysNoReadMessage
+                                        && mLeftBottomView == null) {
+                                    AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
                                     try {
@@ -479,6 +482,7 @@ public class FloatWindowHelper {
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
                                 if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                                    AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
                                     try {
@@ -636,7 +640,9 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
-                                if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                                if (LockManager.getInstatnce().isShowSysNoReadMessage
+                                        && mRightBottomView == null) {
+                                    AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
                                     try {
@@ -1247,6 +1253,12 @@ public class FloatWindowHelper {
 
     private static void onTouchAreaShowQuick(int flag) {
         if (flag == -1 || flag == -2) {
+            // cancel message tip
+            if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                AppMasterPreference.getInstance(AppMasterApplication.getInstance())
+                        .setLastTimeLayout(1);
+                LockManager.getInstatnce().isShowSysNoReadMessage = false;
+            }
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1257,11 +1269,13 @@ public class FloatWindowHelper {
             } else if (flag == -2) {
                 LockManager.getInstatnce().onTuchGestureFlag = -2;
             }
-            // 去除系统短信未读提示
+        } else if (flag == 1 || flag == 2) {
+            // cancel message tip
             if (LockManager.getInstatnce().isShowSysNoReadMessage) {
+                AppMasterPreference.getInstance(AppMasterApplication.getInstance())
+                        .setLastTimeLayout(1);
                 LockManager.getInstatnce().isShowSysNoReadMessage = false;
             }
-        } else if (flag == 1 || flag == 2) {
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1271,10 +1285,6 @@ public class FloatWindowHelper {
                 LockManager.getInstatnce().onTuchGestureFlag = 1;
             } else if (flag == 2) {
                 LockManager.getInstatnce().onTuchGestureFlag = 2;
-            }
-            // 去除系统短信未读提示
-            if (LockManager.getInstatnce().isShowSysNoReadMessage) {
-                LockManager.getInstatnce().isShowSysNoReadMessage = false;
             }
         }
     }
