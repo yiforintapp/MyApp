@@ -280,7 +280,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                 mb.setMessageTime(time);
                 if (threadId != null) {
                     if (!messageList.containsKey(threadId)) {
-                        int temp = threadIdMessage(number);
+                        int temp = noReadMessage(number);
                         mb.setCount(temp);
                         messageList.put(threadId, mb);
                     }
@@ -300,20 +300,9 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         Collections.sort(mMessageList, PrivacyContactUtils.mMessageCamparator);
     }
 
-    private int threadIdMessage(String number) {
-        int count = 0;
-        String fromateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-        Cursor cur = mContext.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
-                Constants.COLUMN_MESSAGE_PHONE_NUMBER
-                        + " LIKE ? and message_is_read = 0",
-                new String[] {
-                    "%" + fromateNumber
-                }, null);
-        if (cur != null) {
-            count = cur.getCount();
-            cur.close();
-        }
-        return count;
+    // get no read message count
+    private int noReadMessage(String number) {
+        return PrivacyContactUtils.getNoReadMessage(mContext, number);
     }
 
     private class MyMessageAdapter extends BaseAdapter {
@@ -557,6 +546,8 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             } else if (PrivacyContactUtils.MESSAGE_EDIT_MODEL_OPERATION_DELETE
                     .equals(operationModel)) {
                 isOtherLogs = PrivacyContactUtils.MESSAGE_EDIT_MODEL_OPERATION_DELETE;
+                AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
+                int temp = pre.getMessageNoReadCount();
                 for (MessageBean messageBean : mRestorMessages) {
                     String fromateNumber = PrivacyContactUtils.formatePhoneNumber(messageBean
                             .getPhoneNumber());
@@ -566,6 +557,25 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                             new String[] {
                                 "%" + fromateNumber
                             });
+                    // delete message cancel red tip
+                    if (temp > 0) {
+                        int noReadMessageCount = noReadMessage(messageBean.getPhoneNumber());
+                        if (noReadMessageCount > 0) {
+                            for (int i = 0; i < noReadMessageCount; i++) {
+                                if (temp > 0) {
+                                    temp=temp-1;
+                                    pre.setMessageNoReadCount(temp);
+                                }
+                                if (temp<= 0) {
+                                    LeoEventBus
+                                            .getDefaultBus()
+                                            .post(
+                                                    new PrivacyDeletEditEvent(
+                                                            PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT));
+                                }
+                            }
+                        }
+                    }
                     for (MessageBean messages : mRestoremessgeLists) {
                         int flagNumber = PrivacyContactUtils.deleteMessageFromMySelf(cr,
                                 Constants.PRIVACY_MESSAGE_URI,

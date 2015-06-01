@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -22,15 +23,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
-import android.provider.CallLog.Calls;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
-import android.util.Log;
-
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -274,7 +273,7 @@ public class PrivacyContactUtils {
                         contacts = null;
                     }
                 }
-            }
+            } 
         } catch (Exception e) {
 
         } finally {
@@ -1134,4 +1133,39 @@ public class PrivacyContactUtils {
 
         return contacts;
     }
+
+    // 获取未读通话数量
+    public static int getNoReadMessage(Context context, String number) {
+        int count = 0;
+        String fromateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+        Cursor cur = context.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
+                Constants.COLUMN_MESSAGE_PHONE_NUMBER
+                        + " LIKE ? and message_is_read = 0",
+                new String[] {
+                    "%" + fromateNumber
+                }, null);
+        if (cur != null) {
+            count = cur.getCount();
+            cur.close();
+        }
+        return count;
+    }
+
+    // 获取未读数量
+    public static int getNoReadCallLogCount(Context context, String number) {
+        int count = 0;
+        String fromateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+        Cursor cur = context.getContentResolver().query(Constants.PRIVACY_CALL_LOG_URI, null,
+                Constants.COLUMN_CALL_LOG_PHONE_NUMBER
+                        + " LIKE ? and call_log_is_read = 0",
+                new String[] {
+                    "%" + fromateNumber
+                }, null);
+        if (cur != null) {
+            count = cur.getCount();
+            cur.close();
+        }
+        return count;
+    }
+
 }

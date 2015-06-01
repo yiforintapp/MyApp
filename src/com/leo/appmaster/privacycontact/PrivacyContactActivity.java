@@ -124,7 +124,8 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 }
                 if (position == 1) {
                     mTtileBar.setOptionImageVisibility(View.INVISIBLE);
-                    if (AppMasterPreference.getInstance(PrivacyContactActivity.this).getCallLogNoReadCount()<=0) {
+                    if (AppMasterPreference.getInstance(PrivacyContactActivity.this)
+                            .getCallLogNoReadCount() <= 0) {
                         mCallLogTip = false;
                         mFragmentHolders[1].redTip = false;
                         mPrivacyContactPagerTab.notifyDataSetChanged();
@@ -222,7 +223,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
                     R.drawable.privacy_title_bt_selecter);
             mTtileBar.setOptionListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
@@ -350,8 +350,8 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 .equals(event.editModel)) {
             mFragmentHolders[0].redTip = false;
             mPrivacyContactPagerTab.notifyDataSetChanged();
-        }else if(PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT
-                .equals(event.editModel)){
+        } else if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT
+                .equals(event.editModel)) {
             mFragmentHolders[1].redTip = false;
             mPrivacyContactPagerTab.notifyDataSetChanged();
         }
@@ -415,7 +415,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         pravicyCalllogFragment.setContent(holder.title);
         holder.fragment = pravicyCalllogFragment;
         mFragmentHolders[1] = holder;
-        if (AppMasterPreference.getInstance(this).getCallLogNoReadCount()>0) {
+        if (AppMasterPreference.getInstance(this).getCallLogNoReadCount() > 0) {
             mFragmentHolders[1].redTip = true;
         }
         /**
