@@ -201,7 +201,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             if (CallLog.Calls.MISSED_TYPE == type) {
                                 AppMasterPreference pre = AppMasterPreference
                                         .getInstance(mContext);
-                                int count = pre.getMessageNoReadCount();
+                                int count = pre.getCallLogNoReadCount();
                                 if (count > 0) {
                                     pre.setCallLogNoReadCount(count + 1);
                                 } else {
