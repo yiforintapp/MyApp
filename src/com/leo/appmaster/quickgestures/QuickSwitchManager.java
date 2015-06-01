@@ -508,16 +508,16 @@ public class QuickSwitchManager {
                         R.drawable.switch_set);
                 mSaveList.add(switchSetInfo);
                 // 情景模式切换
-//                QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
-//                changeModeInfo.swtichIdentiName = CHANGEMODE;
-//                changeModeInfo.label = getLabelFromName(CHANGEMODE);
-//                changeModeInfo.switchIcon =
-//                        getIconFromName(changeModeInfo.label);
-//                changeModeInfo.gesturePosition = 8;
-//                changeModeInfo.isFreeDisturb = true;
-//                changeModeInfo.icon = mContext.getResources().getDrawable(
-//                        R.drawable.switch_mode);
-//                mSaveList.add(changeModeInfo);
+                // QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
+                // changeModeInfo.swtichIdentiName = CHANGEMODE;
+                // changeModeInfo.label = getLabelFromName(CHANGEMODE);
+                // changeModeInfo.switchIcon =
+                // getIconFromName(changeModeInfo.label);
+                // changeModeInfo.gesturePosition = 8;
+                // changeModeInfo.isFreeDisturb = true;
+                // changeModeInfo.icon = mContext.getResources().getDrawable(
+                // R.drawable.switch_mode);
+                // mSaveList.add(changeModeInfo);
                 // 移动数据
                 QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
                 mobileDataInfo.swtichIdentiName = MOBILEDATA;
@@ -579,7 +579,7 @@ public class QuickSwitchManager {
                 mSaveList.add(flyModeInfo);
                 String saveToSp = QuickSwitchManager.getInstance(mContext).listToString(
                         mSaveList.subList(0, 13),
-                        switchNum);
+                        switchNum, false);
                 apf.setSwitchList(saveToSp);
                 apf.setLoadedSwitchList(true);
                 mSwitcherLoaded = true;
@@ -657,12 +657,12 @@ public class QuickSwitchManager {
                 R.drawable.switch_set);
         mAllList.add(switchSetInfo);
         // 情景模式切换
-//        QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
-//        changeModeInfo.swtichIdentiName = CHANGEMODE;
-//        changeModeInfo.label = getLabelFromName(CHANGEMODE);
-//        changeModeInfo.icon = mContext.getResources().getDrawable(
-//                R.drawable.switch_mode);
-//        mAllList.add(changeModeInfo);
+        // QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
+        // changeModeInfo.swtichIdentiName = CHANGEMODE;
+        // changeModeInfo.label = getLabelFromName(CHANGEMODE);
+        // changeModeInfo.icon = mContext.getResources().getDrawable(
+        // R.drawable.switch_mode);
+        // mAllList.add(changeModeInfo);
         // 移动数据
         QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
         mobileDataInfo.swtichIdentiName = MOBILEDATA;
@@ -1189,12 +1189,7 @@ public class QuickSwitchManager {
         mContext.startActivity(intent);
     }
 
-    public String listToString(List<BaseInfo> mSwitchList, int mNum) {
-
-        // 每次调用listToString证明要存入sp，so，每次都更新 一下Manager里的list
-        this.mSaveList = mSwitchList;
-       
-
+    public String listToString(List<BaseInfo> mSwitchList, int mNum, boolean isFromDialog) {
         String ListString = "";
         for (int i = 0; i < mNum; i++) {
             BaseInfo switchInfo = (BaseInfo) mSwitchList.get(i);
@@ -1208,14 +1203,31 @@ public class QuickSwitchManager {
                 ListString = ListString + "," + name + ":" + position;
             }
         }
+        
+        if (isFromDialog) {
+            this.mSaveList = StringToList(ListString);
+        } else {
+            // 每次调用listToString证明要存入sp，so，每次都更新 一下Manager里的list
+            this.mSaveList = mSwitchList;
+        }
+        
         return ListString;
     }
 
-//    private List<BaseInfo> makeRightList(List<BaseInfo> mSwitchList) {
-//        List<BaseInfo> mRightList = new ArrayList<BaseInfo>();
-//        mRightList = mSwitchList;
-//        return mRightList;
+//    private void makeListRight(List<BaseInfo> mSwitchList) {
+//        List<BaseInfo> mBaseInfoList = new ArrayList<BaseInfo>();
+//        for(int i = 0;i<mSwitchList.size();i++){
+//            QuickSwitcherInfo changeInfo = (QuickSwitcherInfo) mSwitchList.get(i);
+//            mBaseInfoList.add(changeInfo);
+//        }
+//        this.mSaveList = mBaseInfoList;
 //    }
+
+    // private List<BaseInfo> makeRightList(List<BaseInfo> mSwitchList) {
+    // List<BaseInfo> mRightList = new ArrayList<BaseInfo>();
+    // mRightList = mSwitchList;
+    // return mRightList;
+    // }
 
     public List<BaseInfo> StringToList(String mSwitchListFromSp) {
         List<BaseInfo> mSwitcherList = new ArrayList<BaseInfo>();
