@@ -57,15 +57,15 @@ public class AppLoadEngine extends BroadcastReceiver {
         public void loadTheme();
     }
 
-//    private static final DecimalFormat sFormat = new DecimalFormat("#.0");
-//    private static final long sKB = 1024;
-//    private static final long sMB = sKB * sKB;
-//    private static final long sGB = sMB * sKB;
-//
-//    private static final String sUnitB = "B";
-//    private static final String sUnitKB = "KB";
-//    private static final String sUnitMB = "MB";
-//    private static final String sUnitGB = "GB";
+    // private static final DecimalFormat sFormat = new DecimalFormat("#.0");
+    // private static final long sKB = 1024;
+    // private static final long sMB = sKB * sKB;
+    // private static final long sGB = sMB * sKB;
+    //
+    // private static final String sUnitB = "B";
+    // private static final String sUnitKB = "KB";
+    // private static final String sUnitMB = "MB";
+    // private static final String sUnitGB = "GB";
 
     /**
      * Resister this listener to receive application changed events
@@ -284,17 +284,17 @@ public class AppLoadEngine extends BroadcastReceiver {
         }
         return dataList.size();
     }
-    
-    
+
     public AppItemInfo getAppInfo(String pkg) {
         return mAppDetails.get(pkg);
     }
 
-    public ArrayList<AppItemInfo> getAppPkgInfo_delete() {
+    public ArrayList<AppItemInfo> getDeleteableApps() {
         loadAllPkgInfo();
         ArrayList<AppItemInfo> dataList = new ArrayList<AppItemInfo>();
         for (AppItemInfo app : mAppDetails.values()) {
-            if (!app.packageName.startsWith("com.leo.theme")) {
+            if (!app.packageName.startsWith("com.leo.theme") && !app.systemApp
+                    && !app.packageName.equals(AppMasterApplication.getInstance().getPackageName())) {
                 dataList.add(app);
             }
         }
@@ -332,7 +332,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                         0);
 
                 // check first load, and save hide theme
-                 checkFirstLoad();
+                checkFirstLoad();
                 List<String> themeList = new ArrayList<String>(
                         pre.getHideThemeList());
                 for (ResolveInfo resolveInfo : apps) {
@@ -437,17 +437,17 @@ public class AppLoadEngine extends BroadcastReceiver {
         appInfo.topPos = mRecommendLocklist.indexOf(packageName);
     }
 
-//    private void loadPowerComsuInfo() {
-//        BatteryInfoProvider provider = new BatteryInfoProvider(mContext);
-//        List<BatteryComsuption> list = provider.getBatteryStats();
-//        for (BatteryComsuption batterySipper : list) {
-//            String packageName = batterySipper.getDefaultPackageName();
-//            if (packageName != null && mAppDetails.containsKey(packageName)) {
-//                mAppDetails.get(packageName).powerComsuPercent = batterySipper
-//                        .getPercentOfTotal();
-//            }
-//        }
-//    }
+    // private void loadPowerComsuInfo() {
+    // BatteryInfoProvider provider = new BatteryInfoProvider(mContext);
+    // List<BatteryComsuption> list = provider.getBatteryStats();
+    // for (BatteryComsuption batterySipper : list) {
+    // String packageName = batterySipper.getDefaultPackageName();
+    // if (packageName != null && mAppDetails.containsKey(packageName)) {
+    // mAppDetails.get(packageName).powerComsuPercent = batterySipper
+    // .getPercentOfTotal();
+    // }
+    // }
+    // }
 
     private void loadCacheInfo(String pkgName) {
         AppItemInfo info = mAppDetails.get(pkgName);
@@ -947,19 +947,19 @@ public class AppLoadEngine extends BroadcastReceiver {
         return 0;
     }
 
-//    private static String convertToSizeString(long size) {
-//        String sSize = null;
-//        if (size > sGB) {
-//            sSize = sFormat.format((float) size / sGB) + sUnitGB;
-//        } else if (size > sMB) {
-//            sSize = sFormat.format((float) size / sMB) + sUnitMB;
-//        } else if (size > sKB) {
-//            sSize = sFormat.format((float) size / sKB) + sUnitKB;
-//        } else {
-//            sSize = size + sUnitB;
-//        }
-//        return sSize;
-//    }
+    // private static String convertToSizeString(long size) {
+    // String sSize = null;
+    // if (size > sGB) {
+    // sSize = sFormat.format((float) size / sGB) + sUnitGB;
+    // } else if (size > sMB) {
+    // sSize = sFormat.format((float) size / sMB) + sUnitMB;
+    // } else if (size > sKB) {
+    // sSize = sFormat.format((float) size / sKB) + sUnitKB;
+    // } else {
+    // sSize = size + sUnitB;
+    // }
+    // return sSize;
+    // }
 
     public String getActivityName(String pkg) {
         AppItemInfo appInfo = mAppDetails.get(pkg);

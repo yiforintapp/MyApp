@@ -69,6 +69,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public static boolean isClean = false;
     public static boolean isShowIng = false;
     private boolean curFastThanset = false;
+    private boolean isStopDongHua = false;
+    private int mNowDongHuaWhere = 0;
     private int lastPosition = -1;
 
     // private boolean isReNewFragment = false;
@@ -147,10 +149,19 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         }
         DeleteDataList = new ArrayList<AppItemInfo>();
         homeAppManagerTask = new HomeAppAsyncTask();
-        homeAppManagerTask.execute("");
-    }
+        homeAppManagerTask.execute();
 
-    class HomeAppAsyncTask extends AsyncTask {
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            @Override
+            public void run() {
+                cleanView();
+                cleanMemory();
+                LeoLog.d("HomeAppManagerFragment", "loadData() finish");
+            }
+        });
+    }
+    
+    class HomeAppAsyncTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -161,14 +172,15 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         }
 
         @Override
-        protected Object doInBackground(Object... params) {
+        protected Void doInBackground(Void... params) {
             loadData();
             onDataReady();
             return null;
         }
+        
 
         @Override
-        protected void onPostExecute(Object result) {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             LeoLog.d("HomeAppManagerFragment", "加载完毕啦！！！！");
             pb_loading.setVisibility(View.GONE);
@@ -212,7 +224,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    if(isStopDongHua){
+                        break;
+                    }
                     startProgress += 1;
+                    mNowDongHuaWhere = startProgress;
                     roundProgressBar.setProgress(startProgress);
                     Message msg = Message.obtain();
                     msg.what = DONGHUA_CHANGE_TEXT;
@@ -270,8 +286,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private void loadData() {
         LeoLog.d("HomeAppManagerFragment", "loadData()");
         // bottom two TextView
-        forTextList = DeleteDataList = (ArrayList<AppItemInfo>) mDeleteManager.getDeleteList()
-                .clone();
+        forTextList = DeleteDataList = mDeleteManager.getDeleteList();
         deleteDataAllSize = countTotalSpace(DeleteDataList);
 
         installedAppsSpan = setTextColor(
@@ -284,15 +299,18 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 resources.getString(R.string.first_used_space)
                         + deleteDataAllSize);
 
-        int RestoreListSize = getRestoreList();
+        AppBackupRestoreManager appBackupRestoreManager = new AppBackupRestoreManager(
+                mActivity.getApplicationContext());
+        int RestoreListSize = appBackupRestoreManager.getRestoreList().size();
+
         backUpSpan = setTextColor(
                 resources.getString(R.string.first_backups_app), ""
                         + RestoreListSize, resources.getString(R.string.first_backups_app)
                         + RestoreListSize);
 
         // clean View
-        cleanView();
-        cleanMemory();
+//        cleanView();
+//        cleanMemory();
         LeoLog.d("HomeAppManagerFragment", "loadData() finish");
     }
 
@@ -434,6 +452,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     private void cleanMem() {
         isCleanning = true;
+        isStopDongHua = true;
         if (!isClean) {
             donghua_show_clean();
             // cleanMemory();
@@ -446,7 +465,9 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private void donghua_show_clean() {
         new Thread() {
             public void run() {
-                int endPoint = 0;
+                if(isStopDongHua){
+                    mProgress= mNowDongHuaWhere;
+                }
                 while (mProgress > 0) {
                     try {
                         Thread.sleep(10);

@@ -254,7 +254,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 LeoLog.e("xxxx", "startInitTask");
-//                AppBusinessManager.getInstance(mInstance).init();
+                // AppBusinessManager.getInstance(mInstance).init();
                 QuickGestureManager.getInstance(AppMasterApplication.this).init();
                 checkUpdateFinish();
                 // judgeLockService();
@@ -295,7 +295,7 @@ public class AppMasterApplication extends Application {
             AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
         }
 
-    }                                   
+    }
 
     protected void checkUpdateFinish() {
         judgeLockAlert();
@@ -919,6 +919,7 @@ public class AppMasterApplication extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
+        ImageLoader.getInstance().clearMemoryCache();
         mBackupManager.onDestory(this);
         unregisterReceiver(mAppsEngine);
         mAppsEngine.onDestroyed();
