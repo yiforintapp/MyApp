@@ -503,21 +503,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 
     public synchronized ArrayList<AppItemInfo> getDeleteList() {
         mDeleteList.clear();
-        // if (mDeleteList.isEmpty()) {
-        // getRestoreList();
-        ArrayList<AppItemInfo> allApps = AppLoadEngine.getInstance(null)
-                .getAppPkgInfo_delete();
-        for (AppItemInfo app : allApps) {
-            if (app.systemApp) {
-                continue;
-            }
-            if(app.packageName.equals(AppMasterApplication.getInstance().getPackageName())){
-                continue;
-            }
-            mDeleteList.add(app);
-        }
-
-        // }
+        mDeleteList =   AppLoadEngine.getInstance(mContext).getDeleteableApps();
         mDataReady = true;
         return mDeleteList;
     }

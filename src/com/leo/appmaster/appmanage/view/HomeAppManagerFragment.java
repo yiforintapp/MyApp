@@ -147,10 +147,19 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         }
         DeleteDataList = new ArrayList<AppItemInfo>();
         homeAppManagerTask = new HomeAppAsyncTask();
-        homeAppManagerTask.execute("");
-    }
+        homeAppManagerTask.execute();
 
-    class HomeAppAsyncTask extends AsyncTask {
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            @Override
+            public void run() {
+                cleanView();
+                cleanMemory();
+                LeoLog.d("HomeAppManagerFragment", "loadData() finish");
+            }
+        });
+    }
+    
+    class HomeAppAsyncTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -161,14 +170,15 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         }
 
         @Override
-        protected Object doInBackground(Object... params) {
+        protected Void doInBackground(Void... params) {
             loadData();
             onDataReady();
             return null;
         }
+        
 
         @Override
-        protected void onPostExecute(Object result) {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             LeoLog.d("HomeAppManagerFragment", "加载完毕啦！！！！");
             pb_loading.setVisibility(View.GONE);
@@ -270,8 +280,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private void loadData() {
         LeoLog.d("HomeAppManagerFragment", "loadData()");
         // bottom two TextView
-        forTextList = DeleteDataList = (ArrayList<AppItemInfo>) mDeleteManager.getDeleteList()
-                .clone();
+        forTextList = DeleteDataList = mDeleteManager.getDeleteList();
         deleteDataAllSize = countTotalSpace(DeleteDataList);
 
         installedAppsSpan = setTextColor(
@@ -284,7 +293,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 resources.getString(R.string.first_used_space)
                         + deleteDataAllSize);
 
-        int RestoreListSize = getRestoreList();
+        AppBackupRestoreManager appBackupRestoreManager = new AppBackupRestoreManager(
+                mActivity.getApplicationContext());
+        int RestoreListSize = appBackupRestoreManager.getRestoreList().size();
+
         backUpSpan = setTextColor(
                 resources.getString(R.string.first_backups_app), ""
                         + RestoreListSize, resources.getString(R.string.first_backups_app)
