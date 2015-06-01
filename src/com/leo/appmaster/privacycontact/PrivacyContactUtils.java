@@ -225,7 +225,6 @@ public class PrivacyContactUtils {
         try {
             phoneCursor = cr.query(CONTACT_PHONE_URL,
                     null, selection, null, Phone.SORT_KEY_PRIMARY);
-            phoneCursor = null;
             if (phoneCursor != null && phoneCursor.getCount() > 0) {
                 while (phoneCursor.moveToNext()) {
                     // get phonenumber
