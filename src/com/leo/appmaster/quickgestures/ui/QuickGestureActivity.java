@@ -134,7 +134,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     }
 
     private void initQuickGestureOpen() {
-        // 开启快捷手势
+        // open quick gesture
         mOpenQuick.setOnClickListener(this);
         mOpenQuickFlag = mPre.getSwitchOpenQuickGesture();
         if (mOpenQuickFlag) {
@@ -148,19 +148,19 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mNoReadMessageFlag = mPre.getSwitchOpenNoReadMessageTip();
         mRecentlyContactFlag = mPre.getSwitchOpenRecentlyContact();
         mPrivacyContactFlag = mPre.getSwitchOpenPrivacyContactMessageTip();
-        // 未读短信开关
+        // no read message switch
         if (mNoReadMessageFlag) {
             mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
         } else {
             mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
         }
-        // 最近联系人开关
+        // recently contact swtich
         if (mRecentlyContactFlag) {
             mRecentlyContactOpenCK.setImageResource(R.drawable.switch_on);
         } else {
             mRecentlyContactOpenCK.setImageResource(R.drawable.switch_off);
         }
-        // 隐私联系人开关
+        // privacy contact switch
         if (mPrivacyContactFlag) {
             mPrivacyContactOpenCK.setImageResource(R.drawable.switch_on);
         } else {
@@ -630,6 +630,15 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         try {
                             AppMasterApplication.getInstance().startActivity(intent);
                             AppMasterPreference.getInstance(this).setFristSlidingTip(true);
+                            if (mQuickOpenCK != null) {
+                                mQuickOpenCK.setImageResource(R.drawable.switch_on);
+                                mPre.setSwitchOpenQuickGesture(true);
+                                mQuickOpenCK.setImageResource(R.drawable.switch_on);
+                                mOpenQuickFlag = true;
+                                QuickGestureManager.getInstance(QuickGestureActivity.this)
+                                        .startFloatWindow();
+                                setOnClickListener();
+                            }
                         } catch (Exception e) {
                         }
                         mFlag = true;
@@ -647,13 +656,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private void quickTipAnim(View view) {
         AlphaAnimation alpha = new AlphaAnimation(0, 1);
         alpha.setDuration(1000);
-        // ScaleAnimation scale = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
-        // Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT,
-        // 0.5f);
-        // scale.setDuration(1000);
         AnimationSet animation = new AnimationSet(true);
         animation.addAnimation(alpha);
-        // animation.addAnimation(scale);
         view.setAnimation(animation);
         animation.start();
     }
@@ -733,7 +737,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             if (QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages != null
                                     && QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages
                                             .size() > 0) {
-                                LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                                QuickGestureManager.getInstance(QuickGestureActivity.this).isShowSysNoReadMessage = true;
                                 FloatWindowHelper
                                         .removeShowReadTipWindow(QuickGestureActivity.this);
                             }
@@ -744,7 +748,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
                     mNoReadMessageFlag = false;
                 }
-//                Log.e("#########", "未读短信是否打开：" + mPre.getSwitchOpenNoReadMessageTip());
+                // Log.e("#########", "未读短信是否打开：" +
+                // mPre.getSwitchOpenNoReadMessageTip());
                 break;
             case R.id.recently_contact_content:
                 if (!mRecentlyContactFlag) {
@@ -767,7 +772,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             if (QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs != null
                                     && QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs
                                             .size() > 0) {
-                                LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                                QuickGestureManager.getInstance(QuickGestureActivity.this).isShowSysNoReadMessage = true;
                                 FloatWindowHelper
                                         .removeShowReadTipWindow(QuickGestureActivity.this);
                             }
@@ -778,7 +783,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mRecentlyContactOpenCK.setImageResource(R.drawable.switch_off);
                     mRecentlyContactFlag = false;
                 }
-//                Log.e("##########", "最近联系人是否打开：" + mPre.getSwitchOpenRecentlyContact());
+                // Log.e("##########", "最近联系人是否打开：" +
+                // mPre.getSwitchOpenRecentlyContact());
                 break;
             case R.id.privacy_contact_content:
                 if (!mPrivacyContactFlag) {
@@ -790,7 +796,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
                     mPrivacyContactFlag = false;
                 }
-//                Log.e("###########", "隐私联系人是否打开："+mPre.getSwitchOpenPrivacyContactMessageTip());
+                // Log.e("###########",
+                // "隐私联系人是否打开："+mPre.getSwitchOpenPrivacyContactMessageTip());
                 break;
         }
 
