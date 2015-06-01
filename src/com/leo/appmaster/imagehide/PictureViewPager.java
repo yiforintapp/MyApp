@@ -135,6 +135,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ImageLoader.getInstance().clearMemoryCache();
     }
 
     @Override
