@@ -733,10 +733,12 @@ public class AppleWatchLayout extends ViewGroup {
     private void showAddNewDiglog(GType type) {
         QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.MostUsedLayout) {
-            qgm.showCommontAppDialog((Activity) getContext());
+            qgm.showCommontAppDialog(getContext());
+            ((Activity) getContext()).finish();
         } else if (type == GType.SwitcherLayout) {
             // get list from sp
-            qgm.showQuickSwitchDialog(getContext(), (Activity) getContext());
+            qgm.showQuickSwitchDialog(getContext());
+            ((Activity) getContext()).finish();
         }
     }
 
