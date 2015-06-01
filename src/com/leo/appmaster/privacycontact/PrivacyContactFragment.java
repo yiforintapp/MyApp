@@ -163,19 +163,6 @@ public class PrivacyContactFragment extends BaseFragment {
             PrivacyContactMyDateTask task = new PrivacyContactMyDateTask();
             task.execute("");
         }
-        // else if
-        // (PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT.equals(event.editModel)
-        // || PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_MESSAGE_LIST
-        // .equals(event.editModel)) {
-        // PrivacyContactMyDateTask task = new PrivacyContactMyDateTask();
-        // task.execute("");
-        // } else if
-        // (PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT.equals(event.editModel)
-        // || PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_CALL_LOG_LIST
-        // .equals(event.editModel)) {
-        // PrivacyContactMyDateTask task = new PrivacyContactMyDateTask();
-        // task.execute("");
-        // }
     }
 
     // 恢复编辑之前的参数
@@ -416,39 +403,11 @@ public class PrivacyContactFragment extends BaseFragment {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
                     startActivity(intent);
-                    // 添加到隐私通话中
-                    // ContentValues values = new ContentValues();
-                    // values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER,
-                    // contact.getContactNumber());
-                    // values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME,
-                    // contact.getContactName());
-                    // SimpleDateFormat df = new
-                    // SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                    // String date = df.format(new Date());
-                    // values.put(Constants.COLUMN_CALL_LOG_DATE, date);
-                    // values.put(Constants.COLUMN_CALL_LOG_TYPE,
-                    // CallLog.Calls.OUTGOING_TYPE);
-                    // mContext.getContentResolver().insert(
-                    // Constants.PRIVACY_CALL_LOG_URI, values);
-                    // // 删除系统通话记录
-                    // String fromateNumber =
-                    // PrivacyContactUtils.formatePhoneNumber(contact
-                    // .getContactNumber());
-                    // PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?",
-                    // fromateNumber,
-                    // mContext);
                 } catch (Exception e) {
                 }
             }
         });
         mPCDialog.setCanceledOnTouchOutside(true);
-        /*
-         * mPCDialog.getWindow().setLayout( (int)
-         * getResources().getDimension(R.dimen
-         * .privacy_contact_edit_dialog_width), (int)
-         * getResources().getDimension
-         * (R.dimen.privacy_contact_edit_dialog_height));
-         */
         mPCDialog.show();
     }
 
@@ -561,16 +520,13 @@ public class PrivacyContactFragment extends BaseFragment {
                                         int noReadCallLogCount = PrivacyContactUtils
                                                 .getNoReadCallLogCount(mContext,
                                                         contact.getContactNumber());
-//                                        Log.e("################", contact.getContactName()+" 未读数量:"+noReadCallLogCount);
                                         int callLogTemp = pre.getCallLogNoReadCount();
-//                                        Log.e("################", contact.getContactName()+"——存储的未读数量:"+callLogTemp);
                                         if (callLogTemp > 0) {
                                             if (noReadCallLogCount > 0) {
                                                 for (int i = 0; i < noReadCallLogCount; i++) {
                                                     if (callLogTemp > 0) {
                                                         callLogTemp = callLogTemp - 1;
                                                         pre.setCallLogNoReadCount(callLogTemp);
-//                                                        Log.e("################", contact.getContactName()+"——现在的未读数量:"+callLogTemp);
                                                     }
                                                     if (callLogTemp <= 0) {
                                                         LeoEventBus
