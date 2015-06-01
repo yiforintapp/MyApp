@@ -22,6 +22,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 public class ZhiWenActivity extends BaseActivity implements OnClickListener {
     private final static int ZHIWENWEIZHUANG = 3;
@@ -33,6 +34,7 @@ public class ZhiWenActivity extends BaseActivity implements OnClickListener {
     private float iv_zhiwen_click_height;
     private Vibrator vib;
     private boolean isClick = false;
+    private float lineTranslateY;
     // three click
     long[] mHits = new long[3];
     private LEOAlarmDialog mAlarmDialog;
@@ -44,7 +46,7 @@ public class ZhiWenActivity extends BaseActivity implements OnClickListener {
                 case SHOWALPHA:
                     showDongHuaAlpha(1f, 0f);
                 case SHOWTRANS:
-                    showDongHuaTrans(iv_zhiwen_click_height - 30, 0);
+                    showDongHuaTrans(lineTranslateY, 0);
                     break;
             }
         };
@@ -76,7 +78,8 @@ public class ZhiWenActivity extends BaseActivity implements OnClickListener {
     public void onWindowFocusChanged(boolean hasFocus) {
         if (hasFocus) {
             iv_zhiwen_click_height = iv_zhiwen_click.getHeight();
-            showDongHuaTrans(0, iv_zhiwen_click_height - 30);
+            lineTranslateY = iv_zhiwen_click_height - DipPixelUtil.dip2px(this, 14);
+            showDongHuaTrans(0, lineTranslateY);
             showDongHuaAlpha(0f, 1f);
         }
         super.onWindowFocusChanged(hasFocus);
@@ -133,7 +136,7 @@ public class ZhiWenActivity extends BaseActivity implements OnClickListener {
                     ms.what = SHOWTRANS;
                     handler.sendMessage(ms);
                 } else {
-                    showDongHuaTrans(0, iv_zhiwen_click_height - 30);
+                    showDongHuaTrans(0, lineTranslateY);
                 }
             }
         });
