@@ -369,7 +369,7 @@ public class QuickGestureManager {
 
     public void updateSwitcherData(List<BaseInfo> infos) {
         String saveToSp = QuickSwitchManager.getInstance(mContext)
-                .listToString(infos, infos.size());
+                .listToString(infos, infos.size(),false);
         LeoLog.d("updateSwitcherData", "saveToSp:" + saveToSp);
         mSpSwitch.setSwitchList(saveToSp);
         mSpSwitch.setSwitchListSize(infos.size());
@@ -730,7 +730,7 @@ public class QuickGestureManager {
                                 }
 
                                 String mChangeList = QuickSwitchManager.getInstance(mContext)
-                                        .listToString(mDefineList, mDefineList.size());
+                                        .listToString(mDefineList, mDefineList.size(),true);
                                 LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
                                 mSpSwitch.setSwitchList(mChangeList);
                             }

@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -23,13 +22,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
+import android.util.Log;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -41,7 +41,8 @@ public class PrivacyContactUtils {
     // public static final Uri SMS_INBOXS = Uri.parse("content://sms/inbox");
     public static final Uri SYS_SMS = Uri.parse("content://sms/inbox");
     public static final Uri CONTACT_INBOXS = Uri.parse("content://icc/adn");
-    public static final Uri contactUri = Phone.CONTENT_URI;
+    public static final Uri CONTACT_PHONE_URL = Phone.CONTENT_URI;
+    public static final Uri CONTACT_URL = Contacts.CONTENT_URI;
     public static final Uri CALL_LOG_URI = android.provider.CallLog.Calls.CONTENT_URI;
     public static final String ADD_CONTACT_MODEL = "add_contact_model";
     public static final String ADD_CALL_LOG_AND_MESSAGE_MODEL = "add_call_log_and_message_model";
@@ -222,9 +223,9 @@ public class PrivacyContactUtils {
         List<ContactBean> contacts = new ArrayList<ContactBean>();
         Cursor phoneCursor = null;
         try {
-            phoneCursor = cr.query(contactUri,
+            phoneCursor = cr.query(CONTACT_PHONE_URL,
                     null, selection, null, Phone.SORT_KEY_PRIMARY);
-            if (phoneCursor != null) {
+            if (phoneCursor != null && phoneCursor.getCount() > 0) {
                 while (phoneCursor.moveToNext()) {
                     // get phonenumber
                     String phoneNumber = phoneCursor
@@ -273,7 +274,10 @@ public class PrivacyContactUtils {
                         contacts = null;
                     }
                 }
-            } 
+            } else {
+                // 更换URL重新查询：CONTACT_URL = Contacts.CONTENT_URI
+                contacts = aginGetSysContact(cr);
+            }
         } catch (Exception e) {
 
         } finally {
@@ -282,6 +286,78 @@ public class PrivacyContactUtils {
             }
         }
 
+        return contacts;
+    }
+
+    private static List<ContactBean> aginGetSysContact(ContentResolver cr) {
+        // TODO Auto-generated method stub
+        String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + "=1 and "
+                + ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1 and "
+                + ContactsContract.Contacts.DISPLAY_NAME + " IS NOT NULL";
+        List<ContactBean> contacts = new ArrayList<ContactBean>();
+        Cursor cursorContact = null;
+        try {
+            cursorContact = cr.query(CONTACT_URL,
+                    null, selection, null, Phone.SORT_KEY_PRIMARY);
+            if (cursorContact != null) {
+                while (cursorContact.moveToNext()) {
+                    // get phonenumber
+                    String phoneNumber = cursorContact
+                            .getString(cursorContact
+                                    .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                    // IF IS NULL CONTINUE
+                    if (TextUtils.isEmpty(phoneNumber)) {
+                        continue;
+                    }
+                    // get name
+                    String contactName = cursorContact.getString(cursorContact
+                            .getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    Long contactid =
+                            cursorContact.getLong(cursorContact
+                                    .getColumnIndex(ContactsContract.Contacts._ID));
+                    Long photoid =
+                            cursorContact.getLong(cursorContact.getColumnIndex("photo_id"));
+                    Bitmap contactPhoto = null;
+                    if (photoid > 0) {
+                        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
+                                contactid);
+                        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
+                                cr,
+                                uri);
+                        contactPhoto = BitmapFactory.decodeStream(input);
+                    }
+                    ContactBean cb = new ContactBean();
+                    cb.setContactName(contactName);
+                    cb.setContactNumber(phoneNumber);
+                    cb.setContactIcon(contactPhoto);
+                    String sortLetter = cursorContact.getString(cursorContact
+                            .getColumnIndex(ContactsContract.Contacts.SORT_KEY_PRIMARY));
+                    if (sortLetter == null) {
+                        sortLetter = "#";
+                        cb.setSortLetter(sortLetter);
+                    } else {
+                        if (sortLetter.trim().substring(0, 1).toUpperCase().matches("[A-Z]")) {
+                            cb.setSortLetter(sortLetter.toUpperCase());
+                        } else {
+                            sortLetter = "#";
+                            cb.setSortLetter(sortLetter);
+                        }
+                    }
+
+                    if (phoneNumber != null) {
+                        contacts.add(cb);
+                    } else {
+                        contacts = null;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            
+        }finally {
+            if(cursorContact != null) {
+                cursorContact.close();
+            }
+        }
         return contacts;
     }
 
@@ -823,7 +899,7 @@ public class PrivacyContactUtils {
     public static Bitmap getContactIconFromSystem(Context context, String number) {
         Bitmap contactIcon = null;
         String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-        Cursor cur = context.getContentResolver().query(contactUri, null,
+        Cursor cur = context.getContentResolver().query(CONTACT_PHONE_URL, null,
                 Phone.NUMBER + " LIKE ? ",
                 new String[] {
                     "%" + formateNumber
