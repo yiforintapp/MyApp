@@ -698,6 +698,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                             R.string.new_install_lock_remind,
                             AppUtil.getAppLabel(packageName, mContext));
                     dialog.setContent(tip);
+                    dialog.setMiddleBtnStr(mContext.getResources().getString(R.string.lock));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override
                         public void onClick(int which) {
