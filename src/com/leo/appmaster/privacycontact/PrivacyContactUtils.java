@@ -352,7 +352,11 @@ public class PrivacyContactUtils {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            
+        }finally {
+            if(cursorContact != null) {
+                cursorContact.close();
+            }
         }
         return contacts;
     }
