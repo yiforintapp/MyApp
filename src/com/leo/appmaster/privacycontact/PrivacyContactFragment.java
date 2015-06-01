@@ -519,6 +519,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                                 }
                                             }
                                         }
+                                    }
                                         for (MessageBean messageBean : mRestorMessages) {
                                             String number = messageBean.getPhoneNumber();
                                             String formateNumber = PrivacyContactUtils
@@ -555,7 +556,6 @@ public class PrivacyContactFragment extends BaseFragment {
                                             }
                                         }
                                     }
-                                }
                                     if (mRestorCallLogs != null && mRestorCallLogs.size() > 0) {
                                         // TODO no read call log count
                                         int noReadCallLogCount = PrivacyContactUtils
@@ -777,7 +777,7 @@ public class PrivacyContactFragment extends BaseFragment {
         protected Boolean doInBackground(ContactBean... arg0) {
             ContactBean contact = arg0[0];
             AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
-            // no read message count
+            // no read call log count
             int noReadCount = PrivacyContactUtils.getNoReadCallLogCount(mContext,
                     contact.getContactNumber());
             int temp = pre.getCallLogNoReadCount();
@@ -798,6 +798,7 @@ public class PrivacyContactFragment extends BaseFragment {
                     }
                 }
             }
+            // no read message count
             int noReadMessageCount = PrivacyContactUtils.getNoReadMessage(mContext,
                     contact.getContactNumber());
             int messageTemp = pre.getMessageNoReadCount();
@@ -806,7 +807,7 @@ public class PrivacyContactFragment extends BaseFragment {
                     for (int i = 0; i < noReadMessageCount; i++) {
                         if (messageTemp > 0) {
                             messageTemp = messageTemp - 1;
-                            pre.setMessageNoReadCount(messageTemp -= 1);
+                            pre.setMessageNoReadCount(messageTemp);
                         }
                         if (temp <= 0) {
                             LeoEventBus
