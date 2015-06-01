@@ -439,15 +439,16 @@ public class AppleWatchContainer extends FrameLayout {
         mMostUsedLayout.setVisibility(View.VISIBLE);
         mSwitcherLayout.setVisibility(View.VISIBLE);
 
-//        if (!mHasRelayout) {
-//            if (mDymicLayout.mHasFillExtraItems && mMostUsedLayout.mHasFillExtraItems
-//                    && mSwitcherLayout.mHasFillExtraItems) {
-//                mDymicLayout.relayoutExtraChildren();
-//                mMostUsedLayout.relayoutExtraChildren();
-//                mSwitcherLayout.relayoutExtraChildren();
-//                // mHasRelayout = true;
-//            }
-//        }
+        // if (!mHasRelayout) {
+        // if (mDymicLayout.mHasFillExtraItems &&
+        // mMostUsedLayout.mHasFillExtraItems
+        // && mSwitcherLayout.mHasFillExtraItems) {
+        // mDymicLayout.relayoutExtraChildren();
+        // mMostUsedLayout.relayoutExtraChildren();
+        // mSwitcherLayout.relayoutExtraChildren();
+        // // mHasRelayout = true;
+        // }
+        // }
     }
 
     private void onTouchMoveRotate(float moveX, float moveY) {
@@ -754,10 +755,12 @@ public class AppleWatchContainer extends FrameLayout {
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
                 // 加速
                 checkSpeedUpStatus(sInfo, mGetIcon, tv);
-            } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.CHANGEMODE)) {
-                // 情景模式切换
-                checkChangeMode(sInfo, mGetIcon, tv);
-            } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SWITCHSET)) {
+            } 
+//            else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.CHANGEMODE)) {
+//                // 情景模式切换
+//                checkChangeMode(sInfo, mGetIcon, tv);
+//            }
+            else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SWITCHSET)) {
                 // 手势设置
                 checkSwitchSet(sInfo, mGetIcon, tv);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SETTING)) {
@@ -778,9 +781,6 @@ public class AppleWatchContainer extends FrameLayout {
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.HOME)) {
                 // 桌面
                 checkHome(sInfo, mGetIcon, tv);
-            } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.XUKUANG)) {
-                // 虚框
-                // checkXuKuang(sInfo, mGetIcon, tv);
             }
             mSwitchList.add(sInfo);
         }
@@ -1307,14 +1307,14 @@ public class AppleWatchContainer extends FrameLayout {
                     layout = mSwitcherLayout;
                 }
                 layout.post(new Runnable() {
-                    
+
                     @Override
                     public void run() {
                         // TODO Auto-generated method stub
                         layout.fillExtraChildren();
                     }
                 });
-                
+
                 run.run();
             }
         });

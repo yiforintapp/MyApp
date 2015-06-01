@@ -53,6 +53,7 @@ public class QuickGestureManager {
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
     private Drawable[] mEmptyIcon;
+    public  int mSlidAreaSize;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
@@ -663,21 +664,9 @@ public class QuickGestureManager {
                                 LeoLog.d("QuickGestureManager", "rightQuickSwitch.size is : "
                                         + rightQuickSwitch.size());
                                 if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
-                                    // String saveToSp =
-                                    // QuickSwitchManager.getInstance(context)
-                                    // .listToString(
-                                    // addQuickSwitch, addQuickSwitch.size());
-                                    // LeoLog.d("QuickGestureManager",
-                                    // "saveToSp is : " + saveToSp);
                                     addSwitch = true;
                                 }
                                 if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
-                                    // String removeToSp =
-                                    // QuickSwitchManager.getInstance(context)
-                                    // .listToString(removeQuickSwitch,
-                                    // removeQuickSwitch.size());
-                                    // LeoLog.d("QuickGestureManager",
-                                    // "removeToSp is : " + removeToSp);
                                     for (int i = 0; i < rightQuickSwitch.size(); i++) {
                                         boolean isHasSameName = false;
                                         BaseInfo nInfo = rightQuickSwitch.get(i);
@@ -780,4 +769,13 @@ public class QuickGestureManager {
             }
         }
     }
+
+    public void resetSlidAreaSize() {
+        mSlidAreaSize = mSpSwitch.getQuickGestureDialogSeekBarValue();
+    }
+
+    public void setSlidAreaSize(int value) {
+        mSlidAreaSize = value;
+    }
+
 }
