@@ -294,7 +294,7 @@ public class AppLoadEngine extends BroadcastReceiver {
         ArrayList<AppItemInfo> dataList = new ArrayList<AppItemInfo>();
         for (AppItemInfo app : mAppDetails.values()) {
             if (!app.packageName.startsWith("com.leo.theme") && !app.systemApp
-                    && app.packageName.equals(AppMasterApplication.getInstance().getPackageName())) {
+                    && !app.packageName.equals(AppMasterApplication.getInstance().getPackageName())) {
                 dataList.add(app);
             }
         }
