@@ -486,10 +486,10 @@ public class QuickGestureManager {
      * 
      * @param context
      */
-    public void showCommontAppDialog(final Activity activity) {
+    public void showCommontAppDialog(final Context context) {
         final QuickGestureFreeDisturbAppDialog commonApp = new QuickGestureFreeDisturbAppDialog(
-                activity.getApplicationContext(), 3);
-        final AppMasterPreference pref = AppMasterPreference.getInstance(activity);
+                context.getApplicationContext(), 3);
+        final AppMasterPreference pref = AppMasterPreference.getInstance(context);
         commonApp.setIsShowCheckBox(true);
         commonApp.setCheckBoxText(R.string.quick_gesture_change_common_app_dialog_checkbox_text);
         // 设置是否选择习惯
@@ -625,7 +625,6 @@ public class QuickGestureManager {
         commonApp.getWindow().setType(
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         commonApp.show();
-        activity.finish();
     }
 
     /**
@@ -635,8 +634,7 @@ public class QuickGestureManager {
      * @param context
      * @param activity
      */
-    public void showQuickSwitchDialog(final Context context,
-            Activity activity) {
+    public void showQuickSwitchDialog(final Context context) {
         final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
                 context.getApplicationContext(), 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
@@ -751,7 +749,6 @@ public class QuickGestureManager {
         quickSwitch.getWindow().setType(
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         quickSwitch.show();
-        activity.finish();
     }
 
     public class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {

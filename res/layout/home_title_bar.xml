@@ -38,7 +38,8 @@
         android:id="@+id/bg_show_hotapp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="8dp"
         android:layout_toLeftOf="@id/iv_option_image"
         android:background="@drawable/title_bar_option_selector"
         android:padding="10dp" >
@@ -47,7 +48,6 @@
             android:id="@+id/hot_app_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:src="@drawable/what_hot_icon" />
 
         <ImageView
