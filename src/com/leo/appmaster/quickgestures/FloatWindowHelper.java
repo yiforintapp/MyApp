@@ -1043,11 +1043,16 @@ public class FloatWindowHelper {
                 || !FloatWindowHelper.isRightTopShowing()
                 || !FloatWindowHelper.isLeftCenterCenterShowing()
                 || !FloatWindowHelper.isRightCenterCenterShowing()) {
-            AppMasterPreference pre = AppMasterPreference
-                    .getInstance(context);
-            // 透明悬浮窗
-            // 左侧底部
-            if (pre.getDialogRadioLeftBottom()) {
+            boolean leftBottom=QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom;
+            boolean rightBottom=QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom;
+            boolean leftCenter=QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter;
+            boolean rightCenter=QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter;
+            Log.e("######", "leftBottom:"+leftBottom);
+            Log.e("######", "rightBottom:"+rightBottom);
+            Log.e("######", "leftCenter:"+leftCenter);
+            Log.e("######", "rightCenter:"+rightCenter);
+            // left bottom
+            if (leftBottom) {
                 FloatWindowHelper
                         .createFloatLeftBottomWindow(context, value);
                 FloatWindowHelper
@@ -1055,8 +1060,8 @@ public class FloatWindowHelper {
                 FloatWindowHelper
                         .createFloatLeftTopWindow(context, value);
             }
-            // 右侧底部
-            if (pre.getDialogRadioRightBottom()) {
+            // right bottom
+            if (rightBottom) {
                 FloatWindowHelper
                         .createFloatRightBottomWindow(context, value);
                 FloatWindowHelper
@@ -1064,24 +1069,22 @@ public class FloatWindowHelper {
                 FloatWindowHelper
                         .createFloatRightTopWindow(context, value);
             }
-            // 左侧中部
-            if (pre.getDialogRadioLeftCenter()) {
-                // FloatWindowHelper.removeSwipWindow(context, 2);
+            // left center
+            if (leftCenter) {
                 FloatWindowHelper.removeSwipWindow(context, 3);
                 FloatWindowHelper.createFloatLeftCenterCenterWindow(context, value);
-                if (pre.getDialogRadioLeftBottom()) {
+                if (leftBottom) {
                     FloatWindowHelper
                             .createFloatLeftBottomWindow(context, value);
                     FloatWindowHelper
                             .createFloatLeftCenterWindow(context, value);
                 }
             }
-            // 右侧中部
-            if (pre.getDialogRadioRightCenter()) {
-                // FloatWindowHelper.removeSwipWindow(context, -2);
+            // right center
+            if (rightCenter) {
                 FloatWindowHelper.removeSwipWindow(context, -3);
                 FloatWindowHelper.createFloatRightCenterCenterWindow(context, value);
-                if (pre.getDialogRadioRightBottom()) {
+                if (rightBottom) {
                     FloatWindowHelper
                             .createFloatRightBottomWindow(context, value);
                     FloatWindowHelper
