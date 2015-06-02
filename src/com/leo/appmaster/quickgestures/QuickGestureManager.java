@@ -748,7 +748,7 @@ public class QuickGestureManager {
 
             @Override
             public void onClick(View arg0) {
-                // 取消按钮
+                // cancel button
                 quickSwitch.dismiss();
             }
         });
