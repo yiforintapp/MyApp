@@ -86,8 +86,9 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 animateItem(arg1);
                 QuickGsturebAppInfo selectInfl = (QuickGsturebAppInfo) arg1.getTag();
-                LeoLog.d("QuickGestureManager", "name : " + selectInfl.label + " ; iName : " + selectInfl.swtichIdentiName);
-                
+                LeoLog.d("QuickGestureManager", "name : " + selectInfl.label + " ; iName : "
+                        + selectInfl.swtichIdentiName);
+
                 if (mFlag == 2) {
                     // 快捷开关的方式
                     if (quickSwitchSaveList != null) {
@@ -102,6 +103,9 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                         mAddFreePackageName.remove(selectInfl);
                     }
                     if (mFirstStatus) {
+                        mRemoveFreePackageName.add(selectInfl);
+                    }
+                    if (mFlag == 1) {
                         mRemoveFreePackageName.add(selectInfl);
                     }
                     ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
@@ -137,9 +141,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                         if (!mFirstStatus) {
                             mAddFreePackageName.add(selectInfl);
                         }
-                        if (mRemoveFreePackageName != null && mRemoveFreePackageName.size() > 0) {
-                            mRemoveFreePackageName.remove(selectInfl);
-                        }
+                        mRemoveFreePackageName.remove(selectInfl);
                         ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
                                 .setDefaultRecommendApp(true);
                     }

@@ -86,7 +86,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         setContentView(R.layout.activity_quick_gesture);
         mPre = AppMasterPreference.getInstance(this);
         initUi();
-        LeoEventBus.getDefaultBus().register(this);
+//        LeoEventBus.getDefaultBus().register(this);
 
     }
 
@@ -275,16 +275,16 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LeoEventBus.getDefaultBus().unregister(this);
+//        LeoEventBus.getDefaultBus().unregister(this);
     }
-
-    public void onEventMainThread(QuickGestureFloatWindowEvent event) {
-        String flag = event.editModel;
-        if (FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION.equals(flag)) {
-            showSlideShowTimeSettingDialog();
-        }
-
-    }
+//
+//    public void onEventMainThread(QuickGestureFloatWindowEvent event) {
+//        String flag = event.editModel;
+//        if (FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION.equals(flag)) {
+//          
+//        }
+//
+//    }
 
     class DialogRadioBean {
         String name;
@@ -526,6 +526,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     final List<BaseInfo> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
                     final List<BaseInfo> removeFreeAppNames = freeDisturbApp
                             .getRemoveFreePackageName();
+                    for (BaseInfo baseInfo : removeFreeAppNames) {
+                        Log.e("##############", ""+baseInfo.label);
+                    }
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                         @Override
@@ -546,10 +549,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             }
                         }
                     });
+                    showSlideShowTimeSettingDialog();
                     freeDisturbApp.dismiss();
-                    LeoEventBus.getDefaultBus().post(
-                            new QuickGestureFloatWindowEvent(
-                                    FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION));
                 }
             }
         });
@@ -566,7 +567,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     // get filter apps
     private List<QuickGsturebAppInfo> getFreeDisturbApps() {
         List<QuickGsturebAppInfo> freeDisturbApp = new ArrayList<QuickGsturebAppInfo>();
-        // 添加Item
+        // add item
         QuickGsturebAppInfo addImageInfo = new QuickGsturebAppInfo();
         addImageInfo.icon = this.getResources().getDrawable(R.drawable.switch_add_block);
         addImageInfo.packageName = "add_free_app";
@@ -824,8 +825,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
                     mNoReadMessageFlag = false;
                 }
-                // Log.e("#########", "未读短信是否打开：" +
-                // mPre.getSwitchOpenNoReadMessageTip());
                 break;
             case R.id.recently_contact_content:
                 if (!mRecentlyContactFlag) {
@@ -859,8 +858,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mRecentlyContactOpenCK.setImageResource(R.drawable.switch_off);
                     mRecentlyContactFlag = false;
                 }
-                // Log.e("##########", "最近联系人是否打开：" +
-                // mPre.getSwitchOpenRecentlyContact());
                 break;
             case R.id.privacy_contact_content:
                 if (!mPrivacyContactFlag) {
@@ -872,8 +869,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
                     mPrivacyContactFlag = false;
                 }
-                // Log.e("###########",
-                // "隐私联系人是否打开："+mPre.getSwitchOpenPrivacyContactMessageTip());
                 break;
         }
 
