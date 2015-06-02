@@ -127,7 +127,8 @@ public class AppMasterApplication extends Application {
         mHandler = new Handler();
         mAppsEngine = AppLoadEngine.getInstance(this);
         mBackupManager = new AppBackupRestoreManager(this);
-        initImageLoader(getApplicationContext());
+//        initImageLoader(getApplicationContext());
+        initImageLoader();
         sharedPreferences = getSharedPreferences("lockerTheme",
                 Context.MODE_WORLD_WRITEABLE);
         usedThemePackage = sharedPreferences.getString("packageName",
@@ -259,7 +260,6 @@ public class AppMasterApplication extends Application {
                 checkUpdateFinish();
                 // judgeLockService();
                 // judgeStatictiUnlockCount();
-                initImageLoader();
                 mAppsEngine.preloadAllBaseInfo();
                 mBackupManager.getBackupList();
                 PrivacyContactManager.getInstance(ctx).getPrivateContacts();
@@ -332,8 +332,8 @@ public class AppMasterApplication extends Application {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 getApplicationContext())
                 .threadPoolSize(Constants.MAX_THREAD_POOL_SIZE)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .memoryCacheSizePercentage(12)
+                .threadPriority(Thread.NORM_PRIORITY)
+                .memoryCacheSizePercentage(8)
                 .diskCacheSize(Constants.MAX_DISK_CACHE_SIZE) // 100 Mb
                 .denyCacheImageMultipleSizesInMemory().build();
         ImageLoader.getInstance().init(config);
@@ -942,17 +942,17 @@ public class AppMasterApplication extends Application {
         mExecutorService.execute(runable);
     }
 
-    // init ImageLoader
-    public static void initImageLoader(Context context) {
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                context).threadPriority(Thread.NORM_PRIORITY)
-                .memoryCacheSizePercentage(3)
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                .diskCacheSize(100 * 1024 * 1024)
-                .tasksProcessingOrder(QueueProcessingType.FIFO)
-                .writeDebugLogs().build();
-        ImageLoader.getInstance().init(config);
-    }
+//    // init ImageLoader
+//    public static void initImageLoader(Context context) {
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//                context).threadPriority(Thread.NORM_PRIORITY)
+//                .memoryCacheSizePercentage(3)
+//                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+//                .diskCacheSize(100 * 1024 * 1024)
+//                .tasksProcessingOrder(QueueProcessingType.FIFO)
+//                .writeDebugLogs().build();
+//        ImageLoader.getInstance().init(config);
+//    }
 
     // for force update strategy to exit application completely
     public synchronized void addActivity(Activity activity) {

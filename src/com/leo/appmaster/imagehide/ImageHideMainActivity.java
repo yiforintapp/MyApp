@@ -35,6 +35,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
 
 public class ImageHideMainActivity extends BaseActivity implements OnClickListener {
 
@@ -85,6 +86,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                 .showImageForEmptyUri(R.drawable.photo_bg_loding)
                 .showImageOnFail(R.drawable.photo_bg_loding)
                 .cacheInMemory(true)
+                .displayer(new FadeInBitmapDisplayer(500))
                 .cacheOnDisk(true)
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)

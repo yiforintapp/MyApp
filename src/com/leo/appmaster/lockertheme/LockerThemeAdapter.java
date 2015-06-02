@@ -9,6 +9,7 @@ import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
 
 import android.content.Context;
@@ -32,6 +33,7 @@ public class LockerThemeAdapter extends BaseAdapter {
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .showImageOnLoading(R.drawable.online_theme_loading)
                 .showImageOnFail(R.drawable.online_theme_loading_failed)
+                .displayer(new FadeInBitmapDisplayer(500))
                 .cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
                 .build();
     }
@@ -106,6 +108,7 @@ public class LockerThemeAdapter extends BaseAdapter {
             compatibleOption = new DisplayImageOptions.Builder()
                     .showImageOnLoading(theme.themeImage)
                     .showImageOnFail(theme.themeImage).cacheInMemory(true)
+                    .displayer(new FadeInBitmapDisplayer(500))
                     .cacheOnDisk(true).considerExifParams(true).build();
             if (Constants.THEME_PACKAGE_NIGHT.equals(theme.packageName)) {
                 ImageLoader.getInstance().displayImage(
