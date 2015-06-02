@@ -40,7 +40,6 @@ public class FloatWindowHelper {
     public static final int ONTUCH_RIGHT_FLAG = 1;
     public static final String QUICK_GESTURE_MSM_TIP = "quick_gesture_msm_tip";
     public static final String QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION = "quick_gesture_add_free_disturb_notification";
-
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,
             mLeftCenterCenterView;
     private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView,
@@ -1183,7 +1182,6 @@ public class FloatWindowHelper {
             } else {
                 if (AppMasterPreference.getInstance(context).getDialogRadioLeftCenter()) {
                     FloatWindowHelper.removeSwipWindow(context, 4);
-                    // FloatWindowHelper.removeSwipWindow(context, 2);
                     FloatWindowHelper.removeSwipWindow(context, 3);
                     FloatWindowHelper
                             .createFloatLeftBottomWindow(context, value);
@@ -1217,7 +1215,6 @@ public class FloatWindowHelper {
             } else {
                 if (AppMasterPreference.getInstance(context).getDialogRadioRightCenter()) {
                     FloatWindowHelper.removeSwipWindow(context, -4);
-                    // FloatWindowHelper.removeSwipWindow(context, -2);
                     FloatWindowHelper.removeSwipWindow(context, -3);
 
                     FloatWindowHelper
