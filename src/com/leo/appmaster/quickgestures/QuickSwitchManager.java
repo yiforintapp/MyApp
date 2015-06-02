@@ -731,7 +731,6 @@ public class QuickSwitchManager {
             mBluetoothAdapter.disable();
             isBlueToothOpen = false;
         }
-        // mContainer.fillSwitchItem(quickGestureLayout, list);
         LeoEventBus.getDefaultBus().post(
                 new ClickQuickItemEvent(BLUETOOTH_EVENT, mInfo));
     }
@@ -1203,31 +1202,16 @@ public class QuickSwitchManager {
                 ListString = ListString + "," + name + ":" + position;
             }
         }
-        
+
         if (isFromDialog) {
             this.mSaveList = StringToList(ListString);
         } else {
             // 每次调用listToString证明要存入sp，so，每次都更新 一下Manager里的list
             this.mSaveList = mSwitchList;
         }
-        
+
         return ListString;
     }
-
-//    private void makeListRight(List<BaseInfo> mSwitchList) {
-//        List<BaseInfo> mBaseInfoList = new ArrayList<BaseInfo>();
-//        for(int i = 0;i<mSwitchList.size();i++){
-//            QuickSwitcherInfo changeInfo = (QuickSwitcherInfo) mSwitchList.get(i);
-//            mBaseInfoList.add(changeInfo);
-//        }
-//        this.mSaveList = mBaseInfoList;
-//    }
-
-    // private List<BaseInfo> makeRightList(List<BaseInfo> mSwitchList) {
-    // List<BaseInfo> mRightList = new ArrayList<BaseInfo>();
-    // mRightList = mSwitchList;
-    // return mRightList;
-    // }
 
     public List<BaseInfo> StringToList(String mSwitchListFromSp) {
         List<BaseInfo> mSwitcherList = new ArrayList<BaseInfo>();
