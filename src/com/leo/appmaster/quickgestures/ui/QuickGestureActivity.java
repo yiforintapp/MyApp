@@ -225,6 +225,19 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         }
     }
 
+    private void closeQuickSetting() {
+        // TODO Auto-generated method stub
+        if (mNoReadMessageOpenCK != null) {
+            mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
+        }
+        if (mRecentlyContactOpenCK != null) {
+            mRecentlyContactOpenCK.setImageResource(R.drawable.switch_off);
+        }
+        if (mPrivacyContactOpenCK != null) {
+            mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
+        }
+    }
+
     private void setOnClickListener() {
         mSlidingArea.setOnClickListener(this);
         mSlidingTime.setOnClickListener(this);
@@ -764,6 +777,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mPre.setSwitchOpenQuickGesture(false);
                     mOpenQuickFlag = false;
                     unSetOnClickListener();
+                    closeQuickSetting();
                     QuickGestureManager.getInstance(this).stopFloatWindow();
                     FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
                 } else {
@@ -773,6 +787,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     QuickGestureManager.getInstance(QuickGestureActivity.this)
                             .startFloatWindow();
                     setOnClickListener();
+                    initChexkBox();
                 }
                 break;
             case R.id.slid_area:
