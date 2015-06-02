@@ -127,7 +127,6 @@ public class AppMasterApplication extends Application {
         mHandler = new Handler();
         mAppsEngine = AppLoadEngine.getInstance(this);
         mBackupManager = new AppBackupRestoreManager(this);
-//        initImageLoader(getApplicationContext());
         initImageLoader();
         sharedPreferences = getSharedPreferences("lockerTheme",
                 Context.MODE_WORLD_WRITEABLE);
