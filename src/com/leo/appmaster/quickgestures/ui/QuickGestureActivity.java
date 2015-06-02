@@ -194,7 +194,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     + ",");
         }
 
-        if (sb != null && sb.length()>0) {
+        if (sb != null && sb.length() > 0) {
             sb.setCharAt(sb.length() - 1, ' ');
         }
         return sb.toString();
@@ -313,12 +313,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 // left bottom
                 boolean leftBottomStatus = mPre.getDialogRadioLeftBottom();
                 if (leftBottomStatus) {
-                    mPre.setDialogRadioLeftBottom(false);
+                    // mPre.setDialogRadioLeftBottom(false);
                     mAlarmDialog.setLeftBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = false;
                 } else {
-                    mPre.setDialogRadioLeftBottom(true);
+                    // mPre.setDialogRadioLeftBottom(true);
                     mAlarmDialog.setLeftBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = true;
@@ -334,12 +334,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 // right bottom
                 boolean rightBottomStatus = mPre.getDialogRadioRightBottom();
                 if (rightBottomStatus) {
-                    mPre.setDialogRadioRightBottom(false);
+                    // mPre.setDialogRadioRightBottom(false);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = false;
                     mAlarmDialog.setRightBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
-                    mPre.setDialogRadioRightBottom(true);
+                    // mPre.setDialogRadioRightBottom(true);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = true;
                     mAlarmDialog.setRightBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
@@ -355,12 +355,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 // left center
                 boolean leftCenterStatus = mPre.getDialogRadioLeftCenter();
                 if (leftCenterStatus) {
-                    mPre.setDialogRadioLeftCenter(false);
+                    // mPre.setDialogRadioLeftCenter(false);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = false;
                     mAlarmDialog.setLeftCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
-                    mPre.setDialogRadioLeftCenter(true);
+                    // mPre.setDialogRadioLeftCenter(true);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = true;
                     mAlarmDialog.setLeftCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
@@ -376,12 +376,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 // right center
                 boolean rightCenterStatus = mPre.getDialogRadioRightCenter();
                 if (rightCenterStatus) {
-                    mPre.setDialogRadioRightCenter(false);
+                    // mPre.setDialogRadioRightCenter(false);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = false;
                     mAlarmDialog.setRightCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
-                    mPre.setDialogRadioRightCenter(true);
+                    // mPre.setDialogRadioRightCenter(true);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = true;
                     mAlarmDialog.setRightCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
@@ -406,9 +406,16 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 boolean mRightCenter = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isRightCenter;
                 if (mLeftBottom || mRightBottm || mLeftCenter || mRightCenter) {
+                    // save progress value
                     mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog
                             .getSeekBarProgressValue());
+                    // save sliding area value
+                    mPre.setDialogRadioLeftBottom(mLeftBottom);
+                    mPre.setDialogRadioRightBottom(mRightBottm);
+                    mPre.setDialogRadioLeftCenter(mLeftCenter);
+                    mPre.setDialogRadioRightCenter(mRightCenter);
                     QuickGestureManager.getInstance(QuickGestureActivity.this).resetSlidAreaSize();
+                    // update area background color
                     updateFloatWindowBackGroudColor();
                     setSlidingAreaSetting();
                     if (mAlarmDialog != null) {
