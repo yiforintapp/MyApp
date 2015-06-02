@@ -45,6 +45,7 @@ import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
 
 public class ImageGridActivity extends BaseActivity implements OnClickListener {
     // private final String TAG = "ImageGridActivity";
@@ -202,6 +203,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 .showImageOnLoading(R.drawable.photo_bg_loding)
                 .showImageForEmptyUri(R.drawable.photo_bg_loding)
                 .showImageOnFail(R.drawable.photo_bg_loding)
+                .displayer(new FadeInBitmapDisplayer(500))
                 .cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
 

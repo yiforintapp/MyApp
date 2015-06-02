@@ -47,6 +47,7 @@ import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
 
 @SuppressLint("NewApi")
@@ -88,6 +89,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                 .showImageOnFail(R.drawable.video_loading)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
+                .displayer(new FadeInBitmapDisplayer(500))
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
