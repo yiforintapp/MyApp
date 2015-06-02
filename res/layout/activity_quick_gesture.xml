@@ -11,7 +11,6 @@
         android:background="@color/app_background" />
 
     <ListView
-        android:id="@+id/quick_gesture_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_quick_gesture_title_bar"
@@ -20,7 +19,432 @@
         android:layout_marginTop="16dp"
         android:divider="@null"
         android:listSelector="@android:color/transparent"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:visibility="gone" />
+
+    <!-- 设置UI  START -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_quick_gesture_title_bar"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical" >
+
+        <!-- 开启快捷手势 -->
+        <RelativeLayout
+            android:id="@+id/open_quick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg" >
+
+            <ImageView
+                android:id="@+id/open_quick_option_IV"
+                android:layout_width="@dimen/privacy_contact_icon_size"
+                android:layout_height="@dimen/privacy_contact_icon_size"
+                android:layout_centerVertical="true"
+                android:src="@drawable/default_user_avatar"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/open_quick_itemLT"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@id/contactIV" >
+
+                <LinearLayout
+                    android:id="@+id/open_quick_linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="40dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/open_quick_gesture_item_nameTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/pg_appmanager_quick_gesture_option_open_quick_gesture"
+                        android:textColor="#414141"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/open_quick_gesture_item_cotentTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="10dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/open_quick_gesture_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="16dp"
+                    android:src="@drawable/switch_off" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <!-- 划出区域位置 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/slid_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/slid_area_option_IV"
+                    android:layout_width="@dimen/privacy_contact_icon_size"
+                    android:layout_height="@dimen/privacy_contact_icon_size"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/default_user_avatar"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/slid_area_itemLT"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/contactIV" >
+
+                    <LinearLayout
+                        android:id="@+id/slid_area_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40dp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/slid_area_item_nameTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/pg_appmanager_quick_gesture_option_sliding_area_location_title"
+                            android:textColor="#414141"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/slid_area_item_cotentTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textColor="#999999"
+                            android:textSize="10dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/slid_area_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="25dp"
+                        android:src="@drawable/privacy_proposals_arrow" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#eeeeee" />
+
+            <!-- 可划出时机 -->
+
+            <RelativeLayout
+                android:id="@+id/allow_slid_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/allow_slid_time_option_IV"
+                    android:layout_width="@dimen/privacy_contact_icon_size"
+                    android:layout_height="@dimen/privacy_contact_icon_size"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/default_user_avatar"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/allow_slid_time_itemLT"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/contactIV" >
+
+                    <LinearLayout
+                        android:id="@+id/allow_slid_time_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40dp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/allow_slid_time_item_nameTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/pg_appmanager_quick_gesture_option_able_sliding_time"
+                            android:textColor="#414141"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/allow_slid_time_item_cotentTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textColor="#999999"
+                            android:textSize="10dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/allow_slid_time_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="25dp"
+                        android:src="@drawable/privacy_proposals_arrow" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+        <!-- 未读短信提示 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/no_read_message_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/no_read_message_option_IV"
+                    android:layout_width="@dimen/privacy_contact_icon_size"
+                    android:layout_height="@dimen/privacy_contact_icon_size"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/default_user_avatar"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/no_read_message_itemLT"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/contactIV" >
+
+                    <LinearLayout
+                        android:id="@+id/no_read_message_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40dp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/no_read_message_item_nameTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/pg_appmanager_quick_gesture_option_no_read_message_tip"
+                            android:textColor="#414141"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/no_read_message_item_cotentTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textColor="#999999"
+                            android:textSize="10dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/no_read_message_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="16dp"
+                        android:src="@drawable/switch_off" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#eeeeee" />
+            <!-- 最近联系人 -->
+
+            <RelativeLayout
+                android:id="@+id/recently_contact_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/recently_contact_option_IV"
+                    android:layout_width="@dimen/privacy_contact_icon_size"
+                    android:layout_height="@dimen/privacy_contact_icon_size"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/default_user_avatar"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/recently_contact_itemLT"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/contactIV" >
+
+                    <LinearLayout
+                        android:id="@+id/recently_contact_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40dp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/recently_contact_item_nameTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/pg_appmanager_quick_gesture_option_recently_contact"
+                            android:textColor="#414141"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/recently_contact_item_cotentTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textColor="#999999"
+                            android:textSize="10dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/recently_contact_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="16dp"
+                        android:src="@drawable/switch_off" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#eeeeee" />
+            <!-- 隐私联系人提示 -->
+
+            <RelativeLayout
+                android:id="@+id/privacy_contact_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg" >
+
+                <ImageView
+                    android:id="@+id/privacy_contact_option_IV"
+                    android:layout_width="@dimen/privacy_contact_icon_size"
+                    android:layout_height="@dimen/privacy_contact_icon_size"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/default_user_avatar"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/privacy_contact_itemLT"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/contactIV" >
+
+                    <LinearLayout
+                        android:id="@+id/privacy_contact_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40dp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/privacy_contact_item_nameTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/pg_appmanager_quick_gesture_option_privacy_contact_message_tip"
+                            android:textColor="#414141"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/privacy_contact_item_cotentTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textColor="#999999"
+                            android:textSize="10dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/privacy_contact_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="16dp"
+                        android:src="@drawable/switch_off" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <!-- END -->
 
     <com.leo.appmaster.quickgestures.view.QuickGesturesAreaView
         android:id="@+id/quick_gesture_area"

@@ -69,6 +69,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public static boolean isClean = false;
     public static boolean isShowIng = false;
     private boolean curFastThanset = false;
+    private boolean isStopDongHua = false;
+    private int mNowDongHuaWhere = 0;
     private int lastPosition = -1;
 
     // private boolean isReNewFragment = false;
@@ -222,7 +224,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    if(isStopDongHua){
+                        break;
+                    }
                     startProgress += 1;
+                    mNowDongHuaWhere = startProgress;
                     roundProgressBar.setProgress(startProgress);
                     Message msg = Message.obtain();
                     msg.what = DONGHUA_CHANGE_TEXT;
@@ -303,8 +309,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         + RestoreListSize);
 
         // clean View
-        cleanView();
-        cleanMemory();
+//        cleanView();
+//        cleanMemory();
         LeoLog.d("HomeAppManagerFragment", "loadData() finish");
     }
 
@@ -446,6 +452,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     private void cleanMem() {
         isCleanning = true;
+        isStopDongHua = true;
         if (!isClean) {
             donghua_show_clean();
             // cleanMemory();
@@ -458,7 +465,9 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private void donghua_show_clean() {
         new Thread() {
             public void run() {
-                int endPoint = 0;
+                if(isStopDongHua){
+                    mProgress= mNowDongHuaWhere;
+                }
                 while (mProgress > 0) {
                     try {
                         Thread.sleep(10);

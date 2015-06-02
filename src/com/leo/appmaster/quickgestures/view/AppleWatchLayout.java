@@ -684,11 +684,11 @@ public class AppleWatchLayout extends ViewGroup {
             intent.setClass(mContext, PrivacyContactActivity.class);
             try {
                 mContext.startActivity(intent);
-                if (LockManager.getInstatnce().isShowPrivacyCallLog) {
-                    LockManager.getInstatnce().isShowPrivacyCallLog = false;
+                if (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog) {
+                    QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = false;
                 }
-                if (LockManager.getInstatnce().isShowPrivacyMsm) {
-                    LockManager.getInstatnce().isShowPrivacyMsm = false;
+                if (QuickGestureManager.getInstance(mContext).isShowPrivacyMsm) {
+                    QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = false;
                 }
             } catch (Exception e) {
             }

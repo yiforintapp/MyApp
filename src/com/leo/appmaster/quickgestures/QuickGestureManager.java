@@ -53,7 +53,11 @@ public class QuickGestureManager {
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
     private Drawable[] mEmptyIcon;
-    public  int mSlidAreaSize;
+    public int mSlidAreaSize;
+    public boolean isShowPrivacyMsm = false;
+    public boolean isShowPrivacyCallLog = false;
+    public boolean isShowSysNoReadMessage = false;
+    public int onTuchGestureFlag = -1;// -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
@@ -140,8 +144,7 @@ public class QuickGestureManager {
         }
         // no privacy contact
         if (isShowPrivacyContactTip) {
-            if (LockManager.getInstatnce().isShowPrivacyCallLog
-                    || LockManager.getInstatnce().isShowPrivacyMsm) {
+            if (isShowPrivacyCallLog || isShowPrivacyMsm) {
                 if (dynamicList.size() <= 12) {
                     QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
                     item.icon = mContext.getResources().getDrawable(
@@ -369,7 +372,7 @@ public class QuickGestureManager {
 
     public void updateSwitcherData(List<BaseInfo> infos) {
         String saveToSp = QuickSwitchManager.getInstance(mContext)
-                .listToString(infos, infos.size(),false);
+                .listToString(infos, infos.size(), false);
         LeoLog.d("updateSwitcherData", "saveToSp:" + saveToSp);
         mSpSwitch.setSwitchList(saveToSp);
         mSpSwitch.setSwitchListSize(infos.size());
@@ -392,11 +395,11 @@ public class QuickGestureManager {
                 mCallLogs.remove(callLog);
             }
         } else if (info instanceof QuickGestureContactTipInfo) {
-            if (LockManager.getInstatnce().isShowPrivacyCallLog) {
-                LockManager.getInstatnce().isShowPrivacyCallLog = false;
+            if (isShowPrivacyCallLog) {
+                isShowPrivacyCallLog = false;
             }
-            if (LockManager.getInstatnce().isShowPrivacyMsm) {
-                LockManager.getInstatnce().isShowPrivacyMsm = false;
+            if (isShowPrivacyMsm) {
+                isShowPrivacyMsm = false;
             }
         }
 
@@ -730,7 +733,7 @@ public class QuickGestureManager {
                                 }
 
                                 String mChangeList = QuickSwitchManager.getInstance(mContext)
-                                        .listToString(mDefineList, mDefineList.size(),true);
+                                        .listToString(mDefineList, mDefineList.size(), true);
                                 LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
                                 mSpSwitch.setSwitchList(mChangeList);
                             }

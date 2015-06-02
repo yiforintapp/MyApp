@@ -699,6 +699,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                             AppUtil.getAppLabel(packageName, mContext));
                     dialog.setContent(tip);
                     dialog.setMiddleBtnStr(mContext.getResources().getString(R.string.lock));
+                    dialog.setRightBtnStr(mContext.getResources().getString(R.string.lock_more));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override
                         public void onClick(int which) {

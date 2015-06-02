@@ -61,11 +61,8 @@ import com.leo.appmaster.ui.CommonTitleBar;
  * 
  * @author run
  */
-public class QuickGestureActivity extends BaseActivity implements OnItemClickListener,
-        OnCheckedChangeListener, OnTouchListener {
-    private ListView mQuickGestureLV;
+public class QuickGestureActivity extends BaseActivity implements OnTouchListener, OnClickListener {
     private CommonTitleBar mTitleBar;
-    private QuickGestureAdapter mAdapter;
     private List<QuickGestureSettingBean> mQuickGestureSettingOption;
     private AppMasterPreference mPre;
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
@@ -75,28 +72,26 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private List<QuickGsturebAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
     private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView;
-    private RelativeLayout mTipRL;
-    private ImageView mHandImage, mArrowImage;
-    private boolean mFlag = false;
+    private RelativeLayout mTipRL, mOpenQuick, mSlidingArea, mSlidingTime, mNoReadMessageOpen,
+            mRecentlyContactOPen, mPrivacyContactOpen;
+    private ImageView mHandImage, mArrowImage, mQuickOpenCK, mNoReadMessageOpenCK,
+            mRecentlyContactOpenCK, mPrivacyContactOpenCK;
+    private boolean mFlag, mOpenQuickFlag, mNoReadMessageFlag, mRecentlyContactFlag,
+            mPrivacyContactFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_gesture);
-        mQuickGestureSettingOption = new ArrayList<QuickGestureSettingBean>();
         mPre = AppMasterPreference.getInstance(this);
         initUi();
-        fillSettingData();
-        mAdapter = new QuickGestureAdapter(this, mQuickGestureSettingOption);
-        mQuickGestureLV.setAdapter(mAdapter);
         LeoEventBus.getDefaultBus().register(this);
+
     }
 
     private void initUi() {
-        mQuickGestureLV = (ListView) findViewById(R.id.quick_gesture_lv);
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
         mTitleBar.openBackView();
-        mQuickGestureLV.setOnItemClickListener(this);
         mTipRL = (RelativeLayout) findViewById(R.id.quick_tipRL);
         mLeftTopView = (TextView) findViewById(R.id.gesture_left_tips_top_tv);
         mLeftBottomView = (TextView) findViewById(R.id.gesture_left_tips_bottom);
@@ -104,6 +99,21 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         mRightBottomView = (TextView) findViewById(R.id.gesture_right_tips_bottom);
         mHandImage = (ImageView) findViewById(R.id.gesture_handIV);
         mArrowImage = (ImageView) findViewById(R.id.gesture_arrowIV);
+        mOpenQuick = (RelativeLayout) findViewById(R.id.open_quick);
+        mSlidingArea = (RelativeLayout) findViewById(R.id.slid_area);
+        mSlidingTime = (RelativeLayout) findViewById(R.id.allow_slid_time);
+        mNoReadMessageOpen = (RelativeLayout) findViewById(R.id.no_read_message_content);
+        mRecentlyContactOPen = (RelativeLayout) findViewById(R.id.recently_contact_content);
+        mPrivacyContactOpen = (RelativeLayout) findViewById(R.id.privacy_contact_content);
+        mQuickOpenCK = (ImageView) findViewById(R.id.open_quick_gesture_check);
+        mNoReadMessageOpenCK = (ImageView) findViewById(R.id.no_read_message_check);
+        mRecentlyContactOpenCK = (ImageView) findViewById(R.id.recently_contact_check);
+        mPrivacyContactOpenCK = (ImageView) findViewById(R.id.privacy_contact_check);
+        initQuickGestureOpen();
+        if (mPre.getSwitchOpenQuickGesture()) {
+            initChexkBox();
+            setOnClickListener();
+        }
         if (!AppMasterPreference.getInstance(this)
                 .getFristSlidingTip()) {
             gestureTranslationAnim(mHandImage, mArrowImage);
@@ -121,6 +131,57 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             mRightBottomView.setOnTouchListener(this);
 
         }
+    }
+
+    private void initQuickGestureOpen() {
+        // open quick gesture
+        mOpenQuick.setOnClickListener(this);
+        mOpenQuickFlag = mPre.getSwitchOpenQuickGesture();
+        if (mOpenQuickFlag) {
+            mQuickOpenCK.setImageResource(R.drawable.switch_on);
+        } else {
+            mQuickOpenCK.setImageResource(R.drawable.switch_off);
+        }
+    }
+
+    private void initChexkBox() {
+        mNoReadMessageFlag = mPre.getSwitchOpenNoReadMessageTip();
+        mRecentlyContactFlag = mPre.getSwitchOpenRecentlyContact();
+        mPrivacyContactFlag = mPre.getSwitchOpenPrivacyContactMessageTip();
+        // no read message switch
+        if (mNoReadMessageFlag) {
+            mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
+        } else {
+            mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
+        }
+        // recently contact swtich
+        if (mRecentlyContactFlag) {
+            mRecentlyContactOpenCK.setImageResource(R.drawable.switch_on);
+        } else {
+            mRecentlyContactOpenCK.setImageResource(R.drawable.switch_off);
+        }
+        // privacy contact switch
+        if (mPrivacyContactFlag) {
+            mPrivacyContactOpenCK.setImageResource(R.drawable.switch_on);
+        } else {
+            mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
+        }
+    }
+
+    private void setOnClickListener() {
+        mSlidingArea.setOnClickListener(this);
+        mSlidingTime.setOnClickListener(this);
+        mNoReadMessageOpen.setOnClickListener(this);
+        mRecentlyContactOPen.setOnClickListener(this);
+        mPrivacyContactOpen.setOnClickListener(this);
+    }
+
+    private void unSetOnClickListener() {
+        mSlidingArea.setOnClickListener(null);
+        mSlidingTime.setOnClickListener(null);
+        mNoReadMessageOpen.setOnClickListener(null);
+        mRecentlyContactOPen.setOnClickListener(null);
+        mPrivacyContactOpen.setOnClickListener(null);
     }
 
     @Override
@@ -152,280 +213,11 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION
                 .equals(flag)) {
             mQuickGestureSettingOption.clear();
-            fillSettingData();
-            mAdapter.notifyDataSetChanged();
         } else if (FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION.equals(flag)) {
             showSlideShowTimeSettingDialog();
         }
 
     }
-
-    private void fillSettingData() {
-        QuickGestureSettingBean gestureSettingOpenGesture = new QuickGestureSettingBean();
-        gestureSettingOpenGesture.setName(this.getResources().getString(
-                R.string.pg_appmanager_quick_gesture_option_open_quick_gesture));
-        gestureSettingOpenGesture.setCheck(mPre.getSwitchOpenQuickGesture());
-        gestureSettingOpenGesture.setBackageDraw(R.drawable.bg);
-        mQuickGestureSettingOption.add(gestureSettingOpenGesture);
-
-        QuickGestureSettingBean gestureSettingSlidingAreaLocation = new QuickGestureSettingBean();
-        gestureSettingSlidingAreaLocation.setName(this.getResources().getString(
-                R.string.pg_appmanager_quick_gesture_option_sliding_area_location_title));
-        gestureSettingSlidingAreaLocation.setBackageDraw(R.drawable.bg_upround);
-        mQuickGestureSettingOption.add(gestureSettingSlidingAreaLocation);
-
-        QuickGestureSettingBean gestureSettingAbleSlidingTime = new QuickGestureSettingBean();
-        gestureSettingAbleSlidingTime.setName(this.getResources().getString(
-                R.string.pg_appmanager_quick_gesture_option_able_sliding_time));
-        gestureSettingAbleSlidingTime.setBackageDraw(R.drawable.bg_downround);
-        mQuickGestureSettingOption.add(gestureSettingAbleSlidingTime);
-
-        QuickGestureSettingBean gestureSettingNoReadMessage = new QuickGestureSettingBean();
-        gestureSettingNoReadMessage.setName(this.getResources().getString(
-                R.string.pg_appmanager_quick_gesture_option_no_read_message_tip));
-        gestureSettingNoReadMessage.setCheck(mPre.getSwitchOpenNoReadMessageTip());
-        gestureSettingNoReadMessage.setBackageDraw(R.drawable.bg_upround);
-        mQuickGestureSettingOption.add(gestureSettingNoReadMessage);
-
-        QuickGestureSettingBean gestureSettingRecentlyContact = new QuickGestureSettingBean();
-        gestureSettingRecentlyContact.setName(this.getResources().getString(
-                R.string.pg_appmanager_quick_gesture_option_recently_contact));
-        gestureSettingRecentlyContact.setCheck(mPre.getSwitchOpenRecentlyContact());
-        gestureSettingRecentlyContact.setBackageDraw(R.drawable.bg_zeroround);
-        mQuickGestureSettingOption.add(gestureSettingRecentlyContact);
-
-        QuickGestureSettingBean gestureSettingContactMessagTip = new QuickGestureSettingBean();
-        gestureSettingContactMessagTip.setName(this.getResources().getString(
-                R.string.pg_appmanager_quick_gesture_option_privacy_contact_message_tip));
-        gestureSettingContactMessagTip.setBackageDraw(R.drawable.bg_downround);
-        gestureSettingContactMessagTip.setCheck(mPre.getSwitchOpenPrivacyContactMessageTip());
-        mQuickGestureSettingOption.add(gestureSettingContactMessagTip);
-    }
-
-    private class QuickGestureAdapter extends BaseAdapter {
-        private LayoutInflater layoutInflater;
-
-        public QuickGestureAdapter(Context context, List<QuickGestureSettingBean> beans) {
-            layoutInflater = LayoutInflater.from(context);
-            mQuickGestureSettingOption = beans;
-        }
-
-        @Override
-        public int getCount() {
-            return mQuickGestureSettingOption.size();
-        }
-
-        @Override
-        public Object getItem(int arg0) {
-            return mQuickGestureSettingOption.get(arg0);
-        }
-
-        @Override
-        public long getItemId(int arg0) {
-            return arg0;
-        }
-
-        class ViewHolder {
-            @SuppressWarnings("unused")
-            ImageView imageView, arrowImageVIew;
-            CheckBox switchView;
-            TextView title, content, segmentationTv, lineTextView;
-            RelativeLayout itemRL;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup arg2) {
-            ViewHolder vh = null;
-            if (convertView == null) {
-                vh = new ViewHolder();
-                convertView = layoutInflater.inflate(R.layout.activity_quick_gesture_item, null);
-                vh.itemRL = (RelativeLayout) convertView.findViewById(R.id.quick_gesture_content);
-                vh.imageView = (ImageView) convertView.findViewById(R.id.quick_gesture_option_IV);
-                vh.switchView = (CheckBox) convertView.findViewById(R.id.quick_gesture_check);
-                vh.title = (TextView) convertView.findViewById(R.id.quick_gesture_item_nameTV);
-                vh.content = (TextView) convertView.findViewById(R.id.quick_gesture_item_cotentTV);
-                vh.segmentationTv = (TextView) convertView.findViewById(R.id.segmentation_tv);
-                vh.lineTextView = (TextView) convertView.findViewById(R.id.quick_line_tv);
-                vh.arrowImageVIew = (ImageView) convertView.findViewById(R.id.quick_gesture_arrow);
-                convertView.setTag(vh);
-            } else {
-                vh = (ViewHolder) convertView.getTag();
-            }
-            vh.switchView.setTag(position);
-            QuickGestureSettingBean bean = mQuickGestureSettingOption.get(position);
-            vh.title.setText(bean.getName());
-            // 设置背景
-            vh.itemRL.setBackgroundResource(bean.getBackageDraw());
-            // 设置复选框
-            if (position == 0 || position == 3
-                    || position == 4
-                    || position == 5) {
-                vh.switchView.setVisibility(View.VISIBLE);
-                if (position == 0) {
-                    vh.switchView.setChecked(bean.isCheck());
-                } else if (position == 3) {
-                    vh.switchView.setChecked(bean.isCheck());
-                } else if (position == 4) {
-                    vh.switchView.setChecked(bean.isCheck());
-                } else if (position == 5) {
-                    vh.switchView.setChecked(bean.isCheck());
-                }
-            } else {
-                vh.switchView.setVisibility(View.GONE);
-            }
-            // 显示下划线
-            if (position == 1 || position == 3 || position == 4) {
-                vh.lineTextView.setVisibility(View.VISIBLE);
-            } else {
-                vh.lineTextView.setVisibility(View.GONE);
-            }
-            // 显示间隔条
-            if (position == 0 || position == 2) {
-                vh.segmentationTv.setVisibility(View.VISIBLE);
-            } else {
-                vh.segmentationTv.setVisibility(View.GONE);
-            }
-            // 显示箭头
-            if (position == 1 || position == 2) {
-                vh.arrowImageVIew.setVisibility(View.VISIBLE);
-            } else {
-                vh.arrowImageVIew.setVisibility(View.GONE);
-            }
-            // 显示划出时机
-            if (position == 2 || position == 1) {
-                vh.content.setVisibility(View.VISIBLE);
-                if (position == 2) {
-                    if (mPre.getSlideTimeJustHome()) {
-                        vh.content
-                                .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
-                    }
-                    if (mPre.getSlideTimeAllAppAndHome()) {
-                        vh.content
-                                .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
-                    }
-                } else if (position == 1) {
-                    // if (mPre.getSlideTimeJustHome()) {
-                    // vh.content
-                    // .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
-                    // }
-                    // if (mPre.getSlideTimeAllAppAndHome()) {
-                    // vh.content
-                    // .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
-                    // }
-                }
-            } else {
-                vh.content.setVisibility(View.GONE);
-            }
-            vh.switchView.setOnCheckedChangeListener(QuickGestureActivity.this);
-            return convertView;
-        }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        if (mPre.getSwitchOpenQuickGesture()) {
-            if (arg2 == 1) {
-                FloatWindowHelper.mEditQuickAreaFlag = true;
-                showSettingDialog(true);
-            } else if (arg2 == 2) {
-                showSlideShowTimeSettingDialog();
-            }
-        }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-        int position = (Integer) arg0.getTag();
-        if (position == 0) {
-            mPre.setSwitchOpenQuickGesture(arg1);
-            mQuickGestureSettingOption.get(position).setCheck(arg1);
-            if (!arg1) {
-                QuickGestureManager.getInstance(this).stopFloatWindow();
-                // 移除悬浮窗
-                FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
-            } else {
-                QuickGestureManager.getInstance(QuickGestureActivity.this)
-                        .startFloatWindow();
-            }
-        } else if (position == 3) {
-            mPre.setSwitchOpenNoReadMessageTip(arg1);
-            mQuickGestureSettingOption.get(position).setCheck(arg1);
-            if (arg1) {
-                // 查看短信数据库未读短信数量
-                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-                    @Override
-                    public void run() {
-                        QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages = PrivacyContactUtils
-                                .getSysMessage(QuickGestureActivity.this,
-                                        QuickGestureActivity.this.getContentResolver(),
-                                        "read=0 AND type=1", null, false);
-                        if (QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages != null
-                                && QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages
-                                        .size() > 0) {
-                            LockManager.getInstatnce().isShowSysNoReadMessage = true;
-                            FloatWindowHelper.removeShowReadTipWindow(QuickGestureActivity.this);
-                        }
-                    }
-                });
-            }
-        } else if (position == 4) {
-            mPre.setSwitchOpenRecentlyContact(arg1);
-            mQuickGestureSettingOption.get(position).setCheck(arg1);
-            if (arg1) {
-                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
-                        String[] selectionArgs = new String[] {
-                                String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
-                        };
-                        QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs = PrivacyContactUtils
-                                .getSysCallLog(QuickGestureActivity.this,
-                                        QuickGestureActivity.this.getContentResolver(), selection,
-                                        selectionArgs);
-                        if (QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs != null
-                                && QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs
-                                        .size() > 0) {
-                            LockManager.getInstatnce().isShowSysNoReadMessage = true;
-                            FloatWindowHelper.removeShowReadTipWindow(QuickGestureActivity.this);
-                        }
-                    }
-                });
-            }
-        } else if (position == 5) {
-            mPre.setSwitchOpenPrivacyContactMessageTip(arg1);
-            mQuickGestureSettingOption.get(position).setCheck(arg1);
-        }
-    }
-
-    // private List<DialogRadioBean> initDialogRadioTextData() {
-    // List<DialogRadioBean> datas = new ArrayList<DialogRadioBean>();
-    // DialogRadioBean bean1 = new DialogRadioBean();
-    // bean1.name = this.getResources().getString(
-    // R.string.pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text);
-    // bean1.isCheck = mPre.getDialogRadioLeftBottom();
-    // datas.add(bean1);
-    //
-    // DialogRadioBean bean2 = new DialogRadioBean();
-    // bean2.name = this.getResources().getString(
-    // R.string.pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text);
-    // bean2.isCheck = mPre.getDialogRadioRightBottom();
-    // datas.add(bean2);
-    //
-    // DialogRadioBean bean3 = new DialogRadioBean();
-    // bean3.name = this.getResources().getString(
-    // R.string.pg_appmanager_quick_gesture_option_dialog_radio_left_center_text);
-    // bean3.isCheck = mPre.getDialogRadioLeftCenter();
-    // datas.add(bean3);
-    //
-    // DialogRadioBean bean4 = new DialogRadioBean();
-    // bean4.name = this.getResources().getString(
-    // R.string.pg_appmanager_quick_gesture_option_dialog_radio_right_center_text);
-    // bean4.isCheck = mPre.getDialogRadioRightCenter();
-    // datas.add(bean4);
-    // return datas;
-    // }
 
     class DialogRadioBean {
         String name;
@@ -438,9 +230,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
             mAlarmDialog = new QuickGestureRadioSeekBarDialog(this);
         }
         mAlarmDialog.setShowRadioListView(flag);
-        // List<DialogRadioBean> data = initDialogRadioTextData();
-        // RadioListViewAdapter adapter = new RadioListViewAdapter(this, data);
-        // mAlarmDialog.setRadioListViewAdapter(adapter);
         mAlarmDialog
                 .setTitle(R.string.pg_appmanager_quick_gesture_option_sliding_area_location_title);
         mAlarmDialog.setSeekBarTextVisibility(false);
@@ -553,18 +342,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                 }
             }
         });
-        // mAlarmDialog.setLeftButtomClick(new OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View arg0) {
-        // FloatWindowHelper.mEditQuickAreaFlag = false;
-        // mAlarmDialogFlag = false;
-        // updateFloatWindowBackGroudColor();
-        // if (mAlarmDialog != null) {
-        // mAlarmDialog.dismiss();
-        // }
-        // }
-        // });
         mAlarmDialog.setCancelable(false);
         mAlarmDialog.show();
         mAlarmDialogFlag = true;
@@ -578,89 +355,6 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         FloatWindowHelper.createFloatWindow(QuickGestureActivity.this, AppMasterPreference
                 .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
     }
-
-    // class RadioListViewAdapter extends BaseAdapter {
-    // private LayoutInflater mLayoutInflater;
-    // private List<DialogRadioBean> mData;
-    //
-    // public RadioListViewAdapter(Context context, List<DialogRadioBean> data)
-    // {
-    // mLayoutInflater = LayoutInflater.from(context);
-    // mData = data;
-    // }
-    //
-    // @Override
-    // public int getCount() {
-    // return mData.size();
-    // }
-    //
-    // @Override
-    // public Object getItem(int arg0) {
-    // return mData.get(arg0);
-    // }
-    //
-    // @Override
-    // public long getItemId(int arg0) {
-    // return arg0;
-    // }
-    //
-    // class ViewHolder {
-    // TextView textView;
-    // CheckBox checkBox;
-    // }
-    //
-    // @SuppressWarnings("unused")
-    // @Override
-    // public View getView(int arg0, View convertView, ViewGroup arg2) {
-    // ViewHolder vh = null;
-    // if (vh == null) {
-    // vh = new ViewHolder();
-    // convertView =
-    // mLayoutInflater.inflate(R.layout.activity_dialog_radio_listview_item,
-    // null);
-    // vh.textView = (TextView)
-    // convertView.findViewById(R.id.dialog_radio_itme_tv);
-    // vh.checkBox = (CheckBox)
-    // convertView.findViewById(R.id.dialog_radio_itme_normalRB);
-    // vh.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-    //
-    // @Override
-    // public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-    // int flag = (Integer) arg0.getTag();
-    // if (flag == 0) {
-    // mLeftBottom = arg1;
-    // mPre.setDialogRadioLeftBottom(arg1);
-    // FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
-    // FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA);
-    // } else if (flag == 1) {
-    // mRightBottm = arg1;
-    // mPre.setDialogRadioRightBottom(arg1);
-    // FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
-    // FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
-    // } else if (flag == 2) {
-    // mLeftCenter = arg1;
-    // mPre.setDialogRadioLeftCenter(arg1);
-    // FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
-    // FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA);
-    // } else if (flag == 3) {
-    // mRightCenter = arg1;
-    // mPre.setDialogRadioRightCenter(arg1);
-    // FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
-    // FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
-    // }
-    // }
-    // });
-    // convertView.setTag(vh);
-    // } else {
-    // vh = (ViewHolder) convertView.getTag();
-    // }
-    // DialogRadioBean bean = mData.get(arg0);
-    // vh.textView.setText(bean.name);
-    // vh.checkBox.setTag(arg0);
-    // vh.checkBox.setChecked(bean.isCheck);
-    // return convertView;
-    // }
-    // }
 
     // 滑动时机对话框
     private void showSlideShowTimeSettingDialog() {
@@ -936,6 +630,15 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
                         try {
                             AppMasterApplication.getInstance().startActivity(intent);
                             AppMasterPreference.getInstance(this).setFristSlidingTip(true);
+                            if (mQuickOpenCK != null) {
+                                mQuickOpenCK.setImageResource(R.drawable.switch_on);
+                                mPre.setSwitchOpenQuickGesture(true);
+                                mQuickOpenCK.setImageResource(R.drawable.switch_on);
+                                mOpenQuickFlag = true;
+                                QuickGestureManager.getInstance(QuickGestureActivity.this)
+                                        .startFloatWindow();
+                                setOnClickListener();
+                            }
                         } catch (Exception e) {
                         }
                         mFlag = true;
@@ -953,12 +656,8 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
     private void quickTipAnim(View view) {
         AlphaAnimation alpha = new AlphaAnimation(0, 1);
         alpha.setDuration(1000);
-//        ScaleAnimation scale = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
-//                Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
-//        scale.setDuration(1000);
         AnimationSet animation = new AnimationSet(true);
         animation.addAnimation(alpha);
-//        animation.addAnimation(scale);
         view.setAnimation(animation);
         animation.start();
     }
@@ -992,5 +691,115 @@ public class QuickGestureActivity extends BaseActivity implements OnItemClickLis
         translate.setDuration(2000);
         animatorSet.playTogether(translate, alpha, alphaArrow, translateArrow);
         animatorSet.start();
+    }
+
+    @Override
+    public void onClick(View arg0) {
+        int flag = arg0.getId();
+        switch (flag) {
+            case R.id.open_quick:
+                if (mOpenQuickFlag) {
+                    mQuickOpenCK.setImageResource(R.drawable.switch_off);
+                    mPre.setSwitchOpenQuickGesture(false);
+                    mOpenQuickFlag = false;
+                    unSetOnClickListener();
+                    QuickGestureManager.getInstance(this).stopFloatWindow();
+                    FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
+                } else {
+                    mPre.setSwitchOpenQuickGesture(true);
+                    mQuickOpenCK.setImageResource(R.drawable.switch_on);
+                    mOpenQuickFlag = true;
+                    QuickGestureManager.getInstance(QuickGestureActivity.this)
+                            .startFloatWindow();
+                    setOnClickListener();
+                }
+                break;
+            case R.id.slid_area:
+                FloatWindowHelper.mEditQuickAreaFlag = true;
+                showSettingDialog(true);
+                break;
+            case R.id.allow_slid_time:
+                showSlideShowTimeSettingDialog();
+                break;
+            case R.id.no_read_message_content:
+                if (!mNoReadMessageFlag) {
+                    mPre.setSwitchOpenNoReadMessageTip(true);
+                    mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
+                    mNoReadMessageFlag = true;
+                    // 查看短信数据库未读短信数量
+                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                        @Override
+                        public void run() {
+                            QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages = PrivacyContactUtils
+                                    .getSysMessage(QuickGestureActivity.this,
+                                            QuickGestureActivity.this.getContentResolver(),
+                                            "read=0 AND type=1", null, false);
+                            if (QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages != null
+                                    && QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages
+                                            .size() > 0) {
+                                QuickGestureManager.getInstance(QuickGestureActivity.this).isShowSysNoReadMessage = true;
+                                FloatWindowHelper
+                                        .removeShowReadTipWindow(QuickGestureActivity.this);
+                            }
+                        }
+                    });
+                } else {
+                    mPre.setSwitchOpenNoReadMessageTip(false);
+                    mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
+                    mNoReadMessageFlag = false;
+                }
+                // Log.e("#########", "未读短信是否打开：" +
+                // mPre.getSwitchOpenNoReadMessageTip());
+                break;
+            case R.id.recently_contact_content:
+                if (!mRecentlyContactFlag) {
+                    mPre.setSwitchOpenRecentlyContact(true);
+                    mRecentlyContactOpenCK.setImageResource(R.drawable.switch_on);
+                    mRecentlyContactFlag = true;
+                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
+                            String[] selectionArgs = new String[] {
+                                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
+                            };
+                            QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs = PrivacyContactUtils
+                                    .getSysCallLog(QuickGestureActivity.this,
+                                            QuickGestureActivity.this.getContentResolver(),
+                                            selection,
+                                            selectionArgs);
+                            if (QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs != null
+                                    && QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs
+                                            .size() > 0) {
+                                QuickGestureManager.getInstance(QuickGestureActivity.this).isShowSysNoReadMessage = true;
+                                FloatWindowHelper
+                                        .removeShowReadTipWindow(QuickGestureActivity.this);
+                            }
+                        }
+                    });
+                } else {
+                    mPre.setSwitchOpenRecentlyContact(false);
+                    mRecentlyContactOpenCK.setImageResource(R.drawable.switch_off);
+                    mRecentlyContactFlag = false;
+                }
+                // Log.e("##########", "最近联系人是否打开：" +
+                // mPre.getSwitchOpenRecentlyContact());
+                break;
+            case R.id.privacy_contact_content:
+                if (!mPrivacyContactFlag) {
+                    mPre.setSwitchOpenPrivacyContactMessageTip(true);
+                    mPrivacyContactOpenCK.setImageResource(R.drawable.switch_on);
+                    mPrivacyContactFlag = true;
+                } else {
+                    mPre.setSwitchOpenPrivacyContactMessageTip(false);
+                    mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
+                    mPrivacyContactFlag = false;
+                }
+                // Log.e("###########",
+                // "隐私联系人是否打开："+mPre.getSwitchOpenPrivacyContactMessageTip());
+                break;
+        }
+
     }
 }
