@@ -526,9 +526,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     final List<BaseInfo> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
                     final List<BaseInfo> removeFreeAppNames = freeDisturbApp
                             .getRemoveFreePackageName();
-                    for (BaseInfo baseInfo : removeFreeAppNames) {
-                        Log.e("##############", ""+baseInfo.label);
-                    }
+                    
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                         @Override
