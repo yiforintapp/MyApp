@@ -34,6 +34,7 @@ public class BuildProperties {
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
     private static final String sMake = Build.MANUFACTURER.toLowerCase();
     private static final String mModel = Build.MODEL.toLowerCase();
+    public static final String I_STYLE_MODEL="i-mobile I-STYLE 217";
 
     private final Properties properties;
 
@@ -243,6 +244,10 @@ public class BuildProperties {
     }
 
     public static void isToHuaWeiSystemManager(Context context) {
-            startHuaWeiSysManageIntent(context);
+        startHuaWeiSysManageIntent(context);
+    }
+
+    public static String getPoneModel() {
+        return android.os.Build.MODEL;
     }
 }

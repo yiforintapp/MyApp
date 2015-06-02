@@ -58,6 +58,9 @@ public class QuickGestureManager {
     public boolean isShowPrivacyCallLog = false;
     public boolean isShowSysNoReadMessage = false;
     public int onTuchGestureFlag = -1;// -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
+    public boolean isJustHome;
+    public boolean isAppsAndHome;
+    public boolean isLeftBottom,isRightBottom,isLeftCenter,isRightCenter;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
@@ -745,7 +748,7 @@ public class QuickGestureManager {
 
             @Override
             public void onClick(View arg0) {
-                // 取消按钮
+                // cancel button
                 quickSwitch.dismiss();
             }
         });

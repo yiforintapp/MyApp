@@ -163,9 +163,29 @@ public class TaskDetectService extends Service {
 
         if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
             startFloatWindowTask();
+            initFloatWindowData();
         } else {
             stopFloatWindowTask();
         }
+    }
+
+    private void initFloatWindowData() {
+        // catch perference value
+        AppMasterPreference pre = AppMasterPreference.getInstance(getApplicationContext());
+        // just home
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isJustHome = pre
+                .getSlideTimeJustHome();
+        // home and apps
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isAppsAndHome = pre
+                .getSlideTimeAllAppAndHome();
+        // left bottom
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom=pre.getDialogRadioLeftBottom();
+        // right bottom
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom=pre.getDialogRadioRightBottom();
+        // left center
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter=pre.getDialogRadioLeftCenter();
+        // right center
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter=pre.getDialogRadioRightCenter();
     }
 
     private void startFloatWindowTask() {
@@ -428,17 +448,16 @@ public class TaskDetectService extends Service {
                         if (!FloatWindowHelper.mGestureShowing
                                 && AppMasterPreference.getInstance(getApplicationContext())
                                         .getFristSlidingTip()) {
-                            boolean isJustHome = AppMasterPreference.getInstance(
-                                    getApplicationContext())
-                                    .getSlideTimeJustHome();
-                            boolean isAppsAndHome = AppMasterPreference
-                                    .getInstance(getApplicationContext())
-                                    .getSlideTimeAllAppAndHome();
+
                             // set background color
                             if (FloatWindowHelper.mEditQuickAreaFlag) {
                                 FloatWindowHelper
                                         .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
                             }
+                            boolean isJustHome = QuickGestureManager
+                                    .getInstance(AppMasterApplication.getInstance()).isJustHome;
+                            boolean isAppsAndHome = QuickGestureManager
+                                    .getInstance(AppMasterApplication.getInstance()).isAppsAndHome;
                             if (isAppsAndHome) {
                                 if (!isRuningFreeDisturbApp(mActivityManager)
                                         || FloatWindowHelper.mEditQuickAreaFlag) {
@@ -473,23 +492,18 @@ public class TaskDetectService extends Service {
     }
 
     // checkout current runing filter app
-    private boolean isRuningFreeDisturbApp(ActivityManager cctivityManager) {
+    private boolean isRuningFreeDisturbApp(ActivityManager activityManager) {
         boolean flag = false;
-//        if(Build.VERSION.SDK_INT>19){
-//            //Android L above
-//            
-//        }else{
-//            
-//        }
-        List<RunningTaskInfo> tasks = cctivityManager.getRunningTasks(1);
+        List<RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
         if (tasks != null && tasks.size() > 0) {
             RunningTaskInfo topTaskInfo = tasks.get(0);
             if (topTaskInfo.topActivity == null) {
                 return flag;
             }
-            String pkgName = topTaskInfo.topActivity.getPackageName();
-            flag = QuickGestureManager.getInstance(getApplicationContext()).getFreeDisturbAppName()
-                    .contains(pkgName);
+            String pageName = topTaskInfo.topActivity.getPackageName();
+            flag = QuickGestureManager.getInstance(getApplicationContext())
+                    .getFreeDisturbAppName()
+                    .contains(pageName);
         }
         return flag;
     }
@@ -498,6 +512,7 @@ public class TaskDetectService extends Service {
         return sService;
     }
 
+    @SuppressWarnings("deprecation")
     public static synchronized Notification getNotification(Context context) {
         if (sNotification == null) {
             PendingIntent pi = PendingIntent.getActivity(context, 0,

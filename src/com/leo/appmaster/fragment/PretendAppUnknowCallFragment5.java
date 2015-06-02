@@ -227,8 +227,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
         new Thread() {
             public void run() {
                 try {
-                    // mHandler.sendEmptyMessage(2);
-                    // sleep(50);
+                     mHandler.sendEmptyMessage(2);
+                     sleep(50);
                     mHandler.sendEmptyMessage(1);
                     // LeoLog.d("testFragment", "setPlace ! ");
                 } catch (Exception e) {

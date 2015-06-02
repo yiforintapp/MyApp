@@ -6,6 +6,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.TimeView;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
 public class WaitActivity extends BaseActivity {
@@ -67,7 +69,12 @@ public class WaitActivity extends BaseActivity {
                     va.cancel();
             }
         });
-        va.setDuration(mWaitTime * 1000);
+        String phoneModel=BuildProperties.getPoneModel();
+        if(BuildProperties.I_STYLE_MODEL.equals(phoneModel)){
+            va.setDuration(mWaitTime * 1000 * 2);
+        }else{
+            va.setDuration(mWaitTime * 1000);
+        }
         va.setInterpolator(new LinearInterpolator());
         va.start();
 
@@ -95,7 +102,7 @@ public class WaitActivity extends BaseActivity {
             }
         }).start();
     }
-
+    
     // private void returnBack() {
     // if (returned) {
     // return;

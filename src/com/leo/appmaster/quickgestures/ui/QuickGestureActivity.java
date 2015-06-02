@@ -68,7 +68,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
     private QuickGestureSlideTimeDialog mSlideTimeDialog;
     private boolean mAlarmDialogFlag = false;
-    private boolean mLeftBottom, mRightBottm, mRightCenter, mLeftCenter;
     private List<QuickGsturebAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
     private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView,
@@ -86,7 +85,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         setContentView(R.layout.activity_quick_gesture);
         mPre = AppMasterPreference.getInstance(this);
         initUi();
-//        LeoEventBus.getDefaultBus().register(this);
+        // LeoEventBus.getDefaultBus().register(this);
 
     }
 
@@ -195,7 +194,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     + ",");
         }
 
-        if (sb != null) {
+        if (sb != null && sb.length() > 0) {
             sb.setCharAt(sb.length() - 1, ' ');
         }
         return sb.toString();
@@ -275,16 +274,19 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        LeoEventBus.getDefaultBus().unregister(this);
+        // LeoEventBus.getDefaultBus().unregister(this);
     }
-//
-//    public void onEventMainThread(QuickGestureFloatWindowEvent event) {
-//        String flag = event.editModel;
-//        if (FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION.equals(flag)) {
-//          
-//        }
-//
-//    }
+
+    //
+    // public void onEventMainThread(QuickGestureFloatWindowEvent event) {
+    // String flag = event.editModel;
+    // if
+    // (FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION.equals(flag))
+    // {
+    //
+    // }
+    //
+    // }
 
     class DialogRadioBean {
         String name;
@@ -309,15 +311,19 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // left bottom
-                boolean leftBottomStatus = mPre.getDialogRadioLeftBottom();
+//                boolean leftBottomStatus = mPre.getDialogRadioLeftBottom();
+                boolean leftBottomStatus = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isLeftBottom;
                 if (leftBottomStatus) {
-                    mPre.setDialogRadioLeftBottom(false);
+                    // mPre.setDialogRadioLeftBottom(false);
                     mAlarmDialog.setLeftBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
+                    QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = false;
                 } else {
-                    mPre.setDialogRadioLeftBottom(true);
+                    // mPre.setDialogRadioLeftBottom(true);
                     mAlarmDialog.setLeftBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
+                    QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = true;
                 }
                 FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
                         FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA);
@@ -328,13 +334,17 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // right bottom
-                boolean rightBottomStatus = mPre.getDialogRadioRightBottom();
+//                boolean rightBottomStatus = mPre.getDialogRadioRightBottom();
+                boolean rightBottomStatus = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isRightBottom;
                 if (rightBottomStatus) {
-                    mPre.setDialogRadioRightBottom(false);
+                    // mPre.setDialogRadioRightBottom(false);
+                    QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = false;
                     mAlarmDialog.setRightBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
-                    mPre.setDialogRadioRightBottom(true);
+                    // mPre.setDialogRadioRightBottom(true);
+                    QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = true;
                     mAlarmDialog.setRightBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
                 }
@@ -347,13 +357,17 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // left center
-                boolean leftCenterStatus = mPre.getDialogRadioLeftCenter();
+//                boolean leftCenterStatus = mPre.getDialogRadioLeftCenter();
+                boolean leftCenterStatus = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isLeftCenter;
                 if (leftCenterStatus) {
-                    mPre.setDialogRadioLeftCenter(false);
+                    // mPre.setDialogRadioLeftCenter(false);
+                    QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = false;
                     mAlarmDialog.setLeftCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
-                    mPre.setDialogRadioLeftCenter(true);
+                    // mPre.setDialogRadioLeftCenter(true);
+                    QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = true;
                     mAlarmDialog.setLeftCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
                 }
@@ -366,13 +380,17 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // right center
-                boolean rightCenterStatus = mPre.getDialogRadioRightCenter();
+//                boolean rightCenterStatus = mPre.getDialogRadioRightCenter();
+                boolean rightCenterStatus = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isRightCenter;
                 if (rightCenterStatus) {
-                    mPre.setDialogRadioRightCenter(false);
+                    // mPre.setDialogRadioRightCenter(false);
+                    QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = false;
                     mAlarmDialog.setRightCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
-                    mPre.setDialogRadioRightCenter(true);
+                    // mPre.setDialogRadioRightCenter(true);
+                    QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = true;
                     mAlarmDialog.setRightCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
                 }
@@ -380,20 +398,32 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
             }
         });
+        // TODO
         mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {
 
             @Override
             public void onClick(int progress) {
                 FloatWindowHelper.mEditQuickAreaFlag = false;
                 mAlarmDialogFlag = false;
-                mLeftBottom = mPre.getDialogRadioLeftBottom();
-                mRightBottm = mPre.getDialogRadioRightBottom();
-                mLeftCenter = mPre.getDialogRadioLeftCenter();
-                mRightCenter = mPre.getDialogRadioRightCenter();
+                boolean mLeftBottom = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isLeftBottom;
+                boolean mRightBottm = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isRightBottom;
+                boolean mLeftCenter = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isLeftCenter;
+                boolean mRightCenter = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isRightCenter;
                 if (mLeftBottom || mRightBottm || mLeftCenter || mRightCenter) {
+                    // save progress value
                     mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog
                             .getSeekBarProgressValue());
+                    // save sliding area value
+                    mPre.setDialogRadioLeftBottom(mLeftBottom);
+                    mPre.setDialogRadioRightBottom(mRightBottm);
+                    mPre.setDialogRadioLeftCenter(mLeftCenter);
+                    mPre.setDialogRadioRightCenter(mRightCenter);
                     QuickGestureManager.getInstance(QuickGestureActivity.this).resetSlidAreaSize();
+                    // update area background color
                     updateFloatWindowBackGroudColor();
                     setSlidingAreaSetting();
                     if (mAlarmDialog != null) {
@@ -463,6 +493,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         mSlideTimeDialog.getJustHometCheckStatus());
                 AppMasterPreference.getInstance(QuickGestureActivity.this)
                         .setSlideTimeAllAppAndHome(mSlideTimeDialog.getAppHomeCheckStatus());
+                // update catch value
+                QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isJustHome = mSlideTimeDialog
+                        .getJustHometCheckStatus();
+                QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isAppsAndHome = mSlideTimeDialog
+                        .getAppHomeCheckStatus();
                 mSlideTimeDialog.dismiss();
             }
         });
@@ -526,7 +561,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     final List<BaseInfo> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
                     final List<BaseInfo> removeFreeAppNames = freeDisturbApp
                             .getRemoveFreePackageName();
-                    
+
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
                         @Override

@@ -64,7 +64,8 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
             switch (msg.what) {
                 case 1:
                     iv_dianhua_hold.layout(hold_left, hold_top, hold_right, hold_bottom);
-
+                    LeoLog.d("testGElayout", "电话柄左：" + hold_left + "右：" + hold_right);
+                    
                     iv_guaduan.layout(gua_left, gua_top, gua_right, gua_bottom);
                     iv_guaduan_big.layout(gua_left_big, gua_top_big, gua_right_big, gua_bottom_big);
 
@@ -77,16 +78,14 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
                     
                     iv_topguide.layout(top_guide_left, top_guide_top, top_guide_right, top_guide_bottom);
 
-                    // if (!isShowing) {
-                    // myself_circle.setVisibility(View.VISIBLE);
-                    // showDonghua();
-                    // }
                     iv_dianhua_hold.setVisibility(View.VISIBLE);
                     iv_guaduan.setVisibility(View.VISIBLE);
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
                     iv_topguide.setVisibility(View.VISIBLE);
-
+                    
+                    mViewContent.mFilterLayout = true;
+                    
                     if (!isShowing) {
                         iv_hands.setVisibility(View.VISIBLE);
                         iv_hands.layout(hand_left, hand_top, hand_right, hand_bottom);
@@ -147,26 +146,6 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
 
     protected void showTransDonghua() {
         isShowing = true;
-        // TranslateAnimation transup = new TranslateAnimation(0,
-        // mBanJing, 0, -mBanJing);
-        // transup.setDuration(1500);
-        // transup.setAnimationListener(new AnimationListener() {
-        // @Override
-        // public void onAnimationStart(Animation animation) {
-        //
-        // }
-        // @Override
-        // public void onAnimationRepeat(Animation animation) {
-        // TranslateAnimation trandown = new TranslateAnimation(0,
-        // mBanJing, 0, -mBanJing);
-        // trandown.setDuration(1500);
-        // }
-        // @Override
-        // public void onAnimationEnd(Animation animation) {
-        //
-        // }
-        // });
-        // iv_hands.setAnimation(transup);
 
         if (!isLunXun) {
             setTimerTask();
@@ -222,30 +201,6 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
             }
         }, 100, 100);
     }
-
-    // protected void showDonghua() {
-    // isShowing = true;
-    // new Thread() {
-    // public void run() {
-    // int startInt = 0;
-    // int mAplha = 0;
-    // while (mBanJing > startInt) {
-    // try {
-    // Thread.sleep(15);
-    // startInt += 2;
-    // mAplha = 255 - (int) (startInt * 255 / mBanJing);
-    // if (mAplha < 0) {
-    // mAplha = 0;
-    // }
-    // myself_circle.setProgress(startInt, mAplha);
-    // } catch (InterruptedException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // showDonghua();
-    // };
-    // }.start();
-    // }
 
     private void init() {
         sp_unknowcall = AppMasterPreference.getInstance(this);
@@ -385,7 +340,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         top_guide_bottom = (int)(mYuanY);
     }
 
-    private void setHold() {
+    public void setHold() {
         new Thread() {
             public void run() {
                 try {
@@ -520,6 +475,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         if (mTimer != null) {
             mTimer.cancel();
         }
+        mViewContent.mFilterLayout = false;
         super.onDestroy();
     }
 

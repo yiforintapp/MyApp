@@ -53,7 +53,7 @@ public class GestureRelative extends RelativeLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (mFilterLayout) {
-            mFilterLayout = false;
+//             mFilterLayout = false;
         } else {
             super.onLayout(changed, l, t, r, b);
         }
@@ -61,18 +61,19 @@ public class GestureRelative extends RelativeLayout {
             CirPointY = (b - t) / 2 + 30;
         } else if (screenH == 800) {
             CirPointY = (b - t) / 2 + 20;
-        } else if(screenH == 320){
+        } else if (screenH == 320) {
             CirPointY = (b - t) / 2 + 5;
-        }else{
+        } else {
             CirPointY = (b - t) / 2 + 10;
         }
         CirPointX = (r - l) / 2;
         // LeoLog.d("testlay", "l :"+l+"--t :"+t+"--r :"+r+"--b :"+b);
         mZhiJing = (b - t) * 7 / 8;
         mBanJing = mZhiJing / 2;
-        if (unknowFragment != null) {
+        if (unknowFragment != null && !mFilterLayout) {
             unknowFragment.setPlace();
         }
+
         LeoLog.d("testGElayout", "喔操走onLayout了");
     }
 
@@ -100,7 +101,7 @@ public class GestureRelative extends RelativeLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if(isFromActivity){
+                if (isFromActivity) {
                     mActivity.hideHands();
                 }
                 break;
@@ -153,7 +154,7 @@ public class GestureRelative extends RelativeLayout {
                     isFlaseControl = true;
                 }
             }
-        }else {
+        } else {
             if (!isControlGua) {
                 if (isFromActivity) {
                     mActivity.guaTurnSmall();
@@ -188,7 +189,7 @@ public class GestureRelative extends RelativeLayout {
                     isThridRound = false;
                 }
             }
-        }else {
+        } else {
             if (!isControlDuan) {
                 if (isFromActivity) {
                     mActivity.duanTurnSmall();
@@ -238,7 +239,7 @@ public class GestureRelative extends RelativeLayout {
                     isSecondRound = false;
                 }
             }
-        }else {
+        } else {
             if (!isControlJie) {
                 if (isFromActivity) {
                     mActivity.jieTurnSmall();
@@ -291,7 +292,7 @@ public class GestureRelative extends RelativeLayout {
     }
 
     public void setPretendFragment(PretendFragment pf) {
-     
+
     }
 
     public void setFragment(PretendAppUnknowCallFragment5 fragment) {

@@ -1043,11 +1043,16 @@ public class FloatWindowHelper {
                 || !FloatWindowHelper.isRightTopShowing()
                 || !FloatWindowHelper.isLeftCenterCenterShowing()
                 || !FloatWindowHelper.isRightCenterCenterShowing()) {
-            AppMasterPreference pre = AppMasterPreference
-                    .getInstance(context);
-            // 透明悬浮窗
-            // 左侧底部
-            if (pre.getDialogRadioLeftBottom()) {
+            boolean leftBottom = QuickGestureManager
+                    .getInstance(AppMasterApplication.getInstance()).isLeftBottom;
+            boolean rightBottom = QuickGestureManager.getInstance(AppMasterApplication
+                    .getInstance()).isRightBottom;
+            boolean leftCenter = QuickGestureManager
+                    .getInstance(AppMasterApplication.getInstance()).isLeftCenter;
+            boolean rightCenter = QuickGestureManager.getInstance(AppMasterApplication
+                    .getInstance()).isRightCenter;
+            // left bottom
+            if (leftBottom) {
                 FloatWindowHelper
                         .createFloatLeftBottomWindow(context, value);
                 FloatWindowHelper
@@ -1055,8 +1060,8 @@ public class FloatWindowHelper {
                 FloatWindowHelper
                         .createFloatLeftTopWindow(context, value);
             }
-            // 右侧底部
-            if (pre.getDialogRadioRightBottom()) {
+            // right bottom
+            if (rightBottom) {
                 FloatWindowHelper
                         .createFloatRightBottomWindow(context, value);
                 FloatWindowHelper
@@ -1064,24 +1069,22 @@ public class FloatWindowHelper {
                 FloatWindowHelper
                         .createFloatRightTopWindow(context, value);
             }
-            // 左侧中部
-            if (pre.getDialogRadioLeftCenter()) {
-                // FloatWindowHelper.removeSwipWindow(context, 2);
+            // left center
+            if (leftCenter) {
                 FloatWindowHelper.removeSwipWindow(context, 3);
                 FloatWindowHelper.createFloatLeftCenterCenterWindow(context, value);
-                if (pre.getDialogRadioLeftBottom()) {
+                if (leftBottom) {
                     FloatWindowHelper
                             .createFloatLeftBottomWindow(context, value);
                     FloatWindowHelper
                             .createFloatLeftCenterWindow(context, value);
                 }
             }
-            // 右侧中部
-            if (pre.getDialogRadioRightCenter()) {
-                // FloatWindowHelper.removeSwipWindow(context, -2);
+            // right center
+            if (rightCenter) {
                 FloatWindowHelper.removeSwipWindow(context, -3);
                 FloatWindowHelper.createFloatRightCenterCenterWindow(context, value);
-                if (pre.getDialogRadioRightBottom()) {
+                if (rightBottom) {
                     FloatWindowHelper
                             .createFloatRightBottomWindow(context, value);
                     FloatWindowHelper
@@ -1167,12 +1170,16 @@ public class FloatWindowHelper {
 
     public static void setShowSlideArea(Context context, String flag) {
         int value = QuickGestureManager.getInstance(context).mSlidAreaSize;
+        boolean leftBottom = QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom;
+        boolean rightBottom = QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom;
+        boolean leftCenter = QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter;
+        boolean rightCenter = QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter;
         if (FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA.equals(flag)) {
-            if (!AppMasterPreference.getInstance(context).getDialogRadioLeftBottom()) {
+            if (!leftBottom) {
                 FloatWindowHelper.removeSwipWindow(context, 1);
                 FloatWindowHelper.removeSwipWindow(context, 2);
                 FloatWindowHelper.removeSwipWindow(context, 3);
-                if (!AppMasterPreference.getInstance(context).getDialogRadioLeftCenter()) {
+                if (!leftCenter) {
                     FloatWindowHelper.removeSwipWindow(context, 4);
                 } else {
                     FloatWindowHelper.removeSwipWindow(context, 4);
@@ -1180,7 +1187,7 @@ public class FloatWindowHelper {
                             .createFloatLeftCenterCenterWindow(context, value);
                 }
             } else {
-                if (AppMasterPreference.getInstance(context).getDialogRadioLeftCenter()) {
+                if (leftCenter) {
                     FloatWindowHelper.removeSwipWindow(context, 4);
                     FloatWindowHelper.removeSwipWindow(context, 3);
                     FloatWindowHelper
@@ -1201,11 +1208,11 @@ public class FloatWindowHelper {
             }
         }
         if (FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA.equals(flag)) {
-            if (!AppMasterPreference.getInstance(context).getDialogRadioRightBottom()) {
+            if (!rightBottom) {
                 FloatWindowHelper.removeSwipWindow(context, -1);
                 FloatWindowHelper.removeSwipWindow(context, -2);
                 FloatWindowHelper.removeSwipWindow(context, -3);
-                if (!AppMasterPreference.getInstance(context).getDialogRadioRightCenter()) {
+                if (!rightCenter) {
                     FloatWindowHelper.removeSwipWindow(context, -4);
                 } else {
                     FloatWindowHelper.removeSwipWindow(context, -4);
@@ -1213,7 +1220,7 @@ public class FloatWindowHelper {
                             .createFloatRightCenterCenterWindow(context, value);
                 }
             } else {
-                if (AppMasterPreference.getInstance(context).getDialogRadioRightCenter()) {
+                if (rightCenter) {
                     FloatWindowHelper.removeSwipWindow(context, -4);
                     FloatWindowHelper.removeSwipWindow(context, -3);
 
