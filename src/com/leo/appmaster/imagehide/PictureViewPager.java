@@ -154,7 +154,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 .resetViewBeforeLoading(true).cacheOnDisk(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)
-                .displayer(new FadeInBitmapDisplayer(30)).build();
+                .displayer(new FadeInBitmapDisplayer(500)).build();
     }
 
     class VPagerAdapter extends PagerAdapter {

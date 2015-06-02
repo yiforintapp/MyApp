@@ -1208,7 +1208,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putInt(PREF_SWITCH_MODE_COUNT, count).commit();
     }
 
-    // =====splash start show time set and get===================
     public void setSplashStartShowTime(long time) {
         mPref.edit().putLong(PREF_SPLASH_START_SHOW_TIME, time).commit();
     }
@@ -1217,7 +1216,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getLong(PREF_SPLASH_START_SHOW_TIME, -1);
     }
 
-    // =====splash end show time set and get===================
     public void setSplashEndShowTime(long time) {
         mPref.edit().putLong(PREF_SPLASH_END_SHOW_TIME, time).commit();
     }
@@ -1387,7 +1385,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getSwitchOpenQuickGesture() {
-        return mPref.getBoolean(PREF_SWITCH_OPEN_QUICK_GESTURE, true);
+        return mPref.getBoolean(PREF_SWITCH_OPEN_QUICK_GESTURE, false);
     }
 
     public void setSwitchOpenNoReadMessageTip(boolean flag) {

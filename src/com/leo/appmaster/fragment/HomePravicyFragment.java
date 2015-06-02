@@ -23,6 +23,7 @@ import com.leo.appmaster.privacy.PrivacyProposalLayout;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
@@ -167,15 +168,15 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
             if (flag == 1) {
                 // 隐私通话
                 if (mPreference.getSwitchOpenPrivacyContactMessageTip()) {
-                    LockManager.getInstatnce().isShowPrivacyCallLog = true;
-                    LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                    QuickGestureManager.getInstance(getActivity()).isShowPrivacyCallLog = true;
+                    QuickGestureManager.getInstance(getActivity()).isShowSysNoReadMessage = true;
                     FloatWindowHelper.removeShowReadTipWindow(getActivity());
                 }
             } else if (flag == 0) {
                 // 隐私短信
                 if (mPreference.getSwitchOpenPrivacyContactMessageTip()) {
-                    LockManager.getInstatnce().isShowPrivacyMsm = true;
-                    LockManager.getInstatnce().isShowSysNoReadMessage = true;
+                    QuickGestureManager.getInstance(getActivity()).isShowPrivacyMsm = true;
+                    QuickGestureManager.getInstance(getActivity()).isShowSysNoReadMessage = true;
                     FloatWindowHelper.removeShowReadTipWindow(getActivity());
                 }
             }

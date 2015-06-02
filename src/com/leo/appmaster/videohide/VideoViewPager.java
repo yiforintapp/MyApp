@@ -33,6 +33,7 @@ import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
 
 public class VideoViewPager extends BaseActivity implements OnClickListener {
@@ -148,6 +149,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .considerExifParams(true)
+                .displayer(new FadeInBitmapDisplayer(500))
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .build();

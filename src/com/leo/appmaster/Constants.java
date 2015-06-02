@@ -102,7 +102,7 @@ public class Constants {
      * Image Loader
      */
     public static final int MAX_MEMORY_CACHE_SIZE = 10 * (1 << 20);// 5M
-    public static final int MAX_DISK_CACHE_SIZE = 100 * (1 << 20);// 20 Mb
+    public static final int MAX_DISK_CACHE_SIZE = 100 * (1 << 20);// 10 Mb
     public static final int MAX_THREAD_POOL_SIZE = 3;
 
     /*

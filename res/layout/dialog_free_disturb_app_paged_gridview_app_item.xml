@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <com.leo.appmaster.quickgestures.view.FreeDisturbImageView
+    <com.leo.appmaster.quickgestures.view.FilterAppImageView
         android:id="@+id/iv_app_icon_free"
         android:layout_width="46dp"
         android:layout_height="46dp" />

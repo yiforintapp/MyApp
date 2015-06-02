@@ -105,10 +105,6 @@ public class LockManager {
     }
 
     public static final String EXTRA_LOCKED_APP_PKG = "locked_app_pkg";
-    public boolean isShowPrivacyMsm = false;
-    public boolean isShowPrivacyCallLog = false;
-    public boolean isShowSysNoReadMessage = false;
-    public int onTuchGestureFlag = -1;// -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
     private ILockPolicy mLockPolicy;
     private static LockManager sInstance;
     private Context mContext;
@@ -1436,7 +1432,7 @@ public class LockManager {
     public void startFloatWindowService() {
         TaskDetectService service = TaskDetectService.getService();
         if (service != null) {
-            service.startFloatWindow();
+            service.checkFloatWindow();
         }
     }
 
