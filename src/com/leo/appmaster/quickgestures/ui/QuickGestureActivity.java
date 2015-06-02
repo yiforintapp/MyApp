@@ -71,7 +71,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private boolean mLeftBottom, mRightBottm, mRightCenter, mLeftCenter;
     private List<QuickGsturebAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
-    private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView;
+    private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView,
+            mSlidingTimeTv, mSlidAreaTv;
     private RelativeLayout mTipRL, mOpenQuick, mSlidingArea, mSlidingTime, mNoReadMessageOpen,
             mRecentlyContactOPen, mPrivacyContactOpen;
     private ImageView mHandImage, mArrowImage, mQuickOpenCK, mNoReadMessageOpenCK,
@@ -109,11 +110,14 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mNoReadMessageOpenCK = (ImageView) findViewById(R.id.no_read_message_check);
         mRecentlyContactOpenCK = (ImageView) findViewById(R.id.recently_contact_check);
         mPrivacyContactOpenCK = (ImageView) findViewById(R.id.privacy_contact_check);
+        mSlidingTimeTv = (TextView) findViewById(R.id.allow_slid_time_item_cotentTV);
+        mSlidAreaTv = (TextView) findViewById(R.id.slid_area_item_cotentTV);
         initQuickGestureOpen();
         if (mPre.getSwitchOpenQuickGesture()) {
             initChexkBox();
             setOnClickListener();
         }
+        initSlidingAreaText();
         if (!AppMasterPreference.getInstance(this)
                 .getFristSlidingTip()) {
             gestureTranslationAnim(mHandImage, mArrowImage);
@@ -142,6 +146,59 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         } else {
             mQuickOpenCK.setImageResource(R.drawable.switch_off);
         }
+    }
+
+    private void initSlidingAreaText() {
+        /**
+         * init sliding time
+         */
+        // just home
+        if (mPre.getSlideTimeJustHome()) {
+            mSlidingTimeTv
+                    .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
+        }
+        // home and all app
+        if (mPre.getSlideTimeAllAppAndHome()) {
+            mSlidingTimeTv
+                    .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
+        }
+        setSlidingAreaSetting();
+    }
+
+    private void setSlidingAreaSetting() {
+        /**
+         * init sliding area
+         */
+        mSlidAreaTv.setText(getSlidingAreaShowString());
+    }
+
+    private String getSlidingAreaShowString() {
+        StringBuilder sb = new StringBuilder();
+        if (mPre.getDialogRadioLeftBottom()) {
+            sb.append(this.getResources().getString(
+                    R.string.pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text)
+                    + ",");
+        }
+        if (mPre.getDialogRadioRightBottom()) {
+            sb.append(this.getResources().getString(
+                    R.string.pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text)
+                    + ",");
+        }
+        if (mPre.getDialogRadioLeftCenter()) {
+            sb.append(this.getResources().getString(
+                    R.string.pg_appmanager_quick_gesture_option_dialog_radio_left_center_text)
+                    + ",");
+        }
+        if (mPre.getDialogRadioRightCenter()) {
+            sb.append(this.getResources().getString(
+                    R.string.pg_appmanager_quick_gesture_option_dialog_radio_right_center_text)
+                    + ",");
+        }
+
+        if (sb != null) {
+            sb.setCharAt(sb.length() - 1, ' ');
+        }
+        return sb.toString();
     }
 
     private void initChexkBox() {
@@ -210,10 +267,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     public void onEventMainThread(QuickGestureFloatWindowEvent event) {
         String flag = event.editModel;
-        if (FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION
-                .equals(flag)) {
-            mQuickGestureSettingOption.clear();
-        } else if (FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION.equals(flag)) {
+        if (FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION.equals(flag)) {
             showSlideShowTimeSettingDialog();
         }
 
@@ -224,7 +278,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         boolean isCheck;
     }
 
-    // 滑动区域设置
+    // sliding area setting dialog
     private void showSettingDialog(boolean flag) {
         if (mAlarmDialog == null) {
             mAlarmDialog = new QuickGestureRadioSeekBarDialog(this);
@@ -241,7 +295,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onClick(View arg0) {
-                // TODO 左下
+                // left bottom
                 boolean leftBottomStatus = mPre.getDialogRadioLeftBottom();
                 if (leftBottomStatus) {
                     mPre.setDialogRadioLeftBottom(false);
@@ -260,7 +314,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onClick(View arg0) {
-                // TODO Auto-generated method stub右下
+                // right bottom
                 boolean rightBottomStatus = mPre.getDialogRadioRightBottom();
                 if (rightBottomStatus) {
                     mPre.setDialogRadioRightBottom(false);
@@ -279,7 +333,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onClick(View arg0) {
-                // TODO Auto-generated method stub左中
+                // left center
                 boolean leftCenterStatus = mPre.getDialogRadioLeftCenter();
                 if (leftCenterStatus) {
                     mPre.setDialogRadioLeftCenter(false);
@@ -298,7 +352,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onClick(View arg0) {
-                // TODO Auto-generated method stub右中
+                // right center
                 boolean rightCenterStatus = mPre.getDialogRadioRightCenter();
                 if (rightCenterStatus) {
                     mPre.setDialogRadioRightCenter(false);
@@ -328,6 +382,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             .getSeekBarProgressValue());
                     QuickGestureManager.getInstance(QuickGestureActivity.this).resetSlidAreaSize();
                     updateFloatWindowBackGroudColor();
+                    setSlidingAreaSetting();
                     if (mAlarmDialog != null) {
                         mAlarmDialog.dismiss();
                     }
@@ -356,7 +411,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
     }
 
-    // 滑动时机对话框
+    // sliding time setting diallg
     private void showSlideShowTimeSettingDialog() {
         if (mSlideTimeDialog == null) {
             mSlideTimeDialog = new QuickGestureSlideTimeDialog(this);
@@ -381,15 +436,21 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onClick(View arg0) {
+                // just home
+                if (mSlideTimeDialog.getJustHometCheckStatus()) {
+                    mSlidingTimeTv
+                            .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
+                }
+                // home and all app
+                if (mSlideTimeDialog.getAppHomeCheckStatus()) {
+                    mSlidingTimeTv
+                            .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
+                }
                 AppMasterPreference.getInstance(QuickGestureActivity.this).setSlideTimeJustHome(
                         mSlideTimeDialog.getJustHometCheckStatus());
                 AppMasterPreference.getInstance(QuickGestureActivity.this)
                         .setSlideTimeAllAppAndHome(mSlideTimeDialog.getAppHomeCheckStatus());
                 mSlideTimeDialog.dismiss();
-                LeoEventBus
-                        .getDefaultBus()
-                        .post(new QuickGestureFloatWindowEvent(
-                                FloatWindowHelper.QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION));
             }
         });
         mSlideTimeDialog.setFreeDisturbAppAddBtClickListener(new OnClickListener() {
@@ -438,7 +499,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         }
     }
 
-    // 免打扰应用列表
+    // filter app list dialog
     private void showAllAppDialog() {
         final QuickGestureFreeDisturbAppDialog freeDisturbApp = new QuickGestureFreeDisturbAppDialog(
                 this, 1);
@@ -448,7 +509,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 if (freeDisturbApp != null) {
-                    // 添加确认免打扰应用
+                    // add filter app
                     final List<BaseInfo> addFreeAppNames = freeDisturbApp.getAddFreePackageName();
                     final List<BaseInfo> removeFreeAppNames = freeDisturbApp
                             .getRemoveFreePackageName();
@@ -489,7 +550,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         freeDisturbApp.show();
     }
 
-    // 获取免干扰应用
+    // get filter apps
     private List<QuickGsturebAppInfo> getFreeDisturbApps() {
         List<QuickGsturebAppInfo> freeDisturbApp = new ArrayList<QuickGsturebAppInfo>();
         // 添加Item
@@ -726,7 +787,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mPre.setSwitchOpenNoReadMessageTip(true);
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
                     mNoReadMessageFlag = true;
-                    // 查看短信数据库未读短信数量
+                    // checkout system database no read message
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                         @Override
                         public void run() {

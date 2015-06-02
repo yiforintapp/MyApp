@@ -151,8 +151,7 @@
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:textColor="#999999"
-                            android:textSize="10dp"
-                            android:visibility="gone" />
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <ImageView
@@ -220,8 +219,7 @@
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:textColor="#999999"
-                            android:textSize="10dp"
-                            android:visibility="gone" />
+                            android:textSize="10dp"/>
                     </LinearLayout>
 
                     <ImageView
