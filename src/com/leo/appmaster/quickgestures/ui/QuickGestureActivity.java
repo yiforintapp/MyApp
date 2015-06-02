@@ -311,7 +311,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // left bottom
-                boolean leftBottomStatus = mPre.getDialogRadioLeftBottom();
+//                boolean leftBottomStatus = mPre.getDialogRadioLeftBottom();
+                boolean leftBottomStatus = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isLeftBottom;
                 if (leftBottomStatus) {
                     // mPre.setDialogRadioLeftBottom(false);
                     mAlarmDialog.setLeftBottomBackgroud(QuickGestureActivity.this.getResources()
@@ -332,7 +334,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // right bottom
-                boolean rightBottomStatus = mPre.getDialogRadioRightBottom();
+//                boolean rightBottomStatus = mPre.getDialogRadioRightBottom();
+                boolean rightBottomStatus = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isRightBottom;
                 if (rightBottomStatus) {
                     // mPre.setDialogRadioRightBottom(false);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = false;
@@ -353,7 +357,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // left center
-                boolean leftCenterStatus = mPre.getDialogRadioLeftCenter();
+//                boolean leftCenterStatus = mPre.getDialogRadioLeftCenter();
+                boolean leftCenterStatus = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isLeftCenter;
                 if (leftCenterStatus) {
                     // mPre.setDialogRadioLeftCenter(false);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = false;
@@ -374,7 +380,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // right center
-                boolean rightCenterStatus = mPre.getDialogRadioRightCenter();
+//                boolean rightCenterStatus = mPre.getDialogRadioRightCenter();
+                boolean rightCenterStatus = QuickGestureManager.getInstance(AppMasterApplication
+                        .getInstance()).isRightCenter;
                 if (rightCenterStatus) {
                     // mPre.setDialogRadioRightCenter(false);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = false;
