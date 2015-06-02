@@ -1043,14 +1043,14 @@ public class FloatWindowHelper {
                 || !FloatWindowHelper.isRightTopShowing()
                 || !FloatWindowHelper.isLeftCenterCenterShowing()
                 || !FloatWindowHelper.isRightCenterCenterShowing()) {
-            boolean leftBottom=QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom;
-            boolean rightBottom=QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom;
-            boolean leftCenter=QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter;
-            boolean rightCenter=QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter;
-            Log.e("######", "leftBottom:"+leftBottom);
-            Log.e("######", "rightBottom:"+rightBottom);
-            Log.e("######", "leftCenter:"+leftCenter);
-            Log.e("######", "rightCenter:"+rightCenter);
+            boolean leftBottom = QuickGestureManager
+                    .getInstance(AppMasterApplication.getInstance()).isLeftBottom;
+            boolean rightBottom = QuickGestureManager.getInstance(AppMasterApplication
+                    .getInstance()).isRightBottom;
+            boolean leftCenter = QuickGestureManager
+                    .getInstance(AppMasterApplication.getInstance()).isLeftCenter;
+            boolean rightCenter = QuickGestureManager.getInstance(AppMasterApplication
+                    .getInstance()).isRightCenter;
             // left bottom
             if (leftBottom) {
                 FloatWindowHelper
@@ -1170,12 +1170,16 @@ public class FloatWindowHelper {
 
     public static void setShowSlideArea(Context context, String flag) {
         int value = QuickGestureManager.getInstance(context).mSlidAreaSize;
+        boolean leftBottom = QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom;
+        boolean rightBottom = QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom;
+        boolean leftCenter = QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter;
+        boolean rightCenter = QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter;
         if (FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA.equals(flag)) {
-            if (!AppMasterPreference.getInstance(context).getDialogRadioLeftBottom()) {
+            if (!leftBottom) {
                 FloatWindowHelper.removeSwipWindow(context, 1);
                 FloatWindowHelper.removeSwipWindow(context, 2);
                 FloatWindowHelper.removeSwipWindow(context, 3);
-                if (!AppMasterPreference.getInstance(context).getDialogRadioLeftCenter()) {
+                if (!leftCenter) {
                     FloatWindowHelper.removeSwipWindow(context, 4);
                 } else {
                     FloatWindowHelper.removeSwipWindow(context, 4);
@@ -1183,7 +1187,7 @@ public class FloatWindowHelper {
                             .createFloatLeftCenterCenterWindow(context, value);
                 }
             } else {
-                if (AppMasterPreference.getInstance(context).getDialogRadioLeftCenter()) {
+                if (leftCenter) {
                     FloatWindowHelper.removeSwipWindow(context, 4);
                     FloatWindowHelper.removeSwipWindow(context, 3);
                     FloatWindowHelper
@@ -1204,11 +1208,11 @@ public class FloatWindowHelper {
             }
         }
         if (FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA.equals(flag)) {
-            if (!AppMasterPreference.getInstance(context).getDialogRadioRightBottom()) {
+            if (!rightBottom) {
                 FloatWindowHelper.removeSwipWindow(context, -1);
                 FloatWindowHelper.removeSwipWindow(context, -2);
                 FloatWindowHelper.removeSwipWindow(context, -3);
-                if (!AppMasterPreference.getInstance(context).getDialogRadioRightCenter()) {
+                if (!rightCenter) {
                     FloatWindowHelper.removeSwipWindow(context, -4);
                 } else {
                     FloatWindowHelper.removeSwipWindow(context, -4);
@@ -1216,7 +1220,7 @@ public class FloatWindowHelper {
                             .createFloatRightCenterCenterWindow(context, value);
                 }
             } else {
-                if (AppMasterPreference.getInstance(context).getDialogRadioRightCenter()) {
+                if (rightCenter) {
                     FloatWindowHelper.removeSwipWindow(context, -4);
                     FloatWindowHelper.removeSwipWindow(context, -3);
 
