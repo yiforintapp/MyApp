@@ -28,6 +28,7 @@ import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.videohide.VideoHideDialog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
 
 /**
  * @author linxiongzhou
@@ -108,6 +109,7 @@ public class ImageGalleryActivity extends BaseActivity {
                 .showImageOnFail(R.drawable.photo_bg_loding)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
+                .displayer(new FadeInBitmapDisplayer(500))
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
