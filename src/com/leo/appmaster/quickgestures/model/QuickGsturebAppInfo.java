@@ -1,9 +1,9 @@
 
 package com.leo.appmaster.quickgestures.model;
 
-import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.AppInfo;
 
-public class QuickGsturebAppInfo extends AppItemInfo {
+public class QuickGsturebAppInfo extends AppInfo {
     /*
      * isFreeDisturb
      */

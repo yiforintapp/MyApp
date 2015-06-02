@@ -514,7 +514,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     // filter app list dialog
     private void showAllAppDialog() {
-        final QuickGestureFreeDisturbAppDialog freeDisturbApp = new QuickGestureFreeDisturbAppDialog(
+        final QuickGestureFilterAppDialog freeDisturbApp = new QuickGestureFilterAppDialog(
                 this, 1);
         freeDisturbApp.setTitle(R.string.pg_appmanager_quick_gesture_select_free_disturb_app_text);
         freeDisturbApp.setRightBt(new OnClickListener() {

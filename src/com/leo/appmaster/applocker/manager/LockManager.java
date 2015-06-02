@@ -1432,7 +1432,7 @@ public class LockManager {
     public void startFloatWindowService() {
         TaskDetectService service = TaskDetectService.getService();
         if (service != null) {
-            service.startFloatWindow();
+            service.checkFloatWindow();
         }
     }
 

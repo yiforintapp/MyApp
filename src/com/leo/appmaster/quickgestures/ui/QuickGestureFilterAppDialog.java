@@ -33,8 +33,8 @@ import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.view.FreeDisturbImageView;
-import com.leo.appmaster.quickgestures.view.FreeDisturbPagedGridView;
+import com.leo.appmaster.quickgestures.view.FilterAppImageView;
+import com.leo.appmaster.quickgestures.view.FilterAppPagedGridView;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -43,9 +43,9 @@ import com.leo.appmaster.utils.LeoLog;
  * 
  * @author run
  */
-public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
+public class QuickGestureFilterAppDialog extends LEOBaseDialog {
     private Context mContext;
-    private FreeDisturbPagedGridView mGridView;
+    private FilterAppPagedGridView mGridView;
     private TextView mTitle, mSureBt, mLeftBt;
     private List<QuickGsturebAppInfo> mDisturbList = null;
     private List<QuickGsturebAppInfo> mFreeDisturbApp = null;
@@ -60,7 +60,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
     private List<BaseInfo> quickSwitchSaveList;
     private static int mMostAppConunt = 0;
 
-    public QuickGestureFreeDisturbAppDialog(Context context, int flag) {
+    public QuickGestureFilterAppDialog(Context context, int flag) {
         super(context, R.style.bt_dialog);
         mContext = context.getApplicationContext();
         mAddFreePackageName = new ArrayList<BaseInfo>();
@@ -74,7 +74,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_free_disturb_app, null);
         Resources resources = AppMasterApplication.getInstance().getResources();
-        mGridView = (FreeDisturbPagedGridView) dlgView.findViewById(R.id.free_disturb_gridview);
+        mGridView = (FilterAppPagedGridView) dlgView.findViewById(R.id.free_disturb_gridview);
         mSureBt = (TextView) dlgView.findViewById(R.id.quick_freed_disturb_dlg_right_btn);
         mLeftBt = (TextView) dlgView.findViewById(R.id.quick_freed_disturb_dlg_left_btn);
         mCheckBoxLL = (LinearLayout) dlgView.findViewById(R.id.checkboxLL);
@@ -108,7 +108,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                     if (mFlag == 1) {
                         mRemoveFreePackageName.add(selectInfl);
                     }
-                    ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                    ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
                             .setDefaultRecommendApp(false);
                     mSwitchListSize -= 1;
                 } else {
@@ -130,7 +130,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                             if (mRemoveFreePackageName != null && mRemoveFreePackageName.size() > 0) {
                                 mRemoveFreePackageName.remove(selectInfl);
                             }
-                            ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                            ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
                                     .setDefaultRecommendApp(true);
                             mSwitchListSize += 1;
                         }
@@ -142,7 +142,7 @@ public class QuickGestureFreeDisturbAppDialog extends LEOBaseDialog {
                             mAddFreePackageName.add(selectInfl);
                         }
                         mRemoveFreePackageName.remove(selectInfl);
-                        ((FreeDisturbImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                        ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
                                 .setDefaultRecommendApp(true);
                     }
 

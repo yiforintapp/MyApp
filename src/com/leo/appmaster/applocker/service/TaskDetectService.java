@@ -94,12 +94,11 @@ public class TaskDetectService extends Service {
         flowDetecTask = new FlowTask();
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
-        // LeoEventBus
-        // .getDefaultBus().register(this);
         mHandler = new Handler();
         sService = this;
         startForeground(1, getNotification(getApplicationContext()));
         startPhantomService();
+        checkFloatWindow();
         super.onCreate();
     }
 
@@ -112,8 +111,6 @@ public class TaskDetectService extends Service {
         if (!mServiceStarted) {
             startDetect();
         }
-        startFloatWindow();
-
         return START_STICKY;
     }
 
@@ -162,7 +159,7 @@ public class TaskDetectService extends Service {
                 TimeUnit.MILLISECONDS);
     }
 
-    public void startFloatWindow() {
+    public void checkFloatWindow() {
 
         if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
             startFloatWindowTask();

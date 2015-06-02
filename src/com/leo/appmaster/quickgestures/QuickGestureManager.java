@@ -35,7 +35,7 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.quickgestures.ui.QuickGestureFreeDisturbAppDialog;
+import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGestureManager {
@@ -490,7 +490,7 @@ public class QuickGestureManager {
      * @param context
      */
     public void showCommontAppDialog(final Context context) {
-        final QuickGestureFreeDisturbAppDialog commonApp = new QuickGestureFreeDisturbAppDialog(
+        final QuickGestureFilterAppDialog commonApp = new QuickGestureFilterAppDialog(
                 context.getApplicationContext(), 3);
         final AppMasterPreference pref = AppMasterPreference.getInstance(context);
         commonApp.setIsShowCheckBox(true);
@@ -638,7 +638,7 @@ public class QuickGestureManager {
      * @param activity
      */
     public void showQuickSwitchDialog(final Context context) {
-        final QuickGestureFreeDisturbAppDialog quickSwitch = new QuickGestureFreeDisturbAppDialog(
+        final QuickGestureFilterAppDialog quickSwitch = new QuickGestureFilterAppDialog(
                 context.getApplicationContext(), 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
         quickSwitch.setRightBt(new OnClickListener() {

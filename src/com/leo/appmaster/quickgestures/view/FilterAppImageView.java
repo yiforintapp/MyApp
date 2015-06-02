@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 import com.leo.appmaster.R;
 
-public class FreeDisturbImageView extends ImageView {
+public class FilterAppImageView extends ImageView {
     private RectF mRect;
     private boolean mDefaultRecommend;
     private Paint mPaint;
@@ -25,7 +25,7 @@ public class FreeDisturbImageView extends ImageView {
     private Bitmap mSourceBitmap, mGaryBitmap;
     private PaintFlagsDrawFilter mDrawFilter;
 
-    public FreeDisturbImageView(Context context, AttributeSet attrs) {
+    public FilterAppImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }

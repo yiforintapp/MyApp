@@ -24,7 +24,7 @@ import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.LeoApplistCirclePageIndicator;
 
-public class FreeDisturbPagedGridView extends LinearLayout {
+public class FilterAppPagedGridView extends LinearLayout {
 
     private int mCellX, mCellY;
     private LeoAppViewPager mViewPager;
@@ -40,7 +40,7 @@ public class FreeDisturbPagedGridView extends LinearLayout {
     private OnTouchListener mTouchListener;
     private int mPageCount;
 
-    public FreeDisturbPagedGridView(Context context, AttributeSet attrs) {
+    public FilterAppPagedGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mInflater = LayoutInflater.from(context);
@@ -202,7 +202,7 @@ public class FreeDisturbPagedGridView extends LinearLayout {
         }
 
         class ViewHolder {
-            FreeDisturbImageView imageView;
+            FilterAppImageView imageView;
             TextView textView;
         }
 
@@ -213,7 +213,7 @@ public class FreeDisturbPagedGridView extends LinearLayout {
                 vh = new ViewHolder();
                 convertView = mInflater.inflate(
                         R.layout.dialog_free_disturb_app_paged_gridview_app_item, null);
-                vh.imageView = (FreeDisturbImageView) convertView
+                vh.imageView = (FilterAppImageView) convertView
                         .findViewById(R.id.iv_app_icon_free);
                 vh.textView = (TextView) convertView
                         .findViewById(R.id.tv_app_name_free);
