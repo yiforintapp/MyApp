@@ -16,7 +16,6 @@ import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,11 +32,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
-import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.backup.AppDeleteAdapter;
@@ -48,8 +45,6 @@ import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -93,7 +88,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     // private int InstalledApps = 0;
     public static final String BACKUP_PATH = "appmaster/backup/";
     private ProcessCleaner mCleaner;
-    private boolean mAllowClean;
     private long mLastUsedMem;
     private long mTotalMem;
     private long mCleanMem;
@@ -160,9 +154,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             }
         });
     }
-    
-    class HomeAppAsyncTask extends AsyncTask<Void, Void, Void> {
 
+    class HomeAppAsyncTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -177,7 +170,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             onDataReady();
             return null;
         }
-        
 
         @Override
         protected void onPostExecute(Void result) {
@@ -187,13 +179,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             list_delete.setVisibility(View.VISIBLE);
             fillData();
             setListView();
-
             if (curFastThanset) {
                 isShowIng = true;
                 curFastThanset = false;
                 showdonghua();
             }
-
         }
     }
 
@@ -224,7 +214,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if(isStopDongHua){
+                    if (isStopDongHua) {
                         break;
                     }
                     startProgress += 1;
@@ -309,8 +299,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         + RestoreListSize);
 
         // clean View
-//        cleanView();
-//        cleanMemory();
+        // cleanView();
+        // cleanMemory();
         LeoLog.d("HomeAppManagerFragment", "loadData() finish");
     }
 
@@ -465,8 +455,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private void donghua_show_clean() {
         new Thread() {
             public void run() {
-                if(isStopDongHua){
-                    mProgress= mNowDongHuaWhere;
+                if (isStopDongHua) {
+                    mProgress = mNowDongHuaWhere;
                 }
                 while (mProgress > 0) {
                     try {
