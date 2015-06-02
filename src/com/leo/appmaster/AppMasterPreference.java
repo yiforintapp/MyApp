@@ -1387,7 +1387,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getSwitchOpenQuickGesture() {
-        return mPref.getBoolean(PREF_SWITCH_OPEN_QUICK_GESTURE, true);
+        return mPref.getBoolean(PREF_SWITCH_OPEN_QUICK_GESTURE, false);
     }
 
     public void setSwitchOpenNoReadMessageTip(boolean flag) {

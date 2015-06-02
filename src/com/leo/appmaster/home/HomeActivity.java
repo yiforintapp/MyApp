@@ -223,7 +223,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
         mFragmentHolders[2] = holder;
 
-        // AM-614, remove cached fragments
+        // remove cached fragments
         FragmentManager fm = getSupportFragmentManager();
         try {
             FragmentTransaction ft = fm.beginTransaction();

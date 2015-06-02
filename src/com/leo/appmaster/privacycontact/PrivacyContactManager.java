@@ -33,16 +33,18 @@ public class PrivacyContactManager {
     private MessageBean mMessage;
     private MessageBean mLastMessage;
     private ContactBean mLastCallContact;
-//    private ArrayList<ContactCallLog> mSysCallLogs;
+    private ContactBean mLastMessageContact;
+    // private ArrayList<ContactCallLog> mSysCallLogs;
     private boolean mContactLoaded = false;
-//    private boolean mSysMessageLoaded = false;
-//    private boolean mSysContactsLoaded = false;
-//    private boolean mSysCallLogLoaded = false;
+
+    // private boolean mSysMessageLoaded = false;
+    // private boolean mSysContactsLoaded = false;
+    // private boolean mSysCallLogLoaded = false;
 
     private PrivacyContactManager(Context context) {
         this.mContext = context.getApplicationContext();
         mContacts = new ArrayList<ContactBean>();
-//        mSysCallLogs = new ArrayList<ContactCallLog>();
+        // mSysCallLogs = new ArrayList<ContactCallLog>();
 
     }
 
@@ -145,6 +147,16 @@ public class PrivacyContactManager {
         return contact;
     }
 
+    public void setLastMessageContact(ContactBean contact) {
+        mLastMessageContact = contact;
+    }
+
+    public ContactBean getLastMessageContact() {
+        ContactBean contact = mLastMessageContact;
+        mLastCallContact = null;
+        return contact;
+    }
+
     public synchronized MessageBean getLastMessage() {
         MessageBean message = mLastMessage;
         mLastMessage = null;
@@ -177,7 +189,6 @@ public class PrivacyContactManager {
                 int threadId = PrivacyContactUtils.queryContactId(mContext,
                         message.getPhoneNumber());
                 values.put(Constants.COLUMN_MESSAGE_THREAD_ID, threadId);
-//                String number = PrivacyContactUtils.formatePhoneNumber(message.getPhoneNumber());
                 ContentResolver mCr = mContext.getContentResolver();
                 mCr.insert(Constants.PRIVACY_MESSAGE_URI, values);
                 if (count > 0) {
@@ -212,12 +223,6 @@ public class PrivacyContactManager {
                     notification.when = System.currentTimeMillis();
                     notificationManager.notify(20140901, notification);
                 }
-                // 删除系统信息
-                // int flag = mCr.delete(PrivacyContactUtils.SMS_INBOXS,
-                // "address LIKE ?",
-                // new String[] {
-                // "%" + number
-                // });
                 String dateFrom = sdf.format(new Date(sendDate));
                 message.setMessageTime(dateFrom);
                 mMessage = message;
@@ -266,11 +271,6 @@ public class PrivacyContactManager {
                 notification.when = System.currentTimeMillis();
                 notificationManager.notify(20140901, notification);
             }
-            // 删除系统信息
-            /*
-             * mCr.delete(PrivacyContactUtils.SMS_INBOXS, "address LIKE ?", new
-             * String[] { "%" + number });
-             */
         }
         // 通知更新短信记录
         LeoEventBus.getDefaultBus().post(

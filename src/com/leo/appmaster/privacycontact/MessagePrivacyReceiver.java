@@ -78,6 +78,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     if (!Utilities.isEmpty(mPhoneNumber)) {
                         String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
                         ContactBean contact = getPrivateMessage(formateNumber, mContext);
+                        PrivacyContactManager.getInstance(mContext).setLastMessageContact(contact);
                         if (contact != null) {
                             abortBroadcast();
                             String sendTime = mSimpleDateFormate.format(System.currentTimeMillis());

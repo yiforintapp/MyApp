@@ -690,8 +690,8 @@ public class SectorQuickGestureContainer extends FrameLayout {
             }
             // 快捷手势未读隐私短信提示
             if (isShowPrivacyContactTip) {
-                if (LockManager.getInstatnce().isShowPrivacyCallLog
-                        || LockManager.getInstatnce().isShowPrivacyMsm) {
+                if (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog
+                        || QuickGestureManager.getInstance(mContext).isShowPrivacyMsm) {
                     QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
                     item.icon = getContext().getResources().getDrawable(
                             R.drawable.gesture_system);
