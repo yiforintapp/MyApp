@@ -123,7 +123,8 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if (((moveX > mLeftBottomParams.width / 8 || moveY > mLeftBottomParams.height / 6)
+                            float presssure=event.getPressure();
+                            if (( (moveX > mLeftBottomParams.width / 8 || moveY > mLeftBottomParams.height / 6 ||presssure>0.03)
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -209,7 +210,8 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftCenterParams.width / 6 || moveY > mLeftCenterParams.width / 6)
+                            float presssure=event.getPressure();
+                            if ((moveX > mLeftCenterParams.width / 6 || moveY > mLeftCenterParams.width / 6 || presssure>0.03)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -285,7 +287,8 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftCenterCenterParams.width / 6 || moveY > mLeftCenterCenterParams.width / 6)
+                            float presssure=event.getPressure();
+                            if ((moveX > mLeftCenterCenterParams.width / 6 || moveY > mLeftCenterCenterParams.width / 6 || presssure>0.03)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -389,7 +392,8 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mLeftTopParams.width / 6 || moveY > mLeftTopParams.width / 6)
+                            float presssure=event.getPressure();
+                            if ((moveX > mLeftTopParams.width / 6 || moveY > mLeftTopParams.width / 6 || presssure>0.03)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -466,7 +470,8 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightBottomParams.width / 8 || moveY > mRightBottomParams.height / 6)
+                            float presssure=event.getPressure();
+                            if ((moveX > mRightBottomParams.width / 8 || moveY > mRightBottomParams.height / 6 || presssure>0.03)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -548,7 +553,8 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightCenterParams.width / 6 || moveY > mRightCenterParams.width / 6)
+                            float presssure=event.getPressure();
+                            if ((moveX > mRightCenterParams.width / 6 || moveY > mRightCenterParams.width / 6 || presssure>0.03)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -625,7 +631,8 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightCenterCenterParams.width / 6 || moveY > mRightCenterCenterParams.width / 6)
+                            float presssure=event.getPressure();
+                            if ((moveX > mRightCenterCenterParams.width / 6 || moveY > mRightCenterCenterParams.width / 6 || presssure>0.03)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -733,7 +740,8 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            if ((moveX > mRightTopParams.width / 6 || moveY > mRightTopParams.width / 6)
+                            float presssure=event.getPressure();
+                            if ((moveX > mRightTopParams.width / 6 || moveY > mRightTopParams.width / 6 || presssure>0.03)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
