@@ -656,13 +656,6 @@ public class QuickSwitchManager {
         switchSetInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_set);
         mAllList.add(switchSetInfo);
-        // 情景模式切换
-        // QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
-        // changeModeInfo.swtichIdentiName = CHANGEMODE;
-        // changeModeInfo.label = getLabelFromName(CHANGEMODE);
-        // changeModeInfo.icon = mContext.getResources().getDrawable(
-        // R.drawable.switch_mode);
-        // mAllList.add(changeModeInfo);
         // 移动数据
         QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
         mobileDataInfo.swtichIdentiName = MOBILEDATA;

@@ -15,6 +15,9 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
+import com.leo.appmaster.utils.LeoLog;
 
 public class FilterAppImageView extends ImageView {
     private RectF mRect;
@@ -24,6 +27,7 @@ public class FilterAppImageView extends ImageView {
     private float mLockX, mLockY;
     private Bitmap mSourceBitmap, mGaryBitmap;
     private PaintFlagsDrawFilter mDrawFilter;
+    private QuickGsturebAppInfo changeInfo;
 
     public FilterAppImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -42,13 +46,27 @@ public class FilterAppImageView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         try {
-            if (mSourceBitmap == null) {
-                Drawable d = this.getDrawable();
+            if (mSourceBitmap == null && changeInfo == null) {
+                Drawable d = null;
+                d = this.getDrawable();
+                LeoLog.d("FilterAppImageView", "正常getDrawable");
                 mSourceBitmap = Bitmap.createBitmap(d.getIntrinsicWidth(),
                         d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
                 d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
                 Canvas c = new Canvas(mSourceBitmap);
                 d.draw(c);
+            } else {
+                if (changeInfo != null) {
+                    Drawable d = null;
+                    LeoLog.d("FilterAppImageView", "点击View，刷新状态");
+                    d = selectIconOrNot();
+                    mSourceBitmap = Bitmap.createBitmap(d.getIntrinsicWidth(),
+                            d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                    d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+                    Canvas c = new Canvas(mSourceBitmap);
+                    d.draw(c);
+                    changeInfo = null;
+                }
             }
             if (mDefaultRecommend) {
                 if (mRect == null) {
@@ -115,6 +133,145 @@ public class FilterAppImageView extends ImageView {
         }
     }
 
+    private Drawable selectIconOrNot() {
+        // 名字为label的，有无选中？
+        Drawable rightIcon = null;
+        if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+            // 蓝牙状态
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_bluetooth_pre);
+                LeoLog.d("FilterAppImageView", "点击蓝牙 -- On");
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_bluetooth);
+                LeoLog.d("FilterAppImageView", "点击蓝牙 -- Off");
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+            // 手电筒状态
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_flashlight_pre);
+                LeoLog.d("FilterAppImageView", "点击手电筒 -- On");
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_flashlight);
+                LeoLog.d("FilterAppImageView", "点击手电筒 -- Off");
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.WLAN)) {
+            // Wifi状态
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_wifi_pre);
+                LeoLog.d("FilterAppImageView", "点击Wifi -- On");
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_wifi);
+                LeoLog.d("FilterAppImageView", "点击Wifi -- Off");
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.CRAME)) {
+            // Crame状态
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_camera);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_camera_dis);
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.SOUND)) {
+            // Sound状态
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_volume_max);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_volume);
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.LIGHT)) {
+            // 亮度状态
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_brightness_min);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_brightness);
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
+            // 加速
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_speed_up);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_speed_up);
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.SWITCHSET)) {
+            // 手势设置
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_set);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_set_dis);
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.SETTING)) {
+            // 系统设置
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_gestureset_pre);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_gestureset);
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.GPS)) {
+            // GPS
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_gps_pre);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_gps);
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.FLYMODE)) {
+            // 飞行模式
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_flightmode_pre);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_flightmode);
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.ROTATION)) {
+            // 屏幕旋转
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_rotation_pre);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_rotation);
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+            // 移动数据
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_data_pre);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_data);
+            }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.HOME)) {
+            // 桌面
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_home);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.switch_home_dis);
+            }
+        }
+        return rightIcon;
+    }
+
     public void setDefaultRecommendApp(boolean defaultApp) {
         mDefaultRecommend = defaultApp;
         invalidate();
@@ -130,6 +287,12 @@ public class FilterAppImageView extends ImageView {
             }
             return mDefaultRecommend;
         }
+    }
 
+    public void setDefaultRecommendApp(QuickGsturebAppInfo selectInfl, boolean defaultApp) {
+        LeoLog.d("FilterAppImageView", "点击按钮，刷新了哦！");
+        mDefaultRecommend = defaultApp;
+        changeInfo = selectInfl;
+        invalidate();
     }
 }

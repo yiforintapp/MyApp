@@ -174,6 +174,10 @@ public class FilterAppPagedGridView extends LinearLayout {
         }
     }
 
+    public void makeNotify(){
+        
+    }
+    
     private class GridviewAdapter extends BaseAdapter {
         List<QuickGsturebAppInfo> mList;
 
