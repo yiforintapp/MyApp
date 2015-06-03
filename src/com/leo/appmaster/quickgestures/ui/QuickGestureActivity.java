@@ -53,6 +53,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureSettingBean;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
+import com.leo.appmaster.quickgestures.ui.QuickGestureSlideTimeDialog.UpdateFilterAppClickListener;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
@@ -61,7 +62,8 @@ import com.leo.appmaster.ui.CommonTitleBar;
  * 
  * @author run
  */
-public class QuickGestureActivity extends BaseActivity implements OnTouchListener, OnClickListener {
+public class QuickGestureActivity extends BaseActivity implements OnTouchListener, OnClickListener,
+        UpdateFilterAppClickListener {
     private CommonTitleBar mTitleBar;
     private List<QuickGestureSettingBean> mQuickGestureSettingOption;
     private AppMasterPreference mPre;
@@ -274,19 +276,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // LeoEventBus.getDefaultBus().unregister(this);
     }
-
-    //
-    // public void onEventMainThread(QuickGestureFloatWindowEvent event) {
-    // String flag = event.editModel;
-    // if
-    // (FloatWindowHelper.QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION.equals(flag))
-    // {
-    //
-    // }
-    //
-    // }
 
     class DialogRadioBean {
         String name;
@@ -311,7 +301,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // left bottom
-//                boolean leftBottomStatus = mPre.getDialogRadioLeftBottom();
+                // boolean leftBottomStatus = mPre.getDialogRadioLeftBottom();
                 boolean leftBottomStatus = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isLeftBottom;
                 if (leftBottomStatus) {
@@ -334,7 +324,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // right bottom
-//                boolean rightBottomStatus = mPre.getDialogRadioRightBottom();
+                // boolean rightBottomStatus = mPre.getDialogRadioRightBottom();
                 boolean rightBottomStatus = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isRightBottom;
                 if (rightBottomStatus) {
@@ -357,7 +347,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // left center
-//                boolean leftCenterStatus = mPre.getDialogRadioLeftCenter();
+                // boolean leftCenterStatus = mPre.getDialogRadioLeftCenter();
                 boolean leftCenterStatus = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isLeftCenter;
                 if (leftCenterStatus) {
@@ -380,7 +370,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // right center
-//                boolean rightCenterStatus = mPre.getDialogRadioRightCenter();
+                // boolean rightCenterStatus = mPre.getDialogRadioRightCenter();
                 boolean rightCenterStatus = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isRightCenter;
                 if (rightCenterStatus) {
@@ -466,6 +456,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mFreeApps = getFreeDisturbApps();
         mSlideTimeAdapter = new FreeDisturbSlideTimeAdapter(this,
                 mFreeApps);
+        mSlideTimeDialog.setUpdateFilterAppClickListener(this);
         if (mFreeApps != null && mFreeApps.size() > 1) {
             mSlideTimeDialog.setFreeDisturbAppAddBtVisVisibility(false);
             mSlideTimeDialog.setFreeDisturbAppHorizontalVisVisibility(true);
@@ -523,6 +514,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             public boolean onLongClick(View arg0) {
                 getEditFreeDisturbAppInfo(true);
                 mSlideTimeAdapter.notifyDataSetChanged();
+                mSlideTimeDialog.setIsEdit(true);
                 return false;
             }
         });
@@ -905,5 +897,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 break;
         }
 
+    }
+
+    @Override
+    public void updateFilterAppClickListener() {
+        // TODO Auto-generated method stub
+        getEditFreeDisturbAppInfo(false);
+        mSlideTimeAdapter.notifyDataSetChanged();
     }
 }

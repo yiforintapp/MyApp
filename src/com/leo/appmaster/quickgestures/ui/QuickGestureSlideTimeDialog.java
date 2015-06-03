@@ -34,9 +34,16 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
     private LinearLayout mFreeDisturbAppHs, mFreeDisturbAppAddBt;
     private CheckBox mJustHomeCb, mAppHomeCb;
     private LeoHorizontalListView mHorizontalLV;
+    private boolean mIsFilterAppEditFlag;
+    private boolean mCancelEdit;
+    private UpdateFilterAppClickListener mUpdateFilterApp;
 
     public interface OnDiaogClickListener {
         public void onClick(int progress);
+    }
+
+    public interface UpdateFilterAppClickListener {
+        public void updateFilterAppClickListener();
     }
 
     public QuickGestureSlideTimeDialog(Context context) {
@@ -173,5 +180,28 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
 
     public void setLeftButtonClickListener(android.view.View.OnClickListener listener) {
         mLeftBt.setOnClickListener(listener);
+    }
+
+    public void setIsEdit(boolean flag) {
+        mIsFilterAppEditFlag = flag;
+    }
+
+    public void setUpdateFilterAppClickListener(UpdateFilterAppClickListener click) {
+        mUpdateFilterApp = click;
+    }
+
+    // TODO
+    public boolean cancelEdit() {
+        return mCancelEdit;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!mIsFilterAppEditFlag) {
+            super.onBackPressed();
+        } else {
+            mIsFilterAppEditFlag = false;
+            mUpdateFilterApp.updateFilterAppClickListener();
+        }
     }
 }
