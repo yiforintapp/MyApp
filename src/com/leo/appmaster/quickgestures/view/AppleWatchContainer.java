@@ -1312,7 +1312,6 @@ public class AppleWatchContainer extends FrameLayout {
 
                     @Override
                     public void run() {
-                        // TODO Auto-generated method stub
                         layout.fillExtraChildren();
                     }
                 });
