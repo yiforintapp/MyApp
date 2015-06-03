@@ -13,6 +13,8 @@ import android.app.ActivityManager.RecentTaskInfo;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.CallLog.Calls;
@@ -35,6 +37,7 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
+import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -42,14 +45,15 @@ public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
 
     protected static final String AppLauncherRecorder = null;
-
-    private Context mContext;
     private static QuickGestureManager mInstance;
+    private Context mContext;
+    private ColorMatcher mMatcher;
+    private boolean mInited = false;
+    
     public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
-
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
     private Drawable[] mEmptyIcon;
@@ -57,10 +61,13 @@ public class QuickGestureManager {
     public boolean isShowPrivacyMsm = false;
     public boolean isShowPrivacyCallLog = false;
     public boolean isShowSysNoReadMessage = false;
-    public int onTuchGestureFlag = -1;// -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
+    /*
+     * -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
+     */
+    public int onTuchGestureFlag = -1;
     public boolean isJustHome;
     public boolean isAppsAndHome;
-    public boolean isLeftBottom,isRightBottom,isLeftCenter,isRightCenter;
+    public boolean isLeftBottom, isRightBottom, isLeftCenter, isRightCenter;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
@@ -79,7 +86,29 @@ public class QuickGestureManager {
         mMostUsedList = new ArrayList<BaseInfo>();
         loadAppLaunchReorder();
         preloadEmptyIcon();
-        getSwitcherList();
+        //TODO switcher init
+       QuickSwitchManager.getInstance(mContext).init();
+        mMatcher = new ColorMatcher();
+        Bitmap bmp;
+        for (Drawable drawable : mEmptyIcon) {
+            bmp = ((BitmapDrawable) drawable).getBitmap();
+            mMatcher.addBitmapSample(bmp);
+        }
+        mInited = true;
+    }
+    
+    public void unInit() {
+        mDynamicList.clear();
+        mMostUsedList.clear();
+        mDynamicList = null;
+        mMostUsedList = null;
+        mAppLaunchRecorders.clear();
+        mAppLaunchRecorders = null;
+        mEmptyIcon = null;
+        mMatcher.clearItem();
+        //TODO Switcher uninit
+        QuickSwitchManager.getInstance(mContext).unInit();
+        mInited = false;
     }
 
     public List<BaseInfo> getDynamicList() {

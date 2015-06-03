@@ -1230,4 +1230,16 @@ public class QuickSwitchManager {
         return switchPreference.getSwitchList();
     }
 
+    public void init() {
+        getSwitchList(13);
+    }
+
+    public void unInit() {
+        mSwitcherLoaded = false;
+        if (mSaveList != null) {
+            mSaveList.clear();
+            mSaveList = null;
+        }
+    }
+
 }
