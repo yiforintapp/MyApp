@@ -22,6 +22,7 @@ public class TaskChangeHandler {
     public static final String PROXYNAME = "ProxyActivity";
     public static final String WAITNAME = "WaitActivity";
     public static final String GESTURE = "QuickGesturePopupActivity";
+    public static final String GESTURESETTING = "QuickGestureActivity";
 
     private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
     private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
@@ -71,7 +72,7 @@ public class TaskChangeHandler {
             mIsFirstDetect = false;
             return;
         }
-        // LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+//         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
         String myPackage = mContext.getPackageName();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
@@ -89,7 +90,7 @@ public class TaskChangeHandler {
                         || (isCurrentSelf
                                 && (activity
                                         .contains(SPLASHNAME) || activity
-                                        .contains(GESTURE) || activity.contains(PROXYNAME) || activity
+                                        .contains(GESTURE) || activity.contains(GESTURESETTING) || activity.contains(PROXYNAME) || activity
                                             .contains(WAITNAME))
                                 || (!unlocked && activity.contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
@@ -103,7 +104,7 @@ public class TaskChangeHandler {
                         || (isCurrentSelf
                                 && (activity
                                         .contains(SPLASHNAME) || activity
-                                        .contains(GESTURE) || activity.contains(PROXYNAME) || activity
+                                        .contains(GESTURE)|| activity.contains(GESTURESETTING) || activity.contains(PROXYNAME) || activity
                                             .contains(WAITNAME)) || (activity
                                     .contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity

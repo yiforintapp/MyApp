@@ -74,7 +74,6 @@ public class GestureRelative extends RelativeLayout {
             unknowFragment.setPlace();
         }
 
-        LeoLog.d("testGElayout", "喔操走onLayout了");
     }
 
     private void init(Context context) {
@@ -82,7 +81,6 @@ public class GestureRelative extends RelativeLayout {
         CirPanint = new Paint();
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
         screenH = mDisplay.getHeight();
-        LeoLog.d("testGElayout", "喔操走init了");
     }
 
     public int getPointX() {
@@ -259,7 +257,6 @@ public class GestureRelative extends RelativeLayout {
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         canvas.drawCircle(CirPointX, CirPointY, mBanJing, CirPanint);
-        LeoLog.d("testGElayout", "喔操走onDraw了");
     }
 
     public void setGuaPosition(int left, int top, int right, int bottom) {
