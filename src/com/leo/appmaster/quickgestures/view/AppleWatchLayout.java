@@ -434,7 +434,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
 
             LayoutParams params = (LayoutParams) child.getLayoutParams();
-            halfItemSize = child.getWidth() / 2;
+            halfItemSize = child.getMeasuredWidth() / 2;
             if (params.position < 0)
                 continue;
             if (params.position == 0) {
