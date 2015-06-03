@@ -101,6 +101,7 @@ public class FloatWindowHelper {
      */
     public static void createFloatLeftBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
+       final  boolean isShowTip=QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
@@ -122,7 +123,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure=event.getPressure();
-                            if (( (moveX > mLeftBottomParams.width / 8 || moveY > mLeftBottomParams.height / 6 ||presssure>0.03)
+                            if (( (moveX > mLeftBottomParams.width / 8 || moveY > mLeftBottomParams.height / 6 ||presssure>0.06)
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -136,7 +137,8 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
-                                if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage) {
+                                Log.e("##############", ""+isShowTip);
+                                if (isShowTip ) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
@@ -209,7 +211,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure=event.getPressure();
-                            if ((moveX > mLeftCenterParams.width / 6 || moveY > mLeftCenterParams.width / 6 || presssure>0.03)
+                            if ((moveX > mLeftCenterParams.width / 6 || moveY > mLeftCenterParams.width / 6 || presssure>0.06)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -264,6 +266,7 @@ public class FloatWindowHelper {
      */
     public static void createFloatLeftCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
+        final  boolean isShowTip=QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
@@ -286,7 +289,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure=event.getPressure();
-                            if ((moveX > mLeftCenterCenterParams.width / 6 || moveY > mLeftCenterCenterParams.width / 6 || presssure>0.03)
+                            if ((moveX > mLeftCenterCenterParams.width / 6 || moveY > mLeftCenterCenterParams.width / 6 || presssure>0.06)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -300,8 +303,7 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
-                                if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                                        && mLeftBottomView == null) {
+                                if (isShowTip && mLeftBottomView == null) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
@@ -391,7 +393,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure=event.getPressure();
-                            if ((moveX > mLeftTopParams.width / 6 || moveY > mLeftTopParams.width / 6 || presssure>0.03)
+                            if ((moveX > mLeftTopParams.width / 6 || moveY > mLeftTopParams.width / 6 || presssure>0.06)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -449,6 +451,7 @@ public class FloatWindowHelper {
      */
     public static void createFloatRightBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
+        final  boolean isShowTip=QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
@@ -470,7 +473,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure=event.getPressure();
-                            if ((moveX > mRightBottomParams.width / 8 || moveY > mRightBottomParams.height / 6 || presssure>0.03)
+                            if ((moveX > mRightBottomParams.width / 8 || moveY > mRightBottomParams.height / 6 || presssure>0.06)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -484,7 +487,7 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
-                                if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage) {
+                                if (isShowTip) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
@@ -554,7 +557,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure=event.getPressure();
-                            if ((moveX > mRightCenterParams.width / 6 || moveY > mRightCenterParams.width / 6 || presssure>0.03)
+                            if ((moveX > mRightCenterParams.width / 6 || moveY > mRightCenterParams.width / 6 || presssure>0.06)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -613,6 +616,7 @@ public class FloatWindowHelper {
      */
     public static void createFloatRightCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
+        final  boolean isShowTip=QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
@@ -635,7 +639,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure=event.getPressure();
-                            if ((moveX > mRightCenterCenterParams.width / 6 || moveY > mRightCenterCenterParams.width / 6 || presssure>0.03)
+                            if ((moveX > mRightCenterCenterParams.width / 6 || moveY > mRightCenterCenterParams.width / 6 || presssure>0.06)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
@@ -649,8 +653,7 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
-                                if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                                        && mRightBottomView == null) {
+                                if (isShowTip && mRightBottomView == null) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
@@ -745,7 +748,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure=event.getPressure();
-                            if ((moveX > mRightTopParams.width / 6 || moveY > mRightTopParams.width / 6 || presssure>0.03)
+                            if ((moveX > mRightTopParams.width / 6 || moveY > mRightTopParams.width / 6 || presssure>0.06)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
