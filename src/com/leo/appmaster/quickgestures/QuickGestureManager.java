@@ -3,6 +3,7 @@ package com.leo.appmaster.quickgestures;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -48,8 +49,9 @@ public class QuickGestureManager {
     private static QuickGestureManager mInstance;
     private Context mContext;
     private ColorMatcher mMatcher;
+    private HashMap<Drawable, Bitmap> mDrawableColors;
     private boolean mInited = false;
-    
+
     public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
@@ -86,17 +88,19 @@ public class QuickGestureManager {
         mMostUsedList = new ArrayList<BaseInfo>();
         loadAppLaunchReorder();
         preloadEmptyIcon();
-        //TODO switcher init
-       QuickSwitchManager.getInstance(mContext).init();
         mMatcher = new ColorMatcher();
         Bitmap bmp;
         for (Drawable drawable : mEmptyIcon) {
             bmp = ((BitmapDrawable) drawable).getBitmap();
             mMatcher.addBitmapSample(bmp);
         }
+        mDrawableColors = new HashMap<Drawable, Bitmap>();
+
+        // TODO switcher init
+        QuickSwitchManager.getInstance(mContext).init();
         mInited = true;
     }
-    
+
     public void unInit() {
         mDynamicList.clear();
         mMostUsedList.clear();
@@ -106,9 +110,24 @@ public class QuickGestureManager {
         mAppLaunchRecorders = null;
         mEmptyIcon = null;
         mMatcher.clearItem();
-        //TODO Switcher uninit
+        mMatcher = null;
+        mDrawableColors.clear();
+        mDrawableColors = null;
+        // TODO Switcher uninit
         QuickSwitchManager.getInstance(mContext).unInit();
         mInited = false;
+    }
+
+    public Bitmap getMatchedColor(Drawable drawable) {
+        Bitmap target = null;
+        target = mDrawableColors.get(drawable);
+        if (target == null) {
+            target = mMatcher.getMatchedBitmap(drawable);
+            if (target != null) {
+                mDrawableColors.put(drawable, target);
+            }
+        }
+        return target;
     }
 
     public List<BaseInfo> getDynamicList() {

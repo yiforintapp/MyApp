@@ -171,7 +171,12 @@ public class AppleWatchLayout extends ViewGroup {
             if (info instanceof GestureEmptyItemInfo) {
                 info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
             }
-            gestureItem.setItemIcon(info.icon);
+            
+            if(info instanceof GestureEmptyItemInfo || info instanceof QuickSwitcherInfo) {
+                gestureItem.setItemIcon(info.icon, false);
+            } else {
+                gestureItem.setItemIcon(info.icon, true);
+            }
             if (info.eventNumber > 0) {
                 gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
             }
@@ -502,7 +507,11 @@ public class AppleWatchLayout extends ViewGroup {
             return;
         item.setGravity(Gravity.CENTER_HORIZONTAL);
         item.setItemName(info.label);
-        item.setItemIcon(info.icon);
+        if(info instanceof GestureEmptyItemInfo || info instanceof QuickSwitcherInfo) {
+            item.setItemIcon(info.icon, false);
+        } else {
+            item.setItemIcon(info.icon, true);
+        }
         if (info.eventNumber > 0) {
             item.setDecorateAction(new EventAction(getContext(), info.eventNumber));
         }
@@ -781,7 +790,7 @@ public class AppleWatchLayout extends ViewGroup {
         GestureEmptyItemInfo info = new GestureEmptyItemInfo();
         info.gesturePosition = baseInfo.gesturePosition;
         info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
-        hitView.setItemIcon(info.icon);
+        hitView.setItemIcon(info.icon, false);
         hitView.setItemName(info.label);
         hitView.setDecorateAction(null);
         hitView.setTag(info);

@@ -33,6 +33,7 @@ import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
+
 //import com.leo.appmaster.quickgestures.view.QuickGestureLayout.LayoutParams;
 
 public class SectorQuickGestureContainer extends FrameLayout {
@@ -733,7 +734,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
                     }
                 }
                 tv.setItemName(info.label);
-                tv.setItemIcon(info.icon);
+                tv.setItemIcon(info.icon, true);
                 tv.setDecorateAction(new EventAction(getContext(), info.eventNumber));
                 tv.setTag(info);
                 targetLayout.addView(tv);
@@ -852,141 +853,141 @@ public class SectorQuickGestureContainer extends FrameLayout {
 
     private void checkXuKuang(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-        tv.setItemIcon(sInfo.switchIcon[0]);
+        tv.setItemIcon(sInfo.switchIcon[0], false);
     }
 
     private void checkLockScreen(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-        tv.setItemIcon(sInfo.switchIcon[0]);
+        tv.setItemIcon(sInfo.switchIcon[0], false);
     }
 
     private void checkHome(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-        tv.setItemIcon(sInfo.switchIcon[0]);
+        tv.setItemIcon(sInfo.switchIcon[0], false);
     }
 
     private void checkMobileData(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkMoblieData()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         }
     }
 
     private void checkRotation(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkRotation()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[1]);
+            tv.setItemIcon(sInfo.switchIcon[1], false);
         }
     }
 
     private void checkFlyMode(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkFlyMode()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[1]);
+            tv.setItemIcon(sInfo.switchIcon[1], false);
         }
     }
 
     private void checkGPS(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkGps()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[1]);
+            tv.setItemIcon(sInfo.switchIcon[1], false);
         }
     }
 
     private void checkSetting(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-        tv.setItemIcon(sInfo.switchIcon[0]);
+        tv.setItemIcon(sInfo.switchIcon[0], false);
     }
 
     private void checkSwitchSet(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-        tv.setItemIcon(sInfo.switchIcon[0]);
+        tv.setItemIcon(sInfo.switchIcon[0], false);
     }
 
     private void checkChangeMode(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-        tv.setItemIcon(sInfo.switchIcon[0]);
+        tv.setItemIcon(sInfo.switchIcon[0], false);
     }
 
     private void checkSpeedUpStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-        tv.setItemIcon(sInfo.switchIcon[0]);
+        tv.setItemIcon(sInfo.switchIcon[0], false);
     }
 
     private void checkLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_AUTO) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         } else if (QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_NORMAL) {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[1]);
+            tv.setItemIcon(sInfo.switchIcon[1], false);
         } else if (QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_50_PERCENT) {
             sInfo.switchIcon[2].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[2]);
+            tv.setItemIcon(sInfo.switchIcon[2], false);
         } else if (QuickSwitchManager.checkLight() == QuickSwitchManager.LIGHT_100_PERCENT) {
             sInfo.switchIcon[3].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[3]);
+            tv.setItemIcon(sInfo.switchIcon[3], false);
         } else {
             // err
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[1]);
+            tv.setItemIcon(sInfo.switchIcon[1], false);
         }
     }
 
     private void checkSoundStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkSound() == QuickSwitchManager.mSound) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         } else if (QuickSwitchManager.checkSound() == QuickSwitchManager.mQuite) {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         } else {
             sInfo.switchIcon[2].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         }
     }
 
     private void checkCrameStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-        tv.setItemIcon(sInfo.switchIcon[0]);
+        tv.setItemIcon(sInfo.switchIcon[0], false);
     }
 
     private void checkWlanStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkWlan()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[1]);
+            tv.setItemIcon(sInfo.switchIcon[1], false);
         }
     }
 
     private void checkFlashLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkFlashLight()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[1]);
+            tv.setItemIcon(sInfo.switchIcon[1], false);
         }
     }
 
     private void checkBlueToothStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (QuickSwitchManager.checkBlueTooth()) {
             sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[0]);
+            tv.setItemIcon(sInfo.switchIcon[0], false);
         } else {
             sInfo.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-            tv.setItemIcon(sInfo.switchIcon[1]);
+            tv.setItemIcon(sInfo.switchIcon[1], false);
         }
     }
 
@@ -1008,7 +1009,7 @@ public class SectorQuickGestureContainer extends FrameLayout {
                 tv.setLayoutParams(lp);
                 info = infos.get(i);
                 tv.setItemName(info.label);
-                tv.setItemIcon(info.icon);
+                tv.setItemIcon(info.icon, false);
                 if (info.eventNumber > 0) {
                     tv.setDecorateAction(new EventAction(getContext(), info.eventNumber));
                 }
