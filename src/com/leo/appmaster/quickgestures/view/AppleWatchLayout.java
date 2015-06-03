@@ -54,6 +54,7 @@ public class AppleWatchLayout extends ViewGroup {
 
     private AppleWatchContainer mContainer;
     private AnimatorSet mReorderAnimator;
+    private AppMasterPreference mPref;
     private boolean mRecodering;
     private boolean mAnimCanceled;
     private int mTotalWidth, mTotalHeight;
@@ -89,6 +90,7 @@ public class AppleWatchLayout extends ViewGroup {
     public AppleWatchLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
+        mPref = AppMasterPreference.getInstance(context);
     }
 
     public boolean isSnapping() {
@@ -735,10 +737,12 @@ public class AppleWatchLayout extends ViewGroup {
         if (type == GType.MostUsedLayout) {
             qgm.showCommontAppDialog(getContext());
             ((Activity) getContext()).finish();
+            mPref.setLastTimeLayout(2);
         } else if (type == GType.SwitcherLayout) {
             // get list from sp
             qgm.showQuickSwitchDialog(getContext());
             ((Activity) getContext()).finish();
+            mPref.setLastTimeLayout(3);
         }
     }
 
