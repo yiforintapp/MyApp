@@ -8,7 +8,7 @@
         android:id="@+id/iv_app_icon"
         android:layout_width="@dimen/apple_watch_item_icon_size"
         android:layout_height="@dimen/apple_watch_item_icon_size"
-        android:padding="5dp"
+        android:padding="@dimen/gesture_item_imageview_padding"
         android:scaleType="fitCenter" />
 
     <TextView
