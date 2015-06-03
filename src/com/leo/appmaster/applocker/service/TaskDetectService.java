@@ -179,13 +179,17 @@ public class TaskDetectService extends Service {
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isAppsAndHome = pre
                 .getSlideTimeAllAppAndHome();
         // left bottom
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom=pre.getDialogRadioLeftBottom();
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = pre
+                .getDialogRadioLeftBottom();
         // right bottom
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom=pre.getDialogRadioRightBottom();
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = pre
+                .getDialogRadioRightBottom();
         // left center
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter=pre.getDialogRadioLeftCenter();
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = pre
+                .getDialogRadioLeftCenter();
         // right center
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter=pre.getDialogRadioRightCenter();
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = pre
+                .getDialogRadioRightCenter();
     }
 
     private void startFloatWindowTask() {
@@ -459,7 +463,7 @@ public class TaskDetectService extends Service {
                             boolean isAppsAndHome = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isAppsAndHome;
                             if (isAppsAndHome) {
-                                if (!isRuningFreeDisturbApp(mActivityManager)
+                                if (!checkForegroundRuningFilterApp(mActivityManager)
                                         || FloatWindowHelper.mEditQuickAreaFlag) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
@@ -492,20 +496,65 @@ public class TaskDetectService extends Service {
     }
 
     // checkout current runing filter app
-    private boolean isRuningFreeDisturbApp(ActivityManager activityManager) {
-        boolean flag = false;
-        List<RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
-        if (tasks != null && tasks.size() > 0) {
-            RunningTaskInfo topTaskInfo = tasks.get(0);
-            if (topTaskInfo.topActivity == null) {
-                return flag;
+    private boolean checkForegroundRuningFilterApp(ActivityManager activityManager) {
+        String pkgName = null;
+        if (Build.VERSION.SDK_INT > 19) {
+            List<RunningAppProcessInfo> list = activityManager.getRunningAppProcesses();
+            for (RunningAppProcessInfo pi : list) {
+                if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
+                        && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
+                        && (0x4 & pi.flags) > 0
+                        && pi.processState == ActivityManager.PROCESS_STATE_TOP) {
+                    String pkgList[] = pi.pkgList;
+                    if (pkgList != null && pkgList.length > 0) {
+                        pkgName = pkgList[0];
+                        if (SYSTEMUI_PKG.equals(pkgName)) {
+                            continue;
+                        }
+                        break;
+                    }
+                }
             }
-            String pageName = topTaskInfo.topActivity.getPackageName();
-            flag = QuickGestureManager.getInstance(getApplicationContext())
-                    .getFreeDisturbAppName()
-                    .contains(pageName);
+        } else {
+            List<RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
+            if (tasks != null && tasks.size() > 0) {
+                RunningTaskInfo topTaskInfo = tasks.get(0);
+                if (topTaskInfo.topActivity == null) {
+                    return false;
+                }
+                pkgName = topTaskInfo.topActivity.getPackageName();
+                if (Utilities.isEmpty(pkgName)) {
+                    List<RunningAppProcessInfo> list = activityManager
+                            .getRunningAppProcesses();
+                    for (RunningAppProcessInfo pi : list) {
+                        if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
+                                && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
+                                && (0x4 & pi.flags) > 0) {
+                            String pkgList[] = pi.pkgList;
+                            if (pkgList != null && pkgList.length > 0) {
+                                pkgName = pkgList[0];
+                                if (SYSTEMUI_PKG.equals(pkgName)) {
+                                    continue;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
-        return flag;
+        if (pkgName != null) {
+            if (QuickGestureManager.getInstance(getApplicationContext())
+                    .getFreeDisturbAppName()
+                    .contains(pkgName)) {
+                // Log.d("get current running app", "pkgName:" + pkgName);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     public static TaskDetectService getService() {
