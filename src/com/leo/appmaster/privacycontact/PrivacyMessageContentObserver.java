@@ -27,6 +27,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.utils.Utilities;
 
 @SuppressLint("NewApi")
 public class PrivacyMessageContentObserver extends ContentObserver {
@@ -90,6 +91,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 .getLastMessageContact();
                         Iterator<MessageBean> ite = messages.iterator();
                         while (ite.hasNext()) {
+                            if(contact!=null && !Utilities.isEmpty(contact.getContactNumber())){
                             MessageBean message = ite.next();
                             String formateLastCall = PrivacyContactUtils
                                     .formatePhoneNumber(contact.getContactNumber());
@@ -98,13 +100,17 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             if (formateLastCall.equals(contactCallFromate)) {
                                 messages.remove(message);
                             }
+                            }else{
+                                break;
+                            }
                         }
                         if (messages != null && messages.size() > 0) {
-                            if(AppMasterPreference.getInstance(mContext).getSwitchOpenNoReadMessageTip()){
-                            QuickGestureManager.getInstance(mContext).mMessages = messages;
-                            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-                            FloatWindowHelper.removeShowReadTipWindow(mContext);
-                        }
+                            if (AppMasterPreference.getInstance(mContext)
+                                    .getSwitchOpenNoReadMessageTip()) {
+                                QuickGestureManager.getInstance(mContext).mMessages = messages;
+                                QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
+                                FloatWindowHelper.removeShowReadTipWindow(mContext);
+                            }
                         }
                     }
                 }
@@ -131,21 +137,28 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                         selectionArgs);
                         Iterator<ContactCallLog> ite = callLogs.iterator();
                         while (ite.hasNext()) {
-                            ContactCallLog contactCallLog = ite.next();
-                            String formateLastCall = PrivacyContactUtils.formatePhoneNumber(call
-                                    .getContactNumber());
-                            String contactCallFromate = PrivacyContactUtils
-                                    .formatePhoneNumber(contactCallLog.getCallLogNumber());
-                            if (formateLastCall.equals(contactCallFromate)) {
-                                callLogs.remove(contactCallLog);
+                            if (call != null && !Utilities.isEmpty(call
+                                    .getContactNumber())) {
+                                ContactCallLog contactCallLog = ite.next();
+                                String formateLastCall = PrivacyContactUtils
+                                        .formatePhoneNumber(call
+                                                .getContactNumber());
+                                String contactCallFromate = PrivacyContactUtils
+                                        .formatePhoneNumber(contactCallLog.getCallLogNumber());
+                                if (formateLastCall.equals(contactCallFromate)) {
+                                    callLogs.remove(contactCallLog);
+                                }
+                            } else {
+                                break;
                             }
                         }
                         if (callLogs != null && callLogs.size() > 0) {
-                            if(AppMasterPreference.getInstance(mContext).getSwitchOpenRecentlyContact()){
-                            QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
-                            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-                            FloatWindowHelper.removeShowReadTipWindow(mContext);
-                        }
+                            if (AppMasterPreference.getInstance(mContext)
+                                    .getSwitchOpenRecentlyContact()) {
+                                QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
+                                QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
+                                FloatWindowHelper.removeShowReadTipWindow(mContext);
+                            }
                         }
                     }
                 }
