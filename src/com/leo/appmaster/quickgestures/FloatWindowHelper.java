@@ -56,36 +56,34 @@ public class FloatWindowHelper {
     private static float startY;
     private static boolean isMoveIng = false;
     public static boolean isFanShowing = false;
-    // 左下宽度
+    // left bottom width
     private static float mLeftBottomWidth = 50;
-    // 左下高度
+    // left bottom height
     private static float mLeftBottomHeight = 25;
-    // 左中宽度
+    // left center width
     private static float mLeftCenterWidth = 25;
-    // 左中高度
+    //left center height
     private static float mLeftCenterHeight = 50;
-    // 左侧中部高度
+    // left center center height
     private static float mLeftCenterCenterHeight = 250;
-    // 左上宽度
+    // left top width
     private static float mLeftTopWidth = 13;
-    // 左上高度
+    // left top height
     private static float mLeftTopHeight = 75;
-    // 右下宽度
+    // right bottom width
     private static float mRightBottomWidth = 50;
-    // 右下高度
+    // right bottom height
     private static float mRightBottomHeight = 25;
-    // 右中宽度
+    // right center width
     private static float mRightCenterWidth = 25;
-    // 右中高度
+    // right center height
     private static float mRightCenterHeight = 50;
-    // 右侧中部高度
+    // right center center height
     private static float mRightCenterCenterHeight = 250;
-    // 右上宽度
+    // right top width
     private static float mRightTopWidth = 13;
-    // 右上高度
+    // right top height
     private static float mRightTopHeight = 75;
-    // 距离底部的距离
-    private static float mMarginBottom = 200;
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
     private static final int LEFT_TOP_FLAG = 3;
@@ -95,8 +93,8 @@ public class FloatWindowHelper {
     private static final int RIGHT_CENTER_CENTER_FLAG = -3;
     private static final int RIGHT_TOP_FLAG = -4;
 
-    // 左下
     /**
+     * left bottom
      * must call in UI thread
      * 
      * @param context
@@ -186,8 +184,8 @@ public class FloatWindowHelper {
         }
     }
 
-    // 左中
     /**
+     * left center
      * must call in UI thread
      * 
      * @param context
@@ -258,8 +256,8 @@ public class FloatWindowHelper {
         }
     }
 
-    // 左侧中部
     /**
+     * left center center
      * must call in UI thread
      * 
      * @param context
@@ -368,8 +366,8 @@ public class FloatWindowHelper {
         }
     }
 
-    // 左上
     /**
+     * left top
      * must call in UI thread
      * 
      * @param context
@@ -442,8 +440,9 @@ public class FloatWindowHelper {
         }
     }
 
-    // 右下
     /**
+     * right bottom
+     * 
      * must call in UI thread
      * 
      * @param context
@@ -529,8 +528,9 @@ public class FloatWindowHelper {
         }
     }
 
-    // 右中
     /**
+     * right center
+     * 
      * must call in UI thread
      * 
      * @param context
@@ -602,8 +602,11 @@ public class FloatWindowHelper {
         }
     }
 
-    // 右侧中部
+    
     /**
+     * 
+    *right center center
+    *
      * must call in UI thread
      * 
      * @param context
@@ -716,8 +719,9 @@ public class FloatWindowHelper {
         }
     }
 
-    // 右上
     /**
+     * right top
+     * 
      * must call in UI thread
      * 
      * @param context
@@ -791,56 +795,58 @@ public class FloatWindowHelper {
     }
 
     /**
-     * 移除悬浮窗口 must call in UI thread
+     * remove float window
+     * 
+     *  must call in UI thread
      * 
      * @param context
      */
     public static void removeSwipWindow(Context context, int flag) {
         WindowManager windowManager = getWindowManager(context);
         if (LEFT_BOTTOM_FLAG == flag) {
-            // 左下
+            // left bottom
             if (mLeftBottomView != null) {
                 windowManager.removeView(mLeftBottomView);
                 mLeftBottomView = null;
             }
         } else if (LEFT_CENTER_FLAG == flag) {
-            // 左中
+            //left center
             if (mLeftCenterView != null) {
                 windowManager.removeView(mLeftCenterView);
                 mLeftCenterView = null;
             }
         } else if (LEFT_TOP_FLAG == flag) {
-            // 左上
+            // left top
             if (mLeftTopView != null) {
                 windowManager.removeView(mLeftTopView);
                 mLeftTopView = null;
             }
         } else if (LEFT_CENTER_CENTER_FLAG == flag) {
-            // 左侧中部
+            //left center center
             if (mLeftCenterCenterView != null) {
                 windowManager.removeView(mLeftCenterCenterView);
                 mLeftCenterCenterView = null;
             }
         } else if (RIGHT_BOTTOM_FLAG == flag) {
-            // 右下
+            // right bottom
             if (mRightBottomView != null) {
                 windowManager.removeView(mRightBottomView);
                 mRightBottomView = null;
             }
         } else if (RIGHT_CENTER_FLAG == flag) {
-            // 右中
+            // right center
             if (mRightCenterView != null) {
                 windowManager.removeView(mRightCenterView);
                 mRightCenterView = null;
             }
         } else if (RIGHT_CENTER_CENTER_FLAG == flag) {
-            // 右上
+            // right top
             if (mRightTopView != null) {
                 windowManager.removeView(mRightTopView);
                 mRightTopView = null;
             }
         } else if (RIGHT_TOP_FLAG == flag) {
-            // 右侧中部
+            // right center center
             if (mRightCenterCenterView != null) {
                 windowManager.removeView(mRightCenterCenterView);
                 mRightCenterCenterView = null;
@@ -848,7 +854,7 @@ public class FloatWindowHelper {
         }
     }
 
-    // 删除所有悬浮窗
+    // remove all float window
     public static void removeAllFloatWindow(Context context) {
         removeSwipWindow(context, 1);
         removeSwipWindow(context, 2);
@@ -860,7 +866,7 @@ public class FloatWindowHelper {
         removeSwipWindow(context, -4);
     }
 
-    // 删除显示红点提示的悬浮窗
+    // remove have red tip float window
     public static void removeShowReadTipWindow(Context context) {
         removeSwipWindow(context, 1);
         removeSwipWindow(context, 4);
@@ -869,6 +875,9 @@ public class FloatWindowHelper {
     }
 
     /**
+     * 
+     * update view LayoutParams
+     * 
      * must call in UI thread
      * 
      * @param context
@@ -886,14 +895,14 @@ public class FloatWindowHelper {
                 mRightCenterHeight) / 2) + (value)) * 2;
         int rightCenter = (int) ((DipPixelUtil.dip2px(context,
                 mRightBottomHeight) / 2) + (value)) * 2;
-        // 左下
+        // left bottom
         if (mLeftBottomParams != null) {
             mLeftBottomParams.width = (int) ((DipPixelUtil.dip2px(context, mLeftBottomWidth) / 2) + (value / 2)) * 2;
             mLeftBottomParams.height = (int) ((DipPixelUtil.dip2px(context, mLeftBottomHeight) / 2) + (value)) * 2;
             mLeftBottomParams.x = (int) (-(width / 2) + (mLeftBottomParams.width / 2));
             mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
         }
-        // 左中
+        // left center
         if (mLeftCenterParams != null) {
             mLeftCenterParams.width = (int) ((DipPixelUtil.dip2px(context, mLeftCenterWidth) / 2) + (value / 2)) * 2;
             mLeftCenterParams.height = (int) ((DipPixelUtil.dip2px(context, mLeftCenterHeight) / 2) + (value)) * 2;
@@ -901,7 +910,7 @@ public class FloatWindowHelper {
             mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2)
                     - mLeftBottomParams.height - DipPixelUtil.dip2px(context, 12));
         }
-        // 左边中部
+        // left center center
         if (mLeftCenterCenterParams != null) {
             mLeftCenterCenterParams.width = (int) ((DipPixelUtil.dip2px(context, mLeftCenterWidth) / 2) + (value / 2)) * 2;
             mLeftCenterCenterParams.height = (int) ((DipPixelUtil.dip2px(context,
@@ -918,7 +927,7 @@ public class FloatWindowHelper {
                         .dip2px(context, 12));
             }
         }
-        // 左上
+        // left top
         if (mLeftTopParams != null) {
             mLeftTopParams.width = (int) ((DipPixelUtil.dip2px(context, mLeftTopWidth) / 2) + (value / 2)) * 2;
             mLeftTopParams.height = (int) ((DipPixelUtil.dip2px(context, mLeftTopHeight) / 2) + (value)) * 2;
@@ -927,14 +936,14 @@ public class FloatWindowHelper {
                     - mLeftBottomParams.height - mLeftCenterParams.height - DipPixelUtil.dip2px(
                     context, 12));
         }
-        // 右下
+        // right bottom
         if (mRightBottomParams != null) {
             mRightBottomParams.width = (int) ((DipPixelUtil.dip2px(context, mRightBottomWidth) / 2) + (value / 2)) * 2;
             mRightBottomParams.height = (int) ((DipPixelUtil.dip2px(context, mRightBottomHeight) / 2) + (value)) * 2;
             mRightBottomParams.x = +(width / 2);
             mRightBottomParams.y = (height / 2) - value;
         }
-        // 右中
+        // right center
         if (mRightCenterParams != null) {
             mRightCenterParams.width = (int) ((DipPixelUtil.dip2px(context, mRightCenterWidth) / 2) + (value / 2)) * 2;
             mRightCenterParams.height = (int) ((DipPixelUtil.dip2px(context, mRightCenterHeight) / 2) + (value)) * 2;
@@ -942,7 +951,7 @@ public class FloatWindowHelper {
             mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2)
                     - mRightBottomParams.height - DipPixelUtil.dip2px(context, 12));
         }
-        // 右上
+        // right top
         if (mRightTopParams != null) {
             mRightTopParams.width = (int) ((DipPixelUtil.dip2px(context, mRightTopWidth) / 2) + (value / 2)) * 2;
             mRightTopParams.height = (int) ((DipPixelUtil.dip2px(context, mRightTopHeight) / 2) + (value)) * 2;
@@ -951,7 +960,7 @@ public class FloatWindowHelper {
                     - mRightBottomParams.height - mRightCenterParams.height - DipPixelUtil.dip2px(
                     context, 12));
         }
-        // 右侧中部
+        // right center center
         if (mRightCenterCenterParams != null) {
             mRightCenterCenterParams.width = (int) ((DipPixelUtil
                     .dip2px(context, mRightCenterWidth) / 2) + (value / 2)) * 2;
@@ -970,7 +979,7 @@ public class FloatWindowHelper {
             }
 
         }
-        // 更新左边
+        // update left 
         if (mLeftBottomView != null) {
             mWindowManager.updateViewLayout(mLeftBottomView, mLeftBottomParams);
         }
@@ -983,7 +992,7 @@ public class FloatWindowHelper {
         if (mLeftCenterCenterView != null) {
             mWindowManager.updateViewLayout(mLeftCenterCenterView, mLeftCenterCenterParams);
         }
-        // 更新右边
+        // update right 
         if (mRightBottomView != null) {
             mWindowManager.updateViewLayout(mRightBottomView, mRightBottomParams);
         }
@@ -1103,7 +1112,11 @@ public class FloatWindowHelper {
     }
 
     /**
-     * updateFloatWindowBackgroudColor must call in UI thread
+     * 
+     * updateFloatWindowBackgroudColor 
+     * 
+     * 
+     * must call in UI thread
      * 
      * @param flag
      */
