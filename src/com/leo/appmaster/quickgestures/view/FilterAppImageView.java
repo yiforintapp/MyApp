@@ -12,6 +12,7 @@ import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.leo.appmaster.R;
