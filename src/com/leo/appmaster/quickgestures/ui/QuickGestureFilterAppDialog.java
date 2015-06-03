@@ -108,8 +108,15 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                     if (mFlag == 1) {
                         mRemoveFreePackageName.add(selectInfl);
                     }
-                    ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                            .setDefaultRecommendApp(false);
+                    
+                    if (mFlag == 2) {
+                        ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                        .setDefaultRecommendApp(selectInfl,false);
+                    }else {
+                        ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                        .setDefaultRecommendApp(false);
+                    }
+
                     mSwitchListSize -= 1;
                 } else {
                     if (mFlag == 2 || mFlag == 3) {
@@ -130,8 +137,14 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                             if (mRemoveFreePackageName != null && mRemoveFreePackageName.size() > 0) {
                                 mRemoveFreePackageName.remove(selectInfl);
                             }
-                            ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                                    .setDefaultRecommendApp(true);
+                            
+                            if (mFlag == 2) {
+                                ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                                .setDefaultRecommendApp(selectInfl,true);
+                            }else {
+                                ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                                .setDefaultRecommendApp(true);
+                            }
                             mSwitchListSize += 1;
                         }
                     } else {
@@ -168,6 +181,10 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         }
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
+    }
+
+    protected void makeOtherIcon(QuickGsturebAppInfo selectInfl, boolean b) {
+        
     }
 
     protected boolean getFirstStatusFromName(List<? extends BaseInfo> mSaveList, String label) {
@@ -368,7 +385,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             // 不可能的情况
             for (int i = 0; i < allList.size(); i++) {
                 Object object = allList.get(i);
-                QuickSwitcherInfo switchInfo = (QuickSwitcherInfo) object;
+                QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) object;
                 mFreeDisturbApp.add(switchInfo);
             }
         } else {
@@ -376,20 +393,22 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             for (int i = 0; i < allList.size(); i++) {
                 boolean hasSame = false;
                 Object objectNormal = allList.get(i);
-                QuickSwitcherInfo switchInfoN = (QuickSwitcherInfo) objectNormal;
+                QuickGsturebAppInfo switchInfoN = (QuickGsturebAppInfo) objectNormal;
                 for (int j = 0; j < quickSwitch.size(); j++) {
                     Object objectSp = quickSwitch.get(j);
-                    QuickSwitcherInfo switchInfoS = (QuickSwitcherInfo) objectSp;
+                    QuickGsturebAppInfo switchInfoS = (QuickGsturebAppInfo) objectSp;
                     if (switchInfoN.label.equals(switchInfoS.label)) {
                         hasSame = true;
                         break;
                     }
                 }
                 if (hasSame) {
-                    switchInfoN.isFreeDisturb = true;
+                    switchInfoN.isFreeDisturb = hasSame;
+                    selectIconOrNot(switchInfoN, hasSame);
                     mFreeDisturbApp.add(switchInfoN);
                 } else {
-                    switchInfoN.isFreeDisturb = false;
+                    switchInfoN.isFreeDisturb = hasSame;
+                    selectIconOrNot(switchInfoN, hasSame);
                     mDisturbList.add(switchInfoN);
                 }
             }
@@ -401,6 +420,137 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             }
         }
         mGridView.setDatas(mFreeDisturbApp, 4, 4);
+    }
+
+    private void selectIconOrNot(QuickGsturebAppInfo switchInfoN, boolean hasSame) {
+        // 名字为label的，有无选中？
+        if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+            // 蓝牙状态
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_bluetooth_pre);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_bluetooth);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+            // 手电筒状态
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_flashlight_pre);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_flashlight);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.WLAN)) {
+            // Wifi状态
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_wifi_pre);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_wifi);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.CRAME)) {
+            // Crame状态
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_camera);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_camera_dis);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.SOUND)) {
+            // Sound状态
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_volume_max);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_volume);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.LIGHT)) {
+            // 亮度状态
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_brightness_min);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_brightness);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
+            // 加速
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_speed_up);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_speed_up);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.SWITCHSET)) {
+            // 手势设置
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_set);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_set_dis);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.SETTING)) {
+            // 系统设置
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_gestureset_pre);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_gestureset);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.GPS)) {
+            // GPS
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_gps_pre);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_gps);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.FLYMODE)) {
+            // 飞行模式
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_flightmode_pre);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_flightmode);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.ROTATION)) {
+            // 屏幕旋转
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_rotation_pre);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_rotation);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+            // 移动数据
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_data_pre);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_data);
+            }
+        } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.HOME)) {
+            // 桌面
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_home);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.switch_home_dis);
+            }
+        }
     }
 
     private void animateItem(View view) {
