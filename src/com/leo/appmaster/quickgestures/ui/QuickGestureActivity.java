@@ -738,6 +738,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                 QuickGestureManager.getInstance(QuickGestureActivity.this)
                                         .startFloatWindow();
                                 setOnClickListener();
+                                //TODO init quick gesture data
+                                
+                                
                             }
                         } catch (Exception e) {
                         }
@@ -806,6 +809,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     closeQuickSetting();
                     QuickGestureManager.getInstance(this).stopFloatWindow();
                     FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
+                    //TODO uninit quick gesture data
+                    
                 } else {
                     mPre.setSwitchOpenQuickGesture(true);
                     mQuickOpenCK.setImageResource(R.drawable.switch_on);
@@ -814,6 +819,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             .startFloatWindow();
                     setOnClickListener();
                     initChexkBox();
+                //TODO init quick gesture data
+                    
                 }
                 break;
             case R.id.slid_area:
