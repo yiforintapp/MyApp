@@ -137,7 +137,6 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
-                                Log.e("##############", ""+isShowTip);
                                 if (isShowTip ) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
