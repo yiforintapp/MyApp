@@ -989,7 +989,11 @@ public class QuickSwitchManager {
             callFLYSettingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(callFLYSettingIntent);
         } catch (Exception e) {
-            Toast.makeText(mContext, "Flight mode is not available!", 0).show();
+            Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+            // Toast.makeText(mContext, "Flight mode is not available!",
+            // 0).show();
         }
     }
 
