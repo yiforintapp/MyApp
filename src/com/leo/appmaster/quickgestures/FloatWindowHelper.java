@@ -62,7 +62,7 @@ public class FloatWindowHelper {
     private static float mLeftBottomHeight = 25;
     // left center width
     private static float mLeftCenterWidth = 25;
-    //left center height
+    // left center height
     private static float mLeftCenterHeight = 50;
     // left center center height
     private static float mLeftCenterCenterHeight = 250;
@@ -94,14 +94,13 @@ public class FloatWindowHelper {
     private static final int RIGHT_TOP_FLAG = -4;
 
     /**
-     * left bottom
-     * must call in UI thread
+     * left bottom must call in UI thread
      * 
      * @param context
      */
     public static void createFloatLeftBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
-       final  boolean isShowTip=QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+        final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
@@ -122,13 +121,24 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            float presssure=event.getPressure();
-                            if (( (moveX > mLeftBottomParams.width / 8 || moveY > mLeftBottomParams.height / 6 ||presssure>0.06)
+                            float presssure = event.getPressure();
+                            if (((moveX > mLeftBottomParams.width / 8 || moveY > mLeftBottomParams.height / 6)
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
+                                }
+                            } else {
+                                if (((moveX > mLeftBottomParams.width / 12 || moveY > mLeftBottomParams.height / 10)
+                                && !isMoveIng)) {
+                                    if (presssure > 0.1) {
+                                        isMoveIng = true;
+                                        if (!mEditQuickAreaFlag) {
+                                            removeAllFloatWindow(mContext);
+                                            onTouchAreaShowQuick(-1);
+                                        }
+                                    }
                                 }
                             }
                             break;
@@ -137,10 +147,13 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // 去除系统短信未读提示
-                                if (isShowTip ) {
+                                Log.e("#######", ""+isShowTip);
+                                if (isShowTip) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("show_orientation", 0);
                                     try {
                                         mContext.startActivity(intent);
                                         QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
@@ -186,8 +199,7 @@ public class FloatWindowHelper {
     }
 
     /**
-     * left center
-     * must call in UI thread
+     * left center must call in UI thread
      * 
      * @param context
      */
@@ -209,13 +221,25 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            float presssure=event.getPressure();
-                            if ((moveX > mLeftCenterParams.width / 6 || moveY > mLeftCenterParams.width / 6 || presssure>0.06)
+                            float presssure = event.getPressure();
+                            if ((moveX > mLeftCenterParams.width / 6
+                                    || moveY > mLeftCenterParams.width / 6 )
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
+                                }
+                            }else {
+                                if (((moveX > mLeftCenterParams.width / 12 || moveY > mLeftCenterParams.height / 10)
+                                && !isMoveIng)) {
+                                    if (presssure > 0.1) {
+                                        isMoveIng = true;
+                                        if (!mEditQuickAreaFlag) {
+                                            removeAllFloatWindow(mContext);
+                                            onTouchAreaShowQuick(-1);
+                                        }
+                                    }
                                 }
                             }
                             break;
@@ -258,14 +282,13 @@ public class FloatWindowHelper {
     }
 
     /**
-     * left center center
-     * must call in UI thread
+     * left center center must call in UI thread
      * 
      * @param context
      */
     public static void createFloatLeftCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
-        final  boolean isShowTip=QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+        final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
@@ -287,13 +310,25 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            float presssure=event.getPressure();
-                            if ((moveX > mLeftCenterCenterParams.width / 6 || moveY > mLeftCenterCenterParams.width / 6 || presssure>0.06)
+                            float presssure = event.getPressure();
+                            if ((moveX > mLeftCenterCenterParams.width / 6
+                                    || moveY > mLeftCenterCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-2);
+                                }
+                            }else {
+                                if (((moveX > mLeftCenterCenterParams.width / 12 || moveY > mLeftCenterCenterParams.height / 10)
+                                && !isMoveIng)) {
+                                    if (presssure > 0.1) {
+                                        isMoveIng = true;
+                                        if (!mEditQuickAreaFlag) {
+                                            removeAllFloatWindow(mContext);
+                                            onTouchAreaShowQuick(-2);
+                                        }
+                                    }
                                 }
                             }
                             break;
@@ -306,6 +341,8 @@ public class FloatWindowHelper {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("show_orientation", 0);
                                     try {
                                         mContext.startActivity(intent);
                                         QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
@@ -368,8 +405,7 @@ public class FloatWindowHelper {
     }
 
     /**
-     * left top
-     * must call in UI thread
+     * left top must call in UI thread
      * 
      * @param context
      */
@@ -391,13 +427,25 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            float presssure=event.getPressure();
-                            if ((moveX > mLeftTopParams.width / 6 || moveY > mLeftTopParams.width / 6 || presssure>0.06)
+                            float presssure = event.getPressure();
+                            if ((moveX > mLeftTopParams.width / 6
+                                    || moveY > mLeftTopParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
+                                }
+                            }else {
+                                if (((moveX > mLeftTopParams.width / 12 || moveY > mLeftTopParams.height / 10)
+                                && !isMoveIng)) {
+                                    if (presssure > 0.1) {
+                                        isMoveIng = true;
+                                        if (!mEditQuickAreaFlag) {
+                                            removeAllFloatWindow(mContext);
+                                            onTouchAreaShowQuick(-1);
+                                        }
+                                    }
                                 }
                             }
                             break;
@@ -442,15 +490,13 @@ public class FloatWindowHelper {
     }
 
     /**
-     * right bottom
-     * 
-     * must call in UI thread
+     * right bottom must call in UI thread
      * 
      * @param context
      */
     public static void createFloatRightBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
-        final  boolean isShowTip=QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+        final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
@@ -471,13 +517,25 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            float presssure=event.getPressure();
-                            if ((moveX > mRightBottomParams.width / 8 || moveY > mRightBottomParams.height / 6 || presssure>0.06)
+                            float presssure = event.getPressure();
+                            if ((moveX > mRightBottomParams.width / 8
+                                    || moveY > mRightBottomParams.height / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
+                                }
+                            }else {
+                                if (((moveX > mRightBottomParams.width / 12 || moveY > mRightBottomParams.height / 10)
+                                && !isMoveIng)) {
+                                    if (presssure > 0.1) {
+                                        isMoveIng = true;
+                                        if (!mEditQuickAreaFlag) {
+                                            removeAllFloatWindow(mContext);
+                                            onTouchAreaShowQuick(1);
+                                        }
+                                    }
                                 }
                             }
                             break;
@@ -490,6 +548,8 @@ public class FloatWindowHelper {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("show_orientation", 2);
                                     try {
                                         mContext.startActivity(intent);
                                         QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
@@ -531,9 +591,7 @@ public class FloatWindowHelper {
     }
 
     /**
-     * right center
-     * 
-     * must call in UI thread
+     * right center must call in UI thread
      * 
      * @param context
      */
@@ -555,13 +613,25 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            float presssure=event.getPressure();
-                            if ((moveX > mRightCenterParams.width / 6 || moveY > mRightCenterParams.width / 6 || presssure>0.06)
+                            float presssure = event.getPressure();
+                            if ((moveX > mRightCenterParams.width / 6
+                                    || moveY > mRightCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
+                                }
+                            }else {
+                                if (((moveX > mRightCenterParams.width / 12 || moveY > mRightCenterParams.height / 10)
+                                && !isMoveIng)) {
+                                    if (presssure > 0.1) {
+                                        isMoveIng = true;
+                                        if (!mEditQuickAreaFlag) {
+                                            removeAllFloatWindow(mContext);
+                                            onTouchAreaShowQuick(1);
+                                        }
+                                    }
                                 }
                             }
                             break;
@@ -604,18 +674,14 @@ public class FloatWindowHelper {
         }
     }
 
-    
     /**
-     * 
-    *right center center
-    *
-     * must call in UI thread
+     * right center center must call in UI thread
      * 
      * @param context
      */
     public static void createFloatRightCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
-        final  boolean isShowTip=QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+        final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
@@ -637,13 +703,25 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            float presssure=event.getPressure();
-                            if ((moveX > mRightCenterCenterParams.width / 6 || moveY > mRightCenterCenterParams.width / 6 || presssure>0.06)
+                            float presssure = event.getPressure();
+                            if ((moveX > mRightCenterCenterParams.width / 6
+                                    || moveY > mRightCenterCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(2);
+                                }
+                            }else {
+                                if (((moveX > mRightCenterCenterParams.width / 12 || moveY > mRightCenterCenterParams.height / 10)
+                                && !isMoveIng)) {
+                                    if (presssure > 0.1) {
+                                        isMoveIng = true;
+                                        if (!mEditQuickAreaFlag) {
+                                            removeAllFloatWindow(mContext);
+                                            onTouchAreaShowQuick(2);
+                                        }
+                                    }
                                 }
                             }
                             break;
@@ -656,6 +734,8 @@ public class FloatWindowHelper {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("show_orientation", 2);
                                     try {
                                         mContext.startActivity(intent);
                                         QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
@@ -722,9 +802,7 @@ public class FloatWindowHelper {
     }
 
     /**
-     * right top
-     * 
-     * must call in UI thread
+     * right top must call in UI thread
      * 
      * @param context
      */
@@ -746,13 +824,25 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
-                            float presssure=event.getPressure();
-                            if ((moveX > mRightTopParams.width / 6 || moveY > mRightTopParams.width / 6 || presssure>0.06)
+                            float presssure = event.getPressure();
+                            if ((moveX > mRightTopParams.width / 6
+                                    || moveY > mRightTopParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
+                                }
+                            }else {
+                                if (((moveX > mRightTopParams.width / 12 || moveY > mRightTopParams.height / 10)
+                                && !isMoveIng)) {
+                                    if (presssure > 0.1) {
+                                        isMoveIng = true;
+                                        if (!mEditQuickAreaFlag) {
+                                            removeAllFloatWindow(mContext);
+                                            onTouchAreaShowQuick(1);
+                                        }
+                                    }
                                 }
                             }
                             break;
@@ -797,9 +887,7 @@ public class FloatWindowHelper {
     }
 
     /**
-     * remove float window
-     * 
-     *  must call in UI thread
+     * remove float window must call in UI thread
      * 
      * @param context
      */
@@ -812,7 +900,7 @@ public class FloatWindowHelper {
                 mLeftBottomView = null;
             }
         } else if (LEFT_CENTER_FLAG == flag) {
-            //left center
+            // left center
             if (mLeftCenterView != null) {
                 windowManager.removeView(mLeftCenterView);
                 mLeftCenterView = null;
@@ -824,7 +912,7 @@ public class FloatWindowHelper {
                 mLeftTopView = null;
             }
         } else if (LEFT_CENTER_CENTER_FLAG == flag) {
-            //left center center
+            // left center center
             if (mLeftCenterCenterView != null) {
                 windowManager.removeView(mLeftCenterCenterView);
                 mLeftCenterCenterView = null;
@@ -877,10 +965,7 @@ public class FloatWindowHelper {
     }
 
     /**
-     * 
-     * update view LayoutParams
-     * 
-     * must call in UI thread
+     * update view LayoutParams must call in UI thread
      * 
      * @param context
      */
@@ -981,7 +1066,7 @@ public class FloatWindowHelper {
             }
 
         }
-        // update left 
+        // update left
         if (mLeftBottomView != null) {
             mWindowManager.updateViewLayout(mLeftBottomView, mLeftBottomParams);
         }
@@ -994,7 +1079,7 @@ public class FloatWindowHelper {
         if (mLeftCenterCenterView != null) {
             mWindowManager.updateViewLayout(mLeftCenterCenterView, mLeftCenterCenterParams);
         }
-        // update right 
+        // update right
         if (mRightBottomView != null) {
             mWindowManager.updateViewLayout(mRightBottomView, mRightBottomParams);
         }
@@ -1114,11 +1199,7 @@ public class FloatWindowHelper {
     }
 
     /**
-     * 
-     * updateFloatWindowBackgroudColor 
-     * 
-     * 
-     * must call in UI thread
+     * updateFloatWindowBackgroudColor must call in UI thread
      * 
      * @param flag
      */
