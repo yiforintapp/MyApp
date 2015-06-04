@@ -204,4 +204,12 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             mUpdateFilterApp.updateFilterAppClickListener();
         }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mJustHomeCb.setSelected(AppMasterPreference.getInstance(mContext).getSlideTimeJustHome());
+        mAppHomeCb.setSelected(AppMasterPreference.getInstance(mContext)
+                .getSlideTimeAllAppAndHome());
+    }
 }
