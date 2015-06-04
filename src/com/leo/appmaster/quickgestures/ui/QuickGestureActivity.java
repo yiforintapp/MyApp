@@ -738,6 +738,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                 QuickGestureManager.getInstance(QuickGestureActivity.this)
                                         .startFloatWindow();
                                 setOnClickListener();
+                                initChexkBox();
                                 // init quick gesture data
                                 QuickGestureManager.getInstance(getApplicationContext()).init();
                             }
@@ -835,22 +836,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
                     mNoReadMessageFlag = true;
                     // checkout system database no read message
-                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-                        @Override
-                        public void run() {
-                            QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages = PrivacyContactUtils
-                                    .getSysMessage(QuickGestureActivity.this,
-                                            QuickGestureActivity.this.getContentResolver(),
-                                            "read=0 AND type=1", null, false);
-                            if (QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages != null
-                                    && QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages
-                                            .size() > 0) {
-                                QuickGestureManager.getInstance(QuickGestureActivity.this).isShowSysNoReadMessage = true;
-                                FloatWindowHelper
-                                        .removeShowReadTipWindow(QuickGestureActivity.this);
-                            }
-                        }
-                    });
+                    checkNoReadMessage();                    
                 } else {
                     mPre.setSwitchOpenNoReadMessageTip(false);
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
@@ -862,28 +848,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mPre.setSwitchOpenRecentlyContact(true);
                     mRecentlyContactOpenCK.setImageResource(R.drawable.switch_on);
                     mRecentlyContactFlag = true;
-                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
-                            String[] selectionArgs = new String[] {
-                                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
-                            };
-                            QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs = PrivacyContactUtils
-                                    .getSysCallLog(QuickGestureActivity.this,
-                                            QuickGestureActivity.this.getContentResolver(),
-                                            selection,
-                                            selectionArgs);
-                            if (QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs != null
-                                    && QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs
-                                            .size() > 0) {
-                                QuickGestureManager.getInstance(QuickGestureActivity.this).isShowSysNoReadMessage = true;
-                                FloatWindowHelper
-                                        .removeShowReadTipWindow(QuickGestureActivity.this);
-                            }
-                        }
-                    });
+                    checkNoReadCallLog();
                 } else {
                     mPre.setSwitchOpenRecentlyContact(false);
                     mRecentlyContactOpenCK.setImageResource(R.drawable.switch_off);
@@ -910,5 +875,47 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         // TODO Auto-generated method stub
         getEditFreeDisturbAppInfo(false);
         mSlideTimeAdapter.notifyDataSetChanged();
+    }
+    private void checkNoReadMessage(){
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            @Override
+            public void run() {
+                QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages = PrivacyContactUtils
+                        .getSysMessage(QuickGestureActivity.this,
+                                QuickGestureActivity.this.getContentResolver(),
+                                "read=0 AND type=1", null, false);
+                if (QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages != null
+                        && QuickGestureManager.getInstance(QuickGestureActivity.this).mMessages
+                                .size() > 0) {
+                    QuickGestureManager.getInstance(QuickGestureActivity.this).isShowSysNoReadMessage = true;
+                    FloatWindowHelper
+                            .removeShowReadTipWindow(QuickGestureActivity.this);
+                }
+            }
+        });
+    }
+    private void checkNoReadCallLog(){
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+
+            @Override
+            public void run() {
+                String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
+                String[] selectionArgs = new String[] {
+                        String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
+                };
+                QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs = PrivacyContactUtils
+                        .getSysCallLog(QuickGestureActivity.this,
+                                QuickGestureActivity.this.getContentResolver(),
+                                selection,
+                                selectionArgs);
+                if (QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs != null
+                        && QuickGestureManager.getInstance(QuickGestureActivity.this).mCallLogs
+                                .size() > 0) {
+                    QuickGestureManager.getInstance(QuickGestureActivity.this).isShowSysNoReadMessage = true;
+                    FloatWindowHelper
+                            .removeShowReadTipWindow(QuickGestureActivity.this);
+                }
+            }
+        });
     }
 }

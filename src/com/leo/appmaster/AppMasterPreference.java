@@ -1394,7 +1394,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getSwitchOpenNoReadMessageTip() {
-        return mPref.getBoolean(PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP, false);
+        return mPref.getBoolean(PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP, true);
     }
 
     public void setSwitchOpenRecentlyContact(boolean flag) {
@@ -1402,7 +1402,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getSwitchOpenRecentlyContact() {
-        return mPref.getBoolean(PREF_SWITCH_OPEN_RECENTLY_CONTACT, false);
+        return mPref.getBoolean(PREF_SWITCH_OPEN_RECENTLY_CONTACT, true);
     }
 
     public void setSwitchOpenPrivacyContactMessageTip(boolean flag) {
@@ -1410,7 +1410,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getSwitchOpenPrivacyContactMessageTip() {
-        return mPref.getBoolean(PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP, false);
+        return mPref.getBoolean(PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP, true);
     }
 
     public void setDialogRadioLeftBottom(boolean flag) {
@@ -1645,7 +1645,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     // 获取常用应用是否开启了习惯记录
     public boolean getQuickGestureCommonAppDialogCheckboxValue() {
-        return mPref.getBoolean(PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG, false);
+        return mPref.getBoolean(PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG, true);
     }
 
     public void setQuickGestureMiuiSettingFirstDialogTip(boolean flag) {
