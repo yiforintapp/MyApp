@@ -173,6 +173,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP = "quick_gesture_setting_first_dialog_tip";
     public static final String PREF_QUICK_GESTURE_FIRST_DIALOG_SHOW = "quick_gesture_first_set_dialog_show";
     public static final String PREF_QUICK_GESTURE_LAST_TIME_LAYOUT = "quick_gesture_last_time_layout";
+    public static final String PREF_QUICK_GESTURE_PERMISSON_OPEN_NOTIFICATION = "quick_permisson_open";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1674,5 +1675,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getQGSettingFirstDialogTip() {
         return mPref.getBoolean(PREF_QUICK_GESTURE_FIRST_DIALOG_SHOW,
                 false);
+    }
+
+    public void setQuickPermissonOpenFirstNotificatioin(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_PERMISSON_OPEN_NOTIFICATION, flag).commit();
+    }
+
+    public boolean getQuickPermissonOpenFirstNotificatioin() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_PERMISSON_OPEN_NOTIFICATION, false);
     }
 }

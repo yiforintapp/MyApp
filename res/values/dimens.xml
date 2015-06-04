@@ -227,5 +227,6 @@
     
    <dimen name="privacy_contact_red_tip_x">94dp</dimen>
     <dimen name="privacy_contact_red_tip_y">12dp</dimen>
+    <dimen name="gesture_item_imageview_padding">10dp</dimen>
 
 </resources>

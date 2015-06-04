@@ -255,7 +255,10 @@ public class AppMasterApplication extends Application {
             public void run() {
                 LeoLog.e("xxxx", "startInitTask");
                 // AppBusinessManager.getInstance(mInstance).init();
-                QuickGestureManager.getInstance(AppMasterApplication.this).init();
+                if (AppMasterPreference.getInstance(getApplicationContext())
+                        .getSwitchOpenQuickGesture()) {
+                    QuickGestureManager.getInstance(AppMasterApplication.this).init();
+                }
                 checkUpdateFinish();
                 // judgeLockService();
                 // judgeStatictiUnlockCount();
@@ -941,17 +944,17 @@ public class AppMasterApplication extends Application {
         mExecutorService.execute(runable);
     }
 
-//    // init ImageLoader
-//    public static void initImageLoader(Context context) {
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//                context).threadPriority(Thread.NORM_PRIORITY)
-//                .memoryCacheSizePercentage(3)
-//                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-//                .diskCacheSize(100 * 1024 * 1024)
-//                .tasksProcessingOrder(QueueProcessingType.FIFO)
-//                .writeDebugLogs().build();
-//        ImageLoader.getInstance().init(config);
-//    }
+    // // init ImageLoader
+    // public static void initImageLoader(Context context) {
+    // ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+    // context).threadPriority(Thread.NORM_PRIORITY)
+    // .memoryCacheSizePercentage(3)
+    // .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+    // .diskCacheSize(100 * 1024 * 1024)
+    // .tasksProcessingOrder(QueueProcessingType.FIFO)
+    // .writeDebugLogs().build();
+    // ImageLoader.getInstance().init(config);
+    // }
 
     // for force update strategy to exit application completely
     public synchronized void addActivity(Activity activity) {

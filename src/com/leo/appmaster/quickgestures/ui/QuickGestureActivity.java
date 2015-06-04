@@ -738,6 +738,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                 QuickGestureManager.getInstance(QuickGestureActivity.this)
                                         .startFloatWindow();
                                 setOnClickListener();
+                                // init quick gesture data
+                                QuickGestureManager.getInstance(getApplicationContext()).init();
                             }
                         } catch (Exception e) {
                         }
@@ -806,6 +808,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     closeQuickSetting();
                     QuickGestureManager.getInstance(this).stopFloatWindow();
                     FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
+                    // uninit quick gesture data
+                    QuickGestureManager.getInstance(getApplicationContext()).unInit();
                 } else {
                     mPre.setSwitchOpenQuickGesture(true);
                     mQuickOpenCK.setImageResource(R.drawable.switch_on);
@@ -814,6 +818,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             .startFloatWindow();
                     setOnClickListener();
                     initChexkBox();
+                    // init quick gesture data
+                    QuickGestureManager.getInstance(getApplicationContext()).init();
                 }
                 break;
             case R.id.slid_area:

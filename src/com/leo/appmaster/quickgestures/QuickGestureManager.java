@@ -3,16 +3,23 @@ package com.leo.appmaster.quickgestures;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ActivityManager.RecentTaskInfo;
+import android.app.Notification;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.CallLog.Calls;
@@ -33,23 +40,30 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
+import com.leo.appmaster.quickgestures.tools.ColorMatcher;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NotificationUtil;
 
 public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
 
     protected static final String AppLauncherRecorder = null;
-
-    private Context mContext;
     private static QuickGestureManager mInstance;
+    private Context mContext;
+    private ColorMatcher mMatcher;
+    private HashMap<Drawable, Bitmap> mDrawableColors;
+    private boolean mInited = false;
+
     public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
-
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
     private Drawable[] mEmptyIcon;
@@ -57,10 +71,13 @@ public class QuickGestureManager {
     public boolean isShowPrivacyMsm = false;
     public boolean isShowPrivacyCallLog = false;
     public boolean isShowSysNoReadMessage = false;
-    public int onTuchGestureFlag = -1;// -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
+    /*
+     * -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
+     */
+    public int onTuchGestureFlag = -1;
     public boolean isJustHome;
     public boolean isAppsAndHome;
-    public boolean isLeftBottom,isRightBottom,isLeftCenter,isRightCenter;
+    public boolean isLeftBottom, isRightBottom, isLeftCenter, isRightCenter;
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
@@ -79,7 +96,46 @@ public class QuickGestureManager {
         mMostUsedList = new ArrayList<BaseInfo>();
         loadAppLaunchReorder();
         preloadEmptyIcon();
-        getSwitcherList();
+        mMatcher = new ColorMatcher();
+        Bitmap bmp;
+        for (Drawable drawable : mEmptyIcon) {
+            bmp = ((BitmapDrawable) drawable).getBitmap();
+            mMatcher.addBitmapSample(bmp);
+        }
+        mDrawableColors = new HashMap<Drawable, Bitmap>();
+
+        // TODO switcher init
+        QuickSwitchManager.getInstance(mContext).init();
+        mInited = true;
+    }
+
+    public void unInit() {
+        mDynamicList.clear();
+        mMostUsedList.clear();
+        mDynamicList = null;
+        mMostUsedList = null;
+        mAppLaunchRecorders.clear();
+        mAppLaunchRecorders = null;
+        mEmptyIcon = null;
+        mMatcher.clearItem();
+        mMatcher = null;
+        mDrawableColors.clear();
+        mDrawableColors = null;
+        // TODO Switcher uninit
+        QuickSwitchManager.getInstance(mContext).unInit();
+        mInited = false;
+    }
+
+    public Bitmap getMatchedColor(Drawable drawable) {
+        Bitmap target = null;
+        target = mDrawableColors.get(drawable);
+        if (target == null) {
+            target = mMatcher.getMatchedBitmap(drawable);
+            if (target != null) {
+                mDrawableColors.put(drawable, target);
+            }
+        }
+        return target;
     }
 
     public List<BaseInfo> getDynamicList() {
@@ -781,4 +837,30 @@ public class QuickGestureManager {
         mSlidAreaSize = value;
     }
 
+    public void sendPermissionOpenNotification(Context context) {
+        NotificationManager notificationManager = (NotificationManager)
+                context
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = new Notification();
+        Intent intentPending = new Intent(context,
+                QuickGestureActivity.class);
+        intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intentPending,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.icon = R.drawable.ic_launcher_notification;
+        notification.tickerText = context
+                .getString(R.string.permission_open_tip_notification_title);
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
+        notification
+                .setLatestEventInfo(
+                        context,
+                        context.getString(R.string.permission_open_tip_notification_title),
+                        context.getString(R.string.permission_open_tip_notification_content),
+                        contentIntent);
+        NotificationUtil.setBigIcon(notification,
+                R.drawable.ic_launcher_notification_big);
+        notification.when = System.currentTimeMillis();
+        notificationManager.notify(20150603, notification);
+        AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(true);
+    }
 }

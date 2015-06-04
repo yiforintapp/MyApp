@@ -656,13 +656,6 @@ public class QuickSwitchManager {
         switchSetInfo.icon = mContext.getResources().getDrawable(
                 R.drawable.switch_set);
         mAllList.add(switchSetInfo);
-        // 情景模式切换
-        // QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
-        // changeModeInfo.swtichIdentiName = CHANGEMODE;
-        // changeModeInfo.label = getLabelFromName(CHANGEMODE);
-        // changeModeInfo.icon = mContext.getResources().getDrawable(
-        // R.drawable.switch_mode);
-        // mAllList.add(changeModeInfo);
         // 移动数据
         QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
         mobileDataInfo.swtichIdentiName = MOBILEDATA;
@@ -996,7 +989,11 @@ public class QuickSwitchManager {
             callFLYSettingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(callFLYSettingIntent);
         } catch (Exception e) {
-            Toast.makeText(mContext, "Flight mode is not available!", 0).show();
+            Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+            // Toast.makeText(mContext, "Flight mode is not available!",
+            // 0).show();
         }
     }
 
@@ -1235,6 +1232,18 @@ public class QuickSwitchManager {
 
     public String getListStringFromSp() {
         return switchPreference.getSwitchList();
+    }
+
+    public void init() {
+        getSwitchList(13);
+    }
+
+    public void unInit() {
+        mSwitcherLoaded = false;
+        if (mSaveList != null) {
+            mSaveList.clear();
+            mSaveList = null;
+        }
     }
 
 }

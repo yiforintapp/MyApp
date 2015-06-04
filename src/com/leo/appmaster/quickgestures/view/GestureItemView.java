@@ -3,8 +3,10 @@ package com.leo.appmaster.quickgestures.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.DragEvent;
@@ -14,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.utils.LeoLog;
@@ -64,8 +67,15 @@ public class GestureItemView extends LinearLayout {
         return mTextView.getText().toString();
     }
 
-    public void setItemIcon(Drawable icon) {
-        mImageView.setBackgroundDrawable(icon);
+    public void setItemIcon(Drawable icon, boolean needColor) {
+        if(needColor) {
+            QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
+            Bitmap target = qgm.getMatchedColor(icon);
+            mImageView.setBackgroundDrawable(new BitmapDrawable(getResources(), target));
+            mImageView.setImageDrawable(icon);
+        } else {
+            mImageView.setBackgroundDrawable(icon);
+        }
     }
 
     public void setDecorateAction(DecorateAction action) {
