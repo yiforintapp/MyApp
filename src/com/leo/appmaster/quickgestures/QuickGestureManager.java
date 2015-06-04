@@ -10,8 +10,12 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ActivityManager.RecentTaskInfo;
+import android.app.Notification;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -36,11 +40,15 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.tools.ColorMatcher;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NotificationUtil;
 
 public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
@@ -829,4 +837,30 @@ public class QuickGestureManager {
         mSlidAreaSize = value;
     }
 
+    public void sendPermissionOpenNotification(Context context) {
+        NotificationManager notificationManager = (NotificationManager)
+                context
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = new Notification();
+        Intent intentPending = new Intent(context,
+                QuickGestureActivity.class);
+        intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intentPending,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.icon = R.drawable.ic_launcher_notification;
+        notification.tickerText = context
+                .getString(R.string.permission_open_tip_notification_title);
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
+        notification
+                .setLatestEventInfo(
+                        context,
+                        context.getString(R.string.permission_open_tip_notification_title),
+                        context.getString(R.string.permission_open_tip_notification_content),
+                        contentIntent);
+        NotificationUtil.setBigIcon(notification,
+                R.drawable.ic_launcher_notification_big);
+        notification.when = System.currentTimeMillis();
+        notificationManager.notify(20150603, notification);
+        AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(true);
+    }
 }

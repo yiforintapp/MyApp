@@ -37,6 +37,7 @@ import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.Utilities;
 
 //import android.app.ActivityManager.AppTask;
@@ -99,6 +100,7 @@ public class TaskDetectService extends Service {
         startForeground(1, getNotification(getApplicationContext()));
         startPhantomService();
         checkFloatWindow();
+        sendQuickPermissionOpenNotification(getApplicationContext());
         super.onCreate();
     }
 
@@ -576,4 +578,25 @@ public class TaskDetectService extends Service {
         return sNotification;
     }
 
+    private void sendQuickPermissionOpenNotification(Context context) {
+        boolean flag = AppMasterPreference.getInstance(context)
+                .getQuickPermissonOpenFirstNotificatioin();
+//        if(!flag){
+//        Log.e("######", "快捷开关权限是否已经发过通知：" + flag+"进去执行");
+//        }else{
+//            Log.e("######", "快捷开关权限是否已经发过通知：" + flag+"不去下面执行");
+//        }
+        if (!flag) {
+            boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(context);
+            boolean checkMiui = BuildProperties.isMIUI();
+            boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(context);
+//            Log.e("#######", "是否为MIUI：" + checkMiui);
+//            Log.e("######", "是否为HUAWEI：" + checkHuaWei);
+//            Log.e("####", "悬浮窗权限是否打开：" + checkFloatWindow);
+            if ((checkHuaWei || checkMiui) && checkFloatWindow) {
+                QuickGestureManager.getInstance(context)
+                        .sendPermissionOpenNotification(context);
+            }
+        }
+    }
 }

@@ -740,7 +740,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                 setOnClickListener();
                                 // init quick gesture data
                                 QuickGestureManager.getInstance(getApplicationContext()).init();
-
                             }
                         } catch (Exception e) {
                         }

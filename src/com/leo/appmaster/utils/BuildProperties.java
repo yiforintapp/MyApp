@@ -117,7 +117,7 @@ public class BuildProperties {
     }
 
     /**
-     * 判断MIUI的悬浮窗权限
+     * 判断悬浮窗权限
      * 
      * @param context
      * @return
