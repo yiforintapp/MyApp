@@ -174,6 +174,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_FIRST_DIALOG_SHOW = "quick_gesture_first_set_dialog_show";
     public static final String PREF_QUICK_GESTURE_LAST_TIME_LAYOUT = "quick_gesture_last_time_layout";
     public static final String PREF_QUICK_GESTURE_PERMISSON_OPEN_NOTIFICATION = "quick_permisson_open";
+    public static final String PREF_QUICK_GESTURE_FIRST_OPEN_QUICK_POPUP = "quick_gesture_first_open_popu";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1394,7 +1395,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getSwitchOpenNoReadMessageTip() {
-        return mPref.getBoolean(PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP, false);
+        return mPref.getBoolean(PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP, true);
     }
 
     public void setSwitchOpenRecentlyContact(boolean flag) {
@@ -1402,7 +1403,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getSwitchOpenRecentlyContact() {
-        return mPref.getBoolean(PREF_SWITCH_OPEN_RECENTLY_CONTACT, false);
+        return mPref.getBoolean(PREF_SWITCH_OPEN_RECENTLY_CONTACT, true);
     }
 
     public void setSwitchOpenPrivacyContactMessageTip(boolean flag) {
@@ -1410,7 +1411,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getSwitchOpenPrivacyContactMessageTip() {
-        return mPref.getBoolean(PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP, false);
+        return mPref.getBoolean(PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP, true);
     }
 
     public void setDialogRadioLeftBottom(boolean flag) {
@@ -1684,4 +1685,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getQuickPermissonOpenFirstNotificatioin() {
         return mPref.getBoolean(PREF_QUICK_GESTURE_PERMISSON_OPEN_NOTIFICATION, false);
     }
+//    public void setQuickGestureOpenFirstPopu(boolean flag) {
+//        mPref.edit().putBoolean(PREF_QUICK_GESTURE_FIRST_OPEN_QUICK_POPUP, flag).commit();
+//    }
+//
+//    public boolean getQuickGestureOpenFirstPopu(boolean flag) {
+//        return mPref.getBoolean(PREF_QUICK_GESTURE_FIRST_OPEN_QUICK_POPUP, false);
+//    }
 }

@@ -38,6 +38,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         fillWhichLayoutFitst(mNowLayout);
         fillTwoLayout(mNowLayout);
         overridePendingTransition(-1, -1);
+
     }
 
     private void fillWhichLayoutFitst(int mNowLayout) {
@@ -63,7 +64,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 mContainer.showOpenAnimation(new Runnable() {
                     @Override
                     public void run() {
-//                        fillTwoLayout(mNowLayout);
+                        // fillTwoLayout(mNowLayout);
                     }
 
                 });

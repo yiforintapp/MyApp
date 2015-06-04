@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -68,7 +69,7 @@ public class GestureItemView extends LinearLayout {
     }
 
     public void setItemIcon(Drawable icon, boolean needColor) {
-        if(needColor) {
+        if (needColor) {
             QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
             Bitmap target = qgm.getMatchedColor(icon);
             mImageView.setBackgroundDrawable(new BitmapDrawable(getResources(), target));
@@ -149,6 +150,10 @@ public class GestureItemView extends LinearLayout {
     public void showReadTip() {
         mIsShowReadTip = true;
         invalidate();
+    }
+
+    public boolean getIsShowReadTip() {
+        return mIsShowReadTip;
     }
 
     public void cancelShowReadTip() {
