@@ -739,8 +739,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                         .startFloatWindow();
                                 setOnClickListener();
                                 initChexkBox();
-//                                checkNoReadCallLog();
-//                                checkNoReadMessage();
+                                // checkNoReadCallLog();
+                                // checkNoReadMessage();
                                 // init quick gesture data
                                 QuickGestureManager.getInstance(getApplicationContext()).init();
                             }
@@ -812,7 +812,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     QuickGestureManager.getInstance(this).stopFloatWindow();
                     FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
                     // uninit quick gesture data
-                    QuickGestureManager.getInstance(getApplicationContext()).unInit();
+                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            QuickGestureManager.getInstance(getApplicationContext()).unInit();
+                        }
+                    });
                 } else {
                     mPre.setSwitchOpenQuickGesture(true);
                     mQuickOpenCK.setImageResource(R.drawable.switch_on);
@@ -822,7 +828,14 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     setOnClickListener();
                     initChexkBox();
                     // init quick gesture data
-                    QuickGestureManager.getInstance(getApplicationContext()).init();
+                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            // TODO Auto-generated method stub
+                            QuickGestureManager.getInstance(getApplicationContext()).init();
+                        }
+                    });
                 }
                 break;
             case R.id.slid_area:
@@ -838,7 +851,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
                     mNoReadMessageFlag = true;
                     // checkout system database no read message
-                    checkNoReadMessage();                    
+                    checkNoReadMessage();
                 } else {
                     mPre.setSwitchOpenNoReadMessageTip(false);
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
@@ -878,7 +891,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         getEditFreeDisturbAppInfo(false);
         mSlideTimeAdapter.notifyDataSetChanged();
     }
-    private void checkNoReadMessage(){
+
+    private void checkNoReadMessage() {
         AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
@@ -896,7 +910,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             }
         });
     }
-    private void checkNoReadCallLog(){
+
+    private void checkNoReadCallLog() {
         AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
             @Override
