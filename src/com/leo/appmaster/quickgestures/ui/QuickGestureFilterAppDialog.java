@@ -56,8 +56,11 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
     private CheckBox mCheckBox;
     private int mFlag;
     private static int mSwitchListSize = 0;
-    private boolean mFirstStatus = false;
+    private boolean mSwitchFirstStatus = false;
+    private boolean mMostFirstStatus = false;
     private List<BaseInfo> quickSwitchSaveList;
+    private List<QuickGsturebAppInfo> mostUseList;
+    private boolean isAutoFillIcon;
     private static int mMostAppConunt = 0;
 
     public QuickGestureFilterAppDialog(Context context, int flag) {
@@ -86,15 +89,20 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 animateItem(arg1);
                 QuickGsturebAppInfo selectInfl = (QuickGsturebAppInfo) arg1.getTag();
-                LeoLog.d("QuickGestureManager", "name : " + selectInfl.label + " ; iName : "
-                        + selectInfl.swtichIdentiName);
 
                 if (mFlag == 2) {
                     // 快捷开关的方式
                     if (quickSwitchSaveList != null) {
-                        mFirstStatus = getFirstStatusFromName(quickSwitchSaveList, selectInfl.label);
+                        mSwitchFirstStatus = getFirstStatusFromName(quickSwitchSaveList,
+                                selectInfl.label);
+                    }
+                } else if (mFlag == 3) {
+                    if (mostUseList != null) {
+                        mMostFirstStatus = getFirstStatusFromPakName(mostUseList,
+                                selectInfl.packageName);
                     }
                 }
+
                 if (selectInfl.isFreeDisturb) {
                     selectInfl.isFreeDisturb = false;
                     mDisturbList.add(selectInfl);
@@ -102,56 +110,74 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                     if (mAddFreePackageName != null && mAddFreePackageName.size() > 0) {
                         mAddFreePackageName.remove(selectInfl);
                     }
-                    if (mFirstStatus) {
+
+                    if (mFlag == 2) {
+                        if (mSwitchFirstStatus) {
+                            mRemoveFreePackageName.add(selectInfl);
+                        }
+                    } else if (mFlag == 3) {
+                        if (mMostFirstStatus) {
+                            mRemoveFreePackageName.add(selectInfl);
+                        }
+                    } else if (mFlag == 1) {
                         mRemoveFreePackageName.add(selectInfl);
                     }
-                    if (mFlag == 1) {
-                        mRemoveFreePackageName.add(selectInfl);
-                    }
-                    
+
                     if (mFlag == 2) {
                         ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                        .setDefaultRecommendApp(selectInfl,false);
-                    }else {
+                                .setDefaultRecommendApp(selectInfl, false);
+                    } else {
                         ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                        .setDefaultRecommendApp(false);
+                                .setDefaultRecommendApp(false);
                     }
-
+                    mMostAppConunt -= 1;
                     mSwitchListSize -= 1;
                 } else {
-                    if (mFlag == 2 || mFlag == 3) {
-
-                        if (mFlag == 3) {
-                            if (mMostAppConunt <= 12) {
-                                selectInfl.gesturePosition = mMostAppConunt;
-                                mMostAppConunt += 1;
-                            }
-                        }
-                        if (mSwitchListSize <= 12) {
+                    if (mFlag == 2) {
+                        if (mSwitchListSize <= 10) {
                             selectInfl.isFreeDisturb = true;
                             mFreeDisturbApp.add(selectInfl);
                             mDisturbList.remove(selectInfl);
-                            if (!mFirstStatus) {
+
+                            if (!mSwitchFirstStatus) {
                                 mAddFreePackageName.add(selectInfl);
                             }
+
                             if (mRemoveFreePackageName != null && mRemoveFreePackageName.size() > 0) {
                                 mRemoveFreePackageName.remove(selectInfl);
                             }
-                            
-                            if (mFlag == 2) {
-                                ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                                .setDefaultRecommendApp(selectInfl,true);
-                            }else {
-                                ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                                .setDefaultRecommendApp(true);
-                            }
+
+                            ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                                    .setDefaultRecommendApp(selectInfl, true);
+
                             mSwitchListSize += 1;
                         }
+                    } else if (mFlag == 3) {
+                        if (mMostAppConunt <= 10) {
+                            selectInfl.gesturePosition = mMostAppConunt;
+                            selectInfl.isFreeDisturb = true;
+                            mFreeDisturbApp.add(selectInfl);
+                            mDisturbList.remove(selectInfl);
+
+                            if (!mMostFirstStatus) {
+                                mAddFreePackageName.add(selectInfl);
+                            }
+
+                            if (mRemoveFreePackageName != null && mRemoveFreePackageName.size() > 0) {
+                                mRemoveFreePackageName.remove(selectInfl);
+                            }
+
+                            ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
+                                    .setDefaultRecommendApp(true);
+
+                            mMostAppConunt += 1;
+                        }
+
                     } else {
                         selectInfl.isFreeDisturb = true;
                         mFreeDisturbApp.add(selectInfl);
                         mDisturbList.remove(selectInfl);
-                        if (!mFirstStatus) {
+                        if (!mSwitchFirstStatus) {
                             mAddFreePackageName.add(selectInfl);
                         }
                         mRemoveFreePackageName.remove(selectInfl);
@@ -183,8 +209,19 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         setCanceledOnTouchOutside(true);
     }
 
+    protected boolean getFirstStatusFromPakName(List<QuickGsturebAppInfo> mostUseList2,
+            String packageName) {
+        boolean isCheck = false;
+        for (int i = 0; i < mostUseList2.size(); i++) {
+            if (mostUseList2.get(i).packageName.equals(packageName)) {
+                isCheck = true;
+            }
+        }
+        return isCheck;
+    }
+
     protected void makeOtherIcon(QuickGsturebAppInfo selectInfl, boolean b) {
-        
+
     }
 
     protected boolean getFirstStatusFromName(List<? extends BaseInfo> mSaveList, String label) {
@@ -306,10 +343,12 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         HashMap<String, Integer> packagePosition = new HashMap<String, Integer>();
         boolean isCheck = AppMasterPreference.getInstance(mContext)
                 .getQuickGestureCommonAppDialogCheckboxValue();
+        isAutoFillIcon = isCheck;
         List<QuickGsturebAppInfo> resault = new ArrayList<QuickGsturebAppInfo>();
         QuickGsturebAppInfo qgInfo;
 
         if (isCheck) {
+            List<QuickGsturebAppInfo> isCheckList = new ArrayList<QuickGsturebAppInfo>();
             ArrayList<AppLauncherRecorder> records = QuickGestureManager.getInstance(mContext).mAppLaunchRecorders;
             Iterator<AppLauncherRecorder> iterator = records.iterator();
             AppLauncherRecorder record;
@@ -332,10 +371,14 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 if (packagePosition.get(qgInfo.packageName) != null) {
                     qgInfo.gesturePosition = packagePosition.get(qgInfo.packageName);
                     qgInfo.isFreeDisturb = true;
+                    isCheckList.add(qgInfo);
                 }
                 resault.add(qgInfo);
+                mostUseList = isCheckList;
+                mMostAppConunt = mostUseList.size();
             }
         } else {
+            List<QuickGsturebAppInfo> isNotCheckList = new ArrayList<QuickGsturebAppInfo>();
             if (!AppMasterPreference.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME
                     .equals(packageName)) {
                 String[] names = packageName.split(";");
@@ -358,9 +401,11 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                     qgInfo.gesturePosition = packagePosition.get(qgInfo.packageName);
                     mSwitchListSize++;
                     qgInfo.isFreeDisturb = true;
+                    isNotCheckList.add(qgInfo);
                 }
-
                 resault.add(qgInfo);
+                mostUseList = isNotCheckList;
+                mMostAppConunt = mostUseList.size();
             }
         }
         Collections.sort(resault, new PositionComparator());

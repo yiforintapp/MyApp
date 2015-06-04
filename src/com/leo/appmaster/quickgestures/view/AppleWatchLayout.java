@@ -32,6 +32,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.AppListActivity;
+import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
@@ -759,7 +760,7 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.MostUsedLayout) {
             // TODO
             if (!(hitView.getTag() instanceof GestureEmptyItemInfo)) {
-                AppItemInfo info = (AppItemInfo) hitView.getTag();
+                AppInfo info = (AppInfo) hitView.getTag();
                 boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
                         .getQuickGestureCommonAppDialogCheckboxValue();
                 if (isRecorderFlag) {
