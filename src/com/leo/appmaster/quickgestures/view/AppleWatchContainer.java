@@ -853,8 +853,8 @@ public class AppleWatchContainer extends FrameLayout {
                 }
             }
 
-            if (infos.size() > 13) {
-                infos = infos.subList(0, 13);
+            if (infos.size() > 11) {
+                infos = infos.subList(0, 11);
             }
 
             for (int i = 0; i < infos.size(); i++) {
@@ -1256,11 +1256,11 @@ public class AppleWatchContainer extends FrameLayout {
         } else {
             targetLayout = mSwitcherLayout;
         }
-        AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
+//        AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
         AnimatorSet set = new AnimatorSet();
         set.setDuration(300);
         set.setInterpolator(new DecelerateInterpolator());
-        set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
+        set.playTogether(tabAnimator, titleAnimator/*, iconAnimatorSet*/);
         set.addListener(new AnimatorListenerAdapter() {
 
             @Override
@@ -1314,11 +1314,11 @@ public class AppleWatchContainer extends FrameLayout {
             LeoLog.d("AppleWatchContainer", "关闭是 : mLastTimeSwitch");
             mPref.setLastTimeLayout(mLastTimeSwitch);
         }
-        AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
+//        AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
         AnimatorSet set = new AnimatorSet();
         set.setDuration(300);
         set.setInterpolator(new DecelerateInterpolator());
-        set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
+        set.playTogether(tabAnimator, titleAnimator/*, iconAnimatorSet*/);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
