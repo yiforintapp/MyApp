@@ -739,6 +739,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                         .startFloatWindow();
                                 setOnClickListener();
                                 initChexkBox();
+//                                checkNoReadCallLog();
+//                                checkNoReadMessage();
                                 // init quick gesture data
                                 QuickGestureManager.getInstance(getApplicationContext()).init();
                             }
