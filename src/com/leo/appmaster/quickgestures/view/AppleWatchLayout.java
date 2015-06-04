@@ -32,6 +32,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.AppListActivity;
+import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
@@ -759,7 +760,7 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.MostUsedLayout) {
             // TODO
             if (!(hitView.getTag() instanceof GestureEmptyItemInfo)) {
-                AppItemInfo info = (AppItemInfo) hitView.getTag();
+                AppInfo info = (AppInfo) hitView.getTag();
                 boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
                         .getQuickGestureCommonAppDialogCheckboxValue();
                 if (isRecorderFlag) {
@@ -1463,9 +1464,16 @@ public class AppleWatchLayout extends ViewGroup {
 
                     if (i == 3 || i == 7) {
                         if (adjustMoveX <= offset / 2) {
-                            targetScale = (offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
+                            targetScale = (offset / 2 - adjustMoveX) /
+                                    (offset / 2) * rawScale1;
+                            // targetScale = rawScale1 - adjustMoveX *
+                            // (rawScale1 / offset);
                         } else {
-                            targetScale = (adjustMoveX - offset / 2) / (offset / 2) * rawScale1;
+                            targetScale = (adjustMoveX - offset / 2) /
+                                    (offset / 2) * rawScale1;
+                            // targetScale = rawScale1 - (offset - adjustMoveX)
+                            // * (rawScale1 / offset);
+
                         }
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
@@ -1498,9 +1506,15 @@ public class AppleWatchLayout extends ViewGroup {
 
                     if (i == 2 || i == 5) {
                         if (adjustMoveX <= offset / 2) {
-                            targetScale = (offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
+                            targetScale = (offset / 2 - adjustMoveX) /
+                                    (offset / 2) * rawScale1;
+                            // targetScale = rawScale1 - adjustMoveX *
+                            // (rawScale1 / offset);
                         } else {
-                            targetScale = (adjustMoveX - offset / 2) / (offset / 2) * rawScale1;
+                            targetScale = (adjustMoveX - offset / 2) /
+                                    (offset / 2) * rawScale1;
+                            // targetScale = rawScale1 - (offset - adjustMoveX)
+                            // * (rawScale1 / offset);
                         }
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);

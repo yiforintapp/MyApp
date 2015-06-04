@@ -75,6 +75,7 @@ public class GestureItemView extends LinearLayout {
             mImageView.setImageDrawable(icon);
         } else {
             mImageView.setBackgroundDrawable(icon);
+            mImageView.setImageDrawable(null);
         }
     }
 
