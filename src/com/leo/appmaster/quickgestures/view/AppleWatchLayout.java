@@ -19,6 +19,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -152,21 +153,21 @@ public class AppleWatchLayout extends ViewGroup {
                 } else {
                     gestureItem.cancelShowReadTip();
                 }
-                gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+                gestureItem.setDecorateAction(new EventAction(getContext(), 0));
             } else if (info instanceof MessageBean) {
                 if (((MessageBean) info).isShowReadTip) {
                     gestureItem.showReadTip();
                 } else {
                     gestureItem.cancelShowReadTip();
                 }
-                gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+                gestureItem.setDecorateAction(new EventAction(getContext(),0));
             } else if (info instanceof ContactCallLog) {
                 if (((ContactCallLog) info).isShowReadTip) {
                     gestureItem.showReadTip();
                 } else {
                     gestureItem.cancelShowReadTip();
                 }
-                gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+                gestureItem.setDecorateAction(new EventAction(getContext(), 0));
             }
 
             if (info instanceof GestureEmptyItemInfo) {
@@ -503,6 +504,30 @@ public class AppleWatchLayout extends ViewGroup {
         if (info.eventNumber > 0) {
             item.setDecorateAction(new EventAction(getContext(), info.eventNumber));
         }
+        // TODO
+        if (info instanceof QuickGestureContactTipInfo) {
+            if (((QuickGestureContactTipInfo) info).isShowReadTip) {
+                item.showReadTip();
+            } else {
+                item.cancelShowReadTip();
+            }
+            item.setDecorateAction(new EventAction(getContext(), 0));
+        } else if (info instanceof MessageBean) {
+            if (((MessageBean) info).isShowReadTip) {
+                item.showReadTip();
+            } else {
+                item.cancelShowReadTip();
+            }
+            item.setDecorateAction(new EventAction(getContext(), 0));
+        } else if (info instanceof ContactCallLog) {
+            if (((ContactCallLog) info).isShowReadTip) {
+                item.showReadTip();
+            } else {
+                item.cancelShowReadTip();
+            }
+            item.setDecorateAction(new EventAction(getContext(), 0));
+        }
+
         item.setTag(info);
     }
 
