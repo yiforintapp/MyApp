@@ -243,21 +243,23 @@ public class AppLoadEngine extends BroadcastReceiver {
     }
 
     public String getAppName(String pkg) {
-        AppItemInfo info = mAppDetails.get(pkg);
-        if (info != null) {
-            return info.label;
-        } else {
-            return "";
+        if(mAppDetails != null) {
+            AppItemInfo info = mAppDetails.get(pkg);
+            if (info != null) {
+                return info.label;
+            }
         }
+        return "";
     }
 
     public Drawable getAppIcon(String pkg) {
-        AppItemInfo info = mAppDetails.get(pkg);
-        if (info != null) {
-            return info.icon;
-        } else {
-            return null;
+        if(mAppDetails != null) {
+            AppItemInfo info = mAppDetails.get(pkg);
+            if (info != null) {
+                return info.icon;
+            }
         }
+        return null;
     }
 
     public ArrayList<AppItemInfo> getAllPkgInfo() {
